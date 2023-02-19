@@ -1,3 +1,10 @@
+/**
+CSS pour le menu de gauche admin
+ */
+#adm-menu-left {
+  max-width: 100%;
+}
+
 #adm-menu-left .nav-pills .nav-link {
   background: none;
   border-radius: unset;
@@ -32,25 +39,5 @@
 
 #adm-menu-left .nav-pills .nav-toggle:not(.collapsed) .bi-chevron-right {
   rotate: 90deg;
-}
-
-@media (max-width:768px) and (min-width:575px) {
-
-  #adm-menu-left {
-    min-width: 60px;
-  }
-
-  #adm-menu-left .bi-icon
-  {
-    font-size: 1.5rem;
-  }
-
-  #adm-menu-left .text-menu {
-    display: none;
-  }
-
-  #adm-menu-left .bi-chevron-right {
-    margin-top: 8px;
-  }
 }
 

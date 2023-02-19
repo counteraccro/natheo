@@ -32,3 +32,4 @@ yarn-error.log
 .idea/phpunit.xml
 .idea/vcs.xml
 .idea/watcherTasks.xml
+.idea/codeStyles/codeStyleConfig.xml
