@@ -4,4 +4,6 @@ $primary: #C780FA;
 @import "~bootstrap/scss/bootstrap";
 
 /** Menu left admin **/
+@import "admin/global";
+@import "admin/header";
 @import "admin/menu-left";

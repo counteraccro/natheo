@@ -1,35 +1,34 @@
-<div class="flex-column bg-primary bg-opacity-75 text-white" id="adm-menu-left">
-    <nav class="nav nav-pills flex-column shadow">
-        <a class="nav-link nav-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#nav-1" href="#nav-1" aria-current="page" aria-expanded="false" href="#">
-            <i class="bi-house"></i>
-            Menu 1
-            <i class="bi-chevron-right float-end"></i>
-        </a>
-        <div class="collapse" id="nav-1" data-bs-parent="#adm-menu-left">
-            <nav class="nav flex-column">
-                <a class="nav-link ps-4" aria-current="page" href="#">
-                    <i class="bi-house"></i>sub-menu-1-1
-                </a>
-                <a class="nav-link ps-4" href="#">
-                    <i class="bi-house"></i>
-                    sub-menu-1-2
-                </a>
-                <a class="nav-link ps-4" href="#"> <i class="bi-house"></i> sub-menu-1-3</a>
-                <a class="nav-link ps-4" href="#"> <i class="bi-house"></i> sub-menu-1-4</a>
-            </nav>
-        </div>
-        <a class="nav-link" href="#">Menu 2</a>
-        <a class="nav-link nav-toggle collapsed" data-bs-toggle="collapse" data-bs-target="#nav-3" href="#nav-3" aria-current="page" aria-expanded="false" href="#">
-            Menu 3
-            <i class="bi-chevron-right float-end"></i>
-        </a>
-        <div class="collapse" id="nav-3" data-bs-parent="#adm-menu-left">
-            <nav class="nav flex-column">
-                <a class="nav-link" href="#">sub-menu-3-1</a>
-                <a class="nav-link" href="#">sub-menu-3-2</a>
-                <a class="nav-link" href="#">sub-menu-3-3</a>
-            </nav>
-        </div>
-        <a class="nav-link disabled">Disabled</a>
-    </nav>
-</div>
+<nav id="sidebar">
+    <div class="sidebar-header">
+        <h3>Natheo</h3>
+    </div>
+
+    <ul class="list-unstyled components">
+        <!-- <p>Project 1</p> -->
+        <li class="active">
+            <a class="collapsed nav-toggle" href="#nav-1" data-bs-toggle="collapse" data-bs-target="#nav-1" aria-current="page" aria-expanded="false">
+                <i class="bi-house"></i> Home
+                <i class="bi-chevron-right float-end"></i>
+            </a>
+            <ul class="collapse list-unstyled" id="nav-1" data-bs-parent="#sidebar">
+                <li><a href="#">Home 1</a></li>
+                <li><a href="#">Home 2</a></li>
+                <li><a href="#">Home 3</a></li>
+            </ul>
+        </li>
+        <li><a href="#">About</a></li>
+        <li>
+            <a class="collapsed nav-toggle" href="#nav-3" data-bs-toggle="collapse" data-bs-target="#nav-3" aria-current="page" aria-expanded="false">
+                <i class="bi-link"></i> Link
+                <i class="bi-chevron-right float-end"></i>
+            </a>
+            <ul class="collapse list-unstyled" id="nav-3" data-bs-parent="#sidebar">
+                <li><a href="#"><i class="bi-link"></i> Link 1</a></li>
+                <li><a href="#">Link 2</a></li>
+                <li><a href="#">Link 3</a></li>
+            </ul>
+        </li>
+        <li><a href="#">Portfolio</a></li>
+        <li><a href="#">Contact</a></li>
+    </ul>
+</nav>

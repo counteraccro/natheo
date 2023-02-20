@@ -1,41 +1,75 @@
-/**
-CSS pour le menu de gauche admin
- */
-#adm-menu-left {
-  max-width: 100%;
-  color: #FFFFFF;
+
+#sidebar {
+  min-width: 250px;
+  max-width: 250px;
+  background: #7386D5;
+  color: #fff;
+  transition: all 0.3s;
 }
 
-#adm-menu-left .nav-pills .nav-link {
-  background: none;
-  border-radius: unset;
-  transition: none;
-  color: #000000;
+#sidebar.active {
+  margin-left: -250px;
 }
 
-#adm-menu-left .nav-pills .nav-link:hover {
-  border-radius: unset;
-  background-color: $primary;
-  color: #FFFFFF;
-  margin-top: -1px;
+#sidebar .sidebar-header {
+  padding: 20px;
+  background: #6d7fcc;
 }
 
-#adm-menu-left .nav-pills .nav-toggle:hover {
-  border-radius: unset;
-  background-color: $primary;
-}
-#adm-menu-left .nav-pills .nav-toggle:not(.collapsed) {
-  background-color: $primary;
-  color: #FFFFFF;
-  font-weight: normal;
-  border-radius: unset;
+#sidebar ul.components {
+  padding: 20px 0;
+  border-bottom: 1px solid #47748b;
 }
 
-#adm-menu-left .bi-chevron-right {
+
+#sidebar ul p {
+  color: #fff;
+  padding: 10px;
+}
+
+#sidebar ul li a {
+  padding: 10px;
+  font-size: 1.1em;
+  display: block;
+}
+
+#sidebar ul li a:hover {
+  color: #7386D5;
+  background: #fff;
+}
+
+#sidebar ul li.active>a, #sidebar
+a[aria-expanded="true"] {
+  color: #fff;
+  background: #6d7fcc;
+}
+
+#sidebar ul ul a {
+  font-size: 0.9em !important;
+  padding-left: 30px !important;
+  background: #6d7fcc;
+}
+
+#sidebar .bi-chevron-right {
   transition: all 0.3s ease;
 }
 
-#adm-menu-left .nav-pills .nav-toggle:not(.collapsed) .bi-chevron-right {
+#sidebar .nav-toggle:not(.collapsed) .bi-chevron-right {
   rotate: 90deg;
 }
 
+/* ---------------------------------------------------
+    MEDIAQUERIES
+----------------------------------------------------- */
+
+@media (max-width: 768px) {
+  #sidebar {
+    margin-left: -250px;
+  }
+  #sidebar.active {
+    margin-left: 0;
+  }
+  #sidebarCollapse span {
+    display: none;
+  }
+}
