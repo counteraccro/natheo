@@ -16,13 +16,11 @@
 </head>
 <body>
 <header>
-    <div class="border border-danger">
-        Header
-    </div>
+    {% include 'admin/includes/header.html.twig' %}
 </header>
-<div class="container-fluid">
+<div>
     <div class="row">
-        <nav class="col-md-2">
+        <nav class="col-md-2 col-lg-2 d-md-block sidebar collapse " id="nav-menu">
                 {% include 'admin/includes/menu.html.twig' %}
         </nav>
         <main class="col">

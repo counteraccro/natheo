@@ -3,32 +3,30 @@ CSS pour le menu de gauche admin
  */
 #adm-menu-left {
   max-width: 100%;
+  color: #FFFFFF;
 }
 
 #adm-menu-left .nav-pills .nav-link {
   background: none;
   border-radius: unset;
   transition: none;
+  color: #000000;
 }
 
 #adm-menu-left .nav-pills .nav-link:hover {
   border-radius: unset;
   background-color: $primary;
-  opacity: 0.5;
-  color: white;
+  color: #FFFFFF;
   margin-top: -1px;
 }
 
 #adm-menu-left .nav-pills .nav-toggle:hover {
   border-radius: unset;
   background-color: $primary;
-  opacity: 0.7;
-  color: white;
 }
 #adm-menu-left .nav-pills .nav-toggle:not(.collapsed) {
   background-color: $primary;
-  opacity: 0.7;
-  color: white;
+  color: #FFFFFF;
   font-weight: normal;
   border-radius: unset;
 }
