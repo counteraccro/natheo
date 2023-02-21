@@ -1,9 +1,15 @@
-$primary: #C780FA;
-
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
 
 @import "~bootstrap/scss/bootstrap";
 
-/** Menu left admin **/
+@import "admin/themes/purple";
+@import "admin/themes/red";
+@import "admin/themes/dark";
+
+@import "~bootstrap/scss/variables";
+
 @import "admin/global";
 @import "admin/header";
 @import "admin/menu-left";

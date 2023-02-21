@@ -1,0 +1,39 @@
+.theme-red {
+
+  $body-bg: rgb(41, 41, 41);
+  $card-bg: rgb(78, 78, 78);
+
+
+  $dark: #561941;
+  $primary: #751d43;
+  $secondary: #a02b46;
+  $success: #ff773d;
+  $danger: #d84846;
+  $info: #c5f57c;
+  $light: #f3ef00;
+  $warning: #F6B339;
+
+  $theme-colors: (
+          "primary": $primary,
+          "secondary": $secondary,
+          "success": $success,
+          "danger": $danger,
+          "info": $info,
+          "dark": $dark,
+          "light": $light,
+          "warning": $warning
+  );
+
+  //$light: $body-bg;
+  //$modal-content-bg: $card-bg;
+
+  //$carousel-indicator-height: 0px;
+
+  //--#{$variable-prefix}body-color: #{$body-color};
+  //--#{$variable-prefix}body-bg: #{$body-bg};
+
+  --bg-primary: #{$primary};
+  --bg-secondary: #{$secondary};
+
+  @import "~bootstrap/scss/bootstrap";
+}
