@@ -1,8 +1,11 @@
 #adm-navbar.navbar {
   padding: 10px 10px;
-  background: #fff;
   border: none;
   border-radius: 0;
-  margin-bottom: 40px;
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0px;
+  height: 82px;
+}
+
+#adm-navbar a {
+  color: #FFF;
 }

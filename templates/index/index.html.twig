@@ -6,11 +6,6 @@
 
     <h2>Page de démo</h2>
 
-    <button class="btn btn-primary btn-theme-switch" data-theme="theme-dark">Thème dark</button>
-    <button class="btn btn-primary btn-theme-switch" data-theme="theme-purple">Thème purple</button>
-    <button class="btn btn-primary btn-theme-switch" data-theme="theme-red">Thème red</button>
-
-
     <h3>Bloc d'éléments</h3>
 
     <a href="#">Je suis un lien</a> <br />
@@ -133,19 +128,6 @@
     <div class="spinner-border text-dark" role="status">
         <span class="visually-hidden">Loading...</span>
     </div>
-
-    <script>
-        let element = document.getElementsByClassName('btn-theme-switch');
-
-        for(let i = 0; i < element.length; i++) {
-            element[i].addEventListener("click", function() {
-                let theme = element[i].dataset.theme;
-
-                document.body.className = '';
-                document.body.classList.add(theme)
-            })
-        }
-    </script>
 
 {% endblock %}
 

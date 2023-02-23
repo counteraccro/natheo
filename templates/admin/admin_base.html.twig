@@ -19,9 +19,11 @@
     <!-- Sidebar  -->
     {% include "/admin/includes/menu.html.twig" %}
     <!-- Page Content  -->
-    <div id="content" class="bg-body">
+    <div id="content">
         {% include "/admin/includes/header.html.twig" %}
-        {% block body %}{% endblock %}
+        <div id="block-content">
+            {% block body %}{% endblock %}
+        </div>
     </div>
 </div>
 </body>

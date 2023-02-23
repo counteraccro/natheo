@@ -2,7 +2,7 @@
 #sidebar {
   min-width: 250px;
   max-width: 250px;
-  background: var(--bg-secondary);
+  background: var(--secondary);
   color: #fff;
   transition: all 0.3s;
 }
@@ -13,12 +13,12 @@
 
 #sidebar .sidebar-header {
   padding: 20px;
-  background: var(--bg-primary);
+  background: var(--secondary);
 }
 
 #sidebar ul.components {
   padding: 20px 0;
-  border-bottom: 1px solid var(--bg-primary);
+  border-bottom: 1px solid var(--primary);
 }
 
 
@@ -34,20 +34,20 @@
 }
 
 #sidebar ul li a:hover {
-  color: var(--bg-secondary);
+  color: var(--secondary);
   background: #fff;
 }
 
 #sidebar ul li.active>a, #sidebar
 a[aria-expanded="true"] {
   color: #fff;
-  background: var(--bg-primary);
+  background: var(--primary);
 }
 
 #sidebar ul ul a {
   font-size: 0.9em !important;
   padding-left: 30px !important;
-  background: var(--bg-primary);
+  background: var(--primary);
 }
 
 #sidebar .bi-chevron-right {
