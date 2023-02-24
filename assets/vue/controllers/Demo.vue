@@ -3,6 +3,7 @@
 </template>
 
 <script setup>
+
 defineProps({
   name: String
 });
