@@ -6,6 +6,48 @@
   height: 82px;
 }
 
+#adm-navbar .badge{
+  font-size: 0.60em;
+}
+
 #adm-navbar a {
   color: #FFF;
+  font-size: 1.4em;
+}
+
+#adm-navbar .bi-h {
+  font-family: "bootstrap-icons";
+  font-style: normal;
+}
+
+#adm-navbar .bi-door-fill-h::after {
+  content: "\F305";
+}
+
+#adm-navbar .bi-door-fill-h:hover::after {
+  content: "\F307";
+}
+
+#adm-navbar .bi-house-fill-h::after {
+  content: "\F424";
+}
+
+#adm-navbar .bi-house-fill-h:hover::after {
+  content: "\F775";
+}
+
+#adm-navbar .bi-bell-fill-h::after {
+  content: "\F189";
+}
+
+#adm-navbar .bi-bell-fill-h:hover::after {
+  content: "\F18A";
+}
+
+#adm-navbar .bi-person-fill-h::after {
+  content: "\F4DA";
+}
+
+#adm-navbar .bi-person-fill-h:hover::after {
+  content: "\F4D7";
 }
