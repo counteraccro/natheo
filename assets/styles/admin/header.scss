@@ -1,13 +1,23 @@
 #adm-navbar.navbar {
-  padding: 10px 10px;
+  padding: 15px 10px;
+  background: #fff;
   border: none;
   border-radius: 0;
-  margin-bottom: 0px;
-  height: 82px;
+  margin-bottom: 40px;
+}
+
+.navbar-btn {
+  box-shadow: none;
+  outline: none !important;
+  border: none;
 }
 
 #adm-navbar .badge{
   font-size: 0.60em;
+}
+
+#adm-navbar .d-none-mini {
+  display: none;
 }
 
 #adm-navbar a {
@@ -50,4 +60,32 @@
 
 #adm-navbar .bi-person-fill-h:hover::after {
   content: "\F4D7";
+}
+
+@media (max-width: 992px) {
+
+  #adm-navbar .navbar-nav{
+    margin-top: 20px;
+  }
+
+  #adm-navbar a {
+    color: #FFF;
+    font-size: 1.2em;
+    padding-left: 10px;
+  }
+
+  #adm-navbar a:hover {
+    color: var(--secondary);
+    text-decoration: none;
+    background-color: #fff;
+    transition: all 0.3s;
+  }
+
+  #adm-navbar .d-none-mini {
+    color:inherit;
+    display: inline;
+  }
+  #sidebarCollapse span {
+    display: none;
+  }
 }
