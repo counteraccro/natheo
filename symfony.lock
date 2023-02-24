@@ -251,6 +251,9 @@
             "./templates/base.html.twig"
         ]
     },
+    "symfony/ux-vue": {
+        "version": "v2.7.1"
+    },
     "symfony/validator": {
         "version": "6.2",
         "recipe": {
