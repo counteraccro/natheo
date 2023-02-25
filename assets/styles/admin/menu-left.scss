@@ -78,7 +78,7 @@ a[aria-expanded="true"] {
   background: var(--primary);
 }
 
-#sidebar .bi-chevron-right {
+#sidebar .bi-chevron-right, #sidebar:not(.active) .bi-chevron-right {
   transition: all 0.3s ease;
 }
 
