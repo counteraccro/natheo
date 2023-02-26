@@ -1,0 +1,227 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block title %}Elements HTML disponibles{% endblock %}
+
+{% block body %}
+
+    <h1>Eléments HTML disponibles</h1>
+
+    <div id="adm-breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb breadcrumb-arrow p-0 bg-light">
+                <li class="breadcrumb-item last-link">
+                    <a href="{{ path('dashboard_index') }}" class="text-uppercase">Dashboard</a></li>
+                <li class="breadcrumb-item pl-0 active text-uppercase pl-4">Elements HTML</li>
+            </ol>
+        </nav>
+    </div>
+
+    <p>Retrouver sur cette page l'ensemble des éléments HTML disponible sur le site</p>
+
+    <div class="border border-1 border-light p-4 rounded-1">
+        <div class="d-flex align-items-start">
+            <div class="nav flex-column nav-pills me-2 w-auto" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <button class="nav-link active" id="breadcrumb-tab" data-bs-toggle="pill" data-bs-target="#breadcrumb" type="button" role="tab">Breadcrumb</button>
+                <button class="nav-link" id="alert-tab" data-bs-toggle="pill" data-bs-target="#alert" type="button" role="tab">Alerte</button>
+                <button class="nav-link" id="badge-tab" data-bs-toggle="pill" data-bs-target="#badge" type="button" role="tab">Badge</button>
+                <button class="nav-link" id="progress-bar-tab" data-bs-toggle="pill" data-bs-target="#progress-bar" type="button" role="tab">Progress bar</button>
+                <button class="nav-link" id="spinner-tab" data-bs-toggle="pill" data-bs-target="#spinner" type="button" role="tab">Spinner</button>
+                <button class="nav-link" id="text-tab" data-bs-toggle="pill" data-bs-target="#text" type="button" role="tab">Textes</button>
+                <button class="nav-link" id="background-tab" data-bs-toggle="pill" data-bs-target="#background" type="button" role="tab">Background</button>
+                <button class="nav-link" id="vue-tab" data-bs-toggle="pill" data-bs-target="#vue" type="button" role="tab">VueJs</button>
+            </div>
+            <div class="tab-content w-75" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="breadcrumb" role="tabpanel" aria-labelledby="breadcrumb-tab">
+                    <h3> Fil d'arianne</h3>
+                    <p>Exemple de fils d'ariannes disponible</p>
+                    <div id="adm-breadcrumb">
+
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb breadcrumb-arrow p-0 bg-light">
+                                <li class="breadcrumb-item last-link"><a href="#" class="text-uppercase">Home</a></li>
+                                <li class="breadcrumb-item pl-0 active text-uppercase pl-4">Data</li>
+                            </ol>
+                        </nav>
+
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb breadcrumb-arrow p-0 bg-light">
+                                <li class="breadcrumb-item"><a href="#" class="text-uppercase pl-3">Home</a></li>
+                                <li class="breadcrumb-item pl-0 last-link">
+                                    <a href="#" class="text-uppercase">Library</a></li>
+                                <li class="breadcrumb-item pl-0 active text-uppercase pl-4">Data</li>
+                            </ol>
+                        </nav>
+
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb breadcrumb-arrow p-0 bg-light">
+                                <li class="breadcrumb-item"><a href="#" class="text-uppercase pl-3">Home</a></li>
+                                <li class="breadcrumb-item pl-0"><a href="#" class="text-uppercase">Library</a></li>
+                                <li class="breadcrumb-item pl-0 last-link">
+                                    <a href="#" class="text-uppercase">Library</a></li>
+                                <li class="breadcrumb-item pl-0 active text-uppercase pl-4">Data</li>
+                            </ol>
+                        </nav>
+
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb breadcrumb-arrow p-0 bg-light">
+                                <li class="breadcrumb-item"><a href="#" class="text-uppercase pl-3">Home</a></li>
+                                <li class="breadcrumb-item pl-0"><a href="#" class="text-uppercase">Library</a></li>
+                                <li class="breadcrumb-item pl-0"><a href="#" class="text-uppercase">Library</a></li>
+                                <li class="breadcrumb-item pl-0 last-link">
+                                    <a href="#" class="text-uppercase">Library</a></li>
+                                <li class="breadcrumb-item pl-0 active text-uppercase pl-4">Data</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="alert" role="tabpanel" aria-labelledby="alert-tab">
+
+                    <h3>Alertes</h3>
+
+                    <p>Exemple d'alertes avec les différents types possible</p>
+
+                    <div class="alert alert-primary" role="alert">
+                        A simple primary alert—check it out!
+                    </div>
+                    <div class="alert alert-secondary" role="alert">
+                        A simple secondary alert—check it out!
+                    </div>
+                    <div class="alert alert-success" role="alert">
+                        A simple success alert—check it out!
+                    </div>
+                    <div class="alert alert-danger" role="alert">
+                        A simple danger alert—check it out!
+                    </div>
+                    <div class="alert alert-warning" role="alert">
+                        A simple warning alert—check it out!
+                    </div>
+                    <div class="alert alert-info" role="alert">
+                        A simple info alert—check it out!
+                    </div>
+                    <div class="alert alert-light" role="alert">
+                        A simple light alert—check it out!
+                    </div>
+                    <div class="alert alert-dark" role="alert">
+                        A simple dark alert—check it out!
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="badge" role="tabpanel" aria-labelledby="badge-tab">
+                    <h3>Badge</h3>
+                    <p> Exemple de badges avec les couleurs de bases</p>
+                    <span class="badge text-bg-primary">Primary</span>
+                    <span class="badge text-bg-secondary">Secondary</span>
+                    <span class="badge text-bg-success">Success</span>
+                    <span class="badge text-bg-danger">Danger</span>
+                    <span class="badge text-bg-warning">Warning</span>
+                    <span class="badge text-bg-info">Info</span>
+                    <span class="badge text-bg-light">Light</span>
+                    <span class="badge text-bg-dark">Dark</span>
+                </div>
+                <div class="tab-pane fade" id="progress-bar" role="tabpanel" aria-labelledby="progress-bar-tab">
+                    <h3>Progress bar</h3>
+                    <p> Exemple de barres de progression avec les couleurs de bases</p>
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar" aria-label="Success example" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <hr />
+                    <div class="progress">
+                        <div class="progress-bar bg-info" role="progressbar" aria-label="Info example" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <hr />
+                    <div class="progress">
+                        <div class="progress-bar bg-warning" role="progressbar" aria-label="Warning example" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <hr />
+                    <div class="progress">
+                        <div class="progress-bar bg-danger" role="progressbar" aria-label="Danger example" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="spinner" role="tabpanel" aria-labelledby="spinner-tab">
+                    <h3>Spinner</h3>
+                    <p> Exemple de spinner avec les couleurs de bases</p>
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-border text-secondary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-border text-success" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-border text-danger" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-border text-warning" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-border text-info" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-border text-light" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-border text-dark" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="text" role="tabpanel" aria-labelledby="text-tab">
+
+                    <h3>Formatage du texte</h3>
+                    <p> Exemple de formatage du texte avec les couleurs de bases</p>
+
+                    <a href="#">Link</a> <br />
+
+                    <a href="#" class="link-primary">Primary link</a>
+                    <a href="#" class="link-secondary">Secondary link</a>
+                    <a href="#" class="link-success">Success link</a>
+                    <a href="#" class="link-danger">Danger link</a>
+                    <a href="#" class="link-warning">Warning link</a>
+                    <a href="#" class="link-info">Info link</a>
+                    <a href="#" class="link-light">Light link</a>
+                    <a href="#" class="link-dark">Dark link</a>
+
+                    <hr />
+
+                    <p class="text-primary">.text-primary</p>
+                    <p class="text-secondary">.text-secondary</p>
+                    <p class="text-success">.text-success</p>
+                    <p class="text-danger">.text-danger</p>
+                    <p class="text-warning bg-dark">.text-warning</p>
+                    <p class="text-info bg-dark">.text-info</p>
+                    <p class="text-light bg-dark">.text-light</p>
+                    <p class="text-dark">.text-dark</p>
+                    <p class="text-body">.text-body</p>
+                    <p class="text-muted">.text-muted</p>
+                    <p class="text-white bg-dark">.text-white</p>
+                    <p class="text-black-50">.text-black-50</p>
+                    <p class="text-white-50 bg-dark">.text-white-50</p>
+                </div>
+                <div class="tab-pane fade" id="background" role="tabpanel" aria-labelledby="background-tab">
+                    <h3>Background</h3>
+                    <p> Exemple de couleurs de fond avec les couleurs de bases</p>
+
+                    <div class="p-3 mb-2 bg-primary text-white">.bg-primary</div>
+                    <div class="p-3 mb-2 bg-secondary text-white">.bg-secondary</div>
+                    <div class="p-3 mb-2 bg-success text-white">.bg-success</div>
+                    <div class="p-3 mb-2 bg-danger text-white">.bg-danger</div>
+                    <div class="p-3 mb-2 bg-warning text-dark">.bg-warning</div>
+                    <div class="p-3 mb-2 bg-info text-dark">.bg-info</div>
+                    <div class="p-3 mb-2 bg-light text-dark">.bg-light</div>
+                    <div class="p-3 mb-2 bg-dark text-white">.bg-dark</div>
+                    <div class="p-3 mb-2 bg-body text-dark">.bg-body</div>
+                    <div class="p-3 mb-2 bg-white text-dark">.bg-white</div>
+                    <div class="p-3 mb-2 bg-transparent text-dark">.bg-transparent</div>
+                </div>
+                <div class="tab-pane fade" id="vue" role="tabpanel" aria-labelledby="vue-tab">
+                    <h3>Vue JS</h3>
+                    <p> Exemple d'un appel Vue JS</p>
+
+                    <div {{ vue_component('Demo', { 'name': 'Mon nom' }) }}></div>
+
+                </div>
+                <div class="tab-pane fade" id="demo" role="tabpanel" aria-labelledby="demo-tab"></div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

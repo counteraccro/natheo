@@ -300,7 +300,8 @@
             "ref": "f8fc53f1942f76679e9ee3c25fd44865355707b5"
         },
         "files": [
-            "./assets/app.js",
+            "./assets/app_admin.js",
+            "./assets/app_front.js",
             "./assets/bootstrap.js",
             "./assets/controllers.json",
             "./assets/controllers/hello_controller.js",

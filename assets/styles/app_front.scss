@@ -1,3 +1,9 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * Point d'entrée pour le design front
+ */
+
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/maps";
@@ -45,7 +51,4 @@ $utilities-bg-colors: map-loop($utilities-bg, rgba-css-var, "$key", "bg");
 
 @import "~bootstrap/scss/bootstrap";
 
-@import "admin/global";
-@import "admin/header";
-@import "admin/menu-left";
-@import "admin/breadcrumb";
+@import "front/global";

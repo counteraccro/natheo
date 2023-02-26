@@ -1,0 +1,13 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * Surcharge des éléments nav de bootstrap
+ */
+
+.nav-pills .nav-link {
+  color: #000;
+}
+
+.nav-pills .nav-link.active {
+  background-color: var(--secondary);
+}
