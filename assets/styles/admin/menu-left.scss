@@ -71,8 +71,8 @@
   background: #fff;
 }
 
-#sidebar ul li.active>a, #sidebar
-a[aria-expanded="true"] {
+#sidebar ul li.active>a,
+#sidebar a[aria-expanded="true"] {
   color: #fff;
   background: var(--primary);
 }
@@ -97,6 +97,11 @@ a[aria-expanded="true"] {
   color: inherit;
   text-decoration: none;
   transition: all 0.3s;
+}
+
+#sidebar .collapse li.sub-active a {
+  background-color: #FFFFFF;
+  color: var(--secondary);
 }
 
 /* ---------------------------------------------------
