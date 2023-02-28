@@ -1,1 +1,8 @@
-pagedemo.element.html: __pagedemo.element.html
+sidebarElement.membre: '__Membres'
+sidebarElement.system: '__Système'
+sidebarElement.role: '__Rôles'
+sidebarElement.options: '__Options'
+sidebarElement.devtools: '__Dev Tools'
+sidebarElement.devoptions: '__Dev Options'
+sidebarElement.htmlElement: '__Base de données'
+pagedemo.element.html: '__pagedemo.element.html'

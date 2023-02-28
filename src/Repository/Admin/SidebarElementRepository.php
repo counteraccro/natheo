@@ -1,8 +1,12 @@
 <?php
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Repository SidebarElement, element du menu sidebar de l'admin
+ */
+namespace App\Repository\Admin;
 
-namespace App\Repository;
-
-use App\Entity\SidebarElement;
+use App\Entity\Admin\SidebarElement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

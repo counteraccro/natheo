@@ -1,0 +1,48 @@
+sidebarElement:
+    membre :
+        icon: 'bi-person-lines-fill'
+        label: 'sidebarElement.membre'
+        path: '#'
+        disabled: false
+    system :
+        icon: 'bi-gear-fill'
+        label: 'sidebarElement.system'
+        path: '#system'
+        disabled: false
+        children :
+            - droits:
+                icon: 'bi-person-workspace'
+                label: 'sidebarElement.role'
+                path: '#'
+                disabled: false
+                parent : system
+            - options:
+                  icon: 'bi-option'
+                  label: 'sidebarElement.option'
+                  path: '#'
+                  disabled: false
+                  parent: system
+    devTools:
+      icon: 'bi-tools'
+      label: 'sidebarElement.devtools'
+      path: '#devTools'
+      disabled: false
+      children:
+        - devOptions:
+            icon: 'bi-sign-do-not-enter-fill'
+            label: 'sidebarElement.devoptions'
+            path: '#'
+            disabled: false
+            parent: devTools
+        - database:
+            icon: 'bi-database-fill'
+            label: 'sidebarElement.database'
+            path: '#'
+            disabled: false
+            parent: devTools
+        - html-element:
+            icon: 'bi-code'
+            label: 'sidebarElement.htmlElement'
+            path: 'dashboard_page_demo'
+            disabled: false
+            parent: devTools

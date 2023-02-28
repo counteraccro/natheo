@@ -1,16 +1,23 @@
 <?php
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Entité SidebarElement, element du menu sidebar de l'admin
+ */
 
-namespace App\Entity;
+namespace App\Entity\Admin;
 
-use App\Repository\SidebarElementRepository;
+use App\Repository\Admin\SidebarElementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: SidebarElementRepository::class)]
 class SidebarElement
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -34,9 +41,11 @@ class SidebarElement
     #[ORM\Column]
     private ?bool $disabled = null;
 
+    #[Gedmo\Timestampable(on : "create")]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
 
+    #[Gedmo\Timestampable(on : "update")]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $update_at = null;
 
