@@ -5,13 +5,15 @@
  * Fixture pour l'entité SidebarElement
  */
 
-namespace App\DataFixtures;
+namespace App\DataFixtures\Admin;
 
+use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\SidebarElement;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Yaml\Yaml;
 
-class SidebarElementFixtures extends AppFixtures
+class SidebarElementFixtures extends AppFixtures implements FixtureGroupInterface
 {
     const SIDEBAR_ELEMENT_FIXTURES_DATA_FILE = 'sidebarElementFixturesData.yaml';
 
@@ -59,5 +61,10 @@ class SidebarElementFixtures extends AppFixtures
         $func = 'set' . ucfirst($key);
         $sidebarElement->$func($value);
         return $sidebarElement;
+    }
+
+    public static function getGroups(): array
+    {
+        return ['devTools', 'sidebarElement'];
     }
 }
