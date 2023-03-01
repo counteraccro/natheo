@@ -36,7 +36,7 @@ class SidebarElement
     private ?string $label = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $path = null;
+    private ?string $route = null;
 
     #[ORM\Column]
     private ?bool $disabled = null;
@@ -125,14 +125,14 @@ class SidebarElement
         return $this;
     }
 
-    public function getPath(): ?string
+    public function getRoute(): ?string
     {
-        return $this->path;
+        return $this->route;
     }
 
-    public function setPath(string $path): self
+    public function setRoute(string $route): self
     {
-        $this->path = $path;
+        $this->route = $route;
 
         return $this;
     }

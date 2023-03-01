@@ -63,8 +63,8 @@ class SidebarExtensionRuntime extends AdminAppExtension implements RuntimeExtens
      */
     private function singleElement(SidebarElement $sidebarElement): string
     {
-        $url = $this->generateRealUrl($sidebarElement->getPath());
-        $active = $this->isClassActive($sidebarElement->getPath(), false);
+        $url = $this->generateRealUrl($sidebarElement->getRoute());
+        $active = $this->isClassActive($sidebarElement->getRoute(), false);
 
         return '<li ' . $active . '>
             <a href="' . $url . '">
@@ -97,7 +97,7 @@ class SidebarExtensionRuntime extends AdminAppExtension implements RuntimeExtens
                 continue;
             }
 
-            $active = $this->isClassActive($child->getPath(), true);
+            $active = $this->isClassActive($child->getRoute(), true);
 
             if($active !== '')
             {
@@ -109,7 +109,7 @@ class SidebarExtensionRuntime extends AdminAppExtension implements RuntimeExtens
                 ];
             }
 
-            $url = $this->generateRealUrl($child->getPath());
+            $url = $this->generateRealUrl($child->getRoute());
             $html .= '<li ' . $active . '>
                     <a href="' . $url . '">
                         <i class="bi ' . $child->getIcon() . '"></i> 
@@ -120,7 +120,7 @@ class SidebarExtensionRuntime extends AdminAppExtension implements RuntimeExtens
 
         $html .= '</ul></li>';
 
-        $route = $sidebarElement->getPath();
+        $route = $sidebarElement->getRoute();
         $routeId = substr($route,1);
 
         return '<li ' . $tabToggle['active'] . '>

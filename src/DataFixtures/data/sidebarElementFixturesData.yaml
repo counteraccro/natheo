@@ -2,52 +2,52 @@ sidebarElement:
     dashboard:
       icon: 'bi-house-fill'
       label: 'sidebarElement.dashboard'
-      path: 'dashboard_index'
+      route: 'dashboard_index'
       disabled: false
     membre :
         icon: 'bi-person-lines-fill'
         label: 'sidebarElement.membre'
-        path: '#'
+        route: '#'
         disabled: false
     system :
         icon: 'bi-gear-fill'
         label: 'sidebarElement.system'
-        path: '#system'
+        route: '#system'
         disabled: false
         children :
             - droits:
                 icon: 'bi-person-workspace'
                 label: 'sidebarElement.role'
-                path: '#'
+                route: '#'
                 disabled: false
                 parent : system
             - options:
                   icon: 'bi-option'
                   label: 'sidebarElement.options'
-                  path: '#'
+                  route: '#'
                   disabled: false
                   parent: system
     devTools:
       icon: 'bi-tools'
       label: 'sidebarElement.devtools'
-      path: '#devTools'
+      route: '#devTools'
       disabled: false
       children:
         - devOptions:
             icon: 'bi-sign-do-not-enter-fill'
             label: 'sidebarElement.devoptions'
-            path: '#'
+            route: '#'
             disabled: false
             parent: devTools
         - database:
             icon: 'bi-database-fill'
             label: 'sidebarElement.database'
-            path: '#'
+            route: '#'
             disabled: false
             parent: devTools
         - html-element:
             icon: 'bi-code'
             label: 'sidebarElement.htmlElement'
-            path: 'dashboard_page_demo'
+            route: 'dashboard_page_demo'
             disabled: false
             parent: devTools
