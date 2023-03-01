@@ -1,4 +1,9 @@
 sidebarElement:
+    dashboard:
+      icon: 'bi-house-fill'
+      label: 'sidebarElement.dashboard'
+      path: 'dashboard_index'
+      disabled: false
     membre :
         icon: 'bi-person-lines-fill'
         label: 'sidebarElement.membre'
@@ -18,7 +23,7 @@ sidebarElement:
                 parent : system
             - options:
                   icon: 'bi-option'
-                  label: 'sidebarElement.option'
+                  label: 'sidebarElement.options'
                   path: '#'
                   disabled: false
                   parent: system

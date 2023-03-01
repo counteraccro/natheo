@@ -18,6 +18,6 @@ class SidebarElementService extends AdminAppService
     public function getAllParent(bool $disabled = false): mixed
     {
         $sidebarElementRepo = $this->entityManager->getRepository(SidebarElement::class);
-        return $sidebarElementRepo->getAllParent();
+        return $sidebarElementRepo->getAllParent($disabled);
     }
 }
