@@ -43,6 +43,23 @@ class SidebarElementRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Récupère l'ensemble des sidebarElement parent
+     * @param bool $disabled
+     * @return float|int|mixed|string
+     */
+    public function getAllParent(bool $disabled = false): mixed
+    {
+        return $this->createQueryBuilder('se')
+            ->andWhere('se.parent IS NULL')
+            ->andWhere('se.disabled = :disabled')
+            ->setParameter('disabled', $disabled)
+            ->orderBy('se.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return SidebarElement[] Returns an array of SidebarElement objects
 //     */
