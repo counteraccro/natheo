@@ -8,7 +8,15 @@
 
 <script setup>
 import {version} from "vue";
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
 defineProps({
-  name: String
+  name: String,
+  methods: {
+    getList() {
+      //this.axios.get()
+    }
+  }
 });
 </script>
