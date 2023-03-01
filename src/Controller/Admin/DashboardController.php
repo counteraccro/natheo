@@ -28,6 +28,6 @@ class DashboardController extends AbstractController
     #[Route('/page-demo', name: 'page_demo')]
     public function pageDemo(): Response
     {
-        return $this->render('admin/dashboard/page-demo.html.twig', []);
+        return $this->render('admin/dashboard/page_demo.html.twig', []);
     }
 }
