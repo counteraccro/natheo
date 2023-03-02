@@ -1,8 +1,7 @@
 <nav id="adm-navbar" class="navbar navbar-expand-lg bg-secondary">
     <div class="container-fluid">
         <button type="button" id="sidebarCollapse" class="btn btn-primary">
-            <i class="bi-toggle-off"></i>
-            <span>Toggle Sidebar</span>
+            <i id="icon-toggle-sidebar" class="bi bi-chevron-double-left"></i>
         </button>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -14,9 +13,32 @@
                 <a class="nav-link" href="#"><i class="bi-h bi-bell-fill-h position-relative">
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">9+</span>
                     </i> <span class="d-none-mini"> Alertes</span></a>
-                <a class="nav-link" href="#"><i class="bi-h bi-person-fill-h"></i> <span class="d-none-mini"> Mon profil</span></a>
-                <a class="nav-link" href="#"><i class="bi-h bi-door-fill-h"></i> <span class="d-none-mini"> Logout</span></a>
+                <a class="nav-link" href="#"><i class="bi-h bi-person-fill-h"></i>
+                    <span class="d-none-mini"> Mon profil</span></a>
+                <a class="nav-link" href="#"><i class="bi-h bi-door-fill-h"></i>
+                    <span class="d-none-mini"> Logout</span></a>
             </div>
         </div>
     </div>
 </nav>
+
+<script>
+
+    let IconElement = document.getElementById('icon-toggle-sidebar');
+    let iconRightClass = 'bi-chevron-double-right';
+    let IconLeftClass = 'bi-chevron-double-left';
+    document.addEventListener("DOMContentLoaded", () => {
+        let sidebarCollapse = document.getElementById('sidebarCollapse');
+        sidebarCollapse.onclick = function () {
+            if (IconElement.classList.contains(iconRightClass)) {
+                IconElement.classList.remove(iconRightClass);
+                IconElement.classList.add(IconLeftClass);
+            } else {
+                IconElement.classList.remove(IconLeftClass);
+                IconElement.classList.add(iconRightClass);
+            }
+            document.getElementById('sidebar').classList.toggle('active');
+            return false;
+        };
+    });
+</script>
