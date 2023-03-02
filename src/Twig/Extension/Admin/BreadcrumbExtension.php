@@ -2,12 +2,12 @@
 
 namespace App\Twig\Extension\Admin;
 
-use App\Twig\Runtime\Admin\SidebarExtensionRuntime;
+use App\Twig\Runtime\Admin\BreadcrumbExtensionRuntime;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
-class SidebarExtension extends AbstractExtension
+class BreadcrumbExtension extends AbstractExtension
 {
     public function getFilters(): array
     {
@@ -15,14 +15,14 @@ class SidebarExtension extends AbstractExtension
             // If your filter generates SAFE HTML, you should add a third
             // parameter: ['is_safe' => ['html']]
             // Reference: https://twig.symfony.com/doc/3.x/advanced.html#automatic-escaping
-            //new TwigFilter('doSomething', [SidebarExtensionRuntime::class, 'doSomething', ['is_safe' => ['html']]]),
+            //new TwigFilter('filter_name', [BreadcrumbExtensionRuntime::class, 'doSomething']),
         ];
     }
 
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('getSidebar', [SidebarExtensionRuntime::class, 'getSidebar'], ['is_safe' => ['html']]),
+            new TwigFunction('breadcrumb', [BreadcrumbExtensionRuntime::class, 'getBreadcrumb'], ['is_safe' => ['html']]),
         ];
     }
 }

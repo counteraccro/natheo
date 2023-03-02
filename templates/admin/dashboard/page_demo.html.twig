@@ -6,15 +6,7 @@
 
     <h1><h1>{{ 'pagedemo.element.html'|trans }}</h1></h1>
 
-    <div id="adm-breadcrumb">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-arrow p-0 bg-light">
-                <li class="breadcrumb-item last-link">
-                    <a href="{{ path('dashboard_index') }}" class="text-uppercase">Dashboard</a></li>
-                <li class="breadcrumb-item pl-0 active text-uppercase pl-4">Elements HTML</li>
-            </ol>
-        </nav>
-    </div>
+    {{ breadcrumb(breadcrumb) }}
 
     <p>Retrouver sur cette page l'ensemble des éléments HTML disponible sur le site</p>
 
@@ -34,6 +26,7 @@
                 <div class="tab-pane fade show active" id="breadcrumb" role="tabpanel" aria-labelledby="breadcrumb-tab">
                     <h3> Fil d'arianne</h3>
                     <p>Exemple de fils d'ariannes disponible</p>
+
                     <div id="adm-breadcrumb">
 
                         <nav aria-label="breadcrumb">
@@ -61,6 +54,21 @@
                                 <li class="breadcrumb-item pl-0 active text-uppercase pl-4">Data</li>
                             </ol>
                         </nav>
+
+                        <pre><code style="margin-left: -30px;">
+  &lt;?php
+  // Le premier lien est généré automatiquement (home)
+  $breadcrumb = [
+    'key.translate.Library' => 'route',
+    'key.translate.Library' => 'route',
+    'key.translate.Library' => 'route',
+    'key.data' => '#'
+    ];
+  ?&gt;
+
+  twig
+  &#123;&#123; breadcrumb(breadcrumb) &#125;&#125;
+                            </code></pre>
 
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb breadcrumb-arrow p-0 bg-light">
