@@ -9,7 +9,7 @@ namespace App\Twig\Runtime\Admin;
 
 use Twig\Extension\RuntimeExtensionInterface;
 
-class BreadcrumbExtensionRuntime extends AdminAppExtension implements RuntimeExtensionInterface
+class BreadcrumbExtensionRuntime extends AdminAppExtensionRuntime implements RuntimeExtensionInterface
 {
 
     /**
