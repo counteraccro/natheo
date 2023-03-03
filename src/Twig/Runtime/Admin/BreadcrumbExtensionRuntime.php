@@ -51,7 +51,7 @@ class BreadcrumbExtensionRuntime extends AdminAppExtensionRuntime implements Run
                             <ol class="breadcrumb breadcrumb-arrow p-0 bg-light">
                                 <li class="breadcrumb-item ' . $lastLink . '">
                                     <a href="' . $this->router->generate('dashboard_index') . '" class="text-uppercase ' . $pl3 . '">
-                                        ' . $this->translator->trans('sidebarElement.dashboard') . '
+                                        ' . $this->translator->trans('global.dashboard') . '
                                     </a>
                                 </li>
                                 ' . $html . '

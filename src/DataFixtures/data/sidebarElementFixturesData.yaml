@@ -1,53 +1,53 @@
 sidebarElement:
     dashboard:
       icon: 'bi-house-fill'
-      label: 'sidebarElement.dashboard'
+      label: 'global.dashboard'
       route: 'dashboard_index'
       disabled: false
     membre :
         icon: 'bi-person-lines-fill'
-        label: 'sidebarElement.membre'
+        label: 'global.membre'
         route: '#'
         disabled: false
     system :
         icon: 'bi-gear-fill'
-        label: 'sidebarElement.system'
+        label: 'global.system'
         route: '#system'
         disabled: false
         children :
             - droits:
                 icon: 'bi-person-workspace'
-                label: 'sidebarElement.role'
+                label: 'global.role'
                 route: '#'
                 disabled: false
                 parent : system
             - options:
                   icon: 'bi-option'
-                  label: 'sidebarElement.options'
+                  label: 'global.options'
                   route: '#'
                   disabled: false
                   parent: system
     devTools:
       icon: 'bi-tools'
-      label: 'sidebarElement.devtools'
+      label: 'global.devtools'
       route: '#devTools'
       disabled: false
       children:
         - devOptions:
             icon: 'bi-sign-do-not-enter-fill'
-            label: 'sidebarElement.devoptions'
+            label: 'global.devoptions'
             route: '#'
             disabled: false
             parent: devTools
         - database:
             icon: 'bi-database-fill'
-            label: 'sidebarElement.database'
+            label: 'global.database'
             route: '#'
             disabled: false
             parent: devTools
         - html-element:
             icon: 'bi-code'
-            label: 'sidebarElement.htmlElement'
+            label: 'global.htmlElement'
             route: 'dashboard_page_demo'
             disabled: false
             parent: devTools
