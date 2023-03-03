@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page non trouvée{% endblock %}
+
+{% block body %}
+    <h1>Page non trouvée</h1>
+    <p>La page que vous cherchez n'a pas été trouvée</p>
+    <p>Le code est : {{status_code}}</p>
+    <p>Le texte est : {{status_text}}</p>
+
+    Erreur custom à personnalisé ici templates/bundles/TwigBundle/Exception/error404.html.twig
+{% endblock %}
