@@ -1,10 +1,13 @@
-global.dashboard: '__Dashboard'
-global.membre: '__Membres'
-global.system: '__Système'
-global.role: '__Rôles'
-global.options: '__Options'
+global.dashboard: __Dashboard
+global.membre: __Membres
+global.system: __Système
+global.role: __Rôles
+global.options: __Options
 global.devtools: '__Dev Tools'
 global.devoptions: '__Dev Options'
 global.database: '__Base de données'
 global.htmlElement: '__Exemple HTML'
 pagedemo.element.html: '__pagedemo.element.html en'
+global.alertes: __global.alertes
+global.profil: __global.profil
+global.logout: __global.logout

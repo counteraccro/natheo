@@ -1,10 +1,13 @@
-global.dashboard: 'Dashboard'
-global.membre: 'Membres'
-global.system: 'Système'
-global.role: 'Rôles'
-global.options: 'Options'
+global.dashboard: Dashboard
+global.membre: Membres
+global.system: Système
+global.role: Rôles
+global.options: Options
 global.devtools: 'Dev Tools'
 global.devoptions: 'Dev Options'
 global.database: 'Base de données'
 global.htmlElement: 'Exemple HTML'
 pagedemo.element.html: 'Elements HML disponibles (trad)'
+global.alertes: Alertes
+global.profil: Profil
+global.logout: Déconnexion
