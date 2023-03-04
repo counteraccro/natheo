@@ -35,7 +35,7 @@ sidebarElement:
       children:
         - devOptions:
             icon: 'bi-sign-do-not-enter-fill'
-            label: 'global.devoptions'
+            label: 'global.dev_options'
             route: '#'
             disabled: false
             parent: devTools
@@ -47,7 +47,7 @@ sidebarElement:
             parent: devTools
         - html-element:
             icon: 'bi-code'
-            label: 'global.htmlElement'
+            label: 'global.html_element'
             route: 'dashboard_page_demo'
             disabled: false
             parent: devTools
