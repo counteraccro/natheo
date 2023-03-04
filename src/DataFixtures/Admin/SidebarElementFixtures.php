@@ -15,7 +15,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class SidebarElementFixtures extends AppFixtures implements FixtureGroupInterface
 {
-    const SIDEBAR_ELEMENT_FIXTURES_DATA_FILE = 'sidebarElementFixturesData.yaml';
+    const SIDEBAR_ELEMENT_FIXTURES_DATA_FILE = 'sidebar_element_fixtures_data.yaml';
 
     public function load(ObjectManager $manager): void
     {
