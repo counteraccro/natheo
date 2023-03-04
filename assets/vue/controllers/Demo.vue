@@ -1,22 +1,33 @@
 <template>
   <div class="border border-1 border-light p-3">
-    Ceci est un exemple d'appel en Vue.js <b>version {{version}}</b>
+    Ceci est un exemple d'appel en Vue.js <b>version {{ this.version }}</b> oki
     <hr />
     Vous êtes connecté en tant que <b>{{name}}</b>
   </div>
 </template>
 
-<script setup>
-import {version} from "vue";
+<script>
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import { version } from 'vue'
 
-defineProps({
-  name: String,
+export default{
+  props : {
+    name : String,
+  },
+  data() {
+    return {
+      version : ''
+    }
+  },
+  mounted() {
+    document.getElementById('test-click-vue-js').addEventListener('click', this.alert_me)
+    this.version = version;
+  },
   methods: {
-    getList() {
-      //this.axios.get()
+    alert_me() {
+      alert(this.version);
     }
   }
-});
+};
 </script>
