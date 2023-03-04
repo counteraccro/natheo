@@ -1,0 +1,8 @@
+options_system:
+  - OS_SITE_NAME :
+      key : 'OS_SITE_NAME'
+      value: 'Natheo'
+      label: 'option_system.site_name'
+      type: 'text'
+      require: true
+      msg_error: 'options_system.msg_error_site_name'
