@@ -4,9 +4,12 @@ global.system: Système
 global.role: Rôles
 global.options: Options
 global.devtools: 'Dev Tools'
-global.devoptions: 'Dev Options'
+global.dev_options: 'Dev Options'
 global.database: 'Base de données'
-global.htmlElement: 'Exemple HTML'
+global.html_element: 'Exemple HTML'
+option_system.site_name: 'Nom de votre site'
+options_system.msg_error_site_name: 'Vous devez saisir un nom pour votre site'
+key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre'
 pagedemo.element.html: 'Elements HML disponibles (trad)'
 global.alertes: Alertes
 global.profil: Profil
