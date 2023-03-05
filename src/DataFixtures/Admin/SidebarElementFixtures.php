@@ -10,18 +10,17 @@ namespace App\DataFixtures\Admin;
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\SidebarElement;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Yaml\Yaml;
 
-class SidebarElementFixtures extends AppFixtures implements FixtureGroupInterface
+class SidebarElementFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
     const SIDEBAR_ELEMENT_FIXTURES_DATA_FILE = 'sidebar_element_fixtures_data.yaml';
 
     public function load(ObjectManager $manager): void
     {
-        $data = [];
         $data = Yaml::parseFile($this->pathDataFixtures . self::SIDEBAR_ELEMENT_FIXTURES_DATA_FILE);
-
         foreach ($data['sidebarElement'] as $id => $data) {
             $sidebarElement = new SidebarElement();
             foreach ($data as $key => $value) {
@@ -66,5 +65,14 @@ class SidebarElementFixtures extends AppFixtures implements FixtureGroupInterfac
     public static function getGroups(): array
     {
         return ['devTools', 'sidebarElement'];
+    }
+
+    /**
+     * Définition de l'ordre
+     * @return int
+     */
+    public function getOrder(): int
+    {
+        return 1; // smaller means sooner
     }
 }
