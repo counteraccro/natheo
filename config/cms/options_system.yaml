@@ -35,6 +35,6 @@ options_system:
       default: '1'
     OS_CONFIRM_LEAVE_FORM:
       type: 'list'
-      label: ''
+      label: 'options_system.confirm_leave_form'
       list_value: '1:global.oui|0:global.non'
       default: '1'
