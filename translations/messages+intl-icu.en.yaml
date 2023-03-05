@@ -22,6 +22,8 @@ options_system.front_script_start_body: '__Script juste après l''ouverture de l
 options_system.front_script_start_body_help: '__Ajouter vos scripts qui doivent être exécutés à l''ouverture de la balise BODY.'
 options_system.front_script_end_body: '__Script juste avant la fermeture de la balise BODY'
 options_system.front_script_end_body_help: '__Ajouter vos scripts qui doivent être exécutés à la fermeture de la balise BODY.'
+options_system.categorie_web_site: '__Site web'
+options_system.categorie_admin: '__Administration'
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.element.html: __pagedemo.element.html
 global.alertes: __global.alertes

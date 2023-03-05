@@ -22,6 +22,8 @@ options_system.front_script_start_body: "Script juste après l'ouverture de la b
 options_system.front_script_start_body_help: "Ajouter vos scripts qui doivent être exécutés à l'ouverture de la balise BODY."
 options_system.front_script_end_body: 'Script juste avant la fermeture de la balise BODY'
 options_system.front_script_end_body_help: 'Ajouter vos scripts qui doivent être exécutés à la fermeture de la balise BODY.'
+options_system.categorie_web_site: 'Site web'
+options_system.categorie_admin: 'Administration'
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.element.html: 'Elements HML disponibles (trad)'
 global.alertes: Alertes
