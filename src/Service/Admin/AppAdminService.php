@@ -4,7 +4,7 @@ namespace App\Service\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
 
-class AdminAppService
+class AppAdminService
 {
 
     /**

@@ -8,7 +8,7 @@ namespace App\Service\Admin;
 
 use App\Entity\Admin\SidebarElement;
 
-class SidebarElementService extends AdminAppService
+class SidebarElementService extends AppAdminService
 {
     /**
      * Récupère l'ensemble des sidebarElement parent
