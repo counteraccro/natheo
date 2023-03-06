@@ -20,3 +20,6 @@ option_system:
   OS_CONFIRM_LEAVE_FORM:
     key: 'OS_CONFIRM_LEAVE_FORM'
     value: 1
+  OS_ALLOW_DELETE_DATA:
+    key: 'OS_ALLOW_DELETE_DATA'
+    value: 0

@@ -31,10 +31,16 @@ options_system:
       type: 'list'
       label: 'options_system.replace_delete_user'
       list_value: '1:global.oui|0:global.non'
-      help: 'options_system.replace_delete_user_info'
+      help: 'options_system.replace_delete_user_help'
       default: '1'
     OS_CONFIRM_LEAVE_FORM:
       type: 'list'
       label: 'options_system.confirm_leave_form'
       list_value: '1:global.oui|0:global.non'
       default: '1'
+    OS_ALLOW_DELETE_DATA:
+      type: 'list'
+      label: 'options_system.allow_delete_data'
+      list_value: '1:global.oui|0:global.non'
+      help: 'options_system.allow_delete_data_help'
+      default: '0'

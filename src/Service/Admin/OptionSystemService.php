@@ -49,4 +49,9 @@ class OptionSystemService extends AppAdminService
      * @var string
      */
     const OS_CONFIRM_LEAVE_FORM = 'OS_CONFIRM_LEAVE_FORM';
+
+    /**
+     * Clé option authorisation suppression de données
+     */
+    const OS_ALLOW_DELETE_DATA = 'OS_ALLOW_DELETE_DATA';
 }

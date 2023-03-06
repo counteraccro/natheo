@@ -12,7 +12,7 @@ global.non: Non
 options_system.site_name: 'Nom de votre site'
 options_system.site_name_msg_error: 'Vous devez saisir un nom pour votre site'
 options_system.replace_delete_user: "Remplacer l'utilisateur supprimé par l'utilisateur fantôme John Doe"
-options_system.replace_delete_user_info: "Dans le cas contraire, l'ensemble des données de l'utilisateur seront supprimées."
+options_system.replace_delete_user_help: "Dans le cas contraire, l'ensemble des données de l'utilisateur seront supprimées."
 options_system.confirm_leave_form: 'Demander une confirmation avant de quitter une page contenant un formulaire'
 options_system.open_site: 'Ouvrir le site au public ?'
 options_system.open_site_help: "Même si le site est fermé au public, l'administration restera toujours accessible."
@@ -22,6 +22,8 @@ options_system.front_script_start_body: "Script juste après l'ouverture de la b
 options_system.front_script_start_body_help: "Ajouter vos scripts qui doivent être exécutés à l'ouverture de la balise BODY."
 options_system.front_script_end_body: 'Script juste avant la fermeture de la balise BODY'
 options_system.front_script_end_body_help: 'Ajouter vos scripts qui doivent être exécutés à la fermeture de la balise BODY.'
+options_system.allow_delete_data: 'Autoriser la suppression des données'
+options_system.allow_delete_data_help: 'Si la valeur choisi est non, alors les données seront masquées'
 options_system.categorie_web_site: 'Site web'
 options_system.categorie_admin: 'Administration'
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
