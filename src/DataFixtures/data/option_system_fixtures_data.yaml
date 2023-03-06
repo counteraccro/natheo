@@ -6,17 +6,17 @@ option_system:
     key: 'OS_OPEN_SITE'
     value: 1
   OS_FRONT_SCRIPT_TOP:
-    key: OS_FRONT_SCRIPT_TOP
+    key: 'OS_FRONT_SCRIPT_TOP'
     value: ''
   OS_FRONT_SCRIPT_START_BODY:
-    key: OS_FRONT_SCRIPT_START_BODY
+    key: 'OS_FRONT_SCRIPT_START_BODY'
     value: ''
   OS_FRONT_SCRIPT_END_BODY:
-    key: OS_FRONT_SCRIPT_END_BODY
+    key: 'OS_FRONT_SCRIPT_END_BODY'
     value: ''
   OS_REPLACE_DELETE_USER:
-    key: OS_REPLACE_DELETE_USER
+    key: 'OS_REPLACE_DELETE_USER'
     value: 1
   OS_CONFIRM_LEAVE_FORM:
-    key: OS_CONFIRM_LEAVE_FORM
+    key: 'OS_CONFIRM_LEAVE_FORM'
     value: 1
