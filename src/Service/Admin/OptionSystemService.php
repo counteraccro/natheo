@@ -6,6 +6,8 @@
  */
 namespace App\Service\Admin;
 
+use App\Entity\Admin\OptionSystem;
+
 class OptionSystemService extends AppAdminService
 {
     /**
@@ -54,4 +56,25 @@ class OptionSystemService extends AppAdminService
      * Clé option authorisation suppression de données
      */
     const OS_ALLOW_DELETE_DATA = 'OS_ALLOW_DELETE_DATA';
+
+    /**
+     * Retourne l'ensemble des options systèmes
+     * @return array|object[]
+     */
+    public function getAll(): array
+    {
+        $optionServiceRepo = $this->entityManager->getRepository(OptionSystem::class);
+        return $optionServiceRepo->findAll();
+    }
+
+    /**
+     * Retourne une option système en fonction de sa clé
+     * @param string $key
+     * @return object|null
+     */
+    public function getByKey(string $key): null|object
+    {
+        $optionServiceRepo = $this->entityManager->getRepository(OptionSystem::class);
+        return $optionServiceRepo->findOneBy(['key' => $key]);
+    }
 }
