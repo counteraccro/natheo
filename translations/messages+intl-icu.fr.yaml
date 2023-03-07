@@ -2,7 +2,7 @@ global.dashboard: Dashboard
 global.membre: Membres
 global.system: Système
 global.role: Rôles
-global.options: Options
+global.system_options: Options
 global.devtools: 'Dev Tools'
 global.dev_options: 'Dev Options'
 global.database: 'Base de données'
@@ -25,9 +25,11 @@ options_system.front_script_end_body_help: 'Ajouter vos scripts qui doivent êtr
 options_system.allow_delete_data: 'Autoriser la suppression des données'
 options_system.allow_delete_data_help: 'Si la valeur choisi est non, alors les données seront masquées'
 options_system.categorie_web_site: 'Site web'
-options_system.categorie_admin: 'Administration'
+options_system.categorie_admin: Administration
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
-pagedemo.element.html: 'Elements HML disponibles (trad)'
+pagedemo.page_title_h1: 'Elements HML disponibles (trad)'
 global.alertes: Alertes
 global.profil: Profil
 global.logout: Déconnexion
+option_system.page_title: 'Options système'
+option_system.page_title_h1: 'Les options système'

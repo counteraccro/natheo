@@ -2,7 +2,7 @@ global.dashboard: __Dashboard
 global.membre: __Membres
 global.system: __Système
 global.role: __Rôles
-global.options: __Options
+global.system_options: __Options
 global.devtools: '__Dev Tools'
 global.dev_options: '__Dev Options'
 global.database: '__Base de données'
