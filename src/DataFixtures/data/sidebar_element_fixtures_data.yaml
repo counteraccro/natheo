@@ -23,8 +23,8 @@ sidebarElement:
                 parent : system
             - options:
                   icon: 'bi-option'
-                  label: 'global.options'
-                  route: '#'
+                  label: 'global.system_options'
+                  route: 'option-system_change'
                   disabled: false
                   parent: system
     devTools:
