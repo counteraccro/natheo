@@ -9,7 +9,7 @@ namespace App\Twig\Runtime\Admin;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class AdminAppExtensionRuntime
+class AppAdminExtensionRuntime
 {
     /**
      * @var RouterInterface

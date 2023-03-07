@@ -13,7 +13,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 
-class SidebarExtensionRuntime extends AdminAppExtensionRuntime implements RuntimeExtensionInterface
+class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements RuntimeExtensionInterface
 {
 
     /**
