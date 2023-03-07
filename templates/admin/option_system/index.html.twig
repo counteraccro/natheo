@@ -1,0 +1,12 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block title %}{{ 'option_system.page_title' | trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'option_system.page_title_h1' | trans }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    {{ option_system_form() }}
+
+{% endblock %}
