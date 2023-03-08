@@ -23,6 +23,7 @@ class AppAdminExtensionRuntime
 
     /**
      * @param RouterInterface $router
+     * @param TranslatorInterface $translator
      */
     public function __construct(RouterInterface $router, TranslatorInterface $translator)
     {

@@ -7,9 +7,15 @@
 namespace App\Service\Admin;
 
 use App\Entity\Admin\OptionSystem;
+use PhpParser\Node\Expr\Array_;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\Yaml\Yaml;
 
 class OptionSystemService extends AppAdminService
 {
+    const OPTION_SYSTEM_CONFIG_FILE = 'options_system.yaml';
+
     /**
      * Clé option nom du site
      * @var string
@@ -76,5 +82,30 @@ class OptionSystemService extends AppAdminService
     {
         $optionServiceRepo = $this->entityManager->getRepository(OptionSystem::class);
         return $optionServiceRepo->findOneBy(['key' => $key]);
+    }
+
+    /**
+     * Retourne le chemin du fichier yaml des options system
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getPathConfig(): string
+    {
+        $kernel = $this->containerBag->get('kernel.project_dir');
+        return $kernel . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'cms' . DIRECTORY_SEPARATOR . self::OPTION_SYSTEM_CONFIG_FILE;
+    }
+
+    /**
+     * Retourne le fichier de config des options system sous la forme d'un tableau
+     * @return array
+     */
+    public function getOptionsSystemConfig() : array
+    {
+        $return = [];
+        try {
+            $return = Yaml::parseFile($this->getPathConfig());
+        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {}
+        return $return;
     }
 }
