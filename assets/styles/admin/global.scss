@@ -11,16 +11,15 @@ body {
 
 p {
   font-family: 'Poppins', sans-serif;
-  font-size: 1.1em;
+  font-size: 1em;
   font-weight: 300;
   line-height: 1.7em;
   color: #999;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4, h5, h6 {
   color: $primary;
-  padding-left: 10px;
-  background: linear-gradient(to right, $light, #FFF);
+  //background: linear-gradient(to right, $light, #FFF);
 }
 
 .wrapper {

@@ -102,7 +102,7 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
             }
             $html .= '<div class="tab-pane fade ' . $active . '" id="nav-' . $key . '" role="tabpanel" tabindex="0">';
 
-            $html .= '<h3>' . $this->translator->trans($optionsSystemConfig[$this->globalKey][$category]['title']) . '</h3>';
+            $html .= '<h5>' . $this->translator->trans($optionsSystemConfig[$this->globalKey][$category]['title']) . '</h5>';
             $html .= '<p>' . $this->translator->trans($optionsSystemConfig[$this->globalKey][$category]['description']) . '</p>';
 
             foreach ($optionsSystemConfig[$this->globalKey][$category]['options'] as $key => $element) {
