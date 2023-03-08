@@ -12,6 +12,10 @@
   transition: all 0.3s;
 }
 
+#sidebar h3 {
+  color: #FFF;
+}
+
 /** Sidebare reduite **/
 #sidebar.active {
   //margin-left: -250px;

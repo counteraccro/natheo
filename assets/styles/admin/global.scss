@@ -17,6 +17,10 @@ p {
   color: #999;
 }
 
+h1, h2, h3 {
+  color: $primary;
+}
+
 .wrapper {
   display: flex;
   width: 100%;
