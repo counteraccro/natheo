@@ -25,7 +25,11 @@ options_system.front_script_end_body_help: '__Ajouter vos scripts qui doivent ê
 options_system.allow_delete_data: '__Autoriser la suppression des données'
 options_system.allow_delete_data_help: '__Si la valeur choisi est non, alors les données seront masquées'
 options_system.categorie_web_site: '__Site web'
-options_system.categorie_admin: '__Administration'
+options_system.categorie_web_site.title: '__Options du site web'
+options_system.categorie_web_site.description : '__Options concernant le site web public'
+options_system.categorie_admin: __Administration
+options_system.categorie_admin.title: "__Options de l'administration"
+options_system.categorie_admin.description: "__Options concernant l'administration du site web"
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.element.html: __pagedemo.element.html
 global.alertes: __global.alertes
