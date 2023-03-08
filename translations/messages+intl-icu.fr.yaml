@@ -31,10 +31,10 @@ options_system.categorie_admin: Administration
 options_system.categorie_admin.title: "Options de l'administration"
 options_system.categorie_admin.description: "Options concernant l'administration du site web"
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
-pagedemo.page_title_h1: 'Elements HML disponibles (trad)'
 global.alertes: Alertes
 global.profil: Profil
 global.logout: Déconnexion
+pagedemo.page_title_h1: 'Elements HML disponibles (trad)'
 option_system.page_title: 'Options système'
 option_system.page_title_h1: 'Les options système'
 option_system.description: 'Configurer votre CMS comme vous le souhaitez avec les options système'
