@@ -10,6 +10,7 @@
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/utilities";
 
+
 :root {
   --primary: #{$purple-700};
   --secondary: #{$purple-500};
@@ -58,3 +59,4 @@ $utilities-bg-colors: map-loop($utilities-bg, rgba-css-var, "$key", "bg");
 @import "admin/header";
 @import "admin/menu-left";
 @import "admin/breadcrumb";
+@import "admin/debug";
