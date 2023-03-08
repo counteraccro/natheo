@@ -1,46 +1,52 @@
 options_system:
   options_system.categorie_web_site:
-    OS_SITE_NAME:
-      default: 'Natheo'
-      label: 'options_system.site_name'
-      type: 'text'
-      require: true
-      msg_error: 'options_system.msg_error_site_name'
-    OS_OPEN_SITE:
-      type: 'boolean'
-      label: 'options_system.open_site'
-      help: 'options_system.open_site_help'
-      default: 1
-    OS_FRONT_SCRIPT_TOP:
-      type: 'textarea'
-      label: 'options_system.front_script_top'
-      help: 'options_system.front_script_top_help'
-      default: ""
-    OS_FRONT_SCRIPT_START_BODY:
-      type: 'textarea'
-      label: 'options_system.front_script_start_body'
-      help: 'options_system.front_script_start_body_help'
-      default: ""
-    OS_FRONT_SCRIPT_END_BODY:
-      type: 'textarea'
-      label: 'options_system.front_script_end_body'
-      help: 'options_system.front_script_end_body_help'
-      default: ""
+    title :  'options_system.categorie_web_site.title'
+    description : 'options_system.categorie_web_site.description'
+    options :
+      OS_SITE_NAME:
+        default: 'Natheo'
+        label: 'options_system.site_name'
+        type: 'text'
+        require: true
+        msg_error: 'options_system.msg_error_site_name'
+      OS_OPEN_SITE:
+        type: 'boolean'
+        label: 'options_system.open_site'
+        help: 'options_system.open_site_help'
+        default: 1
+      OS_FRONT_SCRIPT_TOP:
+        type: 'textarea'
+        label: 'options_system.front_script_top'
+        help: 'options_system.front_script_top_help'
+        default: ""
+      OS_FRONT_SCRIPT_START_BODY:
+        type: 'textarea'
+        label: 'options_system.front_script_start_body'
+        help: 'options_system.front_script_start_body_help'
+        default: ""
+      OS_FRONT_SCRIPT_END_BODY:
+        type: 'textarea'
+        label: 'options_system.front_script_end_body'
+        help: 'options_system.front_script_end_body_help'
+        default: ""
   options_system.categorie_admin:
-    OS_REPLACE_DELETE_USER:
-      type: 'list'
-      label: 'options_system.replace_delete_user'
-      list_value: '1:global.oui|0:global.non'
-      help: 'options_system.replace_delete_user_help'
-      default: '1'
-    OS_CONFIRM_LEAVE_FORM:
-      type: 'list'
-      label: 'options_system.confirm_leave_form'
-      list_value: '1:global.oui|0:global.non'
-      default: '1'
-    OS_ALLOW_DELETE_DATA:
-      type: 'list'
-      label: 'options_system.allow_delete_data'
-      list_value: '1:global.oui|0:global.non'
-      help: 'options_system.allow_delete_data_help'
-      default: '0'
+    title: 'options_system.categorie_admin.title'
+    description: 'options_system.categorie_admin.description'
+    options:
+      OS_REPLACE_DELETE_USER:
+        type: 'select'
+        label: 'options_system.replace_delete_user'
+        list_value: '1:global.oui|0:global.non'
+        help: 'options_system.replace_delete_user_help'
+        default: '1'
+      OS_CONFIRM_LEAVE_FORM:
+        type: 'select'
+        label: 'options_system.confirm_leave_form'
+        list_value: '1:global.oui|0:global.non'
+        default: '1'
+      OS_ALLOW_DELETE_DATA:
+        type: 'select'
+        label: 'options_system.allow_delete_data'
+        list_value: '1:global.oui|0:global.non'
+        help: 'options_system.allow_delete_data_help'
+        default: '0'
