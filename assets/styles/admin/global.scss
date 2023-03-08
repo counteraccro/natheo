@@ -19,6 +19,8 @@ p {
 
 h1, h2, h3 {
   color: $primary;
+  padding-left: 10px;
+  background: linear-gradient(to right, $light, #FFF);
 }
 
 .wrapper {

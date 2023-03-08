@@ -15,6 +15,7 @@
 #adm-breadcrumb .breadcrumb-arrow {
   height: 40px;
   line-height: 40px;
+  background: linear-gradient(to right, $light, #FFF);
 }
 
 #adm-breadcrumb .breadcrumb-arrow .breadcrumb-item:first-child a {
