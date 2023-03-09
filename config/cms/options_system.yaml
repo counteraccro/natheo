@@ -7,7 +7,7 @@ options_system:
         default: 'Natheo'
         label: 'options_system.site_name'
         type: 'text'
-        require: true
+        required: true
         msg_error: 'options_system.msg_error_site_name'
         help: 'options_system.site_name_help'
         placeholder: 'options_system.site_name_placeholder'
