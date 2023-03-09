@@ -11,6 +11,7 @@ options_system:
         msg_error: 'options_system.site_name_msg_error'
         help: 'options_system.site_name_help'
         placeholder: 'options_system.site_name_placeholder'
+        success: 'options_system.site_name_msg_success'
       OS_OPEN_SITE:
         type: 'boolean'
         label: 'options_system.open_site'
