@@ -13,6 +13,7 @@ options_system.site_name: 'Nom de votre site'
 options_system.site_name_help: "Uniquement des lettres, sans caractères spéciaux. Le nom du site apparaitra dans le footer, les mails, et dans l'administration"
 options_system.site_name_placeholder: "Votre nom"
 options_system.site_name_msg_error: 'Vous devez saisir un nom pour votre site'
+options_system.site_name_msg_success: 'Le nom à bien été modifié avec succès'
 options_system.replace_delete_user: "Remplacer l'utilisateur supprimé par l'utilisateur fantôme John Doe"
 options_system.replace_delete_user_help: "Dans le cas contraire, l'ensemble des données de l'utilisateur seront supprimées."
 options_system.confirm_leave_form: 'Demander une confirmation avant de quitter une page contenant un formulaire'
@@ -35,6 +36,8 @@ options_system.categorie_web_site.description: 'Options concernant la gestion de
 options_system.categorie_admin: Administration
 options_system.categorie_admin.title: "Options de l'administration"
 options_system.categorie_admin.description: "Options concernant l'administration du site web"
+options_system.default_msg_success: 'Modification enregistrée avec succès'
+options_system:default_msg_error: 'Erreur de validation, vérifiez votre saisie'
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 global.alertes: Alertes
 global.profil: Profil

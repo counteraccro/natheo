@@ -10,9 +10,10 @@ global.html_element: '__Exemple HTML'
 global.oui: __Oui
 global.non: __Non
 option_system.site_name: '__Nom de votre site'
-options_system.site_name_help: "--Uniquement des lettres, sans caractères spéciaux. Le nom du site apparaitra dans le footer, les mails, et dans l'administration"
-options_system.site_name_placeholder: "--Votre nom"
-options_system.msg_error_site_name: '__Vous devez saisir un nom pour votre site'
+options_system.site_name_help: "__Uniquement des lettres, sans caractères spéciaux. Le nom du site apparaitra dans le footer, les mails, et dans l'administration"
+options_system.site_name_placeholder: "__Votre nom"
+options_system.site_name_msg_error: '__Vous devez saisir un nom pour votre site'
+options_system.site_name_msg_success: '__Le nom à bien été modifié avec succès'
 options_system.replace_delete_user: "__Remplacer l'utilisateur supprimé par l'utilisateur fantôme John Doe"
 options_system.replace_delete_user_help: "__Dans le cas contraire, l'ensemble des données de l'utilisateur seront supprimées."
 options_system.confirm_leave_form: '__Demander une confirmation avant de quitter une page contenant un formulaire'
@@ -35,6 +36,8 @@ options_system.categorie_web_site.description: '__Options concernant le site web
 options_system.categorie_admin: __Administration
 options_system.categorie_admin.title: "__Options de l'administration"
 options_system.categorie_admin.description: "__Options concernant l'administration du site web"
+options_system.default_msg_success: '__Modification enregistrée avec succès'
+options_system:default_msg_error: '__Erreur de validation, vérifiez votre saisie'
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 global.alertes: __global.alertes
 global.profil: __global.profil
