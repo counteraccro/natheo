@@ -7,6 +7,7 @@
 
 namespace App\Twig\Runtime\Admin;
 
+use App\Entity\Admin\OptionSystem;
 use App\Service\Admin\OptionSystemService;
 use App\Utils\Debug;
 use Exception;
@@ -24,6 +25,12 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
      * @var OptionSystemService
      */
     private OptionSystemService $optionSystemService;
+
+    /**
+     * Liste des options système récupéré depuis la base de donnée
+     * @var array
+     */
+    private array $listOptionSystem;
 
     /**
      * Clé global du fichier de config
@@ -50,14 +57,14 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
     public function getOptionSystem(): string
     {
         $optionsSystemConfig = $this->optionSystemService->getOptionsSystemConfig();
+        $this->listOptionSystem = $this->optionSystemService->getAll();
+
         $this->globalKey = key($optionsSystemConfig);
 
         $categories = array_keys($optionsSystemConfig[$this->globalKey]);
-        $html = '';
 
         $html = $this->generateHeader($categories);
         $html .= $this->generateContent($categories, $optionsSystemConfig);
-        //Debug::print_r();
 
         return $html;
     }
@@ -138,23 +145,26 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
      */
     private function generateInputText(string $key, array $element): string
     {
-        $require = $msg_error = $placeholder = '';
-        if(isset($element['required']))
-        {
+        $require = $msg_error = $placeholder = $msg_sucess = '';
+        if (isset($element['required'])) {
             $require = 'required="required"';
-            if(isset($element['msg_error']))
-            {
-                $msg_error = 'data-error="' . $this->translator->trans($element['msg_error']) . '"';
+            $msg_error = '<div id="validation-' . $key . '" class="invalid-feedback">' . $this->translator->trans('options_system:default_msg_error') . '</div>';
+            if (isset($element['msg_error'])) {
+                $msg_error = '<div id="validation-' . $key . '" class="invalid-feedback">' . $this->translator->trans($element['msg_error']) . '</div>';
             }
         }
 
-        if(isset($element['placeholder']))
-        {
+        $msg_success = '<div class="valid-feedback">' . $this->translator->trans('options_system.default_msg_success') . '</div>';
+        if(isset($element['success'])) {
+            $msg_success = '<div class="valid-feedback">' . $this->translator->trans($element['success']) . '</div>';
+        }
+
+        if (isset($element['placeholder'])) {
             $placeholder = 'placeholder="' . $this->translator->trans($element['placeholder']) . '"';
         }
 
         $html = '<label for="' . $key . '" class="form-label">' . $this->translator->trans($element['label']) . '</label>
-            <input type="text" class="form-control event-input" id="' . $key . '" ' . $require . ' ' . $msg_error . ' ' .$placeholder . '>';
+            <input type="text" class="form-control event-input" id="' . $key . '" ' . $require . ' ' . $placeholder . ' value="' . $this->getValueByKey($key) . '">' . $msg_error . $msg_success;
 
         $html .= $this->getHelp($key, $element);
 
@@ -206,10 +216,26 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
      * @param array $element
      * @return string
      */
-    private function getHelp(String $key, array $element): string
+    private function getHelp(string $key, array $element): string
     {
         if (isset($element['help'])) {
             return '<div id="' . $key . 'Help" class="form-text">' . $this->translator->trans($element['help']) . '</div>';
+        }
+        return '';
+    }
+
+    /**
+     * Retourne la valeur d'une option en fonction de sa clé
+     * @param string $key
+     * @return string
+     */
+    private function getValueByKey(string $key): string
+    {
+        foreach ($this->listOptionSystem as $optionSystem) {
+            /* @var OptionSystem $optionSystem */
+            if ($optionSystem->getKey() === $key) {
+                return $optionSystem->getValue();
+            }
         }
         return '';
     }
