@@ -4,6 +4,7 @@
  * @version 1.0
  * Service lier aux options système
  */
+
 namespace App\Service\Admin;
 
 use App\Entity\Admin\OptionSystem;
@@ -100,12 +101,28 @@ class OptionSystemService extends AppAdminService
      * Retourne le fichier de config des options system sous la forme d'un tableau
      * @return array
      */
-    public function getOptionsSystemConfig() : array
+    public function getOptionsSystemConfig(): array
     {
         $return = [];
         try {
             $return = Yaml::parseFile($this->getPathConfig());
-        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {}
+        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+        }
         return $return;
+    }
+
+    /**
+     * Permet de sauvegarder la valeur d'une clée
+     * @param string $key
+     * @param string $value
+     * @return void
+     */
+    public function saveValueByKee(string $key, string $value): void
+    {
+        $optionServiceRepo = $this->entityManager->getRepository(OptionSystem::class);
+        /* @var OptionSystem $optionSystem */
+        $optionSystem = $this->getByKey($key);
+        $optionSystem->setValue($value);
+        $optionServiceRepo->save($optionSystem, true);
     }
 }
