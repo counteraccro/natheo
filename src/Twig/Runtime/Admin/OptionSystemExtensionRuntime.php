@@ -138,15 +138,25 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
      */
     private function generateInputText(string $key, array $element): string
     {
-        //Debug::print_r($element);
-
-        $html = '<label for="' . $key . '" class="form-label">' . $this->translator->trans($element['label']) . '</label>
-            <input type="text" class="form-control" id="' . $key . '">';
-
-        if (isset($element['help'])) {
-            $html .= '<div id="emailHelp" class="form-text">' . $this->translator->trans($element['help']) . '</div>';
+        $require = $msg_error = $placeholder = '';
+        if(isset($element['required']))
+        {
+            $require = 'required="required"';
+            if(isset($element['msg_error']))
+            {
+                $msg_error = 'data-error="' . $this->translator->trans($element['msg_error']) . '"';
+            }
         }
 
+        if(isset($element['placeholder']))
+        {
+            $placeholder = 'placeholder="' . $this->translator->trans($element['placeholder']) . '"';
+        }
+
+        $html = '<label for="' . $key . '" class="form-label">' . $this->translator->trans($element['label']) . '</label>
+            <input type="text" class="form-control event-input" id="' . $key . '" ' . $require . ' ' . $msg_error . ' ' .$placeholder . '>';
+
+        $html .= $this->getHelp($key, $element);
 
         return $html;
     }
@@ -188,5 +198,19 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
         $html = '';
 
         return $html;
+    }
+
+    /**
+     * Retourne un block help si celui-ci est demandé
+     * @param String $key
+     * @param array $element
+     * @return string
+     */
+    private function getHelp(String $key, array $element): string
+    {
+        if (isset($element['help'])) {
+            return '<div id="' . $key . 'Help" class="form-text">' . $this->translator->trans($element['help']) . '</div>';
+        }
+        return '';
     }
 }
