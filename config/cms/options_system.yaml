@@ -9,6 +9,8 @@ options_system:
         type: 'text'
         require: true
         msg_error: 'options_system.msg_error_site_name'
+        help: 'options_system.site_name_help'
+        placeholder: 'options_system.site_name_placeholder'
       OS_OPEN_SITE:
         type: 'boolean'
         label: 'options_system.open_site'
@@ -18,16 +20,19 @@ options_system:
         type: 'textarea'
         label: 'options_system.front_script_top'
         help: 'options_system.front_script_top_help'
+        placeholder: 'options_system.front_script_top_placeholder'
         default: ""
       OS_FRONT_SCRIPT_START_BODY:
         type: 'textarea'
         label: 'options_system.front_script_start_body'
         help: 'options_system.front_script_start_body_help'
+        placeholder: 'options_system.front_script_start_body_placeholder'
         default: ""
       OS_FRONT_SCRIPT_END_BODY:
         type: 'textarea'
         label: 'options_system.front_script_end_body'
         help: 'options_system.front_script_end_body_help'
+        placeholder: 'options_system.front_script_end_body_placeholder'
         default: ""
   options_system.categorie_admin:
     title: 'options_system.categorie_admin.title'

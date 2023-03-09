@@ -10,6 +10,8 @@ global.html_element: '__Exemple HTML'
 global.oui: __Oui
 global.non: __Non
 option_system.site_name: '__Nom de votre site'
+options_system.site_name_help: "--Uniquement des lettres, sans caractères spéciaux. Le nom du site apparaitra dans le footer, les mails, et dans l'administration"
+options_system.site_name_placeholder: "--Votre nom"
 options_system.msg_error_site_name: '__Vous devez saisir un nom pour votre site'
 options_system.replace_delete_user: "__Remplacer l'utilisateur supprimé par l'utilisateur fantôme John Doe"
 options_system.replace_delete_user_help: "__Dans le cas contraire, l'ensemble des données de l'utilisateur seront supprimées."
@@ -18,10 +20,13 @@ options_system.open_site: '__Ouvrir le site au public ?'
 options_system.open_site_help: "__Même si le site est fermé au public, l'administration restera toujours accessible."
 options_system.front_script_top: '__Script dans la balise HEAD'
 options_system.front_script_top_help: '__Ajouter vos scripts qui doivent être exécutés dans la balise HEAD.'
+options_system.front_script_top_placeholder: '__Tous type de scripts est autorisé'
 options_system.front_script_start_body: "__Script juste après l'ouverture de la balise BODY"
 options_system.front_script_start_body_help: "__Ajouter vos scripts qui doivent être exécutés à l'ouverture de la balise BODY."
+options_system.front_script_start_body_placeholder: '__Tous type de scripts est autorisé'
 options_system.front_script_end_body: '__Script juste avant la fermeture de la balise BODY'
 options_system.front_script_end_body_help: '__Ajouter vos scripts qui doivent être exécutés à la fermeture de la balise BODY.'
+options_system.front_script_end_body_placeholder: '__Tous type de scripts est autorisé'
 options_system.allow_delete_data: '__Autoriser la suppression des données'
 options_system.allow_delete_data_help: '__Si la valeur choisi est non, alors les données seront masquées'
 options_system.categorie_web_site: '__Site web'
