@@ -11,6 +11,7 @@ use App\Entity\Admin\OptionSystem;
 use App\Service\Admin\OptionSystemService;
 use App\Utils\Debug;
 use Exception;
+use Monolog\Utils;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
@@ -177,8 +178,7 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
         $value = $this->getValueByKey($key);
 
         $checked = '';
-        if($value === "1")
-        {
+        if ($value === "1") {
             $checked = 'checked';
         }
 
@@ -232,7 +232,33 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
      */
     private function generateSelect(string $key, array $element): string
     {
-        $html = '';
+        $value = $this->getValueByKey($key);
+        $tab = explode('|', $element['list_value']);
+
+        Debug::print_r($tab);
+
+        $html = '<label for="' . $key . '" class="form-label">' . $this->translator->trans($element['label']) . '</label>
+            <select id="' . $key . '" class="form-select event-input" aria-label="Default select example">';
+
+        foreach ($tab as $select) {
+            $option = explode(':', $select);
+            $selected = '';
+            if ($value === $option[0]) {
+                $selected = 'selected';
+            }
+
+            $html .= '<option value="' . $option[0] . '" ' . $selected . '>' . $this->translator->trans($option[1]) . '</option>';
+        }
+
+        //<option selected>Open this select menu</option>
+        //<option value="1">One</option>
+        //<option value="2">Two</option>
+        //<option value="3">Three</option>
+        $html .= '</select>';
+
+        $html .= $this->getSuccess($key, $element);
+        $html .= $this->getSpinner($key);
+        $html .= $this->getHelp($key, $element);
 
         return $html;
     }
@@ -259,7 +285,7 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
      */
     private function getSuccess(string $key, array $element): string
     {
-        if(isset($element['success'])) {
+        if (isset($element['success'])) {
             return '<div id="success-' . $key . '" class="valid-feedback visually-hidden"><b><i class="bi bi-check-circle"></i>  ' . $this->translator->trans($element['success']) . '</b></div>';
         }
         return '<div id="success-' . $key . '" class="valid-feedback visually-hidden"><b><i class="bi bi-check-circle"></i>  ' . $this->translator->trans('options_system.default_msg_success') . '</b></div>';

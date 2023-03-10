@@ -37,8 +37,11 @@ export default {
       let id = element.getAttribute('id');
       let value = '';
 
+      console.log(element.getAttribute('type'));
+
       switch (element.getAttribute('type')) {
-        case "text" :
+        case "text":
+        case null:
           value = element.value;
           break;
         case "checkbox" :
@@ -47,6 +50,7 @@ export default {
           {
             value = 1
           }
+          break;
       }
 
       let required = element.getAttribute('required');
