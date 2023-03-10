@@ -23,7 +23,7 @@ class OptionSystem
     #[ORM\Column(length: 255)]
     private ?string $key = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 65535)]
     private ?string $value = null;
 
     #[Gedmo\Timestampable(on : "create")]
