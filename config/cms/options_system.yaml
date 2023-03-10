@@ -45,6 +45,11 @@ options_system:
     title: 'options_system.categorie_admin.title'
     description: 'options_system.categorie_admin.description'
     options:
+      OS_ALLOW_DELETE_DATA:
+        type: 'boolean'
+        label: 'options_system.allow_delete_data'
+        help: 'options_system.allow_delete_data_help'
+        default: '0'
       OS_REPLACE_DELETE_USER:
         type: 'boolean'
         label: 'options_system.replace_delete_user'
@@ -53,9 +58,5 @@ options_system:
       OS_CONFIRM_LEAVE_FORM:
         type: 'boolean'
         label: 'options_system.confirm_leave_form'
+        help: 'options_system.confirm_leave_form_help'
         default: '1'
-      OS_ALLOW_DELETE_DATA:
-        type: 'boolean'
-        label: 'options_system.allow_delete_data'
-        help: 'options_system.allow_delete_data_help'
-        default: '0'

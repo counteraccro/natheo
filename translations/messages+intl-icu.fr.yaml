@@ -19,8 +19,9 @@ options_system.site_name_placeholder: "Votre nom"
 options_system.site_name_msg_error: 'Vous devez saisir un nom pour votre site'
 options_system.site_name_msg_success: 'Le nom à bien été modifié avec succès'
 options_system.replace_delete_user: "Remplacer l'utilisateur supprimé par l'utilisateur fantôme John Doe"
-options_system.replace_delete_user_help: "Dans le cas contraire, l'ensemble des données de l'utilisateur seront supprimées."
+options_system.replace_delete_user_help: "Permet de remplacer l'utilisateur à supprimer par un utilisateur fantôme au lieu de le désactiver ou de le supprimer. La suppression ne fonctionne que si l'option 'Autoriser la suppression des données' est activé"
 options_system.confirm_leave_form: 'Demander une confirmation avant de quitter une page contenant un formulaire'
+options_system.confirm_leave_form_help: 'Une confirmation vous sera demandé à chaque fois que vous voudrez quitter une page contenant un formulaire si cette option est activé'
 options_system.open_site: 'Ouvrir le site au public ?'
 options_system.open_site_help: "Même si le site est fermé au public, l'administration restera toujours accessible."
 options_system.front_script_top: 'Script dans la balise HEAD'
@@ -33,7 +34,7 @@ options_system.front_script_end_body: 'Script juste avant la fermeture de la bal
 options_system.front_script_end_body_help: 'Ajouter vos scripts qui doivent être exécutés à la fermeture de la balise BODY.'
 options_system.front_script_end_body_placeholder: 'Tous type de scripts est autorisé'
 options_system.allow_delete_data: 'Autoriser la suppression des données'
-options_system.allow_delete_data_help: 'Si la valeur choisi est non, alors les données seront masquées'
+options_system.allow_delete_data_help: 'Si la valeur choisi est non, alors les données seront juste masquées'
 options_system.default_language: 'Langue par défaut du site'
 options_system.default_language_help: 'La langue choisi sera utilisée sur le site ainsi que défini pour chaque nouvel utilisateur créé'
 options_system.categorie_web_site: 'Site web'

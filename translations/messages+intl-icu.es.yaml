@@ -21,6 +21,7 @@ options_system.site_name_msg_success: '__Le nom à bien été modifié avec succ
 options_system.replace_delete_user: "__Remplacer l'utilisateur supprimé par l'utilisateur fantôme John Doe"
 options_system.replace_delete_user_help: "__Dans le cas contraire, l'ensemble des données de l'utilisateur seront supprimées."
 options_system.confirm_leave_form: '__Demander une confirmation avant de quitter une page contenant un formulaire'
+options_system.confirm_leave_form_help: '__Une confirmation vous sera demandé à chaque fois que vous voudrez quitter une page contenant un formulaire si cette option est activé'
 options_system.open_site: '__Ouvrir le site au public ?'
 options_system.open_site_help: "__Même si le site est fermé au public, l'administration restera toujours accessible."
 options_system.front_script_top: '__Script dans la balise HEAD'
