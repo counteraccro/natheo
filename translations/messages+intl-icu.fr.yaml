@@ -1,5 +1,6 @@
 global.dashboard: Dashboard
 global.membre: Membres
+global.user: Utilisateurs
 global.system: Système
 global.role: Rôles
 global.system_options: Options

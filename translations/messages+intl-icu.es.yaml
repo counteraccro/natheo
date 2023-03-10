@@ -1,5 +1,6 @@
 global.dashboard: __Dashboard
 global.membre: __Membres
+global.user: __Utilisateurs
 global.system: __Système
 global.role: __Rôles
 global.system_options: __Options

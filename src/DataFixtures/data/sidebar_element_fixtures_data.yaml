@@ -15,6 +15,12 @@ sidebarElement:
         route: '#system'
         disabled: false
         children :
+            - user:
+                icon: 'bi-person-fill'
+                label: 'global.user'
+                route: '#'
+                disabled: false
+                parent: system
             - droits:
                 icon: 'bi-person-workspace'
                 label: 'global.role'
