@@ -2,7 +2,7 @@ sidebarElement:
     dashboard:
       icon: 'bi-house-fill'
       label: 'global.dashboard'
-      route: 'dashboard_index'
+      route: 'admin_dashboard_index'
       disabled: false
     membre :
         icon: 'bi-person-lines-fill'
@@ -24,7 +24,7 @@ sidebarElement:
             - options:
                   icon: 'bi-option'
                   label: 'global.system_options'
-                  route: 'option-system_change'
+                  route: 'admin_option-system_change'
                   disabled: false
                   parent: system
     devTools:
@@ -48,6 +48,6 @@ sidebarElement:
         - html-element:
             icon: 'bi-code'
             label: 'global.html_element'
-            route: 'dashboard_page_demo'
+            route: 'admin_dashboard_page_demo'
             disabled: false
             parent: devTools

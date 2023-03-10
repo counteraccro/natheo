@@ -50,7 +50,7 @@ class BreadcrumbExtensionRuntime extends AppAdminExtensionRuntime implements Run
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb breadcrumb-arrow p-0 bg-light">
                                 <li class="breadcrumb-item ' . $lastLink . '">
-                                    <a href="' . $this->router->generate('dashboard_index') . '" class="text-uppercase ' . $pl3 . '">
+                                    <a href="' . $this->router->generate('admin_dashboard_index') . '" class="text-uppercase ' . $pl3 . '">
                                         ' . $this->translator->trans('global.dashboard') . '
                                     </a>
                                 </li>
