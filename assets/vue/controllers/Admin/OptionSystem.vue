@@ -34,9 +34,21 @@ export default {
     OnChange(event) {
 
       let element = event.target;
-
       let id = element.getAttribute('id');
-      let value = element.value;
+      let value = '';
+
+      switch (element.getAttribute('type')) {
+        case "text" :
+          value = element.value;
+          break;
+        case "checkbox" :
+          value = 0;
+          if(element.checked)
+          {
+            value = 1
+          }
+      }
+
       let required = element.getAttribute('required');
 
       if (required !== null) {

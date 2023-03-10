@@ -174,7 +174,24 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
      */
     private function generateRadioButton(string $key, array $element): string
     {
-        $html = '';
+        $value = $this->getValueByKey($key);
+
+        $checked = '';
+        if($value === "1")
+        {
+            $checked = 'checked';
+        }
+
+        $html = '<div class="form-check form-switch">
+            <input class="form-check-input event-input" type="checkbox" role="switch" id="' . $key . '" ' . $checked . '>
+            <label class="form-check-label" for="' . $key . '">' . $this->translator->trans($element['label']) . '</label>';
+
+        $html .= $this->getSuccess($key, $element);
+        $html .= '</div>';
+
+        $html .= $this->getSpinner($key);
+        $html .= $this->getHelp($key, $element);
+
 
         return $html;
     }
