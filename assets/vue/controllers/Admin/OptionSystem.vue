@@ -49,6 +49,9 @@ export default {
       }
 
       let spinner = document.getElementById('spinner-' + id);
+      let help = document.getElementById('help-' + id);
+      let success = document.getElementById('success-' + id);
+
       spinner.classList.remove('visually-hidden');
 
       axios.post(this.url_update, {
@@ -56,10 +59,14 @@ export default {
         value: value
       }).then(function (response) {
         spinner.classList.add('visually-hidden');
+        help.classList.add('visually-hidden');
+        success.classList.remove('visually-hidden');
         element.classList.add('is-valid');
 
         setTimeout(() => {
           element.classList.remove('is-valid');
+          help.classList.remove('visually-hidden');
+          success.classList.add('visually-hidden');
         }, 3000)
 
       }).catch(function (error) {
