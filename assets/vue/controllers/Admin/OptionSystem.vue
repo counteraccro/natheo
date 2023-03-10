@@ -33,29 +33,39 @@ export default {
      */
     OnChange(event) {
 
-      let id = event.target.getAttribute('id');
-      let value = event.target.value;
-      let required = event.target.getAttribute('required');
+      let element = event.target;
+
+      let id = element.getAttribute('id');
+      let value = element.value;
+      let required = element.getAttribute('required');
 
       if (required !== null) {
         if (!value) {
-          event.target.classList.add('is-invalid');
+          element.classList.add('is-invalid');
           return false;
         } else {
-          event.target.classList.remove('is-invalid');
+          element.classList.remove('is-invalid');
         }
       }
+
+      let spinner = document.getElementById('spinner-' + id);
+      spinner.classList.remove('visually-hidden');
 
       axios.post(this.url_update, {
         key: id,
         value: value
-      })
-          .then(function (response) {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+      }).then(function (response) {
+        spinner.classList.add('visually-hidden');
+        element.classList.add('is-valid');
+
+        setTimeout(() => {
+          element.classList.remove('is-valid');
+        }, 3000)
+
+      }).catch(function (error) {
+        spinner.classList.add('visually-hidden');
+        console.log(error);
+      });
     }
   }
 }

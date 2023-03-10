@@ -9,6 +9,7 @@ global.database: '__Base de données'
 global.html_element: '__Exemple HTML'
 global.oui: __Oui
 global.non: __Non
+global.loading_save : '__Sauvegarde en cours'
 option_system.site_name: '__Nom de votre site'
 options_system.site_name_help: "__Uniquement des lettres, sans caractères spéciaux. Le nom du site apparaitra dans le footer, les mails, et dans l'administration"
 options_system.site_name_placeholder: "__Votre nom"
