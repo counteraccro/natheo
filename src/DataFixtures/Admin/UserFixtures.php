@@ -79,7 +79,7 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
 
     public static function getGroups(): array
     {
-        return ['membre', 'user'];
+        return ['registered', 'user'];
     }
 
     /**
