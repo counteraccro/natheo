@@ -25,4 +25,4 @@ option_system:
     value: 0
   OS_DEFAULT_LANGUAGE:
     key: 'OS_DEFAULT_LANGUAGE'
-    value: 'en'
+    value: 'fr'
