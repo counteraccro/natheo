@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/{_locale}/admin/dashboard', name: 'admin_dashboard_', requirements: ['_locale' => '%app.supported_locales%'])]
+#[Route('/admin/{_locale}/dashboard', name: 'admin_dashboard_', requirements: ['_locale' => '%app.supported_locales%'])]
 class DashboardController extends AbstractController
 {
     #[Route('/index', name: 'index')]

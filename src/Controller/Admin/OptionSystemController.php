@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/{_locale}/admin/options-system', name: 'admin_option-system_', requirements: ['_locale' => '%app.supported_locales%'])]
+#[Route('/admin/{_locale}/options-system', name: 'admin_option-system_', requirements: ['_locale' => '%app.supported_locales%'])]
 class OptionSystemController extends AbstractController
 {
     /**
