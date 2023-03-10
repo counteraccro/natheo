@@ -128,6 +128,7 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
                         break;
                     default:
                 }
+                $html .= '<br />';
             }
             $html .= '</div>';
         }
@@ -151,17 +152,15 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
             $msg_error = $this->getError($key, $element);
         }
 
-        $msg_success = $this->getSuccess($key, $element);
-
         if (isset($element['placeholder'])) {
             $placeholder = 'placeholder="' . $this->translator->trans($element['placeholder']) . '"';
         }
 
         $html = '<label for="' . $key . '" class="form-label">' . $this->translator->trans($element['label']) . '</label>
-            <input type="text" class="form-control event-input" id="' . $key . '" ' . $require . ' ' . $placeholder . ' value="' . $this->getValueByKey($key) . '">' . $msg_error . $msg_success;
+            <input type="text" class="form-control event-input" id="' . $key . '" ' . $require . ' ' . $placeholder . ' value="' . $this->getValueByKey($key) . '">' . $msg_error;
 
+        $html .= $this->getSuccess($key, $element);
         $html .= $this->getSpinner($key);
-
         $html .= $this->getHelp($key, $element);
 
         return $html;
@@ -188,7 +187,22 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
      */
     private function generateTextarea(string $key, array $element): string
     {
-        $html = '';
+        $require = $msg_error = $placeholder = '';
+        if (isset($element['required'])) {
+            $require = 'required="required"';
+            $msg_error = $this->getError($key, $element);
+        }
+
+        if (isset($element['placeholder'])) {
+            $placeholder = 'placeholder="' . $this->translator->trans($element['placeholder']) . '"';
+        }
+
+        $html = '<label for="' . $key . '" class="form-label">' . $this->translator->trans($element['label']) . '</label>
+            <textarea class="form-control event-input" rows="5" id="' . $key . '" ' . $require . ' ' . $placeholder . '>' . $this->getValueByKey($key) . '</textarea>' . $msg_error;
+
+        $html .= $this->getSuccess($key, $element);
+        $html .= $this->getSpinner($key);
+        $html .= $this->getHelp($key, $element);
 
         return $html;
     }
@@ -215,7 +229,7 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
     private function getHelp(string $key, array $element): string
     {
         if (isset($element['help'])) {
-            return '<div id="' . $key . 'Help" class="form-text">' . $this->translator->trans($element['help']) . '</div>';
+            return '<div id="help-' . $key . '" class="form-text"><i class="bi bi-info-circle"></i> <i>' . $this->translator->trans($element['help']) . '</i></div>';
         }
         return '';
     }
@@ -229,9 +243,9 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
     private function getSuccess(string $key, array $element): string
     {
         if(isset($element['success'])) {
-            return '<div id="success-' . $key . '" class="valid-feedback">' . $this->translator->trans($element['success']) . '</div>';
+            return '<div id="success-' . $key . '" class="valid-feedback visually-hidden"><b><i class="bi bi-check-circle"></i>  ' . $this->translator->trans($element['success']) . '</b></div>';
         }
-        return '<div id="success-' . $key . '" class="valid-feedback">' . $this->translator->trans('options_system.default_msg_success') . '</div>';
+        return '<div id="success-' . $key . '" class="valid-feedback visually-hidden"><b><i class="bi bi-check-circle"></i>  ' . $this->translator->trans('options_system.default_msg_success') . '</b></div>';
     }
 
     /**
@@ -243,9 +257,9 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
     private function getError(string $key, array $element): string
     {
         if (isset($element['msg_error'])) {
-            return '<div id="error-' . $key . '" class="invalid-feedback">' . $this->translator->trans($element['msg_error']) . '</div>';
+            return '<div id="error-' . $key . '" class="invalid-feedback"><b><i class="bi bi-exclamation-circle"></i>  ' . $this->translator->trans($element['msg_error']) . '</b></div>';
         }
-        return '<div id="error-' . $key . '" class="invalid-feedback">' . $this->translator->trans('options_system:default_msg_error') . '</div>';
+        return '<div id="error-' . $key . '" class="invalid-feedback"><b><i class="bi bi-exclamation-circle"></i>  ' . $this->translator->trans('options_system:default_msg_error') . '</b></div>';
     }
 
     /**
