@@ -1,0 +1,9 @@
+user:
+  -
+    email: user@natheo.com
+    password: user@natheo.com
+    login: user-1
+    firstname: user-demo
+    lastname: the-demo
+    roles: ROLE_USER
+    disabled: 0
