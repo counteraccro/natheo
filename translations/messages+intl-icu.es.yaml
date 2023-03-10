@@ -9,6 +9,9 @@ global.database: '__Base de données'
 global.html_element: '__Exemple HTML'
 global.oui: __Oui
 global.non: __Non
+global.french: '__Français'
+global.english: '__Anglais'
+global.spanish: '__Espagnol'
 global.loading_save : '__Sauvegarde en cours'
 option_system.site_name: '__Nom de votre site'
 options_system.site_name_help: "__Uniquement des lettres, sans caractères spéciaux. Le nom du site apparaitra dans le footer, les mails, et dans l'administration"
@@ -31,6 +34,8 @@ options_system.front_script_end_body_help: '__Ajouter vos scripts qui doivent ê
 options_system.front_script_end_body_placeholder: '__Tous type de scripts est autorisé'
 options_system.allow_delete_data: '__Autoriser la suppression des données'
 options_system.allow_delete_data_help: '__Si la valeur choisi est non, alors les données seront masquées'
+options_system.default_language: '__Langue par défaut du site'
+options_system.default_language_help: '__La langue choisi sera utilisée sur le site ainsi que défini pour chaque nouvel utilisateur créé'
 options_system.categorie_web_site: '__Site web'
 options_system.categorie_web_site.title: '__Options du site web'
 options_system.categorie_web_site.description: '__Options concernant le site web public'

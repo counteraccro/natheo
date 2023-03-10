@@ -17,6 +17,12 @@ options_system:
         label: 'options_system.open_site'
         help: 'options_system.open_site_help'
         default: 1
+      OS_DEFAULT_LANGUAGE:
+        type: 'select'
+        label: 'options_system.default_language'
+        list_value: 'fr:global.french|en:global.english|es:global.spanish'
+        help: 'options_system.default_language_help'
+        default: '1'
       OS_FRONT_SCRIPT_TOP:
         type: 'textarea'
         label: 'options_system.front_script_top'
