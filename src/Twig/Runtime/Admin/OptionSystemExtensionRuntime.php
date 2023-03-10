@@ -235,8 +235,6 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
         $value = $this->getValueByKey($key);
         $tab = explode('|', $element['list_value']);
 
-        Debug::print_r($tab);
-
         $html = '<label for="' . $key . '" class="form-label">' . $this->translator->trans($element['label']) . '</label>
             <select id="' . $key . '" class="form-select event-input" aria-label="Default select example">';
 
