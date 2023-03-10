@@ -60,6 +60,7 @@ export default {
         }
       }
 
+      element.disabled = true;
       let spinner = document.getElementById('spinner-' + id);
       let help = document.getElementById('help-' + id);
       let success = document.getElementById('success-' + id);
@@ -80,9 +81,11 @@ export default {
           help.classList.remove('visually-hidden');
           success.classList.add('visually-hidden');
         }, 3000)
+        element.disabled = false;
 
       }).catch(function (error) {
         spinner.classList.add('visually-hidden');
+        element.disabled = false;
         console.log(error);
       });
     }
