@@ -9,6 +9,7 @@ namespace App\Twig\Runtime\Admin;
 
 use App\Entity\Admin\SidebarElement;
 use App\Service\Admin\SidebarElementService;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
@@ -23,14 +24,20 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
 
     private string $current_route = '';
 
+    /**
+     * @var Security
+     */
+    private Security $security;
+
 
     /**
      * @param SidebarElementService $sidebarElementService
      * @param RouterInterface $router
      */
-    public function __construct(SidebarElementService $sidebarElementService, RouterInterface $router, TranslatorInterface $translator)
+    public function __construct(SidebarElementService $sidebarElementService, Security $security, RouterInterface $router, TranslatorInterface $translator)
     {
         $this->sidebarElementService = $sidebarElementService;
+        $this->security = $security;
         parent::__construct($router, $translator);
     }
 
@@ -63,6 +70,11 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
      */
     private function singleElement(SidebarElement $sidebarElement): string
     {
+        if(!$this->security->isGranted($sidebarElement->getRole()) || $sidebarElement->isDisabled())
+        {
+            return '';
+        }
+
         $url = $this->generateRealUrl($sidebarElement->getRoute());
         $active = $this->isClassActive($sidebarElement->getRoute(), false);
 
@@ -81,6 +93,11 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
      */
     public function childrenElement(SidebarElement $sidebarElement): string
     {
+        if(!$this->security->isGranted($sidebarElement->getRole()))
+        {
+            return '';
+        }
+
         $tabToggle = [
             'collapsed' => 'collapsed',
             'aria-expanded' => false,
@@ -92,15 +109,14 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
         foreach ($sidebarElement->getChildren() as $child) {
             /* @var SidebarElement $child */
 
-            if($child->isDisabled())
+            if ($child->isDisabled() || !$this->security->isGranted($child->getRole()))
             {
                 continue;
             }
 
             $active = $this->isClassActive($child->getRoute(), true);
 
-            if($active !== '')
-            {
+            if ($active !== '') {
                 $tabToggle = [
                     'collapsed' => '',
                     'aria-expanded' => true,
@@ -121,14 +137,14 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
         $html .= '</ul></li>';
 
         $route = $sidebarElement->getRoute();
-        $routeId = substr($route,1);
+        $routeId = substr($route, 1);
 
         return '<li ' . $tabToggle['active'] . '>
-            <a class="' .  $tabToggle['collapsed'] .' nav-toggle" href="' . $route . '" data-bs-toggle="collapse" data-bs-target="' . $route . '" aria-current="page" aria-expanded="' . $tabToggle['aria-expanded'] . '">
+            <a class="' . $tabToggle['collapsed'] . ' nav-toggle" href="' . $route . '" data-bs-toggle="collapse" data-bs-target="' . $route . '" aria-current="page" aria-expanded="' . $tabToggle['aria-expanded'] . '">
                 <i class="bi ' . $sidebarElement->getIcon() . '"></i> <span class="d-none-mini">' . $this->translator->trans($sidebarElement->getLabel()) . '</span>
                 <i class="bi bi-chevron-right float-end d-none-mini"></i>
             </a>
-            <ul class="collapse list-unstyled ' .  $tabToggle['show'] .'" id="' . $routeId . '" data-bs-parent="#sidebar">' . $html;
+            <ul class="collapse list-unstyled ' . $tabToggle['show'] . '" id="' . $routeId . '" data-bs-parent="#sidebar">' . $html;
     }
 
     /**
@@ -154,11 +170,9 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
     private function isClassActive($route, bool $child = false): string
     {
         $return = '';
-        if($route === $this->current_route)
-        {
+        if ($route === $this->current_route) {
             $return = 'class="active"';
-            if($child)
-            {
+            if ($child) {
                 $return = 'class="sub-active"';
             }
         }

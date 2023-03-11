@@ -4,16 +4,19 @@ sidebarElement:
       label: 'global.dashboard'
       route: 'admin_dashboard_index'
       disabled: false
+      role: 'ROLE_USER'
     membre :
         icon: 'bi-person-lines-fill'
         label: 'global.membre'
         route: '#'
         disabled: false
+        role: 'ROLE_ADMIN'
     system :
         icon: 'bi-gear-fill'
         label: 'global.system'
         route: '#system'
         disabled: false
+        role: 'ROLE_SUPER_ADMIN'
         children :
             - user:
                 icon: 'bi-person-fill'
@@ -21,23 +24,27 @@ sidebarElement:
                 route: '#'
                 disabled: false
                 parent: system
+                role: 'ROLE_SUPER_ADMIN'
             - droits:
                 icon: 'bi-person-workspace'
                 label: 'global.role'
                 route: '#'
                 disabled: false
                 parent : system
+                role: 'ROLE_SUPER_ADMIN'
             - options:
                   icon: 'bi-option'
                   label: 'global.system_options'
                   route: 'admin_option-system_change'
                   disabled: false
                   parent: system
+                  role: 'ROLE_SUPER_ADMIN'
     devTools:
       icon: 'bi-tools'
       label: 'global.devtools'
       route: '#devTools'
       disabled: false
+      role: 'ROLE_SUPER_ADMIN'
       children:
         - devOptions:
             icon: 'bi-sign-do-not-enter-fill'
@@ -45,15 +52,18 @@ sidebarElement:
             route: '#'
             disabled: false
             parent: devTools
+            role: 'ROLE_SUPER_ADMIN'
         - database:
             icon: 'bi-database-fill'
             label: 'global.database'
             route: '#'
             disabled: false
             parent: devTools
+            role: 'ROLE_SUPER_ADMIN'
         - html-element:
             icon: 'bi-code'
             label: 'global.html_element'
             route: 'admin_dashboard_page_demo'
             disabled: false
             parent: devTools
+            role: 'ROLE_SUPER_ADMIN'

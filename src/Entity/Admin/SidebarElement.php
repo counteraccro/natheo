@@ -50,6 +50,9 @@ class SidebarElement
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $update_at = null;
 
+    #[ORM\Column(length: 100)]
+    private ?string $role = null;
+
     public function __construct()
     {
         $this->children = new ArrayCollection();
@@ -170,6 +173,18 @@ class SidebarElement
     public function setUpdateAt(?\DateTimeInterface $update_at): self
     {
         $this->update_at = $update_at;
+
+        return $this;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(string $role): self
+    {
+        $this->role = $role;
 
         return $this;
     }
