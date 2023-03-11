@@ -57,8 +57,10 @@ option_system.description: 'Configurer votre CMS comme vous le souhaitez avec le
 auth.title: Authentification
 global.licence: 'Copyright &copy; 2023-%year% &mdash; Propulsé par Nathéo CMS'
 security.login_user.title: Authentification
-security.login_user.email: Adresse email
-security.login_user.password: Mot de passe
-security.login_user.forgot_password: Mot de passe oublié ?
-security.login_user.remember_me: Ce souvenir de moi
+security.login_user.email: 'Adresse email'
+security.login_user.password: 'Mot de passe'
+security.login_user.forgot_password: 'Mot de passe oublié ?'
+security.login_user.remember_me: 'Ce souvenir de moi'
 security.login_user.btn_login: Connexion
+security.login.always_log: 'Vous êtes déjà connecté en tant que '
+security.login.logout: 'Déconnexion'

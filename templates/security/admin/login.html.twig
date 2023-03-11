@@ -15,6 +15,13 @@
                     <div class="card shadow-lg">
                         <div class="card-body p-5">
                             <h1 class="fs-4 card-title fw-bold mb-4">{{ 'security.login_user.title' | trans }}</h1>
+
+                            {% if app.user %}
+                                <div class="mb-3">
+                                    {{ 'security.login.always_log'|trans }} {{ app.user.userIdentifier }}, <a href="{{ path('auth_logout') }}">{{ 'security.login.logout'|trans }}</a>
+                                </div>
+                            {% else %}
+
                             <form method="post">
                                 <div class="mb-3">
                                     <label class="mb-2 text-muted" for="email">{{ 'security.login_user.email' | trans }}</label>
@@ -51,10 +58,6 @@
                                 <p class="text-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</p>
                             {% endif %}
 
-                            {% if app.user %}
-                                <div class="mb-3">
-                                    You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-                                </div>
                             {% endif %}
 
                         </div>
