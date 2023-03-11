@@ -235,9 +235,8 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
         $value = $this->getValueByKey($key);
         $tab = explode('|', $element['list_value']);
 
-        $html = '<label for="' . $key . '" class="form-label">' . $this->translator->trans($element['label']) . '</label>
-            <select id="' . $key . '" class="form-select event-input" aria-label="Default select example">';
-
+        $select_style = '';
+        $option_html = '';
         foreach ($tab as $select) {
             $option = explode(':', $select);
             $selected = '';
@@ -245,14 +244,18 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
                 $selected = 'selected';
             }
 
-            $html .= '<option value="' . $option[0] . '" ' . $selected . '>' . $this->translator->trans($option[1]) . '</option>';
+            if (!str_starts_with($option[1], '&#')) {
+                $option_label = $this->translator->trans($option[1]);
+            } else {
+                $option_label = $option[1];
+                $select_style = 'style="font-family: bootstrap-icons"';
+            }
+
+            $option_html .= '<option value="' . $option[0] . '" ' . $selected . '>' . $option_label . '</option>';
         }
 
-        //<option selected>Open this select menu</option>
-        //<option value="1">One</option>
-        //<option value="2">Two</option>
-        //<option value="3">Three</option>
-        $html .= '</select>';
+        $html = '<label for="' . $key . '" class="form-label">' . $this->translator->trans($element['label']) . '</label>
+            <select id="' . $key . '" class="form-select event-input" ' . $select_style . '>' . $option_html . '</select>';
 
         $html .= $this->getSuccess($key, $element);
         $html .= $this->getSpinner($key);

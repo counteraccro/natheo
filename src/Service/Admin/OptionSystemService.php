@@ -24,6 +24,11 @@ class OptionSystemService extends AppAdminService
     const OS_SITE_NAME = 'OS_SITE_NAME';
 
     /**
+     * Clé pour le logo du site
+     */
+    const OS_LOGO_SITE = 'OS_LOGO_SITE';
+
+    /**
      * Clé option site ouvert
      * @var string
      */
