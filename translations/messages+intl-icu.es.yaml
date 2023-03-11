@@ -10,13 +10,13 @@ global.database: '__Base de données'
 global.html_element: '__Exemple HTML'
 global.oui: __Oui
 global.non: __Non
-global.french: '__Français'
-global.english: '__Anglais'
-global.spanish: '__Espagnol'
-global.loading_save : '__Sauvegarde en cours'
+global.french: __Français
+global.english: __Anglais
+global.spanish: __Espagnol
+global.loading_save: '__Sauvegarde en cours'
 option_system.site_name: '__Nom de votre site'
 options_system.site_name_help: "__Uniquement des lettres, sans caractères spéciaux. Le nom du site apparaitra dans le footer, les mails, et dans l'administration"
-options_system.site_name_placeholder: "__Votre nom"
+options_system.site_name_placeholder: '__Votre nom'
 options_system.site_name_msg_error: '__Vous devez saisir un nom pour votre site'
 options_system.site_name_msg_success: '__Le nom à bien été modifié avec succès'
 options_system.replace_delete_user: "__Remplacer l'utilisateur supprimé par l'utilisateur fantôme John Doe"
@@ -45,7 +45,7 @@ options_system.categorie_admin: __Administration
 options_system.categorie_admin.title: "__Options de l'administration"
 options_system.categorie_admin.description: "__Options concernant l'administration du site web"
 options_system.default_msg_success: '__Modification enregistrée avec succès'
-options_system:default_msg_error: '__Erreur de validation, vérifiez votre saisie'
+'options_system:default_msg_error': '__Erreur de validation, vérifiez votre saisie'
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 global.alertes: __global.alertes
 global.profil: __global.profil
@@ -54,3 +54,11 @@ pagedemo.page_title_h1: __pagedemo.page_title_h1
 option_system.page_title: __option_system.page_title
 option_system.page_title_h1: __option_system.page_title_h1
 option_system.description: __option_system.description
+auth.title: __auth.title
+security.login_user.title: __security.login_user.title
+security.login_user.email: __security.login_user.email
+security.login_user.password: __security.login_user.password
+security.login_user.forgot_password: __security.login_user.forgot_password
+security.login_user.remember_me: __security.login_user.remember_me
+security.login_user.btn_login: __security.login_user.btn_login
+global.licence: __global.licence

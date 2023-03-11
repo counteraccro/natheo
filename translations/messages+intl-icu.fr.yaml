@@ -10,13 +10,13 @@ global.database: 'Base de données'
 global.html_element: 'Exemple HTML'
 global.oui: Oui
 global.non: Non
-global.french: 'Français'
-global.english: 'Anglais'
-global.spanish: 'Espagnol'
-global.loading_save : 'Sauvegarde en cours'
+global.french: Français
+global.english: Anglais
+global.spanish: Espagnol
+global.loading_save: 'Sauvegarde en cours'
 options_system.site_name: 'Nom de votre site'
 options_system.site_name_help: "Uniquement des lettres, sans caractères spéciaux. Le nom du site apparaitra dans le footer, les mails, et dans l'administration"
-options_system.site_name_placeholder: "Votre nom"
+options_system.site_name_placeholder: 'Votre nom'
 options_system.site_name_msg_error: 'Vous devez saisir un nom pour votre site'
 options_system.site_name_msg_success: 'Le nom à bien été modifié avec succès'
 options_system.replace_delete_user: "Remplacer l'utilisateur supprimé par l'utilisateur fantôme John Doe"
@@ -45,7 +45,7 @@ options_system.categorie_admin: Administration
 options_system.categorie_admin.title: "Options de l'administration"
 options_system.categorie_admin.description: "Options concernant l'administration du site web"
 options_system.default_msg_success: 'Modification enregistrée avec succès'
-options_system:default_msg_error: 'Erreur de validation, vérifiez votre saisie'
+'options_system:default_msg_error': 'Erreur de validation, vérifiez votre saisie'
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 global.alertes: Alertes
 global.profil: Profil
@@ -54,3 +54,11 @@ pagedemo.page_title_h1: 'Elements HML disponibles (trad)'
 option_system.page_title: 'Options système'
 option_system.page_title_h1: 'Les options système'
 option_system.description: 'Configurer votre CMS comme vous le souhaitez avec les options système'
+auth.title: Authentification
+global.licence: 'Copyright &copy; 2023-%year% &mdash; Propulsé par Nathéo CMS'
+security.login_user.title: Authentification
+security.login_user.email: Adresse email
+security.login_user.password: Mot de passe
+security.login_user.forgot_password: Mot de passe oublié ?
+security.login_user.remember_me: Ce souvenir de moi
+security.login_user.btn_login: Connexion
