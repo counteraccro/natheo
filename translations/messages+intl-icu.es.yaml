@@ -19,6 +19,9 @@ options_system.site_name_help: "__Uniquement des lettres, sans caractères spéc
 options_system.site_name_placeholder: '__Votre nom'
 options_system.site_name_msg_error: '__Vous devez saisir un nom pour votre site'
 options_system.site_name_msg_success: '__Le nom à bien été modifié avec succès'
+options_system.logo_site: '__Logo de votre site'
+options_system.logo_site_help: '__Permet de définir un petit logo devant le nom de votre site, laisser vide pour ne pas en avoir'
+options_system.logo_site_no_value: '__Pas de logo'
 options_system.replace_delete_user: "__Remplacer l'utilisateur supprimé par l'utilisateur fantôme John Doe"
 options_system.replace_delete_user_help: "__Dans le cas contraire, l'ensemble des données de l'utilisateur seront supprimées."
 options_system.confirm_leave_form: '__Demander une confirmation avant de quitter une page contenant un formulaire'
@@ -62,3 +65,5 @@ security.login_user.forgot_password: __security.login_user.forgot_password
 security.login_user.remember_me: __security.login_user.remember_me
 security.login_user.btn_login: __security.login_user.btn_login
 global.licence: __global.licence
+security.login.always_log: __security.login.always_log
+security.login.logout: __security.login.logout

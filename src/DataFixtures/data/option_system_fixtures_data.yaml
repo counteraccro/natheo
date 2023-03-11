@@ -1,7 +1,7 @@
 option_system:
   OS_SITE_NAME:
     key: 'OS_SITE_NAME'
-    value: 'Natheo'
+    value: 'Nathéo CMS'
   OS_OPEN_SITE:
     key: 'OS_OPEN_SITE'
     value: 1
@@ -26,3 +26,6 @@ option_system:
   OS_DEFAULT_LANGUAGE:
     key: 'OS_DEFAULT_LANGUAGE'
     value: 'fr'
+  OS_LOGO_SITE:
+    key: 'OS_LOGO_SITE'
+    value: 'bi-yin-yang'
