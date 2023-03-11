@@ -7,3 +7,27 @@ user:
     lastname: the-demo
     roles: ROLE_USER
     disabled: 0
+  -
+    email: contributeur@natheo.com
+    password: contributeur@natheo.com
+    login: contributeur-1
+    firstname: contributeur-demo
+    lastname: the-demo
+    roles: ROLE_CONTRIBUTEUR
+    disabled: 0
+  -
+    email: admin@natheo.com
+    password: admin@natheo.com
+    login: admin-1
+    firstname: admin-demo
+    lastname: the-demo
+    roles: ROLE_ADMIN
+    disabled: 0
+  -
+    email: superadmin@natheo.com
+    password: superadmin@natheo.com
+    login: super-admin-1
+    firstname: super-admin-demo
+    lastname: the-demo
+    roles: ROLE_SUPER_ADMIN
+    disabled: 0
