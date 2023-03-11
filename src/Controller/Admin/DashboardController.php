@@ -9,8 +9,10 @@ namespace App\Controller\Admin;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin/{_locale}/dashboard', name: 'admin_dashboard_', requirements: ['_locale' => '%app.supported_locales%'])]
+#[IsGranted('ROLE_USER')]
 class DashboardController extends AbstractController
 {
     #[Route('/index', name: 'index')]
@@ -25,6 +27,7 @@ class DashboardController extends AbstractController
      * Page Démo pour les elements html
      * @return Response
      */
+    #[IsGranted('ROLE_SUPER_ADMIN')]
     #[Route('/page-demo', name: 'page_demo')]
     public function pageDemo(): Response
     {
