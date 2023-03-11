@@ -328,4 +328,16 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
         }
         return '';
     }
+
+    /**
+     * Retourne la valeur de l'option en fonction de sa clé
+     * @param string $key
+     * @return string
+     */
+    public function getOptionValueByKey(string $key): string
+    {
+        /* @var OptionSystem $optionSystem */
+        $optionSystem = $this->optionSystemService->getByKey($key);
+        return $optionSystem->getValue();
+    }
 }
