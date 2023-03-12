@@ -5,18 +5,24 @@ sidebarElement:
       route: 'admin_dashboard_index'
       disabled: false
       role: 'ROLE_USER'
+      lock: true
+      description: 'sidebar.dashboard.description'
     membre :
         icon: 'bi-person-lines-fill'
         label: 'global.membre'
         route: '#'
         disabled: false
         role: 'ROLE_ADMIN'
+        lock: false
+        description: 'sidebar.membre.description'
     system :
         icon: 'bi-gear-fill'
         label: 'global.system'
         route: '#system'
         disabled: false
         role: 'ROLE_SUPER_ADMIN'
+        description: 'sidebar.global.system.description'
+        lock: true
         children :
             - user:
                 icon: 'bi-person-fill'
@@ -25,13 +31,17 @@ sidebarElement:
                 disabled: false
                 parent: system
                 role: 'ROLE_SUPER_ADMIN'
+                description: 'sidebar.user.description'
+                lock: false
             - droits:
-                icon: 'bi-person-workspace'
-                label: 'global.role'
+                icon: 'bi-layout-text-sidebar'
+                label: 'global.sidebar'
                 route: '#'
                 disabled: false
                 parent : system
                 role: 'ROLE_SUPER_ADMIN'
+                description: 'sidebar.sidebar.description'
+                lock: true
             - options:
                   icon: 'bi-option'
                   label: 'global.system_options'
@@ -39,12 +49,16 @@ sidebarElement:
                   disabled: false
                   parent: system
                   role: 'ROLE_SUPER_ADMIN'
+                  description: 'sidebar.system_options.description'
+                  lock: true
     devTools:
       icon: 'bi-tools'
       label: 'global.devtools'
       route: '#devTools'
       disabled: false
       role: 'ROLE_SUPER_ADMIN'
+      description: 'sidebar.devtools.description'
+      lock: false
       children:
         - devOptions:
             icon: 'bi-sign-do-not-enter-fill'
@@ -53,6 +67,8 @@ sidebarElement:
             disabled: false
             parent: devTools
             role: 'ROLE_SUPER_ADMIN'
+            description: 'sidebar.dev_options.description'
+            lock: false
         - database:
             icon: 'bi-database-fill'
             label: 'global.database'
@@ -60,6 +76,8 @@ sidebarElement:
             disabled: false
             parent: devTools
             role: 'ROLE_SUPER_ADMIN'
+            description: 'sidebar.database.description'
+            lock: false
         - html-element:
             icon: 'bi-code'
             label: 'global.html_element'
@@ -67,3 +85,5 @@ sidebarElement:
             disabled: false
             parent: devTools
             role: 'ROLE_SUPER_ADMIN'
+            description: 'sidebar.html_element.description'
+            lock: false
