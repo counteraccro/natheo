@@ -42,6 +42,15 @@ class SidebarElement
     #[ORM\Column]
     private ?bool $disabled = null;
 
+    #[ORM\Column(length: 100)]
+    private ?string $role = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $description = null;
+
+    #[ORM\Column]
+    private ?bool $lock = null;
+
     #[Gedmo\Timestampable(on : "create")]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
@@ -49,9 +58,6 @@ class SidebarElement
     #[Gedmo\Timestampable(on : "update")]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $update_at = null;
-
-    #[ORM\Column(length: 100)]
-    private ?string $role = null;
 
     public function __construct()
     {
@@ -185,6 +191,30 @@ class SidebarElement
     public function setRole(string $role): self
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function isLock(): ?bool
+    {
+        return $this->lock;
+    }
+
+    public function setLock(bool $lock): self
+    {
+        $this->lock = $lock;
 
         return $this;
     }
