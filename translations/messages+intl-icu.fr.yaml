@@ -48,17 +48,17 @@ options_system.categorie_admin: Administration
 options_system.categorie_admin.title: "Options de l'administration"
 options_system.categorie_admin.description: "Options concernant l'administration du site web"
 options_system.default_msg_success: 'Modification enregistrée avec succès'
-options_system:default_msg_error: 'Erreur de validation, vérifiez votre saisie'
+options_system.default_msg_error: 'Erreur de validation, vérifiez votre saisie'
 sidebar.dashboard.description: "Page d'accueil de la partie administration du CMS"
-sidebar.membre.description: "Gestion des membres inscrit sur le site"
-sidebar.global.system.description : "Regroupe l'ensemble des modules système du CMS"
-sidebar.user.description: "Gestion des utilisateurs qui peuvent ce connecter à la partie administration du site"
+sidebar.membre.description: 'Gestion des membres inscrit sur le site'
+sidebar.global.system.description: "Regroupe l'ensemble des modules système du CMS"
+sidebar.user.description: 'Gestion des utilisateurs qui peuvent ce connecter à la partie administration du site'
 sidebar.sidebar.description: "Gestion du menu général de l'administration"
-sidebar.system_options.description: "Configuration du CMS"
+sidebar.system_options.description: 'Configuration du CMS'
 sidebar.devtools.description: "Regroupe l'ensemble des modules pour aider au développement du CMS"
-sidebar.dev_options.description: "Permet de gérer les options pour le développement du CMS"
-sidebar.database.description: "Permet de visualisé la base de données + statistiques"
-sidebar.html_element.description: "Démo des différents éléments HTML du CMS"
+sidebar.dev_options.description: 'Permet de gérer les options pour le développement du CMS'
+sidebar.database.description: 'Permet de visualisé la base de données + statistiques'
+sidebar.html_element.description: 'Démo des différents éléments HTML du CMS'
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 global.alertes: Alertes
 global.profil: Profil
@@ -76,4 +76,7 @@ security.login_user.forgot_password: 'Mot de passe oublié ?'
 security.login_user.remember_me: 'Ce souvenir de moi'
 security.login_user.btn_login: Connexion
 security.login.always_log: 'Vous êtes déjà connecté en tant que '
-security.login.logout: 'Déconnexion'
+security.login.logout: Déconnexion
+sidebar.page_title: 'Gestion de la sidebar'
+sidebar.page_title_h1: 'Gestion de la sidebar'
+sidebar.description: "Permet de définir quels sont les éléments du menu de gauche global de l'administration qui doivent être affichés ou masqués"

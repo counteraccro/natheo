@@ -303,7 +303,7 @@ class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements R
         if (isset($element['msg_error'])) {
             return '<div id="error-' . $key . '" class="invalid-feedback"><b><i class="bi bi-exclamation-circle"></i>  ' . $this->translator->trans($element['msg_error']) . '</b></div>';
         }
-        return '<div id="error-' . $key . '" class="invalid-feedback"><b><i class="bi bi-exclamation-circle"></i>  ' . $this->translator->trans('options_system:default_msg_error') . '</b></div>';
+        return '<div id="error-' . $key . '" class="invalid-feedback"><b><i class="bi bi-exclamation-circle"></i>  ' . $this->translator->trans('options_system.default_msg_error') . '</b></div>';
     }
 
     /**

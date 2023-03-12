@@ -48,17 +48,17 @@ options_system.categorie_admin: __Administration
 options_system.categorie_admin.title: "__Options de l'administration"
 options_system.categorie_admin.description: "__Options concernant l'administration du site web"
 options_system.default_msg_success: '__Modification enregistrée avec succès'
-options_system:default_msg_error: '__Erreur de validation, vérifiez votre saisie'
+options_system.default_msg_error: '__Erreur de validation, vérifiez votre saisie'
 sidebar.dashboard.description: "__Page d'accueil de la partie administration du CMS"
-sidebar.membre.description: "__Gestion des membres inscrit sur le site"
-sidebar.global.system.description : "__Regroupe l'ensemble des modules système du CMS"
-sidebar.user.description: "__Gestion des utilisateurs qui peuvent ce connecter à la partie administration du site"
+sidebar.membre.description: '__Gestion des membres inscrit sur le site'
+sidebar.global.system.description: "__Regroupe l'ensemble des modules système du CMS"
+sidebar.user.description: '__Gestion des utilisateurs qui peuvent ce connecter à la partie administration du site'
 sidebar.sidebar.description: "__Gestion du menu général de l'administration"
-sidebar.system_options.description: "__Configuration du CMS"
+sidebar.system_options.description: '__Configuration du CMS'
 sidebar.devtools.description: "__Regroupe l'ensemble des modules pour aider au développement du CMS"
-sidebar.dev_options.description: "__Permet de gérer les options pour le développement du CMS"
-sidebar.database.description: "__Permet de visualisé la base de données + statistiques"
-sidebar.html_element.description: "__Démo des différents éléments HTML du CMS"
+sidebar.dev_options.description: '__Permet de gérer les options pour le développement du CMS'
+sidebar.database.description: '__Permet de visualisé la base de données + statistiques'
+sidebar.html_element.description: '__Démo des différents éléments HTML du CMS'
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 global.alertes: __global.alertes
 global.profil: __global.profil
@@ -77,3 +77,6 @@ security.login_user.btn_login: __security.login_user.btn_login
 global.licence: __global.licence
 security.login.always_log: __security.login.always_log
 security.login.logout: __security.login.logout
+sidebar.page_title: __sidebar.page_title
+sidebar.page_title_h1: __sidebar.page_title_h1
+sidebar.description: __sidebar.description
