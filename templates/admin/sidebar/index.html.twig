@@ -1,0 +1,14 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block title %}{{ 'sidebar.page_title' | trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'sidebar.page_title_h1' | trans }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    <p>{{ 'sidebar.description' | trans }}</p>
+
+    <div {{ vue_component('Admin/SidebarGrid') }}></div>
+
+{% endblock %}
