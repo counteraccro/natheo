@@ -36,7 +36,7 @@ sidebarElement:
             - droits:
                 icon: 'bi-layout-text-sidebar'
                 label: 'global.sidebar'
-                route: '#'
+                route: 'admin_sidebar_index'
                 disabled: false
                 parent : system
                 role: 'ROLE_SUPER_ADMIN'
