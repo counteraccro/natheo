@@ -8,6 +8,7 @@ namespace App\Repository\Admin;
 
 use App\Entity\Admin\SidebarElement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -58,6 +59,25 @@ class SidebarElementRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    /**
+     * Retourne une liste de SidebarElement Paginé
+     * @param int $page
+     * @param int $limit
+     * @return Paginator
+     */
+    public function getAllPaginate(int $page, int $limit): Paginator
+    {
+        $query = $this->createQueryBuilder('se')
+            ->orderBy('se.id');
+
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
+
     }
 
 //    /**
