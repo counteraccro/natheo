@@ -1,10 +1,12 @@
 <script>
-import Grid from '../../Components/Grid.vue'
+import Grid from '../../Components/Grid/Grid.vue'
+import GridPaginate from "../../Components/Grid/GridPaginate.vue";
 import axios from "axios";
 
 export default {
   name: "SidebarGrid",
   components: {
+    GridPaginate,
     Grid
   },
   props: {
@@ -15,29 +17,24 @@ export default {
   data() {
     return {
       searchQuery: '',
-      /*gridColumns: ['name', 'power'],
-      gridData: [
-        { name: 'Chuck Norris', power: Infinity },
-        { name: 'Bruce Lee', power: 9000 },
-        { name: 'Jackie Chan', power: 7000 },
-        { name: 'Jet Li', power: 8000 }
-      ]*/
       gridColumns: [],
       gridData: [],
       sortOrders: [],
+      nbElements: 0
     }
   },
   mounted() {
-    this.loadData();
+    this.loadData(this.page);
   },
   methods: {
-    async loadData() {
+    loadData(page) {
       axios.post(this.url, {
-        page: this.page,
+        page: page,
         limit: this.limit
       }).then((response) => {
         this.gridColumns = response.data.column;
         this.gridData = response.data.data;
+        this.nbElements = response.data.nb;
         this.sortOrders = this.gridColumns.reduce((o, key) => ((o[key] = 1), o), {});
       }).catch((error) => {
         console.log(error);
@@ -45,6 +42,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <template>
@@ -57,6 +55,14 @@ export default {
       :filter-key="searchQuery"
       :sortOrders="sortOrders">
   </Grid>
+  <GridPaginate
+      :current-page="page"
+      :nb-elements="limit"
+      :nb-elements-total="nbElements"
+      :url="url"
+      @change-page-event="loadData"
+  >
+  </GridPaginate>
 </template>
 
 <style scoped>
