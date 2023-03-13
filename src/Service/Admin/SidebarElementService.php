@@ -60,9 +60,9 @@ class SidebarElementService extends AppAdminService
             $data[] = [
                 $this->translator->trans('sidebar.grid.id') => $element->getId(),
                 $this->translator->trans('sidebar.grid.parent') => 'Parent',
-                $this->translator->trans('sidebar.grid.label') => 'Label',
-                $this->translator->trans('sidebar.grid.role') => 'Role',
-                $this->translator->trans('sidebar.grid.description') => 'Description',
+                $this->translator->trans('sidebar.grid.label') => '<i class="bi ' . $element->getIcon() . '"></i> ' . $this->translator->trans($element->getLabel()),
+                $this->translator->trans('sidebar.grid.role') => $element->getRole(),
+                $this->translator->trans('sidebar.grid.description') => $this->translator->trans($element->getDescription()),
                 $this->translator->trans('sidebar.grid.created_at') => 'Date 1',
                 $this->translator->trans('sidebar.grid.update_at') => 'Date 2',
                 $this->translator->trans('sidebar.grid.action') => 'Action',

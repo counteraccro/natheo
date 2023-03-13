@@ -33,7 +33,7 @@ class SidebarController extends AbstractController
         return $this->render('admin/sidebar/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => 2
+            'limit' => 6
         ]);
     }
 
