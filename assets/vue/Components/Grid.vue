@@ -3,12 +3,12 @@ export default {
   props: {
     data: Array,
     columns: Array,
-    filterKey: String
+    filterKey: String,
+    sortOrders: Object,
   },
   data() {
     return {
       sortKey: '',
-      sortOrders: this.columns.reduce((o, key) => ((o[key] = 1), o), {})
     }
   },
   computed: {
