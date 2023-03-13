@@ -9,6 +9,6 @@
 
     <p>{{ 'sidebar.description' | trans }}</p>
 
-    <div {{ vue_component('Admin/SidebarGrid') }}></div>
+    <div {{ vue_component('Admin/SidebarGrid', {'url' : path('admin_sidebar_load_grid_data'), 'page' : page, 'limit' : limit}) }}></div>
 
 {% endblock %}
