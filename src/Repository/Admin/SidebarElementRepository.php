@@ -70,7 +70,8 @@ class SidebarElementRepository extends ServiceEntityRepository
     public function getAllPaginate(int $page, int $limit): Paginator
     {
         $query = $this->createQueryBuilder('se')
-            ->orderBy('se.id');
+            ->orderBy('se.parent', 'DESC')
+            ->orderBy('se.id', 'ASC');
 
         $paginator = new Paginator($query->getQuery(), true);
         $paginator->getQuery()

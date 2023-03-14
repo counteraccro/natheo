@@ -4,6 +4,7 @@
  * @version 1.0
  * Service lier à l'objet SidebarElement
  */
+
 namespace App\Service\Admin;
 
 use App\Entity\Admin\SidebarElement;
@@ -46,26 +47,39 @@ class SidebarElementService extends AppAdminService
             $this->translator->trans('sidebar.grid.description'),
             $this->translator->trans('sidebar.grid.created_at'),
             $this->translator->trans('sidebar.grid.update_at'),
-            $this->translator->trans('sidebar.grid.action'),
+            'action',
         ];
 
         $dataPaginate = $this->getAllPaginate($page, $limit);
 
         $nb = $dataPaginate->count();
         $data = [];
-        foreach($dataPaginate as $element)
-        {
+        foreach ($dataPaginate as $element) {
             /* @var SidebarElement $element */
+
+            $parent = '---';
+            if ($element->getParent() !== null) {
+                $parent = '<i class="bi ' . $element->getParent()->getIcon() . '"></i> ' . $this->translator->trans($element->getParent()->getLabel());
+            }
+
+            $action = $this->generateTabAction($element);
+
+            $is_lock = '';
+            if($element->isLock())
+            {
+                $is_lock = '<i class="bi bi-lock-fill"></i>';
+            }
+
 
             $data[] = [
                 $this->translator->trans('sidebar.grid.id') => $element->getId(),
-                $this->translator->trans('sidebar.grid.parent') => 'Parent',
-                $this->translator->trans('sidebar.grid.label') => '<i class="bi ' . $element->getIcon() . '"></i> ' . $this->translator->trans($element->getLabel()),
+                $this->translator->trans('sidebar.grid.parent') => $parent,
+                $this->translator->trans('sidebar.grid.label') => $is_lock . '<i class="bi ' . $element->getIcon() . '"></i> ' . $this->translator->trans($element->getLabel()),
                 $this->translator->trans('sidebar.grid.role') => $element->getRole(),
                 $this->translator->trans('sidebar.grid.description') => $this->translator->trans($element->getDescription()),
-                $this->translator->trans('sidebar.grid.created_at') => 'Date 1',
-                $this->translator->trans('sidebar.grid.update_at') => 'Date 2',
-                $this->translator->trans('sidebar.grid.action') => 'Action',
+                $this->translator->trans('sidebar.grid.created_at') => $element->getCreatedAt()->format('d/m/y H:i'),
+                $this->translator->trans('sidebar.grid.update_at') => $element->getUpdateAt()->format('d/m/y H:i'),
+                'action' => json_encode($action),
             ];
         }
 
@@ -75,6 +89,26 @@ class SidebarElementService extends AppAdminService
             'column' => $column
         ];
 
+    }
+
+    /**
+     * Génère le tableau d'action pour le Grid des sidebarElement
+     * @param SidebarElement $element
+     * @return array[]|string[]
+     */
+    private function generateTabAction(SidebarElement $element): array
+    {
+        $action_disabled = '';
+        if (!$element->isLock()) {
+            $action_disabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>', 'id' => $element->getId(), 'url' => $this->router->generate('admin_dashboard_index'), 'ajax' => false];
+            if ($element->isDisabled()) {
+                $action_disabled = ['label' => '<i class="bi bi-eye-fill"></i>', 'id' => $element->getId(), 'url' => $this->router->generate('admin_dashboard_index'), 'ajax' => false];
+            }
+        }
+
+        return $action = [
+            $action_disabled
+        ];
     }
 
     /**

@@ -41,6 +41,25 @@ export default {
     },
     capitalize(str) {
       return str.charAt(0).toUpperCase() + str.slice(1)
+    },
+    ajaxAction(url, id)
+    {
+      alert('oki');
+    },
+
+    /**
+     * Converti un json en tableau
+     * @param json
+     * @returns {any|boolean}
+     */
+    jsonParse(json)
+    {
+      let tab = JSON.parse(json);
+      if(tab[0] === "")
+      {
+        return false;
+      }
+      return tab;
     }
   }
 }
@@ -62,7 +81,11 @@ export default {
     <tbody>
     <tr v-for="entry in filteredData">
       <td v-for="key in columns">
-        <span v-html="entry[key]"></span>
+        <span v-if="key !== 'action'" v-html="entry[key]"></span>
+        <div v-else>
+          <button class="btn btn-secondary" v-for="data in this.jsonParse(entry[key])" @click="ajaxAction(data.url, data.id)" v-html="data.label">
+          </button>
+        </div>
       </td>
     </tr>
     </tbody>
