@@ -6,6 +6,7 @@ export default {
     filterKey: String,
     sortOrders: Object,
   },
+  emits: ['redirect-action'],
   data() {
     return {
       sortKey: '',
@@ -41,10 +42,6 @@ export default {
     },
     capitalize(str) {
       return str.charAt(0).toUpperCase() + str.slice(1)
-    },
-    ajaxAction(url, id)
-    {
-      alert('oki');
     },
 
     /**
@@ -83,7 +80,7 @@ export default {
       <td v-for="key in columns">
         <span v-if="key !== 'action'" v-html="entry[key]"></span>
         <div v-else>
-          <button class="btn btn-secondary" v-for="data in this.jsonParse(entry[key])" @click="ajaxAction(data.url, data.id)" v-html="data.label">
+          <button class="btn btn-secondary" v-for="data in this.jsonParse(entry[key])" @click="$emit('redirect-action', data.url, data.id, data.ajax)" v-html="data.label">
           </button>
         </div>
       </td>

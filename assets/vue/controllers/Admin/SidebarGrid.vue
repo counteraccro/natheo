@@ -39,7 +39,30 @@ export default {
       }).catch((error) => {
         console.log(error);
       });
-    }
+    },
+
+    /**
+     * Défini l'action à faire en fonction des paramètres
+     * @param url
+     * @param id
+     * @param is_ajax
+     */
+    redirectAction(url, id, is_ajax)
+    {
+
+      console.log(url);
+      console.log(id);
+      console.log(is_ajax);
+
+      if(is_ajax)
+      {
+        alert('appel ajax');
+        this.loadData(1);
+      }
+      else {
+        window.location.href = url;
+      }
+    },
   }
 }
 
@@ -53,7 +76,8 @@ export default {
       :data="gridData"
       :columns="gridColumns"
       :filter-key="searchQuery"
-      :sortOrders="sortOrders">
+      :sortOrders="sortOrders"
+      @redirect-action="redirectAction">
   </Grid>
   <GridPaginate
       :current-page="page"
