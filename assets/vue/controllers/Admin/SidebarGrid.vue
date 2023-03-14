@@ -20,14 +20,20 @@ export default {
       gridColumns: [],
       gridData: [],
       sortOrders: [],
-      nbElements: 0
+      nbElements: 0,
+      loading: true
     }
   },
   mounted() {
     this.loadData(this.page);
   },
   methods: {
+    /**
+     * Chargement des elements du tableau
+     * @param page
+     */
     loadData(page) {
+      this.loading = true;
       axios.post(this.url, {
         page: page,
         limit: this.limit
@@ -38,7 +44,7 @@ export default {
         this.sortOrders = this.gridColumns.reduce((o, key) => ((o[key] = 1), o), {});
       }).catch((error) => {
         console.log(error);
-      });
+      }).finally(() => this.loading = false);
     },
 
     /**
@@ -47,19 +53,16 @@ export default {
      * @param id
      * @param is_ajax
      */
-    redirectAction(url, id, is_ajax)
-    {
-
+    redirectAction(url, id, is_ajax) {
       console.log(url);
       console.log(id);
       console.log(is_ajax);
 
-      if(is_ajax)
-      {
+      if (is_ajax) {
         alert('appel ajax');
+        this.loading = true;
         this.loadData(1);
-      }
-      else {
+      } else {
         window.location.href = url;
       }
     },
@@ -72,23 +75,34 @@ export default {
   <form id="search">
     Search <input name="query" v-model="searchQuery">
   </form>
-  <Grid
-      :data="gridData"
-      :columns="gridColumns"
-      :filter-key="searchQuery"
-      :sortOrders="sortOrders"
-      @redirect-action="redirectAction">
-  </Grid>
-  <GridPaginate
-      :current-page="page"
-      :nb-elements="limit"
-      :nb-elements-total="nbElements"
-      :url="url"
-      @change-page-event="loadData"
-  >
-  </GridPaginate>
+
+  <div :class="loading === true ? 'block-grid' : ''">
+    <div v-if="loading" class="overlay">
+      <div class="position-absolute top-50 start-50 translate-middle">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <span class="txt-overlay">Chargement des données</span>
+      </div>
+    </div>
+    <Grid
+        :data="gridData"
+        :columns="gridColumns"
+        :filter-key="searchQuery"
+        :sortOrders="sortOrders"
+        @redirect-action="redirectAction">
+    </Grid>
+    <GridPaginate
+        :current-page="page"
+        :nb-elements="limit"
+        :nb-elements-total="nbElements"
+        :url="url"
+        @change-page-event="loadData"
+    >
+    </GridPaginate>
+  </div>
+
 </template>
 
 <style scoped>
-
 </style>
