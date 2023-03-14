@@ -100,15 +100,22 @@ class SidebarElementService extends AppAdminService
     {
         $action_disabled = '';
         if (!$element->isLock()) {
-            $action_disabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>', 'id' => $element->getId(), 'url' => $this->router->generate('admin_dashboard_index'), 'ajax' => false];
+            $action_disabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>', 'id' => $element->getId(), 'url' => $this->router->generate('admin_dashboard_index'), 'ajax' => true];
             if ($element->isDisabled()) {
-                $action_disabled = ['label' => '<i class="bi bi-eye-fill"></i>', 'id' => $element->getId(), 'url' => $this->router->generate('admin_dashboard_index'), 'ajax' => false];
+                $action_disabled = ['label' => '<i class="bi bi-eye-fill"></i>', 'id' => $element->getId(), 'url' => $this->router->generate('admin_dashboard_index'), 'ajax' => true];
             }
         }
 
-        return $action = [
-            $action_disabled
+        $action = [
+            ['label' => '<i class="bi bi-list-ul"></i>', 'id' => $element->getId(), 'url' => $this->router->generate('admin_dashboard_index'), 'ajax' => false]
         ];
+
+        if($action_disabled != '')
+        {
+            $action[] = $action_disabled;
+        }
+
+        return $action;
     }
 
     /**
