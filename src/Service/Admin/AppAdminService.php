@@ -38,4 +38,14 @@ class AppAdminService
         $this->translator = $translator;
         $this->router = $router;
     }
+
+    /**
+     * Retourne un Json contenant la liste de choix d'affichage du nombre d'éléments dans le grid
+     * @return string
+     */
+    protected function getOptionsSelectLimit(): string
+    {
+        $optionLimitGrid = [5 => 5, 10 => 10, 20 => 20, 50 => 50, 100 => 100];
+        return json_encode($optionLimitGrid);
+    }
 }

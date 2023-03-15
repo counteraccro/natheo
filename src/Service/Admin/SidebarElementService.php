@@ -86,7 +86,8 @@ class SidebarElementService extends AppAdminService
         return [
             'nb' => $nb,
             'data' => $data,
-            'column' => $column
+            'column' => $column,
+            'listLimit' => $this->getOptionsSelectLimit()
         ];
 
     }
