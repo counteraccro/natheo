@@ -10,17 +10,7 @@
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/utilities";
 
-
-:root {
-  --primary: #{$purple-700};
-  --secondary: #{$purple-500};
-  --success: #{$green-600};
-  --danger: #{$red-900};
-  --info: #{$blue-600};
-  --light: #{$purple-100};
-  --warning: #{$orange-500};
-  --dark: #{$purple-900};
-}
+@import "admin/themes/purple";
 
 $primary: $purple-700;
 $secondary: $purple-500;
