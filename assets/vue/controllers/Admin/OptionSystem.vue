@@ -37,6 +37,7 @@ export default {
       let id = element.getAttribute('id');
       let value = '';
 
+      // Cas null si type n'existe pas
       switch (element.getAttribute('type')) {
         case "text":
         case null:
