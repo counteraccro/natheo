@@ -29,3 +29,6 @@ option_system:
   OS_LOGO_SITE:
     key: 'OS_LOGO_SITE'
     value: 'bi-yin-yang'
+  OS_THEME_SITE:
+    key: 'OS_THEME_SITE'
+    value: 'purple'

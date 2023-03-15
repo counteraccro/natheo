@@ -28,7 +28,7 @@ options_system:
         label: 'options_system.default_language'
         list_value: 'fr:global.french|en:global.english|es:global.spanish'
         help: 'options_system.default_language_help'
-        default: '1'
+        default: 'fr'
       OS_FRONT_SCRIPT_TOP:
         type: 'textarea'
         label: 'options_system.front_script_top'
@@ -66,3 +66,9 @@ options_system:
         label: 'options_system.confirm_leave_form'
         help: 'options_system.confirm_leave_form_help'
         default: '1'
+      OS_THEME_SITE:
+        type: 'select'
+        label: 'options_system.theme_site'
+        list_value: 'purple:global.purple|red:global.red|orange:global.orange'
+        help: 'options_system.theme_site_help'
+        default: 'purple'
