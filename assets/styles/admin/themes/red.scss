@@ -1,14 +1,11 @@
-@mixin theme-red() {
-  --primary : #{$indigo-700};
-  --secondary: #a02b46;
-  --success: #ff773d;
-  --danger: #d84846;
-  --info: #c5f57c;
-  --light: #f3ef00;
-  --warning: #F6B339;
-  --dark: #561941;
-}
-
-.theme-red {
-  @include theme-red();
+:root {
+  --primary: #{$red-700};
+  --primary-rgb: 132, 32, 41;
+  --secondary: #{$red-500};
+  --success: #{$green-600};
+  --danger: #{$red-800};
+  --info: #{$blue-600};
+  --light: #{$red-100};
+  --warning: #{$orange-500};
+  --dark: #{$red-900};
 }

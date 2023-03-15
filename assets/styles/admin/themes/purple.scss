@@ -1,14 +1,11 @@
-@mixin theme-purple() {
-  --primary : #3f2f61;
-  --secondary: #6d4a93;
-  --success: #ff91ff;
-  --danger: #ad6bd0;
-  --info: #01106e;
-  --light: #AAA;
-  --warning: #705f02;
-  --dark: #705f02;
-}
-
-.theme-purple {
-  @include theme-purple();
+:root {
+  --primary: #{$purple-700};
+  --primary-rgb: 111, 66, 193;
+  --secondary: #{$purple-500};
+  --success: #{$green-600};
+  --danger: #{$red-900};
+  --info: #{$blue-600};
+  --light: #{$purple-100};
+  --warning: #{$orange-500};
+  --dark: #{$purple-900};
 }
