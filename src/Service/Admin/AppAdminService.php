@@ -40,12 +40,14 @@ class AppAdminService
     }
 
     /**
-     * Retourne un Json contenant la liste de choix d'affichage du nombre d'éléments dans le grid
-     * @return string
+     * Ajoute le choix des limits dans le tableau de donnée du GRID
+     * @param array $tab
+     * @return array
      */
-    protected function getOptionsSelectLimit(): string
+    protected function addOptionsSelectLimit(array $tab): array
     {
         $optionLimitGrid = [5 => 5, 10 => 10, 20 => 20, 50 => 50, 100 => 100];
-        return json_encode($optionLimitGrid);
+        $tab['listLimit'] = json_encode($optionLimitGrid);
+        return $tab;
     }
 }

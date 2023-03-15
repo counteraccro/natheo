@@ -83,12 +83,12 @@ class SidebarElementService extends AppAdminService
             ];
         }
 
-        return [
+        $tabReturn = [
             'nb' => $nb,
             'data' => $data,
             'column' => $column,
-            'listLimit' => $this->getOptionsSelectLimit()
         ];
+        return $this->addOptionsSelectLimit($tabReturn);
 
     }
 
