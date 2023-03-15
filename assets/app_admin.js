@@ -5,10 +5,7 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import './styles/app_admin.scss';
-
 import 'bootstrap';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import bsCustomFileInput from 'bs-custom-file-input';
 
 

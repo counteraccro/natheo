@@ -10,16 +10,16 @@
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/utilities";
 
-@import "admin/themes/purple";
+@import "admin/themes/orange";
 
-$primary: $purple-700;
-$secondary: $purple-500;
+$primary: $orange-700;
+$secondary: $orange-500;
 $success: $green-600;
 $danger: $red-600;
 $info: $blue-600;
-$light: $purple-100;
+$light: $orange-100;
 $warning: $orange-500;
-$dark: $purple-800;
+$dark: $orange-900;
 
 $theme-colors: (
         "primary": $primary,
@@ -41,6 +41,7 @@ $utilities-bg: map-merge($utilities-bg, $utilities-colors);
 $utilities-bg-colors: map-loop($utilities-bg, rgba-css-var, "$key", "bg");
 
 @import "~bootstrap/scss/bootstrap";
+@import 'bootstrap-icons/font/bootstrap-icons.css';
 
 // Import surcharge boostrap CSS
 @import "admin/bootstrap/nav";
@@ -51,3 +52,4 @@ $utilities-bg-colors: map-loop($utilities-bg, rgba-css-var, "$key", "bg");
 @import "admin/menu-left";
 @import "admin/breadcrumb";
 @import "admin/debug";
+

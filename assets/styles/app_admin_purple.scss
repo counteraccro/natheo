@@ -10,16 +10,16 @@
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/utilities";
 
-@import "admin/themes/red";
+@import "admin/themes/purple";
 
-$primary: $red-700;
-$secondary: $red-500;
+$primary: $purple-700;
+$secondary: $purple-500;
 $success: $green-600;
-$danger: $red-800;
+$danger: $red-600;
 $info: $blue-600;
-$light: $red-100;
+$light: $purple-100;
 $warning: $orange-500;
-$dark: $red-900;
+$dark: $purple-900;
 
 $theme-colors: (
         "primary": $primary,
