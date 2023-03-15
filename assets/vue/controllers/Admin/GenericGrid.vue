@@ -22,27 +22,32 @@ export default {
       sortOrders: [],
       nbElements: 0,
       loading: true,
-      cPage: this.page
+      cPage: this.page,
+      cLimit : this.limit,
+      typeSearch: 'html',
+      listLimit: [],
     }
   },
   mounted() {
-    this.loadData(this.page);
+    this.loadData(this.page, this.limit);
   },
   methods: {
     /**
      * Chargement des elements du tableau
      * @param page
+     * @param limit
      */
-    loadData(page) {
+    loadData(page, limit) {
       this.loading = true;
       axios.post(this.url, {
         page: page,
-        limit: this.limit
+        limit: limit
       }).then((response) => {
         this.gridColumns = response.data.column;
         this.gridData = response.data.data;
         this.nbElements = response.data.nb;
         this.sortOrders = this.gridColumns.reduce((o, key) => ((o[key] = 1), o), {});
+        this.listLimit = JSON.parse(response.data.listLimit);
         this.cPage = page;
       }).catch((error) => {
         console.log(error);
@@ -78,9 +83,10 @@ export default {
     <div class="input-group mb-3">
       <span class="input-group-text"><i class="bi bi-search"></i></span>
       <input type="text" class="form-control" placeholder="Rechercher" v-model="searchQuery">
+      <button class="btn btn-outline-secondary" :class="typeSearch === 'html' ? 'active' : ''"  @click="typeSearch='html'" type="button">Recherche courante</button>
+      <button class="btn btn-outline-secondary" :class="typeSearch === 'query' ? 'active' : ''" @click="typeSearch='query'" type="button">Recherche globale</button>
     </div>
   </form>
-
   <div :class="loading === true ? 'block-grid' : ''">
     <div v-if="loading" class="overlay">
       <div class="position-absolute top-50 start-50 translate-middle">
@@ -95,6 +101,7 @@ export default {
         :columns="gridColumns"
         :filter-key="searchQuery"
         :sortOrders="sortOrders"
+        :type-search="typeSearch"
         @redirect-action="redirectAction">
     </Grid>
     <GridPaginate
@@ -102,6 +109,7 @@ export default {
         :nb-elements="limit"
         :nb-elements-total="nbElements"
         :url="url"
+        :list-limit="listLimit"
         @change-page-event="loadData"
     >
     </GridPaginate>
