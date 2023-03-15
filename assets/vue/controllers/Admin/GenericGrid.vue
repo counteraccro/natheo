@@ -21,7 +21,8 @@ export default {
       gridData: [],
       sortOrders: [],
       nbElements: 0,
-      loading: true
+      loading: true,
+      cPage: this.page
     }
   },
   mounted() {
@@ -42,6 +43,7 @@ export default {
         this.gridData = response.data.data;
         this.nbElements = response.data.nb;
         this.sortOrders = this.gridColumns.reduce((o, key) => ((o[key] = 1), o), {});
+        this.cPage = page;
       }).catch((error) => {
         console.log(error);
       }).finally(() => this.loading = false);
@@ -61,7 +63,7 @@ export default {
       if (is_ajax) {
         alert('appel ajax');
         this.loading = true;
-        this.loadData(1);
+        this.loadData(this.cPage);
       } else {
         window.location.href = url;
       }
