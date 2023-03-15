@@ -46,10 +46,12 @@ $utilities-bg-colors: map-loop($utilities-bg, rgba-css-var, "$key", "bg");
 // Import surcharge boostrap CSS
 @import "admin/bootstrap/nav";
 @import "admin/bootstrap/pagination";
+@import "admin/bootstrap/form";
 
 @import "admin/global";
 @import "admin/header";
 @import "admin/menu-left";
 @import "admin/breadcrumb";
 @import "admin/debug";
+
 

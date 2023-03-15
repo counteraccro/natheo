@@ -87,3 +87,35 @@ sidebarElement:
             role: 'ROLE_SUPER_ADMIN'
             description: 'sidebar.html_element.description'
             lock: false
+    dashboard-2:
+      icon: 'bi-house-fill'
+      label: 'global.dashboard'
+      route: 'admin_dashboard_index'
+      disabled: false
+      role: 'ROLE_USER'
+      lock: true
+      description: 'sidebar.dashboard.description'
+    dashboard-3:
+      icon: 'bi-house-fill'
+      label: 'global.dashboard'
+      route: 'admin_dashboard_index'
+      disabled: false
+      role: 'ROLE_USER'
+      lock: true
+      description: 'sidebar.dashboard.description'
+    dashboard-4:
+      icon: 'bi-house-fill'
+      label: 'global.dashboard'
+      route: 'admin_dashboard_index'
+      disabled: false
+      role: 'ROLE_USER'
+      lock: true
+      description: 'sidebar.dashboard.description'
+    dashboard-5:
+      icon: 'bi-house-fill'
+      label: 'global.dashboard'
+      route: 'admin_dashboard_index'
+      disabled: false
+      role: 'ROLE_USER'
+      lock: true
+      description: 'sidebar.dashboard.description'

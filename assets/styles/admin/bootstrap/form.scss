@@ -1,0 +1,16 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * Surcharge des éléments form de bootstrap
+ */
+
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+.form-check-input:checked {
+  background-color: var(--secondary);
+  border-color: var(--secondary);
+}

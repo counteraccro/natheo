@@ -21,12 +21,6 @@ h1, h2, h3, h4, h5, h6 {
   //background: linear-gradient(to right, $light, #FFF);
 }
 
-// CSS form
-.form-control:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
-}
-
 .wrapper {
   display: flex;
   width: 100%;
