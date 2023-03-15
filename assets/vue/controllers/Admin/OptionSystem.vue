@@ -90,6 +90,15 @@ export default {
         spinner.classList.add('visually-hidden');
         element.disabled = false;
         console.log(error);
+      }).finally(() => {
+
+        if(id === 'OS_THEME_SITE')
+        {
+          let stylesheet = document.querySelectorAll('[href*="/build/admin"]');
+          let href = stylesheet[0].href;
+          let tab = href.split('_');
+          stylesheet[0].href = tab[0] + '_' + value + '.css';
+        }
       });
     }
   }
