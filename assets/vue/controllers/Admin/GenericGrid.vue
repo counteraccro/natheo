@@ -4,7 +4,7 @@ import GridPaginate from "../../Components/Grid/GridPaginate.vue";
 import axios from "axios";
 
 export default {
-  name: "SidebarGrid",
+  name: "GenericGri",
   components: {
     GridPaginate,
     Grid
