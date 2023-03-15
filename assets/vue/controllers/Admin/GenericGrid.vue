@@ -73,7 +73,10 @@ export default {
 
 <template>
   <form id="search">
-    Search <input name="query" v-model="searchQuery">
+    <div class="input-group mb-3">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="form-control" placeholder="Rechercher" v-model="searchQuery">
+    </div>
   </form>
 
   <div :class="loading === true ? 'block-grid' : ''">
