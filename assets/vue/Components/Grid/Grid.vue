@@ -5,7 +5,6 @@ export default {
     columns: Array,
     filterKey: String,
     sortOrders: Object,
-    typeSearch: String
   },
   emits: ['redirect-action'],
   data() {
@@ -21,19 +20,11 @@ export default {
       const order = this.sortOrders[sortKey] || 1
       let data = this.data
       if (filterKey) {
-
-        if(this.typeSearch === "html")
-        {
-          data = data.filter((row) => {
-            return Object.keys(row).some((key) => {
-              return String(row[key]).toLowerCase().indexOf(filterKey) > -1
-            })
+        data = data.filter((row) => {
+          return Object.keys(row).some((key) => {
+            return String(row[key]).toLowerCase().indexOf(filterKey) > -1
           })
-        }
-        else {
-          alert('appel ajax search avec ' + this.filterKey);
-        }
-
+        })
       }
       if (sortKey) {
         data = data.slice().sort((a, b) => {
@@ -59,11 +50,9 @@ export default {
      * @param json
      * @returns {any|boolean}
      */
-    jsonParse(json)
-    {
+    jsonParse(json) {
       let tab = JSON.parse(json);
-      if(tab[0] === "")
-      {
+      if (tab[0] === "") {
         return false;
       }
       return tab;

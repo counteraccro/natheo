@@ -24,7 +24,6 @@ export default {
       loading: true,
       cPage: this.page,
       cLimit : this.limit,
-      typeSearch: 'html',
       listLimit: [],
     }
   },
@@ -83,8 +82,6 @@ export default {
     <div class="input-group mb-3">
       <span class="input-group-text"><i class="bi bi-search"></i></span>
       <input type="text" class="form-control" placeholder="Rechercher" v-model="searchQuery">
-      <button class="btn btn-outline-secondary" :class="typeSearch === 'html' ? 'active' : ''"  @click="typeSearch='html'" type="button">Recherche courante</button>
-      <button class="btn btn-outline-secondary" :class="typeSearch === 'query' ? 'active' : ''" @click="typeSearch='query'" type="button">Recherche globale</button>
     </div>
   </form>
   <div :class="loading === true ? 'block-grid' : ''">
@@ -101,7 +98,6 @@ export default {
         :columns="gridColumns"
         :filter-key="searchQuery"
         :sortOrders="sortOrders"
-        :type-search="typeSearch"
         @redirect-action="redirectAction">
     </Grid>
     <GridPaginate
