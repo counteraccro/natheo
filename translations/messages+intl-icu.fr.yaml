@@ -13,6 +13,9 @@ global.non: Non
 global.french: Français
 global.english: Anglais
 global.spanish: Espagnol
+global.purple: Violet
+global.red: Rouge
+global.orange: Orange
 global.loading_save: 'Sauvegarde en cours'
 options_system.site_name: 'Nom de votre site'
 options_system.site_name_help: "Uniquement des lettres, sans caractères spéciaux. Le nom du site apparaitra dans le footer, les mails, et dans l'administration"
@@ -49,6 +52,8 @@ options_system.categorie_admin.title: "Options de l'administration"
 options_system.categorie_admin.description: "Options concernant l'administration du site web"
 options_system.default_msg_success: 'Modification enregistrée avec succès'
 options_system.default_msg_error: 'Erreur de validation, vérifiez votre saisie'
+options_system.theme_site: "Couleur principale de l'administration"
+options_system.theme_site_help: "La couleur choisi sera utilisée sur l'administration ainsi que défini pour chaque nouvel utilisateur créé"
 sidebar.dashboard.description: "Page d'accueil de la partie administration du CMS"
 sidebar.membre.description: 'Gestion des membres inscrit sur le site'
 sidebar.global.system.description: "Regroupe l'ensemble des modules système du CMS"
