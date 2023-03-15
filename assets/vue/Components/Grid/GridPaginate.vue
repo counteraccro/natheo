@@ -1,6 +1,4 @@
 <script>
-import {round} from "@popperjs/core/lib/utils/math";
-
 export default {
   name: "GridPaginate",
   props: {
@@ -17,7 +15,7 @@ export default {
   },
   methods: {
     getNbPage() {
-      return round(this.nbElementsTotal / this.nbElements);
+      return Math.ceil(this.nbElementsTotal / this.nbElements);
     },
 
     updateCurrentPage(page)
