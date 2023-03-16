@@ -6,7 +6,8 @@ export default {
     nbElementsTotal: Number,
     nbElements: Number,
     url: String,
-    listLimit: Array
+    listLimit: Object,
+    translate: Object
   },
   emits: ['change-page-event'],
   data() {
@@ -31,8 +32,8 @@ export default {
 <template>
   <nav>
     <div class="float-md-end">
-      Page <strong>{{ cPage }}</strong> sur
-      <strong>{{ this.getNbPage() }}</strong> - {{ this.nbElementsTotal }} elements
+      {{ translate.page }} <strong>{{ cPage }}</strong> {{ translate.on }}
+      <strong>{{ this.getNbPage() }}</strong> - {{ this.nbElementsTotal }} {{ translate.row }}
     </div>
 
     <div class="float-end me-3">

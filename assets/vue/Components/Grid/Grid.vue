@@ -5,6 +5,7 @@ export default {
     columns: Array,
     filterKey: String,
     sortOrders: Object,
+    translate: Object,
   },
   emits: ['redirect-action'],
   data() {
@@ -95,7 +96,9 @@ export default {
     </tr>
     </tbody>
   </table>
-  <p v-else>No matches found.</p>
+  <div v-else>
+    <p class="text-center"> <i class="bi bi-search"></i> <i>{{ translate.noresult}}</i></p>
+  </div>
 </template>
 
 <style>

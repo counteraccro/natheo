@@ -24,7 +24,10 @@ export default {
       loading: true,
       cPage: this.page,
       cLimit : this.limit,
-      listLimit: [],
+      listLimit: {},
+      translate: {},
+      translateGridPaginate : {},
+      translateGrid: {}
     }
   },
   mounted() {
@@ -47,6 +50,9 @@ export default {
         this.nbElements = response.data.nb;
         this.sortOrders = this.gridColumns.reduce((o, key) => ((o[key] = 1), o), {});
         this.listLimit = JSON.parse(response.data.listLimit);
+        this.translate = JSON.parse(response.data.translate.genericGrid);
+        this.translateGridPaginate = JSON.parse(response.data.translate.gridPaginate);
+        this.translateGrid = JSON.parse(response.data.translate.grid);
         this.cPage = page;
         this.cLimit = limit;
       }).catch((error) => {
@@ -82,16 +88,14 @@ export default {
   <form id="search">
     <div class="input-group mb-3">
       <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="form-control" placeholder="Rechercher" v-model="searchQuery">
+      <input type="text" class="form-control" :placeholder="translate.placeholder" v-model="searchQuery">
     </div>
   </form>
   <div :class="loading === true ? 'block-grid' : ''">
     <div v-if="loading" class="overlay">
       <div class="position-absolute top-50 start-50 translate-middle">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-        <span class="txt-overlay">Chargement des données</span>
+        <div class="spinner-border text-primary" role="status"></div>
+        <span class="txt-overlay">{{ translate.loading }}</span>
       </div>
     </div>
     <Grid
@@ -99,6 +103,7 @@ export default {
         :columns="gridColumns"
         :filter-key="searchQuery"
         :sortOrders="sortOrders"
+        :translate="translateGrid"
         @redirect-action="redirectAction">
     </Grid>
     <GridPaginate
@@ -107,6 +112,7 @@ export default {
         :nb-elements-total="nbElements"
         :url="url"
         :list-limit="listLimit"
+        :translate="translateGridPaginate"
         @change-page-event="loadData"
     >
     </GridPaginate>
