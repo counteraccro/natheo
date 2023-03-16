@@ -92,4 +92,10 @@ sidebar.grid.role: Role
 sidebar.grid.description: Description
 sidebar.grid.created_at: Création
 sidebar.grid.update_at: 'Mise à jour'
-sidebar.grid.action: 'Action'
+sidebar.grid.action: Action
+grid.search.placeholder: 'Rechercher dans le tableau'
+grid.loading: 'Chargement des données'
+grid.page: 'Page'
+grid.on: 'sur'
+grid.row: 'lignes'
+grid.no.result: 'Aucun résultat pour votre recherche'

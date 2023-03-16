@@ -93,3 +93,9 @@ sidebar.grid.description: __sidebar.grid.description
 sidebar.grid.created_at: __sidebar.grid.created_at
 sidebar.grid.update_at: __sidebar.grid.update_at
 sidebar.grid.action: __sidebar.grid.action
+grid.search.placeholder: __grid.search.placeholder
+grid.loading: __grid.loading
+grid.page: __grid.page
+grid.on: __grid.on
+grid.row: __grid.row
+grid.no.result: __grid.no.result
