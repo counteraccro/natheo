@@ -27,12 +27,12 @@ sidebarElement:
             - user:
                 icon: 'bi-person-fill'
                 label: 'global.user'
-                route: '#'
+                route: 'admin_user_index'
                 disabled: false
                 parent: system
                 role: 'ROLE_SUPER_ADMIN'
                 description: 'sidebar.user.description'
-                lock: false
+                lock: true
             - droits:
                 icon: 'bi-layout-text-sidebar'
                 label: 'global.sidebar'
