@@ -9,6 +9,11 @@ namespace App\Service\Admin;
 class GridService extends AppAdminService
 {
     /**
+     * Cle pour les actions dans les tableaux grid
+     */
+    const KEY_ACTION = 'action';
+
+    /**
      * Retourne l'ensemble des données obligatoires pour le grid
      * @param array $tab
      * @return array
@@ -42,7 +47,11 @@ class GridService extends AppAdminService
             'genericGrid' => json_encode([
                 'placeholder' => $this->translator->trans('grid.search.placeholder'),
                 'loading' => $this->translator->trans('grid.loading'),
-                'titleSuccess' => $this->translator->trans('grid.success.titre')
+                'titleSuccess' => $this->translator->trans('grid.success.titre'),
+                'confirmTitle' => $this->translator->trans('grid.confirm.titre'),
+                'confirmText' => $this->translator->trans('grid.confirm.texte'),
+                'confirmBtnOK' => $this->translator->trans('grid.confirm.btn.ok'),
+                'confirmBtnNo' => $this->translator->trans('grid.confirm.btn.no'),
             ]),
             'gridPaginate' => json_encode([
                 'page' => $this->translator->trans('grid.page'),

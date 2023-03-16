@@ -2,6 +2,7 @@
 import Grid from '../../Components/Grid/Grid.vue'
 import GridPaginate from "../../Components/Grid/GridPaginate.vue";
 import axios from "axios";
+import {Modal} from 'bootstrap'
 
 export default {
   name: "GenericGri",
@@ -23,17 +24,22 @@ export default {
       nbElements: 0,
       loading: true,
       cPage: this.page,
-      cLimit : this.limit,
+      cLimit: this.limit,
+      cUrl: '',
+      isAjax: '',
       listLimit: {},
       translate: {},
-      translateGridPaginate : {},
+      translateGridPaginate: {},
       translateGrid: {},
       msgSuccess: '',
-      showMsgSuccess: false
+      showMsgSuccess: false,
+      confirmModal: '',
     }
   },
   mounted() {
     this.loadData(this.page, this.limit);
+    this.confirmModal = new Modal(document.getElementById("staticBackdrop"), {});
+
   },
   methods: {
     /**
@@ -65,26 +71,34 @@ export default {
     /**
      * Défini l'action à faire en fonction des paramètres
      * @param url
-     * @param id
+     * @param confirm
      * @param is_ajax
      */
-    redirectAction(url,is_ajax) {
+    redirectAction(url, is_ajax, confirm) {
 
-      if (is_ajax) {
-        axios.post(url).then((response) => {
-          if(response.data.type === 'success')
-          {
-            this.msgSuccess = response.data.msg;
-            this.showMsgSuccess = true;
-            setTimeout(() => {
-              this.showMsgSuccess = false;
-            }, 3000)
-          }
-        }).catch((error) => {
-          console.log(error);
-        }).finally(() => this.loadData(this.cPage, this.cLimit));
+      this.cUrl = url;
+      this.isAjax = is_ajax;
+      this.confirmModal.hide();
+
+      if (confirm) {
+        this.confirmModal.show();
       } else {
-        window.location.href = url;
+        if (is_ajax) {
+          this.loading = true;
+          axios.post(url).then((response) => {
+            if (response.data.type === 'success') {
+              this.msgSuccess = response.data.msg;
+              this.showMsgSuccess = true;
+              setTimeout(() => {
+                this.showMsgSuccess = false;
+              }, 3000)
+            }
+          }).catch((error) => {
+            console.log(error);
+          }).finally(() => this.loadData(this.cPage, this.cLimit));
+        } else {
+          window.location.href = url;
+        }
       }
     },
   }
@@ -93,6 +107,9 @@ export default {
 </script>
 
 <template>
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    Launch demo modal
+  </button>
   <form id="search">
     <div class="input-group mb-3">
       <span class="input-group-text"><i class="bi bi-search"></i></span>
@@ -102,9 +119,27 @@ export default {
 
 
   <div v-if="this.showMsgSuccess" class="alert alert-success alert-dismissible">
-    <strong><i class="bi bi-check2-circle"></i> {{ translate.titleSuccess }} </strong> <br />
+    <strong><i class="bi bi-check2-circle"></i> {{ translate.titleSuccess }} </strong> <br/>
     <span v-html="this.msgSuccess"></span>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-secondary">
+          <h1 class="modal-title fs-5 text-white"><i class="bi bi-sign-stop"></i> {{ translate.confirmTitle }}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {{ translate.confirmText }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" @click="redirectAction(this.cUrl, this.isAjax, false)"><i class="bi bi-check2-circle"></i> {{ translate.confirmBtnOK }}</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> {{ translate.confirmBtnNo }}</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div :class="loading === true ? 'block-grid' : ''">

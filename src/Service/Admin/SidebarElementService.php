@@ -67,7 +67,7 @@ class SidebarElementService extends AppAdminService
             $this->translator->trans('sidebar.grid.description'),
             $this->translator->trans('sidebar.grid.created_at'),
             $this->translator->trans('sidebar.grid.update_at'),
-            'action',
+            GridService::KEY_ACTION,
         ];
 
         $dataPaginate = $this->getAllPaginate($page, $limit);
@@ -98,7 +98,7 @@ class SidebarElementService extends AppAdminService
                 $this->translator->trans('sidebar.grid.description') => $this->translator->trans($element->getDescription()),
                 $this->translator->trans('sidebar.grid.created_at') => $element->getCreatedAt()->format('d/m/y H:i'),
                 $this->translator->trans('sidebar.grid.update_at') => $element->getUpdateAt()->format('d/m/y H:i'),
-                'action' => json_encode($action),
+                GridService::KEY_ACTION => json_encode($action),
             ];
         }
 
@@ -120,7 +120,7 @@ class SidebarElementService extends AppAdminService
     {
         $action_disabled = '';
         if (!$element->isLock()) {
-            $action_disabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>', 'id' => $element->getId(), 'url' => $this->router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]), 'ajax' => true];
+            $action_disabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>', 'id' => $element->getId(), 'url' => $this->router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]), 'ajax' => true, 'confirm' => true];
             if ($element->isDisabled()) {
                 $action_disabled = ['label' => '<i class="bi bi-eye-fill"></i>', 'id' => $element->getId(), 'url' => $this->router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]), 'ajax' => true];
             }
