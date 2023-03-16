@@ -85,8 +85,7 @@ class SidebarElementService extends AppAdminService
             $action = $this->generateTabAction($element);
 
             $is_lock = '';
-            if($element->isLock())
-            {
+            if ($element->isLock()) {
                 $is_lock = '<i class="bi bi-lock-fill"></i>';
             }
 
@@ -120,15 +119,19 @@ class SidebarElementService extends AppAdminService
     {
         $action_disabled = '';
         if (!$element->isLock()) {
-            $action_disabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>', 'id' => $element->getId(), 'url' => $this->router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]), 'ajax' => true, 'confirm' => true];
+            $action_disabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
+                'id' => $element->getId(),
+                'url' => $this->router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]),
+                'ajax' => true,
+                'confirm' => true,
+                'msgConfirm' => $this->translator->trans('sidebar.confirm.disabled.msg', ['{label}' => '<i class="bi ' . $element->getIcon() . '"></i> ' . $this->translator->trans($element->getLabel())])];
             if ($element->isDisabled()) {
                 $action_disabled = ['label' => '<i class="bi bi-eye-fill"></i>', 'id' => $element->getId(), 'url' => $this->router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]), 'ajax' => true];
             }
         }
 
         $action = [];
-        if($action_disabled != '')
-        {
+        if ($action_disabled != '') {
             $action[] = $action_disabled;
         }
 

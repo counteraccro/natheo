@@ -34,6 +34,7 @@ export default {
       msgSuccess: '',
       showMsgSuccess: false,
       confirmModal: '',
+      msgConfirm: '',
     }
   },
   mounted() {
@@ -71,16 +72,19 @@ export default {
     /**
      * Défini l'action à faire en fonction des paramètres
      * @param url
-     * @param confirm
+     * @param is_confirm
      * @param is_ajax
+     * @param msg_confirm
      */
-    redirectAction(url, is_ajax, confirm) {
+    redirectAction(url, is_ajax, is_confirm, msg_confirm) {
 
       this.cUrl = url;
       this.isAjax = is_ajax;
+      this.msgConfirm = this.translate.confirmText;
       this.confirmModal.hide();
 
       if (confirm) {
+        this.msgConfirm = msg_confirm;
         this.confirmModal.show();
       } else {
         if (is_ajax) {
@@ -128,8 +132,7 @@ export default {
           <h1 class="modal-title fs-5 text-white"><i class="bi bi-sign-stop"></i> {{ translate.confirmTitle }}</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          {{ translate.confirmText }}
+        <div class="modal-body" v-html="msgConfirm">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" @click="redirectAction(this.cUrl, this.isAjax, false)"><i class="bi bi-check2-circle"></i> {{ translate.confirmBtnOK }}</button>
