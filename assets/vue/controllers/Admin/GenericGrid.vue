@@ -91,7 +91,7 @@ export default {
               this.showMsgSuccess = true;
               setTimeout(() => {
                 this.showMsgSuccess = false;
-              }, 3000)
+              }, 5000)
             }
           }).catch((error) => {
             console.log(error);
@@ -107,9 +107,6 @@ export default {
 </script>
 
 <template>
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-    Launch demo modal
-  </button>
   <form id="search">
     <div class="input-group mb-3">
       <span class="input-group-text"><i class="bi bi-search"></i></span>
