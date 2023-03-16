@@ -8,12 +8,26 @@
 namespace App\Service\Admin;
 
 use App\Entity\Admin\SidebarElement;
-use App\Utils\Debug;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SidebarElementService extends AppAdminService
 {
+    /**
+     * @var GridService
+     */
+    private GridService $gridService;
+
+    public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag, TranslatorInterface $translator, UrlGeneratorInterface $router, GridService $gridService)
+    {
+        $this->gridService = $gridService;
+        parent::__construct($entityManager, $containerBag, $translator, $router);
+    }
+
     /**
      * Récupère l'ensemble des sidebarElement parent
      * @param bool $disabled
@@ -88,7 +102,7 @@ class SidebarElementService extends AppAdminService
             'data' => $data,
             'column' => $column,
         ];
-        return $this->addOptionsSelectLimit($tabReturn);
+        return $this->gridService->addAllDataRequiredGrid($tabReturn);
 
     }
 
@@ -108,7 +122,7 @@ class SidebarElementService extends AppAdminService
         }
 
         $action = [
-            ['label' => '<i class="bi bi-list-ul"></i>', 'id' => $element->getId(), 'url' => $this->router->generate('admin_dashboard_index'), 'ajax' => false]
+            ['label' => '<i class="bi bi-list-ul"></i>', 'id' => $element->getId(), 'url' => $this->router->generate('admin_dashboard_index'), 'ajax' => true]
         ];
 
         if($action_disabled != '')
