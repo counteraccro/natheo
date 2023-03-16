@@ -56,8 +56,17 @@ export default {
         return false;
       }
       return tab;
+    },
+
+    highlightSearch(text) {
+        if(!this.filterKey) {
+          return text;
+        }
+        return text.toString().replace(new RegExp(this.filterKey, "gi"), match => {
+          return '<span class="bg-secondary text-white p-1">' + match + '</span>';
+        });
+      }
     }
-  }
 }
 </script>
 
@@ -77,7 +86,7 @@ export default {
     <tbody>
     <tr v-for="entry in filteredData">
       <td v-for="key in columns">
-        <span v-if="key !== 'action'" v-html="entry[key]"></span>
+        <span v-if="key !== 'action'" v-html="this.highlightSearch(entry[key])"></span>
         <div v-else>
           <button class="btn btn-secondary btn-sm m-1" v-for="data in this.jsonParse(entry[key])" @click="$emit('redirect-action', data.url, data.id, data.ajax)" v-html="data.label">
           </button>
