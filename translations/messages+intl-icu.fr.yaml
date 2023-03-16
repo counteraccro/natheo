@@ -108,3 +108,6 @@ grid.confirm.texte: 'Êtes vous sur de vouloir faire cela ?'
 grid.confirm.btn.ok: Oui
 grid.confirm.btn.no: Non
 sidebar.confirm.disabled.msg: "L'élément sidebar <strong>{label}</strong> sera désactivé et donc non visible dans l'administration <br /> Confirmez-vous cette action ?"
+user.page_title: "Gestion des utilisateurs"
+user.page_title_h1: "Gestion des utilisateurs"
+user.description: "Gérez les utilisateurs qui peuvent ce connecter dans l'administration du CMS"

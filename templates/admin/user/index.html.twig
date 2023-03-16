@@ -1,0 +1,17 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block title %}{{ 'user.page_title' | trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'user.page_title_h1' | trans }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    <p>
+        {{ 'user.description' | trans }} <br/>
+    </p>
+
+    <!--
+    <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_user_load_grid_data'), 'page' : page, 'limit' : limit}) }}></div>-->
+
+{% endblock %}
