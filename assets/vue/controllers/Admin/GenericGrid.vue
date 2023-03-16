@@ -48,6 +48,7 @@ export default {
         this.sortOrders = this.gridColumns.reduce((o, key) => ((o[key] = 1), o), {});
         this.listLimit = JSON.parse(response.data.listLimit);
         this.cPage = page;
+        this.cLimit = limit;
       }).catch((error) => {
         console.log(error);
       }).finally(() => this.loading = false);
@@ -67,7 +68,7 @@ export default {
       if (is_ajax) {
         alert('appel ajax');
         this.loading = true;
-        this.loadData(this.cPage);
+        this.loadData(this.cPage, this.cLimit);
       } else {
         window.location.href = url;
       }
