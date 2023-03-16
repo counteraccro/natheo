@@ -79,7 +79,7 @@ export default {
           @click="sortBy(key)"
           :class="{ active: sortKey == key }">
         {{ capitalize(key) }}
-        <span class="bi" :class="sortOrders[key] > 0 ? 'bi-caret-up-fill' : 'bi-caret-down-fill'">
+        <span class="bi" :class="sortOrders[key] > 0 ? 'bi-caret-down-fill' : 'bi-caret-up-fill'">
           </span>
       </th>
     </tr>
