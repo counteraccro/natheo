@@ -83,7 +83,7 @@ export default {
       this.msgConfirm = this.translate.confirmText;
       this.confirmModal.hide();
 
-      if (confirm) {
+      if (is_confirm) {
         this.msgConfirm = msg_confirm;
         this.confirmModal.show();
       } else {
@@ -135,7 +135,7 @@ export default {
         <div class="modal-body" v-html="msgConfirm">
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" @click="redirectAction(this.cUrl, this.isAjax, false)"><i class="bi bi-check2-circle"></i> {{ translate.confirmBtnOK }}</button>
+          <button type="button" class="btn btn-primary" @click="redirectAction(this.cUrl, this.isAjax, false, '')"><i class="bi bi-check2-circle"></i> {{ translate.confirmBtnOK }}</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> {{ translate.confirmBtnNo }}</button>
         </div>
       </div>
