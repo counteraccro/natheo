@@ -38,16 +38,4 @@ class AppAdminService
         $this->translator = $translator;
         $this->router = $router;
     }
-
-    /**
-     * Ajoute le choix des limits dans le tableau de donnée du GRID
-     * @param array $tab
-     * @return array
-     */
-    protected function addOptionsSelectLimit(array $tab): array
-    {
-        $optionLimitGrid = [5 => 5, 10 => 10, 20 => 20, 50 => 50, 100 => 100];
-        $tab['listLimit'] = json_encode($optionLimitGrid);
-        return $tab;
-    }
 }
