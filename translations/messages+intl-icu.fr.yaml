@@ -100,3 +100,6 @@ grid.on: sur
 grid.row: lignes
 grid.no.result: 'Aucun résultat pour votre recherche'
 sidebar.info: "Les éléments marqué d'un {icon} sont verrouillés et non modifiable"
+grid.success.titre: 'Action réalisée avec succès !'
+sidebar.success.no.disabled: "L'élément sidebar <strong>{label}</strong> est maintenant visible"
+sidebar.success.disabled: "L'élément sidebar <strong>{label}</strong> est maintenant masquer pour tout le monde"

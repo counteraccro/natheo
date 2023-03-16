@@ -47,10 +47,16 @@ class SidebarElementService extends AppAdminService
      */
     public function getAllPaginate(int $page, int $limit): Paginator
     {
-        $sidebarElementRepo = $this->getSidebarElementRepo();
-        return $sidebarElementRepo->getAllPaginate($page, $limit);
+        $repo = $this->getSidebarElementRepo();
+        return $repo->getAllPaginate($page, $limit);
     }
 
+    /**
+     * Construit le tableau de donnée à envoyé au tableau GRID
+     * @param int $page
+     * @param int $limit
+     * @return array
+     */
     public function getAllFormatToGrid(int $page, int $limit)
     {
         $column = [
@@ -84,11 +90,10 @@ class SidebarElementService extends AppAdminService
                 $is_lock = '<i class="bi bi-lock-fill"></i>';
             }
 
-
             $data[] = [
-                $this->translator->trans('sidebar.grid.id') => $element->getId(),
+                $this->translator->trans('sidebar.grid.id') => $element->getId() . ' ' . $is_lock,
                 $this->translator->trans('sidebar.grid.parent') => $parent,
-                $this->translator->trans('sidebar.grid.label') => $is_lock . '<i class="bi ' . $element->getIcon() . '"></i> ' . $this->translator->trans($element->getLabel()),
+                $this->translator->trans('sidebar.grid.label') => '<i class="bi ' . $element->getIcon() . '"></i> ' . $this->translator->trans($element->getLabel()),
                 $this->translator->trans('sidebar.grid.role') => $element->getRole(),
                 $this->translator->trans('sidebar.grid.description') => $this->translator->trans($element->getDescription()),
                 $this->translator->trans('sidebar.grid.created_at') => $element->getCreatedAt()->format('d/m/y H:i'),
@@ -115,16 +120,13 @@ class SidebarElementService extends AppAdminService
     {
         $action_disabled = '';
         if (!$element->isLock()) {
-            $action_disabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>', 'id' => $element->getId(), 'url' => $this->router->generate('admin_dashboard_index'), 'ajax' => true];
+            $action_disabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>', 'id' => $element->getId(), 'url' => $this->router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]), 'ajax' => true];
             if ($element->isDisabled()) {
-                $action_disabled = ['label' => '<i class="bi bi-eye-fill"></i>', 'id' => $element->getId(), 'url' => $this->router->generate('admin_dashboard_index'), 'ajax' => true];
+                $action_disabled = ['label' => '<i class="bi bi-eye-fill"></i>', 'id' => $element->getId(), 'url' => $this->router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]), 'ajax' => true];
             }
         }
 
-        $action = [
-            ['label' => '<i class="bi bi-list-ul"></i>', 'id' => $element->getId(), 'url' => $this->router->generate('admin_dashboard_index'), 'ajax' => true]
-        ];
-
+        $action = [];
         if($action_disabled != '')
         {
             $action[] = $action_disabled;
@@ -140,5 +142,17 @@ class SidebarElementService extends AppAdminService
     private function getSidebarElementRepo(): EntityRepository
     {
         return $this->entityManager->getRepository(SidebarElement::class);
+    }
+
+    /**
+     * Permet de sauvegarder un sidebarElement en base de donnée
+     * @param SidebarElement $sidebarElement
+     * @param bool $flush
+     * @return void
+     */
+    public function save(SidebarElement $sidebarElement, bool $flush = true)
+    {
+        $repo = $this->getSidebarElementRepo();
+        $repo->save($sidebarElement, $flush);
     }
 }
