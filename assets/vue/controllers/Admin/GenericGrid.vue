@@ -27,7 +27,9 @@ export default {
       listLimit: {},
       translate: {},
       translateGridPaginate : {},
-      translateGrid: {}
+      translateGrid: {},
+      msgSuccess: '',
+      showMsgSuccess: false
     }
   },
   mounted() {
@@ -66,15 +68,21 @@ export default {
      * @param id
      * @param is_ajax
      */
-    redirectAction(url, id, is_ajax) {
-      console.log(url);
-      console.log(id);
-      console.log(is_ajax);
+    redirectAction(url,is_ajax) {
 
       if (is_ajax) {
-        alert('appel ajax');
-        this.loading = true;
-        this.loadData(this.cPage, this.cLimit);
+        axios.post(url).then((response) => {
+          if(response.data.type === 'success')
+          {
+            this.msgSuccess = response.data.msg;
+            this.showMsgSuccess = true;
+            setTimeout(() => {
+              this.showMsgSuccess = false;
+            }, 3000)
+          }
+        }).catch((error) => {
+          console.log(error);
+        }).finally(() => this.loadData(this.cPage, this.cLimit));
       } else {
         window.location.href = url;
       }
@@ -91,6 +99,14 @@ export default {
       <input type="text" class="form-control" :placeholder="translate.placeholder" v-model="searchQuery">
     </div>
   </form>
+
+
+  <div v-if="this.showMsgSuccess" class="alert alert-success alert-dismissible">
+    <strong><i class="bi bi-check2-circle"></i> {{ translate.titleSuccess }} </strong> <br />
+    <span v-html="this.msgSuccess"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
   <div :class="loading === true ? 'block-grid' : ''">
     <div v-if="loading" class="overlay">
       <div class="position-absolute top-50 start-50 translate-middle">
@@ -121,4 +137,14 @@ export default {
 </template>
 
 <style scoped>
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 </style>
