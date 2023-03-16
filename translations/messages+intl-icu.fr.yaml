@@ -73,7 +73,7 @@ option_system.page_title: 'Options système'
 option_system.page_title_h1: 'Les options système'
 option_system.description: 'Configurer votre CMS comme vous le souhaitez avec les options système'
 auth.title: Authentification
-global.licence: 'Copyright &copy; 2023-%year% &mdash; Propulsé par Nathéo CMS'
+global.licence: 'Copyright &copy; 2023-{year} &mdash; Propulsé par Nathéo CMS'
 security.login_user.title: Authentification
 security.login_user.email: 'Adresse email'
 security.login_user.password: 'Mot de passe'
@@ -95,7 +95,8 @@ sidebar.grid.update_at: 'Mise à jour'
 sidebar.grid.action: Action
 grid.search.placeholder: 'Rechercher dans le tableau'
 grid.loading: 'Chargement des données'
-grid.page: 'Page'
-grid.on: 'sur'
-grid.row: 'lignes'
+grid.page: Page
+grid.on: sur
+grid.row: lignes
 grid.no.result: 'Aucun résultat pour votre recherche'
+sidebar.info: "Les éléments marqué d'un {icon} sont verrouillés et non modifiable"

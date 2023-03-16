@@ -7,7 +7,10 @@
 
     {{ breadcrumb(breadcrumb) }}
 
-    <p>{{ 'sidebar.description' | trans }}</p>
+    <p>
+        {{ 'sidebar.description' | trans }} <br/>
+        <i class="bi bi-info-circle"></i> {{ 'sidebar.info' | trans({'icon': '<i class="bi bi-lock-fill"></i>'}) | raw }}
+    </p>
 
     <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_sidebar_load_grid_data'), 'page' : page, 'limit' : limit}) }}></div>
 
