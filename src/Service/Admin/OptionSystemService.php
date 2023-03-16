@@ -81,7 +81,7 @@ class OptionSystemService extends AppAdminService
      */
     public function getAll(): array
     {
-        $optionServiceRepo = $this->entityManager->getRepository(OptionSystem::class);
+        $optionServiceRepo = $this->getRepository(OptionSystem::class);
         return $optionServiceRepo->findAll();
     }
 
@@ -92,7 +92,7 @@ class OptionSystemService extends AppAdminService
      */
     public function getByKey(string $key): null|object
     {
-        $optionServiceRepo = $this->entityManager->getRepository(OptionSystem::class);
+        $optionServiceRepo = $this->getRepository(OptionSystem::class);
         return $optionServiceRepo->findOneBy(['key' => $key]);
     }
 

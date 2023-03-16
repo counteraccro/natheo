@@ -35,8 +35,8 @@ class SidebarElementService extends AppAdminService
      */
     public function getAllParent(bool $disabled = false): mixed
     {
-        $sidebarElementRepo = $this->getSidebarElementRepo();
-        return $sidebarElementRepo->getAllParent($disabled);
+        $repo = $this->getRepository(SidebarElement::class);
+        return $repo->getAllParent($disabled);
     }
 
     /**
@@ -47,7 +47,7 @@ class SidebarElementService extends AppAdminService
      */
     public function getAllPaginate(int $page, int $limit): Paginator
     {
-        $repo = $this->getSidebarElementRepo();
+        $repo = $this->getRepository(SidebarElement::class);
         return $repo->getAllPaginate($page, $limit);
     }
 
@@ -139,15 +139,6 @@ class SidebarElementService extends AppAdminService
     }
 
     /**
-     * Retourne le repository Sidebar
-     * @return EntityRepository
-     */
-    private function getSidebarElementRepo(): EntityRepository
-    {
-        return $this->entityManager->getRepository(SidebarElement::class);
-    }
-
-    /**
      * Permet de sauvegarder un sidebarElement en base de donnée
      * @param SidebarElement $sidebarElement
      * @param bool $flush
@@ -155,7 +146,7 @@ class SidebarElementService extends AppAdminService
      */
     public function save(SidebarElement $sidebarElement, bool $flush = true)
     {
-        $repo = $this->getSidebarElementRepo();
+        $repo = $this->getRepository(SidebarElement::class);
         $repo->save($sidebarElement, $flush);
     }
 }
