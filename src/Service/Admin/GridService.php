@@ -41,7 +41,8 @@ class GridService extends AppAdminService
         $tab['translate'] = [
             'genericGrid' => json_encode([
                 'placeholder' => $this->translator->trans('grid.search.placeholder'),
-                'loading' => $this->translator->trans('grid.loading')
+                'loading' => $this->translator->trans('grid.loading'),
+                'titleSuccess' => $this->translator->trans('grid.success.titre')
             ]),
             'gridPaginate' => json_encode([
                 'page' => $this->translator->trans('grid.page'),
