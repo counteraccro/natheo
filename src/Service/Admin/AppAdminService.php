@@ -4,7 +4,6 @@ namespace App\Service\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -33,7 +32,8 @@ class AppAdminService
      */
     protected UrlGeneratorInterface $router;
 
-    public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag, TranslatorInterface $translator, UrlGeneratorInterface $router)
+    public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
+                                TranslatorInterface $translator, UrlGeneratorInterface $router)
     {
         $this->containerBag = $containerBag;
         $this->entityManager = $entityManager;
