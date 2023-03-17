@@ -59,6 +59,7 @@ class UserService extends AppAdminService
             $this->translator->trans('user.grid.login'),
             $this->translator->trans('user.grid.email'),
             $this->translator->trans('user.grid.name'),
+            $this->translator->trans('user.grid.role'),
             $this->translator->trans('user.grid.created_at'),
             $this->translator->trans('user.grid.update_at'),
             GridService::KEY_ACTION,
@@ -77,12 +78,20 @@ class UserService extends AppAdminService
                 $is_disabled = '<i class="bi bi-eye-slash"></i>';
             }
 
+            $roles = '';
+            foreach($user->getRoles() as $role)
+            {
+                $roles .= $this->gridService->renderRole($role) . ', ';
+            }
+            $roles =substr($roles, 0, -2);
+
             $actions = $this->generateTabAction($user);
             $data[] = [
                 $this->translator->trans('user.grid.id') => $user->getId() . ' ' . $is_disabled,
                 $this->translator->trans('user.grid.login') => $user->getLogin(),
                 $this->translator->trans('user.grid.email') => $user->getEmail(),
                 $this->translator->trans('user.grid.name') => $user->getFirstname() . ' ' . $user->getLastname(),
+                $this->translator->trans('user.grid.role') => $roles,
                 $this->translator->trans('user.grid.created_at') => $user->getCreatedAt()->format('d/m/y H:i'),
                 $this->translator->trans('user.grid.update_at') => $user->getUpdateAt()->format('d/m/y H:i'),
                 GridService::KEY_ACTION => json_encode($actions)

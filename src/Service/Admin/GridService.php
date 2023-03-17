@@ -65,4 +65,21 @@ class GridService extends AppAdminService
 
         return $tab;
     }
+
+    /**
+     * Format le role de symfony en donnée à afficher pour le grid
+     * @param string $role
+     * @return string
+     */
+    public function renderRole(string $role ): string
+    {
+        $tabRole = [
+            'ROLE_USER' => $this->translator->trans('global.role.user'),
+            'ROLE_CONTRIBUTEUR' => $this->translator->trans('global.role.contributeur'),
+            'ROLE_ADMIN' => $this->translator->trans('global.role.admin'),
+            'ROLE_SUPER_ADMIN' => $this->translator->trans('global.role.superadmin')
+        ];
+
+        return $tabRole[$role];
+    }
 }

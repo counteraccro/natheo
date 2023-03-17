@@ -97,7 +97,7 @@ class SidebarElementService extends AppAdminService
                 $this->translator->trans('sidebar.grid.id') => $element->getId() . ' ' . $is_lock . ' ' . $is_disabled,
                 $this->translator->trans('sidebar.grid.parent') => $parent,
                 $this->translator->trans('sidebar.grid.label') => '<i class="bi ' . $element->getIcon() . '"></i> ' . $this->translator->trans($element->getLabel()),
-                $this->translator->trans('sidebar.grid.role') => $element->getRole(),
+                $this->translator->trans('sidebar.grid.role') => $this->gridService->renderRole($element->getRole()),
                 $this->translator->trans('sidebar.grid.description') => $this->translator->trans($element->getDescription()),
                 $this->translator->trans('sidebar.grid.created_at') => $element->getCreatedAt()->format('d/m/y H:i'),
                 $this->translator->trans('sidebar.grid.update_at') => $element->getUpdateAt()->format('d/m/y H:i'),
