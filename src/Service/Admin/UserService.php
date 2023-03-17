@@ -1,12 +1,38 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Service lier à l'objet user
+ */
 namespace App\Service\Admin;
 
 use App\Entity\Admin\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserService extends AppAdminService
 {
+
+    /**
+     * @var GridService
+     */
+    private GridService $gridService;
+
+    /**
+     * @var OptionSystemService
+     */
+    private OptionSystemService $optionSystemService;
+
+    public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
+                                TranslatorInterface $translator, UrlGeneratorInterface $router, GridService $gridService, OptionSystemService $optionSystemService)
+    {
+        $this->gridService = $gridService;
+        $this->optionSystemService = $optionSystemService;
+        parent::__construct($entityManager, $containerBag, $translator, $router);
+    }
 
     /**
      * Retourne une liste de sidebarElement paginé
@@ -26,16 +52,15 @@ class UserService extends AppAdminService
      * @param int $limit
      * @return array
      */
-    public function getAllFormatToGrid(int $page, int $limit)
+    public function getAllFormatToGrid(int $page, int $limit): array
     {
-        /*$column = [
-            $this->translator->trans('sidebar.grid.id'),
-            $this->translator->trans('sidebar.grid.parent'),
-            $this->translator->trans('sidebar.grid.label'),
-            $this->translator->trans('sidebar.grid.role'),
-            $this->translator->trans('sidebar.grid.description'),
-            $this->translator->trans('sidebar.grid.created_at'),
-            $this->translator->trans('sidebar.grid.update_at'),
+        $column = [
+            $this->translator->trans('user.grid.id'),
+            $this->translator->trans('user.grid.login'),
+            $this->translator->trans('user.grid.email'),
+            $this->translator->trans('user.grid.name'),
+            $this->translator->trans('user.grid.created_at'),
+            $this->translator->trans('user.grid.update_at'),
             GridService::KEY_ACTION,
         ];
 
@@ -43,30 +68,18 @@ class UserService extends AppAdminService
 
         $nb = $dataPaginate->count();
         $data = [];
-        foreach ($dataPaginate as $element) {
-            /* @var SidebarElement $element
+        foreach ($dataPaginate as $user) {
+            /* @var User $user */
 
-            $parent = '---';
-            if ($element->getParent() !== null) {
-                $parent = '<i class="bi ' . $element->getParent()->getIcon() . '"></i> ' . $this->translator->trans($element->getParent()->getLabel());
-            }
-
-            $action = $this->generateTabAction($element);
-
-            $is_lock = '';
-            if ($element->isLock()) {
-                $is_lock = '<i class="bi bi-lock-fill"></i>';
-            }
-
+            $actions = $this->generateTabAction($user);
             $data[] = [
-                $this->translator->trans('sidebar.grid.id') => $element->getId() . ' ' . $is_lock,
-                $this->translator->trans('sidebar.grid.parent') => $parent,
-                $this->translator->trans('sidebar.grid.label') => '<i class="bi ' . $element->getIcon() . '"></i> ' . $this->translator->trans($element->getLabel()),
-                $this->translator->trans('sidebar.grid.role') => $element->getRole(),
-                $this->translator->trans('sidebar.grid.description') => $this->translator->trans($element->getDescription()),
-                $this->translator->trans('sidebar.grid.created_at') => $element->getCreatedAt()->format('d/m/y H:i'),
-                $this->translator->trans('sidebar.grid.update_at') => $element->getUpdateAt()->format('d/m/y H:i'),
-                GridService::KEY_ACTION => json_encode($action),
+                $this->translator->trans('user.grid.id') => $user->getId(),
+                $this->translator->trans('user.grid.login') => $user->getLogin(),
+                $this->translator->trans('user.grid.email') => $user->getEmail(),
+                $this->translator->trans('user.grid.name') => $user->getFirstname() . ' ' . $user->getLastname(),
+                $this->translator->trans('user.grid.created_at') => $user->getCreatedAt()->format('d/m/y H:i'),
+                $this->translator->trans('user.grid.update_at') => $user->getUpdateAt()->format('d/m/y H:i'),
+                GridService::KEY_ACTION => json_encode($actions)
             ];
         }
 
@@ -75,47 +88,64 @@ class UserService extends AppAdminService
             'data' => $data,
             'column' => $column,
         ];
-        return $this->gridService->addAllDataRequiredGrid($tabReturn);*/
+        return $this->gridService->addAllDataRequiredGrid($tabReturn);
 
     }
 
     /**
-     * Génère le tableau d'action pour le Grid des sidebarElement
+     * Génère le tableau d'action pour le Grid des users
      * @param User $user
      * @return array[]|string[]
      */
     private function generateTabAction(User $user): array
     {
-       /* $action_disabled = '';
-        if (!$element->isLock()) {
-            $action_disabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
-                'id' => $element->getId(),
-                'url' => $this->router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]),
+
+        $actions = [];
+
+        // Bouton disabled
+        $action_disabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
+            'id' => $user->getId(),
+            'url' => $this->router->generate('admin_user_update_disabled', ['id' => $user->getId()]),
+            'ajax' => true,
+            'confirm' => true,
+            'msgConfirm' => $this->translator->trans('user.confirm.disabled.msg', ['{login}' => $user->getLogin()])];
+        if ($user->isDisabled()) {
+            $action_disabled = ['label' => '<i class="bi bi-eye-fill"></i>', 'id' => $user->getId(), 'url' => $this->router->generate('admin_user_update_disabled', ['id' => $user->getId()]), 'ajax' => true];
+        }
+
+        $actions[] = $action_disabled;
+
+        $canDelete = $this->optionSystemService->getByKey(OptionSystemService::OS_ALLOW_DELETE_DATA);
+        $replaceUser = $this->optionSystemService->getByKey(OptionSystemService::OS_REPLACE_DELETE_USER);
+
+        // Bouton Delete
+        $action_delete = '';
+        if($canDelete->getValue() === '1') {
+
+            $msgConfirm = $this->translator->trans('user.confirm.delete.msg', ['{login}' => $user->getLogin()]);
+            if($replaceUser->getValue() === '1')
+                $msgConfirm = $this->translator->trans('user.confirm.replace.msg', ['{login}' => $user->getLogin()]);
+
+            $action_delete = [
+                'label' => '<i class="bi bi-trash"></i>',
+                'id' => $user->getId(),
+                'url' => $this->router->generate('admin_user_delete', ['id' => $user->getId()]),
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $this->translator->trans('sidebar.confirm.disabled.msg', ['{label}' => '<i class="bi ' . $element->getIcon() . '"></i> ' . $this->translator->trans($element->getLabel())])];
-            if ($element->isDisabled()) {
-                $action_disabled = ['label' => '<i class="bi bi-eye-fill"></i>', 'id' => $element->getId(), 'url' => $this->router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]), 'ajax' => true];
-            }
+                'msgConfirm' => $msgConfirm
+            ];
         }
 
-        $action = [];
-        if ($action_disabled != '') {
-            $action[] = $action_disabled;
+        if ($action_delete != '') {
+            $actions[] = $action_delete;
         }
 
-        return $action;*/
-    }
+        // Bouton edit
+        $actions[] = ['label' => '<i class="bi bi-pencil"></i>',
+            'id' => $user->getId(),
+            'url' => $this->router->generate('admin_user_update', ['id' => $user->getId()]),
+            'ajax' => false];
+        return $actions;
 
-    /**
-     * Permet de sauvegarder un user en base de donnée
-     * @param User $user
-     * @param bool $flush
-     * @return void
-     */
-    public function save(User $sidebarElement, bool $flush = true)
-    {
-        $repo = $this->getRepository(User::class);
-        $repo->save($sidebarElement, $flush);
     }
 }

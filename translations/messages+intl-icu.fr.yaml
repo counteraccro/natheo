@@ -108,6 +108,19 @@ grid.confirm.texte: 'Êtes vous sur de vouloir faire cela ?'
 grid.confirm.btn.ok: Oui
 grid.confirm.btn.no: Non
 sidebar.confirm.disabled.msg: "L'élément sidebar <strong>{label}</strong> sera désactivé et donc non visible dans l'administration <br /> Confirmez-vous cette action ?"
-user.page_title: "Gestion des utilisateurs"
-user.page_title_h1: "Gestion des utilisateurs"
+user.page_title: 'Gestion des utilisateurs'
+user.page_title_h1: 'Gestion des utilisateurs'
 user.description: "Gestion des utilisateurs qui peuvent se connecter dans l'administration du CMS"
+user.success.no.disabled: "Le compte de l'utilisateur <strong>{login}</strong> à été activé"
+user.success.disabled: "Le compte de l'utilisateur <strong>{login}</strong> à été désactivé"
+user.grid.id: Id
+user.grid.login: Login
+user.grid.email: Email
+user.grid.name: Nom
+user.grid.created_at: Création
+user.grid.update_at: Mise à jour
+user.confirm.disabled.msg: "Le compte de l'utilisateur <strong>{login}</strong> sera désactivé et il ne pourra plus ce connecter à l'administration <br /> Confirmez-vous cette action ?"
+user.confirm.delete.msg: "Le compte de l'utilisateur <strong>{login}</strong> sera supprimé, cette action est définitive <br /> Confirmez-vous cette action ?"
+user.confirm.replace.msg: "Le compte de l'utilisateur <strong>{login}</strong> sera remplacé par un compte John Doe, cette action est définitive <br /> Confirmez-vous cette action ?"
+user.page_update_title: "Mise à jour du compte {login}"
+user.page_update_title_h1: "Mise à jour du compte {login}"

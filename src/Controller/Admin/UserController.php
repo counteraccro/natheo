@@ -6,6 +6,7 @@
  */
 namespace App\Controller\Admin;
 
+use App\Entity\Admin\User;
 use App\Service\Admin\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/user', name: 'admin_user_', requirements: ['_locale' => '%app.supported_locales%'])]
 #[IsGranted('ROLE_SUPER_ADMIN')]
@@ -48,5 +50,52 @@ class UserController extends AbstractController
         $data = json_decode($request->getContent(), true);
         $grid = $userService->getAllFormatToGrid($data['page'], $data['limit']);
         return $this->json($grid);
+    }
+
+    /**
+     * Disabled ou non un user
+     * @param User $user
+     * @param UserService $userService
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     */
+    #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', methods: ['POST'])]
+    public function updateDisabled(User $user, UserService $userService, TranslatorInterface $translator): JsonResponse
+    {
+        $user->setDisabled(!$user->isDisabled());
+        $userService->save($user);
+
+        $msg = $translator->trans('user.success.no.disabled', ['login' => $user->getLogin()]);
+        if($user->isDisabled())
+        {
+            $msg = $translator->trans('user.success.disabled', ['login' => $user->getLogin()]);
+        }
+
+        return $this->json(['type' => 'success', 'msg' => $msg]);
+    }
+
+    #[Route('/ajax/delete/{id}', name: 'delete', methods: ['POST'])]
+    public function delete(User $user, UserService $userService): JsonResponse
+    {
+        return $this->json(['type' => 'success', 'msg' => 'delete']);
+    }
+
+    /**
+     * Permet de modifier un user
+     * @param User $user
+     * @param UserService $userService
+     * @return Response
+     */
+    #[Route('/ajax/update/{id}', name: 'update', methods: ['GET'])]
+    public function update(User $user, UserService $userService): Response
+    {
+        $breadcrumb = [
+            'user.page_title_h1' => 'admin_user_index',
+            'user.page_update_title_h1' => '#'
+        ];
+
+        return $this->render('admin/user/update.html.twig', [
+            'breadcrumb' => $breadcrumb,
+        ]);
     }
 }
