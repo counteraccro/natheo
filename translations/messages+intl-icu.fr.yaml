@@ -88,7 +88,7 @@ sidebar.description: "Permet de définir quels sont les éléments du menu de ga
 sidebar.grid.id: Id
 sidebar.grid.parent: Parent
 sidebar.grid.label: Label
-sidebar.grid.role: Role
+sidebar.grid.role: 'Role accès'
 sidebar.grid.description: Description
 sidebar.grid.created_at: Création
 sidebar.grid.update_at: 'Mise à jour'
@@ -125,3 +125,8 @@ user.confirm.replace.msg: "Le compte de l'utilisateur <strong>{login}</strong> s
 user.page_update_title: 'Mise à jour du compte {login}'
 user.page_update_title_h1: 'Mise à jour du compte {login}'
 user.info: "Les utilisateurs marqué d'un {icon} ont été remplacé par John Doe et sont verrouillés | les utilisateurs marqué d'un {icon2} sont désactivés"
+global.role.user: Utilisateur
+global.role.contributeur: Contributeur
+global.role.admin: Administrateur
+global.role.superadmin: Super Administrateur
+user.grid.role: Role
