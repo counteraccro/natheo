@@ -8,7 +8,6 @@
 namespace App\Service\Admin;
 
 use App\Entity\Admin\OptionSystem;
-use PhpParser\Node\Expr\Array_;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -90,7 +89,7 @@ class OptionSystemService extends AppAdminService
      * @param string $key
      * @return object|null
      */
-    public function getByKey(string $key): null|object
+    public function getByKey(string $key): ?object
     {
         $optionServiceRepo = $this->getRepository(OptionSystem::class);
         return $optionServiceRepo->findOneBy(['key' => $key]);
