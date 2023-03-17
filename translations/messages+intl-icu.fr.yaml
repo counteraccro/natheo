@@ -99,7 +99,7 @@ grid.page: Page
 grid.on: sur
 grid.row: lignes
 grid.no.result: 'Aucun résultat pour votre recherche'
-sidebar.info: "Les éléments marqué d'un {icon} sont verrouillés et non modifiable"
+sidebar.info: "Les éléments marqué d'un {icon} sont verrouillés et non modifiable | les éléments marqué d'un {icon2} sont masqués et non visible"
 grid.success.titre: 'Action réalisée avec succès !'
 sidebar.success.no.disabled: "L'élément sidebar <strong>{label}</strong> est maintenant visible"
 sidebar.success.disabled: "L'élément sidebar <strong>{label}</strong> est maintenant masquer pour tout le monde"
@@ -110,4 +110,4 @@ grid.confirm.btn.no: Non
 sidebar.confirm.disabled.msg: "L'élément sidebar <strong>{label}</strong> sera désactivé et donc non visible dans l'administration <br /> Confirmez-vous cette action ?"
 user.page_title: "Gestion des utilisateurs"
 user.page_title_h1: "Gestion des utilisateurs"
-user.description: "Gérez les utilisateurs qui peuvent ce connecter dans l'administration du CMS"
+user.description: "Gestion des utilisateurs qui peuvent se connecter dans l'administration du CMS"
