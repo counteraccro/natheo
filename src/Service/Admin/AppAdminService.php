@@ -51,4 +51,16 @@ class AppAdminService
         return $this->entityManager->getRepository($entity);
     }
 
+    /**
+     * Permet de sauvegarder une entité
+     * @param mixed $entity
+     * @param bool $flush
+     * @return void
+     */
+    public function save(mixed $entity, bool $flush = true): void
+    {
+        $repo = $this->getRepository($entity::class);
+        $repo->save($entity, $flush);
+    }
+
 }

@@ -88,9 +88,14 @@ class SidebarElementService extends AppAdminService
             if ($element->isLock()) {
                 $is_lock = '<i class="bi bi-lock-fill"></i>';
             }
+            $is_disabled = '';
+            if($element->isDisabled())
+            {
+                $is_disabled = '<i class="bi bi-eye-slash"></i>';
+            }
 
             $data[] = [
-                $this->translator->trans('sidebar.grid.id') => $element->getId() . ' ' . $is_lock,
+                $this->translator->trans('sidebar.grid.id') => $element->getId() . ' ' . $is_lock . ' ' . $is_disabled,
                 $this->translator->trans('sidebar.grid.parent') => $parent,
                 $this->translator->trans('sidebar.grid.label') => '<i class="bi ' . $element->getIcon() . '"></i> ' . $this->translator->trans($element->getLabel()),
                 $this->translator->trans('sidebar.grid.role') => $element->getRole(),
@@ -136,17 +141,5 @@ class SidebarElementService extends AppAdminService
         }
 
         return $action;
-    }
-
-    /**
-     * Permet de sauvegarder un sidebarElement en base de donnée
-     * @param SidebarElement $sidebarElement
-     * @param bool $flush
-     * @return void
-     */
-    public function save(SidebarElement $sidebarElement, bool $flush = true)
-    {
-        $repo = $this->getRepository(SidebarElement::class);
-        $repo->save($sidebarElement, $flush);
     }
 }
