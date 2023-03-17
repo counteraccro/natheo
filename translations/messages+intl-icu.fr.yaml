@@ -118,9 +118,10 @@ user.grid.login: Login
 user.grid.email: Email
 user.grid.name: Nom
 user.grid.created_at: Création
-user.grid.update_at: Mise à jour
+user.grid.update_at: 'Mise à jour'
 user.confirm.disabled.msg: "Le compte de l'utilisateur <strong>{login}</strong> sera désactivé et il ne pourra plus ce connecter à l'administration <br /> Confirmez-vous cette action ?"
 user.confirm.delete.msg: "Le compte de l'utilisateur <strong>{login}</strong> sera supprimé, cette action est définitive <br /> Confirmez-vous cette action ?"
 user.confirm.replace.msg: "Le compte de l'utilisateur <strong>{login}</strong> sera remplacé par un compte John Doe, cette action est définitive <br /> Confirmez-vous cette action ?"
-user.page_update_title: "Mise à jour du compte {login}"
-user.page_update_title_h1: "Mise à jour du compte {login}"
+user.page_update_title: 'Mise à jour du compte {login}'
+user.page_update_title_h1: 'Mise à jour du compte {login}'
+user.info: "Les utilisateurs marqué d'un {icon} ont été remplacé par John Doe et sont verrouillés | les utilisateurs marqué d'un {icon2} sont désactivés"

@@ -71,9 +71,15 @@ class UserService extends AppAdminService
         foreach ($dataPaginate as $user) {
             /* @var User $user */
 
+            $is_disabled = '';
+            if($user->isDisabled())
+            {
+                $is_disabled = '<i class="bi bi-eye-slash"></i>';
+            }
+
             $actions = $this->generateTabAction($user);
             $data[] = [
-                $this->translator->trans('user.grid.id') => $user->getId(),
+                $this->translator->trans('user.grid.id') => $user->getId() . ' ' . $is_disabled,
                 $this->translator->trans('user.grid.login') => $user->getLogin(),
                 $this->translator->trans('user.grid.email') => $user->getEmail(),
                 $this->translator->trans('user.grid.name') => $user->getFirstname() . ' ' . $user->getLastname(),

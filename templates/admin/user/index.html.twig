@@ -9,6 +9,7 @@
 
     <p>
         {{ 'user.description' | trans }} <br/>
+        <i class="bi bi-info-circle"></i> {{ 'user.info' | trans({'icon': '<i class="bi bi-recycle"></i>', 'icon2': '<i class="bi bi-eye-slash"></i>'}) | raw }}
     </p>
 
     <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_user_load_grid_data'), 'page' : page, 'limit' : limit}) }}></div>
