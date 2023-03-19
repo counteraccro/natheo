@@ -56,7 +56,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $update_at = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: OptionUser::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: OptionUser::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $optionsUser;
 
     public function __construct()
@@ -218,7 +218,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->optionsUser->contains($optionsUser)) {
             $this->optionsUser->add($optionsUser);
-            $optionsUser->setUuser($this);
+            $optionsUser->setUser($this);
         }
 
         return $this;
@@ -228,8 +228,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->optionsUser->removeElement($optionsUser)) {
             // set the owning side to null (unless already changed)
-            if ($optionsUser->getUuser() === $this) {
-                $optionsUser->setUuser(null);
+            if ($optionsUser->getUser() === $this) {
+                $optionsUser->setUser(null);
             }
         }
 

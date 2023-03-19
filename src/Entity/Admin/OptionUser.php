@@ -28,11 +28,11 @@ class OptionUser
 
     #[Gedmo\Timestampable(on : "create")]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?\DateTimeInterface $created_at = null;
 
     #[Gedmo\Timestampable(on : "update")]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeImmutable $update_at = null;
+    private ?\DateTimeInterface $update_at = null;
 
     public function getId(): ?int
     {
@@ -75,24 +75,24 @@ class OptionUser
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
+    public function setCreatedAt(\DateTimeInterface $created_at): self
     {
         $this->created_at = $created_at;
 
         return $this;
     }
 
-    public function getUpdateAt(): ?\DateTimeImmutable
+    public function getUpdateAt(): ?\DateTimeInterface
     {
         return $this->update_at;
     }
 
-    public function setUpdateAt(\DateTimeImmutable $update_at): self
+    public function setUpdateAt(\DateTimeInterface $update_at): self
     {
         $this->update_at = $update_at;
 
