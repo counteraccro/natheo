@@ -8,8 +8,11 @@
 namespace App\DataFixtures\Admin;
 
 use App\DataFixtures\AppFixtures;
+use App\Entity\Admin\OptionUser;
 use App\Entity\Admin\User;
+use App\Service\Admin\OptionUserService;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
@@ -28,12 +31,18 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     private UserPasswordHasherInterface $passwordHasher;
 
     /**
+     * @var OptionUserService
+     */
+    private OptionUserService $optionUserService;
+
+    /**
      * @param ContainerBagInterface $params
      * @param UserPasswordHasherInterface $passwordHasher
      */
-    public function __construct(ContainerBagInterface $params, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(ContainerBagInterface $params, UserPasswordHasherInterface $passwordHasher, OptionUserService $optionUserService)
     {
         $this->passwordHasher = $passwordHasher;
+        $this->optionUserService = $optionUserService;
         parent::__construct($params);
     }
 
@@ -57,6 +66,7 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                 }
 
             }
+            $user = $this->optionUserService->createOptionsUser($user);
             $manager->persist($user);
         }
         $manager->flush();
@@ -89,5 +99,12 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     public function getOrder(): int
     {
         return 3; // smaller means sooner
+    }
+
+    public function getDependencies(): array
+    {
+       return [
+           OptionSystemFixtures::class
+       ];
     }
 }
