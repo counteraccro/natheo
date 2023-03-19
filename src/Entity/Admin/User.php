@@ -7,6 +7,8 @@
 namespace App\Entity\Admin;
 
 use App\Repository\Admin\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -53,6 +55,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Gedmo\Timestampable(on : "update")]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $update_at = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: OptionUser::class, orphanRemoval: true)]
+    private Collection $optionsUser;
+
+    public function __construct()
+    {
+        $this->optionsUser = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -192,6 +202,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUpdateAt(?\DateTimeInterface $update_at): self
     {
         $this->update_at = $update_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OptionUser>
+     */
+    public function getOptionsUser(): Collection
+    {
+        return $this->optionsUser;
+    }
+
+    public function addOptionsUser(OptionUser $optionsUser): self
+    {
+        if (!$this->optionsUser->contains($optionsUser)) {
+            $this->optionsUser->add($optionsUser);
+            $optionsUser->setUuser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOptionsUser(OptionUser $optionsUser): self
+    {
+        if ($this->optionsUser->removeElement($optionsUser)) {
+            // set the owning side to null (unless already changed)
+            if ($optionsUser->getUuser() === $this) {
+                $optionsUser->setUuser(null);
+            }
+        }
 
         return $this;
     }
