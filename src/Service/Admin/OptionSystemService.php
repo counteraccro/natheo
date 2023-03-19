@@ -75,6 +75,11 @@ class OptionSystemService extends AppAdminService
     const OS_ALLOW_DELETE_DATA = 'OS_ALLOW_DELETE_DATA';
 
     /**
+     * Clé option langue par default pour le site
+     */
+    const OS_DEFAULT_LANGUAGE = 'OS_DEFAULT_LANGUAGE';
+
+    /**
      * Retourne l'ensemble des options systèmes
      * @return array|object[]
      */
