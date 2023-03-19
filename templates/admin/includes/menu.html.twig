@@ -1,8 +1,8 @@
 <nav id="sidebar">
     <div class="sidebar-header">
         <h3>
-            <i class="bi {{ get_option_value_by_key(constant('App\\Service\\Admin\\OptionSystemService::OS_LOGO_SITE'))}}"></i>
-            <span class="d-none-mini">{{ get_option_value_by_key(constant('App\\Service\\Admin\\OptionSystemService::OS_SITE_NAME')) }}</span>
+            <i class="bi {{ get_option_system_value_by_key(constant('App\\Service\\Admin\\OptionSystemService::OS_LOGO_SITE'))}}"></i>
+            <span class="d-none-mini">{{ get_option_system_value_by_key(constant('App\\Service\\Admin\\OptionSystemService::OS_SITE_NAME')) }}</span>
         </h3>
     </div>
     <ul class="list-unstyled components">
