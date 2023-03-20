@@ -8,7 +8,9 @@
 namespace App\Twig\Runtime\Admin;
 
 use App\Entity\Admin\OptionSystem;
+use App\Entity\Admin\OptionUser;
 use App\Service\Admin\OptionSystemService;
+use App\Service\Admin\OptionUserService;
 use App\Utils\Debug;
 use Exception;
 use Monolog\Utils;
@@ -28,10 +30,21 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
     private OptionSystemService $optionSystemService;
 
     /**
+     * @var OptionUserService
+     */
+    private OptionUserService $optionUserService;
+
+    /**
      * Liste des options système récupéré depuis la base de donnée
      * @var array
      */
     private array $listOptionSystem;
+
+    /**
+     * Liste des options users
+     * @var array
+     */
+    private array $listOptionUser;
 
     /**
      * Clé global du fichier de config
@@ -44,8 +57,9 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
      * @param TranslatorInterface $translator
      * @param OptionSystemService $optionSystemService
      */
-    public function __construct(RouterInterface $router, TranslatorInterface $translator, OptionSystemService $optionSystemService)
+    public function __construct(RouterInterface $router, TranslatorInterface $translator, OptionSystemService $optionSystemService, OptionUserService $optionUserService)
     {
+        $this->optionUserService = $optionUserService;
         $this->optionSystemService = $optionSystemService;
         parent::__construct($router, $translator);
     }
@@ -66,6 +80,26 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
 
         $html = $this->generateHeader($categories);
         $html .= $this->generateContent($categories, $optionsSystemConfig);
+
+        return $html;
+    }
+
+    /**
+     * Point d'entrée pour la génération du formulaire des options user
+     * @return string
+     * @throws Exception
+     */
+    public function getOptionUser(): string
+    {
+        $optionUserConfig = $this->optionUserService->getOptionsUserConfig();
+        $this->listOptionSystem = $this->optionUserService->getAll();
+
+        $this->globalKey = key($optionUserConfig);
+
+        $categories = array_keys($optionUserConfig[$this->globalKey]);
+
+        $html = $this->generateHeader($categories);
+        $html .= $this->generateContent($categories, $optionUserConfig);
 
         return $html;
     }
@@ -96,10 +130,10 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
     /**
      * Permet de générer le contenu du tab-content
      * @param array $categories
-     * @param array $optionsSystemConfig
+     * @param array $optionsConfig
      * @return string
      */
-    private function generateContent(array $categories, array $optionsSystemConfig): string
+    private function generateContent(array $categories, array $optionsConfig): string
     {
         $html = '<div class="tab-content" id="nav-tab-option-system-content">';
 
@@ -110,10 +144,10 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
             }
             $html .= '<div class="tab-pane fade ' . $active . '" id="nav-' . $key . '" role="tabpanel" tabindex="0">';
 
-            $html .= '<h5>' . $this->translator->trans($optionsSystemConfig[$this->globalKey][$category]['title']) . '</h5>';
-            $html .= '<p>' . $this->translator->trans($optionsSystemConfig[$this->globalKey][$category]['description']) . '</p>';
+            $html .= '<h5>' . $this->translator->trans($optionsConfig[$this->globalKey][$category]['title']) . '</h5>';
+            $html .= '<p>' . $this->translator->trans($optionsConfig[$this->globalKey][$category]['description']) . '</p>';
 
-            foreach ($optionsSystemConfig[$this->globalKey][$category]['options'] as $key => $element) {
+            foreach ($optionsConfig[$this->globalKey][$category]['options'] as $key => $element) {
                 switch ($element['type']) {
                     case 'text' :
                         $html .= $this->generateInputText($key, $element);
@@ -323,10 +357,21 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
      */
     private function getValueByKey(string $key): string
     {
-        foreach ($this->listOptionSystem as $optionSystem) {
-            /* @var OptionSystem $optionSystem */
-            if ($optionSystem->getKey() === $key) {
-                return $optionSystem->getValue();
+        if(!empty($this->optionSystemService))
+        {
+            foreach ($this->listOptionSystem as $optionSystem) {
+                /* @var OptionSystem $optionSystem */
+                if ($optionSystem->getKey() === $key) {
+                    return $optionSystem->getValue();
+                }
+            }
+        }
+        else {
+            foreach ($this->listOptionUser as $optionUser) {
+                /* @var OptionUser $optionUser */
+                if ($optionUser->getKey() === $key) {
+                    return $optionUser->getValue();
+                }
             }
         }
         return '';

@@ -10,9 +10,12 @@ use App\Entity\Admin\OptionSystem;
 use App\Entity\Admin\OptionUser;
 use App\Entity\Admin\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class OptionUserService extends AppAdminService
@@ -33,6 +36,11 @@ class OptionUserService extends AppAdminService
      * Clé option nb élements pour les users
      */
     const OU_NB_ELEMENT = 'OU_NB_ELEMENT';
+
+    /**
+     * Nom du fichier de config
+     */
+    const OPTION_USER_CONFIG_FILE = 'options_user.yaml';
 
     /**
      * @var OptionSystemService
@@ -85,7 +93,58 @@ class OptionUserService extends AppAdminService
             return $this->optionSystemService->getByKey($key);
         }
 
-        $optionServiceRepo = $this->getRepository(OptionUser::class);
-        return $optionServiceRepo->findOneBy(['key' => $key, 'user' => $this->security->getUser()->getId()]);
+        $repo = $this->getRepository(OptionUser::class);
+        return $repo->findOneBy(['key' => $key, 'user' => $this->security->getUser()->getId()]);
+    }
+
+    /**
+     * Retourne le chemin du fichier yaml des options system
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getPathConfig(): string
+    {
+        $kernel = $this->containerBag->get('kernel.project_dir');
+        return $kernel . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'cms' . DIRECTORY_SEPARATOR . self::OPTION_USER_CONFIG_FILE;
+    }
+
+    /**
+     * Retourne le fichier de config des options system sous la forme d'un tableau
+     * @return array
+     */
+    public function getOptionsUserConfig(): array
+    {
+        $return = [];
+        try {
+            $return = Yaml::parseFile($this->getPathConfig());
+        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+        }
+        return $return;
+    }
+
+    /**
+     * Retourne l'ensemble des options users du user courant
+     * @return array|object[]
+     */
+    public function getAll(): array
+    {
+        $repo = $this->getRepository(OptionUser::class);
+        return $repo->findBy(['user' => $this->security->getUser()->getId()]);
+    }
+
+    /**
+     * Permet de sauvegarder la valeur d'une clée
+     * @param string $key
+     * @param string $value
+     * @return void
+     */
+    public function saveValueByKee(string $key, string $value): void
+    {
+        $repo = $this->entityManager->getRepository(OptionUser::class);
+        /* @var OptionUser $optionUser */
+        $optionUser = $this->getByKey($key);
+        $optionUser->setValue($value);
+        $repo->save($optionUser, true);
     }
 }
