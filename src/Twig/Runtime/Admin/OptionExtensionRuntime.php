@@ -19,7 +19,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 
-class OptionSystemExtensionRuntime extends AppAdminExtensionRuntime implements RuntimeExtensionInterface
+class OptionExtensionRuntime extends AppAdminExtensionRuntime implements RuntimeExtensionInterface
 {
 
     /**
