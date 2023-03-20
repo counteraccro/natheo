@@ -3,7 +3,7 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Permet de générer les events pour la sauvegarde des options systèmes
+ * Permet de générer les events pour la sauvegarde des options systèmes et options users
  */
 
 import axios from 'axios'
