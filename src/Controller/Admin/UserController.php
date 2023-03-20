@@ -7,6 +7,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Admin\User;
+use App\Service\Admin\OptionUserService;
 use App\Service\Admin\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -53,6 +54,21 @@ class UserController extends AbstractController
         return $this->render('admin/user/my_options.html.twig', [
             'breadcrumb' => $breadcrumb,
         ]);
+    }
+
+    /**
+     * Met à jour une option
+     * @param Request $request
+     * @param OptionUserService $optionUserService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/update', name: 'ajax_update_my_option', methods: ['POST'])]
+    #[IsGranted('ROLE_USER')]
+    public function updateMyOption(Request $request, OptionUserService $optionUserService): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $optionUserService->saveValueByKee($data['key'], $data['value']);
+        return $this->json(['success' => 'true']);
     }
 
     /**

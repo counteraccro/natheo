@@ -11,7 +11,8 @@
         {{ 'user.my_option_description' | trans }} <br/>
     </p>
 
-    <!--
-    <div {#  {{ vue_component('Admin/GenericGrid', {'url' : path('admin_user_load_grid_data'), 'page' : page, 'limit' : limit}) }} #}></div>-->
+    {{ option_user_form() }}
+
+    <div {{ vue_component('Admin/OptionSystem', {'url_update' : path('admin_user_ajax_update_my_option')}) }}></div>
 
 {% endblock %}
