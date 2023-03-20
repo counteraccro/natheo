@@ -54,6 +54,8 @@ options_system.default_msg_success: '__Modification enregistrée avec succès'
 options_system.default_msg_error: '__Erreur de validation, vérifiez votre saisie'
 options_system.theme_site: "__Couleur principale de l'administration"
 options_system.theme_site_help: "__La couleur choisi sera utilisée sur l'administration ainsi que défini pour chaque nouvel utilisateur créé"
+options_system.nb_element: "__Nombre d'éléments par page sur les tableaux de données"
+options_system.nb_element_help: '__La valeur choisie sera défini pour chaque nouvel utilisateur créé'
 sidebar.dashboard.description: "__Page d'accueil de la partie administration du CMS"
 sidebar.membre.description: '__Gestion des membres inscrit sur le site'
 sidebar.global.system.description: "__Regroupe l'ensemble des modules système du CMS"
@@ -130,3 +132,7 @@ global.role.contributeur: __global.role.contributeur
 global.role.admin: __global.role.admin
 global.role.superadmin: __global.role.superadmin
 user.grid.role: __user.grid.role
+global.user.option: __global.user.option
+user.my_option_title: __user.my_option_title
+user.my_option_title_h1: __user.my_option_title_h1
+user.my_option_description: __user.my_option_description
