@@ -17,7 +17,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/user', name: 'admin_user_', requirements: ['_locale' => '%app.supported_locales%'])]
-#[IsGranted('ROLE_SUPER_ADMIN')]
 class UserController extends AbstractController
 {
     /**
@@ -25,6 +24,7 @@ class UserController extends AbstractController
      * @return Response
      */
     #[Route('/', name: 'index')]
+    #[IsGranted('ROLE_SUPER_ADMIN')]
     public function index(): Response
     {
         $breadcrumb = [
@@ -39,12 +39,30 @@ class UserController extends AbstractController
     }
 
     /**
+     * Permet au user courant (connecté) de pouvoir gérer ses options
+     * @return Response
+     */
+    #[Route('/my-option', name: 'my_option')]
+    #[IsGranted('ROLE_USER')]
+    public function userOption(): Response
+    {
+        $breadcrumb = [
+            'user.my_option_title_h1' => '#'
+        ];
+
+        return $this->render('admin/user/my_options.html.twig', [
+            'breadcrumb' => $breadcrumb,
+        ]);
+    }
+
+    /**
      * Charge le tableau grid de sidebar en ajax
      * @param Request $request
      * @param UserService $userService
      * @return JsonResponse
      */
     #[Route('/ajax/load-grid-data', name: 'load_grid_data' , methods: ['POST'])]
+    #[IsGranted('ROLE_SUPER_ADMIN')]
     public function loadGridData(Request $request, UserService $userService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -60,6 +78,7 @@ class UserController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', methods: ['POST'])]
+    #[IsGranted('ROLE_SUPER_ADMIN')]
     public function updateDisabled(User $user, UserService $userService, TranslatorInterface $translator): JsonResponse
     {
         $user->setDisabled(!$user->isDisabled());
@@ -75,6 +94,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/ajax/delete/{id}', name: 'delete', methods: ['POST'])]
+    #[IsGranted('ROLE_SUPER_ADMIN')]
     public function delete(User $user, UserService $userService): JsonResponse
     {
         return $this->json(['type' => 'success', 'msg' => 'delete']);
@@ -87,6 +107,7 @@ class UserController extends AbstractController
      * @return Response
      */
     #[Route('/ajax/update/{id}', name: 'update', methods: ['GET'])]
+    #[IsGranted('ROLE_SUPER_ADMIN')]
     public function update(User $user, UserService $userService): Response
     {
         $breadcrumb = [

@@ -68,6 +68,14 @@
   content: "\F4D7";
 }
 
+#adm-navbar .bi-gear-fill-h::after {
+  content: "\F3E2";
+}
+
+#adm-navbar .bi-gear-fill-h:hover::after {
+  content: "\F3E5";
+}
+
 @media (max-width: 991px) {
 
   #adm-navbar .navbar-nav{
