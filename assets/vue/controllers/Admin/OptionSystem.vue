@@ -92,7 +92,7 @@ export default {
         console.log(error);
       }).finally(() => {
 
-        if(id === 'OS_THEME_SITE')
+        if(id === 'OU_THEME_SITE')
         {
           let stylesheet = document.querySelectorAll('[href*="/build/admin"]');
           let href = stylesheet[0].href;
