@@ -8,7 +8,6 @@
 namespace App\DataFixtures\Admin;
 
 use App\DataFixtures\AppFixtures;
-use App\Entity\Admin\OptionUser;
 use App\Entity\Admin\User;
 use App\Service\Admin\OptionUserService;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
@@ -89,7 +88,7 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
 
     public static function getGroups(): array
     {
-        return ['registered', 'user'];
+        return [self::GROUP_REGISTERED, self::GROUP_USER];
     }
 
     /**
@@ -101,10 +100,4 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
         return 3; // smaller means sooner
     }
 
-    public function getDependencies(): array
-    {
-       return [
-           OptionSystemFixtures::class
-       ];
-    }
 }

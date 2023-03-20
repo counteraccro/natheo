@@ -49,7 +49,7 @@ class OptionSystemFixtures extends AppFixtures implements FixtureGroupInterface,
 
     public static function getGroups(): array
     {
-        return ['system', 'option_system'];
+        return [self::GROUP_SYSTEM, self::GROUP_OPTION_SYSTEM, self::GROUP_REGISTERED];
     }
 
     /**

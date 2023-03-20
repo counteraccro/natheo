@@ -63,7 +63,7 @@ class SidebarElementFixtures extends AppFixtures implements FixtureGroupInterfac
 
     public static function getGroups(): array
     {
-        return ['devTools', 'sidebarElement'];
+        return [self::GROUP_DEVTOOLS , self::GROUP_SIDEBAR_ELEMENT];
     }
 
     /**
