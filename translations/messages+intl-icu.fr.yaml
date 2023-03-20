@@ -53,7 +53,9 @@ options_system.categorie_admin.description: "Options concernant l'administration
 options_system.default_msg_success: 'Modification enregistrée avec succès'
 options_system.default_msg_error: 'Erreur de validation, vérifiez votre saisie'
 options_system.theme_site: "Couleur principale de l'administration"
-options_system.theme_site_help: "La couleur choisi sera utilisée sur l'administration ainsi que défini pour chaque nouvel utilisateur créé"
+options_system.theme_site_help: "La couleur choisie sera utilisée sur l'administration ainsi que défini pour chaque nouvel utilisateur créé"
+options_system.nb_element: "Nombre d'éléments par page sur les tableaux de données"
+options_system.nb_element_help: "La valeur choisie sera défini pour chaque nouvel utilisateur créé"
 sidebar.dashboard.description: "Page d'accueil de la partie administration du CMS"
 sidebar.membre.description: 'Gestion des membres inscrit sur le site'
 sidebar.global.system.description: "Regroupe l'ensemble des modules système du CMS"

@@ -30,6 +30,11 @@ class OptionUserService extends AppAdminService
     const OU_THEME_SITE = 'OU_THEME_SITE';
 
     /**
+     * Clé option nb élements pour les users
+     */
+    const OU_NB_ELEMENT = 'OU_NB_ELEMENT';
+
+    /**
      * @var OptionSystemService
      */
     private OptionSystemService $optionSystemService;
@@ -50,7 +55,8 @@ class OptionUserService extends AppAdminService
     {
         $options = [
             $this->optionSystemService::OS_THEME_SITE => self::OU_THEME_SITE,
-            $this->optionSystemService::OS_DEFAULT_LANGUAGE => self::OU_DEFAULT_LANGUAGE
+            $this->optionSystemService::OS_DEFAULT_LANGUAGE => self::OU_DEFAULT_LANGUAGE,
+            $this->optionSystemService::OS_NB_ELEMENT => self::OU_NB_ELEMENT
         ];
 
         foreach($options as $optionSystemKey => $optionUserKey)
@@ -66,6 +72,7 @@ class OptionUserService extends AppAdminService
 
     /**
      * Retourne une option user en fonction de sa clé
+     * Si le user n'existe pas, retourne l'équivalent en option système
      * @param string $key
      * @return object|null
      */

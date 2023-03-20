@@ -72,3 +72,9 @@ options_system:
         list_value: 'purple:global.purple|red:global.red|orange:global.orange'
         help: 'options_system.theme_site_help'
         default: 'purple'
+      OS_NB_ELEMENT:
+        type: 'select'
+        label: 'options_system.nb_element'
+        list_value: '5:5|10:10|20:20|50:50|100:100'
+        help: 'options_system.nb_element_help'
+        default: '20'
