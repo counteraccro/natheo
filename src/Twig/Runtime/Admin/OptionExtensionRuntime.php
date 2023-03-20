@@ -2,7 +2,7 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Permet de générer le formulaire de saisie des options systèmes
+ * Permet de générer le formulaire de saisie des options systèmes et options users
  */
 
 namespace App\Twig\Runtime\Admin;
