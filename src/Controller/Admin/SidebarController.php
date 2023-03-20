@@ -7,6 +7,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Admin\SidebarElement;
+use App\Service\Admin\OptionUserService;
 use App\Service\Admin\SidebarElementService;
 use App\Utils\Debug;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +20,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/sidebar', name: 'admin_sidebar_', requirements: ['_locale' => '%app.supported_locales%'])]
 #[IsGranted('ROLE_SUPER_ADMIN')]
-class SidebarController extends AbstractController
+class SidebarController extends AppAdminController
 {
     /**
      * Point d'entrée
@@ -35,7 +36,7 @@ class SidebarController extends AbstractController
         return $this->render('admin/sidebar/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => 10
+            'limit' => $this->optionUserService->getByKey(OptionUserService::OU_NB_ELEMENT)->getValue()
         ]);
     }
 

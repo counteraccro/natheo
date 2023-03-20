@@ -7,7 +7,6 @@
 namespace App\Controller\Admin;
 
 use App\Service\Admin\OptionSystemService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +15,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin/{_locale}/options-system', name: 'admin_option-system_', requirements: ['_locale' => '%app.supported_locales%'])]
 #[IsGranted('ROLE_SUPER_ADMIN')]
-class OptionSystemController extends AbstractController
+class OptionSystemController extends AppAdminController
 {
     /**
      * Point d'entrée pour les options systèmes

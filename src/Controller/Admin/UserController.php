@@ -9,7 +9,6 @@ namespace App\Controller\Admin;
 use App\Entity\Admin\User;
 use App\Service\Admin\OptionUserService;
 use App\Service\Admin\UserService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +17,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/user', name: 'admin_user_', requirements: ['_locale' => '%app.supported_locales%'])]
-class UserController extends AbstractController
+class UserController extends AppAdminController
 {
     /**
      * point d'entrée
@@ -35,7 +34,7 @@ class UserController extends AbstractController
         return $this->render('admin/user/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => 10,
+            'limit' => $this->optionUserService->getByKey(OptionUserService::OU_NB_ELEMENT)->getValue(),
         ]);
     }
 
@@ -59,15 +58,14 @@ class UserController extends AbstractController
     /**
      * Met à jour une option
      * @param Request $request
-     * @param OptionUserService $optionUserService
      * @return JsonResponse
      */
     #[Route('/ajax/update', name: 'ajax_update_my_option', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function updateMyOption(Request $request, OptionUserService $optionUserService): JsonResponse
+    public function updateMyOption(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $optionUserService->saveValueByKee($data['key'], $data['value']);
+        $this->optionUserService->saveValueByKee($data['key'], $data['value']);
         return $this->json(['success' => 'true']);
     }
 
