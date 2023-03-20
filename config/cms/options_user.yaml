@@ -5,19 +5,19 @@ options_user:
     options :
       OU_DEFAULT_LANGUAGE:
         type: 'select'
-        label: 'options_system.default_language'
+        label: 'options_user.default_language'
         list_value: 'fr:global.french|en:global.english|es:global.spanish'
-        help: 'options_system.default_language_help'
+        help: 'options_user.default_language_help'
         default: 'fr'
       OU_THEME_SITE:
         type: 'select'
-        label: 'options_system.theme_site'
+        label: 'options_user.theme_site'
         list_value: 'purple:global.purple|red:global.red|orange:global.orange'
-        help: 'options_system.theme_site_help'
+        help: 'options_user.theme_site_help'
         default: 'purple'
       OU_NB_ELEMENT:
         type: 'select'
-        label: 'options_system.nb_element'
+        label: 'options_user.nb_element'
         list_value: '5:5|10:10|20:20|50:50|100:100'
-        help: 'options_system.nb_element_help'
+        help: 'options_user.nb_element_help'
         default: '20'
