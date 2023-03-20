@@ -66,6 +66,15 @@ sidebar.devtools.description: "__Regroupe l'ensemble des modules pour aider au d
 sidebar.dev_options.description: '__Permet de gérer les options pour le développement du CMS'
 sidebar.database.description: '__Permet de visualisé la base de données + statistiques'
 sidebar.html_element.description: '__Démo des différents éléments HTML du CMS'
+options_user.administration: __Interface
+options_user.administration.title: '__Personalisation administration'
+options_user.administration.description: "__Personaliser l'administration via ces options"
+options_user.default_language: "__Langue de l'administration"
+options_user.default_language_help: "__Défini la langue de l'administration par défaut pour votre session"
+options_user.theme_site: '__Couleur principale'
+options_user.theme_site_help: "__Défini la couleur de l'administration par défaut pour votre session"
+options_user.nb_element: "__Nombre d'élément par page"
+options_user.nb_element_help: "__Défini le nombre d'élément des tableaux par défaut pour votre session"
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 global.alertes: __global.alertes
 global.profil: __global.profil
