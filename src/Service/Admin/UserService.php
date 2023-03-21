@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -28,11 +29,12 @@ class UserService extends AppAdminService
     private OptionSystemService $optionSystemService;
 
     public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
-                                TranslatorInterface $translator, UrlGeneratorInterface $router, GridService $gridService, OptionSystemService $optionSystemService, Security $security)
+                                TranslatorInterface $translator, UrlGeneratorInterface $router, GridService $gridService,
+                                OptionSystemService $optionSystemService, Security $security, RequestStack $requestStack)
     {
         $this->gridService = $gridService;
         $this->optionSystemService = $optionSystemService;
-        parent::__construct($entityManager, $containerBag, $translator, $router, $security);
+        parent::__construct($entityManager, $containerBag, $translator, $router, $security, $requestStack);
     }
 
     /**

@@ -10,6 +10,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -42,9 +44,15 @@ class AppAdminService
      */
     protected Security $security;
 
+    /**
+     * @var SessionInterface
+     */
+    protected SessionInterface $session;
+
     public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
-                                TranslatorInterface $translator, UrlGeneratorInterface $router, Security $security)
+                                TranslatorInterface $translator, UrlGeneratorInterface $router, Security $security, RequestStack $requestStack)
     {
+        $this->session = $requestStack->getSession();
         $this->containerBag = $containerBag;
         $this->entityManager = $entityManager;
         $this->translator = $translator;
