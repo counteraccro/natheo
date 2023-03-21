@@ -1,6 +1,16 @@
 monolog:
     channels:
         - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
+        - auth
+
+    handlers:
+        auth:
+            # log des connexions à l'administration
+            level: debug
+            type: rotating_file
+            max_files: 10
+            path: '%kernel.logs_dir%/cms/%kernel.environment%/auth.log'
+            channels: [ auth ]
 
 when@dev:
     monolog:
