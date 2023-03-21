@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Service global pour l'administration
+ */
 namespace App\Service\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -33,6 +37,9 @@ class AppAdminService
      */
     protected UrlGeneratorInterface $router;
 
+    /**
+     * @var Security
+     */
     protected Security $security;
 
     public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
