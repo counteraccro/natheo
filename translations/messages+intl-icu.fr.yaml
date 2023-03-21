@@ -66,12 +66,12 @@ sidebar.devtools.description: "Regroupe l'ensemble des modules pour aider au dé
 sidebar.dev_options.description: 'Permet de gérer les options pour le développement du CMS'
 sidebar.database.description: 'Permet de visualisé la base de données + statistiques'
 sidebar.html_element.description: 'Démo des différents éléments HTML du CMS'
-options_user.administration: 'Interface'
+options_user.administration: Interface
 options_user.administration.title: "Personalisation de l'administration"
-options_user.administration.description : "Personaliser l'administration via ces options"
+options_user.administration.description: "Personaliser l'administration via ces options"
 options_user.default_language: "Langue de l'administration"
 options_user.default_language_help: "Défini la langue de l'administration par défaut pour votre session"
-options_user.theme_site: "Couleur principale"
+options_user.theme_site: 'Couleur principale'
 options_user.theme_site_help: "Défini la couleur de l'administration par défaut pour votre session"
 options_user.nb_element: "Nombre d'élément par page"
 options_user.nb_element_help: "Défini le nombre d'élément des tableaux par défaut pour votre session"
@@ -142,6 +142,8 @@ global.role.admin: Administrateur
 global.role.superadmin: 'Super Administrateur'
 user.grid.role: Role
 global.user.option: 'Mes options'
-user.my_option_title: "Mes options"
-user.my_option_title_h1: "Gestion de mes options"
+user.my_option_title: 'Mes options'
+user.my_option_title_h1: 'Gestion de mes options'
 user.my_option_description: "Personaliser l'interface ainsi que la langue et d'autres détails de l'administration"
+log.auth.admin.success: "Connexion de {user} - IP {ip}"
+log.auth.admin.error: "Tentative de Connexion de {user} - IP {ip}"
