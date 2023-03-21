@@ -14,6 +14,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -42,16 +43,18 @@ class OptionUserService extends AppAdminService
      */
     const OPTION_USER_CONFIG_FILE = 'options_user.yaml';
 
+    const KEY_SESSION_TAB_OPTIONS = 'users_options';
+
     /**
      * @var OptionSystemService
      */
     private OptionSystemService $optionSystemService;
 
     public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
-                                TranslatorInterface $translator, UrlGeneratorInterface $router, OptionSystemService $optionSystemService, Security $security)
+                                TranslatorInterface $translator, UrlGeneratorInterface $router, OptionSystemService $optionSystemService, Security $security, RequestStack $requestStack)
     {
         $this->optionSystemService = $optionSystemService;
-        parent::__construct($entityManager, $containerBag, $translator, $router, $security);
+        parent::__construct($entityManager, $containerBag, $translator, $router, $security, $requestStack);
     }
 
     /**
@@ -104,7 +107,19 @@ class OptionUserService extends AppAdminService
      */
     public function getValueByKey(string $key): string
     {
-        return $this->getByKey($key)->getValue();
+        // Priorité à la valeur en session
+        $tabOptions = $this->session->get(self::KEY_SESSION_TAB_OPTIONS, []);
+        if(isset($tabOptions[$key]))
+        {
+            return $tabOptions[$key];
+        }
+
+        $value = $this->getByKey($key)->getValue();
+
+        // Mise à jour de la session avec les options sauvegardées
+        $tabOptions[$key] = $value;
+        $this->session->set(self::KEY_SESSION_TAB_OPTIONS, $tabOptions);
+        return $value;
     }
 
     /**
@@ -156,5 +171,10 @@ class OptionUserService extends AppAdminService
         $optionUser = $this->getByKey($key);
         $optionUser->setValue($value);
         $repo->save($optionUser, true);
+
+        // Mise à jour de la session avec les options sauvegardées
+        $tabOptions = $this->session->get(self::KEY_SESSION_TAB_OPTIONS, []);
+        $tabOptions[$key] = $value;
+        $this->session->set(self::KEY_SESSION_TAB_OPTIONS, $tabOptions);
     }
 }
