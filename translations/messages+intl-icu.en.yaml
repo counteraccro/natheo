@@ -145,3 +145,5 @@ global.user.option: __global.user.option
 user.my_option_title: __user.my_option_title
 user.my_option_title_h1: __user.my_option_title_h1
 user.my_option_description: __user.my_option_description
+log.auth.admin.success: __log.auth.admin.success
+log.auth.admin.error: __log.auth.admin.error
