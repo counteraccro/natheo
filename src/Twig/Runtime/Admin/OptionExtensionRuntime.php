@@ -384,8 +384,6 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
      */
     public function getOptionValueByKey(string $key): string
     {
-        /* @var OptionSystem $optionSystem */
-        $optionSystem = $this->optionSystemService->getByKey($key);
-        return $optionSystem->getValue();
+        return $this->optionSystemService->getValueByKey($key);
     }
 }

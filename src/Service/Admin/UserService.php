@@ -131,15 +131,15 @@ class UserService extends AppAdminService
 
         $actions[] = $action_disabled;
 
-        $canDelete = $this->optionSystemService->getByKey(OptionSystemService::OS_ALLOW_DELETE_DATA);
-        $replaceUser = $this->optionSystemService->getByKey(OptionSystemService::OS_REPLACE_DELETE_USER);
+        $canDelete = $this->optionSystemService->getValueByKey(OptionSystemService::OS_ALLOW_DELETE_DATA);
+        $replaceUser = $this->optionSystemService->getValueByKey(OptionSystemService::OS_REPLACE_DELETE_USER);
 
         // Bouton Delete
         $action_delete = '';
-        if($canDelete->getValue() === '1') {
+        if($canDelete === '1') {
 
             $msgConfirm = $this->translator->trans('user.confirm.delete.msg', ['{login}' => $user->getLogin()]);
-            if($replaceUser->getValue() === '1')
+            if($replaceUser === '1')
                 $msgConfirm = $this->translator->trans('user.confirm.replace.msg', ['{login}' => $user->getLogin()]);
 
             $action_delete = [
