@@ -36,7 +36,7 @@ class SidebarController extends AppAdminController
         return $this->render('admin/sidebar/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getByKey(OptionUserService::OU_NB_ELEMENT)->getValue()
+            'limit' => $this->optionUserService->getValueByKey(OptionUserService::OU_NB_ELEMENT)
         ]);
     }
 

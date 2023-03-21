@@ -34,9 +34,8 @@ class LocaleSubscriber implements EventSubscriberInterface
 
     public function onKernelController(ControllerEvent $event): void
     {
-        /** @var OptionUser $option */
-       $option = $this->optionUserService->getByKey(OptionUserService::OU_DEFAULT_LANGUAGE);
-       $this->localeSwitcher->setLocale($option->getValue());
+       $value = $this->optionUserService->getValueByKey(OptionUserService::OU_DEFAULT_LANGUAGE);
+       $this->localeSwitcher->setLocale($value);
     }
 
     public static function getSubscribedEvents(): array

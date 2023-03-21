@@ -98,6 +98,16 @@ class OptionUserService extends AppAdminService
     }
 
     /**
+     * Retourne une valeur option user en fonction de sa clé
+     * @param string $key
+     * @return string
+     */
+    public function getValueByKey(string $key): string
+    {
+        return $this->getByKey($key)->getValue();
+    }
+
+    /**
      * Retourne le chemin du fichier yaml des options system
      * @return string
      * @throws ContainerExceptionInterface

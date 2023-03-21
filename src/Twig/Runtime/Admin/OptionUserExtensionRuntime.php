@@ -33,8 +33,6 @@ class OptionUserExtensionRuntime extends AppAdminExtensionRuntime implements Run
      */
     public function getOptionValueByKey(string $key): string
     {
-        /* @var OptionUser $optionUser */
-        $optionUser = $this->optionUserService->getByKey($key);
-        return $optionUser->getValue();
+        return  $this->optionUserService->getValueByKey($key);
     }
 }
