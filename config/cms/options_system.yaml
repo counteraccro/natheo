@@ -78,3 +78,12 @@ options_system:
         list_value: '5:5|10:10|20:20|50:50|100:100'
         help: 'options_system.nb_element_help'
         default: '20'
+  options_system.logs:
+    title: 'options_system.logs.title'
+    description: 'options_system.logs.description'
+    options:
+      OS_LOG_DOCTRINE:
+        type: 'boolean'
+        label: 'options_system.log_doctrine'
+        help: 'options_system.log_doctrine_help'
+        default: 1

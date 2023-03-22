@@ -85,6 +85,11 @@ class OptionSystemService extends AppAdminService
     const OS_NB_ELEMENT = 'OS_NB_ELEMENT';
 
     /**
+     * Clé option qui permet de sauvegarder ou non les logs
+     */
+    const OS_LOG_DOCTRINE = 'OS_LOG_DOCTRINE';
+
+    /**
      * Retourne l'ensemble des options systèmes
      * @return array|object[]
      */
@@ -108,11 +113,14 @@ class OptionSystemService extends AppAdminService
     /**
      * Retourne la valeur d'une option système en fonction de sa clé
      * @param string $key
-     * @return string
+     * @return string|null
      */
-    public function getValueByKey(string $key): string
+    public function getValueByKey(string $key): ?string
     {
-        return $this->getByKey($key)->getValue();
+        if($this->getByKey($key) != null)
+            return $this->getByKey($key)->getValue();
+
+        return null;
     }
 
     /**

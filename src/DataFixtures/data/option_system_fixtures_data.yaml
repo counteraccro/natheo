@@ -35,3 +35,6 @@ option_system:
   OS_NB_ELEMENT:
     key: 'OS_NB_ELEMENT'
     value: 20
+  OS_LOG_DOCTRINE:
+    key: 'OS_LOG_DOCTRINE'
+    value: 1

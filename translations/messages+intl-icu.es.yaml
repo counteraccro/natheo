@@ -75,6 +75,11 @@ options_user.theme_site: '__Couleur principale'
 options_user.theme_site_help: "__Défini la couleur de l'administration par défaut pour votre session"
 options_user.nb_element: "__Nombre d'élément par page"
 options_user.nb_element_help: "__Défini le nombre d'élément des tableaux par défaut pour votre session"
+options_system.logs: "__Logs"
+options_system.logs.title: "__Gestion des logs"
+options_system.logs.description: "__Gérer le niveau de log et suivi que vous voulez avoir sur l'application. Attention, un haut niveau de log peut générer des fichiers volumineux"
+options_system.log_doctrine: "__Enregistrer tout changement dans la base de donnée"
+options_system.log_doctrine_help: "__Permet de tracer toutes modifications de donnée (ajout/édition/suppression) sur le site, peut générer des fichiers volumineux"
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 global.alertes: __global.alertes
 global.profil: __global.profil
