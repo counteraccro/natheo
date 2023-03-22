@@ -108,7 +108,7 @@ class OptionUserService extends AppAdminService
     public function getValueByKey(string $key): string
     {
         // Priorité à la valeur en session
-        $tabOptions = $this->session->get(self::KEY_SESSION_TAB_OPTIONS, []);
+        $tabOptions = $this->requestStack->getSession()->get(self::KEY_SESSION_TAB_OPTIONS, []);
         if(isset($tabOptions[$key]))
         {
             return $tabOptions[$key];
@@ -118,7 +118,7 @@ class OptionUserService extends AppAdminService
 
         // Mise à jour de la session avec les options sauvegardées
         $tabOptions[$key] = $value;
-        $this->session->set(self::KEY_SESSION_TAB_OPTIONS, $tabOptions);
+        $this->requestStack->getSession()->set(self::KEY_SESSION_TAB_OPTIONS, $tabOptions);
         return $value;
     }
 
@@ -173,8 +173,8 @@ class OptionUserService extends AppAdminService
         $repo->save($optionUser, true);
 
         // Mise à jour de la session avec les options sauvegardées
-        $tabOptions = $this->session->get(self::KEY_SESSION_TAB_OPTIONS, []);
+        $tabOptions = $this->requestStack->getSession()->get(self::KEY_SESSION_TAB_OPTIONS, []);
         $tabOptions[$key] = $value;
-        $this->session->set(self::KEY_SESSION_TAB_OPTIONS, $tabOptions);
+        $this->requestStack->getSession()->set(self::KEY_SESSION_TAB_OPTIONS, $tabOptions);
     }
 }

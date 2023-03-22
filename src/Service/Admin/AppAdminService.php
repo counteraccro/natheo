@@ -45,14 +45,14 @@ class AppAdminService
     protected Security $security;
 
     /**
-     * @var SessionInterface
+     * @var RequestStack
      */
-    protected SessionInterface $session;
+    protected RequestStack $requestStack;
 
     public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
                                 TranslatorInterface $translator, UrlGeneratorInterface $router, Security $security, RequestStack $requestStack)
     {
-        $this->session = $requestStack->getSession();
+        $this->requestStack = $requestStack;
         $this->containerBag = $containerBag;
         $this->entityManager = $entityManager;
         $this->translator = $translator;
