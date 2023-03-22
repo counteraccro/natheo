@@ -2,6 +2,7 @@ monolog:
     channels:
         - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
         - auth
+        - doctrine_log
 
     handlers:
         auth:
@@ -11,6 +12,13 @@ monolog:
             max_files: 10
             path: '%kernel.logs_dir%/cms/%kernel.environment%/auth.log'
             channels: [ auth ]
+        doctrine_log:
+            # log doctrine sur la modification/création/suppression d'une entité
+            level: debug
+            type: rotating_file
+            max_files: 10
+            path: '%kernel.logs_dir%/cms/%kernel.environment%/doctrine.log'
+            channels: [ doctrine_log ]
 
 when@dev:
     monolog:
