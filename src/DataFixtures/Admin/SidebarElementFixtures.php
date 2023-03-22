@@ -72,6 +72,6 @@ class SidebarElementFixtures extends AppFixtures implements FixtureGroupInterfac
      */
     public function getOrder(): int
     {
-        return 1; // smaller means sooner
+        return 2; // smaller means sooner
     }
 }
