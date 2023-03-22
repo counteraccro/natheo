@@ -7,10 +7,6 @@
 
 namespace App\EventListener;
 
-use App\Entity\Admin\OptionSystem;
-use App\Entity\Admin\OptionUser;
-use App\Entity\Admin\SidebarElement;
-use App\Entity\Admin\User;
 use App\Service\Admin\OptionSystemService;
 use App\Service\LoggerService;
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
@@ -25,13 +21,11 @@ class DatabaseActivitySubscriber implements EventSubscriberInterface
 
     private LoggerService $loggerService;
 
-    private LoggerInterface $logger;
 
-    public function __construct(OptionSystemService $optionSystemService, LoggerService $loggerService, LoggerInterface $logger)
+    public function __construct(OptionSystemService $optionSystemService, LoggerService $loggerService)
     {
         $this->optionSystemService = $optionSystemService;
         $this->loggerService = $loggerService;
-        $this->logger = $logger;
     }
 
     // this method can only return the event names; you cannot define a

@@ -69,6 +69,8 @@ class LoggerService extends AppService
     /**
      * Permet d'enregistrer les logs venant du listener de doctrine
      * @param string $action
+     * @param string $entity
+     * @param int $id
      * @return void
      */
     public function logDoctrine(string $action, string $entity, int $id): void
