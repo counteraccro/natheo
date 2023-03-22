@@ -75,11 +75,11 @@ options_user.theme_site: 'Couleur principale'
 options_user.theme_site_help: "Défini la couleur de l'administration par défaut pour votre session"
 options_user.nb_element: "Nombre d'élément par page"
 options_user.nb_element_help: "Défini le nombre d'élément des tableaux par défaut pour votre session"
-options_system.logs: "Logs"
-options_system.logs.title: "Gestion des logs"
+options_system.logs: Logs
+options_system.logs.title: 'Gestion des logs'
 options_system.logs.description: "Gérer le niveau de log et suivi que vous voulez avoir sur l'application. Attention, un haut niveau de log peut générer des fichiers volumineux"
-options_system.log_doctrine: "Enregistrer tout changement dans la base de donnée"
-options_system.log_doctrine_help: "Permet de tracer toutes modifications de donnée (ajout/édition/suppression) sur le site, peut générer des fichiers volumineux"
+options_system.log_doctrine: 'Enregistrer tout changement dans la base de donnée'
+options_system.log_doctrine_help: 'Permet de tracer toutes modifications de donnée (ajout/édition/suppression) sur le site, peut générer des fichiers volumineux'
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 global.alertes: Alertes
 global.profil: Profil
@@ -150,5 +150,8 @@ global.user.option: 'Mes options'
 user.my_option_title: 'Mes options'
 user.my_option_title_h1: 'Gestion de mes options'
 user.my_option_description: "Personaliser l'interface ainsi que la langue et d'autres détails de l'administration"
-log.auth.admin.success: "Connexion de {user} - IP {ip}"
-log.auth.admin.error: "Tentative de Connexion de {user} - IP {ip}"
+log.auth.admin.success: 'Connexion de {user} - IP {ip}'
+log.auth.admin.error: 'Tentative de Connexion de {user} - IP {ip}'
+log.doctrine.persit: "l'entité {entity} #{id} à été créé par {user} (#{id_user})"
+log.doctrine.remove: "l'entité {entity} #{id} à été supprimée par {user} (#{id_user})"
+log.doctrine.update: "l'entité {entity} #{id} à été modifiée par {user} (#{id_user})"
