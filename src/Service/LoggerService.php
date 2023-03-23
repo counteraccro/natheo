@@ -14,6 +14,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -124,7 +125,44 @@ class LoggerService extends AppService
     {
         $kernel = $this->params->get('kernel.project_dir');
         $pathLog = $kernel . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . self::DIRECTORY_LOG;
-        return $this->fillArrayWithFileNodes( new \DirectoryIterator( $pathLog) );
+
+        $finder = new Finder();
+        $finder->in($pathLog);
+
+        $return = [];
+        foreach($finder as $file)
+        {
+            //echo $file->getFilename() . '----------------------';
+            $tmp = explode('\\', $file->getRelativePath());
+
+            //echo count($tmp).'----------------------';
+
+            $separator = '';
+            if($tmp[0] !== ''){
+                //echo $file->getFilename() . '-t-';
+                $separator = str_repeat('-', count($tmp)+0);
+                //echo $separator . $file->getFilename();
+            }
+            else {
+                //echo $file->getFilename() . 'else';
+                //print_r($tmp);
+            }
+
+
+
+
+            if($file->isDir())
+            {
+                $return[] = ['type' => 'dir', 'name' => $separator . ' ' . $file->getFilename()];
+            }
+            else {
+                $return[] = ['type' => 'file', 'name' => $separator . ' ' . $file->getFilename(), 'path' => $file->getRelativePath()];
+            }
+        }
+
+        return $return;
+
+        //return $this->fillArrayWithFileNodes( new \DirectoryIterator( $pathLog) );
     }
 
     /**

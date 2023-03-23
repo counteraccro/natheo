@@ -38,6 +38,6 @@ class LogController extends AbstractController
     public function dataSelect(LoggerService $loggerService): JsonResponse
     {
         $files = $loggerService->getAllFiles();
-        return $this->json(['data' => $files]);
+        return $this->json(['files' => $files]);
     }
 }
