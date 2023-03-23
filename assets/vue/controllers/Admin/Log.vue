@@ -9,33 +9,52 @@ export default {
   },
   data() {
     return {
-      select : [],
+      select: [],
+      time: "",
+      trans: []
     }
   },
   mounted() {
-    this.loadSelect();
+    this.loadData();
   },
   methods: {
-    loadSelect() {
-      axios.post(this.url_select, {}).then((response) => {
-          this.select = response.data.files
-        console.log(this.select);
+    loadData() {
+      console.log(this.time);
+      axios.post(this.url_select, {
+        'time' : this.time
+      }).then((response) => {
+        this.select = response.data.files;
+        this.trans = response.data.trans;
       }).catch((error) => {
         console.log(error);
       }).finally();
+    },
+    changeTimeFiltre(event)
+    {
+        this.time = event.target.value;
+        this.loadData();
     }
   }
 }
 </script>
 
 <template>
-  <select class="form-select" aria-label="Default select example">
-    <option selected>Open this select menu</option>
-    <template v-for="option in this.select">
-      <optgroup v-if="option.type === 'dir'" v-bind:label="option.name"></optgroup>
-      <option v-if="option.type ==='file' " value="{{option.path}}">{{option.name}}</option>
-    </template>
-  </select>
+  <div class="row">
+    <div class="col">
+      <select class="form-select" aria-label="Default select example">
+        <option selected>{{this.trans.log_select_file}}</option>
+        <option v-for="option in this.select" value="{{option.path}}">{{ option.name }}</option>
+      </select>
+    </div>
+    <div class="col">
+      <select class="form-select" @change="changeTimeFiltre($event)">
+        <option value="" selected>{{this.trans.log_select_time_all}}</option>
+        <option value="now">{{this.trans.log_select_time_now}}</option>
+        <option value="yesterday">{{this.trans.log_select_time_yesterday}}</option>
+      </select>
+    </div>
+  </div>
+
 </template>
 
 <style scoped>

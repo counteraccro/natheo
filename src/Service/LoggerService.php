@@ -122,15 +122,16 @@ class LoggerService extends AppService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllFiles(string $date = null): array
+    public function getAllFiles(string $date = ""): array
     {
         $kernel = $this->params->get('kernel.project_dir');
         $pathLog = $kernel . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . self::DIRECTORY_LOG;
 
         $finder = new Finder();
-        if($date !== null)
+        if($date !== "")
         {
             $date = new \DateTime($date);
+            //print_r($date->format('Y-m-d'));
             $finder->files()->in($pathLog)->name('*-'. $date->format('Y-m-d') . '.log');
         }
         else {

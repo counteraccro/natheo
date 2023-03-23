@@ -8,7 +8,7 @@ global.devtools: '__Dev Tools'
 global.dev_options: '__Dev Options'
 global.database: '__Base de données'
 global.html_element: '__Exemple HTML'
-global.logs: '__Logs'
+global.logs: __Logs
 global.oui: __Oui
 global.non: __Non
 global.french: __Français
@@ -157,3 +157,10 @@ log.auth.admin.error: __log.auth.admin.error
 log.doctrine.persit: __log.doctrine.persit
 log.doctrine.remove: __log.doctrine.remove
 log.doctrine.update: __log.doctrine.update
+log.select-file: __log.select-file
+log.select-time.all: __log.select-time.all
+log.select-time.now: __log.select-time.now
+log.select-time.yesterday: __log.select-time.yesterday
+log.page_title: __log.page_title
+log.page_title_h1: __log.page_title_h1
+log.description: __log.description
