@@ -8,6 +8,7 @@ global.devtools: '__Dev Tools'
 global.dev_options: '__Dev Options'
 global.database: '__Base de données'
 global.html_element: '__Exemple HTML'
+global.logs: '__Logs'
 global.oui: __Oui
 global.non: __Non
 global.french: __Français
@@ -56,6 +57,7 @@ options_system.theme_site: "__Couleur principale de l'administration"
 options_system.theme_site_help: "__La couleur choisi sera utilisée sur l'administration ainsi que défini pour chaque nouvel utilisateur créé"
 options_system.nb_element: "__Nombre d'éléments par page sur les tableaux de données"
 options_system.nb_element_help: '__La valeur choisie sera défini pour chaque nouvel utilisateur créé'
+sidebar.log.description: '__Gestion et visualisation des logs applicatifs'
 sidebar.dashboard.description: "__Page d'accueil de la partie administration du CMS"
 sidebar.membre.description: '__Gestion des membres inscrit sur le site'
 sidebar.global.system.description: "__Regroupe l'ensemble des modules système du CMS"

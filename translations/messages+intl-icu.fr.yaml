@@ -8,6 +8,7 @@ global.devtools: 'Dev Tools'
 global.dev_options: 'Dev Options'
 global.database: 'Base de données'
 global.html_element: 'Exemple HTML'
+global.logs: 'Logs'
 global.oui: Oui
 global.non: Non
 global.french: Français
@@ -66,6 +67,7 @@ sidebar.devtools.description: "Regroupe l'ensemble des modules pour aider au dé
 sidebar.dev_options.description: 'Permet de gérer les options pour le développement du CMS'
 sidebar.database.description: 'Permet de visualisé la base de données + statistiques'
 sidebar.html_element.description: 'Démo des différents éléments HTML du CMS'
+sidebar.log.description: 'Gestion et visualisation des logs applicatifs'
 options_user.administration: Interface
 options_user.administration.title: "Personalisation de l'administration"
 options_user.administration.description: "Personaliser l'administration via ces options"
@@ -155,3 +157,6 @@ log.auth.admin.error: 'Tentative de Connexion de {user} - IP {ip}'
 log.doctrine.persit: "l'entité {entity} #{id} à été créé par {user} (#{id_user})"
 log.doctrine.remove: "l'entité {entity} #{id} à été supprimée par {user} (#{id_user})"
 log.doctrine.update: "l'entité {entity} #{id} à été modifiée par {user} (#{id_user})"
+log.page_title: "Gestion des logs"
+log.page_title_h1: "Gestion des logs"
+log.description: "Consulter / vider les logs applicatifs "

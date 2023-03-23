@@ -51,6 +51,15 @@ sidebarElement:
                   role: 'ROLE_SUPER_ADMIN'
                   description: 'sidebar.system_options.description'
                   lock: true
+            - logs:
+                icon: 'bi-file-earmark-text'
+                label: 'global.logs'
+                route: 'admin_log_index'
+                disabled: false
+                parent: system
+                role: 'ROLE_SUPER_ADMIN'
+                description: 'sidebar.log.description'
+                lock: false
     devTools:
       icon: 'bi-tools'
       label: 'global.devtools'

@@ -8,6 +8,7 @@ global.devtools: '__Dev Tools'
 global.dev_options: '__Dev Options'
 global.database: '__Base de données'
 global.html_element: '__Exemple HTML'
+global.logs: '__Logs'
 global.oui: __Oui
 global.non: __Non
 global.french: __Français
@@ -66,6 +67,7 @@ sidebar.devtools.description: "__Regroupe l'ensemble des modules pour aider au d
 sidebar.dev_options.description: '__Permet de gérer les options pour le développement du CMS'
 sidebar.database.description: '__Permet de visualisé la base de données + statistiques'
 sidebar.html_element.description: '__Démo des différents éléments HTML du CMS'
+sidebar.log.description: '__Gestion et visualisation des logs applicatifs'
 options_user.administration: __Interface
 options_user.administration.title: '__Personalisation administration'
 options_user.administration.description: "__Personaliser l'administration via ces options"
