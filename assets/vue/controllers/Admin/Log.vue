@@ -33,7 +33,7 @@ export default {
     <option selected>Open this select menu</option>
     <template v-for="option in this.select">
       <optgroup v-if="option.type === 'dir'" v-bind:label="option.name"></optgroup>
-      <option v-else value="{{option.path}}">{{option.name}}</option>
+      <option v-if="option.type ==='file' " value="{{option.path}}">{{option.name}}</option>
     </template>
   </select>
 </template>

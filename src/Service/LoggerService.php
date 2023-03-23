@@ -117,73 +117,32 @@ class LoggerService extends AppService
 
     /**
      * Retourne l'ensemble des logs (nom de fichiers) en respectant l'arborescence des logs
+     * @param string|null $date
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllFiles(): array
+    public function getAllFiles(string $date = null): array
     {
         $kernel = $this->params->get('kernel.project_dir');
         $pathLog = $kernel . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . self::DIRECTORY_LOG;
 
         $finder = new Finder();
-        $finder->in($pathLog);
+        if($date !== null)
+        {
+            $date = new \DateTime($date);
+            $finder->files()->in($pathLog)->name('*-'. $date->format('Y-m-d') . '.log');
+        }
+        else {
+            $finder->files()->in($pathLog);
+        }
+
 
         $return = [];
         foreach($finder as $file)
         {
-            //echo $file->getFilename() . '----------------------';
-            $tmp = explode('\\', $file->getRelativePath());
-
-            //echo count($tmp).'----------------------';
-
-            $separator = '';
-            if($tmp[0] !== ''){
-                //echo $file->getFilename() . '-t-';
-                $separator = str_repeat('-', count($tmp)+0);
-                //echo $separator . $file->getFilename();
-            }
-            else {
-                //echo $file->getFilename() . 'else';
-                //print_r($tmp);
-            }
-
-
-
-
-            if($file->isDir())
-            {
-                $return[] = ['type' => 'dir', 'name' => $separator . ' ' . $file->getFilename()];
-            }
-            else {
-                $return[] = ['type' => 'file', 'name' => $separator . ' ' . $file->getFilename(), 'path' => $file->getRelativePath()];
-            }
+            $return[] = ['type' => 'file', 'name' => $file->getRelativePathname(), 'path' => $file->getRelativePath()];
         }
-
         return $return;
-
-        //return $this->fillArrayWithFileNodes( new \DirectoryIterator( $pathLog) );
-    }
-
-    /**
-     * Fonction récursive pour récupérer l'ensemble de l'arborescence des los
-     * @param \DirectoryIterator $dir
-     * @return array
-     */
-    function fillArrayWithFileNodes( \DirectoryIterator $dir ): array
-    {
-        $data = array();
-        foreach ( $dir as $node )
-        {
-            if ( $node->isDir() && !$node->isDot() )
-            {
-                $data[$node->getFilename()] = $this->fillArrayWithFileNodes( new \DirectoryIterator( $node->getPathname() ) );
-            }
-            else if ( $node->isFile() )
-            {
-                $data[] = $node->getFilename();
-            }
-        }
-        return $data;
     }
 }

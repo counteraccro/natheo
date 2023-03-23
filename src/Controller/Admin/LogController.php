@@ -37,7 +37,8 @@ class LogController extends AbstractController
     #[Route('/ajax/data-select-log', name: 'ajax_data_select_log')]
     public function dataSelect(LoggerService $loggerService): JsonResponse
     {
-        $files = $loggerService->getAllFiles();
+        $date = '2023-03-23';
+        $files = $loggerService->getAllFiles($date);
         return $this->json(['files' => $files]);
     }
 }
