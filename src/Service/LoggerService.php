@@ -4,12 +4,16 @@
  * @version 1.0
  * Service qui gère les logs de l'application
  */
+
 namespace App\Service;
 
 use App\Entity\Admin\User;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -20,6 +24,9 @@ class LoggerService extends AppService
      */
     private LoggerInterface $authLogger;
 
+    /**
+     * @var LoggerInterface
+     */
     private LoggerInterface $doctrineLogLogger;
 
     /**
@@ -40,11 +47,18 @@ class LoggerService extends AppService
      */
     const ACTION_DOCTRINE_UPDATE = 'update';
 
-    public function __construct(TranslatorInterface $translator, RequestStack $requestStack, LoggerInterface $authLogger, LoggerInterface $doctrineLogLogger, Security $security)
+    /**
+     * Nom du dossier de log
+     * @var string
+     */
+    const DIRECTORY_LOG = 'log';
+
+    public function __construct(TranslatorInterface $translator, RequestStack $requestStack, LoggerInterface $authLogger,
+                                LoggerInterface     $doctrineLogLogger, Security $security, ContainerBagInterface $params)
     {
         $this->authLogger = $authLogger;
         $this->doctrineLogLogger = $doctrineLogLogger;
-        parent::__construct($translator, $requestStack, $security);
+        parent::__construct($translator, $requestStack, $security, $params);
     }
 
     /**
@@ -79,8 +93,7 @@ class LoggerService extends AppService
         $currentUser = $this->security->getUser();
         $user = 'John doe';
         $id_user = '-';
-        if($currentUser != null)
-        {
+        if ($currentUser != null) {
             $user = $currentUser->getEmail();
             $id_user = $currentUser->getId();
         }
@@ -99,5 +112,40 @@ class LoggerService extends AppService
                 $this->doctrineLogLogger->info($msg);
                 break;
         }
+    }
+
+    /**
+     * Retourne l'ensemble des logs (nom de fichiers) en respectant l'arborescence des logs
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getAllFiles(): array
+    {
+        $kernel = $this->params->get('kernel.project_dir');
+        $pathLog = $kernel . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . self::DIRECTORY_LOG;
+        return $this->fillArrayWithFileNodes( new \DirectoryIterator( $pathLog) );
+    }
+
+    /**
+     * Fonction récursive pour récupérer l'ensemble de l'arborescence des los
+     * @param \DirectoryIterator $dir
+     * @return array
+     */
+    function fillArrayWithFileNodes( \DirectoryIterator $dir ): array
+    {
+        $data = array();
+        foreach ( $dir as $node )
+        {
+            if ( $node->isDir() && !$node->isDot() )
+            {
+                $data[$node->getFilename()] = $this->fillArrayWithFileNodes( new \DirectoryIterator( $node->getPathname() ) );
+            }
+            else if ( $node->isFile() )
+            {
+                $data[] = $node->getFilename();
+            }
+        }
+        return $data;
     }
 }

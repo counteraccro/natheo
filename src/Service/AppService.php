@@ -7,6 +7,7 @@
 namespace App\Service;
 
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -27,10 +28,16 @@ class AppService
      */
     protected Security $security;
 
-    public function __construct(TranslatorInterface $translator, RequestStack $requestStack, Security $security)
+    /**
+     * @var ContainerBagInterface
+     */
+    protected ContainerBagInterface $params;
+
+    public function __construct(TranslatorInterface $translator, RequestStack $requestStack, Security $security, ContainerBagInterface $params)
     {
         $this->translator = $translator;
         $this->requestStack = $requestStack;
         $this->security = $security;
+        $this->params = $params;
     }
 }

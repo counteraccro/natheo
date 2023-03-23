@@ -10,6 +10,6 @@
     <p>{{ 'log.description' | trans }}</p>
 
 
-    <div {# {{ vue_component('Admin/Option', {'url_update' : path('admin_option-system_ajax_update')}) }} #}></div>
+    <div {{ vue_component('Admin/Log', {'url_select' : path('admin_log_ajax_data_select_log')}) }}></div>
 
 {% endblock %}

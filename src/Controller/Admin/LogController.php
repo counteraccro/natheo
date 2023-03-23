@@ -4,9 +4,12 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
+
 namespace App\Controller\Admin;
 
+use App\Service\LoggerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -25,5 +28,16 @@ class LogController extends AbstractController
         return $this->render('admin/log/index.html.twig', [
             'breadcrumb' => $breadcrumb,
         ]);
+    }
+
+    /**
+     * Retourne les données des listes déroulantes des filtres pour les logs
+     * @return JsonResponse
+     */
+    #[Route('/ajax/data-select-log', name: 'ajax_data_select_log')]
+    public function dataSelect(LoggerService $loggerService): JsonResponse
+    {
+        $files = $loggerService->getAllFiles();
+        return $this->json(['data' => $files]);
     }
 }
