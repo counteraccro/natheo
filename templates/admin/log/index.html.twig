@@ -10,6 +10,6 @@
     <p>{{ 'log.description' | trans }}</p>
 
 
-    <div {{ vue_component('Admin/Log', {'url_select' : path('admin_log_ajax_data_select_log')}) }}></div>
+    <div {{ vue_component('Admin/Log', {'url_select' : path('admin_log_ajax_data_select_log'), 'url_load_log_file' : path('admin_log_ajax_load_log_file')}) }}></div>
 
 {% endblock %}

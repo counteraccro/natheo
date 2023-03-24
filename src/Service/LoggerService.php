@@ -8,6 +8,7 @@
 namespace App\Service;
 
 use App\Entity\Admin\User;
+use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
@@ -121,6 +122,7 @@ class LoggerService extends AppService
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws Exception
      */
     public function getAllFiles(string $date = ""): array
     {
@@ -142,8 +144,22 @@ class LoggerService extends AppService
         $return = [];
         foreach($finder as $file)
         {
-            $return[] = ['type' => 'file', 'name' => $file->getRelativePathname(), 'path' => $file->getRelativePath()];
+            $return[] = ['type' => 'file', 'name' => $file->getRelativePathname(), 'path' => $file->getFilename()];
         }
         return $return;
+    }
+
+    public function loadLogFile($fileName)
+    {
+        $kernel = $this->params->get('kernel.project_dir');
+        $pathLog = $kernel . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . self::DIRECTORY_LOG;
+        $finder = new Finder();
+        $finder->files()->name($fileName)->in($pathLog);
+
+        if($finder->count() > 0)
+        {
+            echo "trouvé";
+        }
+
     }
 }

@@ -1,11 +1,16 @@
 <script>
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Permet d'afficher les logs sous forme de tableau d'après les fichiers de logs
+ */
 import axios from "axios";
 
 export default {
   name: "Log",
   props: {
-    url_select: String
+    url_select: String,
+    url_load_log_file: String
   },
   data() {
     return {
@@ -33,6 +38,22 @@ export default {
     {
         this.time = event.target.value;
         this.loadData();
+    },
+
+    /**
+     * Charge le contenu d'un fichier log
+     * @param event
+     */
+    selectLogFile(event)
+    {
+      axios.post(this.url_load_log_file, {
+        'file' : event.target.value
+      }).then((response) => {
+
+
+      }).catch((error) => {
+        console.log(error);
+      }).finally();
     }
   }
 }
@@ -41,9 +62,9 @@ export default {
 <template>
   <div class="row">
     <div class="col">
-      <select class="form-select" aria-label="Default select example">
+      <select class="form-select" @change="selectLogFile($event)">
         <option selected>{{this.trans.log_select_file}}</option>
-        <option v-for="option in this.select" value="{{option.path}}">{{ option.name }}</option>
+        <option v-for="option in this.select" v-bind:value="option.path">{{ option.name }}</option>
       </select>
     </div>
     <div class="col">

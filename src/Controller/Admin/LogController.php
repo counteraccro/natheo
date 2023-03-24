@@ -8,6 +8,9 @@
 namespace App\Controller\Admin;
 
 use App\Service\LoggerService;
+use Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,9 +39,13 @@ class LogController extends AbstractController
 
     /**
      * Retourne les données des listes déroulantes des filtres pour les logs
+     * @param Request $request
+     * @param LoggerService $loggerService
+     * @param TranslatorInterface $translator
      * @return JsonResponse
+     * @throws Exception
      */
-    #[Route('/ajax/data-select-log', name: 'ajax_data_select_log')]
+    #[Route('/ajax/data-select-log', name: 'ajax_data_select_log', methods: ['POST'])]
     public function dataSelect(Request $request, LoggerService $loggerService, TranslatorInterface $translator): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -50,7 +57,27 @@ class LogController extends AbstractController
             'log_select_time_yesterday' => $translator->trans('log.select-time.yesterday'),
         ];
 
-        $files = $loggerService->getAllFiles($data['time']);
+        try {
+            $files = $loggerService->getAllFiles($data['time']);
+        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+
+        }
         return $this->json(['files' => $files, 'trans' => $tabTranslate]);
+    }
+
+    /**
+     * Retourne le contenu d'un fichier de log
+     * @param Request $request
+     * @param LoggerService $loggerService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/load-log-file', name: 'ajax_load_log_file', methods: ['POST'])]
+    public function loadLogFile(Request $request, LoggerService $loggerService): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $loggerService->loadLogFile($data['file']);
+
+        return $this->json(['oki']);
     }
 }
