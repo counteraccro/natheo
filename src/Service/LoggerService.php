@@ -8,7 +8,9 @@
 namespace App\Service;
 
 use App\Entity\Admin\User;
+use App\Service\Admin\GridService;
 use Exception;
+use Monolog\Level;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
@@ -30,6 +32,11 @@ class LoggerService extends AppService
      * @var LoggerInterface
      */
     private LoggerInterface $doctrineLogLogger;
+
+    /**
+     * @var GridService
+     */
+    private GridService $gridService;
 
     /**
      * Action doctrine persistance
@@ -56,10 +63,11 @@ class LoggerService extends AppService
     const DIRECTORY_LOG = 'log';
 
     public function __construct(TranslatorInterface $translator, RequestStack $requestStack, LoggerInterface $authLogger,
-                                LoggerInterface     $doctrineLogLogger, Security $security, ContainerBagInterface $params)
+                                LoggerInterface     $doctrineLogLogger, Security $security, ContainerBagInterface $params, GridService $gridService)
     {
         $this->authLogger = $authLogger;
         $this->doctrineLogLogger = $doctrineLogLogger;
+        $this->gridService = $gridService;
         parent::__construct($translator, $requestStack, $security, $params);
     }
 
@@ -130,36 +138,99 @@ class LoggerService extends AppService
         $pathLog = $kernel . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . self::DIRECTORY_LOG;
 
         $finder = new Finder();
-        if($date !== "")
-        {
+        if ($date !== "") {
             $date = new \DateTime($date);
             //print_r($date->format('Y-m-d'));
-            $finder->files()->in($pathLog)->name('*-'. $date->format('Y-m-d') . '.log');
-        }
-        else {
+            $finder->files()->in($pathLog)->name('*-' . $date->format('Y-m-d') . '.log');
+        } else {
             $finder->files()->in($pathLog);
         }
 
 
         $return = [];
-        foreach($finder as $file)
-        {
+        foreach ($finder as $file) {
             $return[] = ['type' => 'file', 'name' => $file->getRelativePathname(), 'path' => $file->getFilename()];
         }
         return $return;
     }
 
-    public function loadLogFile($fileName)
+    /**
+     * Retourne sous la forme d'un tableau GRID le contenu du fichier envoyé en paramètre
+     * @param $fileName
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function loadLogFile($fileName): array
     {
+        $column = [
+            $this->translator->trans('log.grid.level'),
+            $this->translator->trans('log.grid.date'),
+            $this->translator->trans('log.grid.message'),
+        ];
+
         $kernel = $this->params->get('kernel.project_dir');
         $pathLog = $kernel . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . self::DIRECTORY_LOG;
         $finder = new Finder();
         $finder->files()->name($fileName)->in($pathLog);
 
-        if($finder->count() > 0)
-        {
-            echo "trouvé";
+        $tab = [];
+        $total = 0;
+        if ($finder->count() > 0 && $finder->count() === 1) {
+            $iterator = $finder->getIterator();
+            $iterator->rewind();
+            $file = $iterator->current();
+
+            $content = $file->openFile();
+
+            $i = 0;
+            while (!$content->eof()) {
+                if ($i > 50) {
+                    break;
+                }
+
+                $line = json_decode($content->fgets(), true);
+                if (is_array($line)) {
+                    $tab[] = $this->formatLog($line);
+                }
+                $i++;
+                $total++;
+            }
         }
 
+        $tabReturn = [
+            'nb' => $total,
+            'data' => $tab,
+            'column' => $column,
+        ];
+        return $this->gridService->addAllDataRequiredGrid($tabReturn);
+
+    }
+
+    /**
+     * Permet de formater les logs pour l'affichage
+     * @param array $tabLog
+     * @return array
+     * @throws Exception
+     */
+    private function formatLog(array $tabLog): array
+    {
+
+        $date = new \DateTime($tabLog['datetime']);
+        $date_str = $date->format('d-m-Y h:i:s');
+
+        $class = match ( Level::fromName($tabLog['level_name'])) {
+            Level::Debug => 'badge text-bg-light',
+            Level::Notice, Level::Info => 'badge text-bg-info',
+            Level::Warning => 'badge text-bg-warning',
+            Level::Error, Level::Critical, Level::Alert, Level::Emergency => 'badge text-bg-danger',
+            default => '',
+        };
+
+        return [
+            $this->translator->trans('log.grid.message') => $tabLog['message'],
+            $this->translator->trans('log.grid.date') => $date_str,
+            $this->translator->trans('log.grid.level') => '<span class="' . $class . '">' . $tabLog['level_name'] . '</span>',
+        ];
     }
 }
