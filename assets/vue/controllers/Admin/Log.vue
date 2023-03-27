@@ -175,10 +175,10 @@ export default {
           @redirect-action="redirectAction">
       </Grid>
       <GridPaginate
-          :current-page="page"
+          :current-page="cPage"
           :nb-elements="limit"
           :nb-elements-total="nbElements"
-          :url="url"
+          :url="url_load_log_file"
           :list-limit="listLimit"
           :translate="translateGridPaginate"
           @change-page-event="loadContentFile"

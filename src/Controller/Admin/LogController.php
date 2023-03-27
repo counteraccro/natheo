@@ -76,7 +76,7 @@ class LogController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        $grid = $loggerService->loadLogFile($data['file']);
+        $grid = $loggerService->loadLogFile($data['file'], $data['page'],  $data['limit']);
 
         return $this->json($grid);
     }

@@ -156,12 +156,13 @@ class LoggerService extends AppService
 
     /**
      * Retourne sous la forme d'un tableau GRID le contenu du fichier envoyé en paramètre
-     * @param $fileName
+     * @param string $fileName
+     * @param int $page
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function loadLogFile($fileName): array
+    public function loadLogFile(string $fileName, int $page, int $limit): array
     {
         $column = [
             $this->translator->trans('log.grid.level'),
@@ -181,20 +182,34 @@ class LoggerService extends AppService
             $iterator->rewind();
             $file = $iterator->current();
 
+            $total = substr_count($file->getContents(), "\n");
+
             $content = $file->openFile();
 
-            $i = 0;
+
+            $i = ($limit * $page) - $limit;
+            $begin = $i;
+            $nb = 0;
             while (!$content->eof()) {
-                if ($i > 50) {
+
+                if ($i > $limit * $page || $nb === $total) {
                     break;
                 }
 
-                $line = json_decode($content->fgets(), true);
-                if (is_array($line)) {
-                    $tab[] = $this->formatLog($line);
+                //var_dump($nb . '>' .  $begin);
+                if($nb > $begin)
+                {
+                    //var_dump($i);
+                    $line = json_decode($content->fgets(), true);
+                    if (is_array($line)) {
+                        $tab[] = $this->formatLog($line);
+                    }
+                    $i++;
                 }
-                $i++;
-                $total++;
+                else {
+                    $tmp = $content->fgets();
+                }
+                $nb++;
             }
         }
 
