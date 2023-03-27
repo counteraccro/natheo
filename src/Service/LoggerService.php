@@ -177,15 +177,15 @@ class LoggerService extends AppService
 
         $tab = [];
         $total = 0;
+        $taille = 0;
         if ($finder->count() > 0 && $finder->count() === 1) {
             $iterator = $finder->getIterator();
             $iterator->rewind();
             $file = $iterator->current();
 
             $total = substr_count($file->getContents(), "\n");
-
+            $taille = $file->getSize();
             $content = $file->openFile();
-
 
             $i = ($limit * $page) - $limit;
             $begin = $i;
@@ -196,17 +196,13 @@ class LoggerService extends AppService
                     break;
                 }
 
-                //var_dump($nb . '>' .  $begin);
-                if($nb > $begin)
-                {
-                    //var_dump($i);
+                if ($nb > $begin) {
                     $line = json_decode($content->fgets(), true);
                     if (is_array($line)) {
                         $tab[] = $this->formatLog($line);
                     }
                     $i++;
-                }
-                else {
+                } else {
                     $tmp = $content->fgets();
                 }
                 $nb++;
@@ -214,9 +210,10 @@ class LoggerService extends AppService
         }
 
         $tabReturn = [
-            'nb' => $total,
+            'nb' => ($total - 1),
             'data' => $tab,
             'column' => $column,
+            'taille' => $this->getSizeName($taille),
         ];
         return $this->gridService->addAllDataRequiredGrid($tabReturn);
 
@@ -234,7 +231,7 @@ class LoggerService extends AppService
         $date = new \DateTime($tabLog['datetime']);
         $date_str = $date->format('d-m-Y h:i:s');
 
-        $class = match ( Level::fromName($tabLog['level_name'])) {
+        $class = match (Level::fromName($tabLog['level_name'])) {
             Level::Debug => 'badge text-bg-light',
             Level::Notice, Level::Info => 'badge text-bg-info',
             Level::Warning => 'badge text-bg-warning',
@@ -247,5 +244,32 @@ class LoggerService extends AppService
             $this->translator->trans('log.grid.date') => $date_str,
             $this->translator->trans('log.grid.level') => '<span class="' . $class . '">' . $tabLog['level_name'] . '</span>',
         ];
+    }
+
+    /**
+     * Converti la taille de fichier en octet en Ko, Mo, GO
+     * @param int $octet
+     * @return string
+     */
+    private function getSizeName(int $octet): string
+    {
+        $unite = array(' octet',' Ko',' Mo',' Go');
+
+        if ($octet < 1000) {
+            return $octet.$unite[0];
+        } else {
+            if ($octet < 1000000) {
+                $ko = round($octet/1024,2);
+                return $ko.$unite[1];
+            } else {
+                if ($octet < 1000000000) {
+                    $mo = round($octet/(1024*1024),2);
+                    return $mo.$unite[2];
+                } else {
+                    $go = round($octet/(1024*1024*1024),2);
+                    return $go.$unite[3];
+                }
+            }
+        }
     }
 }

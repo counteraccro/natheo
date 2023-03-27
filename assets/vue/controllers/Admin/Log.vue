@@ -44,6 +44,7 @@ export default {
       confirmModal: '',
       msgConfirm: '',
       selectFile: '',
+      taille: 0,
     }
   },
   mounted() {
@@ -94,6 +95,7 @@ export default {
         this.translateGrid = JSON.parse(response.data.translate.grid);
         this.cPage = page;
         this.cLimit = limit;
+        this.taille = response.data.taille;
       }).catch((error) => {
         console.log(error);
       }).finally(() => this.loading = false);
@@ -124,66 +126,78 @@ export default {
   </div>
 
   <div v-if="selectFile !== ''">
-    <form id="search">
-      <div class="input-group mb-3">
-        <span class="input-group-text"><i class="bi bi-search"></i></span>
-        <input type="text" class="form-control" :placeholder="translate.placeholder" v-model="searchQuery">
+
+    <div class="card mt-3">
+      <div class="card-header text-bg-secondary">
+        <div class="btn btn-danger btn-sm float-end">Delete</div>
+        Fichier {{ this.selectFile }} - Taille {{ this.taille }} - {{ this.nbElements }} lignes
+
       </div>
-    </form>
+      <div class="card-body">
 
-
-    <div v-if="this.showMsgSuccess" class="alert alert-success alert-dismissible">
-      <strong><i class="bi bi-check2-circle"></i> {{ translate.titleSuccess }} </strong> <br/>
-      <span v-html="this.msgSuccess"></span>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header bg-secondary">
-            <h1 class="modal-title fs-5 text-white"><i class="bi bi-sign-stop"></i> {{ translate.confirmTitle }}</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <form id="search">
+          <div class="input-group mb-3">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control" :placeholder="translate.placeholder" v-model="searchQuery">
           </div>
-          <div class="modal-body" v-html="msgConfirm">
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" @click="redirectAction(this.cUrl, this.isAjax, false, '')">
-              <i class="bi bi-check2-circle"></i> {{ translate.confirmBtnOK }}
-            </button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-              <i class="bi bi-x-circle"></i> {{ translate.confirmBtnNo }}
-            </button>
+        </form>
+
+
+        <div v-if="this.showMsgSuccess" class="alert alert-success alert-dismissible">
+          <strong><i class="bi bi-check2-circle"></i> {{ translate.titleSuccess }} </strong> <br/>
+          <span v-html="this.msgSuccess"></span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header bg-secondary">
+                <h1 class="modal-title fs-5 text-white"><i class="bi bi-sign-stop"></i> {{ translate.confirmTitle }}
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body" v-html="msgConfirm">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" @click="redirectAction(this.cUrl, this.isAjax, false, '')">
+                  <i class="bi bi-check2-circle"></i> {{ translate.confirmBtnOK }}
+                </button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                  <i class="bi bi-x-circle"></i> {{ translate.confirmBtnNo }}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div :class="loading === true ? 'block-grid' : ''">
-      <div v-if="loading" class="overlay">
-        <div class="position-absolute top-50 start-50 translate-middle">
-          <div class="spinner-border text-primary" role="status"></div>
-          <span class="txt-overlay">{{ translate.loading }}</span>
+        <div :class="loading === true ? 'block-grid' : ''">
+          <div v-if="loading" class="overlay">
+            <div class="position-absolute top-50 start-50 translate-middle">
+              <div class="spinner-border text-primary" role="status"></div>
+              <span class="txt-overlay">{{ translate.loading }}</span>
+            </div>
+          </div>
+          <Grid
+              :data="gridData"
+              :columns="gridColumns"
+              :filter-key="searchQuery"
+              :sortOrders="sortOrders"
+              :translate="translateGrid"
+              @redirect-action="redirectAction">
+          </Grid>
+          <GridPaginate
+              :current-page="cPage"
+              :nb-elements="limit"
+              :nb-elements-total="nbElements"
+              :url="url_load_log_file"
+              :list-limit="listLimit"
+              :translate="translateGridPaginate"
+              @change-page-event="loadContentFile"
+          >
+          </GridPaginate>
         </div>
       </div>
-      <Grid
-          :data="gridData"
-          :columns="gridColumns"
-          :filter-key="searchQuery"
-          :sortOrders="sortOrders"
-          :translate="translateGrid"
-          @redirect-action="redirectAction">
-      </Grid>
-      <GridPaginate
-          :current-page="cPage"
-          :nb-elements="limit"
-          :nb-elements-total="nbElements"
-          :url="url_load_log_file"
-          :list-limit="listLimit"
-          :translate="translateGridPaginate"
-          @change-page-event="loadContentFile"
-      >
-      </GridPaginate>
     </div>
   </div>
 
