@@ -64,6 +64,7 @@ export default {
     },
     changeTimeFiltre(event) {
       this.time = event.target.value;
+      this.selectFile = '';
       this.loadData();
     },
 
@@ -73,7 +74,10 @@ export default {
      */
     selectLogFile(event) {
       this.selectFile = event.target.value;
-      this.loadContentFile(1, 50);
+      if(this.selectFile !== "")
+      {
+        this.loadContentFile(1, 50);
+      }
     },
 
     loadContentFile(page, limit) {
@@ -112,7 +116,7 @@ export default {
   <div class="row">
     <div class="col">
       <select class="form-select" @change="selectLogFile($event)">
-        <option selected>{{ this.trans.log_select_file }}</option>
+        <option value="" selected>{{ this.trans.log_select_file }}</option>
         <option v-for="option in this.select" v-bind:value="option.path">{{ option.name }}</option>
       </select>
     </div>
@@ -129,8 +133,8 @@ export default {
 
     <div class="card mt-3">
       <div class="card-header text-bg-secondary">
-        <div class="btn btn-danger btn-sm float-end">Delete</div>
-        Fichier {{ this.selectFile }} - Taille {{ this.taille }} - {{ this.nbElements }} lignes
+        <div class="btn btn-danger btn-sm float-end">{{ this.trans.log_btn_delete_file }}</div>
+        {{ this.trans.log_file }} {{ this.selectFile }} -  {{ this.trans.log_file_size }} {{ this.taille }} - {{ this.nbElements }} {{ this.trans.log_file_ligne }}
 
       </div>
       <div class="card-body">
@@ -198,6 +202,15 @@ export default {
           </GridPaginate>
         </div>
       </div>
+    </div>
+  </div>
+  <div class="card mt-3" v-else>
+    <div class="card-header text-bg-secondary">
+      <div class="btn btn-danger btn-sm float-end disabled">{{ this.trans.log_btn_delete_file }}</div>
+      {{ this.trans.log_file }} -- -  {{ this.trans.log_file_size }} 0 Ko - 0 {{ this.trans.log_file_ligne }}
+    </div>
+    <div class="card-body">
+      <p class="text-center"> <i class="bi bi-info-circle"></i> <i>{{ this.trans.log_empty_file}}</i></p>
     </div>
   </div>
 
