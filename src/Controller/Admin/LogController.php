@@ -55,6 +55,11 @@ class LogController extends AbstractController
             'log_select_time_all' => $translator->trans('log.select-time.all'),
             'log_select_time_now' => $translator->trans('log.select-time.now'),
             'log_select_time_yesterday' => $translator->trans('log.select-time.yesterday'),
+            'log_file' => $translator->trans('log.file'),
+            'log_file_size' => $translator->trans('log.file.size'),
+            'log_file_ligne' => $translator->trans('log.file.ligne'),
+            'log_btn_delete_file' => $translator->trans('log.btn.delete.file'),
+            'log_empty_file' => $translator->trans('log.empty.file')
         ];
 
         try {

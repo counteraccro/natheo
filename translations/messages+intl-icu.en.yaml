@@ -164,3 +164,11 @@ log.select-time.yesterday: __log.select-time.yesterday
 log.page_title: __log.page_title
 log.page_title_h1: __log.page_title_h1
 log.description: __log.description
+log.grid.level: __log.grid.level
+log.grid.date: __log.grid.date
+log.grid.message: __log.grid.message
+log.file: __log.file
+log.file.size: __log.file.size
+log.file.ligne: __log.file.ligne
+log.btn.delete.file: __log.btn.delete.file
+log.empty.file: __log.empty.file

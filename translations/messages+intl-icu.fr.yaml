@@ -163,4 +163,12 @@ log.description: 'Consulter / vider les logs applicatifs '
 log.select-file: 'Choix du fichier de log'
 log.select-time.all: 'Tous les logs'
 log.select-time.now: "Aujourd'hui"
-log.select-time.yesterday: "Hier"
+log.select-time.yesterday: Hier
+log.grid.level: Niveau
+log.grid.date: Date
+log.grid.message: Message
+log.file: Fichier
+log.file.size: Taille
+log.file.ligne: Lignes
+log.btn.delete.file: Supprimer
+log.empty.file: "Veuillez sélectionner un fichier pour pouvoir en lire le contenu ou le supprimer"
