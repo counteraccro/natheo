@@ -180,7 +180,7 @@ class LoggerService extends AppService
         $tab = [];
         $total = 0;
         $taille = 0;
-        if ($finder->count() > 0 && $finder->count() === 1) {
+        if ($finder->hasResults() && $finder->count() === 1) {
             $iterator = $finder->getIterator();
             $iterator->rewind();
             $file = $iterator->current();
@@ -198,7 +198,7 @@ class LoggerService extends AppService
                     break;
                 }
 
-                if ($nb > $begin) {
+                if ($nb >= $begin) {
                     $line = json_decode($content->fgets(), true);
                     if (is_array($line)) {
                         $tab[] = $this->formatLog($line);
@@ -212,7 +212,7 @@ class LoggerService extends AppService
         }
 
         $tabReturn = [
-            'nb' => ($total - 1),
+            'nb' => $total,
             'data' => $tab,
             'column' => $column,
             'taille' => Utils::getSizeName($taille),
@@ -261,13 +261,7 @@ class LoggerService extends AppService
         $pathLog = $kernel . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . self::DIRECTORY_LOG;
         $finder = new Finder();
 
-        if($fileName === 'all')
-        {
-            $finder->files()->in($pathLog);
-        }
-        else {
-            $finder->files()->name($fileName)->in($pathLog);
-        }
+        $finder->files()->name($fileName)->in($pathLog);
 
         if($finder->hasResults())
         {
