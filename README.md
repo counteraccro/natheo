@@ -1,4 +1,4 @@
 # natheo
 
+[Documentation](https://counteraccro.github.io/natheo.doc/)
 
-[Documentation](Docs/index.md)
