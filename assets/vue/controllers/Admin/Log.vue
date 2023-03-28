@@ -177,7 +177,7 @@ export default {
     <div class="card mt-3">
       <div class="card-header text-bg-secondary">
         <div class="btn btn-danger btn-sm float-end" @click="this.delete(this.selectFile, true)">{{ this.trans.log_btn_delete_file }}</div>
-        {{ this.trans.log_file }} {{ this.selectFile }} - {{ this.trans.log_file_size }} {{ this.taille }} - {{ this.nbElements }} {{ this.trans.log_file_ligne }}
+        <div class="mt-1">{{ this.trans.log_file }} {{ this.selectFile }} - {{ this.trans.log_file_size }} {{ this.taille }} - {{ this.nbElements }} {{ this.trans.log_file_ligne }}</div>
 
       </div>
       <div class="card-body">
@@ -255,7 +255,7 @@ export default {
   <div class="card mt-3" v-else>
     <div class="card-header text-bg-secondary">
       <div class="btn btn-danger btn-sm float-end disabled">{{ this.trans.log_btn_delete_file }}</div>
-      {{ this.trans.log_file }} -- - {{ this.trans.log_file_size }} 0 Ko - 0 {{ this.trans.log_file_ligne }}
+      <div class="mt-1">{{ this.trans.log_file }} -- - {{ this.trans.log_file_size }} 0 Ko - 0 {{ this.trans.log_file_ligne }}</div>
     </div>
     <div class="card-body">
       <p class="text-center"><i class="bi bi-info-circle"></i> <i>{{ this.trans.log_empty_file }}</i></p>
