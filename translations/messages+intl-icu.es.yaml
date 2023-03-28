@@ -172,3 +172,8 @@ log.file.size: __log.file.size
 log.file.ligne: __log.file.ligne
 log.btn.delete.file: __log.btn.delete.file
 log.empty.file: __log.empty.file
+log.delete.file.confirm: __log.delete.file.confirm
+log.delete.file.confirm_2: __log.delete.file.confirm_2
+log.delete.file.loading: __log.delete.file.loading
+log.delete.file.success: __log.delete.file.success
+log.delete.file.btn_close: __log.delete.file.btn_close

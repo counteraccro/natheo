@@ -9,6 +9,7 @@ namespace App\Service;
 
 use App\Entity\Admin\User;
 use App\Service\Admin\GridService;
+use App\Utils\Utils;
 use Exception;
 use Monolog\Level;
 use Psr\Container\ContainerExceptionInterface;
@@ -17,6 +18,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -213,7 +215,7 @@ class LoggerService extends AppService
             'nb' => ($total - 1),
             'data' => $tab,
             'column' => $column,
-            'taille' => $this->getSizeName($taille),
+            'taille' => Utils::getSizeName($taille),
         ];
         return $this->gridService->addAllDataRequiredGrid($tabReturn);
 
@@ -247,29 +249,35 @@ class LoggerService extends AppService
     }
 
     /**
-     * Converti la taille de fichier en octet en Ko, Mo, GO
-     * @param int $octet
-     * @return string
+     * Permet de supprimer un fichier de log
+     * @param string $fileName
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    private function getSizeName(int $octet): string
+    public function deleteLog(string $fileName): bool
     {
-        $unite = array(' octet',' Ko',' Mo',' Go');
+        $kernel = $this->params->get('kernel.project_dir');
+        $pathLog = $kernel . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . self::DIRECTORY_LOG;
+        $finder = new Finder();
 
-        if ($octet < 1000) {
-            return $octet.$unite[0];
-        } else {
-            if ($octet < 1000000) {
-                $ko = round($octet/1024,2);
-                return $ko.$unite[1];
-            } else {
-                if ($octet < 1000000000) {
-                    $mo = round($octet/(1024*1024),2);
-                    return $mo.$unite[2];
-                } else {
-                    $go = round($octet/(1024*1024*1024),2);
-                    return $go.$unite[3];
-                }
-            }
+        if($fileName === 'all')
+        {
+            $finder->files()->in($pathLog);
         }
+        else {
+            $finder->files()->name($fileName)->in($pathLog);
+        }
+
+        if($finder->hasResults())
+        {
+            foreach($finder as $file)
+            {
+                $filesystem = new Filesystem();
+                $filesystem->remove($file);
+            }
+            return true;
+        }
+        return false;
     }
 }

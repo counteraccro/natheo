@@ -59,7 +59,12 @@ class LogController extends AbstractController
             'log_file_size' => $translator->trans('log.file.size'),
             'log_file_ligne' => $translator->trans('log.file.ligne'),
             'log_btn_delete_file' => $translator->trans('log.btn.delete.file'),
-            'log_empty_file' => $translator->trans('log.empty.file')
+            'log_empty_file' => $translator->trans('log.empty.file'),
+            'log_delete_file_confirm' => $translator->trans('log.delete.file.confirm'),
+            'log_delete_file_confirm_2' => $translator->trans('log.delete.file.confirm_2'),
+            'log_delete_file_loading' => $translator->trans('log.delete.file.loading'),
+            'log_delete_file_success' => $translator->trans('log.delete.file.success'),
+            'log_delete_file_btn_close' => $translator->trans('log.delete.file.btn_close'),
         ];
 
         try {
@@ -81,8 +86,29 @@ class LogController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        $grid = $loggerService->loadLogFile($data['file'], $data['page'],  $data['limit']);
+        $grid = [];
+        try {
+            $grid = $loggerService->loadLogFile($data['file'], $data['page'], $data['limit']);
+        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+            //TODO traiter le try-catch
+        }
 
         return $this->json($grid);
+    }
+
+    /**
+     * Permet de supprimer un ou plusieurs fichiers
+     * @param Request $request
+     * @param LoggerService $loggerService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/delete-file', name: 'ajax_delete_file', methods: ['POST'])]
+    public function deleteFile(Request $request, LoggerService $loggerService): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $success = $loggerService->deleteLog($data['file']);
+
+        return $this->json(['success' => $success]);
     }
 }
