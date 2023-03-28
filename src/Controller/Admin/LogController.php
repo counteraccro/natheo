@@ -7,6 +7,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Service\Admin\OptionUserService;
 use App\Service\LoggerService;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -23,7 +24,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/log', name: 'admin_log_', requirements: ['_locale' => '%app.supported_locales%'])]
 #[IsGranted('ROLE_SUPER_ADMIN')]
-class LogController extends AbstractController
+class LogController extends AppAdminController
 {
     #[Route('/', name: 'index')]
     public function index(): Response
@@ -34,6 +35,7 @@ class LogController extends AbstractController
 
         return $this->render('admin/log/index.html.twig', [
             'breadcrumb' => $breadcrumb,
+            'limit' => $this->optionUserService->getValueByKey(OptionUserService::OU_NB_ELEMENT),
         ]);
     }
 
