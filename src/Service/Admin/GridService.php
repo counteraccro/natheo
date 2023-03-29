@@ -14,6 +14,21 @@ class GridService extends AppAdminService
     const KEY_ACTION = 'action';
 
     /**
+     * Clé pour le nombre d'éléments
+     */
+    const KEY_NB = 'nb';
+
+    /**
+     * Clé pour les données
+     */
+    const KEY_DATA = 'data';
+
+    /**
+     * Clé pour les colonnes
+     */
+    const KEY_COLUMN = 'column';
+
+    /**
      * Retourne l'ensemble des données obligatoires pour le grid
      * @param array $tab
      * @return array

@@ -102,9 +102,9 @@ class UserService extends AppAdminService
         }
 
         $tabReturn = [
-            'nb' => $nb,
-            'data' => $data,
-            'column' => $column,
+            GridService::KEY_NB => $nb,
+            GridService::KEY_DATA => $data,
+            GridService::KEY_COLUMN => $column,
         ];
         return $this->gridService->addAllDataRequiredGrid($tabReturn);
 
@@ -122,13 +122,12 @@ class UserService extends AppAdminService
 
         // Bouton disabled
         $action_disabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
-            'id' => $user->getId(),
             'url' => $this->router->generate('admin_user_update_disabled', ['id' => $user->getId()]),
             'ajax' => true,
             'confirm' => true,
             'msgConfirm' => $this->translator->trans('user.confirm.disabled.msg', ['{login}' => $user->getLogin()])];
         if ($user->isDisabled()) {
-            $action_disabled = ['label' => '<i class="bi bi-eye-fill"></i>', 'id' => $user->getId(), 'url' => $this->router->generate('admin_user_update_disabled', ['id' => $user->getId()]), 'ajax' => true];
+            $action_disabled = ['label' => '<i class="bi bi-eye-fill"></i>', 'url' => $this->router->generate('admin_user_update_disabled', ['id' => $user->getId()]), 'ajax' => true];
         }
 
         $actions[] = $action_disabled;
@@ -146,7 +145,6 @@ class UserService extends AppAdminService
 
             $action_delete = [
                 'label' => '<i class="bi bi-trash"></i>',
-                'id' => $user->getId(),
                 'url' => $this->router->generate('admin_user_delete', ['id' => $user->getId()]),
                 'ajax' => true,
                 'confirm' => true,
