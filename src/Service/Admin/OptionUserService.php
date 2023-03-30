@@ -106,7 +106,7 @@ class OptionUserService extends AppAdminService
     /**
      * Retourne une valeur option user en fonction de sa clé
      * @param string $key
-     * @param bool $no_session
+     * @param bool $session
      * @return string
      */
     public function getValueByKey(string $key, bool $session = true): string
@@ -123,8 +123,10 @@ class OptionUserService extends AppAdminService
         $value = $this->getByKey($key)->getValue();
 
         // Mise à jour de la session avec les options sauvegardées
-        $tabOptions[$key] = $value;
-        $this->requestStack->getSession()->set(self::KEY_SESSION_TAB_OPTIONS, $tabOptions);
+        if ($this->requestStack->getCurrentRequest() != null) {
+            $tabOptions[$key] = $value;
+            $this->requestStack->getSession()->set(self::KEY_SESSION_TAB_OPTIONS, $tabOptions);
+        }
         return $value;
     }
 

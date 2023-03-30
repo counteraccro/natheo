@@ -6,7 +6,6 @@
  */
 namespace App\DataFixtures;
 
-use App\Kernel;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
