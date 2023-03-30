@@ -4,6 +4,7 @@
  * @version 1.0
  * Fixture pour l'entité option_system
  */
+
 namespace App\DataFixtures\Admin;
 
 use App\DataFixtures\AppFixtures;
@@ -21,11 +22,9 @@ class OptionSystemFixtures extends AppFixtures implements FixtureGroupInterface,
     public function load(ObjectManager $manager): void
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::OPTION_SYSTEM_FIXTURES_DATA_FILE);
-        foreach($data['option_system'] as $id => $data)
-        {
+        foreach ($data['option_system'] as $data) {
             $optionSystem = new OptionSystem();
-            foreach($data as $key => $value)
-            {
+            foreach ($data as $key => $value) {
                 $this->setData($key, $value, $optionSystem);
             }
             $manager->persist($optionSystem);

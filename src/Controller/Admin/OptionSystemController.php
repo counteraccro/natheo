@@ -13,7 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/admin/{_locale}/options-system', name: 'admin_option-system_', requirements: ['_locale' => '%app.supported_locales%'])]
+#[Route('/admin/{_locale}/options-system', name: 'admin_option-system_',
+    requirements: ['_locale' => '%app.supported_locales%'])]
 #[IsGranted('ROLE_SUPER_ADMIN')]
 class OptionSystemController extends AppAdminController
 {

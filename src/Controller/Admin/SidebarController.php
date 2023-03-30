@@ -4,6 +4,7 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
+
 namespace App\Controller\Admin;
 
 use App\Entity\Admin\SidebarElement;
@@ -46,7 +47,7 @@ class SidebarController extends AppAdminController
      * @param SidebarElementService $sidebarElementService
      * @return JsonResponse
      */
-    #[Route('/ajax/load-grid-data', name: 'load_grid_data' , methods: ['POST'])]
+    #[Route('/ajax/load-grid-data', name: 'load_grid_data', methods: ['POST'])]
     public function loadGridData(Request $request, SidebarElementService $sidebarElementService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -57,18 +58,27 @@ class SidebarController extends AppAdminController
     /**
      * Disabled ou non un sidebarElement
      * @param SidebarElement $sidebarElement
+     * @param SidebarElementService $sidebarElementService
+     * @param TranslatorInterface $translator
      * @return JsonResponse
      */
     #[Route('/ajax/update-disabled/{id}', name: 'update_disabled')]
-    public function updateDisabled(SidebarElement $sidebarElement, SidebarElementService $sidebarElementService, TranslatorInterface $translator): JsonResponse
+    public function updateDisabled(SidebarElement      $sidebarElement, SidebarElementService $sidebarElementService,
+                                   TranslatorInterface $translator
+    ): JsonResponse
     {
         $sidebarElement->setDisabled(!$sidebarElement->isDisabled());
         $sidebarElementService->save($sidebarElement);
 
-        $msg = $translator->trans('sidebar.success.no.disabled', ['label' => '<i class="bi ' . $sidebarElement->getIcon() . '"></i> ' . $translator->trans($sidebarElement->getLabel())]);
-        if($sidebarElement->isDisabled())
-        {
-            $msg = $translator->trans('sidebar.success.disabled', ['label' => '<i class="bi ' . $sidebarElement->getIcon() . '"></i> ' . $translator->trans($sidebarElement->getLabel())]);
+        $msg = $translator->trans('sidebar.success.no.disabled',
+            ['label' => '<i class="bi ' . $sidebarElement->getIcon() . '"></i> ' .
+                $translator->trans($sidebarElement->getLabel())]
+        );
+        if ($sidebarElement->isDisabled()) {
+            $msg = $translator->trans('sidebar.success.disabled',
+                ['label' => '<i class="bi ' . $sidebarElement->getIcon() . '"></i> ' .
+                    $translator->trans($sidebarElement->getLabel())]
+            );
         }
 
         return $this->json(['type' => 'success', 'msg' => $msg]);

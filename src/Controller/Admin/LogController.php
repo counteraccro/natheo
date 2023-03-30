@@ -48,7 +48,8 @@ class LogController extends AppAdminController
      * @throws Exception
      */
     #[Route('/ajax/data-select-log', name: 'ajax_data_select_log', methods: ['POST'])]
-    public function dataSelect(Request $request, LoggerService $loggerService, TranslatorInterface $translator): JsonResponse
+    public function dataSelect(Request $request, LoggerService $loggerService, TranslatorInterface $translator):
+    JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -72,7 +73,7 @@ class LogController extends AppAdminController
         try {
             $files = $loggerService->getAllFiles($data['time']);
         } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
-
+            die($e->getMessage());
         }
         return $this->json(['files' => $files, 'trans' => $tabTranslate]);
     }
@@ -92,7 +93,7 @@ class LogController extends AppAdminController
         try {
             $grid = $loggerService->loadLogFile($data['file'], $data['page'], $data['limit']);
         } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
-            //TODO traiter le try-catch
+            die($e->getMessage());
         }
 
         return $this->json($grid);

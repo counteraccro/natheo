@@ -82,9 +82,11 @@ class LoggerService extends AppService
      */
     const DIRECTORY_LOG = 'log';
 
-    public function __construct(TranslatorInterface $translator, RequestStack $requestStack, LoggerInterface $authLogger,
-                                LoggerInterface     $doctrineLogLogger, Security $security, ContainerBagInterface $params, GridService $gridService,
-                                OptionSystemService $optionSystemService, OptionUserService $optionUserService, LocaleAwareInterface $localeAware)
+    public function __construct(TranslatorInterface $translator, RequestStack $requestStack,
+                                LoggerInterface $authLogger, LoggerInterface $doctrineLogLogger, Security $security,
+                                ContainerBagInterface $params, GridService $gridService,
+                                OptionSystemService $optionSystemService, OptionUserService
+                                $optionUserService, LocaleAwareInterface $localeAware)
     {
         $this->authLogger = $authLogger;
         $this->doctrineLogLogger = $doctrineLogLogger;
@@ -130,34 +132,42 @@ class LoggerService extends AppService
         /** @var User $currentUser */
         $currentUser = $this->security->getUser();
         $user = 'John doe';
-        $id_user = '-';
+        $idUser = '-';
         if ($currentUser != null) {
             $user = $currentUser->getEmail();
-            $id_user = $currentUser->getId();
+            $idUser = $currentUser->getId();
         }
 
         // On force le changement de langue pour éviter d'enregistrer les logs dans la langue du user courant
         $this->switchDefaultLocale('system');
         switch ($action) {
             case self::ACTION_DOCTRINE_PERSIST :
-                $msg = $this->translator->trans('log.doctrine.persit', ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $id_user]);
+                $msg = $this->translator->trans('log.doctrine.persit',
+                    ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $idUser]
+                );
                 $this->doctrineLogLogger->notice($msg);
                 break;
             case self::ACTION_DOCTRINE_REMOVE :
-                $msg = $this->translator->trans('log.doctrine.remove', ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $id_user]);
+                $msg = $this->translator->trans('log.doctrine.remove',
+                    ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $idUser]
+                );
                 $this->doctrineLogLogger->warning($msg);
                 break;
             case self::ACTION_DOCTRINE_UPDATE :
-                $msg = $this->translator->trans('log.doctrine.update', ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $id_user]);
+                $msg = $this->translator->trans('log.doctrine.update',
+                    ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $idUser]
+                );
                 $this->doctrineLogLogger->info($msg);
                 break;
+            default:
+                $msg = '';
         }
         $this->switchDefaultLocale();
     }
 
     /**
      * Retourne l'ensemble des logs (nom de fichiers) en respectant l'arborescence des logs
-     * @param string|null $date
+     * @param string $date
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -171,7 +181,6 @@ class LoggerService extends AppService
         $finder = new Finder();
         if ($date !== "") {
             $date = new \DateTime($date);
-            //print_r($date->format('Y-m-d'));
             $finder->files()->in($pathLog)->name('*-' . $date->format('Y-m-d') . '.log');
         } else {
             $finder->files()->in($pathLog);
@@ -189,6 +198,7 @@ class LoggerService extends AppService
      * Retourne sous la forme d'un tableau GRID le contenu du fichier envoyé en paramètre
      * @param string $fileName
      * @param int $page
+     * @param int $limit
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -260,7 +270,7 @@ class LoggerService extends AppService
     {
 
         $date = new \DateTime($tabLog['datetime']);
-        $date_str = $date->format('d-m-Y h:i:s');
+        $dateStr = $date->format('d-m-Y h:i:s');
 
         $class = match (Level::fromName($tabLog['level_name'])) {
             Level::Debug => 'badge text-bg-light',
@@ -272,8 +282,9 @@ class LoggerService extends AppService
 
         return [
             $this->translator->trans('log.grid.message') => $tabLog['message'],
-            $this->translator->trans('log.grid.date') => $date_str,
-            $this->translator->trans('log.grid.level') => '<span class="' . $class . '">' . $tabLog['level_name'] . '</span>',
+            $this->translator->trans('log.grid.date') => $dateStr,
+            $this->translator->trans('log.grid.level') => '<span class="' . $class . '">'
+                . $tabLog['level_name'] . '</span>',
         ];
     }
 
@@ -303,7 +314,8 @@ class LoggerService extends AppService
     }
 
     /**
-     * Permet de forcer la locale si besoin pour enregistrer les logs uniquement dans la langue par défault du site et non la langue du user courant
+     * Permet de forcer la locale si besoin pour enregistrer les logs uniquement dans la langue par défaut du site et
+     * non la langue du user courant
      * @param string $typeOption user ou system
      * @return void
      */

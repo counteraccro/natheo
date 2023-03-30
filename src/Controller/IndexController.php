@@ -4,6 +4,7 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
+
 namespace App\Controller;
 
 use Doctrine\DBAL\Connection;
@@ -13,7 +14,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/', name: 'index_', requirements: ['_locale' => '%app.supported_locales%'], defaults: ["_locale" => "%app.default_locale%"])]
+#[Route('/', name: 'index_', requirements: ['_locale' => '%app.supported_locales%'],
+    defaults: ["_locale" => "%app.default_locale%"])]
 class IndexController extends AbstractController
 {
     /**
@@ -23,8 +25,8 @@ class IndexController extends AbstractController
     #[Route('/', name: 'no_local')]
     public function indexNoLocale(): RedirectResponse
     {
-        $default_local = $this->getParameter('app.default_locale');
-        return $this->redirectToRoute('index_index', ['_locale' => $default_local]);
+        $defaultLocal = $this->getParameter('app.default_locale');
+        return $this->redirectToRoute('index_index', ['_locale' => $defaultLocal]);
     }
 
     /**
@@ -36,9 +38,8 @@ class IndexController extends AbstractController
         $cs = $connection->createSchemaManager();
         try {
             var_dump($cs->listDatabases());
-        } catch (Exception $exception)
-        {
-            echo 'oki';
+        } catch (Exception $exception) {
+            die($exception->getMessage());
         }
 
         return $this->render('index/index.html.twig', [
