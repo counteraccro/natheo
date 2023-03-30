@@ -5,6 +5,7 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
+
 namespace App\Controller\Admin;
 
 use App\Entity\Admin\User;
@@ -76,7 +77,7 @@ class UserController extends AppAdminController
      * @param UserService $userService
      * @return JsonResponse
      */
-    #[Route('/ajax/load-grid-data', name: 'load_grid_data' , methods: ['POST'])]
+    #[Route('/ajax/load-grid-data', name: 'load_grid_data', methods: ['POST'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]
     public function loadGridData(Request $request, UserService $userService): JsonResponse
     {
@@ -100,8 +101,7 @@ class UserController extends AppAdminController
         $userService->save($user);
 
         $msg = $translator->trans('user.success.no.disabled', ['login' => $user->getLogin()]);
-        if($user->isDisabled())
-        {
+        if ($user->isDisabled()) {
             $msg = $translator->trans('user.success.disabled', ['login' => $user->getLogin()]);
         }
 
