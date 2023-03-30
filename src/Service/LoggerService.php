@@ -9,6 +9,8 @@ namespace App\Service;
 
 use App\Entity\Admin\User;
 use App\Service\Admin\GridService;
+use App\Service\Admin\OptionSystemService;
+use App\Service\Admin\OptionUserService;
 use App\Utils\Utils;
 use Exception;
 use Monolog\Level;
@@ -41,6 +43,11 @@ class LoggerService extends AppService
     private GridService $gridService;
 
     /**
+     * @var OptionSystemService
+     */
+    private OptionSystemService $optionSystemService;
+
+    /**
      * Action doctrine persistance
      * @var string
      */
@@ -65,11 +72,13 @@ class LoggerService extends AppService
     const DIRECTORY_LOG = 'log';
 
     public function __construct(TranslatorInterface $translator, RequestStack $requestStack, LoggerInterface $authLogger,
-                                LoggerInterface     $doctrineLogLogger, Security $security, ContainerBagInterface $params, GridService $gridService)
+                                LoggerInterface     $doctrineLogLogger, Security $security, ContainerBagInterface $params, GridService $gridService,
+                                OptionSystemService $optionSystemService)
     {
         $this->authLogger = $authLogger;
         $this->doctrineLogLogger = $doctrineLogLogger;
         $this->gridService = $gridService;
+        $this->optionSystemService = $optionSystemService;
         parent::__construct($translator, $requestStack, $security, $params);
     }
 
@@ -82,11 +91,14 @@ class LoggerService extends AppService
      */
     public function logAuthAdmin(string $user, string $ip, bool $success = true): void
     {
+
+        // On force le changement de langue pour éviter d'enregistrer les logs dans la langue du user courant
+        $default_local = $this->optionSystemService->getValueByKey(OptionSystemService::OS_DEFAULT_LANGUAGE);
         if ($success) {
-            $msg = $this->translator->trans('log.auth.admin.success', ['user' => $user, 'ip' => $ip]);
+            $msg = $this->translator->trans('log.auth.admin.success', ['user' => $user, 'ip' => $ip], '', $default_local);
             $level = LogLevel::INFO;
         } else {
-            $msg = $this->translator->trans('log.auth.admin.error', ['user' => $user, 'ip' => $ip]);
+            $msg = $this->translator->trans('log.auth.admin.error', ['user' => $user, 'ip' => $ip], '', $default_local);
             $level = LogLevel::WARNING;
         }
         $this->authLogger->log($level, $msg);
@@ -110,17 +122,19 @@ class LoggerService extends AppService
             $id_user = $currentUser->getId();
         }
 
+        // On force le changement de langue pour éviter d'enregistrer les logs dans la langue du user courant
+        $default_local = $this->optionSystemService->getValueByKey(OptionSystemService::OS_DEFAULT_LANGUAGE);
         switch ($action) {
             case self::ACTION_DOCTRINE_PERSIST :
-                $msg = $this->translator->trans('log.doctrine.persit', ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $id_user]);
+                $msg = $this->translator->trans('log.doctrine.persit', ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $id_user], '', $default_local);
                 $this->doctrineLogLogger->notice($msg);
                 break;
             case self::ACTION_DOCTRINE_REMOVE :
-                $msg = $this->translator->trans('log.doctrine.remove', ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $id_user]);
+                $msg = $this->translator->trans('log.doctrine.remove', ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $id_user], '', $default_local);
                 $this->doctrineLogLogger->warning($msg);
                 break;
             case self::ACTION_DOCTRINE_UPDATE :
-                $msg = $this->translator->trans('log.doctrine.update', ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $id_user]);
+                $msg = $this->translator->trans('log.doctrine.update', ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $id_user], '', $default_local);
                 $this->doctrineLogLogger->info($msg);
                 break;
         }
@@ -213,7 +227,7 @@ class LoggerService extends AppService
 
         $tabReturn = [
             'nb' => $total,
-            'data' => $tab,
+            'data' => array_reverse($tab),
             'column' => $column,
             'taille' => Utils::getSizeName($taille),
         ];
@@ -263,10 +277,8 @@ class LoggerService extends AppService
 
         $finder->files()->name($fileName)->in($pathLog);
 
-        if($finder->hasResults())
-        {
-            foreach($finder as $file)
-            {
+        if ($finder->hasResults()) {
+            foreach ($finder as $file) {
                 $filesystem = new Filesystem();
                 $filesystem->remove($file);
             }

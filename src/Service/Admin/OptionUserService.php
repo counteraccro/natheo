@@ -103,16 +103,21 @@ class OptionUserService extends AppAdminService
     /**
      * Retourne une valeur option user en fonction de sa clé
      * @param string $key
+     * @param bool $no_session
      * @return string
      */
-    public function getValueByKey(string $key): string
+    public function getValueByKey(string $key, bool $session = true): string
     {
-        // Priorité à la valeur en session
-        $tabOptions = $this->requestStack->getSession()->get(self::KEY_SESSION_TAB_OPTIONS, []);
-        if(isset($tabOptions[$key]))
+        if($session)
         {
-            return $tabOptions[$key];
+            // Priorité à la valeur en session
+            $tabOptions = $this->requestStack->getSession()->get(self::KEY_SESSION_TAB_OPTIONS, []);
+            if(isset($tabOptions[$key]))
+            {
+                return $tabOptions[$key];
+            }
         }
+
 
         $value = $this->getByKey($key)->getValue();
 
