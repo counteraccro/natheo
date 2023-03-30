@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -117,9 +118,9 @@ class OptionSystemService extends AppAdminService
      */
     public function getValueByKey(string $key): ?string
     {
-        if($this->getByKey($key) != null)
+        if ($this->getByKey($key) != null) {
             return $this->getByKey($key)->getValue();
-
+        }
         return null;
     }
 
@@ -132,7 +133,8 @@ class OptionSystemService extends AppAdminService
     private function getPathConfig(): string
     {
         $kernel = $this->containerBag->get('kernel.project_dir');
-        return $kernel . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'cms' . DIRECTORY_SEPARATOR . self::OPTION_SYSTEM_CONFIG_FILE;
+        return $kernel . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'cms' . DIRECTORY_SEPARATOR .
+            self::OPTION_SYSTEM_CONFIG_FILE;
     }
 
     /**
@@ -145,6 +147,7 @@ class OptionSystemService extends AppAdminService
         try {
             $return = Yaml::parseFile($this->getPathConfig());
         } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+            die($e->getMessage());
         }
         return $return;
     }

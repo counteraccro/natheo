@@ -72,12 +72,12 @@ export default {
 </script>
 
 <template>
-  <table class="table table-striped table-hover" v-if="filteredData.length">
+  <table class="table table-striped table-hover" v-if="filteredData.length" aria-label="Table-grid">
     <thead>
     <tr>
       <th v-for="key in columns"
           @click="sortBy(key)"
-          :class="{ active: sortKey == key }">
+          :class="{ active: sortKey === key }">
         {{ capitalize(key) }}
         <span class="bi" :class="sortOrders[key] > 0 ? 'bi-caret-down-fill' : 'bi-caret-up-fill'">
           </span>
@@ -100,6 +100,3 @@ export default {
     <p class="text-center"> <i class="bi bi-search"></i> <i>{{ translate.noresult}}</i></p>
   </div>
 </template>
-
-<style>
-</style>

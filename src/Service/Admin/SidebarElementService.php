@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -24,7 +25,9 @@ class SidebarElementService extends AppAdminService
     private GridService $gridService;
 
     public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
-                                TranslatorInterface    $translator, UrlGeneratorInterface $router, GridService $gridService, Security $security, RequestStack $requestStack)
+                                TranslatorInterface    $translator, UrlGeneratorInterface $router,
+                                GridService $gridService, Security $security, RequestStack $requestStack
+    )
     {
         $this->gridService = $gridService;
         parent::__construct($entityManager, $containerBag, $translator, $router, $security, $requestStack);
@@ -81,24 +84,26 @@ class SidebarElementService extends AppAdminService
 
             $parent = '---';
             if ($element->getParent() !== null) {
-                $parent = '<i class="bi ' . $element->getParent()->getIcon() . '"></i> ' . $this->translator->trans($element->getParent()->getLabel());
+                $parent = '<i class="bi ' . $element->getParent()->getIcon() . '"></i> ' .
+                    $this->translator->trans($element->getParent()->getLabel());
             }
 
             $action = $this->generateTabAction($element);
 
-            $is_lock = '';
+            $isLock = '';
             if ($element->isLock()) {
-                $is_lock = '<i class="bi bi-lock-fill"></i>';
+                $isLock = '<i class="bi bi-lock-fill"></i>';
             }
-            $is_disabled = '';
+            $isDisabled = '';
             if ($element->isDisabled()) {
-                $is_disabled = '<i class="bi bi-eye-slash"></i>';
+                $isDisabled = '<i class="bi bi-eye-slash"></i>';
             }
 
             $data[] = [
-                $this->translator->trans('sidebar.grid.id') => $element->getId() . ' ' . $is_lock . ' ' . $is_disabled,
+                $this->translator->trans('sidebar.grid.id') => $element->getId() . ' ' . $isLock . ' ' . $isDisabled,
                 $this->translator->trans('sidebar.grid.parent') => $parent,
-                $this->translator->trans('sidebar.grid.label') => '<i class="bi ' . $element->getIcon() . '"></i> ' . $this->translator->trans($element->getLabel()),
+                $this->translator->trans('sidebar.grid.label') => '<i class="bi ' . $element->getIcon() . '"></i> ' .
+                    $this->translator->trans($element->getLabel()),
                 $this->translator->trans('sidebar.grid.role') => $this->gridService->renderRole($element->getRole()),
                 $this->translator->trans('sidebar.grid.description') => $this->translator->trans($element->getDescription()),
                 $this->translator->trans('sidebar.grid.created_at') => $element->getCreatedAt()->format('d/m/y H:i'),
@@ -123,15 +128,16 @@ class SidebarElementService extends AppAdminService
      */
     private function generateTabAction(SidebarElement $element): array
     {
-        $action_disabled = '';
+        $actionDisabled = '';
         if (!$element->isLock()) {
-            $action_disabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
+            $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
                 'url' => $this->router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]),
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $this->translator->trans('sidebar.confirm.disabled.msg', ['{label}' => '<i class="bi ' . $element->getIcon() . '"></i> ' . $this->translator->trans($element->getLabel())])];
+                'msgConfirm' => $this->translator->trans('sidebar.confirm.disabled.msg', ['{label}' => '<i class="bi ' .
+                    $element->getIcon() . '"></i> ' . $this->translator->trans($element->getLabel())])];
             if ($element->isDisabled()) {
-                $action_disabled = [
+                $actionDisabled = [
                     'label' => '<i class="bi bi-eye-fill"></i>',
                     'url' => $this->router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]),
                     'ajax' => true
@@ -140,8 +146,8 @@ class SidebarElementService extends AppAdminService
         }
 
         $action = [];
-        if ($action_disabled != '') {
-            $action[] = $action_disabled;
+        if ($actionDisabled != '') {
+            $action[] = $actionDisabled;
         }
 
         return $action;

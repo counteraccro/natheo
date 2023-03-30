@@ -1,13 +1,14 @@
 <?php
+
 /**
  * @author Gourdon Aymeric
  * @version 1.0
  * Permet de générer le formulaire de saisie des options users
  * Permet de récupérer la valeur d'une option
  */
+
 namespace App\Twig\Runtime\Admin;
 
-use App\Entity\Admin\OptionUser;
 use App\Service\Admin\OptionUserService;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -20,7 +21,9 @@ class OptionUserExtensionRuntime extends AppAdminExtensionRuntime implements Run
      */
     private OptionUserService $optionUserService;
 
-    public function __construct(RouterInterface $router, TranslatorInterface $translator, OptionUserService $optionUserService)
+    public function __construct(RouterInterface   $router, TranslatorInterface $translator,
+                                OptionUserService $optionUserService
+    )
     {
         $this->optionUserService = $optionUserService;
         parent::__construct($router, $translator);
@@ -33,6 +36,6 @@ class OptionUserExtensionRuntime extends AppAdminExtensionRuntime implements Run
      */
     public function getOptionValueByKey(string $key): string
     {
-        return  $this->optionUserService->getValueByKey($key);
+        return $this->optionUserService->getValueByKey($key);
     }
 }

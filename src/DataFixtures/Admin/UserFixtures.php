@@ -37,8 +37,11 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     /**
      * @param ContainerBagInterface $params
      * @param UserPasswordHasherInterface $passwordHasher
+     * @param OptionUserService $optionUserService
      */
-    public function __construct(ContainerBagInterface $params, UserPasswordHasherInterface $passwordHasher, OptionUserService $optionUserService)
+    public function __construct(ContainerBagInterface $params, UserPasswordHasherInterface $passwordHasher,
+                                OptionUserService     $optionUserService
+    )
     {
         $this->passwordHasher = $passwordHasher;
         $this->optionUserService = $optionUserService;
@@ -48,7 +51,7 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     public function load(ObjectManager $manager): void
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::USER_FIXTURES_DATA_FILE);
-        foreach ($data['user'] as $id => $data) {
+        foreach ($data['user'] as $data) {
             $user = new User();
             $exclude = ['roles', 'password'];
             foreach ($data as $key => $value) {
@@ -59,6 +62,8 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                             break;
                         case 'password':
                             $user->setPassword($this->passwordHasher->hashPassword($user, $value));
+                            break;
+                        default:
                     }
                 } else {
                     $this->setData($key, $value, $user);

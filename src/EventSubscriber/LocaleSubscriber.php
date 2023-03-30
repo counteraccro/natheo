@@ -37,7 +37,9 @@ class LocaleSubscriber implements EventSubscriberInterface
      * @param OptionUserService $optionUserService
      * @param LocaleSwitcher $localeSwitcher
      */
-    public function __construct(OptionUserService $optionUserService, LocaleSwitcher $localeSwitcher, Security $security, OptionSystemService $optionSystemService)
+    public function __construct(OptionUserService $optionUserService, LocaleSwitcher $localeSwitcher,
+                                Security          $security, OptionSystemService $optionSystemService
+    )
     {
         $this->optionUserService = $optionUserService;
         $this->localeSwitcher = $localeSwitcher;
@@ -47,11 +49,9 @@ class LocaleSubscriber implements EventSubscriberInterface
 
     public function onKernelController(ControllerEvent $event): void
     {
-        if($this->security->isGranted('ROLE_USER'))
-        {
+        if ($this->security->isGranted('ROLE_USER')) {
             $locales = $this->optionUserService->getValueByKey(OptionUserService::OU_DEFAULT_LANGUAGE);
-        }
-        else {
+        } else {
             $locales = $this->optionSystemService->getValueByKey(OptionSystemService::OS_DEFAULT_LANGUAGE);
         }
         $this->localeSwitcher->setLocale($locales);

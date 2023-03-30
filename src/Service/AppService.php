@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -33,7 +34,9 @@ class AppService
      */
     protected ContainerBagInterface $params;
 
-    public function __construct(TranslatorInterface $translator, RequestStack $requestStack, Security $security, ContainerBagInterface $params)
+    public function __construct(TranslatorInterface $translator, RequestStack $requestStack, Security $security,
+                                ContainerBagInterface $params
+    )
     {
         $this->translator = $translator;
         $this->requestStack = $requestStack;

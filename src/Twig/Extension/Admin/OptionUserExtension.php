@@ -22,7 +22,9 @@ class OptionUserExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('get_option_user_value_by_key', [OptionUserExtensionRuntime::class, 'getOptionValueByKey']),
+            new TwigFunction('get_option_user_value_by_key',
+                [OptionUserExtensionRuntime::class, 'getOptionValueByKey']
+            ),
         ];
     }
 }

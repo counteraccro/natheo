@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -11,7 +12,6 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -50,7 +50,9 @@ class AppAdminService
     protected RequestStack $requestStack;
 
     public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
-                                TranslatorInterface $translator, UrlGeneratorInterface $router, Security $security, RequestStack $requestStack)
+                                TranslatorInterface $translator, UrlGeneratorInterface $router, Security $security,
+                                RequestStack $requestStack
+    )
     {
         $this->requestStack = $requestStack;
         $this->containerBag = $containerBag;

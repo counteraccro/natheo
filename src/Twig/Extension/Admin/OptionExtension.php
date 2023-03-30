@@ -22,8 +22,12 @@ class OptionExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('option_system_form', [OptionExtensionRuntime::class, 'getOptionSystem'], ['is_safe' => ['html']]),
-            new TwigFunction('option_user_form', [OptionExtensionRuntime::class, 'getOptionUser'], ['is_safe' => ['html']]),
+            new TwigFunction('option_system_form', [OptionExtensionRuntime::class, 'getOptionSystem'],
+                ['is_safe' => ['html']]
+            ),
+            new TwigFunction('option_user_form', [OptionExtensionRuntime::class, 'getOptionUser'],
+                ['is_safe' => ['html']]
+            ),
             new TwigFunction('get_option_system_value_by_key', [OptionExtensionRuntime::class, 'getOptionValueByKey']),
         ];
     }

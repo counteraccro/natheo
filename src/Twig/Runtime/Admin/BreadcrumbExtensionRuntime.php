@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -31,17 +32,19 @@ class BreadcrumbExtensionRuntime extends AppAdminExtensionRuntime implements Run
             }
 
             if ($nb === $i) {
-                $html .= '<li class="breadcrumb-item pl-0 active text-uppercase pl-4">' . $this->translator->trans($label) . '</li>';
+                $html .= '<li class="breadcrumb-item pl-0 active text-uppercase pl-4">' .
+                    $this->translator->trans($label) . '</li>';
             } else {
-                $html .= '<li class="breadcrumb-item pl-0 ' . $lastLink . '"><a href="' . $this->router->generate($route) . '" class="text-uppercase">' . $this->translator->trans($label) . '</a></li>';
+                $html .= '<li class="breadcrumb-item pl-0 ' . $lastLink . '"><a href="' .
+                    $this->router->generate($route) . '" class="text-uppercase">' . $this->translator->trans($label) .
+                    '</a></li>';
             }
             $i++;
         }
 
         $lastLink = '';
         $pl3 = 'pl-3';
-        if($nb === 1)
-        {
+        if ($nb === 1) {
             $lastLink = 'last-link';
             $pl3 = '';
         }
@@ -50,7 +53,8 @@ class BreadcrumbExtensionRuntime extends AppAdminExtensionRuntime implements Run
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb breadcrumb-arrow p-0 bg-light">
                                 <li class="breadcrumb-item ' . $lastLink . '">
-                                    <a href="' . $this->router->generate('admin_dashboard_index') . '" class="text-uppercase ' . $pl3 . '">
+                                    <a href="' . $this->router->generate('admin_dashboard_index') .
+                                        '" class="text-uppercase ' . $pl3 . '">
                                         ' . $this->translator->trans('global.dashboard') . '
                                     </a>
                                 </li>

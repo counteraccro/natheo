@@ -53,17 +53,13 @@ class AppFixtures extends Fixture
     public function __construct(ContainerBagInterface $params)
     {
         $kernel = $params->get('kernel.project_dir');
-        $this->pathDataFixtures = $kernel . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'DataFixtures' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
+        $this->pathDataFixtures = $kernel . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR .
+            'DataFixtures' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
     }
 
 
     public function load(ObjectManager $manager): void
     {
-
-
-        // $product = new Product();
-        // $manager->persist($product);
-
         $manager->flush();
     }
 }

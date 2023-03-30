@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -11,12 +12,7 @@ use App\Entity\Admin\OptionSystem;
 use App\Entity\Admin\OptionUser;
 use App\Service\Admin\OptionSystemService;
 use App\Service\Admin\OptionUserService;
-use App\Utils\Debug;
 use Exception;
-use Monolog\Utils;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
@@ -47,17 +43,19 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
     private array $listOptionUser;
 
     /**
-     * Clé global du fichier de config
+     * Clé globale du fichier de config
      * @var string
      */
-    private $globalKey = '';
+    private string $globalKey = '';
 
     /**
      * @param RouterInterface $router
      * @param TranslatorInterface $translator
      * @param OptionSystemService $optionSystemService
      */
-    public function __construct(RouterInterface $router, TranslatorInterface $translator, OptionSystemService $optionSystemService, OptionUserService $optionUserService)
+    public function __construct(RouterInterface     $router, TranslatorInterface $translator,
+                                OptionSystemService $optionSystemService, OptionUserService $optionUserService
+    )
     {
         $this->optionUserService = $optionUserService;
         $this->optionSystemService = $optionSystemService;
@@ -118,7 +116,8 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
                 $active = 'active';
             }
 
-            $html .= '<button class="nav-link ' . $active . '" id="nav-' . $key . '-tab" data-bs-toggle="tab" data-bs-target="#nav-' . $key . '" type="button" role="tab">
+            $html .= '<button class="nav-link ' . $active . '" id="nav-' . $key . '-tab" data-bs-toggle="tab"
+            data-bs-target="#nav-' . $key . '" type="button" role="tab">
                     ' . $this->translator->trans($category) . '
                 </button>';
         }
@@ -145,21 +144,22 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
             $html .= '<div class="tab-pane fade ' . $active . '" id="nav-' . $key . '" role="tabpanel" tabindex="0">';
 
             $html .= '<h5>' . $this->translator->trans($optionsConfig[$this->globalKey][$category]['title']) . '</h5>';
-            $html .= '<p>' . $this->translator->trans($optionsConfig[$this->globalKey][$category]['description']) . '</p>';
+            $html .= '<p>' . $this->translator->trans($optionsConfig[$this->globalKey][$category]['description']) .
+                '</p>';
 
-            foreach ($optionsConfig[$this->globalKey][$category]['options'] as $key => $element) {
+            foreach ($optionsConfig[$this->globalKey][$category]['options'] as $keyOption => $element) {
                 switch ($element['type']) {
                     case 'text' :
-                        $html .= $this->generateInputText($key, $element);
+                        $html .= $this->generateInputText($keyOption, $element);
                         break;
                     case 'boolean' :
-                        $html .= $this->generateRadioButton($key, $element);
+                        $html .= $this->generateRadioButton($keyOption, $element);
                         break;
                     case 'textarea':
-                        $html .= $this->generateTextarea($key, $element);
+                        $html .= $this->generateTextarea($keyOption, $element);
                         break;
                     case 'select':
-                        $html .= $this->generateSelect($key, $element);
+                        $html .= $this->generateSelect($keyOption, $element);
                         break;
                     default:
                 }
@@ -181,18 +181,20 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
      */
     private function generateInputText(string $key, array $element): string
     {
-        $require = $msg_error = $placeholder = '';
+        $require = $msgError = $placeholder = '';
         if (isset($element['required'])) {
             $require = 'required="required"';
-            $msg_error = $this->getError($key, $element);
+            $msgError = $this->getError($key, $element);
         }
 
         if (isset($element['placeholder'])) {
             $placeholder = 'placeholder="' . $this->translator->trans($element['placeholder']) . '"';
         }
 
-        $html = '<label for="' . $key . '" class="form-label">' . $this->translator->trans($element['label']) . '</label>
-            <input type="text" class="form-control event-input" id="' . $key . '" ' . $require . ' ' . $placeholder . ' value="' . $this->getValueByKey($key) . '">' . $msg_error;
+        $html = '<label for="' . $key . '" class="form-label">
+            ' . $this->translator->trans($element['label']) . '</label>
+            <input type="text" class="form-control event-input" id="' . $key . '" ' . $require . ' ' . $placeholder .
+            ' value="' . $this->getValueByKey($key) . '">' . $msgError;
 
         $html .= $this->getSuccess($key, $element);
         $html .= $this->getSpinner($key);
@@ -217,8 +219,10 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
         }
 
         $html = '<div class="form-check form-switch">
-            <input class="form-check-input event-input" type="checkbox" role="switch" id="' . $key . '" ' . $checked . '>
-            <label class="form-check-label" for="' . $key . '">' . $this->translator->trans($element['label']) . '</label>';
+            <input class="form-check-input event-input" type="checkbox" role="switch"
+                id="' . $key . '" ' . $checked . '>
+            <label class="form-check-label" for="' . $key . '">
+                ' . $this->translator->trans($element['label']) . '</label>';
 
         $html .= $this->getSuccess($key, $element);
         $html .= '</div>';
@@ -238,18 +242,20 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
      */
     private function generateTextarea(string $key, array $element): string
     {
-        $require = $msg_error = $placeholder = '';
+        $require = $msgError = $placeholder = '';
         if (isset($element['required'])) {
             $require = 'required="required"';
-            $msg_error = $this->getError($key, $element);
+            $msgError = $this->getError($key, $element);
         }
 
         if (isset($element['placeholder'])) {
             $placeholder = 'placeholder="' . $this->translator->trans($element['placeholder']) . '"';
         }
 
-        $html = '<label for="' . $key . '" class="form-label">' . $this->translator->trans($element['label']) . '</label>
-            <textarea class="form-control event-input" rows="5" id="' . $key . '" ' . $require . ' ' . $placeholder . '>' . $this->getValueByKey($key) . '</textarea>' . $msg_error;
+        $html = '<label for="' . $key . '" class="form-label">' . $this->translator->trans($element['label']) .
+            '</label>
+            <textarea class="form-control event-input" rows="5" id="' . $key . '" ' . $require . ' ' . $placeholder . '>
+            ' . $this->getValueByKey($key) . '</textarea>' . $msgError;
 
         $html .= $this->getSuccess($key, $element);
         $html .= $this->getSpinner($key);
@@ -269,8 +275,8 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
         $value = $this->getValueByKey($key);
         $tab = explode('|', $element['list_value']);
 
-        $select_style = '';
-        $option_html = '';
+        $selectStyle = '';
+        $optionHtml = '';
         foreach ($tab as $select) {
             $option = explode(':', $select);
             $selected = '';
@@ -279,17 +285,19 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
             }
 
             if (!str_starts_with($option[1], '&#')) {
-                $option_label = $this->translator->trans($option[1]);
+                $optionLabel = $this->translator->trans($option[1]);
             } else {
-                $option_label = $option[1];
-                $select_style = 'style="font-family: bootstrap-icons"';
+                $optionLabel = $option[1];
+                $selectStyle = 'style="font-family: bootstrap-icons"';
             }
 
-            $option_html .= '<option value="' . $option[0] . '" ' . $selected . '>' . $option_label . '</option>';
+            $optionHtml .= '<option value="' . $option[0] . '" ' . $selected . '>' . $optionLabel . '</option>';
         }
 
-        $html = '<label for="' . $key . '" class="form-label">' . $this->translator->trans($element['label']) . '</label>
-            <select id="' . $key . '" class="form-select event-input" ' . $select_style . '>' . $option_html . '</select>';
+        $html = '<label for="' . $key . '" class="form-label">
+        ' . $this->translator->trans($element['label']) . '</label>
+            <select id="' . $key . '" class="form-select event-input" ' . $selectStyle . '>
+            ' . $optionHtml . '</select>';
 
         $html .= $this->getSuccess($key, $element);
         $html .= $this->getSpinner($key);
@@ -307,7 +315,8 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
     private function getHelp(string $key, array $element): string
     {
         if (isset($element['help'])) {
-            return '<div id="help-' . $key . '" class="form-text"><i class="bi bi-info-circle"></i> <i>' . $this->translator->trans($element['help']) . '</i></div>';
+            return '<div id="help-' . $key . '" class="form-text"><i class="bi bi-info-circle"></i> <i>'
+                . $this->translator->trans($element['help']) . '</i></div>';
         }
         return '';
     }
@@ -321,9 +330,12 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
     private function getSuccess(string $key, array $element): string
     {
         if (isset($element['success'])) {
-            return '<div id="success-' . $key . '" class="valid-feedback visually-hidden"><b><i class="bi bi-check-circle"></i>  ' . $this->translator->trans($element['success']) . '</b></div>';
+            return '<div id="success-' . $key . '" class="valid-feedback visually-hidden"><b>
+                <i class="bi bi-check-circle"></i>  ' . $this->translator->trans($element['success']) . '</b></div>';
         }
-        return '<div id="success-' . $key . '" class="valid-feedback visually-hidden"><b><i class="bi bi-check-circle"></i>  ' . $this->translator->trans('options_system.default_msg_success') . '</b></div>';
+        return '<div id="success-' . $key . '" class="valid-feedback visually-hidden"><b>
+            <i class="bi bi-check-circle"></i>
+            ' . $this->translator->trans('options_system.default_msg_success') . '</b></div>';
     }
 
     /**
@@ -335,9 +347,12 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
     private function getError(string $key, array $element): string
     {
         if (isset($element['msg_error'])) {
-            return '<div id="error-' . $key . '" class="invalid-feedback"><b><i class="bi bi-exclamation-circle"></i>  ' . $this->translator->trans($element['msg_error']) . '</b></div>';
+            return '<div id="error-' . $key . '" class="invalid-feedback"><b>
+           <i class="bi bi-exclamation-circle"></i>  ' . $this->translator->trans($element['msg_error']) . '</b></div>';
         }
-        return '<div id="error-' . $key . '" class="invalid-feedback"><b><i class="bi bi-exclamation-circle"></i>  ' . $this->translator->trans('options_system.default_msg_error') . '</b></div>';
+        return '<div id="error-' . $key . '" class="invalid-feedback"><b>
+        <i class="bi bi-exclamation-circle"></i> '
+            . $this->translator->trans('options_system.default_msg_error') . '</b></div>';
     }
 
     /**
@@ -346,8 +361,10 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
      */
     private function getSpinner(string $key): string
     {
-        return '<div id="spinner-' . $key . '" class="float-end visually-hidden"><div class="spinner-border spinner-border-sm text-primary" role="status">
-                </div> <span class="text-primary"><i> &#8239;&#8239; ' . $this->translator->trans('global.loading_save') . '</i></span></div>';
+        return '<div id="spinner-' . $key . '" class="float-end visually-hidden">
+            <div class="spinner-border spinner-border-sm text-primary" role="status">
+                </div> <span class="text-primary"><i> &#8239;&#8239; '
+            . $this->translator->trans('global.loading_save') . '</i></span></div>';
     }
 
     /**
@@ -357,16 +374,14 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
      */
     private function getValueByKey(string $key): string
     {
-        if(!empty($this->optionSystemService))
-        {
+        if (!empty($this->optionSystemService)) {
             foreach ($this->listOptionSystem as $optionSystem) {
                 /* @var OptionSystem $optionSystem */
                 if ($optionSystem->getKey() === $key) {
                     return $optionSystem->getValue();
                 }
             }
-        }
-        else {
+        } else {
             foreach ($this->listOptionUser as $optionUser) {
                 /* @var OptionUser $optionUser */
                 if ($optionUser->getKey() === $key) {

@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @author Gourdon Aymeric
  * @version 1.0
  * Service lier aux options user
  */
+
 namespace App\Service\Admin;
 
 use App\Entity\Admin\OptionSystem;
@@ -51,7 +53,10 @@ class OptionUserService extends AppAdminService
     private OptionSystemService $optionSystemService;
 
     public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
-                                TranslatorInterface $translator, UrlGeneratorInterface $router, OptionSystemService $optionSystemService, Security $security, RequestStack $requestStack)
+                                TranslatorInterface    $translator, UrlGeneratorInterface $router,
+                                OptionSystemService    $optionSystemService, Security $security,
+                                RequestStack           $requestStack
+    )
     {
         $this->optionSystemService = $optionSystemService;
         parent::__construct($entityManager, $containerBag, $translator, $router, $security, $requestStack);
@@ -70,8 +75,7 @@ class OptionUserService extends AppAdminService
             $this->optionSystemService::OS_NB_ELEMENT => self::OU_NB_ELEMENT
         ];
 
-        foreach($options as $optionSystemKey => $optionUserKey)
-        {
+        foreach ($options as $optionSystemKey => $optionUserKey) {
             /** @var OptionSystem $option */
             $option = $this->optionSystemService->getByKey($optionSystemKey);
             $optionUser = new OptionUser();
@@ -90,8 +94,7 @@ class OptionUserService extends AppAdminService
     public function getByKey(string $key): ?object
     {
         // Si pas de user, on chercher l'option système par défaut
-        if($this->security->getUser() === null)
-        {
+        if ($this->security->getUser() === null) {
             $key = str_replace('OU_', 'OS_', $key);
             return $this->optionSystemService->getByKey($key);
         }
@@ -108,12 +111,10 @@ class OptionUserService extends AppAdminService
      */
     public function getValueByKey(string $key, bool $session = true): string
     {
-        if($session)
-        {
+        if ($session) {
             // Priorité à la valeur en session
             $tabOptions = $this->requestStack->getSession()->get(self::KEY_SESSION_TAB_OPTIONS, []);
-            if(isset($tabOptions[$key]))
-            {
+            if (isset($tabOptions[$key])) {
                 return $tabOptions[$key];
             }
         }
@@ -136,7 +137,8 @@ class OptionUserService extends AppAdminService
     private function getPathConfig(): string
     {
         $kernel = $this->containerBag->get('kernel.project_dir');
-        return $kernel . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'cms' . DIRECTORY_SEPARATOR . self::OPTION_USER_CONFIG_FILE;
+        return $kernel . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'cms' . DIRECTORY_SEPARATOR .
+            self::OPTION_USER_CONFIG_FILE;
     }
 
     /**
@@ -149,6 +151,7 @@ class OptionUserService extends AppAdminService
         try {
             $return = Yaml::parseFile($this->getPathConfig());
         } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+            die($e->getMessage());
         }
         return $return;
     }

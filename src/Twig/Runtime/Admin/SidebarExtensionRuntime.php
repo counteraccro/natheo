@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -22,7 +23,7 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
      */
     private SidebarElementService $sidebarElementService;
 
-    private string $current_route = '';
+    private string $currentRoute = '';
 
     /**
      * @var Security
@@ -34,7 +35,8 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
      * @param SidebarElementService $sidebarElementService
      * @param RouterInterface $router
      */
-    public function __construct(SidebarElementService $sidebarElementService, Security $security, RouterInterface $router, TranslatorInterface $translator)
+    public function __construct(SidebarElementService $sidebarElementService, Security $security,
+                                RouterInterface       $router, TranslatorInterface $translator)
     {
         $this->sidebarElementService = $sidebarElementService;
         $this->security = $security;
@@ -43,12 +45,12 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
 
     /**
      * Point d'entrée pour générer le menu sidebar
-     * @param string $current_route
+     * @param string $currentRoute
      * @return string
      */
-    public function getSidebar(string $current_route): string
+    public function getSidebar(string $currentRoute): string
     {
-        $this->current_route = $current_route;
+        $this->currentRoute = $currentRoute;
         $sidebarElements = $this->sidebarElementService->getAllParent();
 
         $html = '';
@@ -70,8 +72,7 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
      */
     private function singleElement(SidebarElement $sidebarElement): string
     {
-        if(!$this->security->isGranted($sidebarElement->getRole()) || $sidebarElement->isDisabled())
-        {
+        if (!$this->security->isGranted($sidebarElement->getRole()) || $sidebarElement->isDisabled()) {
             return '';
         }
 
@@ -80,7 +81,7 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
 
         return '<li ' . $active . '>
             <a href="' . $url . '">
-                <i class="bi ' . $sidebarElement->getIcon() . '"></i> 
+                <i class="bi ' . $sidebarElement->getIcon() . '"></i>
                 <span class="d-none-mini">' . $this->translator->trans($sidebarElement->getLabel()) . '</span>
             </a>
         </li>';
@@ -93,8 +94,7 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
      */
     public function childrenElement(SidebarElement $sidebarElement): string
     {
-        if(!$this->security->isGranted($sidebarElement->getRole()))
-        {
+        if (!$this->security->isGranted($sidebarElement->getRole())) {
             return '';
         }
 
@@ -109,8 +109,7 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
         foreach ($sidebarElement->getChildren() as $child) {
             /* @var SidebarElement $child */
 
-            if ($child->isDisabled() || !$this->security->isGranted($child->getRole()))
-            {
+            if ($child->isDisabled() || !$this->security->isGranted($child->getRole())) {
                 continue;
             }
 
@@ -128,7 +127,7 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
             $url = $this->generateRealUrl($child->getRoute());
             $html .= '<li ' . $active . '>
                     <a href="' . $url . '">
-                        <i class="bi ' . $child->getIcon() . '"></i> 
+                        <i class="bi ' . $child->getIcon() . '"></i>
                         <span class="d-none-mini">' . $this->translator->trans($child->getLabel()) . '</span>
                     </a>
                  </li>';
@@ -141,10 +140,12 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
 
         return '<li ' . $tabToggle['active'] . '>
             <a class="' . $tabToggle['collapsed'] . ' nav-toggle" href="' . $route . '" data-bs-toggle="collapse" data-bs-target="' . $route . '" aria-current="page" aria-expanded="' . $tabToggle['aria-expanded'] . '">
-                <i class="bi ' . $sidebarElement->getIcon() . '"></i> <span class="d-none-mini">' . $this->translator->trans($sidebarElement->getLabel()) . '</span>
+                <i class="bi ' . $sidebarElement->getIcon() . '"></i> <span class="d-none-mini">'
+            . $this->translator->trans($sidebarElement->getLabel()) . '</span>
                 <i class="bi bi-chevron-right float-end d-none-mini"></i>
             </a>
-            <ul class="collapse list-unstyled ' . $tabToggle['show'] . '" id="' . $routeId . '" data-bs-parent="#sidebar">' . $html;
+            <ul class="collapse list-unstyled ' . $tabToggle['show'] . '" id="'
+            . $routeId . '" data-bs-parent="#sidebar">' . $html;
     }
 
     /**
@@ -170,7 +171,7 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
     private function isClassActive($route, bool $child = false): string
     {
         $return = '';
-        if ($route === $this->current_route) {
+        if ($route === $this->currentRoute) {
             $return = 'class="active"';
             if ($child) {
                 $return = 'class="sub-active"';

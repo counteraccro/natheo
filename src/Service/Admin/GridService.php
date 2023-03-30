@@ -1,9 +1,11 @@
 <?php
+
 /**
  * @author Gourdon Aymeric
  * @version 1.0
  * Service pour la génération du grid
  */
+
 namespace App\Service\Admin;
 
 class GridService extends AppAdminService
@@ -86,7 +88,7 @@ class GridService extends AppAdminService
      * @param string $role
      * @return string
      */
-    public function renderRole(string $role ): string
+    public function renderRole(string $role): string
     {
         $tabRole = [
             'ROLE_USER' => $this->translator->trans('global.role.user'),

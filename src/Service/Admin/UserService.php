@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -29,8 +30,9 @@ class UserService extends AppAdminService
     private OptionSystemService $optionSystemService;
 
     public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
-                                TranslatorInterface $translator, UrlGeneratorInterface $router, GridService $gridService,
-                                OptionSystemService $optionSystemService, Security $security, RequestStack $requestStack)
+                                TranslatorInterface    $translator, UrlGeneratorInterface $router, GridService $gridService,
+                                OptionSystemService    $optionSystemService, Security $security, RequestStack $requestStack
+    )
     {
         $this->gridService = $gridService;
         $this->optionSystemService = $optionSystemService;
@@ -75,22 +77,20 @@ class UserService extends AppAdminService
         foreach ($dataPaginate as $user) {
             /* @var User $user */
 
-            $is_disabled = '';
-            if($user->isDisabled())
-            {
-                $is_disabled = '<i class="bi bi-eye-slash"></i>';
+            $isDisabled = '';
+            if ($user->isDisabled()) {
+                $isDisabled = '<i class="bi bi-eye-slash"></i>';
             }
 
             $roles = '';
-            foreach($user->getRoles() as $role)
-            {
+            foreach ($user->getRoles() as $role) {
                 $roles .= $this->gridService->renderRole($role) . ', ';
             }
-            $roles =substr($roles, 0, -2);
+            $roles = substr($roles, 0, -2);
 
             $actions = $this->generateTabAction($user);
             $data[] = [
-                $this->translator->trans('user.grid.id') => $user->getId() . ' ' . $is_disabled,
+                $this->translator->trans('user.grid.id') => $user->getId() . ' ' . $isDisabled,
                 $this->translator->trans('user.grid.login') => $user->getLogin(),
                 $this->translator->trans('user.grid.email') => $user->getEmail(),
                 $this->translator->trans('user.grid.name') => $user->getFirstname() . ' ' . $user->getLastname(),
@@ -121,29 +121,31 @@ class UserService extends AppAdminService
         $actions = [];
 
         // Bouton disabled
-        $action_disabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
+        $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
             'url' => $this->router->generate('admin_user_update_disabled', ['id' => $user->getId()]),
             'ajax' => true,
             'confirm' => true,
             'msgConfirm' => $this->translator->trans('user.confirm.disabled.msg', ['{login}' => $user->getLogin()])];
         if ($user->isDisabled()) {
-            $action_disabled = ['label' => '<i class="bi bi-eye-fill"></i>', 'url' => $this->router->generate('admin_user_update_disabled', ['id' => $user->getId()]), 'ajax' => true];
+            $actionDisabled = ['label' => '<i class="bi bi-eye-fill"></i>', 'url' =>
+                $this->router->generate('admin_user_update_disabled', ['id' => $user->getId()]), 'ajax' => true];
         }
 
-        $actions[] = $action_disabled;
+        $actions[] = $actionDisabled;
 
         $canDelete = $this->optionSystemService->getValueByKey(OptionSystemService::OS_ALLOW_DELETE_DATA);
         $replaceUser = $this->optionSystemService->getValueByKey(OptionSystemService::OS_REPLACE_DELETE_USER);
 
         // Bouton Delete
-        $action_delete = '';
-        if($canDelete === '1') {
+        $actionDelete = '';
+        if ($canDelete === '1') {
 
             $msgConfirm = $this->translator->trans('user.confirm.delete.msg', ['{login}' => $user->getLogin()]);
-            if($replaceUser === '1')
+            if ($replaceUser === '1') {
                 $msgConfirm = $this->translator->trans('user.confirm.replace.msg', ['{login}' => $user->getLogin()]);
+            }
 
-            $action_delete = [
+            $actionDelete = [
                 'label' => '<i class="bi bi-trash"></i>',
                 'url' => $this->router->generate('admin_user_delete', ['id' => $user->getId()]),
                 'ajax' => true,
@@ -152,8 +154,8 @@ class UserService extends AppAdminService
             ];
         }
 
-        if ($action_delete != '') {
-            $actions[] = $action_delete;
+        if ($actionDelete != '') {
+            $actions[] = $actionDelete;
         }
 
         // Bouton edit

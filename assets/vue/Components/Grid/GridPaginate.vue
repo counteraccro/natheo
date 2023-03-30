@@ -24,10 +24,6 @@ export default {
     updateCurrentPage(page) {
       this.cPage = page;
     },
-    initCpage()
-    {
-      this.cPage = 1;
-    }
   }
 }
 
@@ -76,7 +72,3 @@ export default {
 
   </nav>
 </template>
-
-<style scoped>
-
-</style>

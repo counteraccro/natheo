@@ -4,7 +4,6 @@ namespace App\Twig\Extension\Admin;
 
 use App\Twig\Runtime\Admin\SidebarExtensionRuntime;
 use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class SidebarExtension extends AbstractExtension

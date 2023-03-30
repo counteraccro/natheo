@@ -30,7 +30,7 @@ class SidebarElementFixtures extends AppFixtures implements FixtureGroupInterfac
 
                         $tmpKey = key($tab);
                         $sidebarElementChild = new SidebarElement();
-                        foreach($tab[$tmpKey] as $keyChild => $valueChild) {
+                        foreach ($tab[$tmpKey] as $keyChild => $valueChild) {
                             if ($keyChild === 'parent') {
                                 $sidebarElementChild->setParent($this->getReference($id));
                                 $manager->persist($sidebarElementChild);
@@ -63,7 +63,7 @@ class SidebarElementFixtures extends AppFixtures implements FixtureGroupInterfac
 
     public static function getGroups(): array
     {
-        return [self::GROUP_DEVTOOLS , self::GROUP_SIDEBAR_ELEMENT];
+        return [self::GROUP_DEVTOOLS, self::GROUP_SIDEBAR_ELEMENT];
     }
 
     /**

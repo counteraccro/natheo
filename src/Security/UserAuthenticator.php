@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Service\LoggerService;
+use Exception;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -45,6 +46,9 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         );
     }
 
+    /**
+     * @throws Exception
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
 
@@ -59,7 +63,7 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
 
         // For example:
         // return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        throw new Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
     /**

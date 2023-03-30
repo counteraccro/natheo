@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -82,11 +83,12 @@ class LoggerService extends AppService
      */
     const DIRECTORY_LOG = 'log';
 
-    public function __construct(TranslatorInterface $translator, RequestStack $requestStack,
-                                LoggerInterface $authLogger, LoggerInterface $doctrineLogLogger, Security $security,
+    public function __construct(TranslatorInterface   $translator, RequestStack $requestStack,
+                                LoggerInterface       $authLogger, LoggerInterface $doctrineLogLogger, Security $security,
                                 ContainerBagInterface $params, GridService $gridService,
-                                OptionSystemService $optionSystemService, OptionUserService
-                                $optionUserService, LocaleAwareInterface $localeAware)
+                                OptionSystemService   $optionSystemService, OptionUserService $optionUserService,
+                                LocaleAwareInterface $localeAware
+    )
     {
         $this->authLogger = $authLogger;
         $this->doctrineLogLogger = $doctrineLogLogger;
@@ -244,7 +246,7 @@ class LoggerService extends AppService
                     }
                     $i++;
                 } else {
-                    $tmp = $content->fgets();
+                    $content->fgets();
                 }
                 $nb++;
             }

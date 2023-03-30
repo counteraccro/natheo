@@ -37,13 +37,12 @@ class OptionSystemFixtures extends AppFixtures implements FixtureGroupInterface,
      * @param string $key
      * @param mixed $value
      * @param OptionSystem $optionSystem
-     * @return OptionSystem $optionSystem
+     * @return void $optionSystem
      */
-    private function setData(string $key, mixed $value, OptionSystem $optionSystem): OptionSystem
+    private function setData(string $key, mixed $value, OptionSystem $optionSystem): void
     {
         $func = 'set' . ucfirst($key);
         $optionSystem->$func($value);
-        return $optionSystem;
     }
 
     public static function getGroups(): array
