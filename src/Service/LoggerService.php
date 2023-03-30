@@ -23,6 +23,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LoggerService extends AppService
@@ -46,6 +47,16 @@ class LoggerService extends AppService
      * @var OptionSystemService
      */
     private OptionSystemService $optionSystemService;
+
+    /**
+     * @var OptionUserService
+     */
+    private OptionUserService $optionUserService;
+
+    /**
+     * @var LocaleAwareInterface
+     */
+    private LocaleAwareInterface $localeAware;
 
     /**
      * Action doctrine persistance
@@ -73,12 +84,14 @@ class LoggerService extends AppService
 
     public function __construct(TranslatorInterface $translator, RequestStack $requestStack, LoggerInterface $authLogger,
                                 LoggerInterface     $doctrineLogLogger, Security $security, ContainerBagInterface $params, GridService $gridService,
-                                OptionSystemService $optionSystemService)
+                                OptionSystemService $optionSystemService, OptionUserService $optionUserService, LocaleAwareInterface $localeAware)
     {
         $this->authLogger = $authLogger;
         $this->doctrineLogLogger = $doctrineLogLogger;
         $this->gridService = $gridService;
         $this->optionSystemService = $optionSystemService;
+        $this->optionUserService = $optionUserService;
+        $this->localeAware = $localeAware;
         parent::__construct($translator, $requestStack, $security, $params);
     }
 
@@ -93,15 +106,16 @@ class LoggerService extends AppService
     {
 
         // On force le changement de langue pour éviter d'enregistrer les logs dans la langue du user courant
-        $default_local = $this->optionSystemService->getValueByKey(OptionSystemService::OS_DEFAULT_LANGUAGE);
+        $this->switchDefaultLocale('system');
         if ($success) {
-            $msg = $this->translator->trans('log.auth.admin.success', ['user' => $user, 'ip' => $ip], '', $default_local);
+            $msg = $this->translator->trans('log.auth.admin.success', ['user' => $user, 'ip' => $ip]);
             $level = LogLevel::INFO;
         } else {
-            $msg = $this->translator->trans('log.auth.admin.error', ['user' => $user, 'ip' => $ip], '', $default_local);
+            $msg = $this->translator->trans('log.auth.admin.error', ['user' => $user, 'ip' => $ip]);
             $level = LogLevel::WARNING;
         }
         $this->authLogger->log($level, $msg);
+        $this->switchDefaultLocale();
     }
 
     /**
@@ -123,21 +137,22 @@ class LoggerService extends AppService
         }
 
         // On force le changement de langue pour éviter d'enregistrer les logs dans la langue du user courant
-        $default_local = $this->optionSystemService->getValueByKey(OptionSystemService::OS_DEFAULT_LANGUAGE);
+        $this->switchDefaultLocale('system');
         switch ($action) {
             case self::ACTION_DOCTRINE_PERSIST :
-                $msg = $this->translator->trans('log.doctrine.persit', ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $id_user], '', $default_local);
+                $msg = $this->translator->trans('log.doctrine.persit', ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $id_user]);
                 $this->doctrineLogLogger->notice($msg);
                 break;
             case self::ACTION_DOCTRINE_REMOVE :
-                $msg = $this->translator->trans('log.doctrine.remove', ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $id_user], '', $default_local);
+                $msg = $this->translator->trans('log.doctrine.remove', ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $id_user]);
                 $this->doctrineLogLogger->warning($msg);
                 break;
             case self::ACTION_DOCTRINE_UPDATE :
-                $msg = $this->translator->trans('log.doctrine.update', ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $id_user], '', $default_local);
+                $msg = $this->translator->trans('log.doctrine.update', ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $id_user]);
                 $this->doctrineLogLogger->info($msg);
                 break;
         }
+        $this->switchDefaultLocale();
     }
 
     /**
@@ -285,5 +300,19 @@ class LoggerService extends AppService
             return true;
         }
         return false;
+    }
+
+    /**
+     * Permet de forcer la locale si besoin pour enregistrer les logs uniquement dans la langue par défault du site et non la langue du user courant
+     * @param string $typeOption user ou system
+     * @return void
+     */
+    private function switchDefaultLocale(string $typeOption = 'user'): void
+    {
+        $locale = match ($typeOption) {
+            'user' => $this->optionUserService->getValueByKey(OptionUserService::OU_DEFAULT_LANGUAGE, false),
+            default => $this->optionSystemService->getValueByKey(OptionSystemService::OS_DEFAULT_LANGUAGE),
+        };
+        $this->localeAware->setLocale($locale);
     }
 }
