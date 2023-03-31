@@ -28,6 +28,7 @@ class SidebarElement
     private ?self $parent = null;
 
     #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
+    #[ORM\OrderBy(['id' => 'ASC'])]
     private Collection $children;
 
     #[ORM\Column(length: 40)]
