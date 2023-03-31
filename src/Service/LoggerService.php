@@ -204,6 +204,7 @@ class LoggerService extends AppService
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws Exception
      */
     public function loadLogFile(string $fileName, int $page, int $limit): array
     {
@@ -259,7 +260,6 @@ class LoggerService extends AppService
             'taille' => Utils::getSizeName($taille),
         ];
         return $this->gridService->addAllDataRequiredGrid($tabReturn);
-
     }
 
     /**

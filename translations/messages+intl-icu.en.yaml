@@ -177,3 +177,4 @@ log.delete.file.confirm_2: __log.delete.file.confirm_2
 log.delete.file.loading: __log.delete.file.loading
 log.delete.file.success: __log.delete.file.success
 log.delete.file.btn_close: __log.delete.file.btn_close
+log.btn.reload: __log.btn.reload

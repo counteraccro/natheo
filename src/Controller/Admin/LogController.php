@@ -68,6 +68,7 @@ class LogController extends AppAdminController
             'log_delete_file_loading' => $translator->trans('log.delete.file.loading'),
             'log_delete_file_success' => $translator->trans('log.delete.file.success'),
             'log_delete_file_btn_close' => $translator->trans('log.delete.file.btn_close'),
+            'log_btn_reload' => $translator->trans('log.btn.reload'),
         ];
 
         try {
@@ -110,7 +111,11 @@ class LogController extends AppAdminController
     {
         $data = json_decode($request->getContent(), true);
 
-        $success = $loggerService->deleteLog($data['file']);
+        try {
+            $success = $loggerService->deleteLog($data['file']);
+        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+            die($e->getMessage());
+        }
 
         return $this->json(['success' => $success]);
     }

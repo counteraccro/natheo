@@ -77,7 +77,7 @@ export default {
     selectLogFile(event) {
       this.selectFile = event.target.value;
       if (this.selectFile !== "") {
-        this.loadContentFile(1, 50);
+        this.loadContentFile(this.page, this.limit);
       }
     },
 
@@ -177,6 +177,7 @@ export default {
     <div class="card mt-3">
       <div class="card-header text-bg-secondary">
         <div class="btn btn-danger btn-sm float-end" @click="this.delete(this.selectFile, true)">{{ this.trans.log_btn_delete_file }}</div>
+        <div class="btn btn-success btn-sm float-end me-2" @click="this.loadContentFile(this.page, this.limit)"><i class="bi bi-arrow-clockwise"></i> {{ this.trans.log_btn_reload }}</div>
         <div class="mt-1">{{ this.trans.log_file }} {{ this.selectFile }} - {{ this.trans.log_file_size }} {{ this.taille }} - {{ this.nbElements }} {{ this.trans.log_file_ligne }}</div>
 
       </div>
@@ -255,6 +256,7 @@ export default {
   <div class="card mt-3" v-else>
     <div class="card-header text-bg-secondary">
       <div class="btn btn-danger btn-sm float-end disabled">{{ this.trans.log_btn_delete_file }}</div>
+      <div class="btn btn-success btn-sm float-end disabled me-2"><i class="bi bi-arrow-clockwise"></i> {{ this.trans.log_btn_reload }}</div>
       <div class="mt-1">{{ this.trans.log_file }} -- - {{ this.trans.log_file_size }} 0 Ko - 0 {{ this.trans.log_file_ligne }}</div>
     </div>
     <div class="card-body">

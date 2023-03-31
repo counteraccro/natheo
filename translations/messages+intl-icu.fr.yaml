@@ -177,3 +177,4 @@ log.delete.file.confirm_2: 'La suppression est définitive et sans retour possib
 log.delete.file.loading: 'Suppression en cours'
 log.delete.file.btn_close: Fermer
 log.delete.file.success: 'Fichier supprimé avec succès'
+log.btn.reload: 'Recharger'
