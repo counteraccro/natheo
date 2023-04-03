@@ -19,3 +19,12 @@ user.grid.role: Role
 user.my_option_title: 'Mes options'
 user.my_option_title_h1: 'Gestion de mes options'
 user.my_option_description: "Personaliser l'interface ainsi que la langue et d'autres détails de l'administration"
+user.login_user.title: Authentification
+user.login_user.email: 'Adresse email'
+user.login_user.password: 'Mot de passe'
+user.login_user.forgot_password: 'Mot de passe oublié ?'
+user.login_user.remember_me: 'Ce souvenir de moi'
+user.login_user.btn_login: Connexion
+user.login.always_log: 'Vous êtes déjà connecté en tant que '
+user.login.logout: Déconnexion
+user.login.title: Authentification

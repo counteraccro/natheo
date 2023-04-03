@@ -1,6 +1,6 @@
 {% extends 'admin/auth_base.html.twig' %}
 
-{% block title %}{{ 'security.login_user.title' | trans }}{% endblock %}
+{% block title %}{{ 'user.login_user.title' | trans({}, 'user') }}{% endblock %}
 
 {% block body %}
 
@@ -15,25 +15,25 @@
                     </div>
                     <div class="card shadow-lg">
                         <div class="card-body p-5">
-                            <h1 class="fs-4 card-title fw-bold mb-4">{{ 'security.login_user.title' | trans }}</h1>
+                            <h1 class="fs-4 card-title fw-bold mb-4">{{ 'user.login_user.title' | trans({}, 'user') }}</h1>
 
                             {% if app.user %}
                                 <div class="mb-3">
-                                    {{ 'security.login.always_log'|trans }} {{ app.user.userIdentifier }}, <a href="{{ path('auth_logout') }}">{{ 'security.login.logout'|trans }}</a>
+                                    {{ 'user.login.always_log'|trans({}, 'user') }} {{ app.user.userIdentifier }}, <a href="{{ path('auth_logout') }}">{{ 'user.login.logout'|trans({}, 'user') }}</a>
                                 </div>
                             {% else %}
 
                             <form method="post">
                                 <div class="mb-3">
-                                    <label class="mb-2 text-muted" for="email">{{ 'security.login_user.email' | trans }}</label>
+                                    <label class="mb-2 text-muted" for="email">{{ 'user.login_user.email' | trans({}, 'user') }}</label>
                                     <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
                                 </div>
 
                                 <div class="mb-3">
                                     <div class="mb-2 w-100">
-                                        <label class="text-muted" for="password">{{ 'security.login_user.password' | trans }}</label>
+                                        <label class="text-muted" for="password">{{ 'user.login_user.password' | trans({}, 'user') }}</label>
                                         <a href="forgot.html" class="float-end">
-                                            {{ 'security.login_user.forgot_password' | trans }}
+                                            {{ 'user.login_user.forgot_password' | trans({}, 'user') }}
                                         </a>
                                     </div>
                                     <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
@@ -47,10 +47,10 @@
                                     See https://symfony.com/doc/current/security/remember_me.html #}
                                     <div class="form-check">
                                         <input type="checkbox" name="_remember_me" id="remember" class="form-check-input">
-                                        <label for="remember" class="form-check-label">{{ 'security.login_user.remember_me' | trans }}</label>
+                                        <label for="remember" class="form-check-label">{{ 'user.login_user.remember_me' | trans({}, 'user') }}</label>
                                     </div>
                                     <button type="submit" class="btn btn-primary ms-auto">
-                                        {{ 'security.login_user.btn_login' | trans }}
+                                        {{ 'user.login_user.btn_login' | trans({}, 'user') }}
                                     </button>
                                 </div>
                             </form>
@@ -76,7 +76,7 @@
                         </div>
                     </div>
                     <div class="text-center mt-5 text-muted">
-                        {{ 'global.licence'|trans({'year': 'now' | date('Y')}) | raw }}
+                        {{ 'global.licence'|trans({'year': 'now' | date('Y')}, 'global') | raw }}
                     </div>
                 </div>
             </div>

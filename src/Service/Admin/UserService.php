@@ -93,10 +93,13 @@ class UserService extends AppAdminService
                 $this->translator->trans('user.grid.id', domain: 'user') => $user->getId() . ' ' . $isDisabled,
                 $this->translator->trans('user.grid.login', domain: 'user') => $user->getLogin(),
                 $this->translator->trans('user.grid.email', domain: 'user') => $user->getEmail(),
-                $this->translator->trans('user.grid.name', domain: 'user') => $user->getFirstname() . ' ' . $user->getLastname(),
+                $this->translator->trans('user.grid.name', domain: 'user') => $user->getFirstname() . ' ' . $user->
+                    getLastname(),
                 $this->translator->trans('user.grid.role', domain: 'user') => $roles,
-                $this->translator->trans('user.grid.created_at', domain: 'user') => $user->getCreatedAt()->format('d/m/y H:i'),
-                $this->translator->trans('user.grid.update_at', domain: 'user') => $user->getUpdateAt()->format('d/m/y H:i'),
+                $this->translator->trans('user.grid.created_at', domain: 'user') => $user->getCreatedAt()->
+                    format('d/m/y H:i'),
+                $this->translator->trans('user.grid.update_at', domain: 'user') => $user->getUpdateAt()->
+                    format('d/m/y H:i'),
                 GridService::KEY_ACTION => json_encode($actions)
             ];
         }
@@ -141,9 +144,9 @@ class UserService extends AppAdminService
         $actionDelete = '';
         if ($canDelete === '1') {
 
-            $msgConfirm = $this->translator->trans('user.confirm.delete.msg', ['{login}' => $user->getLogin()]);
+            $msgConfirm = $this->translator->trans('user.confirm.delete.msg', ['{login}' => $user->getLogin()], 'user');
             if ($replaceUser === '1') {
-                $msgConfirm = $this->translator->trans('user.confirm.replace.msg', ['{login}' => $user->getLogin()]);
+                $msgConfirm = $this->translator->trans('user.confirm.replace.msg', ['{login}' => $user->getLogin()], 'user');
             }
 
             $actionDelete = [

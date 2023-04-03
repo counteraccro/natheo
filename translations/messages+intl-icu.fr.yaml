@@ -83,37 +83,4 @@ options_system.logs.description: "Gérer le niveau de log et suivi que vous voul
 options_system.log_doctrine: 'Enregistrer tout changement dans la base de donnée'
 options_system.log_doctrine_help: 'Permet de tracer toutes modifications de donnée (ajout/édition/suppression) sur le site, peut générer des fichiers volumineux'
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
-global.alertes: Alertes
-global.profil: Profil
-global.logout: Déconnexion
 pagedemo.page_title_h1: 'Elements HML disponibles (trad)'
-option_system.page_title: 'Options système'
-option_system.page_title_h1: 'Les options système'
-option_system.description: 'Configurer votre CMS comme vous le souhaitez avec les options système'
-auth.title: Authentification
-global.licence: 'Copyright &copy; 2023-{year} &mdash; Propulsé par Nathéo CMS'
-security.login_user.title: Authentification
-security.login_user.email: 'Adresse email'
-security.login_user.password: 'Mot de passe'
-security.login_user.forgot_password: 'Mot de passe oublié ?'
-security.login_user.remember_me: 'Ce souvenir de moi'
-security.login_user.btn_login: Connexion
-security.login.always_log: 'Vous êtes déjà connecté en tant que '
-security.login.logout: Déconnexion
-sidebar.page_title: 'Gestion de la sidebar'
-sidebar.page_title_h1: 'Gestion de la sidebar'
-sidebar.description: "Permet de définir quels sont les éléments du menu de gauche global de l'administration qui doivent être affichés ou masqués"
-sidebar.grid.id: Id
-sidebar.grid.parent: Parent
-sidebar.grid.label: Label
-sidebar.grid.role: 'Role accès'
-sidebar.grid.description: Description
-sidebar.grid.created_at: Création
-sidebar.grid.update_at: 'Mise à jour'
-sidebar.grid.action: Action
-sidebar.info: "Les éléments marqué d'un {icon} sont verrouillés et non modifiable | les éléments marqué d'un {icon2} sont masqués et non visible"
-sidebar.success.no.disabled: "L'élément sidebar <strong>{label}</strong> est maintenant visible"
-sidebar.success.disabled: "L'élément sidebar <strong>{label}</strong> est maintenant masquer pour tout le monde"
-sidebar.confirm.disabled.msg: "L'élément sidebar <strong>{label}</strong> sera désactivé et donc non visible dans l'administration <br /> Confirmez-vous cette action ?"
-global.user.option: 'Mes options'
-
