@@ -54,21 +54,21 @@ class LogController extends AppAdminController
         $data = json_decode($request->getContent(), true);
 
         $tabTranslate = [
-            'log_select_file' => $translator->trans('log.select-file'),
-            'log_select_time_all' => $translator->trans('log.select-time.all'),
-            'log_select_time_now' => $translator->trans('log.select-time.now'),
-            'log_select_time_yesterday' => $translator->trans('log.select-time.yesterday'),
-            'log_file' => $translator->trans('log.file'),
-            'log_file_size' => $translator->trans('log.file.size'),
-            'log_file_ligne' => $translator->trans('log.file.ligne'),
-            'log_btn_delete_file' => $translator->trans('log.btn.delete.file'),
-            'log_empty_file' => $translator->trans('log.empty.file'),
-            'log_delete_file_confirm' => $translator->trans('log.delete.file.confirm'),
-            'log_delete_file_confirm_2' => $translator->trans('log.delete.file.confirm_2'),
-            'log_delete_file_loading' => $translator->trans('log.delete.file.loading'),
-            'log_delete_file_success' => $translator->trans('log.delete.file.success'),
-            'log_delete_file_btn_close' => $translator->trans('log.delete.file.btn_close'),
-            'log_btn_reload' => $translator->trans('log.btn.reload'),
+            'log_select_file' => $translator->trans('log.select-file', domain: 'log'),
+            'log_select_time_all' => $translator->trans('log.select-time.all', domain: 'log'),
+            'log_select_time_now' => $translator->trans('log.select-time.now', domain: 'log'),
+            'log_select_time_yesterday' => $translator->trans('log.select-time.yesterday', domain: 'log'),
+            'log_file' => $translator->trans('log.file', domain: 'log'),
+            'log_file_size' => $translator->trans('log.file.size', domain: 'log'),
+            'log_file_ligne' => $translator->trans('log.file.ligne', domain: 'log'),
+            'log_btn_delete_file' => $translator->trans('log.btn.delete.file', domain: 'log'),
+            'log_empty_file' => $translator->trans('log.empty.file', domain: 'log'),
+            'log_delete_file_confirm' => $translator->trans('log.delete.file.confirm', domain: 'log'),
+            'log_delete_file_confirm_2' => $translator->trans('log.delete.file.confirm_2', domain: 'log'),
+            'log_delete_file_loading' => $translator->trans('log.delete.file.loading', domain: 'log'),
+            'log_delete_file_success' => $translator->trans('log.delete.file.success', domain: 'log'),
+            'log_delete_file_btn_close' => $translator->trans('log.delete.file.btn_close', domain: 'log'),
+            'log_btn_reload' => $translator->trans('log.btn.reload', domain: 'log'),
         ];
 
         try {
