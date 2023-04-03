@@ -1,0 +1,11 @@
+grid.search.placeholder: __grid.search.placeholder
+grid.loading: __grid.loading
+grid.success.titre: __grid.success.titre
+grid.confirm.titre: __grid.confirm.titre
+grid.confirm.texte: __grid.confirm.texte
+grid.confirm.btn.ok: __grid.confirm.btn.ok
+grid.confirm.btn.no: __grid.confirm.btn.no
+grid.page: __grid.page
+grid.on: __grid.on
+grid.row: __grid.row
+grid.no.result: __grid.no.result

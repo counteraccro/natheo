@@ -1,0 +1,14 @@
+sidebar.success.no.disabled: __sidebar.success.no.disabled
+sidebar.success.disabled: __sidebar.success.disabled
+sidebar.grid.id: __sidebar.grid.id
+sidebar.grid.parent: __sidebar.grid.parent
+sidebar.grid.label: __sidebar.grid.label
+sidebar.grid.role: __sidebar.grid.role
+sidebar.grid.description: __sidebar.grid.description
+sidebar.grid.created_at: __sidebar.grid.created_at
+sidebar.grid.update_at: __sidebar.grid.update_at
+sidebar.confirm.disabled.msg: __sidebar.confirm.disabled.msg
+sidebar.page_title: __sidebar.page_title
+sidebar.page_title_h1: __sidebar.page_title_h1
+sidebar.description: __sidebar.description
+sidebar.info: __sidebar.info
