@@ -1,0 +1,15 @@
+sidebar.page_title: 'Gestion de la sidebar'
+sidebar.page_title_h1: 'Gestion de la sidebar'
+sidebar.description: "Permet de définir quels sont les éléments du menu de gauche global de l'administration qui doivent être affichés ou masqués"
+sidebar.grid.id: Id
+sidebar.grid.parent: Parent
+sidebar.grid.label: Label
+sidebar.grid.role: 'Role accès'
+sidebar.grid.description: Description
+sidebar.grid.created_at: Création
+sidebar.grid.update_at: 'Mise à jour'
+sidebar.grid.action: Action
+sidebar.info: "Les éléments marqué d'un {icon} sont verrouillés et non modifiable | les éléments marqué d'un {icon2} sont masqués et non visible"
+sidebar.success.no.disabled: "L'élément sidebar <strong>{label}</strong> est maintenant visible"
+sidebar.success.disabled: "L'élément sidebar <strong>{label}</strong> est maintenant masquer pour tout le monde"
+sidebar.confirm.disabled.msg: "L'élément sidebar <strong>{label}</strong> sera désactivé et donc non visible dans l'administration <br /> Confirmez-vous cette action ?"

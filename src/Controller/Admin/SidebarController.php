@@ -70,14 +70,12 @@ class SidebarController extends AppAdminController
         $sidebarElement->setDisabled(!$sidebarElement->isDisabled());
         $sidebarElementService->save($sidebarElement);
 
-        $msg = $translator->trans('sidebar.success.no.disabled',
-            ['label' => '<i class="bi ' . $sidebarElement->getIcon() . '"></i> ' .
-                $translator->trans($sidebarElement->getLabel())]
+        $msg = $translator->trans('sidebar.success.no.disabled', ['label' => '<i class="bi ' .
+            $sidebarElement->getIcon() . '"></i> ' . $translator->trans($sidebarElement->getLabel())], 'sidebar'
         );
         if ($sidebarElement->isDisabled()) {
-            $msg = $translator->trans('sidebar.success.disabled',
-                ['label' => '<i class="bi ' . $sidebarElement->getIcon() . '"></i> ' .
-                    $translator->trans($sidebarElement->getLabel())]
+            $msg = $translator->trans('sidebar.success.disabled', ['label' => '<i class="bi ' .
+                $sidebarElement->getIcon() . '"></i> ' . $translator->trans($sidebarElement->getLabel())], 'sidebar'
             );
         }
 

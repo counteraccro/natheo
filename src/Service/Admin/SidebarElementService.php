@@ -26,7 +26,7 @@ class SidebarElementService extends AppAdminService
 
     public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
                                 TranslatorInterface    $translator, UrlGeneratorInterface $router,
-                                GridService $gridService, Security $security, RequestStack $requestStack
+                                GridService            $gridService, Security $security, RequestStack $requestStack
     )
     {
         $this->gridService = $gridService;
@@ -65,13 +65,13 @@ class SidebarElementService extends AppAdminService
     public function getAllFormatToGrid(int $page, int $limit)
     {
         $column = [
-            $this->translator->trans('sidebar.grid.id'),
-            $this->translator->trans('sidebar.grid.parent'),
-            $this->translator->trans('sidebar.grid.label'),
-            $this->translator->trans('sidebar.grid.role'),
-            $this->translator->trans('sidebar.grid.description'),
-            $this->translator->trans('sidebar.grid.created_at'),
-            $this->translator->trans('sidebar.grid.update_at'),
+            $this->translator->trans('sidebar.grid.id', domain: 'sidebar'),
+            $this->translator->trans('sidebar.grid.parent', domain: 'sidebar'),
+            $this->translator->trans('sidebar.grid.label', domain: 'sidebar'),
+            $this->translator->trans('sidebar.grid.role', domain: 'sidebar'),
+            $this->translator->trans('sidebar.grid.description', domain: 'sidebar'),
+            $this->translator->trans('sidebar.grid.created_at', domain: 'sidebar'),
+            $this->translator->trans('sidebar.grid.update_at', domain: 'sidebar'),
             GridService::KEY_ACTION,
         ];
 
@@ -100,14 +100,19 @@ class SidebarElementService extends AppAdminService
             }
 
             $data[] = [
-                $this->translator->trans('sidebar.grid.id') => $element->getId() . ' ' . $isLock . ' ' . $isDisabled,
-                $this->translator->trans('sidebar.grid.parent') => $parent,
-                $this->translator->trans('sidebar.grid.label') => '<i class="bi ' . $element->getIcon() . '"></i> ' .
-                    $this->translator->trans($element->getLabel()),
-                $this->translator->trans('sidebar.grid.role') => $this->gridService->renderRole($element->getRole()),
-                $this->translator->trans('sidebar.grid.description') => $this->translator->trans($element->getDescription()),
-                $this->translator->trans('sidebar.grid.created_at') => $element->getCreatedAt()->format('d/m/y H:i'),
-                $this->translator->trans('sidebar.grid.update_at') => $element->getUpdateAt()->format('d/m/y H:i'),
+                $this->translator->trans('sidebar.grid.id', domain: 'sidebar') => $element->getId() . ' ' . $isLock .
+                    ' ' . $isDisabled,
+                $this->translator->trans('sidebar.grid.parent', domain: 'sidebar') => $parent,
+                $this->translator->trans('sidebar.grid.label', domain: 'sidebar') => '<i class="bi ' .
+                    $element->getIcon() . '"></i> ' . $this->translator->trans($element->getLabel()),
+                $this->translator->trans('sidebar.grid.role', domain: 'sidebar') => $this->gridService
+                    ->renderRole($element->getRole()),
+                $this->translator->trans('sidebar.grid.description', domain: 'sidebar') => $this->translator
+                    ->trans($element->getDescription()),
+                $this->translator->trans('sidebar.grid.created_at', domain: 'sidebar') => $element
+                    ->getCreatedAt()->format('d/m/y H:i'),
+                $this->translator->trans('sidebar.grid.update_at', domain: 'sidebar') => $element
+                    ->getUpdateAt()->format('d/m/y H:i'),
                 GridService::KEY_ACTION => json_encode($action),
             ];
         }
@@ -135,7 +140,7 @@ class SidebarElementService extends AppAdminService
                 'ajax' => true,
                 'confirm' => true,
                 'msgConfirm' => $this->translator->trans('sidebar.confirm.disabled.msg', ['{label}' => '<i class="bi ' .
-                    $element->getIcon() . '"></i> ' . $this->translator->trans($element->getLabel())])];
+                    $element->getIcon() . '"></i> ' . $this->translator->trans($element->getLabel())], 'sidebar')];
             if ($element->isDisabled()) {
                 $actionDisabled = [
                     'label' => '<i class="bi bi-eye-fill"></i>',
