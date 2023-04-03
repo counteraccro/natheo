@@ -4,8 +4,10 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
+
 namespace App\Controller\Admin;
 
+use App\Service\Admin\Breadcrumb;
 use App\Service\Admin\OptionSystemService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +28,10 @@ class OptionSystemController extends AppAdminController
     public function index(): Response
     {
         $breadcrumb = [
-            'option_system.page_title_h1' => '#'
+            Breadcrumb::DOMAIN => 'option_system',
+            Breadcrumb::BREADCRUMB => [
+                'option_system.page_title_h1' => '#'
+            ]
         ];
 
         return $this->render('admin/option_system/index.html.twig', [

@@ -7,6 +7,7 @@ global.system_options: Options
 global.devtools: 'Dev Tools'
 global.dev_options: 'Dev Options'
 global.database: 'Base de données'
+global.translate: 'Traduction'
 global.html_element: 'Exemple HTML'
 global.logs: Logs
 global.oui: Oui
@@ -68,6 +69,7 @@ sidebar.dev_options.description: 'Permet de gérer les options pour le développ
 sidebar.database.description: 'Permet de visualisé la base de données + statistiques'
 sidebar.html_element.description: 'Démo des différents éléments HTML du CMS'
 sidebar.log.description: 'Gestion et visualisation des logs applicatifs'
+sidebar.translate.description: 'Gestion des traductions du CMS'
 options_user.administration: Interface
 options_user.administration.title: "Personalisation de l'administration"
 options_user.administration.description: "Personaliser l'administration via ces options"

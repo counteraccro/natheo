@@ -7,6 +7,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Service\Admin\Breadcrumb;
 use App\Service\Admin\OptionUserService;
 use App\Service\LoggerService;
 use Exception;
@@ -30,7 +31,10 @@ class LogController extends AppAdminController
     public function index(): Response
     {
         $breadcrumb = [
-            'log.page_title_h1' => '#'
+            Breadcrumb::DOMAIN => 'log',
+            Breadcrumb::BREADCRUMB => [
+                'log.page_title_h1' => '#'
+            ]
         ];
 
         return $this->render('admin/log/index.html.twig', [
@@ -90,10 +94,11 @@ class LogController extends AppAdminController
     {
         $data = json_decode($request->getContent(), true);
 
-        $grid = [];
         try {
             $grid = $loggerService->loadLogFile($data['file'], $data['page'], $data['limit']);
         } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+            die($e->getMessage());
+        } catch (Exception $e) {
             die($e->getMessage());
         }
 

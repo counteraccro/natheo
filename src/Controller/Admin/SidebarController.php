@@ -8,6 +8,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Admin\SidebarElement;
+use App\Service\Admin\Breadcrumb;
 use App\Service\Admin\OptionUserService;
 use App\Service\Admin\SidebarElementService;
 use App\Utils\Debug;
@@ -31,7 +32,10 @@ class SidebarController extends AppAdminController
     public function index(): Response
     {
         $breadcrumb = [
-            'sidebar.page_title_h1' => '#'
+            Breadcrumb::DOMAIN => 'sidebar',
+            Breadcrumb::BREADCRUMB => [
+                'sidebar.page_title_h1' => '#'
+            ]
         ];
 
         return $this->render('admin/sidebar/index.html.twig', [

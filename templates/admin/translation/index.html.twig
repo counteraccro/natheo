@@ -1,0 +1,14 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block title %}{{ 'translate.page_title' | trans({}, 'translate') }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'translate.page_title_h1' | trans({}, 'translate') }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    <p>{{ 'translate.description' | trans({}, 'translate') }}</p>
+
+    <div {#  { vue_component('Admin/Option', {'url_update' : path('admin_option-system_ajax_update')}) }#}></div>
+
+{% endblock %}

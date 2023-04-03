@@ -5,8 +5,10 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
+
 namespace App\Controller\Admin;
 
+use App\Service\Admin\Breadcrumb;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -32,7 +34,10 @@ class DashboardController extends AppAdminController
     public function pageDemo(): Response
     {
         $breadcrumb = [
-            'pagedemo.element.html' => '#'
+            Breadcrumb::DOMAIN => 'message',
+            Breadcrumb::BREADCRUMB => [
+                'pagedemo.element.html' => '#'
+            ]
         ];
 
         return $this->render('admin/dashboard/page_demo.html.twig', ['breadcrumb' => $breadcrumb]);

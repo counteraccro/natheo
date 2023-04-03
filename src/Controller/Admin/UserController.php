@@ -9,6 +9,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Admin\User;
+use App\Service\Admin\Breadcrumb;
 use App\Service\Admin\OptionUserService;
 use App\Service\Admin\UserService;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,7 +31,10 @@ class UserController extends AppAdminController
     public function index(): Response
     {
         $breadcrumb = [
-            'user.page_title_h1' => '#'
+            Breadcrumb::DOMAIN => 'user',
+            Breadcrumb::BREADCRUMB => [
+                'user.page_title_h1' => '#'
+            ]
         ];
 
         return $this->render('admin/user/index.html.twig', [
@@ -49,7 +53,10 @@ class UserController extends AppAdminController
     public function userOption(): Response
     {
         $breadcrumb = [
-            'user.my_option_title_h1' => '#'
+            Breadcrumb::DOMAIN => 'user',
+            Breadcrumb::BREADCRUMB => [
+                'user.my_option_title_h1' => '#'
+            ]
         ];
 
         return $this->render('admin/user/my_options.html.twig', [
@@ -126,8 +133,11 @@ class UserController extends AppAdminController
     public function update(User $user, UserService $userService): Response
     {
         $breadcrumb = [
-            'user.page_title_h1' => 'admin_user_index',
-            'user.page_update_title_h1' => '#'
+            Breadcrumb::DOMAIN => 'user',
+            Breadcrumb::BREADCRUMB => [
+                'user.page_title_h1' => 'admin_user_index',
+                'user.page_update_title_h1' => '#'
+            ]
         ];
 
         return $this->render('admin/user/update.html.twig', [

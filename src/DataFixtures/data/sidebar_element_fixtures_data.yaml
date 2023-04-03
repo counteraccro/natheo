@@ -51,6 +51,15 @@ sidebarElement:
                   role: 'ROLE_SUPER_ADMIN'
                   description: 'sidebar.system_options.description'
                   lock: true
+            - translate:
+                icon: 'bi-translate'
+                label: 'global.translate'
+                route: 'admin_translation_index'
+                disabled: false
+                parent: system
+                role: 'ROLE_SUPER_ADMIN'
+                description: 'sidebar.translate.description'
+                lock: true
             - logs:
                 icon: 'bi-file-earmark-text'
                 label: 'global.logs'
