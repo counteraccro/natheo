@@ -112,10 +112,10 @@ class LoggerService extends AppService
         // On force le changement de langue pour éviter d'enregistrer les logs dans la langue du user courant
         $this->switchDefaultLocale('system');
         if ($success) {
-            $msg = $this->translator->trans('log.auth.admin.success', ['user' => $user, 'ip' => $ip]);
+            $msg = $this->translator->trans('log.auth.admin.success', ['user' => $user, 'ip' => $ip], 'log');
             $level = LogLevel::INFO;
         } else {
-            $msg = $this->translator->trans('log.auth.admin.error', ['user' => $user, 'ip' => $ip]);
+            $msg = $this->translator->trans('log.auth.admin.error', ['user' => $user, 'ip' => $ip], 'log');
             $level = LogLevel::WARNING;
         }
         $this->authLogger->log($level, $msg);
@@ -144,20 +144,20 @@ class LoggerService extends AppService
         $this->switchDefaultLocale('system');
         switch ($action) {
             case self::ACTION_DOCTRINE_PERSIST :
-                $msg = $this->translator->trans('log.doctrine.persit',
-                    ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $idUser]
+                $msg = $this->translator->trans('log.doctrine.persit', ['entity' => $entity, 'id' => $id, 'user' =>
+                        $user, 'id_user' => $idUser], 'log'
                 );
                 $this->doctrineLogLogger->notice($msg);
                 break;
             case self::ACTION_DOCTRINE_REMOVE :
-                $msg = $this->translator->trans('log.doctrine.remove',
-                    ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $idUser]
+                $msg = $this->translator->trans('log.doctrine.remove', ['entity' => $entity, 'id' => $id, 'user' =>
+                        $user, 'id_user' => $idUser], 'log'
                 );
                 $this->doctrineLogLogger->warning($msg);
                 break;
             case self::ACTION_DOCTRINE_UPDATE :
-                $msg = $this->translator->trans('log.doctrine.update',
-                    ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $idUser]
+                $msg = $this->translator->trans('log.doctrine.update', ['entity' => $entity, 'id' => $id, 'user' =>
+                        $user, 'id_user' => $idUser], 'log'
                 );
                 $this->doctrineLogLogger->info($msg);
                 break;
@@ -209,9 +209,9 @@ class LoggerService extends AppService
     public function loadLogFile(string $fileName, int $page, int $limit): array
     {
         $column = [
-            $this->translator->trans('log.grid.level'),
-            $this->translator->trans('log.grid.date'),
-            $this->translator->trans('log.grid.message'),
+            $this->translator->trans('log.grid.level', domain: 'log'),
+            $this->translator->trans('log.grid.date', domain: 'log'),
+            $this->translator->trans('log.grid.message', domain: 'log'),
         ];
 
         $kernel = $this->params->get('kernel.project_dir');
@@ -283,9 +283,9 @@ class LoggerService extends AppService
         };
 
         return [
-            $this->translator->trans('log.grid.message') => $tabLog['message'],
-            $this->translator->trans('log.grid.date') => $dateStr,
-            $this->translator->trans('log.grid.level') => '<span class="' . $class . '">'
+            $this->translator->trans('log.grid.message', domain: 'log') => $tabLog['message'],
+            $this->translator->trans('log.grid.date', domain: 'log') => $dateStr,
+            $this->translator->trans('log.grid.level', domain: 'log') => '<span class="' . $class . '">'
                 . $tabLog['level_name'] . '</span>',
         ];
     }
