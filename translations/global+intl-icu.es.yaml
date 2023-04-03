@@ -1,10 +1,10 @@
-global.role.user: __global.role.user
-global.role.contributeur: __global.role.contributeur
-global.role.admin: __global.role.admin
-global.role.superadmin: __global.role.superadmin
-global.dashboard: __global.dashboard
-global.alertes: __global.alertes
-global.profil: __global.profil
-global.user.option: __global.user.option
-global.logout: __global.logout
-global.licence: __global.licence
+global.role.user: 'Utilisateur [es]'
+global.role.contributeur: 'Contributeur [es]'
+global.role.admin: 'Administrateur [es]'
+global.role.superadmin: 'Super Administrateur [es]'
+global.alertes: 'Alertes [es]'
+global.profil: 'Profil [es]'
+global.logout: 'Déconnexion [es]'
+global.user.option: 'Mes options [es]'
+global.licence: 'Copyright &copy; 2023-{year} &mdash; Propulsé par Nathéo CMS [es]'
+global.dashboard: 'Dashboard [es]'
