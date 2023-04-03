@@ -63,21 +63,21 @@ class GridService extends AppAdminService
 
         $tab['translate'] = [
             'genericGrid' => json_encode([
-                'placeholder' => $this->translator->trans('grid.search.placeholder', [], 'grid/grid'),
-                'loading' => $this->translator->trans('grid.loading', [], 'grid/grid'),
-                'titleSuccess' => $this->translator->trans('grid.success.titre', [], 'grid/grid'),
-                'confirmTitle' => $this->translator->trans('grid.confirm.titre', [], 'grid/grid'),
-                'confirmText' => $this->translator->trans('grid.confirm.texte', [], 'grid/grid'),
-                'confirmBtnOK' => $this->translator->trans('grid.confirm.btn.ok', [], 'grid/grid'),
-                'confirmBtnNo' => $this->translator->trans('grid.confirm.btn.no', [], 'grid/grid'),
+                'placeholder' => $this->translator->trans('grid.search.placeholder', domain: 'grid'),
+                'loading' => $this->translator->trans('grid.loading', domain: 'grid'),
+                'titleSuccess' => $this->translator->trans('grid.success.titre', domain: 'grid'),
+                'confirmTitle' => $this->translator->trans('grid.confirm.titre', domain: 'grid'),
+                'confirmText' => $this->translator->trans('grid.confirm.texte', domain: 'grid'),
+                'confirmBtnOK' => $this->translator->trans('grid.confirm.btn.ok', domain: 'grid'),
+                'confirmBtnNo' => $this->translator->trans('grid.confirm.btn.no', domain: 'grid'),
             ]),
             'gridPaginate' => json_encode([
-                'page' => $this->translator->trans('grid.page', [], 'grid/grid'),
-                'on' => $this->translator->trans('grid.on', [], 'grid/grid'),
-                'row' => $this->translator->trans('grid.row', [], 'grid/grid')
+                'page' => $this->translator->trans('grid.page', [], domain: 'grid'),
+                'on' => $this->translator->trans('grid.on', [], domain: 'grid'),
+                'row' => $this->translator->trans('grid.row', [], domain: 'grid')
             ]),
             'grid' => json_encode([
-                'noresult' => $this->translator->trans('grid.no.result', [], 'grid/grid')
+                'noresult' => $this->translator->trans('grid.no.result', [], domain: 'grid')
             ])
         ];
 
@@ -92,10 +92,10 @@ class GridService extends AppAdminService
     public function renderRole(string $role): string
     {
         $tabRole = [
-            'ROLE_USER' => $this->translator->trans('global.role.user', [], 'global/global'),
-            'ROLE_CONTRIBUTEUR' => $this->translator->trans('global.role.contributeur', [], 'global/global'),
-            'ROLE_ADMIN' => $this->translator->trans('global.role.admin', [], 'global/global'),
-            'ROLE_SUPER_ADMIN' => $this->translator->trans('global.role.superadmin', [], 'global/global')
+            'ROLE_USER' => $this->translator->trans('global.role.user', domain: 'global'),
+            'ROLE_CONTRIBUTEUR' => $this->translator->trans('global.role.contributeur', domain: 'global'),
+            'ROLE_ADMIN' => $this->translator->trans('global.role.admin', domain: 'global'),
+            'ROLE_SUPER_ADMIN' => $this->translator->trans('global.role.superadmin', domain: 'global')
         ];
         return $tabRole[$role];
     }
