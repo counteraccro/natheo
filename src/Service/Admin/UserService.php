@@ -60,13 +60,13 @@ class UserService extends AppAdminService
     public function getAllFormatToGrid(int $page, int $limit): array
     {
         $column = [
-            $this->translator->trans('user.grid.id'),
-            $this->translator->trans('user.grid.login'),
-            $this->translator->trans('user.grid.email'),
-            $this->translator->trans('user.grid.name'),
-            $this->translator->trans('user.grid.role'),
-            $this->translator->trans('user.grid.created_at'),
-            $this->translator->trans('user.grid.update_at'),
+            $this->translator->trans('user.grid.id', domain: 'user'),
+            $this->translator->trans('user.grid.login', domain: 'user'),
+            $this->translator->trans('user.grid.email', domain: 'user'),
+            $this->translator->trans('user.grid.name', domain: 'user'),
+            $this->translator->trans('user.grid.role', domain: 'user'),
+            $this->translator->trans('user.grid.created_at', domain: 'user'),
+            $this->translator->trans('user.grid.update_at', domain: 'user'),
             GridService::KEY_ACTION,
         ];
 
@@ -90,13 +90,13 @@ class UserService extends AppAdminService
 
             $actions = $this->generateTabAction($user);
             $data[] = [
-                $this->translator->trans('user.grid.id') => $user->getId() . ' ' . $isDisabled,
-                $this->translator->trans('user.grid.login') => $user->getLogin(),
-                $this->translator->trans('user.grid.email') => $user->getEmail(),
-                $this->translator->trans('user.grid.name') => $user->getFirstname() . ' ' . $user->getLastname(),
-                $this->translator->trans('user.grid.role') => $roles,
-                $this->translator->trans('user.grid.created_at') => $user->getCreatedAt()->format('d/m/y H:i'),
-                $this->translator->trans('user.grid.update_at') => $user->getUpdateAt()->format('d/m/y H:i'),
+                $this->translator->trans('user.grid.id', domain: 'user') => $user->getId() . ' ' . $isDisabled,
+                $this->translator->trans('user.grid.login', domain: 'user') => $user->getLogin(),
+                $this->translator->trans('user.grid.email', domain: 'user') => $user->getEmail(),
+                $this->translator->trans('user.grid.name', domain: 'user') => $user->getFirstname() . ' ' . $user->getLastname(),
+                $this->translator->trans('user.grid.role', domain: 'user') => $roles,
+                $this->translator->trans('user.grid.created_at', domain: 'user') => $user->getCreatedAt()->format('d/m/y H:i'),
+                $this->translator->trans('user.grid.update_at', domain: 'user') => $user->getUpdateAt()->format('d/m/y H:i'),
                 GridService::KEY_ACTION => json_encode($actions)
             ];
         }
@@ -125,7 +125,8 @@ class UserService extends AppAdminService
             'url' => $this->router->generate('admin_user_update_disabled', ['id' => $user->getId()]),
             'ajax' => true,
             'confirm' => true,
-            'msgConfirm' => $this->translator->trans('user.confirm.disabled.msg', ['{login}' => $user->getLogin()])];
+            'msgConfirm' =>
+                $this->translator->trans('user.confirm.disabled.msg', ['{login}' => $user->getLogin()], 'user')];
         if ($user->isDisabled()) {
             $actionDisabled = ['label' => '<i class="bi bi-eye-fill"></i>', 'url' =>
                 $this->router->generate('admin_user_update_disabled', ['id' => $user->getId()]), 'ajax' => true];
