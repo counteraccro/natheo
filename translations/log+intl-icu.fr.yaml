@@ -1,0 +1,26 @@
+log.select-file: 'Choix du fichier de log'
+log.select-time.all: 'Tous les logs'
+log.select-time.now: "Aujourd'hui"
+log.select-time.yesterday: Hier
+log.file: Fichier
+log.file.size: Taille
+log.file.ligne: Lignes
+log.btn.delete.file: Supprimer
+log.empty.file: 'Veuillez sélectionner un fichier pour pouvoir en lire le contenu ou le supprimer'
+log.delete.file.confirm: 'Confirmez-vous la suppression du fichier'
+log.delete.file.confirm_2: 'La suppression est définitive et sans retour possible'
+log.delete.file.loading: 'Suppression en cours'
+log.delete.file.success: 'Fichier supprimé avec succès'
+log.delete.file.btn_close: Fermer
+log.btn.reload: Recharger
+log.auth.admin.success: 'Connexion de {user} - IP {ip}'
+log.auth.admin.error: 'Tentative de Connexion de {user} - IP {ip}'
+log.doctrine.persit: "l'entité {entity} #{id} à été créé par {user} (#{id_user})"
+log.doctrine.remove: "l'entité {entity} #{id} à été supprimée par {user} (#{id_user})"
+log.doctrine.update: "l'entité {entity} #{id} à été modifiée par {user} (#{id_user})"
+log.page_title: 'Gestion des logs'
+log.page_title_h1: 'Gestion des logs'
+log.description: 'Consulter / vider les logs applicatifs '
+log.grid.level: Niveau
+log.grid.date: Date
+log.grid.message: Message

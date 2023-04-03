@@ -1,0 +1,4 @@
+global.role.user: Utilisateur
+global.role.contributeur: Contributeur
+global.role.admin: Administrateur
+global.role.superadmin: 'Super Administrateur'

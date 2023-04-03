@@ -111,20 +111,9 @@ sidebar.grid.description: Description
 sidebar.grid.created_at: Création
 sidebar.grid.update_at: 'Mise à jour'
 sidebar.grid.action: Action
-grid.search.placeholder: 'Rechercher dans le tableau'
-grid.loading: 'Chargement des données'
-grid.page: Page
-grid.on: sur
-grid.row: lignes
-grid.no.result: 'Aucun résultat pour votre recherche'
 sidebar.info: "Les éléments marqué d'un {icon} sont verrouillés et non modifiable | les éléments marqué d'un {icon2} sont masqués et non visible"
-grid.success.titre: 'Action réalisée avec succès !'
 sidebar.success.no.disabled: "L'élément sidebar <strong>{label}</strong> est maintenant visible"
 sidebar.success.disabled: "L'élément sidebar <strong>{label}</strong> est maintenant masquer pour tout le monde"
-grid.confirm.titre: 'Confirmation demandée'
-grid.confirm.texte: 'Êtes vous sur de vouloir faire cela ?'
-grid.confirm.btn.ok: Oui
-grid.confirm.btn.no: Non
 sidebar.confirm.disabled.msg: "L'élément sidebar <strong>{label}</strong> sera désactivé et donc non visible dans l'administration <br /> Confirmez-vous cette action ?"
 user.page_title: 'Gestion des utilisateurs'
 user.page_title_h1: 'Gestion des utilisateurs'
@@ -143,38 +132,8 @@ user.confirm.replace.msg: "Le compte de l'utilisateur <strong>{login}</strong> s
 user.page_update_title: 'Mise à jour du compte {login}'
 user.page_update_title_h1: 'Mise à jour du compte {login}'
 user.info: "Les utilisateurs marqué d'un {icon} ont été remplacé par John Doe et sont verrouillés | les utilisateurs marqué d'un {icon2} sont désactivés"
-global.role.user: Utilisateur
-global.role.contributeur: Contributeur
-global.role.admin: Administrateur
-global.role.superadmin: 'Super Administrateur'
 user.grid.role: Role
 global.user.option: 'Mes options'
 user.my_option_title: 'Mes options'
 user.my_option_title_h1: 'Gestion de mes options'
 user.my_option_description: "Personaliser l'interface ainsi que la langue et d'autres détails de l'administration"
-log.auth.admin.success: 'Connexion de {user} - IP {ip}'
-log.auth.admin.error: 'Tentative de Connexion de {user} - IP {ip}'
-log.doctrine.persit: "l'entité {entity} #{id} à été créé par {user} (#{id_user})"
-log.doctrine.remove: "l'entité {entity} #{id} à été supprimée par {user} (#{id_user})"
-log.doctrine.update: "l'entité {entity} #{id} à été modifiée par {user} (#{id_user})"
-log.page_title: 'Gestion des logs'
-log.page_title_h1: 'Gestion des logs'
-log.description: 'Consulter / vider les logs applicatifs '
-log.select-file: 'Choix du fichier de log'
-log.select-time.all: 'Tous les logs'
-log.select-time.now: "Aujourd'hui"
-log.select-time.yesterday: Hier
-log.grid.level: Niveau
-log.grid.date: Date
-log.grid.message: Message
-log.file: Fichier
-log.file.size: Taille
-log.file.ligne: Lignes
-log.btn.delete.file: Supprimer
-log.empty.file: 'Veuillez sélectionner un fichier pour pouvoir en lire le contenu ou le supprimer'
-log.delete.file.confirm: 'Confirmez-vous la suppression du fichier'
-log.delete.file.confirm_2: 'La suppression est définitive et sans retour possible'
-log.delete.file.loading: 'Suppression en cours'
-log.delete.file.btn_close: Fermer
-log.delete.file.success: 'Fichier supprimé avec succès'
-log.btn.reload: 'Recharger'
