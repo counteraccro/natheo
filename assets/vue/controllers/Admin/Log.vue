@@ -139,6 +139,7 @@ export default {
           document.getElementById('select-file').getElementsByTagName('option')[0].selected = 'selected';
           this.time = '';
           this.selectFile = '';
+          this.loadDeleteFile = false;
           this.loadData();
         }
         else {
