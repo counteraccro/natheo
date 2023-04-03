@@ -1,13 +1,13 @@
 {% extends 'admin/admin_base.html.twig' %}
 
-{% block title %}{{ 'log.page_title' | trans }}{% endblock %}
+{% block title %}{{ 'log.page_title' | trans({}, 'log') }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'log.page_title_h1' | trans }}</h1>
+    <h1>{{ 'log.page_title_h1' | trans({}, 'log') }}</h1>
 
     {{ breadcrumb(breadcrumb) }}
 
-    <p>{{ 'log.description' | trans }}</p>
+    <p>{{ 'log.description' | trans({}, 'log') }}</p>
 
 
     <div {{ vue_component('Admin/Log', {'url_select' : path('admin_log_ajax_data_select_log'), 'url_load_log_file' : path('admin_log_ajax_load_log_file'), 'url_delete_file' : path('admin_log_ajax_delete_file'),

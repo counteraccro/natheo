@@ -100,9 +100,9 @@ class UserController extends AppAdminController
         $user->setDisabled(!$user->isDisabled());
         $userService->save($user);
 
-        $msg = $translator->trans('user.success.no.disabled', ['login' => $user->getLogin()]);
+        $msg = $translator->trans('user.success.no.disabled', ['login' => $user->getLogin()], 'user');
         if ($user->isDisabled()) {
-            $msg = $translator->trans('user.success.disabled', ['login' => $user->getLogin()]);
+            $msg = $translator->trans('user.success.disabled', ['login' => $user->getLogin()], 'user');
         }
 
         return $this->json(['type' => 'success', 'msg' => $msg]);

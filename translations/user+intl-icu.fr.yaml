@@ -1,0 +1,11 @@
+user.success.no.disabled: __user.success.no.disabled
+user.success.disabled: __user.success.disabled
+user.page_title: __user.page_title
+user.page_title_h1: __user.page_title_h1
+user.description: __user.description
+user.info: __user.info
+user.my_option_title: __user.my_option_title
+user.my_option_title_h1: __user.my_option_title_h1
+user.my_option_description: __user.my_option_description
+user.page_update_title: __user.page_update_title
+user.page_update_title_h1: __user.page_update_title_h1
