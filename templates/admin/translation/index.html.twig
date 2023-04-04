@@ -9,6 +9,7 @@
 
     <p>{{ 'translate.description' | trans({}, 'translate') }}</p>
 
-    <div {#  { vue_component('Admin/Option', {'url_update' : path('admin_option-system_ajax_update')}) }#}></div>
+    <div {{ vue_component('Admin/Translate', {'url_langue' : path('admin_translation_list_languages'),
+        'url_translate_file' : path('admin_translation_files_translate')}) }}></div>
 
 {% endblock %}

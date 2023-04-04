@@ -1,3 +1,4 @@
-translate.page_title: Gestion des traductions
-translate.page_title_h1:  Gestion des traductions
-translate.description: Gérer les traductions du CMS à partir de cette page
+translate.page_title: 'Gestion des traductions'
+translate.page_title_h1: 'Gestion des traductions'
+translate.description: 'Gérer les traductions du CMS à partir de cette page'
+translate.select.language: 'Sélectionnez une langue'
