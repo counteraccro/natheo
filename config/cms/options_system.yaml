@@ -26,7 +26,7 @@ options_system:
       OS_DEFAULT_LANGUAGE:
         type: 'select'
         label: 'options_system.default_language'
-        list_value: 'fr:global.french|en:global.english|es:global.spanish'
+        list_value: 'fr:global.fr|en:global.en|es:global.es'
         help: 'options_system.default_language_help'
         default: 'fr'
       OS_FRONT_SCRIPT_TOP:

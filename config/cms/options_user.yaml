@@ -6,7 +6,7 @@ options_user:
       OU_DEFAULT_LANGUAGE:
         type: 'select'
         label: 'options_user.default_language'
-        list_value: 'fr:global.french|en:global.english|es:global.spanish'
+        list_value: 'fr:global.fr|en:global.en|es:global.es'
         help: 'options_user.default_language_help'
         default: 'fr'
       OU_THEME_SITE:

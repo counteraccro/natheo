@@ -7,7 +7,7 @@ global.system_options: __Options
 global.devtools: '__Dev Tools'
 global.dev_options: '__Dev Options'
 global.database: '__Base de données'
-global.translate: '__Traduction'
+global.translate: __Traduction
 global.html_element: '__Exemple HTML'
 global.logs: __Logs
 global.oui: __Oui

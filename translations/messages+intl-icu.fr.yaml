@@ -7,14 +7,14 @@ global.system_options: Options
 global.devtools: 'Dev Tools'
 global.dev_options: 'Dev Options'
 global.database: 'Base de données'
-global.translate: 'Traduction'
+global.translate: Traduction
 global.html_element: 'Exemple HTML'
 global.logs: Logs
 global.oui: Oui
 global.non: Non
-global.french: Français
-global.english: Anglais
-global.spanish: Espagnol
+global.fr: Français
+global.en: Anglais
+global.es: Espagnol
 global.purple: Violet
 global.red: Rouge
 global.orange: Orange
