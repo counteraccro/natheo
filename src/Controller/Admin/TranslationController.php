@@ -54,6 +54,8 @@ class TranslationController extends AppAdminController
             'translate_select_language' => $translator->trans('translate.select.language', domain: 'translate'),
             'translate_select_file' => $translator->trans('translate.select.file', domain: 'translate'),
             'translate_empty_file' => $translator->trans('translate.empty.file', domain: 'translate'),
+            'translate_btn_save' => $translator->trans('translate.btn.save', domain: 'translate'),
+            'translate_btn_cache' => $translator->trans('translate.btn.cache', domain: 'translate'),
         ];
 
         try {
@@ -94,5 +96,19 @@ class TranslationController extends AppAdminController
         $data = json_decode($request->getContent(), true);
         $file = $translateService->getTranslationFile($data['file']);
         return $this->json(['file' => $file]);
+    }
+
+    /**
+     * Sauvegarde les traductions
+     * @param Request $request
+     * @param TranslateService $translateService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/save-translate', name: 'save_translate', methods: ['POST'])]
+    public function saveTranslate(Request $request, TranslateService $translateService): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        var_dump($data);
+        return $this->json(['oki']);
     }
 }
