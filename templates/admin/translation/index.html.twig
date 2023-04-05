@@ -10,6 +10,6 @@
     <p>{{ 'translate.description' | trans({}, 'translate') }}</p>
 
     <div {{ vue_component('Admin/Translate', {'url_langue' : path('admin_translation_list_languages'),
-        'url_translate_file' : path('admin_translation_files_translate')}) }}></div>
+        'url_translates_files' : path('admin_translation_files_translate'), 'url_translate_file' : path('admin_translation_file_translate')}) }}></div>
 
 {% endblock %}

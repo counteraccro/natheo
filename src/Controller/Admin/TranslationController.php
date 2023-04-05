@@ -50,8 +50,10 @@ class TranslationController extends AppAdminController
     public function loadLanguages(TranslatorInterface $translator, TranslateService $translateService): JsonResponse
     {
         $tabTranslate = [
-            'translate_select_language' => $translator->trans('translate.select.language', domain: 'translate')
-            ];
+            'translate_select_language' => $translator->trans('translate.select.language', domain: 'translate'),
+            'translate_select_file' => $translator->trans('translate.select.file', domain: 'translate'),
+            'translate_empty_file' => $translator->trans('translate.empty.file', domain: 'translate'),
+        ];
 
         try {
             $languages = $translateService->getListLanguages();
@@ -65,14 +67,31 @@ class TranslationController extends AppAdminController
     /**
      * Récupère la liste des fichiers de traduction en fonction de la langue
      * @param Request $request
+     * @param TranslateService $translateService
      * @return JsonResponse
      */
     #[Route('/ajax/files-translates', name: 'files_translate', methods: ['POST'])]
     public function loadFilesTranslates(Request $request, TranslateService $translateService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $files = $translateService->getTranslatationFileByLanguage($data['language']);
+        $files = $translateService->getTranslationFilesByLanguage($data['language']);
 
         return $this->json(['files' => $files]);
+    }
+
+    /**
+     * Récupère le fichier sélectionné
+     * @param Request $request
+     * @param TranslateService $translateService
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/ajax/file-translate', name: 'file_translate', methods: ['POST'])]
+    public function loadFileTranslate(Request $request, TranslateService $translateService): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $file = $translateService->getTranslationFile($data['file']);
+        return $this->json(['file' => $file]);
     }
 }

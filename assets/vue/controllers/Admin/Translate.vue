@@ -12,6 +12,7 @@ export default {
   name: "Translate",
   props: {
     url_langue: String,
+    url_translates_files: String,
     url_translate_file: String
   },
   data() {
@@ -20,6 +21,8 @@ export default {
       currentLanguage: '',
       files: [],
       languages: [],
+      currentFile: '',
+      file: [],
     }
   },
   mounted() {
@@ -45,15 +48,42 @@ export default {
     selectLanguage(event) {
       this.currentLanguage = event.target.value;
       if (this.currentLanguage !== "") {
-        this.loadTranslateFile();
+        this.loadTranslateListeFile();
       }
     },
 
-    loadTranslateFile() {
-      axios.post(this.url_translate_file, {
+    /**
+     * Charge la liste de fichier en fonction de la langue
+     */
+    loadTranslateListeFile() {
+      this.files = [];
+      axios.post(this.url_translates_files, {
         'language': this.currentLanguage
       }).then((response) => {
         this.files = response.data.files;
+      }).catch((error) => {
+        console.log(error);
+      }).finally();
+    },
+
+    /**
+     * event du choix du fichier
+     * @param event
+     */
+    selectFile(event) {
+      this.currentFile = event.target.value;
+      if(this.currentFile!== '')
+      {
+        this.loadFile();
+      }
+    },
+
+    loadFile()
+    {
+      axios.post(this.url_translate_file, {
+        'file': this.currentFile
+      }).then((response) => {
+        this.file = response.data.file;
       }).catch((error) => {
         console.log(error);
       }).finally();
@@ -71,11 +101,33 @@ export default {
       </select>
     </div>
     <div class="col">
-      <!-- <select class="form-select" id="select-time" @change="changeTimeFiltre($event)">
-         <option value="">{{ this.trans.log_select_time_all }}</option>
-         <option value="now">{{ this.trans.log_select_time_now }}</option>
-         <option value="yesterday">{{ this.trans.log_select_time_yesterday }}</option>
-       </select>-->
+      <select class="form-select" id="select-time" @change="selectFile($event)" :disabled="this.files.length === 0">
+         <option value="">{{ this.trans.translate_select_file }}</option>
+        <option v-for="(language, key) in this.files" v-bind:value="key">{{ language }}</option>
+       </select>
+    </div>
+  </div>
+
+  <div v-if="this.file.length !== 0">
+    <div class="card mt-3">
+      <div class="card-header text-bg-secondary">
+        {{ this.currentFile }}
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Special title treatment</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
+  </div>
+  <div v-else>
+    <div class="card mt-3">
+      <div class="card-header text-bg-secondary">
+        ---
+      </div>
+      <div class="card-body">
+        {{ this.trans.translate_empty_file }}
+      </div>
     </div>
   </div>
 </template>

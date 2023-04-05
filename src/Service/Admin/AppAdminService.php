@@ -5,6 +5,7 @@
  * @version 1.0
  * Service global pour l'administration
  */
+
 namespace App\Service\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -50,8 +51,8 @@ class AppAdminService
     protected RequestStack $requestStack;
 
     public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
-                                TranslatorInterface $translator, UrlGeneratorInterface $router, Security $security,
-                                RequestStack $requestStack
+                                TranslatorInterface    $translator, UrlGeneratorInterface $router, Security $security,
+                                RequestStack           $requestStack
     )
     {
         $this->requestStack = $requestStack;
