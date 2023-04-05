@@ -201,7 +201,7 @@ export default {
                     <div class="col-sm-10">
                         <input v-if="translate.length < 40" type="text" class="form-control" :class="this.isChange(key, 'input')" :id="key"
                                 :data-id="key" :value="this.getValue(key, translate)" :data-save="translate" @change="this.saveTmpTranslate($event)">
-                        <textarea v-else class="form-control" rows="3" :id="key" :data-id="key" :class="this.isChange(key)"
+                        <textarea v-else class="form-control" rows="3" :id="key" :data-id="key" :class="this.isChange(key, 'input')"
                                 :data-save="translate" @change="this.saveTmpTranslate($event)">{{ this.getValue(key, translate) }}</textarea>
                         <div :data-id="key + '-help'" class="form-text text-warning" :class="this.isChange(key, 'help')">We'll never share your email with anyone else.</div>
                     </div>
