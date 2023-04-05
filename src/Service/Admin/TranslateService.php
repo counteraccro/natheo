@@ -74,4 +74,13 @@ class TranslateService extends AppAdminService
         }
         return $return;
     }
+
+    private function getInfoFile() {
+        $tabInfo = [
+            'global' => [
+                'file' => ''
+            ]
+        ];
+    }
 }
+

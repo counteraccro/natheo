@@ -114,9 +114,13 @@ export default {
         {{ this.currentFile }}
       </div>
       <div class="card-body">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+          <div v-for="(translate, key) in this.file" class="mb-3 row">
+              <label :for="key" class="col-sm-2 col-form-label">{{ key }}</label>
+              <div class="col-sm-10">
+                  <input v-if="translate.length < 40" type="text" class="form-control" :id="key" :value="translate">
+                  <textarea v-else class="form-control" rows="3" :id="key">{{ translate }}</textarea>
+              </div>
+          </div>
       </div>
     </div>
   </div>

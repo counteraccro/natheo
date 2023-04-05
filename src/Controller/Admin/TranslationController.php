@@ -44,6 +44,7 @@ class TranslationController extends AppAdminController
     /**
      * Récupère la liste de langues
      * @param TranslatorInterface $translator
+     * @param TranslateService $translateService
      * @return JsonResponse
      */
     #[Route('/ajax/languages', name: 'list_languages', methods: ['POST'])]
