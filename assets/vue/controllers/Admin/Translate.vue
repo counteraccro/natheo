@@ -25,6 +25,7 @@ export default {
             currentFile: '',
             file: [],
             tabTmpTranslate: [],
+            loading: false
         }
     },
     mounted() {
@@ -85,6 +86,7 @@ export default {
          * Charge le contenu du fichier sélectionné
          */
         loadFile() {
+            this.loading = true;
             axios.post(this.url_translate_file, {
                 'file': this.currentFile
             }).then((response) => {
@@ -92,7 +94,9 @@ export default {
                 this.file = response.data.file;
             }).catch((error) => {
                 console.log(error);
-            }).finally();
+            }).finally(() => {
+                this.loading = false;
+            });
         },
 
         /**
@@ -121,6 +125,7 @@ export default {
          * Sauvegarde les traductions modifiées de façon définitive
          */
         saveTranslate() {
+            this.loading = true;
             axios.post(this.url_translate_save, {
                 'file': this.currentFile,
                 'translates': this.tabTmpTranslate
@@ -138,8 +143,7 @@ export default {
          */
         isChangeInput(key) {
 
-            if(this.isExist(key))
-            {
+            if (this.isExist(key)) {
                 return 'is-update'
             }
             return "";
@@ -150,10 +154,8 @@ export default {
          * @param key
          * @returns {string}
          */
-        isChangeHelp(key)
-        {
-            if(this.isExist(key))
-            {
+        isChangeHelp(key) {
+            if (this.isExist(key)) {
                 return ''
             }
             return "d-none";
@@ -194,13 +196,12 @@ export default {
          * Supprime une modification dans le tableau temporaire
          * @param key
          */
-        revertValue(key)
-        {
+        revertValue(key) {
             for (const i in this.tabTmpTranslate) {
                 let element = this.tabTmpTranslate[i];
                 if (element.key === key) {
-                   this.tabTmpTranslate.splice(this.tabTmpTranslate.indexOf(i), 1);
-                   break;
+                    this.tabTmpTranslate.splice(this.tabTmpTranslate.indexOf(i), 1);
+                    break;
                 }
             }
             return false;
@@ -226,24 +227,32 @@ export default {
     </div>
 
     <div v-if="this.file.length !== 0">
-        <div class="card mt-3">
+        <div class="card mt-3" :class="this.loading === true ? 'block-grid' : ''">
+            <div v-if="this.loading" class="overlay">
+                <div class="position-absolute top-50 start-50 translate-middle">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <span class="txt-overlay">{{ this.trans.translate_loading }}</span>
+                </div>
+            </div>
             <div class="card-header text-bg-secondary">
-                {{ this.currentFile }}
-                <span v-if="tabTmpTranslate.length > 0">
-                  - <b>{{ tabTmpTranslate.length }}</b> {{ this.trans.translate_nb_edit }}
-                </span>
                 <div class="btn btn-success btn-sm float-end" @click="this.saveTranslate" :class="this.tabTmpTranslate.length > 0 ? '' : 'disabled'">
                     <i class="bi bi-save-fill"></i> {{ this.trans.translate_btn_save }}
                 </div>
                 <div class="btn btn-warning btn-sm float-end me-2">
                     <i class="bi bi-repeat"></i> {{ this.trans.translate_btn_cache }}
                 </div>
+                <div class="mt-1">
+                    {{ this.currentFile }}
+                    <span v-if="tabTmpTranslate.length > 0">
+                    - <b>{{ tabTmpTranslate.length }}</b> {{ this.trans.translate_nb_edit }}
+                    </span>
+                </div>
             </div>
             <div class="card-body">
                 <div v-for="(translate, key) in this.file" class="mb-3 row">
                     <label :for="key" class="col-sm-2 col-form-label">{{ key }}</label>
                     <div class="col-sm-10">
-                        <input v-if="translate.length < 40" type="text" class="form-control" :class="this.isChangeInput(key)" :id="key"
+                        <input v-if="translate.length < 120" type="text" class="form-control" :class="this.isChangeInput(key)" :id="key"
                                 :data-id="key" :value="this.getValue(key, translate)" :data-save="translate" @change="this.saveTmpTranslate($event)">
                         <textarea v-else class="form-control" rows="3" :id="key" :data-id="key" :class="this.isChangeInput(key)"
                                 :data-save="translate" @change="this.saveTmpTranslate($event)">{{ this.getValue(key, translate) }}</textarea>

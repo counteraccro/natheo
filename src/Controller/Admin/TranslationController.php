@@ -59,6 +59,7 @@ class TranslationController extends AppAdminController
             'translate_info_edit' => $translator->trans('translate.info.edit', domain: 'translate'),
             'translate_link_revert' => $translator->trans('translate.link.revert', domain: 'translate'),
             'translate_nb_edit' => $translator->trans('translate.nb.edit', domain: 'translate'),
+            'translate_loading' => $translator->trans('translate.loading', domain: 'translate'),
         ];
 
         try {
