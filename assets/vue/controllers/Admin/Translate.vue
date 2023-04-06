@@ -7,6 +7,7 @@
  */
 
 import axios from "axios";
+import {Modal} from "bootstrap";
 
 export default {
     name: "Translate",
@@ -15,6 +16,7 @@ export default {
         url_translates_files: String,
         url_translate_file: String,
         url_translate_save: String,
+        url_reload_cache: String,
     },
     data() {
         return {
@@ -25,7 +27,10 @@ export default {
             currentFile: '',
             file: [],
             tabTmpTranslate: [],
-            loading: false
+            loading: false,
+            modalReloadCache: {},
+            isReloadCache: false,
+            isReloadCacheFinish: false
         }
     },
     mounted() {
@@ -205,6 +210,27 @@ export default {
                 }
             }
             return false;
+        },
+
+        /**
+         * Permet de recharger le cache
+         */
+        reloadCache(confirm) {
+
+            if (confirm) {
+                this.modalReloadCache = new Modal(document.getElementById("modal-reload-cache"), {});
+                this.modalReloadCache.show();
+                this.isReloadCache = false;
+            } else {
+                this.isReloadCache = true;
+                axios.post(this.url_reload_cache, {}).then((response) => {
+
+                }).catch((error) => {
+                    console.log(error);
+                }).finally(() => {
+                    this.isReloadCacheFinish = true;
+                });
+            }
         }
     }
 }
@@ -226,6 +252,43 @@ export default {
         </div>
     </div>
 
+    <div class="modal fade" id="modal-reload-cache" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-secondary">
+                    <h1 class="modal-title fs-5 text-white">
+                        {{ this.trans.translate_cache_titre }}
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div v-if="!this.isReloadCacheFinish">
+                        <div v-if="!this.isReloadCache">
+                            {{ this.trans.translate_cache_info }}
+                        </div>
+                        <div v-else>
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            {{ this.trans.translate_cache_wait }}
+                        </div>
+                    </div>
+                    <div v-else>
+                        <div class="text-success">
+                            <i class="bi bi-check-circle-fill"></i> {{ this.trans.translate_cache_success }}</div>
+                    </div>
+                </div>
+                <div class="modal-footer" v-if="!isReloadCacheFinish">
+                    <button v-if="!this.isReloadCache" type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ this.trans.translate_cache_btn_close }}</button>
+                    <button v-if="!this.isReloadCache" type="button" class="btn btn-primary" @click="this.reloadCache(false)">{{ this.trans.translate_cache_btn_accept }}</button>
+                </div>
+                <div class="modal-footer" v-else>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ this.trans.translate_cache_btn_close }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div v-if="this.file.length !== 0">
         <div class="card mt-3" :class="this.loading === true ? 'block-grid' : ''">
             <div v-if="this.loading" class="overlay">
@@ -238,7 +301,7 @@ export default {
                 <div class="btn btn-success btn-sm float-end" @click="this.saveTranslate" :class="this.tabTmpTranslate.length > 0 ? '' : 'disabled'">
                     <i class="bi bi-save-fill"></i> {{ this.trans.translate_btn_save }}
                 </div>
-                <div class="btn btn-warning btn-sm float-end me-2">
+                <div class="btn btn-warning btn-sm float-end me-2" @click="this.reloadCache(true)">
                     <i class="bi bi-repeat"></i> {{ this.trans.translate_btn_cache }}
                 </div>
                 <div class="mt-1">

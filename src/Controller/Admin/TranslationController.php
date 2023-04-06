@@ -4,6 +4,7 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
+
 namespace App\Controller\Admin;
 
 use App\Service\Admin\Breadcrumb;
@@ -60,6 +61,12 @@ class TranslationController extends AppAdminController
             'translate_link_revert' => $translator->trans('translate.link.revert', domain: 'translate'),
             'translate_nb_edit' => $translator->trans('translate.nb.edit', domain: 'translate'),
             'translate_loading' => $translator->trans('translate.loading', domain: 'translate'),
+            'translate_cache_titre' => $translator->trans('translate.cache.titre', domain: 'translate'),
+            'translate_cache_info' => $translator->trans('translate.cache.info', domain: 'translate'),
+            'translate_cache_wait' => $translator->trans('translate.cache.wait', domain: 'translate'),
+            'translate_cache_btn_close' => $translator->trans('translate.cache.btn.close', domain: 'translate'),
+            'translate_cache_btn_accept' => $translator->trans('translate.cache.btn.accept', domain: 'translate'),
+            'translate_cache_success' => $translator->trans('translate.cache.success', domain: 'translate'),
         ];
 
         try {
@@ -107,12 +114,26 @@ class TranslationController extends AppAdminController
      * @param Request $request
      * @param TranslateService $translateService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/save-translate', name: 'save_translate', methods: ['POST'])]
     public function saveTranslate(Request $request, TranslateService $translateService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $translateService->updateTranslateFile($data['file'], $data['translates']);
-        return $this->json(['oki']);
+        return $this->json(['success' => true]);
+    }
+
+    /**
+     * Permet de régénérer le cache applicatif
+     * @param Request $request
+     * @param TranslateService $translateService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/reload-cache', name: 'reload_cache', methods: ['POST'])]
+    public function reloadCache(Request $request, TranslateService $translateService): JsonResponse
+    {
+        return $this->json(['success' => true]);
     }
 }

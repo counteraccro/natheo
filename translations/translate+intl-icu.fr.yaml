@@ -10,3 +10,10 @@ translate.info.edit: 'Cette traduction à été éditée'
 translate.link.revert: Annuler
 translate.nb.edit: 'Lignes modifiées (non sauvegardées)'
 translate.loading: 'En cours de traitement...'
+translate.description.2: "N'oubliez pas de {icon} rafraichir le cache pour prendre en compte vos modifications de traductions"
+translate.cache.info: 'Vous êtes sur le point de recharger le cache applicatif, cette action peux prendre quelques minutes. Confirmez vous ?'
+translate.cache.wait: 'Rechargement du cache en cours..., cela peut prendre du temps'
+translate.cache.btn.close: Fermer
+translate.cache.btn.accept: 'Recharger le cache'
+translate.cache.success: 'Cache rechargé avec succès !'
+translate.cache.titre: 'Rechargement du cache'

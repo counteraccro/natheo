@@ -35,6 +35,8 @@ class TranslateService extends AppAdminService
      * Retourne la liste de fichiers de traduction en fonction de la langue
      * @param string $language
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getTranslationFilesByLanguage(string $language): array
     {
@@ -52,7 +54,7 @@ class TranslateService extends AppAdminService
 
     /**
      * Permet de retourner le contenu d'un fichier en fonction de son nom
-     * @param string $file
+     * @param string $fileName
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
