@@ -229,6 +229,9 @@ export default {
                     console.log(error);
                 }).finally(() => {
                     this.isReloadCacheFinish = true;
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000)
                 });
             }
         }
@@ -253,7 +256,7 @@ export default {
     </div>
 
     <div class="modal fade" id="modal-reload-cache" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-secondary">
                     <h1 class="modal-title fs-5 text-white">
@@ -301,7 +304,7 @@ export default {
                 <div class="btn btn-success btn-sm float-end" @click="this.saveTranslate" :class="this.tabTmpTranslate.length > 0 ? '' : 'disabled'">
                     <i class="bi bi-save-fill"></i> {{ this.trans.translate_btn_save }}
                 </div>
-                <div class="btn btn-warning btn-sm float-end me-2" @click="this.reloadCache(true)">
+                <div class="btn btn-warning btn-sm float-end me-2" @click="this.reloadCache(true)" :class="this.tabTmpTranslate.length === 0 ? '' : 'disabled'">
                     <i class="bi bi-repeat"></i> {{ this.trans.translate_btn_cache }}
                 </div>
                 <div class="mt-1">

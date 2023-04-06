@@ -8,7 +8,9 @@
 namespace App\Controller\Admin;
 
 use App\Service\Admin\Breadcrumb;
+use App\Service\Admin\CommandService;
 use App\Service\Admin\TranslateService;
+use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -128,12 +130,14 @@ class TranslationController extends AppAdminController
     /**
      * Permet de régénérer le cache applicatif
      * @param Request $request
-     * @param TranslateService $translateService
+     * @param CommandService $commandService
      * @return JsonResponse
+     * @throws Exception
      */
     #[Route('/ajax/reload-cache', name: 'reload_cache', methods: ['POST'])]
-    public function reloadCache(Request $request, TranslateService $translateService): JsonResponse
+    public function reloadCache(Request $request, CommandService $commandService): JsonResponse
     {
+        $commandService->reloadCache();
         return $this->json(['success' => true]);
     }
 }
