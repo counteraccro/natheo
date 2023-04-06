@@ -125,33 +125,46 @@ export default {
                 'file': this.currentFile,
                 'translates': this.tabTmpTranslate
             }).then((response) => {
-                //this.file = response.data.file;
+                this.loadFile();
             }).catch((error) => {
                 console.log(error);
             }).finally();
         },
 
-        /** Défini si la valeur a été changé ou non **/
-        isChange(key, type) {
-            for (const i in this.tabTmpTranslate) {
-                let element = this.tabTmpTranslate[i];
-                if (element.key === key) {
+        /**
+         * Défini si la valeur a été changé ou non pour l'input
+         * @param key
+         * @returns {string}
+         */
+        isChangeInput(key) {
 
-                    if(type === 'input')
-                    {
-                        return "is-update";
-                    }
-                    return "";
-
-                }
+            if(this.isExist(key))
+            {
+                return 'is-update'
             }
-            if(type === 'input') {
-                return "";
+            return "";
+        },
+
+        /**
+         * Défini si l valeur à changé pour l'aide
+         * @param key
+         * @returns {string}
+         */
+        isChangeHelp(key)
+        {
+            if(this.isExist(key))
+            {
+                return ''
             }
             return "d-none";
         },
 
-        /** Retourne la bonne valeur **/
+        /**
+         * Retourne la valeur éditer ou la valeur par défaut
+         * @param key
+         * @param value
+         * @returns {string}
+         */
         getValue(key, value) {
             for (const i in this.tabTmpTranslate) {
                 let element = this.tabTmpTranslate[i];
@@ -160,6 +173,37 @@ export default {
                 }
             }
             return value;
+        },
+
+        /**
+         * Défini si une traduction à été changé ou non
+         * @param key
+         * @returns {string}
+         */
+        isExist(key) {
+            for (const i in this.tabTmpTranslate) {
+                let element = this.tabTmpTranslate[i];
+                if (element.key === key) {
+                    return true;
+                }
+            }
+            return false;
+        },
+
+        /**
+         * Supprime une modification dans le tableau temporaire
+         * @param key
+         */
+        revertValue(key)
+        {
+            for (const i in this.tabTmpTranslate) {
+                let element = this.tabTmpTranslate[i];
+                if (element.key === key) {
+                   this.tabTmpTranslate.splice(this.tabTmpTranslate.indexOf(i), 1);
+                   break;
+                }
+            }
+            return false;
         }
     }
 }
@@ -186,9 +230,9 @@ export default {
             <div class="card-header text-bg-secondary">
                 {{ this.currentFile }}
                 <span v-if="tabTmpTranslate.length > 0">
-                    {{ tabTmpTranslate.length }} traductions changées
+                  - <b>{{ tabTmpTranslate.length }}</b> {{ this.trans.translate_nb_edit }}
                 </span>
-                <div class="btn btn-success btn-sm float-end" @click="this.saveTranslate">
+                <div class="btn btn-success btn-sm float-end" @click="this.saveTranslate" :class="this.tabTmpTranslate.length > 0 ? '' : 'disabled'">
                     <i class="bi bi-save-fill"></i> {{ this.trans.translate_btn_save }}
                 </div>
                 <div class="btn btn-warning btn-sm float-end me-2">
@@ -199,11 +243,14 @@ export default {
                 <div v-for="(translate, key) in this.file" class="mb-3 row">
                     <label :for="key" class="col-sm-2 col-form-label">{{ key }}</label>
                     <div class="col-sm-10">
-                        <input v-if="translate.length < 40" type="text" class="form-control" :class="this.isChange(key, 'input')" :id="key"
+                        <input v-if="translate.length < 40" type="text" class="form-control" :class="this.isChangeInput(key)" :id="key"
                                 :data-id="key" :value="this.getValue(key, translate)" :data-save="translate" @change="this.saveTmpTranslate($event)">
-                        <textarea v-else class="form-control" rows="3" :id="key" :data-id="key" :class="this.isChange(key, 'input')"
+                        <textarea v-else class="form-control" rows="3" :id="key" :data-id="key" :class="this.isChangeInput(key)"
                                 :data-save="translate" @change="this.saveTmpTranslate($event)">{{ this.getValue(key, translate) }}</textarea>
-                        <div :data-id="key + '-help'" class="form-text text-warning" :class="this.isChange(key, 'help')">We'll never share your email with anyone else.</div>
+                        <div :data-id="key + '-help'" class="form-text text-warning" :class="this.isChangeHelp(key)">
+                            {{ this.trans.translate_info_edit }}
+                            <a href="#" onclick="return false;" @click="this.revertValue(key);" class="text-warning">{{ this.trans.translate_link_revert }}</a>
+                        </div>
                     </div>
                 </div>
             </div>

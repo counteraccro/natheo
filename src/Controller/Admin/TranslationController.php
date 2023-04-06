@@ -56,6 +56,9 @@ class TranslationController extends AppAdminController
             'translate_empty_file' => $translator->trans('translate.empty.file', domain: 'translate'),
             'translate_btn_save' => $translator->trans('translate.btn.save', domain: 'translate'),
             'translate_btn_cache' => $translator->trans('translate.btn.cache', domain: 'translate'),
+            'translate_info_edit' => $translator->trans('translate.info.edit', domain: 'translate'),
+            'translate_link_revert' => $translator->trans('translate.link.revert', domain: 'translate'),
+            'translate_nb_edit' => $translator->trans('translate.nb.edit', domain: 'translate'),
         ];
 
         try {
@@ -108,7 +111,7 @@ class TranslationController extends AppAdminController
     public function saveTranslate(Request $request, TranslateService $translateService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        var_dump($data);
+        $translateService->updateTranslateFile($data['file'], $data['translates']);
         return $this->json(['oki']);
     }
 }

@@ -16,9 +16,9 @@ class TranslateService extends AppAdminService
 {
     /**
      * Retourne la liste des langues prises en charge par le site
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      * @return array
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
      */
     public function getListLanguages(): array
     {
@@ -75,12 +75,40 @@ class TranslateService extends AppAdminService
         return $return;
     }
 
-    private function getInfoFile() {
-        $tabInfo = [
-            'global' => [
-                'file' => ''
-            ]
-        ];
+    /**
+     * Met à jour un fichier de traduction
+     * @param string $fileName
+     * @param array $updateContent
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function updateTranslateFile(string $fileName, array $updateContent): void
+    {
+        var_dump($updateContent);
+
+        $kernel = $this->containerBag->get('kernel.project_dir');
+        $pathLog = $kernel . DIRECTORY_SEPARATOR . 'translations' . DIRECTORY_SEPARATOR;
+        $finder = new Finder();
+        $finder->files()->in($pathLog)->name($fileName);
+
+        if ($finder->hasResults() && $finder->count() === 1) {
+            $iterator = $finder->getIterator();
+            $iterator->rewind();
+            $file = $iterator->current();
+
+            $tab = Yaml::parseFile($file->getPathname());
+
+            foreach ($tab as $key => $value) {
+                foreach ($updateContent as $update) {
+                    if ($key === $update['key']) {
+                        $tab[$key] = $update['value'];
+                    }
+                }
+            }
+            $yaml = Yaml::dump($tab);
+            file_put_contents($file->getPathname(), $yaml);
+        }
     }
 }
 

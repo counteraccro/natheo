@@ -4,5 +4,8 @@ translate.description: 'Gérer les traductions du CMS à partir de cette page'
 translate.select.language: 'Sélectionnez une langue'
 translate.select.file: 'Sélectionnez un fichier'
 translate.empty.file: 'Sélectionnez un fichier de traduction pour le modifier'
-translate.btn.save: 'Sauvegarder'
+translate.btn.save: Sauvegarder
 translate.btn.cache: 'Mise à jour du cache'
+translate.info.edit: 'Cette traduction à été éditée'
+translate.link.revert: Annuler
+translate.nb.edit: 'Lignes modifiées'
