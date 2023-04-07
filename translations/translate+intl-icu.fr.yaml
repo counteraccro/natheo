@@ -17,3 +17,4 @@ translate.cache.btn.close: Fermer
 translate.cache.btn.accept: 'Recharger le cache'
 translate.cache.success: 'Cache rechargé avec succès ! La page va ce recharger toute seule dans 3 secondes'
 translate.cache.titre: 'Rechargement du cache'
+translate.confirm.leave: "Des données n'ont pas encore été sauvegardées, confirmez vous de quitter cette page ?"

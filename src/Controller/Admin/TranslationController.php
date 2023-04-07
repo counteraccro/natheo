@@ -69,6 +69,7 @@ class TranslationController extends AppAdminController
             'translate_cache_btn_close' => $translator->trans('translate.cache.btn.close', domain: 'translate'),
             'translate_cache_btn_accept' => $translator->trans('translate.cache.btn.accept', domain: 'translate'),
             'translate_cache_success' => $translator->trans('translate.cache.success', domain: 'translate'),
+            'translate_confirm_leave' => $translator->trans('translate.confirm.leave', domain: 'translate'),
         ];
 
         try {

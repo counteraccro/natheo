@@ -35,6 +35,7 @@ export default {
     },
     mounted() {
         this.loadListeLanguages()
+        window.addEventListener('beforeunload', this.checkBeforeLeave)
     },
     methods: {
         /**
@@ -233,6 +234,21 @@ export default {
                         window.location.reload();
                     }, 3000)
                 });
+            }
+        },
+
+        /**
+         * Affiche une confirmation si un champ est modifié, mais pas sauvegardé
+         * @param evt
+         * @returns {string}
+         */
+        checkBeforeLeave(evt)
+        {
+            if(this.tabTmpTranslate.length !== 0)
+            {
+                const unsaved_changes_warning = this.trans.translate_confirm_leave;
+                evt.returnValue = unsaved_changes_warning;
+                return unsaved_changes_warning;
             }
         }
     }
