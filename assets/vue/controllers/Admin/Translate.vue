@@ -205,7 +205,7 @@ export default {
             for (const i in this.tabTmpTranslate) {
                 let element = this.tabTmpTranslate[i];
                 if (element.key === key) {
-                    this.tabTmpTranslate.splice(this.tabTmpTranslate.indexOf(i), 1);
+                    this.tabTmpTranslate.splice(i, 1);
                     break;
                 }
             }
@@ -242,13 +242,13 @@ export default {
 <template>
     <div class="row">
         <div class="col">
-            <select class="form-select" id="select-file" @change="selectLanguage($event)">
+            <select class="form-select no-control" id="select-file" @change="selectLanguage($event)">
                 <option value="" selected>{{ this.trans.translate_select_language }}</option>
                 <option v-for="(language, key) in this.languages" v-bind:value="key">{{ language }}</option>
             </select>
         </div>
         <div class="col">
-            <select class="form-select" id="select-time" @change="selectFile($event)" :disabled="this.files.length === 0">
+            <select class="form-select no-control" id="select-time" @change="selectFile($event)" :disabled="this.files.length === 0">
                 <option value="">{{ this.trans.translate_select_file }}</option>
                 <option v-for="(language, key) in this.files" v-bind:value="key">{{ language }}</option>
             </select>
@@ -318,9 +318,9 @@ export default {
                 <div v-for="(translate, key) in this.file" class="mb-3 row">
                     <label :for="key" class="col-sm-2 col-form-label">{{ key }}</label>
                     <div class="col-sm-10">
-                        <input v-if="translate.length < 120" type="text" class="form-control" :class="this.isChangeInput(key)" :id="key"
+                        <input v-if="translate.length < 120" type="text" class="form-control no-control" :class="this.isChangeInput(key)" :id="key"
                                 :data-id="key" :value="this.getValue(key, translate)" :data-save="translate" @change="this.saveTmpTranslate($event)">
-                        <textarea v-else class="form-control" rows="3" :id="key" :data-id="key" :class="this.isChangeInput(key)"
+                        <textarea v-else class="form-control no-control" rows="3" :id="key" :data-id="key" :class="this.isChangeInput(key)"
                                 :data-save="translate" @change="this.saveTmpTranslate($event)">{{ this.getValue(key, translate) }}</textarea>
                         <div :data-id="key + '-help'" class="form-text text-warning" :class="this.isChangeHelp(key)">
                             {{ this.trans.translate_info_edit }}

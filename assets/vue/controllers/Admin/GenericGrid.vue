@@ -114,7 +114,7 @@ export default {
   <form id="search">
     <div class="input-group mb-3">
       <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="form-control" :placeholder="translate.placeholder" v-model="searchQuery">
+      <input type="text" class="form-control no-control" :placeholder="translate.placeholder" v-model="searchQuery">
     </div>
   </form>
 

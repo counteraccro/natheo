@@ -193,7 +193,7 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
 
         $html = '<label for="' . $key . '" class="form-label">
             ' . $this->translator->trans($element['label']) . '</label>
-            <input type="text" class="form-control event-input" id="' . $key . '" ' . $require . ' ' . $placeholder .
+            <input type="text" class="form-control no-control event-input" id="' . $key . '" ' . $require . ' ' . $placeholder .
             ' value="' . $this->getValueByKey($key) . '">' . $msgError;
 
         $html .= $this->getSuccess($key, $element);
@@ -219,7 +219,7 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
         }
 
         $html = '<div class="form-check form-switch">
-            <input class="form-check-input event-input" type="checkbox" role="switch"
+            <input class="form-check-input no-control event-input" type="checkbox" role="switch"
                 id="' . $key . '" ' . $checked . '>
             <label class="form-check-label" for="' . $key . '">
                 ' . $this->translator->trans($element['label']) . '</label>';
@@ -254,7 +254,7 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
 
         $html = '<label for="' . $key . '" class="form-label">' . $this->translator->trans($element['label']) .
             '</label>
-            <textarea class="form-control event-input" rows="5" id="' . $key . '" ' . $require . ' ' . $placeholder . '>
+            <textarea class="form-control no-control event-input" rows="5" id="' . $key . '" ' . $require . ' ' . $placeholder . '>
             ' . $this->getValueByKey($key) . '</textarea>' . $msgError;
 
         $html .= $this->getSuccess($key, $element);
@@ -296,7 +296,7 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
 
         $html = '<label for="' . $key . '" class="form-label">
         ' . $this->translator->trans($element['label']) . '</label>
-            <select id="' . $key . '" class="form-select event-input" ' . $selectStyle . '>
+            <select id="' . $key . '" class="form-select no-control event-input" ' . $selectStyle . '>
             ' . $optionHtml . '</select>';
 
         $html .= $this->getSuccess($key, $element);

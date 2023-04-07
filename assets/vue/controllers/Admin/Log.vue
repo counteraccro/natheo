@@ -159,13 +159,13 @@ export default {
 <template>
   <div class="row">
     <div class="col">
-      <select class="form-select" id="select-file" @change="selectLogFile($event)">
+      <select class="form-select no-control" id="select-file" @change="selectLogFile($event)">
         <option value="" selected>{{ this.trans.log_select_file }}</option>
         <option v-for="option in this.select" v-bind:value="option.path">{{ option.name }}</option>
       </select>
     </div>
     <div class="col">
-      <select class="form-select" id="select-time" @change="changeTimeFiltre($event)">
+      <select class="form-select no-control" id="select-time" @change="changeTimeFiltre($event)">
         <option value="">{{ this.trans.log_select_time_all }}</option>
         <option value="now">{{ this.trans.log_select_time_now }}</option>
         <option value="yesterday">{{ this.trans.log_select_time_yesterday }}</option>
@@ -187,7 +187,7 @@ export default {
         <form id="search">
           <div class="input-group mb-3">
             <span class="input-group-text"><i class="bi bi-search"></i></span>
-            <input type="text" class="form-control" :placeholder="translate.placeholder" v-model="searchQuery">
+            <input type="text" class="form-control no-control" :placeholder="translate.placeholder" v-model="searchQuery">
           </div>
         </form>
 
