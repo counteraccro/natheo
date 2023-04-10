@@ -86,5 +86,7 @@ options_system.logs.title: '__Gestion des logs'
 options_system.logs.description: "__Gérer le niveau de log et suivi que vous voulez avoir sur l'application. Attention, un haut niveau de log peut générer des fichiers volumineux"
 options_system.log_doctrine: '__Enregistrer tout changement dans la base de donnée'
 options_system.log_doctrine_help: '__Permet de tracer toutes modifications de donnée (ajout/édition/suppression) sur le site, peut générer des fichiers volumineux'
+mail.change.password.title: '__Email de changement de mot de passe'
+mail.change.password.description: "__Email envoyé lorsqu'un utilisateur fait une demande de mot de passe"
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: __pagedemo.page_title_h1

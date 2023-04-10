@@ -49,6 +49,11 @@ class AppFixtures extends Fixture
      */
     protected const GROUP_OPTION_SYSTEM = 'option_system';
 
+    /**
+     * Lié à tous les éléments email
+     */
+    protected const GROUP_MAIL = 'mail';
+
     public function __construct(ContainerBagInterface $params)
     {
         $kernel = $params->get('kernel.project_dir');
