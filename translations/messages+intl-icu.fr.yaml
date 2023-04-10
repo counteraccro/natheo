@@ -10,6 +10,7 @@ global.database: 'Base de données'
 global.translate: Traduction
 global.html_element: 'Exemple HTML'
 global.logs: Logs
+global.mail: Emails
 global.oui: Oui
 global.non: Non
 global.fr: Français
@@ -70,6 +71,7 @@ sidebar.database.description: 'Permet de visualisé la base de données + statis
 sidebar.html_element.description: 'Démo des différents éléments HTML du CMS'
 sidebar.log.description: 'Gestion et visualisation des logs applicatifs'
 sidebar.translate.description: 'Gestion des traductions du CMS'
+sidebar.mail.description: 'Gestion des emails envoyés depuis le CMS'
 options_user.administration: Interface
 options_user.administration.title: "Personalisation de l'administration"
 options_user.administration.description: "Personaliser l'administration via ces options"

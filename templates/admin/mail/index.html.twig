@@ -1,0 +1,16 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block title %}{{ 'mail.page_title' | trans({}, 'mail') }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'mail.page_title_h1' | trans({}, 'mail') }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    <p>{{ 'mail.description' | trans({}, 'mail') }}</p>
+
+
+    <div {# { vue_component('Admin/Log', {'url_select' : path('admin_log_ajax_data_select_log'), 'url_load_log_file' : path('admin_log_ajax_load_log_file'), 'url_delete_file' : path('admin_log_ajax_delete_file'),
+        'page' : 1, 'limit' : limit}) } #}></div>
+
+{% endblock %}

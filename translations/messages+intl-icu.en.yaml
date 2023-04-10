@@ -10,6 +10,7 @@ global.database: '__Base de données'
 global.translate: __Traduction
 global.html_element: '__Exemple HTML'
 global.logs: __Logs
+global.mail : __Emails
 global.oui: __Oui
 global.non: __Non
 global.french: __Français
@@ -71,6 +72,7 @@ sidebar.html_element.description: '__Démo des différents éléments HTML du CM
 sidebar.log.description: '__Gestion et visualisation des logs applicatifs'
 options_user.administration: __Interface
 sidebar.translate.description: '__Gestion des traductions du CMS'
+sidebar.mail.description: '__Gestion des emails envoyés depuis le CMS'
 options_user.administration.title: '__Personalisation administration'
 options_user.administration.description: "__Personaliser l'administration via ces options"
 options_user.default_language: "__Langue de l'administration"
