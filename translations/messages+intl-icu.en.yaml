@@ -10,7 +10,7 @@ global.database: '__Base de données'
 global.translate: __Traduction
 global.html_element: '__Exemple HTML'
 global.logs: __Logs
-global.mail : __Emails
+global.mail: __Emails
 global.oui: __Oui
 global.non: __Non
 global.french: __Français
