@@ -1,5 +1,6 @@
 mail:
   -
+    key: MAIL_CHANGE_PASSWORD
     title: mail.change.password.title
     description: mail.change.password.description
     keyWords : 'user.email|user.login|user.firstname|user.lastname|global.url|global.url_change_psw'

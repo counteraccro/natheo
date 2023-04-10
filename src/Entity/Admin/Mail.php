@@ -20,6 +20,9 @@ class Mail
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    private ?string $key = null;
+
+    #[ORM\Column(length: 255)]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -135,6 +138,18 @@ class Mail
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getKey(): ?string
+    {
+        return $this->key;
+    }
+
+    public function setKey(string $key): self
+    {
+        $this->key = $key;
 
         return $this;
     }
