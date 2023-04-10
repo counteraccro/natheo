@@ -51,6 +51,15 @@ sidebarElement:
                   role: 'ROLE_SUPER_ADMIN'
                   description: 'sidebar.system_options.description'
                   lock: true
+            - email:
+                icon: 'bi-envelope-fill'
+                label: 'global.mail'
+                route: 'admin_mail_index'
+                disabled: false
+                parent: system
+                role: 'ROLE_SUPER_ADMIN'
+                description: 'sidebar.mail.description'
+                lock: false
             - translate:
                 icon: 'bi-translate'
                 label: 'global.translate'
