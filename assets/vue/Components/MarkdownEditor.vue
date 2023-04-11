@@ -39,6 +39,10 @@ export default {
         },
 
         bold() {
+            this.addElement('****', 2, true);
+        },
+
+        addElement(balise, position, separate) {
 
             let input = document.getElementById("editor-" + this.id);
             let start = input.selectionStart;
@@ -48,19 +52,24 @@ export default {
             let select = window.getSelection().toString();
 
             if (select === '') {
-                let str = '****';
-
-                this.value = value.slice(0, start) + str + value.slice(end);
-
-                let caretPos = start + str.length;
-
-                console.log(start);
-                console.log(caretPos);
-
-                input.setSelectionRange(caretPos, caretPos);
+                this.value = value.slice(0, start) + balise + value.slice(end);
+                input.value  = this.value;
+                let caretPos = start + balise.length;
                 input.focus();
+                input.setSelectionRange(caretPos-position, caretPos-position);
+
             } else {
-                this.value = this.value.replace(select, '**' + select + '**');
+                if(separate)
+                {
+                    let b = balise.slice(balise.length/2);
+                    let replace = b + select + b;
+                    this.value = this.value.replace(select, replace);
+                    input.value  = this.value;
+                    let caretPos = start + replace.length;
+                    input.focus();
+                    input.setSelectionRange(caretPos, caretPos);
+                }
+
             }
 
             return false;
@@ -73,7 +82,7 @@ export default {
 <template>
     <div class="editor">
         <div class="header">
-            <div class="btn btn-secondary btn-sm" @click="this.bold"><i class="bi bi-type-bold"></i></div>
+            <div class="btn btn-secondary btn-sm" @click="this.addElement('****', '2', true)"><i class="bi bi-type-bold"></i></div>
         </div>
 
         <textarea :id="'editor-'+ this.id" class="form-control" :value="this.value" @input="update" :rows="this.meRows"></textarea>
