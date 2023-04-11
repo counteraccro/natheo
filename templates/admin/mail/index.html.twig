@@ -10,7 +10,6 @@
     <p>{{ 'mail.description' | trans({}, 'mail') }}</p>
 
 
-    <div {# { vue_component('Admin/Log', {'url_select' : path('admin_log_ajax_data_select_log'), 'url_load_log_file' : path('admin_log_ajax_load_log_file'), 'url_delete_file' : path('admin_log_ajax_delete_file'),
-        'page' : 1, 'limit' : limit}) } #}></div>
+    <div {{ vue_component('Admin/Mail', {}) }}></div>
 
 {% endblock %}
