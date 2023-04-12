@@ -36,3 +36,5 @@ yarn-error.log
 *.pb
 .idea/sonarlint/*
 
+.idea/phpspec.xml
+.idea/codeception.xml
