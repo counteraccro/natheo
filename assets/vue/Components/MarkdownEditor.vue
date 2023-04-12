@@ -16,6 +16,7 @@ export default {
         meValue: String,
         meRows: Number
     },
+    emits: ['editor-value'],
     data() {
         return {
             value: this.meValue,
@@ -127,6 +128,8 @@ export default {
 
         <textarea :id="'editor-'+ this.id" class="form-control" :value="this.value" @input="update" :rows="this.meRows"></textarea>
         <div :id="'emailHelp-' + this.id" class="form-text">We'll never share your email with anyone else.</div>
+
+        <div class="btn btn-danger" @click="$emit('editor-value', this.value)">Test récupération</div>
 
         <div>Prévisualisation</div>
         <div class="output" v-html="output"></div>
