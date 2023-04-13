@@ -2,6 +2,7 @@
 
 import MarkdownEditor from "../../Components/MarkdownEditor.vue";
 import axios from "axios";
+import {marked} from 'marked'
 
 export default {
     name: "Mail",
@@ -34,7 +35,7 @@ export default {
         },
 
         test(value) {
-            this.editorValue = value;
+            this.editorValue = marked(value);
         }
     }
 }
@@ -57,8 +58,7 @@ export default {
     >
     </markdown-editor>
 
-    <div class="border-primary border-1">
-        {{ editorValue }}
+    <div class="border-primary border-1" v-html="editorValue">
     </div>
 </template>
 
