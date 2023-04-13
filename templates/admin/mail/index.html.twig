@@ -10,6 +10,6 @@
     <p>{{ 'mail.description' | trans({}, 'mail') }}</p>
 
 
-    <div {{ vue_component('Admin/Mail', {}) }}></div>
+    <div {{ vue_component('Admin/Mail', {'url_data' : path('admin_mail_load_data')}) }}></div>
 
 {% endblock %}

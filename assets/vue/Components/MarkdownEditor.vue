@@ -8,25 +8,32 @@
 
 import {marked} from 'marked'
 import {debounce} from 'lodash-es'
-import {Tooltip} from 'bootstrap/dist/js/bootstrap.esm.min.js'
+import {Tooltip} from 'bootstrap'
+import {Modal} from 'bootstrap'
 
 export default {
     name: "MarkdownEditor",
     props: {
         meValue: String,
-        meRows: Number
+        meRows: Number,
+        meTranslate : Object
     },
     emits: ['editor-value'],
     data() {
         return {
             value: this.meValue,
-            id: ""
+            id: "",
+            modal: "",
+            titleModal: "",
+            linkModal: "",
+            textModal: ""
         }
     },
     mounted() {
         this.id = this.randomIntFromInterval(1, 9) + '' + this.randomIntFromInterval(1, 9);
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl))
+        this.modal = new Modal(document.getElementById("modal-markdown-editor"), {});
     },
     computed: {
         output() {
@@ -42,6 +49,9 @@ export default {
             return Math.floor(Math.random() * (max - min + 1) + min)
         },
 
+        /**
+         * Ajoute la balise table
+         */
         addTable()
         {
             let balise = '| Column 1 | Column 2 | Column 3 |\n' +
@@ -50,6 +60,9 @@ export default {
             this.addElement(balise, 0, false);
         },
 
+        /**
+         * Ajoute la balise code
+         */
         addCode()
         {
             let balise = '```\n' +
@@ -58,6 +71,32 @@ export default {
             this.addElement(balise, 4, false);
         },
 
+        addLink(modal)
+        {
+            if(modal)
+            {
+                this.titleModal = this.meTranslate.modalTitreLink;
+                this.modal.show();
+            }
+            else {
+                let balise = '[' + this.textModal + '](' + this.linkModal + ')';
+                this.addElement(balise, 0, false);
+                this.modal.hide();
+            }
+        },
+
+        closeModal()
+        {
+            this.modal.hide();
+        },
+
+        /**
+         * Ajoute un élément dans l'input
+         * @param balise
+         * @param position
+         * @param separate
+         * @returns {boolean}
+         */
         addElement(balise, position, separate) {
 
             let input = document.getElementById("editor-" + this.id);
@@ -102,27 +141,56 @@ export default {
 </script>
 
 <template>
+
+    <div class="modal fade" id="modal-markdown-editor" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-secondary">
+                    <h1 class="modal-title fs-5 text-white"><i class="bi bi-plus-circle-fill"></i> {{ this.titleModal }}</h1>
+                    <button type="button" class="btn-close" @click="closeModal"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="mb-3">
+                            <label for="link-modal" class="form-label">URL</label>
+                            <input type="text" class="form-control" id="link-modal" placeholder="" v-model="linkModal">
+                        </div>
+                        <div class="mb-3">
+                            <label for="text-modal" class="form-label">Texte</label>
+                            <input type="text" class="form-control" id="text-modal" placeholder="" v-model="textModal">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @click="addLink(false)"><i class="bi bi-check2-circle"></i> {{ this.meTranslate.modalBtnValide }}</button>
+                    <button type="button" class="btn btn-secondary" @click="closeModal"><i class="bi bi-x-circle"></i> {{ this.meTranslate.modalBtnClose }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="editor">
         <div class="header mb-2">
-            <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('****', '2', true)" data-bs-toggle="tooltip" data-bs-title="Default tooltip">
+            <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('****', '2', true)"  :title="this.meTranslate.btnBold">
                 <i class="bi bi-type-bold"></i></div>
-            <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('**', '1', true)">
+            <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('**', '1', true)" :title="this.meTranslate.btnItalic">
                 <i class="bi bi-type-italic"></i></div>
-            <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('~~~~', '2', true)">
+            <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('~~~~', '2', true)" :title="this.meTranslate.btnStrike">
                 <i class="bi bi-type-strikethrough"></i></div>
-            <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('> ', '0', false)">
+            <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('> ', '0', false)" :title="this.meTranslate.btnQuote">
                 <i class="bi bi-quote"></i></div>
-            <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('- ', '0', false)">
+            <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('- ', '0', false)" :title="this.meTranslate.btnList">
                 <i class="bi bi-list-ul"></i></div>
-            <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('1. ', '0', false)">
+            <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('1. ', '0', false)" :title="this.meTranslate.btnListNumber">
                 <i class="bi bi-list-ol"></i></div>
-            <div class="btn btn-secondary btn-sm me-1" @click="this.addTable">
+            <div class="btn btn-secondary btn-sm me-1" @click="this.addTable" :title="this.meTranslate.btnTable">
                 <i class="bi bi-table"></i></div>
-            <div class="btn btn-secondary btn-sm me-1" @click="this.addTable">
+            <div class="btn btn-secondary btn-sm me-1" @click="this.addLink(true)" :title="this.meTranslate.btnLink">
                 <i class="bi bi-link"></i></div>
-            <div class="btn btn-secondary btn-sm me-1" @click="this.addTable">
+            <div class="btn btn-secondary btn-sm me-1" @click="this.addTable" :title="this.meTranslate.btnImage">
                 <i class="bi bi-image"></i></div>
-            <div class="btn btn-secondary btn-sm me-1" @click="this.addCode">
+            <div class="btn btn-secondary btn-sm me-1" @click="this.addCode" :title="this.meTranslate.btnCode">
                 <i class="bi bi-code"></i></div>
         </div>
 
