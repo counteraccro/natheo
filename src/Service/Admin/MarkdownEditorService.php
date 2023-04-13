@@ -1,0 +1,37 @@
+<?php
+/**
+ * Service pour la génération de l'éditeur Markdown du site
+ * @author Gourdon Aymeric
+ * @version 1.0
+ */
+
+namespace App\Service\Admin;
+
+class MarkdownEditorService extends AppAdminService
+{
+    /**
+     *  Retourne les traductions de l'éditeur Markdown
+     * @return array
+     */
+    public function getTranslate(): array
+    {
+        return [
+            'btnBold' => $this->translator->trans('editor.button.bold', domain: 'editor_markdown'),
+            'btnItalic' => $this->translator->trans('editor.button.italic', domain: 'editor_markdown'),
+            'btnStrike' => $this->translator->trans('editor.button.strike', domain: 'editor_markdown'),
+            'btnQuote' => $this->translator->trans('editor.button.quote', domain: 'editor_markdown'),
+            'btnList' => $this->translator->trans('editor.button.list', domain: 'editor_markdown'),
+            'btnListNumber' => $this->translator->trans('editor.button.list.number', domain: 'editor_markdown'),
+            'btnTable' => $this->translator->trans('editor.button.table', domain: 'editor_markdown'),
+            'btnLink' => $this->translator->trans('editor.button.link', domain: 'editor_markdown'),
+            'btnImage' => $this->translator->trans('editor.button.image', domain: 'editor_markdown'),
+            'btnCode' => $this->translator->trans('editor.button.code', domain: 'editor_markdown'),
+            'modalTitreLink' => $this->translator->trans('editor.modal.titre.link', domain: 'editor_markdown'),
+            'modalTitreImage' => $this->translator->trans('editor.modal.titre.image', domain: 'editor_markdown'),
+            'modalBtnClose' => $this->translator->trans('editor.modal.button.close', domain: 'editor_markdown'),
+            'modalBtnValide' => $this->translator->trans('editor.modal.button.valide', domain: 'editor_markdown'),
+
+
+        ];
+    }
+}
