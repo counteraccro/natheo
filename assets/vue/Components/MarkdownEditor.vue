@@ -8,7 +8,6 @@
 
 import {marked} from 'marked'
 import {debounce} from 'lodash-es'
-import {Tooltip} from 'bootstrap'
 import {Modal} from 'bootstrap'
 
 export default {
@@ -31,8 +30,6 @@ export default {
     },
     mounted() {
         this.id = this.randomIntFromInterval(1, 9) + '' + this.randomIntFromInterval(1, 9);
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl))
         this.modal = new Modal(document.getElementById("modal-markdown-editor"), {});
     },
     computed: {
