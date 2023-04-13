@@ -1,0 +1,14 @@
+editor.button.bold: __editor.button.bold
+editor.button.italic: __editor.button.italic
+editor.button.strike: __editor.button.strike
+editor.button.quote: __editor.button.quote
+editor.button.list: __editor.button.list
+editor.button.list.number: __editor.button.list.number
+editor.button.table: __editor.button.table
+editor.button.link: __editor.button.link
+editor.button.image: __editor.button.image
+editor.button.code: __editor.button.code
+editor.modal.titre.link: __editor.modal.titre.link
+editor.modal.titre.image: __editor.modal.titre.image
+editor.modal.button.close: __editor.modal.button.close
+editor.modal.button.valide: __editor.modal.button.valide

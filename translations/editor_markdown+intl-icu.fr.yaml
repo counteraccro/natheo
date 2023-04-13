@@ -1,0 +1,14 @@
+editor.button.bold: Gras
+editor.button.italic: Italic
+editor.button.strike: Barré
+editor.button.quote: Citation
+editor.button.list: Liste
+editor.button.list.number: Liste numérotée
+editor.button.table: Tableau
+editor.button.link: Lien
+editor.button.image: Image
+editor.button.code: Code
+editor.modal.titre.link: Ajouter un lien
+editor.modal.titre.image: Ajouter une image
+editor.modal.button.close: Annuler
+editor.modal.button.valide: Valider
