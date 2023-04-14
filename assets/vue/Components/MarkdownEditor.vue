@@ -215,6 +215,19 @@ export default {
                 <i class="bi bi-image"></i></div>
             <div class="btn btn-secondary btn-sm me-1" @click="this.addCode" :title="this.meTranslate.btnCode">
                 <i class="bi bi-code"></i></div>
+            <div class="dropdown float-start me-1">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" :title="this.meTranslate.titreLabel" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                   <i class="bi bi-type-h1"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#" @click="this.addElement('# ', '0', false)"> {{ this.meTranslate.titreH1 }}</a></li>
+                    <li><a class="dropdown-item" href="#" @click="this.addElement('## ', '0', false)"> {{ this.meTranslate.titreH2 }}</a></li>
+                    <li><a class="dropdown-item" href="#" @click="this.addElement('### ', '0', false)"> {{ this.meTranslate.titreH3 }}</a></li>
+                    <li><a class="dropdown-item" href="#" @click="this.addElement('#### ', '0', false)"> {{ this.meTranslate.titreH4 }}</a></li>
+                    <li><a class="dropdown-item" href="#" @click="this.addElement('##### ', '0', false)"> {{ this.meTranslate.titreH5 }}</a></li>
+                    <li><a class="dropdown-item" href="#" @click="this.addElement('###### ', '0', false)"> {{ this.meTranslate.titreH6 }}</a></li>
+                </ul>
+            </div>
         </div>
 
         <textarea :id="'editor-'+ this.id" class="form-control" :value="this.value" @input="update" :rows="this.meRows"></textarea>
