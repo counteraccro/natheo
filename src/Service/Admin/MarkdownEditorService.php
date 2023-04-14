@@ -26,6 +26,7 @@ class MarkdownEditorService extends AppAdminService
             'btnLink' => $this->translator->trans('editor.button.link', domain: 'editor_markdown'),
             'btnImage' => $this->translator->trans('editor.button.image', domain: 'editor_markdown'),
             'btnCode' => $this->translator->trans('editor.button.code', domain: 'editor_markdown'),
+            'btnSave' => $this->translator->trans('editor.button.save', domain: 'editor_markdown'),
             'titreLabel'  => $this->translator->trans('editor.titre.label', domain: 'editor_markdown'),
             'titreH1'  => $this->translator->trans('editor.titre.h1', domain: 'editor_markdown'),
             'titreH2'  => $this->translator->trans('editor.titre.h2', domain: 'editor_markdown'),

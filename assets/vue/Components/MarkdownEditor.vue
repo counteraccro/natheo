@@ -228,12 +228,12 @@ export default {
                     <li><a class="dropdown-item" href="#" @click="this.addElement('###### ', '0', false)"> {{ this.meTranslate.titreH6 }}</a></li>
                 </ul>
             </div>
+            <div class="btn btn-secondary btn-sm me-1 float-end" @click="$emit('editor-value', this.value)" :title="this.meTranslate.btnSave">
+                <i class="bi bi-save"></i></div>
         </div>
 
         <textarea :id="'editor-'+ this.id" class="form-control" :value="this.value" @input="update" :rows="this.meRows"></textarea>
         <div :id="'emailHelp-' + this.id" class="form-text">We'll never share your email with anyone else.</div>
-
-        <div class="btn btn-danger" @click="$emit('editor-value', this.value)">Test récupération</div>
 
         <div>Prévisualisation</div>
         <div class="output" v-html="output"></div>
