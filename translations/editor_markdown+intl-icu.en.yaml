@@ -12,3 +12,13 @@ editor.modal.titre.link: __editor.modal.titre.link
 editor.modal.titre.image: __editor.modal.titre.image
 editor.modal.button.close: __editor.modal.button.close
 editor.modal.button.valide: __editor.modal.button.valide
+editor.titre.label: __editor.titre.label
+editor.titre.h1: __editor.titre.h1
+editor.titre.h2: __editor.titre.h2
+editor.titre.h3: __editor.titre.h3
+editor.titre.h4: __editor.titre.h4
+editor.titre.h5: __editor.titre.h5
+editor.titre.h6: __editor.titre.h6
+editor.modal.input.link: __editor.modal.input.link
+editor.modal.input.image: __editor.modal.input.image
+editor.modal.input.text: __editor.modal.input.text

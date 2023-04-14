@@ -15,3 +15,10 @@ editor.modal.button.valide: Valider
 editor.modal.input.link: 'URL du site web'
 editor.modal.input.image: "URL de l'image"
 editor.modal.input.text: Texte
+editor.titre.label: Titre
+editor.titre.h1: 'Titre H1'
+editor.titre.h2: 'Titre H2'
+editor.titre.h3: 'Titre H3'
+editor.titre.h4: 'Titre H4'
+editor.titre.h5: 'Titre H5'
+editor.titre.h6: 'Titre H6'
