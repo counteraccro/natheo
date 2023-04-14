@@ -22,3 +22,4 @@ editor.titre.h6: __editor.titre.h6
 editor.modal.input.link: __editor.modal.input.link
 editor.modal.input.image: __editor.modal.input.image
 editor.modal.input.text: __editor.modal.input.text
+editor.button.save: __editor.button.save
