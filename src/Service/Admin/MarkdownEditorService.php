@@ -27,9 +27,12 @@ class MarkdownEditorService extends AppAdminService
             'btnImage' => $this->translator->trans('editor.button.image', domain: 'editor_markdown'),
             'btnCode' => $this->translator->trans('editor.button.code', domain: 'editor_markdown'),
             'modalTitreLink' => $this->translator->trans('editor.modal.titre.link', domain: 'editor_markdown'),
+            'modalInputUrlLink' => $this->translator->trans('editor.modal.input.link', domain: 'editor_markdown'),
             'modalTitreImage' => $this->translator->trans('editor.modal.titre.image', domain: 'editor_markdown'),
+            'modalInputUrlImage' => $this->translator->trans('editor.modal.input.image', domain: 'editor_markdown'),
             'modalBtnClose' => $this->translator->trans('editor.modal.button.close', domain: 'editor_markdown'),
             'modalBtnValide' => $this->translator->trans('editor.modal.button.valide', domain: 'editor_markdown'),
+            'modalInputText' => $this->translator->trans('editor.modal.input.text', domain: 'editor_markdown'),
 
 
         ];

@@ -25,7 +25,9 @@ export default {
             modal: "",
             titleModal: "",
             linkModal: "",
-            textModal: ""
+            textModal: "",
+            linkLabelModal: "",
+            isImage: false
         }
     },
     mounted() {
@@ -68,16 +70,40 @@ export default {
             this.addElement(balise, 4, false);
         },
 
-        addLink(modal)
+        /**
+         * Ajoute un lien ou une image
+         * @param modal
+         * @param image
+         */
+        addLink(modal, image)
         {
             if(modal)
             {
-                this.titleModal = this.meTranslate.modalTitreLink;
+                this.linkModal = 'https://';
+                if(image)
+                {
+                    this.titleModal = this.meTranslate.modalTitreImage;
+                    this.linkLabelModal = this.meTranslate.modalInputUrlImage;
+                }
+                else {
+                    this.titleModal = this.meTranslate.modalTitreLink;
+                    this.linkLabelModal = this.meTranslate.modalInputUrlLink;
+                }
+
+                this.isImage = image;
                 this.modal.show();
             }
             else {
-                let balise = '[' + this.textModal + '](' + this.linkModal + ')';
+                let balise = '';
+                if(image)
+                {
+                    balise = '![' + this.textModal + '](' + this.linkModal + ')';
+                }
+                else {
+                    balise = '[' + this.textModal + '](' + this.linkModal + ')';
+                }
                 this.addElement(balise, 0, false);
+                this.textModal = this.linkModal = '';
                 this.modal.hide();
             }
         },
@@ -149,7 +175,7 @@ export default {
                 <div class="modal-body">
                     <div>
                         <div class="mb-3">
-                            <label for="link-modal" class="form-label">URL</label>
+                            <label for="link-modal" class="form-label">{{ this.linkLabelModal }}</label>
                             <input type="text" class="form-control" id="link-modal" placeholder="" v-model="linkModal">
                         </div>
                         <div class="mb-3">
@@ -159,7 +185,7 @@ export default {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" @click="addLink(false)"><i class="bi bi-check2-circle"></i> {{ this.meTranslate.modalBtnValide }}</button>
+                    <button type="button" class="btn btn-primary" @click="addLink(false, this.isImage)"><i class="bi bi-check2-circle"></i> {{ this.meTranslate.modalBtnValide }}</button>
                     <button type="button" class="btn btn-secondary" @click="closeModal"><i class="bi bi-x-circle"></i> {{ this.meTranslate.modalBtnClose }}
                     </button>
                 </div>
@@ -183,9 +209,9 @@ export default {
                 <i class="bi bi-list-ol"></i></div>
             <div class="btn btn-secondary btn-sm me-1" @click="this.addTable" :title="this.meTranslate.btnTable">
                 <i class="bi bi-table"></i></div>
-            <div class="btn btn-secondary btn-sm me-1" @click="this.addLink(true)" :title="this.meTranslate.btnLink">
+            <div class="btn btn-secondary btn-sm me-1" @click="this.addLink(true, false)" :title="this.meTranslate.btnLink">
                 <i class="bi bi-link"></i></div>
-            <div class="btn btn-secondary btn-sm me-1" @click="this.addTable" :title="this.meTranslate.btnImage">
+            <div class="btn btn-secondary btn-sm me-1" @click="this.addLink(true, true)" :title="this.meTranslate.btnImage">
                 <i class="bi bi-image"></i></div>
             <div class="btn btn-secondary btn-sm me-1" @click="this.addCode" :title="this.meTranslate.btnCode">
                 <i class="bi bi-code"></i></div>
