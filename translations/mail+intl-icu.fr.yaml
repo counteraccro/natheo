@@ -1,3 +1,4 @@
 mail.page_title: 'Gestion des emails'
 mail.page_title_h1: 'Gestion des emails'
 mail.description: 'Gérer le contenu et le titre des emails qui sont envoyés depuis le CMS'
+mail.list.language: 'Selection de la langue'
