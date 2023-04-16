@@ -68,7 +68,8 @@ class MailController extends AbstractController
         }
 
         $translate = [
-            'listLanguage' => $translator->trans('mail.list.language', domain: 'mail')
+            'listLanguage' => $translator->trans('mail.list.language', domain: 'mail'),
+            'loading' => $translator->trans('mail.loading', domain: 'mail')
         ];
 
         try {

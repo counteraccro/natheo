@@ -3,7 +3,6 @@
 import MarkdownEditor from "../../Components/MarkdownEditor.vue";
 import axios from "axios";
 import {marked} from 'marked'
-import { nextTick } from 'vue'
 
 export default {
     name: "Mail",
@@ -20,7 +19,8 @@ export default {
             translate: {},
             languages: {},
             currentLanguage: null,
-            mails: []
+            mails: [],
+            loading: false,
         }
     },
     mounted() {
@@ -34,8 +34,10 @@ export default {
          */
         loadData() {
 
+            this.loading = true;
+
             axios.post(this.url_data, {
-                'locale' : this.currentLanguage
+                'locale': this.currentLanguage
             }).then((response) => {
                 this.translateEditor = response.data.translateEditor
                 this.languages = response.data.languages;
@@ -47,6 +49,7 @@ export default {
             }).catch((error) => {
                 console.log(error);
             }).finally(() => {
+                this.loading = false
             });
         },
 
@@ -77,19 +80,26 @@ export default {
         </select>
     </div>
 
-    <div v-for="mail in this.mails">
-        <div>{{ mail.title }}</div>
-        <div>{{ mail.description }}</div>
-        <markdown-editor :key="mail.key"
-            :me-value="mail.contentTrans"
-            :me-rows="10"
-            :me-translate="translateEditor"
-            @editor-value="test"
-        >
-        </markdown-editor>
+    <div :class="this.loading === true ? 'block-grid' : ''">
+        <div v-if="this.loading" class="overlay">
+            <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
+                <div class="spinner-border text-primary" role="status"></div>
+                <span class="txt-overlay">{{ this.translate.loading }}</span>
+            </div>
+        </div>
+        <div v-for="mail in this.mails">
+
+            <div>{{ mail.title }}</div>
+            <div>{{ mail.description }}</div>
+            <markdown-editor :key="mail.key"
+                    :me-value="mail.contentTrans"
+                    :me-rows="10"
+                    :me-translate="translateEditor"
+                    @editor-value="test"
+            >
+            </markdown-editor>
+        </div>
     </div>
-
-
 
 
     <div class="border-primary border-1" v-html="editorValue">
