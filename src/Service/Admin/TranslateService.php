@@ -15,7 +15,7 @@ use Symfony\Component\Finder\Finder;
 class TranslateService extends AppAdminService
 {
     /**
-     * Retourne la liste des langues prises en charge par le site
+     * Retourne la liste des langues prises en charge par le site au format local => langue
      * @return array
      * @throws NotFoundExceptionInterface
      * @throws ContainerExceptionInterface
