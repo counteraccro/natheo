@@ -118,6 +118,18 @@ class Mail
         return $this;
     }
 
+    /**
+     * Retourne la traduction en fonction de la locale
+     * @param string $locale
+     * @return MailTranslation
+     */
+    public function geMailTranslationByLocale(string $locale): MailTranslation
+    {
+        return $this->getMailTranslations()->filter(function (MailTranslation $mailTranslation) use ($locale) {
+            return $mailTranslation->getLocale() === $locale;
+        })->first();
+    }
+
     public function getDescription(): ?string
     {
         return $this->description;

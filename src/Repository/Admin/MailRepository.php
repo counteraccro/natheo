@@ -39,6 +39,21 @@ class MailRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Retourne la liste de Mail en fonction de la langue
+     * @param string $locale
+     * @return Mail[] tableau de Mail
+     */
+    public function getAllMailByLocale(string $locale): array
+    {
+        return $this->createQueryBuilder('m')
+            ->leftJoin('m.mailTranslations', 'mt')
+            ->andWhere('mt.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->orderBy('m.id', 'ASC')
+            ->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Mail[] Returns an array of Mail objects
 //     */
