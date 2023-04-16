@@ -20,7 +20,7 @@ class MailTranslation
     private ?Mail $mail = null;
 
     #[ORM\Column(length: 10)]
-    private ?string $local = null;
+    private ?string $locale = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $title = null;
@@ -70,14 +70,14 @@ class MailTranslation
         return $this;
     }
 
-    public function getLocal(): ?string
+    public function getLocale(): ?string
     {
-        return $this->local;
+        return $this->locale;
     }
 
-    public function setLocal(string $local): self
+    public function setLocale(string $local): self
     {
-        $this->local = $local;
+        $this->locale = $local;
 
         return $this;
     }
