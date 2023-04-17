@@ -99,6 +99,7 @@ export default {
                             :me-value="mail.contentTrans"
                             :me-rows="10"
                             :me-translate="translateEditor"
+                            :me-key-words="mail.keyWords"
                             @editor-value="test"
                     >
                     </markdown-editor>

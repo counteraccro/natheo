@@ -15,7 +15,8 @@ export default {
     props: {
         meValue: String,
         meRows: Number,
-        meTranslate : Object
+        meTranslate : Object,
+        meKeyWords: [],
     },
     emits: ['editor-value'],
     data() {
@@ -228,6 +229,16 @@ export default {
                     <li><a class="dropdown-item" style="cursor: pointer" @click="this.addElement('#### ', '0', false)"> {{ this.meTranslate.titreH4 }}</a></li>
                     <li><a class="dropdown-item" style="cursor: pointer" @click="this.addElement('##### ', '0', false)"> {{ this.meTranslate.titreH5 }}</a></li>
                     <li><a class="dropdown-item" style="cursor: pointer" @click="this.addElement('###### ', '0', false)"> {{ this.meTranslate.titreH6 }}</a></li>
+                </ul>
+            </div>
+            <div class="dropdown float-start me-1" v-if="this.meKeyWords.length !== 0">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" :title="this.meTranslate.btnKeyWord" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ this.meTranslate.btnKeyWord }} <i class="bi bi-key-fill"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    <li v-for="(label, key) in this.meKeyWords">
+                        <a class="dropdown-item" style="cursor: pointer" @click="this.addElement('[[' + key + ']]', '0', false)"> {{ label }}</a>
+                    </li>
                 </ul>
             </div>
             <div class="btn btn-secondary btn-sm me-1 float-end" @click="$emit('editor-value', this.value)" :title="this.meTranslate.btnSave">

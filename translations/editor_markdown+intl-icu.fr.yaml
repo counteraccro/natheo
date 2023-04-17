@@ -24,4 +24,5 @@ editor.titre.h5: 'Titre H5'
 editor.titre.h6: 'Titre H6'
 editor.button.save: Sauvegarder
 editor.help: 'La mise en forme de votre contenu se fait avec langage de balisage <a href="https://www.ionos.fr/digitalguide/sites-internet/developpement-web/markdown/">Markdown</a>'
-editor.render: 'Prévisualisation'
+editor.render: Prévisualisation
+editor.button.keyword: Mots clés

@@ -35,10 +35,26 @@ class MailService extends AppAdminService
                 'key' => rand(1, 9) . rand(1, 9) . rand(1, 9) . rand(1, 9),
                 'title' => $this->translator->trans($mail->getTitle()),
                 'description' => $this->translator->trans($mail->getDescription()),
-                'keyWords' => explode('|', $mail->getKeyWords()),
+                'keyWords' => $this->formatKeyWord($mail->getKeyWords()),
                 'titleTrans' => $mailTranslation->getTitle(),
                 'contentTrans' => $mailTranslation->getContent()
             ];
+        }
+        return $return;
+    }
+
+    /**
+     * Format la string keyWord en tableau avec traduction
+     * @param string $keyWord
+     * @return array
+     */
+    private function formatKeyWord(string $keyWord): array
+    {
+        $tab = explode('|', $keyWord);
+
+        $return = [];
+        foreach ($tab as $keyWord) {
+            $return[$keyWord] = $this->translator->trans('mail.' . $keyWord);
         }
         return $return;
     }
