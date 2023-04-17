@@ -34,6 +34,8 @@ class MarkdownEditorService extends AppAdminService
             'titreH4'  => $this->translator->trans('editor.titre.h4', domain: 'editor_markdown'),
             'titreH5'  => $this->translator->trans('editor.titre.h5', domain: 'editor_markdown'),
             'titreH6'  => $this->translator->trans('editor.titre.h6', domain: 'editor_markdown'),
+            'help'  => $this->translator->trans('editor.help', domain: 'editor_markdown'),
+            'render'  => $this->translator->trans('editor.render', domain: 'editor_markdown'),
             'modalTitreLink' => $this->translator->trans('editor.modal.titre.link', domain: 'editor_markdown'),
             'modalInputUrlLink' => $this->translator->trans('editor.modal.input.link', domain: 'editor_markdown'),
             'modalTitreImage' => $this->translator->trans('editor.modal.titre.image', domain: 'editor_markdown'),

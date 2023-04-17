@@ -5,7 +5,7 @@
  */
 
 body {
-  font-family: 'Verdana','Poppins', sans-serif;
+  font-family: 'Verdana', 'Poppins', sans-serif;
   //background-color: var(--light);
   font-size: 0.9em;
 }
@@ -41,7 +41,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /** CSS gird **/
-.block-grid{
+.block-grid {
   position: relative;
 }
 
@@ -57,4 +57,26 @@ h1, h2, h3, h4, h5, h6 {
 .overlay .txt-overlay {
   color: var(--primary);
   font-weight: bold;
+}
+
+fieldset {
+  display: block;
+  margin-inline-start: 2px;
+  margin-inline-end: 2px;
+  padding-block-start: 0.35em;
+  padding-inline-start: 0.75em;
+  padding-inline-end: 0.75em;
+  padding-block-end: 0.625em;
+  min-inline-size: min-content;
+  border-width: 2px;
+  border-style: groove;
+  border-image: initial;
+  border-radius: 5px;
+}
+
+legend {
+  all:unset;
+  padding-inline-start: 6px;
+  padding-inline-end: 6px;
+  color: #999;;
 }

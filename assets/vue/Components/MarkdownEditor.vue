@@ -106,6 +106,8 @@ export default {
                 this.textModal = this.linkModal = '';
                 this.modal.hide();
             }
+
+            return false;
         },
 
         closeModal()
@@ -220,12 +222,12 @@ export default {
                    <i class="bi bi-type-h1"></i>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#" @click="this.addElement('# ', '0', false)"> {{ this.meTranslate.titreH1 }}</a></li>
-                    <li><a class="dropdown-item" href="#" @click="this.addElement('## ', '0', false)"> {{ this.meTranslate.titreH2 }}</a></li>
-                    <li><a class="dropdown-item" href="#" @click="this.addElement('### ', '0', false)"> {{ this.meTranslate.titreH3 }}</a></li>
-                    <li><a class="dropdown-item" href="#" @click="this.addElement('#### ', '0', false)"> {{ this.meTranslate.titreH4 }}</a></li>
-                    <li><a class="dropdown-item" href="#" @click="this.addElement('##### ', '0', false)"> {{ this.meTranslate.titreH5 }}</a></li>
-                    <li><a class="dropdown-item" href="#" @click="this.addElement('###### ', '0', false)"> {{ this.meTranslate.titreH6 }}</a></li>
+                    <li><a class="dropdown-item" style="cursor: pointer" @click="this.addElement('# ', '0', false)"> {{ this.meTranslate.titreH1 }}</a></li>
+                    <li><a class="dropdown-item" style="cursor: pointer" @click="this.addElement('## ', '0', false)"> {{ this.meTranslate.titreH2 }}</a></li>
+                    <li><a class="dropdown-item" style="cursor: pointer" @click="this.addElement('### ', '0', false)"> {{ this.meTranslate.titreH3 }}</a></li>
+                    <li><a class="dropdown-item" style="cursor: pointer" @click="this.addElement('#### ', '0', false)"> {{ this.meTranslate.titreH4 }}</a></li>
+                    <li><a class="dropdown-item" style="cursor: pointer" @click="this.addElement('##### ', '0', false)"> {{ this.meTranslate.titreH5 }}</a></li>
+                    <li><a class="dropdown-item" style="cursor: pointer" @click="this.addElement('###### ', '0', false)"> {{ this.meTranslate.titreH6 }}</a></li>
                 </ul>
             </div>
             <div class="btn btn-secondary btn-sm me-1 float-end" @click="$emit('editor-value', this.value)" :title="this.meTranslate.btnSave">
@@ -233,10 +235,12 @@ export default {
         </div>
 
         <textarea :id="'editor-'+ this.id" class="form-control" :value="this.value" @input="update" :rows="this.meRows"></textarea>
-        <div :id="'emailHelp-' + this.id" class="form-text">We'll never share your email with anyone else.</div>
+        <div :id="'emailHelp-' + this.id" class="form-text" v-html="this.meTranslate.help"></div>
 
-        <div>Prévisualisation</div>
-        <div class="output" v-html="output"></div>
+        <fieldset>
+            <legend>{{ this.meTranslate.render }}</legend>
+            <div class="markdown-editor-output" v-html="output"></div>
+        </fieldset>
     </div>
 </template>
 

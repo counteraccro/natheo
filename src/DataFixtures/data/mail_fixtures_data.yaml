@@ -8,12 +8,12 @@ mail:
       -
         locale: 'fr'
         title: 'Changement de mot de passe'
-        content: 'Bonjour {{user.login}} <br /> cliquez sur ici {{global.url_change_psw}} pour changer votre mot de passe'
+        content: "Bonjour [[user.login]],   \nVous avez fait une demande de changement de mot de passe.   \nCliquez sur [[global.url_change_psw]] pour changer votre mot de passe"
       -
         locale: 'en'
         title: '[EN] Changement de mot de passe'
-        content: '[EN] Bonjour {{user.login}} <br /> cliquez sur ici {{global.url_change_psw}} pour changer votre mot de passe'
+        content: "[EN] Bonjour [[user.login]]  \nCliquez sur ici {{global.url_change_psw}} pour changer votre mot de passe"
       -
         locale: 'es'
         title: '[ES] Changement de mot de passe'
-        content: '[ES] Bonjour {{user.login}} <br /> cliquez sur ici {{global.url_change_psw}} pour changer votre mot de passe'
+        content: "[ES] Bonjour [[user.login]]   \nCliquez sur ici {{global.url_change_psw}} pour changer votre mot de passe"

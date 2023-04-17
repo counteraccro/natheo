@@ -23,3 +23,5 @@ editor.modal.input.link: __editor.modal.input.link
 editor.modal.input.image: __editor.modal.input.image
 editor.modal.input.text: __editor.modal.input.text
 editor.button.save: __editor.button.save
+editor.help: __editor.help
+editor.render: __editor.render

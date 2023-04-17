@@ -88,16 +88,22 @@ export default {
             </div>
         </div>
         <div v-for="mail in this.mails">
-
-            <div>{{ mail.title }}</div>
-            <div>{{ mail.description }}</div>
-            <markdown-editor :key="mail.key"
-                    :me-value="mail.contentTrans"
-                    :me-rows="10"
-                    :me-translate="translateEditor"
-                    @editor-value="test"
-            >
-            </markdown-editor>
+            <div class="card mt-2">
+                <div class="card-header text-bg-secondary">
+                    <div class="mt-1 float-start">{{ mail.title }}</div>
+                    <div class="btn btn-sm btn-secondary float-end"><i class="bi bi-send-check-fill"></i></div>
+                </div>
+                <div class="card-body">
+                    <p>{{ mail.description }}</p>
+                    <markdown-editor :key="mail.key"
+                            :me-value="mail.contentTrans"
+                            :me-rows="10"
+                            :me-translate="translateEditor"
+                            @editor-value="test"
+                    >
+                    </markdown-editor>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -1,0 +1,84 @@
+.markdown-editor-output {
+  p {
+    color: rgb(33, 37, 41);
+  }
+
+  strong {
+    font-weight: bold;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  h3 {
+    font-size: 1rem;
+  }
+
+  h4 {
+    font-size: 0.75rem;
+  }
+
+  h5 {
+    font-size: 0.75rem;
+  }
+
+  h6 {
+    font-size: 0.75rem;
+  }
+
+  blockquote {
+    position: relative;
+    background: linear-gradient(to right, $light, #FFF);
+    border: 1px solid #9A9A9A;
+    border-radius: 5px;
+    padding: 20px 70px;
+  }
+  blockquote p {
+    margin: 0;
+  }
+  blockquote:before {
+    position: absolute;
+    top: 5px;
+    left: 25px;
+    content: "\F6B0";
+    font-size: 40px;
+    font-family: "bootstrap-icons";
+    color: var(--secondary);
+  }
+  blockquote:after {
+    position: absolute;
+    bottom: 5px;
+    right: 25px;
+    content: "\F6B0";
+    font-family: "bootstrap-icons";
+    font-size: 40px;
+    color: var(--secondary);
+  }
+
+  table {
+  }
+  table td, table th {
+    border: 1px solid #DDDDDD;
+    padding: 5px;
+  }
+  table thead {
+    background: #DDDDDD;
+  }
+  table thead th {
+    font-weight: normal;
+  }
+  table tfoot {
+    font-weight: bold;
+  }
+
+  pre {
+    background: var(--light);
+    border-radius: 0.4rem;
+    padding: 0 0.6rem;
+  }
+}
