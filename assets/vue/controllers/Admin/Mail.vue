@@ -19,7 +19,7 @@ export default {
             translate: {},
             languages: {},
             currentLanguage: null,
-            mails: [],
+            mail: [],
             loading: false,
         }
     },
@@ -43,7 +43,7 @@ export default {
                 this.languages = response.data.languages;
                 this.translate = response.data.translate;
                 this.currentLanguage = response.data.locale;
-                this.mails = response.data.mails;
+                this.mail = response.data.mail;
 
                 console.log('Chargement donnée');
             }).catch((error) => {
@@ -87,7 +87,7 @@ export default {
                 <span class="txt-overlay">{{ this.translate.loading }}</span>
             </div>
         </div>
-        <div v-for="mail in this.mails">
+        <div v-for="mail in this.mail">
             <div class="card mt-2">
                 <div class="card-header text-bg-secondary">
                     <div class="mt-1 float-start">{{ mail.title }}</div>

@@ -79,7 +79,7 @@ class UserController extends AppAdminController
     }
 
     /**
-     * Charge le tableau grid de sidebar en ajax
+     * Charge le tableau grid de user en ajax
      * @param Request $request
      * @param UserService $userService
      * @return JsonResponse
@@ -128,7 +128,7 @@ class UserController extends AppAdminController
      * @param UserService $userService
      * @return Response
      */
-    #[Route('/ajax/update/{id}', name: 'update', methods: ['GET'])]
+    #[Route('/update/{id}', name: 'update', methods: ['GET'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]
     public function update(User $user, UserService $userService): Response
     {

@@ -3,3 +3,12 @@ mail.page_title_h1: __mail.page_title_h1
 mail.description: __mail.description
 mail.list.language: __mail.list.language
 mail.loading: __mail.loading
+mail.grid.id: __mail.grid.id
+mail.grid.title: __mail.grid.title
+mail.grid.description: __mail.grid.description
+mail.grid.created_at: __mail.grid.created_at
+mail.grid.update_at: __mail.grid.update_at
+mail.edit_page_title: __mail.edit_page_title
+mail.edit_page_title_h1: __mail.edit_page_title_h1
+mail.edit_page_description: __mail.edit_page_description
+mail.info: __mail.info

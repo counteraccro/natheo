@@ -4,6 +4,7 @@ namespace App\Repository\Admin;
 
 use App\Entity\Admin\Mail;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -40,18 +41,21 @@ class MailRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne la liste de Mail en fonction de la langue
-     * @param string $locale
-     * @return Mail[] tableau de Mail
+     * Retourne une liste de Mail Paginé
+     * @param int $page
+     * @param int $limit
+     * @return Paginator
      */
-    public function getAllMailByLocale(string $locale): array
+    public function getAllPaginate(int $page, int $limit): Paginator
     {
-        return $this->createQueryBuilder('m')
-            ->leftJoin('m.mailTranslations', 'mt')
-            ->andWhere('mt.locale = :locale')
-            ->setParameter('locale', $locale)
-            ->orderBy('m.id', 'ASC')
-            ->getQuery()->getResult();
+        $query = $this->createQueryBuilder('m')
+            ->orderBy('m.id', 'ASC');
+
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
     }
 
 //    /**

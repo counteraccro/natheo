@@ -40,7 +40,7 @@ class UserService extends AppAdminService
     }
 
     /**
-     * Retourne une liste de sidebarElement paginé
+     * Retourne une liste de user paginé
      * @param int $page
      * @param int $limit
      * @return Paginator

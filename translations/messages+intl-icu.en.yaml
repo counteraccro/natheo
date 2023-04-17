@@ -89,9 +89,9 @@ options_system.log_doctrine_help: '__Permet de tracer toutes modifications de do
 mail.change.password.title: '__Email de changement de mot de passe'
 mail.change.password.description: "__Email envoyé lorsqu'un utilisateur fait une demande de mot de passe"
 mail.user.email: '__Adresse email'
-mail.user.login: '__Login'
-mail.user.firstname: '__Prénom'
-mail.user.lastname: '__Nom'
+mail.user.login: __Login
+mail.user.firstname: __Prénom
+mail.user.lastname: __Nom
 mail.global.url: '__Url du site'
 mail.global.url_change_psw: '__Url changement mot de passe'
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'

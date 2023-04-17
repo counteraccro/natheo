@@ -1,0 +1,16 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block title %}{{ 'mail.edit_page_title' | trans({}, 'mail') }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'mail.edit_page_title_h1' | trans({}, 'mail') }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    {% set title =  mail.title | trans({}) %}
+    <p>{{ 'mail.edit_page_description' | trans({'email' : title}, 'mail') | raw }}</p>
+
+
+    <div {{ vue_component('Admin/Mail', {'url_data' : path('admin_mail_load_data', {'id' : mail.id})}) }}></div>
+
+{% endblock %}
