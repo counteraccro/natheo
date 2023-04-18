@@ -90,6 +90,8 @@ class MailController extends AppAdminController
      * @param TranslateService $translateService
      * @param Request $request
      * @param TranslatorInterface $translator
+     * @param MailService $mailService
+     * @param Mail $mail
      * @return JsonResponse
      */
     #[Route('/ajax/load-data/{id}', name: 'load_data', methods: ['POST'])]
@@ -120,6 +122,30 @@ class MailController extends AppAdminController
         $tabEmail = $mailService->getMailFormat($locale, $mail);
 
         return $this->json(['translateEditor' => $markdownEditorService->getTranslate(),
-            'languages' => $languages, 'locale' => $locale, 'translate' => $translate, 'mail' => $tabEmail]);
+            'languages' => $languages, 'locale' => $locale,
+            'translate' => $translate, 'mail' => $tabEmail,
+            'save_url' => $this->generateUrl('admin_mail_save', ['id' => $mail->getId()])]);
+    }
+
+    /**
+     * Sauvegarde les données modifiées d'un mail
+     * @param Request $request
+     * @param MailService $mailService
+     * @param TranslatorInterface $translator
+     * @param Mail $mail
+     * @return JsonResponse
+     */
+    #[Route('/ajax/save/{id}', name: 'save', methods: ['POST'])]
+    public function save(Request             $request, MailService $mailService,
+                         TranslatorInterface $translator, Mail $mail): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $mailTranslation = $mail->geMailTranslationByLocale($data['locale']);
+        $mailTranslation->setContent($data['content']);
+        $mailService->save($mail);
+
+        $title = $translator->trans($mail->getTitle());
+        return $this->json(['msg' => $translator->trans('mail.message.success', ['email' => $title], domain: 'mail')]);
     }
 }

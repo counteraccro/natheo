@@ -21,6 +21,8 @@ export default {
             currentLanguage: null,
             mail: [],
             loading: false,
+            url_save: '',
+            msgSuccess: '',
         }
     },
     mounted() {
@@ -44,8 +46,7 @@ export default {
                 this.translate = response.data.translate;
                 this.currentLanguage = response.data.locale;
                 this.mail = response.data.mail;
-
-                console.log('Chargement donnée');
+                this.url_save = response.data.save_url;
             }).catch((error) => {
                 console.log(error);
             }).finally(() => {
@@ -64,8 +65,33 @@ export default {
             }
         },
 
-        test(value) {
-            this.editorValue = marked(value);
+        /**
+         * Réinitialise le message de sauvegarde
+         */
+        removeMsg()
+        {
+            this.msgSuccess = '';
+        },
+
+        /**
+         * Permet de sauvegarder le content
+         * @param value
+         */
+        save(value) {
+
+            this.loading = true;
+            axios.post(this.url_save, {
+                'locale': this.currentLanguage,
+                'content': value
+            }).then((response) => {
+                this.msgSuccess = response.data.msg;
+            }).catch((error) => {
+                console.log(error);
+            }).finally(() => {
+                console.log('ici');
+                setTimeout(this.removeMsg, 3000);
+                this.loading = false
+            });
         }
     }
 }
@@ -94,22 +120,22 @@ export default {
                     <div class="btn btn-sm btn-secondary float-end"><i class="bi bi-send-check-fill"></i></div>
                 </div>
                 <div class="card-body">
+
+                    <div v-if="msgSuccess !== ''" class="alert alert-success" v-html="'<i class=\'bi bi-check-circle-fill\'></i> ' + this.msgSuccess">
+                    </div>
+
                     <p>{{ mail.description }}</p>
                     <markdown-editor :key="mail.key"
                             :me-value="mail.contentTrans"
                             :me-rows="10"
                             :me-translate="translateEditor"
                             :me-key-words="mail.keyWords"
-                            @editor-value="test"
+                            @editor-value="save"
                     >
                     </markdown-editor>
                 </div>
             </div>
         </div>
-    </div>
-
-
-    <div class="border-primary border-1" v-html="editorValue">
     </div>
 </template>
 
