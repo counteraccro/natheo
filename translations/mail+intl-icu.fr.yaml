@@ -7,8 +7,9 @@ mail.grid.id: Id
 mail.grid.title: Titre
 mail.grid.description: Description
 mail.grid.created_at: Création
-mail.grid.update_at: Mise à jour
-mail.edit_page_title: Edition email
-mail.edit_page_title_h1: Edition d'un email
+mail.grid.update_at: 'Mise à jour'
+mail.edit_page_title: 'Edition email'
+mail.edit_page_title_h1: "Edition d'un email"
 mail.edit_page_description: "Modification de l'email '<strong>{email}</strong>'"
 mail.info: 'Vous pouvez tester les emails en cliquant sur le bouton {icon}, vous les recevrez dans votre boite mail défini dans votre compte'
+mail.message.success: "Mail <strong>{email}</strong> sauvegardé avec succès"
