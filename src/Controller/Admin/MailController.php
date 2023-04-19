@@ -146,6 +146,7 @@ class MailController extends AppAdminController
         $mailTranslation = $mail->geMailTranslationByLocale($data['locale']);
         $mailTranslation->setContent($data['content']);
         $mailTranslation->setTitle($data['title']);
+        $mail->setUpdateAt(new \DateTime());
         $mailService->save($mail);
 
         $title = $translator->trans($mail->getTitle());
