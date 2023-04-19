@@ -17,8 +17,9 @@ export default {
         meRows: Number,
         meTranslate : Object,
         meKeyWords: [],
+        meSave: Boolean
     },
-    emits: ['editor-value'],
+    emits: ['editor-value', 'editor-value-change'],
     data() {
         return {
             value: this.meValue,
@@ -28,7 +29,8 @@ export default {
             linkModal: "",
             textModal: "",
             linkLabelModal: "",
-            isImage: false
+            isImage: false,
+            isValide: "",
         }
     },
     mounted() {
@@ -161,6 +163,17 @@ export default {
 
             }
             return false;
+        },
+
+        isValideInput(event)
+        {
+            this.isValide = '';
+            let value = event.target.value;
+            if(value === "")
+            {
+                this.isValide = 'is-invalid';
+            }
+            this.$emit('editor-value-change', value);
         }
     }
 }
@@ -241,11 +254,14 @@ export default {
                     </li>
                 </ul>
             </div>
-            <div class="btn btn-secondary btn-sm me-1 float-end" @click="$emit('editor-value', this.value)" :title="this.meTranslate.btnSave">
+            <div v-if="this.meSave" class="btn btn-secondary btn-sm me-1 float-end" @click="$emit('editor-value', this.value)" :title="this.meTranslate.btnSave">
                 <i class="bi bi-save"></i></div>
         </div>
 
-        <textarea :id="'editor-'+ this.id" class="form-control" :value="this.value" @input="update" :rows="this.meRows"></textarea>
+        <textarea :id="'editor-'+ this.id" class="form-control" :class="this.isValide" :value="this.value" @input="update" :rows="this.meRows" @change="this.isValideInput"></textarea>
+        <div class="invalid-feedback">
+            {{ this.meTranslate.msgEmptyContent }}
+        </div>
         <div :id="'emailHelp-' + this.id" class="form-text" v-html="this.meTranslate.help"></div>
 
         <fieldset>

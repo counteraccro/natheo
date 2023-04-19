@@ -44,6 +44,7 @@ class MarkdownEditorService extends AppAdminService
             'modalBtnClose' => $this->translator->trans('editor.modal.button.close', domain: 'editor_markdown'),
             'modalBtnValide' => $this->translator->trans('editor.modal.button.valide', domain: 'editor_markdown'),
             'modalInputText' => $this->translator->trans('editor.modal.input.text', domain: 'editor_markdown'),
+            'msgEmptyContent' => $this->translator->trans('editor.input.empty', domain: 'editor_markdown'),
 
 
         ];
