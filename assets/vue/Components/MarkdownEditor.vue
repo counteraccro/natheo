@@ -258,7 +258,7 @@ export default {
                 <i class="bi bi-save"></i></div>
         </div>
 
-        <textarea :id="'editor-'+ this.id" class="form-control" :class="this.isValide" :value="this.value" @input="update" :rows="this.meRows" @change="this.isValideInput"></textarea>
+        <textarea :id="'editor-'+ this.id" class="form-control no-control" :class="this.isValide" :value="this.value" @input="update" :rows="this.meRows" @change="this.isValideInput"></textarea>
         <div class="invalid-feedback">
             {{ this.meTranslate.msgEmptyContent }}
         </div>
