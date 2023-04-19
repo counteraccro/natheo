@@ -110,7 +110,9 @@ class MailController extends AppAdminController
 
         $translate = [
             'listLanguage' => $translator->trans('mail.list.language', domain: 'mail'),
-            'loading' => $translator->trans('mail.loading', domain: 'mail')
+            'loading' => $translator->trans('mail.loading', domain: 'mail'),
+            'titleTrans' => $translator->trans('mail.input.trans.title', domain: 'mail'),
+            'msgEmptyTitle' => $translator->trans('mail.input.trans.title.empty', domain: 'mail'),
         ];
 
         try {
@@ -143,6 +145,7 @@ class MailController extends AppAdminController
 
         $mailTranslation = $mail->geMailTranslationByLocale($data['locale']);
         $mailTranslation->setContent($data['content']);
+        $mailTranslation->setTitle($data['title']);
         $mailService->save($mail);
 
         $title = $translator->trans($mail->getTitle());

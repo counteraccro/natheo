@@ -2,7 +2,6 @@
 
 import MarkdownEditor from "../../Components/MarkdownEditor.vue";
 import axios from "axios";
-import {marked} from 'marked'
 
 export default {
     name: "Mail",
@@ -12,9 +11,6 @@ export default {
     },
     data() {
         return {
-            value: '*tto*',
-            value2: '**2eme**',
-            editorValue: "",
             translateEditor: {},
             translate: {},
             languages: {},
@@ -23,6 +19,10 @@ export default {
             loading: false,
             url_save: '',
             msgSuccess: '',
+            isValideTitle: '',
+            content: '',
+            title: '',
+            canSave: true
         }
     },
     mounted() {
@@ -68,27 +68,65 @@ export default {
         /**
          * Réinitialise le message de sauvegarde
          */
-        removeMsg()
-        {
+        removeMsg() {
             this.msgSuccess = '';
         },
 
         /**
-         * Permet de sauvegarder le content
+         * Vérifie si on peut sauvegarder ou non
+         */
+        checkCanSave() {
+            this.canSave = this.content !== '' && this.title !== '';
+        },
+
+        /**
+         * Vérifie si le titre a été saisi ou non
+         * @param event
+         */
+        checkTitle(event) {
+            this.isValideTitle = '';
+            let value = event.target.value;
+            if (value === "") {
+                this.isValideTitle = 'is-invalid';
+            }
+            this.checkCanSave();
+        },
+
+        /**
+         * Event venant de markdownEditor pour récupérer la valeur saisie
          * @param value
          */
-        save(value) {
+        saveContent(value) {
+            this.content = value;
+            this.checkCanSave();
+        },
+
+        /**
+         * Mis à jour du titre et contenu
+         * @param title
+         * @param content
+         */
+        updateTitleContent(title, content)
+        {
+            this.content = content;
+            this.title = title;
+        },
+
+        /**
+         * Permet de sauvegarder le content
+         */
+        save() {
 
             this.loading = true;
             axios.post(this.url_save, {
                 'locale': this.currentLanguage,
-                'content': value
+                'content': this.content,
+                'title': this.title
             }).then((response) => {
                 this.msgSuccess = response.data.msg;
             }).catch((error) => {
                 console.log(error);
             }).finally(() => {
-                console.log('ici');
                 setTimeout(this.removeMsg, 3000);
                 this.loading = false
             });
@@ -114,23 +152,37 @@ export default {
             </div>
         </div>
         <div v-for="mail in this.mail">
+            {{ this.updateTitleContent(mail.titleTrans, mail.contentTrans) }}
             <div class="card mt-2">
                 <div class="card-header text-bg-secondary">
                     <div class="mt-1 float-start">{{ mail.title }}</div>
+
+                    <div class="btn btn-sm btn-success float-end" :class="!this.canSave ? 'disabled' : ''" @click="this.save">
+                        <i class="bi bi-save-fill"></i></div>
                     <div class="btn btn-sm btn-secondary float-end"><i class="bi bi-send-check-fill"></i></div>
                 </div>
                 <div class="card-body">
 
                     <div v-if="msgSuccess !== ''" class="alert alert-success" v-html="'<i class=\'bi bi-check-circle-fill\'></i> ' + this.msgSuccess">
                     </div>
-
                     <p>{{ mail.description }}</p>
+
+                    <div class="mb-3">
+                        <label for="titleTrans" class="form-label">{{ this.translate.titleTrans }}</label>
+                        <input type="text" class="form-control" :class="this.isValideTitle" id="titleTrans" v-model="mail.titleTrans" @change="this.checkTitle">
+                        <div id="titleTransError" class="invalid-feedback">
+                            {{ this.translate.msgEmptyTitle }}
+                        </div>
+                    </div>
+
                     <markdown-editor :key="mail.key"
                             :me-value="mail.contentTrans"
                             :me-rows="10"
                             :me-translate="translateEditor"
                             :me-key-words="mail.keyWords"
-                            @editor-value="save"
+                            :me-save="false"
+                            @editor-value=""
+                            @editor-value-change="saveContent"
                     >
                     </markdown-editor>
                 </div>
