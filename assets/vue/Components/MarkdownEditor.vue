@@ -264,7 +264,7 @@ export default {
         </div>
         <div :id="'emailHelp-' + this.id" class="form-text" v-html="this.meTranslate.help"></div>
 
-        <fieldset>
+        <fieldset class="mt-3">
             <legend>{{ this.meTranslate.render }}</legend>
             <div class="markdown-editor-output" v-html="output"></div>
         </fieldset>
