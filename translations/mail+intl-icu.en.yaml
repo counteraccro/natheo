@@ -13,3 +13,5 @@ mail.edit_page_title_h1: __mail.edit_page_title_h1
 mail.edit_page_description: __mail.edit_page_description
 mail.info: __mail.info
 mail.message.success: __mail.message.success
+mail.input.trans.title: __mail.input.trans.title
+mail.input.trans.title.empty: __mail.input.trans.title.empty

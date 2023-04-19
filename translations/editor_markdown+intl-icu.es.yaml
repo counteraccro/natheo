@@ -26,3 +26,4 @@ editor.button.save: __editor.button.save
 editor.help: __editor.help
 editor.render: __editor.render
 editor.button.keyword: __editor.button.keyword
+editor.input.empty: __editor.input.empty

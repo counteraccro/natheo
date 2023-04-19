@@ -12,4 +12,6 @@ mail.edit_page_title: 'Edition email'
 mail.edit_page_title_h1: "Edition d'un email"
 mail.edit_page_description: "Modification de l'email '<strong>{email}</strong>'"
 mail.info: 'Vous pouvez tester les emails en cliquant sur le bouton {icon}, vous les recevrez dans votre boite mail défini dans votre compte'
-mail.message.success: "Mail <strong>{email}</strong> sauvegardé avec succès"
+mail.message.success: 'Mail <strong>{email}</strong> sauvegardé avec succès'
+mail.input.trans.title: 'Objet du mail'
+mail.input.trans.title.empty: "L'objet de l'email ne peut pas être vide"
