@@ -91,6 +91,11 @@ class OptionSystemService extends AppAdminService
     const OS_LOG_DOCTRINE = 'OS_LOG_DOCTRINE';
 
     /**
+     * Clé option pour récupérer l'expéditeur des emails
+     */
+    const OS_MAIL_FROM = 'OS_MAIL_FROM';
+
+    /**
      * Retourne l'ensemble des options systèmes
      * @return array|object[]
      */
