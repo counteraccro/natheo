@@ -161,7 +161,7 @@ class MailController extends AppAdminController
      * @return JsonResponse
      * @throws TransportExceptionInterface
      */
-    #[Route('/ajax/send-demo-mail/{id}', name: 'send_demo_mail', methods: ['POST'])]
+    #[Route('/ajax/send-demo-mail/{id}', name: 'send_demo_mail', methods: ['POST', 'GET'])]
     public function sendDemoMail(Mail $mail, MailService $mailService): JsonResponse
     {
         $mailService->sendMail($mail, []);

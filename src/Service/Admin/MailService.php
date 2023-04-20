@@ -8,14 +8,17 @@
 namespace App\Service\Admin;
 
 use App\Entity\Admin\Mail;
+use App\Service\MarkdownService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use JetBrains\PhpStorm\NoReturn;
+use League\CommonMark\Exception\CommonMarkException;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -33,6 +36,16 @@ class MailService extends AppAdminService
     private MailerInterface $mailer;
 
     /**
+     * @var OptionSystemService
+     */
+    private OptionSystemService $optionSystemService;
+
+    /**
+     * @var MarkdownService
+     */
+    private MarkdownService $markdownService;
+
+    /**
      * @param EntityManagerInterface $entityManager
      * @param ContainerBagInterface $containerBag
      * @param TranslatorInterface $translator
@@ -40,14 +53,19 @@ class MailService extends AppAdminService
      * @param Security $security
      * @param RequestStack $requestStack
      * @param GridService $gridService
+     * @param MailerInterface $mailer
+     * @param OptionSystemService $optionSystemService
      */
     public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
                                 TranslatorInterface    $translator, UrlGeneratorInterface $router,
                                 Security               $security, RequestStack $requestStack, GridService $gridService,
-                                MailerInterface        $mailer)
+                                MailerInterface        $mailer, OptionSystemService $optionSystemService,
+                                MarkdownService        $markdownService)
     {
         $this->gridService = $gridService;
         $this->mailer = $mailer;
+        $this->optionSystemService = $optionSystemService;
+        $this->markdownService = $markdownService;
 
         parent::__construct($entityManager, $containerBag, $translator, $router, $security, $requestStack);
     }
@@ -184,19 +202,26 @@ class MailService extends AppAdminService
      * @param array $params
      * @return void
      * @throws TransportExceptionInterface
+     * @throws CommonMarkException
      */
-    public function sendMail(Mail $mail, array $params): void
+    #[NoReturn] public function sendMail(Mail $mail, array $params): void
     {
-        $email = (new Email())
-            ->from('aymeric.gourdon@hotmail.fr')
+        $from = $this->optionSystemService->getValueByKey(OptionSystemService::OS_MAIL_FROM);
+        $mailTranslate = $mail->geMailTranslationByLocale($this->requestStack->getCurrentRequest()->getLocale());
+        $content = $this->markdownService->convertMarkdownToHtml($mailTranslate->getContent());
+
+        $email = (new TemplatedEmail())
+            ->from($from)
             ->to('counteraccro@gmail.com')
             //->cc('cc@example.com')
             //->bcc('bcc@example.com')
             //->replyTo('fabien@example.com')
             //->priority(Email::PRIORITY_HIGH)
-            ->subject('Email oki')
-            ->text('Oui ça marche')
-            ->html('<p>Meme avec HTML</p>');
+            ->subject($mailTranslate->getTitle())
+            ->htmlTemplate('emails/user/new_password.html.twig')
+            ->context([
+                'content' => $content,
+            ]);
 
         $this->mailer->send($email);
     }

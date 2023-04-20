@@ -38,3 +38,5 @@ yarn-error.log
 
 .idea/phpspec.xml
 .idea/codeception.xml
+.idea/commandlinetools/schemas/frameworkDescriptionVersion1.1.4.xsd
+.idea/commandlinetools/Symfony_20_04_2023_17_08.xml
