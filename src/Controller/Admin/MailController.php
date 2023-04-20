@@ -18,6 +18,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -151,5 +152,19 @@ class MailController extends AppAdminController
 
         $title = $translator->trans($mail->getTitle());
         return $this->json(['msg' => $translator->trans('mail.message.success', ['email' => $title], domain: 'mail')]);
+    }
+
+    /**
+     * Permet de tester le contenu d'un email en l'envoyant
+     * @param Mail $mail
+     * @param MailService $mailService
+     * @return JsonResponse
+     * @throws TransportExceptionInterface
+     */
+    #[Route('/ajax/send-demo-mail/{id}', name: 'send_demo_mail', methods: ['POST'])]
+    public function sendDemoMail(Mail $mail, MailService $mailService): JsonResponse
+    {
+        $mailService->sendMail($mail, []);
+        return $this->json(['type' => 'success', 'msg' => 'oui oki']);
     }
 }

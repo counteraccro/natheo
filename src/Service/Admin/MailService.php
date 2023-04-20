@@ -13,6 +13,9 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -25,6 +28,11 @@ class MailService extends AppAdminService
     private GridService $gridService;
 
     /**
+     * @var MailerInterface
+     */
+    private MailerInterface $mailer;
+
+    /**
      * @param EntityManagerInterface $entityManager
      * @param ContainerBagInterface $containerBag
      * @param TranslatorInterface $translator
@@ -35,9 +43,11 @@ class MailService extends AppAdminService
      */
     public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
                                 TranslatorInterface    $translator, UrlGeneratorInterface $router,
-                                Security               $security, RequestStack $requestStack, GridService $gridService)
+                                Security               $security, RequestStack $requestStack, GridService $gridService,
+                                MailerInterface        $mailer)
     {
         $this->gridService = $gridService;
+        $this->mailer = $mailer;
 
         parent::__construct($entityManager, $containerBag, $translator, $router, $security, $requestStack);
     }
@@ -120,8 +130,10 @@ class MailService extends AppAdminService
             $actions = $this->generateTabAction($mail);
             $data[] = [
                 $this->translator->trans('mail.grid.id', domain: 'mail') => $mail->getId(),
-                $this->translator->trans('mail.grid.title', domain: 'mail') => $this->translator->trans($mail->getTitle()),
-                $this->translator->trans('mail.grid.description', domain: 'mail') => $this->translator->trans($mail->getDescription()),
+                $this->translator->trans('mail.grid.title', domain: 'mail') =>
+                    $this->translator->trans($mail->getTitle()),
+                $this->translator->trans('mail.grid.description', domain: 'mail') =>
+                    $this->translator->trans($mail->getDescription()),
                 $this->translator->trans('mail.grid.created_at', domain: 'mail') => $mail->getCreatedAt()->
                 format('d/m/y H:i'),
                 $this->translator->trans('mail.grid.update_at', domain: 'mail') => $mail->getUpdateAt()->
@@ -152,7 +164,7 @@ class MailService extends AppAdminService
         // Bouton test email
         $actions[] = [
             'label' => '<i class="bi bi-send-check"></i>',
-            'url' => $this->router->generate('admin_mail_edit', ['id' => $mail->getId()]),
+            'url' => $this->router->generate('admin_mail_send_demo_mail', ['id' => $mail->getId()]),
             'ajax' => true,
             'confirm' => false,
         ];
@@ -164,6 +176,29 @@ class MailService extends AppAdminService
             'ajax' => false];
         return $actions;
 
+    }
+
+    /**
+     * Permet d'envoyer un email avec le contenu présent dans Mail
+     * @param Mail $mail
+     * @param array $params
+     * @return void
+     * @throws TransportExceptionInterface
+     */
+    public function sendMail(Mail $mail, array $params): void
+    {
+        $email = (new Email())
+            ->from('aymeric.gourdon@hotmail.fr')
+            ->to('counteraccro@gmail.com')
+            //->cc('cc@example.com')
+            //->bcc('bcc@example.com')
+            //->replyTo('fabien@example.com')
+            //->priority(Email::PRIORITY_HIGH)
+            ->subject('Email oki')
+            ->text('Oui ça marche')
+            ->html('<p>Meme avec HTML</p>');
+
+        $this->mailer->send($email);
     }
 
 
