@@ -1,6 +1,11 @@
 <?php
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Class utilitaire pour convertir du Markdown en HTML
+ */
 
-namespace App\Service;
+namespace App\Utils;
 
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Exception\CommonMarkException;
@@ -8,9 +13,8 @@ use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\Strikethrough\StrikethroughExtension;
 use League\CommonMark\Extension\Table\TableExtension;
 use League\CommonMark\MarkdownConverter;
-use League\CommonMark\Util\HtmlElement;
 
-class MarkdownService extends AppService
+class Markdown
 {
     /**
      * Permet de convertir du Markdown en HTML

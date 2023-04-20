@@ -8,7 +8,7 @@
 namespace App\Service\Admin;
 
 use App\Entity\Admin\Mail;
-use App\Service\MarkdownService;
+use App\Utils\Markdown;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use JetBrains\PhpStorm\NoReturn;
@@ -41,11 +41,6 @@ class MailService extends AppAdminService
     private OptionSystemService $optionSystemService;
 
     /**
-     * @var MarkdownService
-     */
-    private MarkdownService $markdownService;
-
-    /**
      * @param EntityManagerInterface $entityManager
      * @param ContainerBagInterface $containerBag
      * @param TranslatorInterface $translator
@@ -59,13 +54,11 @@ class MailService extends AppAdminService
     public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
                                 TranslatorInterface    $translator, UrlGeneratorInterface $router,
                                 Security               $security, RequestStack $requestStack, GridService $gridService,
-                                MailerInterface        $mailer, OptionSystemService $optionSystemService,
-                                MarkdownService        $markdownService)
+                                MailerInterface        $mailer, OptionSystemService $optionSystemService)
     {
         $this->gridService = $gridService;
         $this->mailer = $mailer;
         $this->optionSystemService = $optionSystemService;
-        $this->markdownService = $markdownService;
 
         parent::__construct($entityManager, $containerBag, $translator, $router, $security, $requestStack);
     }
@@ -208,7 +201,9 @@ class MailService extends AppAdminService
     {
         $from = $this->optionSystemService->getValueByKey(OptionSystemService::OS_MAIL_FROM);
         $mailTranslate = $mail->geMailTranslationByLocale($this->requestStack->getCurrentRequest()->getLocale());
-        $content = $this->markdownService->convertMarkdownToHtml($mailTranslate->getContent());
+
+        $markdown = new Markdown();
+        $content = $markdown->convertMarkdownToHtml($mailTranslate->getContent());
 
         $email = (new TemplatedEmail())
             ->from($from)
