@@ -38,3 +38,6 @@ option_system:
   OS_LOG_DOCTRINE:
     key: 'OS_LOG_DOCTRINE'
     value: 1
+  OS_MAIL_FROM:
+    key: 'OS_MAIL_FROM'
+    value: 'aymeric.gourdon@hotmail.com'

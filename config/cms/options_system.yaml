@@ -87,3 +87,16 @@ options_system:
         label: 'options_system.log_doctrine'
         help: 'options_system.log_doctrine_help'
         default: 1
+  options_system.mails:
+    title: 'options_system.mails.title'
+    description: 'options_system.mails.description'
+    options:
+      OS_MAIL_FROM:
+        default: 'aymeric.gourdon@hotmail.fr'
+        label: 'options_system.mail_from'
+        type: 'text'
+        required: true
+        msg_error: 'options_system.mail_from_msg_error'
+        help: 'options_system.mail_from_help'
+        placeholder: 'options_system.mail_from_placeholder'
+        success: 'options_system.mail_from_msg_success'

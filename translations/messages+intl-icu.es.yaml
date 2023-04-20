@@ -94,5 +94,13 @@ mail.user.firstname: __Prénom
 mail.user.lastname: __Nom
 mail.global.url: '__Url du site'
 mail.global.url_change_psw: '__Url changement mot de passe'
+options_system.mails: __Emails
+options_system.mails.title: '__Gestion des emails'
+options_system.mails.description: "__Paramétrage des emails envoyés depuis l'application"
+options_system.mail_from : "__Email envoyé en tant que"
+options_system.mail_from_msg_error: "__Ce champs ne peux pas être vide"
+options_system.mail_from_help: "__Adresse email qui apparaitra en tant qu'expéditeur dans les emails envoyés"
+options_system.mail_from_placeholder: "__Adresse email"
+options_system.mail_from_msg_success : "__Adresse email enregistrée avec succès"
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: __pagedemo.page_title_h1
