@@ -13,6 +13,7 @@ use App\Service\Admin\MailService;
 use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\OptionUserService;
 use App\Service\Admin\TranslateService;
+use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -127,7 +128,8 @@ class MailController extends AppAdminController
         return $this->json(['translateEditor' => $markdownEditorService->getTranslate(),
             'languages' => $languages, 'locale' => $locale,
             'translate' => $translate, 'mail' => $tabEmail,
-            'save_url' => $this->generateUrl('admin_mail_save', ['id' => $mail->getId()])]);
+            'save_url' => $this->generateUrl('admin_mail_save', ['id' => $mail->getId()]),
+            'demo_url' => $this->generateUrl('admin_mail_send_demo_mail', ['id' => $mail->getId()])]);
     }
 
     /**
@@ -160,8 +162,9 @@ class MailController extends AppAdminController
      * @param MailService $mailService
      * @return JsonResponse
      * @throws TransportExceptionInterface
+     * @throws CommonMarkException
      */
-    #[Route('/ajax/send-demo-mail/{id}', name: 'send_demo_mail', methods: ['POST', 'GET'])]
+    #[Route('/ajax/send-demo-mail/{id}', name: 'send_demo_mail', methods: ['POST'])]
     public function sendDemoMail(Mail $mail, MailService $mailService): JsonResponse
     {
         $mailService->sendMail($mail, []);

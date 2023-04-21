@@ -197,7 +197,7 @@ class MailService extends AppAdminService
      * @throws TransportExceptionInterface
      * @throws CommonMarkException
      */
-    #[NoReturn] public function sendMail(Mail $mail, array $params): void
+    public function sendMail(Mail $mail, array $params): void
     {
         $from = $this->optionSystemService->getValueByKey(OptionSystemService::OS_MAIL_FROM);
         $mailTranslate = $mail->geMailTranslationByLocale($this->requestStack->getCurrentRequest()->getLocale());

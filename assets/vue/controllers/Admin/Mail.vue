@@ -18,6 +18,7 @@ export default {
             mail: [],
             loading: false,
             url_save: '',
+            url_demo: '',
             msgSuccess: '',
             isValideTitle: '',
             content: '',
@@ -47,6 +48,7 @@ export default {
                 this.currentLanguage = response.data.locale;
                 this.mail = response.data.mail;
                 this.url_save = response.data.save_url;
+                this.url_demo = response.data.demo_url;
             }).catch((error) => {
                 console.log(error);
             }).finally(() => {
@@ -116,12 +118,27 @@ export default {
          * Permet de sauvegarder le content
          */
         save() {
-
             this.loading = true;
             axios.post(this.url_save, {
                 'locale': this.currentLanguage,
                 'content': this.content,
                 'title': this.title
+            }).then((response) => {
+                this.msgSuccess = response.data.msg;
+            }).catch((error) => {
+                console.log(error);
+            }).finally(() => {
+                setTimeout(this.removeMsg, 3000);
+                this.loading = false
+            });
+        },
+
+        /**
+         * Permet d'envoyer un email de démo
+         */
+        sendDemoMail() {
+            this.loading = true;
+            axios.post(this.url_demo, {
             }).then((response) => {
                 this.msgSuccess = response.data.msg;
             }).catch((error) => {
@@ -159,7 +176,7 @@ export default {
 
                     <div class="btn btn-sm btn-success float-end" :class="!this.canSave ? 'disabled' : ''" @click="this.save">
                         <i class="bi bi-save-fill"></i></div>
-                    <div class="btn btn-sm btn-secondary float-end"><i class="bi bi-send-check-fill"></i></div>
+                    <div class="btn btn-sm btn-secondary float-end" @click="this.sendDemoMail"><i class="bi bi-send-check-fill"></i></div>
                 </div>
                 <div class="card-body">
 
