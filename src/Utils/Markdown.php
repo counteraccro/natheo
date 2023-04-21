@@ -9,6 +9,7 @@ namespace App\Utils;
 
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Exception\CommonMarkException;
+use League\CommonMark\Extension\Attributes\AttributesExtension;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\Strikethrough\StrikethroughExtension;
 use League\CommonMark\Extension\Table\TableExtension;
@@ -22,10 +23,12 @@ class Markdown
      */
     public function convertMarkdownToHtml(string $text): string
     {
+
         $environment = new Environment();
         $environment->addExtension(new CommonMarkCoreExtension());
         $environment->addExtension(new TableExtension());
         $environment->addExtension(new StrikethroughExtension());
+        $environment->addExtension(new AttributesExtension());
         $converter = new MarkdownConverter($environment);
         return $converter->convert($text)->getContent();
     }

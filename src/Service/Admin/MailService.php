@@ -207,7 +207,7 @@ class MailService extends AppAdminService
 
         $email = (new TemplatedEmail())
             ->from($from)
-            ->to('counteraccro@gmail.com')
+            ->to($from)
             //->cc('cc@example.com')
             //->bcc('bcc@example.com')
             //->replyTo('fabien@example.com')
