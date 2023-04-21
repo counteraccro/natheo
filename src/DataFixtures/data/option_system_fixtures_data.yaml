@@ -40,4 +40,4 @@ option_system:
     value: 1
   OS_MAIL_FROM:
     key: 'OS_MAIL_FROM'
-    value: 'aymeric.gourdon@hotmail.com'
+    value: 'aymeric.gourdon@hotmail.fr'
