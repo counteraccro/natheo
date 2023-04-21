@@ -1,3 +1,4 @@
+{% apply inky_to_html|inline_css(encore_entry_css_source('email')) %}
 <table role="presentation" style="width:100%;border-collapse:collapse;border:0;border-spacing:0;background:#ffffff;">
     <tr>
         <td align="center" style="padding:0;">
@@ -47,3 +48,4 @@
         </td>
     </tr>
 </table>
+{% endapply %}
