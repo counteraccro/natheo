@@ -11,7 +11,6 @@ use App\Entity\Admin\Mail;
 use App\Utils\Markdown;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use JetBrains\PhpStorm\NoReturn;
 use League\CommonMark\Exception\CommonMarkException;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -24,6 +23,42 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MailService extends AppAdminService
 {
+
+    /**
+     * Clé FROM
+     * @const string
+     */
+    public const FROM = 'from';
+
+    /**
+     * Clé TO
+     * @const string
+     */
+    public const TO = 'to';
+
+    /**
+     * Clé CC
+     * @const string
+     */
+    public const CC = 'cc';
+
+    /**
+     * Clé BCC
+     * @const string
+     */
+    public const BCC = 'bcc';
+
+    /**
+     * Clé REPLAY_TO
+     * @const string
+     */
+    public const REPLY_TO = 'reply_to';
+
+    /**
+     * Clé TEMPLATE
+     * @const string
+     */
+    public const TEMPLATE = 'template';
 
     /**
      * @var GridService
@@ -54,7 +89,8 @@ class MailService extends AppAdminService
     public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
                                 TranslatorInterface    $translator, UrlGeneratorInterface $router,
                                 Security               $security, RequestStack $requestStack, GridService $gridService,
-                                MailerInterface        $mailer, OptionSystemService $optionSystemService)
+                                MailerInterface        $mailer, OptionSystemService $optionSystemService
+    )
     {
         $this->gridService = $gridService;
         $this->mailer = $mailer;
@@ -192,14 +228,24 @@ class MailService extends AppAdminService
     /**
      * Permet d'envoyer un email avec le contenu présent dans Mail
      * @param Mail $mail
-     * @param array $params
+     * @param array $params Tableau d'options contenant <br />
+     *  from => string || array  - optionnel - Si non défini alors la valeur de OS_MAIL_FROM sera utilisée<br/>
+     *  to => string || array <br/>
+     *  cc =>  string || array  - optionnel<br/>
+     *  bcc => string || array - optionnel <br/>
+     *  replayTo => string || array - si son défini alors la valeur de OS_MAIL_REPLAY_TO sera utilisée<br/>
+     *  template => string <br />
      * @return void
      * @throws TransportExceptionInterface
      * @throws CommonMarkException
      */
     public function sendMail(Mail $mail, array $params): void
     {
-        $from = $this->optionSystemService->getValueByKey(OptionSystemService::OS_MAIL_FROM);
+
+        $from = $this->getParamsValue($params, self::FROM);
+        $replyTo = $this->getParamsValue($params, self::REPLY_TO);
+        $template = $this->getParamsValue($params, self::TEMPLATE);
+
         $mailTranslate = $mail->geMailTranslationByLocale($this->requestStack->getCurrentRequest()->getLocale());
 
         $markdown = new Markdown();
@@ -208,18 +254,42 @@ class MailService extends AppAdminService
         $email = (new TemplatedEmail())
             ->from($from)
             ->to($from)
-            //->cc('cc@example.com')
-            //->bcc('bcc@example.com')
-            //->replyTo('fabien@example.com')
-            //->priority(Email::PRIORITY_HIGH)
+            ->replyTo($replyTo)
             ->subject($mailTranslate->getTitle())
-            ->htmlTemplate('emails/user/new_password.html.twig')
+            ->htmlTemplate($template)
             ->context([
                 'content' => $content,
             ]);
 
+        $cc = $this->getParamsValue($params, self::CC);
+        if ($cc !== null) {
+            $email->cc($cc);
+        }
+
+        $bcc = $this->getParamsValue($params, self::BCC);
+        if ($bcc !== null) {
+            $email->cc($bcc);
+        }
+
         $this->mailer->send($email);
     }
 
+    /**
+     * Permet de renvoyer la valeur d'une option en fonction de sa clé
+     * @param $params
+     * @param $key
+     * @return string|null
+     */
+    private function getParamsValue($params, $key): ?string
+    {
+        if (isset($params[$key]) && ($params[$key] !== "" || $params !== null)) {
+            return $params[$key];
+        }
 
+        return match ($key) {
+            self::FROM => $this->optionSystemService->getValueByKey(OptionSystemService::OS_MAIL_FROM),
+            self::REPLY_TO => $this->optionSystemService->getValueByKey(OptionSystemService::OS_MAIL_REPLY_TO),
+            default => null,
+        };
+    }
 }

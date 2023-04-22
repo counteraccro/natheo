@@ -96,6 +96,11 @@ class OptionSystemService extends AppAdminService
     const OS_MAIL_FROM = 'OS_MAIL_FROM';
 
     /**
+     * Clé option pour récupérer l'email de réponse
+     */
+    const OS_MAIL_REPLY_TO = 'OS_MAIL_REPLY_TO';
+
+    /**
      * Retourne l'ensemble des options systèmes
      * @return array|object[]
      */

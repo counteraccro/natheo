@@ -8,11 +8,13 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Admin\Mail;
+use App\Entity\Admin\User;
 use App\Service\Admin\Breadcrumb;
 use App\Service\Admin\MailService;
 use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\OptionUserService;
 use App\Service\Admin\TranslateService;
+use App\Utils\Mail\MailTemplate;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -167,7 +169,15 @@ class MailController extends AppAdminController
     #[Route('/ajax/send-demo-mail/{id}', name: 'send_demo_mail', methods: ['POST'])]
     public function sendDemoMail(Mail $mail, MailService $mailService): JsonResponse
     {
-        $mailService->sendMail($mail, []);
+        /* @var User $user */
+        $user = $this->getUser();
+
+        $params = [
+            MailService::TO => $user->getEmail(),
+            MailService::TEMPLATE => MailTemplate::EMAIL_USER_NEW_PASSWORD
+        ];
+
+        $mailService->sendMail($mail, $params);
         return $this->json(['type' => 'success', 'msg' => 'oui oki']);
     }
 }

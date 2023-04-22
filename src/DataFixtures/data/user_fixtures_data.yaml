@@ -31,3 +31,11 @@ user:
     lastname: the-demo
     roles: ROLE_SUPER_ADMIN
     disabled: 0
+  -
+    email: aymeric.gourdon@hotmail.fr
+    password: aymeric.gourdon@hotmail.fr
+    login: AG-DEMO
+    firstname: Aymeric
+    lastname: Gourdon
+    roles: ROLE_SUPER_ADMIN
+    disabled: 0
