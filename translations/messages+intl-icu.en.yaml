@@ -102,5 +102,10 @@ options_system.mail_from_msg_error: "__Ce champs ne peux pas être vide"
 options_system.mail_from_help: "__Adresse email qui apparaitra en tant qu'expéditeur dans les emails envoyés"
 options_system.mail_from_placeholder: "__Adresse email"
 options_system.mail_from_msg_success : "__Adresse email enregistrée avec succès"
+options_system.mail_reply_to : "__Adresse email de réponse"
+options_system.mail_reply_to_msg_error: "__Ce champs ne peux pas être vide"
+options_system.mail_reply_to_help: "__Adresse email qui apparaitra lorsque l'on souhaite répondre à un email du CMS"
+options_system.mail_reply_to_placeholder: "__Adresse email"
+options_system.mail_reply_to_msg_success : "__Adresse email enregistrée avec succès"
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: __pagedemo.page_title_h1

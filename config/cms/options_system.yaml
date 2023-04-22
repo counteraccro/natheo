@@ -100,3 +100,12 @@ options_system:
         help: 'options_system.mail_from_help'
         placeholder: 'options_system.mail_from_placeholder'
         success: 'options_system.mail_from_msg_success'
+      OS_MAIL_REPLY_TO:
+        default: 'support@natheo.fr'
+        label: 'options_system.mail_reply_to'
+        type: 'text'
+        required: true
+        msg_error: 'options_system.mail_reply_to_msg_error'
+        help: 'options_system.mail_reply_to_help'
+        placeholder: 'options_system.mail_reply_to_placeholder'
+        success: 'options_system.mail_reply_to_msg_success'
