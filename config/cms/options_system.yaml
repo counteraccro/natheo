@@ -12,6 +12,15 @@ options_system:
         help: 'options_system.site_name_help'
         placeholder: 'options_system.site_name_placeholder'
         success: 'options_system.site_name_msg_success'
+      OS_ADRESSE_SITE:
+        default: 'http://dev.natheo'
+        label: 'options_system.adresse_site'
+        type: 'text'
+        required: true
+        msg_error: 'options_system.adresse_site_msg_error'
+        help: 'options_system.adresse_site_help'
+        placeholder: 'options_system.adresse_site_placeholder'
+        success: 'options_system.adresse_site_msg_success'
       OS_LOGO_SITE:
         type: 'select'
         label: 'options_system.logo_site'

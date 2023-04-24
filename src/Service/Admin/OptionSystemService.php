@@ -72,33 +72,45 @@ class OptionSystemService extends AppAdminService
 
     /**
      * Clé option authorisation suppression de données
+     * @var string
      */
     const OS_ALLOW_DELETE_DATA = 'OS_ALLOW_DELETE_DATA';
 
     /**
      * Clé option langue par défaut pour le site
+     * @var string
      */
     const OS_DEFAULT_LANGUAGE = 'OS_DEFAULT_LANGUAGE';
 
     /**
      * Clé option nb élements par défaut pour les users
+     * @var string
      */
     const OS_NB_ELEMENT = 'OS_NB_ELEMENT';
 
     /**
      * Clé option qui permet de sauvegarder ou non les logs
+     * @var string
      */
     const OS_LOG_DOCTRINE = 'OS_LOG_DOCTRINE';
 
     /**
      * Clé option pour récupérer l'expéditeur des emails
+     * @var string
      */
     const OS_MAIL_FROM = 'OS_MAIL_FROM';
 
     /**
      * Clé option pour récupérer l'email de réponse
+     * @var string
      */
     const OS_MAIL_REPLY_TO = 'OS_MAIL_REPLY_TO';
+
+    /**
+     * Clé option url racine du site
+     * @var string
+     */
+    const OS_ADRESSE_SITE = 'OS_ADRESSE_SITE';
 
     /**
      * Retourne l'ensemble des options systèmes
