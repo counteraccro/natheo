@@ -3,12 +3,12 @@ mail:
     key: MAIL_CHANGE_PASSWORD
     title: mail.change.password.title
     description: mail.change.password.description
-    keyWords : 'user.email|user.login|user.firstname|user.lastname|global.url|global.url_change_psw'
+    keyWords : MAIL_CHANGE_PASSWORD
     translate :
       -
         locale: 'fr'
         title: 'Changement de mot de passe'
-        content: "Bonjour [[user.login]],   \nVous avez fait une demande de changement de mot de passe.   \nCliquez sur [[global.url_change_psw]] pour changer votre mot de passe"
+        content: "Bonjour [[user.login]],   \nVous avez fait une demande de changement de mot de passe.   \nCliquez sur [ce lien]([[global.url_change_psw]]) pour changer votre mot de passe"
       -
         locale: 'en'
         title: '[EN] Changement de mot de passe'

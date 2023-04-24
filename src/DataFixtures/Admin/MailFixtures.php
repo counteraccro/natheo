@@ -5,6 +5,7 @@ namespace App\DataFixtures\Admin;
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\Mail;
 use App\Entity\Admin\MailTranslation;
+use App\Utils\Mail\KeyWord;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -29,13 +30,15 @@ class MailFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                         $mailTranslate->setMail($mail);
                         $manager->persist($mailTranslate);
                     }
+                } elseif ($key === 'keyWords') {
+                    $keyWord = new KeyWord($value);
+                    $this->setData($key, $keyWord->getStringTabKeyWord(), $mail);
                 } else {
                     $this->setData($key, $value, $mail);
                 }
             }
             $manager->persist($mail);
         }
-
         $manager->flush();
     }
 
