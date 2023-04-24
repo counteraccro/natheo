@@ -12,8 +12,10 @@ use App\Entity\Admin\User;
 use App\Service\Admin\Breadcrumb;
 use App\Service\Admin\MailService;
 use App\Service\Admin\MarkdownEditorService;
+use App\Service\Admin\OptionSystemService;
 use App\Service\Admin\OptionUserService;
 use App\Service\Admin\TranslateService;
+use App\Utils\Mail\KeyWord;
 use App\Utils\Mail\MailTemplate;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
@@ -23,6 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -167,17 +170,29 @@ class MailController extends AppAdminController
      * @throws CommonMarkException
      */
     #[Route('/ajax/send-demo-mail/{id}', name: 'send_demo_mail', methods: ['POST'])]
-    public function sendDemoMail(Mail $mail, MailService $mailService): JsonResponse
+    public function sendDemoMail(Mail $mail, MailService $mailService, OptionSystemService $optionSystemService,
+                                 UrlGeneratorInterface $urlGenerator): JsonResponse
     {
         /* @var User $user */
         $user = $this->getUser();
+        $keyWord = new KeyWord($mail->getKey());
+        $tabKeyWord = $keyWord->getTabKeyWordMailChangePassword($user, $urlGenerator, $optionSystemService);
+
+        $mailTranslate = $mail->geMailTranslationByLocale($optionSystemService
+            ->getValueByKey(OptionSystemService::OS_DEFAULT_LANGUAGE));
+        $content = str_replace($tabKeyWord['search'], $tabKeyWord['replace'], $mailTranslate->getContent());
 
         $params = [
+            MailService::TITLE => $mailTranslate->getTitle(),
+            MailService::CONTENT => $content,
             MailService::TO => $user->getEmail(),
             MailService::TEMPLATE => MailTemplate::EMAIL_USER_NEW_PASSWORD
         ];
 
-        $mailService->sendMail($mail, $params);
-        return $this->json(['type' => 'success', 'msg' => 'oui oki']);
+        $mailService->sendMail($params);
+        return $this->json([
+            'type' => 'success',
+            'msg' => 'Mail démo "' . $mail->getTitle() . '" envoyé avec succès à l\'adresse email de votre compte'
+        ]);
     }
 }

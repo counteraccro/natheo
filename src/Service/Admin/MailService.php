@@ -8,6 +8,7 @@
 namespace App\Service\Admin;
 
 use App\Entity\Admin\Mail;
+use App\Utils\Mail\KeyWord;
 use App\Utils\Markdown;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -59,6 +60,23 @@ class MailService extends AppAdminService
      * @const string
      */
     public const TEMPLATE = 'template';
+
+    /**
+     * Clé CONTENT
+     * @const string
+     */
+    public const CONTENT = 'content';
+
+    /**
+     * Clé TITLE
+     * @const string
+     */
+    public const TITLE = 'title';
+
+    /**
+     * Cle pour le mail de changement de mot de passe
+     */
+    public const KEY_MAIL_CHANGE_PASSWORD = 'MAIL_CHANGE_PASSWORD';
 
     /**
      * @var GridService
@@ -227,8 +245,9 @@ class MailService extends AppAdminService
 
     /**
      * Permet d'envoyer un email avec le contenu présent dans Mail
-     * @param Mail $mail
      * @param array $params Tableau d'options contenant <br />
+     *  title => string - titre de l'email <br />
+     *  content => string - Contenu de l'email <br />
      *  from => string || array  - optionnel - Si non défini alors la valeur de OS_MAIL_FROM sera utilisée<br/>
      *  to => string || array <br/>
      *  cc =>  string || array  - optionnel<br/>
@@ -239,23 +258,23 @@ class MailService extends AppAdminService
      * @throws TransportExceptionInterface
      * @throws CommonMarkException
      */
-    public function sendMail(Mail $mail, array $params): void
+    public function sendMail(array $params): void
     {
 
         $from = $this->getParamsValue($params, self::FROM);
         $replyTo = $this->getParamsValue($params, self::REPLY_TO);
         $template = $this->getParamsValue($params, self::TEMPLATE);
-
-        $mailTranslate = $mail->geMailTranslationByLocale($this->requestStack->getCurrentRequest()->getLocale());
+        $content = $this->getParamsValue($params, self::CONTENT);
+        $title = $this->getParamsValue($params, self::TITLE);
 
         $markdown = new Markdown();
-        $content = $markdown->convertMarkdownToHtml($mailTranslate->getContent());
+        $content = $markdown->convertMarkdownToHtml($content);
 
         $email = (new TemplatedEmail())
             ->from($from)
             ->to($from)
             ->replyTo($replyTo)
-            ->subject($mailTranslate->getTitle())
+            ->subject($title)
             ->htmlTemplate($template)
             ->context([
                 'content' => $content,
