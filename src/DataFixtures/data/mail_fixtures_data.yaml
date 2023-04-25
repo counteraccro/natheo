@@ -28,10 +28,25 @@ mail:
     translate:
       - locale: 'fr'
         title: 'Votre compte à été désactivé'
-        content: "Bonjour [[user.login]],   \n\nVotre compte à été désactivé par [[admin.login]].    \n\n *Pour toute contestation, veuillez contacter [[admin.login]]*"
+        content: "Bonjour [[user.login]],   \n\nVotre compte à été désactivé par [[admin.login]].    \n\n*Pour toute contestation, veuillez contacter [[admin.login]]*"
       - locale: 'en'
         title: '[EN] Votre compte à été désactivé'
-        content: "[EN] Bonjour [[user.login]],   \n\nVotre compte à été désactivé par [[admin.login]].    \n\n *Pour toute contestation, veuillez contacter [[admin.login]]*"
+        content: "[EN] Bonjour [[user.login]],   \n\nVotre compte à été désactivé par [[admin.login]].    \n\n*Pour toute contestation, veuillez contacter [[admin.login]]*"
       - locale: 'es'
         title: '[ES] Votre compte à été désactivé'
-        content: "[ES] Bonjour [[user.login]],   \n\nVotre compte à été désactivé par [[admin.login]].    \n\n *Pour toute contestation, veuillez contacter [[admin.login]]*"
+        content: "[ES] Bonjour [[user.login]],   \n\nVotre compte à été désactivé par [[admin.login]].    \n\n*Pour toute contestation, veuillez contacter [[admin.login]]*"
+  -
+    key: MAIL_ACCOUNT_ADM_ENABLE
+    title: mail.account.adm.enable.title
+    description: mail.account.adm.enable.description
+    keyWords: MAIL_ACCOUNT_ADM_DISABLE
+    translate:
+      - locale: 'fr'
+        title: 'Votre compte à été réactivé'
+        content: "Bonjour [[user.login]],   \n\nVotre compte à été réactivé par [[admin.login]].    \n\n*Pour toute contestation, veuillez contacter [[admin.login]]*"
+      - locale: 'en'
+        title: '[EN] Votre compte à été réactivé'
+        content: "[EN] Bonjour [[user.login]],   \n\nVotre compte à été réactivé par [[admin.login]].    \n\n*Pour toute contestation, veuillez contacter [[admin.login]]*"
+      - locale: 'es'
+        title: '[ES] Votre compte à été réactivé'
+        content: "[ES] Bonjour [[user.login]],   \n\nVotre compte à été réactivé par [[admin.login]].    \n\n*Pour toute contestation, veuillez contacter [[admin.login]]*"

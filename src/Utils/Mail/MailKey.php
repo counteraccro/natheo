@@ -20,4 +20,10 @@ class MailKey
      * @const
      */
     public const KEY_MAIL_ACCOUNT_ADM_DISABLE = 'MAIL_ACCOUNT_ADM_DISABLE';
+
+    /**
+     * Clé pour le mail de réactivation d'un compte user
+     * @const
+     */
+    public const MAIL_ACCOUNT_ADM_ENABLE = 'MAIL_ACCOUNT_ADM_ENABLE';
 }

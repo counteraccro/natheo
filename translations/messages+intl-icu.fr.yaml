@@ -116,5 +116,7 @@ options_system.adresse_site_placeholder: "URL"
 options_system.adresse_site_msg_success : "URL enregistrée avec succès"
 mail.account.adm.disable.title: "Email information désactivation compte"
 mail.account.adm.disable.description : "Email envoyé quand un compte user est désactivé (accès administratif)"
+mail.account.adm.enable.title: "Email information réactivation compte"
+mail.account.adm.enable.description : "Email envoyé quand un compte user est réactivé (accès administratif)"
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: 'Elements HML disponibles (trad)'
