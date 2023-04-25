@@ -74,11 +74,6 @@ class MailService extends AppAdminService
     public const TITLE = 'title';
 
     /**
-     * Cle pour le mail de changement de mot de passe
-     */
-    public const KEY_MAIL_CHANGE_PASSWORD = 'MAIL_CHANGE_PASSWORD';
-
-    /**
      * @var GridService
      */
     private GridService $gridService;
