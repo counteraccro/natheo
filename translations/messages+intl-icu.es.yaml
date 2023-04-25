@@ -95,6 +95,7 @@ mail.user.lastname: __Nom
 mail.global.url: '__Url du site'
 mail.global.url_change_psw: '__Url changement mot de passe'
 mail.global.site_name: "__Nom du site"
+mail.admin.login: "__login administrateur"
 options_system.mails: __Emails
 options_system.mails.title: '__Gestion des emails'
 options_system.mails.description: "__Paramétrage des emails envoyés depuis l'application"
@@ -113,5 +114,7 @@ options_system.adresse_site_msg_error: "__Ce champs ne peux pas être vide"
 options_system.adresse_site_help: "__URL racine, qui servira de référence pour la génération des liens externes"
 options_system.adresse_site_placeholder: "__URL"
 options_system.adresse_site_msg_success : "__URL enregistrée avec succès"
+mail.account.adm.disable.title: "__Email information désactivation compte"
+mail.account.adm.disable.description : "__Email envoyé quand un compte user est désactivé (accès administratif)"
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: __pagedemo.page_title_h1
