@@ -50,3 +50,18 @@ mail:
       - locale: 'es'
         title: '[ES] Votre compte à été réactivé'
         content: "[ES] Bonjour [[user.login]],   \n\nVotre compte à été réactivé par [[admin.login]].    \n\n*Pour toute contestation, veuillez contacter [[admin.login]]*"
+  -
+    key: MAIL_CREATE_ACCOUNT_ADM
+    title: mail.create.account.adm.title
+    description: mail.create.account.adm.description
+    keyWords: MAIL_CREATE_ACCOUNT_ADM
+    translate:
+      - locale: 'fr'
+        title: 'Bienvenue'
+        content: "Bonjour [[user.login]],   \n\n[[admin.login]] vous à créé un compte sur le site [[[global.site_name]]]([[global.url_change_psw]]).    \n\n*Pour toute contestation, veuillez contacter [[admin.login]]*"
+      - locale: 'en'
+        title: '[EN] Bienvenue'
+        content: "[EN] Bonjour [[user.login]],   \n\n[[admin.login]] vous à créé un compte sur le site [[[global.site_name]]]([[global.url_change_psw]]).    \n\n*Pour toute contestation, veuillez contacter [[admin.login]]*"
+      - locale: 'es'
+        title: '[ES] Bienvenue'
+        content: "[ES] Bonjour [[user.login]],   \n\n[[admin.login]] vous à créé un compte sur le site [[[global.site_name]]]([[global.url_change_psw]]).    \n\n*Pour toute contestation, veuillez contacter [[admin.login]]*"

@@ -118,5 +118,7 @@ mail.account.adm.disable.title: "Email information désactivation compte"
 mail.account.adm.disable.description : "Email envoyé quand un compte user est désactivé (accès administratif)"
 mail.account.adm.enable.title: "Email information réactivation compte"
 mail.account.adm.enable.description : "Email envoyé quand un compte user est réactivé (accès administratif)"
+mail.create.account.adm.title : "Email information création de compte"
+mail.create.account.adm.description : "Email envoyé quand un administrateur créé un compte pour accéder à l'administration"
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: 'Elements HML disponibles (trad)'

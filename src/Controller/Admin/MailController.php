@@ -189,11 +189,15 @@ class MailController extends AppAdminController
             $keyWord->getTabMailAccountAdmDisabled($user, $user, $optionSystemService),
             MailKey::MAIL_ACCOUNT_ADM_ENABLE =>
             $keyWord->getTabMailAccountAdmEnabled($user, $user, $optionSystemService),
+            MailKey::MAIL_CREATE_ACCOUNT_ADM =>
+            $keyWord->getTabMailCreateAccountAdm($user, $user, $optionSystemService),
             default => [
                 KeyWord::KEY_SEARCH => [],
                 KeyWord::KEY_REPLACE => []
             ],
         };
+
+        var_dump($tabKeyWord);
 
         $mailTranslate = $mail->geMailTranslationByLocale($optionSystemService
             ->getValueByKey(OptionSystemService::OS_DEFAULT_LANGUAGE));

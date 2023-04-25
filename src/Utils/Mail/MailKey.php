@@ -26,4 +26,10 @@ class MailKey
      * @const
      */
     public const MAIL_ACCOUNT_ADM_ENABLE = 'MAIL_ACCOUNT_ADM_ENABLE';
+
+    /**
+     * Clé pour le mail de création d'un compte user
+     * @const
+     */
+    public const MAIL_CREATE_ACCOUNT_ADM = 'MAIL_CREATE_ACCOUNT_ADM';
 }

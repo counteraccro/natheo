@@ -101,6 +101,9 @@ class KeyWord
         ],
         MailKey::MAIL_ACCOUNT_ADM_ENABLE => [
             self::ADMIN_LOGIN_ACTION => '',
+        ],
+        MailKey::MAIL_CREATE_ACCOUNT_ADM => [
+            self::ADMIN_LOGIN_ACTION => '',
         ]
     ];
 
@@ -216,6 +219,20 @@ class KeyWord
      * @return array
      */
     public function getTabMailAccountAdmEnabled(User                  $user, User $admin,
+                                                OptionSystemService   $optionSystemService) : array
+    {
+        return $this->getTabMailAccountAdmDisabled($user, $admin, $optionSystemService);
+    }
+
+    /**
+     * Renvoi le tableau de keyWord avec les valeurs correspondantes pour l'email
+     * create new account adm
+     * @param User $user
+     * @param User $admin
+     * @param OptionSystemService $optionSystemService
+     * @return array
+     */
+    public function getTabMailCreateAccountAdm(User                  $user, User $admin,
                                                 OptionSystemService   $optionSystemService) : array
     {
         return $this->getTabMailAccountAdmDisabled($user, $admin, $optionSystemService);
