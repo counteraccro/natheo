@@ -1,0 +1,7 @@
+{% extends 'emails/email_base.html.twig' %}
+
+{% block body %}
+    <div class="markdown-editor-output">
+        {{ content | raw }}
+    </div>
+{% endblock %}
