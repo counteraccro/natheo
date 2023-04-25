@@ -196,9 +196,7 @@ class MailController extends AppAdminController
                 KeyWord::KEY_REPLACE => []
             ],
         };
-
-        var_dump($tabKeyWord);
-
+        
         $mailTranslate = $mail->geMailTranslationByLocale($optionSystemService
             ->getValueByKey(OptionSystemService::OS_DEFAULT_LANGUAGE));
         $content = str_replace($tabKeyWord[KeyWord::KEY_SEARCH], $tabKeyWord[KeyWord::KEY_REPLACE],
