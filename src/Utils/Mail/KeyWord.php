@@ -69,6 +69,18 @@ class KeyWord
     private const KEY_GLOBAL = 'global';
 
     /**
+     * Clé pour les mots clés globaux
+     * @var string
+     */
+    public const KEY_SEARCH = 'search';
+
+    /**
+     * Clé pour les mots clés globaux
+     * @var string
+     */
+    public const KEY_REPLACE = 'replace';
+
+    /**
      * Tableau contenant l'ensemble des keyWords de tous les emails
      * @var array|array[]
      */
@@ -85,6 +97,9 @@ class KeyWord
             self::GLOBAL_URL_CHANGE_PASSWORD => '',
         ],
         MailKey::KEY_MAIL_ACCOUNT_ADM_DISABLE => [
+            self::ADMIN_LOGIN_ACTION => '',
+        ],
+        MailKey::MAIL_ACCOUNT_ADM_ENABLE => [
             self::ADMIN_LOGIN_ACTION => '',
         ]
     ];
@@ -143,8 +158,8 @@ class KeyWord
     private function formatReturnValue(array $return): array
     {
         return [
-            'search' => array_keys($return),
-            'replace' => array_values($return)
+            self::KEY_SEARCH => array_keys($return),
+            self::KEY_REPLACE => array_values($return)
         ];
     }
 
@@ -176,12 +191,10 @@ class KeyWord
      * disabled account admin
      * @param User $user
      * @param User $admin
-     * @param UrlGeneratorInterface $router
      * @param OptionSystemService $optionSystemService
      * @return array
      */
     public function getTabMailAccountAdmDisabled(User                  $user, User $admin,
-                                                 UrlGeneratorInterface $router,
                                                  OptionSystemService   $optionSystemService
     ): array
     {
@@ -192,5 +205,19 @@ class KeyWord
         $tab = array_merge($tab, $tab2);
 
         return $this->formatReturnValue($tab);
+    }
+
+    /**
+     * Renvoi le tableau de keyWord avec les valeurs correspondantes pour l'email
+     * enable account admin
+     * @param User $user
+     * @param User $admin
+     * @param OptionSystemService $optionSystemService
+     * @return array
+     */
+    public function getTabMailAccountAdmEnabled(User                  $user, User $admin,
+                                                OptionSystemService   $optionSystemService) : array
+    {
+        return $this->getTabMailAccountAdmDisabled($user, $admin, $optionSystemService);
     }
 }

@@ -16,6 +16,7 @@ use App\Service\Admin\OptionSystemService;
 use App\Service\Admin\OptionUserService;
 use App\Service\Admin\TranslateService;
 use App\Utils\Mail\KeyWord;
+use App\Utils\Mail\MailKey;
 use App\Utils\Mail\MailTemplate;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
@@ -165,28 +166,46 @@ class MailController extends AppAdminController
      * Permet de tester le contenu d'un email en l'envoyant
      * @param Mail $mail
      * @param MailService $mailService
+     * @param OptionSystemService $optionSystemService
+     * @param UrlGeneratorInterface $urlGenerator
      * @return JsonResponse
-     * @throws TransportExceptionInterface
      * @throws CommonMarkException
+     * @throws TransportExceptionInterface
      */
     #[Route('/ajax/send-demo-mail/{id}', name: 'send_demo_mail', methods: ['POST'])]
-    public function sendDemoMail(Mail $mail, MailService $mailService, OptionSystemService $optionSystemService,
-                                 UrlGeneratorInterface $urlGenerator): JsonResponse
+    public function sendDemoMail(Mail                  $mail, MailService $mailService,
+                                 OptionSystemService   $optionSystemService,
+                                 UrlGeneratorInterface $urlGenerator
+    ): JsonResponse
     {
         /* @var User $user */
         $user = $this->getUser();
         $keyWord = new KeyWord($mail->getKey());
-        $tabKeyWord = $keyWord->getTabKeyWordMailChangePassword($user, $urlGenerator, $optionSystemService);
+
+        $tabKeyWord = match ($mail->getKey()) {
+            MailKey::KEY_MAIL_CHANGE_PASSWORD =>
+            $keyWord->getMailChangePassword($user, $urlGenerator, $optionSystemService),
+            MailKey::KEY_MAIL_ACCOUNT_ADM_DISABLE =>
+            $keyWord->getTabMailAccountAdmDisabled($user, $user, $optionSystemService),
+            MailKey::MAIL_ACCOUNT_ADM_ENABLE =>
+            $keyWord->getTabMailAccountAdmEnabled($user, $user, $optionSystemService),
+            default => [
+                KeyWord::KEY_SEARCH => [],
+                KeyWord::KEY_REPLACE => []
+            ],
+        };
 
         $mailTranslate = $mail->geMailTranslationByLocale($optionSystemService
             ->getValueByKey(OptionSystemService::OS_DEFAULT_LANGUAGE));
-        $content = str_replace($tabKeyWord['search'], $tabKeyWord['replace'], $mailTranslate->getContent());
+        $content = str_replace($tabKeyWord[KeyWord::KEY_SEARCH], $tabKeyWord[KeyWord::KEY_REPLACE],
+            $mailTranslate->getContent()
+        );
 
         $params = [
             MailService::TITLE => $mailTranslate->getTitle(),
             MailService::CONTENT => $content,
             MailService::TO => $user->getEmail(),
-            MailService::TEMPLATE => MailTemplate::EMAIL_USER_NEW_PASSWORD
+            MailService::TEMPLATE => MailTemplate::EMAIL_SIMPLE_TEMPLATE
         ];
 
         $mailService->sendMail($params);

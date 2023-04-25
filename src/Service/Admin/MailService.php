@@ -74,6 +74,12 @@ class MailService extends AppAdminService
     public const TITLE = 'title';
 
     /**
+     * Clé BODY
+     * @const string
+     */
+    public const BODY = 'body';
+
+    /**
      * @var GridService
      */
     private GridService $gridService;
@@ -242,6 +248,8 @@ class MailService extends AppAdminService
      * Permet d'envoyer un email avec le contenu présent dans Mail
      * @param array $params Tableau d'options contenant <br />
      *  title => string - titre de l'email <br />
+     *  body => array - optionnel - Contenu à ajouter en plus de content directement dans le body du mail
+     * (doit être présent dans le template) <br />
      *  content => string - Contenu de l'email <br />
      *  from => string || array  - optionnel - Si non défini alors la valeur de OS_MAIL_FROM sera utilisée<br/>
      *  to => string || array <br/>
@@ -261,9 +269,12 @@ class MailService extends AppAdminService
         $template = $this->getParamsValue($params, self::TEMPLATE);
         $content = $this->getParamsValue($params, self::CONTENT);
         $title = $this->getParamsValue($params, self::TITLE);
+        $body = $this->getParamsValue($params, self::BODY);
 
         $markdown = new Markdown();
         $content = $markdown->convertMarkdownToHtml($content);
+
+        $body = array_merge((array)$body, ['content' => $content]);
 
         $email = (new TemplatedEmail())
             ->from($from)
@@ -271,9 +282,7 @@ class MailService extends AppAdminService
             ->replyTo($replyTo)
             ->subject($title)
             ->htmlTemplate($template)
-            ->context([
-                'content' => $content,
-            ]);
+            ->context($body);
 
         $cc = $this->getParamsValue($params, self::CC);
         if ($cc !== null) {
