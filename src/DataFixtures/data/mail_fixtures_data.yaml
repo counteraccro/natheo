@@ -20,3 +20,18 @@ mail:
         title: '[ES] Demande de changement de mot de passe'
         content: "[ES] Bonjour [[user.login]],   \n\nVous avez fait une demande de changement de mot de passe depuis le site [[[global.site_name]]]([[global.url_change_psw]]).   \nCliquez sur [ce lien]([[global.url_change_psw]]) pour changer votre mot de passe
         \n\n *Si vous n'êtes pas à l'origine de cette demande, vous pouvez l'ignorer*"
+  -
+    key: MAIL_ACCOUNT_ADM_DISABLE
+    title: mail.account.adm.disable.title
+    description: mail.account.adm.disable.description
+    keyWords: MAIL_ACCOUNT_ADM_DISABLE
+    translate:
+      - locale: 'fr'
+        title: 'Votre compte à été désactivé'
+        content: "Bonjour [[user.login]],   \n\nVotre compte à été désactivé par [[admin.login]].    \n\n *Pour toute contestation, veuillez contacter [[admin.login]]*"
+      - locale: 'en'
+        title: '[EN] Votre compte à été désactivé'
+        content: "[EN] Bonjour [[user.login]],   \n\nVotre compte à été désactivé par [[admin.login]].    \n\n *Pour toute contestation, veuillez contacter [[admin.login]]*"
+      - locale: 'es'
+        title: '[ES] Votre compte à été désactivé'
+        content: "[ES] Bonjour [[user.login]],   \n\nVotre compte à été désactivé par [[admin.login]].    \n\n *Pour toute contestation, veuillez contacter [[admin.login]]*"
