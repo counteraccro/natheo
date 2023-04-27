@@ -8,7 +8,7 @@ security:
         admin_provider:
             entity:
                 class: App\Entity\Admin\User
-                property: email
+                # property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/

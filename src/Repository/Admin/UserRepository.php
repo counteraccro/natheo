@@ -4,8 +4,10 @@ namespace App\Repository\Admin;
 
 use App\Entity\Admin\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -18,7 +20,7 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class UserRepository extends ServiceEntityRepository implements UserLoaderInterface, PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -41,6 +43,22 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * Requête SQL pour authentification
+     * @param string $identifier
+     * @return User|null
+     * @throws NonUniqueResultException
+     */
+    public function loadUserByIdentifier(string $identifier): ?User
+    {
+        $query = $this->createQueryBuilder('u');
+        $query->where('u.email = :email');
+        $query->setParameter('email', $identifier);
+        $query->andWhere('u.disabled = false');
+
+        return $query->getQuery()->getOneOrNullResult();
     }
 
     /**
@@ -72,7 +90,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         }
 
         $user->setPassword($newHashedPassword);
-
         $this->save($user, true);
     }
 }
