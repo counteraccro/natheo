@@ -28,3 +28,8 @@ user.login_user.btn_login: Connexion
 user.login.always_log: 'Vous êtes déjà connecté en tant que '
 user.login.logout: Déconnexion
 user.login.title: Authentification
+user.page_my_account.title: 'Mon compte'
+user.page_my_account.title_h1: 'Mon compte'
+user.page_my_account.description: 'Gérer votre compte, vos données personnelles et votre mot de passe'
+user.page_my_account.statistique: Mes statistiques
+user.page_my_account.password: Mot de passe

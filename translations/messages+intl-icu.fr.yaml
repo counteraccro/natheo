@@ -94,31 +94,31 @@ mail.user.firstname: Prénom
 mail.user.lastname: Nom
 mail.global.url: 'Url du site'
 mail.global.url_change_psw: 'Url changement mot de passe'
-mail.global.site_name: "Nom du site"
-mail.admin.login: "login administrateur"
+mail.global.site_name: 'Nom du site'
+mail.admin.login: 'login administrateur'
 options_system.mails: Emails
 options_system.mails.title: 'Gestion des emails'
 options_system.mails.description: "Paramétrage des emails envoyés depuis l'application"
-options_system.mail_from : "Email envoyé en tant que"
-options_system.mail_from_msg_error: "Ce champs ne peux pas être vide"
+options_system.mail_from: 'Email envoyé en tant que'
+options_system.mail_from_msg_error: 'Ce champs ne peux pas être vide'
 options_system.mail_from_help: "Adresse email qui apparaitra en tant qu'expéditeur dans les emails envoyés"
-options_system.mail_from_placeholder: "Adresse email"
-options_system.mail_from_msg_success : "Adresse email enregistrée avec succès"
-options_system.mail_reply_to : "Adresse email de réponse"
-options_system.mail_reply_to_msg_error: "Ce champs ne peux pas être vide"
+options_system.mail_from_placeholder: 'Adresse email'
+options_system.mail_from_msg_success: 'Adresse email enregistrée avec succès'
+options_system.mail_reply_to: 'Adresse email de réponse'
+options_system.mail_reply_to_msg_error: 'Ce champs ne peux pas être vide'
 options_system.mail_reply_to_help: "Adresse email qui apparaitra lorsque l'on souhaite répondre à un email du CMS"
-options_system.mail_reply_to_placeholder: "Adresse email"
-options_system.mail_reply_to_msg_success : "Adresse email enregistrée avec succès"
-options_system.adresse_site : "URL du site"
-options_system.adresse_site_msg_error: "Ce champs ne peux pas être vide"
-options_system.adresse_site_help: "URL racine, qui servira de référence pour la génération des liens externes"
-options_system.adresse_site_placeholder: "URL"
-options_system.adresse_site_msg_success : "URL enregistrée avec succès"
-mail.account.adm.disable.title: "Email information désactivation compte"
-mail.account.adm.disable.description : "Email envoyé quand un compte user est désactivé (accès administratif)"
-mail.account.adm.enable.title: "Email information réactivation compte"
-mail.account.adm.enable.description : "Email envoyé quand un compte user est réactivé (accès administratif)"
-mail.create.account.adm.title : "Email information création de compte"
-mail.create.account.adm.description : "Email envoyé quand un administrateur créé un compte pour accéder à l'administration"
+options_system.mail_reply_to_placeholder: 'Adresse email'
+options_system.mail_reply_to_msg_success: 'Adresse email enregistrée avec succès'
+options_system.adresse_site: 'URL du site'
+options_system.adresse_site_msg_error: 'Ce champs ne peux pas être vide'
+options_system.adresse_site_help: 'URL racine, qui servira de référence pour la génération des liens externes'
+options_system.adresse_site_placeholder: URL
+options_system.adresse_site_msg_success: 'URL enregistrée avec succès'
+mail.account.adm.disable.title: 'Email information désactivation compte'
+mail.account.adm.disable.description: 'Email envoyé quand un compte user est désactivé (accès administratif)'
+mail.account.adm.enable.title: 'Email information réactivation compte'
+mail.account.adm.enable.description: 'Email envoyé quand un compte user est réactivé (accès administratif)'
+mail.create.account.adm.title: 'Email information création de compte'
+mail.create.account.adm.description: "Email envoyé quand un administrateur créé un compte pour accéder à l'administration"
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: 'Elements HML disponibles (trad)'

@@ -28,3 +28,8 @@ user.login_user.password: __user.login_user.password
 user.login_user.forgot_password: __user.login_user.forgot_password
 user.login_user.remember_me: __user.login_user.remember_me
 user.login_user.btn_login: __user.login_user.btn_login
+user.page_my_account.title: __user.page_my_account.title
+user.page_my_account.title_h1: __user.page_my_account.title_h1
+user.page_my_account.description: __user.page_my_account.description
+user.page_my_account.statistique: __user.page_my_account.statistique
+user.page_my_account.password: __user.page_my_account.password
