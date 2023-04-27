@@ -144,4 +144,20 @@ class UserController extends AppAdminController
             'breadcrumb' => $breadcrumb,
         ]);
     }
+
+    #[Route('/my-account', name: 'my_account', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
+    public function updateMyAccount( UserService $userService)
+    {
+        $breadcrumb = [
+            Breadcrumb::DOMAIN => 'user',
+            Breadcrumb::BREADCRUMB => [
+                'user.page_my_account.title_h1' => '#'
+            ]
+        ];
+
+        return $this->render('admin/user/my_account.html.twig', [
+            'breadcrumb' => $breadcrumb,
+        ]);
+    }
 }

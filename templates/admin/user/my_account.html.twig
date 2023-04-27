@@ -1,0 +1,33 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block title %}{{ 'user.page_my_account.title' | trans({}, 'user') }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'user.page_my_account.title_h1' | trans({}, 'user') }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    <p>
+        {{ 'user.page_my_account.description' | trans({}, 'user') }}
+    </p>
+
+    <div class="row">
+        <div class="col-auto">
+            Formulaire
+        </div>
+        <div class="col-auto">
+            <fieldset>
+                <legend>{{ 'user.page_my_account.statistique' | trans({}, 'user') }}</legend>
+
+                Statistiques
+            </fieldset>
+        </div>
+    </div>
+
+    <fieldset>
+        <legend>{{ 'user.page_my_account.password' | trans({}, 'user') }}</legend>
+
+        Mot de passe
+    </fieldset>
+
+{% endblock %}
