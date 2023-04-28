@@ -7,19 +7,49 @@
 namespace App\Form\Admin\User;
 
 use App\Entity\Admin\User;
+use App\Form\AppFormType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class MyAccountType extends AbstractType
+class MyAccountType extends AppFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
-            ->add('login')
-            ->add('firstname')
-            ->add('lastname')
+            ->add('email', EmailType::class, [
+                'label' => $this->translator->trans('user.form.adresse_email.label', domain: 'user'),
+                'help' => $this->translator->trans('user.form.adresse_email.help', domain: 'user'),
+                'disabled' => true
+            ])
+            ->add('login', TextType::class, [
+                'label' => $this->translator->trans('user.form.login.label', domain: 'user'),
+                'help' => $this->translator->trans('user.form.login.help', domain: 'user'),
+                'attr' => [
+                    'placeholder' => $this->translator->trans('user.form.login.placeholder', domain: 'user')
+                ]
+            ])
+            ->add('firstname', TextType::class, [
+                'label' => $this->translator->trans('user.form.firstname.label', domain: 'user'),
+                'help' => $this->translator->trans('user.form.firstname.help', domain: 'user'),
+                'attr' => [
+                    'placeholder' => $this->translator->trans('user.form.firstname.placeholder', domain: 'user')
+                ]
+
+            ])
+            ->add('lastname', TextType::class, [
+                'label' => $this->translator->trans('user.form.lastname.label', domain: 'user'),
+                'help' => $this->translator->trans('user.form.lastname.help', domain: 'user'),
+                'attr' => [
+                    'placeholder' => $this->translator->trans('user.form.lastname.placeholder', domain: 'user')
+                ]
+            ])
+            ->add('save', SubmitType::class, [
+                'label' => $this->translator->trans('user.form.submit', domain: 'user')
+            ])
         ;
     }
 

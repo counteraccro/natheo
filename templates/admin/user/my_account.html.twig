@@ -12,10 +12,26 @@
     </p>
 
     <div class="row">
-        <div class="col-auto">
-            Formulaire
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header text-bg-secondary">
+                    {{ 'user.page_my_account.profil' | trans({}, 'user') }}
+                </div>
+                <div class="card-body">
+
+                    {{ form_row(form.email) }}
+
+                    <fieldset>
+                        <legend> {{ 'user.page_my_account.personal_data' | trans({}, 'user') }}</legend>
+
+                        <p> <i class="bi bi-info-circle-fill"></i> {{ 'user.page_my_account.personal_data.description' | trans({}, 'user') }}</p>
+
+                        {{ form(form) }}
+                    </fieldset>
+                </div>
+            </div>
         </div>
-        <div class="col-auto">
+        <div class="col-6">
             <fieldset>
                 <legend>{{ 'user.page_my_account.statistique' | trans({}, 'user') }}</legend>
 

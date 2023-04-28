@@ -9,6 +9,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Admin\User;
+use App\Form\Admin\User\MyAccountType;
 use App\Service\Admin\Breadcrumb;
 use App\Service\Admin\OptionUserService;
 use App\Service\Admin\UserService;
@@ -145,9 +146,9 @@ class UserController extends AppAdminController
         ]);
     }
 
-    #[Route('/my-account', name: 'my_account', methods: ['GET'])]
+    #[Route('/my-account', name: 'my_account', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
-    public function updateMyAccount( UserService $userService)
+    public function updateMyAccount(UserService $userService, Request $request)
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'user',
@@ -156,8 +157,18 @@ class UserController extends AppAdminController
             ]
         ];
 
+        $user = $this->getUser();
+        $form = $this->createForm(MyAccountType::class, $user);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $form->getData();
+            $userService->save($user);
+        }
+
         return $this->render('admin/user/my_account.html.twig', [
             'breadcrumb' => $breadcrumb,
+            'form' => $form
         ]);
     }
 }

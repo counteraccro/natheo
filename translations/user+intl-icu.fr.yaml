@@ -31,5 +31,20 @@ user.login.title: Authentification
 user.page_my_account.title: 'Mon compte'
 user.page_my_account.title_h1: 'Mon compte'
 user.page_my_account.description: 'Gérer votre compte, vos données personnelles et votre mot de passe'
-user.page_my_account.statistique: Mes statistiques
-user.page_my_account.password: Mot de passe
+user.page_my_account.statistique: 'Mes statistiques'
+user.page_my_account.password: 'Mot de passe'
+user.form.adresse_email.label: 'Adresse email'
+user.form.adresse_email.help: 'Identifiant pour vous connectez. Demander à un administrateur pour le modifier'
+user.form.login.label: Login
+user.form.login.help: 'Identifiant qui apparait à la fin de vos articles'
+user.form.firstname.label: Prénom
+user.form.firstname.help: 'Identifiant qui apparait à la fin de vos articles si vous souhaitez faire apparaitre votre vrai identité'
+user.form.lastname.label: Nom
+user.form.lastname.help: 'Identifiant qui apparait à la fin de vos articles si vous souhaitez faire apparaitre votre vrai identité'
+user.form.submit: 'Modifier mon profil'
+user.form.login.placeholder: 'Votre login'
+user.form.firstname.placeholder: 'Votre prénom'
+user.form.lastname.placeholder: 'Votre nom'
+user.page_my_account.profil: 'Mon profil'
+user.page_my_account.personal_data: 'Mes données personnelles'
+user.page_my_account.personal_data.description: 'Ces données ne sont pas obligatoires, si vous laissé tout vide, vos contenus ne seront pas identifiés comme vos créations'
