@@ -30,7 +30,7 @@ user.login.logout: Déconnexion
 user.login.title: Authentification
 user.page_my_account.title: 'Mon compte'
 user.page_my_account.title_h1: 'Mon compte'
-user.page_my_account.description: 'Gérer votre compte, vos données personnelles et votre mot de passe'
+user.page_my_account.description: 'Gérer vos données personnelles, votre mot de passe et consulter vos statistiques'
 user.page_my_account.statistique: 'Mes statistiques'
 user.page_my_account.password: 'Mot de passe'
 user.form.adresse_email.label: 'Adresse email'
