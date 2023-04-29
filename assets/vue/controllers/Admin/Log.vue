@@ -175,7 +175,7 @@ export default {
 
   <div v-if="selectFile !== ''">
 
-    <div class="card mt-3">
+    <div class="card mt-3 border border-secondary">
       <div class="card-header text-bg-secondary">
         <div class="btn btn-danger btn-sm float-end" @click="this.delete(this.selectFile, true)">{{ this.trans.log_btn_delete_file }}</div>
         <div class="btn btn-success btn-sm float-end me-2" @click="this.loadContentFile(this.page, this.limit)"><i class="bi bi-arrow-clockwise"></i> {{ this.trans.log_btn_reload }}</div>
@@ -254,7 +254,7 @@ export default {
       </div>
     </div>
   </div>
-  <div class="card mt-3" v-else>
+  <div class="card mt-3 border border-secondary" v-else>
     <div class="card-header text-bg-secondary">
       <div class="btn btn-danger btn-sm float-end disabled">{{ this.trans.log_btn_delete_file }}</div>
       <div class="btn btn-success btn-sm float-end disabled me-2"><i class="bi bi-arrow-clockwise"></i> {{ this.trans.log_btn_reload }}</div>

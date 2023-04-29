@@ -309,7 +309,7 @@ export default {
     </div>
 
     <div v-if="this.file.length !== 0">
-        <div class="card mt-3" :class="this.loading === true ? 'block-grid' : ''">
+        <div class="card mt-3 border border-secondary" :class="this.loading === true ? 'block-grid' : ''">
             <div v-if="this.loading" class="overlay">
                 <div class="position-absolute top-50 start-50 translate-middle">
                     <div class="spinner-border text-primary" role="status"></div>
@@ -348,7 +348,7 @@ export default {
         </div>
     </div>
     <div v-else>
-        <div class="card mt-3">
+        <div class="card mt-3 border border-secondary">
             <div class="card-header text-bg-secondary">
                 ---
                 <div class="btn btn-success btn-sm float-end disabled">
