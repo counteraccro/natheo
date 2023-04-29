@@ -48,3 +48,6 @@ user.form.lastname.placeholder: 'Votre nom'
 user.page_my_account.profil: 'Mon profil'
 user.page_my_account.personal_data: 'Mes données personnelles'
 user.page_my_account.personal_data.description: "Ces données ne sont pas obligatoires, si vous laissé tous les champs vide, vos contenus ne seront pas identifiés comme vos créations. Il est conseillé d'au moins saisir un login"
+user.page_my_account.danger: Zone de danger
+user.page_my_account.statistiques: Mes statistiques
+user.page_my_account.password_change: Changement de mot de passe

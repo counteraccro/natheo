@@ -48,3 +48,6 @@ user.form.submit: __user.form.submit
 user.page_my_account.profil: __user.page_my_account.profil
 user.page_my_account.personal_data: __user.page_my_account.personal_data
 user.page_my_account.personal_data.description: __user.page_my_account.personal_data.description
+user.page_my_account.danger: __user.page_my_account.danger
+user.page_my_account.statistiques: __user.page_my_account.statistiques
+user.page_my_account.password_change: __user.page_my_account.password_change

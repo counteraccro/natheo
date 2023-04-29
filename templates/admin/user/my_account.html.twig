@@ -13,7 +13,7 @@
 
     <div class="row">
         <div class="col-6">
-            <div class="card">
+            <div class="card border border-secondary">
                 <div class="card-header text-bg-secondary">
                     {{ 'user.page_my_account.profil' | trans({}, 'user') }}
                 </div>
@@ -32,18 +32,33 @@
             </div>
         </div>
         <div class="col-6">
-            <fieldset>
-                <legend>{{ 'user.page_my_account.statistique' | trans({}, 'user') }}</legend>
+            <div class="card border border-secondary">
+                <div class="card-header text-bg-secondary">
+                    {{ 'user.page_my_account.password_change' | trans({}, 'user') }}
+                </div>
+                <div class="card-body">
+                    <i>TODO SOON...</i>
+                </div>
+            </div>
 
-                Statistiques
-            </fieldset>
+            <div class="card mt-3 border border-danger">
+                <div class="card-header text-bg-danger">
+                    {{ 'user.page_my_account.danger' | trans({}, 'user') }}
+                </div>
+                <div class="card-body">
+                    <i>TODO SOON...</i>
+                </div>
+            </div>
         </div>
     </div>
 
-    <fieldset>
-        <legend>{{ 'user.page_my_account.password' | trans({}, 'user') }}</legend>
-
-        Mot de passe
-    </fieldset>
+    <div class="card mt-3 border border-secondary">
+        <div class="card-header text-bg-secondary">
+            {{ 'user.page_my_account.statistiques' | trans({}, 'user') }}
+        </div>
+        <div class="card-body">
+            <i>TODO SOON...</i>
+        </div>
+    </div>
 
 {% endblock %}
