@@ -48,6 +48,14 @@ user.form.lastname.placeholder: 'Votre nom'
 user.page_my_account.profil: 'Mon profil'
 user.page_my_account.personal_data: 'Mes données personnelles'
 user.page_my_account.personal_data.description: "Ces données ne sont pas obligatoires, si vous laissé tous les champs vide, vos contenus ne seront pas identifiés comme vos créations. Il est conseillé d'au moins saisir un login"
-user.page_my_account.danger: Zone de danger
-user.page_my_account.statistiques: Mes statistiques
-user.page_my_account.password_change: Changement de mot de passe
+user.page_my_account.danger: 'Zone de danger'
+user.page_my_account.statistiques: 'Mes statistiques'
+user.page_my_account.password_change: 'Changement de mot de passe'
+user.change_password.input.password_1: 'Nouveau mot de passe'
+user.change_password.input.password_2: 'Confirmer nouveau mot de passe'
+user.change_password.force: 'Force du mot de passe, votre mot de passe doit avoir :'
+user.change_password.force.nb_character: "Au moins un minimum de 8 caractères"
+user.change_password.force.majuscule: 'Au moins une lettre majuscule'
+user.change_password.force.minuscule: 'Au moins une lettre minuscule'
+user.change_password.force.chiffre: 'Au moins un chiffre'
+user.change_password.force.character_spe: 'Au moins un caractère spécial'

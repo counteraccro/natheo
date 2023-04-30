@@ -51,3 +51,11 @@ user.page_my_account.personal_data.description: __user.page_my_account.personal_
 user.page_my_account.danger: __user.page_my_account.danger
 user.page_my_account.statistiques: __user.page_my_account.statistiques
 user.page_my_account.password_change: __user.page_my_account.password_change
+user.change_password.input.password_1: __user.change_password.input.password_1
+user.change_password.input.password_2: __user.change_password.input.password_2
+user.change_password.force: __user.change_password.force
+user.change_password.force.nb_character: __user.change_password.force.nb_character
+user.change_password.force.majuscule: __user.change_password.force.majuscule
+user.change_password.force.minuscule: __user.change_password.force.minuscule
+user.change_password.force.chiffre: __user.change_password.force.chiffre
+user.change_password.force.character_spe: __user.change_password.force.character_spe
