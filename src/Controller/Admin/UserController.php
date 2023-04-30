@@ -163,6 +163,7 @@ class UserController extends AppAdminController
             ]
         ];
 
+        /** @var User $user */
         $user = $this->getUser();
         $form = $this->createForm(MyAccountType::class, $user);
 
@@ -175,6 +176,7 @@ class UserController extends AppAdminController
         return $this->render('admin/user/my_account.html.twig', [
             'breadcrumb' => $breadcrumb,
             'form' => $form,
+            'dateUpdate' => $user->getFormatDate(),
             'changePasswordTranslate' => $userService->getTranslateChangePassword()
         ]);
     }
