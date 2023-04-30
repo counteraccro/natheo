@@ -48,7 +48,10 @@ class MyAccountType extends AppFormType
                 ]
             ])
             ->add('save', SubmitType::class, [
-                'label' => $this->translator->trans('user.form.submit', domain: 'user')
+                'label' => $this->translator->trans('user.form.submit', domain: 'user'),
+                'attr' => [
+                    'class' => 'btn-secondary'
+                ]
             ])
         ;
     }
