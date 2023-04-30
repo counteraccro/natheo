@@ -59,3 +59,4 @@ user.change_password.force.majuscule: __user.change_password.force.majuscule
 user.change_password.force.minuscule: __user.change_password.force.minuscule
 user.change_password.force.chiffre: __user.change_password.force.chiffre
 user.change_password.force.character_spe: __user.change_password.force.character_spe
+user.page_my_account.last_update: __user.page_my_account.last_update
