@@ -5,6 +5,7 @@
  * @version 1.0
  * Service lier à l'objet user
  */
+
 namespace App\Service\Admin;
 
 use App\Entity\Admin\User;
@@ -97,9 +98,9 @@ class UserService extends AppAdminService
                     getLastname(),
                 $this->translator->trans('user.grid.role', domain: 'user') => $roles,
                 $this->translator->trans('user.grid.created_at', domain: 'user') => $user->getCreatedAt()->
-                    format('d/m/y H:i'),
+                format('d/m/y H:i'),
                 $this->translator->trans('user.grid.update_at', domain: 'user') => $user->getUpdateAt()->
-                    format('d/m/y H:i'),
+                format('d/m/y H:i'),
                 GridService::KEY_ACTION => json_encode($actions)
             ];
         }
@@ -169,5 +170,25 @@ class UserService extends AppAdminService
             'ajax' => false];
         return $actions;
 
+    }
+
+    /**
+     * Renvoi les traductions pour le changement de mot de passe
+     * @return array
+     */
+    public function getTranslateChangePassword(): array
+    {
+        return [
+            'password' => $this->translator->trans('user.change_password.input.password_1', domain: 'user'),
+            'password_2' => $this->translator->trans('user.change_password.input.password_2', domain: 'user'),
+            'force' => $this->translator->trans('user.change_password.force', domain: 'user'),
+            'force_nb_character' => $this->translator->trans('user.change_password.force.nb_character', domain: 'user'),
+            'force_majuscule' => $this->translator->trans('user.change_password.force.majuscule', domain: 'user'),
+            'force_minuscule' => $this->translator->trans('user.change_password.force.minuscule', domain: 'user'),
+            'force_chiffre' => $this->translator->trans('user.change_password.force.chiffre', domain: 'user'),
+            'force_character_spe' => $this->translator->trans('user.change_password.force.character_spe',
+                domain: 'user'
+            )
+        ];
     }
 }

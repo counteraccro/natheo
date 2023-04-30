@@ -146,9 +146,15 @@ class UserController extends AppAdminController
         ]);
     }
 
+    /**
+     * Mise à jour des données de l'utilisateur par lui-même
+     * @param UserService $userService
+     * @param Request $request
+     * @return Response
+     */
     #[Route('/my-account', name: 'my_account', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
-    public function updateMyAccount(UserService $userService, Request $request)
+    public function updateMyAccount(UserService $userService, Request $request): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'user',
@@ -168,7 +174,21 @@ class UserController extends AppAdminController
 
         return $this->render('admin/user/my_account.html.twig', [
             'breadcrumb' => $breadcrumb,
-            'form' => $form
+            'form' => $form,
+            'changePasswordTranslate' => $userService->getTranslateChangePassword()
         ]);
+    }
+
+    /**
+     * Changement de mot passe
+     * @param UserService $userService
+     * @param Request $request
+     * @return void
+     */
+    #[Route('/change-my-password', name: 'change_my_password', methods: ['POST'])]
+    #[IsGranted('ROLE_USER')]
+    public function updatePassword(UserService $userService, Request $request)
+    {
+        return $this->json(['status' => "oku"]);
     }
 }
