@@ -16,7 +16,9 @@ export default {
     data() {
         return {
             password: '',
+            classPassword: '',
             passwordConfirm: '',
+            classPasswordConfirm: '',
             btnSubmit: 'disabled',
             progressColor: 'bg-danger',
             nbCharacter: {
@@ -85,8 +87,21 @@ export default {
             let test = reg.test(this.password);
             if (test && this.password === this.passwordConfirm) {
                 this.btnSubmit = '';
+                this.classPasswordConfirm = 'is-valid';
+                this.classPassword = 'is-valid';
             } else {
                 this.btnSubmit = 'disabled';
+            }
+
+            if (this.password !== this.passwordConfirm) {
+                this.classPasswordConfirm = 'is-invalid';
+            }
+
+            if (!test) {
+                this.classPassword = 'is-invalid';
+            }
+            else {
+                this.classPassword = 'is-valid';
             }
         },
 
@@ -166,8 +181,7 @@ export default {
         /**
          * Sauvegarde le nouveau mot de passe
          */
-        savePassword()
-        {
+        savePassword() {
             alert('oki');
         }
 
@@ -179,11 +193,14 @@ export default {
 
     <div class="mb-3">
         <label for="input-password-1" class="form-label">{{ this.translate.password }}</label>
-        <input type="text" class="form-control no-control" id="input-password-1" v-model="password" @keyup="this.checkPassword">
+        <input type="text" class="form-control no-control" :class="this.classPassword" id="input-password-1" v-model="password" @keyup="this.checkPassword">
     </div>
     <div class="mb-3">
         <label for="input-password-2" class="form-label">{{ this.translate.password_2 }}</label>
-        <input type="password" class="form-control no-control" id="input-password-2" v-model="passwordConfirm" @keyup="this.validatePasswordFinal">
+        <input type="password" class="form-control no-control" :class="this.classPasswordConfirm" id="input-password-2" v-model="passwordConfirm" @keyup="this.validatePasswordFinal">
+        <div class="invalid-feedback">
+            {{ this.translate.error_password_2 }}
+        </div>
     </div>
 
     <button class="btn btn-secondary" :class="btnSubmit" @click="savePassword">Modifier</button>
