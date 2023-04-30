@@ -4,6 +4,7 @@
  * @version 1.0
  * Entité User, compte pour accéder à l'administration
  */
+
 namespace App\Entity\Admin;
 
 use App\Repository\Admin\UserRepository;
@@ -48,11 +49,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $disabled = null;
 
-    #[Gedmo\Timestampable(on : "create")]
+    #[Gedmo\Timestampable(on: "create")]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
 
-    #[Gedmo\Timestampable(on : "update")]
+    #[Gedmo\Timestampable(on: "update")]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $update_at = null;
 
@@ -88,7 +89,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -234,5 +235,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Retourne une date formatée en string
+     * @param string $dateName - valeur update ou create
+     * @return string
+     */
+    public function getFormatDate(string $dateName = 'update'): string
+    {
+        return match ($dateName) {
+            'update' => $this->getUpdateAt()->format('l d F Y H:i:s'),
+            'create' => $this->getCreatedAt()->format('l d F Y H:i:s'),
+            default => "",
+        };
     }
 }
