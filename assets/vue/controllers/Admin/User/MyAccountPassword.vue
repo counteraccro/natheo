@@ -4,6 +4,7 @@
  * @author Gourdon Aymeric
  * @version 1.0
  * Changement du mot de passe pour un compte user
+ * https://www.gekkode.com/developpement/expression-reguliere-pour-valider-un-mot-de-passe/
  */
 
 export default {
@@ -16,7 +17,29 @@ export default {
         return {
             password: '',
             passwordConfirm: '',
+            btnSubmit: 'disabled',
+            progressColor: 'bg-danger',
             nbCharacter: {
+                'class': '',
+                'icon': 'bi-x-circle-fill',
+                'progress': 0
+            },
+            majuscule: {
+                'class': '',
+                'icon': 'bi-x-circle-fill',
+                'progress': 0
+            },
+            minuscule: {
+                'class': '',
+                'icon': 'bi-x-circle-fill',
+                'progress': 0
+            },
+            chiffre: {
+                'class': '',
+                'icon': 'bi-x-circle-fill',
+                'progress': 0
+            },
+            special: {
                 'class': '',
                 'icon': 'bi-x-circle-fill',
                 'progress': 0
@@ -25,22 +48,56 @@ export default {
                 'start': '^',
                 'end': '$',
                 'nbCharacter': '.{8,}',
+                'majuscule': '(?=.*[A-Z])',
+                'minuscule': '(?=.*?[a-z])',
+                'chiffre': '(?=.*?[0-9])',
+                'special': '(?=.*?[#?!@$%^&*-])'
             }
         }
     },
     computed: {
-      progress() {
-          return this.nbCharacter.progress;
-      }
+        progress() {
+            let nb = this.nbCharacter.progress + this.majuscule.progress + this.minuscule.progress
+                + this.chiffre.progress + this.special.progress;
+
+            switch (nb) {
+                case 20:
+                case 40:
+                    this.progressColor = 'bg-danger';
+                    break;
+                case 60:
+                case 80:
+                    this.progressColor = 'bg-warning';
+                    break;
+                case 100:
+                    this.progressColor = 'bg-primary';
+                    break;
+                default:
+                    this.progressColor = '';
+            }
+
+            return nb;
+        }
     },
     methods: {
         validatePasswordFinal() {
-            let reg = new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/);
-            return reg.test(this.password);
+            let reg = new RegExp(this.rule.start + this.rule.majuscule + this.rule.minuscule + this.rule.chiffre + this.rule.special + this.rule.nbCharacter)
+            let test = reg.test(this.password);
+            if (test && this.password === this.passwordConfirm) {
+                this.btnSubmit = '';
+            } else {
+                this.btnSubmit = 'disabled';
+            }
         },
 
         checkPassword() {
             this.checkNbCharacter();
+            this.checkMajuscule();
+            this.checkMinuscule();
+            this.checkChiffre();
+            this.checkSpecial();
+
+            this.validatePasswordFinal();
         },
 
         /**
@@ -53,12 +110,47 @@ export default {
         },
 
         /**
+         * Vérifie la présence d'au moins 1 majuscule
+         */
+        checkMajuscule() {
+            let reg = new RegExp(this.rule.majuscule);
+            let test = reg.test(this.password);
+            this.updateRender(test, this.majuscule);
+        },
+
+        /**
+         * Vérifie la présence d'au moins 1 minuscule
+         */
+        checkMinuscule() {
+            let reg = new RegExp(this.rule.minuscule);
+            let test = reg.test(this.password);
+            this.updateRender(test, this.minuscule);
+        },
+
+        /**
+         * Vérifie la présence d'au moins 1 chiffre
+         */
+        checkChiffre() {
+            let reg = new RegExp(this.rule.chiffre);
+            let test = reg.test(this.password);
+            this.updateRender(test, this.chiffre);
+        },
+
+        /**
+         * Vérifie la présence d'un caractère spécial
+         */
+        checkSpecial() {
+            let reg = new RegExp(this.rule.special);
+            let test = reg.test(this.password);
+            this.updateRender(test, this.special);
+        },
+
+        /**
          * Met à jour l'affichage
          * @param test
          * @param rule
          */
-        updateRender(test, rule)
-        {
+        updateRender(test, rule) {
             if (test) {
                 rule.progress = 20;
                 rule.class = 'text-success';
@@ -69,6 +161,14 @@ export default {
                 rule.icon = 'bi-x-circle-fill';
                 rule.progress = 0;
             }
+        },
+
+        /**
+         * Sauvegarde le nouveau mot de passe
+         */
+        savePassword()
+        {
+            alert('oki');
         }
 
     }
@@ -79,17 +179,20 @@ export default {
 
     <div class="mb-3">
         <label for="input-password-1" class="form-label">{{ this.translate.password }}</label>
-        <input type="password" class="form-control" id="input-password-1" v-model="password" @keyup="this.checkPassword">
+        <input type="text" class="form-control no-control" id="input-password-1" v-model="password" @keyup="this.checkPassword">
     </div>
     <div class="mb-3">
         <label for="input-password-2" class="form-label">{{ this.translate.password_2 }}</label>
-        <input type="password" class="form-control" id="input-password-2" v-model="passwordConfirm">
+        <input type="password" class="form-control no-control" id="input-password-2" v-model="passwordConfirm" @keyup="this.validatePasswordFinal">
     </div>
+
+    <button class="btn btn-secondary" :class="btnSubmit" @click="savePassword">Modifier</button>
+    <hr/>
 
     <div>
         <p class="mb-0">{{ this.translate.force }}</p>
         <div class="progress">
-            <div class="progress-bar" :style="'width: ' + this.progress + '%;'" role="progressbar" aria-label="Basic example" :data-aria-valuenow="this.progress" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar" :class="this.progressColor" :style="'width: ' + this.progress + '%;'" role="progressbar" aria-label="Basic example" :data-aria-valuenow="this.progress" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
         <div class="row">
             <div class="col-6">
@@ -98,34 +201,30 @@ export default {
                 </p>
             </div>
             <div class="col-6">
-                <p class="text-success mb-0">
-                    <i class="bi bi-x-circle-fill"></i> {{ this.translate.force_majuscule }}
+                <p class="mb-0" :class="this.majuscule.class">
+                    <i class="bi " :class="this.majuscule.icon"></i> {{ this.translate.force_majuscule }}
                 </p>
             </div>
         </div>
         <div class="row">
             <div class="col-6">
-                <p class="text-success mb-0">
-                    <i class="bi bi-x-circle-fill"></i> {{ this.translate.force_minuscule }}
+                <p class="mb-0" :class="this.minuscule.class">
+                    <i class="bi" :class="this.minuscule.icon"></i> {{ this.translate.force_minuscule }}
                 </p>
             </div>
             <div class="col-6">
-                <p class="text-success mb-0">
-                    <i class="bi bi-x-circle-fill"></i> {{ this.translate.force_chiffre }}
+                <p class="mb-0" :class="this.chiffre.class">
+                    <i class="bi" :class="this.chiffre.icon"></i> {{ this.translate.force_chiffre }}
                 </p>
             </div>
         </div>
         <div class="row">
             <div class="col-6">
-                <p class="text-success mb-0">
-                    <i class="bi bi-check-circle-fill"></i> {{ this.translate.force_character_spe }}
+                <p class="mb-0" :class="this.special.class">
+                    <i class="bi" :class="this.special.icon"></i> {{ this.translate.force_character_spe }} - #?!@$%^&*-
                 </p>
             </div>
         </div>
     </div>
 
 </template>
-
-<style scoped>
-
-</style>
