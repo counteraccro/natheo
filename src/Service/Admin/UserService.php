@@ -10,6 +10,7 @@ namespace App\Service\Admin;
 
 use App\Entity\Admin\User;
 use App\Repository\Admin\UserRepository;
+use App\Utils\Role;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -133,8 +134,8 @@ class UserService extends AppAdminService
 
         $actions = [];
 
-
-        $isSuperAdmin = in_array('ROLE_SUPER_ADMIN', $user->getRoles());
+        $role = new Role($user);
+        $isSuperAdmin = $role->isSuperAdmin();
         if (!$isSuperAdmin) {
             // Bouton disabled
             $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
