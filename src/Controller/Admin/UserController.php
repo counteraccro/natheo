@@ -185,7 +185,9 @@ class UserController extends AppAdminController
             'breadcrumb' => $breadcrumb,
             'form' => $form,
             'dateUpdate' => $user->getFormatDate(),
-            'changePasswordTranslate' => $userService->getTranslateChangePassword()
+            'userId' => $user->getId(),
+            'changePasswordTranslate' => $userService->getTranslateChangePassword(),
+            'dangerZoneTranslate' => $userService->getTranslateDangerZone()
         ]);
     }
 

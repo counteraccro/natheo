@@ -210,6 +210,17 @@ class UserService extends AppAdminService
     }
 
     /**
+     * Renvoi les traductions pour la danger-zone de mon profil
+     * @return array
+     */
+    public function getTranslateDangerZone(): array
+    {
+        return [
+            'btn_disabled' => $this->translator->trans('user.danger_zone.btn_disabled', domain: 'user'),
+        ];
+    }
+
+    /**
      * Met à jour le mot de passe de l'utilisateur passé en paramètre
      * @param User $user
      * @param $password
