@@ -13,6 +13,7 @@ use App\Form\Admin\User\MyAccountType;
 use App\Service\Admin\Breadcrumb;
 use App\Service\Admin\OptionUserService;
 use App\Service\Admin\UserService;
+use App\Utils\Role;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -105,6 +106,14 @@ class UserController extends AppAdminController
     #[IsGranted('ROLE_SUPER_ADMIN')]
     public function updateDisabled(User $user, UserService $userService, TranslatorInterface $translator): JsonResponse
     {
+        $role = new Role($user);
+        if ($role->isSuperAdmin()) {
+            return $this->json([
+                'type' => 'success',
+                'msg' => $translator->trans('user.error_not_disabled', domain: 'user')
+            ]);
+        }
+
         $user->setDisabled(!$user->isDisabled());
         $userService->save($user);
 
@@ -112,7 +121,6 @@ class UserController extends AppAdminController
         if ($user->isDisabled()) {
             $msg = $translator->trans('user.success.disabled', ['login' => $user->getLogin()], 'user');
         }
-
         return $this->json(['type' => 'success', 'msg' => $msg]);
     }
 
@@ -202,6 +210,31 @@ class UserController extends AppAdminController
         return $this->json([
             'status' => 'success',
             'msg' => $translator->trans('user.update_password.success', domain: 'user')
+        ]);
+    }
+
+    /**
+     * Permet à l'utilisateur de s'auto désactivé
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     */
+    #[Route('/ajax/self-disabled', name: 'self_disabled', methods: ['POST'])]
+    #[IsGranted('ROLE_USER')]
+    public function selfDisabled(TranslatorInterface $translator): JsonResponse
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $role = new Role($user);
+        if ($role->isSuperAdmin()) {
+            $msg = $translator->trans('user.error_not_disabled', domain: 'user');
+        } else {
+            $user->setDisabled(true);
+            $msg = $translator->trans('user.self_disabled_success', domain: 'user');
+        }
+
+        return $this->json([
+            'status' => 'success',
+            'msg' => $msg
         ]);
     }
 }
