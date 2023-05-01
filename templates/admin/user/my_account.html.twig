@@ -48,7 +48,7 @@
                     {{ 'user.page_my_account.danger' | trans({}, 'user') }}
                 </div>
                 <div class="card-body">
-                    <div {{ vue_component('Admin/User/MyAccountDanger', {'url_disabled' : path('admin_user_self_disabled'),
+                    <div {{ vue_component('Admin/User/MyAccountDangerZone', {'url_disabled' : path('admin_user_self_disabled'),
                         'url_delete' : path('admin_user_delete',  {'id' : userId}),
                         'translate' : dangerZoneTranslate}) }}></div>
                 </div>
