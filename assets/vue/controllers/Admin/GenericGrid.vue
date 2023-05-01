@@ -39,7 +39,7 @@ export default {
   },
   mounted() {
     this.loadData(this.page, this.limit);
-    this.confirmModal = new Modal(document.getElementById("staticBackdrop"), {});
+    this.confirmModal = new Modal(document.getElementById("popin-alert"), {});
 
   },
   methods: {
@@ -125,7 +125,7 @@ export default {
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 
-  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+  <div class="modal fade" id="popin-alert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header bg-secondary">
