@@ -62,3 +62,5 @@ user.change_password.force.character_spe: __user.change_password.force.character
 user.page_my_account.last_update: __user.page_my_account.last_update
 user.error.password_2: __user.error.password_2
 user.update_password.success: __user.update_password.success
+user.error_not_disabled: __user.error_not_disabled
+user.self_disabled_success: __user.self_disabled_success
