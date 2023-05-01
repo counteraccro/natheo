@@ -61,3 +61,4 @@ user.change_password.force.chiffre: __user.change_password.force.chiffre
 user.change_password.force.character_spe: __user.change_password.force.character_spe
 user.page_my_account.last_update: __user.page_my_account.last_update
 user.error.password_2: __user.error.password_2
+user.update_password.success: __user.update_password.success

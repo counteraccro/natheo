@@ -9,11 +9,13 @@
 namespace App\Service\Admin;
 
 use App\Entity\Admin\User;
+use App\Repository\Admin\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -30,13 +32,20 @@ class UserService extends AppAdminService
      */
     private OptionSystemService $optionSystemService;
 
-    public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
-                                TranslatorInterface    $translator, UrlGeneratorInterface $router, GridService $gridService,
-                                OptionSystemService    $optionSystemService, Security $security, RequestStack $requestStack
+    /**
+     * @var UserPasswordHasherInterface
+     */
+    private UserPasswordHasherInterface $passwordHasher;
+
+    public function __construct(EntityManagerInterface      $entityManager, ContainerBagInterface $containerBag,
+                                TranslatorInterface         $translator, UrlGeneratorInterface $router, GridService $gridService,
+                                OptionSystemService         $optionSystemService, Security $security, RequestStack $requestStack,
+                                UserPasswordHasherInterface $userPasswordHasher
     )
     {
         $this->gridService = $gridService;
         $this->optionSystemService = $optionSystemService;
+        $this->passwordHasher = $userPasswordHasher;
         parent::__construct($entityManager, $containerBag, $translator, $router, $security, $requestStack);
     }
 
@@ -191,5 +200,17 @@ class UserService extends AppAdminService
             ),
             'error_password_2' => $this->translator->trans('user.error.password_2', domain: 'user'),
         ];
+    }
+
+    /**
+     * Met à jour le mot de passe de l'utilisateur passé en paramètre
+     * @param User $user
+     * @param $password
+     * @return void
+     */
+    public function updatePassword(User $user, $password)
+    {
+        $user->setPassword($this->passwordHasher->hashPassword($user, $password));
+        $this->save($user);
     }
 }

@@ -185,12 +185,23 @@ class UserController extends AppAdminController
      * Changement de mot passe
      * @param UserService $userService
      * @param Request $request
-     * @return void
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
      */
     #[Route('/change-my-password', name: 'change_my_password', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function updatePassword(UserService $userService, Request $request)
+    public function updatePassword(UserService         $userService, Request $request,
+                                   TranslatorInterface $translator
+    ): JsonResponse
     {
-        return $this->json(['status' => "oku"]);
+        $data = json_decode($request->getContent(), true);
+        /* @var User $user */
+        $user = $this->getUser();
+        $userService->updatePassword($user, $data['data']);
+
+        return $this->json([
+            'status' => 'success',
+            'msg' => $translator->trans('user.update_password.success', domain: 'user')
+        ]);
     }
 }
