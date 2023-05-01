@@ -155,7 +155,7 @@ class UserService extends AppAdminService
 
             // Bouton Delete
             $actionDelete = '';
-            if ($canDelete === '1') {
+            if ($canDelete === '1' || $replaceUser === '1') {
 
                 $msgConfirm = $this->translator->trans('user.confirm.delete.msg', ['{login}' =>
                     $user->getLogin()], 'user');
