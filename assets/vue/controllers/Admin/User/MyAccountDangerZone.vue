@@ -2,11 +2,11 @@
 import {Modal} from "bootstrap";
 
 export default {
-    name: "MyAccountDanger",
+    name: "MyAccountDangerZone",
     props: {
         url_disabled: String,
         url_delete: String,
-        translate: Array
+        translate: Object
     },
     data() {
         return {
@@ -29,8 +29,8 @@ export default {
 </script>
 
 <template>
-    <div class="modal fade" id="modal-alert" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade" id="modal-alert" tabindex="-1" aria-labelledby="modal-alert" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
@@ -47,7 +47,7 @@ export default {
         </div>
     </div>
 
-    <button class="btn btn-danger" @click="this.delete">aaa</button>
+    <button class="btn btn-danger" @click="this.delete">{{ this.translate.btn_disabled }}</button>
 </template>
 
 <style scoped>
