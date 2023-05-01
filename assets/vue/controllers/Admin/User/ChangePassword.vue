@@ -8,7 +8,7 @@
 import axios from "axios";
 
 export default {
-    name: "MyAccountPassword",
+    name: "ChangePassword",
     props: {
         url_change_password: String,
         translate: Array

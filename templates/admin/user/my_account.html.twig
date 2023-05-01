@@ -38,7 +38,7 @@
                     {{ 'user.page_my_account.password_change' | trans({}, 'user') }}
                 </div>
                 <div class="card-body">
-                    <div {{ vue_component('Admin/User/MyAccountPassword', {'url_change_password' : path('admin_user_change_my_password'),
+                    <div {{ vue_component('Admin/User/ChangePassword', {'url_change_password' : path('admin_user_change_my_password'),
                         'translate' : changePasswordTranslate}) }}></div>
                 </div>
             </div>
