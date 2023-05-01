@@ -11,7 +11,7 @@ export default {
     name: "ChangePassword",
     props: {
         url_change_password: String,
-        translate: Array
+        translate: Object
     },
     data() {
         return {
