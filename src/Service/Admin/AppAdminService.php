@@ -10,6 +10,8 @@ namespace App\Service\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -83,6 +85,19 @@ class AppAdminService
     {
         $repo = $this->getRepository($entity::class);
         $repo->save($entity, $flush);
+    }
+
+    /**
+     * Permet de vérifier les droits
+     * @param mixed $attribute
+     * @param mixed|null $subject
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function isGranted(mixed $attribute, mixed $subject = null): bool
+    {
+        return $this->containerBag->get('security.authorization_checker')->isGranted($attribute, $subject);
     }
 
 }
