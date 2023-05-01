@@ -48,7 +48,9 @@
                     {{ 'user.page_my_account.danger' | trans({}, 'user') }}
                 </div>
                 <div class="card-body">
-                    <i>TODO SOON...</i>
+                    <div {{ vue_component('Admin/User/MyAccountDanger', {'url_disabled' : path('admin_user_change_my_password'),
+                        'url_delete' : path('admin_user_change_my_password'),
+                        'translate' : changePasswordTranslate}) }}></div>
                 </div>
             </div>
         </div>
