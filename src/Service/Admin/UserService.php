@@ -133,43 +133,49 @@ class UserService extends AppAdminService
 
         $actions = [];
 
-        // Bouton disabled
-        $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
-            'url' => $this->router->generate('admin_user_update_disabled', ['id' => $user->getId()]),
-            'ajax' => true,
-            'confirm' => true,
-            'msgConfirm' =>
-                $this->translator->trans('user.confirm.disabled.msg', ['{login}' => $user->getLogin()], 'user')];
-        if ($user->isDisabled()) {
-            $actionDisabled = ['label' => '<i class="bi bi-eye-fill"></i>', 'url' =>
-                $this->router->generate('admin_user_update_disabled', ['id' => $user->getId()]), 'ajax' => true];
-        }
 
-        $actions[] = $actionDisabled;
-
-        $canDelete = $this->optionSystemService->getValueByKey(OptionSystemService::OS_ALLOW_DELETE_DATA);
-        $replaceUser = $this->optionSystemService->getValueByKey(OptionSystemService::OS_REPLACE_DELETE_USER);
-
-        // Bouton Delete
-        $actionDelete = '';
-        if ($canDelete === '1') {
-
-            $msgConfirm = $this->translator->trans('user.confirm.delete.msg', ['{login}' => $user->getLogin()], 'user');
-            if ($replaceUser === '1') {
-                $msgConfirm = $this->translator->trans('user.confirm.replace.msg', ['{login}' => $user->getLogin()], 'user');
-            }
-
-            $actionDelete = [
-                'label' => '<i class="bi bi-trash"></i>',
-                'url' => $this->router->generate('admin_user_delete', ['id' => $user->getId()]),
+        $isSuperAdmin = in_array('ROLE_SUPER_ADMIN', $user->getRoles());
+        if (!$isSuperAdmin) {
+            // Bouton disabled
+            $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
+                'url' => $this->router->generate('admin_user_update_disabled', ['id' => $user->getId()]),
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $msgConfirm
-            ];
-        }
+                'msgConfirm' =>
+                    $this->translator->trans('user.confirm.disabled.msg', ['{login}' => $user->getLogin()], 'user')];
+            if ($user->isDisabled()) {
+                $actionDisabled = ['label' => '<i class="bi bi-eye-fill"></i>', 'url' =>
+                    $this->router->generate('admin_user_update_disabled', ['id' => $user->getId()]), 'ajax' => true];
+            }
 
-        if ($actionDelete != '') {
-            $actions[] = $actionDelete;
+            $actions[] = $actionDisabled;
+
+            $canDelete = $this->optionSystemService->getValueByKey(OptionSystemService::OS_ALLOW_DELETE_DATA);
+            $replaceUser = $this->optionSystemService->getValueByKey(OptionSystemService::OS_REPLACE_DELETE_USER);
+
+            // Bouton Delete
+            $actionDelete = '';
+            if ($canDelete === '1') {
+
+                $msgConfirm = $this->translator->trans('user.confirm.delete.msg', ['{login}' =>
+                    $user->getLogin()], 'user');
+                if ($replaceUser === '1') {
+                    $msgConfirm = $this->translator->trans('user.confirm.replace.msg', ['{login}' =>
+                        $user->getLogin()], 'user');
+                }
+
+                $actionDelete = [
+                    'label' => '<i class="bi bi-trash"></i>',
+                    'url' => $this->router->generate('admin_user_delete', ['id' => $user->getId()]),
+                    'ajax' => true,
+                    'confirm' => true,
+                    'msgConfirm' => $msgConfirm
+                ];
+            }
+
+            if ($actionDelete != '') {
+                $actions[] = $actionDelete;
+            }
         }
 
         // Bouton edit
