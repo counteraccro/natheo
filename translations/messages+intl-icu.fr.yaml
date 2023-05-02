@@ -29,7 +29,7 @@ options_system.logo_site: 'Logo de votre site'
 options_system.logo_site_help: 'Permet de définir un petit logo devant le nom de votre site, laisser vide pour ne pas en avoir'
 options_system.logo_site_no_value: ''
 options_system.replace_delete_user: "Remplacer l'utilisateur supprimé par l'utilisateur fantôme John Doe"
-options_system.replace_delete_user_help: "Permet de remplacer l'utilisateur à supprimer par un utilisateur fantôme au lieu de le désactiver ou de le supprimer. La suppression ne fonctionne que si l'option 'Autoriser la suppression des données' est activé"
+options_system.replace_delete_user_help: "Permet de remplacer l'utilisateur à supprimer par un utilisateur fantôme au lieu de le désactiver ou de le supprimer. cette option ne fonctionne que si l'option 'Autoriser la suppression des données' est activé"
 options_system.confirm_leave_form: 'Demander une confirmation avant de quitter une page contenant un formulaire'
 options_system.confirm_leave_form_help: 'Une confirmation vous sera demandé à chaque fois que vous voudrez quitter une page contenant un formulaire si cette option est activé'
 options_system.open_site: 'Ouvrir le site au public ?'
