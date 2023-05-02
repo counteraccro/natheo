@@ -11,6 +11,7 @@ namespace App\Controller\Admin;
 use App\Entity\Admin\User;
 use App\Form\Admin\User\MyAccountType;
 use App\Service\Admin\Breadcrumb;
+use App\Service\Admin\OptionSystemService;
 use App\Service\Admin\OptionUserService;
 use App\Service\Admin\UserService;
 use App\Utils\Role;
@@ -158,11 +159,14 @@ class UserController extends AppAdminController
      * Mise à jour des données de l'utilisateur par lui-même
      * @param UserService $userService
      * @param Request $request
+     * @param OptionSystemService $optionSystemService
      * @return Response
      */
     #[Route('/my-account', name: 'my_account', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
-    public function updateMyAccount(UserService $userService, Request $request): Response
+    public function updateMyAccount(UserService         $userService, Request $request,
+                                    OptionSystemService $optionSystemService
+    ): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'user',
@@ -181,13 +185,18 @@ class UserController extends AppAdminController
             $userService->save($user);
         }
 
+        $canDelete = $optionSystemService->getValueByKey(OptionSystemService::OS_ALLOW_DELETE_DATA);
+        $canReplace = $optionSystemService->getValueByKey(OptionSystemService::OS_REPLACE_DELETE_USER);
+
         return $this->render('admin/user/my_account.html.twig', [
             'breadcrumb' => $breadcrumb,
             'form' => $form,
             'dateUpdate' => $user->getFormatDate(),
             'userId' => $user->getId(),
             'changePasswordTranslate' => $userService->getTranslateChangePassword(),
-            'dangerZoneTranslate' => $userService->getTranslateDangerZone()
+            'dangerZoneTranslate' => $userService->getTranslateDangerZone(),
+            'canDelete' => $canDelete,
+            'canReplace' => $canReplace
         ]);
     }
 
@@ -218,25 +227,31 @@ class UserController extends AppAdminController
     /**
      * Permet à l'utilisateur de s'auto désactivé
      * @param TranslatorInterface $translator
+     * @param UserService $userService
+     * @param Request $request
      * @return JsonResponse
      */
     #[Route('/ajax/self-disabled', name: 'self_disabled', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function selfDisabled(TranslatorInterface $translator): JsonResponse
+    public function selfDisabled(TranslatorInterface $translator, UserService $userService, Request $request): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
         $role = new Role($user);
         if ($role->isSuperAdmin()) {
             $msg = $translator->trans('user.error_not_disabled', domain: 'user');
+            $url = '';
         } else {
             $user->setDisabled(true);
+            $userService->save($user);
             $msg = $translator->trans('user.self_disabled_success', domain: 'user');
+            $url = $this->generateUrl('auth_logout');
         }
 
         return $this->json([
             'status' => 'success',
-            'msg' => $msg
+            'msg' => $msg,
+            'redirect' => $url
         ]);
     }
 }

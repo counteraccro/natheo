@@ -156,7 +156,7 @@ class UserService extends AppAdminService
 
             // Bouton Delete
             $actionDelete = '';
-            if ($canDelete === '1' || $replaceUser === '1') {
+            if ($canDelete === '1') {
 
                 $msgConfirm = $this->translator->trans('user.confirm.delete.msg', ['{login}' =>
                     $user->getLogin()], 'user');
@@ -216,7 +216,15 @@ class UserService extends AppAdminService
     public function getTranslateDangerZone(): array
     {
         return [
+            'loading' => $this->translator->trans('user.danger_zone.loading', domain: 'user'),
             'btn_disabled' => $this->translator->trans('user.danger_zone.btn_disabled', domain: 'user'),
+            'btn_delete' => $this->translator->trans('user.danger_zone.btn_delete', domain: 'user'),
+            'btn_replace' => $this->translator->trans('user.danger_zone.btn_replace', domain: 'user'),
+            'disabled_title' => $this->translator->trans('user.danger_zone.title_disabled', domain: 'user'),
+            'disabled_content_1' => $this->translator->trans('user.danger_zone.content_disabled_1', domain: 'user'),
+            'disabled_content_2' => $this->translator->trans('user.danger_zone.content_disabled_2', domain: 'user'),
+            'disabled_btn_cancel' => $this->translator->trans('user.danger_zone.btn_cancel_disabled', domain: 'user'),
+            'disabled_btn_confirm' => $this->translator->trans('user.danger_zone.btn_confirm_disabled', domain: 'user'),
         ];
     }
 
