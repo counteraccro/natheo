@@ -225,6 +225,16 @@ class UserService extends AppAdminService
             'disabled_content_2' => $this->translator->trans('user.danger_zone.content_disabled_2', domain: 'user'),
             'disabled_btn_cancel' => $this->translator->trans('user.danger_zone.btn_cancel_disabled', domain: 'user'),
             'disabled_btn_confirm' => $this->translator->trans('user.danger_zone.btn_confirm_disabled', domain: 'user'),
+            'delete_btn_cancel' => $this->translator->trans('user.danger_zone.btn_cancel_delete', domain: 'user'),
+            'delete_btn_confirm' => $this->translator->trans('user.danger_zone.btn_confirm_delete', domain: 'user'),
+            'delete_title' => $this->translator->trans('user.danger_zone.title_delete', domain: 'user'),
+            'delete_content_1' => $this->translator->trans('user.danger_zone.content_delete_1', domain: 'user'),
+            'delete_content_2' => $this->translator->trans('user.danger_zone.content_delete_2', domain: 'user'),
+            'replace_btn_cancel' => $this->translator->trans('user.danger_zone.btn_cancel_replace', domain: 'user'),
+            'replace_btn_confirm' => $this->translator->trans('user.danger_zone.btn_confirm_replace', domain: 'user'),
+            'replace_title' => $this->translator->trans('user.danger_zone.title_replace', domain: 'user'),
+            'replace_content_1' => $this->translator->trans('user.danger_zone.content_replace_1', domain: 'user'),
+            'replace_content_2' => $this->translator->trans('user.danger_zone.content_replace_2', domain: 'user'),
         ];
     }
 

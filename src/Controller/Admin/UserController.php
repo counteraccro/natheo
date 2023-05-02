@@ -192,7 +192,6 @@ class UserController extends AppAdminController
             'breadcrumb' => $breadcrumb,
             'form' => $form,
             'dateUpdate' => $user->getFormatDate(),
-            'userId' => $user->getId(),
             'changePasswordTranslate' => $userService->getTranslateChangePassword(),
             'dangerZoneTranslate' => $userService->getTranslateDangerZone(),
             'canDelete' => $canDelete,
@@ -228,12 +227,11 @@ class UserController extends AppAdminController
      * Permet à l'utilisateur de s'auto désactivé
      * @param TranslatorInterface $translator
      * @param UserService $userService
-     * @param Request $request
      * @return JsonResponse
      */
     #[Route('/ajax/self-disabled', name: 'self_disabled', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function selfDisabled(TranslatorInterface $translator, UserService $userService, Request $request): JsonResponse
+    public function selfDisabled(TranslatorInterface $translator, UserService $userService): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -246,6 +244,38 @@ class UserController extends AppAdminController
             $userService->save($user);
             $msg = $translator->trans('user.self_disabled_success', domain: 'user');
             $url = $this->generateUrl('auth_logout');
+        }
+
+        return $this->json([
+            'status' => 'success',
+            'msg' => $msg,
+            'redirect' => $url
+        ]);
+    }
+
+    /**
+     * Permet à l'utilisateur de s'auto supprimer
+     * @param TranslatorInterface $translator
+     * @param UserService $userService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/self-delete', name: 'self_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_USER')]
+    public function selfDelete(TranslatorInterface $translator, UserService $userService): JsonResponse
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $role = new Role($user);
+        if ($role->isSuperAdmin()) {
+            $msg = $translator->trans('user.error_not_disabled', domain: 'user');
+            $url = '';
+        } else {
+
+            //$canDelete = $optionSystemService->getValueByKey(OptionSystemService::OS_ALLOW_DELETE_DATA);
+            //$canReplace = $optionSystemService->getValueByKey(OptionSystemService::OS_REPLACE_DELETE_USER);
+
+            $msg = '';
+            $url = '';
         }
 
         return $this->json([

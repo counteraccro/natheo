@@ -17,7 +17,8 @@ export default {
             confirm_disabled: false,
             msg_return: this.translate.loading,
             url_reload: '',
-            modalDelete: ''
+            modalDelete: '',
+            confirm_delete: false,
         }
     },
     mounted() {
@@ -29,8 +30,24 @@ export default {
         /**
          * Action pour le delete
          */
-        delete() {
-            this.modalDelete.show();
+        delete(confirm) {
+            this.confirm_delete = confirm;
+            if (!confirm) {
+                this.modalDelete.show();
+            }
+            else {
+                axios.post(this.url_delete, {
+                }).then((response) => {
+                    this.msg_return = response.data.msg;
+                    this.url_reload = response.data.redirect;
+                }).catch((error) => {
+                    console.log(error);
+                }).finally(() => {
+                    setTimeout(() => {
+                        document.location.href = this.url_reload
+                    }, 3000)
+                });
+            }
         },
 
         /**
@@ -54,6 +71,16 @@ export default {
                     }, 3000)
                 });
             }
+        },
+
+        isDelete()
+        {
+            return !!(this.can_delete === '1' && this.can_replace === '0');
+        },
+
+        isReplace()
+        {
+            return this.can_delete === '1' && this.can_replace === '1';
         }
     }
 }
@@ -90,24 +117,39 @@ export default {
     <div class="modal fade" id="modal-alert-delete" tabindex="-1" aria-labelledby="modal-alert" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header bg-secondary">
-                    <h1 class="modal-title fs-5 text-white">{{ this.translate.disabled_title }}</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header bg-danger">
+                    <h1 v-if="this.isDelete()" class="modal-title fs-5 text-white">{{ this.translate.delete_title }}</h1>
+                    <h1 v-if="this.isReplace()" class="modal-title fs-5 text-white">{{ this.translate.replace_title }}</h1>
+                    <button v-if="!this.confirm_delete" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    {{ this.translate.disabled_content }}
+                    <div v-if="!this.confirm_delete">
+                        <div v-if="this.isDelete()">
+                            <i class="bi bi-exclamation-triangle-fill"></i> {{ this.translate.delete_content_1 }} <br/>
+                            <p class="mt-2"><i>{{ this.translate.delete_content_2 }}</i></p>
+                        </div>
+                        <div v-if="this.isReplace()">
+                            <i class="bi bi-exclamation-triangle-fill"></i> {{ this.translate.replace_content_1 }} <br/>
+                            <p class="mt-2"><i>{{ this.translate.replace_content_2 }}</i></p>
+                        </div>
+                    </div>
+                    <div v-else>
+                        <p v-html="this.msg_return"></p>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button v-if="!this.confirm_delete && this.isDelete()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ this.translate.delete_btn_cancel }}</button>
+                    <button v-if="!this.confirm_delete && this.isReplace()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ this.translate.replace_btn_cancel }}</button>
+                    <button v-if="this.isDelete()" type="button" class="btn btn-danger" @click="this.delete(true)">{{ this.translate.delete_btn_confirm }}</button>
+                    <button v-if="this.isReplace()" type="button" class="btn btn-danger" @click="this.delete(true)">{{ this.translate.replace_btn_confirm }}</button>
                 </div>
             </div>
         </div>
     </div>
 
     <button class="btn btn-danger me-3" @click="this.disabled(false)">{{ this.translate.btn_disabled }}</button>
-    <button v-if="this.can_delete === '1' && this.can_replace === '0'" class="btn btn-danger" @click="this.delete(false)">{{ this.translate.btn_delete }}</button>
-    <button v-if="this.can_delete === '1' && this.can_replace === '1'"  class="btn btn-danger" @click="this.delete(false)">{{ this.translate.btn_replace }}</button>
+    <button v-if="this.isDelete()" class="btn btn-danger" @click="this.delete(false)">{{ this.translate.btn_delete }}</button>
+    <button v-if="this.isReplace()"  class="btn btn-danger" @click="this.delete(false)">{{ this.translate.btn_replace }}</button>
 </template>
 
 <style scoped>

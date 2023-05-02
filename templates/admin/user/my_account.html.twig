@@ -45,14 +45,14 @@
                         'translate' : changePasswordTranslate}) }}></div>
                 </div>
             </div>
-            {% if not is_granted(constant('App\\Utils\\Role::ROLE_SUPER_ADMIN')) %}
+            {% if is_granted(constant('App\\Utils\\Role::ROLE_SUPER_ADMIN')) %}
                 <div class="card mt-3 border border-danger">
                     <div class="card-header text-bg-danger">
                         {{ 'user.page_my_account.danger' | trans({}, 'user') }}
                     </div>
                     <div class="card-body">
                         <div {{ vue_component('Admin/User/MyAccountDangerZone', {'url_disabled' : path('admin_user_self_disabled'),
-                            'url_delete' : path('admin_user_delete',  {'id' : userId}),
+                            'url_delete' : path('admin_user_self_delete'),
                             'translate' : dangerZoneTranslate,
                             'can_delete' : canDelete, 'can_replace' : canReplace
                         }) }}></div>
