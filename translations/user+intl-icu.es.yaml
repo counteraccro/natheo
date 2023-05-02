@@ -64,3 +64,12 @@ user.error.password_2: __user.error.password_2
 user.update_password.success: __user.update_password.success
 user.error_not_disabled: __user.error_not_disabled
 user.self_disabled_success: __user.self_disabled_success
+user.danger_zone.loading: __user.danger_zone.loading
+user.danger_zone.btn_disabled: __user.danger_zone.btn_disabled
+user.danger_zone.btn_delete: __user.danger_zone.btn_delete
+user.danger_zone.btn_replace: __user.danger_zone.btn_replace
+user.danger_zone.title_disabled: __user.danger_zone.title_disabled
+user.danger_zone.content_disabled_1: __user.danger_zone.content_disabled_1
+user.danger_zone.content_disabled_2: __user.danger_zone.content_disabled_2
+user.danger_zone.btn_cancel_disabled: __user.danger_zone.btn_cancel_disabled
+user.danger_zone.btn_confirm_disabled: __user.danger_zone.btn_confirm_disabled
