@@ -73,3 +73,13 @@ user.danger_zone.btn_confirm_disabled: 'Je confirme mon choix'
 user.danger_zone.loading: 'Action en cours de réalisation...'
 user.danger_zone.btn_delete: 'Supprimer mon compte'
 user.danger_zone.btn_replace: 'Anonymiser mon compte'
+user.danger_zone.btn_cancel_delete: Annuler
+user.danger_zone.btn_confirm_delete: 'Je confirme mon choix'
+user.danger_zone.title_delete: 'Suppression de mon compte'
+user.danger_zone.content_delete_1: "Vous êtes sur le point de supprimer votre compte, après cette action vous perdrez l'ensemble du contenu réalisé sur ce site et vous ne pourrez plus vous connecter sur le site"
+user.danger_zone.content_delete_2: "Cette action est définitive et sans retour possible"
+user.danger_zone.btn_cancel_replace: Annuler
+user.danger_zone.btn_confirm_replace: "Je confirme mon choix"
+user.danger_zone.title_replace: "Anonymiser mon compte"
+user.danger_zone.content_replace_1: "Vous êtes sur le point d'anonymiser votre compte, après cette action vous perdrez l'ensemble du contenu réalisé sur ce site et vous ne pourrez plus vous connecter sur le site"
+user.danger_zone.content_replace_2: "Cette action est définitive et sans retour possible"

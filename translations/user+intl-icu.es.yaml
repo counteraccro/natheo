@@ -73,3 +73,13 @@ user.danger_zone.content_disabled_1: __user.danger_zone.content_disabled_1
 user.danger_zone.content_disabled_2: __user.danger_zone.content_disabled_2
 user.danger_zone.btn_cancel_disabled: __user.danger_zone.btn_cancel_disabled
 user.danger_zone.btn_confirm_disabled: __user.danger_zone.btn_confirm_disabled
+user.danger_zone.btn_cancel_delete: __user.danger_zone.btn_cancel_delete
+user.danger_zone.btn_confirm_delete: __user.danger_zone.btn_confirm_delete
+user.danger_zone.title_delete: __user.danger_zone.title_delete
+user.danger_zone.content_delete_1: __user.danger_zone.content_delete_1
+user.danger_zone.content_delete_2: __user.danger_zone.content_delete_2
+user.danger_zone.btn_cancel_replace: __user.danger_zone.btn_cancel_replace
+user.danger_zone.btn_confirm_replace: __user.danger_zone.btn_confirm_replace
+user.danger_zone.title_replace: __user.danger_zone.title_replace
+user.danger_zone.content_replace_1: __user.danger_zone.content_replace_1
+user.danger_zone.content_replace_2: __user.danger_zone.content_replace_2
