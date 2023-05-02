@@ -2,7 +2,6 @@
  * @author Gourdon Aymeric
  * @version 1.0
  * Changement du mot de passe pour un compte user
- * https://www.gekkode.com/developpement/expression-reguliere-pour-valider-un-mot-de-passe/
  */
 
 import axios from "axios";
