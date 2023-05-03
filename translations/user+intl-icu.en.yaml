@@ -83,3 +83,8 @@ user.danger_zone.btn_confirm_replace: __user.danger_zone.btn_confirm_replace
 user.danger_zone.title_replace: __user.danger_zone.title_replace
 user.danger_zone.content_replace_1: __user.danger_zone.content_replace_1
 user.danger_zone.content_replace_2: __user.danger_zone.content_replace_2
+user.success_anonymous: __user.success_anonymous
+user.success_remove: __user.success_remove
+user.error_not_allowed: __user.error_not_allowed
+user.danger_zone.success_anonymous: __user.danger_zone.success_anonymous
+user.danger_zone.success_remove: __user.danger_zone.success_remove
