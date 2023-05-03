@@ -129,7 +129,7 @@ class LoggerService extends AppService
      * @param int $id
      * @return void
      */
-    public function logDoctrine(string $action, string $entity, int $id): void
+    public function logDoctrine(string $action, string $entity, mixed $id = -1): void
     {
         /** @var User $currentUser */
         $currentUser = $this->security->getUser();
@@ -148,23 +148,27 @@ class LoggerService extends AppService
                         $user, 'id_user' => $idUser], 'log'
                 );
                 $this->doctrineLogLogger->notice($msg);
+                $typeOption = 'user';
                 break;
             case self::ACTION_DOCTRINE_REMOVE :
                 $msg = $this->translator->trans('log.doctrine.remove', ['entity' => $entity, 'id' => $id, 'user' =>
                         $user, 'id_user' => $idUser], 'log'
                 );
                 $this->doctrineLogLogger->warning($msg);
+                $typeOption = 'system';
                 break;
             case self::ACTION_DOCTRINE_UPDATE :
                 $msg = $this->translator->trans('log.doctrine.update', ['entity' => $entity, 'id' => $id, 'user' =>
                         $user, 'id_user' => $idUser], 'log'
                 );
                 $this->doctrineLogLogger->info($msg);
+                $typeOption = 'user';
                 break;
             default:
                 $msg = '';
+                $typeOption = 'user';
         }
-        $this->switchDefaultLocale();
+        $this->switchDefaultLocale($typeOption);
     }
 
     /**
