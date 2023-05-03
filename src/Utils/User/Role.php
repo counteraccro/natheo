@@ -3,10 +3,10 @@
  * @author Gourdon Aymeric
  * @version 1.0
  * Permet de savoir si le User possède un role ou non
- * Pour controller avec la hierarchie des droits utilisés isGranted
+ * Pour controller avec la hiérarchie des droits utilisés isGranted
  */
 
-namespace App\Utils;
+namespace App\Utils\User;
 
 use App\Entity\Admin\User;
 
