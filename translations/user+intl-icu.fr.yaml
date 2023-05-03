@@ -87,4 +87,4 @@ user.success_anonymous: 'Le compte à été anonymisé avec succès'
 user.success_remove: 'Le compte à été supprimé avec succès'
 user.error_not_allowed: "Cette action n'est pas autorisée"
 user.danger_zone.success_anonymous: 'Votre compte à été anonymiser avec succès, déconnexion dans 3 secondes...'
-user.danger_zone.success_remove: "Cette action n'est pas autorisée"
+user.danger_zone.success_remove: "Votre compte à été supprimé avec succès, déconnexion dans 3 secondes..."
