@@ -49,6 +49,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $disabled = null;
 
+    #[ORM\Column]
+    private ?bool $anonymous = false;
+
     #[Gedmo\Timestampable(on: "create")]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
@@ -238,6 +241,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * @param Collection $optionsUsers
+     * @return $this
+     */
+    public function removeAllOptionsUser(Collection $optionsUsers)
+    {
+        foreach ($optionsUsers as $optionsUser) {
+            if ($this->optionsUser->removeElement($optionsUser)) {
+                // set the owning side to null (unless already changed)
+                if ($optionsUser->getUser() === $this) {
+                    $optionsUser->setUser(null);
+                }
+            }
+        }
+        return $this;
+    }
+
+    /**
      * Retourne une date formatée en string
      * @param string $dateName - valeur update ou create
      * @return string
@@ -249,5 +269,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             'create' => $this->getCreatedAt()->format('l d F Y H:i:s'),
             default => "",
         };
+    }
+
+    public function isAnonymous(): ?bool
+    {
+        return $this->anonymous;
+    }
+
+    public function setAnonymous(bool $anonymous): self
+    {
+        $this->anonymous = $anonymous;
+
+        return $this;
     }
 }
