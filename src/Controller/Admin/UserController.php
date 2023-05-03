@@ -14,7 +14,9 @@ use App\Service\Admin\Breadcrumb;
 use App\Service\Admin\OptionSystemService;
 use App\Service\Admin\OptionUserService;
 use App\Service\Admin\UserService;
-use App\Utils\Role;
+use App\Utils\User\Anonymous;
+use App\Utils\User\Role;
+use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -127,9 +129,33 @@ class UserController extends AppAdminController
 
     #[Route('/ajax/delete/{id}', name: 'delete', methods: ['POST'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]
-    public function delete(User $user, UserService $userService): JsonResponse
+    public function delete(
+        User                $user,
+        UserService         $userService,
+        TranslatorInterface $translator,
+        OptionSystemService $optionSystemService
+    ): JsonResponse
     {
-        return $this->json(['type' => 'success', 'msg' => 'delete']);
+        $role = new Role($user);
+        if ($role->isSuperAdmin()) {
+            $msg = $translator->trans('user.error_not_disabled', domain: 'user');
+        } else {
+            $canDelete = $optionSystemService->getValueByKey(OptionSystemService::OS_ALLOW_DELETE_DATA);
+            $canReplace = $optionSystemService->getValueByKey(OptionSystemService::OS_REPLACE_DELETE_USER);
+
+            if ($canDelete === '1') {
+                if ($canReplace === '1') {
+                    $userService->anonymizer($user);
+                    $msg = $translator->trans('user.success_anonymous', domain: 'user');
+                } else {
+                    $userService->remove($user);
+                    $msg = $translator->trans('user.success_remove', domain: 'user');
+                }
+            } else {
+                $msg = $translator->trans('user.error_not_allowed', domain: 'user');
+            }
+        }
+        return $this->json(['type' => 'success', 'msg' => $msg]);
     }
 
     /**
@@ -164,8 +190,10 @@ class UserController extends AppAdminController
      */
     #[Route('/my-account', name: 'my_account', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
-    public function updateMyAccount(UserService         $userService, Request $request,
-                                    OptionSystemService $optionSystemService
+    public function updateMyAccount(
+        UserService         $userService,
+        Request             $request,
+        OptionSystemService $optionSystemService
     ): Response
     {
         $breadcrumb = [
@@ -208,8 +236,10 @@ class UserController extends AppAdminController
      */
     #[Route('/change-my-password', name: 'change_my_password', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function updatePassword(UserService         $userService, Request $request,
-                                   TranslatorInterface $translator
+    public function updatePassword(
+        UserService         $userService,
+        Request             $request,
+        TranslatorInterface $translator
     ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -257,25 +287,42 @@ class UserController extends AppAdminController
      * Permet à l'utilisateur de s'auto supprimer
      * @param TranslatorInterface $translator
      * @param UserService $userService
+     * @param OptionSystemService $optionSystemService
      * @return JsonResponse
+     * @throws Exception
      */
     #[Route('/ajax/self-delete', name: 'self_delete', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function selfDelete(TranslatorInterface $translator, UserService $userService): JsonResponse
+    public function selfDelete(
+        TranslatorInterface $translator,
+        UserService         $userService,
+        OptionSystemService $optionSystemService
+    ): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
         $role = new Role($user);
+        $url = '';
         if ($role->isSuperAdmin()) {
             $msg = $translator->trans('user.error_not_disabled', domain: 'user');
-            $url = '';
         } else {
 
-            //$canDelete = $optionSystemService->getValueByKey(OptionSystemService::OS_ALLOW_DELETE_DATA);
-            //$canReplace = $optionSystemService->getValueByKey(OptionSystemService::OS_REPLACE_DELETE_USER);
+            $canDelete = $optionSystemService->getValueByKey(OptionSystemService::OS_ALLOW_DELETE_DATA);
+            $canReplace = $optionSystemService->getValueByKey(OptionSystemService::OS_REPLACE_DELETE_USER);
 
-            $msg = '';
-            $url = '';
+            if ($canDelete === '1') {
+                if ($canReplace === '1') {
+                    $userService->anonymizer($user);
+                    $msg = $translator->trans('user.danger_zone.success_anonymous', domain: 'user');
+                    $url = $this->generateUrl('auth_logout');
+                } else {
+                    $userService->remove($user);
+                    $msg = $translator->trans('user.danger_zone.success_remove', domain: 'user');
+                    $url = $this->generateUrl('index_index');
+                }
+            } else {
+                $msg = $translator->trans('user.error_not_allowed', domain: 'user');
+            }
         }
 
         return $this->json([

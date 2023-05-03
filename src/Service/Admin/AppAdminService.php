@@ -88,6 +88,20 @@ class AppAdminService
     }
 
     /**
+     * Permet de supprimer une entité
+     * @param mixed $entity
+     * @param bool $flush
+     * @return void
+     */
+    public function remove(mixed $entity, bool $flush = true): void
+    {
+        $repo = $this->getRepository($entity::class);
+        $repo->remove($entity, $flush);
+    }
+
+
+
+    /**
      * Permet de vérifier les droits
      * @param mixed $attribute
      * @param mixed|null $subject

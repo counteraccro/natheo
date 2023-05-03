@@ -45,7 +45,7 @@
                         'translate' : changePasswordTranslate}) }}></div>
                 </div>
             </div>
-            {% if is_granted(constant('App\\Utils\\Role::ROLE_SUPER_ADMIN')) %}
+            {% if not is_granted(constant('App\\Utils\\User\\Role::ROLE_SUPER_ADMIN')) %}
                 <div class="card mt-3 border border-danger">
                     <div class="card-header text-bg-danger">
                         {{ 'user.page_my_account.danger' | trans({}, 'user') }}

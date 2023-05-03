@@ -9,10 +9,11 @@
 namespace App\Service\Admin;
 
 use App\Entity\Admin\User;
-use App\Repository\Admin\UserRepository;
-use App\Utils\Role;
+use App\Utils\User\Anonymous;
+use App\Utils\User\Role;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Exception;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -93,6 +94,12 @@ class UserService extends AppAdminService
                 $isDisabled = '<i class="bi bi-eye-slash"></i>';
             }
 
+            $email = $user->getEmail();
+            if ($user->isAnonymous()) {
+                $isDisabled = '<i class="bi bi-recycle"></i>';
+                $email = '--@anonyme.com';
+            }
+
             $roles = '';
             foreach ($user->getRoles() as $role) {
                 $roles .= $this->gridService->renderRole($role) . ', ';
@@ -103,7 +110,7 @@ class UserService extends AppAdminService
             $data[] = [
                 $this->translator->trans('user.grid.id', domain: 'user') => $user->getId() . ' ' . $isDisabled,
                 $this->translator->trans('user.grid.login', domain: 'user') => $user->getLogin(),
-                $this->translator->trans('user.grid.email', domain: 'user') => $user->getEmail(),
+                $this->translator->trans('user.grid.email', domain: 'user') => $email,
                 $this->translator->trans('user.grid.name', domain: 'user') => $user->getFirstname() . ' ' . $user->
                     getLastname(),
                 $this->translator->trans('user.grid.role', domain: 'user') => $roles,
@@ -133,6 +140,11 @@ class UserService extends AppAdminService
     {
 
         $actions = [];
+
+        if($user->isAnonymous())
+        {
+            return $actions;
+        }
 
         $role = new Role($user);
         $isSuperAdmin = $role->isSuperAdmin();
@@ -247,6 +259,19 @@ class UserService extends AppAdminService
     public function updatePassword(User $user, $password)
     {
         $user->setPassword($this->passwordHasher->hashPassword($user, $password));
+        $this->save($user);
+    }
+
+    /**
+     * Permet d'anonymiser un user
+     * @param User $user
+     * @return void
+     * @throws Exception
+     */
+    public function anonymizer(User $user)
+    {
+        $anonymous = new Anonymous($user);
+        $user = $anonymous->anonymizer();
         $this->save($user);
     }
 }
