@@ -53,10 +53,11 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
      */
     public function loadUserByIdentifier(string $identifier): ?User
     {
-        $query = $this->createQueryBuilder('u');
-        $query->where('u.email = :email');
-        $query->setParameter('email', $identifier);
-        $query->andWhere('u.disabled = false');
+        $query = $this->createQueryBuilder('u')
+        ->where('u.email = :email')
+        ->setParameter('email', $identifier)
+        ->andWhere('u.disabled = false')
+        ->andWhere('u.anonymous = false');
 
         return $query->getQuery()->getOneOrNullResult();
     }
