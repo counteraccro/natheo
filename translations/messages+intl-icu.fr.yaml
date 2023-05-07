@@ -86,7 +86,7 @@ options_system.logs.title: 'Gestion des logs'
 options_system.logs.description: "Gérer le niveau de log et suivi que vous voulez avoir sur l'application. Attention, un haut niveau de log peut générer des fichiers volumineux"
 options_system.log_doctrine: 'Enregistrer tout changement dans la base de donnée'
 options_system.log_doctrine_help: 'Permet de tracer toutes modifications de donnée (ajout/édition/suppression) sur le site, peut générer des fichiers volumineux'
-mail.change.password.title: 'Email de changement de mot de passe'
+mail.change.password.title: 'Changement de mot de passe'
 mail.change.password.description: "Email envoyé lorsqu'un utilisateur fait une demande de mot de passe"
 mail.user.email: 'Adresse email'
 mail.user.login: Login
@@ -114,11 +114,17 @@ options_system.adresse_site_msg_error: 'Ce champs ne peux pas être vide'
 options_system.adresse_site_help: 'URL racine, qui servira de référence pour la génération des liens externes'
 options_system.adresse_site_placeholder: URL
 options_system.adresse_site_msg_success: 'URL enregistrée avec succès'
-mail.account.adm.disable.title: 'Email information désactivation compte'
-mail.account.adm.disable.description: 'Email envoyé quand un compte user est désactivé (accès administratif)'
-mail.account.adm.enable.title: 'Email information réactivation compte'
-mail.account.adm.enable.description: 'Email envoyé quand un compte user est réactivé (accès administratif)'
-mail.create.account.adm.title: 'Email information création de compte'
-mail.create.account.adm.description: "Email envoyé quand un administrateur créé un compte pour accéder à l'administration"
+mail.account.adm.disable.title: 'Désactivation compte'
+mail.account.adm.disable.description: 'Email envoyé quand un compte utilisateur est désactivé (accès administratif) par un administrateur'
+mail.account.adm.enable.title: 'Réactivation compte'
+mail.account.adm.enable.description: 'Email envoyé quand un compte utilisateur est réactivé (accès administratif) par un administrateur'
+mail.create.account.adm.title: 'Création de compte'
+mail.create.account.adm.description: "Email envoyé à l'utilisateur quand un administrateur créé son compte pour accéder à l'administration"
+mail.self_disabled.title: "Utilisateur qui désactive son compte de lui même"
+mail.self_disabled.description: "Email envoyé quand un utilisateur décide de désactiver son compte de lui même"
+mail.self_delete.title: "Utilisateur qui supprime son compte de lui même"
+mail.self_delete.description: "Email envoyé quand un utilisateur décide de supprimer son compte de lui même"
+mail.self_anonymous.title: "Utilisateur qui anonymise son compte de lui même"
+mail.self_anonymous.description: "Email envoyé quand un utilisateur décide d'anonymiser son compte de lui même"
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: 'Elements HML disponibles (trad)'
