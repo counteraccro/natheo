@@ -92,12 +92,11 @@ class KeyWord
             self::USER_LASTNAME => '',
             self::GLOBAL_URL => '',
             self::GLOBAL_SITE_NAME => '',
-             self::ADMIN_LOGIN_ACTION => ''
         ],
         MailKey::KEY_MAIL_CHANGE_PASSWORD => [
             self::GLOBAL_URL_CHANGE_PASSWORD => '',
         ],
-        /*MailKey::KEY_MAIL_ACCOUNT_ADM_DISABLE => [
+        MailKey::KEY_MAIL_ACCOUNT_ADM_DISABLE => [
             self::ADMIN_LOGIN_ACTION => '',
         ],
         MailKey::MAIL_ACCOUNT_ADM_ENABLE => [
@@ -108,7 +107,13 @@ class KeyWord
         ],
         MailKey::MAIL_SELF_DISABLED_ACCOUNT => [
             self::ADMIN_LOGIN_ACTION => '',
-        ]*/
+        ],
+        MailKey::MAIL_SELF_DELETE_ACCOUNT => [
+            self::ADMIN_LOGIN_ACTION => '',
+        ],
+        MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT => [
+            self::ADMIN_LOGIN_ACTION => '',
+        ]
     ];
 
     /**
@@ -174,6 +179,18 @@ class KeyWord
     }
 
     /**
+     * Renvoi sous la forme d'un tableau le keyWord ADMIN_LOGIN_ACTION
+     * @param User $user
+     * @return array
+     */
+    private function getAdminLoginAction(User $user)
+    {
+        return [
+            '[[' . self::ADMIN_LOGIN_ACTION . ']]' => $user->getLogin(),
+        ];
+    }
+
+    /**
      * Renvoi le tableau de keyWord avec les valeurs correspondantes pour l'email
      * change password
      * @param User $user
@@ -213,11 +230,8 @@ class KeyWord
     ): array
     {
         $tab = $this->getGlobalKeyWord($user, $optionSystemService);
-        $tab2 = [
-            '[[' . self::ADMIN_LOGIN_ACTION . ']]' => $admin->getLogin(),
-        ];
+        $tab2 = $this->getAdminLoginAction($admin);
         $tab = array_merge($tab, $tab2);
-
         return $this->formatReturnValue($tab);
     }
 
@@ -247,6 +261,57 @@ class KeyWord
      * @return array
      */
     public function getTabMailCreateAccountAdm(
+        User                $user,
+        User                $admin,
+        OptionSystemService $optionSystemService
+    ): array
+    {
+        return $this->getTabMailAccountAdmDisabled($user, $admin, $optionSystemService);
+    }
+
+    /**
+     * Renvoi le tableau de keyWord avec les valeurs correspondantes pour l'email
+     * self disabled
+     * @param User $user
+     * @param User $admin
+     * @param OptionSystemService $optionSystemService
+     * @return array
+     */
+    public function getTabMailSelfDisabled(
+        User                $user,
+        User                $admin,
+        OptionSystemService $optionSystemService
+    ): array
+    {
+        return $this->getTabMailAccountAdmDisabled($user, $admin, $optionSystemService);
+    }
+
+    /**
+     * Renvoi le tableau de keyWord avec les valeurs correspondantes pour l'email
+     * self delete
+     * @param User $user
+     * @param User $admin
+     * @param OptionSystemService $optionSystemService
+     * @return array
+     */
+    public function getTabMailSelfDelete(
+        User                $user,
+        User                $admin,
+        OptionSystemService $optionSystemService
+    ): array
+    {
+        return $this->getTabMailAccountAdmDisabled($user, $admin, $optionSystemService);
+    }
+
+    /**
+     * Renvoi le tableau de keyWord avec les valeurs correspondantes pour l'email
+     * self anonymous
+     * @param User $user
+     * @param User $admin
+     * @param OptionSystemService $optionSystemService
+     * @return array
+     */
+    public function getTabMailSelfAnonymous(
         User                $user,
         User                $admin,
         OptionSystemService $optionSystemService

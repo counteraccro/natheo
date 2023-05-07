@@ -200,6 +200,12 @@ class MailController extends AppAdminController
             $keyWord->getTabMailAccountAdmEnabled($user, $user, $optionSystemService),
             MailKey::MAIL_CREATE_ACCOUNT_ADM =>
             $keyWord->getTabMailCreateAccountAdm($user, $user, $optionSystemService),
+            MailKey::MAIL_SELF_DISABLED_ACCOUNT =>
+            $keyWord->getTabMailSelfDisabled($user, $user, $optionSystemService),
+            MailKey::MAIL_SELF_DELETE_ACCOUNT =>
+            $keyWord->getTabMailSelfDelete($user, $user, $optionSystemService),
+            MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT =>
+            $keyWord->getTabMailSelfAnonymous($user, $user, $optionSystemService),
             default => [
                 KeyWord::KEY_SEARCH => [],
                 KeyWord::KEY_REPLACE => []
