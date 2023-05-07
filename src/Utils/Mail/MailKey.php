@@ -32,4 +32,19 @@ class MailKey
      * @const
      */
     public const MAIL_CREATE_ACCOUNT_ADM = 'MAIL_CREATE_ACCOUNT_ADM';
+
+    /**
+     * Clé pour le mail d'auto désactivation du compte
+     */
+    public const MAIL_SELF_DISABLED_ACCOUNT = 'MAIL_SELF_DISABLED_ACCOUNT';
+
+    /**
+     * Clé pour le mail d'auto suppression du compte
+     */
+    public const MAIL_SELF_DELETE_ACCOUNT = 'MAIL_SELF_DELETE_ACCOUNT';
+
+    /**
+     * Clé pour le mail d'auto anonymisation du compte
+     */
+    public const MAIL_SELF_ANONYMOUS_ACCOUNT = 'MAIL_SELF_ANONYMOUS_ACCOUNT';
 }

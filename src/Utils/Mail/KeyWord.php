@@ -91,12 +91,13 @@ class KeyWord
             self::USER_FIRSTNAME => '',
             self::USER_LASTNAME => '',
             self::GLOBAL_URL => '',
-            self::GLOBAL_SITE_NAME => ''
+            self::GLOBAL_SITE_NAME => '',
+             self::ADMIN_LOGIN_ACTION => ''
         ],
         MailKey::KEY_MAIL_CHANGE_PASSWORD => [
             self::GLOBAL_URL_CHANGE_PASSWORD => '',
         ],
-        MailKey::KEY_MAIL_ACCOUNT_ADM_DISABLE => [
+        /*MailKey::KEY_MAIL_ACCOUNT_ADM_DISABLE => [
             self::ADMIN_LOGIN_ACTION => '',
         ],
         MailKey::MAIL_ACCOUNT_ADM_ENABLE => [
@@ -104,7 +105,10 @@ class KeyWord
         ],
         MailKey::MAIL_CREATE_ACCOUNT_ADM => [
             self::ADMIN_LOGIN_ACTION => '',
-        ]
+        ],
+        MailKey::MAIL_SELF_DISABLED_ACCOUNT => [
+            self::ADMIN_LOGIN_ACTION => '',
+        ]*/
     ];
 
     /**
@@ -119,7 +123,10 @@ class KeyWord
     public function __construct(string $key)
     {
         $this->currentTabKeyWord = $this->tabKeyWord[self::KEY_GLOBAL];
-        $this->currentTabKeyWord = array_merge($this->currentTabKeyWord, $this->tabKeyWord[$key]);
+        if (isset($this->tabKeyWord[$key])) {
+            $this->currentTabKeyWord = array_merge($this->currentTabKeyWord, $this->tabKeyWord[$key]);
+        }
+
     }
 
     /**
@@ -174,8 +181,10 @@ class KeyWord
      * @param OptionSystemService $optionSystemService
      * @return array
      */
-    public function getMailChangePassword(User                $user, UrlGeneratorInterface $router,
-                                                    OptionSystemService $optionSystemService
+    public function getMailChangePassword(
+        User                  $user,
+        UrlGeneratorInterface $router,
+        OptionSystemService   $optionSystemService
     ): array
     {
         $url = $optionSystemService->getValueByKey(OptionSystemService::OS_ADRESSE_SITE);
@@ -197,8 +206,10 @@ class KeyWord
      * @param OptionSystemService $optionSystemService
      * @return array
      */
-    public function getTabMailAccountAdmDisabled(User                  $user, User $admin,
-                                                 OptionSystemService   $optionSystemService
+    public function getTabMailAccountAdmDisabled(
+        User                $user,
+        User                $admin,
+        OptionSystemService $optionSystemService
     ): array
     {
         $tab = $this->getGlobalKeyWord($user, $optionSystemService);
@@ -218,8 +229,11 @@ class KeyWord
      * @param OptionSystemService $optionSystemService
      * @return array
      */
-    public function getTabMailAccountAdmEnabled(User                  $user, User $admin,
-                                                OptionSystemService   $optionSystemService) : array
+    public function getTabMailAccountAdmEnabled(
+        User                $user,
+        User                $admin,
+        OptionSystemService $optionSystemService
+    ): array
     {
         return $this->getTabMailAccountAdmDisabled($user, $admin, $optionSystemService);
     }
@@ -232,8 +246,11 @@ class KeyWord
      * @param OptionSystemService $optionSystemService
      * @return array
      */
-    public function getTabMailCreateAccountAdm(User                  $user, User $admin,
-                                                OptionSystemService   $optionSystemService) : array
+    public function getTabMailCreateAccountAdm(
+        User                $user,
+        User                $admin,
+        OptionSystemService $optionSystemService
+    ): array
     {
         return $this->getTabMailAccountAdmDisabled($user, $admin, $optionSystemService);
     }
