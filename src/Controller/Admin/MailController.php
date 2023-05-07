@@ -184,7 +184,8 @@ class MailController extends AppAdminController
         Mail                  $mail,
         MailService           $mailService,
         OptionSystemService   $optionSystemService,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        TranslatorInterface   $translator
     ): JsonResponse
     {
         /* @var User $user */
@@ -230,7 +231,7 @@ class MailController extends AppAdminController
         $mailService->sendMail($params);
         return $this->json([
             'type' => 'success',
-            'msg' => 'Mail démo "' . $mail->getTitle() . '" envoyé avec succès à l\'adresse email de votre compte'
+            'msg' => 'Mail démo "' . $translator->trans($mail->getTitle()) . '" envoyé avec succès à l\'adresse email de votre compte'
         ]);
     }
 }
