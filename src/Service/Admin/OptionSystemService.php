@@ -113,6 +113,18 @@ class OptionSystemService extends AppAdminService
     const OS_ADRESSE_SITE = 'OS_ADRESSE_SITE';
 
     /**
+     * Clé option signature email
+     * @var string
+     */
+    const OS_MAIL_SIGNATURE = 'OS_MAIL_SIGNATURE';
+
+    /**
+     * Clé option envoi email
+     * @var string
+     */
+    const OS_MAIL_NOTIFICATION = 'OS_MAIL_NOTIFICATION';
+
+    /**
      * Retourne l'ensemble des options systèmes
      * @return array|object[]
      */

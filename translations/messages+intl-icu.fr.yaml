@@ -126,5 +126,10 @@ mail.self_delete.title: "Utilisateur qui supprime son compte de lui même"
 mail.self_delete.description: "Email envoyé quand un utilisateur décide de supprimer son compte de lui même"
 mail.self_anonymous.title: "Utilisateur qui anonymise son compte de lui même"
 mail.self_anonymous.description: "Email envoyé quand un utilisateur décide d'anonymiser son compte de lui même"
+options_system.mail_signature: "Signature email"
+options_system.mail_signature_help: "Texte présent au pied de chaque email qui sera envoyé depuis le CMS"
+options_system.mail_signature_placeholder: "Saisissez une signature"
+options_system.mail_notification: "Recevoir un email de notification ?"
+options_system.mail_notification_help: "Si oui, tous les SUPER_ADMIN recevrons un email de notification dans le cas de certaines actions comme la désactivation / suppression / anonymisation d'un utilisateur par lui même"
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: 'Elements HML disponibles (trad)'

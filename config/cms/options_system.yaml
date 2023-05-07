@@ -100,6 +100,11 @@ options_system:
     title: 'options_system.mails.title'
     description: 'options_system.mails.description'
     options:
+      OS_MAIL_NOTIFICATION:
+        type: 'boolean'
+        label: 'options_system.mail_notification'
+        help: 'options_system.mail_notification_help'
+        default: 1
       OS_MAIL_FROM:
         default: 'aymeric.gourdon@hotmail.fr'
         label: 'options_system.mail_from'
@@ -118,3 +123,9 @@ options_system:
         help: 'options_system.mail_reply_to_help'
         placeholder: 'options_system.mail_reply_to_placeholder'
         success: 'options_system.mail_reply_to_msg_success'
+      OS_MAIL_SIGNATURE:
+        type: 'textarea'
+        label: 'options_system.mail_signature'
+        help: 'options_system.mail_signature_help'
+        placeholder: 'options_system.mail_signature_placeholder'
+        default: ""
