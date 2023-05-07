@@ -103,10 +103,13 @@ class MailController extends AppAdminController
      * @return JsonResponse
      */
     #[Route('/ajax/load-data/{id}', name: 'load_data', methods: ['POST'])]
-    public function loadData(MarkdownEditorService $markdownEditorService,
-                             TranslateService      $translateService, Request $request,
-                             TranslatorInterface   $translator, MailService $mailService,
-                             Mail                  $mail
+    public function loadData(
+        MarkdownEditorService $markdownEditorService,
+        TranslateService      $translateService,
+        Request               $request,
+        TranslatorInterface   $translator,
+        MailService           $mailService,
+        Mail                  $mail
     ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -147,8 +150,12 @@ class MailController extends AppAdminController
      * @return JsonResponse
      */
     #[Route('/ajax/save/{id}', name: 'save', methods: ['POST'])]
-    public function save(Request             $request, MailService $mailService,
-                         TranslatorInterface $translator, Mail $mail): JsonResponse
+    public function save(
+        Request             $request,
+        MailService         $mailService,
+        TranslatorInterface $translator,
+        Mail                $mail
+    ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -173,9 +180,11 @@ class MailController extends AppAdminController
      * @throws TransportExceptionInterface
      */
     #[Route('/ajax/send-demo-mail/{id}', name: 'send_demo_mail', methods: ['POST'])]
-    public function sendDemoMail(Mail                  $mail, MailService $mailService,
-                                 OptionSystemService   $optionSystemService,
-                                 UrlGeneratorInterface $urlGenerator
+    public function sendDemoMail(
+        Mail                  $mail,
+        MailService           $mailService,
+        OptionSystemService   $optionSystemService,
+        UrlGeneratorInterface $urlGenerator
     ): JsonResponse
     {
         /* @var User $user */
@@ -196,10 +205,12 @@ class MailController extends AppAdminController
                 KeyWord::KEY_REPLACE => []
             ],
         };
-        
+
         $mailTranslate = $mail->geMailTranslationByLocale($optionSystemService
             ->getValueByKey(OptionSystemService::OS_DEFAULT_LANGUAGE));
-        $content = str_replace($tabKeyWord[KeyWord::KEY_SEARCH], $tabKeyWord[KeyWord::KEY_REPLACE],
+        $content = str_replace(
+            $tabKeyWord[KeyWord::KEY_SEARCH],
+            $tabKeyWord[KeyWord::KEY_REPLACE],
             $mailTranslate->getContent()
         );
 
