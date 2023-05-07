@@ -270,9 +270,11 @@ class MailService extends AppAdminService
         $content = $this->getParamsValue($params, self::CONTENT);
         $title = $this->getParamsValue($params, self::TITLE);
         $body = $this->getParamsValue($params, self::BODY);
+        $signature = $this->optionSystemService->getValueByKey(OptionSystemService::OS_MAIL_SIGNATURE);
 
         $markdown = new Markdown();
         $content = $markdown->convertMarkdownToHtml($content);
+        $content = $content . $signature;
 
         $body = array_merge((array)$body, ['content' => $content]);
 
