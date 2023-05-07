@@ -65,3 +65,48 @@ mail:
       - locale: 'es'
         title: '[ES] Bienvenue'
         content: "[ES] Bonjour [[user.login]],   \n\n[[admin.login]] vous à créé un compte sur le site [[[global.site_name]]]([[global.url_change_psw]]).    \n\n*Pour toute contestation, veuillez contacter [[admin.login]]*"
+  -
+    key: MAIL_SELF_DISABLED_ACCOUNT
+    title: mail.self_disabled.title
+    description: mail.self_disabled.description
+    keyWords: MAIL_SELF_DISABLED_ACCOUNT
+    translate:
+      - locale: 'fr'
+        title: 'Bonjour'
+        content: "Bonjour [[admin.login]],   \n\n[[user.login]] à désactivé son compte."
+      - locale: 'en'
+        title: '[EN] Bonjour'
+        content: "[EN] Bonjour [[admin.login]],   \n\n[[user.login]] à désactivé son compte."
+      - locale: 'es'
+        title: '[ES] Bonjour'
+        content: "[ES] Bonjour [[admin.login]],   \n\n[[user.login]] à désactivé son compte."
+  -
+    key: MAIL_SELF_DELETE_ACCOUNT
+    title: mail.self_delete.title
+    description: mail.self_delete.description
+    keyWords: MAIL_SELF_DELETE_ACCOUNT
+    translate:
+      - locale: 'fr'
+        title: 'Bonjour'
+        content: "Bonjour [[admin.login]],   \n\n[[user.login]] à supprimé son compte."
+      - locale: 'en'
+        title: '[EN] Bonjour'
+        content: "[EN] Bonjour [[admin.login]],   \n\n[[user.login]] à supprimé son compte."
+      - locale: 'es'
+        title: '[ES] Bonjour'
+        content: "[ES] Bonjour [[admin.login]],   \n\n[[user.login]] à supprimé son compte."
+  -
+    key: MAIL_SELF_ANONYMOUS_ACCOUNT
+    title: mail.self_anonymous.title
+    description: mail.self_anonymous.description
+    keyWords: MAIL_SELF_ANONYMOUS_ACCOUNT
+    translate:
+      - locale: 'fr'
+        title: 'Bonjour'
+        content: "Bonjour [[admin.login]],   \n\n[[user.login]] à anonymiser son compte."
+      - locale: 'en'
+        title: '[EN] Bonjour'
+        content: "[EN] Bonjour [[admin.login]],   \n\n[[user.login]] à anonymiser son compte."
+      - locale: 'es'
+        title: '[ES] Bonjour'
+        content: "[ES] Bonjour [[admin.login]],   \n\n[[user.login]] à anonymiser son compte."
