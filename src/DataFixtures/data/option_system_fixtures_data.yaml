@@ -49,7 +49,7 @@ option_system:
     value: 'http://dev.natheo'
   OS_MAIL_SIGNATURE:
     key: 'OS_MAIL_SIGNATURE'
-    value: "Cordialement, <br /> L'équipe de Natheo CMS"
+    value: "<hr />Cordialement, <br />L'équipe de Natheo CMS"
   OS_MAIL_NOTIFICATION:
     key: 'OS_MAIL_NOTIFICATION'
     value: 1
