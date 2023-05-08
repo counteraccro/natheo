@@ -60,6 +60,11 @@ options_system:
     title: 'options_system.categorie_admin.title'
     description: 'options_system.categorie_admin.description'
     options:
+      OS_NOTIFICATION:
+        type: 'boolean'
+        label: 'options_system.notification'
+        help: 'options_system.notification_help'
+        default: 1
       OS_ALLOW_DELETE_DATA:
         type: 'boolean'
         label: 'options_system.allow_delete_data'
@@ -129,3 +134,12 @@ options_system:
         help: 'options_system.mail_signature_help'
         placeholder: 'options_system.mail_signature_placeholder'
         default: ""
+  options_system.categorie_notification:
+    title: 'options_system.categorie_notification.title'
+    description: 'options_system.categorie_notification.description'
+    options:
+      OS_NOTIFICATION:
+        type: 'boolean'
+        label: 'options_system.notification'
+        help: 'options_system.notification_help'
+        default: 1

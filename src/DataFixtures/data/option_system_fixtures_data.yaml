@@ -53,3 +53,6 @@ option_system:
   OS_MAIL_NOTIFICATION:
     key: 'OS_MAIL_NOTIFICATION'
     value: 1
+  OS_NOTIFICATION:
+    key: 'OS_NOTIFICATION'
+    value: 1

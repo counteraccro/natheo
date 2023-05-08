@@ -114,4 +114,10 @@ class OptionSystemKey
      * @var string
      */
     const OS_MAIL_NOTIFICATION = 'OS_MAIL_NOTIFICATION';
+
+    /**
+     * Clé pour l'activation des notifications
+     * @var string
+     */
+    const OS_NOTIFICATION = 'OS_NOTIFICATION';
 }
