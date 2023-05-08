@@ -289,7 +289,7 @@ class UserController extends AppAdminController
         }
 
 
-        if ($optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_NOTIFICATION) === true) {
+        if ($optionSystemService->isSendMailNotification()) {
             $mail = $mailService->getByKey(MailKey::MAIL_SELF_DISABLED_ACCOUNT);
             $keyWord = new KeyWord($mail->getKey());
             $tabKeyWord = $keyWord->getTabMailSelfDisabled($user, $optionSystemService);
@@ -336,11 +336,8 @@ class UserController extends AppAdminController
             $msg = $translator->trans('user.error_not_disabled', domain: 'user');
         } else {
 
-            $canDelete = $optionSystemService->getValueByKey(OptionSystemKey::OS_ALLOW_DELETE_DATA);
-            $canReplace = $optionSystemService->getValueByKey(OptionSystemKey::OS_REPLACE_DELETE_USER);
-
-            if ($canDelete === '1') {
-                if ($canReplace === '1') {
+            if ($optionSystemService->canDelete()) {
+                if ($optionSystemService->canReplace()) {
                     $status = 1;
                     $userService->anonymizer($user);
                     $msg = $translator->trans('user.danger_zone.success_anonymous', domain: 'user');
@@ -356,8 +353,7 @@ class UserController extends AppAdminController
             }
         }
 
-        $sendMail = $optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_NOTIFICATION);
-        if ($sendMail == 1) {
+        if ($optionSystemService->canSendMailNotification()) {
             if ($status === 1) { // anonymisation
                 $mail = $mailService->getByKey(MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT);
                 $keyWord = new KeyWord($mail->getKey());

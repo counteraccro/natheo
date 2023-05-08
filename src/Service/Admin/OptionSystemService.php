@@ -9,6 +9,7 @@
 namespace App\Service\Admin;
 
 use App\Entity\Admin\OptionSystem;
+use App\Utils\Options\OptionSystemKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -94,4 +95,41 @@ class OptionSystemService extends AppAdminService
         $optionSystem->setValue($value);
         $optionServiceRepo->save($optionSystem, true);
     }
+
+    /**
+     * Renvoi true ou false en fonction de l'option OS_MAIL_NOTIFICATION
+     * @return bool
+     */
+    public function canSendMailNotification(): bool
+    {
+        if ($this->getValueByKey(OptionSystemKey::OS_MAIL_NOTIFICATION) == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Renvoi true ou false en fonction de l'option OS_ALLOW_DELETE_DATA
+     * @return bool
+     */
+    public function canDelete(): bool
+    {
+        if ($this->getValueByKey(OptionSystemKey::OS_ALLOW_DELETE_DATA) == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Renvoi true ou false en fonction de l'option OS_REPLACE_DELETE_USER
+     * @return bool
+     */
+    public function canReplace(): bool
+    {
+        if ($this->getValueByKey(OptionSystemKey::OS_REPLACE_DELETE_USER) == 1) {
+            return true;
+        }
+        return false;
+    }
+
 }
