@@ -11,6 +11,7 @@ namespace App\Service\Admin;
 use App\Entity\Admin\OptionSystem;
 use App\Entity\Admin\OptionUser;
 use App\Entity\Admin\User;
+use App\Utils\Options\OptionSystemKey;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -70,9 +71,9 @@ class OptionUserService extends AppAdminService
     public function createOptionsUser(User $user): User
     {
         $options = [
-            $this->optionSystemService::OS_THEME_SITE => self::OU_THEME_SITE,
-            $this->optionSystemService::OS_DEFAULT_LANGUAGE => self::OU_DEFAULT_LANGUAGE,
-            $this->optionSystemService::OS_NB_ELEMENT => self::OU_NB_ELEMENT
+            OptionSystemKey::OS_THEME_SITE => self::OU_THEME_SITE,
+            OptionSystemKey::OS_DEFAULT_LANGUAGE => self::OU_DEFAULT_LANGUAGE,
+            OptionSystemKey::OS_NB_ELEMENT => self::OU_NB_ELEMENT
         ];
 
         foreach ($options as $optionSystemKey => $optionUserKey) {

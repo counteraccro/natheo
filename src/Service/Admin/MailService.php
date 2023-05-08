@@ -10,6 +10,7 @@ namespace App\Service\Admin;
 use App\Entity\Admin\Mail;
 use App\Utils\Mail\KeyWord;
 use App\Utils\Markdown;
+use App\Utils\Options\OptionSystemKey;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use League\CommonMark\Exception\CommonMarkException;
@@ -270,7 +271,7 @@ class MailService extends AppAdminService
         $content = $this->getParamsValue($params, self::CONTENT);
         $title = $this->getParamsValue($params, self::TITLE);
         $body = $this->getParamsValue($params, self::BODY);
-        $signature = $this->optionSystemService->getValueByKey(OptionSystemService::OS_MAIL_SIGNATURE);
+        $signature = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_SIGNATURE);
 
         $markdown = new Markdown();
         $content = $markdown->convertMarkdownToHtml($content);
@@ -312,8 +313,8 @@ class MailService extends AppAdminService
         }
 
         return match ($key) {
-            self::FROM => $this->optionSystemService->getValueByKey(OptionSystemService::OS_MAIL_FROM),
-            self::REPLY_TO => $this->optionSystemService->getValueByKey(OptionSystemService::OS_MAIL_REPLY_TO),
+            self::FROM => $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_FROM),
+            self::REPLY_TO => $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_REPLY_TO),
             default => null,
         };
     }

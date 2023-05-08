@@ -18,6 +18,7 @@ use App\Service\Admin\TranslateService;
 use App\Utils\Mail\KeyWord;
 use App\Utils\Mail\MailKey;
 use App\Utils\Mail\MailTemplate;
+use App\Utils\Options\OptionSystemKey;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -214,7 +215,7 @@ class MailController extends AppAdminController
         };
 
         $mailTranslate = $mail->geMailTranslationByLocale($optionSystemService
-            ->getValueByKey(OptionSystemService::OS_DEFAULT_LANGUAGE));
+            ->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE));
         $content = str_replace(
             $tabKeyWord[KeyWord::KEY_SEARCH],
             $tabKeyWord[KeyWord::KEY_REPLACE],

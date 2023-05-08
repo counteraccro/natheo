@@ -10,6 +10,7 @@ namespace App\EventListener;
 
 use App\Service\Admin\OptionSystemService;
 use App\Service\LoggerService;
+use App\Utils\Options\OptionSystemKey;
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
@@ -79,7 +80,7 @@ class DatabaseActivitySubscriber implements EventSubscriberInterface
     private function logActivity(string $action, LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
-        $value = $this->optionSystemService->getValueByKey(OptionSystemService::OS_LOG_DOCTRINE);
+        $value = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_LOG_DOCTRINE);
 
         if ($value !== '1') {
             return;

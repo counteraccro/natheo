@@ -9,6 +9,7 @@
 namespace App\Service\Admin;
 
 use App\Entity\Admin\User;
+use App\Utils\Options\OptionSystemKey;
 use App\Utils\User\Anonymous;
 use App\Utils\User\Role;
 use Doctrine\ORM\EntityManagerInterface;
@@ -163,8 +164,8 @@ class UserService extends AppAdminService
 
             $actions[] = $actionDisabled;
 
-            $canDelete = $this->optionSystemService->getValueByKey(OptionSystemService::OS_ALLOW_DELETE_DATA);
-            $replaceUser = $this->optionSystemService->getValueByKey(OptionSystemService::OS_REPLACE_DELETE_USER);
+            $canDelete = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_ALLOW_DELETE_DATA);
+            $replaceUser = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_REPLACE_DELETE_USER);
 
             // Bouton Delete
             $actionDelete = '';

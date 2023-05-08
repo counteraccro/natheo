@@ -14,6 +14,7 @@ use App\Service\Admin\Breadcrumb;
 use App\Service\Admin\OptionSystemService;
 use App\Service\Admin\OptionUserService;
 use App\Service\Admin\UserService;
+use App\Utils\Options\OptionSystemKey;
 use App\Utils\User\Anonymous;
 use App\Utils\User\Role;
 use Exception;
@@ -140,8 +141,8 @@ class UserController extends AppAdminController
         if ($role->isSuperAdmin()) {
             $msg = $translator->trans('user.error_not_disabled', domain: 'user');
         } else {
-            $canDelete = $optionSystemService->getValueByKey(OptionSystemService::OS_ALLOW_DELETE_DATA);
-            $canReplace = $optionSystemService->getValueByKey(OptionSystemService::OS_REPLACE_DELETE_USER);
+            $canDelete = $optionSystemService->getValueByKey(OptionSystemKey::OS_ALLOW_DELETE_DATA);
+            $canReplace = $optionSystemService->getValueByKey(OptionSystemKey::OS_REPLACE_DELETE_USER);
 
             if ($canDelete === '1') {
                 if ($canReplace === '1') {
@@ -213,8 +214,8 @@ class UserController extends AppAdminController
             $userService->save($user);
         }
 
-        $canDelete = $optionSystemService->getValueByKey(OptionSystemService::OS_ALLOW_DELETE_DATA);
-        $canReplace = $optionSystemService->getValueByKey(OptionSystemService::OS_REPLACE_DELETE_USER);
+        $canDelete = $optionSystemService->getValueByKey(OptionSystemKey::OS_ALLOW_DELETE_DATA);
+        $canReplace = $optionSystemService->getValueByKey(OptionSystemKey::OS_REPLACE_DELETE_USER);
 
         return $this->render('admin/user/my_account.html.twig', [
             'breadcrumb' => $breadcrumb,
@@ -307,8 +308,8 @@ class UserController extends AppAdminController
             $msg = $translator->trans('user.error_not_disabled', domain: 'user');
         } else {
 
-            $canDelete = $optionSystemService->getValueByKey(OptionSystemService::OS_ALLOW_DELETE_DATA);
-            $canReplace = $optionSystemService->getValueByKey(OptionSystemService::OS_REPLACE_DELETE_USER);
+            $canDelete = $optionSystemService->getValueByKey(OptionSystemKey::OS_ALLOW_DELETE_DATA);
+            $canReplace = $optionSystemService->getValueByKey(OptionSystemKey::OS_REPLACE_DELETE_USER);
 
             if ($canDelete === '1') {
                 if ($canReplace === '1') {

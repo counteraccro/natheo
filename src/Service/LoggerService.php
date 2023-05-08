@@ -12,6 +12,7 @@ use App\Entity\Admin\User;
 use App\Service\Admin\GridService;
 use App\Service\Admin\OptionSystemService;
 use App\Service\Admin\OptionUserService;
+use App\Utils\Options\OptionSystemKey;
 use App\Utils\Utils;
 use Exception;
 use Monolog\Level;
@@ -329,7 +330,7 @@ class LoggerService extends AppService
     {
         $locale = match ($typeOption) {
             'user' => $this->optionUserService->getValueByKey(OptionUserService::OU_DEFAULT_LANGUAGE, false),
-            default => $this->optionSystemService->getValueByKey(OptionSystemService::OS_DEFAULT_LANGUAGE),
+            default => $this->optionSystemService->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE),
         };
         $this->localeAware->setLocale($locale);
     }

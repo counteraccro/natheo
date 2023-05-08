@@ -8,8 +8,8 @@
 namespace App\Utils\Mail;
 
 use App\Entity\Admin\User;
-use App\Service\Admin\MailService;
 use App\Service\Admin\OptionSystemService;
+use App\Utils\Options\OptionSystemKey;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class KeyWord
@@ -152,8 +152,8 @@ class KeyWord
      */
     private function getGlobalKeyWord(User $user, OptionSystemService $optionSystemService): array
     {
-        $url = $optionSystemService->getValueByKey(OptionSystemService::OS_ADRESSE_SITE);
-        $siteName = $optionSystemService->getValueByKey(OptionSystemService::OS_SITE_NAME);
+        $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
+        $siteName = $optionSystemService->getValueByKey(OptionSystemKey::OS_SITE_NAME);
 
         return [
             '[[' . self::USER_LOGIN . ']]' => $user->getLogin(),
@@ -204,7 +204,7 @@ class KeyWord
         OptionSystemService   $optionSystemService
     ): array
     {
-        $url = $optionSystemService->getValueByKey(OptionSystemService::OS_ADRESSE_SITE);
+        $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
 
         $tab = $this->getGlobalKeyWord($user, $optionSystemService);
         $tab2 = [
