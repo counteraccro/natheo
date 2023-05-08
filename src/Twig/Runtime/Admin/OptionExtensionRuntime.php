@@ -53,8 +53,11 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
      * @param TranslatorInterface $translator
      * @param OptionSystemService $optionSystemService
      */
-    public function __construct(RouterInterface     $router, TranslatorInterface $translator,
-                                OptionSystemService $optionSystemService, OptionUserService $optionUserService
+    public function __construct(
+        RouterInterface     $router,
+        TranslatorInterface $translator,
+        OptionSystemService $optionSystemService,
+        OptionUserService   $optionUserService
     )
     {
         $this->optionUserService = $optionUserService;
@@ -193,7 +196,8 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
 
         $html = '<label for="' . $key . '" class="form-label">
             ' . $this->translator->trans($element['label']) . '</label>
-            <input type="text" class="form-control no-control event-input" id="' . $key . '" ' . $require . ' ' . $placeholder .
+            <input type="text" class="form-control no-control event-input" id="'
+            . $key . '" ' . $require . ' ' . $placeholder .
             ' value="' . $this->getValueByKey($key) . '">' . $msgError;
 
         $html .= $this->getSuccess($key, $element);
@@ -254,8 +258,9 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
 
         $html = '<label for="' . $key . '" class="form-label">' . $this->translator->trans($element['label']) .
             '</label>
-            <textarea class="form-control no-control event-input" rows="5" id="' . $key . '" ' . $require . ' ' . $placeholder . '>
-            ' . $this->getValueByKey($key) . '</textarea>' . $msgError;
+            <textarea class="form-control no-control event-input" rows="5" 
+            id="' . $key . '" ' . $require . ' ' . $placeholder . '>' . $this->getValueByKey($key) . '</textarea>'
+            . $msgError;
 
         $html .= $this->getSuccess($key, $element);
         $html .= $this->getSpinner($key);
