@@ -1,6 +1,6 @@
 <?php
 /**
- * Liste des clées pour les options Systèmes
+ * Liste des clés pour les options Systèmes
  * @author Gourdon Aymeric
  * @version 1.0
  */

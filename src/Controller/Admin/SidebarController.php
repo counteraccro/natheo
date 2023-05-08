@@ -12,6 +12,7 @@ use App\Service\Admin\Breadcrumb;
 use App\Service\Admin\OptionUserService;
 use App\Service\Admin\SidebarElementService;
 use App\Utils\Debug;
+use App\Utils\Options\OptionUserKey;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,7 +42,7 @@ class SidebarController extends AppAdminController
         return $this->render('admin/sidebar/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserService::OU_NB_ELEMENT)
+            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT)
         ]);
     }
 

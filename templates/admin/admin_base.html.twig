@@ -8,7 +8,7 @@
     {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
     {% block stylesheets %}
 
-        {%set theme = get_option_user_value_by_key(constant('App\\Service\\Admin\\OptionUserService::OU_THEME_SITE')) %}
+        {%set theme = get_option_user_value_by_key(constant('App\\Utils\\Options\\OptionUserKey::OU_THEME_SITE')) %}
         {{ encore_entry_link_tags('admin_'~theme) }}
     {% endblock %}
 

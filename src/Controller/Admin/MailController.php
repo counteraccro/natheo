@@ -19,6 +19,7 @@ use App\Utils\Mail\KeyWord;
 use App\Utils\Mail\MailKey;
 use App\Utils\Mail\MailTemplate;
 use App\Utils\Options\OptionSystemKey;
+use App\Utils\Options\OptionUserKey;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -53,7 +54,7 @@ class MailController extends AppAdminController
         return $this->render('admin/mail/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserService::OU_NB_ELEMENT),
+            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
         ]);
     }
 

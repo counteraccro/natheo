@@ -15,6 +15,7 @@ use App\Service\Admin\OptionSystemService;
 use App\Service\Admin\OptionUserService;
 use App\Service\Admin\UserService;
 use App\Utils\Options\OptionSystemKey;
+use App\Utils\Options\OptionUserKey;
 use App\Utils\User\Anonymous;
 use App\Utils\User\Role;
 use Exception;
@@ -46,7 +47,7 @@ class UserController extends AppAdminController
         return $this->render('admin/user/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserService::OU_NB_ELEMENT),
+            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
         ]);
     }
 

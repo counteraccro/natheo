@@ -13,6 +13,7 @@ use App\Service\Admin\GridService;
 use App\Service\Admin\OptionSystemService;
 use App\Service\Admin\OptionUserService;
 use App\Utils\Options\OptionSystemKey;
+use App\Utils\Options\OptionUserKey;
 use App\Utils\Utils;
 use Exception;
 use Monolog\Level;
@@ -329,7 +330,7 @@ class LoggerService extends AppService
     private function switchDefaultLocale(string $typeOption = 'user'): void
     {
         $locale = match ($typeOption) {
-            'user' => $this->optionUserService->getValueByKey(OptionUserService::OU_DEFAULT_LANGUAGE, false),
+            'user' => $this->optionUserService->getValueByKey(OptionUserKey::OU_DEFAULT_LANGUAGE, false),
             default => $this->optionSystemService->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE),
         };
         $this->localeAware->setLocale($locale);

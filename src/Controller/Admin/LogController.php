@@ -10,6 +10,7 @@ namespace App\Controller\Admin;
 use App\Service\Admin\Breadcrumb;
 use App\Service\Admin\OptionUserService;
 use App\Service\LoggerService;
+use App\Utils\Options\OptionUserKey;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -36,7 +37,7 @@ class LogController extends AppAdminController
 
         return $this->render('admin/log/index.html.twig', [
             'breadcrumb' => $breadcrumb,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserService::OU_NB_ELEMENT),
+            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
         ]);
     }
 

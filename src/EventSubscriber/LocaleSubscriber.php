@@ -6,6 +6,7 @@ use App\Entity\Admin\OptionUser;
 use App\Service\Admin\OptionSystemService;
 use App\Service\Admin\OptionUserService;
 use App\Utils\Options\OptionSystemKey;
+use App\Utils\Options\OptionUserKey;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -51,7 +52,7 @@ class LocaleSubscriber implements EventSubscriberInterface
     public function onKernelController(ControllerEvent $event): void
     {
         if ($this->security->isGranted('ROLE_USER')) {
-            $locales = $this->optionUserService->getValueByKey(OptionUserService::OU_DEFAULT_LANGUAGE);
+            $locales = $this->optionUserService->getValueByKey(OptionUserKey::OU_DEFAULT_LANGUAGE);
         } else {
             $locales = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE);
         }
