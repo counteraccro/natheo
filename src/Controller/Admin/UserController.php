@@ -11,9 +11,13 @@ namespace App\Controller\Admin;
 use App\Entity\Admin\User;
 use App\Form\Admin\User\MyAccountType;
 use App\Service\Admin\Breadcrumb;
+use App\Service\Admin\MailService;
 use App\Service\Admin\OptionSystemService;
 use App\Service\Admin\OptionUserService;
 use App\Service\Admin\UserService;
+use App\Utils\Mail\KeyWord;
+use App\Utils\Mail\MailKey;
+use App\Utils\Mail\MailTemplate;
 use App\Utils\Options\OptionSystemKey;
 use App\Utils\Options\OptionUserKey;
 use App\Utils\User\Anonymous;
@@ -259,11 +263,17 @@ class UserController extends AppAdminController
      * Permet à l'utilisateur de s'auto désactivé
      * @param TranslatorInterface $translator
      * @param UserService $userService
+     * @param MailService $mailService
      * @return JsonResponse
      */
     #[Route('/ajax/self-disabled', name: 'self_disabled', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function selfDisabled(TranslatorInterface $translator, UserService $userService): JsonResponse
+    public function selfDisabled(
+        TranslatorInterface $translator,
+        UserService         $userService,
+        MailService         $mailService,
+        OptionSystemService $optionSystemService
+    ): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -277,6 +287,19 @@ class UserController extends AppAdminController
             $msg = $translator->trans('user.self_disabled_success', domain: 'user');
             $url = $this->generateUrl('auth_logout');
         }
+
+
+        if ($optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_NOTIFICATION) === true) {
+            $mail = $mailService->getByKey(MailKey::MAIL_SELF_DISABLED_ACCOUNT);
+            $keyWord = new KeyWord($mail->getKey());
+            $tabKeyWord = $keyWord->getTabMailSelfDisabled($user, $optionSystemService);
+            $params = $mailService->getDefaultParams($mail, $tabKeyWord);
+            $params[MailService::TO] = $userService->getTabMailByListeUser(
+                $userService->getByRole(Role::ROLE_SUPER_ADMIN)
+            );
+            $mailService->sendMail($params);
+        }
+
 
         return $this->json([
             'status' => 'success',
@@ -298,11 +321,15 @@ class UserController extends AppAdminController
     public function selfDelete(
         TranslatorInterface $translator,
         UserService         $userService,
+        MailService         $mailService,
         OptionSystemService $optionSystemService
     ): JsonResponse
     {
+        $status = 0;
+
         /** @var User $user */
         $user = $this->getUser();
+        $user2 = clone $user;
         $role = new Role($user);
         $url = '';
         if ($role->isSuperAdmin()) {
@@ -314,10 +341,12 @@ class UserController extends AppAdminController
 
             if ($canDelete === '1') {
                 if ($canReplace === '1') {
+                    $status = 1;
                     $userService->anonymizer($user);
                     $msg = $translator->trans('user.danger_zone.success_anonymous', domain: 'user');
                     $url = $this->generateUrl('auth_logout');
                 } else {
+                    $status = 2;
                     $userService->remove($user);
                     $msg = $translator->trans('user.danger_zone.success_remove', domain: 'user');
                     $url = $this->generateUrl('index_index');
@@ -325,6 +354,24 @@ class UserController extends AppAdminController
             } else {
                 $msg = $translator->trans('user.error_not_allowed', domain: 'user');
             }
+        }
+
+        $sendMail = $optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_NOTIFICATION);
+        if ($sendMail == 1) {
+            if ($status === 1) { // anonymisation
+                $mail = $mailService->getByKey(MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT);
+                $keyWord = new KeyWord($mail->getKey());
+                $tabKeyWord = $keyWord->getTabMailSelfAnonymous($user2, $optionSystemService);
+            } else { // delete
+                $mail = $mailService->getByKey(MailKey::MAIL_SELF_DELETE_ACCOUNT);
+                $keyWord = new KeyWord($mail->getKey());
+                $tabKeyWord = $keyWord->getTabMailSelfDelete($user2, $optionSystemService);
+            }
+            $params = $mailService->getDefaultParams($mail, $tabKeyWord);
+            $params[MailService::TO] = $userService->getTabMailByListeUser(
+                $userService->getByRole(Role::ROLE_SUPER_ADMIN)
+            );
+            $mailService->sendMail($params);
         }
 
         return $this->json([

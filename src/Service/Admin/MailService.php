@@ -8,7 +8,10 @@
 namespace App\Service\Admin;
 
 use App\Entity\Admin\Mail;
+use App\Entity\Admin\User;
 use App\Utils\Mail\KeyWord;
+use App\Utils\Mail\MailKey;
+use App\Utils\Mail\MailTemplate;
 use App\Utils\Markdown;
 use App\Utils\Options\OptionSystemKey;
 use Doctrine\ORM\EntityManagerInterface;
@@ -317,5 +320,46 @@ class MailService extends AppAdminService
             self::REPLY_TO => $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_REPLY_TO),
             default => null,
         };
+    }
+
+    /**
+     * Retourne une entité Mail en fonction de sa clé
+     * @param String $key
+     * @return Mail
+     */
+    public function getByKey(string $key): Mail
+    {
+        $repo = $this->getRepository(Mail::class);
+        return $repo->findByKey($key);
+    }
+
+    /**
+     * Retourne la liste des paramètres pour l'envoi d'un email sous la forme d'un tableau
+     * en fonction de la clé d'un email et de la langue du système
+     * @param Mail $mail
+     * @param array $tabKeyWord
+     * @return array <br />[<br />
+     * MailService::TITLE => titre du mail en fonction de la langue du système, <br />
+     * MailService::CONTENT => contenu du mail avec le tableau de keyword, <br />
+     * MailService::TO => '', <br />
+     * MailService::TEMPLATE => MailTemplate::EMAIL_SIMPLE_TEMPLATE <br />
+     * ]
+     */
+    public function getDefaultParams(Mail $mail, array $tabKeyWord): array
+    {
+        $mailTranslate = $mail->geMailTranslationByLocale($this->optionSystemService
+            ->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE));
+        $content = str_replace(
+            $tabKeyWord[KeyWord::KEY_SEARCH],
+            $tabKeyWord[KeyWord::KEY_REPLACE],
+            $mailTranslate->getContent()
+        );
+
+        return [
+            MailService::TITLE => $mailTranslate->getTitle(),
+            MailService::CONTENT => $content,
+            MailService::TO => '',
+            MailService::TEMPLATE => MailTemplate::EMAIL_SIMPLE_TEMPLATE
+        ];
     }
 }

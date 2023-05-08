@@ -12,6 +12,7 @@ use App\Entity\Admin\User;
 use App\Utils\Options\OptionSystemKey;
 use App\Utils\User\Anonymous;
 use App\Utils\User\Role;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;
@@ -142,8 +143,7 @@ class UserService extends AppAdminService
 
         $actions = [];
 
-        if($user->isAnonymous())
-        {
+        if ($user->isAnonymous()) {
             return $actions;
         }
 
@@ -257,7 +257,7 @@ class UserService extends AppAdminService
      * @param $password
      * @return void
      */
-    public function updatePassword(User $user, $password)
+    public function updatePassword(User $user, $password): void
     {
         $user->setPassword($this->passwordHasher->hashPassword($user, $password));
         $this->save($user);
@@ -269,10 +269,36 @@ class UserService extends AppAdminService
      * @return void
      * @throws Exception
      */
-    public function anonymizer(User $user)
+    public function anonymizer(User $user): void
     {
         $anonymous = new Anonymous($user);
         $user = $anonymous->anonymizer();
         $this->save($user);
+    }
+
+    /**
+     * Retourne une liste d'utilisateur en fonction de son role
+     * @param string $role
+     * @return mixed
+     */
+    public function getByRole(string $role): mixed
+    {
+        $repo = $this->getRepository(User::class);
+        return $repo->findByRole($role);
+    }
+
+    /**
+     * Retourne une liste de mail sous la forme d'un tableau d'une liste de user
+     * @param array $liste
+     * @return array
+     */
+    public function getTabMailByListeUser(array $liste): array
+    {
+        $return = [];
+        /** @var User $user */
+        foreach ($liste as $user) {
+            $return[] = $user->getEmail();
+        }
+        return $return;
     }
 }

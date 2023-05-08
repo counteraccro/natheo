@@ -82,6 +82,20 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
     }
 
     /**
+     * Retourne une liste d'utilisateur en fonction de son role
+     * @param string $role
+     * @return float|int|mixed|string
+     */
+    public function findByRole(string $role): mixed
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere("JSON_GET_TEXT(u.roles, '" . $role . "') = :role")
+            ->setParameter('role', $role)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void

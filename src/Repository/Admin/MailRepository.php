@@ -4,6 +4,8 @@ namespace App\Repository\Admin;
 
 use App\Entity\Admin\Mail;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -56,6 +58,22 @@ class MailRepository extends ServiceEntityRepository
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;
+    }
+
+    /**
+     * Retourne un email en fonction de sa clé
+     * @param string $key
+     * @return Mail
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function findByKey(string $key) : Mail
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.key = :key')
+            ->setParameter('key', $key)
+            ->getQuery()
+            ->getSingleResult();
     }
 
 //    /**

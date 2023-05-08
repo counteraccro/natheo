@@ -215,25 +215,14 @@ class MailController extends AppAdminController
             ],
         };
 
-        $mailTranslate = $mail->geMailTranslationByLocale($optionSystemService
-            ->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE));
-        $content = str_replace(
-            $tabKeyWord[KeyWord::KEY_SEARCH],
-            $tabKeyWord[KeyWord::KEY_REPLACE],
-            $mailTranslate->getContent()
-        );
-
-        $params = [
-            MailService::TITLE => $mailTranslate->getTitle(),
-            MailService::CONTENT => $content,
-            MailService::TO => $user->getEmail(),
-            MailService::TEMPLATE => MailTemplate::EMAIL_SIMPLE_TEMPLATE
-        ];
+        $params = $mailService->getDefaultParams($mail, $tabKeyWord);
+        $params[MailService::TO] = $user->getEmail();
 
         $mailService->sendMail($params);
         return $this->json([
             'type' => 'success',
-            'msg' => 'Mail démo "' . $translator->trans($mail->getTitle()) . '" envoyé avec succès à l\'adresse email de votre compte'
+            'msg' => 'Mail démo "' .
+                $translator->trans($mail->getTitle()) . '" envoyé avec succès à l\'adresse email de votre compte'
         ]);
     }
 }
