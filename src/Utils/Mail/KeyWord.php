@@ -106,13 +106,10 @@ class KeyWord
             self::ADMIN_LOGIN_ACTION => '',
         ],
         MailKey::MAIL_SELF_DISABLED_ACCOUNT => [
-            self::ADMIN_LOGIN_ACTION => '',
         ],
         MailKey::MAIL_SELF_DELETE_ACCOUNT => [
-            self::ADMIN_LOGIN_ACTION => '',
         ],
         MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT => [
-            self::ADMIN_LOGIN_ACTION => '',
         ]
     ];
 
@@ -279,11 +276,11 @@ class KeyWord
      */
     public function getTabMailSelfDisabled(
         User                $user,
-        User                $admin,
         OptionSystemService $optionSystemService
     ): array
     {
-        return $this->getTabMailAccountAdmDisabled($user, $admin, $optionSystemService);
+        $tab = $this->getGlobalKeyWord($user, $optionSystemService);
+        return $this->formatReturnValue($tab);
     }
 
     /**
@@ -296,11 +293,10 @@ class KeyWord
      */
     public function getTabMailSelfDelete(
         User                $user,
-        User                $admin,
         OptionSystemService $optionSystemService
     ): array
     {
-        return $this->getTabMailAccountAdmDisabled($user, $admin, $optionSystemService);
+        return $this->getTabMailSelfDisabled($user, $optionSystemService);
     }
 
     /**
@@ -313,10 +309,9 @@ class KeyWord
      */
     public function getTabMailSelfAnonymous(
         User                $user,
-        User                $admin,
         OptionSystemService $optionSystemService
     ): array
     {
-        return $this->getTabMailAccountAdmDisabled($user, $admin, $optionSystemService);
+        return $this->getTabMailSelfDisabled($user, $optionSystemService);
     }
 }
