@@ -17,6 +17,10 @@ doctrine:
                 prefix: 'App\Entity'
                 alias: App
 
+        dql:
+            string_functions:
+                JSON_GET_TEXT: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql\JsonGetText
+
 when@test:
     doctrine:
         dbal:
