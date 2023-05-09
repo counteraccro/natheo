@@ -1,0 +1,17 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block title %}{{ 'notification.page_title' | trans({}, 'notification') }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'notification.page_title_h1' | trans({}, 'notification') }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    <p>{{ 'notification.description' | trans({}, 'notification') }}
+    </p>
+
+
+        <div {# { vue_component('Admin/GenericGrid', {'url' : path('admin_mail_load_grid_data'), 'page' : page, 'limit' : limit}) }#}></div>
+
+{% endblock %}
+
