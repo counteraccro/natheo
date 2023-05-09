@@ -120,21 +120,21 @@ mail.account.adm.enable.title: 'Réactivation compte'
 mail.account.adm.enable.description: 'Email envoyé quand un compte utilisateur est réactivé (accès administratif) par un administrateur'
 mail.create.account.adm.title: 'Création de compte'
 mail.create.account.adm.description: "Email envoyé à l'utilisateur quand un administrateur créé son compte pour accéder à l'administration"
-mail.self_disabled.title: "Utilisateur qui désactive son compte de lui même"
+mail.self_disabled.title: 'Utilisateur qui désactive son compte de lui même'
 mail.self_disabled.description: "Mail envoyé lorsqu'un utilisateur désactive lui même son compte "
-mail.self_delete.title: "Utilisateur qui supprime son compte de lui même"
+mail.self_delete.title: 'Utilisateur qui supprime son compte de lui même'
 mail.self_delete.description: "Mail envoyé lorsqu'un utilisateur supprime lui même son compte "
-mail.self_anonymous.title: "Utilisateur qui anonymise son compte de lui même"
+mail.self_anonymous.title: 'Utilisateur qui anonymise son compte de lui même'
 mail.self_anonymous.description: "Mail envoyé lorsqu'un utilisateur anonymise lui même son compte "
-options_system.mail_signature: "Signature email"
-options_system.mail_signature_help: "Texte présent au pied de chaque email qui sera envoyé depuis le CMS, HTML autorisé"
-options_system.mail_signature_placeholder: "Saisissez une signature"
-options_system.mail_notification: "Recevoir un email de notification ?"
+options_system.mail_signature: 'Signature email'
+options_system.mail_signature_help: 'Texte présent au pied de chaque email qui sera envoyé depuis le CMS, HTML autorisé'
+options_system.mail_signature_placeholder: 'Saisissez une signature'
+options_system.mail_notification: 'Recevoir un email de notification ?'
 options_system.mail_notification_help: "Si oui, tous les SUPER_ADMIN recevrons un email de notification dans le cas de certaines actions comme la désactivation / suppression / anonymisation d'un utilisateur par lui même"
-options_system.categorie_notification: "Notification"
-options_system.categorie_notification.title: "Gestion des notifications"
-options_system.categorie_notification.description: "Gérer les notifications sur le CMS"
-options_system.notification: "Activer les notifications ?"
-options_system.notification_help: "Activer les notifications sur le site"
+options_system.categorie_notification: Notification
+options_system.categorie_notification.title: 'Gestion des notifications'
+options_system.categorie_notification.description: 'Gérer les notifications sur le CMS'
+options_system.notification: 'Activer les notifications ?'
+options_system.notification_help: 'Activer les notifications sur le site'
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: 'Elements HML disponibles (trad)'

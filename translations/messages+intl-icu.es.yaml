@@ -120,16 +120,16 @@ mail.account.adm.enable.title: '__Email information réactivation compte'
 mail.account.adm.enable.description: '__Email envoyé quand un compte user est réactivé (accès administratif)'
 mail.create.account.adm.title: '__Email information création de compte'
 mail.create.account.adm.description: "__Email envoyé quand un administrateur créé un compte pour accéder à l'administration"
-ail.self_disabled.title: "__Utilisateur qui désactive son compte de lui même"
-mail.self_disabled.description: "__Email envoyé quand un utilisateur décide de désactiver son compte de lui même"
-mail.self_delete.title: "__Utilisateur qui supprime son compte de lui même"
-mail.self_delete.description: "__Email envoyé quand un utilisateur décide de supprimer son compte de lui même"
-mail.self_anonymous.title: "__Utilisateur qui anonymise son compte de lui même"
+ail.self_disabled.title: '__Utilisateur qui désactive son compte de lui même'
+mail.self_disabled.description: '__Email envoyé quand un utilisateur décide de désactiver son compte de lui même'
+mail.self_delete.title: '__Utilisateur qui supprime son compte de lui même'
+mail.self_delete.description: '__Email envoyé quand un utilisateur décide de supprimer son compte de lui même'
+mail.self_anonymous.title: '__Utilisateur qui anonymise son compte de lui même'
 mail.self_anonymous.description: "__Email envoyé quand un utilisateur décide d'anonymiser son compte de lui même"
-_system.mail_signature: "Signature email"
-options_system.mail_signature_help: "Texte présent au pied de chaque email qui sera envoyé depuis le CMS, HTML autorisé"
-options_system.mail_signature_placeholder: "Saisissez une signature"
-options_system.mail_notification: "Recevoir un email de notification ?"
+_system.mail_signature: 'Signature email'
+options_system.mail_signature_help: 'Texte présent au pied de chaque email qui sera envoyé depuis le CMS, HTML autorisé'
+options_system.mail_signature_placeholder: 'Saisissez une signature'
+options_system.mail_notification: 'Recevoir un email de notification ?'
 options_system.mail_notification_help: "Si oui, tous les SUPER_ADMIN recevrons un email de notification dans le cas de certaines actions comme la désactivation / suppression / anonymisation d'un utilisateur par lui même"
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: __pagedemo.page_title_h1
