@@ -10,6 +10,8 @@ namespace App\DataFixtures\Admin;
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\User;
 use App\Service\Admin\OptionUserService;
+use App\Utils\Notification\NotificationFactory;
+use App\Utils\Notification\NotificationKey;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -39,8 +41,10 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
      * @param UserPasswordHasherInterface $passwordHasher
      * @param OptionUserService $optionUserService
      */
-    public function __construct(ContainerBagInterface $params, UserPasswordHasherInterface $passwordHasher,
-                                OptionUserService     $optionUserService
+    public function __construct(
+        ContainerBagInterface       $params,
+        UserPasswordHasherInterface $passwordHasher,
+        OptionUserService           $optionUserService
     )
     {
         $this->passwordHasher = $passwordHasher;
@@ -71,6 +75,13 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
 
             }
             $user = $this->optionUserService->createOptionsUser($user);
+
+            $notificationFactory = new NotificationFactory($user);
+            $user = $notificationFactory->addNotification(
+                NotificationKey::KEY_NOTIF_WELCOME,
+                ['login' => $user->getLogin(), 'role' => $user->getRoles()[0]]
+            )->getUser();
+
             $manager->persist($user);
         }
         $manager->flush();
