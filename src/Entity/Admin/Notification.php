@@ -35,6 +35,9 @@ class Notification
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $create_at = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $parameters = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -108,6 +111,18 @@ class Notification
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getParameters(): ?string
+    {
+        return $this->parameters;
+    }
+
+    public function setParameters(?string $parameters): self
+    {
+        $this->parameters = $parameters;
 
         return $this;
     }
