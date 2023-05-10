@@ -299,7 +299,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->notifications->contains($notification)) {
             $this->notifications->add($notification);
-            $notification->setUsr($this);
+            $notification->setUser($this);
         }
 
         return $this;
@@ -309,8 +309,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->notifications->removeElement($notification)) {
             // set the owning side to null (unless already changed)
-            if ($notification->getUsr() === $this) {
-                $notification->setUsr(null);
+            if ($notification->getUser() === $this) {
+                $notification->setUser(null);
             }
         }
 
