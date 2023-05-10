@@ -1,3 +1,6 @@
+notification.welcome.title: "Bienvenue"
+notification.welcome.content: "Bienvenue {login}, vous avez les droits <strong>{role}</strong> sur le site"
 notification.page_title: "Mes notifications"
 notification.page_title_h1: "Mes notifications"
 notification.description: "Mes notifications que j'ai reçu"
+
