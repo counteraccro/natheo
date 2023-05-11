@@ -13,12 +13,17 @@
                     <i class="bi-h bi-house-fill-h"></i>
                     <span class="d-none-mini"> {{ 'global.dashboard' | trans({}, 'global') }}</span>
                 </a>
-                <a class="nav-link link-notification" href="{{ path('admin_notification_index') }}">
-                    <i class="bi-h bi-bell-fill-h position-relative">
-                        <span {{ vue_component('Admin/Notification/NotificationBadge', {'url' : path('admin_notification_number')}) }}></span>
-                    </i>
-                        <span class="d-none-mini"> {{ 'global.notification' | trans({}, 'global') }}</span>
-                </a>
+
+                {%set notification = get_option_system_value_by_key(constant('App\\Utils\\Options\\OptionSystemKey::OS_NOTIFICATION')) %}
+
+                {% if notification is same as("1") %}
+                    <a class="nav-link link-notification" href="{{ path('admin_notification_index') }}">
+                        <i class="bi-h bi-bell-fill-h position-relative">
+                            <span {{ vue_component('Admin/Notification/NotificationBadge', {'url' : path('admin_notification_number')}) }}></span>
+                        </i>
+                            <span class="d-none-mini"> {{ 'global.notification' | trans({}, 'global') }}</span>
+                    </a>
+                {% endif %}
 
                 <a class="nav-link" href="{{ path('admin_user_my_account') }}">
                     <i class="bi-h bi-person-fill-h"></i>
