@@ -9,6 +9,8 @@ namespace App\DataFixtures\Admin;
 
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\User;
+use App\Service\Admin\NotificationService;
+use App\Service\Admin\OptionSystemService;
 use App\Service\Admin\OptionUserService;
 use App\Utils\Notification\NotificationFactory;
 use App\Utils\Notification\NotificationKey;
@@ -36,6 +38,8 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
      */
     private OptionUserService $optionUserService;
 
+    private NotificationService $notificationService;
+
     /**
      * @param ContainerBagInterface $params
      * @param UserPasswordHasherInterface $passwordHasher
@@ -44,11 +48,13 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     public function __construct(
         ContainerBagInterface       $params,
         UserPasswordHasherInterface $passwordHasher,
-        OptionUserService           $optionUserService
+        OptionUserService           $optionUserService,
+        NotificationService         $notificationService
     )
     {
         $this->passwordHasher = $passwordHasher;
         $this->optionUserService = $optionUserService;
+        $this->notificationService = $notificationService;
         parent::__construct($params);
     }
 
@@ -75,17 +81,13 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
 
             }
             $user = $this->optionUserService->createOptionsUser($user);
-
-            $notificationFactory = new NotificationFactory($user);
-            $user = $notificationFactory->addNotification(
+            $user = $this->notificationService->addForFixture(
+                $user,
                 NotificationKey::KEY_NOTIF_WELCOME,
                 ['login' => $user->getLogin(), 'role' => $user->getRoles()[0]]
-            )->getUser();
-
+            );
             $manager->persist($user);
         }
-        $manager->flush();
-
         $manager->flush();
     }
 

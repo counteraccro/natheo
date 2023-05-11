@@ -132,4 +132,16 @@ class OptionSystemService extends AppAdminService
         return false;
     }
 
+    /**
+     * Renvoi true ou false en fonction de l'option OS_NOTIFICATION
+     * @return bool
+     */
+    public function canNotification(): bool
+    {
+        if ($this->getValueByKey(OptionSystemKey::OS_NOTIFICATION) == 1) {
+            return true;
+        }
+        return false;
+    }
+
 }
