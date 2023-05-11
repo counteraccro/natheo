@@ -19,7 +19,8 @@
 }
 
 #adm-navbar .badge{
-  font-size: 0.60em;
+  font-size: 0.55em;
+  font-family: 'Verdana', serif;
 }
 
 #adm-navbar .d-none-mini {
@@ -75,6 +76,36 @@
 #adm-navbar .bi-gear-fill-h:hover::after {
   content: "\F3E5";
 }
+
+#adm-navbar .badge-notification {
+  animation: bounce 2s ease infinite;
+  top: -50% !important;
+}
+
+@keyframes bounce {
+  70% {
+    transform: translateY(0%);
+  }
+  80% {
+    transform: translateY(-15%);
+  }
+  90% {
+    transform: translateY(0%);
+  }
+  95% {
+    transform: translateY(-7%);
+  }
+  97% {
+    transform: translateY(0%);
+  }
+  99% {
+    transform: translateY(-3%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
 
 @media (max-width: 991px) {
 

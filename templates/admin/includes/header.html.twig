@@ -13,12 +13,13 @@
                     <i class="bi-h bi-house-fill-h"></i>
                     <span class="d-none-mini"> {{ 'global.dashboard' | trans({}, 'global') }}</span>
                 </a>
-                <a class="nav-link" href="{{ path('admin_notification_index') }}">
+                <a class="nav-link link-notification" href="{{ path('admin_notification_index') }}">
                     <i class="bi-h bi-bell-fill-h position-relative">
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">9+</span>
+                        <span {{ vue_component('Admin/Notification/NotificationBadge', {'url' : path('admin_notification_number')}) }}></span>
                     </i>
-                        <span class="d-none-mini"> {{ 'global.alertes' | trans({}, 'global') }}</span>
+                        <span class="d-none-mini"> {{ 'global.notification' | trans({}, 'global') }}</span>
                 </a>
+
                 <a class="nav-link" href="{{ path('admin_user_my_account') }}">
                     <i class="bi-h bi-person-fill-h"></i>
                     <span class="d-none-mini"> {{ 'global.profil' | trans({}, 'global') }}</span>
