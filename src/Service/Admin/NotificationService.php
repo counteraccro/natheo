@@ -7,9 +7,13 @@
 
 namespace App\Service\Admin;
 
+use App\Entity\Admin\Notification;
 use App\Entity\Admin\User;
+use App\Repository\Admin\NotificationRepository;
 use App\Utils\Notification\NotificationFactory;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -57,6 +61,7 @@ class NotificationService extends AppAdminService
     }
 
     /**
+     * Création d'une notification pour une fixtures
      * @param User $user
      * @param string $key
      * @param array $params
@@ -70,6 +75,18 @@ class NotificationService extends AppAdminService
 
         $notificationFactory = new NotificationFactory($user);
         return $notificationFactory->addNotification($key, $params)->getUser();
+    }
+
+    /**
+     * Retourne le nombre de notifications en fonction du User
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function getNbByUser(User $user) : int
+    {
+        /** @var NotificationRepository $repo */
+       $repo = $this->getRepository(Notification::class);
+       return $repo->getNbByUser($user);
     }
 
 }

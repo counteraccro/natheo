@@ -3,7 +3,10 @@
 namespace App\Repository\Admin;
 
 use App\Entity\Admin\Notification;
+use App\Entity\Admin\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +40,21 @@ class NotificationRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * Retourne le nombre de notifications en fonction du User
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function getNbByUser(User $user)
+    {
+        return $this->createQueryBuilder('n')
+            ->select('count(n.id)')
+            ->andWhere('n.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
 //    /**

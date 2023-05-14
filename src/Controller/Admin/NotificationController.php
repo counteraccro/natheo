@@ -7,7 +7,11 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Admin\User;
 use App\Service\Admin\Breadcrumb;
+use App\Service\Admin\NotificationService;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,12 +43,17 @@ class NotificationController extends AppAdminController
 
     /**
      * Retourne le nombre de notifications de l'utilisateur courant
+     * @param NotificationService $notificationService
      * @return JsonResponse
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     #[Route('/ajax/number', name: 'number')]
-    public function number(): JsonResponse
+    public function number(NotificationService $notificationService): JsonResponse
     {
-        $number = rand(0, 30);
+        /** @var User $user */
+        $user = $this->getUser();
+        $number = $notificationService->getNbByUser($user);
         return $this->json(['number' => $number]);
     }
 }
