@@ -1,3 +1,11 @@
+notification.msg.welcome.title: __Bienvenue
+notification.msg.welcome.content: '__Bienvenue {login}, vous avez les droits <strong>{role}</strong> sur le site'
+notification.msg.self_disabled.title: '__Désactivation de compte'
+notification.msg.self_disabled.content: '__{login} à décidé de désactiver son compte'
+notification.msg.self_delete.title: '__Suppression de compte'
+notification.msg.self_delete.content: '__{login} à décidé de supprimer son compte'
+notification.msg.self_anonymous.title: '__Anonymisation de compte'
+notification.msg.self_anonymous.content: "__{login} à décidé d'anonymiser son compte"
 notification.page_title: __notification.page_title
 notification.page_title_h1: __notification.page_title_h1
 notification.description: __notification.description
