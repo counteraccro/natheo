@@ -4,6 +4,7 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
+
 namespace App\Utils\Notification;
 
 class NotificationKey
@@ -52,21 +53,64 @@ class NotificationKey
 
     /**
      * Notification bienvenue
+     * @const
      */
-    const KEY_NOTIF_WELCOME = 'NOTIF_WELCOME';
+    const NOTIFICATION_WELCOME = 'NOTIFICATION_WELCOME';
+
+    /**
+     * Notification désactivation par l'utilisateur lui-même
+     * @const
+     */
+    const NOTIFICATION_SELF_DISABLED = 'NOTIFICATION_SELF_DISABLED';
+
+    /**
+     * Notification suppression par l'utilisateur lui-même
+     * @const
+     */
+    const NOTIFICATION_SELF_DELETE = 'NOTIFICATION_SELF_DELETE';
+
+    /**
+     * Notification anonymisation par l'utilisateur lui-même
+     * @const
+     */
+    const NOTIFICATION_SELF_ANONYMOUS = 'NOTIFICATION_SELF_ANONYMOUS';
 
     /**
      * Tableau de notification
      */
     const TAB_NOTIFICATIONS = [
-        self::KEY_NOTIF_WELCOME => [
+        self::NOTIFICATION_WELCOME => [
             self::KEY_PARAMETER => [
                 'login' => '',
                 'role' => ''
             ],
-            self::KEY_TITLE => 'notification.welcome.title',
-            self::KEY_CONTENT => 'notification.welcome.content',
+            self::KEY_TITLE => 'notification.msg.welcome.title',
+            self::KEY_CONTENT => 'notification.msg.welcome.content',
             self::KEY_LEVEL => self::LEVEL_INFO
+        ],
+        self::NOTIFICATION_SELF_DISABLED => [
+            self::KEY_PARAMETER => [
+                'login' => '',
+            ],
+            self::KEY_TITLE => 'notification.msg.self_disabled.title',
+            self::KEY_CONTENT => 'notification.msg.self_disabled.content',
+            self::KEY_LEVEL => self::LEVEL_WARNING
+        ],
+        self::NOTIFICATION_SELF_DELETE => [
+            self::KEY_PARAMETER => [
+                'login' => '',
+            ],
+            self::KEY_TITLE => 'notification.msg.self_delete.title',
+            self::KEY_CONTENT => 'notification.msg.self_delete.content',
+            self::KEY_LEVEL => self::LEVEL_WARNING
+        ],
+        self::NOTIFICATION_SELF_ANONYMOUS => [
+            self::KEY_PARAMETER => [
+                'login' => '',
+            ],
+            self::KEY_TITLE => 'notification.msg.self_anonymous.title',
+            self::KEY_CONTENT => 'notification.msg.self_anonymous.content',
+            self::KEY_LEVEL => self::LEVEL_WARNING
         ]
     ];
 }

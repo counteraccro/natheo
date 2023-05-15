@@ -77,6 +77,8 @@ class NotificationFactory
         $notification->setLevel($tabNotif[NotificationKey::KEY_LEVEL]);
         $notification->setParameters(json_encode($tabParameter));
 
+        $this->user->addNotification($notification);
+
         return $this;
     }
 }
