@@ -19,7 +19,6 @@ doctrine:
 
         dql:
             string_functions:
-                JSON_GET_TEXT: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql\JsonGetText
                 CONTAINS: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\Contains
                 TO_JSONB: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\ToJsonb
 
