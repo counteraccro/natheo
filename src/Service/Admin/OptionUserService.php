@@ -109,8 +109,14 @@ class OptionUserService extends AppAdminService
             }
         }
 
-
-        $value = $this->getByKey($key)->getValue();
+        $obj = $this->getByKey($key);
+        if ($obj != null) {
+            $value = $obj->getValue();
+        } else {
+            // Cas très paticulier, dans le cas de la sauvegarde d'une notification quand le user s'auto delete ou
+            // s'auto anonymise
+            return 'fr';
+        }
 
         // Mise à jour de la session avec les options sauvegardées
         if ($this->requestStack->getCurrentRequest() != null) {
