@@ -89,10 +89,11 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
     public function findByRole(string $role): mixed
     {
         return $this->createQueryBuilder('u')
-            ->andWhere("JSON_GET_TEXT(u.roles, '" . $role . "') = :role")
-            ->setParameter('role', $role)
-            ->getQuery()
-            ->getResult();
+        ->andWhere('CONTAINS(TO_JSONB(u.roles), :role) = TRUE')
+        ->setParameter('role', '["'.$role.'"]')
+        ->orderBy('u.id', 'ASC')
+        ->getQuery()
+        ->getResult();
     }
 
     /**
