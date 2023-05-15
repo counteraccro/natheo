@@ -12,20 +12,24 @@ use App\Entity\Admin\User;
 use App\Form\Admin\User\MyAccountType;
 use App\Service\Admin\Breadcrumb;
 use App\Service\Admin\MailService;
+use App\Service\Admin\NotificationService;
 use App\Service\Admin\OptionSystemService;
 use App\Service\Admin\OptionUserService;
 use App\Service\Admin\UserService;
 use App\Utils\Mail\KeyWord;
 use App\Utils\Mail\MailKey;
 use App\Utils\Mail\MailTemplate;
+use App\Utils\Notification\NotificationKey;
 use App\Utils\Options\OptionSystemKey;
 use App\Utils\Options\OptionUserKey;
 use App\Utils\User\Anonymous;
 use App\Utils\User\Role;
 use Exception;
+use League\CommonMark\Exception\CommonMarkException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -264,6 +268,8 @@ class UserController extends AppAdminController
      * @param TranslatorInterface $translator
      * @param UserService $userService
      * @param MailService $mailService
+     * @param OptionSystemService $optionSystemService
+     * @param NotificationService $notificationService
      * @return JsonResponse
      */
     #[Route('/ajax/self-disabled', name: 'self_disabled', methods: ['POST'])]
@@ -272,7 +278,8 @@ class UserController extends AppAdminController
         TranslatorInterface $translator,
         UserService         $userService,
         MailService         $mailService,
-        OptionSystemService $optionSystemService
+        OptionSystemService $optionSystemService,
+        NotificationService $notificationService
     ): JsonResponse
     {
         /** @var User $user */
@@ -289,7 +296,7 @@ class UserController extends AppAdminController
         }
 
 
-        if ($optionSystemService->isSendMailNotification()) {
+        if ($optionSystemService->canSendMailNotification()) {
             $mail = $mailService->getByKey(MailKey::MAIL_SELF_DISABLED_ACCOUNT);
             $keyWord = new KeyWord($mail->getKey());
             $tabKeyWord = $keyWord->getTabMailSelfDisabled($user, $optionSystemService);
@@ -297,7 +304,25 @@ class UserController extends AppAdminController
             $params[MailService::TO] = $userService->getTabMailByListeUser(
                 $userService->getByRole(Role::ROLE_SUPER_ADMIN)
             );
-            $mailService->sendMail($params);
+            try {
+                $mailService->sendMail($params);
+            } catch (CommonMarkException|TransportExceptionInterface $e) {
+                die($e->getMessage());
+            }
+        }
+
+        // Notifications
+        if ($optionSystemService->canNotification()) {
+
+            $users = $userService->getByRole(Role::ROLE_SUPER_ADMIN);
+
+            foreach ($users as $user_notification) {
+                $notificationService->add(
+                    $user_notification,
+                    NotificationKey::NOTIFICATION_SELF_DISABLED,
+                    ['login' => $user->getLogin()]
+                );
+            }
         }
 
 
@@ -312,9 +337,12 @@ class UserController extends AppAdminController
      * Permet à l'utilisateur de s'auto supprimer
      * @param TranslatorInterface $translator
      * @param UserService $userService
+     * @param MailService $mailService
      * @param OptionSystemService $optionSystemService
+     * @param NotificationService $notificationService
      * @return JsonResponse
-     * @throws Exception
+     * @throws CommonMarkException
+     * @throws TransportExceptionInterface
      */
     #[Route('/ajax/self-delete', name: 'self_delete', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
@@ -322,7 +350,8 @@ class UserController extends AppAdminController
         TranslatorInterface $translator,
         UserService         $userService,
         MailService         $mailService,
-        OptionSystemService $optionSystemService
+        OptionSystemService $optionSystemService,
+        NotificationService $notificationService,
     ): JsonResponse
     {
         $status = 0;
@@ -353,6 +382,7 @@ class UserController extends AppAdminController
             }
         }
 
+        // Envoi emails
         if ($optionSystemService->canSendMailNotification()) {
             if ($status === 1) { // anonymisation
                 $mail = $mailService->getByKey(MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT);
@@ -368,6 +398,20 @@ class UserController extends AppAdminController
                 $userService->getByRole(Role::ROLE_SUPER_ADMIN)
             );
             $mailService->sendMail($params);
+        }
+
+        // Notifications
+        if ($optionSystemService->canNotification()) {
+            $users = $userService->getByRole(Role::ROLE_SUPER_ADMIN);
+            if ($status === 1) {
+                $key = NotificationKey::NOTIFICATION_SELF_ANONYMOUS;
+            } else {
+                $key = NotificationKey::NOTIFICATION_SELF_DELETE;
+            }
+
+            foreach ($users as $user_notification) {
+                $notificationService->add($user_notification, $key, ['login' => $user2->getLogin()]);
+            }
         }
 
         return $this->json([

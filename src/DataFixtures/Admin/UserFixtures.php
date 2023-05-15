@@ -83,7 +83,7 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
             $user = $this->optionUserService->createOptionsUser($user);
             $user = $this->notificationService->addForFixture(
                 $user,
-                NotificationKey::KEY_NOTIF_WELCOME,
+                NotificationKey::NOTIFICATION_WELCOME,
                 ['login' => $user->getLogin(), 'role' => $user->getRoles()[0]]
             );
             $manager->persist($user);

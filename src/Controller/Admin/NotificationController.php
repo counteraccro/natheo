@@ -10,6 +10,7 @@ namespace App\Controller\Admin;
 use App\Entity\Admin\User;
 use App\Service\Admin\Breadcrumb;
 use App\Service\Admin\NotificationService;
+use App\Service\Admin\OptionSystemService;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,8 +28,13 @@ class NotificationController extends AppAdminController
      * @return Response
      */
     #[Route('/', name: 'index')]
-    public function index(): Response
+    public function index(OptionSystemService $optionSystemService): Response
     {
+
+        if (!$optionSystemService->canNotification()) {
+            return $this->redirectToRoute('admin_dashboard_index');
+        }
+
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'notification',
             Breadcrumb::BREADCRUMB => [
