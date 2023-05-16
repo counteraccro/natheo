@@ -11,9 +11,11 @@ use App\Entity\Admin\User;
 use App\Service\Admin\Breadcrumb;
 use App\Service\Admin\NotificationService;
 use App\Service\Admin\OptionSystemService;
+use App\Utils\Options\OptionUserKey;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -44,6 +46,8 @@ class NotificationController extends AppAdminController
 
         return $this->render('admin/notification/index.html.twig', [
             'breadcrumb' => $breadcrumb,
+            'page' => 1,
+            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT)
         ]);
     }
 
@@ -61,5 +65,22 @@ class NotificationController extends AppAdminController
         $user = $this->getUser();
         $number = $notificationService->getNbByUser($user);
         return $this->json(['number' => $number]);
+    }
+
+    /**
+     * Retourne une liste de notifications en fonction de la pagination
+     * @param NotificationService $notificationService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/list', name: 'list')]
+    public function list(Request $request, NotificationService $notificationService): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        /** @var User $user */
+        $user = $this->getUser();
+        $notifications = $notificationService->getByUserPaginate($data['page'], $data['limit'], $user);
+
+        return $this->json(
+            ['notifications' => $notifications, 'translation' => []]);
     }
 }

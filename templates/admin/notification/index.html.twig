@@ -11,7 +11,7 @@
     </p>
 
 
-        <div {# { vue_component('Admin/GenericGrid', {'url' : path('admin_mail_load_grid_data'), 'page' : page, 'limit' : limit}) }#}></div>
+        <div {{ vue_component('Admin/Notification/NotificationList', {'url' : path('admin_notification_list'), 'page' : page, 'limit' : limit}) }}></div>
 
 {% endblock %}
 

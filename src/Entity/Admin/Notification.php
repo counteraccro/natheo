@@ -6,6 +6,7 @@ use App\Repository\Admin\NotificationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
 #[ORM\Table(name: 'natheo.notification')]
@@ -17,6 +18,7 @@ class Notification
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'notifications')]
+    #[Ignore]
     private ?User $user = null;
 
     #[ORM\Column(length: 255)]

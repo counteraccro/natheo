@@ -14,6 +14,7 @@ use App\Utils\Notification\NotificationFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -82,11 +83,39 @@ class NotificationService extends AppAdminService
      * @throws NonUniqueResultException
      * @throws NoResultException
      */
-    public function getNbByUser(User $user) : int
+    public function getNbByUser(User $user): int
     {
         /** @var NotificationRepository $repo */
-       $repo = $this->getRepository(Notification::class);
-       return $repo->getNbByUser($user);
+        $repo = $this->getRepository(Notification::class);
+        return $repo->getNbByUser($user);
+    }
+
+    /**
+     * Retourne une liste de Notification paginé de l'utilisateur et traduit dans la langue de l'utilisateur
+     * @param int $page
+     * @param int $limit
+     * @param User $user
+     * @param bool $onlyNotRead : si true, ne retourne que les non lu
+     * @return Paginator
+     */
+    public function getByUserPaginate(int $page, int $limit, User $user, bool $onlyNotRead = false): Paginator
+    {
+        /** @var NotificationRepository $repo */
+        $repo = $this->getRepository(Notification::class);
+        $list = $repo->getByUserPaginate($page, $limit, $user, $onlyNotRead);
+
+        /** @var Notification $notification */
+        foreach ($list as $notification) {
+            $parameter = json_decode($notification->getParameters(), true);
+            $notification->setTitle($this->translator->trans($notification->getTitle(), domain: 'notification'));
+            $notification->setContent($this->translator->trans(
+                $notification->getContent(),
+                $parameter,
+                domain: 'notification'
+            ));
+        }
+
+        return $list;
     }
 
 }

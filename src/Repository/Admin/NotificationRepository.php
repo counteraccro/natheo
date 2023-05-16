@@ -7,6 +7,7 @@ use App\Entity\Admin\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -53,8 +54,36 @@ class NotificationRepository extends ServiceEntityRepository
             ->select('count(n.id)')
             ->andWhere('n.user = :user')
             ->setParameter('user', $user)
+            ->andWhere('COALESCE(n.read, FALSE) = FALSE')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * Retourne une liste de notification d'un utilisateur paginé
+     * @param int $page
+     * @param int $limit
+     * @param User $user
+     * @param bool $onlyNotRead
+     * @return Paginator
+     */
+    public function getByUserPaginate(int $page, int $limit, User $user, bool $onlyNotRead): Paginator
+    {
+        $query = $this->createQueryBuilder('n')
+            ->andWhere('n.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('n.create_at', 'ASC');
+
+        if ($onlyNotRead) {
+            $query->andWhere('COALESCE(n.read, FALSE) = FALSE');
+        }
+
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
+
     }
 
 //    /**
