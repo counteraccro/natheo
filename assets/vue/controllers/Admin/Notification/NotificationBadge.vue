@@ -21,6 +21,9 @@ export default {
     },
     methods: {
 
+        /*
+        Chargement des données
+         */
         loadData() {
             axios.post(this.url, {}
             ).then((response) => {
