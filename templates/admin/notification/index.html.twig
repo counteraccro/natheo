@@ -10,8 +10,9 @@
     <p><i class="bi bi-bell-fill"></i> {{ 'notification.description' | trans({}, 'notification') }}
     </p>
 
-
+    <div id="notifications">
         <div {{ vue_component('Admin/Notification/NotificationList', {'url' : path('admin_notification_list'), 'page' : page, 'limit' : limit}) }}></div>
+    </div>
 
 {% endblock %}
 

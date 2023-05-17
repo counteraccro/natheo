@@ -20,25 +20,61 @@ export default {
         }
     },
     mounted() {
-      this.loadData(this.page, this.limit)
+        this.loadData(this.page, this.limit)
     },
     methods: {
+        /**
+         * Chargement des données
+         * @param page
+         * @param limit
+         */
         loadData(page, limit) {
             axios.post(this.url, {
-                'page' : page,
-                'limit' : limit
+                'page': page,
+                'limit': limit
             }).then((response) => {
                 this.notifications = response.data.notifications;
                 this.translation = response.data.translation
             }).catch((error) => {
                 console.log(error);
             }).finally();
+        },
+
+        /**
+         * Mise en page class
+         * @param notification
+         * @returns {string}
+         */
+        cssClass(notification) {
+
+            let returnClass = '';
+            if (notification.read === false) {
+                returnClass += ' no-read';
+            }
+
+            if (notification.level === 2) {
+                returnClass += ' bg-warning';
+            } else if (notification.level === 3) {
+                returnClass += ' bg-danger';
+            } else {
+                returnClass += ' bg-light';
+            }
+
+            return returnClass;
         }
     }
 }
 </script>
 
 <template>
+    <div v-for="notification in this.notifications">
+        <div class="card bg-opacity-10 p-2 shadow-sm rounded-end mb-2" :class="this.cssClass(notification)">
+            <div class="card-body">
+                <h5 class="card-title">{{ notification.title }}</h5>
+                <span class="card-text" v-html="notification.content"></span>
+            </div>
+        </div>
+    </div>
 
 </template>
 

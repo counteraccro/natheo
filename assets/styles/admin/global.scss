@@ -78,5 +78,9 @@ legend {
   all:unset;
   padding-inline-start: 6px;
   padding-inline-end: 6px;
-  color: #999;;
+  color: #999;
+}
+
+#notifications .card.no-read {
+  border-left: 5px solid var(--primary);
 }
