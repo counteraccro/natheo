@@ -32,15 +32,12 @@ export default {
                 console.log(error);
             }).finally();
         },
-        show() {
-
-        }
     }
 }
 </script>
 
 <template>
-    <span v-if="this.number > 0" @mouseover="show()" class="badge-notification position-absolute start-50 badge rounded-pill bg-danger">{{ this.number }}</span>
+    <span v-if="this.number > 0" id="badge-notification" class="badge-notification position-absolute start-50 badge rounded-pill bg-danger">{{ this.number }}</span>
 </template>
 
 <style scoped>
