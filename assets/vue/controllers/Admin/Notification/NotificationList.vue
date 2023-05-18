@@ -17,6 +17,8 @@ export default {
     return {
       notifications: Object,
       translation: Object,
+      urlRead: '',
+      listLimit: Object
     }
   },
   mounted() {
@@ -34,7 +36,9 @@ export default {
         'limit': limit
       }).then((response) => {
         this.notifications = response.data.notifications;
-        this.translation = response.data.translation
+        this.translation = response.data.translation;
+        this.urlRead = response.data.urlRead;
+        this.listLimit = JSON.parse(response.data.listLimit);
       }).catch((error) => {
         console.log(error);
       }).finally();
@@ -49,6 +53,14 @@ export default {
       let nbElement = document.getElementById('badge-notification');
       if (element.classList.contains("no-read")) {
         element.classList.remove("no-read");
+
+        axios.post(this.urlRead, {
+          'id': id,
+        }).then((response) => {
+          //this.notifications = response.data.notifications;
+        }).catch((error) => {
+          console.log(error);
+        }).finally();
 
         nbElement.innerHTML = parseInt(nbElement.innerHTML) - 1;
         if (nbElement.innerHTML === '0') {
@@ -86,11 +98,27 @@ export default {
 </script>
 
 <template>
-  <div v-for="notification in this.notifications">
-    <div :id="'notification-' + notification.id" class="card bg-opacity-10 p-2 shadow-sm rounded-end mb-2" :class="this.cssClass(notification)" @mouseover="mouseover(notification.id)">
-      <div class="card-body">
-        <h5 class="card-title">{{ notification.title }}</h5>
-        <span class="card-text" v-html="notification.content"></span>
+
+  <div>
+    <div class="float-end me-2 btn  btn-primary">
+      tout lu
+    </div>
+    <div class="float-end me-2">
+      <select class="form-select form-select-sm">
+        <option v-for="(i) in this.listLimit" :value="i">{{ i }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div class="mt-4">
+    <div v-for="notification in this.notifications">
+      <div :id="'notification-' + notification.id" class="card bg-opacity-10 p-2 shadow-sm rounded-end mb-2" :class="this.cssClass(notification)" @mouseover="mouseover(notification.id)">
+        <div class="card-body">
+          <h5 class="card-title">{{ notification.title }}</h5>
+          <span class="card-text" v-html="notification.content"></span>
+        </div>
       </div>
     </div>
   </div>

@@ -114,7 +114,6 @@ class NotificationService extends AppAdminService
                 domain: 'notification'
             ));
         }
-
         return $list;
     }
 

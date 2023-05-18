@@ -7,8 +7,10 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Admin\Notification;
 use App\Entity\Admin\User;
 use App\Service\Admin\Breadcrumb;
+use App\Service\Admin\GridService;
 use App\Service\Admin\NotificationService;
 use App\Service\Admin\OptionSystemService;
 use App\Utils\Options\OptionUserKey;
@@ -58,7 +60,7 @@ class NotificationController extends AppAdminController
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    #[Route('/ajax/number', name: 'number')]
+    #[Route('/ajax/number', name: 'number', methods: ['POST'])]
     public function number(NotificationService $notificationService): JsonResponse
     {
         /** @var User $user */
@@ -69,18 +71,46 @@ class NotificationController extends AppAdminController
 
     /**
      * Retourne une liste de notifications en fonction de la pagination
+     * @param Request $request
      * @param NotificationService $notificationService
      * @return JsonResponse
      */
-    #[Route('/ajax/list', name: 'list')]
-    public function list(Request $request, NotificationService $notificationService): JsonResponse
+    #[Route('/ajax/list', name: 'list', methods: ['POST'])]
+    public function list(
+        Request             $request,
+        NotificationService $notificationService,
+        GridService         $gridService
+    ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         /** @var User $user */
         $user = $this->getUser();
         $notifications = $notificationService->getByUserPaginate($data['page'], $data['limit'], $user);
 
+        return $this->json([
+            'notifications' => $notifications,
+            'translation' => [],
+            'urlRead' => $this->generateUrl('admin_notification_read'),
+            'listLimit' => $gridService->addOptionsSelectLimit([])['listLimit']
+        ]);
+    }
+
+    /**
+     * Met le status lu à une notification envoyé en paramètre
+     * @param Request $request
+     * @param NotificationService $notificationService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/read-notification', name: 'read', methods: ['POST'])]
+    public function read(Request $request, NotificationService $notificationService): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        /** @var Notification $notification */
+        $notification = $notificationService->findOneBy(Notification::class, $data['id']);
+        $notification->setRead(true);
+        $notificationService->save($notification);
+
         return $this->json(
-            ['notifications' => $notifications, 'translation' => []]);
+            ['success' => true]);
     }
 }
