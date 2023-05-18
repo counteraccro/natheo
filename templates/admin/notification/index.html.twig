@@ -7,7 +7,7 @@
 
     {{ breadcrumb(breadcrumb) }}
 
-    <p><i class="bi bi-bell-fill"></i> {{ 'notification.description' | trans({}, 'notification') }}
+    <p><i class="bi bi-bell-fill"></i> {{ 'notification.description' | trans({'mouse' : '<i class="bi bi-mouse2-fill"></i>'}, 'notification') | raw }}
     </p>
 
     <div id="notifications">
