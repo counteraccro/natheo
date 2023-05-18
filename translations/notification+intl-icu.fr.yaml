@@ -8,4 +8,4 @@ notification.msg.self_anonymous.title: 'Anonymisation de compte'
 notification.msg.self_anonymous.content: "{login} à décidé d'anonymiser son compte"
 notification.page_title: 'Mes notifications'
 notification.page_title_h1: 'Mes notifications'
-notification.description: "Mes notifications que j'ai reçu"
+notification.description: "Liste de mes notifications, passez votre souris {mouse} dessus pour les considérez comme lu."
