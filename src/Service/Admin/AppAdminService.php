@@ -114,4 +114,17 @@ class AppAdminService
         return $this->containerBag->get('security.authorization_checker')->isGranted($attribute, $subject);
     }
 
+
+    /**
+     * Retourne une entité en fonction de son id
+     * @param string $entity
+     * @param int $id
+     * @return object|null
+     */
+    public function findById(string $entity, int $id): ?object
+    {
+        $repo = $this->getRepository($entity);
+        return $repo->findOneBy(['id' => $id]);
+    }
+
 }
