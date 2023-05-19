@@ -143,3 +143,9 @@ options_system:
         label: 'options_system.notification'
         help: 'options_system.notification_help'
         default: 1
+      OS_PURGE_NOTIFICATION:
+        type: 'select'
+        label: 'options_system.purge_notification'
+        list_value: '7:options_system.purge_notification.week|30:options_system.purge_notification.month|90:options_system.purge_notification.3_month|180:options_system.purge_notification.6_month|365:options_system.purge_notification.year'
+        help: 'options_system.purge_notification_help'
+        default: '30'

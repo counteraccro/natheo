@@ -56,3 +56,6 @@ option_system:
   OS_NOTIFICATION:
     key: 'OS_NOTIFICATION'
     value: 1
+  OS_PURGE_NOTIFICATION:
+    key: 'OS_PURGE_NOTIFICATION'
+    value: 30

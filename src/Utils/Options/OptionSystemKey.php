@@ -120,4 +120,10 @@ class OptionSystemKey
      * @var string
      */
     const OS_NOTIFICATION = 'OS_NOTIFICATION';
+
+    /**
+     * Clé pour la purge des notifications
+     * @var string
+     */
+    const OS_PURGE_NOTIFICATION = 'OS_PURGE_NOTIFICATION';
 }
