@@ -18,7 +18,9 @@ export default {
       notifications: Object,
       translation: Object,
       urlRead: '',
-      listLimit: Object
+      listLimit: Object,
+      cLimit: this.limit,
+      loading: false,
     }
   },
   mounted() {
@@ -31,6 +33,9 @@ export default {
      * @param limit
      */
     loadData(page, limit) {
+
+      this.loading = true;
+
       axios.post(this.url, {
         'page': page,
         'limit': limit
@@ -41,7 +46,9 @@ export default {
         this.listLimit = JSON.parse(response.data.listLimit);
       }).catch((error) => {
         console.log(error);
-      }).finally();
+      }).finally(() => {
+        this.loading = false
+      });
     },
 
     /**
@@ -69,6 +76,11 @@ export default {
       }
 
 
+    },
+
+    changeLimit(limit) {
+      this.cLimit = limit;
+      this.loadData(1, limit)
     },
 
     /**
@@ -108,16 +120,33 @@ export default {
         <option v-for="(i) in this.listLimit" :value="i">{{ i }}</option>
       </select>
     </div>
+    <div class="btn-group">
+      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
+        {{ this.translation.nb_notifification_show_start }} {{ this.cLimit }} {{ this.translation.nb_notifification_show_end }}
+      </button>
+      <ul class="dropdown-menu">
+        <li v-for="(i) in this.listLimit">
+          <a class="dropdown-item" href="#" :data-limit="i" @click="this.changeLimit(i)">{{ i }}</a></li>
+      </ul>
+    </div>
   </div>
 
   <div class="clearfix"></div>
 
-  <div class="mt-4">
-    <div v-for="notification in this.notifications">
-      <div :id="'notification-' + notification.id" class="card bg-opacity-10 p-2 shadow-sm rounded-end mb-2" :class="this.cssClass(notification)" @mouseover="mouseover(notification.id)">
-        <div class="card-body">
-          <h5 class="card-title">{{ notification.title }}</h5>
-          <span class="card-text" v-html="notification.content"></span>
+  <div :class="this.loading === true ? 'block-grid' : ''">
+    <div v-if="this.loading" class="overlay">
+      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
+        <div class="spinner-border text-primary" role="status"></div>
+        <span class="txt-overlay">{{ this.translation.loading }}</span>
+      </div>
+    </div>
+    <div class="mt-4">
+      <div v-for="notification in this.notifications">
+        <div :id="'notification-' + notification.id" class="card bg-opacity-10 p-2 shadow-sm rounded-end mb-2" :class="this.cssClass(notification)" @mouseover="mouseover(notification.id)">
+          <div class="card-body">
+            <h5 class="card-title">{{ notification.title }}</h5>
+            <span class="card-text" v-html="notification.content"></span>
+          </div>
         </div>
       </div>
     </div>

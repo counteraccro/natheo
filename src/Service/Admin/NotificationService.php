@@ -117,4 +117,23 @@ class NotificationService extends AppAdminService
         return $list;
     }
 
+    /**
+     * Retourne les traductions pour le listing des notifications
+     * @return array
+     */
+    public function getTranslateListNotifications(): array
+    {
+        return [
+            'nb_notifification_show_start' => $this->translator->trans(
+                'notification.nb.show.start',
+                domain: 'notification'
+            ),
+            'nb_notifification_show_end' => $this->translator->trans(
+                'notification.nb.show.end',
+                domain: 'notification'
+            ),
+            'loading' => $this->translator->trans('notification.loading', domain: 'notification')
+        ];
+    }
+
 }

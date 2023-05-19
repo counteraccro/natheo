@@ -9,3 +9,6 @@ notification.msg.self_anonymous.content: "__{login} à décidé d'anonymiser son
 notification.page_title: __notification.page_title
 notification.page_title_h1: __notification.page_title_h1
 notification.description: __notification.description
+notification.nb.show.start: __notification.nb.show.start
+notification.nb.show.end: __notification.nb.show.end
+notification.loading: __notification.loading

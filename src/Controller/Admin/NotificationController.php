@@ -89,7 +89,7 @@ class NotificationController extends AppAdminController
 
         return $this->json([
             'notifications' => $notifications,
-            'translation' => [],
+            'translation' => $notificationService->getTranslateListNotifications(),
             'urlRead' => $this->generateUrl('admin_notification_read'),
             'listLimit' => $gridService->addOptionsSelectLimit([])['listLimit']
         ]);
