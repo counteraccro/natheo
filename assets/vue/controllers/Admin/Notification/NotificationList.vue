@@ -111,25 +111,18 @@ export default {
 
 <template>
 
-  <div>
-    <div class="float-end me-2 btn  btn-primary">
-      tout lu
-    </div>
-    <div class="float-end me-2">
-      <select class="form-select form-select-sm">
-        <option v-for="(i) in this.listLimit" :value="i">{{ i }}</option>
-      </select>
-    </div>
-    <div class="btn-group">
-      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
-        {{ this.translation.nb_notifification_show_start }} {{ this.cLimit }} {{ this.translation.nb_notifification_show_end }}
-      </button>
-      <ul class="dropdown-menu">
-        <li v-for="(i) in this.listLimit">
-          <a class="dropdown-item" href="#" :data-limit="i" @click="this.changeLimit(i)">{{ i }}</a></li>
-      </ul>
-    </div>
+
+  <div class="btn-group">
+    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
+      {{ this.translation.nb_notifification_show_start }} {{ this.cLimit }} {{ this.translation.nb_notifification_show_end }}
+    </button>
+    <ul class="dropdown-menu">
+      <li v-for="(i) in this.listLimit">
+        <a class="dropdown-item" href="#" :data-limit="i" @click="this.changeLimit(i)">{{ i }}</a></li>
+    </ul>
   </div>
+  <div class="btn btn-secondary ms-2">Uniquement non lu</div>
+  <div class="btn btn-secondary ms-2">Tout marquer comme lu</div>
 
   <div class="clearfix"></div>
 
