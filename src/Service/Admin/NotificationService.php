@@ -138,11 +138,13 @@ class NotificationService extends AppAdminService
     }
 
     /**
-     * Permet de purger les notifications qui ont plus de X jours en paramètre
+     * Permet de purger les notifications lues qui ont dépassé un X nombre de jours
+     * en fonction de l'user
      * @param int $nbDay
+     * @param int $userId
      * @return void
      */
-    public function purge(int $nbDay, int $userId)
+    public function purge(int $nbDay, int $userId): void
     {
         $repo = $this->getRepository(Notification::class);
         $repo->removeAfterDay($nbDay, $userId);

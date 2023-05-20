@@ -5,6 +5,7 @@ namespace App\Repository\Admin;
 use App\Entity\Admin\Notification;
 use App\Entity\Admin\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -86,7 +87,14 @@ class NotificationRepository extends ServiceEntityRepository
 
     }
 
-    public function removeAfterDay(int $nbDay, int $userId)
+    /**
+     * Supprime les notifications lues en fonction du nombre de jours et de l'utilisateur
+     * @param int $nbDay
+     * @param int $userId
+     * @return void
+     * @throws Exception
+     */
+    public function removeAfterDay(int $nbDay, int $userId): void
     {
         $sql = '
             DELETE
@@ -99,7 +107,6 @@ class NotificationRepository extends ServiceEntityRepository
             'user_id' => $userId,
             'nb_day' => $nbDay
         ];
-
         $this->getEntityManager()->getConnection()->prepare($sql)->executeQuery($params);
     }
 
