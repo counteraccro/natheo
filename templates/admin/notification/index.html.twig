@@ -7,7 +7,9 @@
 
     {{ breadcrumb(breadcrumb) }}
 
-    <p><i class="bi bi-bell-fill"></i> {{ 'notification.description' | trans({'mouse' : '<i class="bi bi-mouse2-fill"></i>'}, 'notification') | raw }}
+    <p>
+        <i class="bi bi-bell-fill"></i> {{ 'notification.description' | trans({'mouse' : '<i class="bi bi-mouse2-fill"></i>'}, 'notification') | raw }} <br />
+        <i class="bi bi-info-circle-fill"></i>  {{ 'notification.purge.info' | trans({'nb_day' : nbDay}, 'notification') | raw }}
     </p>
 
     <div id="notifications">

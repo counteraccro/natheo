@@ -132,8 +132,20 @@ class NotificationService extends AppAdminService
                 'notification.nb.show.end',
                 domain: 'notification'
             ),
-            'loading' => $this->translator->trans('notification.loading', domain: 'notification')
+            'loading' => $this->translator->trans('notification.loading', domain: 'notification'),
+            'empty' => $this->translator->trans('notification.empty', domain: 'notification'),
         ];
+    }
+
+    /**
+     * Permet de purger les notifications qui ont plus de X jours en paramètre
+     * @param int $nbDay
+     * @return void
+     */
+    public function purge(int $nbDay, int $userId)
+    {
+        $repo = $this->getRepository(Notification::class);
+        $repo->removeAfterDay($nbDay, $userId);
     }
 
 }

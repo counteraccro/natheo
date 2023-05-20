@@ -86,6 +86,23 @@ class NotificationRepository extends ServiceEntityRepository
 
     }
 
+    public function removeAfterDay(int $nbDay, int $userId)
+    {
+        $sql = '
+            DELETE
+            FROM natheo.notification n
+            WHERE n.user_id = :user_id
+            AND n.read = true
+            AND EXTRACT(day from ((CURRENT_DATE - n.create_at))) > :nb_day
+        ';
+        $params = [
+            'user_id' => $userId,
+            'nb_day' => $nbDay
+        ];
+
+        $this->getEntityManager()->getConnection()->prepare($sql)->executeQuery($params);
+    }
+
 //    /**
 //     * @return Notification[] Returns an array of Notification objects
 //     */

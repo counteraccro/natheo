@@ -13,6 +13,7 @@ use App\Service\Admin\Breadcrumb;
 use App\Service\Admin\GridService;
 use App\Service\Admin\NotificationService;
 use App\Service\Admin\OptionSystemService;
+use App\Utils\Options\OptionSystemKey;
 use App\Utils\Options\OptionUserKey;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -32,12 +33,14 @@ class NotificationController extends AppAdminController
      * @return Response
      */
     #[Route('/', name: 'index')]
-    public function index(OptionSystemService $optionSystemService): Response
+    public function index(OptionSystemService $optionSystemService, NotificationService $notificationService): Response
     {
 
         if (!$optionSystemService->canNotification()) {
             return $this->redirectToRoute('admin_dashboard_index');
         }
+        $nbDay = $optionSystemService->getValueByKey(OptionSystemKey::OS_PURGE_NOTIFICATION);
+        $notificationService->purge($nbDay, $this->getUser()->getId());
 
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'notification',
@@ -49,7 +52,8 @@ class NotificationController extends AppAdminController
         return $this->render('admin/notification/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT)
+            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
+            'nbDay' => $nbDay
         ]);
     }
 
@@ -73,13 +77,14 @@ class NotificationController extends AppAdminController
      * Retourne une liste de notifications en fonction de la pagination
      * @param Request $request
      * @param NotificationService $notificationService
+     * @param GridService $gridService
      * @return JsonResponse
      */
     #[Route('/ajax/list', name: 'list', methods: ['POST'])]
     public function list(
         Request             $request,
         NotificationService $notificationService,
-        GridService         $gridService
+        GridService         $gridService,
     ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -91,7 +96,8 @@ class NotificationController extends AppAdminController
             'notifications' => $notifications,
             'translation' => $notificationService->getTranslateListNotifications(),
             'urlRead' => $this->generateUrl('admin_notification_read'),
-            'listLimit' => $gridService->addOptionsSelectLimit([])['listLimit']
+            'listLimit' => $gridService->addOptionsSelectLimit([])['listLimit'],
+            'locale' => $request->getLocale()
         ]);
     }
 
