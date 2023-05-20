@@ -15,12 +15,13 @@ export default {
   },
   data() {
     return {
-      notifications: Object,
+      notifications: [],
       translation: Object,
       urlRead: '',
       listLimit: Object,
       cLimit: this.limit,
       loading: false,
+      locale: '',
     }
   },
   mounted() {
@@ -43,6 +44,7 @@ export default {
         this.notifications = response.data.notifications;
         this.translation = response.data.translation;
         this.urlRead = response.data.urlRead;
+        this.locale = response.data.locale;
         this.listLimit = JSON.parse(response.data.listLimit);
       }).catch((error) => {
         console.log(error);
@@ -104,27 +106,22 @@ export default {
       }
 
       return returnClass;
+    },
+
+    /**
+     * Affiche le bon format de la date
+     * @param dateString
+     * @returns {string}
+     */
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      return new Intl.DateTimeFormat(this.locale, {dateStyle: 'long', timeStyle: 'short'}).format(date);
     }
   }
 }
 </script>
 
 <template>
-
-
-  <div class="btn-group">
-    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
-      {{ this.translation.nb_notifification_show_start }} {{ this.cLimit }} {{ this.translation.nb_notifification_show_end }}
-    </button>
-    <ul class="dropdown-menu">
-      <li v-for="(i) in this.listLimit">
-        <a class="dropdown-item" href="#" :data-limit="i" @click="this.changeLimit(i)">{{ i }}</a></li>
-    </ul>
-  </div>
-  <div class="btn btn-secondary ms-2">Uniquement non lu</div>
-  <div class="btn btn-secondary ms-2">Tout marquer comme lu</div>
-
-  <div class="clearfix"></div>
 
   <div :class="this.loading === true ? 'block-grid' : ''">
     <div v-if="this.loading" class="overlay">
@@ -133,12 +130,38 @@ export default {
         <span class="txt-overlay">{{ this.translation.loading }}</span>
       </div>
     </div>
-    <div class="mt-4">
-      <div v-for="notification in this.notifications">
-        <div :id="'notification-' + notification.id" class="card bg-opacity-10 p-2 shadow-sm rounded-end mb-2" :class="this.cssClass(notification)" @mouseover="mouseover(notification.id)">
-          <div class="card-body">
-            <h5 class="card-title">{{ notification.title }}</h5>
-            <span class="card-text" v-html="notification.content"></span>
+    <div v-if="this.notifications.length > 0">
+      <div class="btn-group">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
+          {{ this.translation.nb_notifification_show_start }} {{ this.cLimit }} {{ this.translation.nb_notifification_show_end }}
+        </button>
+        <ul class="dropdown-menu">
+          <li v-for="(i) in this.listLimit">
+            <a class="dropdown-item" href="#" :data-limit="i" @click="this.changeLimit(i)">{{ i }}</a></li>
+        </ul>
+      </div>
+      <div class="btn btn-secondary ms-2">Uniquement non lu</div>
+      <div class="btn btn-secondary ms-2">Tout marquer comme lu</div>
+
+      <div class="clearfix"></div>
+
+      <div class="mt-4">
+        <div v-for="notification in this.notifications">
+          <div :id="'notification-' + notification.id" class="card bg-opacity-10 p-2 shadow-sm rounded-end mb-2" :class="this.cssClass(notification)" @mouseover="mouseover(notification.id)">
+            <div class="card-body">
+              <div class="float-end"><i>{{ this.formatDate(notification.createAt) }}</i></div>
+              <h5 class="card-title">{{ notification.title }}</h5>
+              <span class="card-text" v-html="notification.content"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-else class="mt-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="text-center">
+            <i>{{ this.translation.empty }}</i>
           </div>
         </div>
       </div>
