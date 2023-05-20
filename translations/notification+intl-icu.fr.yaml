@@ -11,4 +11,6 @@ notification.page_title_h1: 'Mes notifications'
 notification.description: 'Liste de mes notifications, passez votre souris {mouse} dessus pour les considérez comme lu.'
 notification.nb.show.start: 'Afficher les'
 notification.nb.show.end: 'dernières notifications'
-notification.loading: __notification.loading
+notification.loading: 'Chargement des données'
+notification.purge.info: 'Les notifications lues seront automatiquement supprimées au bout de <b>{nb_day}</b> jours'
+notification.empty: 'Aucune notifications pour le moment...'

@@ -12,3 +12,5 @@ notification.description: __notification.description
 notification.nb.show.start: __notification.nb.show.start
 notification.nb.show.end: __notification.nb.show.end
 notification.loading: __notification.loading
+notification.empty: __notification.empty
+notification.purge.info: __notification.purge.info
