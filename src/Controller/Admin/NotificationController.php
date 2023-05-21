@@ -30,17 +30,17 @@ class NotificationController extends AppAdminController
 {
     /**
      * Notification de l'Utilisateur
+     * @param OptionSystemService $optionSystemService
      * @return Response
      */
     #[Route('/', name: 'index')]
-    public function index(OptionSystemService $optionSystemService, NotificationService $notificationService): Response
+    public function index(OptionSystemService $optionSystemService): Response
     {
 
         if (!$optionSystemService->canNotification()) {
             return $this->redirectToRoute('admin_dashboard_index');
         }
         $nbDay = $optionSystemService->getValueByKey(OptionSystemKey::OS_PURGE_NOTIFICATION);
-        $notificationService->purge($nbDay, $this->getUser()->getId());
 
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'notification',
@@ -118,5 +118,19 @@ class NotificationController extends AppAdminController
 
         return $this->json(
             ['success' => true]);
+    }
+
+    /**
+     * Permet de purger les commentaires
+     * @param OptionSystemService $optionSystemService
+     * @param NotificationService $notificationService
+     * @return Response
+     */
+    #[Route('/ajax/purge', name: 'purge')]
+    public function purge(OptionSystemService $optionSystemService, NotificationService $notificationService): Response
+    {
+        $nbDay = $optionSystemService->getValueByKey(OptionSystemKey::OS_PURGE_NOTIFICATION);
+        $notificationService->purge($nbDay, $this->getUser()->getId());
+        return $this->json(['success' => true]);
     }
 }

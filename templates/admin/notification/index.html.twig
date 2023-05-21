@@ -13,7 +13,10 @@
     </p>
 
     <div id="notifications">
-        <div {{ vue_component('Admin/Notification/NotificationList', {'url' : path('admin_notification_list'), 'page' : page, 'limit' : limit}) }}></div>
+        <div {{ vue_component('Admin/Notification/NotificationList', {
+            'url' : path('admin_notification_list'), 'page' : page, 'limit' : limit,
+            'urlPurge' : path('admin_notification_purge')
+        }) }}></div>
     </div>
 
 {% endblock %}

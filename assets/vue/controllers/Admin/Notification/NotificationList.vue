@@ -10,6 +10,7 @@ export default {
   name: "NotificationList",
   props: {
     url: String,
+    urlPurge: String,
     page: Number,
     limit: Number,
   },
@@ -25,7 +26,8 @@ export default {
     }
   },
   mounted() {
-    this.loadData(this.page, this.limit)
+    this.loading = true;
+    this.purge()
   },
   methods: {
     /**
@@ -36,7 +38,6 @@ export default {
     loadData(page, limit) {
 
       this.loading = true;
-
       axios.post(this.url, {
         'page': page,
         'limit': limit
@@ -53,6 +54,16 @@ export default {
       });
     },
 
+    /** Lance la purge des notifications **/
+    purge() {
+      axios.post(this.urlPurge, {}).then((response) => {
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+        this.loadData(this.page, this.limit)
+      });
+    },
+
     /**
      * Au survol de la sourie
      * @param id
@@ -66,7 +77,6 @@ export default {
         axios.post(this.urlRead, {
           'id': id,
         }).then((response) => {
-          //this.notifications = response.data.notifications;
         }).catch((error) => {
           console.log(error);
         }).finally();
