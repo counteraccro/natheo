@@ -88,14 +88,19 @@ class NotificationController extends AppAdminController
     ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+        $onlyNotRead = false;
+        if ($data['onlyNotRead'] === 1) {
+            $onlyNotRead = true;
+        }
         /** @var User $user */
         $user = $this->getUser();
-        $notifications = $notificationService->getByUserPaginate($data['page'], $data['limit'], $user);
+        $notifications = $notificationService->getByUserPaginate($data['page'], $data['limit'], $user, $onlyNotRead);
 
         return $this->json([
             'notifications' => $notifications,
             'translation' => $notificationService->getTranslateListNotifications(),
             'urlRead' => $this->generateUrl('admin_notification_read'),
+            'urlReadAll' => $this->generateUrl('admin_notification_read_all'),
             'listLimit' => $gridService->addOptionsSelectLimit([])['listLimit'],
             'locale' => $request->getLocale()
         ]);
@@ -131,6 +136,20 @@ class NotificationController extends AppAdminController
     {
         $nbDay = $optionSystemService->getValueByKey(OptionSystemKey::OS_PURGE_NOTIFICATION);
         $notificationService->purge($nbDay, $this->getUser()->getId());
+        return $this->json(['success' => true]);
+    }
+
+    /**
+     * Permet de marquer toutes les notifications non lu, en lu en fonction de l'utilisateur
+     * @param NotificationService $notificationService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/readAll', name: 'read_all')]
+    public function readAll(NotificationService $notificationService): JsonResponse
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $notificationService->readAll($user);
         return $this->json(['success' => true]);
     }
 }

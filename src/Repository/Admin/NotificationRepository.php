@@ -110,28 +110,23 @@ class NotificationRepository extends ServiceEntityRepository
         $this->getEntityManager()->getConnection()->prepare($sql)->executeQuery($params);
     }
 
-//    /**
-//     * @return Notification[] Returns an array of Notification objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('n')
-//            ->andWhere('n.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('n.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * Met en status lu l'ensemble des notifications non lu de l'utilisateur
+     * @param User $user
+     * @return void
+     */
+    public function readAll(User $user): void
+    {
+        $query = $this->createQueryBuilder('n')
+            ->andWhere('n.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('COALESCE(n.read, FALSE) = FALSE');
 
-//    public function findOneBySomeField($value): ?Notification
-//    {
-//        return $this->createQueryBuilder('n')
-//            ->andWhere('n.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $result = $query->getQuery()->getResult();
+        /** @var Notification $notification */
+        foreach ($result as $notification) {
+            $notification->setRead(true);
+        }
+        $this->getEntityManager()->flush();
+    }
 }

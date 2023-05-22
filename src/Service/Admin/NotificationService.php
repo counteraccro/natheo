@@ -134,6 +134,10 @@ class NotificationService extends AppAdminService
             ),
             'loading' => $this->translator->trans('notification.loading', domain: 'notification'),
             'empty' => $this->translator->trans('notification.empty', domain: 'notification'),
+            'onlyNotRead' => $this->translator->trans('notification.only_not_read', domain: 'notification'),
+            'readAll' => $this->translator->trans('notification.read_All', domain: 'notification'),
+            'all' => $this->translator->trans('notification.all', domain: 'notification'),
+            'allSuccess' => $this->translator->trans('notification.all_success', domain: 'notification'),
         ];
     }
 
@@ -148,6 +152,17 @@ class NotificationService extends AppAdminService
     {
         $repo = $this->getRepository(Notification::class);
         $repo->removeAfterDay($nbDay, $userId);
+    }
+
+    /**
+     * Met en status lu toutes les notifications non lus du user
+     * @param User $user
+     * @return void
+     */
+    public function readAll(User $user)
+    {
+        $repo = $this->getRepository(Notification::class);
+        $repo->readAll($user);
     }
 
 }

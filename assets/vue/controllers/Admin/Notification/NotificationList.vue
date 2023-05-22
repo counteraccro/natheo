@@ -19,10 +19,14 @@ export default {
       notifications: [],
       translation: Object,
       urlRead: '',
+      urlReadAll: '',
       listLimit: Object,
       cLimit: this.limit,
       loading: false,
       locale: '',
+      onlyNotRead: 1,
+      allReadSuccess: false,
+      allReadBtn: true,
     }
   },
   mounted() {
@@ -34,33 +38,87 @@ export default {
      * Chargement des données
      * @param page
      * @param limit
+     * @param onlyNotRead
      */
-    loadData(page, limit) {
+    loadData(page, limit, onlyNotRead) {
 
       this.loading = true;
       axios.post(this.url, {
         'page': page,
-        'limit': limit
+        'limit': limit,
+        'onlyNotRead': onlyNotRead,
       }).then((response) => {
         this.notifications = response.data.notifications;
         this.translation = response.data.translation;
         this.urlRead = response.data.urlRead;
+        this.urlReadAll = response.data.urlReadAll;
         this.locale = response.data.locale;
         this.listLimit = JSON.parse(response.data.listLimit);
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
         this.loading = false
+        this.canAllRead();
+      });
+    },
+
+    /**
+     * Active ou désactive le bouton non-lu
+     */
+    canAllRead() {
+      let nbElement = document.getElementById('badge-notification');
+      if (nbElement === null) {
+        this.allReadBtn = false;
+      } else {
+        this.allReadBtn = true;
+      }
+    },
+
+    /**
+     * Charge uniquement les notifications non lu
+     */
+    loadOnlyNotRead() {
+      this.onlyNotRead = 0;
+      this.loadData(1, 500, 1);
+    },
+
+    /**
+     * Charge toutes les notifications
+     */
+    loadAll() {
+      this.onlyNotRead = 1;
+      this.loadData(1, this.limit, 0);
+    },
+
+    /**
+     * Met toutes les notifications non lu en lu
+     */
+    readAll() {
+
+      let nbElement = document.getElementById('badge-notification');
+      nbElement.remove();
+
+      this.loading = true;
+      axios.post(this.urlReadAll, {}).then((response) => {
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+        this.allReadSuccess = true;
+        setTimeout(() => {
+          this.allReadSuccess = false;
+        }, 5000)
+        this.loadData(this.page, this.limit, 0)
       });
     },
 
     /** Lance la purge des notifications **/
     purge() {
+
       axios.post(this.urlPurge, {}).then((response) => {
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
-        this.loadData(this.page, this.limit)
+        this.loadData(this.page, this.limit, 0)
       });
     },
 
@@ -86,13 +144,11 @@ export default {
           nbElement.remove();
         }
       }
-
-
     },
 
     changeLimit(limit) {
       this.cLimit = limit;
-      this.loadData(1, limit)
+      this.loadData(1, limit, 0)
     },
 
     /**
@@ -140,6 +196,7 @@ export default {
         <span class="txt-overlay">{{ this.translation.loading }}</span>
       </div>
     </div>
+
     <div v-if="this.notifications.length > 0">
       <div class="btn-group">
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
@@ -150,10 +207,13 @@ export default {
             <a class="dropdown-item" href="#" :data-limit="i" @click="this.changeLimit(i)">{{ i }}</a></li>
         </ul>
       </div>
-      <div class="btn btn-secondary ms-2">Uniquement non lu</div>
-      <div class="btn btn-secondary ms-2">Tout marquer comme lu</div>
+      <div v-if="onlyNotRead === 1" class="btn btn-secondary ms-2" @click="this.loadOnlyNotRead()">{{ this.translation.onlyNotRead }}</div>
+      <div v-else class="btn btn-secondary ms-2" @click="this.loadAll()">{{ this.translation.all }}</div>
+      <div class="btn btn-secondary ms-2" @click="this.readAll()" :class="allReadBtn ? '' : 'disabled'">{{ this.translation.readAll }}</div>
 
       <div class="clearfix"></div>
+
+      <div v-if="allReadSuccess" class="alert alert-success mt-4">{{ this.translation.allSuccess }}</div>
 
       <div class="mt-4">
         <div v-for="notification in this.notifications">
@@ -168,7 +228,12 @@ export default {
       </div>
     </div>
     <div v-else class="mt-4">
-      <div class="card">
+      <button v-if="!loading" class="btn btn-secondary disabled">
+        {{ this.translation.nb_notifification_show_start }} {{ this.cLimit }} {{ this.translation.nb_notifification_show_end }}
+      </button>
+      <div v-if="!loading" class="btn btn-secondary ms-2" @click="this.loadAll()">{{ this.translation.all }}</div>
+      <div v-if="!loading" class="btn btn-secondary ms-2 disabled">{{ this.translation.readAll }}</div>
+      <div class="card mt-4">
         <div class="card-body">
           <div class="text-center">
             <i>{{ this.translation.empty }}</i>
