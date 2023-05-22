@@ -14,3 +14,7 @@ notification.nb.show.end: __notification.nb.show.end
 notification.loading: __notification.loading
 notification.empty: __notification.empty
 notification.purge.info: __notification.purge.info
+notification.only_not_read: __notification.only_not_read
+notification.read_All: __notification.read_All
+notification.all: __notification.all
+notification.all_success: __notification.all_success
