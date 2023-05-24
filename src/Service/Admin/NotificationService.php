@@ -159,7 +159,7 @@ class NotificationService extends AppAdminService
      * @param User $user
      * @return void
      */
-    public function readAll(User $user)
+    public function readAll(User $user): void
     {
         $repo = $this->getRepository(Notification::class);
         $repo->readAll($user);
