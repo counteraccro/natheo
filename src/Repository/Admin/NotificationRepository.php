@@ -73,7 +73,7 @@ class NotificationRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('n')
             ->andWhere('n.user = :user')
             ->setParameter('user', $user)
-            ->orderBy('n.create_at', 'ASC');
+            ->orderBy('n.create_at', 'DESC');
 
         if ($onlyNotRead) {
             $query->andWhere('COALESCE(n.read, FALSE) = FALSE');
