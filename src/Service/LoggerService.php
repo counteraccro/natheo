@@ -85,11 +85,16 @@ class LoggerService extends AppService
      */
     const DIRECTORY_LOG = 'log';
 
-    public function __construct(TranslatorInterface   $translator, RequestStack $requestStack,
-                                LoggerInterface       $authLogger, LoggerInterface $doctrineLogLogger, Security $security,
-                                ContainerBagInterface $params, GridService $gridService,
-                                OptionSystemService   $optionSystemService, OptionUserService $optionUserService,
-                                LocaleAwareInterface $localeAware
+    public function __construct(
+        TranslatorInterface   $translator,
+        RequestStack          $requestStack,
+        LoggerInterface       $authLogger,
+        LoggerInterface       $doctrineLogLogger, Security $security,
+        ContainerBagInterface $params,
+        GridService           $gridService,
+        OptionSystemService   $optionSystemService,
+        OptionUserService     $optionUserService,
+        LocaleAwareInterface  $localeAware
     )
     {
         $this->authLogger = $authLogger;
@@ -147,21 +152,21 @@ class LoggerService extends AppService
         switch ($action) {
             case self::ACTION_DOCTRINE_PERSIST :
                 $msg = $this->translator->trans('log.doctrine.persit', ['entity' => $entity, 'id' => $id, 'user' =>
-                        $user, 'id_user' => $idUser], 'log'
+                    $user, 'id_user' => $idUser], 'log'
                 );
                 $this->doctrineLogLogger->notice($msg);
                 $typeOption = 'user';
                 break;
             case self::ACTION_DOCTRINE_REMOVE :
                 $msg = $this->translator->trans('log.doctrine.remove', ['entity' => $entity, 'id' => $id, 'user' =>
-                        $user, 'id_user' => $idUser], 'log'
+                    $user, 'id_user' => $idUser], 'log'
                 );
                 $this->doctrineLogLogger->warning($msg);
                 $typeOption = 'system';
                 break;
             case self::ACTION_DOCTRINE_UPDATE :
                 $msg = $this->translator->trans('log.doctrine.update', ['entity' => $entity, 'id' => $id, 'user' =>
-                        $user, 'id_user' => $idUser], 'log'
+                    $user, 'id_user' => $idUser], 'log'
                 );
                 $this->doctrineLogLogger->info($msg);
                 $typeOption = 'user';
