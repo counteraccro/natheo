@@ -187,6 +187,12 @@ class UserService extends AppAdminService
             if ($actionDelete != '') {
                 $actions[] = $actionDelete;
             }
+
+            $actions[] = ['label' => '<i class="bi bi-arrow-left-right"></i>',
+                'id' => $user->getId(),
+                'url' => $this->router->generate('admin_dashboard_index') . '?_switch_user=' . $user->getEmail(),
+                'ajax' => false];
+
         }
 
         // Bouton edit
