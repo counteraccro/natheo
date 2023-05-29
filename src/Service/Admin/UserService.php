@@ -41,10 +41,14 @@ class UserService extends AppAdminService
      */
     private UserPasswordHasherInterface $passwordHasher;
 
-    public function __construct(EntityManagerInterface      $entityManager, ContainerBagInterface $containerBag,
-                                TranslatorInterface         $translator, UrlGeneratorInterface $router, GridService $gridService,
-                                OptionSystemService         $optionSystemService, Security $security, RequestStack $requestStack,
-                                UserPasswordHasherInterface $userPasswordHasher
+    public function __construct(
+        EntityManagerInterface      $entityManager,
+        ContainerBagInterface       $containerBag,
+        TranslatorInterface         $translator,
+        UrlGeneratorInterface       $router, GridService $gridService,
+        OptionSystemService         $optionSystemService,
+        Security                    $security, RequestStack $requestStack,
+        UserPasswordHasherInterface $userPasswordHasher
     )
     {
         $this->gridService = $gridService;
@@ -188,10 +192,12 @@ class UserService extends AppAdminService
                 $actions[] = $actionDelete;
             }
 
-            $actions[] = ['label' => '<i class="bi bi-arrow-left-right"></i>',
-                'id' => $user->getId(),
-                'url' => $this->router->generate('admin_dashboard_index') . '?_switch_user=' . $user->getEmail(),
-                'ajax' => false];
+            if (!$user->isDisabled()) {
+                $actions[] = ['label' => '<i class="bi bi-arrow-left-right"></i>',
+                    'id' => $user->getId(),
+                    'url' => $this->router->generate('admin_dashboard_index') . '?_switch_user=' . $user->getEmail(),
+                    'ajax' => false];
+            }
 
         }
 
@@ -218,7 +224,8 @@ class UserService extends AppAdminService
             'force_majuscule' => $this->translator->trans('user.change_password.force.majuscule', domain: 'user'),
             'force_minuscule' => $this->translator->trans('user.change_password.force.minuscule', domain: 'user'),
             'force_chiffre' => $this->translator->trans('user.change_password.force.chiffre', domain: 'user'),
-            'force_character_spe' => $this->translator->trans('user.change_password.force.character_spe',
+            'force_character_spe' => $this->translator->trans(
+                'user.change_password.force.character_spe',
                 domain: 'user'
             ),
             'error_password_2' => $this->translator->trans('user.error.password_2', domain: 'user'),

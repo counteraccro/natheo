@@ -33,6 +33,14 @@
                     <i class="bi-h bi-gear-fill-h"></i>
                     <span class="d-none-mini"> {{ 'global.user.option' | trans({}, 'global') }}</span>
                 </a>
+
+                {% if is_granted('IS_IMPERSONATOR') %}
+                    <a class="nav-link" href="{{ impersonation_exit_path(path('admin_dashboard_index') ) }}">
+                        <i class="bi-h bi-person-fill-exclamation-h"></i>
+                        <span class="d-none-mini"> {{ 'global.user.impersonation' | trans({}, 'global') }}</span>
+                    </a>
+                {% endif %}
+
                 <a class="nav-link" href="{{ path('auth_logout') }}">
                     <i class="bi-h bi-door-fill-h"></i>
                     <span class="d-none-mini"> {{ 'global.logout' | trans({}, 'global') }}</span>

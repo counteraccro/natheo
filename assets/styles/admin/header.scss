@@ -77,6 +77,14 @@
   content: "\F3E5";
 }
 
+#adm-navbar .bi-person-fill-exclamation-h::after {
+  content: "\F89F";
+}
+
+#adm-navbar .bi-person-fill-exclamation-h:hover::after {
+  content: "\F4D9";
+}
+
 #adm-navbar .badge-notification {
   animation: bounce 2s ease infinite;
   top: -50% !important;
