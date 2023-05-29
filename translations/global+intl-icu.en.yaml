@@ -8,3 +8,4 @@ global.user.option: 'Mes options [en]'
 global.licence: 'Copyright &copy; 2023-{year} &mdash; Propulsé par Nathéo CMS [en]'
 global.dashboard: 'Dashboard [en]'
 global.notification: __global.notification
+global.user.impersonation: __global.user.impersonation
