@@ -88,3 +88,7 @@ user.success_remove: 'Le compte à été supprimé avec succès'
 user.error_not_allowed: "Cette action n'est pas autorisée"
 user.danger_zone.success_anonymous: 'Votre compte à été anonymiser avec succès, déconnexion dans 3 secondes...'
 user.danger_zone.success_remove: 'Votre compte à été supprimé avec succès, déconnexion dans 3 secondes...'
+user.page_add_title: 'Nouvel utilisateur'
+user.page_add_title_h1: "Formulaire de création d'un nouvel utilisateur"
+user.btn.new: 'Nouvel utilisateur'
+user.page_add.description: 'Créer un nouvel utilisateur qui pourra contribuer au contenu de votre site'

@@ -88,3 +88,5 @@ user.success_remove: __user.success_remove
 user.error_not_allowed: __user.error_not_allowed
 user.danger_zone.success_anonymous: __user.danger_zone.success_anonymous
 user.danger_zone.success_remove: __user.danger_zone.success_remove
+user.page_add_title: __user.page_add_title
+user.page_add_title_h1: __user.page_add_title_h1
