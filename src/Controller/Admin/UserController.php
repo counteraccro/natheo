@@ -416,4 +416,21 @@ class UserController extends AppAdminController
             'redirect' => $url
         ]);
     }
+
+    #[Route('/add', name: 'add', methods: ['GET'])]
+    #[IsGranted('ROLE_SUPER_ADMIN')]
+    public function add(): Response
+    {
+        $breadcrumb = [
+            Breadcrumb::DOMAIN => 'user',
+            Breadcrumb::BREADCRUMB => [
+                'user.page_title_h1' => 'admin_user_index',
+                'user.page_add_title_h1' => '#'
+            ]
+        ];
+
+        return $this->render('admin/user/add.html.twig', [
+            'breadcrumb' => $breadcrumb,
+        ]);
+    }
 }

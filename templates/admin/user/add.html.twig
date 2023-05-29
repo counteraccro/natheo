@@ -1,0 +1,14 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block title %}{{ 'user.page_add_title' | trans({}, 'user') }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'user.page_add_title_h1' | trans({}, 'user') }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    <p>
+        {{ 'user.page_add.description' | trans({}, 'user') }} <br/>
+    </p>
+
+{% endblock %}
