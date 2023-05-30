@@ -15,6 +15,7 @@ use App\Service\Admin\MailService;
 use App\Service\Admin\NotificationService;
 use App\Service\Admin\OptionSystemService;
 use App\Service\Admin\UserService;
+use App\Service\LoggerService;
 use App\Utils\Mail\KeyWord;
 use App\Utils\Mail\MailKey;
 use App\Utils\Notification\NotificationKey;
@@ -23,6 +24,7 @@ use App\Utils\Options\OptionUserKey;
 use App\Utils\User\Role;
 use League\CommonMark\Exception\CommonMarkException;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -432,5 +434,14 @@ class UserController extends AppAdminController
         return $this->render('admin/user/add.html.twig', [
             'breadcrumb' => $breadcrumb,
         ]);
+    }
+
+    #[Route('/switch', name: 'switch', methods: ['GET'])]
+    #[IsGranted('ROLE_SUPER_ADMIN')]
+    public function switch(Request $request, LoggerService $loggerService): RedirectResponse
+    {
+        $email = $request->query->get('user');
+        $loggerService->logSwitchUser($this->getUser()->getEmail(), $email);
+        return $this->redirectToRoute('admin_dashboard_index', ['_switch_user' => $email]);
     }
 }

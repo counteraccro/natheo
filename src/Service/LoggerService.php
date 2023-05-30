@@ -130,6 +130,22 @@ class LoggerService extends AppService
     }
 
     /**
+     * Permet de loger le switch d'utilisateur
+     * @return void
+     */
+    public function logSwitchUser(string $user, string $userToSwitch): void
+    {
+        $this->switchDefaultLocale('system');
+        $msg = $this->translator->trans(
+            'log.auth.admin.user.switch',
+            ['user' => $user, 'userToSwitch' => $userToSwitch],
+            'log'
+        );
+        $level = LogLevel::WARNING;
+        $this->authLogger->log($level, $msg);
+    }
+
+    /**
      * Permet d'enregistrer les logs venant du listener de doctrine
      * @param string $action
      * @param string $entity
