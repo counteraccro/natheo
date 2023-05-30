@@ -24,3 +24,4 @@ log.description: 'Consulter / vider les logs applicatifs '
 log.grid.level: Niveau
 log.grid.date: Date
 log.grid.message: Message
+log.auth.admin.user.switch: "Le SUPER_ADMIN <b>{user}</b> à prit le contrôle du compte de <b>{userToSwitch}</b>"

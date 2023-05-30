@@ -24,3 +24,4 @@ log.grid.message: __log.grid.message
 log.page_title: __log.page_title
 log.page_title_h1: __log.page_title_h1
 log.description: __log.description
+log.auth.admin.user.switch: __log.auth.admin.user.switch
