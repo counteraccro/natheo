@@ -195,7 +195,7 @@ class UserService extends AppAdminService
             if (!$user->isDisabled()) {
                 $actions[] = ['label' => '<i class="bi bi-arrow-left-right"></i>',
                     'id' => $user->getId(),
-                    'url' => $this->router->generate('admin_user_switch'). '?user=' . $user->getEmail(),
+                    'url' => $this->router->generate('admin_user_switch', ['user' => $user->getEmail()]),
                     'ajax' => false];
             }
 
