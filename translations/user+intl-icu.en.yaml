@@ -92,3 +92,10 @@ user.page_add_title: __user.page_add_title
 user.page_add_title_h1: __user.page_add_title_h1
 user.page_add.description: __user.page_add.description
 user.btn.new: __user.btn.new
+user.index.popin.help.title: __user.index.popin.help.title
+user.index.popin.help.disabled_user: __user.index.popin.help.disabled_user
+user.index.popin.help.enable_user: __user.index.popin.help.enable_user
+user.index.popin.help.delete: __user.index.popin.help.delete
+user.index.popin.help.anonymous: __user.index.popin.help.anonymous
+user.index.popin.help.edit: __user.index.popin.help.edit
+user.index.popin.help.switch: __user.index.popin.help.switch
