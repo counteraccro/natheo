@@ -94,8 +94,8 @@ user.btn.new: 'Nouvel utilisateur'
 user.page_add.description: 'Créer un nouvel utilisateur qui pourra contribuer au contenu de votre site'
 user.index.popin.help.title: Aide
 user.index.popin.help.disabled_user: 'Désactive un utilisateur'
-user.index.popin.help.enable_user: "Active un utilisateur"
-user.index.popin.help.delete: "Supprime un utilisateur"
-user.index.popin.help.anonymous: "Anonymise un utilisateur"
-user.index.popin.help.edit: "Modifier un utilisateur"
-user.index.popin.help.switch: "Ce connecter en tant que"
+user.index.popin.help.enable_user: 'Active un utilisateur'
+user.index.popin.help.delete: 'Supprime un utilisateur'
+user.index.popin.help.anonymous: 'Anonymise un utilisateur'
+user.index.popin.help.edit: 'Modifier un utilisateur'
+user.index.popin.help.switch: 'Ce connecter en tant que'
