@@ -174,13 +174,15 @@ class UserService extends AppAdminService
 
                 $msgConfirm = $this->translator->trans('user.confirm.delete.msg', ['{login}' =>
                     $user->getLogin()], 'user');
+                $label = '<i class="bi bi-trash"></i>';
                 if ($this->optionSystemService->canReplace()) {
                     $msgConfirm = $this->translator->trans('user.confirm.replace.msg', ['{login}' =>
                         $user->getLogin()], 'user');
+                    $label = '<i class="bi bi-person-fill-slash"></i>';
                 }
 
                 $actionDelete = [
-                    'label' => '<i class="bi bi-trash"></i>',
+                    'label' => $label,
                     'url' => $this->router->generate('admin_user_delete', ['id' => $user->getId()]),
                     'ajax' => true,
                     'confirm' => true,
@@ -202,7 +204,7 @@ class UserService extends AppAdminService
         }
 
         // Bouton edit
-        $actions[] = ['label' => '<i class="bi bi-pencil"></i>',
+        $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
             'id' => $user->getId(),
             'url' => $this->router->generate('admin_user_update', ['id' => $user->getId()]),
             'ajax' => false];
