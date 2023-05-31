@@ -233,14 +233,14 @@ class MailService extends AppAdminService
 
         // Bouton test email
         $actions[] = [
-            'label' => '<i class="bi bi-send-check"></i>',
+            'label' => '<i class="bi bi-send-check-fill"></i>',
             'url' => $this->router->generate('admin_mail_send_demo_mail', ['id' => $mail->getId()]),
             'ajax' => true,
             'confirm' => false,
         ];
 
         // Bouton edit
-        $actions[] = ['label' => '<i class="bi bi-pencil"></i>',
+        $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
             'id' => $mail->getId(),
             'url' => $this->router->generate('admin_mail_edit', ['id' => $mail->getId()]),
             'ajax' => false];
