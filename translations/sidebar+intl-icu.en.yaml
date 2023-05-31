@@ -12,3 +12,6 @@ sidebar.page_title: __sidebar.page_title
 sidebar.page_title_h1: __sidebar.page_title_h1
 sidebar.description: __sidebar.description
 sidebar.info: __sidebar.info
+sidebar.index.popin.help.title: __sidebar.index.popin.help.title
+sidebar.index.popin.help.disabled: __sidebar.index.popin.help.disabled
+sidebar.index.popin.help.enabled: __sidebar.index.popin.help.enabled

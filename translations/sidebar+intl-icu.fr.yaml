@@ -13,3 +13,6 @@ sidebar.info: "Les éléments marqué d'un {icon} sont verrouillés et non modif
 sidebar.success.no.disabled: "L'élément sidebar <strong>{label}</strong> est maintenant visible"
 sidebar.success.disabled: "L'élément sidebar <strong>{label}</strong> est maintenant masquer pour tout le monde"
 sidebar.confirm.disabled.msg: "L'élément sidebar <strong>{label}</strong> sera désactivé et donc non visible dans l'administration <br /> Confirmez-vous cette action ?"
+sidebar.index.popin.help.title: Aide
+sidebar.index.popin.help.disabled: 'Masque un élément'
+sidebar.index.popin.help.enabled: 'Affiche un élément'
