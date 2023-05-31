@@ -15,3 +15,6 @@ mail.info: 'Vous pouvez tester les emails en cliquant sur le bouton {icon}, vous
 mail.message.success: 'Mail <strong>{email}</strong> sauvegardé avec succès'
 mail.input.trans.title: 'Objet du mail'
 mail.input.trans.title.empty: "L'objet de l'email ne peut pas être vide"
+mail.index.popin.help.title: Aide
+mail.index.popin.help.send: "Recevoir l'email en démo"
+mail.index.popin.help.edit: "Modifier un email"

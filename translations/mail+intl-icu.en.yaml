@@ -15,3 +15,6 @@ mail.info: __mail.info
 mail.message.success: __mail.message.success
 mail.input.trans.title: __mail.input.trans.title
 mail.input.trans.title.empty: __mail.input.trans.title.empty
+mail.index.popin.help.title: __mail.index.popin.help.title
+mail.index.popin.help.send: __mail.index.popin.help.send
+mail.index.popin.help.edit: __mail.index.popin.help.edit
