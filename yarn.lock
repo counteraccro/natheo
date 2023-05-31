@@ -1064,6 +1064,9 @@
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
+"@symfony/stimulus-bundle@file:vendor/symfony/stimulus-bundle/assets":
+  version "1.0.0"
+
 "@symfony/ux-vue@file:vendor/symfony/ux-vue/assets":
   version "1.0.0"
 
@@ -1827,10 +1830,10 @@ bootstrap-icons@^1.10.3:
   resolved "https://registry.npmjs.org/bootstrap-icons/-/bootstrap-icons-1.10.3.tgz"
   integrity sha512-7Qvj0j0idEm/DdX9Q0CpxAnJYqBCFCiUI6qzSPYfERMcokVuV9Mdm/AJiVZI8+Gawe4h/l6zFcOzvV7oXCZArw==
 
-bootstrap@^5.2.3:
-  version "5.2.3"
-  resolved "https://registry.npmjs.org/bootstrap/-/bootstrap-5.2.3.tgz"
-  integrity sha512-cEKPM+fwb3cT8NzQZYEu4HilJ3anCrWqh3CHAok1p9jXqMPsPTBhU25fBckEJHJ/p+tTxTFTsFQGM+gaHpi3QQ==
+bootstrap@5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.3.0.tgz#0718a7cc29040ee8dbf1bd652b896f3436a87c29"
+  integrity sha512-UnBV3E3v4STVNQdms6jSGO2CvOkjUMdDAVR2V5N4uCMdaIkaQjbcEAMqRimDHIs4uqBYzDAKCQwCB+97tJgHQw==
 
 brace-expansion@^1.1.7:
   version "1.1.11"
