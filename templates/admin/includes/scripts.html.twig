@@ -58,6 +58,9 @@
         // Cas submit, on clean tout
         addEventListener("submit", (evt) => {
             modified_inputs.clear();
+            let msg = '{{ 'message.global.loading' | trans }}'
+            evt.submitter.innerHTML = ' <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> ' + msg;
+            document.querySelector('#' + evt.submitter.id).disabled = true;
             // to prevent the warning from happening, it is advisable
             // that you clear your form controls back to their default
             // state with evt.target.reset() or form.reset() after submission

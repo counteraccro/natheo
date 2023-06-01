@@ -145,3 +145,4 @@ options_system.purge_notification.6_month: '__6 mois'
 options_system.purge_notification.year: '__1 an'
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: __pagedemo.page_title_h1
+message.global.loading: __message.global.loading
