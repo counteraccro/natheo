@@ -14,6 +14,7 @@ user.confirm.delete.msg: "Le compte de l'utilisateur <strong>{login}</strong> se
 user.confirm.replace.msg: "Le compte de l'utilisateur <strong>{login}</strong> sera remplacé par un compte John Doe, cette action est définitive <br /> Confirmez-vous cette action ?"
 user.page_update_title: 'Mise à jour du compte {login}'
 user.page_update_title_h1: 'Mise à jour du compte {login}'
+user.page_update_title_h1_2: 'Mise à jour du compte'
 user.info: "Les utilisateurs marqué d'un {icon} ont été remplacé par John Doe et sont verrouillés | les utilisateurs marqué d'un {icon2} sont désactivés"
 user.grid.role: Role
 user.my_option_title: 'Mes options'
@@ -99,3 +100,24 @@ user.index.popin.help.delete: 'Supprime un utilisateur'
 user.index.popin.help.anonymous: 'Anonymise un utilisateur'
 user.index.popin.help.edit: 'Modifier un utilisateur'
 user.index.popin.help.switch: 'Ce connecter en tant que'
+user.page_update.profil: Profil
+user.page_update.personal_data: 'Données personnelles'
+user.page_update.personal_data.description: "L'utilisateur peut modifier ses données directement depuis son compte, données non obligatoire"
+user.page_update.last_update: 'Dernière mise à jour'
+user.page_update.information: Information
+user.form_update.adresse_email.label: 'Adresse email'
+user.form_update.adresse_email.help: "Attention, à ne changer que sur demande de l'utilisateur, ou uniquement si nécessaire"
+user.form_update.disabled.label: "Désactiver l'utilisateur"
+user.form_update.disabled.help: "Autorise ou non l'utilisateur à se connecter à la zone admin du site"
+user.form_update.login.label: Login
+user.form_update.login.help: 'Identifiant qui apparait à la fin de ses articles'
+user.form_update.login.placeholder: 'Son login'
+user.form_update.firstname.label: Prénom
+user.form_update.firstname.help: "Identifiant qui apparait à la fin de ses articles s'il souhaite faire apparaitre sa vrai identité"
+user.form_update.firstname.placeholder: 'Son prénom'
+user.form_update.lastname.label: Nom
+user.form_update.lastname.help: "Identifiant qui apparait à la fin de ses articles s'il souhaite faire apparaitre sa vrai identité"
+user.form_update.lastname.placeholder: 'Son nom'
+user.form_update.submit: Modifier
+user.page_update_description: "Modifier le compte d'un utilisateur et/ou consulter quelques statistiques"
+user.page_update.success: "Utilisateur <b>{email}</b> modifié avec succès"

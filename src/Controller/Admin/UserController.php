@@ -10,12 +10,14 @@ namespace App\Controller\Admin;
 
 use App\Entity\Admin\User;
 use App\Form\Admin\User\MyAccountType;
+use App\Form\Admin\User\UserType;
 use App\Service\Admin\Breadcrumb;
 use App\Service\Admin\MailService;
 use App\Service\Admin\NotificationService;
 use App\Service\Admin\OptionSystemService;
 use App\Service\Admin\UserService;
 use App\Service\LoggerService;
+use App\Utils\Flash\FlashKey;
 use App\Utils\Mail\KeyWord;
 use App\Utils\Mail\MailKey;
 use App\Utils\Notification\NotificationKey;
@@ -172,20 +174,38 @@ class UserController extends AppAdminController
      * @param UserService $userService
      * @return Response
      */
-    #[Route('/update/{id}', name: 'update', methods: ['GET'])]
+    #[Route('/update/{id}', name: 'update', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]
-    public function update(User $user, UserService $userService): Response
+    public function update(
+        User                $user,
+        UserService         $userService,
+        Request             $request,
+        TranslatorInterface $translator
+    ): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'user',
             Breadcrumb::BREADCRUMB => [
                 'user.page_title_h1' => 'admin_user_index',
-                'user.page_update_title_h1' => '#'
+                'user.page_update_title_h1_2' => '#'
             ]
         ];
 
+        $form = $this->createForm(UserType::class, $user);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $form->getData();
+            $userService->save($user);
+            $this->addFlash(
+                FlashKey::FLASH_SUCCESS,
+                $translator->trans('user.page_update.success', ['email' => $user->getEmail()], domain: 'user'));
+        }
+
         return $this->render('admin/user/update.html.twig', [
             'breadcrumb' => $breadcrumb,
+            'form' => $form,
+            'user' => $user
         ]);
     }
 
