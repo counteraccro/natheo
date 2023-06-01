@@ -221,7 +221,8 @@ class UserController extends AppAdminController
     public function updateMyAccount(
         UserService         $userService,
         Request             $request,
-        OptionSystemService $optionSystemService
+        OptionSystemService $optionSystemService,
+        TranslatorInterface $translator
     ): Response
     {
         $breadcrumb = [
@@ -239,6 +240,9 @@ class UserController extends AppAdminController
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
             $userService->save($user);
+            $this->addFlash(
+                FlashKey::FLASH_SUCCESS,
+                $translator->trans('user.page_my_account.success', domain: 'user'));
         }
 
         $canDelete = $optionSystemService->getValueByKey(OptionSystemKey::OS_ALLOW_DELETE_DATA);

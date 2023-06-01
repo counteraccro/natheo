@@ -120,4 +120,5 @@ user.form_update.lastname.help: "Identifiant qui apparait à la fin de ses artic
 user.form_update.lastname.placeholder: 'Son nom'
 user.form_update.submit: Modifier
 user.page_update_description: "Modifier le compte d'un utilisateur et/ou consulter quelques statistiques"
-user.page_update.success: "Utilisateur <b>{email}</b> modifié avec succès"
+user.page_update.success: 'Utilisateur <b>{email}</b> modifié avec succès'
+user.page_my_account.success: 'Vos données personnelles ont été correctement modifiées'

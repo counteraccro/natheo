@@ -120,3 +120,4 @@ user.page_update.personal_data: __user.page_update.personal_data
 user.page_update.personal_data.description: __user.page_update.personal_data.description
 user.page_update.last_update: __user.page_update.last_update
 user.page_update.information: __user.page_update.information
+user.page_my_account.success: __user.page_my_account.success
