@@ -231,8 +231,8 @@ export default {
             </div>
         </div>
 
-        <div v-if="this.msgUpdatePassword !== ''" class="alert alert-info">
-            {{ this.msgUpdatePassword }}
+        <div v-if="this.msgUpdatePassword !== ''" class="alert alert-success">
+            <i class="bi bi-check-circle-fill"></i> {{ this.msgUpdatePassword }}
         </div>
 
         <div class="mb-3">
