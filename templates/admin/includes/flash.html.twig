@@ -1,0 +1,12 @@
+
+{% set array = [] %}
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        {% set array = array|merge([{ label: label, message: message}]) %}
+    {% endfor %}
+{% endfor %}
+
+{% if array is not empty %}
+    <div {{ vue_component('Admin/Flash', {flashes : array})}}></div>
+{% endif %}
+
