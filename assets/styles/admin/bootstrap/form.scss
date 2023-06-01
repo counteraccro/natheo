@@ -15,6 +15,12 @@
   border-color: var(--secondary);
 }
 
+label.required:after {
+  content: " *";
+  color: var(--danger);
+  font-weight: bold;
+}
+
 /* Ajout is-update equivalent is-error ou is-validate */
 .is-update {
   border-color: var(--warning);
