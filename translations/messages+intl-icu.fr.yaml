@@ -143,7 +143,14 @@ options_system.purge_notification.month: '1 mois'
 options_system.purge_notification.3_month: '3 mois'
 options_system.purge_notification.6_month: '6 mois'
 options_system.purge_notification.year: '1 an'
-message.global.loading: 'Chargement...'
+message.global.loading: Chargement...
+date.diff.start: "Il y'a"
+date.diff.year: "{years, plural,\n    =1    {année}\n    other {années}\n}"
+date.diff.month: mois
+date.diff.day: "{days, plural,\n    =1    {jour}\n    other {jours}\n}"
+date.diff.hour: "{hours, plural,\n    =1    {heure}\n    other {heures}\n}"
+date.diff.minute: "{minutes, plural,\n    =1    {minute}\n    other {minutes}\n}"
+date.diff.seconde: "{secondes, plural,\n    =1    {seconde}\n    other {secondes}\n}"
+date.diff.instant: "quelques instants"
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: 'Elements HML disponibles (trad)'
-

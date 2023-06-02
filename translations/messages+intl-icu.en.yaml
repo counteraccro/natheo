@@ -143,6 +143,14 @@ options_system.purge_notification.month: '__1 mois'
 options_system.purge_notification.3_month: '__3 mois'
 options_system.purge_notification.6_month: '__6 mois'
 options_system.purge_notification.year: '__1 an'
+message.global.loading: __message.global.loading
+date.diff.start: "__Il y'a"
+date.diff.year: "{years, plural,\n    =1    {__année}\n    other {__années}\n}"
+date.diff.month: __mois
+date.diff.day: "{days, plural,\n    =1    {__jour}\n    other {__jours}\n}"
+date.diff.hour: "{hours, plural,\n    =1    {__heure}\n    other {__heures}\n}"
+date.diff.minute: "{minutes, plural,\n    =1    {__minute}\n    other {__minutes}\n}"
+date.diff.seconde: "{secondes, plural,\n    =1    {__seconde}\n    other {__secondes}\n}"
+date.diff.instant: "__A l'instant"
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: __pagedemo.page_title_h1
-message.global.loading: __message.global.loading
