@@ -56,6 +56,9 @@ class DateExtensionRuntime extends AppExtensionRuntime implements RuntimeExtensi
                 'date.diff.minute',
                 ['minutes' => $dateInterval->i]
                 );
+            if ($dateInterval->s > 0) {
+                $return .= ' ' . $this->translator->trans('date.diff.and');
+            }
         }
 
         if ($dateInterval->s > 0) {
