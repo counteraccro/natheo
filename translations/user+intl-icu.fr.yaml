@@ -60,7 +60,7 @@ user.change_password.force.majuscule: 'Au moins une lettre majuscule'
 user.change_password.force.minuscule: 'Au moins une lettre minuscule'
 user.change_password.force.chiffre: 'Au moins un chiffre'
 user.change_password.force.character_spe: 'Au moins un caractère spécial'
-user.page_my_account.last_update: 'Dernière mise à jour le '
+user.page_my_account.last_update: 'Dernière mise à jour'
 user.error.password_2: 'Le mot de passe de confirmation est différent du mot de passe'
 user.update_password.success: 'Le nouveau mot de passe à correctement été mis à jour'
 user.error_not_disabled: 'Vous ne pouvez pas désactiver cet utilisateur'
@@ -122,3 +122,4 @@ user.form_update.submit: Modifier
 user.page_update_description: "Modifier le compte d'un utilisateur et/ou consulter quelques statistiques"
 user.page_update.success: 'Utilisateur <b>{email}</b> modifié avec succès'
 user.page_my_account.success: 'Vos données personnelles ont été correctement modifiées'
+user.page_update.created: Date de création

@@ -152,5 +152,6 @@ date.diff.hour: "{hours, plural,\n    =1    {__heure}\n    other {__heures}\n}"
 date.diff.minute: "{minutes, plural,\n    =1    {__minute}\n    other {__minutes}\n}"
 date.diff.seconde: "{secondes, plural,\n    =1    {__seconde}\n    other {__secondes}\n}"
 date.diff.instant: "__A l'instant"
+date.diff.and: __et
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: __pagedemo.page_title_h1

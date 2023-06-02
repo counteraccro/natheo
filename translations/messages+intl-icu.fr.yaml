@@ -151,6 +151,7 @@ date.diff.day: "{days, plural,\n    =1    {jour}\n    other {jours}\n}"
 date.diff.hour: "{hours, plural,\n    =1    {heure}\n    other {heures}\n}"
 date.diff.minute: "{minutes, plural,\n    =1    {minute}\n    other {minutes}\n}"
 date.diff.seconde: "{secondes, plural,\n    =1    {seconde}\n    other {secondes}\n}"
-date.diff.instant: "quelques instants"
+date.diff.instant: 'quelques instants'
+date.diff.and: 'et'
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: 'Elements HML disponibles (trad)'

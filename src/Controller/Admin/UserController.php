@@ -251,7 +251,7 @@ class UserController extends AppAdminController
         return $this->render('admin/user/my_account.html.twig', [
             'breadcrumb' => $breadcrumb,
             'form' => $form,
-            'dateUpdate' => $user->getFormatDate(),
+            'user' => $user,
             'changePasswordTranslate' => $userService->getTranslateChangePassword(),
             'dangerZoneTranslate' => $userService->getTranslateDangerZone(),
             'canDelete' => $canDelete,

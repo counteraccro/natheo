@@ -29,8 +29,10 @@
                         </p>
 
                         {{ form(form) }}
-                        <p class="float-end">
-                            <i>{{ 'user.page_my_account.last_update' | trans({}, 'user') }} {{ dateUpdate }}</i></p>
+
+                            <i class="float-end">{{ 'user.page_my_account.last_update' | trans({}, 'user') }} {{ diff_now(user.updateAt) }}</i>
+
+
                     </fieldset>
                 </div>
             </div>
