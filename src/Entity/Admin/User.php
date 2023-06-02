@@ -268,9 +268,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getFormatDate(string $dateName = 'update'): string
     {
+        $format = 'l d F Y H:i:s';
         return match ($dateName) {
-            'update' => $this->getUpdateAt()->format('l d F Y H:i:s'),
-            'create' => $this->getCreatedAt()->format('l d F Y H:i:s'),
+            'update' => $this->getUpdateAt()->format($format),
+            'create' => $this->getCreatedAt()->format($format),
             default => "",
         };
     }

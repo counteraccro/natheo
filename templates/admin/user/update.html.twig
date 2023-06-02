@@ -32,7 +32,7 @@
 
                         {{ form(form) }}
                         <p class="float-end">
-                            <i>{{ 'user.page_update.last_update' | trans({}, 'user') }} {{ 'dateUpdate' }}</i></p>
+                            <i>{{ 'user.page_update.last_update' | trans({}, 'user') }} {{ user.getFormatDate }}</i></p>
                     </fieldset>
                 </div>
             </div>
@@ -44,7 +44,7 @@
                     {{ 'user.page_update.information' | trans({}, 'user') }}
                 </div>
                 <div class="card-body">
-
+                    {{ 'user.page_update.last_update' | trans({}, 'user') }} : {{ diff_now(user.updateAt) }}
                 </div>
             </div>
         </div>
