@@ -122,3 +122,11 @@ user.page_update.last_update: __user.page_update.last_update
 user.page_update.information: __user.page_update.information
 user.page_my_account.success: __user.page_my_account.success
 user.page_update.created: __user.page_update.created
+user.page_update.info.user_disabled: __user.page_update.info.user_disabled
+user.page_update.info.warning: __user.page_update.info.warning
+user.page_update.reset_password: __user.page_update.reset_password
+user.page_update.action: __user.page_update.action
+user.page_update.reset_password.description: __user.page_update.reset_password.description
+user.page_update.connecte_to: __user.page_update.connecte_to
+user.page_update.connecte_to.description: __user.page_update.connecte_to.description
+user.page_update.connecte_to.btn: __user.page_update.connecte_to.btn

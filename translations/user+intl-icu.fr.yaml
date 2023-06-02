@@ -122,4 +122,12 @@ user.form_update.submit: Modifier
 user.page_update_description: "Modifier le compte d'un utilisateur et/ou consulter quelques statistiques"
 user.page_update.success: 'Utilisateur <b>{email}</b> modifié avec succès'
 user.page_my_account.success: 'Vos données personnelles ont été correctement modifiées'
-user.page_update.created: Date de création
+user.page_update.created: 'Date de création'
+user.page_update.info.user_disabled: 'Cet utilisateur est désactivé, il ne peux plus ce connecter à la zone admin du site'
+user.page_update.info.warning: Attention
+user.page_update.reset_password: 'Réinitialisation du mot de passe'
+user.page_update.action: 'Actions possibles'
+user.page_update.reset_password.description: "Vous pouvez initialisé le reset du mot de passe de l'utilisateur. Un email sera envoyé à l'utilisateur pour l'aider à réinitialiser son mot de passe"
+user.page_update.connecte_to: 'Ce connecter en tant que'
+user.page_update.connecte_to.description: 'Vous pouvez faire une prise de contrôle du compte de {login} afin de pouvoir vous connecter sur son compte'
+user.page_update.connecte_to.btn: Me connecter en tant que {login}
