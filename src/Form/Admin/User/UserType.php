@@ -1,9 +1,15 @@
 <?php
+/**
+ * Formulaire pour modifier un utilisateur
+ * @author Gourdon Aymeric
+ * @version 1.0
+ */
 
 namespace App\Form\Admin\User;
 
 use App\Entity\Admin\User;
 use App\Form\AppFormType;
+use App\Utils\User\Role;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -11,9 +17,11 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserType extends AppFormType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -48,28 +56,33 @@ class UserType extends AppFormType
                     'placeholder' => $this->translator->trans('user.form_update.lastname.placeholder', domain: 'user')
                 ],
                 'required' => false
-            ])
-            ->add('disabled', CheckboxType::class, [
+            ]);
+
+        if (!$options['is_super_adm']) {
+            $builder->add('disabled', CheckboxType::class, [
                 'label_attr' => ['class' => 'checkbox-switch'],
                 'label' => $this->translator->trans('user.form_update.disabled.label', domain: 'user'),
                 'help' => $this->translator->trans('user.form_update.disabled.help', domain: 'user'),
                 'required' => false,
-            ])
-            //->add('created_at')
-            //->add('update_at')
-            ->add('save', SubmitType::class, [
-                'label' => $this->translator->trans('user.form_update.submit', domain: 'user'),
-                'attr' => [
-                    'class' => 'btn-secondary'
-                ]
-            ])
-        ;
+            ]);
+        }
+
+
+        //->add('created_at')
+        //->add('update_at')
+        $builder->add('save', SubmitType::class, [
+            'label' => $this->translator->trans('user.form_update.submit', domain: 'user'),
+            'attr' => [
+                'class' => 'btn-secondary'
+            ]
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'is_super_adm' => false
         ]);
     }
 }

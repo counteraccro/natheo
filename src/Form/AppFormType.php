@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppFormType extends AbstractType
@@ -14,10 +15,17 @@ class AppFormType extends AbstractType
     protected TranslatorInterface $translator;
 
     /**
-     * @param TranslatorInterface $translator
+     * @var AuthorizationCheckerInterface
      */
-    public function __construct(TranslatorInterface $translator)
+    protected AuthorizationCheckerInterface $authorizationChecker;
+
+    /**
+     * @param TranslatorInterface $translator
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     */
+    public function __construct(TranslatorInterface $translator, AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->translator = $translator;
+        $this->authorizationChecker = $authorizationChecker;
     }
 }

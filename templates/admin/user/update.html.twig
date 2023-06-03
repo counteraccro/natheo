@@ -21,7 +21,9 @@
 
                     {{ form_row(form.email) }}
 
-                    {{ form_row(form.disabled) }}
+                    {% if isSuperAdmin is same as false %}
+                        {{ form_row(form.disabled) }}
+                    {% endif %}
 
                     <fieldset>
                         <legend> {{ 'user.page_update.personal_data' | trans({}, 'user') }}</legend>
@@ -43,7 +45,8 @@
                     {{ 'user.page_update.information' | trans({}, 'user') }}
                 </div>
                 <div class="card-body">
-                    <i class="bi bi-calendar-plus"></i> {{ 'user.page_update.created' | trans({}, 'user') }} : {{ diff_now(user.createdAt) }} <br />
+                    <i class="bi bi-calendar-plus"></i> {{ 'user.page_update.created' | trans({}, 'user') }} : {{ diff_now(user.createdAt) }}
+                    <br/>
                     <i class="bi bi-calendar-check"></i> {{ 'user.page_update.last_update' | trans({}, 'user') }} : {{ diff_now(user.updateAt) }}
 
 
@@ -65,10 +68,12 @@
                         <h6>{{ 'user.page_update.reset_password' | trans({}, 'user') }}</h6>
                         <p>{{ 'user.page_update.reset_password.description' | trans({}, 'user') }}</p>
 
-                        <hr />
-                        <h6>{{ 'user.page_update.connecte_to' | trans({}, 'user') }}</h6>
-                        <p>{{ 'user.page_update.connecte_to.description' | trans({'login' : user.login}, 'user') }}</p>
-                        <a href="{{ path('admin_user_switch', {'user' : user.email}) }}" class="btn btn-secondary">{{ 'user.page_update.connecte_to.btn' | trans({'login' : user.login}, 'user') }}</a>
+                        {% if isSuperAdmin is same as false %}
+                            <hr/>
+                            <h6>{{ 'user.page_update.connecte_to' | trans({}, 'user') }}</h6>
+                            <p>{{ 'user.page_update.connecte_to.description' | trans({'login' : user.login}, 'user') }}</p>
+                            <a href="{{ path('admin_user_switch', {'user' : user.email}) }}" class="btn btn-secondary">{{ 'user.page_update.connecte_to.btn' | trans({'login' : user.login}, 'user') }}</a>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>

@@ -191,7 +191,12 @@ class UserController extends AppAdminController
             ]
         ];
 
-        $form = $this->createForm(UserType::class, $user);
+        $isSuperAdmin = false;
+        if (in_array(Role::ROLE_SUPER_ADMIN, $user->getRoles())) {
+            $isSuperAdmin = true;
+        }
+
+        $form = $this->createForm(UserType::class, $user, ['is_super_adm' => $isSuperAdmin]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -205,7 +210,8 @@ class UserController extends AppAdminController
         return $this->render('admin/user/update.html.twig', [
             'breadcrumb' => $breadcrumb,
             'form' => $form,
-            'user' => $user
+            'user' => $user,
+            'isSuperAdmin' => $isSuperAdmin
         ]);
     }
 
@@ -214,6 +220,7 @@ class UserController extends AppAdminController
      * @param UserService $userService
      * @param Request $request
      * @param OptionSystemService $optionSystemService
+     * @param TranslatorInterface $translator
      * @return Response
      */
     #[Route('/my-account', name: 'my_account', methods: ['GET', 'POST'])]
@@ -443,6 +450,10 @@ class UserController extends AppAdminController
         ]);
     }
 
+    /**
+     * Permet de créer un nouvel user
+     * @return Response
+     */
     #[Route('/add', name: 'add', methods: ['GET'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]
     public function add(): Response
@@ -460,6 +471,12 @@ class UserController extends AppAdminController
         ]);
     }
 
+    /**
+     * Permet de prendre le contrôle du compte d'un utilisateur
+     * @param Request $request
+     * @param LoggerService $loggerService
+     * @return RedirectResponse
+     */
     #[Route('/switch', name: 'switch', methods: ['GET'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]
     public function switch(Request $request, LoggerService $loggerService): RedirectResponse
