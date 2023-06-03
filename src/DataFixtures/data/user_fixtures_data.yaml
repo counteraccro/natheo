@@ -8,6 +8,7 @@ user:
     roles: ROLE_USER
     disabled: 0
     anonymous: 0
+    founder: 0
   -
     email: contributeur@natheo.com
     password: contributeur@natheo.com
@@ -17,6 +18,7 @@ user:
     roles: ROLE_CONTRIBUTEUR
     disabled: 0
     anonymous: 0
+    founder: 0
   -
     email: admin@natheo.com
     password: admin@natheo.com
@@ -26,6 +28,7 @@ user:
     roles: ROLE_ADMIN
     disabled: 0
     anonymous: 0
+    founder: 0
   -
     email: superadmin@natheo.com
     password: superadmin@natheo.com
@@ -35,6 +38,7 @@ user:
     roles: ROLE_SUPER_ADMIN
     disabled: 0
     anonymous: 0
+    founder: 0
   -
     email: aymeric.gourdon@hotmail.fr
     password: aymeric.gourdon@hotmail.fr
@@ -44,3 +48,4 @@ user:
     roles: ROLE_SUPER_ADMIN
     disabled: 0
     anonymous: 0
+    founder: 1
