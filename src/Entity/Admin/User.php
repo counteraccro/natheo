@@ -52,6 +52,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $anonymous = false;
 
+    #[ORM\Column]
+    private ?bool $isFounder = false;
+
     #[Gedmo\Timestampable(on: "create")]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
@@ -314,6 +317,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $notification->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isIsFounder(): ?bool
+    {
+        return $this->isFounder;
+    }
+
+    public function setIsFounder(bool $isFounder): self
+    {
+        $this->isFounder = $isFounder;
 
         return $this;
     }
