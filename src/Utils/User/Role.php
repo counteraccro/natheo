@@ -95,4 +95,18 @@ class Role
     {
         return in_array($role, $this->user->getRoles());
     }
+
+    /**
+     * Retourne un tableau de role
+     * @return array
+     */
+    public static function getListRole(): array
+    {
+        return [
+            'user.form_update.role.user' => self::ROLE_USER,
+            'user.form_update.role.contributeur' => self::ROLE_CONTRIBUTEUR,
+            'user.form_update.role.admin' => self::ROLE_ADMIN,
+            'user.form_update.role.super_admin' => self::ROLE_SUPER_ADMIN,
+        ];
+    }
 }

@@ -22,6 +22,7 @@
                     {{ form_row(form.email) }}
 
                     {% if isSuperAdmin is same as false %}
+                        {{ form_row(form.roles) }}
                         {{ form_row(form.disabled) }}
                     {% endif %}
 
@@ -45,6 +46,9 @@
                     {{ 'user.page_update.information' | trans({}, 'user') }}
                 </div>
                 <div class="card-body">
+                    {% if isSuperAdmin is same as true %}
+                        <p class="text-danger"><i>{{ 'user.page_update.info_role_super_admin' | trans({}, 'user') | raw }}</i></p>
+                    {% endif %}
                     <i class="bi bi-calendar-plus"></i> {{ 'user.page_update.created' | trans({}, 'user') }} : {{ diff_now(user.createdAt) }}
                     <br/>
                     <i class="bi bi-calendar-check"></i> {{ 'user.page_update.last_update' | trans({}, 'user') }} : {{ diff_now(user.updateAt) }}

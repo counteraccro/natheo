@@ -11,7 +11,9 @@ use App\Entity\Admin\User;
 use App\Form\AppFormType;
 use App\Utils\User\Role;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -59,6 +61,31 @@ class UserType extends AppFormType
             ]);
 
         if (!$options['is_super_adm']) {
+
+            $roles = Role::getListRole();
+            $rolesTrans = [];
+            foreach ($roles as $key => $role) {
+                $rolesTrans[$this->translator->trans($key, domain: 'user')] = $role;
+            }
+
+            $builder->add('roles', ChoiceType::class, [
+                'choices' => $rolesTrans,
+                'label' => $this->translator->trans('user.form_update.role.label', domain: 'user'),
+                'help' => $this->translator->trans('user.form_update.role.help', domain: 'user'),
+            ]);
+
+            $builder->get('roles')
+                ->addModelTransformer(new CallbackTransformer(
+                    function ($rolesArray) {
+                        // transform the array to a string
+                        return count($rolesArray)? $rolesArray[0]: null;
+                    },
+                    function ($rolesString) {
+                        // transform the string back to an array
+                        return [$rolesString];
+                    }
+                ));
+
             $builder->add('disabled', CheckboxType::class, [
                 'label_attr' => ['class' => 'checkbox-switch'],
                 'label' => $this->translator->trans('user.form_update.disabled.label', domain: 'user'),

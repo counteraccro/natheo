@@ -192,7 +192,8 @@ class UserController extends AppAdminController
         ];
 
         $isSuperAdmin = false;
-        if (in_array(Role::ROLE_SUPER_ADMIN, $user->getRoles())) {
+        $role = new Role($user);
+        if ($role->isSuperAdmin()) {
             $isSuperAdmin = true;
         }
 

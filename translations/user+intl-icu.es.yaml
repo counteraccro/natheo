@@ -130,3 +130,10 @@ user.page_update.reset_password.description: __user.page_update.reset_password.d
 user.page_update.connecte_to: __user.page_update.connecte_to
 user.page_update.connecte_to.description: __user.page_update.connecte_to.description
 user.page_update.connecte_to.btn: __user.page_update.connecte_to.btn
+user.form_update.role.user: __Utilisateur
+user.form_update.role.contributeur: __Contributeur
+user.form_update.role.admin: __Administrateur
+user.form_update.role.super_admin: '__Super Administrateur'
+user.form_update.role.label: __user.form_update.role.label
+user.form_update.role.help: __user.form_update.role.help
+user.page_update.info_role_super_admin: __user.page_update.info_role_super_admin
