@@ -137,4 +137,5 @@ user.form_update.role.admin: Administrateur
 user.form_update.role.super_admin: 'Super Administrateur'
 user.form_update.role.label: "Rôle dans l'application"
 user.form_update.role.help: "Le rôle détermine les droits que possède l'utilisateur dans la partie administration du site"
-user.page_update.info_role_super_admin: "Ce compte possède un role <b>SUPER_ADMIN</b> et est <b>fondateur</b>, par sécurité certaines données ne sont pas modifiables et certaines actions ne sont pas autorisées."
+user.page_update.info_role_super_admin: 'Ce compte possède un role <b>SUPER_ADMIN</b> et est <b>fondateur</b>, par sécurité certaines données ne sont pas modifiables et certaines actions ne sont pas autorisées.'
+user.form_update.role.founder: 'Fondateur'

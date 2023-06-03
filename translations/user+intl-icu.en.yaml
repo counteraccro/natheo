@@ -137,3 +137,4 @@ user.form_update.role.super_admin: '__Super Administrateur'
 user.form_update.role.label: __user.form_update.role.label
 user.form_update.role.help: __user.form_update.role.help
 user.page_update.info_role_super_admin: __user.page_update.info_role_super_admin
+user.form_update.role.founder: __user.form_update.role.founder
