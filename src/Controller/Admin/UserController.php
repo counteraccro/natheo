@@ -191,6 +191,10 @@ class UserController extends AppAdminController
             ]
         ];
 
+        if ($user->isFounder() && $this->getUser()->getId() !== $user->getId()) {
+            return $this->redirectToRoute('admin_user_index');
+        }
+
         $isSuperAdmin = false;
         $role = new Role($user);
         if ($role->isSuperAdmin() && $user->isFounder()) {

@@ -45,9 +45,11 @@ class UserService extends AppAdminService
         EntityManagerInterface      $entityManager,
         ContainerBagInterface       $containerBag,
         TranslatorInterface         $translator,
-        UrlGeneratorInterface       $router, GridService $gridService,
+        UrlGeneratorInterface       $router,
+        GridService                 $gridService,
         OptionSystemService         $optionSystemService,
-        Security                    $security, RequestStack $requestStack,
+        Security                    $security,
+        RequestStack                $requestStack,
         UserPasswordHasherInterface $userPasswordHasher
     )
     {
@@ -106,11 +108,16 @@ class UserService extends AppAdminService
                 $email = '--@anonyme.com';
             }
 
-            $roles = '';
-            foreach ($user->getRoles() as $role) {
-                $roles .= $this->gridService->renderRole($role) . ', ';
+            if ($user->isFounder()) {
+                $roles = $this->translator->trans('user.form_update.role.founder', domain: 'user');
+            } else {
+                $roles = '';
+                foreach ($user->getRoles() as $role) {
+                    $roles .= $this->gridService->renderRole($role) . ', ';
+                }
+                $roles = substr($roles, 0, -2);
             }
-            $roles = substr($roles, 0, -2);
+
 
             $actions = $this->generateTabAction($user);
             $data[] = [
@@ -152,7 +159,8 @@ class UserService extends AppAdminService
         }
 
 
-        $isSuperAdmin = $user->isFounder();
+        $role = new Role($user);
+        $isSuperAdmin = $user->isFounder() && $role->isSuperAdmin();
         if (!$isSuperAdmin) {
             // Bouton disabled
             $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
@@ -203,11 +211,15 @@ class UserService extends AppAdminService
 
         }
 
-        // Bouton edit
-        $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
-            'id' => $user->getId(),
-            'url' => $this->router->generate('admin_user_update', ['id' => $user->getId()]),
-            'ajax' => false];
+        // Bouton édition affiché sauf pour le fondateur ou si l'utilisateur courant est le fondateur
+        if (($user->isFounder() && $this->security->getUser()->isFounder()) || !$user->isFounder()) {
+            // Bouton edit
+            $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
+                'id' => $user->getId(),
+                'url' => $this->router->generate('admin_user_update', ['id' => $user->getId()]),
+                'ajax' => false];
+        }
+
         return $actions;
 
     }
