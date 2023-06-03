@@ -46,9 +46,6 @@
                     {{ 'user.page_update.information' | trans({}, 'user') }}
                 </div>
                 <div class="card-body">
-                    {% if isSuperAdmin is same as true %}
-                        <p class="text-danger"><i>{{ 'user.page_update.info_role_super_admin' | trans({}, 'user') | raw }}</i></p>
-                    {% endif %}
                     <i class="bi bi-calendar-plus"></i> {{ 'user.page_update.created' | trans({}, 'user') }} : {{ diff_now(user.createdAt) }}
                     <br/>
                     <i class="bi bi-calendar-check"></i> {{ 'user.page_update.last_update' | trans({}, 'user') }} : {{ diff_now(user.updateAt) }}
@@ -63,21 +60,24 @@
                 </div>
                 <div class="card-body">
 
-                    {% if user.disabled %}
-                        <div class="alert alert-warning mt-2">
-                            <h5 class="alert-heading"> {{ 'user.page_update.info.warning' | trans({}, 'user') }}</h5>
-                            <i class="bi bi-exclamation-triangle-fill"></i> {{ 'user.page_update.info.user_disabled' | trans({}, 'user') }}
-                        </div>
-                    {% else %}
-                        <h6>{{ 'user.page_update.reset_password' | trans({}, 'user') }}</h6>
-                        <p>{{ 'user.page_update.reset_password.description' | trans({}, 'user') }}</p>
+                    {% if isSuperAdmin is same as false %}
+                        {% if user.disabled %}
+                            <div class="alert alert-warning mt-2">
+                                <h5 class="alert-heading"> {{ 'user.page_update.info.warning' | trans({}, 'user') }}</h5>
+                                <i class="bi bi-exclamation-triangle-fill"></i> {{ 'user.page_update.info.user_disabled' | trans({}, 'user') }}
+                            </div>
+                        {% else %}
+                            <h6>{{ 'user.page_update.reset_password' | trans({}, 'user') }}</h6>
+                            <p>{{ 'user.page_update.reset_password.description' | trans({}, 'user') }}</p>
 
-                        {% if isSuperAdmin is same as false %}
                             <hr/>
                             <h6>{{ 'user.page_update.connecte_to' | trans({}, 'user') }}</h6>
                             <p>{{ 'user.page_update.connecte_to.description' | trans({'login' : user.login}, 'user') }}</p>
                             <a href="{{ path('admin_user_switch', {'user' : user.email}) }}" class="btn btn-secondary">{{ 'user.page_update.connecte_to.btn' | trans({'login' : user.login}, 'user') }}</a>
                         {% endif %}
+                    {% else %}
+                        <p class="text-danger">
+                            <i>{{ 'user.page_update.info_role_super_admin' | trans({}, 'user') | raw }}</i></p>
                     {% endif %}
                 </div>
             </div>

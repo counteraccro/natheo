@@ -151,8 +151,8 @@ class UserService extends AppAdminService
             return $actions;
         }
 
-        $role = new Role($user);
-        $isSuperAdmin = $role->isSuperAdmin();
+
+        $isSuperAdmin = $user->isFounder();
         if (!$isSuperAdmin) {
             // Bouton disabled
             $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',

@@ -120,7 +120,7 @@ class UserController extends AppAdminController
     public function updateDisabled(User $user, UserService $userService, TranslatorInterface $translator): JsonResponse
     {
         $role = new Role($user);
-        if ($role->isSuperAdmin()) {
+        if ($role->isSuperAdmin() && $user->isFounder()) {
             return $this->json([
                 'type' => 'success',
                 'msg' => $translator->trans('user.error_not_disabled', domain: 'user')
@@ -147,7 +147,7 @@ class UserController extends AppAdminController
     ): JsonResponse
     {
         $role = new Role($user);
-        if ($role->isSuperAdmin()) {
+        if ($role->isSuperAdmin() && $user->isFounder()) {
             $msg = $translator->trans('user.error_not_disabled', domain: 'user');
         } else {
             $canDelete = $optionSystemService->getValueByKey(OptionSystemKey::OS_ALLOW_DELETE_DATA);
@@ -193,7 +193,7 @@ class UserController extends AppAdminController
 
         $isSuperAdmin = false;
         $role = new Role($user);
-        if ($role->isSuperAdmin()) {
+        if ($role->isSuperAdmin() && $user->isFounder()) {
             $isSuperAdmin = true;
         }
 
