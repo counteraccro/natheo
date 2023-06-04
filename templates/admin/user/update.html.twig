@@ -49,8 +49,8 @@
                     <i class="bi bi-calendar-plus"></i> {{ 'user.page_update.created' | trans({}, 'user') }} : {{ diff_now(user.createdAt) }}
                     <br/>
                     <i class="bi bi-calendar-check"></i> {{ 'user.page_update.last_update' | trans({}, 'user') }} : {{ diff_now(user.updateAt) }}
-
-
+                    <br />
+                    <i class="bi bi-clock"></i> {{ 'user.page_update.last_connexion' | trans({}, 'user') }} : {{ diff_now(lastConnexion) }}
                 </div>
             </div>
 
