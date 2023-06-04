@@ -2,7 +2,11 @@
 
 namespace App\Security;
 
+use App\Entity\Admin\User;
+use App\Entity\Admin\UserData;
+use App\Service\Admin\User\UserDataService;
 use App\Service\LoggerService;
+use App\Utils\User\UserdataKey;
 use Exception;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,9 +31,16 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
 
     private LoggerService $loggerService;
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator, LoggerService $loggerService)
+    private UserDataService $userDataService;
+
+    public function __construct(
+        private UrlGeneratorInterface $urlGenerator,
+        LoggerService $loggerService,
+        UserDataService $userDataService
+    )
     {
         $this->loggerService = $loggerService;
+        $this->userDataService = $userDataService;
     }
 
     public function authenticate(Request $request): Passport
@@ -52,9 +63,13 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
 
-        $user = $token->getUser()->getEmail();
+        /** @var User $user */
+        $user = $token->getUser();
         $ip = $request->getClientIp();
-        $this->loggerService->logAuthAdmin($user, $ip);
+        $this->loggerService->logAuthAdmin($user->getEmail(), $ip);
+
+        $date = new \DateTime();
+        $this->userDataService->update(UserdataKey::KEY_LAST_CONNEXION, $date->getTimestamp(), $user);
 
 
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
