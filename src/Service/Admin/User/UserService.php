@@ -6,13 +6,14 @@
  * Service lier à l'objet user
  */
 
-namespace App\Service\Admin;
+namespace App\Service\Admin\User;
 
 use App\Entity\Admin\User;
-use App\Utils\Options\OptionSystemKey;
+use App\Service\Admin\AppAdminService;
+use App\Service\Admin\GridService;
+use App\Service\Admin\OptionSystemService;
 use App\Utils\User\Anonymous;
 use App\Utils\User\Role;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;
