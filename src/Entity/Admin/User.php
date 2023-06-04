@@ -10,6 +10,7 @@ namespace App\Entity\Admin;
 use App\Repository\Admin\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ReadableCollection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -255,7 +256,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @param Collection $optionsUsers
      * @return $this
      */
-    public function removeAllOptionsUser(Collection $optionsUsers)
+    public function removeAllOptionsUser(Collection $optionsUsers): self
     {
         foreach ($optionsUsers as $optionsUser) {
             if ($this->optionsUser->removeElement($optionsUser)) {
@@ -365,5 +366,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Retourne un UserData en fonction de sa clé
+     * @param string $key
+     * @return UserData|null
+     */
+    public function getUserDataByKey(string $key): ?UserData
+    {
+        $result = $this->getUserData()->filter(function (UserData $userData) use ($key) {
+            return $userData->getKey() === $key;
+        });
+        if (!$result->first() instanceof UserData) {
+            return null;
+        }
+        return $result->first();
     }
 }
