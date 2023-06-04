@@ -69,10 +69,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Notification::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $notifications;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserData::class, cascade: ['persist'], orphanRemoval: true)]
+    private Collection $userData;
+
     public function __construct()
     {
         $this->optionsUser = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->userData = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -329,6 +333,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFounder(bool $founder): self
     {
         $this->founder = $founder;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserData>
+     */
+    public function getUserData(): Collection
+    {
+        return $this->userData;
+    }
+
+    public function addUserData(UserData $userData): self
+    {
+        if (!$this->userData->contains($userData)) {
+            $this->userData->add($userData);
+            $userData->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserData(UserData $userData): self
+    {
+        if ($this->userData->removeElement($userData)) {
+            // set the owning side to null (unless already changed)
+            if ($userData->getUser() === $this) {
+                $userData->setUser(null);
+            }
+        }
 
         return $this;
     }
