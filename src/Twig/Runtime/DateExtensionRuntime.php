@@ -7,20 +7,26 @@
 
 namespace App\Twig\Runtime;
 
+use DateTime;
+use DateTimeInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class DateExtensionRuntime extends AppExtensionRuntime implements RuntimeExtensionInterface
 {
     /**
      * Affiche le temps entre 2 date sous la forme de
-     * @param \DateTimeInterface $dateRef
-     * @param \DateTimeInterface|null $dateDiff
+     * @param DateTimeInterface|null $dateRef
+     * @param DateTimeInterface|null $dateDiff
      * @return string
      */
-    public function getDiffNow(\DateTimeInterface $dateRef, \DateTimeInterface $dateDiff = null): string
+    public function getDiffNow(DateTimeInterface $dateRef = null, DateTimeInterface $dateDiff = null): string
     {
+        if ($dateRef === null) {
+            return '<i>' . $this->translator->trans('date.diff.no_data') . '</i>';
+        }
+
         if ($dateDiff === null) {
-            $dateDiff = new \DateTime('now');
+            $dateDiff = new DateTime('now');
         }
         $dateInterval = $dateRef->diff($dateDiff);
 
@@ -68,8 +74,7 @@ class DateExtensionRuntime extends AppExtensionRuntime implements RuntimeExtensi
                 );
         }
 
-        if($return === $this->translator->trans('date.diff.start'))
-        {
+        if ($return === $this->translator->trans('date.diff.start')) {
             $return .= ' ' . $this->translator->trans('date.diff.instant');
         }
 
