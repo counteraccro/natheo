@@ -9,13 +9,15 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Admin\User;
+use App\Entity\Admin\UserData;
 use App\Form\Admin\User\MyAccountType;
 use App\Form\Admin\User\UserType;
 use App\Service\Admin\Breadcrumb;
 use App\Service\Admin\MailService;
 use App\Service\Admin\NotificationService;
 use App\Service\Admin\OptionSystemService;
-use App\Service\Admin\UserService;
+use App\Service\Admin\User\UserDataService;
+use App\Service\Admin\User\UserService;
 use App\Service\LoggerService;
 use App\Utils\Flash\FlashKey;
 use App\Utils\Mail\KeyWord;
@@ -24,6 +26,7 @@ use App\Utils\Notification\NotificationKey;
 use App\Utils\Options\OptionSystemKey;
 use App\Utils\Options\OptionUserKey;
 use App\Utils\User\Role;
+use App\Utils\User\UserdataKey;
 use League\CommonMark\Exception\CommonMarkException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -172,6 +175,8 @@ class UserController extends AppAdminController
      * Permet de modifier un user
      * @param User $user
      * @param UserService $userService
+     * @param Request $request
+     * @param TranslatorInterface $translator
      * @return Response
      */
     #[Route('/update/{id}', name: 'update', methods: ['GET', 'POST'])]
@@ -180,7 +185,8 @@ class UserController extends AppAdminController
         User                $user,
         UserService         $userService,
         Request             $request,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        UserDataService $userDataService
     ): Response
     {
         $breadcrumb = [
@@ -212,10 +218,13 @@ class UserController extends AppAdminController
                 $translator->trans('user.page_update.success', ['email' => $user->getEmail()], domain: 'user'));
         }
 
+        $lastConnexion = $userDataService->getLastConnexion($user);
+
         return $this->render('admin/user/update.html.twig', [
             'breadcrumb' => $breadcrumb,
             'form' => $form,
             'user' => $user,
+            'lastConnexion' => $lastConnexion,
             'isSuperAdmin' => $isSuperAdmin
         ]);
     }
