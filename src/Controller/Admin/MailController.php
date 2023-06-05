@@ -209,6 +209,8 @@ class MailController extends AppAdminController
             $keyWord->getTabMailSelfDelete($user, $optionSystemService),
             MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT =>
             $keyWord->getTabMailSelfAnonymous($user, $optionSystemService),
+            MailKey::KEY_MAIL_RESET_PASSWORD =>
+            $keyWord->getTabMailResetPassword($user, $user, $urlGenerator, $optionSystemService),
             default => [
                 KeyWord::KEY_SEARCH => [],
                 KeyWord::KEY_REPLACE => []

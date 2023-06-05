@@ -144,6 +144,8 @@ options_system.purge_notification.3_month: '3 mois'
 options_system.purge_notification.6_month: '6 mois'
 options_system.purge_notification.year: '1 an'
 message.global.loading: Chargement...
+mail.reset.password.title: 'Reset mot de passe'
+mail.reset.password.description: "Mail envoyé si un super administrateur fait un reset du mot de passe d'un utilisateur"
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: 'Elements HML disponibles (trad)'
 date.diff.start: "Il y'a"

@@ -96,6 +96,10 @@ class KeyWord
         MailKey::KEY_MAIL_CHANGE_PASSWORD => [
             self::GLOBAL_URL_CHANGE_PASSWORD => '',
         ],
+        MailKey::KEY_MAIL_RESET_PASSWORD => [
+            self::GLOBAL_URL_CHANGE_PASSWORD => '',
+            self::ADMIN_LOGIN_ACTION => '',
+        ],
         MailKey::KEY_MAIL_ACCOUNT_ADM_DISABLE => [
             self::ADMIN_LOGIN_ACTION => '',
         ],
@@ -303,7 +307,6 @@ class KeyWord
      * Renvoi le tableau de keyWord avec les valeurs correspondantes pour l'email
      * self anonymous
      * @param User $user
-     * @param User $admin
      * @param OptionSystemService $optionSystemService
      * @return array
      */
@@ -313,5 +316,32 @@ class KeyWord
     ): array
     {
         return $this->getTabMailSelfDisabled($user, $optionSystemService);
+    }
+
+    /**
+     * Renvoi le tableau de keyWord avec les valeurs correspondantes pour l'email reset de mot de passe
+     * @param User $user
+     * @param User $admin
+     * @param UrlGeneratorInterface $router
+     * @param OptionSystemService $optionSystemService
+     * @return array
+     */
+    public function getTabMailResetPassword(
+        User $user,
+        User $admin,
+        UrlGeneratorInterface $router,
+        OptionSystemService   $optionSystemService
+    )
+    {
+        $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
+
+        $tab = $this->getGlobalKeyWord($user, $optionSystemService);
+        $tab2 = [
+            '[[' . self::GLOBAL_URL_CHANGE_PASSWORD . ']]' => $url . $router->generate('index_index'),
+        ];
+
+        $tab3 = $this->getAdminLoginAction($admin);
+        $tab = array_merge($tab, $tab2, $tab3);
+        return $this->formatReturnValue($tab);
     }
 }
