@@ -157,4 +157,4 @@ date.diff.minute: "{minutes, plural,\n    =1    {minute}\n    other {minutes}\n}
 date.diff.seconde: "{secondes, plural,\n    =1    {seconde}\n    other {secondes}\n}"
 date.diff.instant: 'quelques instants'
 date.diff.and: et
-date.diff.no_data: Aucune donnée
+date.diff.no_data: 'Aucune donnée'
