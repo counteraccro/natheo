@@ -69,7 +69,7 @@
                         {% else %}
                             <h6>{{ 'user.page_update.reset_password' | trans({}, 'user') }}</h6>
                             <p>{{ 'user.page_update.reset_password.description' | trans({}, 'user') }}</p>
-                            <a href="#" class="btn btn-secondary">{{ 'user.page_update.reset_password.btn' | trans({}, 'user') }}</a>
+                            <a href="{{ path('admin_user_reset_password', {'id' : user.id}) }}" class="btn btn-secondary">{{ 'user.page_update.reset_password.btn' | trans({}, 'user') }}</a>
 
                             <hr/>
                             <h6>{{ 'user.page_update.connecte_to' | trans({}, 'user') }}</h6>

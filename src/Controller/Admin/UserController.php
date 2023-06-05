@@ -34,7 +34,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\String\ByteString;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/user', name: 'admin_user_', requirements: ['_locale' => '%app.supported_locales%'])]
@@ -498,5 +500,42 @@ class UserController extends AppAdminController
         $email = $request->query->get('user');
         $loggerService->logSwitchUser($this->getUser()->getEmail(), $email);
         return $this->redirectToRoute('admin_dashboard_index', ['_switch_user' => $email]);
+    }
+
+    /**
+     * envoi un email pour reset le password de l'utilisateur
+     * @param User $user
+     * @param MailService $mailService
+     * @param OptionSystemService $optionSystemService
+     * @return RedirectResponse
+     * @throws CommonMarkException
+     * @throws TransportExceptionInterface
+     */
+    #[Route('/reset-password/{id}', name: 'reset_password', methods: ['GET'])]
+    #[IsGranted('ROLE_SUPER_ADMIN')]
+    public function sendResetPassword(
+        User $user,
+        MailService $mailService,
+        OptionSystemService $optionSystemService,
+        UserDataService $userDataService
+    ): RedirectResponse
+    {
+        $key = ByteString::fromRandom(48)->toString();
+        $userDataService->update(UserdataKey::KEY_RESET_PASSWORD, $key, $user);
+
+
+        $mail = $mailService->getByKey(MailKey::KEY_MAIL_RESET_PASSWORD);
+        $keyWord = new KeyWord($mail->getKey());
+        $tabKeyWord = $keyWord->getTabMailResetPassword(
+            $user,
+            $this->getUser(),
+            $this->generateUrl('auth_change_password', ['key' => $key]),
+            $optionSystemService
+        );
+        $params = $mailService->getDefaultParams($mail, $tabKeyWord);
+        $params[MailService::TO] = $user->getEmail();
+
+        $mailService->sendMail($params);
+        return $this->redirectToRoute('admin_user_update', ['id' => $user->getId()]);
     }
 }
