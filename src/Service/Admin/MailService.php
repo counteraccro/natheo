@@ -268,6 +268,7 @@ class MailService extends AppAdminService
     public function sendMail(array $params): void
     {
 
+        $to = $this->getParamsValue($params, self::TO);
         $from = $this->getParamsValue($params, self::FROM);
         $replyTo = $this->getParamsValue($params, self::REPLY_TO);
         $template = $this->getParamsValue($params, self::TEMPLATE);
@@ -284,7 +285,7 @@ class MailService extends AppAdminService
 
         $email = (new TemplatedEmail())
             ->from($from)
-            ->to($from)
+            ->to($to)
             ->replyTo($replyTo)
             ->subject($title)
             ->htmlTemplate($template)
