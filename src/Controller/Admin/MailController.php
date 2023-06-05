@@ -210,7 +210,7 @@ class MailController extends AppAdminController
             MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT =>
             $keyWord->getTabMailSelfAnonymous($user, $optionSystemService),
             MailKey::KEY_MAIL_RESET_PASSWORD =>
-            $keyWord->getTabMailResetPassword($user, $user, $urlGenerator, $optionSystemService),
+            $keyWord->getTabMailResetPassword($user, $user, $this->generateUrl('index_index'), $optionSystemService),
             default => [
                 KeyWord::KEY_SEARCH => [],
                 KeyWord::KEY_REPLACE => []

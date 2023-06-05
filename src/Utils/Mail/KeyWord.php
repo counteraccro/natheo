@@ -329,15 +329,15 @@ class KeyWord
     public function getTabMailResetPassword(
         User $user,
         User $admin,
-        UrlGeneratorInterface $router,
+        string $urlPath,
         OptionSystemService   $optionSystemService
-    )
+    ): array
     {
         $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
 
         $tab = $this->getGlobalKeyWord($user, $optionSystemService);
         $tab2 = [
-            '[[' . self::GLOBAL_URL_CHANGE_PASSWORD . ']]' => $url . $router->generate('index_index'),
+            '[[' . self::GLOBAL_URL_CHANGE_PASSWORD . ']]' => $url . $urlPath,
         ];
 
         $tab3 = $this->getAdminLoginAction($admin);
