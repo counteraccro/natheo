@@ -141,4 +141,6 @@ user.page_update.info_role_super_admin: 'Ce compte possède un role <b>SUPER_ADM
 user.form_update.role.founder: Fondateur
 user.page_update.reset_password.btn: 'Réinitialiser le mot de passe'
 user.page_update.last_connexion: 'Dernière connexion'
-user.reset_password.title: Changement de mot passe
+user.reset_password.title: 'Changement de mot passe'
+user.page_my_account.reset_password_success: "Un email contenant les instructions de changement de mot de passe à été envoyé avec succès à l'utilisateur"
+user.change_password.error_404: 'Non non non, Vous n’avez pas dit le mot magique !'

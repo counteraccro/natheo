@@ -141,3 +141,5 @@ user.form_update.role.founder: __user.form_update.role.founder
 user.page_update.last_connexion: __user.page_update.last_connexion
 user.page_update.reset_password.btn: __user.page_update.reset_password.btn
 user.reset_password.title: __user.reset_password.title
+user.page_my_account.reset_password_success: __user.page_my_account.reset_password_success
+user.change_password.error_404: __user.change_password.error_404
