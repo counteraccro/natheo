@@ -60,11 +60,6 @@ options_system:
     title: 'options_system.categorie_admin.title'
     description: 'options_system.categorie_admin.description'
     options:
-      OS_NOTIFICATION:
-        type: 'boolean'
-        label: 'options_system.notification'
-        help: 'options_system.notification_help'
-        default: 1
       OS_ALLOW_DELETE_DATA:
         type: 'boolean'
         label: 'options_system.allow_delete_data'
@@ -110,6 +105,12 @@ options_system:
         label: 'options_system.mail_notification'
         help: 'options_system.mail_notification_help'
         default: 1
+      OS_MAIL_RESET_PASSWORD_TIME:
+        type: 'select'
+        label: 'options_system.time_reset_password'
+        list_value: '5:5|10:10|20:20|30:30|60:60'
+        help: 'options_system.time_reset_password_help'
+        default: '20'
       OS_MAIL_FROM:
         default: 'aymeric.gourdon@hotmail.fr'
         label: 'options_system.mail_from'
