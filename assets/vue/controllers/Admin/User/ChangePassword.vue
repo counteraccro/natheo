@@ -237,7 +237,7 @@ export default {
 
         <div class="mb-3">
             <label for="input-password-1" class="form-label">{{ this.translate.password }}</label>
-            <input type="text" class="form-control no-control" :class="this.classPassword" id="input-password-1" v-model="password" @keyup="this.checkPassword">
+            <input type="password" class="form-control no-control" :class="this.classPassword" id="input-password-1" v-model="password" @keyup="this.checkPassword">
         </div>
         <div class="mb-3">
             <label for="input-password-2" class="form-label">{{ this.translate.password_2 }}</label>
