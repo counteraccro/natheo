@@ -126,4 +126,10 @@ class OptionSystemKey
      * @var string
      */
     const OS_PURGE_NOTIFICATION = 'OS_PURGE_NOTIFICATION';
+
+    /**
+     * Clé pour le temps de validité du lien de changement de mot de passe
+     * @var string
+     */
+    const OS_MAIL_RESET_PASSWORD_TIME = 'OS_MAIL_RESET_PASSWORD_TIME';
 }

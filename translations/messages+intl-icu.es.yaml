@@ -146,6 +146,8 @@ options_system.purge_notification.year: '__1 an'
 message.global.loading: __message.global.loading
 mail.reset.password.title: '__Reset mot de passe'
 mail.reset.password.description: "__Mail envoyé si un super administrateur fait un reset du mot de passe d'un utilisateur"
+options_system.time_reset_password: '__Délais de validité du lien de changement de mot de passe'
+options_system.time_reset_password_help: '__Temps en minutes avant que le lien généré pour le changement de mot de passe soit invalide'
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: __pagedemo.page_title_h1
 date.diff.start: "__Il y'a"
