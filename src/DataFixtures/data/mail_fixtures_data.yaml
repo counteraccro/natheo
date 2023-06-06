@@ -29,15 +29,15 @@ mail:
       - locale: 'fr'
         title: 'Réinitialisation de votre mot de passe'
         content: "Bonjour [[user.login]],   \n\nL'administrateur [[admin.login]] à lancé une procédure de réinitialisation de votre mot de passe.   \nCliquez sur [ce lien]([[global.url_change_psw]]) pour changer votre mot de passe    
-        \n\n *Si vous n'êtes pas à l'origine de cette demande, vous pouvez l'ignorer*"
+        \n\n Ce lien est valable durant les **[[url.time]] prochaines minutes** \n\n *Si vous n'êtes pas à l'origine de cette demande, vous pouvez l'ignorer*"
       - locale: 'en'
         title: '[EN] Réinitialisation de votre mot de passe'
         content: "[EN] Bonjour [[user.login]],   \n\nL'administrateur [[admin.login]] à lancé une procédure de réinitialisation de votre mot de passe.   \nCliquez sur [ce lien]([[global.url_change_psw]]) pour changer votre mot de passe    
-        \n\n *Si vous n'êtes pas à l'origine de cette demande, vous pouvez l'ignorer*"
+        \n\n Ce lien est valable durant les **[[url.time]] prochaines minutes** \n\n *Si vous n'êtes pas à l'origine de cette demande, vous pouvez l'ignorer*"
       - locale: 'es'
         title: '[ES] Réinitialisation de votre mot de passe'
         content: "[ES] Bonjour [[user.login]],   \n\nL'administrateur [[admin.login]] à lancé une procédure de réinitialisation de votre mot de passe.   \nCliquez sur [ce lien]([[global.url_change_psw]]) pour changer votre mot de passe    
-        \n\n *Si vous n'êtes pas à l'origine de cette demande, vous pouvez l'ignorer*"
+        \n\n Ce lien est valable durant les **[[url.time]] prochaines minutes** \n\n *Si vous n'êtes pas à l'origine de cette demande, vous pouvez l'ignorer*"
   -
     key: MAIL_ACCOUNT_ADM_DISABLE
     title: mail.account.adm.disable.title

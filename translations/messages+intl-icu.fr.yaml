@@ -96,6 +96,7 @@ mail.global.url: 'Url du site'
 mail.global.url_change_psw: 'Url changement mot de passe'
 mail.global.site_name: 'Nom du site'
 mail.admin.login: 'login administrateur'
+mail.url.time: 'délais lien'
 options_system.mails: Emails
 options_system.mails.title: 'Gestion des emails'
 options_system.mails.description: "Paramétrage des emails envoyés depuis l'application"

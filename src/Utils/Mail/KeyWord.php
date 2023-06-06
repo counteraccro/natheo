@@ -57,6 +57,12 @@ class KeyWord
     private const GLOBAL_URL = 'global.url';
 
     /**
+     * Clé temps validité lien
+     * @var string
+     */
+    private const URL_TIME = 'url.time';
+
+    /**
      * Clé url changement du mot de passe
      * @var string
      */
@@ -99,6 +105,7 @@ class KeyWord
         MailKey::KEY_MAIL_RESET_PASSWORD => [
             self::GLOBAL_URL_CHANGE_PASSWORD => '',
             self::ADMIN_LOGIN_ACTION => '',
+            self::URL_TIME => '',
         ],
         MailKey::KEY_MAIL_ACCOUNT_ADM_DISABLE => [
             self::ADMIN_LOGIN_ACTION => '',
@@ -334,10 +341,12 @@ class KeyWord
     ): array
     {
         $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
+        $minutes = $optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_RESET_PASSWORD_TIME);
 
         $tab = $this->getGlobalKeyWord($user, $optionSystemService);
         $tab2 = [
             '[[' . self::GLOBAL_URL_CHANGE_PASSWORD . ']]' => $url . $urlPath,
+            '[[' . self::URL_TIME . ']]' => $minutes,
         ];
 
         $tab3 = $this->getAdminLoginAction($admin);
