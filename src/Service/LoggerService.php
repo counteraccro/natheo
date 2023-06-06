@@ -15,6 +15,7 @@ use App\Service\Admin\OptionUserService;
 use App\Utils\Options\OptionSystemKey;
 use App\Utils\Options\OptionUserKey;
 use App\Utils\Utils;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Monolog\Level;
 use Psr\Container\ContainerExceptionInterface;
@@ -94,7 +95,8 @@ class LoggerService extends AppService
         GridService           $gridService,
         OptionSystemService   $optionSystemService,
         OptionUserService     $optionUserService,
-        LocaleAwareInterface  $localeAware
+        LocaleAwareInterface  $localeAware,
+        EntityManagerInterface $entityManager
     )
     {
         $this->authLogger = $authLogger;
@@ -103,7 +105,7 @@ class LoggerService extends AppService
         $this->optionSystemService = $optionSystemService;
         $this->optionUserService = $optionUserService;
         $this->localeAware = $localeAware;
-        parent::__construct($translator, $requestStack, $security, $params);
+        parent::__construct($translator, $requestStack, $security, $params, $entityManager);
     }
 
     /**
