@@ -43,6 +43,18 @@ class UserDataService extends AppAdminService
     }
 
     /**
+     * Renvoi une UserData en fonction de sa clé et sa valeur
+     * @param string $key
+     * @param string $value
+     * @return UserData|null
+     */
+    public function findKeyAndValue(string $key, string $value) :?UserData
+    {
+        $repo = $this->getRepository(UserData::class);
+        return $repo->findByKeyValue($key, $value);
+    }
+
+    /**
      * Retourne la dernière date de connexion
      *  (cle KEY_LAST_CONNEXION)
      * @param User $user

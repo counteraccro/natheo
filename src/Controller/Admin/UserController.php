@@ -503,10 +503,12 @@ class UserController extends AppAdminController
     }
 
     /**
-     * envoi un email pour reset le password de l'utilisateur
+     * Envoi un email pour reset le password de l'utilisateur
      * @param User $user
      * @param MailService $mailService
      * @param OptionSystemService $optionSystemService
+     * @param UserDataService $userDataService
+     * @param TranslatorInterface $translator
      * @return RedirectResponse
      * @throws CommonMarkException
      * @throws TransportExceptionInterface
@@ -517,7 +519,8 @@ class UserController extends AppAdminController
         User $user,
         MailService $mailService,
         OptionSystemService $optionSystemService,
-        UserDataService $userDataService
+        UserDataService $userDataService,
+        TranslatorInterface $translator
     ): RedirectResponse
     {
         $key = ByteString::fromRandom(48)->toString();
@@ -536,6 +539,11 @@ class UserController extends AppAdminController
         $params[MailService::TO] = $user->getEmail();
 
         $mailService->sendMail($params);
+
+        $this->addFlash(
+            FlashKey::FLASH_SUCCESS,
+            $translator->trans('user.page_my_account.reset_password_success', domain: 'user'));
+
         return $this->redirectToRoute('admin_user_update', ['id' => $user->getId()]);
     }
 }

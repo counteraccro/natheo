@@ -52,9 +52,13 @@ class AppAdminService
      */
     protected RequestStack $requestStack;
 
-    public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
-                                TranslatorInterface    $translator, UrlGeneratorInterface $router, Security $security,
-                                RequestStack           $requestStack
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ContainerBagInterface  $containerBag,
+        TranslatorInterface    $translator,
+        UrlGeneratorInterface  $router,
+        Security               $security,
+        RequestStack           $requestStack
     )
     {
         $this->requestStack = $requestStack;
@@ -98,7 +102,6 @@ class AppAdminService
         $repo = $this->getRepository($entity::class);
         $repo->remove($entity, $flush);
     }
-
 
 
     /**

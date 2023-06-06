@@ -4,14 +4,19 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
+
 namespace App\Controller;
 
+use App\Service\Admin\TranslateService;
+use App\Service\Admin\User\UserService;
+use App\Service\SecurityService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route('/security/{_locale}', name: 'auth_', requirements: ['_locale' => '%app.supported_locales%'],
+#[Route('{_locale}/security/', name: 'auth_', requirements: ['_locale' => '%app.supported_locales%'],
     defaults: ["_locale" => "%app.default_locale%"])]
 class SecurityController extends AbstractController
 {
@@ -20,7 +25,7 @@ class SecurityController extends AbstractController
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */
-    #[Route(path: '/user/login', name: 'user_login')]
+    #[Route(path: 'user/login', name: 'user_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         // get the login error if there is one
@@ -31,7 +36,7 @@ class SecurityController extends AbstractController
         return $this->render('security/admin/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
-    #[Route(path: '/logout', name: 'logout')]
+    #[Route(path: 'logout', name: 'logout')]
     public function logout(): void
     {
         //throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
@@ -42,9 +47,24 @@ class SecurityController extends AbstractController
      * @param string $key
      * @return Response
      */
-    #[Route(path: '/change-password/{key}', name: 'change_password', methods: ['GET'])]
-    public function changePasswordAdm(string $key)
+    #[Route(path: 'change-password/{key}', name: 'change_password', methods: ['GET'])]
+    public function changePasswordAdm(
+        string              $key,
+        SecurityService     $securityService,
+        TranslatorInterface $translator,
+        UserService $userService
+    ): Response
     {
-        return $this->render('security/admin/change_password.html.twig');
+        $user = $securityService->canChangePassword($key);
+
+        if ($user === null) {
+            throw $this->createNotFoundException($translator->trans('user.change_password.error_404', domain: 'user'));
+        }
+
+        echo $user->getLogin();
+
+        return $this->render('security/admin/change_password.html.twig', [
+            'changePasswordTranslate' => $userService->getTranslateChangePassword(),
+        ]);
     }
 }

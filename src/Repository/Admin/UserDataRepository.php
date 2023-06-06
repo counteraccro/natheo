@@ -4,6 +4,7 @@ namespace App\Repository\Admin;
 
 use App\Entity\Admin\UserData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +38,24 @@ class UserDataRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * Retourne une UserData en fonction de sa clé et sa valeur
+     * @param string $key
+     * @param string $value
+     * @return UserData|null
+     * @throws NonUniqueResultException return UserData
+     */
+    public function findByKeyValue(string $key, string $value) :?UserData
+    {
+        return $this->createQueryBuilder('ud')
+            ->andWhere('ud.key = :key')
+            ->setParameter('key', $key)
+            ->andWhere('ud.value = :value')
+            ->setParameter('value', $value)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
 //    /**
