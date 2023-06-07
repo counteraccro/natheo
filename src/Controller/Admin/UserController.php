@@ -304,7 +304,8 @@ class UserController extends AppAdminController
 
         return $this->json([
             'status' => 'success',
-            'msg' => $translator->trans('user.update_password.success', domain: 'user')
+            'msg' => $translator->trans('user.update_password.success', domain: 'user'),
+            'redirect' => false,
         ]);
     }
 
@@ -532,7 +533,7 @@ class UserController extends AppAdminController
         $tabKeyWord = $keyWord->getTabMailResetPassword(
             $user,
             $this->getUser(),
-            $this->generateUrl('auth_change_password', ['key' => $key]),
+            $this->generateUrl('auth_change_password_user', ['key' => $key]),
             $optionSystemService
         );
         $params = $mailService->getDefaultParams($mail, $tabKeyWord);
