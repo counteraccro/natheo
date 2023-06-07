@@ -18,6 +18,7 @@ export default {
             classPassword: '',
             passwordConfirm: '',
             classPasswordConfirm: '',
+            redirect: false,
             loading: false,
             btnSubmit: 'disabled',
             progressColor: 'bg-danger',
@@ -207,6 +208,7 @@ export default {
                 data: this.password
             }).then((response) => {
                 this.msgUpdatePassword = response.data.msg;
+                this.redirect = response.data.redirect;
             }).catch((error) => {
                 console.log(error);
             }).finally(() => {
@@ -214,7 +216,11 @@ export default {
                 this.resetAll();
                 setTimeout(() => {
                     this.msgUpdatePassword = '';
-                }, 3000)
+                    if(this.redirect !== false)
+                    {
+                      window.location = this.redirect;
+                    }
+                }, 4000)
             });
         },
     }
