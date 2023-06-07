@@ -47,6 +47,7 @@ class SecurityService extends AppService
     }
 
     /**
+     * Détermine si l'utilisateur peut changer ou non son mot de passe
      * @param string $key
      * @return User|null
      * @throws NonUniqueResultException
