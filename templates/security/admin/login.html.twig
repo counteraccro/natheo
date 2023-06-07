@@ -66,10 +66,11 @@
                             <div class="text-center">
                                 <figure>
                                     <blockquote class="blockquote" style="font-size: 1.3em">
-                                        <p><small>À vaincre sans péril, on triomphe sans gloire.</small></p>
+                                        <p><small>
+                                                {{ 'global.citation' | trans({}, 'global') }}</small></p>
                                     </blockquote>
                                     <figcaption class="blockquote-footer">
-                                        Pierre corneille <cite title="Le Cid, p.207">Le cid</cite>
+                                        {{ 'global.citation.auteur' | trans({}, 'global') | raw }}
                                     </figcaption>
                                 </figure>
                             </div>

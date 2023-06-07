@@ -9,3 +9,5 @@ global.licence: 'Copyright &copy; 2023-{year} &mdash; Propulsé par Nathéo CMS 
 global.dashboard: 'Dashboard [es]'
 global.notification: __global.notification
 global.user.impersonation: __global.user.impersonation
+global.citation: __global.citation
+global.citation.auteur: __global.citation.auteur
