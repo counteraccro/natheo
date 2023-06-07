@@ -144,3 +144,7 @@ user.page_update.last_connexion: 'Dernière connexion'
 user.reset_password.title: 'Changement de mot passe'
 user.page_my_account.reset_password_success: "Un email contenant les instructions de changement de mot de passe à été envoyé avec succès à l'utilisateur"
 user.change_password.error_404: 'Non non non, Vous n’avez pas dit le mot magique !'
+user.change_password.title: 'Changement de mon mot de passe'
+user.change_password.link_login: 'Me connecter'
+user.change_password.link_home: 'Index du site'
+user.change_password.success: 'Votre mot de passe à été changé avec succès, vous pouvez maintenant vous connecter avec votre nouveau mot de passe'
