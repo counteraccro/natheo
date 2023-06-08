@@ -99,22 +99,24 @@ class KeyWord
             self::GLOBAL_URL => '',
             self::GLOBAL_SITE_NAME => '',
         ],
-        MailKey::KEY_MAIL_CHANGE_PASSWORD => [
+        MailKey::MAIL_CHANGE_PASSWORD => [
             self::GLOBAL_URL_CHANGE_PASSWORD => '',
         ],
-        MailKey::KEY_MAIL_RESET_PASSWORD => [
+        MailKey::MAIL_RESET_PASSWORD => [
             self::GLOBAL_URL_CHANGE_PASSWORD => '',
             self::ADMIN_LOGIN_ACTION => '',
             self::URL_TIME => '',
         ],
-        MailKey::KEY_MAIL_ACCOUNT_ADM_DISABLE => [
+        MailKey::MAIL_ACCOUNT_ADM_DISABLE => [
             self::ADMIN_LOGIN_ACTION => '',
         ],
         MailKey::MAIL_ACCOUNT_ADM_ENABLE => [
             self::ADMIN_LOGIN_ACTION => '',
         ],
         MailKey::MAIL_CREATE_ACCOUNT_ADM => [
+            self::GLOBAL_URL_CHANGE_PASSWORD => '',
             self::ADMIN_LOGIN_ACTION => '',
+            self::URL_TIME => '',
         ],
         MailKey::MAIL_SELF_DISABLED_ACCOUNT => [
         ],
@@ -271,10 +273,11 @@ class KeyWord
     public function getTabMailCreateAccountAdm(
         User                $user,
         User                $admin,
+        string              $url,
         OptionSystemService $optionSystemService
     ): array
     {
-        return $this->getTabMailAccountAdmDisabled($user, $admin, $optionSystemService);
+        return $this->getTabMailResetPassword($user, $admin, $url, $optionSystemService);
     }
 
     /**

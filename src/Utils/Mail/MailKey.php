@@ -13,18 +13,18 @@ class MailKey
      * Cle pour le mail de changement de mot de passe
      * @const
      */
-    public const KEY_MAIL_CHANGE_PASSWORD = 'MAIL_CHANGE_PASSWORD';
+    public const MAIL_CHANGE_PASSWORD = 'MAIL_CHANGE_PASSWORD';
 
     /**
      * Clé pour le mail du reset de mot de passe
      */
-    public const KEY_MAIL_RESET_PASSWORD = 'MAIL_RESET_PASSWORD';
+    public const MAIL_RESET_PASSWORD = 'MAIL_RESET_PASSWORD';
 
     /**
      * Clé pour le mail de désactivation d'un compte user
      * @const
      */
-    public const KEY_MAIL_ACCOUNT_ADM_DISABLE = 'MAIL_ACCOUNT_ADM_DISABLE';
+    public const MAIL_ACCOUNT_ADM_DISABLE = 'MAIL_ACCOUNT_ADM_DISABLE';
 
     /**
      * Clé pour le mail de réactivation d'un compte user

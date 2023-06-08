@@ -195,21 +195,21 @@ class MailController extends AppAdminController
         $keyWord = new KeyWord($mail->getKey());
 
         $tabKeyWord = match ($mail->getKey()) {
-            MailKey::KEY_MAIL_CHANGE_PASSWORD =>
+            MailKey::MAIL_CHANGE_PASSWORD =>
             $keyWord->getMailChangePassword($user, $urlGenerator, $optionSystemService),
-            MailKey::KEY_MAIL_ACCOUNT_ADM_DISABLE =>
+            MailKey::MAIL_ACCOUNT_ADM_DISABLE =>
             $keyWord->getTabMailAccountAdmDisabled($user, $user, $optionSystemService),
             MailKey::MAIL_ACCOUNT_ADM_ENABLE =>
             $keyWord->getTabMailAccountAdmEnabled($user, $user, $optionSystemService),
             MailKey::MAIL_CREATE_ACCOUNT_ADM =>
-            $keyWord->getTabMailCreateAccountAdm($user, $user, $optionSystemService),
+            $keyWord->getTabMailCreateAccountAdm($user, $user, $this->generateUrl('index_index'), $optionSystemService),
             MailKey::MAIL_SELF_DISABLED_ACCOUNT =>
             $keyWord->getTabMailSelfDisabled($user, $optionSystemService),
             MailKey::MAIL_SELF_DELETE_ACCOUNT =>
             $keyWord->getTabMailSelfDelete($user, $optionSystemService),
             MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT =>
             $keyWord->getTabMailSelfAnonymous($user, $optionSystemService),
-            MailKey::KEY_MAIL_RESET_PASSWORD =>
+            MailKey::MAIL_RESET_PASSWORD =>
             $keyWord->getTabMailResetPassword($user, $user, $this->generateUrl('index_index'), $optionSystemService),
             default => [
                 KeyWord::KEY_SEARCH => [],
