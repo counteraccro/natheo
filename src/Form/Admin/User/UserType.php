@@ -32,8 +32,6 @@ class UserType extends AppFormType
                 'help' => $this->translator->trans('user.form_update.adresse_email.help', domain: 'user'),
                 'required' => true
             ])
-            //->add('roles')
-            //->add('password')
             ->add('login', TextType::class, [
                 'label' => $this->translator->trans('user.form_update.login.label', domain: 'user'),
                 'help' => $this->translator->trans('user.form_update.login.help', domain: 'user'),
@@ -94,9 +92,6 @@ class UserType extends AppFormType
             ]);
         }
 
-
-        //->add('created_at')
-        //->add('update_at')
         $builder->add('save', SubmitType::class, [
             'label' => $this->translator->trans('user.form_update.submit', domain: 'user'),
             'attr' => [
