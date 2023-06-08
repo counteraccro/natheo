@@ -76,13 +76,19 @@ mail:
     translate:
       - locale: 'fr'
         title: 'Bienvenue'
-        content: "Bonjour [[user.login]],   \n\n[[admin.login]] vous à créé un compte sur le site [[[global.site_name]]]([[global.url_change_psw]]).    \n\n*Pour toute contestation, veuillez contacter [[admin.login]]*"
+        content: "Bonjour [[user.login]],   \n\n[[admin.login]] vous à créé un compte sur le site [[[global.site_name]]]([[global.url]]).    
+        \n\nPour finaliser la création de votre compte, cliquez sur [ce lien]([[global.url_change_psw]]) pour initialiser votre mot de passe.    
+        \n\n Ce lien est valable durant les **[[url.time]] prochaines minutes** \n\n*Pour toute information, veuillez contacter [[admin.login]]*"
       - locale: 'en'
         title: '[EN] Bienvenue'
-        content: "[EN] Bonjour [[user.login]],   \n\n[[admin.login]] vous à créé un compte sur le site [[[global.site_name]]]([[global.url_change_psw]]).    \n\n*Pour toute contestation, veuillez contacter [[admin.login]]*"
+        content: "[EN] Bonjour [[user.login]],   \n\n[[admin.login]] vous à créé un compte sur le site [[[global.site_name]]]([[global.url]]).    
+        \n\nPour finaliser la création de votre compte, cliquez sur [ce lien]([[global.url_change_psw]]) pour initialiser votre mot de passe.    
+        \n\n Ce lien est valable durant les **[[url.time]] prochaines minutes** \n\n*Pour toute information, veuillez contacter [[admin.login]]*"
       - locale: 'es'
         title: '[ES] Bienvenue'
-        content: "[ES] Bonjour [[user.login]],   \n\n[[admin.login]] vous à créé un compte sur le site [[[global.site_name]]]([[global.url_change_psw]]).    \n\n*Pour toute contestation, veuillez contacter [[admin.login]]*"
+        content: "[ES] Bonjour [[user.login]],   \n\n[[admin.login]] vous à créé un compte sur le site [[[global.site_name]]]([[global.url]]).    
+        \n\nPour finaliser la création de votre compte, cliquez sur [ce lien]([[global.url_change_psw]]) pour initialiser votre mot de passe.    
+        \n\n Ce lien est valable durant les **[[url.time]] prochaines minutes** \n\n*Pour toute information, veuillez contacter [[admin.login]]*"
   -
     key: MAIL_SELF_DISABLED_ACCOUNT
     title: mail.self_disabled.title
