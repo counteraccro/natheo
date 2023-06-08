@@ -48,7 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $lastname = null;
 
     #[ORM\Column]
-    private ?bool $disabled = null;
+    private ?bool $disabled = false;
 
     #[ORM\Column]
     private ?bool $anonymous = false;
