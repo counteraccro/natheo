@@ -22,6 +22,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\String\ByteString;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserService extends AppAdminService
@@ -158,7 +159,6 @@ class UserService extends AppAdminService
         if ($user->isAnonymous()) {
             return $actions;
         }
-
 
         $role = new Role($user);
         $isSuperAdmin = $user->isFounder() && $role->isSuperAdmin();
@@ -325,5 +325,21 @@ class UserService extends AppAdminService
             $return[] = $user->getEmail();
         }
         return $return;
+    }
+
+    /**
+     * Créer un nouvel user
+     * @param User $user
+     * @return User
+     */
+    public function addUser(User $user): User
+    {
+        $password = ByteString::fromRandom(20)->toString();
+        if ($user->getLogin() === null) {
+            $user->setLogin(explode('@', $user->getEmail())[0]);
+        }
+        $this->updatePassword($user, $password);
+        $this->save($user);
+        return $user;
     }
 }

@@ -11,4 +11,42 @@
         {{ 'user.page_add.description' | trans({}, 'user') }} <br/>
     </p>
 
+    <div class="row">
+        <div class="col-6">
+             {{ form_start(form) }}
+            <div class="card border border-secondary">
+                <div class="card-header text-bg-secondary">
+                    {{ 'user.page_add.profil' | trans({}, 'user') }}
+                </div>
+                <div class="card-body">
+
+                    {{ form_row(form.email) }}
+                    {{ form_row(form.roles) }}
+
+                    <fieldset>
+                        <legend> {{ 'user.page_add.personal_data' | trans({}, 'user') }}</legend>
+
+                        <p>
+                            <i class="bi bi-info-circle-fill"></i> {{ 'user.page_add.personal_data.description' | trans({}, 'user') }}
+                        </p>
+
+                        {{ form(form) }}
+                    </fieldset>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+        <div class="col-6">
+            <div class="card border border-secondary">
+                <div class="card-header text-bg-secondary">
+                    {{ 'user.page_add.information' | trans({}, 'user') }}
+                </div>
+                <div class="card-body">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 {% endblock %}

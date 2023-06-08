@@ -148,3 +148,21 @@ user.change_password.title: 'Changement de mon mot de passe'
 user.change_password.link_login: 'Me connecter'
 user.change_password.link_home: 'Index du site'
 user.change_password.success: 'Votre mot de passe à été changé avec succès, vous pouvez maintenant vous connecter avec votre nouveau mot de passe'
+user.form_add.adresse_email.label: 'Adresse email'
+user.form_add.adresse_email.help: 'Identifiant pour ce connecter, le nouvelle utilisateur recevra un email sur cette adresse pour finaliser la création de son compte'
+user.form_add.role.label: "Rôle dans l'application"
+user.form_add.role.help: "Le rôle détermine les droits que possède l'utilisateur dans la partie administration du site"
+user.form_add.login.label: Login
+user.form_add.login.help: 'Identifiant qui apparait à la fin de ses articles'
+user.form_add.login.placeholder: Login
+user.form_add.firstname.label: Prénom
+user.form_add.firstname.help: "Identifiant qui apparait à la fin de ses articles s'il souhaite faire apparaitre sa vrai identité"
+user.form_add.firstname.placeholder: 'Son prénom'
+user.form_add.lastname.label: Nom
+user.form_add.lastname.help: "Identifiant qui apparait à la fin de ses articles s'il souhaite faire apparaitre sa vrai identité"
+user.form_add.lastname.placeholder: 'Son nom'
+user.page_add.profil: 'Son profil'
+user.page_add.personal_data: 'Ses données personnelles'
+user.page_add.personal_data.description: "L'utilisateur peut modifier ses données directement depuis son compte, données non obligatoire"
+user.page_add.information: Information
+user.form_add.submit: "Créer le nouvel utilisateur"

@@ -11,11 +11,13 @@ namespace App\Controller\Admin;
 use App\Entity\Admin\User;
 use App\Entity\Admin\UserData;
 use App\Form\Admin\User\MyAccountType;
+use App\Form\Admin\User\UserAddType;
 use App\Form\Admin\User\UserType;
 use App\Service\Admin\Breadcrumb;
 use App\Service\Admin\MailService;
 use App\Service\Admin\NotificationService;
 use App\Service\Admin\OptionSystemService;
+use App\Service\Admin\OptionUserService;
 use App\Service\Admin\User\UserDataService;
 use App\Service\Admin\User\UserService;
 use App\Service\LoggerService;
@@ -179,6 +181,7 @@ class UserController extends AppAdminController
      * @param UserService $userService
      * @param Request $request
      * @param TranslatorInterface $translator
+     * @param UserDataService $userDataService
      * @return Response
      */
     #[Route('/update/{id}', name: 'update', methods: ['GET', 'POST'])]
@@ -188,7 +191,7 @@ class UserController extends AppAdminController
         UserService         $userService,
         Request             $request,
         TranslatorInterface $translator,
-        UserDataService $userDataService
+        UserDataService     $userDataService
     ): Response
     {
         $breadcrumb = [
@@ -469,11 +472,22 @@ class UserController extends AppAdminController
 
     /**
      * Permet de créer un nouvel user
+     * @param Request $request
+     * @param UserService $userService
      * @return Response
      */
-    #[Route('/add', name: 'add', methods: ['GET'])]
+    #[Route('/add', name: 'add', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]
-    public function add(): Response
+    public function add(
+        Request             $request,
+        UserService         $userService,
+        OptionUserService   $optionUserService,
+        OptionSystemService $optionSystemService,
+        TranslatorInterface $translator,
+        UserDataService     $userDataService,
+        NotificationService $notificationService,
+        MailService         $mailService
+    ): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'user',
@@ -483,8 +497,56 @@ class UserController extends AppAdminController
             ]
         ];
 
+        $user = new User();
+        $form = $this->createForm(UserAddType::class, $user);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var User $user */
+            $user = $form->getData();
+            $user = $userService->addUser($user);
+
+            $optionUserService->createOptionsUser($user);
+
+            $key = ByteString::fromRandom(48)->toString();
+            $userDataService->update(UserdataKey::KEY_RESET_PASSWORD, $key, $user);
+
+
+            $mail = $mailService->getByKey(MailKey::MAIL_CREATE_ACCOUNT_ADM);
+            $keyWord = new KeyWord($mail->getKey());
+            $tabKeyWord = $keyWord->getTabMailCreateAccountAdm(
+                $user,
+                $this->getUser(),
+                $this->generateUrl('auth_change_password_user', ['key' => $key]),
+                $optionSystemService
+            );
+            $params = $mailService->getDefaultParams($mail, $tabKeyWord);
+            $params[MailService::TO] = $user->getEmail();
+
+            $mailService->sendMail($params);
+
+            $this->addFlash(
+                FlashKey::FLASH_SUCCESS,
+                $translator->trans('user.page_add.success', ['email' => $user->getEmail()], domain: 'user'));
+
+            if ($optionSystemService->canNotification()) {
+                $notificationService->add(
+                    $user,
+                    NotificationKey::NOTIFICATION_WELCOME,
+                    [
+                        'login' => $user->getLogin(),
+                        'url_aide' => 'url_aide',
+                        'role' => $user->getRoles()[0]
+                    ]
+                );
+            }
+
+            return $this->redirectToRoute('admin_user_index');
+        }
+
         return $this->render('admin/user/add.html.twig', [
             'breadcrumb' => $breadcrumb,
+            'form' => $form
         ]);
     }
 
@@ -517,10 +579,10 @@ class UserController extends AppAdminController
     #[Route('/reset-password/{id}', name: 'reset_password', methods: ['GET'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]
     public function sendResetPassword(
-        User $user,
-        MailService $mailService,
+        User                $user,
+        MailService         $mailService,
         OptionSystemService $optionSystemService,
-        UserDataService $userDataService,
+        UserDataService     $userDataService,
         TranslatorInterface $translator
     ): RedirectResponse
     {
@@ -528,7 +590,7 @@ class UserController extends AppAdminController
         $userDataService->update(UserdataKey::KEY_RESET_PASSWORD, $key, $user);
 
 
-        $mail = $mailService->getByKey(MailKey::KEY_MAIL_RESET_PASSWORD);
+        $mail = $mailService->getByKey(MailKey::MAIL_CREATE_ACCOUNT_ADM);
         $keyWord = new KeyWord($mail->getKey());
         $tabKeyWord = $keyWord->getTabMailResetPassword(
             $user,
