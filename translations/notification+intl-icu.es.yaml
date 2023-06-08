@@ -1,5 +1,5 @@
-notification.msg.welcome.title: __Bienvenue
-notification.msg.welcome.content: '__Bienvenue {login}, vous avez les droits <strong>{role}</strong> sur le site'
+notification.msg.welcome.title: '__Bienvenue sur le site'
+notification.msg.welcome.content: "__Bienvenue {login} , Vous pouvez dès à présent contribuer au site. Votre compte possède les droits <strong>{role}</strong> sur le site <br /> Pour toute question vous avez <a href='{url_aide}'>l'aide</a> du site"
 notification.msg.self_disabled.title: '__Désactivation de compte'
 notification.msg.self_disabled.content: '__{login} à décidé de désactiver son compte'
 notification.msg.self_delete.title: '__Suppression de compte'

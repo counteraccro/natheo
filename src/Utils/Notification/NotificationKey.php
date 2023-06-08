@@ -82,7 +82,8 @@ class NotificationKey
         self::NOTIFICATION_WELCOME => [
             self::KEY_PARAMETER => [
                 'login' => '',
-                'role' => ''
+                'role' => '',
+                'url_aide' => ''
             ],
             self::KEY_TITLE => 'notification.msg.welcome.title',
             self::KEY_CONTENT => 'notification.msg.welcome.content',
