@@ -517,7 +517,7 @@ class UserController extends AppAdminController
             $tabKeyWord = $keyWord->getTabMailCreateAccountAdm(
                 $user,
                 $this->getUser(),
-                $this->generateUrl('auth_change_password_user', ['key' => $key]),
+                $this->generateUrl('auth_change_new_password_user', ['key' => $key]),
                 $optionSystemService
             );
             $params = $mailService->getDefaultParams($mail, $tabKeyWord);
@@ -590,7 +590,7 @@ class UserController extends AppAdminController
         $userDataService->update(UserdataKey::KEY_RESET_PASSWORD, $key, $user);
 
 
-        $mail = $mailService->getByKey(MailKey::MAIL_CREATE_ACCOUNT_ADM);
+        $mail = $mailService->getByKey(MailKey::MAIL_RESET_PASSWORD);
         $keyWord = new KeyWord($mail->getKey());
         $tabKeyWord = $keyWord->getTabMailResetPassword(
             $user,
