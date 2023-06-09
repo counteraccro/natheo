@@ -57,11 +57,13 @@ class SecurityController extends AbstractController
      * @throws NonUniqueResultException
      */
     #[Route(path: 'change-password/{key}', name: 'change_password_user', methods: ['GET'])]
+    #[Route(path: 'new-password/{key}', name: 'change_new_password_user', methods: ['GET'])]
     public function changePasswordAdm(
         string              $key,
         SecurityService     $securityService,
         TranslatorInterface $translator,
-        UserService $userService
+        UserService         $userService,
+        Request             $request
     ): Response
     {
         $user = $securityService->canChangePassword($key);
@@ -69,9 +71,16 @@ class SecurityController extends AbstractController
         if ($user === null) {
             throw $this->createNotFoundException($translator->trans('user.change_password.error_404', domain: 'user'));
         }
+
+        $new = false;
+        if ($request->attributes->get('_route') === 'auth_change_new_password_user') {
+            $new = true;
+        }
+
         return $this->render('security/admin/change_password.html.twig', [
             'changePasswordTranslate' => $userService->getTranslateChangePassword(),
-            'user' => $user
+            'user' => $user,
+            'new' => $new
         ]);
     }
 
@@ -85,7 +94,7 @@ class SecurityController extends AbstractController
      */
     #[Route('/change-password/update/{id}', name: 'change_password_update_user', methods: ['POST'])]
     public function updatePassword(
-        User $user,
+        User                $user,
         UserService         $userService,
         Request             $request,
         TranslatorInterface $translator

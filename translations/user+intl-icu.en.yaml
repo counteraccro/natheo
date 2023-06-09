@@ -166,3 +166,4 @@ user.page_add.profil: __user.page_add.profil
 user.page_add.personal_data: __user.page_add.personal_data
 user.page_add.personal_data.description: __user.page_add.personal_data.description
 user.page_add.information: __user.page_add.information
+user.change_password.new_title: __user.change_password.new_title

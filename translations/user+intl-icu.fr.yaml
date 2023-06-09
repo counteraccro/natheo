@@ -165,4 +165,6 @@ user.page_add.profil: 'Son profil'
 user.page_add.personal_data: 'Ses données personnelles'
 user.page_add.personal_data.description: "L'utilisateur peut modifier ses données directement depuis son compte, données non obligatoire"
 user.page_add.information: Information
-user.form_add.submit: "Créer le nouvel utilisateur"
+user.form_add.submit: 'Créer le nouvel utilisateur'
+user.page_add.success: 'Utilisateur {email} ajouté avec succès'
+user.change_password.new_title: "Créer votre mot de passe"
