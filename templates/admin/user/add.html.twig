@@ -43,6 +43,17 @@
                 </div>
                 <div class="card-body">
 
+                    <p>
+                        <i class="bi bi-info-circle-fill"></i> {{ 'user.page_add.information.role.info' | trans({}, 'user') }}
+                    </p>
+
+                    {{ 'user.page_add.information.liste_role' | trans({}, 'user') }}
+                    <ul>
+                        <li><b>{{ 'user.page_add.information.role.user' | trans({}, 'user') }}</b> : {{ 'user.page_add.information.role.user.info' | trans({}, 'user') }}</li>
+                        <li><b>{{ 'user.page_add.information.role.contributeur' | trans({}, 'user') }}</b> : {{ 'user.page_add.information.role.contributeur.info' | trans({}, 'user') }}</li>
+                        <li><b>{{ 'user.page_add.information.role.admin' | trans({}, 'user') }}</b> : {{ 'user.page_add.information.role.admin.info' | trans({}, 'user') }}</li>
+                        <li><b>{{ 'user.page_add.information.role.super_admin' | trans({}, 'user') }}</b> : {{ 'user.page_add.information.role.super_admin.info' | trans({}, 'user') }}</li>
+                    </ul>
                 </div>
             </div>
 

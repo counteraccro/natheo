@@ -167,3 +167,13 @@ user.page_add.personal_data: __user.page_add.personal_data
 user.page_add.personal_data.description: __user.page_add.personal_data.description
 user.page_add.information: __user.page_add.information
 user.change_password.new_title: __user.change_password.new_title
+user.page_add.information.role.info: __user.page_add.information.role.info
+user.page_add.information.liste_role: __user.page_add.information.liste_role
+user.page_add.information.role.user: __user.page_add.information.role.user
+user.page_add.information.role.user.info: __user.page_add.information.role.user.info
+user.page_add.information.role.contributeur: __user.page_add.information.role.contributeur
+user.page_add.information.role.contributeur.info: __user.page_add.information.role.contributeur.info
+user.page_add.information.role.admin: __user.page_add.information.role.admin
+user.page_add.information.role.admin.info: __user.page_add.information.role.admin.info
+user.page_add.information.role.super_admin: __user.page_add.information.role.super_admin
+user.page_add.information.role.super_admin.info: __user.page_add.information.role.super_admin.info

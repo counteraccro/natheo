@@ -167,4 +167,14 @@ user.page_add.personal_data.description: "L'utilisateur peut modifier ses donné
 user.page_add.information: Information
 user.form_add.submit: 'Créer le nouvel utilisateur'
 user.page_add.success: 'Utilisateur {email} ajouté avec succès'
-user.change_password.new_title: "Créer votre mot de passe"
+user.change_password.new_title: 'Créer votre mot de passe'
+user.page_add.information.liste_role: 'Rôles disponibles'
+user.page_add.information.role.user: 'Rôle Utilisateur'
+user.page_add.information.role.user.info: "Donne le droit de ce connecter à l'application (rôle par défaut)"
+user.page_add.information.role.contributeur: 'Rôle Contributeur'
+user.page_add.information.role.contributeur.info: "Donne le droit d'ajouter du contenu sur le site"
+user.page_add.information.role.admin: 'Rôle Administrateur'
+user.page_add.information.role.admin.info: "Donne le droit d'administrer les contenus du site (commentaires, membres etc...)"
+user.page_add.information.role.super_admin: 'Rôle Super Administrateur'
+user.page_add.information.role.super_admin.info: "Permet de gérer l'ensemble du CMS"
+user.page_add.information.role.info: "Les rôles sont listés par ordre de puissance, du plus faible, au plus puissant. chaque rôle supérieur hérite des droits du rôle inférieur"
