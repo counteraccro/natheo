@@ -328,7 +328,8 @@ class UserService extends AppAdminService
     }
 
     /**
-     * Créer un nouvel user
+     * Créer un nouvel user et génère un mot de passe
+     * Si le champ login est null, la valeur avant le @ de l'email sera prise.
      * @param User $user
      * @return User
      */
