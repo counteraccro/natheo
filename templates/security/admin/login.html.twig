@@ -32,7 +32,7 @@
                                 <div class="mb-3">
                                     <div class="mb-2 w-100">
                                         <label class="text-muted" for="password">{{ 'user.login_user.password' | trans({}, 'user') }}</label>
-                                        <a href="forgot.html" class="float-end">
+                                        <a href="{{ path('auth_reset_password_user') }}" class="float-end">
                                             {{ 'user.login_user.forgot_password' | trans({}, 'user') }}
                                         </a>
                                     </div>
