@@ -350,11 +350,16 @@ class UserController extends AppAdminController
             $keyWord = new KeyWord($mail->getKey());
             $tabKeyWord = $keyWord->getTabMailSelfDisabled($user, $optionSystemService);
             $params = $mailService->getDefaultParams($mail, $tabKeyWord);
-            $params[MailService::TO] = $userService->getTabMailByListeUser(
+            $tabTo = $userService->getTabMailByListeUser(
                 $userService->getByRole(Role::ROLE_SUPER_ADMIN)
             );
+
             try {
-                $mailService->sendMail($params);
+                foreach ($tabTo as $to) {
+                    $params[MailService::TO] = $to;
+                    $mailService->sendMail($params);
+                }
+
             } catch (CommonMarkException|TransportExceptionInterface $e) {
                 die($e->getMessage());
             }
@@ -443,10 +448,14 @@ class UserController extends AppAdminController
                 $tabKeyWord = $keyWord->getTabMailSelfDelete($user2, $optionSystemService);
             }
             $params = $mailService->getDefaultParams($mail, $tabKeyWord);
-            $params[MailService::TO] = $userService->getTabMailByListeUser(
+            $tabTo = $userService->getTabMailByListeUser(
                 $userService->getByRole(Role::ROLE_SUPER_ADMIN)
             );
-            $mailService->sendMail($params);
+
+            foreach ($tabTo as $to) {
+                $params[MailService::TO] = $to;
+                $mailService->sendMail($params);
+            }
         }
 
         // Notifications
