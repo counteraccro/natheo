@@ -124,7 +124,7 @@ class AppAdminService
      * @param int $id
      * @return object|null
      */
-    public function findOneBy(string $entity, int $id): ?object
+    public function findOneById(string $entity, int $id): ?object
     {
         $repo = $this->getRepository($entity);
         return $repo->findOneBy(['id' => $id]);

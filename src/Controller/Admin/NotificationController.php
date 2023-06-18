@@ -117,7 +117,7 @@ class NotificationController extends AppAdminController
     {
         $data = json_decode($request->getContent(), true);
         /** @var Notification $notification */
-        $notification = $notificationService->findOneBy(Notification::class, $data['id']);
+        $notification = $notificationService->findOneById(Notification::class, $data['id']);
         $notification->setRead(true);
         $notificationService->save($notification);
 
