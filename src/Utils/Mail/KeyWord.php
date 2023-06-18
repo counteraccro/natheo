@@ -204,21 +204,21 @@ class KeyWord
      * Renvoi le tableau de keyWord avec les valeurs correspondantes pour l'email
      * change password
      * @param User $user
-     * @param UrlGeneratorInterface $router
+     * @param string $url_change_password
      * @param OptionSystemService $optionSystemService
      * @return array
      */
     public function getMailChangePassword(
-        User                  $user,
-        UrlGeneratorInterface $router,
-        OptionSystemService   $optionSystemService
+        User                $user,
+        string              $urlChangePassword,
+        OptionSystemService $optionSystemService
     ): array
     {
         $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
 
         $tab = $this->getGlobalKeyWord($user, $optionSystemService);
         $tab2 = [
-            '[[' . self::GLOBAL_URL_CHANGE_PASSWORD . ']]' => $url . $router->generate('index_index'),
+            '[[' . self::GLOBAL_URL_CHANGE_PASSWORD . ']]' => $url . $urlChangePassword,
         ];
         $tab = array_merge($tab, $tab2);
 
@@ -337,10 +337,10 @@ class KeyWord
      * @return array
      */
     public function getTabMailResetPassword(
-        User $user,
-        User $admin,
-        string $urlPath,
-        OptionSystemService   $optionSystemService
+        User                $user,
+        User                $admin,
+        string              $urlPath,
+        OptionSystemService $optionSystemService
     ): array
     {
         $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
