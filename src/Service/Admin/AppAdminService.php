@@ -126,8 +126,20 @@ class AppAdminService
      */
     public function findOneById(string $entity, int $id): ?object
     {
+        return $this->findOneBy($entity, 'id', $id);
+    }
+
+    /**
+     * Retourne une entité en fonction de son champ et valeur associé
+     * @param string $entity
+     * @param string $field
+     * @param mixed $value
+     * @return object|null
+     */
+    public function findOneBy(string $entity, string $field, mixed $value): ?object
+    {
         $repo = $this->getRepository($entity);
-        return $repo->findOneBy(['id' => $id]);
+        return $repo->findOneBy([$field => $value]);
     }
 
 }
