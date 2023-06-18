@@ -177,4 +177,9 @@ user.page_add.information.role.admin: 'Rôle Administrateur'
 user.page_add.information.role.admin.info: "Donne le droit d'administrer les contenus du site (commentaires, membres etc...)"
 user.page_add.information.role.super_admin: 'Rôle Super Administrateur'
 user.page_add.information.role.super_admin.info: "Permet de gérer l'ensemble du CMS"
-user.page_add.information.role.info: "Les rôles sont listés par ordre de puissance, du plus faible, au plus puissant. chaque rôle supérieur hérite des droits du rôle inférieur"
+user.page_add.information.role.info: 'Les rôles sont listés par ordre de puissance, du plus faible, au plus puissant. chaque rôle supérieur hérite des droits du rôle inférieur'
+user.reset_password.email.label: 'Adresse email'
+user.reset_password.email.placeholder: 'Adresse email'
+user.reset_password.submit: 'Changer mon mot de passe'
+user.reset_password.email.help: 'Vous recevrez un email contenant les instructions pour pouvoir changer votre mot de passe'
+user.reset_password.success: "Un email à été envoyé à l'adresse email indiquée"

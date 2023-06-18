@@ -8,17 +8,26 @@
 namespace App\Controller;
 
 use App\Entity\Admin\User;
+use App\Service\Admin\MailService;
+use App\Service\Admin\OptionSystemService;
 use App\Service\Admin\TranslateService;
+use App\Service\Admin\User\UserDataService;
 use App\Service\Admin\User\UserService;
 use App\Service\SecurityService;
+use App\Utils\Mail\KeyWord;
+use App\Utils\Mail\MailKey;
+use App\Utils\User\UserdataKey;
 use Doctrine\ORM\NonUniqueResultException;
+use League\CommonMark\Exception\CommonMarkException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\String\ByteString;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('{_locale}/security/', name: 'auth_', requirements: ['_locale' => '%app.supported_locales%'],
@@ -53,6 +62,7 @@ class SecurityController extends AbstractController
      * @param SecurityService $securityService
      * @param TranslatorInterface $translator
      * @param UserService $userService
+     * @param Request $request
      * @return Response
      * @throws NonUniqueResultException
      */
@@ -107,6 +117,59 @@ class SecurityController extends AbstractController
             'status' => 'success',
             'msg' => $translator->trans('user.change_password.success', domain: 'user'),
             'redirect' => $this->generateUrl('auth_user_login')
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param UserService $userService
+     * @param MailService $mailService
+     * @param OptionSystemService $optionSystemService
+     * @param UserDataService $userDataService
+     * @return Response
+     * @throws CommonMarkException
+     * @throws TransportExceptionInterface
+     */
+    #[Route('reset-password/update', name: 'reset_password_user', methods: ['GET', 'POST'])]
+    public function resetpassword(
+        Request             $request,
+        UserService         $userService,
+        MailService         $mailService,
+        OptionSystemService $optionSystemService,
+        UserDataService     $userDataService,
+        TranslatorInterface $translator
+    ): Response
+    {
+        $msg = '';
+        $email = $request->get('email');
+        if (!empty($email)) {
+
+            $msg = $translator->trans('user.reset_password.success', domain: 'user');
+
+            $user = $userService->findOneBy(User::class, 'email', $email);
+
+            if ($user != null) {
+
+                $key = ByteString::fromRandom(48)->toString();
+                $userDataService->update(UserdataKey::KEY_RESET_PASSWORD, $key, $user);
+
+
+                $mail = $mailService->getByKey(MailKey::MAIL_CHANGE_PASSWORD);
+                $keyWord = new KeyWord($mail->getKey());
+                $tabKeyWord = $keyWord->getMailChangePassword(
+                    $user,
+                    $this->generateUrl('auth_change_password_user', ['key' => $key]),
+                    $optionSystemService
+                );
+                $params = $mailService->getDefaultParams($mail, $tabKeyWord);
+                $params[MailService::TO] = $user->getEmail();
+
+                $mailService->sendMail($params);
+            }
+        }
+
+        return $this->render('security/admin/reset_password.html.twig', [
+            'msg' => $msg
         ]);
     }
 }

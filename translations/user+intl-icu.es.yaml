@@ -177,3 +177,8 @@ user.page_add.information.role.admin: __user.page_add.information.role.admin
 user.page_add.information.role.admin.info: __user.page_add.information.role.admin.info
 user.page_add.information.role.super_admin: __user.page_add.information.role.super_admin
 user.page_add.information.role.super_admin.info: __user.page_add.information.role.super_admin.info
+user.reset_password.success: __user.reset_password.success
+user.reset_password.email.label: __user.reset_password.email.label
+user.reset_password.email.placeholder: __user.reset_password.email.placeholder
+user.reset_password.email.help: __user.reset_password.email.help
+user.reset_password.submit: __user.reset_password.submit
