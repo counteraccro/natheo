@@ -15,6 +15,24 @@ sidebarElement:
         role: 'ROLE_ADMIN'
         lock: false
         description: 'sidebar.membre.description'
+    content:
+      icon: 'bi-folder-fill'
+      label: 'global.content'
+      route: '#contenus'
+      disabled: false
+      role: 'ROLE_CONTRIBUTEUR'
+      description: 'sidebar.global.content.description'
+      lock: true
+      children:
+        - tag:
+            icon: 'bi-tags-fill'
+            label: 'global.tag'
+            route: 'admin_tag_index'
+            disabled: false
+            parent: content
+            role: 'ROLE_CONTRIBUTEUR'
+            description: 'sidebar.tag.description'
+            lock: false
     system :
         icon: 'bi-gear-fill'
         label: 'global.system'
