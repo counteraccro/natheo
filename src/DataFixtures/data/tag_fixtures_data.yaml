@@ -1,0 +1,25 @@
+tag:
+  -
+    color: '#FAFAFA'
+    translate:
+      -
+        locale: fr
+        label: 'Site web'
+      -
+        locale: es
+        label: 'es Site web'
+      -
+        locale: en
+        label: 'en Site web'
+  -
+    color: '#BABABA'
+    translate:
+      -
+        locale: fr
+        label: 'Informatique'
+      -
+        locale: es
+        label: 'es Informatique'
+      -
+        locale: en
+        label: 'en Informatique'

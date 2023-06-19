@@ -54,6 +54,16 @@ class AppFixtures extends Fixture
      */
     protected const GROUP_MAIL = 'mail';
 
+    /**
+     * Lié à tous les elements content
+     */
+    protected const GROUP_CONTENT = 'content';
+
+    /**
+     * Lié à tous les elements tags
+     */
+    protected const GROUP_TAG = 'tag';
+
     public function __construct(ContainerBagInterface $params)
     {
         $kernel = $params->get('kernel.project_dir');
