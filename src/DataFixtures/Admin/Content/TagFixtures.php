@@ -1,11 +1,15 @@
 <?php
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Fixtures pour la génération des tags
+ */
 
 namespace App\DataFixtures\Admin\Content;
 
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\Content\Tag;
 use App\Entity\Admin\Content\TagTranslation;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

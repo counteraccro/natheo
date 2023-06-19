@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Fixtures pour la génération des mails
+ */
 namespace App\DataFixtures\Admin;
 
 use App\DataFixtures\AppFixtures;
