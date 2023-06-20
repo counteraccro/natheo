@@ -68,8 +68,10 @@ class SidebarController extends AppAdminController
      * @return JsonResponse
      */
     #[Route('/ajax/update-disabled/{id}', name: 'update_disabled')]
-    public function updateDisabled(SidebarElement      $sidebarElement, SidebarElementService $sidebarElementService,
-                                   TranslatorInterface $translator
+    public function updateDisabled(
+        SidebarElement        $sidebarElement,
+        SidebarElementService $sidebarElementService,
+        TranslatorInterface   $translator
     ): JsonResponse
     {
         $sidebarElement->setDisabled(!$sidebarElement->isDisabled());

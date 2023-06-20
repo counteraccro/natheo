@@ -4,6 +4,7 @@ namespace App\Repository\Admin\Content;
 
 use App\Entity\Admin\Content\Tag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +38,25 @@ class TagRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * Retourne une liste de tag Paginé
+     * @param int $page
+     * @param int $limit
+     * @return Paginator
+     */
+    public function getAllPaginate(int $page, int $limit): Paginator
+    {
+        $query = $this->createQueryBuilder('t')
+            ->orderBy('t.id', 'ASC');
+
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
+
     }
 
 //    /**

@@ -122,4 +122,16 @@ class Tag
 
         return $this;
     }
+
+    /**
+     * Retourne la traduction en fonction de la locale
+     * @param string $locale
+     * @return TagTranslation
+     */
+    public function getTagTranslationByLocale(string $locale): TagTranslation
+    {
+        return $this->getTagTranslations()->filter(function (TagTranslation $tagTranslation) use ($locale) {
+            return $tagTranslation->getLocale() === $locale;
+        })->first();
+    }
 }
