@@ -2,3 +2,11 @@ tag.index.page_title: __tag.index.page_title
 tag.index.page_title_h1: __tag.index.page_title_h1
 tag.index.btn.new: __tag.index.btn.new
 tag.index.description: __tag.index.description
+tag.success.no.disabled: __tag.success.no.disabled
+tag.success.disabled: __tag.success.disabled
+tag.grid.id: __tag.grid.id
+tag.grid.label: __tag.grid.label
+tag.grid.color: __tag.grid.color
+tag.grid.created_at: __tag.grid.created_at
+tag.grid.update_at: __tag.grid.update_at
+tag.confirm.disabled.msg: __tag.confirm.disabled.msg

@@ -1,4 +1,23 @@
 tag.index.page_title: 'Gestion des tags'
 tag.index.page_title_h1: 'Gestion des tags'
 tag.index.btn.new: 'Nouveau tag'
-tag.index.description: 'Gestion des tags qui peuvent être rattachés aux page de votre site'
+tag.index.description: 'Utiliser les tags pour pouvoir classer le contenu de votre site comme vous le souhaitez'
+tag.grid.id: id
+tag.grid.label: label
+tag.grid.color: couleur
+tag.grid.created_at: Création
+tag.grid.update_at: 'Mise à jour'
+tag.confirm.disabled.msg: "La désactivation du tag <strong>{label}</strong> entraine sa désactivation et son invisibilité sur le site. Aucune donnée n'est supprimés. Par contre les contenus liés à ce tag peuvent être masqués"
+tag.success.no.disabled: 'Le tag <strong>{label}</strong> est maintenant activé'
+tag.success.disabled: 'Le tag <strong>{label}</strong> est maintenant désactivé'
+tag.confirm.delete.msg: 'La suppression du tag <strong>{label}</strong> est définitif. Seul le tag est supprimé et non les données associées'
+tag.add.page_title: 'Nouveau tag'
+tag.add.page_title_h1: 'Ajouter un tag'
+tag.update.page_title: 'Edition du tag {tag}'
+tag.update.page_title_h1: 'Editer le tag'
+tag.index.popin.help.title: Aide
+tag.index.popin.help.disabled_user: 'Désactiver un tag'
+tag.index.popin.help.enable_user: 'Activer un tag'
+tag.index.popin.help.delete: 'Supprimer un tag'
+tag.index.popin.help.edit: 'Modifier un tag'
+tag.index.description2: 'Les tags marqué de {icon} sont désactivés et donc non visible sur le site. Les contenus liés à ce tag peuvent être masqués'
