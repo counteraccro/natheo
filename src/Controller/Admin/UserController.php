@@ -483,7 +483,15 @@ class UserController extends AppAdminController
      * Permet de créer un nouvel user
      * @param Request $request
      * @param UserService $userService
+     * @param OptionUserService $optionUserService
+     * @param OptionSystemService $optionSystemService
+     * @param TranslatorInterface $translator
+     * @param UserDataService $userDataService
+     * @param NotificationService $notificationService
+     * @param MailService $mailService
      * @return Response
+     * @throws CommonMarkException
+     * @throws TransportExceptionInterface
      */
     #[Route('/add', name: 'add', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]
