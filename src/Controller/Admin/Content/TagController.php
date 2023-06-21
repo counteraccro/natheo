@@ -105,7 +105,14 @@ class TagController extends AppAdminController
         Request             $request
     ): JsonResponse
     {
-        return $this->json([]);
+        $label = $tag->getTagTranslationByLocale($request->getLocale())->getLabel();
+
+        $tagService->remove($tag);
+        return $this->json(['type' => 'success', 'msg' => $translator->trans(
+            'tag.remove.success',
+            ['label' => $label],
+            domain: 'tag'
+        )]);
     }
 
     #[Route('/ajax/add/', name: 'add')]

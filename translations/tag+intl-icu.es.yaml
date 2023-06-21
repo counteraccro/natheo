@@ -10,3 +10,15 @@ tag.grid.color: __tag.grid.color
 tag.grid.created_at: __tag.grid.created_at
 tag.grid.update_at: __tag.grid.update_at
 tag.confirm.disabled.msg: __tag.confirm.disabled.msg
+tag.remove.success: __tag.remove.success
+tag.confirm.delete.msg: __tag.confirm.delete.msg
+tag.add.page_title: __tag.add.page_title
+tag.add.page_title_h1: __tag.add.page_title_h1
+tag.index.description2: __tag.index.description2
+tag.index.popin.help.title: __tag.index.popin.help.title
+tag.index.popin.help.disabled_user: __tag.index.popin.help.disabled_user
+tag.index.popin.help.enable_user: __tag.index.popin.help.enable_user
+tag.index.popin.help.delete: __tag.index.popin.help.delete
+tag.index.popin.help.edit: __tag.index.popin.help.edit
+tag.update.page_title: __tag.update.page_title
+tag.update.page_title_h1: __tag.update.page_title_h1

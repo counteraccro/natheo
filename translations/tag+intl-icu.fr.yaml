@@ -21,3 +21,4 @@ tag.index.popin.help.enable_user: 'Activer un tag'
 tag.index.popin.help.delete: 'Supprimer un tag'
 tag.index.popin.help.edit: 'Modifier un tag'
 tag.index.description2: 'Les tags marqué de {icon} sont désactivés et donc non visible sur le site. Les contenus liés à ce tag peuvent être masqués'
+tag.remove.success: "Le tag {label} à été correctement supprimé"
