@@ -7,5 +7,6 @@
 
     {{ breadcrumb(breadcrumb) }}
 
+    <div {{ vue_component('Admin/Content/TagForm', {'url' : path('admin_tag_save'), 'tag' : tag, 'translate' : translate}) }}></div>
 
 {% endblock %}

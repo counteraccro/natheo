@@ -166,7 +166,6 @@ class TagService extends AppAdminService
             'url' => $this->router->generate('admin_tag_update', ['id' => $tag->getId()]),
             'ajax' => false];
 
-
         return $actions;
     }
 }
