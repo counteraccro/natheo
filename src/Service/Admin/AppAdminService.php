@@ -16,6 +16,10 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppAdminService
@@ -140,6 +144,27 @@ class AppAdminService
     {
         $repo = $this->getRepository($entity);
         return $repo->findOneBy([$field => $value]);
+    }
+
+    /**
+     * Convertie une entité en tableau PHP
+     * @param object $object
+     * @param array $ignoredAttributes
+     * @return array
+     * @throws ExceptionInterface
+     */
+    public function convertEntityToArray(object $object, array $ignoredAttributes = []): array
+    {
+        $defaultContext = [
+            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
+                return $object->getId();
+            },
+            AbstractNormalizer::IGNORED_ATTRIBUTES => $ignoredAttributes
+        ];
+        $normalizer = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
+        $serializer = new Serializer([$normalizer], []);
+
+        return $serializer->normalize($object, null);
     }
 
 }
