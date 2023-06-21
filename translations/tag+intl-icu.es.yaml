@@ -22,3 +22,4 @@ tag.index.popin.help.delete: __tag.index.popin.help.delete
 tag.index.popin.help.edit: __tag.index.popin.help.edit
 tag.update.page_title: __tag.update.page_title
 tag.update.page_title_h1: __tag.update.page_title_h1
+tag.form.loading: __tag.form.loading
