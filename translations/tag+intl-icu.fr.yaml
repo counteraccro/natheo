@@ -25,5 +25,7 @@ tag.remove.success: 'Le tag {label} à été correctement supprimé'
 tag.form.loading: 'Chargement des données...'
 tag.form.title.create: 'Nouveau tag'
 tag.form.title.update: 'Edition du tag'
-tag.add.description: "Aouter un nouveau tag pour pouvoir classer vos contenus plus facilement"
+tag.add.description: 'Aouter un nouveau tag pour pouvoir classer vos contenus plus facilement'
 tag.update.description: "L'édition du tag ne modifie pas les contenus associés à celui-ci"
+tag.form.input.color.label: "Couleur du tag"
+tag.form.input.label.label: "Label en"

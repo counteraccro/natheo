@@ -26,7 +26,7 @@ export default {
   methods: {
 
     /**
-     * Récupère les données liées à la gestion des emails
+     * sauvegarde des données
      */
     save() {
 
@@ -39,6 +39,15 @@ export default {
       }).finally(() => {
         this.loading = false
       });
+    },
+
+    generateRandomHexColor() {
+      const randomColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+      if (randomColor.length !== 7) {
+        return this.generateRandomHexColor();
+      } else {
+        return randomColor;
+      }
     },
 
   }
@@ -71,6 +80,9 @@ export default {
           </div>
           <div class="card-body">
 
+            <div :style="'background-color:' + this.generateRandomHexColor()">aaa</div>
+
+
             <label for="tagColor" class="form-label">{{ this.translate.formInputColorLabel }}</label>
             <input type="color" class="form-control form-control-color" id="tagColor" v-model="this.tag.color">
 
@@ -78,7 +90,7 @@ export default {
               <div v-for="translation in tag.tagTranslations">
                 <div v-if="translation.locale === key">
                   <div class="mb-3">
-                    <label :for="'label-' + translation.locale" class="form-label">{{ this.translate.formInputLabelLabel }}  {{this.locales.localesTranslate[key]}}</label>
+                    <label :for="'label-' + translation.locale" class="form-label">{{ this.translate.formInputLabelLabel }} {{ this.locales.localesTranslate[key] }}</label>
                     <input type="text" class="form-control" :id="'label-' + translation.locale" placeholder="" v-model="translation.label">
                   </div>
 
