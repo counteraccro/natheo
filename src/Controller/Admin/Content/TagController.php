@@ -145,6 +145,7 @@ class TagController extends AppAdminController
         ];
 
         $translate = $tagService->getTranslateTagForm();
+        $locales = $tagService->getLocales(false);
 
 
         if ($tag === null) {

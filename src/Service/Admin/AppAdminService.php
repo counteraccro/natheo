@@ -15,6 +15,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
@@ -58,9 +59,9 @@ class AppAdminService
     protected RequestStack $requestStack;
 
     /**
-     * @var ContainerInterface
+     * @var ParameterBagInterface
      */
-    protected ContainerInterface $container;
+    protected ParameterBagInterface $parameterBag;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -69,6 +70,7 @@ class AppAdminService
         UrlGeneratorInterface  $router,
         Security               $security,
         RequestStack           $requestStack,
+        ParameterBagInterface  $parameterBag
     )
     {
         $this->requestStack = $requestStack;
@@ -77,7 +79,7 @@ class AppAdminService
         $this->translator = $translator;
         $this->router = $router;
         $this->security = $security;
-
+        $this->parameterBag = $parameterBag;
     }
 
     /**
@@ -172,15 +174,6 @@ class AppAdminService
         $serializer = new Serializer([$normalizer], []);
 
         return $serializer->normalize($object, null);
-    }
-
-    public function getLocales(bool $transtale = false)
-    {
-        if ($transtale) {
-
-        } else {
-            $locales = explode('|', $this->container->getParameter('app.supported_locales'));
-        }
     }
 
 }

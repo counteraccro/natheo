@@ -18,6 +18,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -38,7 +39,7 @@ class NotificationService extends AppAdminService
      * @param Security $security
      * @param RequestStack $requestStack
      * @param OptionSystemService $optionSystemService
-     * @param Container $container
+     * @param ParameterBagInterface $parameterBag
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -48,10 +49,11 @@ class NotificationService extends AppAdminService
         Security               $security,
         RequestStack           $requestStack,
         OptionSystemService    $optionSystemService,
+        ParameterBagInterface  $parameterBag
     )
     {
         $this->optionSystemService = $optionSystemService;
-        parent::__construct($entityManager, $containerBag, $translator, $router, $security, $requestStack);
+        parent::__construct($entityManager, $containerBag, $translator, $router, $security, $requestStack, $parameterBag);
     }
 
     /**

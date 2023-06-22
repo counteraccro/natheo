@@ -8,9 +8,7 @@
 namespace App\Service\Admin;
 
 use App\Entity\Admin\Mail;
-use App\Entity\Admin\User;
 use App\Utils\Mail\KeyWord;
-use App\Utils\Mail\MailKey;
 use App\Utils\Mail\MailTemplate;
 use App\Utils\Markdown;
 use App\Utils\Options\OptionSystemKey;
@@ -21,6 +19,7 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -109,7 +108,7 @@ class MailService extends AppAdminService
      * @param GridService $gridService
      * @param MailerInterface $mailer
      * @param OptionSystemService $optionSystemService
-     * @param Container $container
+     * @param ParameterBagInterface $parameterBag
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -121,13 +120,14 @@ class MailService extends AppAdminService
         GridService            $gridService,
         MailerInterface        $mailer,
         OptionSystemService    $optionSystemService,
+        ParameterBagInterface  $parameterBag
     )
     {
         $this->gridService = $gridService;
         $this->mailer = $mailer;
         $this->optionSystemService = $optionSystemService;
 
-        parent::__construct($entityManager, $containerBag, $translator, $router, $security, $requestStack);
+        parent::__construct($entityManager, $containerBag, $translator, $router, $security, $requestStack, $parameterBag);
     }
 
 

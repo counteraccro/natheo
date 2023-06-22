@@ -9,8 +9,9 @@ use App\Service\Admin\OptionSystemService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -36,6 +37,7 @@ class TagService extends AppAdminService
      * @param RequestStack $requestStack
      * @param GridService $gridService
      * @param OptionSystemService $optionSystemService
+     * @param ParameterBagInterface $parameterBag
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -46,11 +48,12 @@ class TagService extends AppAdminService
         RequestStack           $requestStack,
         GridService            $gridService,
         OptionSystemService    $optionSystemService,
+        ParameterBagInterface  $parameterBag
     )
     {
         $this->gridService = $gridService;
         $this->optionSystemService = $optionSystemService;
-        parent::__construct($entityManager, $containerBag, $translator, $router, $security, $requestStack);
+        parent::__construct($entityManager, $containerBag, $translator, $router, $security, $requestStack, $parameterBag);
     }
 
     /**
@@ -188,5 +191,20 @@ class TagService extends AppAdminService
             'formInputLabelLabel' => $this->translator->trans('tag.form.input.label.label', domain: 'tag'),
         ];
 
+    }
+
+    /**
+     * @param bool $translate
+     * @return array
+     */
+    public function getLocales(bool $translate = false): array
+    {
+        if ($translate) {
+            $locales = [];
+        } else {
+            $locales = explode('|', $this->parameterBag->get('app.supported_locales'));
+        }
+
+        return $locales;
     }
 }

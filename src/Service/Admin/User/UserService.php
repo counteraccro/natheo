@@ -18,8 +18,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -54,6 +54,7 @@ class UserService extends AppAdminService
      * @param Security $security
      * @param RequestStack $requestStack
      * @param UserPasswordHasherInterface $userPasswordHasher
+     * @param ParameterBagInterface $parameterBag
      */
     public function __construct(
         EntityManagerInterface      $entityManager,
@@ -65,12 +66,13 @@ class UserService extends AppAdminService
         Security                    $security,
         RequestStack                $requestStack,
         UserPasswordHasherInterface $userPasswordHasher,
+        ParameterBagInterface  $parameterBag
     )
     {
         $this->gridService = $gridService;
         $this->optionSystemService = $optionSystemService;
         $this->passwordHasher = $userPasswordHasher;
-        parent::__construct($entityManager, $containerBag, $translator, $router, $security, $requestStack);
+        parent::__construct($entityManager, $containerBag, $translator, $router, $security, $requestStack, $parameterBag);
     }
 
     /**
