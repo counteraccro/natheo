@@ -9,16 +9,13 @@ namespace App\Controller\Admin;
 
 use App\Entity\Admin\Mail;
 use App\Entity\Admin\User;
-use App\Service\Admin\Breadcrumb;
+use App\Utils\Breadcrumb;
 use App\Service\Admin\MailService;
 use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\OptionSystemService;
-use App\Service\Admin\OptionUserService;
 use App\Service\Admin\TranslateService;
 use App\Utils\Mail\KeyWord;
-use App\Utils\Mail\MailKey;
-use App\Utils\Mail\MailTemplate;
-use App\Utils\Options\OptionSystemKey;
+use App\Utils\Mail\MailKey;;
 use App\Utils\Options\OptionUserKey;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;

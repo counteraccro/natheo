@@ -8,7 +8,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Service\Admin\Breadcrumb;
+use App\Utils\Breadcrumb;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;

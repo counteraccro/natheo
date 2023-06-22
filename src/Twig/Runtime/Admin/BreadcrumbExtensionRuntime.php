@@ -8,7 +8,7 @@
 
 namespace App\Twig\Runtime\Admin;
 
-use App\Service\Admin\Breadcrumb;
+use App\Utils\Breadcrumb;
 use Doctrine\ORM\Query\AST\BetweenExpression;
 use Twig\Extension\RuntimeExtensionInterface;
 

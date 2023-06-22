@@ -9,7 +9,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Admin\Notification;
 use App\Entity\Admin\User;
-use App\Service\Admin\Breadcrumb;
+use App\Utils\Breadcrumb;
 use App\Service\Admin\GridService;
 use App\Service\Admin\NotificationService;
 use App\Service\Admin\OptionSystemService;

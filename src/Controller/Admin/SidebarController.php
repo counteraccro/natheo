@@ -8,12 +8,9 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Admin\SidebarElement;
-use App\Service\Admin\Breadcrumb;
-use App\Service\Admin\OptionUserService;
+use App\Utils\Breadcrumb;
 use App\Service\Admin\SidebarElementService;
-use App\Utils\Debug;
 use App\Utils\Options\OptionUserKey;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

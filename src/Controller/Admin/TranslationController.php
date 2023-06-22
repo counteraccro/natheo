@@ -7,7 +7,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Service\Admin\Breadcrumb;
+use App\Utils\Breadcrumb;
 use App\Service\Admin\CommandService;
 use App\Service\Admin\TranslateService;
 use Exception;

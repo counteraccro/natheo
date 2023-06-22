@@ -7,8 +7,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Service\Admin\Breadcrumb;
-use App\Service\Admin\OptionUserService;
+use App\Utils\Breadcrumb;
 use App\Service\LoggerService;
 use App\Utils\Options\OptionUserKey;
 use Exception;

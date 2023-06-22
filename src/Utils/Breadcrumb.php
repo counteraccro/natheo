@@ -5,9 +5,9 @@
  * Service pour constantes du fil d'Ariane
  */
 
-namespace App\Service\Admin;
+namespace App\Utils;
 
-class Breadcrumb extends AppAdminService
+class Breadcrumb
 {
     /**
      * Défini le domaine de traduction
