@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityRepository;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -56,13 +57,18 @@ class AppAdminService
      */
     protected RequestStack $requestStack;
 
+    /**
+     * @var ContainerInterface
+     */
+    protected ContainerInterface $container;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         ContainerBagInterface  $containerBag,
         TranslatorInterface    $translator,
         UrlGeneratorInterface  $router,
         Security               $security,
-        RequestStack           $requestStack
+        RequestStack           $requestStack,
     )
     {
         $this->requestStack = $requestStack;
@@ -71,6 +77,7 @@ class AppAdminService
         $this->translator = $translator;
         $this->router = $router;
         $this->security = $security;
+
     }
 
     /**
@@ -165,6 +172,15 @@ class AppAdminService
         $serializer = new Serializer([$normalizer], []);
 
         return $serializer->normalize($object, null);
+    }
+
+    public function getLocales(bool $transtale = false)
+    {
+        if ($transtale) {
+
+        } else {
+            $locales = explode('|', $this->container->getParameter('app.supported_locales'));
+        }
     }
 
 }

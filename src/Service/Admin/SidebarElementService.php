@@ -12,6 +12,7 @@ use App\Entity\Admin\SidebarElement;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -24,9 +25,24 @@ class SidebarElementService extends AppAdminService
      */
     private GridService $gridService;
 
-    public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
-                                TranslatorInterface    $translator, UrlGeneratorInterface $router,
-                                GridService            $gridService, Security $security, RequestStack $requestStack
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param ContainerBagInterface $containerBag
+     * @param TranslatorInterface $translator
+     * @param UrlGeneratorInterface $router
+     * @param GridService $gridService
+     * @param Security $security
+     * @param RequestStack $requestStack
+     * @param Container $container
+     */
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ContainerBagInterface  $containerBag,
+        TranslatorInterface    $translator,
+        UrlGeneratorInterface  $router,
+        GridService            $gridService,
+        Security               $security,
+        RequestStack           $requestStack,
     )
     {
         $this->gridService = $gridService;

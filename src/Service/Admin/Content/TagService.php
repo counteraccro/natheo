@@ -9,6 +9,7 @@ use App\Service\Admin\OptionSystemService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -21,6 +22,9 @@ class TagService extends AppAdminService
      */
     private GridService $gridService;
 
+    /**
+     * @var OptionSystemService
+     */
     private OptionSystemService $optionSystemService;
 
     /** Constructeur
@@ -31,6 +35,7 @@ class TagService extends AppAdminService
      * @param Security $security
      * @param RequestStack $requestStack
      * @param GridService $gridService
+     * @param OptionSystemService $optionSystemService
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -167,5 +172,21 @@ class TagService extends AppAdminService
             'ajax' => false];
 
         return $actions;
+    }
+
+    /**
+     * Traduction pour le formulaire de création / édition d'un tag
+     * @return array
+     */
+    public function getTranslateTagForm(): array
+    {
+        return [
+            'loading' => $this->translator->trans('tag.form.loading', domain: 'tag'),
+            'formTitleCreate' => $this->translator->trans('tag.form.title.create', domain: 'tag'),
+            'formTitleUpdate' => $this->translator->trans('tag.form.title.update', domain: 'tag'),
+            'formInputColorLabel' => $this->translator->trans('tag.form.input.color.label', domain: 'tag'),
+            'formInputLabelLabel' => $this->translator->trans('tag.form.input.label.label', domain: 'tag'),
+        ];
+
     }
 }

@@ -19,6 +19,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use League\CommonMark\Exception\CommonMarkException;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -108,11 +109,18 @@ class MailService extends AppAdminService
      * @param GridService $gridService
      * @param MailerInterface $mailer
      * @param OptionSystemService $optionSystemService
+     * @param Container $container
      */
-    public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
-                                TranslatorInterface    $translator, UrlGeneratorInterface $router,
-                                Security               $security, RequestStack $requestStack, GridService $gridService,
-                                MailerInterface        $mailer, OptionSystemService $optionSystemService
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ContainerBagInterface  $containerBag,
+        TranslatorInterface    $translator,
+        UrlGeneratorInterface  $router,
+        Security               $security,
+        RequestStack           $requestStack,
+        GridService            $gridService,
+        MailerInterface        $mailer,
+        OptionSystemService    $optionSystemService,
     )
     {
         $this->gridService = $gridService;

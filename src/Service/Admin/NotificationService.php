@@ -16,6 +16,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -29,6 +30,16 @@ class NotificationService extends AppAdminService
      */
     private OptionSystemService $optionSystemService;
 
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param ContainerBagInterface $containerBag
+     * @param TranslatorInterface $translator
+     * @param UrlGeneratorInterface $router
+     * @param Security $security
+     * @param RequestStack $requestStack
+     * @param OptionSystemService $optionSystemService
+     * @param Container $container
+     */
     public function __construct(
         EntityManagerInterface $entityManager,
         ContainerBagInterface  $containerBag,
@@ -36,7 +47,7 @@ class NotificationService extends AppAdminService
         UrlGeneratorInterface  $router,
         Security               $security,
         RequestStack           $requestStack,
-        OptionSystemService    $optionSystemService
+        OptionSystemService    $optionSystemService,
     )
     {
         $this->optionSystemService = $optionSystemService;

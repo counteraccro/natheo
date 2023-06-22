@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -38,6 +39,16 @@ class OptionUserService extends AppAdminService
      */
     private OptionSystemService $optionSystemService;
 
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param ContainerBagInterface $containerBag
+     * @param TranslatorInterface $translator
+     * @param UrlGeneratorInterface $router
+     * @param OptionSystemService $optionSystemService
+     * @param Security $security
+     * @param RequestStack $requestStack
+     * @param Container $container
+     */
     public function __construct(
         EntityManagerInterface $entityManager,
         ContainerBagInterface  $containerBag,
@@ -45,7 +56,7 @@ class OptionUserService extends AppAdminService
         UrlGeneratorInterface  $router,
         OptionSystemService    $optionSystemService,
         Security               $security,
-        RequestStack           $requestStack
+        RequestStack           $requestStack,
     )
     {
         $this->optionSystemService = $optionSystemService;

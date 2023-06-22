@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -36,9 +37,14 @@ class CommandService extends AppAdminService
      * @param RequestStack $requestStack
      * @param KernelInterface $kernel
      */
-    public function __construct(EntityManagerInterface $entityManager, ContainerBagInterface $containerBag,
-                                TranslatorInterface    $translator, UrlGeneratorInterface $router, Security $security,
-                                RequestStack           $requestStack, KernelInterface $kernel)
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ContainerBagInterface  $containerBag,
+        TranslatorInterface    $translator,
+        UrlGeneratorInterface  $router, Security $security,
+        RequestStack           $requestStack,
+        KernelInterface        $kernel,
+    )
     {
         $this->kernel = $kernel;
         parent::__construct($entityManager, $containerBag, $translator, $router, $security, $requestStack);

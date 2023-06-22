@@ -9,6 +9,7 @@ namespace App\Controller\Admin\Content;
 
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Tag;
+use App\Entity\Admin\Content\TagTranslation;
 use App\Service\Admin\Breadcrumb;
 use App\Service\Admin\Content\TagService;
 use App\Utils\Options\OptionUserKey;
@@ -18,9 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/tag', name: 'admin_tag_', requirements: ['_locale' => '%app.supported_locales%'])]
@@ -133,26 +131,38 @@ class TagController extends AppAdminController
         Tag                 $tag = null,
     ): Response
     {
+        $breadcrumbTitle = 'tag.update.page_title_h1';
+        if ($tag === null) {
+            $breadcrumbTitle = 'tag.add.page_title_h1';
+        }
+
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'tag',
             Breadcrumb::BREADCRUMB => [
                 'tag.index.page_title' => 'admin_tag_index',
-                'tag.add.page_title_h1' => '#'
+                $breadcrumbTitle => '#'
             ]
         ];
 
-        $translate = [
-            'loading' => $translator->trans('tag.form.loading', domain: 'tag'),
-        ];
+        $translate = $tagService->getTranslateTagForm();
 
-        if ($tag !== null) {
-            $tag = $tagService->convertEntityToArray($tag, ['createdAt', 'updateAt']);
+
+        if ($tag === null) {
+            $tag = new Tag();
+            foreach ($locales as $key => $locale) {
+                $tagTranslation = new TagTranslation();
+                $tagTranslation->setLocale($locale)->setTag($tag);
+                $tag->addTagTranslation($tagTranslation);
+
+            }
         }
+        $tag = $tagService->convertEntityToArray($tag, ['createdAt', 'updateAt']);
 
 
-        return $this->render('admin/content/tag/add.html.twig', [
+        return $this->render('admin/content/tag/add_update.html.twig', [
             'breadcrumb' => $breadcrumb,
             'translate' => $translate,
+            'locales' => $locales,
             'tag' => $tag
         ]);
     }

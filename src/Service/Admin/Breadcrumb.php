@@ -7,9 +7,7 @@
 
 namespace App\Service\Admin;
 
-use App\Controller\Admin\AppAdminController;
-
-class Breadcrumb extends AppAdminController
+class Breadcrumb extends AppAdminService
 {
     /**
      * Défini le domaine de traduction
