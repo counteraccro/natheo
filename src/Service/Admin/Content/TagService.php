@@ -192,19 +192,4 @@ class TagService extends AppAdminService
         ];
 
     }
-
-    /**
-     * @param bool $translate
-     * @return array
-     */
-    public function getLocales(bool $translate = false): array
-    {
-        if ($translate) {
-            $locales = [];
-        } else {
-            $locales = explode('|', $this->parameterBag->get('app.supported_locales'));
-        }
-
-        return $locales;
-    }
 }

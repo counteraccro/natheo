@@ -150,7 +150,7 @@ class TagController extends AppAdminController
 
         if ($tag === null) {
             $tag = new Tag();
-            foreach ($locales as $key => $locale) {
+            foreach ($locales['locales'] as $locale) {
                 $tagTranslation = new TagTranslation();
                 $tagTranslation->setLocale($locale)->setTag($tag);
                 $tag->addTagTranslation($tagTranslation);

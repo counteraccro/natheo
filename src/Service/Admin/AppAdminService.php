@@ -176,4 +176,25 @@ class AppAdminService
         return $serializer->normalize($object, null);
     }
 
+    /**
+     * Retourne un tableau contenant 2 données <br />
+     *  ['locales'] => liste des locales du site <br />
+     *  ['localesTranslate'] => listes des locales avec traduction dans la langue courante
+     * @return array
+     */
+    public function getLocales(): array
+    {
+        $locales = explode('|', $this->parameterBag->get('app.supported_locales'));
+        $localesTranslate = [];
+
+        foreach ($locales as $locale) {
+            $localesTranslate[$locale] = $this->translator->trans('global.' . $locale);
+        }
+
+        return [
+            'locales' => $locales,
+            'localesTranslate' => $localesTranslate
+        ];
+    }
+
 }

@@ -74,13 +74,18 @@ export default {
             <label for="tagColor" class="form-label">{{ this.translate.formInputColorLabel }}</label>
             <input type="color" class="form-control form-control-color" id="tagColor" v-model="this.tag.color">
 
-            <div v-for="translation in tag.tagTranslations">
-              <div class="mb-3">
-                <label :for="'label-' + translation.locale" class="form-label">{{ this.translate.formInputLabelLabel }}</label>
-                <input type="text" class="form-control" :id="'label-' + translation.locale" placeholder="" v-model="translation.label">
-              </div>
+            <div v-for="key in this.locales.locales">
+              <div v-for="translation in tag.tagTranslations">
+                <div v-if="translation.locale === key">
+                  <div class="mb-3">
+                    <label :for="'label-' + translation.locale" class="form-label">{{ this.translate.formInputLabelLabel }}  {{this.locales.localesTranslate[key]}}</label>
+                    <input type="text" class="form-control" :id="'label-' + translation.locale" placeholder="" v-model="translation.label">
+                  </div>
 
+                </div>
+              </div>
             </div>
+
           </div>
         </div>
 
