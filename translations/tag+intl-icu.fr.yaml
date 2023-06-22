@@ -13,8 +13,8 @@ tag.success.disabled: 'Le tag <strong>{label}</strong> est maintenant désactiv�
 tag.confirm.delete.msg: 'La suppression du tag <strong>{label}</strong> est définitif. Seul le tag est supprimé et non les données associées'
 tag.add.page_title: 'Nouveau tag'
 tag.add.page_title_h1: 'Ajouter un tag'
-tag.update.page_title: 'Edition du tag {tag}'
-tag.update.page_title_h1: 'Editer le tag'
+tag.update.page_title: 'Edition du tag #{id}'
+tag.update.page_title_h1: "Edition d'un tag"
 tag.index.popin.help.title: Aide
 tag.index.popin.help.disabled_user: 'Désactiver un tag'
 tag.index.popin.help.enable_user: 'Activer un tag'
@@ -23,3 +23,7 @@ tag.index.popin.help.edit: 'Modifier un tag'
 tag.index.description2: 'Les tags marqué de {icon} sont désactivés et donc non visible sur le site. Les contenus liés à ce tag peuvent être masqués'
 tag.remove.success: 'Le tag {label} à été correctement supprimé'
 tag.form.loading: 'Chargement des données...'
+tag.form.title.create: 'Nouveau tag'
+tag.form.title.update: 'Edition du tag'
+tag.add.description: "Aouter un nouveau tag pour pouvoir classer vos contenus plus facilement"
+tag.update.description: "L'édition du tag ne modifie pas les contenus associés à celui-ci"
