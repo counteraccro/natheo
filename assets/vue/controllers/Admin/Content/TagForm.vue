@@ -59,16 +59,14 @@ export default {
 
       this.msgErrorExa = '';
 
-      let reg=/^#([0-9a-f]{3}){1,2}$/i;
-      if(!reg.test(this.tag.color))
-      {
+      let reg = /^#([0-9a-f]{3}){1,2}$/i;
+      if (!reg.test(this.tag.color)) {
         this.msgErrorExa = this.translate.formInputColorError
       }
 
     },
 
-    switchColor(color)
-    {
+    switchColor(color) {
       this.tag.color = color;
     },
 
@@ -120,33 +118,35 @@ export default {
                 aaa
               </legend>
 
-                <div class="row">
-
-                  <div class="col" v-for="color in this.tabColor">
-                    <span class="badge badge-nat rounded-pill" :style="'background-color:' + color" style="cursor:pointer;" @click="this.switchColor(color)">{{ color }}</span>
-                  </div>
-                  <div class="col">
-                    <span class="text-secondary" style="cursor:pointer;" @click="this.loadColorExemple()"><i class="bi bi-arrow-clockwise"></i> {{ this.translate.linkColorReload }}</span>
-                  </div>
-
+              <div class="row">
+                <div class="col">
+                  <input type="color" class="form-control form-control-color" id="tagColor" v-model="this.tag.color">
+                  
                 </div>
-
-                <div class="row">
-                  <div class="col">
-                    <input type="color" class="form-control form-control-color" id="tagColor" v-model="this.tag.color">
-                  </div>
-                  <div class="col ">
-                    <input type="text" class="form-control"
-                        :class="this.msgErrorExa !== '' ? 'is-invalid' : ''"
-                        id="tagColorinput"
-                        v-model="this.tag.color"
-                        size="7" style="width: auto"
-                        @change="this.checkValideHex()" maxlength="7">
-                    <div class="invalid-feedback">
-                      {{ this.msgErrorExa }}
-                    </div>
+                <div class="col ">
+                  <input type="text" class="form-control"
+                      :class="this.msgErrorExa !== '' ? 'is-invalid' : ''"
+                      id="tagColorinput"
+                      v-model="this.tag.color"
+                      size="7" style="width: auto"
+                      @change="this.checkValideHex()" maxlength="7">
+                  <div class="invalid-feedback">
+                    {{ this.msgErrorExa }}
                   </div>
                 </div>
+                <div class="col">
+                  <div class="input-group mb-3">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ this.translate.linkColorChoice }}</button>
+                    <ul class="dropdown-menu">
+                      <li v-for="color in this.tabColor">
+                        <a class="dropdown-item" :style="'color:' + color" href="#" @click="this.switchColor(color)">{{ color }}</a>
+                      </li>
+                    </ul>
+                    <button @click="this.loadColorExemple()" class="btn btn-outline-secondary" type="button">
+                      <i class="bi bi-arrow-clockwise"></i></button>
+                  </div>
+                </div>
+              </div>
 
             </fieldset>
 

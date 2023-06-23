@@ -190,7 +190,7 @@ class TagService extends AppAdminService
             'formInputColorLabel' => $this->translator->trans('tag.form.input.color.label', domain: 'tag'),
             'formInputColorError' => $this->translator->trans('tag.form.input.color.error', domain: 'tag'),
             'formInputLabelLabel' => $this->translator->trans('tag.form.input.label.label', domain: 'tag'),
-            'linkColorReload' => $this->translator->trans('tag.link.color.reload', domain: 'tag'),
+            'linkColorChoice' => $this->translator->trans('tag.link.color.choice', domain: 'tag'),
         ];
 
     }
