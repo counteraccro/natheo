@@ -166,8 +166,6 @@ export default {
               </div>
             </fieldset>
 
-            ici : {{ this.locales.locales[1] }}
-
             <div v-for="key in this.locales.locales">
               <div v-for="translation in tag.tagTranslations">
                 <div v-if="translation.locale === key">
@@ -179,10 +177,10 @@ export default {
                       <label class="form-check-label" for="flexSwitchCheckDefault">{{ this.translate.autoCopy }}</label>
                     </div>
 
-                    <h4 class="card-title">{{ this.translate.labelCurrent }}</h4>
+                    <h5 class="card-title">{{ this.translate.labelCurrent }}</h5>
 
                   </div>
-                  <h4 v-else-if="this.locales.locales[1] === key" class="card-title">{{ this.translate.labelOther }}</h4>
+                  <h5 v-else-if="this.locales.locales[1] === key" class="card-title">{{ this.translate.labelOther }}</h5>
                   <div class="mb-3">
                     <label :for="'label-' + translation.locale" class="form-label">{{ this.translate.formInputLabelLabel }} {{ this.locales.localesTranslate[key] }}</label>
                     <input type="text"
