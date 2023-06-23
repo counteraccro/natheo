@@ -23,3 +23,11 @@ tag.index.popin.help.edit: __tag.index.popin.help.edit
 tag.update.page_title: __tag.update.page_title
 tag.update.page_title_h1: __tag.update.page_title_h1
 tag.form.loading: __tag.form.loading
+tag.form.title.create: __tag.form.title.create
+tag.form.title.update: __tag.form.title.update
+tag.form.input.color.label: __tag.form.input.color.label
+tag.form.input.color.error: __tag.form.input.color.error
+tag.form.input.label.label: __tag.form.input.label.label
+tag.link.color.reload: __tag.link.color.reload
+tag.add.description: __tag.add.description
+tag.update.description: __tag.update.description

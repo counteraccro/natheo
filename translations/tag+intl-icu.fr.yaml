@@ -27,5 +27,7 @@ tag.form.title.create: 'Nouveau tag'
 tag.form.title.update: 'Edition du tag'
 tag.add.description: 'Aouter un nouveau tag pour pouvoir classer vos contenus plus facilement'
 tag.update.description: "L'édition du tag ne modifie pas les contenus associés à celui-ci"
-tag.form.input.color.label: "Couleur du tag"
-tag.form.input.label.label: "Label en"
+tag.form.input.color.label: 'Couleur du tag'
+tag.form.input.label.label: 'Label en'
+tag.form.input.color.error: 'le format attendu est "#rrggbb" ou rr, gg, bb sont 2 valeurs hexadecimal.'
+tag.link.color.reload: 'Autres exemples'
