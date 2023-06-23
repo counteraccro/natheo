@@ -177,14 +177,18 @@ class AppAdminService
     }
 
     /**
-     * Retourne un tableau contenant 2 données <br />
+     * Retourne un tableau contenant 3 données en fonctions des locales <br />
      *  ['locales'] => liste des locales du site <br />
-     *  ['localesTranslate'] => listes des locales avec traduction dans la langue courante
+     *  ['localesTranslate'] => listes des locales avec traduction dans la langue courante<br />
+     * ['current'] => la langue courante
      * @return array
      */
     public function getLocales(): array
     {
+        $current = $this->requestStack->getCurrentRequest()->getLocale();
+
         $locales = explode('|', $this->parameterBag->get('app.supported_locales'));
+        array_unshift($locales, $current);
         $localesTranslate = [];
 
         foreach ($locales as $locale) {
@@ -192,8 +196,9 @@ class AppAdminService
         }
 
         return [
-            'locales' => $locales,
-            'localesTranslate' => $localesTranslate
+            'locales' => array_values(array_unique($locales)),
+            'localesTranslate' => $localesTranslate,
+            'current' => $current
         ];
     }
 

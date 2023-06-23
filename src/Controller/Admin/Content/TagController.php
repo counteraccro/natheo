@@ -129,6 +129,7 @@ class TagController extends AppAdminController
         TagService          $tagService,
         TranslatorInterface $translator,
         Tag                 $tag = null,
+        Request             $request
     ): Response
     {
         $breadcrumbTitle = 'tag.update.page_title_h1';
@@ -146,6 +147,7 @@ class TagController extends AppAdminController
 
         $translate = $tagService->getTranslateTagForm();
         $locales = $tagService->getLocales(false);
+        $locales['current'] = $request->getLocale();
 
 
         if ($tag === null) {
