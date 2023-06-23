@@ -62,7 +62,7 @@ export default {
       let reg=/^#([0-9a-f]{3}){1,2}$/i;
       if(!reg.test(this.tag.color))
       {
-        this.msgErrorExa = "The format is '#rrggbb' where rr, gg, bb are two-digit hexadecimal numbers.";
+        this.msgErrorExa = this.translate.formInputColorError
       }
 
     },
@@ -123,10 +123,10 @@ export default {
                 <div class="row">
 
                   <div class="col" v-for="color in this.tabColor">
-                    <span class="badge badge-nat rounded-pill" :style="'background-color:' + color" @click="this.switchColor(color)">{{ color }}</span>
+                    <span class="badge badge-nat rounded-pill" :style="'background-color:' + color" style="cursor:pointer;" @click="this.switchColor(color)">{{ color }}</span>
                   </div>
                   <div class="col">
-                    <span class="text-secondary" @click="this.loadColorExemple()"><i class="bi bi-arrow-clockwise"></i> Autres</span>
+                    <span class="text-secondary" style="cursor:pointer;" @click="this.loadColorExemple()"><i class="bi bi-arrow-clockwise"></i> {{ this.translate.linkColorReload }}</span>
                   </div>
 
                 </div>
@@ -140,6 +140,7 @@ export default {
                         :class="this.msgErrorExa !== '' ? 'is-invalid' : ''"
                         id="tagColorinput"
                         v-model="this.tag.color"
+                        size="7" style="width: auto"
                         @change="this.checkValideHex()" maxlength="7">
                     <div class="invalid-feedback">
                       {{ this.msgErrorExa }}
@@ -167,7 +168,7 @@ export default {
 
 
       </div>
-      <div class="col">
+      <div class="col-4">
         <div class="card border-secondary">
           <div class="card-header bg-secondary text-white">
             Featured
