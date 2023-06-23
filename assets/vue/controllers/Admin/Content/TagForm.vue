@@ -17,10 +17,13 @@ export default {
   data() {
     return {
       loading: false,
-      tag: this.pTag
+      tag: this.pTag,
+      tabColor: [],
+      msgErrorExa: "",
     }
   },
   mounted() {
+    this.loadColorExemple()
   },
 
   methods: {
@@ -41,6 +44,38 @@ export default {
       });
     },
 
+    loadColorExemple() {
+      let i;
+      this.tabColor = [];
+      for (i = 0; i < 5; i++) {
+        this.tabColor.push(this.generateRandomHexColor());
+      }
+    },
+
+    /**
+     * Vérifie si la valeur hexadecimal est correcte
+     */
+    checkValideHex() {
+
+      this.msgErrorExa = '';
+
+      let reg=/^#([0-9a-f]{3}){1,2}$/i;
+      if(!reg.test(this.tag.color))
+      {
+        this.msgErrorExa = "The format is '#rrggbb' where rr, gg, bb are two-digit hexadecimal numbers.";
+      }
+
+    },
+
+    switchColor(color)
+    {
+      this.tag.color = color;
+    },
+
+    /**
+     * Génère une valeur hexadécimale random
+     * @returns {*|string}
+     */
     generateRandomHexColor() {
       const randomColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
       if (randomColor.length !== 7) {
@@ -80,11 +115,40 @@ export default {
           </div>
           <div class="card-body">
 
-            <div :style="'background-color:' + this.generateRandomHexColor()">aaa</div>
+            <fieldset>
+              <legend>
+                aaa
+              </legend>
 
+                <div class="row">
 
-            <label for="tagColor" class="form-label">{{ this.translate.formInputColorLabel }}</label>
-            <input type="color" class="form-control form-control-color" id="tagColor" v-model="this.tag.color">
+                  <div class="col" v-for="color in this.tabColor">
+                    <span class="badge badge-nat rounded-pill" :style="'background-color:' + color" @click="this.switchColor(color)">{{ color }}</span>
+                  </div>
+                  <div class="col">
+                    <span class="text-secondary" @click="this.loadColorExemple()"><i class="bi bi-arrow-clockwise"></i> Autres</span>
+                  </div>
+
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <input type="color" class="form-control form-control-color" id="tagColor" v-model="this.tag.color">
+                  </div>
+                  <div class="col ">
+                    <input type="text" class="form-control"
+                        :class="this.msgErrorExa !== '' ? 'is-invalid' : ''"
+                        id="tagColorinput"
+                        v-model="this.tag.color"
+                        @change="this.checkValideHex()" maxlength="7">
+                    <div class="invalid-feedback">
+                      {{ this.msgErrorExa }}
+                    </div>
+                  </div>
+                </div>
+
+            </fieldset>
+
 
             <div v-for="key in this.locales.locales">
               <div v-for="translation in tag.tagTranslations">
@@ -111,7 +175,7 @@ export default {
           <div class="card-body">
             <h5 class="card-title">Special title treatment</h5>
             <div v-for="translation in tag.tagTranslations">
-              <span class="badge rounded-pill badge-nat" :style="'background-color: ' + tag.color"> {{ translation.label }}</span>
+              <span class="badge rounded-pill badge-nat" :style="'background-color: ' + tag.color">{{ translation.label }}</span>
             </div>
           </div>
         </div>
