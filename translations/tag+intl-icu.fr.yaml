@@ -30,4 +30,4 @@ tag.update.description: "L'édition du tag ne modifie pas les contenus associés
 tag.form.input.color.label: 'Couleur du tag'
 tag.form.input.label.label: 'Label en'
 tag.form.input.color.error: 'le format attendu est "#rrggbb" ou rr, gg, bb sont 2 valeurs hexadecimal.'
-tag.link.color.reload: 'Autres exemples'
+tag.link.color.choice: 'Exemple de couleur'
