@@ -13,9 +13,9 @@ global.logs: __Logs
 global.mail: __Emails
 global.oui: __Oui
 global.non: __Non
-global.french: __Français
-global.english: __Anglais
-global.spanish: __Espagnol
+global.fr: __Français
+global.en: __Anglais
+global.es: __Espagnol
 global.purple: __Violet
 global.red: __Rouge
 global.orange: __Orange
@@ -149,6 +149,10 @@ mail.reset.password.title: '__Reset mot de passe'
 mail.reset.password.description: "__Mail envoyé si un super administrateur fait un reset du mot de passe d'un utilisateur"
 options_system.time_reset_password: '__Délais de validité du lien de changement de mot de passe'
 options_system.time_reset_password_help: '__Temps en minutes avant que le lien généré pour le changement de mot de passe soit invalide'
+global.content: __Content
+sidebar.global.content.description: "__Regroupe l'ensemble des modules de contenus du site "
+global.tag: __Tags
+sidebar.tag.description: '__Gestion des tags'
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: __pagedemo.page_title_h1
 date.diff.start: "__Il y'a"

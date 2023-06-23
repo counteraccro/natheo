@@ -28,6 +28,11 @@ tag.form.title.update: __tag.form.title.update
 tag.form.input.color.label: __tag.form.input.color.label
 tag.form.input.color.error: __tag.form.input.color.error
 tag.form.input.label.label: __tag.form.input.label.label
-tag.link.color.choice: __tag.link.color.reload
+tag.form.link.color.choice: __tag.link.color.reload
 tag.add.description: __tag.add.description
 tag.update.description: __tag.update.description
+tag.form.color.title: __tag.form.color.title
+tag.form.color.description: __tag.form.color.description
+tag.form.title.label.current: __tag.form.title.label.current
+tag.form.title.label.other: __tag.form.title.label.other
+tag.form.check.auto.copy: __tag.form.check.auto.copy
