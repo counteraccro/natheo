@@ -48,6 +48,7 @@ $utilities-bg-colors: map-loop($utilities-bg, rgba-css-var, "$key", "bg");
 @import "admin/bootstrap/nav";
 @import "admin/bootstrap/pagination";
 @import "admin/bootstrap/form";
+@import "admin/bootstrap/badge";
 
 @import "admin/global";
 @import "admin/header";
