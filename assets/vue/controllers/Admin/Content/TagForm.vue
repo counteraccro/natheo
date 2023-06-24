@@ -92,6 +92,15 @@ export default {
       })
     },
 
+    isDisabled(locale)
+    {
+      if(this.autoCopy && locale !== this.locales.current)
+      {
+        return true;
+      }
+      return false;
+    },
+
     /**
      * Génère une valeur hexadécimale random
      * @returns {*|string}
@@ -142,18 +151,6 @@ export default {
 
               <p>{{ this.translate.colorDescription }}</p>
 
-              <input type="color" class="form-control form-control-color float-start" id="tagColor" v-model="this.tag.color">
-
-              <input type="text" class="form-control float-start"
-                  :class="this.msgErrorExa !== '' ? 'is-invalid' : ''"
-                  id="tagColorinput"
-                  v-model="this.tag.color"
-                  size="7" style="width: auto"
-                  @change="this.checkValideHex()" maxlength="7">
-              <div class="invalid-feedback">
-                {{ this.msgErrorExa }}
-              </div>
-
               <div class="input-group mb-3 me-3 float-end" style="width: auto">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ this.translate.linkColorChoice }}</button>
                 <ul class="dropdown-menu">
@@ -164,6 +161,19 @@ export default {
                 <button @click="this.loadColorExemple()" class="btn btn-secondary" type="button">
                   <i class="bi bi-arrow-clockwise"></i></button>
               </div>
+
+              <input type="color" class="form-control form-control-color float-start" id="tagColor" v-model="this.tag.color">
+
+              <input type="text" class="form-control"
+                  :class="this.msgErrorExa !== '' ? 'is-invalid' : ''"
+                  id="tagColorinput"
+                  v-model="this.tag.color"
+                  size="7" style="width: auto"
+                  @change="this.checkValideHex()" maxlength="7">
+              <div class="invalid-feedback">
+                {{ this.msgErrorExa }}
+              </div>
+
             </fieldset>
 
             <div v-for="key in this.locales.locales">
@@ -186,6 +196,7 @@ export default {
                     <input type="text"
                         class="form-control" :id="'label-' + translation.locale"
                         placeholder=""
+                        :disabled="this.isDisabled(translation.locale)"
                         v-model="translation.label"
                         v-on="this.autoCopy && translation.locale === this.locales.current ? { keyup: () => this.copyLabel(translation.label) } : {} "
                     >
