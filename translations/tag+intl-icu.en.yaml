@@ -36,3 +36,7 @@ tag.form.color.description: __tag.form.color.description
 tag.form.title.label.current: __tag.form.title.label.current
 tag.form.title.label.other: __tag.form.title.label.other
 tag.form.check.auto.copy: __tag.form.check.auto.copy
+tag.form.input.label.error: __tag.form.input.label.error
+tag.form.rendu.title: __tag.form.rendu.title
+tag.form.submit.update: __tag.form.submit.update
+tag.form.submit.create: __tag.form.submit.create
