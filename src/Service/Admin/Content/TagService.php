@@ -204,34 +204,4 @@ class TagService extends AppAdminService
         ];
 
     }
-
-    /**
-     * Met à jour un Tag à partir d'un tableau
-     * @param array $data
-     * @return Tag
-     */
-    public function updateTagByArray(array $data) :Tag
-    {
-        $repo = $this->getRepository(Tag::class);
-        $tag = $repo->findOneBy(['id' => $data['id']]);
-
-        foreach ($data as $key => $value) {
-
-            if (!is_array($value)) {
-                if ($key !== 'id') {
-                    $func = 'set' . ucfirst($key);
-                    $tag->$func($value);
-                }
-            } else {
-                if ($key === 'tagTranslations') {
-                    foreach ($value as $tagTrans) {
-                        $tagTranslation = $tag->getTagTranslationByLocale($tagTrans['locale']);
-                        $tagTranslation->setLabel($tagTrans['label']);
-                        $tagTranslation->setLocale($tagTrans['locale']);
-                    }
-                }
-            }
-        }
-        return $tag;
-    }
 }

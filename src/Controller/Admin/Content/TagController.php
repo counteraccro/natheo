@@ -183,12 +183,11 @@ class TagController extends AppAdminController
     {
         $data = json_decode($request->getContent(), true);
 
-        /** @var Tag $tag */
-        if ($data['tag']['id'] === null) {
-            $tag = $tagService->convertArrayToEntity($data['tag'], Tag::class);
-        } else {
-            $tag = $tagService->updateTagByArray($data['tag']);
+        $tag = new tag();
+        if ($data['tag']['id'] !== null) {
+            $tag = $tagService->findOneBy(Tag::class, 'id', $data['tag']['id']);
         }
+        $tag = $tagService->convertArrayToEntity($data['tag'], Tag::class, $tag);
         $tagService->save($tag);
 
         return $this->json(['msg' => 'oki']);

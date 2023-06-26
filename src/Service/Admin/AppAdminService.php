@@ -181,12 +181,13 @@ class AppAdminService
     }
 
     /**
-     * Converti un array en une entité
+     * Met à jour l'objet entity avec les données de $array
      * @param array $array
-     * @param string $entity
+     * @param string $objectClass
+     * @param object $object
      * @return object
      */
-    public function convertArrayToEntity(array $array, string $entity): object
+    public function convertArrayToEntity(array $array, string $objectClass, object $object): object
     {
         $extractor = new PropertyInfoExtractor([], [new PhpDocExtractor(), new ReflectionExtractor()]);
         $normalizer = new ObjectNormalizer(null, null, null, $extractor);
@@ -194,9 +195,12 @@ class AppAdminService
 
         return  $serializer->denormalize(
             $array,
-            $entity,
+            $objectClass,
             null,
-            [AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true]
+            [
+                AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true,
+                AbstractNormalizer::OBJECT_TO_POPULATE => $object
+            ]
         );
     }
 
