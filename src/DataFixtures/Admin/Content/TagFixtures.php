@@ -66,7 +66,7 @@ class TagFixtures extends AppFixtures implements FixtureGroupInterface, OrderedF
         return [self::GROUP_TAG, self::GROUP_CONTENT];
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 5;
     }
