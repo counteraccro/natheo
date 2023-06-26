@@ -9,7 +9,7 @@ import axios from "axios";
 export default {
   name: "TagForm",
   props: {
-    url_form_tag: String,
+    url: String,
     translate: [],
     locales: [],
     pTag: []
@@ -41,7 +41,9 @@ export default {
 
       this.loading = true;
 
-      axios.post(this.url_form_tag, {}).then((response) => {
+      axios.post(this.url, {
+        'tag' : this.tag
+      }).then((response) => {
 
       }).catch((error) => {
         console.log(error);
@@ -263,7 +265,7 @@ export default {
               </div>
             </div>
 
-            <button class="btn btn-secondary" :disabled="this.canSubmit()">{{ this.getLabelSubmit() }}</button>
+            <button class="btn btn-secondary" @click="this.save()" :disabled="this.canSubmit()">{{ this.getLabelSubmit() }}</button>
 
           </div>
         </div>

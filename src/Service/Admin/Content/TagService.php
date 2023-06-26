@@ -3,6 +3,7 @@
 namespace App\Service\Admin\Content;
 
 use App\Entity\Admin\Content\Tag;
+use App\Entity\Admin\Content\TagTranslation;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Admin\OptionSystemService;
@@ -202,5 +203,45 @@ class TagService extends AppAdminService
             'btnSubmitCreate' => $this->translator->trans('tag.form.submit.create', domain: 'tag')
         ];
 
+    }
+
+    /**
+     * Met à jour un Tag à partir d'un tableau
+     * Si Id est null, créer un nouveau tag
+     * @param array $data
+     * @param int|null $id
+     * @return Tag
+     */
+    public function updateTagByArray(array $data, int $id = null) :Tag
+    {
+        $tag = new Tag();
+        if ($id !== null) {
+            $repo = $this->getRepository(Tag::class);
+            $tag = $repo->findOneBy(['id' => $id]);
+        }
+
+        foreach ($data as $key => $value) {
+
+            if (!is_array($value)) {
+                if ($key !== 'id') {
+                    $func = 'set' . ucfirst($key);
+                    $tag->$func($value);
+                }
+            } else {
+                if ($key === 'tagTranslations') {
+                    foreach ($value as $tagTrans) {
+                        if ($tagTrans['id'] === null) {
+                            $tagTranslation = new TagTranslation();
+                            $tag->addTagTranslation($tagTranslation);
+                        } else {
+                            $tagTranslation = $tag->getTagTranslationByLocale($tagTrans['locale']);
+                        }
+                        $tagTranslation->setLabel($tagTrans['label']);
+                        $tagTranslation->setLocale($tagTrans['locale']);
+                    }
+                }
+            }
+        }
+        return $tag;
     }
 }

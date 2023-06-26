@@ -118,7 +118,7 @@ class TagController extends AppAdminController
     /**
      * Permet d'ajouter / éditer un tag
      * @param TagService $tagService
-     * @param TranslatorInterface $translator
+     * @param Request $request
      * @param Tag|null $tag
      * @return Response
      * @throws ExceptionInterface
@@ -126,10 +126,9 @@ class TagController extends AppAdminController
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
     public function add(
-        TagService          $tagService,
-        TranslatorInterface $translator,
-        Tag                 $tag = null,
-        Request             $request
+        TagService $tagService,
+        Request    $request,
+        Tag        $tag = null
     ): Response
     {
         $breadcrumbTitle = 'tag.update.page_title_h1';
@@ -179,8 +178,14 @@ class TagController extends AppAdminController
     #[Route('/ajax/save/', name: 'save', methods: ['POST'])]
     public function save(
         TagService $tagService,
+        Request    $request
     ): JsonResponse
     {
+        $data = json_decode($request->getContent(), true);
+
+        $tag = $tagService->updateTagByArray($data['tag'], $data['tag']['id']);
+        $tagService->save($tag);
+
         return $this->json(['msg' => 'oki']);
     }
 }
