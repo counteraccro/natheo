@@ -21,14 +21,14 @@ export default {
       tabColor: [],
       msgErrorExa: "",
       autoCopy: true,
-      canSubmit: false,
+      isErrorHexa: true,
+      isErrorLabel: true,
     }
   },
   mounted() {
     this.loadColorExemple()
-    if(this.tag.id !== null)
-    {
-      this.canSubmit = true;
+    if (this.tag.id !== null) {
+      this.isErrorHexa = this.isErrorLabel = false;
     }
   },
 
@@ -67,12 +67,12 @@ export default {
     checkValideHex() {
 
       this.msgErrorExa = '';
-      this.canSubmit = true;
+      this.isErrorHexa = false;
 
       let reg = /^#([0-9a-f]{3}){1,2}$/i;
       if (!reg.test(this.tag.color)) {
         this.msgErrorExa = this.translate.formInputColorError
-        this.canSubmit = false;
+        this.isErrorHexa = true;
       }
 
 
@@ -82,10 +82,8 @@ export default {
      * Affichage du label du bouton
      * @returns {*}
      */
-    getLabelSubmit()
-    {
-      if(this.tag.id === null)
-      {
+    getLabelSubmit() {
+      if (this.tag.id === null) {
         return this.translate.btnSubmitCreate;
       }
       return this.translate.btnSubmitUpdate;
@@ -96,6 +94,8 @@ export default {
      * @param color
      */
     switchColor(color) {
+      this.isErrorHexa = false;
+      this.msgErrorExa = '';
       this.tag.color = color;
     },
 
@@ -104,6 +104,7 @@ export default {
      * @param label
      */
     copyLabel(label) {
+      this.isErrorLabel = false;
       this.locales.locales.forEach((locale) => {
         this.tag.tagTranslations.forEach((translation) => {
           if (locale === translation.locale && translation.locale !== this.locales.current) {
@@ -130,14 +131,14 @@ export default {
     isNoEmptyInput(translation_id) {
 
       let css = "";
-      this.canSubmit = true;
+      this.isErrorLabel = false;
       this.tag.tagTranslations.forEach((translation) => {
         if (translation.id === translation_id && translation.label === "") {
           css = "is-invalid";
         }
 
-        if (translation.label === "") {
-          this.canSubmit = false;
+        if (translation.label === "" || translation.label === null) {
+          this.isErrorLabel = true;
         }
       })
       return css;
@@ -155,6 +156,14 @@ export default {
         return randomColor;
       }
     },
+
+    /**
+     * Active ou désactive le bouton submit
+     * @returns {boolean}
+     */
+    canSubmit() {
+      return (this.isErrorHexa || this.isErrorLabel);
+    }
 
   }
 }
@@ -204,7 +213,7 @@ export default {
                   <i class="bi bi-arrow-clockwise"></i></button>
               </div>
 
-              <input type="color" class="form-control form-control-color float-start" id="tagColor" v-model="this.tag.color">
+              <input type="color" @change="this.isErrorHexa = false; this.msgErrorExa = ''" class="form-control form-control-color float-start" id="tagColor" v-model="this.tag.color">
 
               <input type="text" class="form-control"
                   :class="this.msgErrorExa !== '' ? 'is-invalid' : ''"
@@ -254,7 +263,7 @@ export default {
               </div>
             </div>
 
-            <button class="btn btn-secondary" :disabled="!this.canSubmit">{{ this.getLabelSubmit() }}</button>
+            <button class="btn btn-secondary" :disabled="this.canSubmit()">{{ this.getLabelSubmit() }}</button>
 
           </div>
         </div>
@@ -281,8 +290,6 @@ export default {
           </div>
         </div>
       </div>
-
-
     </div>
   </div>
 
