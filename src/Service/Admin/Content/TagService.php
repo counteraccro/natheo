@@ -207,18 +207,13 @@ class TagService extends AppAdminService
 
     /**
      * Met à jour un Tag à partir d'un tableau
-     * Si Id est null, créer un nouveau tag
      * @param array $data
-     * @param int|null $id
      * @return Tag
      */
-    public function updateTagByArray(array $data, int $id = null) :Tag
+    public function updateTagByArray(array $data) :Tag
     {
-        $tag = new Tag();
-        if ($id !== null) {
-            $repo = $this->getRepository(Tag::class);
-            $tag = $repo->findOneBy(['id' => $id]);
-        }
+        $repo = $this->getRepository(Tag::class);
+        $tag = $repo->findOneBy(['id' => $data['id']]);
 
         foreach ($data as $key => $value) {
 
@@ -230,12 +225,7 @@ class TagService extends AppAdminService
             } else {
                 if ($key === 'tagTranslations') {
                     foreach ($value as $tagTrans) {
-                        if ($tagTrans['id'] === null) {
-                            $tagTranslation = new TagTranslation();
-                            $tag->addTagTranslation($tagTranslation);
-                        } else {
-                            $tagTranslation = $tag->getTagTranslationByLocale($tagTrans['locale']);
-                        }
+                        $tagTranslation = $tag->getTagTranslationByLocale($tagTrans['locale']);
                         $tagTranslation->setLabel($tagTrans['label']);
                         $tagTranslation->setLocale($tagTrans['locale']);
                     }
