@@ -200,7 +200,9 @@ class TagService extends AppAdminService
             'autoCopy' => $this->translator->trans('tag.form.check.auto.copy', domain: 'tag'),
             'renduTitle' => $this->translator->trans('tag.form.rendu.title', domain: 'tag'),
             'btnSubmitUpdate' => $this->translator->trans('tag.form.submit.update', domain: 'tag'),
-            'btnSubmitCreate' => $this->translator->trans('tag.form.submit.create', domain: 'tag')
+            'btnSubmitCreate' => $this->translator->trans('tag.form.submit.create', domain: 'tag'),
+            'statTitle' => $this->translator->trans('tag.form.stat.title', domain: 'tag'),
+            'formDisabledLabel' => $this->translator->trans('tag.form.input.disabled.label', domain: 'tag'),
         ];
 
     }

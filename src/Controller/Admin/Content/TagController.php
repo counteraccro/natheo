@@ -12,6 +12,7 @@ use App\Entity\Admin\Content\Tag;
 use App\Entity\Admin\Content\TagTranslation;
 use App\Service\Admin\Content\TagService;
 use App\Utils\Breadcrumb;
+use App\Utils\Flash\FlashKey;
 use App\Utils\Options\OptionUserKey;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -169,27 +170,48 @@ class TagController extends AppAdminController
         ]);
     }
 
-
     /**
      * Sauvegarde les données du tags
      * @param TagService $tagService
+     * @param Request $request
      * @return JsonResponse
      */
     #[Route('/ajax/save/', name: 'save', methods: ['POST'])]
     public function save(
-        TagService $tagService,
-        Request    $request
+        TagService          $tagService,
+        Request             $request,
+        TranslatorInterface $translator
     ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
         $tag = new tag();
+        $status = 'new';
         if ($data['tag']['id'] !== null) {
             $tag = $tagService->findOneBy(Tag::class, 'id', $data['tag']['id']);
+            $status = 'edit';
         }
+
+        /** @var Tag $tag */
         $tag = $tagService->convertArrayToEntity($data['tag'], Tag::class, $tag);
+        $tag->setUpdateAt(new \DateTime());
         $tagService->save($tag);
 
-        return $this->json(['msg' => 'oki']);
+        $msg = $translator->trans(
+            'tag.save.' . $status,
+            ['label' => $tag->getTagTranslationByLocale($request->getLocale())->getLabel()],
+            domain: 'tag'
+        );
+        $this->addFlash(FlashKey::FLASH_SUCCESS, $msg);
+
+        return $this->json(['etat' => $status]);
+    }
+
+    #[Route('/ajax/stats/{id}', name: 'stats', methods: ['GET'])]
+    public function statistique(Tag $tag = null): Response
+    {
+        return $this->render('admin/content/tag/date_update.html.twig', [
+            'tag' => $tag
+        ]);
     }
 }

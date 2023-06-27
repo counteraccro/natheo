@@ -5,10 +5,14 @@
     {% set title = 'tag.add.page_title' | trans({}, 'tag') %}
     {% set titleH1 = 'tag.add.page_title_h1' | trans({}, 'tag') %}
     {% set description = 'tag.add.description' | trans({}, 'tag') %}
+    {%  set url_stats = '' %}
+    {%  set url_update = '' %}
 {% else %}
     {% set title = 'tag.update.page_title' | trans({'id' : tag.id}, 'tag') %}
     {% set titleH1 = 'tag.update.page_title_h1' | trans({}, 'tag') %}
     {% set description = 'tag.update.description' | trans({}, 'tag') %}
+    {%  set url_stats =  path('admin_tag_stats', {'id' : tag.id}) %}
+    {%  set url_update =  path('admin_tag_update', {'id' : tag.id}) %}
 {% endif %}
 
  {% block title %}
@@ -25,9 +29,14 @@
         {{ description }}
     </p>
 
-    <div {{ vue_component('Admin/Content/TagForm', {'url' : path('admin_tag_save'),
+    <div {{ vue_component('Admin/Content/TagForm', {
+        'url' : path('admin_tag_save'),
+        'url_update' : url_update,
+        'url_stats' : url_stats,
+        'url_index' : path('admin_tag_index'),
         'pTag' : tag,
         'translate' : translate,
-        'locales' : locales}) }}></div>
+        'locales' : locales}) }}>
+    </div>
 
 {% endblock %}

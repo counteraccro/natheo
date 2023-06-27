@@ -10,6 +10,9 @@ export default {
   name: "TagForm",
   props: {
     url: String,
+    url_stats: String,
+    url_index: String,
+    url_update: String,
     translate: [],
     locales: [],
     pTag: []
@@ -23,12 +26,16 @@ export default {
       autoCopy: true,
       isErrorHexa: true,
       isErrorLabel: true,
+      templateStat: '',
+      classNoControl: '',
     }
   },
   mounted() {
     this.loadColorExemple()
     if (this.tag.id !== null) {
       this.isErrorHexa = this.isErrorLabel = false;
+      this.autoCopy = false;
+      this.loadStat();
     }
   },
 
@@ -40,15 +47,32 @@ export default {
     save() {
 
       this.loading = true;
+      this.classNoControl = 'no-control';
 
       axios.post(this.url, {
-        'tag' : this.tag
+        'tag': this.tag
       }).then((response) => {
-
+          if(response.data.etat === 'new')
+          {
+            window.location = this.url_index;
+          }
+          else {
+            window.location = this.url_update;
+          }
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
-        this.loading = false
+        //this.loading = false
+      });
+    },
+
+    loadStat() {
+      axios.get(this.url_stats).then((response) => {
+        this.templateStat = response.data;
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+
       });
     },
 
@@ -174,122 +198,128 @@ export default {
 
 <template>
 
-  <div :class="this.loading === true ? 'block-grid' : ''">
-    <div v-if="this.loading" class="overlay">
-      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
-        <div class="spinner-border text-primary" role="status"></div>
-        <span class="txt-overlay">{{ this.translate.loading }}</span>
-      </div>
-    </div>
 
-    <br/>
-    <div class="row">
-      <div class="col">
+  <div class="row">
+    <div class="col">
 
-        <div class="card border-secondary">
-          <div class="card-header bg-secondary text-white">
+      <div class="card border-secondary" :class="this.loading === true ? 'block-grid' : ''">
+        <div v-if="this.loading" class="overlay">
+          <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
+            <div class="spinner-border text-primary" role="status"></div>
+            <span class="txt-overlay">{{ this.translate.loading }}</span>
+          </div>
+        </div>
+        <div class="card-header bg-secondary text-white">
             <span v-if="tag.id === null">
               {{ this.translate.formTitleCreate }}
             </span>
-            <span v-else>
+          <span v-else>
               {{ this.translate.formTitleUpdate }} #{{ this.tag.id }}
             </span>
-          </div>
-          <div class="card-body">
+        </div>
+        <div class="card-body">
 
-            <fieldset class="mb-3">
-              <legend>
-                {{ this.translate.colorTitle }}
-              </legend>
+          <fieldset class="mb-3">
+            <legend>
+              {{ this.translate.colorTitle }}
+            </legend>
 
-              <p>{{ this.translate.colorDescription }}</p>
+            <p>{{ this.translate.colorDescription }}</p>
 
-              <div class="input-group mb-3 me-3 float-end" style="width: auto">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ this.translate.linkColorChoice }}</button>
-                <ul class="dropdown-menu">
-                  <li v-for="color in this.tabColor">
-                    <a class="dropdown-item" :style="'cursor:pointer;color:' + color" @click="this.switchColor(color)">{{ color }}</a>
-                  </li>
-                </ul>
-                <button @click="this.loadColorExemple()" class="btn btn-secondary" type="button">
-                  <i class="bi bi-arrow-clockwise"></i></button>
-              </div>
-
-              <input type="color" @change="this.isErrorHexa = false; this.msgErrorExa = ''" class="form-control form-control-color float-start" id="tagColor" v-model="this.tag.color">
-
-              <input type="text" class="form-control"
-                  :class="this.msgErrorExa !== '' ? 'is-invalid' : ''"
-                  id="tagColorinput"
-                  v-model="this.tag.color"
-                  size="7" style="width: auto"
-                  @change="this.checkValideHex()" maxlength="7">
-              <div class="invalid-feedback">
-                {{ this.msgErrorExa }}
-              </div>
-
-            </fieldset>
-
-            <div v-for="key in this.locales.locales">
-              <div v-for="translation in tag.tagTranslations">
-                <div v-if="translation.locale === key">
-
-                  <div v-if="translation.locale === this.locales.current">
-
-                    <div class="form-check form-switch float-end">
-                      <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" v-model="this.autoCopy">
-                      <label class="form-check-label" for="flexSwitchCheckDefault">{{ this.translate.autoCopy }}</label>
-                    </div>
-
-                    <h5 class="card-title">{{ this.translate.labelCurrent }}</h5>
-
-                  </div>
-                  <h5 v-else-if="this.locales.locales[1] === key" class="card-title">{{ this.translate.labelOther }}</h5>
-                  <div class="mb-3">
-                    <label :for="'label-' + translation.locale" class="form-label">{{ this.translate.formInputLabelLabel }} {{ this.locales.localesTranslate[key] }}</label>
-                    <input type="text"
-                        :class="this.isNoEmptyInput(translation.id)"
-                        class="form-control"
-                        :id="'label-' + translation.locale"
-                        placeholder=""
-                        :disabled="this.isDisabled(translation.locale)"
-                        v-model="translation.label"
-                        v-on="this.autoCopy && translation.locale === this.locales.current ? { keyup: () => this.copyLabel(translation.label) } : {} "
-                    >
-                    <div class="invalid-feedback">
-                      {{ this.translate.formInputLabelError }}
-                    </div>
-                  </div>
-
-
-                </div>
-              </div>
+            <div class="input-group mb-3 me-3 float-end" style="width: auto">
+              <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ this.translate.linkColorChoice }}</button>
+              <ul class="dropdown-menu">
+                <li v-for="color in this.tabColor">
+                  <a class="dropdown-item" :style="'cursor:pointer;color:' + color" @click="this.switchColor(color)">{{ color }}</a>
+                </li>
+              </ul>
+              <button @click="this.loadColorExemple()" class="btn btn-secondary" type="button">
+                <i class="bi bi-arrow-clockwise"></i></button>
             </div>
 
-            <button class="btn btn-secondary" @click="this.save()" :disabled="this.canSubmit()">{{ this.getLabelSubmit() }}</button>
+            <input type="color" @change="this.isErrorHexa = false; this.msgErrorExa = ''" class="form-control form-control-color float-start no-control" id="tagColor" v-model="this.tag.color">
 
+            <input type="text" class="form-control no-control"
+                :class="this.msgErrorExa !== '' ? 'is-invalid' : ''"
+                id="tagColorinput"
+                v-model="this.tag.color"
+                size="7" style="width: auto"
+                @change="this.checkValideHex()" maxlength="7">
+            <div class="invalid-feedback">
+              {{ this.msgErrorExa }}
+            </div>
+
+          </fieldset>
+
+          <div v-for="key in this.locales.locales">
+            <div v-for="translation in tag.tagTranslations">
+              <div v-if="translation.locale === key">
+
+                <div v-if="translation.locale === this.locales.current">
+
+                  <div class="form-check form-switch float-end">
+                    <input class="form-check-input no-control" type="checkbox" role="switch" id="flexSwitchCheckDefault" v-model="this.autoCopy">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">{{ this.translate.autoCopy }}</label>
+                  </div>
+
+                  <h5 class="card-title">{{ this.translate.labelCurrent }}</h5>
+
+                </div>
+                <h5 v-else-if="this.locales.locales[1] === key" class="card-title">{{ this.translate.labelOther }}</h5>
+                <div class="mb-3">
+                  <label :for="'label-' + translation.locale" class="form-label">{{ this.translate.formInputLabelLabel }} {{ this.locales.localesTranslate[key] }}</label>
+                  <input type="text"
+                      :class="this.isNoEmptyInput(translation.id)"
+                      class="form-control no-control"
+                      :id="'label-' + translation.locale"
+                      placeholder=""
+                      :disabled="this.isDisabled(translation.locale)"
+                      v-model="translation.label"
+                      v-on="this.autoCopy && translation.locale === this.locales.current ? { keyup: () => this.copyLabel(translation.label) } : {} "
+                  >
+                  <div class="invalid-feedback">
+                    {{ this.translate.formInputLabelError }}
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+
+          <div class="btn btn-secondary" @click="this.save()" :disabled="this.canSubmit()">{{ this.getLabelSubmit() }}</div>
+
+        </div>
+      </div>
+
+
+    </div>
+    <div class="col-4">
+      <div class="card border-secondary">
+        <div class="card-header bg-secondary text-white">
+          {{ this.translate.renduTitle }}
+        </div>
+        <div class="card-body">
+          <div v-for="key in this.locales.locales">
+            <div v-for="translation in tag.tagTranslations">
+              <div v-if="translation.locale === key">
+                <h5 v-if="translation.locale === this.locales.current" class="card-title">{{ this.translate.labelCurrent }}</h5>
+                <h5 v-else-if="this.locales.locales[1] === key" class="card-title mt-2 mb-2">{{ this.translate.labelOther }}</h5>
+                <b>{{ this.locales.localesTranslate[key] }}</b> :
+                <span class="badge rounded-pill badge-nat" :style="'background-color: ' + tag.color">{{ translation.label }}</span>
+
+              </div>
+            </div>
           </div>
         </div>
-
-
       </div>
-      <div class="col-4">
-        <div class="card border-secondary">
-          <div class="card-header bg-secondary text-white">
-            {{ this.translate.renduTitle }}
-          </div>
-          <div class="card-body">
-            <div v-for="key in this.locales.locales">
-              <div v-for="translation in tag.tagTranslations">
-                <div v-if="translation.locale === key">
-                  <h5 v-if="translation.locale === this.locales.current" class="card-title">{{ this.translate.labelCurrent }}</h5>
-                  <h5 v-else-if="this.locales.locales[1] === key" class="card-title mt-2 mb-2">{{ this.translate.labelOther }}</h5>
-                  <b>{{ this.locales.localesTranslate[key] }}</b> :
-                  <span class="badge rounded-pill badge-nat" :style="'background-color: ' + tag.color">{{ translation.label }}</span>
 
-                </div>
-              </div>
-            </div>
-          </div>
+      <div class="card border-secondary mt-3" v-if="tag.id !== null">
+        <div class="card-header bg-secondary text-white">
+          {{ this.translate.statTitle }}
+        </div>
+        <div class="card-body" v-html="this.templateStat">
+
         </div>
       </div>
     </div>
