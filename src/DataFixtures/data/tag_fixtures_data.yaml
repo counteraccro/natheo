@@ -1,25 +1,41 @@
 tag:
-  -
-    color: '#FAFAFA'
+  - color: '#6F42C1'
     translate:
-      -
-        locale: fr
-        label: 'Site web'
-      -
-        locale: es
-        label: 'es Site web'
-      -
-        locale: en
-        label: 'en Site web'
-  -
-    color: '#BABABA'
+      - locale: fr
+        label: 'Natheo'
+      - locale: es
+        label: 'Natheo'
+      - locale: en
+        label: 'Natheo'
+  - color: '#7A86B8'
     translate:
-      -
-        locale: fr
-        label: 'Informatique'
-      -
-        locale: es
-        label: 'es Informatique'
-      -
-        locale: en
-        label: 'en Informatique'
+      - locale: fr
+        label: 'Développement'
+      - locale: es
+        label: 'Développement (ES)'
+      - locale: en
+        label: 'Développement (EN)'
+  - color: '#8fb408'
+    translate:
+      - locale: fr
+        label: 'Média'
+      - locale: es
+        label: 'Média (ES)'
+      - locale: en
+        label: 'Média (EN)'
+  - color: '#1188b4'
+    translate:
+      - locale: fr
+        label: 'Article'
+      - locale: es
+        label: 'Article (ES)'
+      - locale: en
+        label: 'Article (EN)'
+  - color: '#b61114'
+    translate:
+      - locale: fr
+        label: 'Evolution'
+      - locale: es
+        label: 'Evolution (ES)'
+      - locale: en
+        label: 'Evolution (EN)'
