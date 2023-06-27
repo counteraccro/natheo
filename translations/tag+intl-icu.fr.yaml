@@ -38,5 +38,10 @@ tag.form.title.label.other: 'Autres langues'
 tag.form.check.auto.copy: 'dupliquer le label pour les autres langues'
 tag.form.input.label.error: 'Le label du tag ne peux pas être vide'
 tag.form.rendu.title: 'Aperçu du tag'
-tag.form.submit.update: 'Modifier'
-tag.form.submit.create: 'Créer'
+tag.form.submit.update: Modifier
+tag.form.submit.create: Créer
+tag.save.new: 'Le tag <strong>{label}</strong> à été créé avec succès'
+tag.save.edit: 'Le tag <strong>{label}</strong> à été modifié avec succès'
+tag.form.stat.title: Statistiques
+tag.page_date_update.created: 'Date de création'
+tag.page_date_update.last_update: 'Dernière modification'

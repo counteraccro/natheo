@@ -40,3 +40,7 @@ tag.form.input.label.error: __tag.form.input.label.error
 tag.form.rendu.title: __tag.form.rendu.title
 tag.form.submit.update: __tag.form.submit.update
 tag.form.submit.create: __tag.form.submit.create
+tag.form.stat.title: __tag.form.stat.title
+tag.form.input.disabled.label: __tag.form.input.disabled.label
+tag.page_date_update.created: __tag.page_date_update.created
+tag.page_date_update.last_update: __tag.page_date_update.last_update
