@@ -287,7 +287,7 @@ export default {
             </div>
           </div>
 
-          <div class="btn btn-secondary" @click="this.save()" :disabled="this.canSubmit()">{{ this.getLabelSubmit() }}</div>
+          <button class="btn btn-secondary" @click="this.save()" :disabled="this.canSubmit()">{{ this.getLabelSubmit() }}</button>
 
         </div>
       </div>
