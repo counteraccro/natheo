@@ -5,7 +5,7 @@ namespace App\Security;
 use App\Entity\Admin\System\User;
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\LoggerService;
-use App\Utils\User\UserdataKey;
+use App\Utils\System\User\UserdataKey;
 use Exception;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;

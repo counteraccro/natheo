@@ -6,7 +6,7 @@
  * Pour controller avec la hiérarchie des droits utilisés isGranted
  */
 
-namespace App\Utils\User;
+namespace App\Utils\System\User;
 
 use App\Entity\Admin\System\User;
 

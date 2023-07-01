@@ -5,7 +5,7 @@
  * Clé pour userdata
  */
 
-namespace App\Utils\User;
+namespace App\Utils\System\User;
 
 class UserdataKey
 {

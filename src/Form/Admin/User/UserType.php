@@ -9,7 +9,7 @@ namespace App\Form\Admin\User;
 
 use App\Entity\Admin\System\User;
 use App\Form\AppFormType;
-use App\Utils\User\Role;
+use App\Utils\System\User\Role;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

@@ -5,7 +5,7 @@
  * Permet d'anonymiser un utilisateur
  */
 
-namespace App\Utils\User;
+namespace App\Utils\System\User;
 
 use App\Entity\Admin\System\User;
 use Exception;

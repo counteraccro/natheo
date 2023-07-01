@@ -5,7 +5,7 @@ namespace App\Service\Admin\System\User;
 use App\Entity\Admin\System\User;
 use App\Entity\Admin\System\UserData;
 use App\Service\Admin\AppAdminService;
-use App\Utils\User\UserdataKey;
+use App\Utils\System\User\UserdataKey;
 use DateTime;
 
 class UserDataService extends AppAdminService
