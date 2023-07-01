@@ -2,7 +2,7 @@
 
 namespace App\Repository\Admin;
 
-use App\Entity\Admin\MailTranslation;
+use App\Entity\Admin\System\MailTranslation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

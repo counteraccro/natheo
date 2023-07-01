@@ -8,7 +8,7 @@
 namespace App\Controller\Admin\System;
 
 use App\Controller\Admin\AppAdminController;
-use App\Entity\Admin\Mail;
+use App\Entity\Admin\System\Mail;
 use App\Entity\Admin\User;
 use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\OptionSystemService;

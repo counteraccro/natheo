@@ -7,8 +7,8 @@
 namespace App\DataFixtures\Admin;
 
 use App\DataFixtures\AppFixtures;
-use App\Entity\Admin\Mail;
-use App\Entity\Admin\MailTranslation;
+use App\Entity\Admin\System\Mail;
+use App\Entity\Admin\System\MailTranslation;
 use App\Utils\Mail\KeyWord;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;

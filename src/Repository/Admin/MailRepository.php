@@ -2,7 +2,7 @@
 
 namespace App\Repository\Admin;
 
-use App\Entity\Admin\Mail;
+use App\Entity\Admin\System\Mail;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;

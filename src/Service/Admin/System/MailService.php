@@ -7,7 +7,7 @@
 
 namespace App\Service\Admin\System;
 
-use App\Entity\Admin\Mail;
+use App\Entity\Admin\System\Mail;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Admin\OptionSystemService;

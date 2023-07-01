@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Admin;
+namespace App\Entity\Admin\System;
 
 use App\Repository\Admin\MailRepository;
 use Doctrine\Common\Collections\ArrayCollection;
