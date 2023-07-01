@@ -5,10 +5,11 @@
  * @version 1.0
  */
 
-namespace App\Controller\Admin;
+namespace App\Controller\Admin\System;
 
+use App\Controller\Admin\AppAdminController;
+use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Breadcrumb;
-use App\Service\Admin\OptionSystemService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +35,7 @@ class OptionSystemController extends AppAdminController
             ]
         ];
 
-        return $this->render('admin/option_system/index.html.twig', [
+        return $this->render('admin/system/option_system/index.html.twig', [
             'breadcrumb' => $breadcrumb,
         ]);
     }

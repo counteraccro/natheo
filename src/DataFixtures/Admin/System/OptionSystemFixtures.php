@@ -5,10 +5,10 @@
  * Fixture pour l'entité option_system
  */
 
-namespace App\DataFixtures\Admin;
+namespace App\DataFixtures\Admin\System;
 
 use App\DataFixtures\AppFixtures;
-use App\Entity\Admin\OptionSystem;
+use App\Entity\Admin\System\OptionSystem;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

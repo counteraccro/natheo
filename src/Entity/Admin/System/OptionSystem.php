@@ -4,12 +4,12 @@
  * @version 1.0
  * Entité Optionsystem, gestion des options globales du CMS
  */
-namespace App\Entity\Admin;
+namespace App\Entity\Admin\System;
 
-use App\Repository\Admin\OptionSystemRepository;
+use App\Repository\Admin\System\OptionSystemRepository;
 use Doctrine\DBAL\Types\Types;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Table(name : "natheo.option_system")]
 #[ORM\Entity(repositoryClass: OptionSystemRepository::class)]

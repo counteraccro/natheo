@@ -8,13 +8,12 @@
 
 namespace App\EventListener;
 
-use App\Service\Admin\OptionSystemService;
+use App\Service\Admin\System\OptionSystemService;
 use App\Service\LoggerService;
 use App\Utils\Options\OptionSystemKey;
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Psr\Log\LoggerInterface;
 
 class DatabaseActivitySubscriber implements EventSubscriberInterface
 {

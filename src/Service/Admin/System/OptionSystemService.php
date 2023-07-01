@@ -6,9 +6,10 @@
  * Service lier aux options système
  */
 
-namespace App\Service\Admin;
+namespace App\Service\Admin\System;
 
-use App\Entity\Admin\OptionSystem;
+use App\Entity\Admin\System\OptionSystem;
+use App\Service\Admin\AppAdminService;
 use App\Utils\Options\OptionSystemKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
