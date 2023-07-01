@@ -4,8 +4,8 @@
  * @version 1.0
  * Permet d'afficher les logs sous forme de tableau d'après les fichiers de logs
  */
-import Grid from '../../Components/Grid/Grid.vue'
-import GridPaginate from "../../Components/Grid/GridPaginate.vue";
+import Grid from '../../../Components/Grid/Grid.vue'
+import GridPaginate from "../../../Components/Grid/GridPaginate.vue";
 import axios from "axios";
 import {Modal} from 'bootstrap'
 
