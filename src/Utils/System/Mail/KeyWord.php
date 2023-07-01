@@ -5,7 +5,7 @@
  * @version 1.0
  */
 
-namespace App\Utils\Mail;
+namespace App\Utils\System\Mail;
 
 use App\Entity\Admin\User;
 use App\Service\Admin\OptionSystemService;

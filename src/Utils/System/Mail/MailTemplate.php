@@ -4,7 +4,7 @@
  * @version 1.0
  * Class qui regroupe les paths des templates des emails
  */
-namespace App\Utils\Mail;
+namespace App\Utils\System\Mail;
 
 class MailTemplate
 {

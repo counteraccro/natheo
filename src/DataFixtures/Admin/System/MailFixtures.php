@@ -9,7 +9,7 @@ namespace App\DataFixtures\Admin\System;
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\System\Mail;
 use App\Entity\Admin\System\MailTranslation;
-use App\Utils\Mail\KeyWord;
+use App\Utils\System\Mail\KeyWord;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
