@@ -5,12 +5,13 @@
  * @version 1.0
  */
 
-namespace App\Service\Admin;
+namespace App\Service\Admin\System;
 
-use Symfony\Component\Yaml\Yaml;
+use App\Service\Admin\AppAdminService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Yaml;
 
 class TranslateService extends AppAdminService
 {

@@ -13,7 +13,7 @@ use App\Entity\Admin\User;
 use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\OptionSystemService;
 use App\Service\Admin\System\MailService;
-use App\Service\Admin\TranslateService;
+use App\Service\Admin\System\TranslateService;
 use App\Utils\Breadcrumb;
 use App\Utils\Options\OptionUserKey;
 use App\Utils\System\Mail\KeyWord;

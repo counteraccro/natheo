@@ -5,11 +5,12 @@
  * @version 1.0
  */
 
-namespace App\Controller\Admin;
+namespace App\Controller\Admin\System;
 
-use App\Utils\Breadcrumb;
+use App\Controller\Admin\AppAdminController;
 use App\Service\Admin\CommandService;
-use App\Service\Admin\TranslateService;
+use App\Service\Admin\System\TranslateService;
+use App\Utils\Breadcrumb;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -39,7 +40,7 @@ class TranslationController extends AppAdminController
             ]
         ];
 
-        return $this->render('admin/translation/index.html.twig', [
+        return $this->render('admin/system/translation/index.html.twig', [
             'breadcrumb' => $breadcrumb,
         ]);
     }
