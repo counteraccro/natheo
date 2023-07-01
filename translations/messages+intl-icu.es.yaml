@@ -153,6 +153,18 @@ global.content: __Content
 sidebar.global.content.description: "__Regroupe l'ensemble des modules de contenus du site "
 global.tag: __Tags
 sidebar.tag.description: '__Gestion des tags'
+global.page: __Pages
+sidebar.page.description: '__Gestion des pages'
+global.comment: __Commentaires
+sidebar.comment.description: '__Gestion des commentaires'
+global.mediatheque: __Médiathèque
+sidebar.mediatheque.description: '__Gestion des médias'
+global.faq: __FAQ
+sidebar.faq.description: '__Gestion des FAQs'
+global.cv: __CV
+sidebar.cv.description: '__Gestion des CVs'
+global.menu: __Menus
+sidebar.menu.description: '__Gestion des menus'
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: __pagedemo.page_title_h1
 date.diff.start: "__Il y'a"

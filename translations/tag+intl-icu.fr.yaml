@@ -45,3 +45,4 @@ tag.save.edit: 'Le tag <strong>{label}</strong> à été modifié avec succès'
 tag.form.stat.title: Statistiques
 tag.page_date_update.created: 'Date de création'
 tag.page_date_update.last_update: 'Dernière modification'
+tag.form.input.disabled.label: __tag.form.input.disabled.label

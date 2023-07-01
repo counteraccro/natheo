@@ -153,6 +153,18 @@ global.content: Content
 sidebar.global.content.description: "Regroupe l'ensemble des modules de contenus du site "
 global.tag: Tags
 sidebar.tag.description: 'Gestion des tags'
+global.page: Pages
+sidebar.page.description: 'Gestion des pages'
+global.comment: Commentaires
+sidebar.comment.description: 'Gestion des commentaires'
+global.mediatheque: Médiathèque
+sidebar.mediatheque.description: 'Gestion des médias'
+global.faq: FAQ
+sidebar.faq.description: 'Gestion des FAQs'
+global.cv: CV
+sidebar.cv.description: 'Gestion des CVs'
+global.menu: Menus
+sidebar.menu.description: 'Gestion des menus'
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: 'Elements HML disponibles (trad)'
 date.diff.start: "Il y'a"
