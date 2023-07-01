@@ -2,7 +2,7 @@
 
 namespace App\Entity\Admin\System;
 
-use App\Repository\Admin\MailTranslationRepository;
+use App\Repository\Admin\System\MailTranslationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 

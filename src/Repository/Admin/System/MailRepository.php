@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repository\Admin;
+namespace App\Repository\Admin\System;
 
 use App\Entity\Admin\System\Mail;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
