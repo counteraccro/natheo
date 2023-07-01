@@ -8,8 +8,8 @@
 
 namespace App\Twig\Runtime\Admin;
 
-use App\Entity\Admin\SidebarElement;
-use App\Service\Admin\SidebarElementService;
+use App\Entity\Admin\System\SidebarElement;
+use App\Service\Admin\System\SidebarElementService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;

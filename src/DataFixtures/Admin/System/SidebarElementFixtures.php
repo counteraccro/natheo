@@ -5,10 +5,10 @@
  * Fixture pour l'entité SidebarElement
  */
 
-namespace App\DataFixtures\Admin;
+namespace App\DataFixtures\Admin\System;
 
 use App\DataFixtures\AppFixtures;
-use App\Entity\Admin\SidebarElement;
+use App\Entity\Admin\System\SidebarElement;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

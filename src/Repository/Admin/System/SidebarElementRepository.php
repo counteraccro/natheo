@@ -4,9 +4,9 @@
  * @version 1.0
  * Repository SidebarElement, element du menu sidebar de l'admin
  */
-namespace App\Repository\Admin;
+namespace App\Repository\Admin\System;
 
-use App\Entity\Admin\SidebarElement;
+use App\Entity\Admin\System\SidebarElement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;

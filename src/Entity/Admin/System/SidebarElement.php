@@ -5,9 +5,9 @@
  * Entité SidebarElement, element du menu sidebar de l'admin
  */
 
-namespace App\Entity\Admin;
+namespace App\Entity\Admin\System;
 
-use App\Repository\Admin\SidebarElementRepository;
+use App\Repository\Admin\System\SidebarElementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;

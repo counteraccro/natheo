@@ -6,13 +6,14 @@
  * Service lier à l'objet SidebarElement
  */
 
-namespace App\Service\Admin;
+namespace App\Service\Admin\System;
 
-use App\Entity\Admin\SidebarElement;
+use App\Entity\Admin\System\SidebarElement;
+use App\Service\Admin\AppAdminService;
+use App\Service\Admin\GridService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
