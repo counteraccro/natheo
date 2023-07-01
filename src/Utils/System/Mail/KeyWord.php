@@ -9,7 +9,7 @@ namespace App\Utils\System\Mail;
 
 use App\Entity\Admin\User;
 use App\Service\Admin\System\OptionSystemService;
-use App\Utils\Options\OptionSystemKey;
+use App\Utils\System\Options\OptionSystemKey;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class KeyWord

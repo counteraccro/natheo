@@ -14,7 +14,7 @@
                     <span class="d-none-mini"> {{ 'global.dashboard' | trans({}, 'global') }}</span>
                 </a>
 
-                {%set notification = get_option_system_value_by_key(constant('App\\Utils\\Options\\OptionSystemKey::OS_NOTIFICATION')) %}
+                {%set notification = get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_NOTIFICATION')) %}
 
                 {% if notification is same as("1") %}
                     <a class="nav-link link-notification" href="{{ path('admin_notification_index') }}">

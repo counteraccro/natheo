@@ -4,7 +4,7 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
-namespace App\Utils\Options;
+namespace App\Utils\System\Options;
 
 class OptionSystemKey
 {

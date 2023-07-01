@@ -5,7 +5,7 @@
      */
     "use strict";
     (() => {
-        let checkConfirm = '{{ get_option_system_value_by_key(constant('App\\Utils\\Options\\OptionSystemKey::OS_CONFIRM_LEAVE_FORM'))}}';
+        let checkConfirm = '{{ get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_CONFIRM_LEAVE_FORM'))}}';
         if(checkConfirm === '0')
         {
             return false;

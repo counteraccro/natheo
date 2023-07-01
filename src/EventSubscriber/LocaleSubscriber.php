@@ -4,8 +4,8 @@ namespace App\EventSubscriber;
 
 use App\Service\Admin\OptionUserService;
 use App\Service\Admin\System\OptionSystemService;
-use App\Utils\Options\OptionSystemKey;
-use App\Utils\Options\OptionUserKey;
+use App\Utils\System\Options\OptionSystemKey;
+use App\Utils\System\Options\OptionUserKey;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
