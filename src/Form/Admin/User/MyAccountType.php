@@ -6,7 +6,7 @@
  */
 namespace App\Form\Admin\User;
 
-use App\Entity\Admin\User;
+use App\Entity\Admin\System\User;
 use App\Form\AppFormType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

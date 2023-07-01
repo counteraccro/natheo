@@ -4,9 +4,9 @@
  * @version 1.0
  * Entité UserData, données associées au user
  */
-namespace App\Entity\Admin;
+namespace App\Entity\Admin\System;
 
-use App\Repository\Admin\UserDataRepository;
+use App\Repository\Admin\System\UserDataRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;

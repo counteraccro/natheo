@@ -5,12 +5,12 @@
  * Fixture pour l'entité User
  */
 
-namespace App\DataFixtures\Admin;
+namespace App\DataFixtures\Admin\System;
 
 use App\DataFixtures\AppFixtures;
-use App\Entity\Admin\User;
+use App\Entity\Admin\System\User;
 use App\Service\Admin\NotificationService;
-use App\Service\Admin\OptionUserService;
+use App\Service\Admin\System\OptionUserService;
 use App\Utils\Notification\NotificationKey;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;

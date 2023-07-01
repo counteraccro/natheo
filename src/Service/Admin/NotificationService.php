@@ -8,7 +8,7 @@
 namespace App\Service\Admin;
 
 use App\Entity\Admin\Notification;
-use App\Entity\Admin\User;
+use App\Entity\Admin\System\User;
 use App\Repository\Admin\NotificationRepository;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Notification\NotificationFactory;

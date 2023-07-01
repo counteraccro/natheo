@@ -6,18 +6,19 @@
  * @version 1.0
  */
 
-namespace App\Controller\Admin;
+namespace App\Controller\Admin\System;
 
-use App\Entity\Admin\User;
+use App\Controller\Admin\AppAdminController;
+use App\Entity\Admin\System\User;
 use App\Form\Admin\User\MyAccountType;
 use App\Form\Admin\User\UserAddType;
 use App\Form\Admin\User\UserType;
 use App\Service\Admin\NotificationService;
-use App\Service\Admin\OptionUserService;
 use App\Service\Admin\System\MailService;
 use App\Service\Admin\System\OptionSystemService;
-use App\Service\Admin\User\UserDataService;
-use App\Service\Admin\User\UserService;
+use App\Service\Admin\System\OptionUserService;
+use App\Service\Admin\System\User\UserDataService;
+use App\Service\Admin\System\User\UserService;
 use App\Service\LoggerService;
 use App\Utils\Breadcrumb;
 use App\Utils\Flash\FlashKey;
@@ -57,7 +58,7 @@ class UserController extends AppAdminController
             ]
         ];
 
-        return $this->render('admin/user/index.html.twig', [
+        return $this->render('admin/system/user/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
             'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
@@ -79,7 +80,7 @@ class UserController extends AppAdminController
             ]
         ];
 
-        return $this->render('admin/user/my_options.html.twig', [
+        return $this->render('admin/system/user/my_options.html.twig', [
             'breadcrumb' => $breadcrumb,
         ]);
     }
@@ -223,7 +224,7 @@ class UserController extends AppAdminController
 
         $lastConnexion = $userDataService->getLastConnexion($user);
 
-        return $this->render('admin/user/update.html.twig', [
+        return $this->render('admin/system/user/update.html.twig', [
             'breadcrumb' => $breadcrumb,
             'form' => $form,
             'user' => $user,
@@ -272,7 +273,7 @@ class UserController extends AppAdminController
         $canDelete = $optionSystemService->getValueByKey(OptionSystemKey::OS_ALLOW_DELETE_DATA);
         $canReplace = $optionSystemService->getValueByKey(OptionSystemKey::OS_REPLACE_DELETE_USER);
 
-        return $this->render('admin/user/my_account.html.twig', [
+        return $this->render('admin/system/user/my_account.html.twig', [
             'breadcrumb' => $breadcrumb,
             'form' => $form,
             'user' => $user,
@@ -559,7 +560,7 @@ class UserController extends AppAdminController
             return $this->redirectToRoute('admin_user_index');
         }
 
-        return $this->render('admin/user/add.html.twig', [
+        return $this->render('admin/system/user/add.html.twig', [
             'breadcrumb' => $breadcrumb,
             'form' => $form
         ]);

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Service\Admin\User;
+namespace App\Service\Admin\System\User;
 
-use App\Entity\Admin\User;
-use App\Entity\Admin\UserData;
+use App\Entity\Admin\System\User;
+use App\Entity\Admin\System\UserData;
 use App\Service\Admin\AppAdminService;
 use App\Utils\User\UserdataKey;
 use DateTime;

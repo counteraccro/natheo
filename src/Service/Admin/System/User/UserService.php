@@ -6,9 +6,9 @@
  * Service lier à l'objet user
  */
 
-namespace App\Service\Admin\User;
+namespace App\Service\Admin\System\User;
 
-use App\Entity\Admin\User;
+use App\Entity\Admin\System\User;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Admin\System\OptionSystemService;

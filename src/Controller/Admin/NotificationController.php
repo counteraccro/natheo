@@ -8,7 +8,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Admin\Notification;
-use App\Entity\Admin\User;
+use App\Entity\Admin\System\User;
 use App\Service\Admin\GridService;
 use App\Service\Admin\NotificationService;
 use App\Service\Admin\System\OptionSystemService;

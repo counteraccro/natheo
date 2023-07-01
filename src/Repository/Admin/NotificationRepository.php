@@ -3,7 +3,7 @@
 namespace App\Repository\Admin;
 
 use App\Entity\Admin\Notification;
-use App\Entity\Admin\User;
+use App\Entity\Admin\System\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\NonUniqueResultException;

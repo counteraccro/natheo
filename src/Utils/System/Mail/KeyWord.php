@@ -7,7 +7,7 @@
 
 namespace App\Utils\System\Mail;
 
-use App\Entity\Admin\User;
+use App\Entity\Admin\System\User;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\System\Options\OptionSystemKey;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

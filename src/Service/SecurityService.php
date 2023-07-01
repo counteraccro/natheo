@@ -8,9 +8,9 @@
 
 namespace App\Service;
 
-use App\Entity\Admin\User;
-use App\Entity\Admin\UserData;
-use App\Repository\Admin\UserDataRepository;
+use App\Entity\Admin\System\User;
+use App\Entity\Admin\System\UserData;
+use App\Repository\Admin\System\UserDataRepository;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\User\UserdataKey;

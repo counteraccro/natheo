@@ -7,11 +7,11 @@
 
 namespace App\Controller;
 
-use App\Entity\Admin\User;
+use App\Entity\Admin\System\User;
 use App\Service\Admin\System\MailService;
 use App\Service\Admin\System\OptionSystemService;
-use App\Service\Admin\User\UserDataService;
-use App\Service\Admin\User\UserService;
+use App\Service\Admin\System\User\UserDataService;
+use App\Service\Admin\System\User\UserService;
 use App\Service\SecurityService;
 use App\Utils\System\Mail\KeyWord;
 use App\Utils\System\Mail\MailKey;

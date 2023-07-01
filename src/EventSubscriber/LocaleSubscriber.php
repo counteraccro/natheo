@@ -2,8 +2,8 @@
 
 namespace App\EventSubscriber;
 
-use App\Service\Admin\OptionUserService;
 use App\Service\Admin\System\OptionSystemService;
+use App\Service\Admin\System\OptionUserService;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
 use Symfony\Bundle\SecurityBundle\Security;

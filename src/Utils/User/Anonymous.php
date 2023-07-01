@@ -7,7 +7,7 @@
 
 namespace App\Utils\User;
 
-use App\Entity\Admin\User;
+use App\Entity\Admin\System\User;
 use Exception;
 
 class Anonymous

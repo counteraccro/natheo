@@ -6,12 +6,12 @@
  * Service lier aux options user
  */
 
-namespace App\Service\Admin;
+namespace App\Service\Admin\System;
 
-use App\Entity\Admin\OptionUser;
 use App\Entity\Admin\System\OptionSystem;
-use App\Entity\Admin\User;
-use App\Service\Admin\System\OptionSystemService;
+use App\Entity\Admin\System\OptionUser;
+use App\Entity\Admin\System\User;
+use App\Service\Admin\AppAdminService;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
 use Doctrine\ORM\EntityManagerInterface;

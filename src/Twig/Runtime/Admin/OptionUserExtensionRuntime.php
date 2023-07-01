@@ -9,7 +9,7 @@
 
 namespace App\Twig\Runtime\Admin;
 
-use App\Service\Admin\OptionUserService;
+use App\Service\Admin\System\OptionUserService;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
