@@ -5,9 +5,12 @@
  * Service lier à l'objet mail
  */
 
-namespace App\Service\Admin;
+namespace App\Service\Admin\System;
 
 use App\Entity\Admin\Mail;
+use App\Service\Admin\AppAdminService;
+use App\Service\Admin\GridService;
+use App\Service\Admin\OptionSystemService;
 use App\Utils\Mail\KeyWord;
 use App\Utils\Mail\MailTemplate;
 use App\Utils\Markdown;
@@ -17,7 +20,6 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use League\CommonMark\Exception\CommonMarkException;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;

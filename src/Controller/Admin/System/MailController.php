@@ -5,17 +5,18 @@
  * @version 1.0
  */
 
-namespace App\Controller\Admin;
+namespace App\Controller\Admin\System;
 
+use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Mail;
 use App\Entity\Admin\User;
-use App\Utils\Breadcrumb;
-use App\Service\Admin\MailService;
 use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\OptionSystemService;
+use App\Service\Admin\System\MailService;
 use App\Service\Admin\TranslateService;
+use App\Utils\Breadcrumb;
 use App\Utils\Mail\KeyWord;
-use App\Utils\Mail\MailKey;;
+use App\Utils\Mail\MailKey;
 use App\Utils\Options\OptionUserKey;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
@@ -28,6 +29,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
+
+;
 
 #[Route('/admin/{_locale}/mail', name: 'admin_mail_', requirements: ['_locale' => '%app.supported_locales%'])]
 #[IsGranted('ROLE_SUPER_ADMIN')]
@@ -48,7 +51,7 @@ class MailController extends AppAdminController
             ]
         ];
 
-        return $this->render('admin/mail/index.html.twig', [
+        return $this->render('admin/system/mail/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
             'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
@@ -85,7 +88,7 @@ class MailController extends AppAdminController
             ]
         ];
 
-        return $this->render('admin/mail/edit.html.twig', [
+        return $this->render('admin/system/mail/edit.html.twig', [
             'breadcrumb' => $breadcrumb,
             'mail' => $mail
         ]);

@@ -11,6 +11,6 @@
     <p>{{ 'mail.edit_page_description' | trans({'email' : title}, 'mail') | raw }}</p>
 
 
-    <div {{ vue_component('Admin/Mail', {'url_data' : path('admin_mail_load_data', {'id' : mail.id})}) }}></div>
+    <div {{ vue_component('Admin/System/Mail', {'url_data' : path('admin_mail_load_data', {'id' : mail.id})}) }}></div>
 
 {% endblock %}
