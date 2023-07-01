@@ -6,10 +6,11 @@
  * Permet de générer le menu sidebar de l'administration
  */
 
-namespace App\Twig\Runtime\Admin;
+namespace App\Twig\Runtime\Admin\System;
 
 use App\Entity\Admin\System\SidebarElement;
 use App\Service\Admin\System\SidebarElementService;
+use App\Twig\Runtime\Admin\AppAdminExtensionRuntime;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;

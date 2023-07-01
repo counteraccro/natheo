@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Twig\Extension\Admin;
+namespace App\Twig\Extension\Admin\System;
 
-use App\Twig\Runtime\Admin\OptionExtensionRuntime;
+use App\Twig\Runtime\Admin\System\OptionExtensionRuntime;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
