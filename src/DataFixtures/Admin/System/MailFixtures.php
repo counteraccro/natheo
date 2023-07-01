@@ -4,7 +4,7 @@
  * @version 1.0
  * Fixtures pour la génération des mails
  */
-namespace App\DataFixtures\Admin;
+namespace App\DataFixtures\Admin\System;
 
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\System\Mail;
