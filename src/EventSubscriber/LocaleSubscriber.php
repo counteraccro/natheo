@@ -37,6 +37,8 @@ class LocaleSubscriber implements EventSubscriberInterface
     /**
      * @param OptionUserService $optionUserService
      * @param LocaleSwitcher $localeSwitcher
+     * @param Security $security
+     * @param OptionSystemService $optionSystemService
      */
     public function __construct(OptionUserService $optionUserService, LocaleSwitcher $localeSwitcher,
                                 Security          $security, OptionSystemService $optionSystemService
