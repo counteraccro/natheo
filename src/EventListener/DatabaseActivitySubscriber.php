@@ -11,11 +11,15 @@ namespace App\EventListener;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\LoggerService;
 use App\Utils\System\Options\OptionSystemKey;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
-class DatabaseActivitySubscriber implements EventSubscriberInterface
+#[AsDoctrineListener('postPersist')]
+#[AsDoctrineListener('postRemove')]
+#[AsDoctrineListener('postUpdate')]
+class DatabaseActivitySubscriber
 {
 
     private OptionSystemService $optionSystemService;
