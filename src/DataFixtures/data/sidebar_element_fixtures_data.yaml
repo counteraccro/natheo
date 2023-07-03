@@ -60,10 +60,10 @@ sidebarElement:
           role: 'ROLE_CONTRIBUTEUR'
           description: 'sidebar.tag.description'
           lock: true
-      - mediatheque:
+      - media:
           icon: 'bi-file-earmark-image-fill'
           label: 'global.mediatheque'
-          route: '#'
+          route: 'admin_media_index'
           disabled: false
           parent: content
           role: 'ROLE_CONTRIBUTEUR'
