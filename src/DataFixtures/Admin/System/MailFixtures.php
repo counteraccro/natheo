@@ -66,6 +66,6 @@ class MailFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
 
     public function getOrder(): int
     {
-        return 4;
+        return 104;
     }
 }

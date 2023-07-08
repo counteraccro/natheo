@@ -68,6 +68,6 @@ class TagFixtures extends AppFixtures implements FixtureGroupInterface, OrderedF
 
     public function getOrder(): int
     {
-        return 5;
+        return 201;
     }
 }

@@ -77,6 +77,6 @@ class MediaFolderFixtures extends AppFixtures implements FixtureGroupInterface, 
 
     public function getOrder(): int
     {
-        return 6;
+        return 202;
     }
 }

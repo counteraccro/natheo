@@ -112,7 +112,7 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
      */
     public function getOrder(): int
     {
-        return 3; // smaller means sooner
+        return 103; // smaller means sooner
     }
 
 }

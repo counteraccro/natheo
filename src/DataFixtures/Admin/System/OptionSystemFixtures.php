@@ -56,6 +56,6 @@ class OptionSystemFixtures extends AppFixtures implements FixtureGroupInterface,
      */
     public function getOrder(): int
     {
-        return 1; // smaller means sooner
+        return 101; // smaller means sooner
     }
 }
