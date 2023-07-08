@@ -64,6 +64,8 @@ class AppFixtures extends Fixture
      */
     protected const GROUP_TAG = 'tag';
 
+    protected const GROUP_MEDIA = 'media';
+
     public function __construct(ContainerBagInterface $params)
     {
         $kernel = $params->get('kernel.project_dir');

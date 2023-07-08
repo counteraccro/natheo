@@ -1,0 +1,10 @@
+media_folder:
+  Media:
+    name: Medias
+    parent:
+  Article:
+    name: Articles
+    parent: Media
+  CV:
+    name: CV
+    parent: Media
