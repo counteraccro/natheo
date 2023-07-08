@@ -27,7 +27,10 @@ class MediaFolder
     private ?string $name = null;
 
     #[ORM\Column]
-    private ?bool $disabled = null;
+    private ?bool $disabled = false;
+
+    #[ORM\Column]
+    private ?bool $trash = false;
 
     #[ORM\Column]
     #[Gedmo\Timestampable(on: "create")]
@@ -133,6 +136,18 @@ class MediaFolder
     public function setUpdateAt(?\DateTimeImmutable $update_at): static
     {
         $this->update_at = $update_at;
+
+        return $this;
+    }
+
+    public function isTrash(): ?bool
+    {
+        return $this->trash;
+    }
+
+    public function setTrash(bool $trash): static
+    {
+        $this->trash = $trash;
 
         return $this;
     }
