@@ -7,6 +7,7 @@
 
 namespace App\Entity\Admin\System;
 
+use App\Entity\Admin\Content\Media;
 use App\Entity\Admin\Notification;
 use App\Repository\Admin\System\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -75,11 +76,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserData::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $userData;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Media::class, orphanRemoval: true)]
+    private Collection $medias;
+
     public function __construct()
     {
         $this->optionsUser = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->userData = new ArrayCollection();
+        $this->medias = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -384,5 +389,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             return null;
         }
         return $result->first();
+    }
+
+    /**
+     * @return Collection<int, Media>
+     */
+    public function getMedias(): Collection
+    {
+        return $this->medias;
+    }
+
+    public function addMedia(Media $media): static
+    {
+        if (!$this->medias->contains($media)) {
+            $this->medias->add($media);
+            $media->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMedia(Media $media): static
+    {
+        if ($this->medias->removeElement($media)) {
+            // set the owning side to null (unless already changed)
+            if ($media->getUser() === $this) {
+                $media->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
