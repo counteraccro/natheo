@@ -40,9 +40,13 @@ class MediaFolder
     #[Gedmo\Timestampable(on: "update")]
     private ?\DateTimeImmutable $update_at = null;
 
+    #[ORM\OneToMany(mappedBy: 'mediaFolder', targetEntity: Media::class)]
+    private Collection $medias;
+
     public function __construct()
     {
         $this->children = new ArrayCollection();
+        $this->medias = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -148,6 +152,36 @@ class MediaFolder
     public function setTrash(bool $trash): static
     {
         $this->trash = $trash;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Media>
+     */
+    public function getMedias(): Collection
+    {
+        return $this->medias;
+    }
+
+    public function addMedia(Media $media): static
+    {
+        if (!$this->medias->contains($media)) {
+            $this->medias->add($media);
+            $media->setMediaFolder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMedia(Media $media): static
+    {
+        if ($this->medias->removeElement($media)) {
+            // set the owning side to null (unless already changed)
+            if ($media->getMediaFolder() === $this) {
+                $media->setMediaFolder(null);
+            }
+        }
 
         return $this;
     }
