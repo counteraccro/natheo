@@ -62,3 +62,12 @@ option_system:
   OS_MAIL_RESET_PASSWORD_TIME:
     key: 'OS_MAIL_RESET_PASSWORD_TIME'
     value: 20
+  OS_MEDIA_FOLDER:
+    key: 'OS_MEDIA_FOLDER'
+    value: 1
+  OS_MEDIA_PATH:
+    key: 'OS_MEDIA_PATH'
+    value: public
+  OS_MEDIA_URL:
+    key: 'OS_MEDIA_URL'
+    value: 'http://dev.natheo'
