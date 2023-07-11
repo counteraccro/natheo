@@ -150,3 +150,30 @@ options_system:
         list_value: '7:options_system.purge_notification.week|30:options_system.purge_notification.month|90:options_system.purge_notification.3_month|180:options_system.purge_notification.6_month|365:options_system.purge_notification.year'
         help: 'options_system.purge_notification_help'
         default: '30'
+  options_system.media:
+    title: 'options_system.media.title'
+    description: 'options_system.media.description'
+    options:
+      OS_MEDIA_PATH:
+        default: 'public'
+        label: 'options_system.media_path'
+        type: 'text'
+        required: true
+        msg_error: 'options_system.media_path_msg_error'
+        help: 'options_system.media_path_help'
+        placeholder: 'options_system.media_path_placeholder'
+        success: 'options_system.media_path_msg_success'
+      OS_MEDIA_URL:
+        default: 'public'
+        label: 'options_system.media_url'
+        type: 'text'
+        required: true
+        msg_error: 'options_system.media_url_msg_error'
+        help: 'options_system.media_url_help'
+        placeholder: 'options_system.media_url_placeholder'
+        success: 'options_system.media_url_msg_success'
+      OS_MEDIA_FOLDER:
+        type: 'boolean'
+        label: 'options_system.media_folder'
+        help: 'options_system.media_folder_help'
+        default: 1

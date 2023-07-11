@@ -132,4 +132,21 @@ class OptionSystemKey
      * @var string
      */
     const OS_MAIL_RESET_PASSWORD_TIME = 'OS_MAIL_RESET_PASSWORD_TIME';
+
+    /**
+     * Défini si on créé des dossiers physiques ou non pour la médiathèque
+     * @var string
+     */
+    const OS_MEDIA_FOLDER = 'OS_MEDIA_FOLDER';
+
+    /**
+     * Path du dossier média
+     * @var string
+     */
+    const OS_MEDIA_PATH = 'OS_MEDIA_PATH';
+
+    /**
+     * URL public d'accès au média
+     */
+    const OS_MEDIA_URL = 'OS_MEDIA_URL';
 }
