@@ -4,23 +4,43 @@
  * @version 1.0
  * Fixtures pour la génération des dossiers de media
  */
+
 namespace App\DataFixtures\Admin\Content;
 
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\Content\MediaFolder;
+use App\Service\Admin\Content\Media\MediaFolderService;
+use App\Service\Admin\System\OptionSystemService;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Yaml\Yaml;
 use function PHPUnit\Framework\isEmpty;
 
 class MediaFolderFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
+    private MediaFolderService $mediaFolderService;
+
+    private OptionSystemService $optionSystemService;
+
+    public function __construct(
+        ContainerBagInterface $params,
+        MediaFolderService    $mediaFolderService,
+        OptionSystemService   $optionSystemService
+    )
+    {
+        $this->optionSystemService = $optionSystemService;
+        $this->mediaFolderService = $mediaFolderService;
+        parent::__construct($params);
+    }
 
     const TAG_FIXTURES_DATA_FILE = 'media_folder_fixtures_data.yaml';
 
     public function load(ObjectManager $manager): void
     {
+        $this->mediaFolderService->removeAllMedia();
+
         $data = Yaml::parseFile($this->pathDataFixtures . self::TAG_FIXTURES_DATA_FILE);
         foreach ($data['media_folder'] as $ref => $folder) {
             $mediaFolder = new MediaFolder();
@@ -64,8 +84,7 @@ class MediaFolderFixtures extends AppFixtures implements FixtureGroupInterface, 
      */
     private function setParent(mixed $ref, MediaFolder $mediaFolder): void
     {
-        if(!isEmpty($ref) || $ref != null)
-        {
+        if (!isEmpty($ref) || $ref != null) {
             $mediaFolder->setParent($this->getReference($ref));
         }
     }
