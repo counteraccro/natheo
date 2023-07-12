@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Service gérant les tags de l'application
+ */
 namespace App\Service\Admin\Content;
 
 use App\Entity\Admin\Content\Tag;
