@@ -3,7 +3,10 @@
 {% block title %}{{ 'media.index.page_title' | trans({}, 'media') }}{% endblock %}
 
 {% block body %}
-<h1>{{ 'media.index.page_title_h1' | trans({}, 'media') }}</h1>
+    <h1>{{ 'media.index.page_title_h1' | trans({}, 'media') }}</h1>
 
-{{ breadcrumb(breadcrumb) }}
+    {{ breadcrumb(breadcrumb) }}
+
+    <img src="{{ asset('assets/fixtures/the-desert.png')}}" alt="">
+    <img src="http://dev.natheo/assets/fixtures/the-desert.png" alt="">
 {% endblock %}

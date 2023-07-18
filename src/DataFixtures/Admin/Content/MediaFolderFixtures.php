@@ -39,7 +39,7 @@ class MediaFolderFixtures extends AppFixtures implements FixtureGroupInterface, 
 
     public function load(ObjectManager $manager): void
     {
-        $this->mediaFolderService->removeAllMedia();
+        $this->mediaFolderService->resetAllMedia();
 
         $data = Yaml::parseFile($this->pathDataFixtures . self::TAG_FIXTURES_DATA_FILE);
         foreach ($data['media_folder'] as $ref => $folder) {

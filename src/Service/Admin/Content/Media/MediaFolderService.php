@@ -7,6 +7,7 @@
 
 namespace App\Service\Admin\Content\Media;
 
+use App\Entity\Admin\Content\MediaFolder;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Content\Media\MediaFolderConst;
@@ -27,6 +28,8 @@ class MediaFolderService extends AppAdminService
 
     private OptionSystemService $optionSystemService;
 
+    private string $rootPathMediatheque = '';
+
     public function __construct(
         EntityManagerInterface $entityManager,
         ContainerBagInterface  $containerBag,
@@ -39,6 +42,14 @@ class MediaFolderService extends AppAdminService
     )
     {
         $this->optionSystemService = $optionSystemService;
+
+        $rootPath = $containerBag->get('kernel.project_dir');
+        $publicFolder = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_PATH);
+
+        $this->rootPathMediatheque = $rootPath . DIRECTORY_SEPARATOR .
+            MediaFolderConst::ROOT_FOLDER_NAME . DIRECTORY_SEPARATOR .
+            $publicFolder . DIRECTORY_SEPARATOR .
+            MediaFolderConst::ROOT_MEDIA_FOLDER_NAME;
 
         parent::__construct(
             $entityManager,
@@ -53,22 +64,36 @@ class MediaFolderService extends AppAdminService
 
     /**
      * Supprime l'ensemble des dossiers / fichiers de la médiathèque
+     * Recréer le dossier racine
      * Appeler uniquement pour les fixtures
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function removeAllMedia(): void
+    public function resetAllMedia(): void
     {
-        $rootPath = $this->containerBag->get('kernel.project_dir');
-        $publicFolder = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_PATH);
-
-        $path = $rootPath . DIRECTORY_SEPARATOR . $publicFolder . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_FOLDER;
-
         $filesystem = new Filesystem();
-        if($filesystem->exists($path))
+        if ($filesystem->exists($this->rootPathMediatheque)) {
+            $filesystem->remove($this->rootPathMediatheque);
+        }
+        $filesystem->mkdir($this->rootPathMediatheque);
+    }
+
+    /**
+     * @param MediaFolder $mediaFolder
+     * @return void
+     */
+    public function createFolder(MediaFolder $mediaFolder)
+    {
+        $filesystem = new Filesystem();
+
+        if($mediaFolder->getPath() != '/')
         {
-            $filesystem->remove($path);
+            if(!$filesystem->exists($mediaFolder->getPath()))
+            {
+
+            }
+
         }
     }
 }
