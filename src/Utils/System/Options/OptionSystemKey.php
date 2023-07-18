@@ -137,7 +137,7 @@ class OptionSystemKey
      * Défini si on créé des dossiers physiques ou non pour la médiathèque
      * @var string
      */
-    const OS_MEDIA_FOLDER = 'OS_MEDIA_FOLDER';
+    const OS_MEDIA_CREATE_PHYSICAL_FOLDER = 'OS_MEDIA_CREATE_PHYSICAL_FOLDER';
 
     /**
      * Path du dossier média

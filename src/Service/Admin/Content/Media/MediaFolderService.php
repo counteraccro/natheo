@@ -30,6 +30,8 @@ class MediaFolderService extends AppAdminService
 
     private string $rootPathMediatheque = '';
 
+
+
     public function __construct(
         EntityManagerInterface $entityManager,
         ContainerBagInterface  $containerBag,
@@ -81,19 +83,21 @@ class MediaFolderService extends AppAdminService
 
     /**
      * @param MediaFolder $mediaFolder
-     * @return void
+     * @return bool
      */
-    public function createFolder(MediaFolder $mediaFolder)
+    public function createFolder(MediaFolder $mediaFolder): bool
     {
         $filesystem = new Filesystem();
 
-        if($mediaFolder->getPath() != '/')
-        {
-            if(!$filesystem->exists($mediaFolder->getPath()))
-            {
-
+        if ($mediaFolder->getPath() != '/') {
+            if (!$filesystem->exists($mediaFolder->getPath()) && $mediaFolder->getParent() != null) {
+                return $this->createFolder($mediaFolder->getParent());
             }
-
         }
+
+        $filesystem->mkdir($this->rootPathMediatheque . $mediaFolder->getPath() .
+            DIRECTORY_SEPARATOR . $mediaFolder->getName());
+
+        return true;
     }
 }
