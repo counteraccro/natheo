@@ -12,5 +12,5 @@ class MediaFolderConst
     /**
      * Nom du dossier root de la médiathèque
      */
-    public const ROOT_MEDIA_FOLDER_NAME = 'medias';
+    public const ROOT_MEDIA_FOLDER_NAME = 'assets_medias';
 }

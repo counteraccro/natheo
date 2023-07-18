@@ -1,13 +1,13 @@
 media_folder:
   Media:
     name: medias
-    path: /
+    path: \
     parent:
   Article:
     name: articles
-    path: /medias
+    path: \medias
     parent: Media
   CV:
     name: cv
-    path: /medias
+    path: \medias
     parent: Media

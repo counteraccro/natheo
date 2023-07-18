@@ -14,6 +14,7 @@ use App\Service\Admin\System\OptionSystemService;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Yaml\Yaml;
 use function PHPUnit\Framework\isEmpty;
@@ -22,15 +23,12 @@ class MediaFolderFixtures extends AppFixtures implements FixtureGroupInterface, 
 {
     private MediaFolderService $mediaFolderService;
 
-    private OptionSystemService $optionSystemService;
 
     public function __construct(
         ContainerBagInterface $params,
         MediaFolderService    $mediaFolderService,
-        OptionSystemService   $optionSystemService
     )
     {
-        $this->optionSystemService = $optionSystemService;
         $this->mediaFolderService = $mediaFolderService;
         parent::__construct($params);
     }
@@ -57,6 +55,7 @@ class MediaFolderFixtures extends AppFixtures implements FixtureGroupInterface, 
             }
 
             $manager->persist($mediaFolder);
+            $this->mediaFolderService->createFolder($mediaFolder);
             $this->addReference($ref, $mediaFolder);
         }
         $manager->flush();

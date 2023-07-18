@@ -30,6 +30,7 @@ class MediaFolderService extends AppAdminService
 
     private string $rootPathMediatheque = '';
 
+    private bool $canCreatePhysicalFolder = false;
 
 
     public function __construct(
@@ -45,14 +46,6 @@ class MediaFolderService extends AppAdminService
     {
         $this->optionSystemService = $optionSystemService;
 
-        $rootPath = $containerBag->get('kernel.project_dir');
-        $publicFolder = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_PATH);
-
-        $this->rootPathMediatheque = $rootPath . DIRECTORY_SEPARATOR .
-            MediaFolderConst::ROOT_FOLDER_NAME . DIRECTORY_SEPARATOR .
-            $publicFolder . DIRECTORY_SEPARATOR .
-            MediaFolderConst::ROOT_MEDIA_FOLDER_NAME;
-
         parent::__construct(
             $entityManager,
             $containerBag,
@@ -62,6 +55,29 @@ class MediaFolderService extends AppAdminService
             $requestStack,
             $parameterBag
         );
+
+        $this->initValue();
+    }
+
+    /**
+     * Initialise des valeurs nécessaires au bon fonctionnement de la médiathèque
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function initValue(): void
+    {
+        $rootPath = $this->containerBag->get('kernel.project_dir');
+        $publicFolder = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_PATH);
+
+        $this->rootPathMediatheque = $rootPath . DIRECTORY_SEPARATOR .
+            MediaFolderConst::ROOT_FOLDER_NAME . DIRECTORY_SEPARATOR .
+            $publicFolder . DIRECTORY_SEPARATOR .
+            MediaFolderConst::ROOT_MEDIA_FOLDER_NAME;
+
+        $this->canCreatePhysicalFolder = filter_var($this->optionSystemService->getValueByKey(
+            OptionSystemKey::OS_MEDIA_CREATE_PHYSICAL_FOLDER
+        ), FILTER_VALIDATE_BOOLEAN);
     }
 
     /**
@@ -82,22 +98,25 @@ class MediaFolderService extends AppAdminService
     }
 
     /**
+     * Permet de créer le dossier mediaFolder physiquement
      * @param MediaFolder $mediaFolder
      * @return bool
      */
     public function createFolder(MediaFolder $mediaFolder): bool
     {
+        if (!$this->canCreatePhysicalFolder) {
+            return false;
+        }
+
         $filesystem = new Filesystem();
 
-        if ($mediaFolder->getPath() != '/') {
-            if (!$filesystem->exists($mediaFolder->getPath()) && $mediaFolder->getParent() != null) {
-                return $this->createFolder($mediaFolder->getParent());
-            }
+        if ($mediaFolder->getParent() != null &&
+            !$filesystem->exists($this->rootPathMediatheque . $mediaFolder->getPath())) {
+            return $this->createFolder($mediaFolder->getParent());
         }
 
         $filesystem->mkdir($this->rootPathMediatheque . $mediaFolder->getPath() .
             DIRECTORY_SEPARATOR . $mediaFolder->getName());
-
         return true;
     }
 }
