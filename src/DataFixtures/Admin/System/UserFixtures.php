@@ -58,7 +58,7 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     public function load(ObjectManager $manager): void
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::USER_FIXTURES_DATA_FILE);
-        foreach ($data['user'] as $data) {
+        foreach ($data['user'] as $ref => $data) {
             $user = new User();
             $exclude = ['roles', 'password'];
             foreach ($data as $key => $value) {
@@ -84,6 +84,7 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                 ['login' => $user->getLogin(), 'role' => $user->getRoles()[0]]
             );
             $manager->persist($user);
+            $this->addReference($ref, $user);
         }
         $manager->flush();
     }

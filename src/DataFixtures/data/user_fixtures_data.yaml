@@ -1,5 +1,5 @@
 user:
-  -
+  User:
     email: user@natheo.com
     password: user@natheo.com
     login: user-1
@@ -9,7 +9,7 @@ user:
     disabled: 0
     anonymous: 0
     founder: 0
-  -
+  Contributeur:
     email: contributeur@natheo.com
     password: contributeur@natheo.com
     login: contributeur-1
@@ -19,7 +19,7 @@ user:
     disabled: 0
     anonymous: 0
     founder: 0
-  -
+  Admin:
     email: admin@natheo.com
     password: admin@natheo.com
     login: admin-1
@@ -29,7 +29,7 @@ user:
     disabled: 0
     anonymous: 0
     founder: 0
-  -
+  SuperAdmin:
     email: superadmin@natheo.com
     password: superadmin@natheo.com
     login: super-admin-1
@@ -39,7 +39,7 @@ user:
     disabled: 0
     anonymous: 0
     founder: 0
-  -
+  Aymeric:
     email: aymeric.gourdon@hotmail.fr
     password: aymeric.gourdon@hotmail.fr
     login: AG-DEMO
