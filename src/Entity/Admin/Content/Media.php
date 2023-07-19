@@ -24,6 +24,9 @@ class Media
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $name = null;
+
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
@@ -201,6 +204,18 @@ class Media
     public function setWebPath(string $web_path): static
     {
         $this->web_path = $web_path;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }
