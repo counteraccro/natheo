@@ -28,11 +28,16 @@ class MediaFolderService extends AppAdminService
 
     private OptionSystemService $optionSystemService;
 
-    private string $rootPathMediatheque = '';
+    private string $rootPathMedia = '';
 
     private bool $canCreatePhysicalFolder = false;
 
 
+    /**
+     * Constructeur
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function __construct(
         EntityManagerInterface $entityManager,
         ContainerBagInterface  $containerBag,
@@ -70,7 +75,9 @@ class MediaFolderService extends AppAdminService
         $rootPath = $this->containerBag->get('kernel.project_dir');
         $publicFolder = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_PATH);
 
-        $this->rootPathMediatheque = $rootPath . DIRECTORY_SEPARATOR .
+        //TODO gérer cas url externe
+
+        $this->rootPathMedia = $rootPath . DIRECTORY_SEPARATOR .
             MediaFolderConst::ROOT_FOLDER_NAME . DIRECTORY_SEPARATOR .
             $publicFolder . DIRECTORY_SEPARATOR .
             MediaFolderConst::ROOT_MEDIA_FOLDER_NAME;
@@ -85,16 +92,14 @@ class MediaFolderService extends AppAdminService
      * Recréer le dossier racine
      * Appeler uniquement pour les fixtures
      * @return void
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     public function resetAllMedia(): void
     {
         $filesystem = new Filesystem();
-        if ($filesystem->exists($this->rootPathMediatheque)) {
-            $filesystem->remove($this->rootPathMediatheque);
+        if ($filesystem->exists($this->rootPathMedia)) {
+            $filesystem->remove($this->rootPathMedia);
         }
-        $filesystem->mkdir($this->rootPathMediatheque);
+        $filesystem->mkdir($this->rootPathMedia);
     }
 
     /**
@@ -111,11 +116,11 @@ class MediaFolderService extends AppAdminService
         $filesystem = new Filesystem();
 
         if ($mediaFolder->getParent() != null &&
-            !$filesystem->exists($this->rootPathMediatheque . $mediaFolder->getPath())) {
+            !$filesystem->exists($this->rootPathMedia . $mediaFolder->getPath())) {
             return $this->createFolder($mediaFolder->getParent());
         }
 
-        $filesystem->mkdir($this->rootPathMediatheque . $mediaFolder->getPath() .
+        $filesystem->mkdir($this->rootPathMedia . $mediaFolder->getPath() .
             DIRECTORY_SEPARATOR . $mediaFolder->getName());
         return true;
     }
