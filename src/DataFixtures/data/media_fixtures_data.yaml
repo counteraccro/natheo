@@ -1,0 +1,6 @@
+media:
+  media-1:
+    folder: Article
+    user: Aymeric
+    description: "un désert dans le désert"
+    image: 'the-desert.png'

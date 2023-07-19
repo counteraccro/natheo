@@ -28,9 +28,11 @@ class MediaFolderService extends AppAdminService
 
     private OptionSystemService $optionSystemService;
 
-    private string $rootPathMedia = '';
+    protected string $rootPathMedia = '';
 
-    private bool $canCreatePhysicalFolder = false;
+    protected string $webPathMedia = '';
+
+    protected bool $canCreatePhysicalFolder = false;
 
 
     /**
@@ -60,7 +62,6 @@ class MediaFolderService extends AppAdminService
             $requestStack,
             $parameterBag
         );
-
         $this->initValue();
     }
 
@@ -73,14 +74,15 @@ class MediaFolderService extends AppAdminService
     private function initValue(): void
     {
         $rootPath = $this->containerBag->get('kernel.project_dir');
-        $publicFolder = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_PATH);
+        $mediaFolder = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_PATH);
+        $rootWebPath = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_URL);
 
         //TODO gérer cas url externe
 
         $this->rootPathMedia = $rootPath . DIRECTORY_SEPARATOR .
-            MediaFolderConst::ROOT_FOLDER_NAME . DIRECTORY_SEPARATOR .
-            $publicFolder . DIRECTORY_SEPARATOR .
-            MediaFolderConst::ROOT_MEDIA_FOLDER_NAME;
+            MediaFolderConst::ROOT_FOLDER_NAME . $mediaFolder;
+
+        $this->webPathMedia = $rootWebPath . MediaFolderConst::PATH_WEB_PATH . $mediaFolder;
 
         $this->canCreatePhysicalFolder = filter_var($this->optionSystemService->getValueByKey(
             OptionSystemKey::OS_MEDIA_CREATE_PHYSICAL_FOLDER
@@ -123,5 +125,21 @@ class MediaFolderService extends AppAdminService
         $filesystem->mkdir($this->rootPathMedia . $mediaFolder->getPath() .
             DIRECTORY_SEPARATOR . $mediaFolder->getName());
         return true;
+    }
+
+    /**
+     * Retourne le path complet du dossier envoyé en paramètre
+     * chemin sous la forme chemin/vers/mon/dossier
+     * @param MediaFolder $mediaFolder
+     * @param bool $endDirectorySeparator si true ajoute DIRECTORY_SEPARATOR à la fin
+     * @return string
+     */
+    public function getPathFolder(MediaFolder $mediaFolder, bool $endDirectorySeparator = true): string
+    {
+        $ds = '';
+        if ($endDirectorySeparator) {
+            $ds = DIRECTORY_SEPARATOR;
+        }
+        return $this->rootPathMedia . $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $mediaFolder->getName() . $ds;
     }
 }
