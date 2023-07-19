@@ -7,10 +7,7 @@ class MediaFolderConst
     /**
      * Nom du dossier root des assets
      */
-    public const ROOT_FOLDER_NAME = 'public';
+    public const ROOT_FOLDER_NAME = 'public' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
 
-    /**
-     * Nom du dossier root de la médiathèque
-     */
-    public const ROOT_MEDIA_FOLDER_NAME = 'assets_medias';
+    public const PATH_WEB_PATH = '/assets/';
 }
