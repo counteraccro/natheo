@@ -174,6 +174,7 @@ class TagController extends AppAdminController
      * Sauvegarde les données du tags
      * @param TagService $tagService
      * @param Request $request
+     * @param TranslatorInterface $translator
      * @return JsonResponse
      */
     #[Route('/ajax/save/', name: 'save', methods: ['POST'])]
