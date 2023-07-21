@@ -3,6 +3,7 @@
 namespace App\Repository\Admin\Content;
 
 use App\Entity\Admin\Content\Media;
+use App\Entity\Admin\Content\MediaFolder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,28 +40,24 @@ class MediaRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Media[] Returns an array of Media objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * Retourne une liste de medias en fonction d'un mediaFolder
+     * @param MediaFolder|null $mediaFolder
+     * @return float|int|mixed|string
+     */
+    public function findByMediaFolder(MediaFolder $mediaFolder = null): mixed
+    {
+        $query = $this->createQueryBuilder('m');
 
-//    public function findOneBySomeField($value): ?Media
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if ($mediaFolder !== null) {
+            $query->andWhere('m.mediaFolder = :val')
+                ->setParameter('val', $mediaFolder);
+        } else {
+            $query->andWhere('m.mediaFolder IS NULL');
+        }
+
+        return $query->orderBy('m.created_at', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

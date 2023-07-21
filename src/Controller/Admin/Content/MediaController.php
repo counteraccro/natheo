@@ -7,7 +7,11 @@
 namespace App\Controller\Admin\Content;
 
 use App\Controller\Admin\AppAdminController;
+use App\Entity\Admin\Content\MediaFolder;
+use App\Service\Admin\Content\Media\MediaService;
 use App\Utils\Breadcrumb;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -17,8 +21,13 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_CONTRIBUTEUR')]
 class MediaController extends AppAdminController
 {
+    /**
+     * Point d'entrée pour la médiathèque
+     * @param MediaService $mediaService
+     * @return Response
+     */
     #[Route('/', name: 'index')]
-    public function index(): Response
+    public function index(MediaService $mediaService): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'media',
@@ -30,5 +39,23 @@ class MediaController extends AppAdminController
         return $this->render('admin/content/media/index.html.twig', [
             'breadcrumb' => $breadcrumb,
         ]);
+    }
+
+    /**
+     * Charge une liste de média en fonction d'un dossier
+     * @param MediaFolder|null $mediaFolder
+     * @param MediaService $mediaService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/load', name: 'load', methods: ['POST'])]
+    public function loadMedia(Request $request, MediaService $mediaService): JsonResponse
+    {
+        $idFolder = $request->get('folder');
+
+        echo $idFolder;
+
+        $medias = $mediaService->getMediaByFolderMedia();
+        $medias = $mediaService->convertObjectsToJson($medias);
+        return $this->json(['medias' => json_decode($medias)]);
     }
 }
