@@ -20,6 +20,7 @@ use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
@@ -179,6 +180,28 @@ class AppAdminService
 
         return $serializer->normalize($object, null);
     }
+
+    /**
+     * Convertie tout type de donnée en Json
+     * @param $objects
+     * @param array $ignoredAttributes
+     * @return string
+     */
+    public function convertObjectsToJson($objects, array $ignoredAttributes = []): string
+    {
+
+        $defaultContext = [
+            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
+                return $object->getId();
+            },
+            AbstractNormalizer::IGNORED_ATTRIBUTES => $ignoredAttributes
+        ];
+        $normalizer = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
+        $serializer = new Serializer([$normalizer], [new JsonEncoder()]);
+
+        return $serializer->serialize($objects, 'json', $defaultContext);
+    }
+
 
     /**
      * Met à jour l'objet entity avec les données de $array
