@@ -2557,16 +2557,16 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v3.11.1",
+            "version": "v3.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine-extensions/DoctrineExtensions.git",
-                "reference": "ae4bdf0d567e06b6bb1902a560ee78961b230953"
+                "reference": "eef4b4978118fdb4c0a03509325e807ad96e3bec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine-extensions/DoctrineExtensions/zipball/ae4bdf0d567e06b6bb1902a560ee78961b230953",
-                "reference": "ae4bdf0d567e06b6bb1902a560ee78961b230953",
+                "url": "https://api.github.com/repos/doctrine-extensions/DoctrineExtensions/zipball/eef4b4978118fdb4c0a03509325e807ad96e3bec",
+                "reference": "eef4b4978118fdb4c0a03509325e807ad96e3bec",
                 "shasum": ""
             },
             "require": {
@@ -2582,7 +2582,6 @@
                 "symfony/deprecation-contracts": "^2.1 || ^3.0"
             },
             "conflict": {
-                "doctrine/cache": "<1.11",
                 "doctrine/dbal": "<2.13.1 || ^3.0 <3.2",
                 "doctrine/mongodb-odm": "<2.3",
                 "doctrine/orm": "<2.10.2",
@@ -2594,25 +2593,25 @@
                 "doctrine/doctrine-bundle": "^2.3",
                 "doctrine/mongodb-odm": "^2.3",
                 "doctrine/orm": "^2.10.2",
-                "friendsofphp/php-cs-fixer": "^3.4.0,<3.10",
+                "friendsofphp/php-cs-fixer": "^3.4.0 <3.10",
                 "nesbot/carbon": "^2.55",
-                "phpstan/phpstan": "^1.9",
+                "phpstan/phpstan": "^1.10.2",
                 "phpstan/phpstan-doctrine": "^1.0",
                 "phpstan/phpstan-phpunit": "^1.0",
                 "phpunit/phpunit": "^8.5 || ^9.5",
+                "rector/rector": "^0.15.20",
                 "symfony/console": "^4.4 || ^5.3 || ^6.0",
                 "symfony/phpunit-bridge": "^6.0",
                 "symfony/yaml": "^4.4 || ^5.3 || ^6.0"
             },
             "suggest": {
                 "doctrine/mongodb-odm": "to use the extensions with the MongoDB ODM",
-                "doctrine/orm": "to use the extensions with the ORM",
-                "symfony/cache": "to cache parsed annotations"
+                "doctrine/orm": "to use the extensions with the ORM"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "3.12-dev"
+                    "dev-main": "3.13-dev"
                 }
             },
             "autoload": {
@@ -2660,10 +2659,28 @@
             "support": {
                 "email": "gediminas.morkevicius@gmail.com",
                 "issues": "https://github.com/doctrine-extensions/DoctrineExtensions/issues",
-                "source": "https://github.com/doctrine-extensions/DoctrineExtensions/tree/v3.11.1",
+                "source": "https://github.com/doctrine-extensions/DoctrineExtensions/tree/v3.12.0",
                 "wiki": "https://github.com/Atlantic18/DoctrineExtensions/tree/main/doc"
             },
-            "time": "2023-02-20T19:24:07+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/l3pp4rd",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/mbabker",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/phansys",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/stof",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-07-08T20:38:42+00:00"
         },
         {
             "name": "kelunik/certificate",
@@ -4187,30 +4204,31 @@
         },
         {
             "name": "stof/doctrine-extensions-bundle",
-            "version": "v1.7.2",
+            "version": "v1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stof/StofDoctrineExtensionsBundle.git",
-                "reference": "5cfabc774ee0df1904b10cd03ceb39d993bb61bd"
+                "reference": "b40623da645d0e206331f506fb1065d8b0a0f3d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/5cfabc774ee0df1904b10cd03ceb39d993bb61bd",
-                "reference": "5cfabc774ee0df1904b10cd03ceb39d993bb61bd",
+                "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/b40623da645d0e206331f506fb1065d8b0a0f3d6",
+                "reference": "b40623da645d0e206331f506fb1065d8b0a0f3d6",
                 "shasum": ""
             },
             "require": {
-                "gedmo/doctrine-extensions": "^2.3.4 || ^3.0.0",
-                "php": "^7.1.3 || ^8.0",
-                "symfony/config": "^4.4 || ^5.2 || ^6.0",
-                "symfony/dependency-injection": "^4.4 || ^5.2 || ^6.0",
-                "symfony/event-dispatcher": "^4.4 || ^5.2 || ^6.0",
-                "symfony/http-kernel": "^4.4 || ^5.2 || ^6.0"
+                "gedmo/doctrine-extensions": "^3.5.0",
+                "php": "^7.2.5 || ^8.0",
+                "symfony/cache": "^5.4 || ^6.0",
+                "symfony/config": "^5.4 || ^6.0",
+                "symfony/dependency-injection": "^5.4 || ^6.0",
+                "symfony/event-dispatcher": "^5.4 || ^6.0",
+                "symfony/http-kernel": "^5.4 || ^6.0"
             },
             "require-dev": {
-                "symfony/mime": "^4.4 || ^5.2 || ^6.0",
-                "symfony/phpunit-bridge": "^v5.2.4 || ^6.0",
-                "symfony/security-core": "^4.4 || ^5.2 || ^6.0"
+                "symfony/mime": "^5.4 || ^6.0",
+                "symfony/phpunit-bridge": "^v5.4 || ^6.0",
+                "symfony/security-core": "^5.4 || ^6.0"
             },
             "suggest": {
                 "doctrine/doctrine-bundle": "to use the ORM extensions",
@@ -4255,9 +4273,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stof/StofDoctrineExtensionsBundle/issues",
-                "source": "https://github.com/stof/StofDoctrineExtensionsBundle/tree/v1.7.2"
+                "source": "https://github.com/stof/StofDoctrineExtensionsBundle/tree/v1.8.0"
             },
-            "time": "2023-05-22T18:25:15+00:00"
+            "time": "2023-07-07T15:34:33+00:00"
         },
         {
             "name": "symfony/apache-pack",
@@ -8431,16 +8449,16 @@
         },
         {
             "name": "symfony/stimulus-bundle",
-            "version": "v2.9.1",
+            "version": "v2.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stimulus-bundle.git",
-                "reference": "5261003352f52d9e1bcd0a04f099784ada2c3829"
+                "reference": "257ef052bebe491d7c29e9a4a8009edb82269e15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/stimulus-bundle/zipball/5261003352f52d9e1bcd0a04f099784ada2c3829",
-                "reference": "5261003352f52d9e1bcd0a04f099784ada2c3829",
+                "url": "https://api.github.com/repos/symfony/stimulus-bundle/zipball/257ef052bebe491d7c29e9a4a8009edb82269e15",
+                "reference": "257ef052bebe491d7c29e9a4a8009edb82269e15",
                 "shasum": ""
             },
             "require": {
@@ -8479,7 +8497,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/stimulus-bundle/tree/v2.9.1"
+                "source": "https://github.com/symfony/stimulus-bundle/tree/v2.10.0"
             },
             "funding": [
                 {
@@ -8495,7 +8513,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-30T15:13:12+00:00"
+            "time": "2023-06-29T19:46:37+00:00"
         },
         {
             "name": "symfony/stopwatch",
@@ -9012,16 +9030,16 @@
         },
         {
             "name": "symfony/ux-vue",
-            "version": "v2.9.1",
+            "version": "v2.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-vue.git",
-                "reference": "a315e5b62aa1caf1a4df25f594546bac8b2fb39e"
+                "reference": "371b35e80d5b45ea4d93e399d040bb5d7e8af089"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-vue/zipball/a315e5b62aa1caf1a4df25f594546bac8b2fb39e",
-                "reference": "a315e5b62aa1caf1a4df25f594546bac8b2fb39e",
+                "url": "https://api.github.com/repos/symfony/ux-vue/zipball/371b35e80d5b45ea4d93e399d040bb5d7e8af089",
+                "reference": "371b35e80d5b45ea4d93e399d040bb5d7e8af089",
                 "shasum": ""
             },
             "require": {
@@ -9072,7 +9090,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-vue/tree/v2.9.1"
+                "source": "https://github.com/symfony/ux-vue/tree/v2.10.0"
             },
             "funding": [
                 {
@@ -9088,7 +9106,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-30T14:40:50+00:00"
+            "time": "2023-06-28T20:17:17+00:00"
         },
         {
             "name": "symfony/validator",
@@ -10804,16 +10822,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.6.9",
+            "version": "9.6.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "a9aceaf20a682aeacf28d582654a1670d8826778"
+                "reference": "a6d351645c3fe5a30f5e86be6577d946af65a328"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a9aceaf20a682aeacf28d582654a1670d8826778",
-                "reference": "a9aceaf20a682aeacf28d582654a1670d8826778",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a6d351645c3fe5a30f5e86be6577d946af65a328",
+                "reference": "a6d351645c3fe5a30f5e86be6577d946af65a328",
                 "shasum": ""
             },
             "require": {
@@ -10887,7 +10905,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.9"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.10"
             },
             "funding": [
                 {
@@ -10903,7 +10921,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-06-11T06:13:56+00:00"
+            "time": "2023-07-10T04:04:23+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -12080,16 +12098,16 @@
         },
         {
             "name": "symfony/maker-bundle",
-            "version": "v1.49.0",
+            "version": "v1.50.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/maker-bundle.git",
-                "reference": "ce1d424f76bbb377f1956cc7641e8e2eafe81cde"
+                "reference": "a1733f849b999460c308e66f6392fb09b621fa86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/ce1d424f76bbb377f1956cc7641e8e2eafe81cde",
-                "reference": "ce1d424f76bbb377f1956cc7641e8e2eafe81cde",
+                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/a1733f849b999460c308e66f6392fb09b621fa86",
+                "reference": "a1733f849b999460c308e66f6392fb09b621fa86",
                 "shasum": ""
             },
             "require": {
@@ -12147,13 +12165,14 @@
             "homepage": "https://symfony.com/doc/current/bundles/SymfonyMakerBundle/index.html",
             "keywords": [
                 "code generator",
+                "dev",
                 "generator",
                 "scaffold",
                 "scaffolding"
             ],
             "support": {
                 "issues": "https://github.com/symfony/maker-bundle/issues",
-                "source": "https://github.com/symfony/maker-bundle/tree/v1.49.0"
+                "source": "https://github.com/symfony/maker-bundle/tree/v1.50.0"
             },
             "funding": [
                 {
@@ -12169,7 +12188,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-06-07T13:10:14+00:00"
+            "time": "2023-07-10T18:21:57+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",
