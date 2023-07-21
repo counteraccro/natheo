@@ -4,3 +4,8 @@ media:
     user: Aymeric
     description: "un désert dans le désert"
     image: 'the-desert.png'
+  media-2:
+    folder: ''
+    user: Aymeric
+    description: "Soleil levant sur la plage"
+    image: 'beach.jpg'
