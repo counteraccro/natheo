@@ -41,7 +41,10 @@ class MediaFixtures extends AppFixtures implements FixtureGroupInterface, Ordere
             foreach ($data as $key => $value) {
                 switch ($key) {
                     case 'folder' :
-                        $media->setMediaFolder($this->getReference($value));
+                        if(!empty($value))
+                        {
+                            $media->setMediaFolder($this->getReference($value));
+                        }
                         break;
                     case 'user' :
                         $media->setUser($this->getReference($value));

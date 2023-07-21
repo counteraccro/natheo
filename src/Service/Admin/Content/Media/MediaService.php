@@ -8,6 +8,8 @@
 namespace App\Service\Admin\Content\Media;
 
 use App\Entity\Admin\Content\Media;
+use App\Entity\Admin\Content\MediaFolder;
+use App\Repository\Admin\Content\MediaRepository;
 use App\Utils\Content\Media\MediaFolderConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -34,8 +36,8 @@ class MediaService extends MediaFolderService
         $fileSystem = new Filesystem();
 
         $urlOrigin = $fixturesPath . $file;
-        $urlCopy = $this->rootPathMedia . $file;
-        if ($this->canCreatePhysicalFolder) {
+        $urlCopy = $this->rootPathMedia . DIRECTORY_SEPARATOR . $file;
+        if ($this->canCreatePhysicalFolder && $media->getMediaFolder() != null) {
             $urlCopy = $this->getPathFolder($media->getMediaFolder()) . $file;
         }
         $fileSystem->copy($urlOrigin, $urlCopy);
@@ -50,7 +52,7 @@ class MediaService extends MediaFolderService
     public function UpdateMediaFile(Media $media, string $file)
     {
         $urlFile = $this->rootPathMedia;
-        if ($this->canCreatePhysicalFolder) {
+        if ($this->canCreatePhysicalFolder && $media->getMediaFolder() != null) {
             $urlFile = $this->getPathFolder($media->getMediaFolder());
         }
         $finder = new Finder();
@@ -76,7 +78,23 @@ class MediaService extends MediaFolderService
     public function getWebPath(Media $media): string
     {
         $mediaFolder = $media->getMediaFolder();
-        return $this->webPathMedia . $mediaFolder->getPath() . '/' .
-            $mediaFolder->getName() . '/' . $media->getName();
+        $path = $this->webPathMedia . '/' . $media->getName();
+        if ($mediaFolder != null) {
+            $path = $this->webPathMedia . $mediaFolder->getPath() . '/' .
+                $mediaFolder->getName() . '/' . $media->getName();
+        }
+        return $path;
+    }
+
+    /**
+     * Retourne une liste de média en fonction d'un mediaFolder
+     * @param MediaFolder|null $mediaFolder
+     * @return float|int|mixed|string
+     */
+    public function getMediaByFolderMedia(MediaFolder $mediaFolder = null): mixed
+    {
+        /** @var MediaRepository $repo */
+        $repo = $this->getRepository(Media::class);
+        return $repo->findByMediaFolder($mediaFolder);
     }
 }
