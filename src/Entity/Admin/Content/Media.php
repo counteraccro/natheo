@@ -54,13 +54,13 @@ class Media
     #[ORM\Column(name: 'web_path', type: Types::TEXT)]
     private ?string $webPath = null;
 
-    #[ORM\Column(name: 'created_at')]
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
     #[Gedmo\Timestampable(on: "create")]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?\DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(name: 'update_at', nullable: true)]
+    #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Gedmo\Timestampable(on: "update")]
-    private ?\DateTimeImmutable $updateAt = null;
+    private ?\DateTimeInterface $updateAt = null;
 
     public function getId(): ?int
     {
@@ -163,24 +163,24 @@ class Media
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdateAt(): ?\DateTimeImmutable
+    public function getUpdateAt(): ?\DateTimeInterface
     {
         return $this->updateAt;
     }
 
-    public function setUpdateAt(?\DateTimeImmutable $updateAt): static
+    public function setUpdateAt(?\DateTimeInterface $updateAt): static
     {
         $this->updateAt = $updateAt;
 

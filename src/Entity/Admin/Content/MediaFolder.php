@@ -5,6 +5,7 @@ namespace App\Entity\Admin\Content;
 use App\Repository\Admin\Content\MediaFolderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -35,13 +36,13 @@ class MediaFolder
     #[ORM\Column]
     private ?bool $trash = false;
 
-    #[ORM\Column]
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
     #[Gedmo\Timestampable(on: "create")]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?\DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Gedmo\Timestampable(on: "update")]
-    private ?\DateTimeImmutable $update_at = null;
+    private ?\DateTimeInterface $updateAt = null;
 
     #[ORM\OneToMany(mappedBy: 'mediaFolder', targetEntity: Media::class)]
     private Collection $medias;
@@ -123,26 +124,26 @@ class MediaFolder
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdateAt(): ?\DateTimeImmutable
+    public function getUpdateAt(): ?\DateTimeInterface
     {
-        return $this->update_at;
+        return $this->updateAt;
     }
 
-    public function setUpdateAt(?\DateTimeImmutable $update_at): static
+    public function setUpdateAt(?\DateTimeInterface $updateAt): static
     {
-        $this->update_at = $update_at;
+        $this->updateAt = $updateAt;
 
         return $this;
     }
