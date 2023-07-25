@@ -55,7 +55,7 @@ class MediaController extends AppAdminController
         echo $idFolder;
 
         $medias = $mediaService->getMediaByFolderMedia();
-        $medias = $mediaService->convertObjectsToJson($medias);
-        return $this->json(['medias' => json_decode($medias)]);
+        //$medias = $mediaService->convertObjectsToJson($medias);
+        return $this->json(['medias' => $medias]);
     }
 }

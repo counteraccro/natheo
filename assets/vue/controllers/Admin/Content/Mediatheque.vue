@@ -46,7 +46,7 @@ export default {
 <template>
   <div v-for="media in this.medias">
     {{media.name}}
-    <img :src="media.webPath" :alt="media.name" />
+    <img :src="media.web_path" :alt="media.name" />
   </div>
 
 </template>
