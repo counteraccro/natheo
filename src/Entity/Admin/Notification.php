@@ -35,8 +35,8 @@ class Notification
     private ?bool $read = null;
 
     #[Gedmo\Timestampable(on: "create")]
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $create_at = null;
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createAt = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $parameters = null;
@@ -96,12 +96,12 @@ class Notification
 
     public function getCreateAt(): ?\DateTimeInterface
     {
-        return $this->create_at;
+        return $this->createAt;
     }
 
-    public function setCreateAt(\DateTimeInterface $create_at): self
+    public function setCreateAt(\DateTimeInterface $createAt): self
     {
-        $this->create_at = $create_at;
+        $this->createAt = $createAt;
 
         return $this;
     }

@@ -53,12 +53,12 @@ class SidebarElement
     private ?bool $lock = null;
 
     #[Gedmo\Timestampable(on : "create")]
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $created_at = null;
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
 
     #[Gedmo\Timestampable(on : "update")]
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $update_at = null;
+    #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $updateAt = null;
 
     public function __construct()
     {
@@ -162,24 +162,24 @@ class SidebarElement
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdateAt(): ?\DateTimeInterface
     {
-        return $this->update_at;
+        return $this->updateAt;
     }
 
-    public function setUpdateAt(?\DateTimeInterface $update_at): self
+    public function setUpdateAt(?\DateTimeInterface $updateAt): self
     {
-        $this->update_at = $update_at;
+        $this->updateAt = $updateAt;
 
         return $this;
     }
