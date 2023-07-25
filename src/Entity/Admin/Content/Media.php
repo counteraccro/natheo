@@ -51,16 +51,16 @@ class Media
     #[ORM\Column(type: Types::TEXT)]
     private ?string $path = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $web_path = null;
+    #[ORM\Column(name: 'web_path', type: Types::TEXT)]
+    private ?string $webPath = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name: 'created_at')]
     #[Gedmo\Timestampable(on: "create")]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(name: 'update_at', nullable: true)]
     #[Gedmo\Timestampable(on: "update")]
-    private ?\DateTimeImmutable $update_at = null;
+    private ?\DateTimeImmutable $updateAt = null;
 
     public function getId(): ?int
     {
@@ -165,24 +165,24 @@ class Media
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdateAt(): ?\DateTimeImmutable
     {
-        return $this->update_at;
+        return $this->updateAt;
     }
 
-    public function setUpdateAt(?\DateTimeImmutable $update_at): static
+    public function setUpdateAt(?\DateTimeImmutable $updateAt): static
     {
-        $this->update_at = $update_at;
+        $this->updateAt = $updateAt;
 
         return $this;
     }
@@ -201,12 +201,12 @@ class Media
 
     public function getWebPath(): ?string
     {
-        return $this->web_path;
+        return $this->webPath;
     }
 
-    public function setWebPath(string $web_path): static
+    public function setWebPath(string $webPath): static
     {
-        $this->web_path = $web_path;
+        $this->webPath = $webPath;
 
         return $this;
     }
