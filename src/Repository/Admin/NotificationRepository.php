@@ -73,7 +73,7 @@ class NotificationRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('n')
             ->andWhere('n.user = :user')
             ->setParameter('user', $user)
-            ->orderBy('n.create_at', 'DESC');
+            ->orderBy('n.createdAt', 'DESC');
 
         if ($onlyNotRead) {
             $query->andWhere('COALESCE(n.read, FALSE) = FALSE');
@@ -101,7 +101,7 @@ class NotificationRepository extends ServiceEntityRepository
             FROM natheo.notification n
             WHERE n.user_id = :user_id
             AND n.read = true
-            AND EXTRACT(day from ((CURRENT_DATE - n.create_at))) > :nb_day
+            AND EXTRACT(day from ((CURRENT_DATE - n.created_at))) > :nb_day
         ';
         $params = [
             'user_id' => $userId,

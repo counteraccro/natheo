@@ -219,7 +219,7 @@ export default {
         <div v-for="notification in this.notifications">
           <div :id="'notification-' + notification.id" class="card bg-opacity-10 p-2 shadow-sm rounded-end mb-2" :class="this.cssClass(notification)" @mouseover="mouseover(notification.id)">
             <div class="card-body">
-              <div class="float-end"><i>{{ this.formatDate(notification.createAt) }}</i></div>
+              <div class="float-end"><i>{{ this.formatDate(notification.createdAt) }}</i></div>
               <h5 class="card-title">{{ notification.title }}</h5>
               <span class="card-text" v-html="notification.content"></span>
             </div>
