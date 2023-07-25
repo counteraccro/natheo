@@ -49,7 +49,7 @@ class MediaRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('m');
 
-        $query->select('m.id', 'm.title', 'm.web_path', 'm.size', 'm.name');
+        $query->select('m.id', 'm.title', 'm.webPath', 'm.size', 'm.name');
 
         if ($mediaFolder !== null) {
             $query->andWhere('m.mediaFolder = :val')
@@ -58,7 +58,7 @@ class MediaRepository extends ServiceEntityRepository
             $query->andWhere('m.mediaFolder IS NULL');
         }
 
-        return $query->orderBy('m.created_at', 'ASC')
+        return $query->orderBy('m.createdAt', 'ASC')
             ->getQuery()
             ->getResult();
     }
