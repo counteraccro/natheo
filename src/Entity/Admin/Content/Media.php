@@ -40,6 +40,9 @@ class Media
     private ?string $extension = null;
 
     #[ORM\Column]
+    private ?int $size = null;
+
+    #[ORM\Column]
     private ?bool $disabled = false;
 
     #[ORM\Column]
@@ -216,6 +219,18 @@ class Media
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSize(): ?int
+    {
+        return $this->size;
+    }
+
+    public function setSize(int $size): static
+    {
+        $this->size = $size;
 
         return $this;
     }

@@ -49,7 +49,7 @@ class MediaService extends MediaFolderService
      * @param string $file
      * @return void
      */
-    public function UpdateMediaFile(Media $media, string $file)
+    public function UpdateMediaFile(Media $media, string $file): void
     {
         $urlFile = $this->rootPathMedia;
         if ($this->canCreatePhysicalFolder && $media->getMediaFolder() != null) {
@@ -65,6 +65,7 @@ class MediaService extends MediaFolderService
                 $media->setTitle($file->getFilenameWithoutExtension());
                 $media->setName($file->getFilename());
                 $media->setWebPath($this->getWebPath($media));
+                $media->setSize($file->getSize());
                 $media->setType('Image');
             }
         }
