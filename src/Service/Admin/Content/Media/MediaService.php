@@ -106,7 +106,16 @@ class MediaService extends MediaFolderService
     public function getMediatequeTranslation(): array
     {
         return [
-            'loading' => $this->translator->trans('media.mediatheque.loading', domain: 'media')
+            'loading' => $this->translator->trans('media.mediatheque.loading', domain: 'media'),
+            'btn_new_folder' => $this->translator->trans('media.mediatheque.btn.new.folder', domain: 'media'),
+            'btn_new_media' => $this->translator->trans('media.mediatheque.btn.new.media', domain: 'media'),
+            'btn_filtre' => $this->translator->trans('media.mediatheque.btn.filtre', domain: 'media'),
+            'filtre_date' => $this->translator->trans('media.mediatheque.filtre.date', domain: 'media'),
+            'filtre_nom' => $this->translator->trans('media.mediatheque.filtre.nom', domain: 'media'),
+            'filtre_type' => $this->translator->trans('media.mediatheque.filtre.type', domain: 'media'),
+            'btn_order' => $this->translator->trans('media.mediatheque.btn.order', domain: 'media'),
+            'order_asc' => $this->translator->trans('media.mediatheque.order.asc', domain: 'media'),
+            'order_desc' => $this->translator->trans('media.mediatheque.order.desc', domain: 'media'),
         ];
     }
 }

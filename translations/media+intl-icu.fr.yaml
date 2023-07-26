@@ -1,3 +1,12 @@
 media.index.page_title: Médiathèque
 media.index.page_title_h1: 'La médiathèque'
 media.mediatheque.loading: 'Chargement de la médiatheque'
+media.mediatheque.btn.new.folder: 'Nouveau dossier'
+media.mediatheque.btn.new.media: 'Nouveau média'
+media.mediatheque.btn.filtre: 'Trier par'
+media.mediatheque.filtre.date: 'Date création'
+media.mediatheque.filtre.nom: Nom
+media.mediatheque.filtre.type: Type
+media.mediatheque.btn.order: Ordre
+media.mediatheque.order.asc: Croissant
+media.mediatheque.order.desc: Décroissant

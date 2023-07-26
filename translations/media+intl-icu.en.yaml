@@ -1,2 +1,12 @@
 media.index.page_title: __media.index.page_title
 media.index.page_title_h1: __media.index.page_title_h1
+media.mediatheque.loading: __media.mediatheque.loading
+media.mediatheque.btn.new.folder: __media.mediatheque.btn.new.folder
+media.mediatheque.btn.new.media: __media.mediatheque.btn.new.media
+media.mediatheque.btn.filtre: __media.mediatheque.btn.filtre
+media.mediatheque.filtre.date: __media.mediatheque.filtre.date
+media.mediatheque.filtre.nom: __media.mediatheque.filtre.nom
+media.mediatheque.filtre.type: __media.mediatheque.filtre.type
+media.mediatheque.btn.order: __media.mediatheque.btn.order
+media.mediatheque.order.asc: __media.mediatheque.order.asc
+media.mediatheque.order.desc: __media.mediatheque.order.desc
