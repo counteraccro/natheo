@@ -8,6 +8,7 @@
 namespace App\Service\Admin\Content\Media;
 
 use App\Entity\Admin\Content\MediaFolder;
+use App\Repository\Admin\Content\MediaFolderRepository;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Content\Media\MediaFolderConst;
@@ -19,6 +20,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -141,5 +143,54 @@ class MediaFolderService extends AppAdminService
             $ds = DIRECTORY_SEPARATOR;
         }
         return $this->rootPathMedia . $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $mediaFolder->getName() . $ds;
+    }
+
+    /** Retourne une liste de médiaFolder en fonction d'un médiaFolder
+     * @param MediaFolder|null $mediaFolder
+     * @param bool $trash
+     * @param bool $disabled
+     * @return float|int|mixed|string
+     */
+    public function getMediaFolderByMediaFolder
+    (
+        MediaFolder $mediaFolder = null,
+        bool        $trash = false,
+        bool        $disabled = false
+    ): mixed
+    {
+        $repo = $this->getRepository(MediaFolder::class);
+
+        /** @var MediaFolderRepository $repo */
+        return $repo->getByMediaFolder($mediaFolder, $trash, $disabled);
+    }
+
+    /**
+     * Retourne la taille d'un dossier
+     * @param MediaFolder|null $mediaFolder
+     * @return int
+     */
+    public function getFolderSize(MediaFolder $mediaFolder = null): int
+    {
+        $path = $this->rootPathMedia;
+        if ($mediaFolder != null) {
+            $path = $this->getPathFolder($mediaFolder, false);
+        }
+
+        return $this->folderSize($path);
+
+    }
+
+    /**
+     * Calcul la taille d'un dossier
+     * @param string $dir
+     * @return int
+     */
+    private function folderSize(string $dir): int
+    {
+        $size = 0;
+        foreach (glob(rtrim($dir, '/') . '/*', GLOB_NOSORT) as $each) {
+            $size += is_file($each) ? filesize($each) : $this->folderSize($each);
+        }
+        return $size;
     }
 }

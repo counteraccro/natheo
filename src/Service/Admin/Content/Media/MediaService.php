@@ -92,10 +92,17 @@ class MediaService extends MediaFolderService
      * @param MediaFolder|null $mediaFolder
      * @return float|int|mixed|string
      */
-    public function getMediaByFolderMedia(MediaFolder $mediaFolder = null): mixed
+    public function getMediaByMediaFolder(MediaFolder $mediaFolder = null): mixed
     {
         /** @var MediaRepository $repo */
         $repo = $this->getRepository(Media::class);
         return $repo->findByMediaFolder($mediaFolder);
+    }
+
+    public function getMediatequeTranslation()
+    {
+        return [
+            'title.folder'
+        ]
     }
 }

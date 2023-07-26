@@ -39,6 +39,36 @@ class MediaFolderRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Retourne une liste de médiaFolder contenu dans un médiaFolder
+     * @param MediaFolder|null $mediaFolder
+     * @param bool $trash : par défaut false
+     * @param bool $disabled: par défaut false
+     * @return float|int|mixed|string
+     */
+    public function getByMediaFolder
+    (
+        MediaFolder $mediaFolder = null,
+        bool        $trash = false,
+        bool        $disabled = false
+    ): mixed
+    {
+        $query = $this->createQueryBuilder('mf')
+            ->select('mf.name', 'mf.path')
+            ->andWhere('mf.disabled = :disabled')
+            ->setParameter('disabled', $disabled)
+            ->andWhere('mf.trash = :trash')
+            ->setParameter('trash', $trash);
+
+        if ($mediaFolder != null) {
+            $query->andWhere('mf.parent = :val');
+            $query->setParameter('val', $mediaFolder);
+        } else {
+            $query->andWhere('mf.parent IS NULL');
+        }
+        return $query->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return MediaFolder[] Returns an array of MediaFolder objects
 //     */
