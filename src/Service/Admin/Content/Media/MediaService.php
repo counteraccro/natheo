@@ -99,10 +99,14 @@ class MediaService extends MediaFolderService
         return $repo->findByMediaFolder($mediaFolder);
     }
 
-    public function getMediatequeTranslation()
+    /**
+     * Retourne la traduction pour la médiathèque
+     * @return array
+     */
+    public function getMediatequeTranslation(): array
     {
         return [
-            'title.folder'
-        ]
+            'loading' => $this->translator->trans('media.mediatheque.loading', domain: 'media')
+        ];
     }
 }

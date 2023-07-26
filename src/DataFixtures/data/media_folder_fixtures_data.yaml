@@ -11,3 +11,7 @@ media_folder:
     name: cv
     path: \medias
     parent: Media
+  2023:
+    name: 2023
+    path: \medias\articles
+    parent: Article

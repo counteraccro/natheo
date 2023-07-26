@@ -4,12 +4,14 @@
  * @version 1.0
  * Controller pour la gestion des médias
  */
+
 namespace App\Controller\Admin\Content;
 
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\MediaFolder;
 use App\Service\Admin\Content\Media\MediaService;
 use App\Utils\Breadcrumb;
+use App\Utils\Utils;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,12 +40,13 @@ class MediaController extends AppAdminController
 
         return $this->render('admin/content/media/index.html.twig', [
             'breadcrumb' => $breadcrumb,
+            'translate' => $mediaService->getMediatequeTranslation()
         ]);
     }
 
     /**
      * Charge une liste de média en fonction d'un dossier
-     * @param MediaFolder|null $mediaFolder
+     * @param Request $request
      * @param MediaService $mediaService
      * @return JsonResponse
      */
@@ -54,8 +57,17 @@ class MediaController extends AppAdminController
 
         echo $idFolder;
 
-        $medias = $mediaService->getMediaByFolderMedia();
-        //$medias = $mediaService->convertObjectsToJson($medias);
-        return $this->json(['medias' => $medias]);
+        $folders = $mediaService->getMediaFolderByMediaFolder();
+        $medias = $mediaService->getMediaByMediaFolder();
+        $size = $mediaService->getFolderSize();
+
+        return $this->json([
+            'medias' => $medias,
+            'folders' => $folders,
+            'currentFolder' => [
+                'size' => Utils::getSizeName($size),
+                'folder' => null
+            ]
+        ]);
     }
 }

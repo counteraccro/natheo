@@ -7,6 +7,6 @@
 
     {{ breadcrumb(breadcrumb) }}
 
-    <div {{ vue_component('Admin/Content/Mediatheque', {'url' : path('admin_media_load')}) }}></div>
+    <div {{ vue_component('Admin/Content/Mediatheque', {'url' : path('admin_media_load'), 'translate' : translate}) }}></div>
 
 {% endblock %}
