@@ -14,8 +14,18 @@ class MediaFolderConst
      */
     public const ROOT_FOLDER_NAME = 'public' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
 
-    public const ROOT_THUMBNAILS = 'public' .
-    DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'thumbnails';
-
+    /**
+     * Url pour le dossier asset
+     */
     public const PATH_WEB_PATH = '/assets/';
+
+    /**
+     * Chemin pour le dossier miniature
+     */
+    public const ROOT_THUMBNAILS = 'public' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'thumbnails';
+
+    /**
+     * Url pour le dossier thumbnails
+     */
+    public const PATH_WEB_THUMBNAILS = '/assets/thumbnails/';
 }

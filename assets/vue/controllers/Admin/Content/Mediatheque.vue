@@ -120,7 +120,7 @@ export default {
 
         <div class="mt-5" v-for="media in this.medias">
           {{ media.name }}
-          <img class="img-thumbnail" :src="media.webPath" :alt="media.name"/>
+          <img class="img-thumbnail" :src="media.thumbnail" :alt="media.name"/>
         </div>
 
       </div>

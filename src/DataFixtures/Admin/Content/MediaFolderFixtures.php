@@ -51,9 +51,7 @@ class MediaFolderFixtures extends AppFixtures implements FixtureGroupInterface, 
                     default:
                         $this->setData($key, $value, $mediaFolder);
                 }
-
             }
-
             $manager->persist($mediaFolder);
             $this->mediaFolderService->createFolder($mediaFolder);
             $this->addReference($ref, $mediaFolder);

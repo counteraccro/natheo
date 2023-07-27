@@ -42,17 +42,20 @@ class Media
     #[ORM\Column]
     private ?int $size = null;
 
-    #[ORM\Column]
-    private ?bool $disabled = false;
-
-    #[ORM\Column]
-    private ?bool $trash = false;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $thumbnail = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $path = null;
 
     #[ORM\Column(name: 'web_path', type: Types::TEXT)]
     private ?string $webPath = null;
+
+    #[ORM\Column]
+    private ?bool $disabled = false;
+
+    #[ORM\Column]
+    private ?bool $trash = false;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
     #[Gedmo\Timestampable(on: "create")]
@@ -231,6 +234,18 @@ class Media
     public function setSize(int $size): static
     {
         $this->size = $size;
+
+        return $this;
+    }
+
+    public function getThumbnail(): ?string
+    {
+        return $this->thumbnail;
+    }
+
+    public function setThumbnail(?string $thumbnail): static
+    {
+        $this->thumbnail = $thumbnail;
 
         return $this;
     }

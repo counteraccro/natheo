@@ -63,9 +63,10 @@ class MediaService extends MediaFolderService
         if ($finder->hasResults()) {
             foreach ($finder as $file) {
 
-                $thumbnail = new Thumbnail($this->rootThumbnailsPath);
-                $thumbnail->create($file->getRealPath(), $file->getExtension());
+                $thumbnail = new Thumbnail($this->rootPathThumbnail);
+                $nameThumbnail = $thumbnail->create($file->getRealPath(), $file->getExtension());
 
+                $media->setThumbnail($nameThumbnail);
                 $media->setExtension($file->getExtension());
                 $media->setPath($file->getPath());
                 $media->setTitle($file->getFilenameWithoutExtension());
@@ -94,6 +95,16 @@ class MediaService extends MediaFolderService
     }
 
     /**
+     * Renvoi l'url web de la miniature
+     * @param string $thumbnail
+     * @return string
+     */
+    public function getWebPathThumbnail(string $thumbnail)
+    {
+        return $this->webPathThumbnail . $thumbnail;
+    }
+
+    /**
      * Retourne l'ensemble des médias et dossier lié à un dossier
      * @return array
      */
@@ -105,8 +116,7 @@ class MediaService extends MediaFolderService
         $return = [];
 
         /** @var Media $media */
-        foreach($medias as $media)
-        {
+        foreach ($medias as $media) {
             $return[] = [
                 'type' => 'media',
                 'id' => $media->getId(),
@@ -114,12 +124,12 @@ class MediaService extends MediaFolderService
                 'description' => $media->getDescription(),
                 'size' => Utils::getSizeName($media->getSize()),
                 'webPath' => $media->getWebPath(),
+                'thumbnail' => $this->getWebPathThumbnail($media->getThumbnail())
             ];
         }
 
         /** @var MediaFolder $folder */
-        foreach($folders as $folder)
-        {
+        foreach ($folders as $folder) {
             $return[] = [
                 'type' => 'folder',
                 'id' => $folder->getId(),

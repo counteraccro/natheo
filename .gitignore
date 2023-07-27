@@ -43,3 +43,4 @@ yarn-error.log
 .idea/dataSources.xml
 .idea/sqldialects.xml
 /.env.dev
+public/assets/thumbnails/*
