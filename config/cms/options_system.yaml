@@ -172,7 +172,7 @@ options_system:
         help: 'options_system.media_url_help'
         placeholder: 'options_system.media_url_placeholder'
         success: 'options_system.media_url_msg_success'
-      OS_MEDIA_FOLDER:
+      OS_MEDIA_CREATE_PHYSICAL_FOLDER:
         type: 'boolean'
         label: 'options_system.media_folder'
         help: 'options_system.media_folder_help'
