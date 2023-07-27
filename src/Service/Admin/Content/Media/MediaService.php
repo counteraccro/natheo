@@ -11,6 +11,7 @@ use App\Entity\Admin\Content\Media;
 use App\Entity\Admin\Content\MediaFolder;
 use App\Repository\Admin\Content\MediaRepository;
 use App\Utils\Content\Media\MediaFolderConst;
+use App\Utils\Content\Media\Thumbnail;
 use App\Utils\Utils;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -61,6 +62,10 @@ class MediaService extends MediaFolderService
 
         if ($finder->hasResults()) {
             foreach ($finder as $file) {
+
+                $thumbnail = new Thumbnail($this->rootThumbnailsPath);
+                $thumbnail->create($file->getRealPath(), $file->getExtension());
+
                 $media->setExtension($file->getExtension());
                 $media->setPath($file->getPath());
                 $media->setTitle($file->getFilenameWithoutExtension());

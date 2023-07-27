@@ -34,6 +34,10 @@ class MediaFolderService extends AppAdminService
 
     protected string $webPathMedia = '';
 
+    protected string $rootPath = '';
+
+    protected string $rootThumbnailsPath = '';
+
     protected bool $canCreatePhysicalFolder = false;
 
 
@@ -75,16 +79,17 @@ class MediaFolderService extends AppAdminService
      */
     private function initValue(): void
     {
-        $rootPath = $this->containerBag->get('kernel.project_dir');
+        $this->rootPath = $this->containerBag->get('kernel.project_dir');
         $mediaFolder = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_PATH);
         $rootWebPath = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_URL);
 
         //TODO gérer cas url externe
 
-        $this->rootPathMedia = $rootPath . DIRECTORY_SEPARATOR .
+        $this->rootPathMedia = $this->rootPath . DIRECTORY_SEPARATOR .
             MediaFolderConst::ROOT_FOLDER_NAME . $mediaFolder;
 
         $this->webPathMedia = $rootWebPath . MediaFolderConst::PATH_WEB_PATH . $mediaFolder;
+        $this->rootThumbnailsPath = $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_THUMBNAILS;
 
         $this->canCreatePhysicalFolder = filter_var($this->optionSystemService->getValueByKey(
             OptionSystemKey::OS_MEDIA_CREATE_PHYSICAL_FOLDER
@@ -103,7 +108,17 @@ class MediaFolderService extends AppAdminService
         if ($filesystem->exists($this->rootPathMedia)) {
             $filesystem->remove($this->rootPathMedia);
         }
+
+        if ($filesystem->exists($this->rootThumbnailsPath)) {
+            $filesystem->remove($this->rootThumbnailsPath);
+        }
+
+        echo $this->rootThumbnailsPath;
+
         $filesystem->mkdir($this->rootPathMedia);
+        $filesystem->mkdir($this->rootThumbnailsPath);
+
+
     }
 
     /**
