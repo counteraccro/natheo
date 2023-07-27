@@ -9,5 +9,7 @@ class MediaFolderConst
      */
     public const ROOT_FOLDER_NAME = 'public' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR;
 
+    public const ROOT_THUMBNAILS = 'public' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'thumbnails';
+
     public const PATH_WEB_PATH = '/assets/';
 }
