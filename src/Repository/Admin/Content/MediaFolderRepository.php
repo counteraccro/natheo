@@ -54,7 +54,6 @@ class MediaFolderRepository extends ServiceEntityRepository
     ): mixed
     {
         $query = $this->createQueryBuilder('mf')
-            ->select('mf.name', 'mf.path')
             ->andWhere('mf.disabled = :disabled')
             ->setParameter('disabled', $disabled)
             ->andWhere('mf.trash = :trash')

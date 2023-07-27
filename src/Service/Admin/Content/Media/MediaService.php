@@ -11,6 +11,7 @@ use App\Entity\Admin\Content\Media;
 use App\Entity\Admin\Content\MediaFolder;
 use App\Repository\Admin\Content\MediaRepository;
 use App\Utils\Content\Media\MediaFolderConst;
+use App\Utils\Utils;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -85,6 +86,43 @@ class MediaService extends MediaFolderService
                 $mediaFolder->getName() . '/' . $media->getName();
         }
         return $path;
+    }
+
+    /**
+     * Retourne l'ensemble des médias et dossier lié à un dossier
+     * @return array
+     */
+    public function getALlMediaAndMediaFolderByMediaFolder(MediaFolder $mediaFolder = null)
+    {
+        $medias = $this->getMediaByMediaFolder($mediaFolder);
+        $folders = $this->getMediaFolderByMediaFolder($mediaFolder);
+
+        $return = [];
+
+        /** @var Media $media */
+        foreach($medias as $media)
+        {
+            $return[] = [
+                'type' => 'media',
+                'id' => $media->getId(),
+                'name' => $media->getName(),
+                'description' => $media->getDescription(),
+                'size' => Utils::getSizeName($media->getSize()),
+                'webPath' => $media->getWebPath(),
+            ];
+        }
+
+        /** @var MediaFolder $folder */
+        foreach($folders as $folder)
+        {
+            $return[] = [
+                'type' => 'folder',
+                'id' => $folder->getId(),
+                'name' => $folder->getName()
+            ];
+        }
+
+        return $return;
     }
 
     /**

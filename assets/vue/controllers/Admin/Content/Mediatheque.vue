@@ -13,7 +13,6 @@ export default {
     return {
       loading: false,
       medias: [],
-      folders: [],
       currentFolder: [],
     }
   },
@@ -34,7 +33,6 @@ export default {
         'folder': null
       }).then((response) => {
         this.medias = response.data.medias;
-        this.folders = response.data.folders;
         this.currentFolder = response.data.currentFolder;
       }).catch((error) => {
         console.log(error);
@@ -54,6 +52,7 @@ export default {
         return "A faire";
       }
     },
+
 
     /**
      * Retourne la taille du dossier
@@ -121,7 +120,7 @@ export default {
 
         <div class="mt-5" v-for="media in this.medias">
           {{ media.name }}
-          <img :src="media.webPath" :alt="media.name"/>
+          <img class="img-thumbnail" :src="media.webPath" :alt="media.name"/>
         </div>
 
       </div>

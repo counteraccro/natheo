@@ -49,8 +49,6 @@ class MediaRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('m');
 
-        $query->select('m.id', 'm.title', 'm.webPath', 'm.size', 'm.name');
-
         if ($mediaFolder !== null) {
             $query->andWhere('m.mediaFolder = :val')
                 ->setParameter('val', $mediaFolder);

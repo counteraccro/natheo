@@ -57,13 +57,11 @@ class MediaController extends AppAdminController
 
         echo $idFolder;
 
-        $folders = $mediaService->getMediaFolderByMediaFolder();
-        $medias = $mediaService->getMediaByMediaFolder();
+        $medias = $mediaService->getALlMediaAndMediaFolderByMediaFolder();
         $size = $mediaService->getFolderSize();
 
         return $this->json([
             'medias' => $medias,
-            'folders' => $folders,
             'currentFolder' => [
                 'size' => Utils::getSizeName($size),
                 'folder' => null
