@@ -42,3 +42,4 @@ yarn-error.log
 .idea/commandlinetools/Symfony_20_04_2023_17_08.xml
 .idea/dataSources.xml
 .idea/sqldialects.xml
+/.env.dev
