@@ -63,12 +63,15 @@ class MediaService extends MediaFolderService
         if ($finder->hasResults()) {
             foreach ($finder as $file) {
 
+                $pathMedia = str_replace($this->rootPathMedia, '', $file->getPath()) .
+                    DIRECTORY_SEPARATOR . $file->getFilename();
+
                 $thumbnail = new Thumbnail($this->rootPathThumbnail);
                 $nameThumbnail = $thumbnail->create($file->getRealPath(), $file->getExtension());
 
                 $media->setThumbnail($nameThumbnail);
                 $media->setExtension($file->getExtension());
-                $media->setPath($file->getPath());
+                $media->setPath($pathMedia);
                 $media->setTitle($file->getFilenameWithoutExtension());
                 $media->setName($file->getFilename());
                 $media->setWebPath($this->getWebPath($media));
@@ -99,16 +102,17 @@ class MediaService extends MediaFolderService
      * @param string $thumbnail
      * @return string
      */
-    public function getWebPathThumbnail(string $thumbnail)
+    public function getWebPathThumbnail(string $thumbnail): string
     {
         return $this->webPathThumbnail . $thumbnail;
     }
 
     /**
      * Retourne l'ensemble des médias et dossier lié à un dossier
+     * @param MediaFolder|null $mediaFolder
      * @return array
      */
-    public function getALlMediaAndMediaFolderByMediaFolder(MediaFolder $mediaFolder = null)
+    public function getALlMediaAndMediaFolderByMediaFolder(MediaFolder $mediaFolder = null): array
     {
         $medias = $this->getMediaByMediaFolder($mediaFolder);
         $folders = $this->getMediaFolderByMediaFolder($mediaFolder);
