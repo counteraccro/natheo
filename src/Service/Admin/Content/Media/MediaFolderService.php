@@ -13,6 +13,7 @@ use App\Service\Admin\AppAdminService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Content\Media\MediaFolderConst;
 use App\Utils\System\Options\OptionSystemKey;
+use App\Utils\Utils;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -179,6 +180,26 @@ class MediaFolderService extends AppAdminService
     }
 
     /**
+     * Retourne les données nécessaires sur le dossier courant pour la médiathèque
+     * @param MediaFolder|null $mediaFolder
+     * @return array
+     */
+    public function getMediaFolderInfo(MediaFolder $mediaFolder = null): array
+    {
+        $size = $this->getFolderSize($mediaFolder);
+        $path = DIRECTORY_SEPARATOR;
+        if($mediaFolder !== null)
+        {
+            $path = $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $mediaFolder->getName();
+        }
+
+        return [
+            'size' => Utils::getSizeName($size),
+            'path' => $path
+        ];
+    }
+
+    /**
      * Retourne la taille d'un dossier
      * @param MediaFolder|null $mediaFolder
      * @return int
@@ -189,7 +210,6 @@ class MediaFolderService extends AppAdminService
         if ($mediaFolder != null) {
             $path = $this->getPathFolder($mediaFolder, false);
         }
-
         return $this->folderSize($path);
 
     }

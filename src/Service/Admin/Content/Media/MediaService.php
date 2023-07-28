@@ -108,11 +108,19 @@ class MediaService extends MediaFolderService
     }
 
     /**
-     * Retourne l'ensemble des médias et dossier lié à un dossier
+     * Retourne l'ensemble des médias et dossier lié à un dossier trié et ordonné en fonction
+     * des paramètres
      * @param MediaFolder|null $mediaFolder
+     * @param string $filter
+     * @param string $order
      * @return array
      */
-    public function getALlMediaAndMediaFolderByMediaFolder(MediaFolder $mediaFolder = null): array
+    public function getALlMediaAndMediaFolderByMediaFolder
+    (
+        MediaFolder $mediaFolder = null,
+        string      $filter = 'created_at',
+        string      $order = 'asc'
+    ): array
     {
         $medias = $this->getMediaByMediaFolder($mediaFolder);
         $folders = $this->getMediaFolderByMediaFolder($mediaFolder);
@@ -128,7 +136,8 @@ class MediaService extends MediaFolderService
                 'description' => $media->getDescription(),
                 'size' => Utils::getSizeName($media->getSize()),
                 'webPath' => $media->getWebPath(),
-                'thumbnail' => $this->getWebPathThumbnail($media->getThumbnail())
+                'thumbnail' => $this->getWebPathThumbnail($media->getThumbnail()),
+                'created_at' => $media->getCreatedAt()->getTimestamp()
             ];
         }
 
@@ -137,9 +146,18 @@ class MediaService extends MediaFolderService
             $return[] = [
                 'type' => 'folder',
                 'id' => $folder->getId(),
-                'name' => $folder->getName()
+                'name' => $folder->getName(),
+                'created_at' => $folder->getCreatedAt()->getTimestamp()
             ];
         }
+
+        $column = array_column($return, $filter);
+
+        $sort = SORT_ASC;
+        if ($order === 'desc') {
+            $sort = SORT_DESC;
+        }
+        array_multisort($column, $sort, $return);
 
         return $return;
     }

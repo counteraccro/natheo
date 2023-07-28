@@ -14,6 +14,10 @@ export default {
       loading: false,
       medias: [],
       currentFolder: [],
+      filter: 'created_at',
+      filterIcon: 'bi-clock',
+      order: 'asc',
+      orderIcon: 'bi-sort-down'
     }
   },
 
@@ -30,7 +34,9 @@ export default {
       this.loading = true;
 
       axios.post(this.url, {
-        'folder': null
+        'folder': 0,
+        'order': this.order,
+        'filter': this.filter
       }).then((response) => {
         this.medias = response.data.medias;
         this.currentFolder = response.data.currentFolder;
@@ -42,28 +48,52 @@ export default {
     },
 
     /**
+     * Change l'ordre du tri
+     * @param order
+     */
+    changeOrder(order) {
+
+      this.order = order;
+      if (order === 'asc') {
+        this.orderIcon = 'bi-sort-down';
+      } else {
+        this.orderIcon = 'bi-sort-up';
+      }
+
+      this.loadMedia();
+    },
+
+    changeFilter(filter) {
+      this.filter = filter;
+      switch (filter) {
+        case "created_at":
+          this.filterIcon = 'bi-clock'
+          break;
+        case "name":
+          this.filterIcon = 'bi-card-text'
+          break;
+        case "type":
+          this.filterIcon = 'bi-file'
+          break;
+      }
+
+      this.loadMedia();
+    },
+
+    /**
      * Retourne le path du dossier courant
      * @returns {string}
      */
     getPathCurrentFolder() {
-      if (this.currentFolder.folder === null) {
-        return '/';
-      } else {
-        return "A faire";
-      }
+      return this.currentFolder.path;
     },
-
 
     /**
      * Retourne la taille du dossier
      * @returns {*|string}
      */
     getSizeCurrentFolder() {
-      if (this.currentFolder.size === null) {
-        return '/';
-      } else {
-        return this.currentFolder.size;
-      }
+      return this.currentFolder.size;
     }
   }
 }
@@ -96,21 +126,29 @@ export default {
           <div class="float-end">
             <div class="btn-group">
               <button type="button" class="btn btn-sm btn-secondary dropdown-toggle me-1" data-bs-toggle="dropdown" aria-expanded="false">
-                {{ this.translate.btn_filtre }} <i class="bi bi-clock"></i>
+                {{ this.translate.btn_filtre }} <i class="bi" :class="this.filterIcon"></i>
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#"><i class="bi bi-clock"></i> {{ this.translate.filtre_date }}</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-card-text"></i> {{ this.translate.filtre_nom }}</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-file"></i> {{ this.translate.filtre_type }}</a></li>
+                <li><a class="dropdown-item" href="#" @click="this.changeFilter('created_at')"><i class="bi bi-clock"></i> {{ this.translate.filtre_date }}</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#" @click="this.changeFilter('name')"><i class="bi bi-card-text"></i> {{ this.translate.filtre_nom }}</a>
+                </li>
+                <li><a class="dropdown-item" href="#" @click="this.changeFilter('type')"><i class="bi bi-file"></i> {{ this.translate.filtre_type }}</a>
+                </li>
               </ul>
             </div>
             <div class="btn-group">
               <button type="button" class="btn btn-sm btn-secondary dropdown-toggle me-1" data-bs-toggle="dropdown" aria-expanded="false">
-                {{ this.translate.btn_order }} <i class="bi bi-sort-down"></i>
+                {{ this.translate.btn_order }} <i class="bi" :class="this.orderIcon"></i>
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#"><i class="bi bi-sort-down"></i> {{ this.translate.order_asc }}</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-sort-up"></i> {{ this.translate.order_desc }}</a></li>
+                <li>
+                  <a class="dropdown-item" href="#" @click="this.changeOrder('asc')"><i class="bi bi-sort-down"></i> {{ this.translate.order_asc }}</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#" @click="this.changeOrder('desc')"><i class="bi bi-sort-up"></i> {{ this.translate.order_desc }}</a>
+                </li>
               </ul>
             </div>
             <div class="btn btn-sm btn-secondary me-1"><i class="bi bi-grid"></i></div>

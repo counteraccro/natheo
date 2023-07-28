@@ -53,19 +53,17 @@ class MediaController extends AppAdminController
     #[Route('/ajax/load', name: 'load', methods: ['POST'])]
     public function loadMedia(Request $request, MediaService $mediaService): JsonResponse
     {
-        $idFolder = $request->get('folder');
+        $data = json_decode($request->getContent(), true);
 
-        $mediaFolder = $mediaService->findOneById(MediaFolder::class, 118);
+        /** @var MediaFolder $mediaFolder */
+        $mediaFolder = $mediaService->findOneById(MediaFolder::class, $data['folder']);
 
-        $medias = $mediaService->getALlMediaAndMediaFolderByMediaFolder($mediaFolder);
-        $size = $mediaService->getFolderSize();
+        $medias = $mediaService->getALlMediaAndMediaFolderByMediaFolder($mediaFolder, $data['filter'], $data['order']);
+        $currentFolder = $mediaService->getMediaFolderInfo($mediaFolder);
 
         return $this->json([
             'medias' => $medias,
-            'currentFolder' => [
-                'size' => Utils::getSizeName($size),
-                'folder' => null
-            ]
+            'currentFolder' => $currentFolder
         ]);
     }
 }
