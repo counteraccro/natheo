@@ -1,10 +1,16 @@
-<script>/**
+<script>
+/**
  * Interface de la médiathèque
  */
+
+import MediasGrid from "../../../Components/Mediatheque/MediasGrid.vue";
 import axios from "axios";
 
 export default {
   name: "Mediatheque",
+  components: {
+    MediasGrid
+  },
   props: {
     url: String,
     translate: []
@@ -17,7 +23,8 @@ export default {
       filter: 'created_at',
       filterIcon: 'bi-clock',
       order: 'asc',
-      orderIcon: 'bi-sort-down'
+      orderIcon: 'bi-sort-down',
+      render: 'grid'
     }
   },
 
@@ -81,6 +88,14 @@ export default {
     },
 
     /**
+     * Permet de switcher le mode d'affichage
+     * @param render
+     */
+    switchRender(render) {
+      this.render = render;
+    },
+
+    /**
      * Retourne le path du dossier courant
      * @returns {string}
      */
@@ -129,12 +144,14 @@ export default {
                 {{ this.translate.btn_filtre }} <i class="bi" :class="this.filterIcon"></i>
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" @click="this.changeFilter('created_at')"><i class="bi bi-clock"></i> {{ this.translate.filtre_date }}</a>
+                <li>
+                  <a class="dropdown-item" href="#" @click="this.changeFilter('created_at')"><i class="bi bi-clock"></i> {{ this.translate.filtre_date }}</a>
                 </li>
                 <li>
                   <a class="dropdown-item" href="#" @click="this.changeFilter('name')"><i class="bi bi-card-text"></i> {{ this.translate.filtre_nom }}</a>
                 </li>
-                <li><a class="dropdown-item" href="#" @click="this.changeFilter('type')"><i class="bi bi-file"></i> {{ this.translate.filtre_type }}</a>
+                <li>
+                  <a class="dropdown-item" href="#" @click="this.changeFilter('type')"><i class="bi bi-file"></i> {{ this.translate.filtre_type }}</a>
                 </li>
               </ul>
             </div>
@@ -151,14 +168,23 @@ export default {
                 </li>
               </ul>
             </div>
-            <div class="btn btn-sm btn-secondary me-1"><i class="bi bi-grid"></i></div>
-            <div class="btn btn-sm btn-secondary"><i class="bi bi-list"></i></div>
+            <input type="radio" class="btn-check no-control" name="options-render" id="btn-grid" autocomplete="off" checked @change="this.switchRender('grid')">
+            <label class="btn btn-sm me-1 btn-secondary" for="btn-grid"><i class="bi bi-grid"></i></label>
+
+            <input type="radio" class="btn-check no-control" name="options-render" id="btn-list" autocomplete="off" @change="this.switchRender('list')">
+            <label class="btn btn-sm btn-secondary" for="btn-list"><i class="bi bi-list"></i></label>
           </div>
         </div>
 
-        <div class="mt-5" v-for="media in this.medias">
-          {{ media.name }}
-          <img class="img-thumbnail" :src="media.thumbnail" :alt="media.name"/>
+
+        <div v-if="render === 'grid'">
+          <medias-grid
+              :medias="this.medias">
+          </medias-grid>
+        </div>
+
+        <div v-else>
+          list render
         </div>
 
       </div>

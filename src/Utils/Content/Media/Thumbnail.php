@@ -27,7 +27,7 @@ class Thumbnail
      * @param int $thumbWidth
      * @return string|null
      */
-    public function create($pathImg, $ext, int $thumbWidth = 100): ?string
+    public function create($pathImg, $ext, int $thumbWidth = 200): ?string
     {
         $sourceImage = $this->getGdImage($pathImg, $ext);
         if ($sourceImage === false || $sourceImage === null) {
