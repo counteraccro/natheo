@@ -24,7 +24,8 @@ export default {
       filterIcon: 'bi-clock',
       order: 'asc',
       orderIcon: 'bi-sort-down',
-      render: 'grid'
+      render: 'grid',
+      folderId: 0
     }
   },
 
@@ -41,7 +42,7 @@ export default {
       this.loading = true;
 
       axios.post(this.url, {
-        'folder': 0,
+        'folder': this.folderId,
         'order': this.order,
         'filter': this.filter
       }).then((response) => {
