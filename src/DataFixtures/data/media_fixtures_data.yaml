@@ -1,11 +1,56 @@
 media:
   media-1:
-    folder: Article
+    folder: Paysage
     user: Aymeric
     description: "un désert dans le désert"
     image: 'the-desert.png'
   media-2:
-    folder: ''
+    folder: Paysage
     user: Aymeric
     description: "Soleil levant sur la plage"
     image: 'beach.jpg'
+  media-3:
+    folder: Paysage
+    user: Aymeric
+    description: "Plage ensoleillé"
+    image: 'beach-sun.jpg'
+  media-4:
+    folder: Paysage
+    user: Aymeric
+    description: "Chemin dans la foret"
+    image: 'forest-road.jpg'
+  media-5:
+    folder: Paysage
+    user: Aymeric
+    description: "Voie de chemin de fer"
+    image: 'railroad.jpg'
+  media-6:
+    folder: Paysage
+    user: Aymeric
+    description: "Route"
+    image: 'road.jpg'
+  media-7:
+    folder: Paysage
+    user: Aymeric
+    description: "Vagues"
+    image: 'wave.jpg'
+  media-8:
+    folder: CV
+    user: Aymeric
+    description: "Recrutement"
+    image: 'interview.png'
+  media-9:
+    folder: ''
+    user: Aymeric
+    description: "Tasse de café"
+    image: 'cup-of-coffee.jpg'
+  media-10:
+    folder: ''
+    user: Aymeric
+    description: "Code"
+    image: 'technology.jpg'
+  media-11:
+    folder: ''
+    user: Aymeric
+    description: "Bureau"
+    image: 'workspace.jpg'
