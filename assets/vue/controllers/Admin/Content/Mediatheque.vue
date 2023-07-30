@@ -88,6 +88,12 @@ export default {
       this.loadMedia();
     },
 
+    loadFolder(id)
+    {
+      this.folderId = id;
+      this.loadMedia();
+    },
+
     /**
      * Permet de switcher le mode d'affichage
      * @param render
@@ -180,7 +186,9 @@ export default {
 
         <div v-if="render === 'grid'">
           <medias-grid
-              :medias="this.medias">
+              :medias="this.medias"
+              @load-folder="this.loadFolder"
+          >
           </medias-grid>
         </div>
 
