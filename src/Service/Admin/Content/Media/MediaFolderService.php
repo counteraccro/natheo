@@ -188,15 +188,28 @@ class MediaFolderService extends AppAdminService
     {
         $size = $this->getFolderSize($mediaFolder);
         $path = DIRECTORY_SEPARATOR;
+        $root = [];
         if($mediaFolder !== null)
         {
             $path = $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $mediaFolder->getName();
+            $root = $this->getTreeFolder($mediaFolder);
         }
 
         return [
+            'root' => $root,
             'size' => Utils::getSizeName($size),
             'path' => $path
         ];
+    }
+
+    public function getTreeFolder(MediaFolder $mediaFolder, array $tree = []): array
+    {
+        array_unshift($tree, ['id' => $mediaFolder->getId(), 'name' => $mediaFolder->getName()]);
+        if($mediaFolder->getParent() !== null)
+        {
+            return $this->getTreeFolder($mediaFolder->getParent(), $tree);
+        }
+        return $tree;
     }
 
     /**

@@ -1,6 +1,8 @@
 <script>
 /**
- * Affichage des médias au format GRID
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Affichage au format GRID des médias
  */
 export default {
   props: {
@@ -9,7 +11,7 @@ export default {
   emits: ['load-folder'],
   data() {
     return {
-      sortKey: '',
+
     }
   },
   computed: {},
