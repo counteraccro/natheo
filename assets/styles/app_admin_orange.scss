@@ -56,5 +56,6 @@ $utilities-bg-colors: map-loop($utilities-bg, rgba-css-var, "$key", "bg");
 @import "admin/breadcrumb";
 @import "admin/debug";
 @import "admin/markdown-editor";
+@import "admin/mediatheque";
 
 

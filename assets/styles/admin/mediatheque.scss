@@ -1,0 +1,12 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * CSS la médiathèque
+ */
+
+/**
+Fil d'arianne, affichage du > en blanc
+ */
+#mediaBreadcrumb .breadcrumb-item + .breadcrumb-item::before {
+  color: #FFFFFF;
+}
