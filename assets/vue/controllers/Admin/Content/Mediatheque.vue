@@ -4,14 +4,14 @@
  */
 
 import MediasGrid from "../../../Components/Mediatheque/MediasGrid.vue";
-import MediaBreadcrumb from "../../../Components/Mediatheque/MediaBreadcrumb.vue";
+import MediasBreadcrumb from "../../../Components/Mediatheque/MediasBreadcrumb.vue";
 import axios from "axios";
 
 export default {
   name: "Mediatheque",
   components: {
     MediasGrid,
-    MediaBreadcrumb
+    MediasBreadcrumb
   },
   props: {
     url: String,
@@ -140,10 +140,11 @@ export default {
         <div class="float-end">
           {{ this.getSizeCurrentFolder() }}
         </div>
-        <MediaBreadcrumb
+        <MediasBreadcrumb
             :paths="this.currentFolder.root"
+            @load-folder="this.loadFolder"
           >
-        </MediaBreadcrumb>
+        </MediasBreadcrumb>
       </div>
       <div class="card-body">
         <div>
