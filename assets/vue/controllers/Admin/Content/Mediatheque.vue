@@ -127,7 +127,7 @@ export default {
 
 <template>
 
-  <div :class="this.loading === true ? 'block-grid' : ''">
+  <div id="global-mediatheque" :class="this.loading === true ? 'block-grid' : ''">
     <div v-if="this.loading" class="overlay">
       <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
         <div class="spinner-border text-primary" role="status"></div>
@@ -148,12 +148,17 @@ export default {
       </div>
       <div class="card-body">
         <div>
-          <div class="btn btn-secondary me-1"><i class="bi bi-folder-plus"></i> {{ this.translate.btn_new_folder }}
+          <div class="btn btn-secondary me-1">
+            <i class="bi bi-folder-plus"></i>
+            <span class="d-none-mini">&nbsp;{{ this.translate.btn_new_folder }}</span>
           </div>
-          <div class="btn btn-secondary me-1"><i class="bi bi-file-plus"></i> {{ this.translate.btn_new_media }}</div>
+          <div class="btn btn-secondary me-1">
+            <i class="bi bi-file-plus"></i>
+            <span class="d-none-mini">&nbsp;{{ this.translate.btn_new_media }}</span>
+          </div>
           <div class="float-end">
             <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-secondary dropdown-toggle me-1" data-bs-toggle="dropdown" aria-expanded="false">
+              <button type="button" class="btn btn-secondary dropdown-toggle me-1" data-bs-toggle="dropdown" aria-expanded="false">
                 {{ this.translate.btn_filtre }} <i class="bi" :class="this.filterIcon"></i>
               </button>
               <ul class="dropdown-menu">
@@ -169,7 +174,7 @@ export default {
               </ul>
             </div>
             <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-secondary dropdown-toggle me-1" data-bs-toggle="dropdown" aria-expanded="false">
+              <button type="button" class="btn btn-secondary dropdown-toggle me-1" data-bs-toggle="dropdown" aria-expanded="false">
                 {{ this.translate.btn_order }} <i class="bi" :class="this.orderIcon"></i>
               </button>
               <ul class="dropdown-menu">
@@ -182,10 +187,10 @@ export default {
               </ul>
             </div>
             <input type="radio" class="btn-check no-control" name="options-render" id="btn-grid" autocomplete="off" checked @change="this.switchRender('grid')">
-            <label class="btn btn-sm me-1 btn-secondary" for="btn-grid"><i class="bi bi-grid"></i></label>
+            <label class="btn me-1 btn-secondary" for="btn-grid"><i class="bi bi-grid"></i></label>
 
             <input type="radio" class="btn-check no-control" name="options-render" id="btn-list" autocomplete="off" @change="this.switchRender('list')">
-            <label class="btn btn-sm btn-secondary" for="btn-list"><i class="bi bi-list"></i></label>
+            <label class="btn btn-secondary" for="btn-list"><i class="bi bi-list"></i></label>
           </div>
         </div>
 

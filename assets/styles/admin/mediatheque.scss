@@ -4,9 +4,39 @@
  * CSS la médiathèque
  */
 
-/**
-Fil d'arianne, affichage du > en blanc
- */
-#mediaBreadcrumb .breadcrumb-item + .breadcrumb-item::before {
-  color: #FFFFFF;
+#global-mediatheque {
+
+  /**
+  Fil d'arianne, affichage du > en blanc
+   */
+  #mediaBreadcrumb .breadcrumb-item + .breadcrumb-item::before {
+    color: #FFFFFF;
+  }
+
+  @media (max-width: 1040px) {
+    .d-none-mini {
+      display: none;
+    }
+  }
+
+  #block-media-grid {
+
+    .media {
+      border-radius: 2px;
+    }
+
+    .media .info-media {
+      position: relative;
+      top: -36px;
+      color: #FFF;
+      padding: 5px;
+      background-color: rgba(35, 40, 43, 0.5);
+      display: none;
+      margin-bottom: -40px;
+    }
+
+    .media:hover .info-media {
+      display: block;
+    }
+  }
 }
