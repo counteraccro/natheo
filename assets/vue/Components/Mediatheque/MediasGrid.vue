@@ -7,6 +7,7 @@
 export default {
   props: {
     medias: Array,
+    translate: Array
   },
   emits: ['load-folder'],
   data() {
@@ -29,13 +30,13 @@ export default {
             <i class="bi bi-justify"></i>
           </button>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#"><i class="bi bi-info-circle-fill"></i> Information</a></li>
-            <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-fill"></i> Renommer</a></li>
-            <li><a class="dropdown-item" href="#"><i class="bi bi-arrow-right-circle-fill"></i> Déplacer</a></li>
+            <li><a class="dropdown-item" href="#"><i class="bi bi-info-circle-fill"></i> {{ this.translate.link_info }}</a></li>
+            <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-fill"></i> {{ this.translate.link_edit }}</a></li>
+            <li><a class="dropdown-item" href="#"><i class="bi bi-arrow-right-circle-fill"></i> {{ this.translate.link_move }}</a></li>
             <li>
               <hr class="dropdown-divider">
             </li>
-            <li><a class="dropdown-item" href="#"><i class="bi bi-trash-fill"></i> Supprimer</a></li>
+            <li><a class="dropdown-item" href="#"><i class="bi bi-trash-fill"></i> {{ this.translate.link_remove }}</a></li>
           </ul>
         </div>
         {{ media.name }}

@@ -5,11 +5,13 @@
 
 import MediasGrid from "../../../Components/Mediatheque/MediasGrid.vue";
 import MediasBreadcrumb from "../../../Components/Mediatheque/MediasBreadcrumb.vue";
+import MediaModalFolder from "../../../Components/Mediatheque/MediaModalFolder.vue";
 import axios from "axios";
 
 export default {
   name: "Mediatheque",
   components: {
+    MediaModalFolder,
     MediasGrid,
     MediasBreadcrumb
   },
@@ -27,7 +29,8 @@ export default {
       order: 'asc',
       orderIcon: 'bi-sort-down',
       render: 'grid',
-      folderId: 0
+      folderId: 0,
+      openModalFolder: false,
     }
   },
 
@@ -90,8 +93,11 @@ export default {
       this.loadMedia();
     },
 
-    loadFolder(id)
-    {
+    renderModalFolder(render) {
+      this.openModalFolder = render;
+    },
+
+    loadFolder(id) {
       this.folderId = id;
       this.loadMedia();
     },
@@ -143,12 +149,12 @@ export default {
         <MediasBreadcrumb
             :paths="this.currentFolder.root"
             @load-folder="this.loadFolder"
-          >
+        >
         </MediasBreadcrumb>
       </div>
       <div class="card-body">
         <div>
-          <div class="btn btn-secondary me-1">
+          <div class="btn btn-secondary me-1" @click="this.renderModalFolder(true)">
             <i class="bi bi-folder-plus"></i>
             <span class="d-none-mini">&nbsp;{{ this.translate.btn_new_folder }}</span>
           </div>
@@ -198,6 +204,7 @@ export default {
         <div v-if="render === 'grid'">
           <medias-grid
               :medias="this.medias"
+              :translate="this.translate.media"
               @load-folder="this.loadFolder"
           >
           </medias-grid>
@@ -210,6 +217,14 @@ export default {
       </div>
     </div>
   </div>
+
+  {{ this.translate.media.toto }}
+
+  <media-modal-folder
+      :open-modal="this.openModalFolder"
+      :translate="this.translate.folder"
+      @hide-modal-folder="this.renderModalFolder"
+  ></media-modal-folder>
 
 </template>
 

@@ -191,6 +191,15 @@ class MediaService extends MediaFolderService
             'btn_order' => $this->translator->trans('media.mediatheque.btn.order', domain: 'media'),
             'order_asc' => $this->translator->trans('media.mediatheque.order.asc', domain: 'media'),
             'order_desc' => $this->translator->trans('media.mediatheque.order.desc', domain: 'media'),
+            'media' => [
+                'link_info' => $this->translator->trans('media.mediatheque.media.link.info', domain: 'media'),
+                'link_edit' => $this->translator->trans('media.mediatheque.media.link.edit', domain: 'media'),
+                'link_move' => $this->translator->trans('media.mediatheque.media.link.move', domain: 'media'),
+                'link_remove' => $this->translator->trans('media.mediatheque.media.link.remove', domain: 'media'),
+            ],
+            'folder' => [
+                'new' => $this->translator->trans('media.mediatheque.folder.new', domain: 'media'),
+            ]
         ];
     }
 }
