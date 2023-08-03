@@ -10,3 +10,8 @@ media.mediatheque.filtre.type: __media.mediatheque.filtre.type
 media.mediatheque.btn.order: __media.mediatheque.btn.order
 media.mediatheque.order.asc: __media.mediatheque.order.asc
 media.mediatheque.order.desc: __media.mediatheque.order.desc
+media.mediatheque.media.link.info: __media.mediatheque.media.link.info
+media.mediatheque.media.link.edit: __media.mediatheque.media.link.edit
+media.mediatheque.media.link.move: __media.mediatheque.media.link.move
+media.mediatheque.media.link.remove: __media.mediatheque.media.link.remove
+media.mediatheque.folder.new: __media.mediatheque.folder.new

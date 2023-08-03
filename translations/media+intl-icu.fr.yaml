@@ -10,3 +10,8 @@ media.mediatheque.filtre.type: Type
 media.mediatheque.btn.order: Ordre
 media.mediatheque.order.asc: Croissant
 media.mediatheque.order.desc: Décroissant
+media.mediatheque.media.link.info: Information
+media.mediatheque.media.link.edit: Renommer
+media.mediatheque.media.link.move: Déplacer
+media.mediatheque.media.link.remove: Supprimer
+media.mediatheque.folder.new: Nouveau dossier
