@@ -98,6 +98,7 @@ export default {
     },
 
     renderModalFolder(render) {
+      this.folderEdit = [];
       this.openModalFolder = render;
     },
 
