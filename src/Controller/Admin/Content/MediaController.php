@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
 #[Route('/admin/{_locale}/media', name: 'admin_media_',
     requirements: ['_locale' => '%app.supported_locales%'])]
@@ -45,13 +46,14 @@ class MediaController extends AppAdminController
     }
 
     /**
-     * Charge une liste de média en fonction d'un dossier
+     * Charge une liste de média en fonction d'un dossier ainsi que les données nécessaires au
+     * bon fonctionnement de la médiathèque
      * @param Request $request
      * @param MediaService $mediaService
      * @return JsonResponse
      */
-    #[Route('/ajax/load', name: 'load', methods: ['POST'])]
-    public function loadMedia(Request $request, MediaService $mediaService): JsonResponse
+    #[Route('/ajax/load-medias', name: 'load_medias', methods: ['POST'])]
+    public function loadMedias(Request $request, MediaService $mediaService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -63,7 +65,35 @@ class MediaController extends AppAdminController
 
         return $this->json([
             'medias' => $medias,
-            'currentFolder' => $currentFolder
+            'currentFolder' => $currentFolder,
+            'url' => [
+                'loadFolder' => $this->generateUrl('admin_media_load_folder')
+            ]
+        ]);
+    }
+
+    /**
+     * Charger un mediaFolder en fonction de son id
+     * @param Request $request
+     * @param MediaService $mediaService
+     * @return JsonResponse
+     * @throws ExceptionInterface
+     */
+    #[Route('/ajax/load-folder', name: 'load_folder', methods: ['POST'])]
+    public function loadFolder(Request $request, MediaService $mediaService): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        /** @var MediaFolder $mediaFolder */
+        $mediaFolder = $mediaService->findOneById(MediaFolder::class, $data['id']);
+
+        $attributes = [];
+        if(isset($data['action']) && $data['action'] === 'edit')
+        {
+            $attributes = ['medias', 'parent', 'children'];
+        }
+
+        return $this->json([
+            'folder' => $mediaService->convertEntityToArray($mediaFolder, $attributes)
         ]);
     }
 }

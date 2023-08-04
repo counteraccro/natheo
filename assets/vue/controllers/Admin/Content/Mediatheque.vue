@@ -31,6 +31,9 @@ export default {
       render: 'grid',
       folderId: 0,
       openModalFolder: false,
+      folderEditId: 0,
+      folderEdit: [],
+      urlActions: '',
     }
   },
 
@@ -53,6 +56,7 @@ export default {
       }).then((response) => {
         this.medias = response.data.medias;
         this.currentFolder = response.data.currentFolder;
+        this.urlActions = response.data.url;
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
@@ -97,13 +101,37 @@ export default {
       this.openModalFolder = render;
     },
 
-    loadFolder(id) {
+    /**
+     * Charge les données du dossier en id
+     * @param id
+     */
+    loadDataInFolder(id) {
       this.folderId = id;
       this.loadMedia();
     },
 
     /**
-     * Permet de switcher le mode d'affichage
+     * edition d'un dossier
+     * @param id
+     */
+    editFolder(id)
+    {
+      this.loading = true;
+      axios.post(this.urlActions.loadFolder, {
+        'id': id,
+        'action' : 'edit'
+      }).then((response) => {
+        this.folderEdit = response.data.folder;
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+        this.loading = false
+        this.openModalFolder = true;
+      });
+    },
+
+    /**
+     * Permet de switcher le mode d'affichage des médias
      * @param render
      */
     switchRender(render) {
@@ -148,7 +176,7 @@ export default {
         </div>
         <MediasBreadcrumb
             :paths="this.currentFolder.root"
-            @load-folder="this.loadFolder"
+            @load-folder="this.loadDataInFolder"
         >
         </MediasBreadcrumb>
       </div>
@@ -205,7 +233,8 @@ export default {
           <medias-grid
               :medias="this.medias"
               :translate="this.translate.media"
-              @load-folder="this.loadFolder"
+              @load-data-folder="this.loadDataInFolder"
+              @edit-folder="this.editFolder"
           >
           </medias-grid>
         </div>
@@ -218,10 +247,10 @@ export default {
     </div>
   </div>
 
-  {{ this.translate.media.toto }}
-
   <media-modal-folder
       :open-modal="this.openModalFolder"
+      :current-folder-id="this.currentFolder.id"
+      :folder-edit="this.folderEdit"
       :translate="this.translate.folder"
       @hide-modal-folder="this.renderModalFolder"
   ></media-modal-folder>

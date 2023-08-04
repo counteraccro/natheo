@@ -199,6 +199,7 @@ class MediaService extends MediaFolderService
             ],
             'folder' => [
                 'new' => $this->translator->trans('media.mediatheque.folder.new', domain: 'media'),
+                'edit' => $this->translator->trans('media.mediatheque.folder.edit', domain: 'media'),
             ]
         ];
     }
