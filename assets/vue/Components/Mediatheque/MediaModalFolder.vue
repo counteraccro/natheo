@@ -5,7 +5,6 @@
  * Affichage modal pour ajouter/editer un dossier
  */
 
-import {Modal} from 'bootstrap'
 import axios from "axios";
 import {isEmpty} from "lodash-es";
 
@@ -13,29 +12,25 @@ export default {
   props: {
     currentFolderId: Number,
     folderEdit: Array,
-    translate: Array
+    translate: Array,
+    name: String
   },
   emits: ['hide-modal-folder'],
   data() {
     return {
-      name: this.init()
+      name: this.name,
     }
   },
   created() {
+    console.log('created')
   },
   mounted() {
+    console.log('mounted')
   },
-  computed: {},
+  computed: {
+  },
   methods: {
     isEmpty,
-
-    init()
-    {
-      if(!isEmpty(this.folderEdit))
-      {
-        return this.folderEdit.name;
-      }
-    },
 
     /**
      * Créer ou modifie un dossier
@@ -60,7 +55,6 @@ export default {
 </script>
 
 <template>
-
 
   <div class="modal-header bg-secondary">
     <h1 class="modal-title fs-5 text-white">

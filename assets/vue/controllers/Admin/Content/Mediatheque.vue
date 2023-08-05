@@ -8,6 +8,7 @@ import MediasBreadcrumb from "../../../Components/Mediatheque/MediasBreadcrumb.v
 import MediaModalFolder from "../../../Components/Mediatheque/MediaModalFolder.vue";
 import axios from "axios";
 import {Modal} from "bootstrap";
+import {isEmpty} from "lodash-es";
 
 export default {
   name: "Mediatheque",
@@ -45,6 +46,7 @@ export default {
   },
 
   methods: {
+    isEmpty,
 
     /**
      * Charge les médias
@@ -270,6 +272,7 @@ export default {
             :current-folder-id="this.currentFolder.id"
             :folder-edit="this.folderEdit"
             :translate="this.translate.folder"
+            :name="!isEmpty(this.folderEdit) ? this.folderEdit.name : ''"
             @hide-modal-folder="this.closeModal()"
         ></media-modal-folder>
       </div>
