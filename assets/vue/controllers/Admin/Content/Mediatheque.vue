@@ -7,6 +7,7 @@ import MediasGrid from "../../../Components/Mediatheque/MediasGrid.vue";
 import MediasBreadcrumb from "../../../Components/Mediatheque/MediasBreadcrumb.vue";
 import MediaModalFolder from "../../../Components/Mediatheque/MediaModalFolder.vue";
 import axios from "axios";
+import {Modal} from "bootstrap";
 
 export default {
   name: "Mediatheque",
@@ -22,6 +23,8 @@ export default {
   data() {
     return {
       loading: false,
+      modal: '',
+      modalContent: '',
       medias: [],
       currentFolder: [],
       filter: 'created_at',
@@ -30,7 +33,6 @@ export default {
       orderIcon: 'bi-sort-down',
       render: 'grid',
       folderId: 0,
-      openModalFolder: false,
       folderEditId: 0,
       folderEdit: [],
       urlActions: '',
@@ -38,6 +40,7 @@ export default {
   },
 
   mounted() {
+    this.modal = new Modal(document.getElementById("modal-mediatheque"), {});
     this.loadMedia();
   },
 
@@ -97,9 +100,20 @@ export default {
       this.loadMedia();
     },
 
-    renderModalFolder(render) {
+    openModal(content)
+    {
+      this.modalContent = content;
+      this.modal.show();
+    },
+
+    closeModal()
+    {
+      this.modal.hide();
+    },
+
+    newFolder() {
       this.folderEdit = [];
-      this.openModalFolder = render;
+      this.openModal('folder');
     },
 
     /**
@@ -126,8 +140,8 @@ export default {
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
-        this.loading = false
-        this.openModalFolder = true;
+        this.loading = false;
+        this.openModal('folder');
       });
     },
 
@@ -183,7 +197,7 @@ export default {
       </div>
       <div class="card-body">
         <div>
-          <div class="btn btn-secondary me-1" @click="this.renderModalFolder(true)">
+          <div class="btn btn-secondary me-1" @click="this.newFolder()">
             <i class="bi bi-folder-plus"></i>
             <span class="d-none-mini">&nbsp;{{ this.translate.btn_new_folder }}</span>
           </div>
@@ -248,13 +262,21 @@ export default {
     </div>
   </div>
 
-  <media-modal-folder
-      :open-modal="this.openModalFolder"
-      :current-folder-id="this.currentFolder.id"
-      :folder-edit="this.folderEdit"
-      :translate="this.translate.folder"
-      @hide-modal-folder="this.renderModalFolder"
-  ></media-modal-folder>
+  <div class="modal fade" id="modal-mediatheque" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <media-modal-folder v-if="this.modalContent='folder'"
+            :current-folder-id="this.currentFolder.id"
+            :folder-edit="this.folderEdit"
+            :translate="this.translate.folder"
+            @hide-modal-folder="this.closeModal()"
+        ></media-modal-folder>
+      </div>
+    </div>
+  </div>
+
+
 
 </template>
 
