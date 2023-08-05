@@ -17,9 +17,6 @@ export default {
   },
   emits: ['hide-modal-folder'],
   data() {
-    return {
-      name: this.name,
-    }
   },
   created() {
     console.log('created')
@@ -36,7 +33,10 @@ export default {
      * Créer ou modifie un dossier
      */
     submit() {
-      console.log('oki submit')
+
+      let name = document.getElementById('folderName');
+
+      console.log(name.value);
     },
 
 
@@ -64,8 +64,8 @@ export default {
   </div>
   <div class="modal-body">
     <div class="mb-3">
-      <label for="foldeName" class="form-label">Nom du dossier -trad</label>
-      <input type="text" v-model="this.name" class="form-control" id="foldeName" placeholder="Nom du dossier -trad">
+      <label for="folderName" class="form-label">Nom du dossier -trad</label>
+      <input type="text" :value="this.name" class="form-control" id="folderName" placeholder="Nom du dossier -trad">
     </div>
   </div>
   <div class="modal-footer">
