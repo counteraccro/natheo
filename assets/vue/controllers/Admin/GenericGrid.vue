@@ -13,7 +13,7 @@ export default {
   props: {
     url: String,
     page: Number,
-    limit: Number,
+    limit: String,
   },
   data() {
     return {

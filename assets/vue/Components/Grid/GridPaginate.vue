@@ -4,7 +4,7 @@ export default {
   props: {
     currentPage: Number,
     nbElementsTotal: Number,
-    nbElements: Number,
+    nbElements: String,
     url: String,
     listLimit: Object,
     translate: Object

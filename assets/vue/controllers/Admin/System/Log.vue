@@ -20,7 +20,7 @@ export default {
     url_load_log_file: String,
     url_delete_file: String,
     page: Number,
-    limit: Number,
+    limit: String,
   },
   data() {
     return {
