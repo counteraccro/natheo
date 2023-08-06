@@ -195,11 +195,16 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
             $placeholder = 'placeholder="' . $this->translator->trans($element['placeholder']) . '"';
         }
 
+        $disabled = '';
+        if (isset($element['disabled'])) {
+            $disabled = 'disabled';
+        }
+
         $html = '<label for="' . $key . '" class="form-label">
             ' . $this->translator->trans($element['label']) . '</label>
             <input type="text" class="form-control no-control event-input" id="'
             . $key . '" ' . $require . ' ' . $placeholder .
-            ' value="' . $this->getValueByKey($key) . '">' . $msgError;
+            ' value="' . $this->getValueByKey($key) . '" ' . $disabled . '>' . $msgError;
 
         $html .= $this->getSuccess($key, $element);
         $html .= $this->getSpinner($key);
@@ -223,8 +228,13 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
             $checked = 'checked';
         }
 
+        $disabled = '';
+        if (isset($element['disabled'])) {
+            $disabled = 'disabled';
+        }
+
         $html = '<div class="form-check form-switch">
-            <input class="form-check-input no-control event-input" type="checkbox" role="switch"
+            <input class="form-check-input no-control event-input" type="checkbox" role="switch" ' . $disabled . '
                 id="' . $key . '" ' . $checked . '>
             <label class="form-check-label" for="' . $key . '">
                 ' . $this->translator->trans($element['label']) . '</label>';
@@ -257,10 +267,16 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
             $placeholder = 'placeholder="' . $this->translator->trans($element['placeholder']) . '"';
         }
 
+        $disabled = '';
+        if (isset($element['disabled'])) {
+            $disabled = 'disabled';
+        }
+
         $html = '<label for="' . $key . '" class="form-label">' . $this->translator->trans($element['label']) .
             '</label>
-            <textarea class="form-control no-control event-input" rows="5" 
-            id="' . $key . '" ' . $require . ' ' . $placeholder . '>' . $this->getValueByKey($key) . '</textarea>'
+            <textarea class="form-control no-control event-input" rows="5"
+            id="' . $key . '" ' . $require . ' ' . $placeholder . ' ' . $disabled . '>' . $this->getValueByKey($key) .
+            '</textarea>'
             . $msgError;
 
         $html .= $this->getSuccess($key, $element);
@@ -283,6 +299,12 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
 
         $selectStyle = '';
         $optionHtml = '';
+
+        $disabled = '';
+        if (isset($element['disabled'])) {
+            $disabled = 'disabled';
+        }
+
         foreach ($tab as $select) {
             $option = explode(':', $select);
             $selected = '';
@@ -302,7 +324,7 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
 
         $html = '<label for="' . $key . '" class="form-label">
         ' . $this->translator->trans($element['label']) . '</label>
-            <select id="' . $key . '" class="form-select no-control event-input" ' . $selectStyle . '>
+            <select id="' . $key . '" class="form-select no-control event-input" ' . $selectStyle . ' ' . $disabled . '>
             ' . $optionHtml . '</select>';
 
         $html .= $this->getSuccess($key, $element);

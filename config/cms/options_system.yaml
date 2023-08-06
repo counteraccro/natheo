@@ -163,6 +163,7 @@ options_system:
         help: 'options_system.media_path_help'
         placeholder: 'options_system.media_path_placeholder'
         success: 'options_system.media_path_msg_success'
+        disabled: true
       OS_MEDIA_URL:
         default: 'public'
         label: 'options_system.media_url'
@@ -172,6 +173,7 @@ options_system:
         help: 'options_system.media_url_help'
         placeholder: 'options_system.media_url_placeholder'
         success: 'options_system.media_url_msg_success'
+        disabled: true
       OS_MEDIA_CREATE_PHYSICAL_FOLDER:
         type: 'boolean'
         label: 'options_system.media_folder'
