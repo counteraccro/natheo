@@ -64,14 +64,17 @@ export default {
   </div>
   <div class="modal-body">
     <div class="mb-3">
-      <label for="folderName" class="form-label">Nom du dossier -trad</label>
-      <input type="text" :value="this.name" class="form-control" id="folderName" placeholder="Nom du dossier -trad">
+      <label for="folderName" class="form-label">{{ this.translate.input_label }}</label>
+      <input type="text" :value="this.name" class="form-control" id="folderName" :placeholder="this.translate.input_label_placeholder">
+      <div class="invalid-feedback">
+        {{ this.translate.input_error }}
+      </div>
     </div>
   </div>
   <div class="modal-footer">
-    <div class="btn btn-dark" @click="$emit('hide-modal-folder', false)">Annuler trad</div>
-    <div v-if="isEmpty(this.folderEdit)" class="btn btn-primary">Créer le dossier trad</div>
-    <div v-else class="btn btn-primary" @click="this.submit()">Modifier le dossier trad</div>
+    <div class="btn btn-dark" @click="$emit('hide-modal-folder', false)">{{ this.translate.btn_cancel }}</div>
+    <div v-if="isEmpty(this.folderEdit)" class="btn btn-primary">{{ this.translate.btn_submit_create }}</div>
+    <div v-else class="btn btn-primary" @click="this.submit()">{{ this.translate.btn_submit_edit }}</div>
   </div>
 
 </template>
