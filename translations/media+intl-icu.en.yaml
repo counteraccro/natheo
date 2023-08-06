@@ -16,3 +16,9 @@ media.mediatheque.media.link.move: __media.mediatheque.media.link.move
 media.mediatheque.media.link.remove: __media.mediatheque.media.link.remove
 media.mediatheque.folder.new: __media.mediatheque.folder.new
 media.mediatheque.folder.edit: __media.mediatheque.folder.edit
+media.mediatheque.folder.input.label: __media.mediatheque.folder.input.label
+media.mediatheque.folder.input.label.placeholder: __media.mediatheque.folder.input.label.placeholder
+media.mediatheque.folder.input.error: __media.mediatheque.folder.input.error
+media.mediatheque.folder.btn.submit.create: __media.mediatheque.folder.btn.submit.create
+media.mediatheque.folder.btn.submit.edit: __media.mediatheque.folder.btn.submit.edit
+media.mediatheque.folder.btn.cancel: __media.mediatheque.folder.btn.cancel

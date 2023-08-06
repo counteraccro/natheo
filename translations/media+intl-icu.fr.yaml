@@ -16,3 +16,9 @@ media.mediatheque.media.link.move: Déplacer
 media.mediatheque.media.link.remove: Supprimer
 media.mediatheque.folder.new: 'Nouveau dossier'
 media.mediatheque.folder.edit: 'Renommer le dossier'
+media.mediatheque.folder.input.label: 'Nom du dossier'
+media.mediatheque.folder.input.label.placeholder: 'Nom du dossier'
+media.mediatheque.folder.input.error: 'Le nom du dossier ne doit pas être vide ou contenir des caractères spéciaux'
+media.mediatheque.folder.btn.submit.create: 'Créer le dossier'
+media.mediatheque.folder.btn.submit.edit: 'Editer le dossier'
+media.mediatheque.folder.btn.cancel: Annuler
