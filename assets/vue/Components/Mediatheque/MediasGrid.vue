@@ -6,8 +6,8 @@
  */
 export default {
   props: {
-    medias: Array,
-    translate: Array
+    medias: Object,
+    translate: Object
   },
   emits: ['load-data-folder', 'edit-folder'],
   data() {

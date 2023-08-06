@@ -5,7 +5,6 @@
 
 import MediasGrid from "../../../Components/Mediatheque/MediasGrid.vue";
 import MediasBreadcrumb from "../../../Components/Mediatheque/MediasBreadcrumb.vue";
-import MediaModalFolder from "../../../Components/Mediatheque/MediaModalFolder.vue";
 import axios from "axios";
 import {Modal} from "bootstrap";
 import {isEmpty} from "lodash-es";
@@ -13,19 +12,17 @@ import {isEmpty} from "lodash-es";
 export default {
   name: "Mediatheque",
   components: {
-    MediaModalFolder,
     MediasGrid,
     MediasBreadcrumb
   },
   props: {
     url: String,
-    translate: []
+    translate: Object
   },
   data() {
     return {
       loading: false,
-      modal: '',
-      modalContent: '',
+      modalFolder: '',
       medias: [],
       currentFolder: [],
       filter: 'created_at',
@@ -34,24 +31,25 @@ export default {
       orderIcon: 'bi-sort-down',
       render: 'grid',
       folderId: 0,
-      folderEditId: 0,
       folderEdit: [],
+      folderName: '',
+      folderCanSubmit: false,
       urlActions: '',
     }
   },
 
   mounted() {
-    this.modal = new Modal(document.getElementById("modal-mediatheque"), {});
+    this.modalFolder = new Modal(document.getElementById("modal-folder"), {});
     this.loadMedia();
   },
 
   methods: {
     isEmpty,
-
     /**
      * Charge les médias
      */
     loadMedia() {
+
       this.loading = true;
 
       axios.post(this.url, {
@@ -102,22 +100,6 @@ export default {
       this.loadMedia();
     },
 
-    openModal(content)
-    {
-      this.modalContent = content;
-      this.modal.show();
-    },
-
-    closeModal()
-    {
-      this.modal.hide();
-    },
-
-    newFolder() {
-      this.folderEdit = [];
-      this.openModal('folder');
-    },
-
     /**
      * Charge les données du dossier en id
      * @param id
@@ -125,26 +107,6 @@ export default {
     loadDataInFolder(id) {
       this.folderId = id;
       this.loadMedia();
-    },
-
-    /**
-     * edition d'un dossier
-     * @param id
-     */
-    editFolder(id)
-    {
-      this.loading = true;
-      axios.post(this.urlActions.loadFolder, {
-        'id': id,
-        'action' : 'edit'
-      }).then((response) => {
-        this.folderEdit = response.data.folder;
-      }).catch((error) => {
-        console.log(error);
-      }).finally(() => {
-        this.loading = false;
-        this.openModal('folder');
-      });
     },
 
     /**
@@ -169,7 +131,85 @@ export default {
      */
     getSizeCurrentFolder() {
       return this.currentFolder.size;
+    },
+
+    /** Bloc méthode gestion des dossiers **/
+
+    /**
+     * edition d'un dossier
+     * @param id
+     */
+    editFolder(id) {
+      this.loading = true;
+      axios.post(this.urlActions.loadFolder, {
+        'id': id,
+        'action': 'edit'
+      }).then((response) => {
+        this.folderEdit = response.data.folder;
+        this.folderName = this.folderEdit.name;
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+        this.loading = false;
+        this.openModalFolder();
+      });
+    },
+
+    /**
+     * Ouvre la modale pour la gestion des dossiers
+     */
+    openModalFolder() {
+      this.modalFolder.show();
+    },
+
+    /**
+     * Ferme la modale pour la gestion des dssiers
+     */
+    closeModalFolder() {
+      this.folderEdit = [];
+      this.folderName = '';
+      let element = document.getElementById('input-folder-name');
+      element.classList.remove('is-invalid');
+      this.modalFolder.hide();
+    },
+
+    /**
+     * Génère le titre de la modale
+     */
+    getTitleModalFolder() {
+      if (isEmpty(this.folderEdit)) {
+        return this.translate.folder.new;
+      } else {
+        return this.translate.folder.edit + ' ' + this.folderEdit.name;
+      }
+    },
+
+    /**
+     * Vérifie si le nom est correcte ou non
+     */
+    validateFolderName()
+    {
+      let element = document.getElementById('input-folder-name');
+      let regex = /^[a-zA-Z0-9]{3,15}$/;
+      if (!regex.test(this.folderName)) {
+        element.classList.add('is-invalid');
+        this.folderCanSubmit = false;
+      }
+      else {
+        element.classList.remove('is-invalid');
+        this.folderCanSubmit = true;
+      }
+    },
+
+    /**
+     * Soumission du formulaire pour éditer / new folder
+     */
+    submitFolder()
+    {
+      console.log('submit')
     }
+
+    /** fin bloc gestion des dossiers **/
   }
 }
 
@@ -199,7 +239,7 @@ export default {
       </div>
       <div class="card-body">
         <div>
-          <div class="btn btn-secondary me-1" @click="this.newFolder()">
+          <div class="btn btn-secondary me-1" @click="this.openModalFolder()">
             <i class="bi bi-folder-plus"></i>
             <span class="d-none-mini">&nbsp;{{ this.translate.btn_new_folder }}</span>
           </div>
@@ -264,21 +304,43 @@ export default {
     </div>
   </div>
 
-  <div class="modal fade" id="modal-mediatheque" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+
+  <!-- Modal pour la gestion des dossier -->
+  <div class="modal fade" id="modal-folder" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-
-        <media-modal-folder v-if="this.modalContent='folder'"
-            :current-folder-id="this.currentFolder.id"
-            :folder-edit="this.folderEdit"
-            :translate="this.translate.folder"
-            :name="!isEmpty(this.folderEdit) ? this.folderEdit.name : ''"
-            @hide-modal-folder="this.closeModal()"
-        ></media-modal-folder>
+        <div class="modal-header bg-secondary">
+          <h1 class="modal-title fs-5 text-white">
+            <i class="bi" :class="isEmpty(this.folderEdit)?'bi-folder-plus': 'bi-pencil-fill'"></i> {{ this.getTitleModalFolder() }}
+          </h1>
+          <button type="button" class="btn-close" @click="this.closeModalFolder()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="folderName" class="form-label">{{ this.translate.folder.input_label }} *</label>
+            <input type="text" v-model="folderName"
+                @keyup="this.validateFolderName()"
+                class="form-control"
+                id="input-folder-name"
+                :placeholder="this.translate.folder.input_label_placeholder">
+            <div class="invalid-feedback">
+              {{ this.translate.folder.input_error }}
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="btn btn-dark" @click="this.closeModalFolder()">{{ this.translate.folder.btn_cancel }}</div>
+          <div v-if="isEmpty(this.folderEdit)" @click="this.submitFolder()" class="btn btn-primary" :class="this.folderCanSubmit ? '':'disabled'">
+            {{ this.translate.folder.btn_submit_create }}
+          </div>
+          <div v-else class="btn btn-primary" @click="this.submitFolder()">
+            {{ this.translate.folder.btn_submit_edit }}
+          </div>
+        </div>
       </div>
     </div>
   </div>
-
+  <!-- Fin Modal pour la gestion des dossier -->
 
 
 </template>

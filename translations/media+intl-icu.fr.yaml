@@ -18,7 +18,7 @@ media.mediatheque.folder.new: 'Nouveau dossier'
 media.mediatheque.folder.edit: 'Renommer le dossier'
 media.mediatheque.folder.input.label: 'Nom du dossier'
 media.mediatheque.folder.input.label.placeholder: 'Nom du dossier'
-media.mediatheque.folder.input.error: 'Le nom du dossier ne doit pas être vide ou contenir des caractères spéciaux'
+media.mediatheque.folder.input.error: 'Le nom du dossier ne doit pas être vide, contenir que des chiffres et des lettres sans caractères spéciaux et doit faire entre 3 et 15 caractères de longueur'
 media.mediatheque.folder.btn.submit.create: 'Créer le dossier'
 media.mediatheque.folder.btn.submit.edit: 'Editer le dossier'
 media.mediatheque.folder.btn.cancel: Annuler
