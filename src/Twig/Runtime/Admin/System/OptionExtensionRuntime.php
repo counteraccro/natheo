@@ -2,7 +2,7 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Permet de générer le formulaire de saisie des options systèmes et options users
  */
 
