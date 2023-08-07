@@ -9,12 +9,14 @@ namespace App\Controller\Admin\Content;
 
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\MediaFolder;
+use App\Service\Admin\Content\Media\MediaFolderService;
 use App\Service\Admin\Content\Media\MediaService;
 use App\Utils\Breadcrumb;
 use App\Utils\Utils;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
@@ -67,7 +69,8 @@ class MediaController extends AppAdminController
             'medias' => $medias,
             'currentFolder' => $currentFolder,
             'url' => [
-                'loadFolder' => $this->generateUrl('admin_media_load_folder')
+                'loadFolder' => $this->generateUrl('admin_media_load_folder'),
+                'saveFolder' => $this->generateUrl('admin_media_save_folder')
             ]
         ]);
     }
@@ -94,6 +97,23 @@ class MediaController extends AppAdminController
 
         return $this->json([
             'folder' => $mediaService->convertEntityToArray($mediaFolder, $attributes)
+        ]);
+    }
+
+    /**
+     * Permet de créer ou modifier un mediaFolder
+     * @param Request $request
+     * @param MediaFolderService $mediaFolderService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/save-folder', name: 'save_folder', methods: ['POST'])]
+    public function updateFolder(Request $request, MediaFolderService $mediaFolderService): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        var_dump($data);
+
+        return $this->json([
+
         ]);
     }
 }

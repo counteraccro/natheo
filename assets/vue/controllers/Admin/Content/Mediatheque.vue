@@ -168,6 +168,7 @@ export default {
     closeModalFolder() {
       this.folderEdit = [];
       this.folderName = '';
+      this.folderCanSubmit = false;
       let element = document.getElementById('input-folder-name');
       element.classList.remove('is-invalid');
       this.modalFolder.hide();
@@ -189,9 +190,14 @@ export default {
      */
     validateFolderName()
     {
+      let defaultName = '';
+      if (!isEmpty(this.folderEdit)) {
+        defaultName = this.folderEdit.name;
+      }
+
       let element = document.getElementById('input-folder-name');
       let regex = /^[a-zA-Z0-9]{3,15}$/;
-      if (!regex.test(this.folderName)) {
+      if (!regex.test(this.folderName) || this.folderName === defaultName) {
         element.classList.add('is-invalid');
         this.folderCanSubmit = false;
       }
@@ -206,7 +212,26 @@ export default {
      */
     submitFolder()
     {
-      console.log('submit')
+
+      let editFolderId = 0;
+      if (!isEmpty(this.folderEdit)) {
+        editFolderId = this.folderEdit.id
+      }
+
+      this.loading = true;
+      axios.post(this.urlActions.saveFolder, {
+        'name': this.folderName,
+        'currendFolder': this.currentFolder.id,
+        'editFolder' : editFolderId
+      }).then((response) => {
+        this.folderEdit = response.data.folder;
+        this.folderName = this.folderEdit.name;
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+        this.loading = false;
+        //this.openModalFolder();
+      });
     }
 
     /** fin bloc gestion des dossiers **/
@@ -333,7 +358,7 @@ export default {
           <div v-if="isEmpty(this.folderEdit)" @click="this.submitFolder()" class="btn btn-primary" :class="this.folderCanSubmit ? '':'disabled'">
             {{ this.translate.folder.btn_submit_create }}
           </div>
-          <div v-else class="btn btn-primary" @click="this.submitFolder()">
+          <div v-else class="btn btn-primary" @click="this.submitFolder()" :class="this.folderCanSubmit ? '':'disabled'">
             {{ this.translate.folder.btn_submit_edit }}
           </div>
         </div>
