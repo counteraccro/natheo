@@ -224,8 +224,7 @@ export default {
         'currendFolder': this.currentFolder.id,
         'editFolder' : editFolderId
       }).then((response) => {
-        this.folderEdit = response.data.folder;
-        this.folderName = this.folderEdit.name;
+
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
