@@ -12,14 +12,13 @@ use App\Entity\Admin\Content\MediaFolder;
 use App\Service\Admin\Content\Media\MediaFolderService;
 use App\Service\Admin\Content\Media\MediaService;
 use App\Utils\Breadcrumb;
-use App\Utils\Utils;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/media', name: 'admin_media_',
     requirements: ['_locale' => '%app.supported_locales%'])]
@@ -90,8 +89,7 @@ class MediaController extends AppAdminController
         $mediaFolder = $mediaService->findOneById(MediaFolder::class, $data['id']);
 
         $attributes = [];
-        if(isset($data['action']) && $data['action'] === 'edit')
-        {
+        if (isset($data['action']) && $data['action'] === 'edit') {
             $attributes = ['medias', 'parent', 'children'];
         }
 
@@ -107,10 +105,32 @@ class MediaController extends AppAdminController
      * @return JsonResponse
      */
     #[Route('/ajax/save-folder', name: 'save_folder', methods: ['POST'])]
-    public function updateFolder(Request $request, MediaFolderService $mediaFolderService): JsonResponse
+    public function updateFolder(
+        Request             $request,
+        MediaFolderService  $mediaFolderService,
+        TranslatorInterface $translator
+    ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        var_dump($data);
+
+        $editFolder = $mediaFolderService->findOneById(MediaFolder::class, $data['editFolder']);
+        $currentFolder = $mediaFolderService->findOneById(MediaFolder::class, $data['currentFolder']);
+
+        $exist = $mediaFolderService->findOneBy(MediaFolder::class, 'name', $data['name']);
+        if ($exist !== null) {
+            return $this->json([
+                    'result' => 'error',
+                    'msg' => $translator->trans('media.mediatheque.folder.error.exist_name', domain: 'media')]
+            );
+        }
+
+        if ($editFolder === null) {
+
+        }
+        else {
+
+        }
+
 
         return $this->json([
 

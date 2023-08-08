@@ -205,6 +205,12 @@ class MediaFolderService extends AppAdminService
         ];
     }
 
+    /**
+     * Retoune l'arborescence sous la forme d'un array du dossier envoyé en paramètre
+     * @param MediaFolder $mediaFolder
+     * @param array $tree
+     * @return array
+     */
     public function getTreeFolder(MediaFolder $mediaFolder, array $tree = []): array
     {
         array_unshift($tree, ['id' => $mediaFolder->getId(), 'name' => $mediaFolder->getName()]);

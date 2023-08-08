@@ -33,6 +33,7 @@ export default {
       folderId: 0,
       folderEdit: [],
       folderName: '',
+      folderError: '',
       folderCanSubmit: false,
       urlActions: '',
     }
@@ -190,20 +191,43 @@ export default {
      */
     validateFolderName()
     {
+      let error = false;
       let defaultName = '';
       if (!isEmpty(this.folderEdit)) {
         defaultName = this.folderEdit.name;
       }
 
-      let element = document.getElementById('input-folder-name');
+
       let regex = /^[a-zA-Z0-9]{3,15}$/;
-      if (!regex.test(this.folderName) || this.folderName === defaultName) {
+      if (!regex.test(this.folderName)) {
+        error = true;
+        this.folderError = this.translate.folder.input_error;
+      }
+
+      if(this.folderName === defaultName)
+      {
+        error = true;
+      }
+
+      this.renderErrorFolderInput(error);
+    },
+
+    /**
+     * Affichage l'erreur du formulaire pour l'édition / création d'un dossier
+     * @param boolean (true erreur / false masquer l'erreur)
+     */
+    renderErrorFolderInput(boolean)
+    {
+      let element = document.getElementById('input-folder-name');
+      if(boolean)
+      {
         element.classList.add('is-invalid');
         this.folderCanSubmit = false;
       }
       else {
         element.classList.remove('is-invalid');
         this.folderCanSubmit = true;
+        this.folderError = '';
       }
     },
 
@@ -221,15 +245,23 @@ export default {
       this.loading = true;
       axios.post(this.urlActions.saveFolder, {
         'name': this.folderName,
-        'currendFolder': this.currentFolder.id,
+        'currentFolder': this.currentFolder.id,
         'editFolder' : editFolderId
       }).then((response) => {
+        if(response.data.result === 'error')
+        {
+            this.folderError = response.data.msg;
+            this.renderErrorFolderInput(true);
+        }
+        else {
+          this.renderErrorFolderInput(false);
+        }
 
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
         this.loading = false;
-        //this.openModalFolder();
+
       });
     }
 
@@ -348,7 +380,7 @@ export default {
                 id="input-folder-name"
                 :placeholder="this.translate.folder.input_label_placeholder">
             <div class="invalid-feedback">
-              {{ this.translate.folder.input_error }}
+              {{ this.folderError }}
             </div>
           </div>
         </div>
