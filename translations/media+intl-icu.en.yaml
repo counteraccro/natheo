@@ -22,3 +22,4 @@ media.mediatheque.folder.input.error: __media.mediatheque.folder.input.error
 media.mediatheque.folder.btn.submit.create: __media.mediatheque.folder.btn.submit.create
 media.mediatheque.folder.btn.submit.edit: __media.mediatheque.folder.btn.submit.edit
 media.mediatheque.folder.btn.cancel: __media.mediatheque.folder.btn.cancel
+media.mediatheque.folder.error.exist_name: __media.mediatheque.folder.error.exist_name
