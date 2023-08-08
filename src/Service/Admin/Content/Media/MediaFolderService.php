@@ -249,4 +249,26 @@ class MediaFolderService extends AppAdminService
         }
         return $size;
     }
+
+    /**
+     * Permet de créer un nouveau dossier
+     * @param string $name
+     * @param MediaFolder|null $parent
+     * @return void
+     */
+    public function createMediaFolder(string $name, MediaFolder $parent = null)
+    {
+
+    }
+
+    /**
+     * Met à jour un média folder ainsi que tous ses enfants
+     * @param string $name
+     * @param MediaFolder $mediaFolder
+     * @return void
+     */
+    public function updateMediaFolder(string $name, MediaFolder $mediaFolder)
+    {
+
+    }
 }

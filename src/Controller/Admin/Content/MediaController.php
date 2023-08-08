@@ -102,6 +102,7 @@ class MediaController extends AppAdminController
      * Permet de créer ou modifier un mediaFolder
      * @param Request $request
      * @param MediaFolderService $mediaFolderService
+     * @param TranslatorInterface $translator
      * @return JsonResponse
      */
     #[Route('/ajax/save-folder', name: 'save_folder', methods: ['POST'])]
@@ -125,10 +126,10 @@ class MediaController extends AppAdminController
         }
 
         if ($editFolder === null) {
-
+            $mediaFolderService->createMediaFolder($data['name'], $currentFolder);
         }
         else {
-
+            $mediaFolderService->updateMediaFolder($data['name'], $editFolder);
         }
 
 
