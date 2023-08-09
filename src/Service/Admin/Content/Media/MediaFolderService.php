@@ -21,7 +21,6 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -190,8 +189,7 @@ class MediaFolderService extends AppAdminService
         $path = DIRECTORY_SEPARATOR;
         $root = [];
         $id = 0;
-        if($mediaFolder !== null)
-        {
+        if ($mediaFolder !== null) {
             $path = $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $mediaFolder->getName();
             $root = $this->getTreeFolder($mediaFolder);
             $id = $mediaFolder->getId();
@@ -214,8 +212,7 @@ class MediaFolderService extends AppAdminService
     public function getTreeFolder(MediaFolder $mediaFolder, array $tree = []): array
     {
         array_unshift($tree, ['id' => $mediaFolder->getId(), 'name' => $mediaFolder->getName()]);
-        if($mediaFolder->getParent() !== null)
-        {
+        if ($mediaFolder->getParent() !== null) {
             return $this->getTreeFolder($mediaFolder->getParent(), $tree);
         }
         return $tree;
@@ -251,14 +248,34 @@ class MediaFolderService extends AppAdminService
     }
 
     /**
-     * Permet de créer un nouveau dossier
+     * Permet de créer un nouveau dossier en base de donnée ainsi que physiquement si l'option est activée
      * @param string $name
      * @param MediaFolder|null $parent
-     * @return void
+     * @return boolean
      */
-    public function createMediaFolder(string $name, MediaFolder $parent = null)
+    public function createMediaFolder(string $name, MediaFolder $parent = null): bool
     {
+        $mediaFolder = new MediaFolder();
+        $mediaFolder->setName($name);
+        $mediaFolder->setParent($parent);
 
+        $path = DIRECTORY_SEPARATOR;
+        if ($parent !== null) {
+            $path = $parent->getPath();
+            if ($path === DIRECTORY_SEPARATOR) {
+                $path .= $parent->getName();
+            } else {
+                $path = $path . DIRECTORY_SEPARATOR . $parent->getName();
+            }
+        }
+        $mediaFolder->setPath($path);
+        $this->save($mediaFolder);
+
+        if($this->createFolder($mediaFolder))
+        {
+            return true;
+        }
+        return false;
     }
 
     /**

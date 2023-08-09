@@ -209,6 +209,10 @@ class MediaService extends MediaFolderService
                 'btn_submit_edit' =>
                     $this->translator->trans('media.mediatheque.folder.btn.submit.edit', domain: 'media'),
                 'btn_cancel' => $this->translator->trans('media.mediatheque.folder.btn.cancel', domain: 'media'),
+                'msg_wait_create' =>
+                    $this->translator->trans('media.mediatheque.folder.msg.wait.create', domain: 'media'),
+                'msg_wait_edit' =>
+                    $this->translator->trans('media.mediatheque.folder.msg.wait.edit', domain: 'media'),
             ]
         ];
     }

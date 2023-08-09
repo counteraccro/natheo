@@ -34,6 +34,7 @@ export default {
       folderEdit: [],
       folderName: '',
       folderError: '',
+      folderSuccess: '',
       folderCanSubmit: false,
       urlActions: '',
     }
@@ -164,11 +165,12 @@ export default {
     },
 
     /**
-     * Ferme la modale pour la gestion des dssiers
+     * Ferme la modale pour la gestion des dossiers
      */
     closeModalFolder() {
       this.folderEdit = [];
       this.folderName = '';
+      this.folderSuccess = '';
       this.folderCanSubmit = false;
       let element = document.getElementById('input-folder-name');
       element.classList.remove('is-invalid');
@@ -189,8 +191,7 @@ export default {
     /**
      * Vérifie si le nom est correcte ou non
      */
-    validateFolderName()
-    {
+    validateFolderName() {
       let error = false;
       let defaultName = '';
       if (!isEmpty(this.folderEdit)) {
@@ -204,8 +205,7 @@ export default {
         this.folderError = this.translate.folder.input_error;
       }
 
-      if(this.folderName === defaultName)
-      {
+      if (this.folderName === defaultName) {
         error = true;
       }
 
@@ -216,15 +216,12 @@ export default {
      * Affichage l'erreur du formulaire pour l'édition / création d'un dossier
      * @param boolean (true erreur / false masquer l'erreur)
      */
-    renderErrorFolderInput(boolean)
-    {
+    renderErrorFolderInput(boolean) {
       let element = document.getElementById('input-folder-name');
-      if(boolean)
-      {
+      if (boolean) {
         element.classList.add('is-invalid');
         this.folderCanSubmit = false;
-      }
-      else {
+      } else {
         element.classList.remove('is-invalid');
         this.folderCanSubmit = true;
         this.folderError = '';
@@ -234,33 +231,37 @@ export default {
     /**
      * Soumission du formulaire pour éditer / new folder
      */
-    submitFolder()
-    {
+    submitFolder() {
 
       let editFolderId = 0;
+      this.folderSuccess = this.translate.folder.msg_wait_create;
       if (!isEmpty(this.folderEdit)) {
         editFolderId = this.folderEdit.id
+        this.folderSuccess = this.translate.folder.msg_wait_edit;
       }
 
-      this.loading = true;
+
       axios.post(this.urlActions.saveFolder, {
         'name': this.folderName,
         'currentFolder': this.currentFolder.id,
-        'editFolder' : editFolderId
+        'editFolder': editFolderId
       }).then((response) => {
-        if(response.data.result === 'error')
-        {
-            this.folderError = response.data.msg;
-            this.renderErrorFolderInput(true);
-        }
-        else {
+
+        if (response.data.result === 'error') {
+          this.folderSuccess = '';
+          this.folderError = response.data.msg;
+          this.renderErrorFolderInput(true);
+        } else {
+          this.folderSuccess = response.data.msg;
           this.renderErrorFolderInput(false);
+
+          setTimeout(this.closeModalFolder, 3000);
+          setTimeout(this.loadMedia, 3000);
         }
 
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
-        this.loading = false;
 
       });
     }
@@ -372,7 +373,7 @@ export default {
           <button type="button" class="btn-close" @click="this.closeModalFolder()"></button>
         </div>
         <div class="modal-body">
-          <div class="mb-3">
+          <div class="mb-3" :class="this.folderSuccess !== '' ? 'd-none':''">
             <label for="folderName" class="form-label">{{ this.translate.folder.input_label }} *</label>
             <input type="text" v-model="folderName"
                 @keyup="this.validateFolderName()"
@@ -383,8 +384,11 @@ export default {
               {{ this.folderError }}
             </div>
           </div>
+          <div class="mb-3" :class="this.folderSuccess === '' ? 'd-none':''">
+            <i>{{ this.folderSuccess }}</i>
+          </div>
         </div>
-        <div class="modal-footer">
+        <div v-if="this.folderSuccess === ''" class="modal-footer">
           <div class="btn btn-dark" @click="this.closeModalFolder()">{{ this.translate.folder.btn_cancel }}</div>
           <div v-if="isEmpty(this.folderEdit)" @click="this.submitFolder()" class="btn btn-primary" :class="this.folderCanSubmit ? '':'disabled'">
             {{ this.translate.folder.btn_submit_create }}

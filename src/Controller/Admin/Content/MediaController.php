@@ -121,20 +121,21 @@ class MediaController extends AppAdminController
         if ($exist !== null) {
             return $this->json([
                     'result' => 'error',
-                    'msg' => $translator->trans('media.mediatheque.folder.error.exist_name', domain: 'media')]
-            );
+                    'msg' => $translator->trans('media.mediatheque.folder.error.exist_name', domain: 'media')
+                ]);
         }
 
+        $result = 'success';
+        $msg = $translator->trans('media.mediatheque.folder.success', ['name' => $data['name']], domain: 'media');
         if ($editFolder === null) {
             $mediaFolderService->createMediaFolder($data['name'], $currentFolder);
-        }
-        else {
+        } else {
             $mediaFolderService->updateMediaFolder($data['name'], $editFolder);
         }
 
-
         return $this->json([
-
+            'result' => $result,
+            'msg' => $msg
         ]);
     }
 }
