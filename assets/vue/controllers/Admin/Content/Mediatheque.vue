@@ -53,7 +53,6 @@ export default {
     loadMedia() {
 
       this.loading = true;
-
       axios.post(this.url, {
         'folder': this.folderId,
         'order': this.order,
@@ -81,7 +80,6 @@ export default {
       } else {
         this.orderIcon = 'bi-sort-up';
       }
-
       this.loadMedia();
     },
 
@@ -98,7 +96,6 @@ export default {
           this.filterIcon = 'bi-file'
           break;
       }
-
       this.loadMedia();
     },
 
@@ -198,7 +195,6 @@ export default {
         defaultName = this.folderEdit.name;
       }
 
-
       let regex = /^[a-zA-Z0-9]{3,15}$/;
       if (!regex.test(this.folderName)) {
         error = true;
@@ -240,13 +236,11 @@ export default {
         this.folderSuccess = this.translate.folder.msg_wait_edit;
       }
 
-
       axios.post(this.urlActions.saveFolder, {
         'name': this.folderName,
         'currentFolder': this.currentFolder.id,
         'editFolder': editFolderId
       }).then((response) => {
-
         if (response.data.result === 'error') {
           this.folderSuccess = '';
           this.folderError = response.data.msg;
@@ -254,24 +248,17 @@ export default {
         } else {
           this.folderSuccess = response.data.msg;
           this.renderErrorFolderInput(false);
-
           setTimeout(this.closeModalFolder, 3000);
           setTimeout(this.loadMedia, 3000);
         }
-
       }).catch((error) => {
         console.log(error);
-      }).finally(() => {
-
-      });
+      }).finally(() => {});
     }
-
     /** fin bloc gestion des dossiers **/
   }
 }
-
 </script>
-
 
 <template>
 
@@ -336,12 +323,10 @@ export default {
             </div>
             <input type="radio" class="btn-check no-control" name="options-render" id="btn-grid" autocomplete="off" checked @change="this.switchRender('grid')">
             <label class="btn me-1 btn-secondary" for="btn-grid"><i class="bi bi-grid"></i></label>
-
             <input type="radio" class="btn-check no-control" name="options-render" id="btn-list" autocomplete="off" @change="this.switchRender('list')">
             <label class="btn btn-secondary" for="btn-list"><i class="bi bi-list"></i></label>
           </div>
         </div>
-
 
         <div v-if="render === 'grid'">
           <medias-grid
@@ -401,8 +386,6 @@ export default {
     </div>
   </div>
   <!-- Fin Modal pour la gestion des dossier -->
-
-
 </template>
 
 <style scoped>
