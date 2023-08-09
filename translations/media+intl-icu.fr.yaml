@@ -23,3 +23,6 @@ media.mediatheque.folder.btn.submit.create: 'Créer le dossier'
 media.mediatheque.folder.btn.submit.edit: 'Editer le dossier'
 media.mediatheque.folder.btn.cancel: Annuler
 media.mediatheque.folder.error.exist_name: 'Ce nom est déjà utilisé comme dossier dans la médiathèque'
+media.mediatheque.folder.success: 'Le dossier {name} à été créé avec succès, cette fenêtre va ce fermer automatiquement dans 3 secondes...'
+media.mediatheque.folder.msg.wait.create: Création du dossier en cours...
+media.mediatheque.folder.msg.wait.edit: Edition du dossier en cours...
