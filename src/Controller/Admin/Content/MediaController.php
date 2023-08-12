@@ -126,10 +126,12 @@ class MediaController extends AppAdminController
         }
 
         $result = 'success';
-        $msg = $translator->trans('media.mediatheque.folder.success', ['name' => $data['name']], domain: 'media');
         if ($editFolder === null) {
+            $msg = $translator->trans('media.mediatheque.folder.success', ['name' => $data['name']], domain: 'media');
             $mediaFolderService->createMediaFolder($data['name'], $currentFolder);
         } else {
+            $msg = $translator->trans('media.mediatheque.folder.edit.success',
+                ['new_name' => $data['name'], 'name' => $editFolder->getName()], domain: 'media');
             $mediaFolderService->updateMediaFolder($data['name'], $editFolder);
         }
 

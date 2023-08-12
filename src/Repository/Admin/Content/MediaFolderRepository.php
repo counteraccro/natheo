@@ -43,7 +43,7 @@ class MediaFolderRepository extends ServiceEntityRepository
      * Retourne une liste de médiaFolder contenu dans un médiaFolder
      * @param MediaFolder|null $mediaFolder
      * @param bool $trash : par défaut false
-     * @param bool $disabled: par défaut false
+     * @param bool $disabled : par défaut false
      * @return float|int|mixed|string
      */
     public function getByMediaFolder
@@ -66,6 +66,21 @@ class MediaFolderRepository extends ServiceEntityRepository
             $query->andWhere('mf.parent IS NULL');
         }
         return $query->getQuery()->getResult();
+    }
+
+
+    /**
+     * Retourne une liste de médiaFolder contenant dans path la chaine $name
+     * @param string $name
+     * @return mixed
+     */
+    public function getAllByLikePath(string $name): mixed
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.path LIKE :name')
+            ->setParameter('name', '%' . $name . '%')
+            ->orderBy('m.id', 'ASC')
+            ->getQuery()->getResult();
     }
 
 //    /**

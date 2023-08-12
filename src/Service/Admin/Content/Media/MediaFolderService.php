@@ -30,10 +30,18 @@ class MediaFolderService extends AppAdminService
 
     private OptionSystemService $optionSystemService;
 
+    /**
+     * Path de la médiathèque
+     * @var string
+     */
     protected string $rootPathMedia = '';
 
     protected string $webPathMedia = '';
 
+    /**
+     * Path du projet
+     * @var string
+     */
     protected string $rootPath = '';
 
     protected string $rootPathThumbnail = '';
@@ -251,9 +259,9 @@ class MediaFolderService extends AppAdminService
      * Permet de créer un nouveau dossier en base de donnée ainsi que physiquement si l'option est activée
      * @param string $name
      * @param MediaFolder|null $parent
-     * @return boolean
+     * @return void
      */
-    public function createMediaFolder(string $name, MediaFolder $parent = null): bool
+    public function createMediaFolder(string $name, MediaFolder $parent = null): void
     {
         $mediaFolder = new MediaFolder();
         $mediaFolder->setName($name);
@@ -271,11 +279,7 @@ class MediaFolderService extends AppAdminService
         $mediaFolder->setPath($path);
         $this->save($mediaFolder);
 
-        if($this->createFolder($mediaFolder))
-        {
-            return true;
-        }
-        return false;
+        $this->createFolder($mediaFolder);
     }
 
     /**
@@ -284,8 +288,33 @@ class MediaFolderService extends AppAdminService
      * @param MediaFolder $mediaFolder
      * @return void
      */
-    public function updateMediaFolder(string $name, MediaFolder $mediaFolder)
+    public function updateMediaFolder(string $name, MediaFolder $mediaFolder): void
     {
+        $oldName = $mediaFolder->getName();
+        $mediaFolder->setName($name);
+        $this->save($mediaFolder);
 
+        /** @var MediaFolderRepository $repo */
+        $repo = $this->getRepository(MediaFolder::class);
+        $listMediaFolder = $repo->getAllByLikePath($oldName);
+
+        /** @var MediaFolder $mediaFolder */
+        $nb = count($listMediaFolder);
+        $i = 0;
+        $flush = false;
+        foreach ($listMediaFolder as $mediaFolderParent) {
+            $i++;
+            if ($i === $nb) {
+                $flush = true;
+            }
+            $mediaFolderParent->setPath(str_replace($oldName, $name, $mediaFolderParent->getPath()));
+            $repo->save($mediaFolder, $flush);
+        }
+
+        $fileSystem = new Filesystem();
+
+        $origin = $this->rootPathMedia . $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $oldName;
+        $target = $this->getPathFolder($mediaFolder);
+        $fileSystem->rename($origin, $target);
     }
 }
