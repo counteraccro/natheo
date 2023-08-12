@@ -213,6 +213,10 @@ class MediaService extends MediaFolderService
                     $this->translator->trans('media.mediatheque.folder.msg.wait.create', domain: 'media'),
                 'msg_wait_edit' =>
                     $this->translator->trans('media.mediatheque.folder.msg.wait.edit', domain: 'media'),
+            ],
+            'info' => [
+                'title' => $this->translator->trans('media.mediatheque.info.title', domain: 'media'),
+                'btn_close' => $this->translator->trans('media.mediatheque.info.btn.close', domain: 'media'),
             ]
         ];
     }

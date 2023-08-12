@@ -69,7 +69,8 @@ class MediaController extends AppAdminController
             'currentFolder' => $currentFolder,
             'url' => [
                 'loadFolder' => $this->generateUrl('admin_media_load_folder'),
-                'saveFolder' => $this->generateUrl('admin_media_save_folder')
+                'saveFolder' => $this->generateUrl('admin_media_save_folder'),
+                'loadInfo' => $this->generateUrl('admin_media_load_info'),
             ]
         ]);
     }
@@ -138,6 +139,28 @@ class MediaController extends AppAdminController
         return $this->json([
             'result' => $result,
             'msg' => $msg
+        ]);
+    }
+
+    /**
+     * Charge les informations pour le média ou le dossier sélectionné
+     * @param Request $request
+     * @param MediaService $mediaService
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     */
+    #[Route('/ajax/load-info', name: 'load_info', methods: ['POST'])]
+    public function loadInfo(
+        Request             $request,
+        MediaService  $mediaService,
+        TranslatorInterface $translator
+    ): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        return $this->json([
+            'type' => $data['type'],
+            'id' => $data['id']
         ]);
     }
 }

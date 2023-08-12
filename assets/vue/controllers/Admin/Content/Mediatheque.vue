@@ -5,6 +5,7 @@
 
 import MediasGrid from "../../../Components/Mediatheque/MediasGrid.vue";
 import MediasBreadcrumb from "../../../Components/Mediatheque/MediasBreadcrumb.vue";
+import MediaModalInfo from "../../../Components/Mediatheque/MediaModalInfo.vue";
 import axios from "axios";
 import {Modal} from "bootstrap";
 import {isEmpty} from "lodash-es";
@@ -13,7 +14,8 @@ export default {
   name: "Mediatheque",
   components: {
     MediasGrid,
-    MediasBreadcrumb
+    MediasBreadcrumb,
+    MediaModalInfo
   },
   props: {
     url: String,
@@ -23,6 +25,7 @@ export default {
     return {
       loading: false,
       modalFolder: '',
+      modalInfo: '',
       medias: [],
       currentFolder: [],
       filter: 'created_at',
@@ -36,12 +39,14 @@ export default {
       folderError: '',
       folderSuccess: '',
       folderCanSubmit: false,
+      infoData: [],
       urlActions: '',
     }
   },
 
   mounted() {
     this.modalFolder = new Modal(document.getElementById("modal-folder"), {});
+    this.modalInfo = new Modal(document.getElementById("modal-info"), {});
     this.loadMedia();
   },
 
@@ -253,9 +258,51 @@ export default {
         }
       }).catch((error) => {
         console.log(error);
-      }).finally(() => {});
-    }
+      }).finally(() => {
+      });
+    },
     /** fin bloc gestion des dossiers **/
+
+    /** Bloc modal information **/
+
+    /**
+     * Charge les informations de la popin information
+     * @param type
+     * @param id
+     */
+    loadDataInformation(type, id)
+    {
+      this.loading = true;
+      axios.post(this.urlActions.loadInfo, {
+        'id': id,
+        'type': type,
+      }).then((response) => {
+        this.infoData = response.data
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+        this.loading = false;
+        this.openModalInfo();
+      });
+    },
+
+    /**
+     * Ouvre la modale pour les informations
+     */
+    openModalInfo() {
+      this.modalInfo.show();
+    },
+
+    /**
+     * Ferme la modale pour les informations
+     */
+    closeModalInfo() {
+      this.infoMedia = [];
+      this.infoFolder = [];
+      this.modalInfo.hide();
+    }
+
+    /** Fin bloc modal information **/
   }
 }
 </script>
@@ -334,6 +381,7 @@ export default {
               :translate="this.translate.media"
               @load-data-folder="this.loadDataInFolder"
               @edit-folder="this.editFolder"
+              @show-info="this.loadDataInformation"
           >
           </medias-grid>
         </div>
@@ -386,6 +434,30 @@ export default {
     </div>
   </div>
   <!-- Fin Modal pour la gestion des dossier -->
+
+  <!-- Modal pour les informations -->
+  <div class="modal fade" id="modal-info" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-secondary">
+          <h1 class="modal-title fs-5 text-white">
+            <i class="bi bi-info-circle-fill"></i> {{ this.translate.info.title }}
+          </h1>
+          <button type="button" class="btn-close" @click="this.closeModalInfo()"></button>
+        </div>
+        <div class="modal-body">
+          <media-modal-info
+              :data="this.infoData"
+          >
+          </media-modal-info>
+        </div>
+        <div class="modal-footer">
+          <div class="btn btn-dark" @click="this.closeModalInfo()">{{ this.translate.info.btn_close }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fin Modal pour les informations -->
 </template>
 
 <style scoped>

@@ -9,7 +9,7 @@ export default {
     medias: Object,
     translate: Object
   },
-  emits: ['load-data-folder', 'edit-folder'],
+  emits: ['load-data-folder', 'edit-folder', 'show-info'],
   data() {
     return {}
   },
@@ -30,14 +30,18 @@ export default {
             <i class="bi bi-justify"></i>
           </button>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">
-              <i class="bi bi-info-circle-fill"></i> {{ this.translate.link_info }}</a>
+            <li>
+              <!-- lien information -->
+              <a class="dropdown-item" href="#" @click="$emit('show-info', media.type, media.id)">
+                <i class="bi bi-info-circle-fill"></i> {{ this.translate.link_info }}
+              </a>
             </li>
-            <li v-if="media.type === 'media'">
-              <a class="dropdown-item" href="#"><i class="bi bi-pencil-fill"></i> {{ this.translate.link_edit }}</a>
-            </li>
-            <li v-else>
-              <a class="dropdown-item" href="#" @click="$emit('edit-folder', media.id)">
+            <li>
+              <!-- lien éditer -->
+              <a v-if="media.type === 'media'" class="dropdown-item" href="#">
+                <i class="bi bi-pencil-fill"></i> {{ this.translate.link_edit }}
+              </a>
+              <a v-else class="dropdown-item" href="#" @click="$emit('edit-folder', media.id)">
                 <i class="bi bi-pencil-fill"></i> {{ this.translate.link_edit }}
               </a>
             </li>
