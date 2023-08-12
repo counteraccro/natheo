@@ -32,26 +32,26 @@ export default {
           <ul class="dropdown-menu">
             <li>
               <!-- lien information -->
-              <a class="dropdown-item" href="#" @click="$emit('show-info', media.type, media.id)">
+              <a class="dropdown-item" @click="$emit('show-info', media.type, media.id)">
                 <i class="bi bi-info-circle-fill"></i> {{ this.translate.link_info }}
               </a>
             </li>
             <li>
               <!-- lien éditer -->
-              <a v-if="media.type === 'media'" class="dropdown-item" href="#">
+              <a v-if="media.type === 'media'" class="dropdown-item">
                 <i class="bi bi-pencil-fill"></i> {{ this.translate.link_edit }}
               </a>
-              <a v-else class="dropdown-item" href="#" @click="$emit('edit-folder', media.id)">
+              <a v-else class="dropdown-item" @click="$emit('edit-folder', media.id)">
                 <i class="bi bi-pencil-fill"></i> {{ this.translate.link_edit }}
               </a>
             </li>
             <li>
-              <a class="dropdown-item" href="#"><i class="bi bi-arrow-right-circle-fill"></i> {{ this.translate.link_move }}</a>
+              <a class="dropdown-item"><i class="bi bi-arrow-right-circle-fill"></i> {{ this.translate.link_move }}</a>
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
-            <li><a class="dropdown-item" href="#"><i class="bi bi-trash-fill"></i> {{ this.translate.link_remove }}</a>
+            <li><a class="dropdown-item"><i class="bi bi-trash-fill"></i> {{ this.translate.link_remove }}</a>
             </li>
           </ul>
         </div>
