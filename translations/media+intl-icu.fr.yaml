@@ -27,3 +27,5 @@ media.mediatheque.folder.success: 'Le dossier {name} à été créé avec succè
 media.mediatheque.folder.msg.wait.create: 'Création du dossier en cours...'
 media.mediatheque.folder.msg.wait.edit: 'Edition du dossier en cours...'
 media.mediatheque.folder.edit.success: 'Le dossier {name} renommé en {new_name} à été fait avec succès, cette fenêtre va ce fermer automatiquement dans 3 secondes...'
+media.mediatheque.info.title: 'Information'
+media.mediatheque.info.btn.close: 'Fermer'

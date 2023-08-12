@@ -27,3 +27,5 @@ media.mediatheque.folder.success: __media.mediatheque.folder.success
 media.mediatheque.folder.msg.wait.create: __media.mediatheque.folder.msg.wait.create
 media.mediatheque.folder.msg.wait.edit: __media.mediatheque.folder.msg.wait.edit
 media.mediatheque.folder.edit.success: __media.mediatheque.folder.edit.success
+media.mediatheque.info.title: __media.mediatheque.info.title
+media.mediatheque.info.btn.close: __media.mediatheque.info.btn.close
