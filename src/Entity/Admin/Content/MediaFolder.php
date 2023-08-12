@@ -27,7 +27,7 @@ class MediaFolder
     #[ORM\Column(length: 150)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $path = null;
 
     #[ORM\Column]
