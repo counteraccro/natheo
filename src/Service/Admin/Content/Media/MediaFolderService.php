@@ -15,6 +15,7 @@ use App\Utils\Content\Media\MediaFolderConst;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\Utils;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\Integer;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -316,5 +317,29 @@ class MediaFolderService extends AppAdminService
         $origin = $this->rootPathMedia . $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $oldName;
         $target = $this->getPathFolder($mediaFolder);
         $fileSystem->rename($origin, $target);
+    }
+
+    /**
+     * Retourne les informations d'un dossier
+     * @param int $idFolderMedia
+     * @return array
+     */
+    public function getInfoFolder(int $idFolderMedia): array
+    {
+        /** @var MediaFolder $mediaFolder */
+        $mediaFolder = $this->findOneById(MediaFolder::class, $idFolderMedia);
+
+        return [
+            $this->translator->trans('media.mediatheque.info.folder.name', domain: 'media')
+            => $mediaFolder->getName(),
+            $this->translator->trans('media.mediatheque.info.folder.emplacement', domain: 'media')
+            => 'emplacement',
+            $this->translator->trans('media.mediatheque.info.folder.taille.disque', domain: 'media')
+            => 'taille sur le disque',
+            $this->translator->trans('media.mediatheque.info.folder.contenu', domain: 'media')
+            => 'contenu',
+            $this->translator->trans('media.mediatheque.info.folder.date_creation', domain: 'media')
+            => 'date création'
+            ];
     }
 }

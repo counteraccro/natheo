@@ -300,7 +300,7 @@ export default {
       this.infoMedia = [];
       this.infoFolder = [];
       this.modalInfo.hide();
-    }
+    },
 
     /** Fin bloc modal information **/
   }

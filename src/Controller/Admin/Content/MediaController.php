@@ -121,9 +121,9 @@ class MediaController extends AppAdminController
         $exist = $mediaFolderService->findOneBy(MediaFolder::class, 'name', $data['name']);
         if ($exist !== null) {
             return $this->json([
-                    'result' => 'error',
-                    'msg' => $translator->trans('media.mediatheque.folder.error.exist_name', domain: 'media')
-                ]);
+                'result' => 'error',
+                'msg' => $translator->trans('media.mediatheque.folder.error.exist_name', domain: 'media')
+            ]);
         }
 
         $result = 'success';
@@ -152,15 +152,19 @@ class MediaController extends AppAdminController
     #[Route('/ajax/load-info', name: 'load_info', methods: ['POST'])]
     public function loadInfo(
         Request             $request,
-        MediaService  $mediaService,
+        MediaService        $mediaService,
         TranslatorInterface $translator
     ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
-        return $this->json([
-            'type' => $data['type'],
-            'id' => $data['id']
-        ]);
+        $json = ['type' => $data['type']];
+        if ($data['type'] === 'folder') {
+            $json['data'] = $mediaService->getInfoFolder($data['id']);
+        } else {
+            $json['data'] = $mediaService->getInfoMedia($data['id']);
+        }
+
+        return $this->json($json);
     }
 }

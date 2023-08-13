@@ -175,6 +175,16 @@ class MediaService extends MediaFolderService
     }
 
     /**
+     * Retourne les informations d'un média
+     * @param int $idMedia
+     * @return array
+     */
+    public function getInfoMedia(int $idMedia): array
+    {
+        return [];
+    }
+
+    /**
      * Retourne la traduction pour la médiathèque
      * @return array
      */

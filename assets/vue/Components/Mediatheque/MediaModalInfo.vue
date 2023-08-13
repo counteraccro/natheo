@@ -23,8 +23,13 @@ export default {
 </script>
 
 <template>
-  <div v-if="!IsEmpty(this.data)">
-    {{this.data.id }} -> {{this.data.type }}
+  <div v-if="!IsEmpty(this.data) && this.data.type === 'folder'">
+    <div v-for="(data, label) in this.data.data">
+      {{ label }} : {{ data }}
+    </div>
+  </div>
+  <div v-else-if="!IsEmpty(this.data) && this.data.type === 'media'">
+    Media
   </div>
 </template>
 
