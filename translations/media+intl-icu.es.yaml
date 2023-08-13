@@ -29,3 +29,8 @@ media.mediatheque.folder.msg.wait.edit: __media.mediatheque.folder.msg.wait.edit
 media.mediatheque.folder.edit.success: __media.mediatheque.folder.edit.success
 media.mediatheque.info.title: __media.mediatheque.info.title
 media.mediatheque.info.btn.close: __media.mediatheque.info.btn.close
+media.mediatheque.info.folder.name: __media.mediatheque.info.folder.name
+media.mediatheque.info.folder.emplacement: __media.mediatheque.info.folder.emplacement
+media.mediatheque.info.folder.taille.disque: __media.mediatheque.info.folder.taille.disque
+media.mediatheque.info.folder.contenu: __media.mediatheque.info.folder.contenu
+media.mediatheque.info.folder.date_creation: __media.mediatheque.info.folder.date_creation
