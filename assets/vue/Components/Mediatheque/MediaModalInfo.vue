@@ -23,14 +23,23 @@ export default {
 </script>
 
 <template>
-  <div v-if="!IsEmpty(this.data) && this.data.type === 'folder'">
-    <div v-for="(data, label) in this.data.data">
-      {{ label }} : {{ data }}
+  <div class="row">
+    <div class="col-8">
+      <div v-if="!IsEmpty(this.data)" v-for="(data, label) in this.data.data">
+        {{ label }} : {{ data }}
+      </div>
+    </div>
+    <div class="col-4 d-flex justify-content-center align-items-center">
+      <div v-if="!IsEmpty(this.data) && this.data.type === 'folder'">
+        <img src="/assets/natheo/mediatheque/folder-media.png" alt="folder" width="75" height="75" />
+      </div>
+      <div v-else-if="!IsEmpty(this.data) && this.data.type === 'media'">
+        thumbnail
+        <img :src="this.data.thumbnail" alt="folder" width="75" height="75" />
+      </div>
     </div>
   </div>
-  <div v-else-if="!IsEmpty(this.data) && this.data.type === 'media'">
-    Media
-  </div>
+
 </template>
 
 <style scoped>

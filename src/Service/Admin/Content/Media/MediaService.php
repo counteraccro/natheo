@@ -181,7 +181,31 @@ class MediaService extends MediaFolderService
      */
     public function getInfoMedia(int $idMedia): array
     {
-        return [];
+        /** @var Media $media */
+        $media = $this->findOneById(Media::class, $idMedia);
+
+        return [
+            'data' => [
+                $this->translator->trans('media.mediatheque.info.media.name', domain: 'media')
+                => $media->getName(),
+                $this->translator->trans('media.mediatheque.info.media.description', domain: 'media')
+                => $media->getDescription(),
+                $this->translator->trans('media.mediatheque.info.media.extension', domain: 'media')
+                => $media->getExtension(),
+                $this->translator->trans('media.mediatheque.info.media.user', domain: 'media')
+                => 'user',
+                $this->translator->trans('media.mediatheque.info.media.emplacement', domain: 'media')
+                => $media->getPath(),
+                $this->translator->trans('media.mediatheque.info.media.size', domain: 'media')
+                => Utils::getSizeName($media->getSize()),
+                $this->translator->trans('media.mediatheque.info.media.date_created', domain: 'media')
+                => $media->getCreatedAt()->format('d/m/y H:i'),
+                $this->translator->trans('media.mediatheque.info.media.date_update', domain: 'media')
+                => $media->getUpdateAt()->format('d/m/y H:i'),
+            ],
+            'thumbnail' => $this->getWebPathThumbnail($media->getThumbnail()),
+            'web_path' => $media->getWebPath()
+        ];
     }
 
     /**

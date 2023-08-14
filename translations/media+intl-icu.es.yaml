@@ -37,3 +37,11 @@ media.mediatheque.info.folder.date_creation: __media.mediatheque.info.folder.dat
 media.mediatheque.info.folder.files: __media.mediatheque.info.folder.files
 media.mediatheque.info.folder.folder: __media.mediatheque.info.folder.folder
 media.mediatheque.info.folder.date_update: __media.mediatheque.info.folder.date_update
+media.mediatheque.info.media.name: __media.mediatheque.info.media.name
+media.mediatheque.info.media.description: __media.mediatheque.info.media.description
+media.mediatheque.info.media.extension: __media.mediatheque.info.media.extension
+media.mediatheque.info.media.user: __media.mediatheque.info.media.user
+media.mediatheque.info.media.size: __media.mediatheque.info.media.size
+media.mediatheque.info.media.date_created: __media.mediatheque.info.media.date_created
+media.mediatheque.info.media.date_update: __media.mediatheque.info.media.date_update
+media.mediatheque.info.media.emplacement: __media.mediatheque.info.media.emplacement

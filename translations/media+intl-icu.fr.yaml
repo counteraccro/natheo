@@ -35,5 +35,13 @@ media.mediatheque.info.folder.taille.disque: 'Taille (disque)'
 media.mediatheque.info.folder.contenu: Contenu
 media.mediatheque.info.folder.date_creation: 'Créer le'
 media.mediatheque.info.folder.files: Fichiers
-media.mediatheque.info.folder.date_update: 'Dernière modification'
+media.mediatheque.info.folder.date_update: 'Dernière modification le'
 media.mediatheque.info.folder.folder: Dossiers
+media.mediatheque.info.media.name: Nom
+media.mediatheque.info.media.description: Description
+media.mediatheque.info.media.extension: Extension
+media.mediatheque.info.media.user: Utilisateur
+media.mediatheque.info.media.size: 'Taille (disque)'
+media.mediatheque.info.media.date_created: 'Créer le'
+media.mediatheque.info.media.date_update: 'Dernière modification le'
+media.mediatheque.info.media.emplacement: Emplacement

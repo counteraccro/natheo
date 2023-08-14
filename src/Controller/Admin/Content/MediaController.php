@@ -158,12 +158,12 @@ class MediaController extends AppAdminController
     {
         $data = json_decode($request->getContent(), true);
 
-        $json = ['type' => $data['type']];
         if ($data['type'] === 'folder') {
             $json['data'] = $mediaService->getInfoFolder($data['id']);
         } else {
-            $json['data'] = $mediaService->getInfoMedia($data['id']);
+            $json = $mediaService->getInfoMedia($data['id']);
         }
+        $json['type'] = $data['type'];
 
         return $this->json($json);
     }
