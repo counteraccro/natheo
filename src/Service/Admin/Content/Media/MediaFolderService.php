@@ -15,13 +15,13 @@ use App\Utils\Content\Media\MediaFolderConst;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\Utils;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Types\Integer;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -213,7 +213,7 @@ class MediaFolderService extends AppAdminService
     }
 
     /**
-     * Retoune l'arborescence sous la forme d'un array du dossier envoyé en paramètre
+     * Retourne l'arborescence sous la forme d'un array du dossier envoyé en paramètre
      * @param MediaFolder $mediaFolder
      * @param array $tree
      * @return array
@@ -328,18 +328,42 @@ class MediaFolderService extends AppAdminService
     {
         /** @var MediaFolder $mediaFolder */
         $mediaFolder = $this->findOneById(MediaFolder::class, $idFolderMedia);
+        $content = $this->getContentFolder($mediaFolder);
 
         return [
             $this->translator->trans('media.mediatheque.info.folder.name', domain: 'media')
             => $mediaFolder->getName(),
             $this->translator->trans('media.mediatheque.info.folder.emplacement', domain: 'media')
-            => 'emplacement',
+            => $mediaFolder->getPath(),
             $this->translator->trans('media.mediatheque.info.folder.taille.disque', domain: 'media')
-            => 'taille sur le disque',
+            => Utils::getSizeName($this->getFolderSize($mediaFolder)),
             $this->translator->trans('media.mediatheque.info.folder.contenu', domain: 'media')
-            => 'contenu',
+            => $content['files'] . ' ' .
+                $this->translator->trans('media.mediatheque.info.folder.files', domain: 'media') . ', ' .
+                $content['directory'] . ' ' .
+                $this->translator->trans('media.mediatheque.info.folder.folder', domain: 'media'),
             $this->translator->trans('media.mediatheque.info.folder.date_creation', domain: 'media')
-            => 'date création'
+            => $mediaFolder->getCreatedAt()->format('d/m/y H:i'),
+            $this->translator->trans('media.mediatheque.info.folder.date_update', domain: 'media')
+            => $mediaFolder->getUpdateAt()->format('d/m/y H:i')
             ];
+    }
+
+    /**
+     * Retourne le contenu d'un dossier (nombre de dossiers et fichiers)
+     * @param MediaFolder $mediaFolder
+     * @return array
+     */
+    public function getContentFolder(MediaFolder $mediaFolder): array
+    {
+        $finder = new Finder();
+        $path = $this->getPathFolder($mediaFolder);
+        $nbDirectory = $finder->directories()->in($path)->count();
+        $nbFile = $finder::create()->files()->name('*.*')->in($path)->count();
+
+        return [
+            'files' => $nbFile,
+            'directory' => $nbDirectory
+        ];
     }
 }

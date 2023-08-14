@@ -34,3 +34,6 @@ media.mediatheque.info.folder.emplacement: __media.mediatheque.info.folder.empla
 media.mediatheque.info.folder.taille.disque: __media.mediatheque.info.folder.taille.disque
 media.mediatheque.info.folder.contenu: __media.mediatheque.info.folder.contenu
 media.mediatheque.info.folder.date_creation: __media.mediatheque.info.folder.date_creation
+media.mediatheque.info.folder.files: __media.mediatheque.info.folder.files
+media.mediatheque.info.folder.folder: __media.mediatheque.info.folder.folder
+media.mediatheque.info.folder.date_update: __media.mediatheque.info.folder.date_update

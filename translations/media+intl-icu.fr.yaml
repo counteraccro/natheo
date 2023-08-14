@@ -31,6 +31,9 @@ media.mediatheque.info.title: Information
 media.mediatheque.info.btn.close: Fermer
 media.mediatheque.info.folder.name: Nom
 media.mediatheque.info.folder.emplacement: Emplacement
-media.mediatheque.info.folder.taille.disque: Taille (disque)
+media.mediatheque.info.folder.taille.disque: 'Taille (disque)'
 media.mediatheque.info.folder.contenu: Contenu
-media.mediatheque.info.folder.date_creation: Créer le
+media.mediatheque.info.folder.date_creation: 'Créer le'
+media.mediatheque.info.folder.files: Fichiers
+media.mediatheque.info.folder.date_update: 'Dernière modification'
+media.mediatheque.info.folder.folder: Dossiers
