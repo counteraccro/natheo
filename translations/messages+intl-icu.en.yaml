@@ -180,6 +180,15 @@ options_system.media_url_msg_error: '__Vous devez saisir une url'
 options_system.media_url_help: '__A ne changer que si vous utilisez un stockage externe pour vos médias'
 options_system.media_url_placeholder: '__URL public au format http://'
 options_system.media_url_msg_success: '__Dossier média changé avec succès'
+options_user.donnees_personnelles: '__Données personnelles'
+options_user.donnees_personnelles.title: '__Mes données personnelles'
+options_user.donnees_personnelles.description: '__Gestion de mes données personnelles sur le site'
+options_user.default_personal_data_render: '__Affichage de vos données personnelles'
+options_user.default_personal_data_render.anonyme: '__Anonyme'
+options_user.default_personal_data_render.email: '__Adresse email'
+options_user.default_personal_data_render.login: '__Pseudonyme'
+options_user.default_personal_data_render.name: '__Votre nom et prénom'
+options_user.default_personal_data_render.help: "__Si les données personnelles n'on pas été saisies, l'option inférieure sera prise en compte"
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: __pagedemo.page_title_h1
 date.diff.start: "__Il y'a"
