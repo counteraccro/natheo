@@ -45,3 +45,4 @@ media.mediatheque.info.media.size: 'Taille (disque)'
 media.mediatheque.info.media.date_created: 'Créer le'
 media.mediatheque.info.media.date_update: 'Dernière modification le'
 media.mediatheque.info.media.emplacement: Emplacement
+media.mediatheque.info.link.size: 'Taille réelle'
