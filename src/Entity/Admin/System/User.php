@@ -277,6 +277,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * Retourne un UserOption en fonction de sa clé
+     * @param string $key
+     * @return OptionUser|null
+     */
+    public function getOptionUserByKey(string $key): ?OptionUser
+    {
+        $result = $this->getOptionsUser()->filter(function (OptionUser $optionUser) use ($key) {
+            return $optionUser->getKey() === $key;
+        });
+        if (!$result->first() instanceof OptionUser) {
+            return null;
+        }
+        return $result->first();
+    }
+
+    /**
      * Retourne une date formatée en string
      * @param string $dateName - valeur update ou create
      * @return string

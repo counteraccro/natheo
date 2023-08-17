@@ -21,3 +21,13 @@ options_user:
         list_value: '5:5|10:10|20:20|50:50|100:100'
         help: 'options_user.nb_element_help'
         default: '20'
+  options_user.donnees_personnelles:
+    title: 'options_user.donnees_personnelles.title'
+    description: 'options_user.donnees_personnelles.description'
+    options:
+      OU_DEFAULT_PERSONAL_DATA_RENDER:
+        type: 'select'
+        label: 'options_user.default_personal_data_render'
+        list_value: 'anonyme:options_user.default_personal_data_render.anonyme|email:options_user.default_personal_data_render.email|login:options_user.default_personal_data_render.login|name:options_user.default_personal_data_render.name'
+        help: 'options_user.default_personal_data_render.help'
+        default: 'email'

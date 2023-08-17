@@ -85,6 +85,15 @@ class OptionUserService extends AppAdminService
             $optionUser->setKey($optionUserKey)->setValue($option->getValue());
             $user->addOptionsUser($optionUser);
         }
+
+        $options = [
+            OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER => 'email'
+        ];
+        foreach ($options as $key => $value) {
+            $optionUser = new OptionUser();
+            $optionUser->setKey($key)->setValue($value);
+            $user->addOptionsUser($optionUser);
+        }
         return $user;
     }
 
