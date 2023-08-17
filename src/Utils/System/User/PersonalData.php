@@ -39,6 +39,10 @@ class PersonalData
      */
     const OU_PERSONAL_DATA_RENDER_NAME = 'name';
 
+    /**
+     * Tableau des options de rendu
+     * @var array|string[]
+     */
     private array $optionsRender = [
         self::OU_PERSONAL_DATA_RENDER_ANONYME,
         self::OU_PERSONAL_DATA_RENDER_EMAIL,
@@ -46,10 +50,21 @@ class PersonalData
         self::OU_PERSONAL_DATA_RENDER_NAME
     ];
 
+    /**
+     * @var User
+     */
     private User $user;
 
+    /**
+     * @var string
+     */
     private string $optionRender = '';
 
+    /**
+     * Construct
+     * @param User $user
+     * @param string $optionRender
+     */
     public function __construct(User $user, string $optionRender = self::OU_PERSONAL_DATA_RENDER_ANONYME)
     {
         $this->user = $user;
@@ -58,7 +73,7 @@ class PersonalData
 
     /**
      * Retourne les données personnelles de l'utilisateur en fonction de ses préférences
-     * @return string
+     * @return string|null
      */
     public function getPersonalData(): ?string
     {
