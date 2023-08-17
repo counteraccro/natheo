@@ -448,6 +448,7 @@ export default {
         <div class="modal-body">
           <media-modal-info
               :data="this.infoData"
+              :translate="this.translate.info"
           >
           </media-modal-info>
         </div>

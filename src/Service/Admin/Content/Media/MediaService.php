@@ -251,6 +251,7 @@ class MediaService extends MediaFolderService
             'info' => [
                 'title' => $this->translator->trans('media.mediatheque.info.title', domain: 'media'),
                 'btn_close' => $this->translator->trans('media.mediatheque.info.btn.close', domain: 'media'),
+                'link_size' => $this->translator->trans('media.mediatheque.info.link.size', domain: 'media'),
             ]
         ];
     }

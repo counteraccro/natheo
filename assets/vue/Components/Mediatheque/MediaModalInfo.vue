@@ -10,6 +10,7 @@ import IsEmpty from "lodash-es/isEmpty";
 export default {
   props: {
     data: Object,
+    translate: Object
   },
   emits: [],
   data() {
@@ -29,12 +30,13 @@ export default {
         {{ label }} : {{ data }}
       </div>
     </div>
-    <div class="col-4 d-flex justify-content-center align-items-center">
+    <div class="col-4 d-flex justify-content-center align-items-center text-center">
       <div v-if="!IsEmpty(this.data) && this.data.type === 'folder'">
-        <img src="/assets/natheo/mediatheque/folder-media.png" alt="folder" width="75" height="75"/>
+        <img src="/assets/natheo/mediatheque/folder-media.png" alt="folder" height="100"/>
       </div>
       <div v-else-if="!IsEmpty(this.data) && this.data.type === 'media'">
-        <img :src="this.data.thumbnail" alt="folder" width="75" height="75"/>
+        <img :src="this.data.thumbnail" :alt="this.data.thumbnail" class="img-fluid"/> <br/>
+        <a class="link-dark" :href="this.data.web_path" target="_blank"><i class="bi bi-arrows-angle-expand"></i> {{ this.translate.link_size }}</a>
       </div>
     </div>
   </div>
