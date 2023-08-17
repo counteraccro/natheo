@@ -12,6 +12,8 @@ use App\Entity\Admin\Content\MediaFolder;
 use App\Repository\Admin\Content\MediaRepository;
 use App\Utils\Content\Media\MediaFolderConst;
 use App\Utils\Content\Media\Thumbnail;
+use App\Utils\System\Options\OptionUserKey;
+use App\Utils\System\User\PersonalData;
 use App\Utils\Utils;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -183,6 +185,9 @@ class MediaService extends MediaFolderService
     {
         /** @var Media $media */
         $media = $this->findOneById(Media::class, $idMedia);
+        $user = $media->getUser();
+        $persoalDataRender = $user->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER);
+        $personalData = new PersonalData($user, $persoalDataRender->getValue());
 
         return [
             'data' => [
@@ -193,7 +198,7 @@ class MediaService extends MediaFolderService
                 $this->translator->trans('media.mediatheque.info.media.extension', domain: 'media')
                 => $media->getExtension(),
                 $this->translator->trans('media.mediatheque.info.media.user', domain: 'media')
-                => 'user',
+                => $personalData->getPersonalData(),
                 $this->translator->trans('media.mediatheque.info.media.emplacement', domain: 'media')
                 => $media->getPath(),
                 $this->translator->trans('media.mediatheque.info.media.size', domain: 'media')
