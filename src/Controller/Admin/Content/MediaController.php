@@ -71,6 +71,7 @@ class MediaController extends AppAdminController
                 'loadFolder' => $this->generateUrl('admin_media_load_folder'),
                 'saveFolder' => $this->generateUrl('admin_media_save_folder'),
                 'loadInfo' => $this->generateUrl('admin_media_load_info'),
+                'upload' => $this->generateUrl('admin_media_upload'),
             ]
         ]);
     }
@@ -166,5 +167,22 @@ class MediaController extends AppAdminController
         $json['type'] = $data['type'];
 
         return $this->json($json);
+    }
+
+    /**
+     * Upload de média
+     * @param Request $request
+     * @return JsonResponse
+     */
+    #[Route('/ajax/upload-media', name: 'upload', methods: ['POST'])]
+    public function upload(Request $request, MediaService $mediaService): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $mediaService->uploadMediaFile();
+        var_dump($data);
+
+        return $this->json([
+
+        ]);
     }
 }

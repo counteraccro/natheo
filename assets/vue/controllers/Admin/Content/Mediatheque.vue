@@ -6,6 +6,7 @@
 import MediasGrid from "../../../Components/Mediatheque/MediasGrid.vue";
 import MediasBreadcrumb from "../../../Components/Mediatheque/MediasBreadcrumb.vue";
 import MediaModalInfo from "../../../Components/Mediatheque/MediaModalInfo.vue";
+import FileUpload from "../../../Components/FileUpload.vue";
 import axios from "axios";
 import {Modal} from "bootstrap";
 import {isEmpty} from "lodash-es";
@@ -15,7 +16,8 @@ export default {
   components: {
     MediasGrid,
     MediasBreadcrumb,
-    MediaModalInfo
+    MediaModalInfo,
+    FileUpload
   },
   props: {
     url: String,
@@ -26,6 +28,7 @@ export default {
       loading: false,
       modalFolder: '',
       modalInfo: '',
+      modalUpload: '',
       medias: [],
       currentFolder: [],
       filter: 'created_at',
@@ -47,6 +50,7 @@ export default {
   mounted() {
     this.modalFolder = new Modal(document.getElementById("modal-folder"), {});
     this.modalInfo = new Modal(document.getElementById("modal-info"), {});
+    this.modalUpload = new Modal(document.getElementById("modal-upload"), {});
     this.loadMedia();
   },
 
@@ -303,6 +307,38 @@ export default {
     },
 
     /** Fin bloc modal information **/
+
+    /** bloc modal upload **/
+
+    /**
+     * Ouvre la modale pour l'upload
+     */
+    openModalUpload() {
+      this.modalUpload.show();
+    },
+
+    /**
+     * Ferme la modale pour l'upload
+     */
+    closeModalUpload() {
+      this.modalUpload.hide();
+    },
+
+    async getUploadedData(file)
+    {
+      axios.post(this.urlActions.upload, {
+        'file': file,
+        'folder': this.folderId,
+      }).then((response) => {
+        this.infoData = response.data
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+        this.loading = false;
+      });
+    },
+
+    /** Fin bloc modal upload **/
   }
 }
 </script>
@@ -334,7 +370,7 @@ export default {
             <i class="bi bi-folder-plus"></i>
             <span class="d-none-mini">&nbsp;{{ this.translate.btn_new_folder }}</span>
           </div>
-          <div class="btn btn-secondary me-1">
+          <div class="btn btn-secondary me-1" @click="this.openModalUpload()">
             <i class="bi bi-file-plus"></i>
             <span class="d-none-mini">&nbsp;{{ this.translate.btn_new_media }}</span>
           </div>
@@ -459,6 +495,27 @@ export default {
     </div>
   </div>
   <!-- Fin Modal pour les informations -->
+
+  <!-- Modal pour l'upload -->
+  <div class="modal fade" id="modal-upload" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-secondary">
+          <h1 class="modal-title fs-5 text-white">
+            <i class="bi bi-upload"></i> Upload toto
+          </h1>
+          <button type="button" class="btn-close" @click="this.closeModalUpload()"></button>
+        </div>
+        <div class="modal-body">
+          <FileUpload :maxSize="1" accept="png" @file-uploaded="getUploadedData" />
+        </div>
+        <div class="modal-footer">
+          <div class="btn btn-dark" @click="this.closeModalUpload()">{{ this.translate.info.btn_close }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fin Modal pour l'upload -->
 </template>
 
 <style scoped>

@@ -213,6 +213,11 @@ class MediaService extends MediaFolderService
         ];
     }
 
+    public function uploadMediaFile()
+    {
+
+    }
+
     /**
      * Retourne la traduction pour la médiathèque
      * @return array
