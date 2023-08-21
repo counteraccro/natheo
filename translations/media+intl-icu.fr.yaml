@@ -60,4 +60,6 @@ media.mediatheque.upload.form.title: 'Autres informations'
 media.mediatheque.upload.input.title.help: 'Si vide, le nom du fichier sera prit par défaut'
 media.mediatheque.upload.input.description.help: 'Description rapide de votre média'
 media.mediatheque.upload.no_preview: 'Pas de prévisualisation disponible pour les fichiers de type'
-media.mediatheque.upload.preview: 'Prévisualisation'
+media.mediatheque.upload.preview: Prévisualisation
+media.mediatheque.upload.loading.msg: 'Upload de votre média en cours...'
+media.mediatheque.upload.loading.msg.success: 'Média ajouté avec succès, cette fenêtre ce fermera toute seule dans 3 secondes...'

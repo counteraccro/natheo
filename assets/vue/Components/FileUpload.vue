@@ -1,6 +1,7 @@
 <script>
 export default {
   name: "FileUpload",
+  emits: ['fileUploaded'],
   props: {
     maxSize: {
       type: Number,

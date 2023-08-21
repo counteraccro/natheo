@@ -28,4 +28,9 @@ class MediaFolderConst
      * Url pour le dossier thumbnails
      */
     public const PATH_WEB_THUMBNAILS = '/assets/thumbnails/';
+
+    /**
+     * Url dossier média interne au CMS
+     */
+    public const PATH_WEB_NATHEO_MEDIA =  '/assets/natheo/mediatheque/';
 }

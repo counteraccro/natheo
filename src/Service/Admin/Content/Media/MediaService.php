@@ -10,6 +10,7 @@ namespace App\Service\Admin\Content\Media;
 use App\Entity\Admin\Content\Media;
 use App\Entity\Admin\Content\MediaFolder;
 use App\Repository\Admin\Content\MediaRepository;
+use App\Utils\Content\Media\MediaConst;
 use App\Utils\Content\Media\MediaFolderConst;
 use App\Utils\Content\Media\Thumbnail;
 use App\Utils\System\Options\OptionUserKey;
@@ -68,8 +69,13 @@ class MediaService extends MediaFolderService
                 $pathMedia = str_replace($this->rootPathMedia, '', $file->getPath()) .
                     DIRECTORY_SEPARATOR . $file->getFilename();
 
-                $thumbnail = new Thumbnail($this->rootPathThumbnail);
-                $nameThumbnail = $thumbnail->create($file->getRealPath(), $file->getExtension());
+                $nameThumbnail = null;
+                $type = MediaConst::MEDIA_TYPE_FILE;
+                if (in_array($file->getExtension(), Thumbnail::EXT_ALLOW_THUMBNAIL)) {
+                    $thumbnail = new Thumbnail($this->rootPathThumbnail);
+                    $nameThumbnail = $thumbnail->create($file->getRealPath(), $file->getExtension());
+                    $type = MediaConst::MEDIA_TYPE_IMG;
+                }
 
                 $media->setThumbnail($nameThumbnail);
                 $media->setExtension($file->getExtension());
@@ -78,7 +84,7 @@ class MediaService extends MediaFolderService
                 $media->setName($file->getFilename());
                 $media->setWebPath($this->getWebPath($media));
                 $media->setSize($file->getSize());
-                $media->setType('Image');
+                $media->setType($type);
             }
         }
     }
@@ -131,6 +137,7 @@ class MediaService extends MediaFolderService
 
         /** @var Media $media */
         foreach ($medias as $media) {
+
             $return[] = [
                 'type' => 'media',
                 'id' => $media->getId(),
@@ -138,7 +145,7 @@ class MediaService extends MediaFolderService
                 'description' => $media->getDescription(),
                 'size' => Utils::getSizeName($media->getSize()),
                 'webPath' => $media->getWebPath(),
-                'thumbnail' => $this->getWebPathThumbnail($media->getThumbnail()),
+                'thumbnail' => $this->getThumbnail($media),
                 'created_at' => $media->getCreatedAt()->getTimestamp()
             ];
         }
@@ -208,7 +215,7 @@ class MediaService extends MediaFolderService
                 $this->translator->trans('media.mediatheque.info.media.date_update', domain: 'media')
                 => $media->getUpdateAt()->format('d/m/y H:i'),
             ],
-            'thumbnail' => $this->getWebPathThumbnail($media->getThumbnail()),
+            'thumbnail' => $this->getThumbnail($media),
             'web_path' => $media->getWebPath()
         ];
     }
@@ -229,10 +236,38 @@ class MediaService extends MediaFolderService
         list(, $data) = explode(';', $file['url']);
         list(, $data) = explode(',', $data);
         $data = base64_decode($data);
-        file_put_contents($path . 'oki.' . $file['fileExtention'], $data);
 
-        echo $path;
 
+        $name = $file['name'] . '-' . time() . '.' . $file['fileExtention'];
+        file_put_contents($path . $name, $data);
+
+        $media = new Media();
+        $media->setMediaFolder($folder);
+        $media->setUser($this->security->getUser());
+        $this->UpdateMediaFile($media, $name);
+        $media->setName($file['name']);
+        $media->setDescription($file['description']);
+        $this->save($media);
+    }
+
+    /**
+     * Retourne le bon thumbnail en fonction du media
+     * @param Media $media
+     * @return string
+     */
+    public function getThumbnail(Media $media): string
+    {
+        if ($media->getType() === MediaConst::MEDIA_TYPE_IMG) {
+            return $this->getWebPathThumbnail($media->getThumbnail());
+        }
+
+        return match ($media->getExtension()) {
+            'pdf' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_pdf.png',
+            'xls', 'xlsx' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_excel.png',
+            'csv' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_csv.png',
+            'doc', 'docx' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_doc.png',
+            default => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file.png',
+        };
     }
 
     /**
@@ -300,6 +335,9 @@ class MediaService extends MediaFolderService
                 'error_ext' => $this->translator->trans('media.mediatheque.upload.error.ext', domain: 'media'),
                 'no_preview' => $this->translator->trans('media.mediatheque.upload.no_preview', domain: 'media'),
                 'preview' => $this->translator->trans('media.mediatheque.upload.preview', domain: 'media'),
+                'loading_msg' => $this->translator->trans('media.mediatheque.upload.loading.msg', domain: 'media'),
+                'loading_msg_success' =>
+                    $this->translator->trans('media.mediatheque.upload.loading.msg.success', domain: 'media'),
             ]
         ];
     }

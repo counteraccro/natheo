@@ -26,6 +26,7 @@ export default {
   data() {
     return {
       loading: false,
+      loadingUploadMsg: '',
       modalFolder: '',
       modalInfo: '',
       modalUpload: '',
@@ -275,8 +276,7 @@ export default {
      * @param type
      * @param id
      */
-    loadDataInformation(type, id)
-    {
+    loadDataInformation(type, id) {
       this.loading = true;
       axios.post(this.urlActions.loadInfo, {
         'id': id,
@@ -323,20 +323,27 @@ export default {
      */
     closeModalUpload() {
       this.modalUpload.hide();
+      this.loadingUploadMsg = '';
     },
 
-    async getUploadedData(file)
-    {
+    /**
+     * Télécharge un fichier sur le serveur
+     * @param file
+     */
+    getUploadedData(file) {
+
+      this.loadingUploadMsg = this.translate.upload.loading_msg
+
       axios.post(this.urlActions.upload, {
         'file': file,
         'folder': this.folderId,
       }).then((response) => {
-        this.infoData = response.data
+        this.loadingUploadMsg = this.translate.upload.loading_msg_success
+        setTimeout(this.closeModalUpload, 3000);
+        setTimeout(this.loadMedia, 2500);
       }).catch((error) => {
         console.log(error);
-      }).finally(() => {
-        this.loading = false;
-      });
+      }).finally(() => {});
     },
 
     /** Fin bloc modal upload **/
@@ -377,37 +384,46 @@ export default {
           </div>
           <div class="float-end">
             <div class="btn-group">
-              <button type="button" class="btn btn-secondary dropdown-toggle me-1" data-bs-toggle="dropdown" aria-expanded="false">
+              <button type="button" class="btn btn-secondary dropdown-toggle me-1" data-bs-toggle="dropdown"
+                      aria-expanded="false">
                 {{ this.translate.btn_filtre }} <i class="bi" :class="this.filterIcon"></i>
               </button>
               <ul class="dropdown-menu">
                 <li>
-                  <a class="dropdown-item" href="#" @click="this.changeFilter('created_at')"><i class="bi bi-clock"></i> {{ this.translate.filtre_date }}</a>
+                  <a class="dropdown-item" href="#" @click="this.changeFilter('created_at')"><i class="bi bi-clock"></i>
+                    {{ this.translate.filtre_date }}</a>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#" @click="this.changeFilter('name')"><i class="bi bi-card-text"></i> {{ this.translate.filtre_nom }}</a>
+                  <a class="dropdown-item" href="#" @click="this.changeFilter('name')"><i class="bi bi-card-text"></i>
+                    {{ this.translate.filtre_nom }}</a>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#" @click="this.changeFilter('type')"><i class="bi bi-file"></i> {{ this.translate.filtre_type }}</a>
+                  <a class="dropdown-item" href="#" @click="this.changeFilter('type')"><i class="bi bi-file"></i>
+                    {{ this.translate.filtre_type }}</a>
                 </li>
               </ul>
             </div>
             <div class="btn-group">
-              <button type="button" class="btn btn-secondary dropdown-toggle me-1" data-bs-toggle="dropdown" aria-expanded="false">
+              <button type="button" class="btn btn-secondary dropdown-toggle me-1" data-bs-toggle="dropdown"
+                      aria-expanded="false">
                 {{ this.translate.btn_order }} <i class="bi" :class="this.orderIcon"></i>
               </button>
               <ul class="dropdown-menu">
                 <li>
-                  <a class="dropdown-item" href="#" @click="this.changeOrder('asc')"><i class="bi bi-sort-down"></i> {{ this.translate.order_asc }}</a>
+                  <a class="dropdown-item" href="#" @click="this.changeOrder('asc')"><i class="bi bi-sort-down"></i>
+                    {{ this.translate.order_asc }}</a>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#" @click="this.changeOrder('desc')"><i class="bi bi-sort-up"></i> {{ this.translate.order_desc }}</a>
+                  <a class="dropdown-item" href="#" @click="this.changeOrder('desc')"><i class="bi bi-sort-up"></i>
+                    {{ this.translate.order_desc }}</a>
                 </li>
               </ul>
             </div>
-            <input type="radio" class="btn-check no-control" name="options-render" id="btn-grid" autocomplete="off" checked @change="this.switchRender('grid')">
+            <input type="radio" class="btn-check no-control" name="options-render" id="btn-grid" autocomplete="off"
+                   checked @change="this.switchRender('grid')">
             <label class="btn me-1 btn-secondary" for="btn-grid"><i class="bi bi-grid"></i></label>
-            <input type="radio" class="btn-check no-control" name="options-render" id="btn-list" autocomplete="off" @change="this.switchRender('list')">
+            <input type="radio" class="btn-check no-control" name="options-render" id="btn-list" autocomplete="off"
+                   @change="this.switchRender('list')">
             <label class="btn btn-secondary" for="btn-list"><i class="bi bi-list"></i></label>
           </div>
         </div>
@@ -438,7 +454,8 @@ export default {
       <div class="modal-content">
         <div class="modal-header bg-secondary">
           <h1 class="modal-title fs-5 text-white">
-            <i class="bi" :class="isEmpty(this.folderEdit)?'bi-folder-plus': 'bi-pencil-fill'"></i> {{ this.getTitleModalFolder() }}
+            <i class="bi" :class="isEmpty(this.folderEdit)?'bi-folder-plus': 'bi-pencil-fill'"></i>
+            {{ this.getTitleModalFolder() }}
           </h1>
           <button type="button" class="btn-close" @click="this.closeModalFolder()"></button>
         </div>
@@ -446,10 +463,10 @@ export default {
           <div class="mb-3" :class="this.folderSuccess !== '' ? 'd-none':''">
             <label for="folderName" class="form-label">{{ this.translate.folder.input_label }} *</label>
             <input type="text" v-model="folderName"
-                @keyup="this.validateFolderName()"
-                class="form-control"
-                id="input-folder-name"
-                :placeholder="this.translate.folder.input_label_placeholder">
+                   @keyup="this.validateFolderName()"
+                   class="form-control"
+                   id="input-folder-name"
+                   :placeholder="this.translate.folder.input_label_placeholder">
             <div class="invalid-feedback">
               {{ this.folderError }}
             </div>
@@ -460,10 +477,12 @@ export default {
         </div>
         <div v-if="this.folderSuccess === ''" class="modal-footer">
           <div class="btn btn-dark" @click="this.closeModalFolder()">{{ this.translate.folder.btn_cancel }}</div>
-          <div v-if="isEmpty(this.folderEdit)" @click="this.submitFolder()" class="btn btn-primary" :class="this.folderCanSubmit ? '':'disabled'">
+          <div v-if="isEmpty(this.folderEdit)" @click="this.submitFolder()" class="btn btn-primary"
+               :class="this.folderCanSubmit ? '':'disabled'">
             {{ this.translate.folder.btn_submit_create }}
           </div>
-          <div v-else class="btn btn-primary" @click="this.submitFolder()" :class="this.folderCanSubmit ? '':'disabled'">
+          <div v-else class="btn btn-primary" @click="this.submitFolder()"
+               :class="this.folderCanSubmit ? '':'disabled'">
             {{ this.translate.folder.btn_submit_edit }}
           </div>
         </div>
@@ -500,7 +519,7 @@ export default {
   <!-- Modal pour l'upload -->
   <div class="modal fade" id="modal-upload" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content">
+      <div v-if="this.loadingUploadMsg === ''" class="modal-content">
         <div class="modal-header bg-secondary">
           <h1 class="modal-title fs-5 text-white">
             <i class="bi bi-upload"></i> {{ this.translate.upload.title }}
@@ -508,10 +527,21 @@ export default {
           <button type="button" class="btn-close" @click="this.closeModalUpload()"></button>
         </div>
         <div class="modal-body">
-          <FileUpload :translate="this.translate.upload" :maxSize="20" :accept="this.extAccept" @file-uploaded="getUploadedData" />
+          <FileUpload :translate="this.translate.upload" :maxSize="20" :accept="this.extAccept"
+                      @file-uploaded="getUploadedData"/>
         </div>
         <div class="modal-footer">
           <div class="btn btn-dark" @click="this.closeModalUpload()">{{ this.translate.info.btn_close }}</div>
+        </div>
+      </div>
+      <div v-else class="modal-content">
+        <div class="modal-header bg-secondary">
+          <h1 class="modal-title fs-5 text-white">
+            <i class="bi bi-upload"></i> {{ this.translate.upload.title }}
+          </h1>
+        </div>
+        <div class="modal-body">
+            {{ this.loadingUploadMsg }}
         </div>
       </div>
     </div>

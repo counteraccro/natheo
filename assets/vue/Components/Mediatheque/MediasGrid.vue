@@ -55,7 +55,7 @@ export default {
             </li>
           </ul>
         </div>
-        {{ media.name }}
+       <span class="d-inline-block text-truncate" style="max-width: 150px;"> {{ media.name }} </span>
 
       </div>
     </div>
