@@ -178,8 +178,7 @@ class MediaController extends AppAdminController
     public function upload(Request $request, MediaService $mediaService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $mediaService->uploadMediaFile();
-        var_dump($data);
+        $mediaService->uploadMediaFile($data['folder'], $data['file']);
 
         return $this->json([
 

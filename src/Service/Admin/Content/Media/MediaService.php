@@ -213,8 +213,23 @@ class MediaService extends MediaFolderService
         ];
     }
 
-    public function uploadMediaFile()
+    /**
+     * Ajoute une image physiquement sur le disque et créer l'objet Media
+     * @return void
+     */
+    public function uploadMediaFile(int $idFolder, array $file): void
     {
+        /** @var MediaFolder $folder */
+        $folder = $this->findOneById(MediaFolder::class, $idFolder);
+        $path = $this->rootPathMedia;
+        if($folder != null && $this->canCreatePhysicalFolder)
+        {
+            $path = $this->getPathFolder($folder, true);
+        }
+        $data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $file['url']));
+        //file_put_contents($path . 'oki.' . $file['fileExtention'], $data);
+
+        echo $path;
 
     }
 
@@ -262,6 +277,16 @@ class MediaService extends MediaFolderService
                 'title' => $this->translator->trans('media.mediatheque.info.title', domain: 'media'),
                 'btn_close' => $this->translator->trans('media.mediatheque.info.btn.close', domain: 'media'),
                 'link_size' => $this->translator->trans('media.mediatheque.info.link.size', domain: 'media'),
+            ],
+            'upload' => [
+                'title' => $this->translator->trans('media.mediatheque.upload.title', domain: 'media'),
+                'help' => $this->translator->trans('media.mediatheque.upload.help', domain: 'media'),
+                'input_upload' => $this->translator->trans('media.mediatheque.upload.input.upload', domain: 'media'),
+                'input_title' => $this->translator->trans('media.mediatheque.upload.input.title', domain: 'media'),
+                'input_description' =>
+                    $this->translator->trans('media.mediatheque.upload.input.description', domain: 'media'),
+                'btn_cancel' => $this->translator->trans('media.mediatheque.upload.btn.cancel', domain: 'media'),
+                'btn_upload' => $this->translator->trans('media.mediatheque.upload.btn.upload', domain: 'media'),
             ]
         ];
     }

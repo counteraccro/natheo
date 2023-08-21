@@ -184,9 +184,9 @@ options_user.donnees_personnelles: 'Données personnelles'
 options_user.donnees_personnelles.title: 'Mes données personnelles'
 options_user.donnees_personnelles.description: 'Gestion de mes données personnelles sur le site'
 options_user.default_personal_data_render: 'Affichage de vos données personnelles'
-options_user.default_personal_data_render.anonyme: 'Anonyme'
+options_user.default_personal_data_render.anonyme: Anonyme
 options_user.default_personal_data_render.email: 'Adresse email'
-options_user.default_personal_data_render.login: 'Pseudonyme'
+options_user.default_personal_data_render.login: Pseudonyme
 options_user.default_personal_data_render.name: 'Votre nom et prénom'
 options_user.default_personal_data_render.help: "Si les données personnelles n'on pas été saisies, l'option inférieure sera prise en compte"
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'

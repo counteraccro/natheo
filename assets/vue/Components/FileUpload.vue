@@ -1,37 +1,3 @@
-<template>
-  <div class="file-upload">
-    <div class="file-upload__area">
-      <div v-if="!file.isUploaded">
-        <input type="file" name="" id="" @change="handleFileChange($event)" />
-        <div v-if="errors.length > 0">
-          <div
-              class="file-upload__error"
-              v-for="(error, index) in errors"
-              :key="index"
-          >
-            <span>{{ error }}</span>
-          </div>
-        </div>
-      </div>
-      <div v-if="file.isUploaded" class="upload-preview">
-        <img :src="file.url" v-if="file.isImage" class="file-image" alt="" />
-        <div v-if="!file.isImage" class="file-extention">
-          {{ file.fileExtention }}
-        </div>
-        <span class="file-name">
-          {{ file.name }}{{ file.isImage ? `.${file.fileExtention}` : "" }}
-        </span>
-        <div class="">
-          <button @click="resetFileInput">Change file</button>
-        </div>
-        <div class="" style="margin-top: 10px">
-          <button @click="sendDataToParent">Select File</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script>
 export default {
   name: "FileUpload",
@@ -45,6 +11,7 @@ export default {
       type: String,
       default: "image/*",
     },
+    translate: Object
   },
   data() {
     return {
@@ -59,6 +26,8 @@ export default {
         url: "",
         isImage: false,
         isUploaded: false,
+        title: '',
+        description: ''
       },
     };
   },
@@ -142,6 +111,8 @@ export default {
           url: "",
           isImage: false,
           isUploaded: false,
+          title: '',
+          description: '',
         };
       });
     },
@@ -153,5 +124,39 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<template>
+  <div class="file-upload">
+    <div class="file-upload__area">
+      <div v-if="!file.isUploaded">
+        <div class="mb-3">
+          <label for="formFile" class="form-label">Default file input example</label>
+          <input class="form-control" type="file" id="formFile" @change="handleFileChange($event)">
+        </div>
+        <div v-if="errors.length > 0">
+          <div
+              class="file-upload__error"
+              v-for="(error, index) in errors"
+              :key="index"
+          >
+            <span>{{ error }}</span>
+          </div>
+        </div>
+      </div>
+      <div v-if="file.isUploaded" class="upload-preview">
+        <img :src="file.url" v-if="file.isImage" class="img-fluid" alt="" />
+        <div v-if="!file.isImage" class="file-extention">
+          {{ file.fileExtention }}
+        </div>
+        <span class="file-name">
+          {{ file.name }}{{ file.isImage ? `.${file.fileExtention}` : "" }}
+        </span>
+        <div class="">
+          <button @click="resetFileInput">Change file</button>
+        </div>
+        <div class="" style="margin-top: 10px">
+          <button @click="sendDataToParent">Select File</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

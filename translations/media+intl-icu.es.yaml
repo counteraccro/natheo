@@ -46,3 +46,10 @@ media.mediatheque.info.media.date_created: __media.mediatheque.info.media.date_c
 media.mediatheque.info.media.date_update: __media.mediatheque.info.media.date_update
 media.mediatheque.info.media.emplacement: __media.mediatheque.info.media.emplacement
 media.mediatheque.info.link.size: __media.mediatheque.info.link.size
+media.mediatheque.upload.title: __media.mediatheque.upload.title
+media.mediatheque.upload.help: __media.mediatheque.upload.help
+media.mediatheque.upload.input.upload: __media.mediatheque.upload.input.upload
+media.mediatheque.upload.input.title: __media.mediatheque.upload.input.title
+media.mediatheque.upload.input.description: __media.mediatheque.upload.input.description
+media.mediatheque.upload.btn.cancel: __media.mediatheque.upload.btn.cancel
+media.mediatheque.upload.btn.upload: __media.mediatheque.upload.btn.upload
