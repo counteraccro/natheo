@@ -56,3 +56,6 @@ media.mediatheque.upload.btn.upload: __media.mediatheque.upload.btn.upload
 media.mediatheque.upload.error.title: __media.mediatheque.upload.error.title
 media.mediatheque.upload.error.size: __media.mediatheque.upload.error.size
 media.mediatheque.upload.error.ext: __media.mediatheque.upload.error.ext
+media.mediatheque.upload.form.title: __media.mediatheque.upload.form.title
+media.mediatheque.upload.input.title.help: __media.mediatheque.upload.input.title.help
+media.mediatheque.upload.input.description.help: __media.mediatheque.upload.input.description.help

@@ -32,6 +32,7 @@ export default {
     };
   },
   methods: {
+
     handleFileChange(e) {
       this.errors = [];
       // Check if file is selected
@@ -75,29 +76,41 @@ export default {
         }
       }
     },
+
+    /**
+     * Control taille du fichier
+     * @param fileSize
+     */
     isFileSizeValid(fileSize) {
-      if (fileSize <= this.maxSize) {
-        console.log("File size is valid");
-      } else {
+      if (fileSize > this.maxSize) {
         this.errors.push(this.translate.error_size + ' ' + this.maxSize + 'MB');
       }
     },
+
+    /**
+     * Control de l'extension
+     * @param fileExtention
+     */
     isFileTypeValid(fileExtention) {
-      if (this.accept.split(",").includes(fileExtention)) {
-        console.log("File type is valid");
-      } else {
+      if (!this.accept.split(",").includes(fileExtention)) {
         this.errors.push(this.translate.error_ext + ' ' + this.accept);
       }
     },
+
+    /**
+     * Validation
+     * @param file
+     * @returns {boolean}
+     */
     isFileValid(file) {
       this.isFileSizeValid(Math.round((file.size / 1024 / 1024) * 100) / 100);
       this.isFileTypeValid(file.name.split(".").pop());
-      if (this.errors.length === 0) {
-        return true;
-      } else {
-        return false;
-      }
+      return this.errors.length === 0;
     },
+
+    /**
+     * Réinitialisation des champs
+     */
     resetFileInput() {
       this.uploadReady = false;
       this.$nextTick(() => {
@@ -116,6 +129,10 @@ export default {
         };
       });
     },
+
+    /**
+     * Envoi des données
+     */
     sendDataToParent() {
       this.resetFileInput();
       this.$emit("file-uploaded", this.file);
@@ -125,41 +142,49 @@ export default {
 </script>
 
 <template>
-  <div class="file-upload">
-    <div class="file-upload__area">
-      <div v-if="!file.isUploaded">
-        <div class="mb-3">
-          <label for="formFile" class="form-label">{{ this.translate.input_upload }}</label>
-          <input class="form-control" type="file" id="formFile" @change="handleFileChange($event)">
-          <div id="uploadHelp" class="form-text">{{ this.translate.help }}</div>
-        </div>
-        <div v-if="errors.length > 0">
-          <div class="alert alert-danger">
-            <h5 class="alert-heading">{{ this.translate.error_title }}</h5>
-            <div
-                v-for="(error, index) in errors"
-                :key="index"
-            >
-              <span>{{ error }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div v-if="file.isUploaded" class="upload-preview">
-        <img :src="file.url" v-if="file.isImage" class="img-fluid" alt=""/>
-        <div v-if="!file.isImage" class="file-extention">
-          {{ file.fileExtention }}
-        </div>
-        <span class="file-name">
-          {{ file.name }}{{ file.isImage ? `.${file.fileExtention}` : "" }}
-        </span>
-        <div class="">
-          <button @click="resetFileInput">Change file</button>
-        </div>
-        <div class="" style="margin-top: 10px">
-          <button @click="sendDataToParent">Select File</button>
+  <div v-if="!file.isUploaded">
+    <div class="mb-3">
+      <label for="formFile" class="form-label">{{ this.translate.input_upload }}</label>
+      <input class="form-control" type="file" id="formFile" @change="handleFileChange($event)">
+      <div id="uploadHelp" class="form-text">{{ this.translate.help }}</div>
+    </div>
+    <div v-if="errors.length > 0">
+      <div class="alert alert-danger">
+        <h5 class="alert-heading">{{ this.translate.error_title }}</h5>
+        <div
+            v-for="(error, index) in errors"
+            :key="index"
+        >
+          <span>{{ error }}</span>
         </div>
       </div>
     </div>
+  </div>
+  <div v-if="file.isUploaded" class="upload-preview">
+    <h4>Prévieuw</h4>
+    <img :src="file.url" v-if="file.isImage" class="img-fluid" alt=""/>
+    <hr/>
+ <fieldset>
+  <legend>{{ this.translate.form_title }}</legend>
+
+    <div class="mb-3">
+      <label for="mediaTitle" class="form-label">{{ this.translate.input_title }}</label>
+      <input type="email" class="form-control" id="mediaTitle" aria-describedby="emailMediaTitle">
+      <div id="emailMediaTitle" class="form-text">{{ this.translate.input_title_help }}</div>
+    </div>
+    <div class="mb-3">
+      <label for="mediaDescription" class="form-label">{{ this.translate.input_description }}</label>
+      <input type="email" class="form-control" id="mediaDescription" aria-describedby="emailMediaDescription">
+      <div id="emailMediaDescription" class="form-text">{{ this.translate.input_description_help }}</div>
+    </div>
+ </fieldset>
+    <!--<div v-if="!file.isImage" class="file-extention">
+      {{ file.fileExtention }}
+    </div>
+    <span class="file-name">
+          {{ file.name }}{{ file.isImage ? `.${file.fileExtention}` : "" }}
+        </span> -->
+    <button class="btn btn-warning" @click="resetFileInput"><i class="bi bi-file-earmark-x-fill"></i> {{ this.translate.btn_cancel }}</button>
+    <button class="btn btn-secondary" @click="sendDataToParent"><i class="bi bi-upload"></i> {{ this.translate.btn_upload }}</button>
   </div>
 </template>
