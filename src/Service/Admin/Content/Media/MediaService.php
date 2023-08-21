@@ -221,13 +221,15 @@ class MediaService extends MediaFolderService
     {
         /** @var MediaFolder $folder */
         $folder = $this->findOneById(MediaFolder::class, $idFolder);
-        $path = $this->rootPathMedia;
-        if($folder != null && $this->canCreatePhysicalFolder)
-        {
-            $path = $this->getPathFolder($folder, true);
+        $path = $this->rootPathMedia . DIRECTORY_SEPARATOR;
+        if ($folder != null && $this->canCreatePhysicalFolder) {
+            $path = $this->getPathFolder($folder);
         }
-        $data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $file['url']));
-        //file_put_contents($path . 'oki.' . $file['fileExtention'], $data);
+
+        list(, $data) = explode(';', $file['url']);
+        list(, $data) = explode(',', $data);
+        $data = base64_decode($data);
+        file_put_contents($path . 'oki.' . $file['fileExtention'], $data);
 
         echo $path;
 
@@ -296,6 +298,8 @@ class MediaService extends MediaFolderService
                 'error_title' => $this->translator->trans('media.mediatheque.upload.error.title', domain: 'media'),
                 'error_size' => $this->translator->trans('media.mediatheque.upload.error.size', domain: 'media'),
                 'error_ext' => $this->translator->trans('media.mediatheque.upload.error.ext', domain: 'media'),
+                'no_preview' => $this->translator->trans('media.mediatheque.upload.no_preview', domain: 'media'),
+                'preview' => $this->translator->trans('media.mediatheque.upload.preview', domain: 'media'),
             ]
         ];
     }

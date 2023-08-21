@@ -59,3 +59,5 @@ media.mediatheque.upload.error.ext: __media.mediatheque.upload.error.ext
 media.mediatheque.upload.form.title: __media.mediatheque.upload.form.title
 media.mediatheque.upload.input.title.help: __media.mediatheque.upload.input.title.help
 media.mediatheque.upload.input.description.help: __media.mediatheque.upload.input.description.help
+media.mediatheque.upload.no_preview: __media.mediatheque.upload.no_preview
+media.mediatheque.upload.preview: __media.mediatheque.upload.preview

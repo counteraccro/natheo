@@ -43,6 +43,7 @@ export default {
       folderSuccess: '',
       folderCanSubmit: false,
       infoData: [],
+      extAccept: 'csv,pdf,jpg,png,xls,xlsx,doc,docx,gif',
       urlActions: '',
     }
   },
@@ -507,7 +508,7 @@ export default {
           <button type="button" class="btn-close" @click="this.closeModalUpload()"></button>
         </div>
         <div class="modal-body">
-          <FileUpload :translate="this.translate.upload" :maxSize="20" accept="csv,pdf,jpg,png" @file-uploaded="getUploadedData" />
+          <FileUpload :translate="this.translate.upload" :maxSize="20" :accept="this.extAccept" @file-uploaded="getUploadedData" />
         </div>
         <div class="modal-footer">
           <div class="btn btn-dark" @click="this.closeModalUpload()">{{ this.translate.info.btn_close }}</div>

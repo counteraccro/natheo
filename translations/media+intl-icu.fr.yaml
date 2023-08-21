@@ -57,5 +57,7 @@ media.mediatheque.upload.error.title: "Erreur(s) survenue(s) lors de l'upload"
 media.mediatheque.upload.error.size: 'Votre fichier ne doit pas faire plus de'
 media.mediatheque.upload.error.ext: 'Votre fichier doit posséder une des extensions suivantes :'
 media.mediatheque.upload.form.title: 'Autres informations'
-media.mediatheque.upload.input.title.help: 'Saisissez un titre claire pour le retrouver facilement'
+media.mediatheque.upload.input.title.help: 'Si vide, le nom du fichier sera prit par défaut'
 media.mediatheque.upload.input.description.help: 'Description rapide de votre média'
+media.mediatheque.upload.no_preview: 'Pas de prévisualisation disponible pour les fichiers de type'
+media.mediatheque.upload.preview: 'Prévisualisation'

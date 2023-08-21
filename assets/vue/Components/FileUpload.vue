@@ -65,6 +65,8 @@ export default {
                   isImage: isImage,
                   url: reader.result,
                   isUploaded: true,
+                  title: fileName,
+                  description: '',
                 };
               },
               false
@@ -130,6 +132,30 @@ export default {
       });
     },
 
+    renderPreviewFile(extension) {
+      let icon = '';
+      switch (extension) {
+        case 'csv':
+          icon = 'filetype-csv'
+          break;
+        case 'pdf':
+          icon = 'filetype-pdf'
+          break;
+        case 'xls':
+        case 'xlsx':
+          icon = 'filetype-xls'
+          break;
+        case 'doc':
+        case 'docx':
+          icon = 'filetype-doc'
+          break;
+        default :
+          icon = 'file'
+          break;
+      }
+      return 'bi-' + icon;
+    },
+
     /**
      * Envoi des données
      */
@@ -150,7 +176,7 @@ export default {
     </div>
     <div v-if="errors.length > 0">
       <div class="alert alert-danger">
-        <h5 class="alert-heading">{{ this.translate.error_title }}</h5>
+        <b>{{ this.translate.error_title }}</b>
         <div
             v-for="(error, index) in errors"
             :key="index"
@@ -161,30 +187,42 @@ export default {
     </div>
   </div>
   <div v-if="file.isUploaded" class="upload-preview">
-    <h4>Prévieuw</h4>
+    <h4>{{ this.translate.preview }}</h4>
     <img :src="file.url" v-if="file.isImage" class="img-fluid" alt=""/>
+    <div v-else>
+      <i class="text-warning">
+        <i class="bi" :class="this.renderPreviewFile(file.fileExtention)"></i>
+        {{ this.translate.no_preview }} : {{ file.fileExtention }}
+      </i>
+    </div>
     <hr/>
- <fieldset>
-  <legend>{{ this.translate.form_title }}</legend>
+    <fieldset>
+      <legend>{{ this.translate.form_title }}</legend>
 
-    <div class="mb-3">
-      <label for="mediaTitle" class="form-label">{{ this.translate.input_title }}</label>
-      <input type="email" class="form-control" id="mediaTitle" aria-describedby="emailMediaTitle">
-      <div id="emailMediaTitle" class="form-text">{{ this.translate.input_title_help }}</div>
-    </div>
-    <div class="mb-3">
-      <label for="mediaDescription" class="form-label">{{ this.translate.input_description }}</label>
-      <input type="email" class="form-control" id="mediaDescription" aria-describedby="emailMediaDescription">
-      <div id="emailMediaDescription" class="form-text">{{ this.translate.input_description_help }}</div>
-    </div>
- </fieldset>
+      <div class="mb-3">
+        <label for="mediaTitle" class="form-label">{{ this.translate.input_title }}</label>
+        <input type="text" v-model="this.file.title" class="form-control" id="mediaTitle"
+               aria-describedby="emailMediaTitle">
+        <div id="emailMediaTitle" class="form-text">{{ this.translate.input_title_help }}</div>
+      </div>
+      <div class="mb-3">
+        <label for="mediaDescription" class="form-label">{{ this.translate.input_description }}</label>
+        <input type="text" v-model="this.file.description" class="form-control" id="mediaDescription"
+               aria-describedby="emailMediaDescription">
+        <div id="emailMediaDescription" class="form-text">{{ this.translate.input_description_help }}</div>
+      </div>
+    </fieldset>
     <!--<div v-if="!file.isImage" class="file-extention">
       {{ file.fileExtention }}
     </div>
     <span class="file-name">
           {{ file.name }}{{ file.isImage ? `.${file.fileExtention}` : "" }}
         </span> -->
-    <button class="btn btn-warning" @click="resetFileInput"><i class="bi bi-file-earmark-x-fill"></i> {{ this.translate.btn_cancel }}</button>
-    <button class="btn btn-secondary" @click="sendDataToParent"><i class="bi bi-upload"></i> {{ this.translate.btn_upload }}</button>
+    <button class="btn btn-warning float-end" @click="resetFileInput"><i class="bi bi-file-earmark-x-fill"></i>
+      {{ this.translate.btn_cancel }}
+    </button>
+    <button class="btn btn-secondary float-end me-2" @click="sendDataToParent"><i class="bi bi-upload"></i>
+      {{ this.translate.btn_upload }}
+    </button>
   </div>
 </template>
