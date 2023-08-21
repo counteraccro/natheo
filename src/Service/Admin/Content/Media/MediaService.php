@@ -287,6 +287,9 @@ class MediaService extends MediaFolderService
                     $this->translator->trans('media.mediatheque.upload.input.description', domain: 'media'),
                 'btn_cancel' => $this->translator->trans('media.mediatheque.upload.btn.cancel', domain: 'media'),
                 'btn_upload' => $this->translator->trans('media.mediatheque.upload.btn.upload', domain: 'media'),
+                'error_title' => $this->translator->trans('media.mediatheque.upload.error.title', domain: 'media'),
+                'error_size' => $this->translator->trans('media.mediatheque.upload.error.size', domain: 'media'),
+                'error_ext' => $this->translator->trans('media.mediatheque.upload.error.ext', domain: 'media'),
             ]
         ];
     }

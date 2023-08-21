@@ -47,7 +47,7 @@ export default {
               // Get file name
               fileName = file.name.split(".").shift(),
               // Check if file is an image
-              isImage = ["jpg", "jpeg", "png", "gif", 'PNG'].includes(fileExtention);
+              isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtention);
           // Print to console
           console.log(fileSize, fileExtention, fileName, isImage);
           // Load the FileReader API
@@ -79,14 +79,14 @@ export default {
       if (fileSize <= this.maxSize) {
         console.log("File size is valid");
       } else {
-        this.errors.push(`File size should be less than ${this.maxSize} MB`);
+        this.errors.push(this.translate.error_size + ' ' + this.maxSize + 'MB');
       }
     },
     isFileTypeValid(fileExtention) {
       if (this.accept.split(",").includes(fileExtention)) {
         console.log("File type is valid");
       } else {
-        this.errors.push(`File type should be ${this.accept}`);
+        this.errors.push(this.translate.error_ext + ' ' + this.accept);
       }
     },
     isFileValid(file) {
@@ -129,21 +129,24 @@ export default {
     <div class="file-upload__area">
       <div v-if="!file.isUploaded">
         <div class="mb-3">
-          <label for="formFile" class="form-label">Default file input example</label>
+          <label for="formFile" class="form-label">{{ this.translate.input_upload }}</label>
           <input class="form-control" type="file" id="formFile" @change="handleFileChange($event)">
+          <div id="uploadHelp" class="form-text">{{ this.translate.help }}</div>
         </div>
         <div v-if="errors.length > 0">
-          <div
-              class="file-upload__error"
-              v-for="(error, index) in errors"
-              :key="index"
-          >
-            <span>{{ error }}</span>
+          <div class="alert alert-danger">
+            <h5 class="alert-heading">{{ this.translate.error_title }}</h5>
+            <div
+                v-for="(error, index) in errors"
+                :key="index"
+            >
+              <span>{{ error }}</span>
+            </div>
           </div>
         </div>
       </div>
       <div v-if="file.isUploaded" class="upload-preview">
-        <img :src="file.url" v-if="file.isImage" class="img-fluid" alt="" />
+        <img :src="file.url" v-if="file.isImage" class="img-fluid" alt=""/>
         <div v-if="!file.isImage" class="file-extention">
           {{ file.fileExtention }}
         </div>

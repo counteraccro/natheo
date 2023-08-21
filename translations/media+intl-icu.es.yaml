@@ -53,3 +53,6 @@ media.mediatheque.upload.input.title: __media.mediatheque.upload.input.title
 media.mediatheque.upload.input.description: __media.mediatheque.upload.input.description
 media.mediatheque.upload.btn.cancel: __media.mediatheque.upload.btn.cancel
 media.mediatheque.upload.btn.upload: __media.mediatheque.upload.btn.upload
+media.mediatheque.upload.error.title: __media.mediatheque.upload.error.title
+media.mediatheque.upload.error.size: __media.mediatheque.upload.error.size
+media.mediatheque.upload.error.ext: __media.mediatheque.upload.error.ext

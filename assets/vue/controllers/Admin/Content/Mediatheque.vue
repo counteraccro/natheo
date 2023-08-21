@@ -502,12 +502,12 @@ export default {
       <div class="modal-content">
         <div class="modal-header bg-secondary">
           <h1 class="modal-title fs-5 text-white">
-            <i class="bi bi-upload"></i> Upload toto
+            <i class="bi bi-upload"></i> {{ this.translate.upload.title }}
           </h1>
           <button type="button" class="btn-close" @click="this.closeModalUpload()"></button>
         </div>
         <div class="modal-body">
-          <FileUpload :maxSize="1" accept="png" @file-uploaded="getUploadedData" />
+          <FileUpload :translate="this.translate.upload" :maxSize="20" accept="csv,pdf,jpg" @file-uploaded="getUploadedData" />
         </div>
         <div class="modal-footer">
           <div class="btn btn-dark" @click="this.closeModalUpload()">{{ this.translate.info.btn_close }}</div>
