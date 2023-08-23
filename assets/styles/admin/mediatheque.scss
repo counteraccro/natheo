@@ -27,7 +27,7 @@
 
     .media .info-media {
       position: relative;
-      top: -36px;
+      top: -40px;
       color: #FFF;
       padding: 5px;
       background-color: rgba(35, 40, 43, 0.5);
@@ -47,6 +47,19 @@ Grid
 #block-media-grid {
 
   a {
+    cursor: pointer;
+  }
+
+  .folder {
+    background-image: url('/public/assets/natheo/mediatheque/folder.png');
+    background-size: 200px;
+    height: 200px;
+    width: 200px;
+  }
+
+  .folder:hover {
+    background-image: url('/public/assets/natheo/mediatheque/folder_open.png');
+    background-size: 200px;
     cursor: pointer;
   }
 

@@ -23,7 +23,7 @@ export default {
   <div id="block-media-grid" class="mt-3 row">
     <div class="media col-auto mb-4" v-for="media in this.medias">
       <img v-if="media.type === 'media'" height="200" width="200" :src="media.thumbnail" :alt="media.name"/>
-      <img v-else src="/assets/natheo/mediatheque/folder-media.png" width="200" height="200" alt="media.name" @click="$emit('load-data-folder', media.id)">
+      <div v-else class="folder" alt="media.name" @click="$emit('load-data-folder', media.id)"></div>
       <div class="info-media">
         <div class="btn-group">
           <button type="button" class="btn btn-link btn-sm dropdown-toggle" style="color: #FFFFFF; margin-top: -5px;" data-bs-toggle="dropdown" aria-expanded="false">
@@ -55,7 +55,7 @@ export default {
             </li>
           </ul>
         </div>
-       <span class="d-inline-block text-truncate" style="max-width: 150px;"> {{ media.name }} </span>
+       <span class="d-inline-block text-truncate" style="max-width: 140px;"> {{ media.name }} </span>
 
       </div>
     </div>

@@ -263,7 +263,7 @@ class MediaService extends MediaFolderService
 
         return match ($media->getExtension()) {
             'pdf' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_pdf.png',
-            'xls', 'xlsx' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_excel.png',
+            'xls', 'xlsx' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_xls.png',
             'csv' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_csv.png',
             'doc', 'docx' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_doc.png',
             default => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file.png',
