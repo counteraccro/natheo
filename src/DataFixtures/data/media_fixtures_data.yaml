@@ -54,3 +54,18 @@ media:
     user: Aymeric
     description: "Bureau"
     image: 'workspace.jpg'
+  media-12:
+    folder: Documentation
+    user: Aymeric
+    description: "Documentation de Natheo CMS"
+    image: 'documentation-natheo.docx'
+  media-13:
+    folder: Documentation
+    user: Aymeric
+    description: "Documentation de Natheo CMS en PDF"
+    image: 'documentation-natheo.pdf'
+  media-14:
+    folder: Documentation
+    user: Aymeric
+    description: "Historique des versions de Natheo CMS"
+    image: 'Versions-natheo.xlsx'

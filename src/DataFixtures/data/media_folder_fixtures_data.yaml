@@ -3,6 +3,10 @@ media_folder:
     name: medias
     path: \
     parent:
+  Documentation:
+    name: documentations
+    path: \
+    parent:
   Paysage:
     name: paysage
     path: \medias
