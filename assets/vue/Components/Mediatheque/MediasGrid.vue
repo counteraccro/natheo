@@ -26,7 +26,7 @@ export default {
       <div v-else class="folder" alt="media.name" @click="$emit('load-data-folder', media.id)"></div>
       <div class="info-media">
         <div class="btn-group">
-          <button type="button" class="btn btn-link btn-sm dropdown-toggle" style="color: #FFFFFF; margin-top: -5px;" data-bs-toggle="dropdown" aria-expanded="false">
+          <button type="button" class="btn btn-link btn-sm dropdown-toggle pt-2" style="color: #FFFFFF; margin-top: -5px;" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-justify"></i>
           </button>
           <ul class="dropdown-menu">
@@ -55,7 +55,7 @@ export default {
             </li>
           </ul>
         </div>
-       <span class="d-inline-block text-truncate" style="max-width: 140px;"> {{ media.name }} </span>
+       <span class="d-inline-block text-truncate" style="max-width: 140px;vertical-align: middle;"> {{ media.name }} </span>
 
       </div>
     </div>
