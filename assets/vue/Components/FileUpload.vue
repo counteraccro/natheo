@@ -50,8 +50,6 @@ export default {
               fileName = file.name.split(".").shift(),
               // Check if file is an image
               isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtention);
-          // Print to console
-          console.log(fileSize, fileExtention, fileName, isImage);
           // Load the FileReader API
           let reader = new FileReader();
           reader.addEventListener(
@@ -115,7 +113,6 @@ export default {
      * Réinitialisation des champs
      */
     resetFileInput() {
-      console.log('reset');
       this.uploadReady = false;
       this.$nextTick(() => {
         this.uploadReady = true;
