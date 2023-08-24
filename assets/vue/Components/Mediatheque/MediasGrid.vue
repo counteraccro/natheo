@@ -14,7 +14,17 @@ export default {
     return {}
   },
   computed: {},
-  methods: {}
+  methods: {
+
+    /**
+     * Permet d'ouvrir un média
+     * @param path
+     */
+    openMedia(path)
+    {
+      window.open(path, "_blank");
+    }
+  }
 }
 </script>
 
@@ -22,7 +32,9 @@ export default {
 
   <div id="block-media-grid" class="mt-3 row">
     <div class="media col-auto mb-4" v-for="media in this.medias">
-      <img v-if="media.type === 'media'" height="200" width="200" :src="media.thumbnail" :alt="media.name"/>
+      <img v-if="media.type === 'media'" height="200" width="200" 
+           :src="media.thumbnail" style="cursor:pointer;"
+           :alt="media.name" @click="this.openMedia(media.webPath)"/>
       <div v-else class="folder" alt="media.name" @click="$emit('load-data-folder', media.id)"></div>
       <div class="info-media">
         <div class="btn-group">
