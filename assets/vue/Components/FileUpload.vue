@@ -172,7 +172,7 @@ export default {
   <div v-if="!file.isUploaded">
     <div class="mb-3">
       <label for="formFile" class="form-label">{{ this.translate.input_upload }}</label>
-      <input class="form-control" type="file" id="formFile" @change="handleFileChange($event)">
+      <input class="form-control no-control" type="file" id="formFile" @change="handleFileChange($event)">
       <div id="uploadHelp" class="form-text">{{ this.translate.help }}</div>
     </div>
     <div v-if="errors.length > 0">
@@ -187,43 +187,46 @@ export default {
       </div>
     </div>
   </div>
-  <div v-if="file.isUploaded" class="upload-preview">
-    <h4>{{ this.translate.preview }}</h4>
-    <img :src="file.url" v-if="file.isImage" class="img-fluid" alt=""/>
-    <div v-else>
-      <i class="text-warning">
-        <i class="bi" :class="this.renderPreviewFile(file.fileExtention)"></i>
-        {{ this.translate.no_preview }} : {{ file.fileExtention }}
-      </i>
-    </div>
-    <hr/>
-    <fieldset>
-      <legend>{{ this.translate.form_title }}</legend>
+  <div v-if="file.isUploaded" id="form-upload-preview">
 
-      <div class="mb-3">
-        <label for="mediaTitle" class="form-label">{{ this.translate.input_title }}</label>
-        <input type="text" v-model="this.file.title" class="form-control" id="mediaTitle"
-               aria-describedby="emailMediaTitle">
-        <div id="emailMediaTitle" class="form-text">{{ this.translate.input_title_help }}</div>
+    <div class="row">
+      <div class="col-8">
+        <fieldset class="mb-2">
+          <legend>{{ this.translate.form_title }}</legend>
+
+          <div class="mb-3">
+            <label for="mediaTitle" class="form-label">{{ this.translate.input_title }}</label>
+            <input type="text" v-model="this.file.title" class="form-control no-control" id="mediaTitle"
+                   aria-describedby="emailMediaTitle">
+            <div id="emailMediaTitle" class="form-text">{{ this.translate.input_title_help }}</div>
+          </div>
+          <div class="mb-3">
+            <label for="mediaDescription" class="form-label">{{ this.translate.input_description }}</label>
+            <input type="text" v-model="this.file.description" class="form-control no-control" id="mediaDescription"
+                   aria-describedby="emailMediaDescription">
+            <div id="emailMediaDescription" class="form-text">{{ this.translate.input_description_help }}</div>
+          </div>
+        </fieldset>
+        <button class="btn btn-outline-secondary float-end" @click="resetFileInput"><i class="bi bi-file-earmark-x-fill"></i>
+          {{ this.translate.btn_cancel }}
+        </button>
+        <button class="btn btn-secondary float-end me-2" @click="sendDataToParent"><i class="bi bi-upload"></i>
+          {{ this.translate.btn_upload }}
+        </button>
       </div>
-      <div class="mb-3">
-        <label for="mediaDescription" class="form-label">{{ this.translate.input_description }}</label>
-        <input type="text" v-model="this.file.description" class="form-control" id="mediaDescription"
-               aria-describedby="emailMediaDescription">
-        <div id="emailMediaDescription" class="form-text">{{ this.translate.input_description_help }}</div>
+      <div class="col-4">
+        <h4>{{ this.translate.preview }}</h4>
+        <div v-if="file.isImage">
+          <img :src="file.url" class="img-fluid" alt=""/>
+          <div class="mt-2"><i>{{ this.translate.preview_help }}</i></div>
+        </div>
+        <div v-else>
+          <i class="text-warning">
+            <i class="bi" :class="this.renderPreviewFile(file.fileExtention)"></i>
+            {{ this.translate.no_preview }} : {{ file.fileExtention }}
+          </i>
+        </div>
       </div>
-    </fieldset>
-    <!--<div v-if="!file.isImage" class="file-extention">
-      {{ file.fileExtention }}
     </div>
-    <span class="file-name">
-          {{ file.name }}{{ file.isImage ? `.${file.fileExtention}` : "" }}
-        </span> -->
-    <button class="btn btn-warning float-end" @click="resetFileInput"><i class="bi bi-file-earmark-x-fill"></i>
-      {{ this.translate.btn_cancel }}
-    </button>
-    <button class="btn btn-secondary float-end me-2" @click="sendDataToParent"><i class="bi bi-upload"></i>
-      {{ this.translate.btn_upload }}
-    </button>
   </div>
 </template>

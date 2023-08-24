@@ -345,6 +345,7 @@ class MediaService extends MediaFolderService
                 'error_ext' => $this->translator->trans('media.mediatheque.upload.error.ext', domain: 'media'),
                 'no_preview' => $this->translator->trans('media.mediatheque.upload.no_preview', domain: 'media'),
                 'preview' => $this->translator->trans('media.mediatheque.upload.preview', domain: 'media'),
+                'preview_help' => $this->translator->trans('media.mediatheque.upload.preview.help', domain: 'media'),
                 'loading_msg' => $this->translator->trans('media.mediatheque.upload.loading.msg', domain: 'media'),
                 'loading_msg_success' =>
                     $this->translator->trans('media.mediatheque.upload.loading.msg.success', domain: 'media'),
