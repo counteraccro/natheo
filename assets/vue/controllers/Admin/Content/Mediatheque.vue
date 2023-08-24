@@ -520,19 +520,12 @@ export default {
   <div class="modal fade" id="modal-upload" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div v-if="this.loadingUploadMsg === ''" class="modal-content">
-        <div class="modal-header bg-secondary">
-          <h1 class="modal-title fs-5 text-white">
-            <i class="bi bi-upload"></i> {{ this.translate.upload.title }}
-          </h1>
-          <button type="button" class="btn-close" @click="this.closeModalUpload()"></button>
-        </div>
-        <div class="modal-body">
-          <FileUpload :translate="this.translate.upload" :maxSize="20" :accept="this.extAccept"
-                      @file-uploaded="getUploadedData"/>
-        </div>
-        <div class="modal-footer">
-          <div class="btn btn-dark" @click="this.closeModalUpload()">{{ this.translate.info.btn_close }}</div>
-        </div>
+          <FileUpload :translate="this.translate.upload"
+                      :maxSize="20"
+                      :accept="this.extAccept"
+                      @file-uploaded="getUploadedData"
+                      @close-modale-upload="closeModalUpload"
+          />
       </div>
       <div v-else class="modal-content">
         <div class="modal-header bg-secondary">

@@ -330,7 +330,7 @@ class MediaService extends MediaFolderService
                 'help' => $this->translator->trans('media.mediatheque.upload.help', domain: 'media'),
                 'form_title' => $this->translator->trans('media.mediatheque.upload.form.title', domain: 'media'),
                 'input_upload' => $this->translator->trans('media.mediatheque.upload.input.upload', domain: 'media'),
-                'input_upload' => $this->translator->trans('media.mediatheque.upload.input.upload', domain: 'media'),
+                'btn_close' => $this->translator->trans('media.mediatheque.upload.btn.close', domain: 'media'),
                 'input_title' => $this->translator->trans('media.mediatheque.upload.input.title', domain: 'media'),
                 'input_title_help' =>
                     $this->translator->trans('media.mediatheque.upload.input.title.help', domain: 'media'),

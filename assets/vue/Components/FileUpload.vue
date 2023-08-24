@@ -1,7 +1,7 @@
 <script>
 export default {
   name: "FileUpload",
-  emits: ['fileUploaded'],
+  emits: ['file-uploaded', 'close-modale-upload'],
   props: {
     maxSize: {
       type: Number,
@@ -12,7 +12,7 @@ export default {
       type: String,
       default: "image/*",
     },
-    translate: Object
+    translate: Object,
   },
   data() {
     return {
@@ -115,6 +115,7 @@ export default {
      * Réinitialisation des champs
      */
     resetFileInput() {
+      console.log('reset');
       this.uploadReady = false;
       this.$nextTick(() => {
         this.uploadReady = true;
@@ -158,6 +159,14 @@ export default {
     },
 
     /**
+     * Ferme la modale
+     */
+    closeModale() {
+      this.resetFileInput();
+      this.$emit('close-modale-upload')
+    },
+
+    /**
      * Envoi des données
      */
     sendDataToParent() {
@@ -169,64 +178,76 @@ export default {
 </script>
 
 <template>
-  <div v-if="!file.isUploaded">
-    <div class="mb-3">
-      <label for="formFile" class="form-label">{{ this.translate.input_upload }}</label>
-      <input class="form-control no-control" type="file" id="formFile" @change="handleFileChange($event)">
-      <div id="uploadHelp" class="form-text">{{ this.translate.help }}</div>
+  <div class="modal-header bg-secondary">
+    <h1 class="modal-title fs-5 text-white">
+      <i class="bi bi-upload"></i> {{ this.translate.title }}
+    </h1>
+    <button type="button" class="btn-close" @click="this.closeModale()"></button>
+  </div>
+  <div class="modal-body">
+    <div v-if="!file.isUploaded">
+      <div class="mb-3">
+        <label for="formFile" class="form-label">{{ this.translate.input_upload }}</label>
+        <input class="form-control no-control" type="file" id="formFile" @change="handleFileChange($event)">
+        <div id="uploadHelp" class="form-text">{{ this.translate.help }}</div>
+      </div>
+      <div v-if="errors.length > 0">
+        <div class="alert alert-danger">
+          <b>{{ this.translate.error_title }}</b>
+          <div
+              v-for="(error, index) in errors"
+              :key="index"
+          >
+            <span>{{ error }}</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div v-if="errors.length > 0">
-      <div class="alert alert-danger">
-        <b>{{ this.translate.error_title }}</b>
-        <div
-            v-for="(error, index) in errors"
-            :key="index"
-        >
-          <span>{{ error }}</span>
+    <div v-if="file.isUploaded" id="form-upload-preview">
+
+      <div class="row">
+        <div class="col-8">
+          <fieldset class="mb-2">
+            <legend>{{ this.translate.form_title }}</legend>
+
+            <div class="mb-3">
+              <label for="mediaTitle" class="form-label">{{ this.translate.input_title }}</label>
+              <input type="text" v-model="this.file.title" class="form-control no-control" id="mediaTitle"
+                     aria-describedby="emailMediaTitle">
+              <div id="emailMediaTitle" class="form-text">{{ this.translate.input_title_help }}</div>
+            </div>
+            <div class="mb-3">
+              <label for="mediaDescription" class="form-label">{{ this.translate.input_description }}</label>
+              <input type="text" v-model="this.file.description" class="form-control no-control" id="mediaDescription"
+                     aria-describedby="emailMediaDescription">
+              <div id="emailMediaDescription" class="form-text">{{ this.translate.input_description_help }}</div>
+            </div>
+          </fieldset>
+        </div>
+        <div class="col-4">
+          <h4>{{ this.translate.preview }}</h4>
+          <div v-if="file.isImage">
+            <img :src="file.url" class="img-fluid" alt=""/>
+            <div class="mt-2"><i>{{ this.translate.preview_help }}</i></div>
+          </div>
+          <div v-else>
+            <i class="text-warning">
+              <i class="bi" :class="this.renderPreviewFile(file.fileExtention)"></i>
+              {{ this.translate.no_preview }} : {{ file.fileExtention }}
+            </i>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <div v-if="file.isUploaded" id="form-upload-preview">
-
-    <div class="row">
-      <div class="col-8">
-        <fieldset class="mb-2">
-          <legend>{{ this.translate.form_title }}</legend>
-
-          <div class="mb-3">
-            <label for="mediaTitle" class="form-label">{{ this.translate.input_title }}</label>
-            <input type="text" v-model="this.file.title" class="form-control no-control" id="mediaTitle"
-                   aria-describedby="emailMediaTitle">
-            <div id="emailMediaTitle" class="form-text">{{ this.translate.input_title_help }}</div>
-          </div>
-          <div class="mb-3">
-            <label for="mediaDescription" class="form-label">{{ this.translate.input_description }}</label>
-            <input type="text" v-model="this.file.description" class="form-control no-control" id="mediaDescription"
-                   aria-describedby="emailMediaDescription">
-            <div id="emailMediaDescription" class="form-text">{{ this.translate.input_description_help }}</div>
-          </div>
-        </fieldset>
-        <button class="btn btn-outline-secondary float-end" @click="resetFileInput"><i class="bi bi-file-earmark-x-fill"></i>
-          {{ this.translate.btn_cancel }}
-        </button>
-        <button class="btn btn-secondary float-end me-2" @click="sendDataToParent"><i class="bi bi-upload"></i>
-          {{ this.translate.btn_upload }}
-        </button>
-      </div>
-      <div class="col-4">
-        <h4>{{ this.translate.preview }}</h4>
-        <div v-if="file.isImage">
-          <img :src="file.url" class="img-fluid" alt=""/>
-          <div class="mt-2"><i>{{ this.translate.preview_help }}</i></div>
-        </div>
-        <div v-else>
-          <i class="text-warning">
-            <i class="bi" :class="this.renderPreviewFile(file.fileExtention)"></i>
-            {{ this.translate.no_preview }} : {{ file.fileExtention }}
-          </i>
-        </div>
-      </div>
-    </div>
+  <div class="modal-footer">
+    <button v-if="file.isUploaded" class="btn btn-secondary" @click="sendDataToParent"><i class="bi bi-upload"></i>
+      {{ this.translate.btn_upload }}
+    </button>
+    <button v-if="file.isUploaded" class="btn btn-outline-secondary" @click="resetFileInput"><i
+        class="bi bi-file-earmark-x-fill"></i>
+      {{ this.translate.btn_cancel }}
+    </button>
+    <div class="btn btn-dark" @click="this.closeModale()">{{ this.translate.btn_close }}</div>
   </div>
 </template>
