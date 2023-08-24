@@ -37,6 +37,10 @@ class MediaFolderService extends AppAdminService
      */
     protected string $rootPathMedia = '';
 
+    /**
+     * URL pour l'accès aux images depuis le web
+     * @var string
+     */
     protected string $webPathMedia = '';
 
     /**

@@ -69,6 +69,11 @@ class MediaService extends MediaFolderService
                 $pathMedia = str_replace($this->rootPathMedia, '', $file->getPath()) .
                     DIRECTORY_SEPARATOR . $file->getFilename();
 
+                // Cas étrange de fichier qui remonte avec un path commençant par //
+                if (preg_match('/^\\\\\\\\/m', $pathMedia)) {
+                    $pathMedia = str_replace('\\\\', '\\', $pathMedia);
+                }
+
                 $nameThumbnail = null;
                 $type = MediaConst::MEDIA_TYPE_FILE;
                 if (in_array($file->getExtension(), Thumbnail::EXT_ALLOW_THUMBNAIL)) {
@@ -102,7 +107,9 @@ class MediaService extends MediaFolderService
             $path = $this->webPathMedia . $mediaFolder->getPath() . '/' .
                 $mediaFolder->getName() . '/' . $media->getName();
         }
-        return $path;
+
+        $path = str_replace('\\', '/', $path);
+        return str_replace('//', '/', $path);
     }
 
     /**
