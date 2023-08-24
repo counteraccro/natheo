@@ -32,11 +32,14 @@ export default {
     </div>
     <div class="col-4 d-flex justify-content-center align-items-center text-center">
       <div v-if="!IsEmpty(this.data) && this.data.type === 'folder'">
-        <img src="/assets/natheo/mediatheque/folder-media.png" alt="folder" height="100"/>
+        <img src="/assets/natheo/mediatheque/folder.png" alt="folder" height="100"/>
       </div>
       <div v-else-if="!IsEmpty(this.data) && this.data.type === 'media'">
         <img :src="this.data.thumbnail" :alt="this.data.thumbnail" class="img-fluid"/> <br/>
-        <a class="link-dark" :href="this.data.web_path" target="_blank"><i class="bi bi-arrows-angle-expand"></i> {{ this.translate.link_size }}</a>
+        <a class="link-dark" :href="this.data.web_path" target="_blank">
+          <span v-if="this.data.media_type === 'img'"><i class="bi bi-arrows-angle-expand"></i> {{ this.translate.link_size }} </span>
+          <span v-else><i class="bi bi-download"></i> {{ this.translate.link_download }} </span>
+        </a>
       </div>
     </div>
   </div>
