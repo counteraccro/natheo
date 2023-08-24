@@ -102,14 +102,15 @@ class MediaService extends MediaFolderService
     public function getWebPath(Media $media): string
     {
         $mediaFolder = $media->getMediaFolder();
-        $path = $this->webPathMedia . '/' . $media->getName();
+        $path =  '/' . $media->getName();
         if ($mediaFolder != null) {
-            $path = $this->webPathMedia . $mediaFolder->getPath() . '/' .
+            $path = $mediaFolder->getPath() . '/' .
                 $mediaFolder->getName() . '/' . $media->getName();
         }
 
         $path = str_replace('\\', '/', $path);
-        return str_replace('//', '/', $path);
+        $path =  str_replace('//', '/', $path);
+        return $this->webPathMedia . $path;
     }
 
     /**
@@ -223,7 +224,8 @@ class MediaService extends MediaFolderService
                 => $media->getUpdateAt()->format('d/m/y H:i'),
             ],
             'thumbnail' => $this->getThumbnail($media),
-            'web_path' => $media->getWebPath()
+            'web_path' => $media->getWebPath(),
+            'media_type' => $media->getType()
         ];
     }
 
@@ -321,6 +323,7 @@ class MediaService extends MediaFolderService
                 'title' => $this->translator->trans('media.mediatheque.info.title', domain: 'media'),
                 'btn_close' => $this->translator->trans('media.mediatheque.info.btn.close', domain: 'media'),
                 'link_size' => $this->translator->trans('media.mediatheque.info.link.size', domain: 'media'),
+                'link_download' => $this->translator->trans('media.mediatheque.info.link.download', domain: 'media'),
             ],
             'upload' => [
                 'title' => $this->translator->trans('media.mediatheque.upload.title', domain: 'media'),
