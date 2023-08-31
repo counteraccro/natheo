@@ -66,5 +66,15 @@ media.mediatheque.upload.loading.msg.success: 'Média ajouté avec succès, cett
 media.mediatheque.info.link.download: Télécharger
 media.mediatheque.upload.preview.help: 'Passez votre souris dessus pour un meilleur aperçu'
 media.mediatheque.upload.btn.close: Fermer
-media.mediatheque.media.link.edit.media: 'Editer'
+media.mediatheque.media.link.edit.media: Editer
 media.mediatheque.edit.media.title: "Edition d'un media"
+media.mediatheque.edit.media.name: 'Nom du média'
+media.mediatheque.edit.media.name.placeholder: 'Le nom du media'
+media.mediatheque.edit.media.description: 'Description du média'
+media.mediatheque.edit.media.description.placeholder: 'Sa description'
+media.mediatheque.edit.media.submit: Valider
+media.mediatheque.edit.media.cancel: Annuler
+media.mediatheque.edit.media.legend: Informations
+media.mediatheque.edit.media.loading: 'Mise à jour du média en cours...'
+media.mediatheque.edit.media.success: 'Votre média à été correctement mis à jour, cette fenêtre va ce fermer automatiquement dans 3 secondes'
+media.mediatheque.info.media.titre: 'Titre'

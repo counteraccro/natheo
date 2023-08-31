@@ -47,7 +47,9 @@ export default {
       mediaEdit: {
         id: 0,
         name: '',
-        description: ''
+        description: '',
+        thumbnail: '',
+        status: '',
       },
       infoData: [],
       extAccept: 'csv,pdf,jpg,png,xls,xlsx,doc,docx,gif',
@@ -350,7 +352,8 @@ export default {
         setTimeout(this.loadMedia, 2500);
       }).catch((error) => {
         console.log(error);
-      }).finally(() => {});
+      }).finally(() => {
+      });
     },
 
     /** Fin bloc modal upload **/
@@ -370,22 +373,29 @@ export default {
     closeModalEditMedia() {
       this.modalEditMedia.hide();
       this.mediaEdit = {
-        id : 0,
+        id: 0,
         name: '',
         description: '',
+        thumbnail : '',
+        status: '',
       }
     },
 
-    editMedia(id)
-    {
+    /**
+     * Charge un media en fonction d'un id
+     * @param id
+     */
+    editMedia(id) {
       this.loading = true;
       axios.post(this.urlActions.loadMediaEdit, {
         'id': id,
       }).then((response) => {
         this.mediaEdit = {
-          id : response.data.media.id,
-          name : response.data.media.name,
-          description : response.data.media.description
+          id: response.data.media.id,
+          name: response.data.media.name,
+          description: response.data.media.description,
+          thumbnail: response.data.media.thumbnail,
+          status: '',
         }
       }).catch((error) => {
         console.log(error);
@@ -394,6 +404,23 @@ export default {
         this.openModalEditMedia();
       });
     },
+
+    /**
+     * Sauvegarde les modifications d'un média
+     */
+    saveMedia() {
+      this.mediaEdit.status = "loading";
+      axios.post(this.urlActions.saveMediaEdit, {
+        'media': this.mediaEdit,
+      }).then((response) => {
+        this.mediaEdit.status = "success";
+        setTimeout(this.closeModalEditMedia, 3000);
+        setTimeout(this.loadMedia, 2500);
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+      });
+    }
 
     /** fin bloc modal edit média **/
 
@@ -571,12 +598,12 @@ export default {
   <div class="modal fade" id="modal-upload" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div v-if="this.loadingUploadMsg === ''" class="modal-content">
-          <FileUpload :translate="this.translate.upload"
-                      :maxSize="20"
-                      :accept="this.extAccept"
-                      @file-uploaded="getUploadedData"
-                      @close-modale-upload="closeModalUpload"
-          />
+        <FileUpload :translate="this.translate.upload"
+                    :maxSize="20"
+                    :accept="this.extAccept"
+                    @file-uploaded="getUploadedData"
+                    @close-modale-upload="closeModalUpload"
+        />
       </div>
       <div v-else class="modal-content">
         <div class="modal-header bg-secondary">
@@ -585,7 +612,7 @@ export default {
           </h1>
         </div>
         <div class="modal-body">
-            {{ this.loadingUploadMsg }}
+          {{ this.loadingUploadMsg }}
         </div>
       </div>
     </div>
@@ -594,7 +621,7 @@ export default {
 
   <!-- Modal pour l'édition d'un media -->
   <div class="modal fade" id="modal-edit-media" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header bg-secondary">
           <h1 class="modal-title fs-5 text-white">
@@ -604,8 +631,41 @@ export default {
           <button type="button" class="btn-close" @click="this.closeModalEditMedia()"></button>
         </div>
         <div class="modal-body">
+          <div v-if="this.mediaEdit.status === ''" class="row">
+            <div class="col-8">
+              <fieldset>
+               <legend> {{ this.translate.edit_media.legend }}</legend>
+
+              <div class="mb-3">
+                <label for="edit-media-title" class="form-label"> {{ this.translate.edit_media.media_name }}</label>
+                <input type="text" class="form-control" v-model="this.mediaEdit.name" id="edit-media-title"
+                       :placeholder="this.translate.edit_media.media_name_placeholder">
+              </div>
+              <div class="mb-3">
+                <label for="edit-media-description" class="form-label"> {{ this.translate.edit_media.media_description }}</label>
+                <input type="text" class="form-control" v-model="this.mediaEdit.description" id="edit-media-description"
+                       :placeholder="this.translate.edit_media.media_description_placeholder">
+              </div>
+              </fieldset>
+            </div>
+            <div class="col-4 d-flex justify-content-center align-items-center text-center">
+             <img :src="this.mediaEdit.thumbnail" :alt="mediaEdit.name" class="img-fluid">
+            </div>
+          </div>
+          <div v-else-if="this.mediaEdit.status === 'loading'">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            {{ this.translate.edit_media.loading }}
+          </div>
+         <div v-else>
+           <span class="text-success"><i class="bi bi-check"></i> {{ this.translate.edit_media.success }}</span>
+         </div>
+
         </div>
         <div class="modal-footer">
+          <div class="btn btn-secondary" @click="this.saveMedia()"> {{ this.translate.edit_media.submit }}</div>
+          <div class="btn btn-dark" @click="this.closeModalEditMedia()"> {{ this.translate.edit_media.cancel }}</div>
         </div>
       </div>
     </div>

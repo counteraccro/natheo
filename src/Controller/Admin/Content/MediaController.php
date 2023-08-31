@@ -203,8 +203,9 @@ class MediaController extends AppAdminController
         return $this->json([
             'media' => [
                 'id' => $media->getId(),
-                'name' => $media->getName(),
-                'description' => $media->getDescription()
+                'name' => $media->getTitle(),
+                'description' => $media->getDescription(),
+                'thumbnail' => $mediaService->getThumbnail($media)
             ]
         ]);
     }
@@ -219,6 +220,15 @@ class MediaController extends AppAdminController
     public function saveMedia(Request $request, MediaService $mediaService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        return $this->json(['']);
+        /** @var Media $media */
+        $media = $mediaService->findOneById(Media::class, $data['media']['id']);
+
+        if (empty($data['media']['name'])) {
+            $data['media']['name'] = $media->getName();
+        }
+        $media->setTitle($data['media']['name']);
+        $media->setDescription($data['media']['description']);
+        $mediaService->save($media);
+        return $this->json(['success' => true]);
     }
 }

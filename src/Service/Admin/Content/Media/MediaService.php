@@ -208,6 +208,8 @@ class MediaService extends MediaFolderService
             'data' => [
                 $this->translator->trans('media.mediatheque.info.media.name', domain: 'media')
                 => $media->getName(),
+                $this->translator->trans('media.mediatheque.info.media.titre', domain: 'media')
+                => $media->getTitle(),
                 $this->translator->trans('media.mediatheque.info.media.description', domain: 'media')
                 => $media->getDescription(),
                 $this->translator->trans('media.mediatheque.info.media.extension', domain: 'media')
@@ -299,7 +301,8 @@ class MediaService extends MediaFolderService
             'media' => [
                 'link_info' => $this->translator->trans('media.mediatheque.media.link.info', domain: 'media'),
                 'link_edit' => $this->translator->trans('media.mediatheque.media.link.edit', domain: 'media'),
-                'link_edit_media' => $this->translator->trans('media.mediatheque.media.link.edit.media', domain: 'media'),
+                'link_edit_media' =>
+                    $this->translator->trans('media.mediatheque.media.link.edit.media', domain: 'media'),
                 'link_move' => $this->translator->trans('media.mediatheque.media.link.move', domain: 'media'),
                 'link_remove' => $this->translator->trans('media.mediatheque.media.link.remove', domain: 'media'),
             ],
@@ -353,6 +356,18 @@ class MediaService extends MediaFolderService
             ],
             'edit_media' => [
                 'title' => $this->translator->trans('media.mediatheque.edit.media.title', domain: 'media'),
+                'legend' => $this->translator->trans('media.mediatheque.edit.media.legend', domain: 'media'),
+                'media_name' => $this->translator->trans('media.mediatheque.edit.media.name', domain: 'media'),
+                'media_name_placeholder' =>
+                    $this->translator->trans('media.mediatheque.edit.media.name.placeholder', domain: 'media'),
+                'media_description' =>
+                    $this->translator->trans('media.mediatheque.edit.media.description', domain: 'media'),
+                'media_description_placeholder' =>
+                    $this->translator->trans('media.mediatheque.edit.media.description.placeholder', domain: 'media'),
+                'submit' => $this->translator->trans('media.mediatheque.edit.media.submit', domain: 'media'),
+                'cancel' => $this->translator->trans('media.mediatheque.edit.media.cancel', domain: 'media'),
+                'loading' => $this->translator->trans('media.mediatheque.edit.media.loading', domain: 'media'),
+                'success' => $this->translator->trans('media.mediatheque.edit.media.success', domain: 'media'),
             ]
         ];
     }

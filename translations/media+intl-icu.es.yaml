@@ -66,3 +66,15 @@ media.mediatheque.upload.loading.msg.success: __media.mediatheque.upload.loading
 media.mediatheque.info.link.download: __media.mediatheque.info.link.download
 media.mediatheque.upload.preview.help: __media.mediatheque.upload.preview.help
 media.mediatheque.upload.btn.close: __media.mediatheque.upload.btn.close
+media.mediatheque.info.media.titre: __media.mediatheque.info.media.titre
+media.mediatheque.media.link.edit.media: __media.mediatheque.media.link.edit.media
+media.mediatheque.edit.media.title: __media.mediatheque.edit.media.title
+media.mediatheque.edit.media.legend: __media.mediatheque.edit.media.legend
+media.mediatheque.edit.media.name: __media.mediatheque.edit.media.name
+media.mediatheque.edit.media.name.placeholder: __media.mediatheque.edit.media.name.placeholder
+media.mediatheque.edit.media.description: __media.mediatheque.edit.media.description
+media.mediatheque.edit.media.description.placeholder: __media.mediatheque.edit.media.description.placeholder
+media.mediatheque.edit.media.submit: __media.mediatheque.edit.media.submit
+media.mediatheque.edit.media.cancel: __media.mediatheque.edit.media.cancel
+media.mediatheque.edit.media.loading: __media.mediatheque.edit.media.loading
+media.mediatheque.edit.media.success: __media.mediatheque.edit.media.success
