@@ -9,7 +9,7 @@ export default {
     medias: Object,
     translate: Object
   },
-  emits: ['load-data-folder', 'edit-folder', 'show-info'],
+  emits: ['load-data-folder', 'edit-folder', 'show-info', 'edit-media'],
   data() {
     return {}
   },
@@ -50,8 +50,8 @@ export default {
             </li>
             <li>
               <!-- lien éditer -->
-              <a v-if="media.type === 'media'" class="dropdown-item">
-                <i class="bi bi-pencil-fill"></i> {{ this.translate.link_edit }}
+              <a v-if="media.type === 'media'" class="dropdown-item" @click="$emit('edit-media', media.id)">
+                <i class="bi bi-pencil-square"></i> {{ this.translate.link_edit_media }}
               </a>
               <a v-else class="dropdown-item" @click="$emit('edit-folder', media.id)">
                 <i class="bi bi-pencil-fill"></i> {{ this.translate.link_edit }}

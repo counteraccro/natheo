@@ -299,6 +299,7 @@ class MediaService extends MediaFolderService
             'media' => [
                 'link_info' => $this->translator->trans('media.mediatheque.media.link.info', domain: 'media'),
                 'link_edit' => $this->translator->trans('media.mediatheque.media.link.edit', domain: 'media'),
+                'link_edit_media' => $this->translator->trans('media.mediatheque.media.link.edit.media', domain: 'media'),
                 'link_move' => $this->translator->trans('media.mediatheque.media.link.move', domain: 'media'),
                 'link_remove' => $this->translator->trans('media.mediatheque.media.link.remove', domain: 'media'),
             ],
@@ -349,6 +350,9 @@ class MediaService extends MediaFolderService
                 'loading_msg' => $this->translator->trans('media.mediatheque.upload.loading.msg', domain: 'media'),
                 'loading_msg_success' =>
                     $this->translator->trans('media.mediatheque.upload.loading.msg.success', domain: 'media'),
+            ],
+            'edit_media' => [
+                'title' => $this->translator->trans('media.mediatheque.edit.media.title', domain: 'media'),
             ]
         ];
     }

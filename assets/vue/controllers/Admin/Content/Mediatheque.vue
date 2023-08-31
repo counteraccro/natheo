@@ -30,6 +30,7 @@ export default {
       modalFolder: '',
       modalInfo: '',
       modalUpload: '',
+      modalEditMedia: '',
       medias: [],
       currentFolder: [],
       filter: 'created_at',
@@ -53,6 +54,7 @@ export default {
     this.modalFolder = new Modal(document.getElementById("modal-folder"), {});
     this.modalInfo = new Modal(document.getElementById("modal-info"), {});
     this.modalUpload = new Modal(document.getElementById("modal-upload"), {});
+    this.modalEditMedia = new Modal(document.getElementById("modal-edit-media"), {});
     this.loadMedia();
   },
 
@@ -347,6 +349,31 @@ export default {
     },
 
     /** Fin bloc modal upload **/
+
+    /** bloc modal edit média **/
+
+    /**
+     * Ouvre la modale pour l'édition d'un média
+     */
+    openModalEditMedia() {
+      this.modalEditMedia.show();
+    },
+
+    /**
+     * Ferme la modale pour l'édition d'un média
+     */
+    closeModalEditMedia() {
+      this.modalEditMedia.hide();
+    },
+
+    editMedia(id)
+    {
+      console.log(id)
+      this.openModalEditMedia()
+    },
+
+    /** fin bloc modal edit média **/
+
   }
 }
 </script>
@@ -435,6 +462,7 @@ export default {
               @load-data-folder="this.loadDataInFolder"
               @edit-folder="this.editFolder"
               @show-info="this.loadDataInformation"
+              @edit-media="this.editMedia"
           >
           </medias-grid>
         </div>
@@ -540,6 +568,26 @@ export default {
     </div>
   </div>
   <!-- Fin Modal pour l'upload -->
+
+  <!-- Modal pour l'édition d'un media -->
+  <div class="modal fade" id="modal-edit-media" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-secondary">
+          <h1 class="modal-title fs-5 text-white">
+            <i class="bi bi-pencil-square"></i>
+            {{ this.translate.edit_media.title }}
+          </h1>
+          <button type="button" class="btn-close" @click="this.closeModalEditMedia()"></button>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fin Modal pour l'édition d'un media -->
 </template>
 
 <style scoped>

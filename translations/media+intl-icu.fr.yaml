@@ -66,3 +66,5 @@ media.mediatheque.upload.loading.msg.success: 'Média ajouté avec succès, cett
 media.mediatheque.info.link.download: Télécharger
 media.mediatheque.upload.preview.help: 'Passez votre souris dessus pour un meilleur aperçu'
 media.mediatheque.upload.btn.close: Fermer
+media.mediatheque.media.link.edit.media: 'Editer'
+media.mediatheque.edit.media.title: "Edition d'un media"
