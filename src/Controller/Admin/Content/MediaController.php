@@ -8,6 +8,7 @@
 namespace App\Controller\Admin\Content;
 
 use App\Controller\Admin\AppAdminController;
+use App\Entity\Admin\Content\Media;
 use App\Entity\Admin\Content\MediaFolder;
 use App\Service\Admin\Content\Media\MediaFolderService;
 use App\Service\Admin\Content\Media\MediaService;
@@ -72,6 +73,8 @@ class MediaController extends AppAdminController
                 'saveFolder' => $this->generateUrl('admin_media_save_folder'),
                 'loadInfo' => $this->generateUrl('admin_media_load_info'),
                 'upload' => $this->generateUrl('admin_media_upload'),
+                'loadMediaEdit' => $this->generateUrl('admin_media_load_media_edit'),
+                'saveMediaEdit' => $this->generateUrl('admin_media_save_media_edit'),
             ]
         ]);
     }
@@ -172,6 +175,7 @@ class MediaController extends AppAdminController
     /**
      * Upload de média
      * @param Request $request
+     * @param MediaService $mediaService
      * @return JsonResponse
      */
     #[Route('/ajax/upload-media', name: 'upload', methods: ['POST'])]
@@ -180,8 +184,41 @@ class MediaController extends AppAdminController
         $data = json_decode($request->getContent(), true);
         $mediaService->uploadMediaFile($data['folder'], $data['file']);
 
-        return $this->json([
+        return $this->json([]);
+    }
 
+    /**
+     * Charge le nom et la description d'un média en fonction de son id
+     * @param Request $request
+     * @param MediaService $mediaService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/load-media', name: 'load_media_edit', methods: ['POST'])]
+    public function loadMedia(Request $request, MediaService $mediaService): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        /** @var Media $media */
+        $media = $mediaService->findOneById(Media::class, $data['id']);
+        return $this->json([
+            'media' => [
+                'id' => $media->getId(),
+                'name' => $media->getName(),
+                'description' => $media->getDescription()
+            ]
         ]);
+    }
+
+    /**
+     * Sauvegarde le nom et la description d'un media
+     * @param Request $request
+     * @param MediaService $mediaService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/save-media', name: 'save_media_edit', methods: ['POST'])]
+    public function saveMedia(Request $request, MediaService $mediaService): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        return $this->json(['']);
     }
 }

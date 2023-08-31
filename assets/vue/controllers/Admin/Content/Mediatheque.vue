@@ -44,6 +44,11 @@ export default {
       folderError: '',
       folderSuccess: '',
       folderCanSubmit: false,
+      mediaEdit: {
+        id: 0,
+        name: '',
+        description: ''
+      },
       infoData: [],
       extAccept: 'csv,pdf,jpg,png,xls,xlsx,doc,docx,gif',
       urlActions: '',
@@ -364,12 +369,30 @@ export default {
      */
     closeModalEditMedia() {
       this.modalEditMedia.hide();
+      this.mediaEdit = {
+        id : 0,
+        name: '',
+        description: '',
+      }
     },
 
     editMedia(id)
     {
-      console.log(id)
-      this.openModalEditMedia()
+      this.loading = true;
+      axios.post(this.urlActions.loadMediaEdit, {
+        'id': id,
+      }).then((response) => {
+        this.mediaEdit = {
+          id : response.data.media.id,
+          name : response.data.media.name,
+          description : response.data.media.description
+        }
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+        this.loading = false;
+        this.openModalEditMedia();
+      });
     },
 
     /** fin bloc modal edit média **/
