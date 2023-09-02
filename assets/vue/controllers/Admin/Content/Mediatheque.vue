@@ -680,12 +680,12 @@ export default {
 
               <div class="mb-3">
                 <label for="edit-media-title" class="form-label"> {{ this.translate.edit_media.media_name }}</label>
-                <input type="text" class="form-control" v-model="this.mediaEdit.name" id="edit-media-title"
+                <input type="text" class="form-control no-control" v-model="this.mediaEdit.name" id="edit-media-title"
                        :placeholder="this.translate.edit_media.media_name_placeholder">
               </div>
               <div class="mb-3">
                 <label for="edit-media-description" class="form-label"> {{ this.translate.edit_media.media_description }}</label>
-                <input type="text" class="form-control" v-model="this.mediaEdit.description" id="edit-media-description"
+                <input type="text" class="form-control no-control" v-model="this.mediaEdit.description" id="edit-media-description"
                        :placeholder="this.translate.edit_media.media_description_placeholder">
               </div>
               </fieldset>
