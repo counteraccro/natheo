@@ -244,7 +244,14 @@ class MediaController extends AppAdminController
     public function listeFolderToMove(Request $request, MediaFolderService $mediaFolderService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        return $this->json(['success' => true]);
+
+        $mediaFolderService->getListeFolderToMove($data['id'], $data['type']);
+
+        return $this->json(['dataMove' => [
+            'id' => $data['id'],
+            'type' => $data['type'],
+            'listeFolder' => []
+        ]]);
     }
 
     /**

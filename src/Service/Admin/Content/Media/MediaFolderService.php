@@ -370,4 +370,9 @@ class MediaFolderService extends AppAdminService
             'directory' => $nbDirectory
         ];
     }
+
+    public function getListeFolderToMove(int $id, string $type = 'media')
+    {
+
+    }
 }

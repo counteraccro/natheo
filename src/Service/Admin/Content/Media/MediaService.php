@@ -368,6 +368,9 @@ class MediaService extends MediaFolderService
                 'cancel' => $this->translator->trans('media.mediatheque.edit.media.cancel', domain: 'media'),
                 'loading' => $this->translator->trans('media.mediatheque.edit.media.loading', domain: 'media'),
                 'success' => $this->translator->trans('media.mediatheque.edit.media.success', domain: 'media'),
+            ],
+            'move' => [
+                'title' => $this->translator->trans('media.mediatheque.move.title', domain: 'media'),
             ]
         ];
     }

@@ -7,6 +7,7 @@ import MediasGrid from "../../../Components/Mediatheque/MediasGrid.vue";
 import MediasBreadcrumb from "../../../Components/Mediatheque/MediasBreadcrumb.vue";
 import MediaModalInfo from "../../../Components/Mediatheque/MediaModalInfo.vue";
 import FileUpload from "../../../Components/FileUpload.vue";
+import MediaMove from "../../../Components/Mediatheque/MediaMove.vue";
 import axios from "axios";
 import {Modal} from "bootstrap";
 import {isEmpty} from "lodash-es";
@@ -17,7 +18,8 @@ export default {
     MediasGrid,
     MediasBreadcrumb,
     MediaModalInfo,
-    FileUpload
+    FileUpload,
+    MediaMove
   },
   props: {
     url: String,
@@ -55,7 +57,7 @@ export default {
       infoData: [],
       extAccept: 'csv,pdf,jpg,png,xls,xlsx,doc,docx,gif',
       urlActions: '',
-      listMove: [],
+      dataMove: [],
     }
   },
 
@@ -379,7 +381,7 @@ export default {
         id: 0,
         name: '',
         description: '',
-        thumbnail : '',
+        thumbnail: '',
         status: '',
       }
     },
@@ -441,7 +443,7 @@ export default {
      */
     closeModalMove() {
       this.modalMove.hide();
-      this.listMove = [];
+      this.dataMove = [];
     },
 
     /**
@@ -453,8 +455,9 @@ export default {
       this.loading = true;
       axios.post(this.urlActions.listeMove, {
         'id': id,
+        'type': type
       }).then((response) => {
-
+        this.dataMove = response.data.listeMove;
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
@@ -503,7 +506,7 @@ export default {
           <div class="float-end">
             <div class="btn-group">
               <button type="button" class="btn btn-secondary dropdown-toggle me-1" data-bs-toggle="dropdown"
-                      aria-expanded="false">
+                  aria-expanded="false">
                 {{ this.translate.btn_filtre }} <i class="bi" :class="this.filterIcon"></i>
               </button>
               <ul class="dropdown-menu">
@@ -523,7 +526,7 @@ export default {
             </div>
             <div class="btn-group">
               <button type="button" class="btn btn-secondary dropdown-toggle me-1" data-bs-toggle="dropdown"
-                      aria-expanded="false">
+                  aria-expanded="false">
                 {{ this.translate.btn_order }} <i class="bi" :class="this.orderIcon"></i>
               </button>
               <ul class="dropdown-menu">
@@ -538,10 +541,10 @@ export default {
               </ul>
             </div>
             <input type="radio" class="btn-check no-control" name="options-render" id="btn-grid" autocomplete="off"
-                   checked @change="this.switchRender('grid')">
+                checked @change="this.switchRender('grid')">
             <label class="btn me-1 btn-secondary" for="btn-grid"><i class="bi bi-grid"></i></label>
             <input type="radio" class="btn-check no-control" name="options-render" id="btn-list" autocomplete="off"
-                   @change="this.switchRender('list')">
+                @change="this.switchRender('list')">
             <label class="btn btn-secondary" for="btn-list"><i class="bi bi-list"></i></label>
           </div>
         </div>
@@ -583,10 +586,10 @@ export default {
           <div class="mb-3" :class="this.folderSuccess !== '' ? 'd-none':''">
             <label for="folderName" class="form-label">{{ this.translate.folder.input_label }} *</label>
             <input type="text" v-model="folderName"
-                   @keyup="this.validateFolderName()"
-                   class="form-control"
-                   id="input-folder-name"
-                   :placeholder="this.translate.folder.input_label_placeholder">
+                @keyup="this.validateFolderName()"
+                class="form-control"
+                id="input-folder-name"
+                :placeholder="this.translate.folder.input_label_placeholder">
             <div class="invalid-feedback">
               {{ this.folderError }}
             </div>
@@ -598,11 +601,11 @@ export default {
         <div v-if="this.folderSuccess === ''" class="modal-footer">
           <div class="btn btn-dark" @click="this.closeModalFolder()">{{ this.translate.folder.btn_cancel }}</div>
           <div v-if="isEmpty(this.folderEdit)" @click="this.submitFolder()" class="btn btn-primary"
-               :class="this.folderCanSubmit ? '':'disabled'">
+              :class="this.folderCanSubmit ? '':'disabled'">
             {{ this.translate.folder.btn_submit_create }}
           </div>
           <div v-else class="btn btn-primary" @click="this.submitFolder()"
-               :class="this.folderCanSubmit ? '':'disabled'">
+              :class="this.folderCanSubmit ? '':'disabled'">
             {{ this.translate.folder.btn_submit_edit }}
           </div>
         </div>
@@ -641,10 +644,10 @@ export default {
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div v-if="this.loadingUploadMsg === ''" class="modal-content">
         <FileUpload :translate="this.translate.upload"
-                    :maxSize="20"
-                    :accept="this.extAccept"
-                    @file-uploaded="getUploadedData"
-                    @close-modale-upload="closeModalUpload"
+            :maxSize="20"
+            :accept="this.extAccept"
+            @file-uploaded="getUploadedData"
+            @close-modale-upload="closeModalUpload"
         />
       </div>
       <div v-else class="modal-content">
@@ -676,22 +679,22 @@ export default {
           <div v-if="this.mediaEdit.status === ''" class="row">
             <div class="col-8">
               <fieldset>
-               <legend> {{ this.translate.edit_media.legend }}</legend>
+                <legend> {{ this.translate.edit_media.legend }}</legend>
 
-              <div class="mb-3">
-                <label for="edit-media-title" class="form-label"> {{ this.translate.edit_media.media_name }}</label>
-                <input type="text" class="form-control no-control" v-model="this.mediaEdit.name" id="edit-media-title"
-                       :placeholder="this.translate.edit_media.media_name_placeholder">
-              </div>
-              <div class="mb-3">
-                <label for="edit-media-description" class="form-label"> {{ this.translate.edit_media.media_description }}</label>
-                <input type="text" class="form-control no-control" v-model="this.mediaEdit.description" id="edit-media-description"
-                       :placeholder="this.translate.edit_media.media_description_placeholder">
-              </div>
+                <div class="mb-3">
+                  <label for="edit-media-title" class="form-label"> {{ this.translate.edit_media.media_name }}</label>
+                  <input type="text" class="form-control no-control" v-model="this.mediaEdit.name" id="edit-media-title"
+                      :placeholder="this.translate.edit_media.media_name_placeholder">
+                </div>
+                <div class="mb-3">
+                  <label for="edit-media-description" class="form-label"> {{ this.translate.edit_media.media_description }}</label>
+                  <input type="text" class="form-control no-control" v-model="this.mediaEdit.description" id="edit-media-description"
+                      :placeholder="this.translate.edit_media.media_description_placeholder">
+                </div>
               </fieldset>
             </div>
             <div class="col-4 d-flex justify-content-center align-items-center text-center">
-             <img :src="this.mediaEdit.thumbnail" :alt="mediaEdit.name" class="img-fluid">
+              <img :src="this.mediaEdit.thumbnail" :alt="mediaEdit.name" class="img-fluid">
             </div>
           </div>
           <div v-else-if="this.mediaEdit.status === 'loading'">
@@ -700,9 +703,9 @@ export default {
             </div>
             {{ this.translate.edit_media.loading }}
           </div>
-         <div v-else>
-           <span class="text-success"><i class="bi bi-check"></i> {{ this.translate.edit_media.success }}</span>
-         </div>
+          <div v-else>
+            <span class="text-success"><i class="bi bi-check"></i> {{ this.translate.edit_media.success }}</span>
+          </div>
 
         </div>
         <div class="modal-footer">
@@ -718,22 +721,15 @@ export default {
   <div class="modal fade" id="modal-move" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header bg-secondary">
-          <h1 class="modal-title fs-5 text-white">
-            <i class="bi bi-upload"></i> {{ this.translate.upload.title }}
-          </h1>
-          <button type="button" class="btn-close" @click="this.closeModalMove()"></button>
-        </div>
-        <div class="modal-body">
-          body
-        </div>
-        <div class="modal-footer">
-          footer
-        </div>
+        <media-move
+            :translate="this.translate.move"
+            :data-move="this.dataMove"
+            @close-modale="this.closeModalMove"
+        />
       </div>
     </div>
   </div>
-  <!-- Fin Modal pour le move -->
+    <!-- Fin Modal pour le move -->
 
 </template>
 
