@@ -75,6 +75,8 @@ class MediaController extends AppAdminController
                 'upload' => $this->generateUrl('admin_media_upload'),
                 'loadMediaEdit' => $this->generateUrl('admin_media_load_media_edit'),
                 'saveMediaEdit' => $this->generateUrl('admin_media_save_media_edit'),
+                'listeMove' => $this->generateUrl('admin_media_liste_move'),
+                'move' => $this->generateUrl('admin_media_move'),
             ]
         ]);
     }
@@ -229,6 +231,32 @@ class MediaController extends AppAdminController
         $media->setTitle($data['media']['name']);
         $media->setDescription($data['media']['description']);
         $mediaService->save($media);
+        return $this->json(['success' => true]);
+    }
+
+    /**
+     * Retourne la liste des dossiers pour le déplacement
+     * @param Request $request
+     * @param MediaFolderService $mediaFolderService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/liste-move', name: 'liste_move', methods: ['POST'])]
+    public function listeFolderToMove(Request $request, MediaFolderService $mediaFolderService): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        return $this->json(['success' => true]);
+    }
+
+    /**
+     * Permet de déplacer un dossier ou un média
+     * @param Request $request
+     * @param MediaService $mediaService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/move', name: 'move', methods: ['POST'])]
+    public function move(Request $request, MediaService $mediaService): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
         return $this->json(['success' => true]);
     }
 }

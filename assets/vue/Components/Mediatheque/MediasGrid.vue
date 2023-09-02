@@ -9,7 +9,7 @@ export default {
     medias: Object,
     translate: Object
   },
-  emits: ['load-data-folder', 'edit-folder', 'show-info', 'edit-media'],
+  emits: ['load-data-folder', 'edit-folder', 'show-info', 'edit-media', 'move'],
   data() {
     return {}
   },
@@ -20,8 +20,7 @@ export default {
      * Permet d'ouvrir un média
      * @param path
      */
-    openMedia(path)
-    {
+    openMedia(path) {
       window.open(path, "_blank");
     }
   }
@@ -32,9 +31,9 @@ export default {
 
   <div id="block-media-grid" class="mt-3 row">
     <div class="media col-auto mb-4" v-for="media in this.medias">
-      <img v-if="media.type === 'media'" height="200" width="200" 
-           :src="media.thumbnail" style="cursor:pointer;"
-           :alt="media.name" @click="this.openMedia(media.webPath)"/>
+      <img v-if="media.type === 'media'" height="200" width="200"
+          :src="media.thumbnail" style="cursor:pointer;"
+          :alt="media.name" @click="this.openMedia(media.webPath)"/>
       <div v-else class="folder" alt="media.name" @click="$emit('load-data-folder', media.id)"></div>
       <div class="info-media">
         <div class="btn-group">
@@ -58,16 +57,20 @@ export default {
               </a>
             </li>
             <li>
-              <a class="dropdown-item"><i class="bi bi-arrow-right-circle-fill"></i> {{ this.translate.link_move }}</a>
+              <a class="dropdown-item"  @click="$emit('move', media.type, media.id)">
+                <i class="bi bi-arrow-right-circle-fill"></i> {{ this.translate.link_move }}
+              </a>
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
-            <li><a class="dropdown-item"><i class="bi bi-trash-fill"></i> {{ this.translate.link_remove }}</a>
+            <li><a class="dropdown-item">
+              <i class="bi bi-trash-fill"></i> {{ this.translate.link_remove }}
+            </a>
             </li>
           </ul>
         </div>
-       <span class="d-inline-block text-truncate" style="max-width: 140px;vertical-align: middle;"> {{ media.name }} </span>
+        <span class="d-inline-block text-truncate" style="max-width: 140px;vertical-align: middle;"> {{ media.name }} </span>
 
       </div>
     </div>

@@ -31,6 +31,7 @@ export default {
       modalInfo: '',
       modalUpload: '',
       modalEditMedia: '',
+      modalMove: '',
       medias: [],
       currentFolder: [],
       filter: 'created_at',
@@ -54,6 +55,7 @@ export default {
       infoData: [],
       extAccept: 'csv,pdf,jpg,png,xls,xlsx,doc,docx,gif',
       urlActions: '',
+      listMove: [],
     }
   },
 
@@ -61,6 +63,7 @@ export default {
     this.modalFolder = new Modal(document.getElementById("modal-folder"), {});
     this.modalInfo = new Modal(document.getElementById("modal-info"), {});
     this.modalUpload = new Modal(document.getElementById("modal-upload"), {});
+    this.modalMove = new Modal(document.getElementById("modal-move"), {});
     this.modalEditMedia = new Modal(document.getElementById("modal-edit-media"), {});
     this.loadMedia();
   },
@@ -420,9 +423,47 @@ export default {
         console.log(error);
       }).finally(() => {
       });
-    }
+    },
 
     /** fin bloc modal edit média **/
+
+    /** bloc modal move **/
+
+    /**
+     * Ouvre la modale pour le move
+     */
+    openModalMove() {
+      this.modalMove.show();
+    },
+
+    /**
+     * Ferme la modale le move
+     */
+    closeModalMove() {
+      this.modalMove.hide();
+      this.listMove = [];
+    },
+
+    /**
+     * Charge une liste de dossier pour le déplacement
+     * @param id
+     * @param type
+     */
+    loadListFolderMove(type, id) {
+      this.loading = true;
+      axios.post(this.urlActions.listeMove, {
+        'id': id,
+      }).then((response) => {
+
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+        this.loading = false;
+        this.openModalMove();
+      });
+    },
+
+    /** fin bloc modal move **/
 
   }
 }
@@ -513,6 +554,7 @@ export default {
               @edit-folder="this.editFolder"
               @show-info="this.loadDataInformation"
               @edit-media="this.editMedia"
+              @move="this.loadListFolderMove"
           >
           </medias-grid>
         </div>
@@ -671,6 +713,28 @@ export default {
     </div>
   </div>
   <!-- Fin Modal pour l'édition d'un media -->
+
+  <!-- Modal pour le move -->
+  <div class="modal fade" id="modal-move" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-secondary">
+          <h1 class="modal-title fs-5 text-white">
+            <i class="bi bi-upload"></i> {{ this.translate.upload.title }}
+          </h1>
+          <button type="button" class="btn-close" @click="this.closeModalMove()"></button>
+        </div>
+        <div class="modal-body">
+          body
+        </div>
+        <div class="modal-footer">
+          footer
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fin Modal pour le move -->
+
 </template>
 
 <style scoped>
