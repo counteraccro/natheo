@@ -618,22 +618,12 @@ export default {
   <div class="modal fade" id="modal-info" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header bg-secondary">
-          <h1 class="modal-title fs-5 text-white">
-            <i class="bi bi-info-circle-fill"></i> {{ this.translate.info.title }}
-          </h1>
-          <button type="button" class="btn-close" @click="this.closeModalInfo()"></button>
-        </div>
-        <div class="modal-body">
           <media-modal-info
               :data="this.infoData"
               :translate="this.translate.info"
+              @close-modale="this.closeModalInfo"
           >
           </media-modal-info>
-        </div>
-        <div class="modal-footer">
-          <div class="btn btn-dark" @click="this.closeModalInfo()">{{ this.translate.info.btn_close }}</div>
-        </div>
       </div>
     </div>
   </div>
