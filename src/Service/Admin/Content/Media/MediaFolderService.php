@@ -7,6 +7,7 @@
 
 namespace App\Service\Admin\Content\Media;
 
+use App\Entity\Admin\Content\Media;
 use App\Entity\Admin\Content\MediaFolder;
 use App\Repository\Admin\Content\MediaFolderRepository;
 use App\Service\Admin\AppAdminService;
@@ -350,7 +351,7 @@ class MediaFolderService extends AppAdminService
             => $mediaFolder->getCreatedAt()->format('d/m/y H:i'),
             $this->translator->trans('media.mediatheque.info.folder.date_update', domain: 'media')
             => $mediaFolder->getUpdateAt()->format('d/m/y H:i')
-            ];
+        ];
     }
 
     /**
@@ -371,8 +372,74 @@ class MediaFolderService extends AppAdminService
         ];
     }
 
-    public function getListeFolderToMove(int $id, string $type = 'media')
+    /**
+     * Retourne une liste de dossier sous la forme id => nom valide pour un déplacement
+     * en fonction de l'id en paramètre
+     * @param int $id
+     * @param string $type
+     * @return array
+     */
+    public function getListeFolderToMove(int $id, string $type = 'media'): array
     {
 
+        if ($type === 'media') {
+            /** @var Media $entity */
+            $entity = $this->findOneById(Media::class, $id);
+            $folder = $entity->getMediaFolder();
+
+        } else {
+            /** @var MediaFolder $entity */
+            $folder = $this->findOneById(MediaFolder::class, $id);
+        }
+
+        /** @var MediaFolderRepository $repo */
+        $repo = $this->getRepository(MediaFolder::class);
+        $result = $repo->getAllFolderNoChild($folder);
+
+        $parents = [];
+        /** @var MediaFolder $folder */
+        foreach ($result as $folder) {
+            if ($folder->getParent() === null) {
+                $parents[] = $folder;
+            }
+        }
+
+        $return = [];
+        foreach ($parents as $parent) {
+            $return = $this->getTreeFolders($parent, $result, $return, 1);
+        }
+        return $return;
+    }
+
+    /**
+     * Construit de façon récursive un arbre de dossier à afficher sous forme de listing
+     * @param MediaFolder $folder
+     * @param array $folders
+     * @param array $return
+     * @param int $depth
+     * @return array
+     */
+    private function getTreeFolders(MediaFolder $folder, array $folders, array $return, int $depth): array
+    {
+        if ($folder->getParent() === null) {
+            $return[$folder->getId()] = $folder->getName();
+        }
+        if ($folder->getChildren()->count() > 0) {
+            foreach ($folder->getChildren() as $child) {
+                foreach ($folders as $fold) {
+                    if ($fold->getId() === $child->getId()) {
+                        $return[$child->getId()] = str_pad($child->getName(), strlen($child->getName()) + $depth
+                            , "-", STR_PAD_LEFT);
+                        break;
+                    }
+                }
+                if ($child->getChildren()->count() > 0) {
+                    $depth = $depth + 1;
+                    $return = $this->getTreeFolders($child, $folders, $return, $depth);
+                    $depth = $depth - 1;
+                }
+            }
+        }
+        return $return;
     }
 }
