@@ -86,17 +86,20 @@ class MediaFolderRepository extends ServiceEntityRepository
     /**
      * Retourne une liste de dossier (id, nom) qui est non-enfant du nom dossier envoyé en paramètre
      * et qui n'est pas le dossier id en paramètre. Liste pour déplacer le dossier
-     * @param MediaFolder $mediaFolder
+     * @param MediaFolder|null $mediaFolder
      * @return mixed
      */
-    public function getAllFolderNoChild(MediaFolder $mediaFolder): mixed
+    public function getAllFolderNoChild(MediaFolder $mediaFolder = null): mixed
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.path NOT LIKE :name')
-            ->setParameter('name', '%' . $mediaFolder->getName() . '%')
-            ->andWhere('m.id != :id')
-            ->setParameter('id',  $mediaFolder->getId())
-            ->orderBy('m.id', 'ASC')
+        $queryBuilder = $this->createQueryBuilder('m');
+
+        if ($mediaFolder != null) {
+            $queryBuilder->andWhere('m.path NOT LIKE :name')
+                ->setParameter('name', '%' . $mediaFolder->getName() . '%')
+                ->andWhere('m.id != :id')
+                ->setParameter('id', $mediaFolder->getId());
+        }
+        return $queryBuilder->orderBy('m.id', 'ASC')
             ->getQuery()->getResult();
     }
 

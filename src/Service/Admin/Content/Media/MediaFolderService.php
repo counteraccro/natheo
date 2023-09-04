@@ -373,24 +373,48 @@ class MediaFolderService extends AppAdminService
     }
 
     /**
-     * Retourne une liste de dossier sous la forme id => nom valide pour un déplacement
-     * en fonction de l'id en paramètre
+     * Retourne l'ensemble des informations nécessaire pour la modale de déplacement
      * @param int $id
      * @param string $type
      * @return array
      */
-    public function getListeFolderToMove(int $id, string $type = 'media'): array
+    public function getAllDataForModalMove(int $id, string $type = 'media'): array
     {
-
         if ($type === 'media') {
             /** @var Media $entity */
             $entity = $this->findOneById(Media::class, $id);
             $folder = $entity->getMediaFolder();
 
+            $label = $this->translator->trans('media.mediatheque.move.label.media',
+                ['name' => $entity->getName()], domain: 'media');
+
         } else {
-            /** @var MediaFolder $entity */
+            /** @var MediaFolder $folder */
             $folder = $this->findOneById(MediaFolder::class, $id);
+            $label = $this->translator->trans('media.mediatheque.move.label.folder',
+                ['name' => $folder->getName()], domain: 'media');
         }
+
+        $return = [];
+
+        $parentId = 0;
+        if ($folder != null && $folder->getParent() != null) {
+            $parentId = $folder->getParent()->getId();
+        }
+        $return['parentId'] = $parentId;
+        $return['label'] = $label;
+        $return['liste'] = $this->getListeFolderToMove($folder);
+        return $return;
+    }
+
+    /**
+     * Retourne une liste de dossier sous la forme id => nom valide pour un déplacement
+     * en fonction du dossier courant
+     * @param MediaFolder|null $folder
+     * @return array
+     */
+    public function getListeFolderToMove(MediaFolder $folder = null): array
+    {
 
         /** @var MediaFolderRepository $repo */
         $repo = $this->getRepository(MediaFolder::class);
@@ -422,14 +446,15 @@ class MediaFolderService extends AppAdminService
     private function getTreeFolders(MediaFolder $folder, array $folders, array $return, int $depth): array
     {
         if ($folder->getParent() === null) {
-            $return[$folder->getId()] = $folder->getName();
+            $return[] = ['id' => $folder->getId(), 'name' => $folder->getName()];
         }
         if ($folder->getChildren()->count() > 0) {
             foreach ($folder->getChildren() as $child) {
                 foreach ($folders as $fold) {
                     if ($fold->getId() === $child->getId()) {
-                        $return[$child->getId()] = str_pad($child->getName(), strlen($child->getName()) + $depth
-                            , "-", STR_PAD_LEFT);
+                        $return[] = ['id' => $child->getId(), 'name' => '|' . str_pad($child->getName(),
+                                strlen($child->getName()) + $depth
+                                , "-", STR_PAD_LEFT)];
                         break;
                     }
                 }

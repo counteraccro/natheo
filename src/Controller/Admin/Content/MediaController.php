@@ -245,12 +245,14 @@ class MediaController extends AppAdminController
     {
         $data = json_decode($request->getContent(), true);
 
-        $liste = $mediaFolderService->getListeFolderToMove($data['id'], $data['type']);
+        $dataMove = $mediaFolderService->getAllDataForModalMove($data['id'], $data['type']);
 
         return $this->json(['dataMove' => [
             'id' => $data['id'],
+            'parentIid' => $dataMove['parentId'],
+            'label' => $dataMove['label'],
             'type' => $data['type'],
-            'listeFolder' => $liste
+            'listeFolder' => $dataMove['liste']
         ]]);
     }
 
@@ -264,6 +266,7 @@ class MediaController extends AppAdminController
     public function move(Request $request, MediaService $mediaService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+        var_dump($data);
         return $this->json(['success' => true]);
     }
 }

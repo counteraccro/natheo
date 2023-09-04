@@ -58,6 +58,7 @@ export default {
       extAccept: 'csv,pdf,jpg,png,xls,xlsx,doc,docx,gif',
       urlActions: '',
       dataMove: [],
+      mediaMoveStatus: '',
     }
   },
 
@@ -444,6 +445,7 @@ export default {
     closeModalMove() {
       this.modalMove.hide();
       this.dataMove = [];
+      this.mediaMoveStatus = '';
     },
 
     /**
@@ -457,7 +459,7 @@ export default {
         'id': id,
         'type': type
       }).then((response) => {
-        this.dataMove = response.data.listeMove;
+        this.dataMove = response.data.dataMove;
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
@@ -465,6 +467,29 @@ export default {
         this.openModalMove();
       });
     },
+
+    /**
+     * Déplace un média
+     * @param idToMove
+     * @param id
+     * @param type
+     */
+    moveMedia(idToMove, id, type) {
+      this.mediaMoveStatus = 'loading'
+      axios.post(this.urlActions.move, {
+        'idToMove': idToMove,
+        'id': id,
+        'type': type
+      }).then((response) => {
+
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+        this.mediaMoveStatus = "success";
+        setTimeout(this.closeModalMove, 3000);
+        setTimeout(this.loadMedia, 2500);
+      });
+    }
 
     /** fin bloc modal move **/
 
@@ -618,12 +643,12 @@ export default {
   <div class="modal fade" id="modal-info" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
-          <media-modal-info
-              :data="this.infoData"
-              :translate="this.translate.info"
-              @close-modale="this.closeModalInfo"
-          >
-          </media-modal-info>
+        <media-modal-info
+            :data="this.infoData"
+            :translate="this.translate.info"
+            @close-modale="this.closeModalInfo"
+        >
+        </media-modal-info>
       </div>
     </div>
   </div>
@@ -711,15 +736,36 @@ export default {
   <div class="modal fade" id="modal-move" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
-        <media-move
-            :translate="this.translate.move"
-            :data-move="this.dataMove"
-            @close-modale="this.closeModalMove"
-        />
+        <div v-if="this.mediaMoveStatus === ''">
+          <media-move
+              :translate="this.translate.move"
+              :data-move="this.dataMove"
+              @move="this.moveMedia"
+              @close-modale="this.closeModalMove"
+          />
+        </div>
+        <div v-else>
+          <div class="modal-header bg-secondary">
+            <h1 class="modal-title fs-5 text-white">
+              <i class="bi bi-arrow-right-circle-fill"></i> {{ this.translate.move.title }}
+            </h1>
+          </div>
+          <div class="modal-body">
+            <div v-if="this.mediaMoveStatus === 'loading'">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              {{ this.translate.move.loading }}
+            </div>
+            <div v-else>
+              <span class="text-success"><i class="bi bi-check"></i> {{ this.translate.move.success }}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-    <!-- Fin Modal pour le move -->
+  <!-- Fin Modal pour le move -->
 
 </template>
 

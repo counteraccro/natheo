@@ -372,6 +372,11 @@ class MediaService extends MediaFolderService
             'move' => [
                 'title' => $this->translator->trans('media.mediatheque.move.title', domain: 'media'),
                 'btn_close' => $this->translator->trans('media.mediatheque.move.btn.close', domain: 'media'),
+                'btn_validate' => $this->translator->trans('media.mediatheque.move.btn.validate', domain: 'media'),
+                'input_label' => $this->translator->trans('media.mediatheque.move.input.label', domain: 'media'),
+                'input_info' => $this->translator->trans('media.mediatheque.move.input.info', domain: 'media'),
+                'loading' => $this->translator->trans('media.mediatheque.move.loading', domain: 'media'),
+                'success' => $this->translator->trans('media.mediatheque.move.success', domain: 'media')
             ]
         ];
     }
