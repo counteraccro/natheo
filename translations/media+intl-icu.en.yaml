@@ -78,3 +78,12 @@ media.mediatheque.edit.media.submit: __media.mediatheque.edit.media.submit
 media.mediatheque.edit.media.cancel: __media.mediatheque.edit.media.cancel
 media.mediatheque.edit.media.loading: __media.mediatheque.edit.media.loading
 media.mediatheque.edit.media.success: __media.mediatheque.edit.media.success
+media.mediatheque.move.label.media: __media.mediatheque.move.label.media
+media.mediatheque.move.label.folder: __media.mediatheque.move.label.folder
+media.mediatheque.move.title: __media.mediatheque.move.title
+media.mediatheque.move.btn.close: __media.mediatheque.move.btn.close
+media.mediatheque.move.btn.validate: __media.mediatheque.move.btn.validate
+media.mediatheque.move.input.label: __media.mediatheque.move.input.label
+media.mediatheque.move.input.info: __media.mediatheque.move.input.info
+media.mediatheque.move.loading: __media.mediatheque.move.loading
+media.mediatheque.move.success: __media.mediatheque.move.success
