@@ -428,7 +428,8 @@ class MediaFolderService extends AppAdminService
             }
         }
 
-        $return = [];
+        $return =[];
+        $return[] = ['id' => -1, 'name' => 'root'];
         foreach ($parents as $parent) {
             $return = $this->getTreeFolders($parent, $result, $return, 1);
         }
@@ -466,5 +467,16 @@ class MediaFolderService extends AppAdminService
             }
         }
         return $return;
+    }
+
+    /**
+     * Déplacer un dossier vers le dossier en paramètre
+     * @param MediaFolder $mediaFolder
+     * @param MediaFolder|null $mediaFolderToMove
+     * @return void
+     */
+    public function moveFolder(MediaFolder $mediaFolder, MediaFolder $mediaFolderToMove = null)
+    {
+
     }
 }
