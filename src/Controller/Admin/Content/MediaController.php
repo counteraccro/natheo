@@ -266,7 +266,7 @@ class MediaController extends AppAdminController
     public function move(Request $request, MediaService $mediaService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        var_dump($data);
+        $mediaService->move($data['id'], $data['type'], $data['idToMove']);
         return $this->json(['success' => true]);
     }
 }

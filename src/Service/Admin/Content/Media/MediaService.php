@@ -102,15 +102,32 @@ class MediaService extends MediaFolderService
     public function getWebPath(Media $media): string
     {
         $mediaFolder = $media->getMediaFolder();
-        $path =  '/' . $media->getName();
+        $path = '/' . $media->getName();
         if ($mediaFolder != null) {
             $path = $mediaFolder->getPath() . '/' .
                 $mediaFolder->getName() . '/' . $media->getName();
         }
 
         $path = str_replace('\\', '/', $path);
-        $path =  str_replace('//', '/', $path);
+        $path = str_replace('//', '/', $path);
         return $this->webPathMedia . $path;
+    }
+
+    /**
+     * Génère le path d'un média
+     * @param Media $media
+     * @return string
+     */
+    public function getPath(Media $media): string
+    {
+        $mediaFolder = $media->getMediaFolder();
+        $path = DIRECTORY_SEPARATOR . $media->getName();
+        if ($mediaFolder != null) {
+            $path = $mediaFolder->getPath() . DIRECTORY_SEPARATOR .
+                $mediaFolder->getName() . DIRECTORY_SEPARATOR . $media->getName();
+        }
+        $path = str_replace('//', '/', $path);
+        return $path;
     }
 
     /**
@@ -279,6 +296,59 @@ class MediaService extends MediaFolderService
             'doc', 'docx' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_doc.png',
             default => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file.png',
         };
+    }
+
+    /**
+     * Déplace un type de média vers le médiafolder idToMove
+     * @param int $id
+     * @param string $type
+     * @param int $idToMove
+     * @return void
+     */
+    public function move(int $id, string $type, int $idToMove): void
+    {
+        if ($type === 'media') {
+            $media = $this->findOneById(Media::class, $id);
+            $folder = $this->findOneById(MediaFolder::class, $idToMove);
+            $this->moveMedia($media, $folder);
+
+        } else {
+            $folder = $this->findOneById(MediaFolder::class, $id);
+            $folderInMove = $this->findOneById(MediaFolder::class, $idToMove);
+            $this->moveFolder($folder, $folderInMove);
+        }
+    }
+
+    /**
+     * Déplace un média vers le médiaFolder en paramètre
+     * @param Media $media
+     * @param MediaFolder|null $mediaFolderInMove
+     * @return void
+     */
+    public function moveMedia(Media $media, MediaFolder $mediaFolderInMove = null): void
+    {
+        $oldPath = $this->rootPathMedia . DIRECTORY_SEPARATOR . $media->getName();
+        if($media->getMediaFolder() !== null)
+        {
+            $oldPath = $this->getPathFolder($media->getMediaFolder()) . $media->getName();
+        }
+
+        $media->setMediaFolder($mediaFolderInMove);
+        $media->setWebPath($this->getWebPath($media));
+        $media->setPath($this->getPath($media));
+        $this->save($media);
+
+        if($this->canCreatePhysicalFolder)
+        {
+            $newPath = $this->rootPathMedia . DIRECTORY_SEPARATOR . $media->getName();
+            if($media->getMediaFolder() !== null)
+            {
+                $newPath = $this->getPathFolder($media->getMediaFolder()) . $media->getName();;
+            }
+
+            $fileSystem = new Filesystem();
+            $fileSystem->rename($oldPath, $newPath, true);
+        }
     }
 
     /**
