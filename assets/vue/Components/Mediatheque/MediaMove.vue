@@ -33,7 +33,7 @@ export default {
     <p v-html="this.dataMove.label"></p>
     <select class="form-select no-control" id="select-folder-to-move">
       <option selected>{{ this.translate.input_label }}</option>
-      <option v-for="(folder) in this.dataMove.listeFolder" :value="folder.id" :disabled="folder.id === this.dataMove.parentIid">{{ folder.name }}</option>
+      <option v-for="(folder) in this.dataMove.listeFolder" :value="folder.id">{{ folder.name }}</option>
     </select>
     <div id="list-folder-help" class="form-text">{{ this.translate.input_info }}</div>
   </div>
