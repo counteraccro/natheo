@@ -300,28 +300,49 @@ class MediaFolderService extends AppAdminService
         $mediaFolder->setName($name);
         $this->save($mediaFolder);
 
+        $this->updateAllPathChildren($oldName, $name);
+
+        if($this->canCreatePhysicalFolder)
+        {
+            $fileSystem = new Filesystem();
+            $origin = $this->rootPathMedia . $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $oldName;
+            $target = $this->getPathFolder($mediaFolder);
+            $fileSystem->rename($origin, $target);
+        }
+    }
+
+    /**
+     * Met à jour tous les paths des dossiers enfants en remplaçant le nom du dossier old par new
+     * met à jour tous les paths des médias contenu dans les dossiers enfants
+     * @param string $old
+     * @param string $new
+     * @return void
+     */
+    private function updateAllPathChildren(string $old, string $new): void
+    {
         /** @var MediaFolderRepository $repo */
         $repo = $this->getRepository(MediaFolder::class);
-        $listMediaFolder = $repo->getAllByLikePath($oldName);
+        $listMediaFolder = $repo->getAllByLikePath($old);
 
-        /** @var MediaFolder $mediaFolder */
+        /** @var MediaFolder $mediaFolderChildren */
         $nb = count($listMediaFolder);
         $i = 0;
         $flush = false;
-        foreach ($listMediaFolder as $mediaFolderParent) {
+        foreach ($listMediaFolder as $mediaFolderChildren) {
             $i++;
             if ($i === $nb) {
                 $flush = true;
             }
-            $mediaFolderParent->setPath(str_replace($oldName, $name, $mediaFolderParent->getPath()));
-            $repo->save($mediaFolder, $flush);
+            $mediaFolderChildren->setPath(str_replace($old, $new, $mediaFolderChildren->getPath()));
+
+            /** @var Media $media */
+            foreach($mediaFolderChildren->getMedias() as &$media)
+            {
+                $media->setPath(str_replace($old, $new, $media->getPath()));
+            }
+
+            $repo->save($mediaFolderChildren, $flush);
         }
-
-        $fileSystem = new Filesystem();
-
-        $origin = $this->rootPathMedia . $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $oldName;
-        $target = $this->getPathFolder($mediaFolder);
-        $fileSystem->rename($origin, $target);
     }
 
     /**
