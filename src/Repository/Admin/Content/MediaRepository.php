@@ -60,4 +60,20 @@ class MediaRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * Retourne une liste de Medias contenant dans path la chaine $name
+     * @param string $name
+     * @return mixed
+     */
+    public function getAllByLikePath(string $name): mixed
+    {
+        $name = addcslashes($name, '\\%_');
+
+        return  $this->createQueryBuilder('m')
+            ->andWhere('m.path LIKE :name')
+            ->setParameter('name', '%' . $name . '%')
+            ->orderBy('m.id', 'ASC')
+            ->getQuery()->getResult();
+    }
 }
