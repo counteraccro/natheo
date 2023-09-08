@@ -76,7 +76,7 @@ media.mediatheque.edit.media.submit: Valider
 media.mediatheque.edit.media.cancel: Annuler
 media.mediatheque.edit.media.legend: Informations
 media.mediatheque.edit.media.loading: 'Mise à jour du média en cours...'
-media.mediatheque.edit.media.success: 'Votre média à été correctement mis à jour, cette fenêtre va ce fermer automatiquement dans 3 secondes'
+media.mediatheque.edit.media.success: 'Votre média à été correctement mis à jour, cette fenêtre va se fermer automatiquement dans 3 secondes'
 media.mediatheque.info.media.titre: Titre
 media.mediatheque.move.title: 'Déplacer un élément'
 media.mediatheque.move.btn.close: Annuler
@@ -86,4 +86,4 @@ media.mediatheque.move.input.info: 'Toutes les données (dossiers et/ou médias)
 media.mediatheque.move.label.media: 'Déplacer le média <b>{name}</b> vers '
 media.mediatheque.move.label.folder: 'Déplacer le dossier <b>{name}</b> vers '
 media.mediatheque.move.loading: "Déplacement de l'élément en cours"
-media.mediatheque.move.success: "Votre élément à été déplacé avec succès"
+media.mediatheque.move.success: "Votre élément à été déplacé avec succès, cette fenêtre va se fermer automatiquement dans 3 secondes"
