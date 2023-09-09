@@ -123,7 +123,7 @@ class MediaService extends MediaFolderService
         $mediaFolder = $media->getMediaFolder();
         $path = DIRECTORY_SEPARATOR . $media->getName();
         if ($mediaFolder != null) {
-            $path = $mediaFolder->getPath() . DIRECTORY_SEPARATOR .
+            $path = $mediaFolder->getPath() .
                 $mediaFolder->getName() . DIRECTORY_SEPARATOR . $media->getName();
         }
         $path = str_replace('//', '/', $path);
