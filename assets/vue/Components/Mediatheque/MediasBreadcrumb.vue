@@ -30,8 +30,9 @@ export default {
   <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" id="mediaBreadcrumb">
     <ol class="breadcrumb mb-0">
       <li class="breadcrumb-item text-white" aria-current="page">
+        <i class="bi bi-house-fill"></i>&nbsp;
         <span v-if="isEmpty(this.paths)">Home</span>
-        <a v-else href="#" class="text-white" @click="$emit('load-folder', 0)">Home </a>
+        <a v-else href="#" class="text-white" @click="$emit('load-folder', 0)">Home</a>
       </li>
       <li v-for="item in this.paths" class="breadcrumb-item text-white" :class="this.paths.indexOf(item) === Object.keys(this.paths).length-1 ? 'active' : ''">
         <a v-if="this.paths.indexOf(item) !== Object.keys(this.paths).length-1" href="#" class="text-white" @click="$emit('load-folder', item.id)">{{ item.name }}</a>
