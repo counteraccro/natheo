@@ -67,7 +67,7 @@ option_system:
     value: 1
   OS_MEDIA_PATH:
     key: 'OS_MEDIA_PATH'
-    value: assets_medias
+    value: natheotheque
   OS_MEDIA_URL:
     key: 'OS_MEDIA_URL'
     value: 'http://dev.natheo'
