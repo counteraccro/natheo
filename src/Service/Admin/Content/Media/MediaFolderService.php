@@ -326,13 +326,14 @@ class MediaFolderService extends AppAdminService
             $patternPath = '/' . preg_quote($old) . '/';
         }
 
+        $newWebPath = $new;
         $patternWebPath = '/\b' . preg_quote($old) . '\b/';
         if (stristr($old, "/") === false) {
             $replace = str_replace('\\', '\/', $old);
             $patternWebPath = '/' . $replace . '/';
             $newWebPath = str_replace('\\', '/', $new);
         }
-        
+
         /** @var MediaFolderRepository $repo */
         $repo = $this->getRepository(MediaFolder::class);
         $listMediaFolder = $repo->getAllByLikePath($old);
@@ -367,8 +368,7 @@ class MediaFolderService extends AppAdminService
             if ($i === $nb) {
                 $flush = true;
             }
-
-            $media->setPath(preg_replace($patternPath, $new, $media->getPath()));
+            $media->setPath(preg_replace($patternPath, preg_quote($new), $media->getPath()));
             $media->setWebPath(preg_replace($patternWebPath, $newWebPath, $media->getWebPath()));
             $repoM->save($media, $flush);
         }
@@ -528,20 +528,35 @@ class MediaFolderService extends AppAdminService
     public function moveFolder(MediaFolder $mediaFolder, MediaFolder $newParent = null): void
     {
         $oldPath = $mediaFolder->getPath();
-        $oldParent = $mediaFolder->getParent();
-        $mediaFolder->setParent($newParent);
-
-        $path = $newParent->getPath();
-        if ($path === DIRECTORY_SEPARATOR) {
-            $path .= $newParent->getName();
-        } else {
-            $path = $path . DIRECTORY_SEPARATOR . $newParent->getName();
+        $old = DIRECTORY_SEPARATOR . $mediaFolder->getName();
+        if ($mediaFolder->getParent() !== null) {
+            $oldParent = $mediaFolder->getParent();
+            $old = $oldParent->getPath() . $oldParent->getName() . DIRECTORY_SEPARATOR . $mediaFolder->getName();
+            if ($oldParent->getPath() !== DIRECTORY_SEPARATOR) {
+                $old = $oldParent->getPath() . DIRECTORY_SEPARATOR .
+                    $oldParent->getName() . DIRECTORY_SEPARATOR . $mediaFolder->getName();
+            }
         }
-        $mediaFolder->setPath($path);
-        $this->save($mediaFolder);
 
-        $old = $oldParent->getPath() . $oldParent->getName() . DIRECTORY_SEPARATOR . $mediaFolder->getName();
-        $new = $newParent->getPath() . $newParent->getName() . DIRECTORY_SEPARATOR . $mediaFolder->getName();
+        $path = DIRECTORY_SEPARATOR;
+        $new = DIRECTORY_SEPARATOR . $mediaFolder->getName();
+        if ($newParent !== null) {
+            $path = $newParent->getPath();
+            if ($path === DIRECTORY_SEPARATOR) {
+                $path .= $newParent->getName();
+            } else {
+                $path = $path . DIRECTORY_SEPARATOR . $newParent->getName();
+            }
+            $new = $newParent->getPath() . $newParent->getName() . DIRECTORY_SEPARATOR . $mediaFolder->getName();
+            if ($newParent->getPath() !== DIRECTORY_SEPARATOR) {
+                $new = $newParent->getPath() . DIRECTORY_SEPARATOR .
+                    $newParent->getName() . DIRECTORY_SEPARATOR . $mediaFolder->getName();
+            }
+        }
+
+        $mediaFolder->setPath($path);
+        $mediaFolder->setParent($newParent);
+        $this->save($mediaFolder);
 
         $this->updateAllPathChildren($old, $new);
 
