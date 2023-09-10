@@ -528,11 +528,18 @@ export default {
             <i class="bi bi-file-plus"></i>
             <span class="d-none-mini">&nbsp;{{ this.translate.btn_new_media }}</span>
           </div>
+
+
           <div class="float-end">
+            <div class="input-group float-start me-1" style="width: 250px">
+              <button class="btn btn-secondary" type="button" id="button-addon1"><i class="bi bi-search"></i></button>
+              <input type="text" class="form-control" :placeholder="this.translate.search_placeholder">
+            </div>
             <div class="btn-group">
               <button type="button" class="btn btn-secondary dropdown-toggle me-1" data-bs-toggle="dropdown"
                   aria-expanded="false">
-                {{ this.translate.btn_filtre }} <i class="bi" :class="this.filterIcon"></i>
+                <span class="d-none-mini">{{ this.translate.btn_filtre }}</span>
+                <i class="bi" :class="this.filterIcon"></i>
               </button>
               <ul class="dropdown-menu">
                 <li>
@@ -552,7 +559,7 @@ export default {
             <div class="btn-group">
               <button type="button" class="btn btn-secondary dropdown-toggle me-1" data-bs-toggle="dropdown"
                   aria-expanded="false">
-                {{ this.translate.btn_order }} <i class="bi" :class="this.orderIcon"></i>
+                <i class="bi" :class="this.orderIcon"></i>
               </button>
               <ul class="dropdown-menu">
                 <li>
@@ -565,6 +572,14 @@ export default {
                 </li>
               </ul>
             </div>
+
+            <button type="button" class="btn btn-secondary position-relative me-1">
+              <i class="bi bi-trash-fill"></i>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              2
+            </span>
+            </button>
+
             <input type="radio" class="btn-check no-control" name="options-render" id="btn-grid" autocomplete="off"
                 checked @change="this.switchRender('grid')">
             <label class="btn me-1 btn-secondary" for="btn-grid"><i class="bi bi-grid"></i></label>

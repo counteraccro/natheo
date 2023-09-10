@@ -365,9 +365,9 @@ class MediaService extends MediaFolderService
             'filtre_date' => $this->translator->trans('media.mediatheque.filtre.date', domain: 'media'),
             'filtre_nom' => $this->translator->trans('media.mediatheque.filtre.nom', domain: 'media'),
             'filtre_type' => $this->translator->trans('media.mediatheque.filtre.type', domain: 'media'),
-            'btn_order' => $this->translator->trans('media.mediatheque.btn.order', domain: 'media'),
             'order_asc' => $this->translator->trans('media.mediatheque.order.asc', domain: 'media'),
             'order_desc' => $this->translator->trans('media.mediatheque.order.desc', domain: 'media'),
+            'search_placeholder' => $this->translator->trans('media.mediatheque.search.placeholder', domain: 'media'),
             'media' => [
                 'link_info' => $this->translator->trans('media.mediatheque.media.link.info', domain: 'media'),
                 'link_edit' => $this->translator->trans('media.mediatheque.media.link.edit', domain: 'media'),

@@ -7,7 +7,6 @@ media.mediatheque.btn.filtre: 'Trier par'
 media.mediatheque.filtre.date: 'Date création'
 media.mediatheque.filtre.nom: Nom
 media.mediatheque.filtre.type: Type
-media.mediatheque.btn.order: Ordre
 media.mediatheque.order.asc: Croissant
 media.mediatheque.order.desc: Décroissant
 media.mediatheque.media.link.info: Information
