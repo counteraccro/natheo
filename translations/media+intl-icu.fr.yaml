@@ -12,7 +12,7 @@ media.mediatheque.order.desc: Décroissant
 media.mediatheque.media.link.info: Information
 media.mediatheque.media.link.edit: Renommer
 media.mediatheque.media.link.move: Déplacer
-media.mediatheque.media.link.remove: 'Déplacer vers la corbeille'
+media.mediatheque.media.link.remove: 'Corbeille'
 media.mediatheque.folder.new: 'Nouveau dossier'
 media.mediatheque.folder.edit: 'Renommer le dossier'
 media.mediatheque.folder.input.label: 'Nom du dossier'

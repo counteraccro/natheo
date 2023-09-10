@@ -540,8 +540,7 @@ export default {
             <div class="btn-group">
               <button type="button" class="btn btn-secondary dropdown-toggle me-1" data-bs-toggle="dropdown"
                   aria-expanded="false">
-                <span class="d-none-mini">{{ this.translate.btn_filtre }}</span>
-                <i class="bi" :class="this.filterIcon"></i>
+                <span class="d-none-mini">{{ this.translate.btn_filtre }}</span>&nbsp;<i class="bi" :class="this.filterIcon"></i>
               </button>
               <ul class="dropdown-menu">
                 <li>
@@ -637,7 +636,19 @@ export default {
             </div>
           </div>
           <div class="mb-3" :class="this.folderSuccess === '' ? 'd-none':''">
-            <i>{{ this.folderSuccess }}</i>
+            <div v-if="this.folderSuccess === this.translate.folder.msg_wait_create">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              {{ this.folderSuccess }}
+          </div>
+            <div v-else-if="this.folderSuccess === this.translate.folder.msg_wait_edit">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              {{ this.folderSuccess }}
+            </div>
+            <span v-else class="text-success"><i class="bi bi-check"></i> <i>{{ this.folderSuccess }}</i></span>
           </div>
         </div>
         <div v-if="this.folderSuccess === ''" class="modal-footer">
