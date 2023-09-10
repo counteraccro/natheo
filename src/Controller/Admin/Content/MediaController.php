@@ -12,6 +12,7 @@ use App\Entity\Admin\Content\Media;
 use App\Entity\Admin\Content\MediaFolder;
 use App\Service\Admin\Content\Media\MediaFolderService;
 use App\Service\Admin\Content\Media\MediaService;
+use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Breadcrumb;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,7 +56,11 @@ class MediaController extends AppAdminController
      * @return JsonResponse
      */
     #[Route('/ajax/load-medias', name: 'load_medias', methods: ['POST'])]
-    public function loadMedias(Request $request, MediaService $mediaService): JsonResponse
+    public function loadMedias(
+        Request             $request,
+        MediaService        $mediaService,
+        OptionSystemService $optionSystemService
+    ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -68,6 +73,7 @@ class MediaController extends AppAdminController
         return $this->json([
             'medias' => $medias,
             'currentFolder' => $currentFolder,
+            'canDelete' => $optionSystemService->canDelete(),
             'url' => [
                 'loadFolder' => $this->generateUrl('admin_media_load_folder'),
                 'saveFolder' => $this->generateUrl('admin_media_save_folder'),

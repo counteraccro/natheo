@@ -375,6 +375,7 @@ class MediaService extends MediaFolderService
                     $this->translator->trans('media.mediatheque.media.link.edit.media', domain: 'media'),
                 'link_move' => $this->translator->trans('media.mediatheque.media.link.move', domain: 'media'),
                 'link_remove' => $this->translator->trans('media.mediatheque.media.link.remove', domain: 'media'),
+                'no_media' => $this->translator->trans('media.mediatheque.media.no.media', domain: 'media'),
             ],
             'folder' => [
                 'new' => $this->translator->trans('media.mediatheque.folder.new', domain: 'media'),

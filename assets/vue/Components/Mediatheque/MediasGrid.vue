@@ -30,7 +30,7 @@ export default {
 <template>
 
   <div id="block-media-grid" class="mt-3 row">
-    <div class="media col-auto mb-4" v-for="media in this.medias">
+    <div v-if="this.medias.length > 0" class="media col-auto mb-4" v-for="media in this.medias">
       <img v-if="media.type === 'media'" height="200" width="200"
           :src="media.thumbnail" style="cursor:pointer;"
           :alt="media.name" @click="this.openMedia(media.webPath)"/>
@@ -73,6 +73,11 @@ export default {
         <span class="d-inline-block text-truncate" style="max-width: 140px;vertical-align: middle;"> {{ media.name }} </span>
 
       </div>
+    </div>
+    <div v-else class="text-center mt-3">
+      <i class="bi bi-folder-x"></i> <i>
+      {{ this.translate.no_media }}
+    </i>
     </div>
   </div>
 

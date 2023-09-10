@@ -59,6 +59,7 @@ export default {
       urlActions: '',
       dataMove: [],
       mediaMoveStatus: '',
+      canDelete: false
     }
   },
 
@@ -87,6 +88,7 @@ export default {
         this.medias = response.data.medias;
         this.currentFolder = response.data.currentFolder;
         this.urlActions = response.data.url;
+        this.canDelete = response.data.canDelete;
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
