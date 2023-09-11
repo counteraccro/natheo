@@ -83,6 +83,8 @@ class MediaController extends AppAdminController
                 'saveMediaEdit' => $this->generateUrl('admin_media_save_media_edit'),
                 'listeMove' => $this->generateUrl('admin_media_liste_move'),
                 'move' => $this->generateUrl('admin_media_move'),
+                'updateTrash' => $this->generateUrl('admin_media_update_trash'),
+                'nbTrash' => $this->generateUrl('admin_media_nb_trash'),
             ]
         ]);
     }
@@ -274,5 +276,33 @@ class MediaController extends AppAdminController
         $data = json_decode($request->getContent(), true);
         $mediaService->move($data['id'], $data['type'], $data['idToMove']);
         return $this->json(['success' => true]);
+    }
+
+    /**
+     * Met à jour la valeur trash d'un média ou d'un média folder
+     * @param Request $request
+     * @param MediaService $mediaService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/update-trash', name: 'update_trash', methods: ['POST'])]
+    public function updateTrash(Request $request, MediaService $mediaService): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        return $this->json(['success' => true]);
+    }
+
+    /**
+     * Retourne le nombre d'éléments dans la corbeille
+     * @param Request $request
+     * @param MediaService $mediaService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/nb-trash', name: 'nb_trash', methods: ['POST'])]
+    public function nbTrash(Request $request, MediaService $mediaService): JsonResponse
+    {
+
+
+        //$data = json_decode($request->getContent(), true);
+        return $this->json(['nb' => 12]);
     }
 }

@@ -352,6 +352,15 @@ class MediaService extends MediaFolderService
     }
 
     /**
+     * Retourne le nombre total d'éléments dans la corbeille
+     * @return void
+     */
+    public function getNbInTrash()
+    {
+
+    }
+
+    /**
      * Retourne la traduction pour la médiathèque
      * @return array
      */

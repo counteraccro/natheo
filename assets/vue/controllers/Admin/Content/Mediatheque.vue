@@ -59,7 +59,8 @@ export default {
       urlActions: '',
       dataMove: [],
       mediaMoveStatus: '',
-      canDelete: false
+      canDelete: false,
+      nbTrash: 0
     }
   },
 
@@ -92,8 +93,22 @@ export default {
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
+        this.getNbTrash();
         this.loading = false
       });
+    },
+
+    /**
+     * Retourne le nombre d'éléments dans la corbeille
+     */
+    getNbTrash()
+    {
+      axios.post(this.urlActions.nbTrash, {
+      }).then((response) => {
+        this.nbTrash = response.data.nb;
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {});
     },
 
     /**
@@ -576,9 +591,9 @@ export default {
 
             <button type="button" class="btn btn-secondary position-relative me-1">
               <i class="bi bi-trash-fill"></i>
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-              2
-            </span>
+              <span v-if="this.nbTrash > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              {{ this.nbTrash }}
+              </span>
             </button>
 
             <input type="radio" class="btn-check no-control" name="options-render" id="btn-grid" autocomplete="off"
