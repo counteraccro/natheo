@@ -300,9 +300,9 @@ class MediaController extends AppAdminController
     #[Route('/ajax/nb-trash', name: 'nb_trash', methods: ['POST'])]
     public function nbTrash(Request $request, MediaService $mediaService): JsonResponse
     {
-
+        $tab = $mediaService->getNbInTrash();
 
         //$data = json_decode($request->getContent(), true);
-        return $this->json(['nb' => 12]);
+        return $this->json(['nb' => ($tab['medias'] + $tab['folders'])]);
     }
 }

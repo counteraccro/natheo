@@ -71,10 +71,27 @@ class MediaRepository extends ServiceEntityRepository
     {
         $name = addcslashes($name, '\\%_');
 
-        return  $this->createQueryBuilder('m')
+        return $this->createQueryBuilder('m')
             ->andWhere('m.path LIKE :name')
             ->setParameter('name', '%' . $name . '%')
             ->orderBy('m.id', 'ASC')
             ->getQuery()->getResult();
+    }
+
+    /**
+     * Retourne le nombre de médias tagué pour la corbeille
+     * @return int
+     */
+    public function getNbInTrash(): int
+    {
+        $result = $this->createQueryBuilder('m')
+            ->select('count(m.id) as nb')
+            ->where('m.trash = true')
+            ->getQuery()->getScalarResult();
+
+        if (isset($result[0]['nb'])) {
+            return $result[0]['nb'];
+        }
+        return 0;
     }
 }

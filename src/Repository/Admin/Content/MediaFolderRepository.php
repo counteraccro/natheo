@@ -103,28 +103,20 @@ class MediaFolderRepository extends ServiceEntityRepository
             ->getQuery()->getResult();
     }
 
-//    /**
-//     * @return MediaFolder[] Returns an array of MediaFolder objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * Retourne le nombre de médias tagué pour la corbeille
+     * @return int
+     */
+    public function getNbInTrash(): int
+    {
+        $result = $this->createQueryBuilder('m')
+            ->select('count(m.id) as nb')
+            ->where('m.trash = true')
+            ->getQuery()->getScalarResult();
 
-//    public function findOneBySomeField($value): ?MediaFolder
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if (isset($result[0]['nb'])) {
+            return $result[0]['nb'];
+        }
+        return 0;
+    }
 }

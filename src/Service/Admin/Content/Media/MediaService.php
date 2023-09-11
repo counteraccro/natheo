@@ -352,12 +352,19 @@ class MediaService extends MediaFolderService
     }
 
     /**
-     * Retourne le nombre total d'éléments dans la corbeille
-     * @return void
+     * Retourne un tableau contenant le nombre de médias et le nombre de dossiers
+     * dans la corbeille
+     * @return array
      */
-    public function getNbInTrash()
+    public function getNbInTrash(): array
     {
+        $repoMedia = $this->getRepository(Media::class);
+        $return['medias'] = $repoMedia->getNbInTrash();
 
+        $repoMediaFold = $this->getRepository(MediaFolder::class);
+        $return['folders'] = $repoMediaFold->getNbInTrash();
+
+        return $return;
     }
 
     /**
