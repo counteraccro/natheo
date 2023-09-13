@@ -288,6 +288,7 @@ class MediaController extends AppAdminController
     public function updateTrash(Request $request, MediaService $mediaService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+        var_dump($data);
         return $this->json(['success' => true]);
     }
 
@@ -301,8 +302,6 @@ class MediaController extends AppAdminController
     public function nbTrash(Request $request, MediaService $mediaService): JsonResponse
     {
         $tab = $mediaService->getNbInTrash();
-
-        //$data = json_decode($request->getContent(), true);
         return $this->json(['nb' => ($tab['medias'] + $tab['folders'])]);
     }
 }

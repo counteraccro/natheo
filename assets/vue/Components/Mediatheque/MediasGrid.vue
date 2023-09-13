@@ -9,7 +9,7 @@ export default {
     medias: Object,
     translate: Object
   },
-  emits: ['load-data-folder', 'edit-folder', 'show-info', 'edit-media', 'move'],
+  emits: ['load-data-folder', 'edit-folder', 'show-info', 'edit-media', 'move', 'trash'],
   data() {
     return {}
   },
@@ -64,7 +64,7 @@ export default {
             <li>
               <hr class="dropdown-divider">
             </li>
-            <li><a class="dropdown-item">
+            <li><a class="dropdown-item" @click="$emit('trash', media.type, media.id, media.name, false)">
               <i class="bi bi-trash-fill"></i> {{ this.translate.link_remove }}
             </a>
             </li>

@@ -34,6 +34,7 @@ export default {
       modalUpload: '',
       modalEditMedia: '',
       modalMove: '',
+      modalTrash: '',
       medias: [],
       currentFolder: [],
       filter: 'created_at',
@@ -60,7 +61,13 @@ export default {
       dataMove: [],
       mediaMoveStatus: '',
       canDelete: false,
-      nbTrash: 0
+      nbTrash: 0,
+      trash: {
+        type: '',
+        id: '',
+      },
+      trashMsg: '',
+      trashConfirm: false,
     }
   },
 
@@ -70,6 +77,7 @@ export default {
     this.modalUpload = new Modal(document.getElementById("modal-upload"), {});
     this.modalMove = new Modal(document.getElementById("modal-move"), {});
     this.modalEditMedia = new Modal(document.getElementById("modal-edit-media"), {});
+    this.modalTrash = new Modal(document.getElementById("modal-trash"), {});
     this.loadMedia();
   },
 
@@ -506,9 +514,76 @@ export default {
         setTimeout(this.closeModalMove, 3000);
         setTimeout(this.loadMedia, 2500);
       });
-    }
+    },
 
     /** fin bloc modal move **/
+
+    /** bloc modal trash **/
+
+    confirmTrash(type, id, name, confirm)
+    {
+      this.trash.type = type;
+      this.trash.id = id;
+      this.trashConfirm = confirm;
+
+      if(!confirm)
+      {
+        if(type === 'folder') {
+          this.trashMsg = this.translate.trash.text_folder + ' : ' . name + ' <br />' + this.translate.trash.text_info;
+        }
+        else {
+          this.trashMsg = this.translate.trash.text_media + ' : ' . name
+        }
+        this.openModalTrash();
+      }
+      else {
+        this.trashMsg = this.translate.trash.loading;
+        this.updateTrash();
+      }
+
+    },
+
+    /**
+     * Ouvre la modale pour la corbeille
+     */
+    openModalTrash() {
+      this.modalTrash.show();
+    },
+
+    /**
+     * Ferme la modale pour la corbeille
+     */
+    closeModalTrash() {
+      this.modalTrash.hide();
+      this.trash = {
+        type : '',
+        id : ''
+      }
+      this.trashMsg = '';
+      this.trashConfirm = false;
+    },
+
+    /**
+     * Met à jour le média avec la valeur de la corbeille
+     */
+    updateTrash()
+    {
+      axios.post(this.urlActions.updateTrash, {
+        'trash': 1,
+        'id': this.trash.id,
+        'type': this.trash.type
+      }).then((response) => {
+
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+        this.trashMsg = this.translate.trash.success_trash;
+        setTimeout(this.closeModalTrash, 3000);
+        setTimeout(this.loadMedia, 2500);
+      });
+    }
+
+    /** fin bloc modal trash **/
 
   }
 }
@@ -614,6 +689,7 @@ export default {
               @show-info="this.loadDataInformation"
               @edit-media="this.editMedia"
               @move="this.loadListFolderMove"
+              @trash="this.confirmTrash"
           >
           </medias-grid>
         </div>
@@ -809,6 +885,26 @@ export default {
     </div>
   </div>
   <!-- Fin Modal pour le move -->
+
+  <!-- Modal confirme corbeille -->
+  <div class="modal fade" id="modal-trash" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-secondary">
+          <h1 class="modal-title fs-5 text-white">
+            {{  this.translate.trash.title }}
+          </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" v-html="this.trashMsg">
+        </div>
+        <div class="modal-footer" v-if="!this.trashConfirm">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{  this.translate.trash.btn_cancel }}</button>
+          <button type="button" class="btn btn-primary" @click="this.confirmTrash(this.trash.type, this.trash.id, '', true)">{{  this.translate.trash.btn_confirm }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </template>
 
