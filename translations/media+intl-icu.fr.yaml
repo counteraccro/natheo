@@ -12,7 +12,7 @@ media.mediatheque.order.desc: Décroissant
 media.mediatheque.media.link.info: Information
 media.mediatheque.media.link.edit: Renommer
 media.mediatheque.media.link.move: Déplacer
-media.mediatheque.media.link.remove: 'Corbeille'
+media.mediatheque.media.link.remove: Corbeille
 media.mediatheque.folder.new: 'Nouveau dossier'
 media.mediatheque.folder.edit: 'Renommer le dossier'
 media.mediatheque.folder.input.label: 'Nom du dossier'
@@ -87,4 +87,13 @@ media.mediatheque.move.label.folder: 'Déplacer le dossier <b>{name}</b> vers '
 media.mediatheque.move.loading: "Déplacement de l'élément en cours"
 media.mediatheque.move.success: 'Votre élément à été déplacé avec succès, cette fenêtre va se fermer automatiquement dans 3 secondes'
 media.mediatheque.search.placeholder: Rechercher
-media.mediatheque.media.no.media: Ce dossier est vide pour le moment
+media.mediatheque.media.no.media: 'Ce dossier est vide pour le moment'
+media.mediatheque.trash.title: 'Confirmation mise à la corbeille'
+media.mediatheque.trash.text.folder: 'Confirmez vous la mise à la corbeille du dossier'
+media.mediatheque.trash.text.media: 'Confirmez vous la mise à la corbeille du média'
+media.mediatheque.trash.text.info: 'Attention, tous les dossiers et médias présent dans ce dossier seront aussi poussés dans la corbeille'
+media.mediatheque.trash.loading: 'Déplacement vers la corbeille'
+media.mediatheque.trash.btn.confirm: 'Mettre dans la corbeille'
+media.mediatheque.trash.btn.cancel: 'Annuler'
+media.mediatheque.trash.success.trash: 'Mise en corbeille fait avec succès'
+media.mediatheque.trash.success.no.trash: 'Restauration effectuée avec succès'

@@ -520,7 +520,14 @@ export default {
 
     /** bloc modal trash **/
 
-    confirmTrash(type, id, name, confirm)
+    /**
+     * Ouvre la modale de confirmation de mise à la corbeille
+     * @param type
+     * @param id
+     * @param nameM
+     * @param confirm
+     */
+    confirmTrash(type, id, nameM, confirm)
     {
       this.trash.type = type;
       this.trash.id = id;
@@ -529,15 +536,17 @@ export default {
       if(!confirm)
       {
         if(type === 'folder') {
-          this.trashMsg = this.translate.trash.text_folder + ' : ' . name + ' <br />' + this.translate.trash.text_info;
+          this.trashMsg = this.translate.trash.text_folder + ' : <b>' + nameM +
+              '</b> ?<br /><span class="text-warning"><i class="bi bi-exclamation-triangle-fill"></i> <i>' + this.translate.trash.text_info + '</i></span>';
         }
         else {
-          this.trashMsg = this.translate.trash.text_media + ' : ' . name
+          this.trashMsg = this.translate.trash.text_media + ' : <b>' + nameM + '</b> ?'
         }
         this.openModalTrash();
       }
       else {
-        this.trashMsg = this.translate.trash.loading;
+        this.trashMsg = '<div class="spinner-border text-primary" role="status"></div> '
+            + this.translate.trash.loading;
         this.updateTrash();
       }
 
@@ -577,7 +586,7 @@ export default {
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
-        this.trashMsg = this.translate.trash.success_trash;
+        this.trashMsg =  '<span class="text-success"><i class="bi bi-check"></i>' + this.translate.trash.success_trash + '</span>';
         setTimeout(this.closeModalTrash, 3000);
         setTimeout(this.loadMedia, 2500);
       });
@@ -888,11 +897,11 @@ export default {
 
   <!-- Modal confirme corbeille -->
   <div class="modal fade" id="modal-trash" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header bg-secondary">
           <h1 class="modal-title fs-5 text-white">
-            {{  this.translate.trash.title }}
+            <i class="bi bi-trash-fill"></i> {{  this.translate.trash.title }}
           </h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
