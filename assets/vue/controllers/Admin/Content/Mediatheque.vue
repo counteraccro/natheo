@@ -578,7 +578,7 @@ export default {
     updateTrash()
     {
       axios.post(this.urlActions.updateTrash, {
-        'trash': 1,
+        'trash': true,
         'id': this.trash.id,
         'type': this.trash.type
       }).then((response) => {
@@ -903,7 +903,7 @@ export default {
           <h1 class="modal-title fs-5 text-white">
             <i class="bi bi-trash-fill"></i> {{  this.translate.trash.title }}
           </h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button v-if="!this.trashConfirm" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body" v-html="this.trashMsg">
         </div>

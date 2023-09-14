@@ -288,7 +288,7 @@ class MediaController extends AppAdminController
     public function updateTrash(Request $request, MediaService $mediaService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        var_dump($data);
+        $mediaService->updateTrash($data['type'], $data['id'], $data['trash']);
         return $this->json(['success' => true]);
     }
 

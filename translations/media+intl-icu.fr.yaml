@@ -95,5 +95,5 @@ media.mediatheque.trash.text.info: 'Attention, tous les dossiers et médias pré
 media.mediatheque.trash.loading: 'Déplacement vers la corbeille'
 media.mediatheque.trash.btn.confirm: 'Mettre dans la corbeille'
 media.mediatheque.trash.btn.cancel: 'Annuler'
-media.mediatheque.trash.success.trash: 'Mise en corbeille fait avec succès'
+media.mediatheque.trash.success.trash: 'Mise en corbeille fait avec succès. La fenêtre ce fermera automatiquement dans 3 secondes'
 media.mediatheque.trash.success.no.trash: 'Restauration effectuée avec succès'

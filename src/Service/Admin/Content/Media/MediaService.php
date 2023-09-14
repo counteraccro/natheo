@@ -368,6 +368,28 @@ class MediaService extends MediaFolderService
     }
 
     /**
+     * Met à jour le champ corbeille en fonction de $trash d'un media ou d'un mediaFolder
+     * @param string $type
+     * @param int $id
+     * @param bool $trash
+     * @return void
+     */
+    public function updateTrash(string $type, int $id, bool $trash): void
+    {
+        if ($type === 'media') {
+            /** @var Media $media */
+            $media = $this->findOneById(Media::class, $id);
+            $media->setTrash($trash);
+            $this->save($media);
+        } else {
+            /** @var MediaFolder $folder */
+            $folder = $this->findOneById(MediaFolder::class, $id);
+            $folder->setTrash($trash);
+            $this->save($folder);
+        }
+    }
+
+    /**
      * Retourne la traduction pour la médiathèque
      * @return array
      */
