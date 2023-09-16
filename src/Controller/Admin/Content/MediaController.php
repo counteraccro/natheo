@@ -86,6 +86,7 @@ class MediaController extends AppAdminController
                 'move' => $this->generateUrl('admin_media_move'),
                 'updateTrash' => $this->generateUrl('admin_media_update_trash'),
                 'nbTrash' => $this->generateUrl('admin_media_nb_trash'),
+                'listTrash' => $this->generateUrl('admin_media_list_trash'),
             ]
         ]);
     }
@@ -302,4 +303,17 @@ class MediaController extends AppAdminController
         $tab = $mediaService->getNbInTrash();
         return $this->json(['nb' => ($tab['medias'] + $tab['folders'])]);
     }
+
+    /**
+     * Retourne l'ensemble des éléments dans la corbeille
+     * @param MediaService $mediaService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/list-trash', name: 'list_trash', methods: ['POST'])]
+    public function listTrash(MediaService $mediaService): JsonResponse
+    {
+        return $this->json(['mediasTrash' => $mediaService->getAllMediaAndMediaFolderInTrash()]);
+    }
+
+
 }

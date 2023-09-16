@@ -368,10 +368,48 @@ class MediaService extends MediaFolderService
         return $return;
     }
 
+    public function getAllMediaAndMediaFolderInTrash()
+    {
+        $repoMedia = $this->getRepository(Media::class);
+        $medias = $repoMedia->findBy(['trash' => true]);
 
+        $repoMediaFolder = $this->getRepository(MediaFolder::class);
+        $folders = $repoMediaFolder->findBy(['trash' => true]);
+
+
+        $return = [];
+
+        /** @var Media $media */
+        foreach ($medias as $media) {
+
+            $return[] = [
+                'type' => 'media',
+                'id' => $media->getId(),
+                'name' => $media->getName(),
+                'description' => $media->getDescription(),
+                'size' => Utils::getSizeName($media->getSize()),
+                'webPath' => $media->getWebPath(),
+                'thumbnail' => $this->getThumbnail($media),
+                'created_at' => $media->getCreatedAt()->getTimestamp()
+            ];
+        }
+
+        /** @var MediaFolder $folder */
+        foreach ($folders as $folder) {
+            $return[] = [
+                'type' => 'folder',
+                'id' => $folder->getId(),
+                'name' => $folder->getName(),
+                'created_at' => $folder->getCreatedAt()->getTimestamp()
+            ];
+        }
+
+        return $return;
+
+    }
 
     /**
-     * Met à jour le champ corbeille en fonction de $trash d'un media ou d'un mediaFolder
+     * Met à jour le champ corbeille en fonction de $trash d'un média ou d'un mediaFolder
      * @param string $type
      * @param int $id
      * @param bool $trash
@@ -391,6 +429,8 @@ class MediaService extends MediaFolderService
             $this->save($folder);
         }
     }
+
+
 
     /**
      * Retourne la traduction pour la médiathèque

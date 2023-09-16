@@ -68,6 +68,7 @@ export default {
       },
       trashMsg: '',
       trashConfirm: false,
+      mediasTrash: [],
     }
   },
 
@@ -109,14 +110,13 @@ export default {
     /**
      * Retourne le nombre d'éléments dans la corbeille
      */
-    getNbTrash()
-    {
-      axios.post(this.urlActions.nbTrash, {
-      }).then((response) => {
+    getNbTrash() {
+      axios.post(this.urlActions.nbTrash, {}).then((response) => {
         this.nbTrash = response.data.nb;
       }).catch((error) => {
         console.log(error);
-      }).finally(() => {});
+      }).finally(() => {
+      });
     },
 
     /**
@@ -527,24 +527,20 @@ export default {
      * @param nameM
      * @param confirm
      */
-    confirmTrash(type, id, nameM, confirm)
-    {
+    confirmTrash(type, id, nameM, confirm) {
       this.trash.type = type;
       this.trash.id = id;
       this.trashConfirm = confirm;
 
-      if(!confirm)
-      {
-        if(type === 'folder') {
+      if (!confirm) {
+        if (type === 'folder') {
           this.trashMsg = this.translate.trash.text_folder + ' : <b>' + nameM +
               '</b> ?<br /><span class="text-warning"><i class="bi bi-exclamation-triangle-fill"></i> <i>' + this.translate.trash.text_info + '</i></span>';
-        }
-        else {
+        } else {
           this.trashMsg = this.translate.trash.text_media + ' : <b>' + nameM + '</b> ?'
         }
         this.openModalTrash();
-      }
-      else {
+      } else {
         this.trashMsg = '<div class="spinner-border text-primary" role="status"></div> '
             + this.translate.trash.loading;
         this.updateTrash();
@@ -565,8 +561,8 @@ export default {
     closeModalTrash() {
       this.modalTrash.hide();
       this.trash = {
-        type : '',
-        id : ''
+        type: '',
+        id: ''
       }
       this.trashMsg = '';
       this.trashConfirm = false;
@@ -575,8 +571,7 @@ export default {
     /**
      * Met à jour le média avec la valeur de la corbeille
      */
-    updateTrash()
-    {
+    updateTrash() {
       axios.post(this.urlActions.updateTrash, {
         'trash': true,
         'id': this.trash.id,
@@ -586,11 +581,26 @@ export default {
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
-        this.trashMsg =  '<span class="text-success"><i class="bi bi-check"></i>' + this.translate.trash.success_trash + '</span>';
+        this.trashMsg = '<span class="text-success"><i class="bi bi-check"></i>' + this.translate.trash.success_trash + '</span>';
         setTimeout(this.closeModalTrash, 3000);
         setTimeout(this.loadMedia, 2500);
       });
     },
+
+    /**
+     * Charge le contenu de la corbeille
+     */
+    loadInTrash() {
+      this.loading = true;
+      axios.post(this.urlActions.listTrash, {
+      }).then((response) => {
+          this.mediasTrash = response.data.mediasTrash
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+        this.loading = false;
+      });
+    }
 
     /** fin bloc trash **/
 
@@ -609,7 +619,7 @@ export default {
     </div>
 
     <div class="card border border-secondary">
-      <div class="card-header text-bg-secondary">
+      <div v-if="render !== 'trash'" class="card-header text-bg-secondary">
         <div class="float-end">
           {{ this.getSizeCurrentFolder() }}
         </div>
@@ -619,8 +629,11 @@ export default {
         >
         </MediasBreadcrumb>
       </div>
+      <div v-else class="card-header text-bg-secondary">
+        <i class="bi bi-trash"></i> aa Corbeille
+      </div>
       <div class="card-body">
-        <div>
+        <div v-if="render !== 'trash'">
           <div class="btn btn-secondary me-1" @click="this.openModalFolder()">
             <i class="bi bi-folder-plus"></i>
             <span class="d-none-mini">&nbsp;{{ this.translate.btn_new_folder }}</span>
@@ -673,14 +686,11 @@ export default {
               </ul>
             </div>
 
-            <div class="btn btn-secondary position-relative me-1" @click="this.switchRender('trash')" v-if="this.render !== 'trash'">
+            <div class="btn btn-secondary position-relative me-1" @click="this.switchRender('trash');this.loadInTrash()" v-if="this.render !== 'trash'">
               <i class="bi bi-trash-fill"></i>
               <span v-if="this.nbTrash > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
               {{ this.nbTrash }}
               </span>
-            </div>
-            <div v-else class="btn btn-secondary me-1" @click="this.switchRender('grid')">
-              <i class="bi bi-folder"></i>
             </div>
 
             <input type="radio" class="btn-check no-control" name="options-render" id="btn-grid" autocomplete="off"
@@ -689,6 +699,11 @@ export default {
             <input type="radio" class="btn-check no-control" name="options-render" id="btn-list" autocomplete="off"
                 @change="this.switchRender('list')">
             <label class="btn btn-secondary" for="btn-list"><i class="bi bi-list"></i></label>
+          </div>
+        </div>
+        <div v-else>
+          <div class="btn btn-secondary me-1" @click="this.switchRender('grid');this.loadMedia()">
+            <i class="bi bi-x-circle"></i> Fermer corbeille
           </div>
         </div>
 
@@ -745,7 +760,7 @@ export default {
                 <span class="visually-hidden">Loading...</span>
               </div>
               {{ this.folderSuccess }}
-          </div>
+            </div>
             <div v-else-if="this.folderSuccess === this.translate.folder.msg_wait_edit">
               <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
@@ -905,15 +920,15 @@ export default {
       <div class="modal-content">
         <div class="modal-header bg-secondary">
           <h1 class="modal-title fs-5 text-white">
-            <i class="bi bi-trash-fill"></i> {{  this.translate.trash.title }}
+            <i class="bi bi-trash-fill"></i> {{ this.translate.trash.title }}
           </h1>
           <button v-if="!this.trashConfirm" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body" v-html="this.trashMsg">
         </div>
         <div class="modal-footer" v-if="!this.trashConfirm">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{  this.translate.trash.btn_cancel }}</button>
-          <button type="button" class="btn btn-primary" @click="this.confirmTrash(this.trash.type, this.trash.id, '', true)">{{  this.translate.trash.btn_confirm }}</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ this.translate.trash.btn_cancel }}</button>
+          <button type="button" class="btn btn-primary" @click="this.confirmTrash(this.trash.type, this.trash.id, '', true)">{{ this.translate.trash.btn_confirm }}</button>
         </div>
       </div>
     </div>
