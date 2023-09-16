@@ -518,7 +518,7 @@ export default {
 
     /** fin bloc modal move **/
 
-    /** bloc modal trash **/
+    /** bloc trash **/
 
     /**
      * Ouvre la modale de confirmation de mise à la corbeille
@@ -590,9 +590,9 @@ export default {
         setTimeout(this.closeModalTrash, 3000);
         setTimeout(this.loadMedia, 2500);
       });
-    }
+    },
 
-    /** fin bloc modal trash **/
+    /** fin bloc trash **/
 
   }
 }
@@ -673,12 +673,15 @@ export default {
               </ul>
             </div>
 
-            <button type="button" class="btn btn-secondary position-relative me-1">
+            <div class="btn btn-secondary position-relative me-1" @click="this.switchRender('trash')" v-if="this.render !== 'trash'">
               <i class="bi bi-trash-fill"></i>
               <span v-if="this.nbTrash > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
               {{ this.nbTrash }}
               </span>
-            </button>
+            </div>
+            <div v-else class="btn btn-secondary me-1" @click="this.switchRender('grid')">
+              <i class="bi bi-folder"></i>
+            </div>
 
             <input type="radio" class="btn-check no-control" name="options-render" id="btn-grid" autocomplete="off"
                 checked @change="this.switchRender('grid')">
@@ -689,8 +692,9 @@ export default {
           </div>
         </div>
 
-        <div v-if="render === 'grid'">
+        <div v-if="render !== 'trash'">
           <medias-grid
+              :render="this.render"
               :medias="this.medias"
               :translate="this.translate.media"
               @load-data-folder="this.loadDataInFolder"
@@ -704,7 +708,7 @@ export default {
         </div>
 
         <div v-else>
-          list render
+          trash
         </div>
 
       </div>

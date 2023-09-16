@@ -7,7 +7,8 @@
 export default {
   props: {
     medias: Object,
-    translate: Object
+    translate: Object,
+    render: String
   },
   emits: ['load-data-folder', 'edit-folder', 'show-info', 'edit-media', 'move', 'trash'],
   data() {
@@ -29,7 +30,7 @@ export default {
 
 <template>
 
-  <div id="block-media-grid" class="mt-3 row">
+  <div id="block-media-grid" class="mt-3 row" v-if="this.render === 'grid'">
     <div v-if="this.medias.length > 0" class="media col-auto mb-4" v-for="media in this.medias">
       <img v-if="media.type === 'media'" height="200" width="200"
           :src="media.thumbnail" style="cursor:pointer;"
@@ -79,6 +80,9 @@ export default {
       {{ this.translate.no_media }}
     </i>
     </div>
+  </div>
+  <div v-else>
+    Render list
   </div>
 
 
