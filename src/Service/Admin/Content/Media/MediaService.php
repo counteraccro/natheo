@@ -126,8 +126,7 @@ class MediaService extends MediaFolderService
             $path = $mediaFolder->getPath() .
                 $mediaFolder->getName() . DIRECTORY_SEPARATOR . $media->getName();
         }
-        $path = str_replace('//', '/', $path);
-        return $path;
+        return str_replace('//', '/', $path);
     }
 
     /**
@@ -218,8 +217,8 @@ class MediaService extends MediaFolderService
         /** @var Media $media */
         $media = $this->findOneById(Media::class, $idMedia);
         $user = $media->getUser();
-        $persoalDataRender = $user->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER);
-        $personalData = new PersonalData($user, $persoalDataRender->getValue());
+        $personalDataRender = $user->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER);
+        $personalData = new PersonalData($user, $personalDataRender->getValue());
 
         return [
             'data' => [
@@ -249,7 +248,9 @@ class MediaService extends MediaFolderService
     }
 
     /**
-     * Ajoute une image physiquement sur le disque et créer l'objet Media
+     * Ajoute une image physiquement sur le disque et créer l'objet Média
+     * @param int $idFolder
+     * @param array $file
      * @return void
      */
     public function uploadMediaFile(int $idFolder, array $file): void
@@ -299,7 +300,7 @@ class MediaService extends MediaFolderService
     }
 
     /**
-     * Déplace un type de média vers le médiafolder idToMove
+     * Déplace un type de média vers le MédiaFolder idToMove
      * @param int $id
      * @param string $type
      * @param int $idToMove
@@ -343,7 +344,7 @@ class MediaService extends MediaFolderService
             $newPath = $this->rootPathMedia . DIRECTORY_SEPARATOR . $media->getName();
             if($media->getMediaFolder() !== null)
             {
-                $newPath = $this->getPathFolder($media->getMediaFolder()) . $media->getName();;
+                $newPath = $this->getPathFolder($media->getMediaFolder()) . $media->getName();
             }
 
             $fileSystem = new Filesystem();
@@ -366,6 +367,8 @@ class MediaService extends MediaFolderService
 
         return $return;
     }
+
+
 
     /**
      * Met à jour le champ corbeille en fonction de $trash d'un media ou d'un mediaFolder
@@ -393,7 +396,7 @@ class MediaService extends MediaFolderService
      * Retourne la traduction pour la médiathèque
      * @return array
      */
-    public function getMediatequeTranslation(): array
+    public function getMediathequeTranslation(): array
     {
         return [
             'loading' => $this->translator->trans('media.mediatheque.loading', domain: 'media'),

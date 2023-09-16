@@ -44,7 +44,7 @@ class MediaController extends AppAdminController
 
         return $this->render('admin/content/media/index.html.twig', [
             'breadcrumb' => $breadcrumb,
-            'translate' => $mediaService->getMediatequeTranslation()
+            'translate' => $mediaService->getMediathequeTranslation()
         ]);
     }
 
@@ -53,6 +53,7 @@ class MediaController extends AppAdminController
      * bon fonctionnement de la médiathèque
      * @param Request $request
      * @param MediaService $mediaService
+     * @param OptionSystemService $optionSystemService
      * @return JsonResponse
      */
     #[Route('/ajax/load-medias', name: 'load_medias', methods: ['POST'])]
@@ -160,14 +161,12 @@ class MediaController extends AppAdminController
      * Charge les informations pour le média ou le dossier sélectionné
      * @param Request $request
      * @param MediaService $mediaService
-     * @param TranslatorInterface $translator
      * @return JsonResponse
      */
     #[Route('/ajax/load-info', name: 'load_info', methods: ['POST'])]
     public function loadInfo(
         Request             $request,
         MediaService        $mediaService,
-        TranslatorInterface $translator
     ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -294,12 +293,11 @@ class MediaController extends AppAdminController
 
     /**
      * Retourne le nombre d'éléments dans la corbeille
-     * @param Request $request
      * @param MediaService $mediaService
      * @return JsonResponse
      */
     #[Route('/ajax/nb-trash', name: 'nb_trash', methods: ['POST'])]
-    public function nbTrash(Request $request, MediaService $mediaService): JsonResponse
+    public function nbTrash(MediaService $mediaService): JsonResponse
     {
         $tab = $mediaService->getNbInTrash();
         return $this->json(['nb' => ($tab['medias'] + $tab['folders'])]);
