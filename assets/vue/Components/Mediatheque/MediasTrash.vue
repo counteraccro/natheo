@@ -31,11 +31,11 @@ export default {
 
   <div id="block-media-grid" class="mt-3 row">
     <div v-if="this.medias.length > 0" class="media col-auto mb-4" v-for="media in this.medias">
-      <img v-if="media.type === 'media'" height="200" width="200"
+      <img v-if="media.type === 'media'" height="200" width="200" class="rounded-3"
           :src="media.thumbnail" style="cursor:pointer;"
           :alt="media.name" @click="this.openMedia(media.webPath)"/>
       <div v-else class="folder" alt="media.name"></div>
-      <div class="info-media">
+      <div class="info-media rounded-bottom-3">
         <div class="btn-group">
           <button type="button" class="btn btn-link btn-sm dropdown-toggle pt-2" style="color: #FFFFFF; margin-top: -5px;" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-justify"></i>
