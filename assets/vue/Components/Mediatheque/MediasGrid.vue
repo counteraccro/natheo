@@ -2,7 +2,7 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Affichage au format GRID des médias
+ * Affichage au format GRID et listing des médias
  */
 export default {
   props: {
