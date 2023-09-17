@@ -8,6 +8,7 @@ import MediasBreadcrumb from "../../../Components/Mediatheque/MediasBreadcrumb.v
 import MediaModalInfo from "../../../Components/Mediatheque/MediaModalInfo.vue";
 import FileUpload from "../../../Components/FileUpload.vue";
 import MediaMove from "../../../Components/Mediatheque/MediaMove.vue";
+import MediasTrash from "../../../Components/Mediatheque/MediasTrash.vue";
 import axios from "axios";
 import {Modal} from "bootstrap";
 import {isEmpty} from "lodash-es";
@@ -19,7 +20,8 @@ export default {
     MediasBreadcrumb,
     MediaModalInfo,
     FileUpload,
-    MediaMove
+    MediaMove,
+    MediasTrash
   },
   props: {
     url: String,
@@ -65,6 +67,7 @@ export default {
       trash: {
         type: '',
         id: '',
+        trash: true
       },
       trashMsg: '',
       trashConfirm: false,
@@ -530,6 +533,7 @@ export default {
     confirmTrash(type, id, nameM, confirm) {
       this.trash.type = type;
       this.trash.id = id;
+      this.trash.trash = true;
       this.trashConfirm = confirm;
 
       if (!confirm) {
@@ -562,10 +566,26 @@ export default {
       this.modalTrash.hide();
       this.trash = {
         type: '',
-        id: ''
+        id: '',
+        trash: true
       }
       this.trashMsg = '';
       this.trashConfirm = false;
+    },
+
+    /**
+     * Annule le tag corbeille d'un média / dossier
+     * @param type
+     * @param id
+     */
+    revertTrash(type, id)
+    {
+      this.loading = true;
+      this.trash.type = type;
+      this.trash.id = id;
+      this.trash.trash = false;
+
+      this.updateTrash();
     },
 
     /**
@@ -573,7 +593,7 @@ export default {
      */
     updateTrash() {
       axios.post(this.urlActions.updateTrash, {
-        'trash': true,
+        'trash': this.trash.trash,
         'id': this.trash.id,
         'type': this.trash.type
       }).then((response) => {
@@ -581,9 +601,16 @@ export default {
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
-        this.trashMsg = '<span class="text-success"><i class="bi bi-check"></i>' + this.translate.trash.success_trash + '</span>';
-        setTimeout(this.closeModalTrash, 3000);
-        setTimeout(this.loadMedia, 2500);
+
+        if(this.trash.trash)
+        {
+          this.trashMsg = '<span class="text-success"><i class="bi bi-check"></i>' + this.translate.trash.success_trash + '</span>';
+          setTimeout(this.closeModalTrash, 3000);
+          setTimeout(this.loadMedia, 2500);
+        }
+        else {
+          setTimeout(this.loadInTrash, 2500);
+        }
       });
     },
 
@@ -630,7 +657,7 @@ export default {
         </MediasBreadcrumb>
       </div>
       <div v-else class="card-header text-bg-secondary">
-        <i class="bi bi-trash"></i> aa Corbeille
+        <i class="bi bi-trash"></i> {{ this.translate.trash.breadcrumb_trash }}
       </div>
       <div class="card-body">
         <div v-if="render !== 'trash'">
@@ -703,7 +730,7 @@ export default {
         </div>
         <div v-else>
           <div class="btn btn-secondary me-1" @click="this.switchRender('grid');this.loadMedia()">
-            <i class="bi bi-x-circle"></i> Fermer corbeille
+            <i class="bi bi-arrow-up-left-circle"></i> {{ this.translate.trash.btn_close_trash }}
           </div>
         </div>
 
@@ -723,7 +750,12 @@ export default {
         </div>
 
         <div v-else>
-          trash
+          <MediasTrash
+              :translate="this.translate.trash"
+              :medias="this.mediasTrash"
+              @revert-trash="this.revertTrash"
+            >
+          </MediasTrash>
         </div>
 
       </div>

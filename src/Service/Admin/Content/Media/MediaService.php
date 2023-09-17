@@ -541,6 +541,12 @@ class MediaService extends MediaFolderService
                 'success_trash' => $this->translator->trans('media.mediatheque.trash.success.trash', domain: 'media'),
                 'success_no_trash' =>
                     $this->translator->trans('media.mediatheque.trash.success.no.trash', domain: 'media'),
+                'breadcrumb_trash' =>
+                    $this->translator->trans('media.mediatheque.trash.breadcrumb', domain: 'media'),
+                'btn_close_trash' => $this->translator->trans('media.mediatheque.trash.btn.close', domain: 'media'),
+                'link_revert' => $this->translator->trans('media.mediatheque.trash.link.revert', domain: 'media'),
+                'link_delete' => $this->translator->trans('media.mediatheque.trash.link.delete', domain: 'media'),
+                'no_media' => $this->translator->trans('media.mediatheque.trash.empty.media', domain: 'media'),
             ]
         ];
     }
