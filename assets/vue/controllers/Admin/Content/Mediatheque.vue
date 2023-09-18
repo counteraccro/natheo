@@ -75,6 +75,10 @@ export default {
       mediasTrash: [],
       removeMsg: '',
       removeConfirm: false,
+      remove: {
+        type: '',
+        id: '',
+      }
     }
   },
 
@@ -647,6 +651,8 @@ export default {
 
     confirmRemove(type, id, nameM, confirm) {
 
+      this.remove.type = type;
+      this.remove.id = id;
       this.removeConfirm = confirm;
 
       if (!confirm) {
@@ -1012,13 +1018,13 @@ export default {
           <h1 class="modal-title fs-5 text-white">
             <i class="bi bi-trash-fill"></i> {{ this.translate.trash.title }}
           </h1>
-          <button v-if="!this.trashConfirm" type="button" class="btn-close" data-bs-dismiss="modal"
+          <button v-if="!this.trashConfirm" type="button" @click="this.closeModalTrash" class="btn-close" data-bs-dismiss="modal"
                   aria-label="Close"></button>
         </div>
         <div class="modal-body" v-html="this.trashMsg">
         </div>
         <div class="modal-footer" v-if="!this.trashConfirm">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
+          <button type="button" class="btn btn-secondary" @click="this.closeModalTrash" data-bs-dismiss="modal">{{
               this.translate.trash.btn_cancel
             }}
           </button>
@@ -1051,7 +1057,7 @@ export default {
             }}
           </button>
           <button type="button" class="btn btn-primary"
-                  @click="this.confirmRemove(this.trash.type, this.trash.id, '', true)">
+                  @click="this.confirmRemove(this.remove.type, this.remove.id, '', true)">
             {{ this.translate.remove.btn_confirm }}
           </button>
         </div>
