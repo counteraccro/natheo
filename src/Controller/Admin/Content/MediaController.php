@@ -87,6 +87,7 @@ class MediaController extends AppAdminController
                 'updateTrash' => $this->generateUrl('admin_media_update_trash'),
                 'nbTrash' => $this->generateUrl('admin_media_nb_trash'),
                 'listTrash' => $this->generateUrl('admin_media_list_trash'),
+                'remove' => $this->generateUrl('admin_media_remove'),
             ]
         ]);
     }
@@ -313,6 +314,19 @@ class MediaController extends AppAdminController
     public function listTrash(MediaService $mediaService): JsonResponse
     {
         return $this->json(['mediasTrash' => $mediaService->getAllMediaAndMediaFolderInTrash()]);
+    }
+
+    /**
+     * @param Request $request
+     * @param MediaService $mediaService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/remove', name: 'remove', methods: ['POST'])]
+    public function removeTrash(Request $request, MediaService $mediaService): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        //$mediaService->updateTrash($data['type'], $data['id'], $data['trash']);
+        return $this->json(['success' => 'remove']);
     }
 
 

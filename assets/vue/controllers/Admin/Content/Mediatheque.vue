@@ -37,6 +37,7 @@ export default {
       modalEditMedia: '',
       modalMove: '',
       modalTrash: '',
+      modalRemove: '',
       medias: [],
       currentFolder: [],
       filter: 'created_at',
@@ -72,6 +73,8 @@ export default {
       trashMsg: '',
       trashConfirm: false,
       mediasTrash: [],
+      removeMsg: '',
+      removeConfirm: false,
     }
   },
 
@@ -82,6 +85,7 @@ export default {
     this.modalMove = new Modal(document.getElementById("modal-move"), {});
     this.modalEditMedia = new Modal(document.getElementById("modal-edit-media"), {});
     this.modalTrash = new Modal(document.getElementById("modal-trash"), {});
+    this.modalRemove = new Modal(document.getElementById("modal-remove"), {});
     this.loadMedia();
   },
 
@@ -578,8 +582,7 @@ export default {
      * @param type
      * @param id
      */
-    revertTrash(type, id)
-    {
+    revertTrash(type, id) {
       this.loading = true;
       this.trash.type = type;
       this.trash.id = id;
@@ -602,13 +605,11 @@ export default {
         console.log(error);
       }).finally(() => {
 
-        if(this.trash.trash)
-        {
+        if (this.trash.trash) {
           this.trashMsg = '<span class="text-success"><i class="bi bi-check"></i>' + this.translate.trash.success_trash + '</span>';
           setTimeout(this.closeModalTrash, 3000);
           setTimeout(this.loadMedia, 2500);
-        }
-        else {
+        } else {
           setTimeout(this.loadInTrash, 2500);
         }
       });
@@ -619,14 +620,64 @@ export default {
      */
     loadInTrash() {
       this.loading = true;
-      axios.post(this.urlActions.listTrash, {
-      }).then((response) => {
-          this.mediasTrash = response.data.mediasTrash
+      axios.post(this.urlActions.listTrash, {}).then((response) => {
+        this.mediasTrash = response.data.mediasTrash
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
         this.loading = false;
       });
+    },
+
+    /**
+     * Ouvre la modale pour la suppression
+     */
+    openModalRemove() {
+      this.modalRemove.show();
+    },
+
+    /**
+     * Ferme la modale pour la suppression
+     */
+    closeModalRemove() {
+      this.modalRemove.hide();
+      this.removeMsg = '';
+      this.removeConfirm = false;
+    },
+
+    confirmRemove(type, id, nameM, confirm) {
+
+      this.removeConfirm = confirm;
+
+      if (!confirm) {
+        if (type === 'folder') {
+          this.removeMsg = this.translate.remove.text_folder + ' : <b>' + nameM +
+              '</b> ?<br /><span class="text-warning"><i class="bi bi-exclamation-triangle-fill"></i> <i>' + this.translate.remove.text_info + '</i></span>';
+        } else {
+          this.removeMsg = this.translate.remove.text_media + ' : <b>' + nameM + '</b> ?'
+        }
+        this.removeMsg += '<br /><span class="text-danger"><b>' + this.translate.remove.text_info_2 + '</b></span>';
+
+        this.openModalRemove();
+      } else {
+        this.removeMsg = '<div class="spinner-border text-primary" role="status"></div> '
+            + this.translate.remove.loading;
+
+        this.loading = true;
+        axios.post(this.urlActions.remove, {
+          'id': id,
+          'type': type
+        }).then((response) => {
+
+        }).catch((error) => {
+          console.log(error);
+        }).finally(() => {
+          this.loading = false;
+          this.removeMsg = '<span class="text-success"><i class="bi bi-check"></i>' + this.translate.remove.success + '</span>';
+          setTimeout(this.closeModalRemove, 3000);
+          setTimeout(this.loadInTrash, 2500);
+        });
+      }
     }
 
     /** fin bloc trash **/
@@ -678,8 +729,9 @@ export default {
             </div>
             <div class="btn-group">
               <button type="button" class="btn btn-secondary dropdown-toggle me-1" data-bs-toggle="dropdown"
-                  aria-expanded="false">
-                <span class="d-none-mini">{{ this.translate.btn_filtre }}</span>&nbsp;<i class="bi" :class="this.filterIcon"></i>
+                      aria-expanded="false">
+                <span class="d-none-mini">{{ this.translate.btn_filtre }}</span>&nbsp;<i class="bi"
+                                                                                         :class="this.filterIcon"></i>
               </button>
               <ul class="dropdown-menu">
                 <li>
@@ -698,7 +750,7 @@ export default {
             </div>
             <div class="btn-group">
               <button type="button" class="btn btn-secondary dropdown-toggle me-1" data-bs-toggle="dropdown"
-                  aria-expanded="false">
+                      aria-expanded="false">
                 <i class="bi" :class="this.orderIcon"></i>
               </button>
               <ul class="dropdown-menu">
@@ -713,18 +765,20 @@ export default {
               </ul>
             </div>
 
-            <div class="btn btn-secondary position-relative me-1" @click="this.switchRender('trash');this.loadInTrash()" v-if="this.render !== 'trash'">
+            <div class="btn btn-secondary position-relative me-1" @click="this.switchRender('trash');this.loadInTrash()"
+                 v-if="this.render !== 'trash'">
               <i class="bi bi-trash-fill"></i>
-              <span v-if="this.nbTrash > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              <span v-if="this.nbTrash > 0"
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
               {{ this.nbTrash }}
               </span>
             </div>
 
             <input type="radio" class="btn-check no-control" name="options-render" id="btn-grid" autocomplete="off"
-                checked @change="this.switchRender('grid')">
+                   checked @change="this.switchRender('grid')">
             <label class="btn me-1 btn-secondary" for="btn-grid"><i class="bi bi-grid"></i></label>
             <input type="radio" class="btn-check no-control" name="options-render" id="btn-list" autocomplete="off"
-                @change="this.switchRender('list')">
+                   @change="this.switchRender('list')">
             <label class="btn btn-secondary" for="btn-list"><i class="bi bi-list"></i></label>
           </div>
         </div>
@@ -754,7 +808,8 @@ export default {
               :translate="this.translate.trash"
               :medias="this.mediasTrash"
               @revert-trash="this.revertTrash"
-            >
+              @delete="this.confirmRemove"
+          >
           </MediasTrash>
         </div>
 
@@ -778,10 +833,10 @@ export default {
           <div class="mb-3" :class="this.folderSuccess !== '' ? 'd-none':''">
             <label for="folderName" class="form-label">{{ this.translate.folder.input_label }} *</label>
             <input type="text" v-model="folderName"
-                @keyup="this.validateFolderName()"
-                class="form-control"
-                id="input-folder-name"
-                :placeholder="this.translate.folder.input_label_placeholder">
+                   @keyup="this.validateFolderName()"
+                   class="form-control"
+                   id="input-folder-name"
+                   :placeholder="this.translate.folder.input_label_placeholder">
             <div class="invalid-feedback">
               {{ this.folderError }}
             </div>
@@ -805,11 +860,11 @@ export default {
         <div v-if="this.folderSuccess === ''" class="modal-footer">
           <div class="btn btn-dark" @click="this.closeModalFolder()">{{ this.translate.folder.btn_cancel }}</div>
           <div v-if="isEmpty(this.folderEdit)" @click="this.submitFolder()" class="btn btn-primary"
-              :class="this.folderCanSubmit ? '':'disabled'">
+               :class="this.folderCanSubmit ? '':'disabled'">
             {{ this.translate.folder.btn_submit_create }}
           </div>
           <div v-else class="btn btn-primary" @click="this.submitFolder()"
-              :class="this.folderCanSubmit ? '':'disabled'">
+               :class="this.folderCanSubmit ? '':'disabled'">
             {{ this.translate.folder.btn_submit_edit }}
           </div>
         </div>
@@ -838,10 +893,10 @@ export default {
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div v-if="this.loadingUploadMsg === ''" class="modal-content">
         <FileUpload :translate="this.translate.upload"
-            :maxSize="20"
-            :accept="this.extAccept"
-            @file-uploaded="getUploadedData"
-            @close-modale-upload="closeModalUpload"
+                    :maxSize="20"
+                    :accept="this.extAccept"
+                    @file-uploaded="getUploadedData"
+                    @close-modale-upload="closeModalUpload"
         />
       </div>
       <div v-else class="modal-content">
@@ -878,12 +933,15 @@ export default {
                 <div class="mb-3">
                   <label for="edit-media-title" class="form-label"> {{ this.translate.edit_media.media_name }}</label>
                   <input type="text" class="form-control no-control" v-model="this.mediaEdit.name" id="edit-media-title"
-                      :placeholder="this.translate.edit_media.media_name_placeholder">
+                         :placeholder="this.translate.edit_media.media_name_placeholder">
                 </div>
                 <div class="mb-3">
-                  <label for="edit-media-description" class="form-label"> {{ this.translate.edit_media.media_description }}</label>
-                  <input type="text" class="form-control no-control" v-model="this.mediaEdit.description" id="edit-media-description"
-                      :placeholder="this.translate.edit_media.media_description_placeholder">
+                  <label for="edit-media-description" class="form-label"> {{
+                      this.translate.edit_media.media_description
+                    }}</label>
+                  <input type="text" class="form-control no-control" v-model="this.mediaEdit.description"
+                         id="edit-media-description"
+                         :placeholder="this.translate.edit_media.media_description_placeholder">
                 </div>
               </fieldset>
             </div>
@@ -947,20 +1005,55 @@ export default {
   <!-- Fin Modal pour le move -->
 
   <!-- Modal confirme corbeille -->
-  <div class="modal fade" id="modal-trash" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+  <div class="modal fade" id="modal-trash" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header bg-secondary">
           <h1 class="modal-title fs-5 text-white">
             <i class="bi bi-trash-fill"></i> {{ this.translate.trash.title }}
           </h1>
-          <button v-if="!this.trashConfirm" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button v-if="!this.trashConfirm" type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
         </div>
         <div class="modal-body" v-html="this.trashMsg">
         </div>
         <div class="modal-footer" v-if="!this.trashConfirm">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ this.translate.trash.btn_cancel }}</button>
-          <button type="button" class="btn btn-primary" @click="this.confirmTrash(this.trash.type, this.trash.id, '', true)">{{ this.translate.trash.btn_confirm }}</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
+              this.translate.trash.btn_cancel
+            }}
+          </button>
+          <button type="button" class="btn btn-primary"
+                  @click="this.confirmTrash(this.trash.type, this.trash.id, '', true)">
+            {{ this.translate.trash.btn_confirm }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fin Modal confirme corbeille -->
+
+  <!-- Modal confirme suppression -->
+  <div class="modal fade" id="modal-remove" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-secondary">
+          <h1 class="modal-title fs-5 text-white">
+            <i class="bi bi-trash-fill"></i> {{ this.translate.remove.title }}
+          </h1>
+          <button v-if="!this.removeConfirm" @click="this.closeModalRemove" type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+        </div>
+        <div class="modal-body" v-html="this.removeMsg">
+        </div>
+        <div class="modal-footer" v-if="!this.removeConfirm">
+          <button type="button" class="btn btn-secondary" @click="this.closeModalRemove" data-bs-dismiss="modal">{{
+              this.translate.remove.btn_cancel
+            }}
+          </button>
+          <button type="button" class="btn btn-primary"
+                  @click="this.confirmRemove(this.trash.type, this.trash.id, '', true)">
+            {{ this.translate.remove.btn_confirm }}
+          </button>
         </div>
       </div>
     </div>

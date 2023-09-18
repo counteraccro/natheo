@@ -102,3 +102,12 @@ media.mediatheque.trash.btn.close: __media.mediatheque.trash.btn.close
 media.mediatheque.trash.link.revert: __media.mediatheque.trash.link.revert
 media.mediatheque.trash.link.delete: __media.mediatheque.trash.link.delete
 media.mediatheque.trash.empty.media: __media.mediatheque.trash.empty.media
+media.mediatheque.remove.title: __media.mediatheque.remove.title
+media.mediatheque.remove.text.folder: __media.mediatheque.remove.text.folder
+media.mediatheque.remove.text.media: __media.mediatheque.remove.text.media
+media.mediatheque.remove.text.info: __media.mediatheque.remove.text.info
+media.mediatheque.remove.text.info2: __media.mediatheque.remove.text.info2
+media.mediatheque.remove.loading: __media.mediatheque.remove.loading
+media.mediatheque.remove.btn.confirm: __media.mediatheque.remove.btn.confirm
+media.mediatheque.remove.btn.cancel: __media.mediatheque.remove.btn.cancel
+media.mediatheque.remove.success: __media.mediatheque.remove.success
