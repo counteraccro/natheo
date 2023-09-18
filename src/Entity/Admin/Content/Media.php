@@ -17,7 +17,7 @@ class Media
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'medias')]
+    #[ORM\ManyToOne(cascade: ['remove'], inversedBy: 'medias')]
     private ?MediaFolder $mediaFolder = null;
 
     #[ORM\ManyToOne(inversedBy: 'medias')]

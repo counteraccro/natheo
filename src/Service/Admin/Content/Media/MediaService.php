@@ -329,8 +329,7 @@ class MediaService extends MediaFolderService
     public function moveMedia(Media $media, MediaFolder $mediaFolderInMove = null): void
     {
         $oldPath = $this->rootPathMedia . DIRECTORY_SEPARATOR . $media->getName();
-        if($media->getMediaFolder() !== null)
-        {
+        if ($media->getMediaFolder() !== null) {
             $oldPath = $this->getPathFolder($media->getMediaFolder()) . $media->getName();
         }
 
@@ -339,11 +338,9 @@ class MediaService extends MediaFolderService
         $media->setPath($this->getPath($media));
         $this->save($media);
 
-        if($this->canCreatePhysicalFolder)
-        {
+        if ($this->canCreatePhysicalFolder) {
             $newPath = $this->rootPathMedia . DIRECTORY_SEPARATOR . $media->getName();
-            if($media->getMediaFolder() !== null)
-            {
+            if ($media->getMediaFolder() !== null) {
                 $newPath = $this->getPathFolder($media->getMediaFolder()) . $media->getName();
             }
 
@@ -430,6 +427,35 @@ class MediaService extends MediaFolderService
         }
     }
 
+    /**
+     * Supprime un média ou un dossier en fonction du type
+     * Si le dossier existe physiquement, le supprime aussi
+     * @param string $type
+     * @param int $id
+     * @return void
+     */
+    public function confirmTrash(string $type, int $id): void
+    {
+        if ($type === 'media') {
+            /** @var Media $media */
+            $entity = $this->findOneById(Media::class, $id);
+            $path =  $this->rootPathMedia . $this->getPath($entity);
+
+        } else {
+            /** @var MediaFolder $entity */
+            $entity = $this->findOneById(MediaFolder::class, $id);
+            $path = $this->getPathFolder($entity);
+        }
+
+        if ($this->canCreatePhysicalFolder) {
+
+            echo $path;
+
+            $fileSystem = new Filesystem();
+            $fileSystem->remove($path);
+        }
+        $this->remove($entity);
+    }
 
 
     /**

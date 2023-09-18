@@ -317,6 +317,7 @@ class MediaController extends AppAdminController
     }
 
     /**
+     * Supprime un élément de la corbeille de façon définitive
      * @param Request $request
      * @param MediaService $mediaService
      * @return JsonResponse
@@ -325,7 +326,7 @@ class MediaController extends AppAdminController
     public function removeTrash(Request $request, MediaService $mediaService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        //$mediaService->updateTrash($data['type'], $data['id'], $data['trash']);
+        $mediaService->confirmTrash($data['type'], $data['id']);
         return $this->json(['success' => 'remove']);
     }
 

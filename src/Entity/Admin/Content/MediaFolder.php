@@ -18,10 +18,10 @@ class MediaFolder
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
+    #[ORM\ManyToOne(targetEntity: self::class, cascade: ['remove'], inversedBy: 'children')]
     private ?self $parent = null;
 
-    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class, cascade: ['remove'])]
     private Collection $children;
 
     #[ORM\Column(length: 150)]
@@ -44,7 +44,7 @@ class MediaFolder
     #[Gedmo\Timestampable(on: "update")]
     private ?\DateTimeInterface $updateAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'mediaFolder', targetEntity: Media::class)]
+    #[ORM\OneToMany(mappedBy: 'mediaFolder', targetEntity: Media::class, cascade: ['remove'])]
     private Collection $medias;
 
     public function __construct()
