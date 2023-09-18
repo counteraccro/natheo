@@ -449,8 +449,6 @@ class MediaService extends MediaFolderService
 
         if ($this->canCreatePhysicalFolder) {
 
-            echo $path;
-
             $fileSystem = new Filesystem();
             $fileSystem->remove($path);
         }
