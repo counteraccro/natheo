@@ -109,5 +109,9 @@ media.mediatheque.remove.text.info: 'Attention, tous les dossiers et médias pr�
 media.mediatheque.remove.text.info2: 'Cette action est définitive et sans possibilité de restauration !'
 media.mediatheque.remove.loading: 'Suppression en cours...'
 media.mediatheque.remove.btn.confirm: 'Confirmer la suppression'
-media.mediatheque.remove.btn.cancel: 'Annuler'
+media.mediatheque.remove.btn.cancel: Annuler
 media.mediatheque.remove.success: 'La suppression à été réalisé avec succès, La fenêtre ce fermera automatiquement dans 3 secondes'
+media.mediatheque.media.table.name: Nom
+media.mediatheque.media.table.size: Taille
+media.mediatheque.media.table.action: Actions
+media.mediatheque.media.table.caption: "Plus d'éléments...(Soon™..)"
