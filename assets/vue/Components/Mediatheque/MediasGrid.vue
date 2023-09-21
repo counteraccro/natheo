@@ -94,6 +94,7 @@ export default {
         <tr>
           <th style="width: 3%">#</th>
           <th>{{ this.translate.table_name }}</th>
+          <th style="width: 15%">{{ this.translate.table_date }}</th>
           <th style="width: 10%">{{ this.translate.table_size }}</th>
           <th style="width: 20%">{{ this.translate.table_action }}</th>
         </tr>
@@ -108,6 +109,7 @@ export default {
                  @click.stop="media.type === 'media' ? this.openMedia(media.webPath) : $emit('load-data-folder', media.id)">{{
               media.name
             }}</a></td>
+          <td>{{ media.date }}</td>
           <td><span v-if="media.type === 'media'">{{ media.size }}</span></td>
           <td>
 

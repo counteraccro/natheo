@@ -170,7 +170,8 @@ class MediaService extends MediaFolderService
                 'size' => Utils::getSizeName($media->getSize()),
                 'webPath' => $media->getWebPath(),
                 'thumbnail' => $this->getThumbnail($media),
-                'created_at' => $media->getCreatedAt()->getTimestamp()
+                'created_at' => $media->getCreatedAt()->getTimestamp(),
+                'date' => $media->getCreatedAt()->format('d-m-Y H:i:s')
             ];
         }
 
@@ -180,7 +181,8 @@ class MediaService extends MediaFolderService
                 'type' => 'folder',
                 'id' => $folder->getId(),
                 'name' => $folder->getName(),
-                'created_at' => $folder->getCreatedAt()->getTimestamp()
+                'created_at' => $folder->getCreatedAt()->getTimestamp(),
+                'date' => $folder->getCreatedAt()->format('d-m-Y H:i:s')
             ];
         }
 
@@ -484,7 +486,8 @@ class MediaService extends MediaFolderService
                 'table_name' => $this->translator->trans('media.mediatheque.media.table.name', domain: 'media'),
                 'table_size' => $this->translator->trans('media.mediatheque.media.table.size', domain: 'media'),
                 'table_action' => $this->translator->trans('media.mediatheque.media.table.action', domain: 'media'),
-                'table_caption' => $this->translator->trans('media.mediatheque.media.table.caption', domain: 'media')
+                'table_caption' => $this->translator->trans('media.mediatheque.media.table.caption', domain: 'media'),
+                'table_date' => $this->translator->trans('media.mediatheque.media.table.date', domain: 'media')
             ],
             'folder' => [
                 'new' => $this->translator->trans('media.mediatheque.folder.new', domain: 'media'),
