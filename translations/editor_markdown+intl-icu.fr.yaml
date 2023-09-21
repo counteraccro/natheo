@@ -27,3 +27,6 @@ editor.help: 'La mise en forme de votre contenu se fait avec langage de balisage
 editor.render: Prévisualisation
 editor.button.keyword: 'Mots clés'
 editor.input.empty: 'Le champ ne peut pas être vide'
+editor.btn.mediatheque: 'Médiathèque'
+editor.mediatheque.title: 'Médiathèque'
+editor.mediatheque.btn.close: 'Fermer'

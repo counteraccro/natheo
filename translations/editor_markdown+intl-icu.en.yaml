@@ -27,3 +27,6 @@ editor.help: __editor.help
 editor.render: __editor.render
 editor.button.keyword: __editor.button.keyword
 editor.input.empty: __editor.input.empty
+editor.btn.mediatheque: __editor.btn.mediatheque
+editor.mediatheque.title: __editor.mediatheque.title
+editor.mediatheque.btn.close: __editor.mediatheque.btn.close
