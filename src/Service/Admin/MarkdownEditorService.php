@@ -49,6 +49,7 @@ class MarkdownEditorService extends AppAdminService
             'mediathequeMarkdown' => [
                 'title' => $this->translator->trans('editor.mediatheque.title', domain: 'editor_markdown'),
                 'btn_close' => $this->translator->trans('editor.mediatheque.btn.close', domain: 'editor_markdown'),
+                'loading' => $this->translator->trans('editor.mediatheque.loading', domain: 'editor_markdown'),
             ]
         ];
     }

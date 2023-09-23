@@ -65,6 +65,22 @@ Grid
 
 }
 
+/** Media grid pour l'éditeur markdown **/
+#block-media-grid-markdown {
+  .folder {
+    background-image: url('/public/assets/natheo/mediatheque/folder.png');
+    background-size: 100px;
+    height: 100px;
+    width: 100px;
+  }
+
+  .folder:hover {
+    background-image: url('/public/assets/natheo/mediatheque/folder_open.png');
+    background-size: 100px;
+    cursor: pointer;
+  }
+}
+
 /** Block preview **/
 #form-upload-preview {
   img {

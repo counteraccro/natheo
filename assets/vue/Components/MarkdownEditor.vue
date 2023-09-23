@@ -38,7 +38,9 @@ export default {
       isImage: false,
       isValide: "",
       dataMedia: [],
-      urlMedia: "/admin/fr/media/ajax/load-medias"
+      urlMedia: "/admin/fr/media/ajax/load-medias",
+      currentFolder: [],
+      loadingMedia: false
     }
   },
   mounted() {
@@ -127,20 +129,20 @@ export default {
 
     loadMedia(folderId, order, filter) {
 
-      //this.loading = true;
+      this.loadingMedia = true;
       axios.post(this.urlMedia, {
         'folder': folderId,
         'order': order,
         'filter': filter
       }).then((response) => {
         this.dataMedia = response.data.medias;
-        /*this.currentFolder = response.data.currentFolder;
-        this.urlActions = response.data.url;
+        this.currentFolder = response.data.currentFolder;
+        /*this.urlActions = response.data.url;
         this.canDelete = response.data.canDelete;*/
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
-        //this.loading = false
+        this.loadingMedia = false
       });
     },
 
@@ -264,11 +266,12 @@ export default {
         <MediaModalMarkdown
             :medias="this.dataMedia"
             :translate="this.meTranslate.mediathequeMarkdown"
+            :current-folder="this.currentFolder"
+            :loading="this.loadingMedia"
             @close-modale="this.closeModalMediatheque"
             @select-media="this.selectMedia"
             @load-media="this.loadMedia"
         >
-
         </MediaModalMarkdown>
       </div>
     </div>
