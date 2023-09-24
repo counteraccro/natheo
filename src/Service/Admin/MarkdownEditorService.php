@@ -50,6 +50,16 @@ class MarkdownEditorService extends AppAdminService
                 'title' => $this->translator->trans('editor.mediatheque.title', domain: 'editor_markdown'),
                 'btn_close' => $this->translator->trans('editor.mediatheque.btn.close', domain: 'editor_markdown'),
                 'loading' => $this->translator->trans('editor.mediatheque.loading', domain: 'editor_markdown'),
+                'no_media' => $this->translator->trans('editor.mediatheque.no_media', domain: 'editor_markdown'),
+                'btn_size' => $this->translator->trans('editor.mediatheque.btn.size', domain: 'editor_markdown'),
+                'size_fluide' => $this->translator->trans('editor.mediatheque.size.fluide', domain: 'editor_markdown'),
+                'size_max' => $this->translator->trans('editor.mediatheque.size_max', domain: 'editor_markdown'),
+                'size_100' => $this->translator->trans('editor.mediatheque.size_100', domain: 'editor_markdown'),
+                'size_200' => $this->translator->trans('editor.mediatheque.size_200', domain: 'editor_markdown'),
+                'size_300' => $this->translator->trans('editor.mediatheque.size_300', domain: 'editor_markdown'),
+                'size_400' => $this->translator->trans('editor.mediatheque.size_400', domain: 'editor_markdown'),
+                'size_500' => $this->translator->trans('editor.mediatheque.size_500', domain: 'editor_markdown'),
+
             ]
         ];
     }

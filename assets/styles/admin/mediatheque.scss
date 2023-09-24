@@ -66,6 +66,14 @@ Grid
 }
 
 /** Media grid pour l'éditeur markdown **/
+
+/**
+Fil d'arianne, affichage du > en blanc
+ */
+#mediaBreadcrumb .breadcrumb-item + .breadcrumb-item::before {
+  color: #FFFFFF;
+}
+
 #block-media-grid-markdown {
   .folder {
     background-image: url('/public/assets/natheo/mediatheque/folder.png');
@@ -79,6 +87,12 @@ Grid
     background-size: 100px;
     cursor: pointer;
   }
+
+  img:hover {
+    transform: scale(1.2);
+  }
+
+
 }
 
 /** Block preview **/

@@ -151,6 +151,7 @@ export default {
      */
     closeModalMediatheque() {
       this.modaleMedia.hide();
+      this.dataMedia = [];
     },
 
     /**
@@ -158,10 +159,32 @@ export default {
      * @param name
      * @param url
      */
-    selectMedia(name, url) {
-      //let balise = "![" + name + "](" + url + " =20%x)";
+    selectMedia(name, url, size) {
 
-      let balise = '<img src="' + url + '" alt="' + name + '" title="" width="100" height="100" />';
+      let balise = '';
+      let patt1=/\.[0-9a-z]+$/i;
+      let extensionImg = ['.jpeg', '.jpg', '.gif', '.tif', '.psd', '.svg', '.png'];
+
+      if(extensionImg.includes(name.match(patt1)[0]))
+      {
+
+        let sizeHtml = '';
+        switch (size) {
+          case "fluid":
+            sizeHtml = 'class="img-fluid"'
+            break;
+          case "max":
+                sizeHtml = '';
+            break;
+          default:
+            sizeHtml = 'width="' + size +'px" height="' + size +'px"';
+        }
+
+        balise = '<img src="' + url + '" alt="' + name + '" ' + sizeHtml + '>';
+      }
+      else {
+        balise = '<a href="' + url + '" target="_blank">' + name + '</a>';
+      }
 
       this.addElement(balise, 0, false);
       this.closeModalMediatheque();
