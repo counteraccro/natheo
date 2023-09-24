@@ -30,3 +30,13 @@ editor.input.empty: __editor.input.empty
 editor.btn.mediatheque: __editor.btn.mediatheque
 editor.mediatheque.title: __editor.mediatheque.title
 editor.mediatheque.btn.close: __editor.mediatheque.btn.close
+editor.mediatheque.loading: __editor.mediatheque.loading
+editor.mediatheque.no_media: __editor.mediatheque.no_media
+editor.mediatheque.btn.size: __editor.mediatheque.btn.size
+editor.mediatheque.size.fluide: __editor.mediatheque.size.fluide
+editor.mediatheque.size_max: __editor.mediatheque.size_max
+editor.mediatheque.size_100: __editor.mediatheque.size_100
+editor.mediatheque.size_200: __editor.mediatheque.size_200
+editor.mediatheque.size_300: __editor.mediatheque.size_300
+editor.mediatheque.size_400: __editor.mediatheque.size_400
+editor.mediatheque.size_500: __editor.mediatheque.size_500
