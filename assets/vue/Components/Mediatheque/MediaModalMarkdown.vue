@@ -156,7 +156,6 @@ export default {
             <i>{{ this.translate.no_media }}</i>
           </div>
         </div>
-        <div class="btn btn-info" @click="$emit('select-media', 'mediaMan', '/aa/bb/aa.jpg')">Test</div>
       </div>
     </div>
   </div>

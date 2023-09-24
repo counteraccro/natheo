@@ -158,6 +158,7 @@ export default {
      * Ajoute le média sélectionné
      * @param name
      * @param url
+     * @param size
      */
     selectMedia(name, url, size) {
 
