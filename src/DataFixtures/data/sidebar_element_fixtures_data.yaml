@@ -36,7 +36,7 @@ sidebarElement:
       - page:
           icon: 'bi-file-earmark-text-fill'
           label: 'global.page'
-          route: '#'
+          route: 'admin_page_index'
           disabled: false
           parent: content
           role: 'ROLE_CONTRIBUTEUR'
