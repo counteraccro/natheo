@@ -6,6 +6,7 @@
 parameters:
     app.supported_locales: 'fr|en|es'
     app.default_locale: 'fr'
+    app.version: 'dev-09-2023'
 
 services:
     # default configuration for services in *this* file
