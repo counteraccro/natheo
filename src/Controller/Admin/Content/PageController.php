@@ -34,4 +34,41 @@ class PageController extends AppAdminController
             'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT)
         ]);
     }
+
+    /**
+     * Contenu Page
+     * Page
+     *  - id
+     *  - user_id
+     *  - render
+     *  - created_at
+     *  - update_at
+     *
+     * PageTranslation
+     * - id
+     * - page_id
+     * - locale
+     * - titre
+     * - url
+     * - created_at
+     * - update_at
+     *
+     * PageContent
+     * - id
+     * - page_id
+     * - order
+     * - type
+     * -
+     *
+     * PageContentTranslate
+     * - page_content_id
+     * - locale
+     * - text
+     *
+     *
+     * PageTag
+     * - id
+     * - page_id
+     * - tag_id
+     */
 }
