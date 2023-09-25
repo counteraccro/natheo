@@ -20,6 +20,11 @@ class DevExtensionRuntime extends AppExtensionRuntime implements RuntimeExtensio
     private ParameterBagInterface $parameterBag;
 
 
+    /**
+     * @param ParameterBagInterface $parameterBag
+     * @param RouterInterface $router
+     * @param TranslatorInterface $translator
+     */
     public function __construct(
         ParameterBagInterface $parameterBag,
         RouterInterface $router,
@@ -30,7 +35,7 @@ class DevExtensionRuntime extends AppExtensionRuntime implements RuntimeExtensio
     }
 
     /**
-     * Retourne des informations de dev
+     * Retourne la version en fonction de l'environnement
      * @return string
      */
     public function getVersion(): string
@@ -52,16 +57,20 @@ class DevExtensionRuntime extends AppExtensionRuntime implements RuntimeExtensio
         return $return;
     }
 
-    private function getDevInfo()
+    /**
+     * Retourne les informations pour les dev
+     * @return string
+     */
+    private function getDevInfo(): string
     {
         $version = $this->parameterBag->get('app.version');
         $branche = $this->parameterBag->get('app.current_branche');
         return '<fieldset>
         <legend class="text-white">' . $this->translator->trans('dev.info', domain: 'dev') . '</legend>
             <i class="bi bi-github"></i> <i>
-            ' . $this->translator->trans('dev.info.branche', domain: 'dev') . ' <b>master</b></i> <br />
+            ' . $this->translator->trans('dev.info.branche', domain: 'dev') . ' <b>' . $branche . '</b></i> <br />
             <i class="bi bi-bug-fill"></i> <i>
-            ' . $this->translator->trans('dev.info.version', domain: 'dev') . ' <b>' . $version . '</b></i> 
+            ' . $this->translator->trans('dev.info.version', domain: 'dev') . ' <b>' . $version . '</b></i>
         </fieldset>';
     }
 }
