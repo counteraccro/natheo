@@ -55,6 +55,7 @@ class DevExtensionRuntime extends AppExtensionRuntime implements RuntimeExtensio
     private function getDevInfo()
     {
         $version = $this->parameterBag->get('app.version');
+        $branche = $this->parameterBag->get('app.current_branche');
         return '<fieldset>
         <legend class="text-white">' . $this->translator->trans('dev.info', domain: 'dev') . '</legend>
             <i class="bi bi-github"></i> <i>
