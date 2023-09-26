@@ -8,7 +8,7 @@
 namespace App\DataFixtures\Admin\Content;
 
 use App\DataFixtures\AppFixtures;
-use App\Entity\Admin\Content\Media;
+use App\Entity\Admin\Content\Media\Media;
 use App\Service\Admin\Content\Media\MediaService;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;

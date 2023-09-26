@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Entity\Admin\Content;
+namespace App\Entity\Admin\Content\Media;
 
+use App\Entity\Admin\Content\MediaFolder;
 use App\Entity\Admin\System\User;
 use App\Repository\Admin\Content\MediaRepository;
 use Doctrine\DBAL\Types\Types;

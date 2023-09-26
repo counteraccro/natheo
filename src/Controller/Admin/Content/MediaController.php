@@ -8,7 +8,7 @@
 namespace App\Controller\Admin\Content;
 
 use App\Controller\Admin\AppAdminController;
-use App\Entity\Admin\Content\Media;
+use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\MediaFolder;
 use App\Service\Admin\Content\Media\MediaFolderService;
 use App\Service\Admin\Content\Media\MediaService;
@@ -210,7 +210,7 @@ class MediaController extends AppAdminController
         $data = json_decode($request->getContent(), true);
 
         /** @var Media $media */
-        $media = $mediaService->findOneById(Media::class, $data['id']);
+        $media = $mediaService->findOneById(Media\Media::class, $data['id']);
         return $this->json([
             'media' => [
                 'id' => $media->getId(),

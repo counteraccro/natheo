@@ -7,7 +7,7 @@
 
 namespace App\Service\Admin\Content\Media;
 
-use App\Entity\Admin\Content\Media;
+use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\MediaFolder;
 use App\Repository\Admin\Content\MediaFolderRepository;
 use App\Repository\Admin\Content\MediaRepository;
@@ -357,7 +357,7 @@ class MediaFolderService extends AppAdminService
         $repoM = $this->getRepository(Media::class);
         $listeMedia = $repoM->getAllByLikePath($old);
 
-        /** @var Media $media */
+        /** @var \App\Entity\Admin\Content\Media\Media $media */
         $nb = count($listeMedia);
 
         $i = 0;

@@ -2,7 +2,7 @@
 
 namespace App\Repository\Admin\Content;
 
-use App\Entity\Admin\Content\Media;
+use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\MediaFolder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
