@@ -6,7 +6,7 @@
  */
 namespace App\Service\Admin\Content;
 
-use App\Entity\Admin\Content\Tag;
+use App\Entity\Admin\Content\Tag\Tag;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Admin\System\OptionSystemService;

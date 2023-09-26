@@ -7,10 +7,10 @@
 
 namespace App\Service\Admin\Content\Media;
 
-use App\Entity\Admin\Content\Media;
-use App\Entity\Admin\Content\MediaFolder;
-use App\Repository\Admin\Content\MediaFolderRepository;
-use App\Repository\Admin\Content\MediaRepository;
+use App\Entity\Admin\Content\Media\Media;
+use App\Entity\Admin\Content\Media\MediaFolder;
+use App\Repository\Admin\Content\Media\MediaFolderRepository;
+use App\Repository\Admin\Content\Media\MediaRepository;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Content\Media\MediaFolderConst;
@@ -357,7 +357,7 @@ class MediaFolderService extends AppAdminService
         $repoM = $this->getRepository(Media::class);
         $listeMedia = $repoM->getAllByLikePath($old);
 
-        /** @var Media $media */
+        /** @var \App\Entity\Admin\Content\Media\Media $media */
         $nb = count($listeMedia);
 
         $i = 0;
@@ -423,7 +423,7 @@ class MediaFolderService extends AppAdminService
     }
 
     /**
-     * Retourne l'ensemble des informations nécessaire pour la modale de déplacement
+     * Retourne l'ensemble des informations nécessaires pour la modale de déplacement
      * @param int $id
      * @param string $type
      * @return array

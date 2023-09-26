@@ -8,8 +8,8 @@
 namespace App\DataFixtures\Admin\Content;
 
 use App\DataFixtures\AppFixtures;
-use App\Entity\Admin\Content\Tag;
-use App\Entity\Admin\Content\TagTranslation;
+use App\Entity\Admin\Content\Tag\Tag;
+use App\Entity\Admin\Content\Tag\TagTranslation;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

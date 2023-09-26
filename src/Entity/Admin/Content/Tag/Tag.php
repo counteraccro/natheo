@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Entity\Admin\Content;
+namespace App\Entity\Admin\Content\Tag;
 
-use App\Repository\Admin\Content\TagRepository;
+use App\Repository\Admin\Content\Tag\TagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;

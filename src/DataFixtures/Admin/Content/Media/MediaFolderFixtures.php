@@ -5,16 +5,14 @@
  * Fixtures pour la génération des dossiers de media
  */
 
-namespace App\DataFixtures\Admin\Content;
+namespace App\DataFixtures\Admin\Content\Media;
 
 use App\DataFixtures\AppFixtures;
-use App\Entity\Admin\Content\MediaFolder;
+use App\Entity\Admin\Content\Media\MediaFolder;
 use App\Service\Admin\Content\Media\MediaFolderService;
-use App\Service\Admin\System\OptionSystemService;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Yaml\Yaml;
 use function PHPUnit\Framework\isEmpty;

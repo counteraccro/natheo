@@ -7,7 +7,7 @@
 
 namespace App\Entity\Admin\System;
 
-use App\Entity\Admin\Content\Media;
+use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Notification;
 use App\Repository\Admin\System\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;

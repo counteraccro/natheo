@@ -7,9 +7,9 @@
 
 namespace App\Service\Admin\Content\Media;
 
-use App\Entity\Admin\Content\Media;
-use App\Entity\Admin\Content\MediaFolder;
-use App\Repository\Admin\Content\MediaRepository;
+use App\Entity\Admin\Content\Media\Media;
+use App\Entity\Admin\Content\Media\MediaFolder;
+use App\Repository\Admin\Content\Media\MediaRepository;
 use App\Utils\Content\Media\MediaConst;
 use App\Utils\Content\Media\MediaFolderConst;
 use App\Utils\Content\Media\Thumbnail;

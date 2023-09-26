@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repository\Admin\Content;
+namespace App\Repository\Admin\Content\Media;
 
-use App\Entity\Admin\Content\Media;
-use App\Entity\Admin\Content\MediaFolder;
+use App\Entity\Admin\Content\Media\Media;
+use App\Entity\Admin\Content\Media\MediaFolder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
