@@ -5,7 +5,7 @@
  * Fixtures pour la génération des dossiers de media
  */
 
-namespace App\DataFixtures\Admin\Content;
+namespace App\DataFixtures\Admin\Content\Media;
 
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\Content\Media\MediaFolder;

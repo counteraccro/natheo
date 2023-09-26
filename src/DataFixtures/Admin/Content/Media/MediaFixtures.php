@@ -5,7 +5,7 @@
  * Fixture pour l'entité Media
  */
 
-namespace App\DataFixtures\Admin\Content;
+namespace App\DataFixtures\Admin\Content\Media;
 
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\Content\Media\Media;
