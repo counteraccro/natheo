@@ -9,8 +9,8 @@ namespace App\Service\Admin\Content\Media;
 
 use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Media\MediaFolder;
-use App\Repository\Admin\Content\MediaFolderRepository;
-use App\Repository\Admin\Content\MediaRepository;
+use App\Repository\Admin\Content\Media\MediaFolderRepository;
+use App\Repository\Admin\Content\Media\MediaRepository;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Content\Media\MediaFolderConst;

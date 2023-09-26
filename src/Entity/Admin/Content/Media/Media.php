@@ -3,7 +3,7 @@
 namespace App\Entity\Admin\Content\Media;
 
 use App\Entity\Admin\System\User;
-use App\Repository\Admin\Content\MediaRepository;
+use App\Repository\Admin\Content\Media\MediaRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
