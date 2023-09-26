@@ -2,7 +2,7 @@
 
 namespace App\Entity\Admin\Content\Tag;
 
-use App\Repository\Admin\Content\TagTranslationRepository;
+use App\Repository\Admin\Content\Tag\TagTranslationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TagTranslationRepository::class)]

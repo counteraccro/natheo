@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repository\Admin\Content;
+namespace App\Repository\Admin\Content\Tag;
 
 use App\Entity\Admin\Content\Tag\TagTranslation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
