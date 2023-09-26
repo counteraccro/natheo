@@ -8,6 +8,7 @@
 namespace App\Entity\Admin\System;
 
 use App\Entity\Admin\Content\Media\Media;
+use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Notification;
 use App\Repository\Admin\System\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -79,12 +80,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Media::class, orphanRemoval: true)]
     private Collection $medias;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Page::class, orphanRemoval: true)]
+    private Collection $pages;
+
     public function __construct()
     {
         $this->optionsUser = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->userData = new ArrayCollection();
         $this->medias = new ArrayCollection();
+        $this->pages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -431,6 +436,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($media->getUser() === $this) {
                 $media->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Page>
+     */
+    public function getPages(): Collection
+    {
+        return $this->pages;
+    }
+
+    public function addPage(Page $page): static
+    {
+        if (!$this->pages->contains($page)) {
+            $this->pages->add($page);
+            $page->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removePage(Page $page): static
+    {
+        if ($this->pages->removeElement($page)) {
+            // set the owning side to null (unless already changed)
+            if ($page->getUsers() === $this) {
+                $page->setUsers(null);
             }
         }
 
