@@ -9,7 +9,7 @@ namespace App\Controller\Admin\Content;
 
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Media\Media;
-use App\Entity\Admin\Content\MediaFolder;
+use App\Entity\Admin\Content\Media\MediaFolder;
 use App\Service\Admin\Content\Media\MediaFolderService;
 use App\Service\Admin\Content\Media\MediaService;
 use App\Service\Admin\System\OptionSystemService;
