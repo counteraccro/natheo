@@ -8,8 +8,8 @@
 namespace App\Controller\Admin\Content;
 
 use App\Controller\Admin\AppAdminController;
-use App\Entity\Admin\Content\Tag;
-use App\Entity\Admin\Content\TagTranslation;
+use App\Entity\Admin\Content\Tag\Tag;
+use App\Entity\Admin\Content\Tag\TagTranslation;
 use App\Service\Admin\Content\TagService;
 use App\Utils\Breadcrumb;
 use App\Utils\Flash\FlashKey;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Admin\Content;
+namespace App\Entity\Admin\Content\Tag;
 
 use App\Repository\Admin\Content\TagRepository;
 use Doctrine\Common\Collections\ArrayCollection;

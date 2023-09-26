@@ -2,7 +2,7 @@
 
 namespace App\Repository\Admin\Content;
 
-use App\Entity\Admin\Content\Tag;
+use App\Entity\Admin\Content\Tag\Tag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;

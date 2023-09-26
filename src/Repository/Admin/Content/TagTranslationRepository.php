@@ -2,7 +2,7 @@
 
 namespace App\Repository\Admin\Content;
 
-use App\Entity\Admin\Content\TagTranslation;
+use App\Entity\Admin\Content\Tag\TagTranslation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
