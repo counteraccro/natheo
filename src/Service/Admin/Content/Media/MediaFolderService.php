@@ -55,7 +55,7 @@ class MediaFolderService extends AppAdminService
 
     protected string $webPathThumbnail = '';
 
-    protected bool $canCreatePhysicalFolder = false;
+    protected bool $canCreatePhysicalFolder = true;
 
 
     /**
@@ -100,8 +100,12 @@ class MediaFolderService extends AppAdminService
         $mediaFolder = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_PATH);
         $rootWebPath = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_URL);
 
-        //TODO gérer cas url externe
+        if($mediaFolder === null || $mediaFolder === '')
+        {
+            $mediaFolder = MediaFolderConst::NAME_DEFAULT_FOLDER_MEDIATHEQUE;
+        }
 
+        //TODO gérer cas url externe
         $this->rootPathMedia = $this->rootPath . DIRECTORY_SEPARATOR .
             MediaFolderConst::ROOT_FOLDER_NAME . $mediaFolder;
 
@@ -109,9 +113,14 @@ class MediaFolderService extends AppAdminService
         $this->rootPathThumbnail = $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_THUMBNAILS;
         $this->webPathThumbnail = $rootWebPath . MediaFolderConst::PATH_WEB_THUMBNAILS;
 
-        $this->canCreatePhysicalFolder = filter_var($this->optionSystemService->getValueByKey(
+        $optCanCreatePhysicalFolder = $this->optionSystemService->getValueByKey(
             OptionSystemKey::OS_MEDIA_CREATE_PHYSICAL_FOLDER
-        ), FILTER_VALIDATE_BOOLEAN);
+        );
+
+        if($optCanCreatePhysicalFolder !== null && $optCanCreatePhysicalFolder !== '')
+        {
+            $this->canCreatePhysicalFolder = filter_var($optCanCreatePhysicalFolder, FILTER_VALIDATE_BOOLEAN);
+        }
     }
 
     /**
