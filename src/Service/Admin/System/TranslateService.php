@@ -88,8 +88,6 @@ class TranslateService extends AppAdminService
      */
     public function updateTranslateFile(string $fileName, array $updateContent): void
     {
-        var_dump($updateContent);
-
         $kernel = $this->containerBag->get('kernel.project_dir');
         $pathLog = $kernel . DIRECTORY_SEPARATOR . 'translations' . DIRECTORY_SEPARATOR;
         $finder = new Finder();
