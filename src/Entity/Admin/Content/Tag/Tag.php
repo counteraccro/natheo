@@ -2,6 +2,7 @@
 
 namespace App\Entity\Admin\Content\Tag;
 
+use App\Entity\Admin\Content\Page\Page;
 use App\Repository\Admin\Content\Tag\TagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -35,9 +36,13 @@ class Tag
     #[ORM\OneToMany(mappedBy: 'tag', targetEntity: TagTranslation::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $tagTranslations;
 
+    #[ORM\ManyToMany(targetEntity: Page::class, mappedBy: 'tag')]
+    private Collection $pages;
+
     public function __construct()
     {
         $this->tagTranslations = new ArrayCollection();
+        $this->pages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -133,5 +138,32 @@ class Tag
         return $this->getTagTranslations()->filter(function (TagTranslation $tagTranslation) use ($locale) {
             return $tagTranslation->getLocale() === $locale;
         })->first();
+    }
+
+    /**
+     * @return Collection<int, Page>
+     */
+    public function getPages(): Collection
+    {
+        return $this->pages;
+    }
+
+    public function addPage(Page $page): static
+    {
+        if (!$this->pages->contains($page)) {
+            $this->pages->add($page);
+            $page->addTag($this);
+        }
+
+        return $this;
+    }
+
+    public function removePage(Page $page): static
+    {
+        if ($this->pages->removeElement($page)) {
+            $page->removeTag($this);
+        }
+
+        return $this;
     }
 }

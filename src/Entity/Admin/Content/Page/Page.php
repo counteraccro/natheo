@@ -2,10 +2,14 @@
 
 namespace App\Entity\Admin\Content\Page;
 
+use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
 use App\Repository\Admin\Content\Page\PageRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinTable;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 
@@ -35,6 +39,27 @@ class Page
     #[Gedmo\Timestampable(on: "update")]
     #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeImmutable $updateAt = null;
+
+    #[ORM\OneToMany(mappedBy: 'page', targetEntity: PageTranslation::class, orphanRemoval: true)]
+    private Collection $pageTranslations;
+
+    #[ORM\OneToMany(mappedBy: 'page', targetEntity: PageContent::class, orphanRemoval: true)]
+    private Collection $pageContents;
+
+    #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'pages')]
+    #[JoinTable(name: 'natheo.page_tag')]
+    private Collection $tags;
+
+    #[ORM\OneToMany(mappedBy: 'page', targetEntity: PageStatistique::class, orphanRemoval: true)]
+    private Collection $pageStatistiques;
+
+    public function __construct()
+    {
+        $this->pageTranslations = new ArrayCollection();
+        $this->pageContents = new ArrayCollection();
+        $this->tags = new ArrayCollection();
+        $this->pageStatistiques = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -98,6 +123,120 @@ class Page
     public function setStatus(int $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PageTranslation>
+     */
+    public function getPageTranslations(): Collection
+    {
+        return $this->pageTranslations;
+    }
+
+    public function addPageTranslation(PageTranslation $pageTranslation): static
+    {
+        if (!$this->pageTranslations->contains($pageTranslation)) {
+            $this->pageTranslations->add($pageTranslation);
+            $pageTranslation->setPage($this);
+        }
+
+        return $this;
+    }
+
+    public function removePageTranslation(PageTranslation $pageTranslation): static
+    {
+        if ($this->pageTranslations->removeElement($pageTranslation)) {
+            // set the owning side to null (unless already changed)
+            if ($pageTranslation->getPage() === $this) {
+                $pageTranslation->setPage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PageContent>
+     */
+    public function getPageContents(): Collection
+    {
+        return $this->pageContents;
+    }
+
+    public function addPageContent(PageContent $pageContent): static
+    {
+        if (!$this->pageContents->contains($pageContent)) {
+            $this->pageContents->add($pageContent);
+            $pageContent->setPage($this);
+        }
+
+        return $this;
+    }
+
+    public function removePageContent(PageContent $pageContent): static
+    {
+        if ($this->pageContents->removeElement($pageContent)) {
+            // set the owning side to null (unless already changed)
+            if ($pageContent->getPage() === $this) {
+                $pageContent->setPage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Tag>
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): static
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): static
+    {
+        $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PageStatistique>
+     */
+    public function getPageStatistiques(): Collection
+    {
+        return $this->pageStatistiques;
+    }
+
+    public function addPageStatistique(PageStatistique $pageStatistique): static
+    {
+        if (!$this->pageStatistiques->contains($pageStatistique)) {
+            $this->pageStatistiques->add($pageStatistique);
+            $pageStatistique->setPage($this);
+        }
+
+        return $this;
+    }
+
+    public function removePageStatistique(PageStatistique $pageStatistique): static
+    {
+        if ($this->pageStatistiques->removeElement($pageStatistique)) {
+            // set the owning side to null (unless already changed)
+            if ($pageStatistique->getPage() === $this) {
+                $pageStatistique->setPage(null);
+            }
+        }
 
         return $this;
     }
