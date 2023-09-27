@@ -36,7 +36,7 @@ class Tag
     #[ORM\OneToMany(mappedBy: 'tag', targetEntity: TagTranslation::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $tagTranslations;
 
-    #[ORM\ManyToMany(targetEntity: Page::class, mappedBy: 'tag')]
+    #[ORM\ManyToMany(targetEntity: Page::class, mappedBy: 'tags')]
     private Collection $pages;
 
     public function __construct()
