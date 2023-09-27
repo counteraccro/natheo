@@ -269,14 +269,14 @@ class MediaService extends MediaFolderService
         $data = base64_decode($data);
 
 
-        $name = $file['name'] . '-' . time() . '.' . $file['fileExtention'];
+        $name = str_replace(' ', '-', $file['name']) . '-' . time() . '.' . $file['fileExtention'];
         file_put_contents($path . $name, $data);
 
         $media = new Media();
         $media->setMediaFolder($folder);
         $media->setUser($this->security->getUser());
         $this->UpdateMediaFile($media, $name);
-        $media->setName($file['name']);
+        $media->setTitle($file['name']);
         $media->setDescription($file['description']);
         $this->save($media);
     }
