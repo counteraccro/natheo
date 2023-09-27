@@ -33,4 +33,9 @@ class MediaFolderConst
      * Url dossier média interne au CMS
      */
     public const PATH_WEB_NATHEO_MEDIA =  '/assets/natheo/mediatheque/';
+
+    /**
+     * Nom du dossier par défaut de la médiatheque
+     */
+    public const NAME_DEFAULT_FOLDER_MEDIATHEQUE = 'natheotheque';
 }

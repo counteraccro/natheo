@@ -100,6 +100,11 @@ class MediaFolderService extends AppAdminService
         $mediaFolder = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_PATH);
         $rootWebPath = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_URL);
 
+        if($mediaFolder === null || $mediaFolder === '')
+        {
+            $mediaFolder = MediaFolderConst::NAME_DEFAULT_FOLDER_MEDIATHEQUE;
+        }
+
         //TODO gérer cas url externe
 
         $this->rootPathMedia = $this->rootPath . DIRECTORY_SEPARATOR .
