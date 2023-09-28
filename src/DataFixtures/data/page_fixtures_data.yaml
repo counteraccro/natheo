@@ -24,6 +24,57 @@ pages:
       presentation_content_1:
         renderOrder: 1
         type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: "# Félicitation ! Installation de nathéo CMS terminé\n\n
+            Bravo, si vous voyez cette page c'est que vous avez terminé l'installation de Natheo CMS sur votre environnement. Mais le travail n'est pas encore terminé pour autant, il va surement falloir configurer certains détail pour que ce site soit définitivement le votre
+            \n\n
+            ## Documentations\n\n
+            Retrouver l'ensemble de la documentation de <a href='http://dev.natheo/assets/natheotheque/documentations/documentation-natheo.pdf' target='_blank'>NatheoCMS</a> au format PDF
+            \n\n
+            ## Autres informations\n\n
+            Consulter notre site pour obtenir d'autres informations sur NatheoCMS"
+          en:
+            locale: en
+            text: "# [EN]Félicitation ! Installation de nathéo CMS terminé\n\n
+            Bravo, si vous voyez cette page c'est que vous avez terminé l'installation de Natheo CMS sur votre environnement. Mais le travail n'est pas encore terminé pour autant, il va surement falloir configurer certains détail pour que ce site soit définitivement le votre
+            \n\n
+            ## Documentations\n\n
+            Retrouver l'ensemble de la documentation de <a href='http://dev.natheo/assets/natheotheque/documentations/documentation-natheo.pdf' target='_blank'>NatheoCMS</a> au format PDF
+            \n\n
+            ## Autres informations\n\n
+            Consulter notre site pour obtenir d'autres informations sur NatheoCMS"
+          es:
+            locale: es
+            text: "# [ES]Félicitation ! Installation de nathéo CMS terminé\n\n
+            Bravo, si vous voyez cette page c'est que vous avez terminé l'installation de Natheo CMS sur votre environnement. Mais le travail n'est pas encore terminé pour autant, il va surement falloir configurer certains détail pour que ce site soit définitivement le votre
+            \n\n
+            ## Documentations\n\n
+            Retrouver l'ensemble de la documentation de <a href='http://dev.natheo/assets/natheotheque/documentations/documentation-natheo.pdf' target='_blank'>NatheoCMS</a> au format PDF
+            \n\n
+            ## Autres informations\n\n
+            Consulter notre site pour obtenir d'autres informations sur NatheoCMS"
       presentation_content_2:
         renderOrder: 2
         type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: "# Pour les développeurs
+            \n\n
+            Vous souhaitez contribuer au développement du CMS ou tout simplement le modifier pour l'adapter à vos besoins, consulter [la documentation](https://counteraccro.github.io/natheo.doc/) technique."
+          en:
+            locale: en
+            text: "# [EN]Pour les développeurs
+            \n\n
+            Vous souhaitez contribuer au développement du CMS ou tout simplement le modifier pour l'adapter à vos besoins, consulter [la documentation](https://counteraccro.github.io/natheo.doc/) technique."
+          es:
+            locale: es
+            text: "# [ES]Pour les développeurs
+            \n\n
+            Vous souhaitez contribuer au développement du CMS ou tout simplement le modifier pour l'adapter à vos besoins, consulter [la documentation](https://counteraccro.github.io/natheo.doc/) technique."
+      presentation_content_3:
+        renderOrder: 3
+        type: 2
+        typeId: 1

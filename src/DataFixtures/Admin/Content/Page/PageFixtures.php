@@ -5,6 +5,7 @@ namespace App\DataFixtures\Admin\Content\Page;
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageContent;
+use App\Entity\Admin\Content\Page\PageContentTranslation;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -19,7 +20,7 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::PAGE_FIXTURES_DATA_FILE);
 
-        foreach($data['pages'] as $ref => $data) {
+        foreach ($data['pages'] as $ref => $data) {
 
             $page = new Page();
             foreach ($data as $key => $value) {
@@ -31,14 +32,12 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                         $this->addTag($page, $value);
                         break;
                     case "pageTranslation":
-                        foreach ($value as $pageTrans)
-                        {
+                        foreach ($value as $pageTrans) {
                             $page->addPageTranslation($this->createPageTranslation($pageTrans));
                         }
                         break;
                     case "pageContent":
-                        foreach($value as $pageCont)
-                        {
+                        foreach ($value as $pageCont) {
                             $page->addPageContent($this->createPageContent($pageCont));
                         }
                         break;
@@ -75,8 +74,7 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
      */
     private function addTag(Page $page, array $tabTags): void
     {
-        foreach ($tabTags as $tag)
-        {
+        foreach ($tabTags as $tag) {
             $page->addTag($this->getReference($tag));
         }
     }
@@ -89,8 +87,7 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     private function createPageTranslation(array $data): PageTranslation
     {
         $pageTranslation = new PageTranslation();
-        foreach($data as $key => $value)
-        {
+        foreach ($data as $key => $value) {
             $this->setData($key, $value, $pageTranslation);
         }
         return $pageTranslation;
@@ -104,12 +101,34 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     private function createPageContent(array $data): PageContent
     {
         $pageContent = new PageContent();
-        foreach($data as $key => $value)
-        {
-            $this->setData($key, $value, $pageContent);
+        foreach ($data as $key => $value) {
+
+            if ($key === 'pageContentTranslation') {
+                foreach ($value as $pageContTrans) {
+                    $pageContent->addPageContentTranslation($this->createPageContentTranslation($pageContTrans));
+                }
+            } else {
+                $this->setData($key, $value, $pageContent);
+            }
+
         }
 
         return $pageContent;
+    }
+
+    /**
+     * Permet de créer un nouveau PageContentTranslation
+     * @param array $data
+     * @return PageContentTranslation
+     */
+    private function createPageContentTranslation(array $data): PageContentTranslation
+    {
+        $pageContentTranslation = new PageContentTranslation();
+        foreach ($data as $key => $value) {
+            $this->setData($key, $value, $pageContentTranslation);
+        }
+
+        return $pageContentTranslation;
     }
 
     public static function getGroups(): array
