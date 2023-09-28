@@ -1,0 +1,5 @@
+pages:
+  Page_1:
+    user: Aymeric
+    render: 1
+    status: 1
