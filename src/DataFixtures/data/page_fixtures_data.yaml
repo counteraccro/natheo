@@ -1,5 +1,9 @@
 pages:
-  Page_1:
+  Page_presentation:
     user: Aymeric
     render: 1
     status: 1
+    tags:
+      - Tag_natheo
+      - Tag_evolution
+      - Tag_article

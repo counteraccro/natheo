@@ -25,6 +25,9 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                     case "user" :
                         $page->setUser($this->getReference($value));
                         break;
+                    case "tags" :
+                        $this->addTag($page, $value);
+                        break;
                     default:
                         $this->setData($key, $value, $page);
                 }
@@ -48,6 +51,20 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     {
         $func = 'set' . ucfirst($key);
         $entity->$func($value);
+    }
+
+    /**
+     * Ajoute des tags à une page
+     * @param Page $page
+     * @param array $tabTags
+     * @return void
+     */
+    private function addTag(Page $page, array $tabTags): void
+    {
+        foreach ($tabTags as $tag)
+        {
+            $page->addTag($this->getReference($tag));
+        }
     }
 
     public static function getGroups(): array
