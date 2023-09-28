@@ -26,7 +26,8 @@ class PageContent
     #[ORM\Column]
     private ?int $type = null;
 
-    #[ORM\OneToMany(mappedBy: 'pageContent', targetEntity: PageContentTranslation::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'pageContent', targetEntity: PageContentTranslation::class,
+        cascade: ['persist'] ,orphanRemoval: true)]
     private Collection $pageContentTranslations;
 
     #[ORM\Column(nullable: true)]
