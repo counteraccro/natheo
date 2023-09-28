@@ -1,5 +1,5 @@
 mail:
-  -
+  MAIL_CHANGE_PASSWORD:
     key: MAIL_CHANGE_PASSWORD
     title: mail.change.password.title
     description: mail.change.password.description
@@ -20,7 +20,7 @@ mail:
         title: '[ES] Demande de changement de mot de passe'
         content: "[ES] Bonjour [[user.login]],   \n\nVous avez fait une demande de changement de mot de passe depuis le site [[[global.site_name]]]([[global.url_change_psw]]).   \nCliquez sur [ce lien]([[global.url_change_psw]]) pour changer votre mot de passe
         \n\n *Si vous n'êtes pas à l'origine de cette demande, vous pouvez l'ignorer*"
-  -
+  MAIL_RESET_PASSWORD:
     key: MAIL_RESET_PASSWORD
     title: mail.reset.password.title
     description: mail.reset.password.description
@@ -38,7 +38,7 @@ mail:
         title: '[ES] Réinitialisation de votre mot de passe'
         content: "[ES] Bonjour [[user.login]],   \n\nL'administrateur [[admin.login]] à lancé une procédure de réinitialisation de votre mot de passe.   \nCliquez sur [ce lien]([[global.url_change_psw]]) pour changer votre mot de passe    
         \n\n Ce lien est valable durant les **[[url.time]] prochaines minutes** \n\n *Si vous n'êtes pas à l'origine de cette demande, vous pouvez l'ignorer*"
-  -
+  MAIL_ACCOUNT_ADM_DISABLE:
     key: MAIL_ACCOUNT_ADM_DISABLE
     title: mail.account.adm.disable.title
     description: mail.account.adm.disable.description
@@ -53,7 +53,7 @@ mail:
       - locale: 'es'
         title: '[ES] Votre compte à été désactivé'
         content: "[ES] Bonjour [[user.login]],   \n\nVotre compte à été désactivé par [[admin.login]].    \n\n*Pour toute contestation, veuillez contacter [[admin.login]]*"
-  -
+  MAIL_ACCOUNT_ADM_ENABLE:
     key: MAIL_ACCOUNT_ADM_ENABLE
     title: mail.account.adm.enable.title
     description: mail.account.adm.enable.description
@@ -68,7 +68,7 @@ mail:
       - locale: 'es'
         title: '[ES] Votre compte à été réactivé'
         content: "[ES] Bonjour [[user.login]],   \n\nVotre compte à été réactivé par [[admin.login]].    \n\n*Pour toute contestation, veuillez contacter [[admin.login]]*"
-  -
+  MAIL_CREATE_ACCOUNT_ADM:
     key: MAIL_CREATE_ACCOUNT_ADM
     title: mail.create.account.adm.title
     description: mail.create.account.adm.description
@@ -89,7 +89,7 @@ mail:
         content: "[ES] Bonjour [[user.login]],   \n\n[[admin.login]] vous à créé un compte sur le site [[[global.site_name]]]([[global.url]]).    
         \n\nPour finaliser la création de votre compte, cliquez sur [ce lien]([[global.url_change_psw]]) pour initialiser votre mot de passe.    
         \n\n Ce lien est valable durant les **[[url.time]] prochaines minutes** \n\n*Pour toute information, veuillez contacter [[admin.login]]*"
-  -
+  MAIL_SELF_DISABLED_ACCOUNT:
     key: MAIL_SELF_DISABLED_ACCOUNT
     title: mail.self_disabled.title
     description: mail.self_disabled.description
@@ -104,7 +104,7 @@ mail:
       - locale: 'es'
         title: '[ES] Bonjour'
         content: "[ES] Bonjour,   \n\n[[user.login]] à désactivé son compte."
-  -
+  MAIL_SELF_DELETE_ACCOUNT:
     key: MAIL_SELF_DELETE_ACCOUNT
     title: mail.self_delete.title
     description: mail.self_delete.description
@@ -119,7 +119,7 @@ mail:
       - locale: 'es'
         title: '[ES] Bonjour'
         content: "[ES] Bonjour,   \n\n[[user.login]] à supprimé son compte."
-  -
+  MAIL_SELF_ANONYMOUS_ACCOUNT:
     key: MAIL_SELF_ANONYMOUS_ACCOUNT
     title: mail.self_anonymous.title
     description: mail.self_anonymous.description
