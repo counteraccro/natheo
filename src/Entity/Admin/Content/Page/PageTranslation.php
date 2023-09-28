@@ -31,11 +31,11 @@ class PageTranslation
 
     #[Gedmo\Timestampable(on: "create")]
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?\DateTimeInterface $createdAt = null;
 
     #[Gedmo\Timestampable(on: "update")]
     #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeImmutable $updateAt = null;
+    private ?\DateTimeInterface $updateAt = null;
 
     public function getId(): ?int
     {

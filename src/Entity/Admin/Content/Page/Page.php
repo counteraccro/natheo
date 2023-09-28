@@ -34,11 +34,11 @@ class Page
 
     #[Gedmo\Timestampable(on: "create")]
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?\DateTimeInterface $createdAt = null;
 
     #[Gedmo\Timestampable(on: "update")]
     #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeImmutable $updateAt = null;
+    private ?\DateTimeInterface $updateAt = null;
 
     #[ORM\OneToMany(mappedBy: 'page', targetEntity: PageTranslation::class, orphanRemoval: true)]
     private Collection $pageTranslations;
@@ -67,12 +67,12 @@ class Page
         return $this->id;
     }
 
-    public function getUsers(): ?User
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUsers(?User $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 
