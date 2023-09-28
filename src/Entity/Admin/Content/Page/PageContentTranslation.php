@@ -23,7 +23,7 @@ class PageContentTranslation
     private ?string $locale = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $texte = null;
+    private ?string $text = null;
 
     public function getId(): ?int
     {
@@ -54,14 +54,14 @@ class PageContentTranslation
         return $this;
     }
 
-    public function getTexte(): ?string
+    public function getText(): ?string
     {
-        return $this->texte;
+        return $this->text;
     }
 
-    public function setTexte(string $texte): static
+    public function setText(string $text): static
     {
-        $this->texte = $texte;
+        $this->text = $text;
 
         return $this;
     }
