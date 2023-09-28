@@ -1,5 +1,5 @@
 sidebarElement:
-  dashboard:
+  se_dashboard:
     icon: 'bi-house-fill'
     label: 'global.dashboard'
     route: 'admin_dashboard_index'
@@ -7,7 +7,7 @@ sidebarElement:
     role: 'ROLE_USER'
     lock: true
     description: 'sidebar.dashboard.description'
-  membre:
+  se_membre:
     icon: 'bi-person-lines-fill'
     label: 'global.membre'
     route: '#'
@@ -15,7 +15,7 @@ sidebarElement:
     role: 'ROLE_ADMIN'
     lock: false
     description: 'sidebar.membre.description'
-  content:
+  se_content:
     icon: 'bi-folder-fill'
     label: 'global.content'
     route: '#contenus'
@@ -24,70 +24,70 @@ sidebarElement:
     description: 'sidebar.global.content.description'
     lock: true
     children:
-      - page:
+      - se_menu:
           icon: 'bi-menu-button-wide-fill'
           label: 'global.menu'
           route: '#'
           disabled: false
-          parent: content
+          parent: se_content
           role: 'ROLE_CONTRIBUTEUR'
           description: 'sidebar.menu.description'
           lock: true
-      - page:
+      - se_page:
           icon: 'bi-file-earmark-text-fill'
           label: 'global.page'
           route: 'admin_page_index'
           disabled: false
-          parent: content
+          parent: se_content
           role: 'ROLE_CONTRIBUTEUR'
           description: 'sidebar.page.description'
           lock: true
-      - comment:
+      - se_comment:
           icon: 'bi-chat-text-fill'
           label: 'global.comment'
           route: '#'
           disabled: false
-          parent: content
+          parent: se_content
           role: 'ROLE_CONTRIBUTEUR'
           description: 'sidebar.comment.description'
           lock: true
-      - tag:
+      - se_tag:
           icon: 'bi-tags-fill'
           label: 'global.tag'
           route: 'admin_tag_index'
           disabled: false
-          parent: content
+          parent: se_content
           role: 'ROLE_CONTRIBUTEUR'
           description: 'sidebar.tag.description'
           lock: true
-      - media:
+      - se_media:
           icon: 'bi-file-earmark-image-fill'
           label: 'global.mediatheque'
           route: 'admin_media_index'
           disabled: false
-          parent: content
+          parent: se_content
           role: 'ROLE_CONTRIBUTEUR'
           description: 'sidebar.mediatheque.description'
           lock: true
-      - faq:
+      - se_faq:
           icon: 'bi-question-circle-fill'
           label: 'global.faq'
           route: '#'
           disabled: false
-          parent: content
+          parent: se_content
           role: 'ROLE_CONTRIBUTEUR'
           description: 'sidebar.faq.description'
           lock: false
-      - cv:
+      - se_cv:
           icon: 'bi-file-person-fill'
           label: 'global.cv'
           route: '#'
           disabled: false
-          parent: content
+          parent: se_content
           role: 'ROLE_CONTRIBUTEUR'
           description: 'sidebar.cv.description'
           lock: false
-  system:
+  se_system:
     icon: 'bi-gear-fill'
     label: 'global.system'
     route: '#system'
@@ -96,61 +96,61 @@ sidebarElement:
     description: 'sidebar.global.system.description'
     lock: true
     children:
-      - user:
+      - se_user:
           icon: 'bi-person-fill'
           label: 'global.user'
           route: 'admin_user_index'
           disabled: false
-          parent: system
+          parent: se_system
           role: 'ROLE_SUPER_ADMIN'
           description: 'sidebar.user.description'
           lock: true
-      - droits:
+      - se_droits:
           icon: 'bi-layout-text-sidebar'
           label: 'global.sidebar'
           route: 'admin_sidebar_index'
           disabled: false
-          parent: system
+          parent: se_system
           role: 'ROLE_SUPER_ADMIN'
           description: 'sidebar.sidebar.description'
           lock: true
-      - options:
+      - se_options:
           icon: 'bi-option'
           label: 'global.system_options'
           route: 'admin_option-system_change'
           disabled: false
-          parent: system
+          parent: se_system
           role: 'ROLE_SUPER_ADMIN'
           description: 'sidebar.system_options.description'
           lock: true
-      - email:
+      - se_email:
           icon: 'bi-envelope-fill'
           label: 'global.mail'
           route: 'admin_mail_index'
           disabled: false
-          parent: system
+          parent: se_system
           role: 'ROLE_SUPER_ADMIN'
           description: 'sidebar.mail.description'
           lock: false
-      - translate:
+      - se_translate:
           icon: 'bi-translate'
           label: 'global.translate'
           route: 'admin_translation_index'
           disabled: false
-          parent: system
+          parent: se_system
           role: 'ROLE_SUPER_ADMIN'
           description: 'sidebar.translate.description'
           lock: true
-      - logs:
+      - se_logs:
           icon: 'bi-file-earmark-text'
           label: 'global.logs'
           route: 'admin_log_index'
           disabled: false
-          parent: system
+          parent: se_system
           role: 'ROLE_SUPER_ADMIN'
           description: 'sidebar.log.description'
           lock: false
-  devTools:
+  se_devTools:
     icon: 'bi-tools'
     label: 'global.devtools'
     route: '#devTools'
@@ -159,30 +159,30 @@ sidebarElement:
     description: 'sidebar.devtools.description'
     lock: false
     children:
-      - devOptions:
+      - se_devOptions:
           icon: 'bi-sign-do-not-enter-fill'
           label: 'global.dev_options'
           route: '#'
           disabled: false
-          parent: devTools
+          parent: se_devTools
           role: 'ROLE_SUPER_ADMIN'
           description: 'sidebar.dev_options.description'
           lock: false
-      - database:
+      - se_database:
           icon: 'bi-database-fill'
           label: 'global.database'
           route: '#'
           disabled: false
-          parent: devTools
+          parent: se_devTools
           role: 'ROLE_SUPER_ADMIN'
           description: 'sidebar.database.description'
           lock: false
-      - html-element:
+      - se_html-element:
           icon: 'bi-code'
           label: 'global.html_element'
           route: 'admin_dashboard_page_demo'
           disabled: false
-          parent: devTools
+          parent: se_devTools
           role: 'ROLE_SUPER_ADMIN'
           description: 'sidebar.html_element.description'
           lock: false
