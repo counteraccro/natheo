@@ -4,6 +4,8 @@ namespace App\DataFixtures\Admin\Content\Page;
 
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\Content\Page\Page;
+use App\Entity\Admin\Content\Page\PageContent;
+use App\Entity\Admin\Content\Page\PageTranslation;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -27,6 +29,18 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                         break;
                     case "tags" :
                         $this->addTag($page, $value);
+                        break;
+                    case "pageTranslation":
+                        foreach ($value as $pageTrans)
+                        {
+                            $page->addPageTranslation($this->createPageTranslation($pageTrans));
+                        }
+                        break;
+                    case "pageContent":
+                        foreach($value as $pageCont)
+                        {
+                            $page->addPageContent($this->createPageContent($pageCont));
+                        }
                         break;
                     default:
                         $this->setData($key, $value, $page);
@@ -65,6 +79,37 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
         {
             $page->addTag($this->getReference($tag));
         }
+    }
+
+    /**
+     * Créer une nouvelle pageTranslation
+     * @param array $data
+     * @return PageTranslation
+     */
+    private function createPageTranslation(array $data): PageTranslation
+    {
+        $pageTranslation = new PageTranslation();
+        foreach($data as $key => $value)
+        {
+            $this->setData($key, $value, $pageTranslation);
+        }
+        return $pageTranslation;
+    }
+
+    /**
+     * Permet de créer un nouveau PageContent
+     * @param array $data
+     * @return PageContent
+     */
+    private function createPageContent(array $data): PageContent
+    {
+        $pageContent = new PageContent();
+        foreach($data as $key => $value)
+        {
+            $this->setData($key, $value, $pageContent);
+        }
+
+        return $pageContent;
     }
 
     public static function getGroups(): array

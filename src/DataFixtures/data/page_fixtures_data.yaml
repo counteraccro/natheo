@@ -7,3 +7,23 @@ pages:
       - Tag_natheo
       - Tag_evolution
       - Tag_article
+    pageTranslation:
+      fr:
+        locale: fr
+        titre: Bienvenue sur NatheoCMS
+        url: article/bienvenue
+      en:
+        locale: en
+        titre: '[EN] Bienvenue sur NatheoCMS'
+        url: 'article-en/welcome'
+      es:
+        locale: es
+        titre: '[ES] Bienvenue sur NatheoCMS'
+        url: 'article-es/bienvenido'
+    pageContent:
+      presentation_content_1:
+        renderOrder: 1
+        type: 1
+      presentation_content_2:
+        renderOrder: 2
+        type: 1
