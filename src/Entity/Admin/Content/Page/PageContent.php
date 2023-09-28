@@ -29,6 +29,9 @@ class PageContent
     #[ORM\OneToMany(mappedBy: 'pageContent', targetEntity: PageContentTranslation::class, orphanRemoval: true)]
     private Collection $pageContentTranslations;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $typeId = null;
+
     public function __construct()
     {
         $this->pageContentTranslations = new ArrayCollection();
@@ -101,6 +104,18 @@ class PageContent
                 $pageContentTranslation->setPageContent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTypeId(): ?int
+    {
+        return $this->typeId;
+    }
+
+    public function setTypeId(?int $typeId): static
+    {
+        $this->typeId = $typeId;
 
         return $this;
     }
