@@ -158,6 +158,6 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
 
     public function getOrder(): int
     {
-        return 204;
+        return 299;
     }
 }
