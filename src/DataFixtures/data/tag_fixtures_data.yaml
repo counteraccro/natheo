@@ -1,5 +1,6 @@
 tag:
-  - color: '#6F42C1'
+  Tag_natheo:
+    color: '#6F42C1'
     translate:
       - locale: fr
         label: 'Natheo'
@@ -7,7 +8,8 @@ tag:
         label: 'Natheo'
       - locale: en
         label: 'Natheo'
-  - color: '#7A86B8'
+  Tag_dev:
+    color: '#7A86B8'
     translate:
       - locale: fr
         label: 'Développement'
@@ -15,7 +17,8 @@ tag:
         label: 'Développement (ES)'
       - locale: en
         label: 'Développement (EN)'
-  - color: '#8fb408'
+  Tag_media:
+    color: '#8fb408'
     translate:
       - locale: fr
         label: 'Média'
@@ -23,7 +26,8 @@ tag:
         label: 'Média (ES)'
       - locale: en
         label: 'Média (EN)'
-  - color: '#1188b4'
+  Tag_article:
+    color: '#1188b4'
     translate:
       - locale: fr
         label: 'Article'
@@ -31,7 +35,8 @@ tag:
         label: 'Article (ES)'
       - locale: en
         label: 'Article (EN)'
-  - color: '#b61114'
+  Tag_evolution:
+    color: '#b61114'
     translate:
       - locale: fr
         label: 'Evolution'
