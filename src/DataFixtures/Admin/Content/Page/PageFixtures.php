@@ -6,6 +6,7 @@ use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\Content\Page\PageContentTranslation;
+use App\Entity\Admin\Content\Page\PageStatistique;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -39,6 +40,11 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                     case "pageContent":
                         foreach ($value as $pageCont) {
                             $page->addPageContent($this->createPageContent($pageCont));
+                        }
+                        break;
+                    case "pageStatistique":
+                        foreach ($value as $pageStat) {
+                            $page->addPageStatistique($this->createPageStatistique($pageStat));
                         }
                         break;
                     default:
@@ -129,6 +135,20 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
         }
 
         return $pageContentTranslation;
+    }
+
+    /**
+     * Créer une nouvelle pageStatistique
+     * @param array $data
+     * @return PageStatistique
+     */
+    private function createPageStatistique(array $data): PageStatistique
+    {
+        $pageStatistique = new PageStatistique();
+        foreach ($data as $key => $value) {
+            $this->setData($key, $value, $pageStatistique);
+        }
+        return $pageStatistique;
     }
 
     public static function getGroups(): array

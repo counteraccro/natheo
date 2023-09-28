@@ -78,3 +78,10 @@ pages:
         renderOrder: 3
         type: 2
         typeId: 1
+    pageStatistique:
+      PAGE_NB_VISITEUR:
+        key: PAGE_NB_VISITEUR
+        value: 100
+      PAGE_NB_READ:
+        key: PAGE_NB_READ
+        value: 30
