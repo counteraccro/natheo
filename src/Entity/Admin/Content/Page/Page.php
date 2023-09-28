@@ -40,17 +40,17 @@ class Page
     #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updateAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'page', targetEntity: PageTranslation::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'page', targetEntity: PageTranslation::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $pageTranslations;
 
-    #[ORM\OneToMany(mappedBy: 'page', targetEntity: PageContent::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'page', targetEntity: PageContent::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $pageContents;
 
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'pages')]
     #[JoinTable(name: 'natheo.page_tag')]
     private Collection $tags;
 
-    #[ORM\OneToMany(mappedBy: 'page', targetEntity: PageStatistique::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'page', targetEntity: PageStatistique::class, cascade: ['persist'] , orphanRemoval: true)]
     private Collection $pageStatistiques;
 
     public function __construct()
