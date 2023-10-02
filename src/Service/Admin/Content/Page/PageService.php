@@ -10,6 +10,9 @@ use App\Entity\Admin\Content\Page\Page;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Admin\System\OptionSystemService;
+use App\Utils\Content\Page\PageConst;
+use App\Utils\Content\Tag\TagRender;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -101,10 +104,11 @@ class PageService extends AppAdminService
             $data[] = [
                 $this->translator->trans('page.grid.id', domain: 'page') => $element->getId() . ' ' . $isDisabled,
                 $this->translator->trans('page.grid.title', domain: 'page') => $titre,
-                $this->translator->trans('page.grid.status', domain: 'page') => 'Status',
-                $this->translator->trans('page.grid.tag', domain: 'page') => 'Tag',
-                $this->translator->trans('page.grid.comment', domain: 'page') => 'Nb Comment',
-                $this->translator->trans('page.grid.nb_see', domain: 'page') => 'Nb Comment',
+                $this->translator->trans('page.grid.status', domain: 'page') =>
+                    $this->getStatusStr($element->getStatus()),
+                $this->translator->trans('page.grid.tag', domain: 'page') => $this->getTags($element->getTags()),
+                $this->translator->trans('page.grid.comment', domain: 'page') => 0,
+                $this->translator->trans('page.grid.nb_see', domain: 'page') => 0,
                 $this->translator->trans('page.grid.update_at', domain: 'page') => $element
                     ->getUpdateAt()->format('d/m/y H:i'),
                 GridService::KEY_ACTION => json_encode($action),
@@ -122,7 +126,7 @@ class PageService extends AppAdminService
 
     /**
      * Génère le tableau d'action pour le Grid des sidebarElement
-     * @param Page $tag
+     * @param Page $page
      * @return array[]|string[]
      */
     private function generateTabAction(Page $page): array
@@ -168,5 +172,36 @@ class PageService extends AppAdminService
             'ajax' => false];
 
         return $actions;
+    }
+
+    /**
+     * Retourne le status sous forme d'un label traduit
+     * @param int $status
+     * @return string
+     */
+    public function getStatusStr(int $status): string
+    {
+        return match ($status) {
+            PageConst::STATUS_DRAFT => $this->translator->trans('page.status.draft', domain: 'page'),
+            PageConst::STATUS_PUBLISH => $this->translator->trans('page.status.publish', domain: 'page'),
+            default => $this->translator->trans('page.status.inconnu', domain: 'page'),
+        };
+    }
+
+    /**
+     * Génère une liste de tags au format HTML
+     * @param Collection $tags
+     * @return string
+     */
+    public function getTags(Collection $tags): string
+    {
+        $locale = $this->requestStack->getCurrentRequest()->getLocale();
+        $return = '';
+        foreach($tags as $tag)
+        {
+            $tagRender = new TagRender($tag, $locale);
+            $return .= ' ' . $tagRender->getHtml();
+        }
+        return trim($return);
     }
 }
