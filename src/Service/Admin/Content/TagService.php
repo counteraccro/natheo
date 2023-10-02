@@ -10,6 +10,7 @@ use App\Entity\Admin\Content\Tag\Tag;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Admin\System\OptionSystemService;
+use App\Utils\Content\Tag\TagRender;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -103,15 +104,13 @@ class TagService extends AppAdminService
                 $isDisabled = '<i class="bi bi-eye-slash"></i>';
             }
 
-            $label = $element->getTagTranslationByLocale(
-                $this->requestStack->getCurrentRequest()->getLocale()
-            )->getLabel();
+            $locale = $this->requestStack->getCurrentRequest()->getLocale();
+            $label = $element->getTagTranslationByLocale($locale)->getLabel();
+            $tagRender = new TagRender($element, $locale);
 
             $data[] = [
                 $this->translator->trans('tag.grid.id', domain: 'tag') => $element->getId() . ' ' . $isDisabled,
-                $this->translator->trans('tag.grid.label', domain: 'tag') =>
-                    '<span class="badge rounded-pill badge-nat" 
-                    style="background-color: ' . $element->getColor() . '">' . $label . '<span>',
+                $this->translator->trans('tag.grid.label', domain: 'tag') => $tagRender->getHtml(),
                 $this->translator->trans('tag.grid.color', domain: 'tag') => $element->getColor(),
                 $this->translator->trans('tag.grid.created_at', domain: 'tag') => $element
                     ->getCreatedAt()->format('d/m/y H:i'),
