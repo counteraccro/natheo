@@ -4,6 +4,7 @@ namespace App\Repository\Admin\Content\Page;
 
 use App\Entity\Admin\Content\Page\Page;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,6 +20,25 @@ class PageRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Page::class);
+    }
+
+    /**
+     * Retourne une liste de page Paginé
+     * @param int $page
+     * @param int $limit
+     * @return Paginator
+     */
+    public function getAllPaginate(int $page, int $limit): Paginator
+    {
+        $query = $this->createQueryBuilder('p')
+            ->orderBy('p.id', 'ASC');
+
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
+
     }
 
 //    /**
