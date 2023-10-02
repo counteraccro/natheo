@@ -3,3 +3,15 @@ page.index.page_title_h1: __page.index.page_title_h1
 page.index.btn.new: __page.index.btn.new
 page.index.description: __page.index.description
 page.index.popin.help.title: __page.index.popin.help.title
+page.success.no.disabled: __page.success.no.disabled
+page.success.disabled: __page.success.disabled
+page.remove.success: __page.remove.success
+page.grid.id: __page.grid.id
+page.grid.title: __page.grid.title
+page.grid.status: __page.grid.status
+page.grid.tag: __page.grid.tag
+page.grid.comment: __page.grid.comment
+page.grid.nb_see: __page.grid.nb_see
+page.grid.update_at: __page.grid.update_at
+page.confirm.disabled.msg: __page.confirm.disabled.msg
+page.confirm.delete.msg: __page.confirm.delete.msg

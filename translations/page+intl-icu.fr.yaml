@@ -3,3 +3,15 @@ page.index.page_title_h1: 'Gestion des pages'
 page.index.btn.new: 'Nouvelle page'
 page.index.popin.help.title: Aide
 page.index.description: 'Gérer les pages accessibles par vos visiteurs.'
+page.grid.title: Titre
+page.grid.status: Status
+page.grid.tag: Tags
+page.grid.comment: 'Nb Commentaires'
+page.grid.nb_see: Affichage
+page.grid.update_at: 'Dernière modification'
+page.confirm.disabled.msg: 'Confirmez vous la désactivation de la page <b>{label}</b>, cette page deviendra inaccessible'
+page.grid.id: '#'
+page.confirm.delete.msg: 'Confirmez vous la suppression de la page <b>{label}</b>, cette action est définitive'
+page.success.no.disabled: 'La page <b>{label}</b> à été restaurée avec succès'
+page.success.disabled: 'La page <b>{label}</b> à été désactivée avec succès'
+page.remove.success: 'La page <b>{label}</b> à été supprimée avec succès'
