@@ -105,7 +105,6 @@ class TagService extends AppAdminService
             }
 
             $locale = $this->requestStack->getCurrentRequest()->getLocale();
-            $label = $element->getTagTranslationByLocale($locale)->getLabel();
             $tagRender = new TagRender($element, $locale);
 
             $data[] = [
