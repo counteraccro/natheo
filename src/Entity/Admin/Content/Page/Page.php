@@ -32,6 +32,9 @@ class Page
     #[ORM\Column]
     private ?int $status = null;
 
+    #[ORM\Column]
+    private ?bool $disabled = false;
+
     #[Gedmo\Timestampable(on: "create")]
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
@@ -237,6 +240,18 @@ class Page
                 $pageStatistique->setPage(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isDisabled(): ?bool
+    {
+        return $this->disabled;
+    }
+
+    public function setDisabled(bool $disabled): static
+    {
+        $this->disabled = $disabled;
 
         return $this;
     }
