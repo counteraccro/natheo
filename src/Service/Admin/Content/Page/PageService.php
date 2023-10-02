@@ -71,7 +71,7 @@ class PageService extends AppAdminService
     {
         $column = [
             $this->translator->trans('page.grid.id', domain: 'page'),
-            $this->translator->trans('page.grid.titre', domain: 'page'),
+            $this->translator->trans('page.grid.title', domain: 'page'),
             $this->translator->trans('page.grid.status', domain: 'page'),
             $this->translator->trans('page.grid.tag', domain: 'page'),
             $this->translator->trans('page.grid.comment', domain: 'page'),
@@ -95,17 +95,17 @@ class PageService extends AppAdminService
                 $isDisabled = '<i class="bi bi-eye-slash"></i>';
             }
 
-            $label = $element->getPageTranslationByLocale(
-                $this->requestStack->getCurrentRequest()->getLocale()
-            )->getTitre();
+            $locale = $this->requestStack->getCurrentRequest()->getLocale();
+            $titre = $element->getPageTranslationByLocale($locale)->getTitre();
 
             $data[] = [
-                $this->translator->trans('page.grid.id', domain: 'tag') => $element->getId() . ' ' . $isDisabled,
-                $this->translator->trans('tag.grid.label', domain: 'tag') => '',
-                $this->translator->trans('tag.grid.color', domain: 'tag') => $element->getColor(),
-                $this->translator->trans('tag.grid.created_at', domain: 'tag') => $element
-                    ->getCreatedAt()->format('d/m/y H:i'),
-                $this->translator->trans('tag.grid.update_at', domain: 'tag') => $element
+                $this->translator->trans('page.grid.id', domain: 'page') => $element->getId() . ' ' . $isDisabled,
+                $this->translator->trans('page.grid.title', domain: 'page') => $titre,
+                $this->translator->trans('page.grid.status', domain: 'page') => 'Status',
+                $this->translator->trans('page.grid.tag', domain: 'page') => 'Tag',
+                $this->translator->trans('page.grid.comment', domain: 'page') => 'Nb Comment',
+                $this->translator->trans('page.grid.nb_see', domain: 'page') => 'Nb Comment',
+                $this->translator->trans('page.grid.update_at', domain: 'page') => $element
                     ->getUpdateAt()->format('d/m/y H:i'),
                 GridService::KEY_ACTION => json_encode($action),
             ];
