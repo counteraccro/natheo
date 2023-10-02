@@ -11,6 +11,7 @@ use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Content\Page\PageConst;
+use App\Utils\Content\Page\PageStatistiqueKey;
 use App\Utils\Content\Tag\TagRender;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -108,7 +109,8 @@ class PageService extends AppAdminService
                     $this->getStatusStr($element->getStatus()),
                 $this->translator->trans('page.grid.tag', domain: 'page') => $this->getTags($element->getTags()),
                 $this->translator->trans('page.grid.comment', domain: 'page') => 0,
-                $this->translator->trans('page.grid.nb_see', domain: 'page') => 0,
+                $this->translator->trans('page.grid.nb_see', domain: 'page') =>
+                    $element->getPageStatistiqueByKey(PageStatistiqueKey::KEY_PAGE_NB_VISITEUR)->getValue(),
                 $this->translator->trans('page.grid.update_at', domain: 'page') => $element
                     ->getUpdateAt()->format('d/m/y H:i'),
                 GridService::KEY_ACTION => json_encode($action),
