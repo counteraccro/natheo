@@ -267,4 +267,15 @@ class Page
             return $pageTranslation->getLocale() === $locale;
         })->first();
     }
+
+    /**
+     * @param string $key
+     * @return PageStatistique;
+     */
+    public function getPageStatistiqueByKey(string $key): PageStatistique
+    {
+        return $this->getPageStatistiques()->filter(function (PageStatistique $pageStatistique) use ($key) {
+            return $pageStatistique->getKey() === $key;
+        })->first();
+    }
 }
