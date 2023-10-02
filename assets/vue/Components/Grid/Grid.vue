@@ -72,7 +72,7 @@ export default {
 </script>
 
 <template>
-  <table class="table table-striped table-hover" v-if="filteredData.length" aria-label="Table-grid">
+  <table class="table table-striped table-hover align-middle" v-if="filteredData.length" aria-label="Table-grid">
     <thead>
     <tr>
       <th v-for="key in columns"
