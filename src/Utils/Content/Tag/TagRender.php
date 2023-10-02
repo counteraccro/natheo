@@ -32,6 +32,6 @@ class TagRender
     {
         $label = $this->tag->getTagTranslationByLocale($this->locale)->getLabel();
         return '<span class="badge rounded-pill badge-nat"
-                    style="background-color: ' . $this->tag->getColor() . '">' . $label . '<span>';
+                    style="background-color: ' . $this->tag->getColor() . '">' . $label . '</span>';
     }
 }
