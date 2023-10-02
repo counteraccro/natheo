@@ -28,7 +28,7 @@ class TagRender
      * Génère le format HTML d'un tag
      * @return string
      */
-    public function getHtml()
+    public function getHtml(): string
     {
         $label = $this->tag->getTagTranslationByLocale($this->locale)->getLabel();
         return '<span class="badge rounded-pill badge-nat"
