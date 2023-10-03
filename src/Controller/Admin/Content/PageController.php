@@ -9,6 +9,7 @@ namespace App\Controller\Admin\Content;
 
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Page\Page;
+use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Service\Admin\Content\Page\PageService;
 use App\Utils\Breadcrumb;
 use App\Utils\System\Options\OptionUserKey;
@@ -139,12 +140,25 @@ class PageController extends AppAdminController
             ]
         ];
 
+        $translate = [];
+        $locales = $pageService->getLocales();
+        if ($page === null) {
+            $page = new Page();
+            foreach ($locales['locales'] as $locale) {
+                $pageTranslation = new PageTranslation();
+                $pageTranslation->setLocale($locale)->setPage($page);
+                $page->addPageTranslation($pageTranslation);
+
+            }
+        }
+        $page = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt']);
+
 
         return $this->render('admin/content/page/add_update.html.twig', [
             'breadcrumb' => $breadcrumb,
-            //'translate' => $translate,
-            //'locales' => $locales,
-            //'tag' => $tag
+            'translate' => $translate,
+            'locales' => $locales,
+            'page' => $page
         ]);
     }
 }

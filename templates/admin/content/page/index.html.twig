@@ -10,7 +10,7 @@
     <button type="button" class="btn btn-secondary float-end ms-2" data-bs-toggle="modal" data-bs-target="#help-grid-tag">
         <i class="bi bi-question-circle"></i>
     </button>
-    <a href="#" class="float-end btn btn-secondary"><i class="bi bi-journal-text"></i> {{ 'page.index.btn.new' | trans({}, 'page') }}</a>
+    <a href="{{ path('admin_page_add') }}" class="float-end btn btn-secondary"><i class="bi bi-journal-text"></i> {{ 'page.index.btn.new' | trans({}, 'page') }}</a>
 
     <p>
         {{ 'page.index.description' | trans({}, 'page') }} <br/>
