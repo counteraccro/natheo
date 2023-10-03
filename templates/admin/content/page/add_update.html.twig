@@ -1,0 +1,34 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+
+{% if page.id is same as null %}
+    {% set title = 'page.add.page_title' | trans({}, 'page') %}
+    {% set titleH1 = 'page.add.page_title_h1' | trans({}, 'page') %}
+    {% set description = 'page.add.description' | trans({}, 'page') %}
+{% else %}
+    {% set title = 'page.update.page_title' | trans({'id' : page.id}, 'page') %}
+    {% set titleH1 = 'page.update.page_title_h1' | trans({}, 'page') %}
+    {% set description = 'page.update.description' | trans({}, 'page') %}
+{% endif %}
+
+ {% block title %}
+     {{ title }}
+ {% endblock %}
+
+{% block body %}
+
+    <h1>{{ titleH1 }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    <p>
+        {{ description }}
+    </p>
+
+    <div {{ vue_component('Admin/Content/PageForm', {
+        'url' : '#',
+        'translate' : translate,
+        'locales' : locales}) }}>
+    </div>
+
+{% endblock %}
