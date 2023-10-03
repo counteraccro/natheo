@@ -15,6 +15,12 @@ page.confirm.delete.msg: 'Confirmez vous la suppression de la page <b>{label}</b
 page.success.no.disabled: 'La page <b>{label}</b> à été restaurée avec succès'
 page.success.disabled: 'La page <b>{label}</b> à été désactivée avec succès'
 page.remove.success: 'La page <b>{label}</b> à été supprimée avec succès'
-page.status.draft: 'Brouillon'
-page.status.publish: 'Publiée'
-page.status.inconnu: 'Inconnu'
+page.status.draft: Brouillon
+page.status.publish: Publiée
+page.status.inconnu: Inconnu
+page.add.page_title: "Création d'une nouvelle page"
+page.add.page_title_h1: "Nouvelle page"
+page.add.description: "Créer une nouvelle page pour votre site web"
+page.update.page_title: "Edition de la page #{id}"
+page.update.page_title_h1: "Edition"
+page.update.description: "Modifier une page de votre site web"

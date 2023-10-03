@@ -15,3 +15,12 @@ page.grid.nb_see: __page.grid.nb_see
 page.grid.update_at: __page.grid.update_at
 page.confirm.disabled.msg: __page.confirm.disabled.msg
 page.confirm.delete.msg: __page.confirm.delete.msg
+page.status.draft: __page.status.draft
+page.status.publish: __page.status.publish
+page.status.inconnu: __page.status.inconnu
+page.add.page_title: __page.add.page_title
+page.add.page_title_h1: __page.add.page_title_h1
+page.add.description: __page.add.description
+page.update.page_title: __page.update.page_title
+page.update.page_title_h1: __page.update.page_title_h1
+page.update.description: __page.update.description
