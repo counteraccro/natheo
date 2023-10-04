@@ -6,17 +6,22 @@
  */
 
 export default {
+  name: 'PageForm',
   props: {
     url: String,
     translate: Object,
-    locales: Object
+    locales: Object,
+    pPage: Object
   },
   emits: [],
   data() {
-    return {}
+    return {
+      page: this.pPage
+    }
   },
   computed: {},
   methods: {
+
   }
 }
 
@@ -24,5 +29,13 @@ export default {
 
 <template>
   <div>Template Page</div>
+
+  <div v-for="pTrans in this.page.pageTranslations">
+    <input type="text" v-model="pTrans.locale">
+  </div>
+
+  <div v-for="pTrans in this.page.pageTranslations">
+    <div>{{pTrans.locale}}</div>
+  </div>
 
 </template>
