@@ -12,6 +12,7 @@ use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Service\Admin\Content\Page\PageService;
 use App\Utils\Breadcrumb;
+use App\Utils\Content\Page\PageFactory;
 use App\Utils\System\Options\OptionUserKey;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -143,13 +144,17 @@ class PageController extends AppAdminController
         $translate = [];
         $locales = $pageService->getLocales();
         if ($page === null) {
-            $page = new Page();
+
+            $pageFactory = new PageFactory($locales['locales']);
+            $page = $pageFactory->create();
+
+            /*$page = new Page();
             foreach ($locales['locales'] as $locale) {
                 $pageTranslation = new PageTranslation();
                 $pageTranslation->setLocale($locale)->setPage($page);
                 $page->addPageTranslation($pageTranslation);
 
-            }
+            }*/
         }
         $page = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt']);
 
