@@ -39,6 +39,11 @@ class PageConst
      */
     const STATUS_DRAFT = 2;
 
+    /**
+     * Type texte pour les pages contents
+     */
+    const CONTENT_TYPE_TEXT = 1;
+
 
 
 
