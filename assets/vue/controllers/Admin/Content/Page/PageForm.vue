@@ -1,5 +1,4 @@
-<script>
-/**
+<script>/**
  * Permet d'ajouter ou éditer une page
  * @author Gourdon Aymeric
  * @version 1.0
@@ -19,11 +18,15 @@ export default {
       page: this.pPage
     }
   },
+  mounted() {
+
+  },
   computed: {},
   methods: {
 
   }
 }
+
 
 </script>
 
