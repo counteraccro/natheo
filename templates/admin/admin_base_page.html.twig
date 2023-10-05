@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>{% block title %}{{ get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_SITE_NAME')) }}{% endblock %}</title>
     <link rel="icon"
-          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
     {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
     {% block stylesheets %}
 
@@ -29,20 +29,19 @@
                 {% include "/admin/includes/flash.html.twig" %}
                 <div id="block-content">
                     {% block body %}{% endblock %}
+                    <div class="btn btn-primary" onclick="showRender()" id="btn-reduce">Voir</div>
                 </div>
-
-                <div class="btn btn-primary float-end" onclick="show()" id="btn-reduce">Agradnir</div>
             </div>
         </div>
     </div>
     <div class="col-4" id="col-adm-page-render" style="transition: all 0.3s;">
 
-        <div id="demo-render-page" class="overflow-y-auto w-100 h-75" style="border: 1px solid red">
-            aaaa
+        <div id="demo-render-page" class="overflow-y-auto w-100" style="border: 1px solid red; height: 90%">
+            {% include "/admin/content/page/render.html.twig" %}
         </div>
 
         <div class="">
-            <div class="btn btn-primary" onclick="test()" id="btn-reduce">Reduire</div>
+            <div class="btn btn-primary" onclick="hideRender()" id="btn-reduce">Reduire</div>
         </div>
 
     </div>
@@ -54,14 +53,18 @@
     let colPage = document.getElementById('col-adm-page');
     let colRender = document.getElementById('col-adm-page-render');
 
-    function test()
-    {
+    /**
+     * Masque le rendu démo
+     */
+    function hideRender() {
         colPage.classList.remove('col-8');
         colRender.classList.add('d-none');
     }
 
-    function show()
-    {
+    /**
+     * Affiche le rendu démo
+     */
+    function showRender() {
         colPage.classList.add('col-8');
         colRender.classList.remove('d-none');
     }
