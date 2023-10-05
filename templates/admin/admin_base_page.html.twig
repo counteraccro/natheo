@@ -1,0 +1,70 @@
+{# Template pour la création / édition de page #}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{{ get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_SITE_NAME')) }}{% endblock %}</title>
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+    {% block stylesheets %}
+
+        {% set theme = get_option_user_value_by_key(constant('App\\Utils\\System\\Options\\OptionUserKey::OU_THEME_SITE')) %}
+        {{ encore_entry_link_tags('admin_'~theme) }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('admin') }}
+    {% endblock %}
+</head>
+<body>
+<div class="row g-0">
+    <div class="col-8" id="col-adm-page" style="transition: all 0.3s;">
+        <div class="wrapper">
+            <!-- Sidebar  -->
+            {% include "/admin/includes/menu.html.twig" %}
+            <!-- Page Content  -->
+            <div id="content">
+                {% include "/admin/includes/header.html.twig" %}
+                {% include "/admin/includes/flash.html.twig" %}
+                <div id="block-content">
+                    {% block body %}{% endblock %}
+                </div>
+
+                <div class="btn btn-primary float-end" onclick="show()" id="btn-reduce">Agradnir</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-4" id="col-adm-page-render" style="transition: all 0.3s;">
+
+        <div id="demo-render-page" class="overflow-y-auto w-100 h-75" style="border: 1px solid red">
+            aaaa
+        </div>
+
+        <div class="">
+            <div class="btn btn-primary" onclick="test()" id="btn-reduce">Reduire</div>
+        </div>
+
+    </div>
+</div>
+
+{% include "/admin/includes/scripts.html.twig" %}
+<script>
+    let btn = document.getElementById('btn-reduce');
+    let colPage = document.getElementById('col-adm-page');
+    let colRender = document.getElementById('col-adm-page-render');
+
+    function test()
+    {
+        colPage.classList.remove('col-8');
+        colRender.classList.add('d-none');
+    }
+
+    function show()
+    {
+        colPage.classList.add('col-8');
+        colRender.classList.remove('d-none');
+    }
+</script>
+</body>
+</html>
