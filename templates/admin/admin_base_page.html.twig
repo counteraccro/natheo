@@ -28,19 +28,26 @@
                 {% include "/admin/includes/flash.html.twig" %}
                 <div id="block-content">
                     {% block body %}{% endblock %}
-                    <div class="btn btn-primary" onclick="showRender()" id="btn-reduce">Voir</div>
+                    <div class="btn btn-secondary btn-action-show-render" onclick="showRender()">
+                        <i class="bi bi-arrow-bar-left"></i> {{ 'page.template.btn.show' | trans({}, 'page') }}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-4" id="col-adm-page-render" style="transition: all 0.3s;">
+    <div class="col-4 transition-render" id="col-adm-page-render">
 
-        <div id="demo-render-page" class="overflow-y-auto w-100" style="border: 1px solid red; height: 90%">
+        <div id="demo-render-page" class="overflow-y-auto w-100 p-3">
             {% include "/admin/content/page/render.html.twig" %}
         </div>
 
-        <div class="">
-            <div class="btn btn-primary" onclick="hideRender()" id="btn-reduce">Reduire</div>
+        <div class="mt-2">
+            <div class="btn btn-secondary btn-action-show-render" onclick="hideRender()">
+                <i class="bi bi-arrow-bar-right"></i> {{ 'page.template.btn.hide' | trans({}, 'page') }}
+            </div>
+            <div class="btn btn-secondary ms-2" id="btn-reduce">
+                <i class="bi bi-arrow-up-right-square"></i> {{ 'page.template.btn.extern' | trans({}, 'page') }}
+            </div>
         </div>
 
     </div>
@@ -48,7 +55,7 @@
 
 {% include "/admin/includes/scripts.html.twig" %}
 <script>
-    let btn = document.getElementById('btn-reduce');
+    let btn = document.getElementsByClassName('btn-action-show-render');
     let colPage = document.getElementById('col-adm-page');
     let colRender = document.getElementById('col-adm-page-render');
 

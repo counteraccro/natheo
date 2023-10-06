@@ -206,4 +206,17 @@ class PageService extends AppAdminService
         }
         return trim($return);
     }
+
+    /**
+     * Retourne les traductions pour les pages
+     * @return array
+     */
+    public function getPageTranslation()
+    {
+        return [
+            'onglet_content' => $this->translator->trans('page.onglet.content', domain: 'page'),
+            'onglet_seo' => $this->translator->trans('page.onglet.seo', domain: 'page'),
+            'onglet_tags' => $this->translator->trans('page.onglet.tag', domain: 'page'),
+        ];
+    }
 }

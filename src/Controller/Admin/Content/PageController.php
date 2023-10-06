@@ -141,20 +141,12 @@ class PageController extends AppAdminController
             ]
         ];
 
-        $translate = [];
+        $translate = $pageService->getPageTranslation();
         $locales = $pageService->getLocales();
         if ($page === null) {
 
             $pageFactory = new PageFactory($locales['locales']);
             $page = $pageFactory->create();
-
-            /*$page = new Page();
-            foreach ($locales['locales'] as $locale) {
-                $pageTranslation = new PageTranslation();
-                $pageTranslation->setLocale($locale)->setPage($page);
-                $page->addPageTranslation($pageTranslation);
-
-            }*/
         }
         $page = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt']);
 
