@@ -24,3 +24,9 @@ page.add.description: __page.add.description
 page.update.page_title: __page.update.page_title
 page.update.page_title_h1: __page.update.page_title_h1
 page.update.description: __page.update.description
+page.onglet.content: __page.onglet.content
+page.onglet.seo: __page.onglet.seo
+page.onglet.tag: __page.onglet.tag
+page.template.btn.show: __page.template.btn.show
+page.template.btn.hide: __page.template.btn.hide
+page.template.btn.extern: __page.template.btn.extern

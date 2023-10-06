@@ -19,8 +19,14 @@ page.status.draft: Brouillon
 page.status.publish: Publiée
 page.status.inconnu: Inconnu
 page.add.page_title: "Création d'une nouvelle page"
-page.add.page_title_h1: "Nouvelle page"
-page.add.description: "Créer une nouvelle page pour votre site web"
-page.update.page_title: "Edition de la page #{id}"
-page.update.page_title_h1: "Edition"
-page.update.description: "Modifier une page de votre site web"
+page.add.page_title_h1: 'Nouvelle page'
+page.add.description: 'Créer une nouvelle page pour votre site web'
+page.update.page_title: 'Edition de la page #{id}'
+page.update.page_title_h1: Edition
+page.update.description: 'Modifier une page de votre site web'
+page.onglet.content: 'Contenu'
+page.onglet.seo: 'SEO'
+page.onglet.tag: 'Les tags'
+page.template.btn.show: 'Voir le rendu'
+page.template.btn.hide: 'Masquer le rendu'
+page.template.btn.extern: 'Voir le rendu sur une page externe'
