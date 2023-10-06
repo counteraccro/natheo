@@ -3,3 +3,16 @@
  * Version : 1.0
  * CSS pour la création / gestion des pages
  */
+
+/** Rendu de la démo **/
+#col-adm-page-render {
+
+  .transition-render {
+    transition: all 0.3s;
+  }
+
+  #demo-render-page {
+    border: 3px solid var(--bs-secondary);
+    height: 90%
+  }
+}
