@@ -37,19 +37,19 @@
     </div>
     <div class="col-4 transition-render" id="col-adm-page-render">
 
-        <div id="demo-render-page" class="overflow-y-auto w-100 p-3">
-            {% include "/admin/content/page/render.html.twig" %}
-        </div>
-
-        <div class="mt-2">
-            <div class="btn btn-secondary btn-action-show-render" onclick="hideRender()">
-                <i class="bi bi-arrow-bar-right"></i> {{ 'page.template.btn.hide' | trans({}, 'page') }}
+        <div id="demo-render-page">
+            <div id="content-render"  class="overflow-y-auto w-100">
+                {% include "/admin/content/page/render.html.twig" %}
             </div>
-            <div class="btn btn-secondary ms-2" id="btn-reduce">
-                <i class="bi bi-arrow-up-right-square"></i> {{ 'page.template.btn.extern' | trans({}, 'page') }}
+            <div class="mt-2 p-3">
+                <div class="btn btn-secondary btn-action-show-render" onclick="hideRender()">
+                    <i class="bi bi-arrow-bar-right"></i> {{ 'page.template.btn.hide' | trans({}, 'page') }}
+                </div>
+                <div class="btn btn-secondary ms-2" id="btn-reduce">
+                    <i class="bi bi-arrow-up-right-square"></i> {{ 'page.template.btn.extern' | trans({}, 'page') }}
+                </div>
             </div>
         </div>
-
     </div>
 </div>
 
