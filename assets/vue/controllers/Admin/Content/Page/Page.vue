@@ -5,7 +5,7 @@
  */
 
 export default {
-  name: 'PageForm',
+  name: 'Page',
   props: {
     url: String,
     translate: Object,
