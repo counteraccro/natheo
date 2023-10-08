@@ -29,7 +29,7 @@
                 <div id="block-content">
                     {% block body %}{% endblock %}
                     <div class="btn btn-secondary btn-action-show-render" onclick="showRender()">
-                        <i class="bi bi-arrow-bar-left"></i> {{ 'page.template.btn.show' | trans({}, 'page') }}
+                        <i class="bi bi-arrow-bar-left"></i><span class="d-none d-xxl-inline"> {{ 'page.template.btn.show' | trans({}, 'page') }}</span>
                     </div>
                 </div>
             </div>
@@ -43,10 +43,10 @@
             </div>
             <div class="mt-2 p-3">
                 <div class="btn btn-secondary btn-action-show-render" onclick="hideRender()">
-                    <i class="bi bi-arrow-bar-right"></i> {{ 'page.template.btn.hide' | trans({}, 'page') }}
+                    <i class="bi bi-arrow-bar-right"></i><span class="d-none d-xxl-inline"> {{ 'page.template.btn.hide' | trans({}, 'page') }}</span>
                 </div>
                 <div class="btn btn-secondary ms-2" id="btn-reduce">
-                    <i class="bi bi-arrow-up-right-square"></i> {{ 'page.template.btn.extern' | trans({}, 'page') }}
+                    <i class="bi bi-arrow-up-right-square"></i><span class="d-none d-xxl-inline"> {{ 'page.template.btn.extern' | trans({}, 'page') }}</span>
                 </div>
             </div>
         </div>
