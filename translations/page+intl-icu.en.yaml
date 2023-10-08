@@ -31,3 +31,4 @@ page.template.btn.show: __page.template.btn.show
 page.template.btn.hide: __page.template.btn.hide
 page.template.btn.extern: __page.template.btn.extern
 page.select.locale: __page.select.locale
+page.loading: __page.loading

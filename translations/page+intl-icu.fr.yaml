@@ -30,4 +30,5 @@ page.onglet.tag: 'Les tags'
 page.template.btn.show: 'Voir le rendu'
 page.template.btn.hide: 'Masquer le rendu'
 page.template.btn.extern: 'Voir le rendu sur une page externe'
-page.select.locale: Choix de la langue
+page.select.locale: 'Choix de la langue'
+page.loading: 'Chargement des données...'
