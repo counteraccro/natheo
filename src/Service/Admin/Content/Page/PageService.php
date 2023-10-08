@@ -211,13 +211,14 @@ class PageService extends AppAdminService
      * Retourne les traductions pour les pages
      * @return array
      */
-    public function getPageTranslation()
+    public function getPageTranslation(): array
     {
         return [
             'select_locale' => $this->translator->trans('page.select.locale', domain: 'page'),
             'onglet_content' => $this->translator->trans('page.onglet.content', domain: 'page'),
             'onglet_seo' => $this->translator->trans('page.onglet.seo', domain: 'page'),
             'onglet_tags' => $this->translator->trans('page.onglet.tag', domain: 'page'),
+            'loading' => $this->translator->trans('page.loading', domain: 'page'),
         ];
     }
 }

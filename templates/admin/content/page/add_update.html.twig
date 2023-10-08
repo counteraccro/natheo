@@ -1,12 +1,12 @@
 {% extends 'admin/admin_base_page.html.twig' %}
 
 
-{% if page.id is same as null %}
+{% if id is same as null %}
     {% set title = 'page.add.page_title' | trans({}, 'page') %}
     {% set titleH1 = 'page.add.page_title_h1' | trans({}, 'page') %}
     {% set description = 'page.add.description' | trans({}, 'page') %}
 {% else %}
-    {% set title = 'page.update.page_title' | trans({'id' : page.id}, 'page') %}
+    {% set title = 'page.update.page_title' | trans({'id' : id}, 'page') %}
     {% set titleH1 = 'page.update.page_title_h1' | trans({}, 'page') %}
     {% set description = 'page.update.description' | trans({}, 'page') %}
 {% endif %}
@@ -26,8 +26,8 @@
     </p>
 
     <div {{ vue_component('Admin/Content/Page/Page', {
-        'pPage' : page,
-        'url' : '#',
+        'id' : id,
+        'urls' : urls,
         'translate' : translate,
         'locales' : locales}) }}>
     </div>

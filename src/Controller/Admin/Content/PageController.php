@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/page', name: 'admin_page_', requirements: ['_locale' => '%app.supported_locales%'])]
@@ -117,7 +118,7 @@ class PageController extends AppAdminController
      * Création / édition d'une page
      * @param PageService $pageService
      * @param Request $request
-     * @param Page|null $page
+     * @param int|null $id
      * @return Response
      */
     #[Route('/add/', name: 'add')]
@@ -125,11 +126,11 @@ class PageController extends AppAdminController
     public function add(
         PageService $pageService,
         Request     $request,
-        Page        $page = null
+        int         $id = null
     ): Response
     {
         $breadcrumbTitle = 'page.update.page_title_h1';
-        if ($page === null) {
+        if ($id === null) {
             $breadcrumbTitle = 'page.add.page_title_h1';
         }
 
@@ -143,18 +144,43 @@ class PageController extends AppAdminController
 
         $translate = $pageService->getPageTranslation();
         $locales = $pageService->getLocales();
-        if ($page === null) {
-
-            $pageFactory = new PageFactory($locales['locales']);
-            $page = $pageFactory->create();
-        }
-        $page = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt']);
-
 
         return $this->render('admin/content/page/add_update.html.twig', [
             'breadcrumb' => $breadcrumb,
             'translate' => $translate,
             'locales' => $locales,
+            'id' => $id,
+            'urls' => [
+                'load_tab_content' => $this->generateUrl('admin_page_load_tab_content')
+            ]
+        ]);
+    }
+
+
+    /**
+     * Permet de charger le contenu du tab content
+     * @param PageService $pageService
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ExceptionInterface
+     */
+    #[Route('/ajax/load-tab-content', name: 'load_tab_content')]
+    public function loadTabContent(
+        PageService $pageService,
+        Request     $request): JsonResponse
+    {
+        $locales = $pageService->getLocales();
+        $data = json_decode($request->getContent(), true);
+
+        if ($data['id'] === null) {
+            $pageFactory = new PageFactory($locales['locales']);
+            $page = $pageFactory->create();
+        } else {
+            $page = $pageService->findOneById(Page::class, $data['id']);
+        }
+        $page = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt']);
+
+        return $this->json([
             'page' => $page
         ]);
     }
