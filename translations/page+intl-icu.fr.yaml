@@ -32,3 +32,7 @@ page.template.btn.hide: 'Masquer le rendu'
 page.template.btn.extern: 'Voir le rendu sur une page externe'
 page.select.locale: 'Choix de la langue'
 page.loading: 'Chargement des données...'
+page.page_content_form.input.url.label: 'Url de la page'
+page.page_content_form.input.url.info: "Url d'accès à votre page"
+page.page_content_form.input.titre.label: 'Titre de la page'
+page.page_content_form.input.titre.info: "Texte qui va permettre d'identifier la page"
