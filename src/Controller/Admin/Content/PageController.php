@@ -151,7 +151,8 @@ class PageController extends AppAdminController
             'locales' => $locales,
             'id' => $id,
             'urls' => [
-                'load_tab_content' => $this->generateUrl('admin_page_load_tab_content')
+                'load_tab_content' => $this->generateUrl('admin_page_load_tab_content'),
+                'auto_save' => $this->generateUrl('admin_page_auto_save')
             ]
         ]);
     }
@@ -178,10 +179,24 @@ class PageController extends AppAdminController
         } else {
             $page = $pageService->findOneById(Page::class, $data['id']);
         }
-        $page = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt']);
+        $page = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt', 'user']);
 
         return $this->json([
             'page' => $page
         ]);
+    }
+
+    /**
+     * @param PageService $pageService
+     * @param Request $request
+     * @return JsonResponse
+     */
+    #[Route('/ajax/auto-save', name: 'auto_save')]
+    public function autoSave(PageService $pageService, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        var_dump($data['page']['pageTranslations']);
+        return $this->json(['retour save']);
     }
 }

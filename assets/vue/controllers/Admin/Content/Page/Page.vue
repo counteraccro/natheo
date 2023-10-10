@@ -4,9 +4,13 @@
  * @version 1.0
  */
 import axios from "axios";
+import PageContentForm from "../../../../Components/Page/PageContentForm.vue";
 
 export default {
   name: 'Page',
+  components: {
+    PageContentForm
+  },
   props: {
     urls: Object,
     translate: Object,
@@ -70,13 +74,31 @@ export default {
       this.loading = true;
       axios.post(this.urls.load_tab_content, {
         'id': this.id,
-        'locale' : this.currentLocale
+        'locale': this.currentLocale
       }).then((response) => {
         this.page = response.data.page;
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
         this.loading = false
+      });
+    },
+
+    /**
+     * Permet une sauvegarde automatique
+     * @param page
+     */
+    autoSave(page)
+    {
+      //this.loading = true;
+      axios.post(this.urls.auto_save, {
+        'page' : page
+      }).then((response) => {
+
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+        //this.loading = false
       });
     }
   }
@@ -112,11 +134,20 @@ export default {
           <span class="txt-overlay">{{ this.translate.loading }}</span>
         </div>
       </div>
-        <div v-for="pageContent in this.page.pageContents">
-          <div v-for="pCT in pageContent.pageContentTranslations">
-            {{ pCT.text }} <br /> <hr />
-          </div>
+      <page-content-form
+        :locale="this.currentLocale"
+          :page="this.page"
+          :translate="this.translate.page_content_form"
+          @auto-save="this.autoSave"
+      />
+
+      <div v-for="pageContent in this.page.pageContents">
+        <div v-for="pCT in pageContent.pageContentTranslations">
+          {{ pCT.text }} <br/>
+          <hr/>
         </div>
+      </div>
+
     </div>
     <div class="tab-pane fade" id="nav-seo" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">Tab1</div>
     <div class="tab-pane fade" id="nav-tags" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">Tab2</div>
