@@ -9,15 +9,11 @@ namespace App\Controller\Admin\Content;
 
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Page\Page;
-use App\Entity\Admin\Content\Page\PageTranslation;
-use App\Entity\Admin\System\User;
 use App\Service\Admin\Content\Page\PageService;
 use App\Utils\Breadcrumb;
 use App\Utils\Content\Page\PageFactory;
 use App\Utils\Content\Page\PageHistory;
 use App\Utils\System\Options\OptionUserKey;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -203,9 +199,8 @@ class PageController extends AppAdminController
         $user = $this->getUser();
 
         $pageHistory = new PageHistory($containerBag, $user);
+        $pageHistory->save($data['page']);
 
-
-        var_dump($data['page']['pageTranslations']);
         return $this->json(['retour save']);
     }
 }
