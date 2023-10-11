@@ -10,10 +10,15 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageTranslation;
+use App\Entity\Admin\System\User;
 use App\Service\Admin\Content\Page\PageService;
 use App\Utils\Breadcrumb;
 use App\Utils\Content\Page\PageFactory;
+use App\Utils\Content\Page\PageHistory;
 use App\Utils\System\Options\OptionUserKey;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -192,9 +197,13 @@ class PageController extends AppAdminController
      * @return JsonResponse
      */
     #[Route('/ajax/auto-save', name: 'auto_save')]
-    public function autoSave(PageService $pageService, Request $request): JsonResponse
+    public function autoSave(ContainerBagInterface $containerBag, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+        $user = $this->getUser();
+
+        $pageHistory = new PageHistory($containerBag, $user);
+
 
         var_dump($data['page']['pageTranslations']);
         return $this->json(['retour save']);
