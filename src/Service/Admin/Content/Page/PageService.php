@@ -218,7 +218,9 @@ class PageService extends AppAdminService
             'onglet_content' => $this->translator->trans('page.onglet.content', domain: 'page'),
             'onglet_seo' => $this->translator->trans('page.onglet.seo', domain: 'page'),
             'onglet_tags' => $this->translator->trans('page.onglet.tag', domain: 'page'),
+            'onglet_history' => $this->translator->trans('page.onglet.history', domain: 'page'),
             'loading' => $this->translator->trans('page.loading', domain: 'page'),
+            'msg_auto_save_success' => $this->translator->trans('page.msg.auto_save.success', domain: 'page'),
             'page_content_form' =>
             [
                 'input_url_label' => $this->translator->trans('page.page_content_form.input.url.label', domain: 'page'),
