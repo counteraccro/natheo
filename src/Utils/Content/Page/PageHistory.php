@@ -83,7 +83,7 @@ class PageHistory
      * @param array $page
      * @return void
      */
-    public function save(array $page)
+    public function save(array $page): void
     {
         $id = $page['id'];
         if ($id === null) {
@@ -107,5 +107,15 @@ class PageHistory
         $serializer = new Serializer($normalizers, $encoders);
         $data = ['time' => time(), 'pageH' => $page];
         return $serializer->serialize($data, 'json');
+    }
+
+    /**
+     * Retourne l'ensemble de l'historique d'une page en fonction de son id
+     * @param int $id
+     * @return array
+     */
+    public function getHistory(int $id): array
+    {
+        return [$id];
     }
 }

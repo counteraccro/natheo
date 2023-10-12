@@ -25,7 +25,8 @@ export default {
       page: [],
       currentLocale: '',
       currentTab: 'content',
-      toast: []
+      toast: [],
+      history: []
     }
   },
   mounted() {
@@ -68,6 +69,9 @@ export default {
           break;
         case "tags" :
           break;
+        case "history" :
+          this.loadTabHistory()
+          break;
         default:
           console.log('Erreur tab')
       }
@@ -91,21 +95,35 @@ export default {
     },
 
     /**
+     * Charge l'historique des modifications de la page
+     */
+    loadTabHistory()
+    {
+      this.loading = true;
+      axios.post(this.urls.load_tab_history, {
+        'id': this.id,
+      }).then((response) => {
+        this.history = response.data.history;
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+        this.loading = false
+      });
+    },
+
+    /**
      * Permet une sauvegarde automatique
      * @param page
      */
     autoSave(page)
     {
-      //this.loading = true;
       axios.post(this.urls.auto_save, {
         'page' : page
       }).then((response) => {
         this.toast.show();
       }).catch((error) => {
         console.log(error);
-      }).finally(() => {
-        //this.loading = false
-      });
+      }).finally(() => {});
     }
   }
 }
@@ -160,7 +178,16 @@ export default {
     </div>
     <div class="tab-pane fade" id="nav-seo" role="tabpanel" aria-labelledby="seo-tab" tabindex="0">Tab1</div>
     <div class="tab-pane fade" id="nav-tags" role="tabpanel" aria-labelledby="tags-tab" tabindex="0">Tab2</div>
-    <div class="tab-pane fade" id="nav-history" role="tabpanel" aria-labelledby="history-tab" tabindex="0">Tab3</div>
+    <div class="tab-pane fade" id="nav-history" role="tabpanel" aria-labelledby="history-tab" tabindex="0">
+      <div v-if="this.loading" class="overlay">
+        <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
+          <div class="spinner-border text-primary" role="status"></div>
+          <span class="txt-overlay">{{ this.translate.loading }}</span>
+        </div>
+      </div>
+
+
+    </div>
   </div>
 
 

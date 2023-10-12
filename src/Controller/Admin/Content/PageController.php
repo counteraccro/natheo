@@ -9,11 +9,14 @@ namespace App\Controller\Admin\Content;
 
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Page\Page;
+use App\Entity\Admin\System\User;
 use App\Service\Admin\Content\Page\PageService;
 use App\Utils\Breadcrumb;
 use App\Utils\Content\Page\PageFactory;
 use App\Utils\Content\Page\PageHistory;
 use App\Utils\System\Options\OptionUserKey;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -153,6 +156,7 @@ class PageController extends AppAdminController
             'id' => $id,
             'urls' => [
                 'load_tab_content' => $this->generateUrl('admin_page_load_tab_content'),
+                'load_tab_history' => $this->generateUrl('admin_page_load_tab_history'),
                 'auto_save' => $this->generateUrl('admin_page_auto_save')
             ]
         ]);
@@ -188,7 +192,7 @@ class PageController extends AppAdminController
     }
 
     /**
-     * @param PageService $pageService
+     * @param ContainerBagInterface $containerBag
      * @param Request $request
      * @return JsonResponse
      */
@@ -196,11 +200,41 @@ class PageController extends AppAdminController
     public function autoSave(ContainerBagInterface $containerBag, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+        /** @var User $user */
+        $user = $this->getUser();
+
+        try {
+            $pageHistory = new PageHistory($containerBag, $user);
+            $pageHistory->save($data['page']);
+        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+            return $this->json(['status' => false, 'error' => $e->getMessage()]);
+        }
+        return $this->json(['status' => true]);
+    }
+
+    /**
+     * @param ContainerBagInterface $containerBag
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/ajax/load-tab-history', name: 'load_tab_history')]
+    public function loadTabHistory(ContainerBagInterface $containerBag, Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        /** @var User $user */
         $user = $this->getUser();
 
         $pageHistory = new PageHistory($containerBag, $user);
-        $pageHistory->save($data['page']);
 
-        return $this->json(['retour save']);
+
+        $id = $data['id'];
+        if ($id === null) {
+            $id = 0;
+        }
+        $history = $pageHistory->getHistory($id);
+
+        return $this->json(['history' => [$history]]);
     }
 }
