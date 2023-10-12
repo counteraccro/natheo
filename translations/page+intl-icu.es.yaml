@@ -36,3 +36,5 @@ page.page_content_form.input.url.label: __page.page_content_form.input.url.label
 page.page_content_form.input.url.info: __page.page_content_form.input.url.info
 page.page_content_form.input.titre.label: __page.page_content_form.input.titre.label
 page.page_content_form.input.titre.info: __page.page_content_form.input.titre.info
+page.onglet.history: __page.onglet.history
+page.msg.auto_save.success: __page.msg.auto_save.success
