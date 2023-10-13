@@ -9,6 +9,8 @@
 namespace App\Utils\Content\Page;
 
 use App\Entity\Admin\System\User;
+use App\Utils\Utils;
+use PhpCsFixer\Finder;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
@@ -42,6 +44,10 @@ class PageHistory
      * @var Filesystem
      */
     private Filesystem $filesystem;
+
+    private string $fileName = 'page-';
+
+    private string $fileExt = '.txt';
 
     /**
      * Constructeur
@@ -85,13 +91,21 @@ class PageHistory
      */
     public function save(array $page): void
     {
-        $id = $page['id'];
+        $path = $this->getPath($page['id']);
+        $this->filesystem->appendToFile($path, $this->serialize($page) . "\n");
+    }
+
+    /**
+     * Retourne le chemin complet de l'historique d'une page en fonction de son id
+     * @param int|null $id
+     * @return string
+     */
+    private function getPath(int $id = null): string
+    {
         if ($id === null) {
             $id = 0;
         }
-
-        $path = $this->pathPageHistoryUser . DIRECTORY_SEPARATOR . 'page-' . $id . '.txt';
-        $this->filesystem->appendToFile($path, $this->serialize($page) . "\n");
+        return $this->pathPageHistoryUser . DIRECTORY_SEPARATOR . $this->fileName . $id . $this->fileExt;
     }
 
     /**
@@ -110,12 +124,30 @@ class PageHistory
     }
 
     /**
+     * Retourne le contenu d'un fichier en fonction de son id
+     * @param int $id
+     * @return array
+     */
+    private function getContentFile(int $id)
+    {
+        $path = $this->getPath($id);
+        return file($path);
+    }
+
+    /**
      * Retourne l'ensemble de l'historique d'une page en fonction de son id
      * @param int $id
      * @return array
      */
     public function getHistory(int $id): array
     {
-        return [$id];
+        $datas = $this->getContentFile($id);
+        $return = [];
+        foreach($datas as $key => $row)
+        {
+            $array = json_decode($row, true);
+            $return[] = ['time' => $array['time'], 'id' => $key];
+        }
+        return $return;
     }
 }
