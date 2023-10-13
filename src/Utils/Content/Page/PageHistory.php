@@ -128,7 +128,7 @@ class PageHistory
      * @param int $id
      * @return array
      */
-    private function getContentFile(int $id)
+    private function getContentFile(int $id): array
     {
         $path = $this->getPath($id);
         return file($path);
