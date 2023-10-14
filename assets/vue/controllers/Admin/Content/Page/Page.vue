@@ -5,12 +5,14 @@
  */
 import axios from "axios";
 import PageContentForm from "../../../../Components/Page/PageContentForm.vue";
+import PageHistory from "../../../../Components/Page/PageHistory.vue";
 import {Toast} from "bootstrap";
 
 export default {
   name: 'Page',
   components: {
-    PageContentForm
+    PageContentForm,
+    PageHistory
   },
   props: {
     urls: Object,
@@ -97,8 +99,7 @@ export default {
     /**
      * Charge l'historique des modifications de la page
      */
-    loadTabHistory()
-    {
+    loadTabHistory() {
       this.loading = true;
       axios.post(this.urls.load_tab_history, {
         'id': this.id,
@@ -115,15 +116,24 @@ export default {
      * Permet une sauvegarde automatique
      * @param page
      */
-    autoSave(page)
-    {
+    autoSave(page) {
       axios.post(this.urls.auto_save, {
-        'page' : page
+        'page': page
       }).then((response) => {
         this.toast.show();
       }).catch((error) => {
         console.log(error);
-      }).finally(() => {});
+      }).finally(() => {
+      });
+    },
+
+    /**
+     *
+     * @param id
+     */
+    loadPageHistory(id)
+    {
+      console.log('load ici')
     }
   }
 }
@@ -140,7 +150,7 @@ export default {
     </select>
     <div class="nav nav-pills mb-3" id="nav-tab-option-system" role="tablist">
       <button class="nav-link active" @click="this.switchTab('content')" id="content-tab" data-bs-toggle="tab" data-bs-target="#nav-content" type="button" role="tab" aria-selected="true">
-       <i class="bi bi-file-text"></i> {{ this.translate.onglet_content }}
+        <i class="bi bi-file-text"></i> {{ this.translate.onglet_content }}
       </button>
       <button class="nav-link" @click="this.switchTab('seo')" id="seo-tab" data-bs-toggle="tab" data-bs-target="#nav-seo" type="button" role="tab" aria-selected="false" tabindex="-1">
         <i class="bi bi-tools"></i> {{ this.translate.onglet_seo }}
@@ -162,7 +172,7 @@ export default {
         </div>
       </div>
       <page-content-form
-        :locale="this.currentLocale"
+          :locale="this.currentLocale"
           :page="this.page"
           :translate="this.translate.page_content_form"
           @auto-save="this.autoSave"
@@ -185,7 +195,11 @@ export default {
           <span class="txt-overlay">{{ this.translate.loading }}</span>
         </div>
       </div>
-
+      <page-history
+          :translate="this.translate.page_history"
+          :history="this.history"
+          @load-page-history="this.loadPageHistory"
+      />
 
     </div>
   </div>

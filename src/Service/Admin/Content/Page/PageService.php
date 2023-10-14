@@ -4,6 +4,7 @@
  * @version 1.0
  * Service gérant la création de page
  */
+
 namespace App\Service\Admin\Content\Page;
 
 use App\Entity\Admin\Content\Page\Page;
@@ -37,14 +38,14 @@ class PageService extends AppAdminService
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        ContainerBagInterface $containerBag,
-        TranslatorInterface $translator,
-        UrlGeneratorInterface $router,
-        Security $security,
-        RequestStack $requestStack,
-        ParameterBagInterface $parameterBag,
-        GridService $gridService,
-        OptionSystemService $optionSystemService
+        ContainerBagInterface  $containerBag,
+        TranslatorInterface    $translator,
+        UrlGeneratorInterface  $router,
+        Security               $security,
+        RequestStack           $requestStack,
+        ParameterBagInterface  $parameterBag,
+        GridService            $gridService,
+        OptionSystemService    $optionSystemService
     )
     {
         $this->gridService = $gridService;
@@ -199,8 +200,7 @@ class PageService extends AppAdminService
     {
         $locale = $this->requestStack->getCurrentRequest()->getLocale();
         $return = '';
-        foreach($tags as $tag)
-        {
+        foreach ($tags as $tag) {
             $tagRender = new TagRender($tag, $locale);
             $return .= ' ' . $tagRender->getHtml();
         }
@@ -221,14 +221,16 @@ class PageService extends AppAdminService
             'onglet_history' => $this->translator->trans('page.onglet.history', domain: 'page'),
             'loading' => $this->translator->trans('page.loading', domain: 'page'),
             'msg_auto_save_success' => $this->translator->trans('page.msg.auto_save.success', domain: 'page'),
-            'page_content_form' =>
-            [
+            'page_content_form' => [
                 'input_url_label' => $this->translator->trans('page.page_content_form.input.url.label', domain: 'page'),
                 'input_url_info' => $this->translator->trans('page.page_content_form.input.url.info', domain: 'page'),
                 'input_titre_label' =>
                     $this->translator->trans('page.page_content_form.input.titre.label', domain: 'page'),
                 'input_titre_info' =>
                     $this->translator->trans('page.page_content_form.input.titre.info', domain: 'page'),
+            ],
+            'page_history' => [
+                'description' => $this->translator->trans('page.page_history.description', domain: 'page'),
             ]
         ];
     }

@@ -235,6 +235,6 @@ class PageController extends AppAdminController
         }
         $history = $pageHistory->getHistory($id);
 
-        return $this->json(['history' => [$history]]);
+        return $this->json(['history' => $history]);
     }
 }
