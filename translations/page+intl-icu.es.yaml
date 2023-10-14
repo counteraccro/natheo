@@ -38,3 +38,4 @@ page.page_content_form.input.titre.label: __page.page_content_form.input.titre.l
 page.page_content_form.input.titre.info: __page.page_content_form.input.titre.info
 page.onglet.history: __page.onglet.history
 page.msg.auto_save.success: __page.msg.auto_save.success
+page.page_history.description: __page.page_history.description
