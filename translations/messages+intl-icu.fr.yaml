@@ -192,6 +192,7 @@ options_user.default_personal_data_render.help: "Si les données personnelles n'
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: 'Elements HML disponibles (trad)'
 date.diff.start: "Il y'a"
+date.diff.start.short: "Il y'a environ"
 date.diff.year: "{years, plural,\n    =1    {année}\n    other {années}\n}"
 date.diff.month: mois
 date.diff.day: "{days, plural,\n    =1    {jour}\n    other {jours}\n}"

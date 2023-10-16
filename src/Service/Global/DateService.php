@@ -34,11 +34,13 @@ class DateService extends AppService
      * 'il y'a ...'
      * @param DateTimeInterface|null $dateRef
      * @param DateTimeInterface|null $dateDiff
+     * @param bool $short
      * @return string
      */
     public function getStringDiffDate(
         DateTimeInterface $dateRef = null,
-        DateTimeInterface $dateDiff = null): string
+        DateTimeInterface $dateDiff = null,
+        bool              $short = false): string
     {
         if ($dateRef === null) {
             return '<i>' . $this->translator->trans('date.diff.no_data') . '</i>';
@@ -49,41 +51,64 @@ class DateService extends AppService
         }
         $dateInterval = $dateRef->diff($dateDiff);
 
-        $return = $this->translator->trans('date.diff.start');
-
+        $tabReturn = [];
         if ($dateInterval->y > 0) {
-            $return .= $this->getTranslateValue($dateInterval->y, 'date.diff.year', 'years');
+            $tabReturn['y'] = $this->getTranslateValue($dateInterval->y, 'date.diff.year', 'years');
         }
 
         if ($dateInterval->m > 0) {
-            $return .= $this->getTranslateValue($dateInterval->m, 'date.diff.month', 'month');
+            $tabReturn['m'] = $this->getTranslateValue($dateInterval->m, 'date.diff.month', 'month');
         }
 
         if ($dateInterval->d > 0) {
-            $return .= $this->getTranslateValue($dateInterval->d, 'date.diff.day', 'days');
+            $tabReturn['d'] = $this->getTranslateValue($dateInterval->d, 'date.diff.day', 'days');
         }
 
         if ($dateInterval->h > 0) {
-            $return .= $this->getTranslateValue($dateInterval->h, 'date.diff.hour', 'hours');
+            $tabReturn['h'] = $this->getTranslateValue($dateInterval->h, 'date.diff.hour', 'hours');
         }
 
         if ($dateInterval->i > 0) {
-            $return .= $this->getTranslateValue($dateInterval->i, 'date.diff.minute', 'minutes');
+            $tabReturn['i'] = $this->getTranslateValue($dateInterval->i, 'date.diff.minute', 'minutes');
 
             if ($dateInterval->s > 0) {
-                $return .= ' ' . $this->translator->trans('date.diff.and');
+                $tabReturn['id'] = ' ' . $this->translator->trans('date.diff.and');
             }
         }
 
         if ($dateInterval->s > 0) {
-            $return .= $this->getTranslateValue($dateInterval->s, 'date.diff.seconde', 'secondes');
+            $tabReturn['s'] = $this->getTranslateValue($dateInterval->s, 'date.diff.seconde', 'secondes');
         }
 
-        if ($return === $this->translator->trans('date.diff.start')) {
+
+        $return = $this->constructString($tabReturn, $short);
+        return $this->returnFormatString($return, $dateRef);
+    }
+
+    /**
+     * Construit la chaine de retour
+     * @param array $tab
+     * @param bool $short
+     * @return string
+     */
+    private function constructString(array $tab, bool $short): string
+    {
+        if ($short) {
+            $return = $this->translator->trans('date.diff.start.short') . ' ';
+        } else {
+            $return = $this->translator->trans('date.diff.start') . ' ';
+        }
+        foreach ($tab as $value) {
+            if ($short) {
+                return $return .= $value;
+            }
+            $return .= $value;
+        }
+
+        if (empty($tab)) {
             $return .= ' ' . $this->translator->trans('date.diff.instant');
         }
-
-        return $this->returnFormatString($return, $dateRef);
+        return $return;
     }
 
     /**
