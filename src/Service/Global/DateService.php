@@ -14,6 +14,21 @@ class DateService extends AppService
 {
 
     /**
+     * Format équivalent à l d F Y H:i:s
+     */
+    public const DATE_FORMAT_ALL = 'all';
+
+    /**
+     * Format équivalent à d/m/Y
+     */
+    public const DATE_FORMAT_DATE = 'date';
+
+    /**
+     * Format équivalent H:i:s
+     */
+    public const DATE_FORMAT_TIME = 'time';
+
+    /**
      * Affiche le temps entre 2 date sous la forme d'un texte de la forme
      * 'il y'a ...'
      * @param DateTimeInterface|null $dateRef
@@ -80,7 +95,23 @@ class DateService extends AppService
         }
 
         return '<div class="tooltip-nat">' . $return . '
-                        <span class="tooltiptext-nat">' . $dateRef->format('l d F Y H:i:s') . '</span>
+                        <span class="tooltiptext-nat">' .
+            $dateRef->format($this->getDateFormat(self::DATE_FORMAT_ALL)) . '</span>
                     </div>';
+    }
+
+    /**
+     * Retourne un format de date en fonction de $format
+     * @param string $format
+     * @return string
+     */
+    private function getDateFormat(string $format = ''): string
+    {
+        return match ($format) {
+            self::DATE_FORMAT_ALL => 'l d F Y H:i:s',
+            self::DATE_FORMAT_TIME => 'H:i:s',
+            self::DATE_FORMAT_DATE => 'd/m/Y',
+            default => 'd/m/Y H:i:s',
+        };
     }
 }
