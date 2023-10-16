@@ -87,7 +87,7 @@ class PersonalData
     }
 
     /**
-     * Retourne l'adresse email du user
+     * Retourne l'adresse email de l'user
      * @return string|null
      */
     private function getEmail(): ?string
@@ -96,10 +96,10 @@ class PersonalData
     }
 
     /**
-     * Retourne le login du user s'il existe
+     * Retourne le login de l'user s'il existe
      * @return string|null
      */
-    private function getLogin()
+    private function getLogin(): ?string
     {
         if(empty($this->user->getLogin()))
         {
@@ -112,7 +112,7 @@ class PersonalData
      * Retourne le nom et prénom ou nom ou prénom du user s'il existe
      * @return string|null
      */
-    private function getName()
+    private function getName(): ?string
     {
         if(empty($this->user->getFirstname()) && empty($this->user->getLastname()))
         {
@@ -126,7 +126,7 @@ class PersonalData
      * SI ce n'est pas le cas, la valeur anonyme est prise par défaut
      * @return void
      */
-    private function checkOptionRender()
+    private function checkOptionRender(): void
     {
         if (!in_array($this->optionRender, $this->optionsRender)) {
             $this->optionRender = self::OU_PERSONAL_DATA_RENDER_ANONYME;
