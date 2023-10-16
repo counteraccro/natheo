@@ -9,6 +9,8 @@
 namespace App\Utils\Content\Page;
 
 use App\Entity\Admin\System\User;
+use App\Utils\System\Options\OptionUserKey;
+use App\Utils\System\User\PersonalData;
 use App\Utils\Utils;
 use PhpCsFixer\Finder;
 use Psr\Container\ContainerExceptionInterface;
@@ -26,12 +28,6 @@ class PageHistory
      * @var string
      */
     private string $pathPageHistory;
-
-    /**
-     * Path pour les historiques de page pour le user
-     * @var string
-     */
-    private string $pathPageHistoryUser;
 
     /**
      * @var User
@@ -101,7 +97,7 @@ class PageHistory
         if ($id === null) {
             $id = 0;
         }
-        return $this->pathPageHistoryUser . DIRECTORY_SEPARATOR . $this->fileName . $id . $this->fileExt;
+        return $this->pathPageHistory . DIRECTORY_SEPARATOR . $this->fileName . $id . $this->fileExt;
     }
 
     /**
@@ -115,7 +111,11 @@ class PageHistory
         $normalizers = [new ObjectNormalizer()];
 
         $serializer = new Serializer($normalizers, $encoders);
-        $data = ['time' => time(), 'pageH' => $page];
+
+        $personalData = new PersonalData($this->user,
+            $this->user->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue());
+
+        $data = ['time' => time(), 'user' => $personalData->getPersonalData(), 'pageH' => $page];
         return $serializer->serialize($data, 'json');
     }
 
@@ -132,7 +132,6 @@ class PageHistory
             return file($path);
         }
         return [];
-
     }
 
     /**
@@ -146,7 +145,7 @@ class PageHistory
         $return = [];
         foreach ($datas as $key => $row) {
             $array = json_decode($row, true);
-            $return[] = ['time' => $array['time'], 'id' => $key];
+            $return[] = ['time' => $array['time'], 'id' => $key, 'user' => $array['user']];
         }
         return $return;
     }
