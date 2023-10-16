@@ -34,7 +34,7 @@ export default {
   <h5>{{ this.translate.title }}</h5>
   <div>{{ this.translate.description }}</div>
   <div v-if="this.history.length > 0" v-for="history in this.history">
-      {{ history.time }}
+     <div> {{ history.time }} {{ history.user }}</div>
   </div>
   <div v-else class="text-center">
   <hr/>
