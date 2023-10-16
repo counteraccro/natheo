@@ -125,13 +125,18 @@ class PageHistory
 
     /**
      * Retourne le contenu d'un fichier en fonction de son id
+     * Si le fichier n'existe pas, retourne un tableau vide
      * @param int $id
      * @return array
      */
     private function getContentFile(int $id): array
     {
         $path = $this->getPath($id);
-        return file($path);
+        if (file_exists($path)) {
+            return file($path);
+        }
+        return [];
+
     }
 
     /**
@@ -143,8 +148,7 @@ class PageHistory
     {
         $datas = $this->getContentFile($id);
         $return = [];
-        foreach($datas as $key => $row)
-        {
+        foreach ($datas as $key => $row) {
             $array = json_decode($row, true);
             $return[] = ['time' => $array['time'], 'id' => $key];
         }
