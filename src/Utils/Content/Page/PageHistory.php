@@ -66,10 +66,6 @@ class PageHistory
             . DIRECTORY_SEPARATOR . $this->directoryHistory;
 
         $this->isExistDirectory($this->pathPageHistory);
-        $this->pathPageHistoryUser = $this->pathPageHistory .
-            DIRECTORY_SEPARATOR . 'history-user-' . $this->user->getId();
-        $this->isExistDirectory($this->pathPageHistoryUser);
-
     }
 
     /**

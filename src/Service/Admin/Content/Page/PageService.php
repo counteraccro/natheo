@@ -230,7 +230,9 @@ class PageService extends AppAdminService
                     $this->translator->trans('page.page_content_form.input.titre.info', domain: 'page'),
             ],
             'page_history' => [
+                'title' => $this->translator->trans('page.page_history.title', domain: 'page'),
                 'description' => $this->translator->trans('page.page_history.description', domain: 'page'),
+                'empty' => $this->translator->trans('page.page_history.empty', domain: 'page'),
             ]
         ];
     }

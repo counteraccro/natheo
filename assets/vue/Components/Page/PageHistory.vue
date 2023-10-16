@@ -31,9 +31,14 @@ export default {
 
 <template>
 
+  <h5>{{ this.translate.title }}</h5>
   <div>{{ this.translate.description }}</div>
-  <div v-for="history in this.history">
+  <div v-if="this.history.length > 0" v-for="history in this.history">
       {{ history.time }}
+  </div>
+  <div v-else class="text-center">
+  <hr/>
+    <i>{{ this.translate.empty }}</i>
   </div>
 
 </template>

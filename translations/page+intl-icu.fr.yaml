@@ -38,4 +38,6 @@ page.page_content_form.input.titre.label: 'Titre de la page'
 page.page_content_form.input.titre.info: "Texte qui va permettre d'identifier la page"
 page.onglet.history: Historique
 page.msg.auto_save.success: 'Sauvegarde auto réalisée avec succès'
-page.page_history.description: "Retrouver l'historique des modifications faite sur cette page."
+page.page_history.title: 'Historique des modifications'
+page.page_history.description: "Liste de l'ensemble des modifications faite sur cette page "
+page.page_history.empty: "Aucun historique pour le moment"
