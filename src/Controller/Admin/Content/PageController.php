@@ -243,7 +243,7 @@ class PageController extends AppAdminController
         foreach ($history as &$hist) {
             $dateDiff = new \DateTime();
             $dateDiff->setTimestamp($hist['time']);
-            $hist['time'] = $dateService->getStringDiffDate($dateDiff);
+            $hist['time'] = $dateService->getStringDiffDate($dateDiff, short: true);
         }
 
         return $this->json(['history' => $history]);
