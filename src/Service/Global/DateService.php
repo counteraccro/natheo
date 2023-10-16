@@ -4,6 +4,7 @@
  * @version 1.0
  * Service qui gère la manipulation de dates et son format
  */
+
 namespace App\Service\Global;
 
 use DateTime;
@@ -35,7 +36,9 @@ class DateService extends AppService
      * @param DateTimeInterface|null $dateDiff
      * @return string
      */
-    public function getStringDiffDate(DateTimeInterface $dateRef = null, DateTimeInterface $dateDiff = null): string
+    public function getStringDiffDate(
+        DateTimeInterface $dateRef = null,
+        DateTimeInterface $dateDiff = null): string
     {
         if ($dateRef === null) {
             return '<i>' . $this->translator->trans('date.diff.no_data') . '</i>';
@@ -49,55 +52,69 @@ class DateService extends AppService
         $return = $this->translator->trans('date.diff.start');
 
         if ($dateInterval->y > 0) {
-            $return .= ' ' . $dateInterval->y . $this->translator->trans(
-                    'date.diff.year',
-                    ['years' => $dateInterval->y]
-                );
+            $return .= $this->getTranslateValue($dateInterval->y, 'date.diff.year', 'years');
         }
 
         if ($dateInterval->m > 0) {
-            $return .= ' ' . $dateInterval->m . $this->translator->trans('date.diff.month');
+            $return .= $this->getTranslateValue($dateInterval->m, 'date.diff.month', 'month');
         }
 
         if ($dateInterval->d > 0) {
-            $return .= ' ' . $dateInterval->d . ' ' . $this->translator->trans(
-                    'date.diff.day',
-                    ['days' => $dateInterval->d]
-                );
+            $return .= $this->getTranslateValue($dateInterval->d, 'date.diff.day', 'days');
         }
 
         if ($dateInterval->h > 0) {
-            $return .= ' ' . $dateInterval->h . ' ' . $this->translator->trans(
-                    'date.diff.hour',
-                    ['hours' => $dateInterval->h]
-                );
+            $return .= $this->getTranslateValue($dateInterval->h, 'date.diff.hour', 'hours');
         }
 
         if ($dateInterval->i > 0) {
-            $return .= ' ' . $dateInterval->i . ' ' . $this->translator->trans(
-                    'date.diff.minute',
-                    ['minutes' => $dateInterval->i]
-                );
+            $return .= $this->getTranslateValue($dateInterval->i, 'date.diff.minute', 'minutes');
+
             if ($dateInterval->s > 0) {
                 $return .= ' ' . $this->translator->trans('date.diff.and');
             }
         }
 
         if ($dateInterval->s > 0) {
-            $return .= ' ' . $dateInterval->s . ' ' . $this->translator->trans(
-                    'date.diff.seconde',
-                    ['secondes' => $dateInterval->s]
-                );
+            $return .= $this->getTranslateValue($dateInterval->s, 'date.diff.seconde', 'secondes');
         }
 
         if ($return === $this->translator->trans('date.diff.start')) {
             $return .= ' ' . $this->translator->trans('date.diff.instant');
         }
 
-        return '<div class="tooltip-nat">' . $return . '
+        return $this->returnFormatString($return, $dateRef);
+    }
+
+    /**
+     * Format le contenu de la chaine de caractères de retour
+     * @param string $str
+     * @param DateTimeInterface $date
+     * @return string
+     */
+    private function returnFormatString(string $str, DateTimeInterface $date): string
+    {
+        return '<div class="tooltip-nat">' . $str . '
                         <span class="tooltiptext-nat">' .
-            $dateRef->format($this->getDateFormat(self::DATE_FORMAT_ALL)) . '</span>
+            $date->format($this->getDateFormat(self::DATE_FORMAT_ALL)) . '</span>
                     </div>';
+    }
+
+
+    /**
+     * Génère une traduction en fonction de la valeur, de la clé de traduction et de la clé
+     * de la valeur pour la traduction
+     * @param int $value
+     * @param string $keyTranslate
+     * @param string $keyValue
+     * @return string
+     */
+    private function getTranslateValue(int $value, string $keyTranslate, string $keyValue = 'default'): string
+    {
+        return ' ' . $value . ' ' . $this->translator->trans(
+                $keyTranslate,
+                [$keyValue => $value]
+            );
     }
 
     /**
