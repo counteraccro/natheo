@@ -11,6 +11,7 @@ use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
 use App\Service\Admin\Content\Page\PageService;
+use App\Service\Global\DateService;
 use App\Utils\Breadcrumb;
 use App\Utils\Content\Page\PageFactory;
 use App\Utils\Content\Page\PageHistory;
@@ -220,7 +221,11 @@ class PageController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-tab-history', name: 'load_tab_history')]
-    public function loadTabHistory(ContainerBagInterface $containerBag, Request $request): JsonResponse
+    public function loadTabHistory(
+        ContainerBagInterface $containerBag,
+        Request               $request,
+        DateService $dateService
+    ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         /** @var User $user */
@@ -234,6 +239,13 @@ class PageController extends AppAdminController
             $id = 0;
         }
         $history = $pageHistory->getHistory($id);
+
+        foreach ($history as &$hist)
+        {
+            $dateDiff = new \DateTime();
+            $dateDiff->setTimestamp($hist['time']);
+            $hist['time'] = $dateService->getStringDiffDate($dateDiff);
+        }
 
         return $this->json(['history' => $history]);
     }

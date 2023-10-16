@@ -40,4 +40,7 @@ page.onglet.history: Historique
 page.msg.auto_save.success: 'Sauvegarde auto réalisée avec succès'
 page.page_history.title: 'Historique des modifications'
 page.page_history.description: "Liste de l'ensemble des modifications faite sur cette page "
-page.page_history.empty: "Aucun historique pour le moment"
+page.page_history.empty: 'Aucun historique pour le moment'
+page.page_history.update: 'Modification n°'
+page.page_history.for: par
+page.page_history.reload: Restaurer

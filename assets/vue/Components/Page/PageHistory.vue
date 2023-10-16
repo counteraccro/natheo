@@ -20,12 +20,7 @@ export default {
 
   },
   computed: {},
-  methods: {
-    autoSave()
-    {
-      //this.$emit('auto-save', this.page);
-    }
-  }
+  methods: {}
 }
 </script>
 
@@ -34,7 +29,15 @@ export default {
   <h5>{{ this.translate.title }}</h5>
   <div>{{ this.translate.description }}</div>
   <div v-if="this.history.length > 0" v-for="history in this.history">
-     <div> {{ history.time }} {{ history.user }}</div>
+     <div class="m-2 ms-0">
+       {{ this.translate.update }}#{{ history.id }},
+       <span v-html="history.time"></span>,
+       {{ this.translate.for }} {{ history.user }}
+
+       <div class="float-end" style="cursor: pointer" @click="$emit('load-page-history', history.id)">
+         <div class="icon-link icon-link-hover"><i class="bi bi-arrow-clockwise"></i> {{ this.translate.reload }}</div>
+       </div>
+     </div>
   </div>
   <div v-else class="text-center">
   <hr/>

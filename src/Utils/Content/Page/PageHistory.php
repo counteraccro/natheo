@@ -147,6 +147,6 @@ class PageHistory
             $array = json_decode($row, true);
             $return[] = ['time' => $array['time'], 'id' => $key, 'user' => $array['user']];
         }
-        return $return;
+        return array_reverse($return);
     }
 }
