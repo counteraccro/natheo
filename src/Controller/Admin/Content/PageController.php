@@ -158,7 +158,8 @@ class PageController extends AppAdminController
             'urls' => [
                 'load_tab_content' => $this->generateUrl('admin_page_load_tab_content'),
                 'load_tab_history' => $this->generateUrl('admin_page_load_tab_history'),
-                'auto_save' => $this->generateUrl('admin_page_auto_save')
+                'auto_save' => $this->generateUrl('admin_page_auto_save'),
+                'reload_page_history' => $this->generateUrl('admin_page_reload_page_history'),
             ]
         ]);
     }
@@ -224,7 +225,7 @@ class PageController extends AppAdminController
     public function loadTabHistory(
         ContainerBagInterface $containerBag,
         Request               $request,
-        DateService $dateService
+        DateService           $dateService
     ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -233,20 +234,38 @@ class PageController extends AppAdminController
 
         $pageHistory = new PageHistory($containerBag, $user);
 
-
         $id = $data['id'];
         if ($id === null) {
             $id = 0;
         }
         $history = $pageHistory->getHistory($id);
 
-        foreach ($history as &$hist)
-        {
+        foreach ($history as &$hist) {
             $dateDiff = new \DateTime();
             $dateDiff->setTimestamp($hist['time']);
             $hist['time'] = $dateService->getStringDiffDate($dateDiff);
         }
 
         return $this->json(['history' => $history]);
+    }
+
+    #[Route('/ajax/reload-page-history', name: 'reload_page_history')]
+    public function reloadPageHistory(
+        ContainerBagInterface $containerBag,
+        Request               $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $pageHistory = new PageHistory($containerBag, $user);
+
+        $id = $data['id'];
+        if ($id === null) {
+            $id = 0;
+        }
+        $page = $pageHistory->getPageHistoryById($id, $data['row_id']);
+
+        return $this->json(['page' => $page]);
     }
 }

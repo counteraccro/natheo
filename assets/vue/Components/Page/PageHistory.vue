@@ -11,7 +11,7 @@ export default {
     history: Object,
     translate: Object,
   },
-  emits: ['load-page-history'],
+  emits: ['reload-page-history'],
   data() {
     return {
     }
@@ -34,7 +34,7 @@ export default {
        <span v-html="history.time"></span>,
        {{ this.translate.for }} {{ history.user }}
 
-       <div class="float-end" style="cursor: pointer" @click="$emit('load-page-history', history.id)">
+       <div class="float-end" style="cursor: pointer" @click="$emit('reload-page-history', history.id)">
          <div class="icon-link icon-link-hover"><i class="bi bi-arrow-clockwise"></i> {{ this.translate.reload }}</div>
        </div>
      </div>

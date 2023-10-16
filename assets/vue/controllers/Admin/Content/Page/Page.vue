@@ -65,7 +65,7 @@ export default {
     loadTab() {
       switch (this.currentTab) {
         case "content":
-          this.loadTabContent();
+          //this.loadTabContent();
           break;
         case "seo" :
           break;
@@ -128,12 +128,20 @@ export default {
     },
 
     /**
-     *
+     * Recharge l'historique de la page en fonction de son id
      * @param id
      */
-    loadPageHistory(id)
+    reloadPageHistory(rowId)
     {
-      console.log('load ici')
+      axios.post(this.urls.reload_page_history, {
+        'row_id': rowId,
+        'id' : this.id
+      }).then((response) => {
+        this.page = response.data.page;
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+      });
     }
   }
 }
@@ -198,7 +206,7 @@ export default {
       <page-history
           :translate="this.translate.page_history"
           :history="this.history"
-          @load-page-history="this.loadPageHistory"
+          @reload-page-history="this.reloadPageHistory"
       />
 
     </div>

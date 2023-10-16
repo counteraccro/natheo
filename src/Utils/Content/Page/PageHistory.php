@@ -149,4 +149,23 @@ class PageHistory
         }
         return array_reverse($return);
     }
+
+    /**
+     * Retourne l'historique d'une page en fonction de son id et de la key id (ligne dans le fichier)
+     * @param int $pageId
+     * @param int $rowId
+     * @return array
+     */
+    public function getPageHistoryById(int $pageId, int $rowId) : array
+    {
+        $datas = $this->getContentFile($pageId);
+        foreach ($datas as $key => $row) {
+            if($key === $rowId)
+            {
+                $array = json_decode($row, true);
+                return $array['pageH'];
+            }
+        }
+        return [];
+    }
 }
