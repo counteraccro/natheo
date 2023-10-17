@@ -44,3 +44,4 @@ page.page_history.empty: 'Aucun historique pour le moment'
 page.page_history.update: 'Modification n°'
 page.page_history.for: par
 page.page_history.reload: Restaurer
+page.page_history.success: "Restauration de la page à l'état #{id} faite avec succès"

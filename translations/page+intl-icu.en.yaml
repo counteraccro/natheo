@@ -39,3 +39,9 @@ page.page_content_form.input.titre.info: __page.page_content_form.input.titre.in
 page.onglet.history: __page.onglet.history
 page.msg.auto_save.success: __page.msg.auto_save.success
 page.page_history.description: __page.page_history.description
+page.page_history.success: __page.page_history.success
+page.page_history.title: __page.page_history.title
+page.page_history.empty: __page.page_history.empty
+page.page_history.update: __page.page_history.update
+page.page_history.for: __page.page_history.for
+page.page_history.reload: __page.page_history.reload
