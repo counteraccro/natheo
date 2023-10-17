@@ -252,7 +252,9 @@ class PageController extends AppAdminController
     #[Route('/ajax/reload-page-history', name: 'reload_page_history')]
     public function reloadPageHistory(
         ContainerBagInterface $containerBag,
-        Request               $request): JsonResponse
+        Request               $request,
+        TranslatorInterface $translator,
+    ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         /** @var User $user */
@@ -266,6 +268,9 @@ class PageController extends AppAdminController
         }
         $page = $pageHistory->getPageHistoryById($id, $data['row_id']);
 
-        return $this->json(['page' => $page]);
+        return $this->json([
+            'page' => $page,
+            'msg' => $translator->trans('page.page_history.success', ['id' => $data['row_id']], domain: 'page')
+        ]);
     }
 }

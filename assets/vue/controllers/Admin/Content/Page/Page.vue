@@ -6,7 +6,7 @@
 import axios from "axios";
 import PageContentForm from "../../../../Components/Page/PageContentForm.vue";
 import PageHistory from "../../../../Components/Page/PageHistory.vue";
-import {Toast} from "bootstrap";
+import {Toast, Tab} from "bootstrap";
 
 export default {
   name: 'Page',
@@ -28,7 +28,8 @@ export default {
       currentLocale: '',
       currentTab: 'content',
       toast: [],
-      history: []
+      history: [],
+      msgToast: '',
     }
   },
   mounted() {
@@ -120,6 +121,7 @@ export default {
       axios.post(this.urls.auto_save, {
         'page': page
       }).then((response) => {
+        this.msgToast = this.translate.msg_auto_save_success;
         this.toast.show();
       }).catch((error) => {
         console.log(error);
@@ -129,18 +131,26 @@ export default {
 
     /**
      * Recharge l'historique de la page en fonction de son id
-     * @param id
+     * @param rowId
      */
     reloadPageHistory(rowId)
     {
+      this.loading = true;
       axios.post(this.urls.reload_page_history, {
         'row_id': rowId,
         'id' : this.id
       }).then((response) => {
+
+        let tabContent = document.querySelector('#nav-tab-page button[data-bs-target="#nav-content"]');
+        console.log(tabContent);
+        Tab.getInstance(tabContent).show();
         this.page = response.data.page;
+        this.msgToast = response.data.msg;
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
+        this.toast.show();
+        this.loading = false;
       });
     }
   }
@@ -156,7 +166,7 @@ export default {
       <option value="" selected>{{ this.translate.select_locale }}</option>
       <option v-for="(language, key) in this.locales.localesTranslate" :value="key" :selected="key===this.currentLocale">{{ language }}</option>
     </select>
-    <div class="nav nav-pills mb-3" id="nav-tab-option-system" role="tablist">
+    <div class="nav nav-pills mb-3" id="nav-tab-page" role="tablist">
       <button class="nav-link active" @click="this.switchTab('content')" id="content-tab" data-bs-toggle="tab" data-bs-target="#nav-content" type="button" role="tab" aria-selected="true">
         <i class="bi bi-file-text"></i> {{ this.translate.onglet_content }}
       </button>
@@ -171,7 +181,7 @@ export default {
       </button>
     </div>
   </nav>
-  <div class="tab-content" id="myTabContent" :class="this.loading === true ? 'block-grid' : ''">
+  <div class="tab-content" id="page-tab" :class="this.loading === true ? 'block-grid' : ''">
     <div class="tab-pane fade show active" id="nav-content" role="tabpanel" aria-labelledby="content-tab" tabindex="0">
       <div v-if="this.loading" class="overlay">
         <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
@@ -217,7 +227,7 @@ export default {
     <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="toast-body text-white bg-success">
         <i class="bi bi-check-circle-fill"></i>
-        {{ this.translate.msg_auto_save_success }}
+        {{ this.msgToast }}
       </div>
     </div>
   </div>
