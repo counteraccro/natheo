@@ -210,7 +210,7 @@ class MediaController extends AppAdminController
         $data = json_decode($request->getContent(), true);
 
         /** @var Media $media */
-        $media = $mediaService->findOneById(Media\Media::class, $data['id']);
+        $media = $mediaService->findOneById(Media::class, $data['id']);
         return $this->json([
             'media' => [
                 'id' => $media->getId(),
