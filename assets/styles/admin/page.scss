@@ -20,3 +20,15 @@
     height: 92%;
   }
 }
+
+/** CSS formulaire de création / édition de pae **/
+#global-page-form {
+
+  #content-history {
+
+    .row-history:hover {
+      background-color: var(--bs-secondary);
+      color:white;
+    }
+  }
+}
