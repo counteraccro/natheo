@@ -44,3 +44,4 @@ tag.form.stat.title: __tag.form.stat.title
 tag.form.input.disabled.label: __tag.form.input.disabled.label
 tag.page_date_update.created: __tag.page_date_update.created
 tag.page_date_update.last_update: __tag.page_date_update.last_update
+tag.component.title: __tag.component.title
