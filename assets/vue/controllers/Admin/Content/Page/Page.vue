@@ -6,13 +6,15 @@
 import axios from "axios";
 import PageContentForm from "../../../../Components/Page/PageContentForm.vue";
 import PageHistory from "../../../../Components/Page/PageHistory.vue";
+import Tag from "../../../../Components/Global/Tag.vue";
 import {Toast, Tab} from "bootstrap";
 
 export default {
   name: 'Page',
   components: {
     PageContentForm,
-    PageHistory
+    PageHistory,
+    Tag
   },
   props: {
     urls: Object,
@@ -205,7 +207,13 @@ export default {
 
       </div>
       <div class="tab-pane fade" id="nav-seo" role="tabpanel" aria-labelledby="seo-tab" tabindex="0">Tab1</div>
-      <div class="tab-pane fade" id="nav-tags" role="tabpanel" aria-labelledby="tags-tab" tabindex="0">Tab2</div>
+      <div class="tab-pane fade" id="nav-tags" role="tabpanel" aria-labelledby="tags-tab" tabindex="0">
+
+        <tag
+          :urls="[]"
+        />
+
+      </div>
       <div class="tab-pane fade" id="nav-history" role="tabpanel" aria-labelledby="history-tab" tabindex="0">
         <div v-if="this.loading" class="overlay">
           <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">

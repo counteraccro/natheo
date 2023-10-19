@@ -208,11 +208,28 @@ class TagController extends AppAdminController
         return $this->json(['etat' => $status]);
     }
 
+    /**
+     * Affiche les statistiques d'un tag
+     * @param Tag|null $tag
+     * @return Response
+     */
     #[Route('/ajax/stats/{id}', name: 'stats', methods: ['GET'])]
     public function statistique(Tag $tag = null): Response
     {
         return $this->render('admin/content/tag/date_update.html.twig', [
             'tag' => $tag
         ]);
+    }
+
+    /**
+     * Permet de rechercher un ou plusieurs tags
+     * @param Request $request
+     * @param TagService $tagService
+     * @return Response
+     */
+    #[Route('/ajax/search/', name: 'search')]
+    public function search(Request $request, TagService $tagService)
+    {
+
     }
 }
