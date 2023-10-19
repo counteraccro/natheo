@@ -4,7 +4,7 @@
  * @version 1.0
  * Service gérant les tags de l'application
  */
-namespace App\Service\Admin\Content;
+namespace App\Service\Admin\Content\Tag;
 
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Service\Admin\AppAdminService;
