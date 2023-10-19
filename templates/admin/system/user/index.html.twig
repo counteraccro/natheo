@@ -20,41 +20,35 @@
 
     <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_user_load_grid_data'), 'page' : page, 'limit' : limit}) }}></div>
 
-    <div class="modal fade" id="help-grid-user" tabindex="-1" aria-labelledby="help-grid-user" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-secondary">
-                    <h1 class="modal-title fs-5 text-white" id="exampleModalLabel"><i class="bi bi-question-circle"></i> {{ 'user.index.popin.help.title' | trans({}, 'user') }}</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col">
-                            <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-eye-slash-fill"></i></button> {{ 'user.index.popin.help.disabled_user' | trans({}, 'user') }}
-                        </div>
-                        <div class="col">
-                            <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-eye-fill"></i></button> {{ 'user.index.popin.help.enable_user' | trans({}, 'user') }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-trash"></i></button> {{ 'user.index.popin.help.delete' | trans({}, 'user') }}
-                        </div>
-                        <div class="col">
-                            <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-person-fill-slash"></i></button> {{ 'user.index.popin.help.anonymous' | trans({}, 'user') }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-pencil-fill"></i></button> {{ 'user.index.popin.help.edit' | trans({}, 'user') }}
-                        </div>
-                        <div class="col">
-                            <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-arrow-left-right"></i></button> {{ 'user.index.popin.help.switch' | trans({}, 'user') }}
-                        </div>
-                    </div>
-                </div>
+    <twig:Admin:ModaleComponent id="help-grid-user" bgColor="bg-secondary">
+        <twig:block name="header">
+            <i class="bi bi-question-circle"></i> {{ 'user.index.popin.help.title' | trans({}, 'user') }}</h1>
+        </twig:block>
+
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-eye-slash-fill"></i></button> {{ 'user.index.popin.help.disabled_user' | trans({}, 'user') }}
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-eye-fill"></i></button> {{ 'user.index.popin.help.enable_user' | trans({}, 'user') }}
             </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-trash"></i></button> {{ 'user.index.popin.help.delete' | trans({}, 'user') }}
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-person-fill-slash"></i></button> {{ 'user.index.popin.help.anonymous' | trans({}, 'user') }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-pencil-fill"></i></button> {{ 'user.index.popin.help.edit' | trans({}, 'user') }}
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-arrow-left-right"></i></button> {{ 'user.index.popin.help.switch' | trans({}, 'user') }}
+            </div>
+        </div>
+    </twig:Admin:ModaleComponent>
 
 {% endblock %}

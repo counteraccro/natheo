@@ -17,25 +17,20 @@
 
     <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_sidebar_load_grid_data'), 'page' : page, 'limit' : limit}) }}></div>
 
-    <div class="modal fade" id="help-grid-sidebar" tabindex="-1" aria-labelledby="help-grid-sidebar" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-secondary">
-                    <h1 class="modal-title fs-5 text-white" id="exampleModalLabel"><i class="bi bi-question-circle"></i> {{ 'sidebar.index.popin.help.title' | trans({}, 'sidebar') }}</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col">
-                            <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-eye-slash-fill"></i></button> {{ 'sidebar.index.popin.help.disabled' | trans({}, 'sidebar') }}
-                        </div>
-                        <div class="col">
-                            <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-eye-fill"></i></button> {{ 'sidebar.index.popin.help.enabled' | trans({}, 'sidebar') }}
-                        </div>
-                    </div>
-                </div>
+
+    <twig:Admin:ModaleComponent id="help-grid-sidebar" bgColor="bg-secondary">
+        <twig:block name="header">
+            <i class="bi bi-question-circle"></i> {{ 'sidebar.index.popin.help.title' | trans({}, 'sidebar') }}
+        </twig:block>
+
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-eye-slash-fill"></i></button> {{ 'sidebar.index.popin.help.disabled' | trans({}, 'sidebar') }}
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-eye-fill"></i></button> {{ 'sidebar.index.popin.help.enabled' | trans({}, 'sidebar') }}
             </div>
         </div>
-    </div>
+    </twig:Admin:ModaleComponent>
 
 {% endblock %}
