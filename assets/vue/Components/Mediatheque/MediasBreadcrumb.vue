@@ -8,6 +8,7 @@ import {isEmpty} from "lodash-es";
  * Affichage de la navBar des médias
  */
 export default {
+  name: 'MediasBreadcrum',
   props: {
     paths: Object,
   },

@@ -8,6 +8,7 @@ import IsEmpty from "lodash-es/isEmpty";
  * Affichage du contenu de la modale d'information
  */
 export default {
+  name: 'MediaModalInfo',
   props: {
     data: Object,
     translate: Object
