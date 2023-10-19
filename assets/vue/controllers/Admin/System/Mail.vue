@@ -1,4 +1,9 @@
 <script>
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Formulaire pour la création / édition d'un email
+ */
 
 import MarkdownEditor from "../../../Components/Global/MarkdownEditor.vue";
 import axios from "axios";
