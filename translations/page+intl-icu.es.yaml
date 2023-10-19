@@ -45,3 +45,7 @@ page.page_history.empty: __page.page_history.empty
 page.page_history.update: __page.page_history.update
 page.page_history.for: __page.page_history.for
 page.page_history.reload: __page.page_history.reload
+page.index.popin.help.disabled_page: __page.index.popin.help.disabled_page
+page.index.popin.help.enable_page: __page.index.popin.help.enable_page
+page.index.popin.help.delete: __page.index.popin.help.delete
+page.index.popin.help.edit: __page.index.popin.help.edit
