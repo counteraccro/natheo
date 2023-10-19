@@ -10,6 +10,7 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
+use App\Service\Admin\Content\Tag\TagComponentService;
 use App\Service\Admin\Content\Tag\TagService;
 use App\Utils\Breadcrumb;
 use App\Utils\Flash\FlashKey;
@@ -228,8 +229,23 @@ class TagController extends AppAdminController
      * @return Response
      */
     #[Route('/ajax/search/', name: 'search')]
-    public function search(Request $request, TagService $tagService)
+    public function search(Request $request, TagService $tagService): Response
     {
+        return $this->json([]);
+    }
 
+    /**
+     * Permet de récupérer les données initiales pour le tagComponent
+     * @param Request $request
+     * @param TagService $tagService
+     * @return Response
+     */
+    #[Route('/ajax/init-data-comp/', name: 'init_data_comp')]
+    public function initDataTagComponent(
+        Request $request,
+        TagComponentService $tagComponentService
+    ): Response
+    {
+        return $this->json(['translate' => $tagComponentService->getTranslateTagComponent()]);
     }
 }

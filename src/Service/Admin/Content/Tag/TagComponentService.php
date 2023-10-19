@@ -17,6 +17,7 @@ class TagComponentService extends TagService
     {
         return [
             'search' => $this->router->generate('admin_tag_search'),
+            'init_data' => $this->router->generate('admin_tag_init_data_comp')
         ];
     }
 

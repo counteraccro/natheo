@@ -1,9 +1,9 @@
-<script>
-/**
+<script>/**
  * Permet de récupérer un tag pour le lier à autre chose
  * @author Gourdon Aymeric
  * @version 1.0
  */
+import axios from "axios";
 
 export default {
   name: 'Tag',
@@ -18,14 +18,22 @@ export default {
     }
   },
   mounted() {
-
+    this.loadData();
   },
   computed: {},
   methods: {
 
     loadData()
     {
-      
+      axios.post(this.urls.init_data, {
+        //'page': page
+      }).then((response) => {
+        this.translate = response.data.translate
+        this.toast.show();
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+      });
     }
 
   }
