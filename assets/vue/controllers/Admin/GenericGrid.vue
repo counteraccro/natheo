@@ -1,11 +1,18 @@
 <script>
+
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Permet de générer le tableau GRID
+ */
+
 import Grid from '../../Components/Grid/Grid.vue'
 import GridPaginate from "../../Components/Grid/GridPaginate.vue";
 import axios from "axios";
 import {Modal} from 'bootstrap'
 
 export default {
-  name: "GenericGri",
+  name: "GenericGrid",
   components: {
     GridPaginate,
     Grid

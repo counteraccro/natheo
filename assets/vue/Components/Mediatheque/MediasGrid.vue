@@ -5,6 +5,7 @@
  * Affichage au format GRID et listing des médias
  */
 export default {
+  name: 'MediasGrid',
   props: {
     medias: Object,
     translate: Object,

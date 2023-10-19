@@ -1,4 +1,11 @@
 <script>
+
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Permet d'afficher la pagination pour le grid
+ */
+
 export default {
   name: "GridPaginate",
   props: {

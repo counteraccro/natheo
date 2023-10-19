@@ -1,6 +1,13 @@
 <script>
 
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Modale pour de déplacement de fichier
+ */
+
 export default {
+  name: 'MediaMove',
   props: {
     dataMove: Object,
     translate: Object
@@ -11,8 +18,7 @@ export default {
   },
   computed: {},
   methods: {
-    move()
-    {
+    move() {
       let element = document.getElementById('select-folder-to-move');
       let id = element.value;
       this.$emit('move', id, this.dataMove.id, this.dataMove.type)

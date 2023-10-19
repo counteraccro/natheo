@@ -1,4 +1,11 @@
 <script>
+
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Permet d'uploader un fichier
+ */
+
 export default {
   name: "FileUpload",
   emits: ['file-uploaded', 'close-modale-upload'],

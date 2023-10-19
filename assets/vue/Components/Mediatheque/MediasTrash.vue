@@ -5,6 +5,7 @@
  * Affichage au format GRID des médias dans la corbeille
  */
 export default {
+  name: 'MediaTrash',
   props: {
     medias: Object,
     translate: Object,

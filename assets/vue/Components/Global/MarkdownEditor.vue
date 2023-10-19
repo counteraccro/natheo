@@ -9,7 +9,7 @@
 import {marked} from 'marked'
 import {debounce} from 'lodash-es'
 import {Modal} from 'bootstrap'
-import MediaModalMarkdown from "./Mediatheque/MediaModalMarkdown.vue";
+import MediaModalMarkdown from "../Mediatheque/MediaModalMarkdown.vue";
 import axios from "axios";
 
 export default {

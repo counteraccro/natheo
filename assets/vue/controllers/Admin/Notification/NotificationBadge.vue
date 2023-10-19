@@ -1,4 +1,6 @@
-<script>/**
+<script>
+
+/**
  * @author Gourdon Aymeric
  * @version 1.0
  * Permet d'afficher le nombre de notification dans la zone admin
