@@ -1,4 +1,11 @@
 <script>
+
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Génération du tableau GRID
+ */
+
 export default {
   props: {
     data: Array,
@@ -14,6 +21,11 @@ export default {
     }
   },
   computed: {
+
+    /**
+     * Permet de filtrer les données présents dans data
+     * @returns {*[]}
+     */
     filteredData() {
 
       const sortKey = this.sortKey
@@ -38,6 +50,11 @@ export default {
     }
   },
   methods: {
+
+    /**
+     * Permet de trier en fonction d'une clé
+     * @param key
+     */
     sortBy(key) {
       this.sortKey = key
       this.sortOrders[key] = this.sortOrders[key] * -1
@@ -60,14 +77,14 @@ export default {
     },
 
     highlightSearch(text) {
-        if(!this.filterKey) {
-          return text;
-        }
-        return text.toString().replace(new RegExp(this.filterKey, "gi"), match => {
-          return '<span class="bg-secondary text-white p-1">' + match + '</span>';
-        });
+      if (!this.filterKey) {
+        return text;
       }
+      return text.toString().replace(new RegExp(this.filterKey, "gi"), match => {
+        return '<span class="bg-secondary text-white p-1">' + match + '</span>';
+      });
     }
+  }
 }
 </script>
 
@@ -89,7 +106,9 @@ export default {
       <td v-for="key in columns">
         <span v-if="key !== 'action'" v-html="this.highlightSearch(entry[key])"></span>
         <div v-else>
-          <button class="btn btn-secondary btn-sm m-1" v-for="data in this.jsonParse(entry[key])" @click="$emit('redirect-action', data.url, data.ajax, data.confirm, data.msgConfirm)" v-html="data.label">
+          <button class="btn btn-secondary btn-sm m-1" v-for="data in this.jsonParse(entry[key])"
+                  @click="$emit('redirect-action', data.url, data.ajax, data.confirm, data.msgConfirm)"
+                  v-html="data.label">
           </button>
         </div>
       </td>
@@ -97,6 +116,6 @@ export default {
     </tbody>
   </table>
   <div v-else>
-    <p class="text-center"> <i class="bi bi-search"></i> <i>{{ translate.noresult}}</i></p>
+    <p class="text-center"><i class="bi bi-search"></i> <i>{{ translate.noresult }}</i></p>
   </div>
 </template>
