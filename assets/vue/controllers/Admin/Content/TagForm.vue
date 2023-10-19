@@ -1,4 +1,6 @@
-<script>/**
+<script>
+
+/**
  * Permet d'ajouter ou éditer un tag
  * @author Gourdon Aymeric
  * @version 1.0
@@ -52,13 +54,11 @@ export default {
       axios.post(this.url, {
         'tag': this.tag
       }).then((response) => {
-          if(response.data.etat === 'new')
-          {
-            window.location = this.url_index;
-          }
-          else {
-            window.location = this.url_update;
-          }
+        if (response.data.etat === 'new') {
+          window.location = this.url_index;
+        } else {
+          window.location = this.url_update;
+        }
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
@@ -227,24 +227,29 @@ export default {
             <p>{{ this.translate.colorDescription }}</p>
 
             <div class="input-group mb-3 me-3 float-end" style="width: auto">
-              <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ this.translate.linkColorChoice }}</button>
+              <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                      aria-expanded="false">{{ this.translate.linkColorChoice }}
+              </button>
               <ul class="dropdown-menu">
                 <li v-for="color in this.tabColor">
-                  <a class="dropdown-item" :style="'cursor:pointer;color:' + color" @click="this.switchColor(color)">{{ color }}</a>
+                  <a class="dropdown-item" :style="'cursor:pointer;color:' + color"
+                     @click="this.switchColor(color)">{{ color }}</a>
                 </li>
               </ul>
               <button @click="this.loadColorExemple()" class="btn btn-secondary" type="button">
                 <i class="bi bi-arrow-clockwise"></i></button>
             </div>
 
-            <input type="color" @change="this.isErrorHexa = false; this.msgErrorExa = ''" class="form-control form-control-color float-start no-control" id="tagColor" v-model="this.tag.color">
+            <input type="color" @change="this.isErrorHexa = false; this.msgErrorExa = ''"
+                   class="form-control form-control-color float-start no-control" id="tagColor"
+                   v-model="this.tag.color">
 
             <input type="text" class="form-control no-control"
-                :class="this.msgErrorExa !== '' ? 'is-invalid' : ''"
-                id="tagColorinput"
-                v-model="this.tag.color"
-                size="7" style="width: auto"
-                @change="this.checkValideHex()" maxlength="7">
+                   :class="this.msgErrorExa !== '' ? 'is-invalid' : ''"
+                   id="tagColorinput"
+                   v-model="this.tag.color"
+                   size="7" style="width: auto"
+                   @change="this.checkValideHex()" maxlength="7">
             <div class="invalid-feedback">
               {{ this.msgErrorExa }}
             </div>
@@ -258,7 +263,8 @@ export default {
                 <div v-if="translation.locale === this.locales.current">
 
                   <div class="form-check form-switch float-end">
-                    <input class="form-check-input no-control" type="checkbox" role="switch" id="flexSwitchCheckDefault" v-model="this.autoCopy">
+                    <input class="form-check-input no-control" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                           v-model="this.autoCopy">
                     <label class="form-check-label" for="flexSwitchCheckDefault">{{ this.translate.autoCopy }}</label>
                   </div>
 
@@ -267,15 +273,17 @@ export default {
                 </div>
                 <h5 v-else-if="this.locales.locales[1] === key" class="card-title">{{ this.translate.labelOther }}</h5>
                 <div class="mb-3">
-                  <label :for="'label-' + translation.locale" class="form-label">{{ this.translate.formInputLabelLabel }} {{ this.locales.localesTranslate[key] }}</label>
+                  <label :for="'label-' + translation.locale" class="form-label">{{
+                      this.translate.formInputLabelLabel
+                    }} {{ this.locales.localesTranslate[key] }}</label>
                   <input type="text"
-                      :class="this.isNoEmptyInput(translation.id)"
-                      class="form-control no-control"
-                      :id="'label-' + translation.locale"
-                      placeholder=""
-                      :disabled="this.isDisabled(translation.locale)"
-                      v-model="translation.label"
-                      v-on="this.autoCopy && translation.locale === this.locales.current ? { keyup: () => this.copyLabel(translation.label) } : {} "
+                         :class="this.isNoEmptyInput(translation.id)"
+                         class="form-control no-control"
+                         :id="'label-' + translation.locale"
+                         placeholder=""
+                         :disabled="this.isDisabled(translation.locale)"
+                         v-model="translation.label"
+                         v-on="this.autoCopy && translation.locale === this.locales.current ? { keyup: () => this.copyLabel(translation.label) } : {} "
                   >
                   <div class="invalid-feedback">
                     {{ this.translate.formInputLabelError }}
@@ -287,7 +295,10 @@ export default {
             </div>
           </div>
 
-          <button class="btn btn-secondary" @click="this.save()" :disabled="this.canSubmit()">{{ this.getLabelSubmit() }}</button>
+          <button class="btn btn-secondary" @click="this.save()" :disabled="this.canSubmit()">{{
+              this.getLabelSubmit()
+            }}
+          </button>
 
         </div>
       </div>
@@ -303,10 +314,14 @@ export default {
           <div v-for="key in this.locales.locales">
             <div v-for="translation in tag.tagTranslations">
               <div v-if="translation.locale === key">
-                <h5 v-if="translation.locale === this.locales.current" class="card-title">{{ this.translate.labelCurrent }}</h5>
-                <h5 v-else-if="this.locales.locales[1] === key" class="card-title mt-2 mb-2">{{ this.translate.labelOther }}</h5>
+                <h5 v-if="translation.locale === this.locales.current" class="card-title">{{
+                    this.translate.labelCurrent
+                  }}</h5>
+                <h5 v-else-if="this.locales.locales[1] === key" class="card-title mt-2 mb-2">
+                  {{ this.translate.labelOther }}</h5>
                 <b>{{ this.locales.localesTranslate[key] }}</b> :
-                <span class="badge rounded-pill badge-nat" :style="'background-color: ' + tag.color">{{ translation.label }}</span>
+                <span class="badge rounded-pill badge-nat"
+                      :style="'background-color: ' + tag.color">{{ translation.label }}</span>
 
               </div>
             </div>
