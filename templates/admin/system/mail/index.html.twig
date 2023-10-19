@@ -7,7 +7,7 @@
 
     {{ breadcrumb(breadcrumb) }}
 
-    <button type="button" class="btn btn-secondary float-end ms-2" data-bs-toggle="modal" data-bs-target="#help-grid-sidebar">
+    <button type="button" class="btn btn-secondary float-end ms-2" data-bs-toggle="modal" data-bs-target="#help-grid-mail">
         <i class="bi bi-question-circle"></i>
     </button>
 
@@ -18,25 +18,19 @@
 
     <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_mail_load_grid_data'), 'page' : page, 'limit' : limit}) }}></div>
 
-    <div class="modal fade" id="help-grid-sidebar" tabindex="-1" aria-labelledby="help-grid-sidebar" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-secondary">
-                    <h1 class="modal-title fs-5 text-white" id="exampleModalLabel"><i class="bi bi-question-circle"></i> {{ 'mail.index.popin.help.title' | trans({}, 'mail') }}</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col">
-                            <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-send-check-fill"></i></button> {{ 'mail.index.popin.help.send' | trans({}, 'mail') }}
-                        </div>
-                        <div class="col">
-                            <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-pencil-fill"></i></button> {{ 'mail.index.popin.help.edit' | trans({}, 'mail') }}
-                        </div>
-                    </div>
-                </div>
+    <twig:Admin:ModaleComponent id="help-grid-mail" bgColor="bg-secondary">
+        <twig:block name="header">
+            <i class="bi bi-question-circle"></i> {{ 'mail.index.popin.help.title' | trans({}, 'mail') }}
+        </twig:block>
+
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-send-check-fill"></i></button> {{ 'mail.index.popin.help.send' | trans({}, 'mail') }}
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-pencil-fill"></i></button> {{ 'mail.index.popin.help.edit' | trans({}, 'mail') }}
             </div>
         </div>
-    </div>
+    </twig:Admin:ModaleComponent>
 
 {% endblock %}
