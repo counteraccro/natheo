@@ -7,46 +7,40 @@
 
     {{ breadcrumb(breadcrumb) }}
 
-    <button type="button" class="btn btn-secondary float-end ms-2" data-bs-toggle="modal" data-bs-target="#help-grid-tag">
+    <button type="button" class="btn btn-secondary float-end ms-2" data-bs-toggle="modal" data-bs-target="#help-grid-page">
         <i class="bi bi-question-circle"></i>
     </button>
     <a href="{{ path('admin_page_add') }}" class="float-end btn btn-secondary"><i class="bi bi-journal-text"></i> {{ 'page.index.btn.new' | trans({}, 'page') }}</a>
 
     <p>
         {{ 'page.index.description' | trans({}, 'page') }} <br/>
-       <!-- {{ 'tag.index.description2' | trans({'icon' : '<i class="bi-eye-slash-fill"></i>'}, 'tag') | raw }} --><br/>
+       {#  {{ 'tag.index.description2' | trans({'icon' : '<i class="bi-eye-slash-fill"></i>'}, 'tag') | raw }} #}<br/>
     </p>
 
 
     <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_page_load_grid_data'), 'page' : page, 'limit' : limit}) }}></div>
 
-    <div class="modal fade" id="help-grid-tag" tabindex="-1" aria-labelledby="help-grid-tag" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-secondary">
-                    <h1 class="modal-title fs-5 text-white" id="exampleModalLabel"><i class="bi bi-question-circle"></i> {{ 'page.index.popin.help.title' | trans({}, 'page') }}</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col">
-                            <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-eye-slash-fill"></i></button> {{ 'tag.index.popin.help.disabled_user' | trans({}, 'tag') }}
-                        </div>
-                        <div class="col">
-                            <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-eye-fill"></i></button> {{ 'tag.index.popin.help.enable_user' | trans({}, 'tag') }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-trash"></i></button> {{ 'tag.index.popin.help.delete' | trans({}, 'tag') }}
-                        </div>
-                        <div class="col">
-                            <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-pencil-fill"></i></button> {{ 'tag.index.popin.help.edit' | trans({}, 'tag') }}
-                        </div>
-                    </div>
-                </div>
+    <twig:Admin:ModaleComponent id="help-grid-page" bgColor="bg-secondary">
+        <twig:block name="header">
+            <i class="bi bi-question-circle"></i> {{ 'page.index.popin.help.title' | trans({}, 'page') }}
+        </twig:block>
+
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-eye-slash-fill"></i></button> {{ 'page.index.popin.help.disabled_page' | trans({}, 'page') }}
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-eye-fill"></i></button> {{ 'page.index.popin.help.enable_page' | trans({}, 'page') }}
             </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-trash"></i></button> {{ 'page.index.popin.help.delete' | trans({}, 'page') }}
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-pencil-fill"></i></button> {{ 'page.index.popin.help.edit' | trans({}, 'page') }}
+            </div>
+        </div>
+    </twig:Admin:ModaleComponent>
 
 {% endblock %}
