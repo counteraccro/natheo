@@ -9,23 +9,33 @@ export default {
   name: 'Tag',
   props: {
     urls: Object,
-    ListTags: Object,
   },
   emits: ['add-tag', 'remove-tag'],
   data() {
     return {
       translate : [],
+      resultSearch : []
     }
   },
   mounted() {
 
   },
   computed: {},
-  methods: {}
+  methods: {
+
+    loadData()
+    {
+      
+    }
+
+  }
 }
 </script>
 
 <template>
+ <div id="tag-component">
+  <h5>{{ this.translate.title }}</h5>
+ </div>
 
 </template>
 

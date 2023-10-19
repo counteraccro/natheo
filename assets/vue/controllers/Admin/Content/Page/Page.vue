@@ -210,7 +210,7 @@ export default {
       <div class="tab-pane fade" id="nav-tags" role="tabpanel" aria-labelledby="tags-tab" tabindex="0">
 
         <tag
-          :urls="[]"
+          :urls="this.urls.tags"
         />
 
       </div>
