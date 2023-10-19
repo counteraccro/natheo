@@ -1,6 +1,6 @@
 <script>
 
-import MarkdownEditor from "../../../Components/MarkdownEditor.vue";
+import MarkdownEditor from "../../../Components/Global/MarkdownEditor.vue";
 import axios from "axios";
 
 export default {
