@@ -21,7 +21,7 @@
 
 
     <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_tag_load_grid_data'), 'page' : page, 'limit' : limit}) }}></div>
-    
+
     <twig:Admin:ModaleComponent id="help-grid-tag" bgColor="bg-secondary">
         <twig:block name="header">
             <i class="bi bi-question-circle"></i> {{ 'tag.index.popin.help.title' | trans({}, 'tag') }}
