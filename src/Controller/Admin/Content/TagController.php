@@ -237,7 +237,7 @@ class TagController extends AppAdminController
     /**
      * Permet de récupérer les données initiales pour le tagComponent
      * @param Request $request
-     * @param TagService $tagService
+     * @param TagComponentService $tagComponentService
      * @return Response
      */
     #[Route('/ajax/init-data-comp/', name: 'init_data_comp')]
