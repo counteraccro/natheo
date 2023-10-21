@@ -10,7 +10,9 @@ import AutoComplete from "./AutoComplete.vue";
 
 export default {
   name: 'Tag',
-  components: {AutoComplete},
+  components: {
+    AutoComplete
+  },
   props: {
     urls: Object,
   },
@@ -30,7 +32,6 @@ export default {
 
     loadData() {
       axios.post(this.urls.init_data, {
-        //'page': page
       }).then((response) => {
         this.translate = response.data.translate
       }).catch((error) => {
