@@ -4,6 +4,7 @@
  * @version 1.0
  * Service qui permet de gérer les traitements pour le TagComponent de vueJS
  */
+
 namespace App\Service\Admin\Content\Tag;
 
 class TagComponentService extends TagService
@@ -29,6 +30,12 @@ class TagComponentService extends TagService
     {
         return [
             'title' => $this->translator->trans('tag.component.title', domain: 'tag'),
+            'auto_complete' => [
+                'auto_complete_label' => $this->translator->trans('tag.component.auto_complete.label', domain: 'tag'),
+                'auto_complete_placeholder' =>
+                    $this->translator->trans('tag.component.auto_complete.placeholder', domain: 'tag'),
+                'auto_complete_help' => $this->translator->trans('tag.component.auto_complete.help', domain: 'tag')
+            ]
         ];
     }
 }
