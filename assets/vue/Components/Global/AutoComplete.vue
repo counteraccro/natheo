@@ -66,11 +66,12 @@ export default {
     <div id="emailHelp" class="form-text">{{ this.translate.auto_complete_help }}</div>
     <datalist id="datalistOptions">
       <select>
-      <option value="San Francisco"/>
-      <option value="New York"/>
-      <option value="Seattle"/>
-      <option value="Los Angeles"/>
-      <option value="Chicago"/>
+        <option v-for="data in this.results" :value="data"/>
+        <option value="San Francisco"/>
+        <option value="New York"/>
+        <option value="Seattle"/>
+        <option value="Los Angeles"/>
+        <option value="Chicago"/>
       </select>
     </datalist>
   </div>
