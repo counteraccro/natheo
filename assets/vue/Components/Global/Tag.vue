@@ -50,7 +50,7 @@ export default {
     <h5>{{ this.translate.title }}</h5>
 
     <component :is="this.component"
-        :url="''"
+        :url="this.urls.search"
         :translate="this.translate.auto_complete"
     />
   </div>

@@ -231,7 +231,8 @@ class TagController extends AppAdminController
     #[Route('/ajax/search/', name: 'search')]
     public function search(Request $request, TagService $tagService): Response
     {
-        return $this->json([]);
+        $data = json_decode($request->getContent(), true);
+        return $this->json(['result' => [$data['search'], 'value1', 'value2', 'value3']]);
     }
 
     /**

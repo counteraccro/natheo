@@ -19,6 +19,7 @@ export default {
     return {
       results: [],
       id: 0,
+      value: '',
     }
   },
   mounted() {
@@ -32,8 +33,7 @@ export default {
      * Génère un int de taille size
      * @param size
      */
-    getId(size)
-    {
+    getId(size) {
       let id = '';
       for (let i = 0; i < size; i++) {
         id += Math.floor(Math.random() * 9);
@@ -42,9 +42,9 @@ export default {
       return id;
     },
 
-    loadData() {
+    search() {
       axios.post(this.url, {
-        //'page': page
+        'search': this.value
       }).then((response) => {
         this.results = response.data.result
       }).catch((error) => {
@@ -62,8 +62,17 @@ export default {
 
   <div class="mb-3">
     <label :for="'auto-complete-input-' + this.id" class="form-label">{{ this.translate.auto_complete_label }}</label>
-    <input type="email" class="form-control" :id="'auto-complete-input-' +this.id" :placeholder="this.translate.auto_complete_placeholder">
+    <input list="datalistOptions" autocomplete="off" class="form-control" v-model="this.value" @keyup="this.search()" :id="'auto-complete-input-' +this.id" :placeholder="this.translate.auto_complete_placeholder">
     <div id="emailHelp" class="form-text">{{ this.translate.auto_complete_help }}</div>
+    <datalist id="datalistOptions">
+      <select>
+      <option value="San Francisco"/>
+      <option value="New York"/>
+      <option value="Seattle"/>
+      <option value="Los Angeles"/>
+      <option value="Chicago"/>
+      </select>
+    </datalist>
   </div>
 
 </template>
