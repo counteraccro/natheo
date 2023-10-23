@@ -59,6 +59,23 @@ class TagRepository extends ServiceEntityRepository
 
     }
 
+    /**
+     * Retourne une liste de tag en fonction de $search et de la locale
+     * @param string $locale
+     * @param string $search
+     * @return array
+     */
+    public function searchByName(string $locale, string $search): array
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t.id', 'tt.label')
+            ->join('t.tagTranslations', 'tt', 'WITH', "tt.locale = '" . $locale . "'")
+            ->andWhere('LOWER(tt.label) LIKE LOWER(:label)')
+            ->setParameter('label', '%' . $search . '%')
+            ->getQuery()
+            ->getArrayResult();
+    }
+
 //    /**
 //     * @return Tag[] Returns an array of Tag objects
 //     */

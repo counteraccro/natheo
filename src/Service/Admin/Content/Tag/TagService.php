@@ -7,6 +7,7 @@
 namespace App\Service\Admin\Content\Tag;
 
 use App\Entity\Admin\Content\Tag\Tag;
+use App\Repository\Admin\Content\Tag\TagRepository;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Admin\System\OptionSystemService;
@@ -214,6 +215,15 @@ class TagService extends AppAdminService
      */
     public function searchByLocale(string $locale, string $search): array
     {
-        return [];
+        /** @var TagRepository $repo */
+        $repo = $this->getRepository(Tag::class);
+        $result = $repo->searchByName($locale, $search);
+
+        $return = [];
+        foreach($result as $row)
+        {
+            $return[$row['id']] = $row['label'];
+        }
+        return $return;
     }
 }
