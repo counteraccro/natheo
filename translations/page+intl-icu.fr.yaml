@@ -45,7 +45,10 @@ page.page_history.update: 'Modification n°'
 page.page_history.for: par
 page.page_history.reload: Restaurer
 page.page_history.success: "Restauration de la page à l'état #{id} faite avec succès"
-page.index.popin.help.disabled_page: "Désactiver une page"
-page.index.popin.help.enable_page: "Activer une page"
-page.index.popin.help.delete: "Supprimer"
-page.index.popin.help.edit: "Editer"
+page.index.popin.help.disabled_page: 'Désactiver une page'
+page.index.popin.help.enable_page: 'Activer une page'
+page.index.popin.help.delete: Supprimer
+page.index.popin.help.edit: Editer
+page.tag.auto_complete.label: Rechercher / Ajouter tag
+page.tag.auto_complete.placeholder: Rechercher un tag
+page.tag.auto_complete.help: Rechercher ou ajouter un tag associé à la langue choisi pour la page en cours
