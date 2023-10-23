@@ -45,6 +45,9 @@ export default {
       return id;
     },
 
+    /**
+     * Évènement onKeyUp
+     */
     onKeyup()
     {
       this.debounceFn();
@@ -80,7 +83,7 @@ export default {
     <div id="emailHelp" class="form-text">{{ this.translate.auto_complete_help }}</div>
     <datalist :id="'data-list-option-' + this.id">
       <select>
-        <option v-if="this.results.length > 0" v-for="data in this.results" :value="data"/>
+        <option v-for="data in this.results" :value="data"  />
       </select>
     </datalist>
   </div>
