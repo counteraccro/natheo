@@ -1,3 +1,5 @@
+|Build Status| |Coverage Status|
+
 # Projet Natheo
 
 Le projet Natheo est un projet PHP pour développer un CMS avec Symfony
