@@ -236,6 +236,12 @@ class PageService extends AppAdminService
                 'update' => $this->translator->trans('page.page_history.update', domain: 'page'),
                 'for' => $this->translator->trans('page.page_history.for', domain: 'page'),
                 'reload' => $this->translator->trans('page.page_history.reload', domain: 'page'),
+            ],
+            'auto_complete' => [
+                'auto_complete_label' => $this->translator->trans('page.tag.auto_complete.label', domain: 'page'),
+                'auto_complete_placeholder' =>
+                    $this->translator->trans('page.tag.auto_complete.placeholder', domain: 'page'),
+                'auto_complete_help' => $this->translator->trans('page.tag.auto_complete.help', domain: 'page')
             ]
         ];
     }

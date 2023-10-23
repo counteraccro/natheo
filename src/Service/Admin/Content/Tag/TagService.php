@@ -206,4 +206,14 @@ class TagService extends AppAdminService
         ];
 
     }
+
+    /**
+     * @param string $locale
+     * @param string $search
+     * @return array
+     */
+    public function searchByLocale(string $locale, string $search): array
+    {
+        return [];
+    }
 }

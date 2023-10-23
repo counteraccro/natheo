@@ -12,6 +12,7 @@ use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\Content\Tag\TagComponentService;
+use App\Service\Admin\Content\Tag\TagService;
 use App\Service\Global\DateService;
 use App\Utils\Breadcrumb;
 use App\Utils\Content\Page\PageFactory;
@@ -130,9 +131,8 @@ class PageController extends AppAdminController
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
     public function add(
-        PageService         $pageService,
-        TagComponentService $tagComponentService,
-        int                 $id = null
+        PageService $pageService,
+        int         $id = null
     ): Response
     {
         $breadcrumbTitle = 'page.update.page_title_h1';
@@ -161,7 +161,7 @@ class PageController extends AppAdminController
                 'load_tab_history' => $this->generateUrl('admin_page_load_tab_history'),
                 'auto_save' => $this->generateUrl('admin_page_auto_save'),
                 'reload_page_history' => $this->generateUrl('admin_page_reload_page_history'),
-                'tags' => $tagComponentService->getAllRoute()
+                'auto_complete_tag' => $this->generateUrl('admin_tag_search'),
             ]
         ]);
     }

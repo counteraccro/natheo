@@ -223,7 +223,7 @@ class TagController extends AppAdminController
     }
 
     /**
-     * Permet de rechercher un ou plusieurs tags
+     * Permet de rechercher un ou plusieurs tags pour l'auto-complete
      * @param Request $request
      * @param TagService $tagService
      * @return Response
@@ -232,21 +232,7 @@ class TagController extends AppAdminController
     public function search(Request $request, TagService $tagService): Response
     {
         $data = json_decode($request->getContent(), true);
-        return $this->json(['result' => [$data['search'], 'value1', 'value2', 'value3']]);
-    }
-
-    /**
-     * Permet de récupérer les données initiales pour le tagComponent
-     * @param Request $request
-     * @param TagComponentService $tagComponentService
-     * @return Response
-     */
-    #[Route('/ajax/init-data-comp/', name: 'init_data_comp')]
-    public function initDataTagComponent(
-        Request $request,
-        TagComponentService $tagComponentService
-    ): Response
-    {
-        return $this->json(['translate' => $tagComponentService->getTranslateTagComponent()]);
+        $result = $tagService->searchByLocale($data['locale'], $data['search']);
+        return $this->json(['result' => $result]);
     }
 }

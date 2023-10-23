@@ -8,10 +8,12 @@ import PageContentForm from "../../../../Components/Page/PageContentForm.vue";
 import PageHistory from "../../../../Components/Page/PageHistory.vue";
 import Tag from "../../../../Components/Global/Tag.vue";
 import {Toast, Tab} from "bootstrap";
+import AutoComplete from "../../../../Components/Global/AutoComplete.vue";
 
 export default {
   name: 'Page',
   components: {
+    AutoComplete,
     PageContentForm,
     PageHistory,
     Tag
@@ -166,25 +168,32 @@ export default {
     <nav>
       <select class="form-select float-end w-25" @change="this.switchLocale($event)">
         <option value="" selected>{{ this.translate.select_locale }}</option>
-        <option v-for="(language, key) in this.locales.localesTranslate" :value="key" :selected="key===this.currentLocale">{{ language }}</option>
+        <option v-for="(language, key) in this.locales.localesTranslate" :value="key"
+                :selected="key===this.currentLocale">{{ language }}
+        </option>
       </select>
       <div class="nav nav-pills mb-3" id="nav-tab-page" role="tablist">
-        <button class="nav-link active" @click="this.switchTab('content')" id="content-tab" data-bs-toggle="tab" data-bs-target="#nav-content" type="button" role="tab" aria-selected="true">
+        <button class="nav-link active" @click="this.switchTab('content')" id="content-tab" data-bs-toggle="tab"
+                data-bs-target="#nav-content" type="button" role="tab" aria-selected="true">
           <i class="bi bi-file-text"></i> {{ this.translate.onglet_content }}
         </button>
-        <button class="nav-link" @click="this.switchTab('seo')" id="seo-tab" data-bs-toggle="tab" data-bs-target="#nav-seo" type="button" role="tab" aria-selected="false" tabindex="-1">
+        <button class="nav-link" @click="this.switchTab('seo')" id="seo-tab" data-bs-toggle="tab"
+                data-bs-target="#nav-seo" type="button" role="tab" aria-selected="false" tabindex="-1">
           <i class="bi bi-tools"></i> {{ this.translate.onglet_seo }}
         </button>
-        <button class="nav-link" @click="this.switchTab('tags')" id="tags-tab" data-bs-toggle="tab" data-bs-target="#nav-tags" type="button" role="tab" aria-selected="false" tabindex="-1">
+        <button class="nav-link" @click="this.switchTab('tags')" id="tags-tab" data-bs-toggle="tab"
+                data-bs-target="#nav-tags" type="button" role="tab" aria-selected="false" tabindex="-1">
           <i class="bi bi-tags"></i> {{ this.translate.onglet_tags }}
         </button>
-        <button class="nav-link" @click="this.switchTab('history')" id="tags-history" data-bs-toggle="tab" data-bs-target="#nav-history" type="button" role="tab" aria-selected="false" tabindex="-1">
+        <button class="nav-link" @click="this.switchTab('history')" id="tags-history" data-bs-toggle="tab"
+                data-bs-target="#nav-history" type="button" role="tab" aria-selected="false" tabindex="-1">
           <i class="bi bi-clock-history"></i> {{ this.translate.onglet_history }}
         </button>
       </div>
     </nav>
     <div class="tab-content" id="page-tab" :class="this.loading === true ? 'block-grid' : ''">
-      <div class="tab-pane fade show active" id="nav-content" role="tabpanel" aria-labelledby="content-tab" tabindex="0">
+      <div class="tab-pane fade show active" id="nav-content" role="tabpanel" aria-labelledby="content-tab"
+           tabindex="0">
         <div v-if="this.loading" class="overlay">
           <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
             <div class="spinner-border text-primary" role="status"></div>
@@ -209,8 +218,10 @@ export default {
       <div class="tab-pane fade" id="nav-seo" role="tabpanel" aria-labelledby="seo-tab" tabindex="0">Tab1</div>
       <div class="tab-pane fade" id="nav-tags" role="tabpanel" aria-labelledby="tags-tab" tabindex="0">
 
-        <tag
-          :urls="this.urls.tags"
+        <auto-complete
+            :locale="this.currentLocale"
+            :url="this.urls.auto_complete_tag"
+            :translate="this.translate.auto_complete"
         />
 
       </div>
