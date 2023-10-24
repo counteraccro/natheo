@@ -219,6 +219,7 @@ class PageController extends AppAdminController
     /**
      * @param ContainerBagInterface $containerBag
      * @param Request $request
+     * @param DateService $dateService
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
