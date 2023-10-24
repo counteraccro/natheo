@@ -6,7 +6,6 @@
 import axios from "axios";
 import PageContentForm from "../../../../Components/Page/PageContentForm.vue";
 import PageHistory from "../../../../Components/Page/PageHistory.vue";
-import Tag from "../../../../Components/Global/Tag.vue";
 import {Toast, Tab} from "bootstrap";
 import AutoComplete from "../../../../Components/Global/AutoComplete.vue";
 
@@ -16,7 +15,6 @@ export default {
     AutoComplete,
     PageContentForm,
     PageHistory,
-    Tag
   },
   props: {
     urls: Object,
