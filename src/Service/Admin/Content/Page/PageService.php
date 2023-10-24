@@ -221,6 +221,8 @@ class PageService extends AppAdminService
             'onglet_history' => $this->translator->trans('page.onglet.history', domain: 'page'),
             'loading' => $this->translator->trans('page.loading', domain: 'page'),
             'msg_auto_save_success' => $this->translator->trans('page.msg.auto_save.success', domain: 'page'),
+            'tag_title' => $this->translator->trans('page.onglet.tag.title', domain: 'page'),
+            'tag_sub_title' => $this->translator->trans('page.onglet.tag.sub_title', domain: 'page'),
             'page_content_form' => [
                 'input_url_label' => $this->translator->trans('page.page_content_form.input.url.label', domain: 'page'),
                 'input_url_info' => $this->translator->trans('page.page_content_form.input.url.info', domain: 'page'),
@@ -241,7 +243,8 @@ class PageService extends AppAdminService
                 'auto_complete_label' => $this->translator->trans('page.tag.auto_complete.label', domain: 'page'),
                 'auto_complete_placeholder' =>
                     $this->translator->trans('page.tag.auto_complete.placeholder', domain: 'page'),
-                'auto_complete_help' => $this->translator->trans('page.tag.auto_complete.help', domain: 'page')
+                'auto_complete_help' => $this->translator->trans('page.tag.auto_complete.help', domain: 'page'),
+                'auto_complete_btn' => $this->translator->trans('page.tag.auto_complete.btn', domain: 'page')
             ]
         ];
     }

@@ -153,7 +153,48 @@ export default {
         this.toast.show();
         this.loading = false;
       });
+    },
+
+    /*** Bloc Tag ***/
+
+    /**
+     * Ajoute un tag à la page
+     * @param tag
+     */
+    addTag(tag)
+    {
+      console.log(tag);
+    },
+
+    /**
+     * Génère le label en fonction de la local
+     * @param tag
+     */
+    getTagLabel(tag)
+    {
+      let label = 'NaN';
+      let locale = this.currentLocale;
+      tag.tagTranslations.forEach(function (translate) {
+        if(translate.locale === locale)
+        {
+          label = translate.label;
+          return false;
+        }
+      });
+      return label;
+    },
+
+    /**
+     * Supprime un tag
+     * @param tag
+     */
+    removeTag(tag)
+    {
+      console.log(tag.id);
     }
+
+    /*** Fin bloc tag ***/
+
   }
 }
 
@@ -216,11 +257,22 @@ export default {
       <div class="tab-pane fade" id="nav-seo" role="tabpanel" aria-labelledby="seo-tab" tabindex="0">Tab1</div>
       <div class="tab-pane fade" id="nav-tags" role="tabpanel" aria-labelledby="tags-tab" tabindex="0">
 
+        <h5>{{this.translate.tag_title}}</h5>
+
         <auto-complete
             :locale="this.currentLocale"
             :url="this.urls.auto_complete_tag"
             :translate="this.translate.auto_complete"
+            @select-value="this.addTag"
         />
+
+        <h6>{{ this.translate.tag_sub_title }}</h6>
+        <div id="block-tag">
+          <span v-for="tag in this.page.tags" class="me-1 badge rounded-pill badge-nat" :style="'background-color:' +tag.color">
+           {{ this.getTagLabel(tag) }}
+            <i class="bi bi-x-circle" style="cursor: pointer" @click="this.removeTag(tag)"></i>
+          </span>
+        </div>
 
       </div>
       <div class="tab-pane fade" id="nav-history" role="tabpanel" aria-labelledby="history-tab" tabindex="0">

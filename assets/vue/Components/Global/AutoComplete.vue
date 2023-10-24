@@ -6,7 +6,6 @@
  * @version 1.0
  */
 import axios from "axios";
-import {isEmpty} from "lodash-es";
 import {debounce} from "../../../utils/debouce";
 
 export default {
@@ -16,7 +15,7 @@ export default {
     locale: String,
     translate: Object,
   },
-  emits: [''],
+  emits: ['select-value'],
   data() {
     return {
       results: [],
@@ -48,9 +47,15 @@ export default {
     /**
      * Évènement onKeyUp
      */
-    onKeyup()
-    {
+    onKeyup() {
       this.debounceFn();
+    },
+
+    /**
+     * Évènement click sur le bouton
+     */
+    onClick() {
+      this.$emit('select-value', this.value);
     },
 
     /**
@@ -77,13 +82,19 @@ export default {
 
   <div class="mb-3">
     <label :for="'auto-complete-input-' + this.id" class="form-label">{{ this.translate.auto_complete_label }}</label>
-    <input :list="'data-list-option-' + this.id" autocomplete="off" class="form-control" v-model="this.value"
-           @keyup="this.onKeyup()" :id="'auto-complete-input-' +this.id"
-           :placeholder="this.translate.auto_complete_placeholder">
+
+    <div class="input-group mb-3">
+      <input :list="'data-list-option-' + this.id" autocomplete="off" class="form-control" v-model="this.value"
+          @keyup="this.onKeyup()" :id="'auto-complete-input-' +this.id"
+          :placeholder="this.translate.auto_complete_placeholder">
+      <button class="btn btn-secondary" type="button" @click="this.onClick">
+        <span v-html="this.translate.auto_complete_btn"></span>
+      </button>
+    </div>
     <div id="emailHelp" class="form-text">{{ this.translate.auto_complete_help }}</div>
     <datalist :id="'data-list-option-' + this.id">
       <select>
-        <option v-for="data in this.results" :value="data"  />
+        <option v-for="data in this.results" :value="data"/>
       </select>
     </datalist>
   </div>
