@@ -52,3 +52,6 @@ page.index.popin.help.edit: __page.index.popin.help.edit
 page.tag.auto_complete.label: __page.tag.auto_complete.label
 page.tag.auto_complete.placeholder: __page.tag.auto_complete.placeholder
 page.tag.auto_complete.help: __page.tag.auto_complete.help
+page.onglet.tag.title: __page.onglet.tag.title
+page.onglet.tag.sub_title: __page.onglet.tag.sub_title
+page.tag.auto_complete.btn: __page.tag.auto_complete.btn
