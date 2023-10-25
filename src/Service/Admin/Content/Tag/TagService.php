@@ -4,9 +4,11 @@
  * @version 1.0
  * Service gérant les tags de l'application
  */
+
 namespace App\Service\Admin\Content\Tag;
 
 use App\Entity\Admin\Content\Tag\Tag;
+use App\Entity\Admin\Content\Tag\TagTranslation;
 use App\Repository\Admin\Content\Tag\TagRepository;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
@@ -209,6 +211,7 @@ class TagService extends AppAdminService
     }
 
     /**
+     * Recherche une liste de tag en fonction de la locale
      * @param string $locale
      * @param string $search
      * @return array
@@ -220,10 +223,57 @@ class TagService extends AppAdminService
         $result = $repo->searchByName($locale, $search);
 
         $return = [];
-        foreach($result as $row)
-        {
+        foreach ($result as $row) {
             $return[$row['id']] = $row['label'];
         }
         return $return;
+    }
+
+    /**
+     * Retourne un tag en fonction de son label et de la locale
+     * Si le tag n'existe pas retourne null
+     * @param string $locale
+     * @param string $label
+     * @return ?Tag
+     */
+    public function searchByNameByLocale(string $locale, string $label): ?Tag
+    {
+        $repo = $this->getRepository(TagTranslation::class);
+        /** @var TagTranslation $tagTranslation */
+        $tagTranslation = $repo->findOneBy(['label' => $label, 'locale' => $locale]);
+
+        return $tagTranslation?->getTag();
+    }
+
+    /**
+     * Créer un tag en fonction d'un label et de la locale
+     * @param string $locale
+     * @param string $label
+     * @return Tag
+     */
+    public function newTagByNameAndLocale(string $locale, string $label): Tag
+    {
+        $tag = $this->searchByNameByLocale($locale, $label);
+        if ($tag !== null) {
+            return $tag;
+        }
+
+        $tag = new Tag();
+        $tag->setColor('#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT));
+
+        $locales = $this->getLocales();
+        foreach ($locales['locales'] as $loc) {
+            $tagTranslation = new TagTranslation();
+            $strLabel = $label;
+            if ($loc !== $locale) {
+                $strLabel .= ' (' . $loc . ')';
+            }
+            $tagTranslation->setLocale($loc);
+            $tagTranslation->setLabel($strLabel);
+            $tagTranslation->setTag($tag);
+            $tag->addTagTranslation($tagTranslation);
+        }
+
+        return $tag;
     }
 }

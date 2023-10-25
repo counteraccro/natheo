@@ -87,7 +87,7 @@ export default {
       <input :list="'data-list-option-' + this.id" autocomplete="off" class="form-control" v-model="this.value"
           @keyup="this.onKeyup()" :id="'auto-complete-input-' +this.id"
           :placeholder="this.translate.auto_complete_placeholder">
-      <button class="btn btn-secondary" type="button" @click="this.onClick">
+      <button class="btn btn-secondary" type="button" @click="this.onClick" :disabled="(this.value === '')">
         <span v-html="this.translate.auto_complete_btn"></span>
       </button>
     </div>

@@ -235,4 +235,22 @@ class TagController extends AppAdminController
         $result = $tagService->searchByLocale($data['locale'], $data['search']);
         return $this->json(['result' => $result]);
     }
+
+    /**
+     * Retourne un objet tag depuis un label et la locale
+     * Si le tag n'existe pas, il est créé. (utilisé pour l'auto-complete)
+     * @param Request $request
+     * @param TagService $tagService
+     * @return Response
+     */
+    #[Route('/ajax/tag-by-name/', name: 'tag_by_name')]
+    public function getTagByName(Request $request, TagService $tagService): Response
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $tag = $tagService->newTagByNameAndLocale($data['locale'], $data['label']);
+        $tag = $tagService->convertEntityToArray($tag, ['createdAt', 'updateAt']);
+
+        return $this->json(['tag' => $tag]);
+    }
 }

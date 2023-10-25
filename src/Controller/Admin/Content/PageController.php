@@ -162,6 +162,7 @@ class PageController extends AppAdminController
                 'auto_save' => $this->generateUrl('admin_page_auto_save'),
                 'reload_page_history' => $this->generateUrl('admin_page_reload_page_history'),
                 'auto_complete_tag' => $this->generateUrl('admin_tag_search'),
+                'tag_by_name' => $this->generateUrl('admin_tag_tag_by_name')
             ]
         ]);
     }

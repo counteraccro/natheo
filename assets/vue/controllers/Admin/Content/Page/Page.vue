@@ -163,7 +163,23 @@ export default {
      */
     addTag(tag)
     {
-      console.log(tag);
+
+      axios.post(this.urls.tag_by_name, {
+        'label': tag,
+        'locale' : this.currentLocale
+      }).then((response) => {
+        let tag = response.data.tag;
+        this.page.tags.push(tag);
+
+        this.msgToast = this.translate.msg_add_tag_success;
+        this.toast.show();
+        this.autoSave(this.page)
+
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+      });
+
     },
 
     /**
@@ -191,6 +207,17 @@ export default {
     removeTag(tag)
     {
       console.log(tag.id);
+
+      for (let i = 0; i < this.page.tags.length; i++) {
+        if (this.page.tags[i].id === tag.id) {
+          let spliced = this.page.tags.splice(i, 1);
+        }
+      }
+      this.msgToast = this.translate.msg_del_tag_success;
+      this.toast.show();
+
+      this.autoSave(this.page);
+
     }
 
     /*** Fin bloc tag ***/
