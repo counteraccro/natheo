@@ -55,3 +55,5 @@ page.tag.auto_complete.help: __page.tag.auto_complete.help
 page.onglet.tag.title: __page.onglet.tag.title
 page.onglet.tag.sub_title: __page.onglet.tag.sub_title
 page.tag.auto_complete.btn: __page.tag.auto_complete.btn
+page.onglet.tag.msg.add_tag_success: __page.onglet.tag.msg.add_tag_success
+page.onglet.tag.msg.del_tag_success: __page.onglet.tag.msg.del_tag_success
