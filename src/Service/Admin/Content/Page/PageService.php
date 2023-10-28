@@ -219,6 +219,7 @@ class PageService extends AppAdminService
             'onglet_seo' => $this->translator->trans('page.onglet.seo', domain: 'page'),
             'onglet_tags' => $this->translator->trans('page.onglet.tag', domain: 'page'),
             'onglet_history' => $this->translator->trans('page.onglet.history', domain: 'page'),
+            'onglet_save' => $this->translator->trans('page.onglet.save', domain: 'page'),
             'loading' => $this->translator->trans('page.loading', domain: 'page'),
             'msg_auto_save_success' => $this->translator->trans('page.msg.auto_save.success', domain: 'page'),
             'tag_title' => $this->translator->trans('page.onglet.tag.title', domain: 'page'),
@@ -240,6 +241,9 @@ class PageService extends AppAdminService
                 'update' => $this->translator->trans('page.page_history.update', domain: 'page'),
                 'for' => $this->translator->trans('page.page_history.for', domain: 'page'),
                 'reload' => $this->translator->trans('page.page_history.reload', domain: 'page'),
+            ],
+            'page_save' => [
+                'title' => $this->translator->trans('page.page_save.title', domain: 'page'),
             ],
             'auto_complete' => [
                 'auto_complete_label' => $this->translator->trans('page.tag.auto_complete.label', domain: 'page'),

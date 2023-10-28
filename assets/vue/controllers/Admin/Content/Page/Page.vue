@@ -251,13 +251,19 @@ export default {
                 data-bs-target="#nav-tags" type="button" role="tab" aria-selected="false" tabindex="-1">
           <i class="bi bi-tags"></i> {{ this.translate.onglet_tags }}
         </button>
-        <button class="nav-link" @click="this.switchTab('history')" id="tags-history" data-bs-toggle="tab"
+        <button class="nav-link" @click="this.switchTab('history')" id="history-tab" data-bs-toggle="tab"
                 data-bs-target="#nav-history" type="button" role="tab" aria-selected="false" tabindex="-1">
           <i class="bi bi-clock-history"></i> {{ this.translate.onglet_history }}
+        </button>
+        <button class="nav-link" @click="this.switchTab('save')" id="save-tab" data-bs-toggle="tab"
+            data-bs-target="#nav-save" type="button" role="tab" aria-selected="false" tabindex="-1">
+          <i class="bi bi-floppy"></i> {{ this.translate.onglet_save }}
         </button>
       </div>
     </nav>
     <div class="tab-content" id="page-tab" :class="this.loading === true ? 'block-grid' : ''">
+
+      <!-- Formulaire page -->
       <div class="tab-pane fade show active" id="nav-content" role="tabpanel" aria-labelledby="content-tab"
            tabindex="0">
         <div v-if="this.loading" class="overlay">
@@ -281,7 +287,13 @@ export default {
         </div>
 
       </div>
-      <div class="tab-pane fade" id="nav-seo" role="tabpanel" aria-labelledby="seo-tab" tabindex="0">Tab1</div>
+      <!-- Fin Formulaire page -->
+      <!-- Bloc SEO -->
+      <div class="tab-pane fade" id="nav-seo" role="tabpanel" aria-labelledby="seo-tab" tabindex="0">
+        Tab1
+      </div>
+      <!-- Fin bloc SEO -->
+      <!-- Bloc tag -->
       <div class="tab-pane fade" id="nav-tags" role="tabpanel" aria-labelledby="tags-tab" tabindex="0">
 
         <h5>{{this.translate.tag_title}}</h5>
@@ -302,6 +314,8 @@ export default {
         </div>
 
       </div>
+      <!-- fin bloc tag -->
+      <!-- Bloc history -->
       <div class="tab-pane fade" id="nav-history" role="tabpanel" aria-labelledby="history-tab" tabindex="0">
         <div v-if="this.loading" class="overlay">
           <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
@@ -316,6 +330,12 @@ export default {
         />
 
       </div>
+      <!-- fin bloc history -->
+      <!-- Bloc save -->
+      <div class="tab-pane fade" id="nav-save" role="tabpanel" aria-labelledby="seo-tab" tabindex="0">
+        <h5>{{ this.translate.page_save.title}}</h5>
+      </div>
+      <!-- fin bloc save -->
     </div>
   </div>
 
