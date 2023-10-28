@@ -57,3 +57,9 @@ page.onglet.tag.sub_title: __page.onglet.tag.sub_title
 page.tag.auto_complete.btn: __page.tag.auto_complete.btn
 page.onglet.tag.msg.add_tag_success: __page.onglet.tag.msg.add_tag_success
 page.onglet.tag.msg.del_tag_success: __page.onglet.tag.msg.del_tag_success
+page.onglet.save: __page.onglet.save
+page.page_save.title: __page.page_save.title
+page.page_save.list_status_label: __page.page_save.list_status_label
+page.page_save.list_status_help: __page.page_save.list_status_help
+page.page_save.btn.save: __page.page_save.btn.save
+page.page_save.btn.see_ext: __page.page_save.btn.see_ext
