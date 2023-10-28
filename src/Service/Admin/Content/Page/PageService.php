@@ -192,6 +192,18 @@ class PageService extends AppAdminService
     }
 
     /**
+     * Retourne la liste de status que peut avoir une page
+     * @return array
+     */
+    public function getAllStatus(): array
+    {
+        return [
+            PageConst::STATUS_DRAFT => $this->translator->trans('page.status.draft', domain: 'page'),
+            PageConst::STATUS_PUBLISH => $this->translator->trans('page.status.publish', domain: 'page'),
+        ];
+    }
+
+    /**
      * Génère une liste de tags au format HTML
      * @param Collection $tags
      * @return string
@@ -244,6 +256,10 @@ class PageService extends AppAdminService
             ],
             'page_save' => [
                 'title' => $this->translator->trans('page.page_save.title', domain: 'page'),
+                'list_status_label' => $this->translator->trans('page.page_save.list_status_label', domain: 'page'),
+                'list_status_help' => $this->translator->trans('page.page_save.list_status_help', domain: 'page'),
+                'btn_save' => $this->translator->trans('page.page_save.btn.save', domain: 'page'),
+                'btn_see_ext' => $this->translator->trans('page.page_save.btn.see_ext', domain: 'page'),
             ],
             'auto_complete' => [
                 'auto_complete_label' => $this->translator->trans('page.tag.auto_complete.label', domain: 'page'),

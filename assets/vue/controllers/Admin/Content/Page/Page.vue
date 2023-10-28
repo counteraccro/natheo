@@ -20,6 +20,7 @@ export default {
     urls: Object,
     translate: Object,
     locales: Object,
+    page_datas: Object,
     id: Number
   },
   emits: [],
@@ -32,6 +33,7 @@ export default {
       toast: [],
       history: [],
       msgToast: '',
+      list_status: this.page_datas.list_status
     }
   },
   mounted() {
@@ -161,12 +163,11 @@ export default {
      * Ajoute un tag à la page
      * @param tag
      */
-    addTag(tag)
-    {
+    addTag(tag) {
 
       axios.post(this.urls.tag_by_name, {
         'label': tag,
-        'locale' : this.currentLocale
+        'locale': this.currentLocale
       }).then((response) => {
         let tag = response.data.tag;
         this.page.tags.push(tag);
@@ -186,13 +187,11 @@ export default {
      * Génère le label en fonction de la local
      * @param tag
      */
-    getTagLabel(tag)
-    {
+    getTagLabel(tag) {
       let label = 'NaN';
       let locale = this.currentLocale;
       tag.tagTranslations.forEach(function (translate) {
-        if(translate.locale === locale)
-        {
+        if (translate.locale === locale) {
           label = translate.label;
           return false;
         }
@@ -204,8 +203,7 @@ export default {
      * Supprime un tag
      * @param tag
      */
-    removeTag(tag)
-    {
+    removeTag(tag) {
       console.log(tag.id);
 
       for (let i = 0; i < this.page.tags.length; i++) {
@@ -235,24 +233,24 @@ export default {
       <select class="form-select float-end w-25" @change="this.switchLocale($event)">
         <option value="" selected>{{ this.translate.select_locale }}</option>
         <option v-for="(language, key) in this.locales.localesTranslate" :value="key"
-                :selected="key===this.currentLocale">{{ language }}
+            :selected="key===this.currentLocale">{{ language }}
         </option>
       </select>
       <div class="nav nav-pills mb-3" id="nav-tab-page" role="tablist">
         <button class="nav-link active" @click="this.switchTab('content')" id="content-tab" data-bs-toggle="tab"
-                data-bs-target="#nav-content" type="button" role="tab" aria-selected="true">
+            data-bs-target="#nav-content" type="button" role="tab" aria-selected="true">
           <i class="bi bi-file-text"></i> {{ this.translate.onglet_content }}
         </button>
         <button class="nav-link" @click="this.switchTab('seo')" id="seo-tab" data-bs-toggle="tab"
-                data-bs-target="#nav-seo" type="button" role="tab" aria-selected="false" tabindex="-1">
+            data-bs-target="#nav-seo" type="button" role="tab" aria-selected="false" tabindex="-1">
           <i class="bi bi-tools"></i> {{ this.translate.onglet_seo }}
         </button>
         <button class="nav-link" @click="this.switchTab('tags')" id="tags-tab" data-bs-toggle="tab"
-                data-bs-target="#nav-tags" type="button" role="tab" aria-selected="false" tabindex="-1">
+            data-bs-target="#nav-tags" type="button" role="tab" aria-selected="false" tabindex="-1">
           <i class="bi bi-tags"></i> {{ this.translate.onglet_tags }}
         </button>
         <button class="nav-link" @click="this.switchTab('history')" id="history-tab" data-bs-toggle="tab"
-                data-bs-target="#nav-history" type="button" role="tab" aria-selected="false" tabindex="-1">
+            data-bs-target="#nav-history" type="button" role="tab" aria-selected="false" tabindex="-1">
           <i class="bi bi-clock-history"></i> {{ this.translate.onglet_history }}
         </button>
         <button class="nav-link" @click="this.switchTab('save')" id="save-tab" data-bs-toggle="tab"
@@ -265,7 +263,7 @@ export default {
 
       <!-- Formulaire page -->
       <div class="tab-pane fade show active" id="nav-content" role="tabpanel" aria-labelledby="content-tab"
-           tabindex="0">
+          tabindex="0">
         <div v-if="this.loading" class="overlay">
           <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
             <div class="spinner-border text-primary" role="status"></div>
@@ -296,7 +294,7 @@ export default {
       <!-- Bloc tag -->
       <div class="tab-pane fade" id="nav-tags" role="tabpanel" aria-labelledby="tags-tab" tabindex="0">
 
-        <h5>{{this.translate.tag_title}}</h5>
+        <h5>{{ this.translate.tag_title }}</h5>
 
         <auto-complete
             :locale="this.currentLocale"
@@ -333,7 +331,23 @@ export default {
       <!-- fin bloc history -->
       <!-- Bloc save -->
       <div class="tab-pane fade" id="nav-save" role="tabpanel" aria-labelledby="seo-tab" tabindex="0">
-        <h5>{{ this.translate.page_save.title}}</h5>
+        <h5>{{ this.translate.page_save.title }}</h5>
+
+        <div class="mb3">
+          <label for="list-status-page" class="form-label">{{ this.translate.page_save.list_status_label }}</label>
+          <select id="list-status-page" class="form-select" aria-label="Default select example" v-model="this.page.status">
+            <option v-for="(value, key) in this.list_status" :value="key">{{ value }}</option>
+          </select>
+          <div id="list-status-help" class="form-text">{{ this.translate.page_save.list_status_help }}</div>
+        </div>
+
+        <div class="mt-3">
+          <div class="btn btn-secondary me-1"><i class="bi bi-floppy"></i> {{ this.translate.page_save.btn_save }}</div>
+          <div class="btn btn-secondary">
+            <i class="bi bi-box-arrow-up-right"></i> {{ this.translate.page_save.btn_see_ext }}
+          </div>
+        </div>
+
       </div>
       <!-- fin bloc save -->
     </div>

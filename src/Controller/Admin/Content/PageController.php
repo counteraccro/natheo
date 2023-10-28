@@ -124,7 +124,6 @@ class PageController extends AppAdminController
     /**
      * Création / édition d'une page
      * @param PageService $pageService
-     * @param TagComponentService $tagComponentService
      * @param int|null $id
      * @return Response
      */
@@ -156,6 +155,9 @@ class PageController extends AppAdminController
             'translate' => $translate,
             'locales' => $locales,
             'id' => $id,
+            'datas' => [
+                'list_status' => $pageService->getAllStatus()
+            ],
             'urls' => [
                 'load_tab_content' => $this->generateUrl('admin_page_load_tab_content'),
                 'load_tab_history' => $this->generateUrl('admin_page_load_tab_history'),
