@@ -30,16 +30,27 @@ export default {
       page: [],
       currentLocale: '',
       currentTab: 'content',
-      toast: [],
+      toasts: {
+        autoSave: {
+          toast : [],
+          msg : '',
+        },
+        tag : {
+          toast: [],
+          msg: '',
+        }
+      },
       history: [],
-      msgToast: '',
       list_status: this.page_datas.list_status
     }
   },
   mounted() {
 
-    let tBootstrap = document.getElementById('liveToast');
-    this.toast = Toast.getOrCreateInstance(tBootstrap);
+    let toastAutoSave = document.getElementById('live-toast-auto-save');
+    this.toasts.autoSave.toast = Toast.getOrCreateInstance(toastAutoSave);
+
+    let toastBootstrap = document.getElementById('live-toast-tag');
+    this.toasts.tag.toast = Toast.getOrCreateInstance(toastBootstrap);
 
     this.currentLocale = this.locales.current;
     this.loadTabContent();
@@ -125,8 +136,8 @@ export default {
       axios.post(this.urls.auto_save, {
         'page': page
       }).then((response) => {
-        this.msgToast = this.translate.msg_auto_save_success;
-        this.toast.show();
+        this.toasts.autoSave.msg = this.translate.msg_auto_save_success;
+        this.toasts.autoSave.toast.show();
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
@@ -172,8 +183,8 @@ export default {
         let tag = response.data.tag;
         this.page.tags.push(tag);
 
-        this.msgToast = this.translate.msg_add_tag_success;
-        this.toast.show();
+        this.toasts.tag.msg = this.translate.msg_add_tag_success;
+        this.toasts.tag.toast.show();
         this.autoSave(this.page)
 
       }).catch((error) => {
@@ -211,8 +222,8 @@ export default {
           let spliced = this.page.tags.splice(i, 1);
         }
       }
-      this.msgToast = this.translate.msg_del_tag_success;
-      this.toast.show();
+      this.toasts.tag.msg = this.translate.msg_del_tag_success;
+      this.toasts.tag.toast.show();
 
       this.autoSave(this.page);
 
@@ -354,11 +365,18 @@ export default {
   </div>
 
 
-  <div class="toast-container position-fixed top-0 end-0 p-3">
-    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast-container position-fixed top-0 end-0 p-2">
+    <div id="live-toast-auto-save" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="toast-body text-white bg-success">
         <i class="bi bi-check-circle-fill"></i>
-        {{ this.msgToast }}
+        {{ this.toasts.autoSave.msg }}
+      </div>
+    </div>
+
+    <div id="live-toast-tag" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-body text-white bg-success">
+        <i class="bi bi-check-circle-fill"></i>
+        {{ this.toasts.tag.msg }}
       </div>
     </div>
   </div>
