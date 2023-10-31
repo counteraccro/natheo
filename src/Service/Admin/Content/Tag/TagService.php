@@ -249,12 +249,15 @@ class TagService extends AppAdminService
      * Créer un tag en fonction d'un label et de la locale
      * @param string $locale
      * @param string $label
-     * @return Tag
+     * @return Tag|null
      */
-    public function newTagByNameAndLocale(string $locale, string $label): Tag
+    public function newTagByNameAndLocale(string $locale, string $label): ?Tag
     {
         $tag = $this->searchByNameByLocale($locale, $label);
         if ($tag !== null) {
+            if ($tag->isDisabled()) {
+                return null;
+            }
             return $tag;
         }
 

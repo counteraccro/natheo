@@ -32,12 +32,13 @@ export default {
       currentTab: 'content',
       toasts: {
         autoSave: {
-          toast : [],
-          msg : '',
-        },
-        tag : {
           toast: [],
           msg: '',
+        },
+        tag: {
+          toast: [],
+          msg: '',
+          bg: 'bg-success'
         }
       },
       history: [],
@@ -181,11 +182,18 @@ export default {
         'locale': this.currentLocale
       }).then((response) => {
         let tag = response.data.tag;
-        this.page.tags.push(tag);
 
-        this.toasts.tag.msg = this.translate.msg_add_tag_success;
-        this.toasts.tag.toast.show();
-        this.autoSave(this.page)
+        if (tag !== null) {
+          this.page.tags.push(tag);
+          this.toasts.tag.bg = 'bg-success';
+          this.toasts.tag.msg = this.translate.msg_add_tag_success;
+          this.toasts.tag.toast.show();
+          this.autoSave(this.page)
+        } else {
+          this.toasts.tag.bg = 'bg-warning';
+          this.toasts.tag.msg = response.data.msg;
+          this.toasts.tag.toast.show();
+        }
 
       }).catch((error) => {
         console.log(error);
@@ -374,7 +382,7 @@ export default {
     </div>
 
     <div id="live-toast-tag" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-body text-white bg-success">
+      <div class="toast-body text-white" :class="this.toasts.tag.bg">
         <i class="bi bi-check-circle-fill"></i>
         {{ this.toasts.tag.msg }}
       </div>
