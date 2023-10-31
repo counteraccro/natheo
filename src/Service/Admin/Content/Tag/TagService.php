@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.2
  * Service gérant les tags de l'application
  */
 
@@ -273,6 +273,7 @@ class TagService extends AppAdminService
             $tagTranslation->setTag($tag);
             $tag->addTagTranslation($tagTranslation);
         }
+        $this->save($tag);
 
         return $tag;
     }
