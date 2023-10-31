@@ -57,9 +57,9 @@ page.onglet.tag.title: 'Les tags'
 page.onglet.tag.sub_title: 'Tags associés à la page'
 page.onglet.tag.msg.add_tag_success: 'Tag associé avec succès'
 page.onglet.tag.msg.del_tag_success: 'Tag retiré avec succès'
-page.onglet.save: 'Sauvegarde'
+page.onglet.save: Sauvegarde
 page.page_save.title: 'Sauvegarde de la page'
 page.page_save.list_status_label: 'Etat de la page'
-page.page_save.list_status_help: "Permet de définir l`état de la page"
-page.page_save.btn.save: 'Sauvegarder'
+page.page_save.list_status_help: 'Permet de définir l`état de la page'
+page.page_save.btn.save: Sauvegarder
 page.page_save.btn.see_ext: 'Voir le rendu'
