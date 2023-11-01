@@ -157,14 +157,13 @@ export default {
       }).then((response) => {
 
         let tabContent = document.querySelector('#nav-tab-page button[data-bs-target="#nav-content"]');
-        console.log(tabContent);
         Tab.getInstance(tabContent).show();
         this.page = response.data.page;
-        this.msgToast = response.data.msg;
+        this.toasts.autoSave.msg = response.data.msg;
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
-        this.toast.show();
+        this.toasts.autoSave.toast.show();
         this.loading = false;
       });
     },
