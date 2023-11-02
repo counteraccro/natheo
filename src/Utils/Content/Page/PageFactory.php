@@ -55,6 +55,8 @@ class PageFactory
             $pageTranslation = new PageTranslation();
             $pageTranslation->setLocale($locale);
             $pageTranslation->setPage($this->page);
+            $pageTranslation->setTitre('');
+            $pageTranslation->setUrl('');
             $this->page->addPageTranslation($pageTranslation);
         }
     }

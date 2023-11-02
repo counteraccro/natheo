@@ -308,7 +308,7 @@ class PageController extends AppAdminController
         {
             $page = $pageService->findOneById(Page::class, $data['page']['id']);
         }
-        
+
         $page = $pageFactory->mergePage($page, $data['page']);
         $pageService->save($page);
 
