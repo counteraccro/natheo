@@ -146,6 +146,24 @@ export default {
     },
 
     /**
+     * Sauvegarde une page
+     */
+    save()
+    {
+      this.loading = true;
+      axios.post(this.urls.save, {
+        'page': this.page
+      }).then((response) => {
+        this.toasts.autoSave.msg = response.data.msg;
+        this.toasts.autoSave.toast.show();
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+        this.loading = false;
+      });
+    },
+
+    /**
      * Recharge l'historique de la page en fonction de son id
      * @param rowId
      */
@@ -349,6 +367,14 @@ export default {
       <!-- fin bloc history -->
       <!-- Bloc save -->
       <div class="tab-pane fade" id="nav-save" role="tabpanel" aria-labelledby="seo-tab" tabindex="0">
+
+        <div v-if="this.loading" class="overlay">
+          <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
+            <div class="spinner-border text-primary" role="status"></div>
+            <span class="txt-overlay">{{ this.translate.loading }}</span>
+          </div>
+        </div>
+
         <h5>{{ this.translate.page_save.title }}</h5>
 
         <div class="mb3">
@@ -360,7 +386,8 @@ export default {
         </div>
 
         <div class="mt-3">
-          <div class="btn btn-secondary me-1"><i class="bi bi-floppy"></i> {{ this.translate.page_save.btn_save }}</div>
+          <div class="btn btn-secondary me-1" @click="this.save">
+            <i class="bi bi-floppy"></i> {{ this.translate.page_save.btn_save }}</div>
           <div class="btn btn-secondary">
             <i class="bi bi-box-arrow-up-right"></i> {{ this.translate.page_save.btn_see_ext }}
           </div>

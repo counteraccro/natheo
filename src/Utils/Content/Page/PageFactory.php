@@ -51,8 +51,7 @@ class PageFactory
      */
     public function createPageTranslation(): void
     {
-        foreach($this->locales as $locale)
-        {
+        foreach ($this->locales as $locale) {
             $pageTranslation = new PageTranslation();
             $pageTranslation->setLocale($locale);
             $pageTranslation->setPage($this->page);
@@ -61,16 +60,40 @@ class PageFactory
     }
 
     /**
+     * Fusionne les données de $populate dans $page
+     * @param Page $page
+     * @param array $populate
+     * @return Page
+     */
+    public function mergePage(Page $page, array $populate): Page
+    {
+        var_dump($populate);
+
+        if (isset($populate['pageTranslations'])) {
+            foreach ($page->getPageTranslations() as &$pageTranslation) {
+                foreach ($populate['pageTranslations'] as $dataTranslation) {
+                    if ($pageTranslation->getLocale() === $dataTranslation['locale']) {
+                        $pageTranslation = $this->mergeData($pageTranslation, $dataTranslation,
+                            ['id', 'page', 'locale']);
+                    }
+                }
+            }
+        }
+
+        return $page;
+    }
+
+    /**
+     * Création des pageContent
      * @return void
      */
-    private function createPageContent()
+    private function createPageContent(): void
     {
         $pageContent = new PageContent();
         $pageContent->setType(PageConst::CONTENT_TYPE_TEXT);
         $pageContent->setRenderOrder(1);
 
-        foreach($this->locales as $locale)
-        {
+        foreach ($this->locales as $locale) {
             $pageContentTranslation = new PageContentTranslation();
             $pageContentTranslation->setLocale($locale);
             $pageContentTranslation->setText('[' . $locale . '] Contenu de votre page');
@@ -95,7 +118,6 @@ class PageFactory
             $pageStatistique->setPage($this->page);
             $this->page->addPageStatistique($pageStatistique);
         }
-
     }
 
     /**
@@ -105,5 +127,25 @@ class PageFactory
     private function getPage(): Page
     {
         return $this->page;
+    }
+
+    /**
+     * Merge des données de $populate dans $object sans prendre en compte de $exclude
+     * @param mixed $object
+     * @param array $populate
+     * @param array $exclude
+     * @return mixed
+     */
+    private function mergeData(mixed $object, array $populate, array $exclude = []): mixed
+    {
+        foreach ($populate as $key => $value) {
+            if (in_array($key, $exclude)) {
+                continue;
+            }
+
+            $func = 'set' . ucfirst($key);
+            $object->$func($value);
+        }
+        return $object;
     }
 }

@@ -164,7 +164,8 @@ class PageController extends AppAdminController
                 'auto_save' => $this->generateUrl('admin_page_auto_save'),
                 'reload_page_history' => $this->generateUrl('admin_page_reload_page_history'),
                 'auto_complete_tag' => $this->generateUrl('admin_tag_search'),
-                'tag_by_name' => $this->generateUrl('admin_tag_tag_by_name')
+                'tag_by_name' => $this->generateUrl('admin_tag_tag_by_name'),
+                'save' => $this->generateUrl('admin_page_save')
             ]
         ]);
     }
@@ -199,6 +200,7 @@ class PageController extends AppAdminController
     }
 
     /**
+     * Sauvegarde à un instant T l'objet page dans un fichier plat
      * @param ContainerBagInterface $containerBag
      * @param Request $request
      * @return JsonResponse
@@ -220,6 +222,7 @@ class PageController extends AppAdminController
     }
 
     /**
+     * Charge le tableau d'historique
      * @param ContainerBagInterface $containerBag
      * @param Request $request
      * @param DateService $dateService
@@ -255,6 +258,15 @@ class PageController extends AppAdminController
         return $this->json(['history' => $history]);
     }
 
+    /**
+     * Retourne une page en fonction de l'id de l'historique
+     * @param ContainerBagInterface $containerBag
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     #[Route('/ajax/reload-page-history', name: 'reload_page_history')]
     public function reloadPageHistory(
         ContainerBagInterface $containerBag,
@@ -277,6 +289,31 @@ class PageController extends AppAdminController
         return $this->json([
             'page' => $page,
             'msg' => $translator->trans('page.page_history.success', ['id' => $data['row_id']], domain: 'page')
+        ]);
+    }
+
+    /**
+     * Permet de sauvegarder une page
+     * @param Request $request
+     * @return JsonResponse
+     */
+    #[Route('/ajax/save', name: 'save')]
+    public function save(Request $request, PageService $pageService, TranslatorInterface $translator): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $pageFactory = new PageFactory($pageService->getLocales()['locales']);
+
+        $page = $pageFactory->create();
+        if(isset($data['page']['id']) && $data['page']['id'] > 0)
+        {
+            $page = $pageService->findOneById(Page::class, $data['page']['id']);
+        }
+        
+        $page = $pageFactory->mergePage($page, $data['page']);
+        $pageService->save($page);
+
+        return $this->json([
+            'msg' => $translator->trans('page.save.success', domain: 'page')
         ]);
     }
 }
