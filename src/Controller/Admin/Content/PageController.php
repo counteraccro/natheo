@@ -17,6 +17,7 @@ use App\Service\Global\DateService;
 use App\Utils\Breadcrumb;
 use App\Utils\Content\Page\PageFactory;
 use App\Utils\Content\Page\PageHistory;
+use App\Utils\Content\Page\PagePopulate;
 use App\Utils\System\Options\OptionUserKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -309,7 +310,8 @@ class PageController extends AppAdminController
             $page = $pageService->findOneById(Page::class, $data['page']['id']);
         }
 
-        $page = $pageFactory->mergePage($page, $data['page']);
+        $pagePopulate = new PagePopulate($page, $data['page'], $pageService);
+        $page = $pagePopulate->populate()->getPage();
         $pageService->save($page);
 
         return $this->json([
