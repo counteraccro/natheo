@@ -135,9 +135,6 @@ export default {
      */
     autoSave(page) {
 
-      emitter.emit('load-render', {isOpen : true} );
-      console.log(emitter);
-
       axios.post(this.urls.auto_save, {
         'page': page
       }).then((response) => {
@@ -146,6 +143,8 @@ export default {
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
+        // On lance le rechargement du render
+        emitter.emit('load-render');
       });
     },
 
