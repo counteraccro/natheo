@@ -1,3 +1,9 @@
+/**
+ * Permet de créer un debounce
+ * @author Gourdon Aymeric
+ * @version 1.0
+ */
+
 export const debounce = (func, delay = 600, immediate = false) => {
     let timeout
     return function () {
