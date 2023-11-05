@@ -8,6 +8,7 @@ import PageContentForm from "../../../../Components/Page/PageContentForm.vue";
 import PageHistory from "../../../../Components/Page/PageHistory.vue";
 import {Toast, Tab} from "bootstrap";
 import AutoComplete from "../../../../Components/Global/AutoComplete.vue";
+import {emitter} from "../../../../../utils/useEvent";
 
 export default {
   name: 'Page',
@@ -46,7 +47,6 @@ export default {
     }
   },
   mounted() {
-
     let toastAutoSave = document.getElementById('live-toast-auto-save');
     this.toasts.autoSave.toast = Toast.getOrCreateInstance(toastAutoSave);
 
@@ -134,6 +134,10 @@ export default {
      * @param page
      */
     autoSave(page) {
+
+      emitter.emit('load-render', {isOpen : true} );
+      console.log(emitter);
+
       axios.post(this.urls.auto_save, {
         'page': page
       }).then((response) => {

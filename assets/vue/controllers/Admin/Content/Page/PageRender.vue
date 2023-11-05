@@ -1,8 +1,10 @@
-<script>/**
+<script>
+/**
  * Permet de générer un rendu pour les pages
  * @author Gourdon Aymeric
  * @version 1.0
  */
+import {emitter} from "../../../../../utils/useEvent";
 
 
 export default {
@@ -18,11 +20,16 @@ export default {
     }
   },
   mounted() {
-
+    // Appelé depuis autoSave de Page.vue
+    emitter.on('load-render', async () => {
+     this.load();
+    });
   },
   computed: {},
   methods: {
-
+    load() {
+      console.log('reload-render')
+    }
   }
 }
 </script>
