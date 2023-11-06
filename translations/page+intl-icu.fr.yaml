@@ -63,3 +63,5 @@ page.page_save.list_status_label: 'Etat de la page'
 page.page_save.list_status_help: 'Permet de définir l`état de la page'
 page.page_save.btn.save: Sauvegarder
 page.page_save.btn.see_ext: 'Voir le rendu'
+page.save.success: 'Sauvegarde de la page fait avec succès'
+page.page_content_form.title: 'Contenu de la page'
