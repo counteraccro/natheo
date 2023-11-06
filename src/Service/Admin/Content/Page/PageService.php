@@ -239,6 +239,7 @@ class PageService extends AppAdminService
             'msg_add_tag_success' => $this->translator->trans('page.onglet.tag.msg.add_tag_success', domain: 'page'),
             'msg_del_tag_success' => $this->translator->trans('page.onglet.tag.msg.del_tag_success', domain: 'page'),
             'page_content_form' => [
+                'title' => $this->translator->trans('page.page_content_form.title', domain: 'page'),
                 'input_url_label' => $this->translator->trans('page.page_content_form.input.url.label', domain: 'page'),
                 'input_url_info' => $this->translator->trans('page.page_content_form.input.url.info', domain: 'page'),
                 'input_titre_label' =>

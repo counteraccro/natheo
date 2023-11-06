@@ -48,7 +48,7 @@ export default {
 
 <template>
 
-  <h5>aa</h5>
+  <h5>{{ this.translate.title }}</h5>
 
   <div class="mb-3">
     <label for="page-titre" class="form-label">{{ this.translate.input_titre_label }}</label>
