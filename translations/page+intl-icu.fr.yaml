@@ -65,3 +65,8 @@ page.page_save.btn.save: Sauvegarder
 page.page_save.btn.see_ext: 'Voir le rendu'
 page.save.success: 'Sauvegarde de la page fait avec succès'
 page.page_content_form.title: 'Contenu de la page'
+page.render.1.colum: 1 colonne
+page.render.2.colum: 2 colonnes
+page.render.3.colum: 3 colonnes
+page.page_save.list_render_label: Choix de l'affichage du contenu de la page
+page.page_save.list_render_help: Permet de définir la structure du contenu de la page
