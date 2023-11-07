@@ -204,6 +204,19 @@ class PageService extends AppAdminService
     }
 
     /**
+     * Retourne la liste de rendu que peut avoir une page
+     * @return array
+     */
+    public function getAllRender(): array
+    {
+        return [
+            PageConst::RENDER_1_COLUM => $this->translator->trans('page.render.1.colum', domain: 'page'),
+            PageConst::RENDER_2_COLUM => $this->translator->trans('page.render.2.colum', domain: 'page'),
+            PageConst::RENDER_3_COLUM => $this->translator->trans('page.render.3.colum', domain: 'page'),
+        ];
+    }
+
+    /**
      * Génère une liste de tags au format HTML
      * @param Collection $tags
      * @return string
@@ -246,6 +259,8 @@ class PageService extends AppAdminService
                     $this->translator->trans('page.page_content_form.input.titre.label', domain: 'page'),
                 'input_titre_info' =>
                     $this->translator->trans('page.page_content_form.input.titre.info', domain: 'page'),
+                'list_render_label' => $this->translator->trans('page.page_save.list_render_label', domain: 'page'),
+                'list_render_help' => $this->translator->trans('page.page_save.list_render_help', domain: 'page'),
             ],
             'page_history' => [
                 'title' => $this->translator->trans('page.page_history.title', domain: 'page'),

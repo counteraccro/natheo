@@ -10,6 +10,7 @@ export default {
   name: 'PageContentForm',
   props: {
     page: Object,
+    listRender: Object,
     translate: Object,
     locale: String
   },
@@ -64,6 +65,14 @@ export default {
       <input v-if="pageTranslation.locale === this.locale" type="text" class="form-control" id="page-url" v-model="pageTranslation.url" @change="this.autoSave">
     </div>
     <div id="pageUrlHelp" class="form-text">{{ this.translate.input_url_info }}</div>
+  </div>
+
+  <div class="mb3">
+    <label for="list-status-page" class="form-label">{{ this.translate.list_render_label }}</label>
+    <select id="list-status-page" class="form-select" aria-label="Default select example" v-model="this.page.render" @change="this.autoSave">
+      <option v-for="(value, key) in this.listRender" :value="parseInt(key)">{{ value }}</option>
+    </select>
+    <div id="list-status-help" class="form-text">{{ this.translate.list_render_help }}</div>
   </div>
 
 

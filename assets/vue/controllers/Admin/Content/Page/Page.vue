@@ -313,6 +313,7 @@ export default {
             :locale="this.currentLocale"
             :page="this.page"
             :translate="this.translate.page_content_form"
+            :list-render="this.page_datas.list_render"
             @auto-save="this.autoSave"
         />
 
@@ -383,7 +384,7 @@ export default {
         <div class="mb3">
           <label for="list-status-page" class="form-label">{{ this.translate.page_save.list_status_label }}</label>
           <select id="list-status-page" class="form-select" aria-label="Default select example" v-model="this.page.status">
-            <option v-for="(value, key) in this.list_status" :value="key">{{ value }}</option>
+            <option v-for="(value, key) in this.list_status" :value="parseInt(key)">{{ value }}</option>
           </select>
           <div id="list-status-help" class="form-text">{{ this.translate.page_save.list_status_help }}</div>
         </div>
