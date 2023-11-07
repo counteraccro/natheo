@@ -54,9 +54,20 @@ class PagePopulate
      */
     public function populate(): static
     {
+        $this->populatePage();
         $this->populatePageTranslation();
         $this->populateTags();
         return $this;
+    }
+
+    /**
+     * Met à jour certaines données de l'objet Page
+     * @return void
+     */
+    private function populatePage(): void
+    {
+        $this->page->setRender($this->populate['render']);
+        $this->page->setStatus($this->populate['status']);
     }
 
     /**
