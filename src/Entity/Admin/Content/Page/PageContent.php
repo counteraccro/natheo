@@ -20,6 +20,9 @@ class PageContent
     #[ORM\JoinColumn(nullable: false)]
     private ?Page $page = null;
 
+    #[ORM\Column]
+    private ?int $renderBlock = null;
+
     #[ORM\Column(name: 'render_order')]
     private ?int $renderOrder = null;
 
@@ -117,6 +120,18 @@ class PageContent
     public function setTypeId(?int $typeId): static
     {
         $this->typeId = $typeId;
+
+        return $this;
+    }
+
+    public function getRenderBlock(): ?int
+    {
+        return $this->renderBlock;
+    }
+
+    public function setRenderBlock(int $renderBlock): static
+    {
+        $this->renderBlock = $renderBlock;
 
         return $this;
     }
