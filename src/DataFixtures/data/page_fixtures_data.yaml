@@ -22,6 +22,7 @@ pages:
         url: 'article-es/bienvenido'
     pageContent:
       presentation_content_1:
+        renderBlock: 1
         renderOrder: 1
         type: 1
         pageContentTranslation:
@@ -56,6 +57,7 @@ pages:
             ## Autres informations\n\n
             Consulter notre site pour obtenir d'autres informations sur NatheoCMS"
       presentation_content_2:
+        renderBlock: 1
         renderOrder: 2
         type: 1
         pageContentTranslation:
@@ -75,6 +77,7 @@ pages:
             \n\n
             Vous souhaitez contribuer au développement du CMS ou tout simplement le modifier pour l'adapter à vos besoins, consulter [la documentation](https://counteraccro.github.io/natheo.doc/) technique."
       presentation_content_3:
+        renderBlock: 1
         renderOrder: 3
         type: 2
         typeId: 1
