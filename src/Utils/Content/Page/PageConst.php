@@ -10,22 +10,36 @@ namespace App\Utils\Content\Page;
 class PageConst
 {
     /**
-     * Affichage du rendu sur 1 colonne
+     * Affichage du rendu mode 1 block
      * @var integer
      */
-    const RENDER_1_COLUM = 1;
+    const RENDER_1_BLOCK = 1;
 
     /**
-     * Affichage du rendu sur 2 colonnes
+     * Affichage du rendu mode 2 block côte à côte
      * @var integer
      */
-    const RENDER_2_COLUM = 2;
+    const RENDER_2_BLOCK = 2;
 
     /**
-     * Affichage du rendu sur 3 colonnes
+     * Affichage du rendu mode 3 block côte à côte
      * @var integer
      */
-    const RENDER_3_COLUM = 3;
+    const RENDER_3_BLOCK = 3;
+
+    /**
+     * Affichage du rendu mode 2 block côte à côte + 1 block en dessous
+     * @var integer
+     */
+    const RENDER_2_1_BLOCK = 4;
+
+    /**
+     * Affichage du rendu mode 2 block côte à côte + 2 block côte à côte en dessous
+     * @var integer
+     */
+    const RENDER_2_2_BLOCK = 5;
+
+
 
     /**
      * Status publié pour un article

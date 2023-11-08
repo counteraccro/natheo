@@ -210,9 +210,11 @@ class PageService extends AppAdminService
     public function getAllRender(): array
     {
         return [
-            PageConst::RENDER_1_COLUM => $this->translator->trans('page.render.1.colum', domain: 'page'),
-            PageConst::RENDER_2_COLUM => $this->translator->trans('page.render.2.colum', domain: 'page'),
-            PageConst::RENDER_3_COLUM => $this->translator->trans('page.render.3.colum', domain: 'page'),
+            PageConst::RENDER_1_BLOCK => $this->translator->trans('page.render.1.block', domain: 'page'),
+            PageConst::RENDER_2_BLOCK => $this->translator->trans('page.render.2.block', domain: 'page'),
+            PageConst::RENDER_3_BLOCK => $this->translator->trans('page.render.3.block', domain: 'page'),
+            PageConst::RENDER_2_1_BLOCK => $this->translator->trans('page.render.2.1.block', domain: 'page'),
+            PageConst::RENDER_2_2_BLOCK => $this->translator->trans('page.render.2.2.block', domain: 'page'),
         ];
     }
 
