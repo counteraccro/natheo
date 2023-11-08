@@ -264,6 +264,9 @@ class PageService extends AppAdminService
                 'list_render_label' => $this->translator->trans('page.page_save.list_render_label', domain: 'page'),
                 'list_render_help' => $this->translator->trans('page.page_save.list_render_help', domain: 'page'),
             ],
+            'page_content' => [
+                'title' => $this->translator->trans('page.page_content.title', domain: 'page'),
+            ],
             'page_history' => [
                 'title' => $this->translator->trans('page.page_history.title', domain: 'page'),
                 'description' => $this->translator->trans('page.page_history.description', domain: 'page'),

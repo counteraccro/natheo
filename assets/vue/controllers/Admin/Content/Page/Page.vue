@@ -9,10 +9,12 @@ import PageHistory from "../../../../Components/Page/PageHistory.vue";
 import {Toast, Tab} from "bootstrap";
 import AutoComplete from "../../../../Components/Global/AutoComplete.vue";
 import {emitter} from "../../../../../utils/useEvent";
+import PageContent from "../../../../Components/Page/PageContent.vue";
 
 export default {
   name: 'Page',
   components: {
+    PageContent,
     AutoComplete,
     PageContentForm,
     PageHistory,
@@ -149,10 +151,17 @@ export default {
     },
 
     /**
+     * Ajoute un objet content ou le met à jour
+     * @param content
+     */
+    addContent(content) {
+      console.log('addContent');
+    },
+
+    /**
      * Sauvegarde une page
      */
-    save()
-    {
+    save() {
       this.loading = true;
       axios.post(this.urls.save, {
         'page': this.page
@@ -317,10 +326,20 @@ export default {
             @auto-save="this.autoSave"
         />
 
-        <div v-for="pageContent in this.page.pageContents">
-          <div v-for="pCT in pageContent.pageContentTranslations">
-            {{ pCT.text }} <br/>
-            <hr/>
+        <page-content
+            :locale="this.currentLocale"
+            :url="a"
+            :translate="this.translate.page_content"
+            :page="this.page"
+            @add-content="this.addContent"
+        />
+
+        <div class="row">
+          <div v-for="pageContent in this.page.pageContents">
+
+            <div v-for="pCT in pageContent.pageContentTranslations">
+              <div v-if="pCT.locale === this.currentLocale"> {{ pCT.text }}</div>
+            </div>
           </div>
         </div>
 
@@ -391,7 +410,8 @@ export default {
 
         <div class="mt-3">
           <div class="btn btn-secondary me-1" @click="this.save">
-            <i class="bi bi-floppy"></i> {{ this.translate.page_save.btn_save }}</div>
+            <i class="bi bi-floppy"></i> {{ this.translate.page_save.btn_save }}
+          </div>
           <div class="btn btn-secondary">
             <i class="bi bi-box-arrow-up-right"></i> {{ this.translate.page_save.btn_see_ext }}
           </div>
