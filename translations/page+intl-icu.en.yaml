@@ -64,9 +64,11 @@ page.page_save.list_status_help: __page.page_save.list_status_help
 page.page_save.btn.save: __page.page_save.btn.save
 page.page_save.btn.see_ext: __page.page_save.btn.see_ext
 page.save.success: __page.save.success
-page.render.1.colum: __page.render.1.colum
-page.render.2.colum: __page.render.2.colum
-page.render.3.colum: __page.render.3.colum
 page.page_content_form.title: __page.page_content_form.title
 page.page_save.list_render_label: __page.page_save.list_render_label
 page.page_save.list_render_help: __page.page_save.list_render_help
+page.render.1.block: __page.render.1.block
+page.render.2.block: __page.render.2.block
+page.render.3.block: __page.render.3.block
+page.render.2.1.block: __page.render.2.1.block
+page.render.2.2.block: __page.render.2.2.block
