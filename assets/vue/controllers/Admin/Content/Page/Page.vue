@@ -328,19 +328,14 @@ export default {
 
         <page-content
             :locale="this.currentLocale"
-            :url="a"
+            :url="this.urls.au"
             :translate="this.translate.page_content"
             :page="this.page"
             @add-content="this.addContent"
         />
 
         <div class="row">
-          <div v-for="pageContent in this.page.pageContents">
 
-            <div v-for="pCT in pageContent.pageContentTranslations">
-              <div v-if="pCT.locale === this.currentLocale"> {{ pCT.text }}</div>
-            </div>
-          </div>
         </div>
 
       </div>

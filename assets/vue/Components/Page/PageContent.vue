@@ -28,6 +28,17 @@ export default {
   computed: {},
   methods: {
 
+    getNbRow()
+    {
+      switch (this.page.render) {
+        case 1:
+          return 1;
+        case 2:
+          return 2;
+        case 3:
+          return 3;
+      }
+    },
 
     /**
      * Évènement click sur le bouton
@@ -59,14 +70,20 @@ export default {
 
   <h5>{{ this.translate.title }}</h5>
 
-  <div v-if="this.page.render === 1">
+  <div v-if="this.page.render < 4">
     1 block
-  </div>
-  <div v-else-if="this.page.render === 2">
-    2 block
-  </div>
-  <div v-else-if="this.page.render === 3">
-    3 block
+    <div class="row">
+      <div v-for="n in this.getNbRow()" :class="'col-' + (12/this.getNbRow())">
+        <div v-for="pageContent in this.page.pageContents">
+
+          <div v-for="pCT in pageContent.pageContentTranslations">
+            <div v-if="pCT.locale === this.locale && pageContent.renderBlock === n">
+              {{ pCT.text }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div v-else-if="this.page.render === 4">
     2 block + 1 blocs
