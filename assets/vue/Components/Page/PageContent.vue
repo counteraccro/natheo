@@ -6,11 +6,13 @@
  * @version 1.0
  */
 import axios from "axios";
-import {debounce} from "../../../utils/debouce";
-import {marked} from "marked";
+import PageContentBlock from "./PageContentBlock.vue";
 
 export default {
   name: 'PageContent',
+  components: {
+    PageContentBlock
+  },
   props: {
     url: String,
     locale: String,
@@ -20,7 +22,8 @@ export default {
   emits: ['add-content'],
   data() {
     return {
-      isEmptyBlock: true,
+      renderColumn: [1, 2, 3],
+      renderRow: [4, 5]
     }
   },
   mounted() {
@@ -28,9 +31,12 @@ export default {
   },
   computed: {},
   methods: {
-    marked,
 
-    getNbRow() {
+    /**
+     * Retourne le nombre d'itérations en fonction du render
+     * @returns {number}
+     */
+    getNbIteration() {
       switch (this.page.render) {
         case 1:
           return 1;
@@ -38,7 +44,21 @@ export default {
           return 2;
         case 3:
           return 3;
+        case 4:
+          return 2;
+        case 5:
+          return 3;
       }
+    },
+
+    /**
+     * La valeur existe dans la liste
+     * @param list
+     * @param number
+     * @returns boolean
+     */
+    inArray(list, number) {
+      return list.includes(number)
     },
 
     /**
@@ -71,28 +91,36 @@ export default {
 
   <h5>{{ this.translate.title }}</h5>
 
-  <div v-if="this.page.render < 4">
+  <div v-if="this.inArray(this.renderColumn, this.page.render)">
     <div class="row">
-      <div v-for="n in this.getNbRow()" :set="this.isEmptyBlock = false" :class="'col-' + (12/this.getNbRow())">
-        <div v-for="pageContent in this.page.pageContents">
-          <div v-for="pCT in pageContent.pageContentTranslations">
-            <div v-if="pCT.locale === this.locale && pageContent.renderBlock === n">
-              <div v-html="marked(pCT.text)" :set="this.isEmptyBlock = true"></div>
-            </div>
-          </div>
-        </div>
-
-        <div v-if="!this.isEmptyBlock">
-          Block vide
-        </div>
-
+      <div v-for="n in this.getNbIteration()" :class="'col-' + (12/this.getNbIteration())">
+        <page-content-block
+            :translate="this.translate"
+            :locale="this.locale"
+            :page-contents="this.page.pageContents"
+            :render-block-id="n"
+        />
       </div>
     </div>
   </div>
-  <div v-else-if="this.page.render === 4">
+
+  <div v-if="this.inArray(this.renderRow, this.page.render)">
+    <div class="row">
+      <div v-for="n in this.getNbIteration()" class="col-12">
+        <page-content-block
+            :translate="this.translate"
+            :locale="this.locale"
+            :page-contents="this.page.pageContents"
+            :render-block-id="n"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div v-else-if="this.page.render === 6">
     2 block + 1 blocs
   </div>
-  <div v-else-if="this.page.render === 5">
+  <div v-else-if="this.page.render === 7">
     2 block + 2 block
   </div>
 </template>
