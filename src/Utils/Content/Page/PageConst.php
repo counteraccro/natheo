@@ -28,16 +28,27 @@ class PageConst
     const RENDER_3_BLOCK = 3;
 
     /**
+     * Affichage du rendu mode 2 bloc l'un en dessous de l'autre
+     */
+    const RENDER_2_BLOCK_BOTTOM = 4;
+
+    /**
+     * Affichage du rendu mode 3 bloc l'un en dessous de l'autre
+     */
+    const RENDER_3_BLOCK_BOTTOM = 5;
+
+    /**
      * Affichage du rendu mode 2 block côte à côte + 1 block en dessous
      * @var integer
      */
-    const RENDER_2_1_BLOCK = 4;
+    const RENDER_2_1_BLOCK = 6;
 
     /**
      * Affichage du rendu mode 2 block côte à côte + 2 block côte à côte en dessous
      * @var integer
      */
-    const RENDER_2_2_BLOCK = 5;
+    const RENDER_2_2_BLOCK = 7;
+
 
 
 

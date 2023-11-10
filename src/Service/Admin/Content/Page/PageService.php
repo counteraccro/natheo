@@ -213,6 +213,8 @@ class PageService extends AppAdminService
             PageConst::RENDER_1_BLOCK => $this->translator->trans('page.render.1.block', domain: 'page'),
             PageConst::RENDER_2_BLOCK => $this->translator->trans('page.render.2.block', domain: 'page'),
             PageConst::RENDER_3_BLOCK => $this->translator->trans('page.render.3.block', domain: 'page'),
+            PageConst::RENDER_2_BLOCK_BOTTOM => $this->translator->trans('page.render.2.block.bottom', domain: 'page'),
+            PageConst::RENDER_3_BLOCK_BOTTOM => $this->translator->trans('page.render.3.block.bottom', domain: 'page'),
             PageConst::RENDER_2_1_BLOCK => $this->translator->trans('page.render.2.1.block', domain: 'page'),
             PageConst::RENDER_2_2_BLOCK => $this->translator->trans('page.render.2.2.block', domain: 'page'),
         ];
