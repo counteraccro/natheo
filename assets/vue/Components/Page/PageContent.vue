@@ -1,12 +1,13 @@
 <script>
 
 /**
-* Ajout de contenu dans la page
-* @author Gourdon Aymeric
-* @version 1.0
-*/
+ * Ajout de contenu dans la page
+ * @author Gourdon Aymeric
+ * @version 1.0
+ */
 import axios from "axios";
 import {debounce} from "../../../utils/debouce";
+import {marked} from "marked";
 
 export default {
   name: 'PageContent',
@@ -19,7 +20,7 @@ export default {
   emits: ['add-content'],
   data() {
     return {
-
+      isEmptyBlock: true,
     }
   },
   mounted() {
@@ -27,9 +28,9 @@ export default {
   },
   computed: {},
   methods: {
+    marked,
 
-    getNbRow()
-    {
+    getNbRow() {
       switch (this.page.render) {
         case 1:
           return 1;
@@ -71,17 +72,20 @@ export default {
   <h5>{{ this.translate.title }}</h5>
 
   <div v-if="this.page.render < 4">
-    1 block
     <div class="row">
-      <div v-for="n in this.getNbRow()" :class="'col-' + (12/this.getNbRow())">
+      <div v-for="n in this.getNbRow()" :set="this.isEmptyBlock = false" :class="'col-' + (12/this.getNbRow())">
         <div v-for="pageContent in this.page.pageContents">
-
           <div v-for="pCT in pageContent.pageContentTranslations">
             <div v-if="pCT.locale === this.locale && pageContent.renderBlock === n">
-              {{ pCT.text }}
+              <div v-html="marked(pCT.text)" :set="this.isEmptyBlock = true"></div>
             </div>
           </div>
         </div>
+
+        <div v-if="!this.isEmptyBlock">
+          Block vide
+        </div>
+
       </div>
     </div>
   </div>
