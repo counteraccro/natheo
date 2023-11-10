@@ -72,3 +72,6 @@ page.render.2.block: __page.render.2.block
 page.render.3.block: __page.render.3.block
 page.render.2.1.block: __page.render.2.1.block
 page.render.2.2.block: __page.render.2.2.block
+page.render.2.block.bottom: __page.render.2.block.bottom
+page.render.3.block.bottom: __page.render.3.block.bottom
+page.page_content.title: __page.page_content.title
