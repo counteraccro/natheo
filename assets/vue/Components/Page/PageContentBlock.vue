@@ -72,7 +72,7 @@ export default {
                 :me-value="pCT.text"
                 :me-rows="10"
                 :me-translate="this.translate.markdown"
-                :me-key-words="{}"
+                :me-key-words="[]"
                 :me-save="true"
                 :me-preview="false"
                 @editor-value="this.updatePageContentText"
