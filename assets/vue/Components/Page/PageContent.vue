@@ -95,7 +95,7 @@ export default {
     <div class="row">
       <div v-for="n in this.getNbIteration()" :class="'col-' + (12/this.getNbIteration())">
         <page-content-block
-            :translate="this.translate"
+            :translate="this.translate.page_content_block"
             :locale="this.locale"
             :page-contents="this.page.pageContents"
             :render-block-id="n"
@@ -108,7 +108,7 @@ export default {
     <div class="row">
       <div v-for="n in this.getNbIteration()" class="col-12">
         <page-content-block
-            :translate="this.translate"
+            :translate="this.translate.page_content_block"
             :locale="this.locale"
             :page-contents="this.page.pageContents"
             :render-block-id="n"

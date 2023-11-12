@@ -5,9 +5,11 @@
  */
 
 import {marked} from "marked";
+import MarkdownEditor from "../Global/MarkdownEditor.vue";
 
 export default {
   name: 'PageContentBlock',
+  components: {MarkdownEditor},
   props: {
     locale: String,
     translate: Object,
@@ -25,6 +27,11 @@ export default {
   computed: {},
   methods: {
     marked,
+
+    updatePageContentText(value)
+    {
+      console.log(value);
+    },
 
     /**
      * Évènement click sur le bouton
@@ -55,10 +62,26 @@ export default {
 <template>
   <div :set="this.isEmptyBlock = false">
     <div v-for="pageContent in this.pageContents">
-      <div v-for="pCT in pageContent.pageContentTranslations">
-        <div v-if="pCT.locale === this.locale && pageContent.renderBlock === this.renderBlockId">
-          <div v-html="marked(pCT.text)" :set="this.isEmptyBlock = true"></div>
+      <div v-if="pageContent.typeId === null">
+        <div v-for="pCT in pageContent.pageContentTranslations">
+          <div v-if="pCT.locale === this.locale && pageContent.renderBlock === this.renderBlockId">
+            <div :set="this.isEmptyBlock = true"></div>
+            <markdown-editor :key="pCT.id"
+                :me-value="pCT.text"
+                :me-rows="10"
+                :me-translate="this.translate.markdown"
+                :me-key-words="{}"
+                :me-save="false"
+                @editor-value=""
+                @editor-value-change="this.updatePageContentText"
+            >
+            </markdown-editor>
+
+          </div>
         </div>
+      </div>
+      <div v-else-if="pageContent.renderBlock === this.renderBlockId" :set="this.isEmptyBlock = true">
+        block type {{ pageContent.typeId}}
       </div>
     </div>
 

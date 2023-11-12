@@ -10,6 +10,7 @@ namespace App\Service\Admin\Content\Page;
 use App\Entity\Admin\Content\Page\Page;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
+use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageStatistiqueKey;
@@ -36,6 +37,11 @@ class PageService extends AppAdminService
      */
     private OptionSystemService $optionSystemService;
 
+    /**
+     * @var MarkdownEditorService
+     */
+    private MarkdownEditorService $markdownEditorService;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         ContainerBagInterface  $containerBag,
@@ -45,11 +51,13 @@ class PageService extends AppAdminService
         RequestStack           $requestStack,
         ParameterBagInterface  $parameterBag,
         GridService            $gridService,
-        OptionSystemService    $optionSystemService
+        OptionSystemService    $optionSystemService,
+        MarkdownEditorService $markdownEditorService
     )
     {
         $this->gridService = $gridService;
         $this->optionSystemService = $optionSystemService;
+        $this->markdownEditorService = $markdownEditorService;
         parent::__construct($entityManager, $containerBag, $translator, $router,
             $security, $requestStack, $parameterBag);
     }
@@ -215,6 +223,7 @@ class PageService extends AppAdminService
             PageConst::RENDER_3_BLOCK => $this->translator->trans('page.render.3.block', domain: 'page'),
             PageConst::RENDER_2_BLOCK_BOTTOM => $this->translator->trans('page.render.2.block.bottom', domain: 'page'),
             PageConst::RENDER_3_BLOCK_BOTTOM => $this->translator->trans('page.render.3.block.bottom', domain: 'page'),
+            PageConst::RENDER_1_2_BLOCK => $this->translator->trans('page.render.1.2.block', domain: 'page'),
             PageConst::RENDER_2_1_BLOCK => $this->translator->trans('page.render.2.1.block', domain: 'page'),
             PageConst::RENDER_2_2_BLOCK => $this->translator->trans('page.render.2.2.block', domain: 'page'),
         ];
@@ -268,6 +277,9 @@ class PageService extends AppAdminService
             ],
             'page_content' => [
                 'title' => $this->translator->trans('page.page_content.title', domain: 'page'),
+                'page_content_block' => [
+                    'markdown' => $this->markdownEditorService->getTranslate()
+                ],
             ],
             'page_history' => [
                 'title' => $this->translator->trans('page.page_history.title', domain: 'page'),
