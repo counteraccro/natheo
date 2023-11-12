@@ -166,11 +166,10 @@ export default {
     selectMedia(name, url, size) {
 
       let balise = '';
-      let patt1=/\.[0-9a-z]+$/i;
+      let patt1 = /\.[0-9a-z]+$/i;
       let extensionImg = ['.jpeg', '.jpg', '.gif', '.tif', '.psd', '.svg', '.png'];
 
-      if(extensionImg.includes(name.match(patt1)[0]))
-      {
+      if (extensionImg.includes(name.match(patt1)[0])) {
 
         let sizeHtml = '';
         switch (size) {
@@ -178,15 +177,14 @@ export default {
             sizeHtml = 'class="img-fluid"'
             break;
           case "max":
-                sizeHtml = '';
+            sizeHtml = '';
             break;
           default:
-            sizeHtml = 'width="' + size +'px" height="' + size +'px"';
+            sizeHtml = 'width="' + size + 'px" height="' + size + 'px"';
         }
 
         balise = '<img src="' + url + '" alt="' + name + '" ' + sizeHtml + '>';
-      }
-      else {
+      } else {
         balise = '<a href="' + url + '" target="_blank">' + name + '</a>';
       }
 
@@ -251,10 +249,31 @@ export default {
     },
 
     /**
+     * Check si on est dans le cas de données éditées non sauvegardées ou non
+     * @returns {boolean}
+     */
+    checkNoSaveData() {
+      return (this.meSave && (this.valueRef !== this.value));
+    },
+
+    /**
+     * Condition pour les class du textarea
+     * @returns {string}
+     */
+    classInputTextArea() {
+      if (this.isValide !== '') {
+        return this.isValide;
+      }
+
+      if (this.checkNoSaveData()) {
+        return "border-3 border-warning"
+      }
+    },
+
+    /**
      * Event sur le bouton save
      */
-    eventBtnSave()
-    {
+    eventBtnSave() {
       this.valueRef = this.value;
       this.$emit('editor-value', this.meId, this.value)
     }
@@ -296,7 +315,7 @@ export default {
   </div>
 
   <div class="modal fade" id="modal-markdown-mediatheque" data-bs-backdrop="static" data-bs-keyboard="false"
-       tabindex="-1">
+      tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <MediaModalMarkdown
@@ -316,22 +335,22 @@ export default {
   <div class="editor">
     <div class="header mb-2">
       <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('****', '2', true)"
-           :title="this.meTranslate.btnBold">
+          :title="this.meTranslate.btnBold">
         <i class="bi bi-type-bold"></i></div>
       <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('**', '1', true)"
-           :title="this.meTranslate.btnItalic">
+          :title="this.meTranslate.btnItalic">
         <i class="bi bi-type-italic"></i></div>
       <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('~~~~', '2', true)"
-           :title="this.meTranslate.btnStrike">
+          :title="this.meTranslate.btnStrike">
         <i class="bi bi-type-strikethrough"></i></div>
       <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('> ', '0', false)"
-           :title="this.meTranslate.btnQuote">
+          :title="this.meTranslate.btnQuote">
         <i class="bi bi-quote"></i></div>
       <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('- ', '0', false)"
-           :title="this.meTranslate.btnList">
+          :title="this.meTranslate.btnList">
         <i class="bi bi-list-ul"></i></div>
       <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('1. ', '0', false)"
-           :title="this.meTranslate.btnListNumber">
+          :title="this.meTranslate.btnListNumber">
         <i class="bi bi-list-ol"></i></div>
       <div class="btn btn-secondary btn-sm me-1" @click="this.addTable" :title="this.meTranslate.btnTable">
         <i class="bi bi-table"></i></div>
@@ -342,12 +361,12 @@ export default {
       <div class="btn btn-secondary btn-sm me-1" @click="this.addCode" :title="this.meTranslate.btnCode">
         <i class="bi bi-code"></i></div>
       <div class="btn btn-secondary btn-sm me-1" @click="this.openModalMediatheque"
-           :title="this.meTranslate.btnMediatheque">
+          :title="this.meTranslate.btnMediatheque">
         <i class="bi bi-images"></i></div>
 
       <div class="dropdown float-start me-1">
         <button class="btn btn-secondary btn-sm dropdown-toggle" :title="this.meTranslate.titreLabel" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false">
+            data-bs-toggle="dropdown" aria-expanded="false">
           <i class="bi bi-type-h1"></i>
         </button>
         <ul class="dropdown-menu">
@@ -367,7 +386,7 @@ export default {
       </div>
       <div class="dropdown float-start me-1" v-if="this.meKeyWords.length !== 0">
         <button class="btn btn-secondary btn-sm dropdown-toggle" :title="this.meTranslate.btnKeyWord" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false">
+            data-bs-toggle="dropdown" aria-expanded="false">
           {{ this.meTranslate.btnKeyWord }} <i class="bi bi-key-fill"></i>
         </button>
         <ul class="dropdown-menu">
@@ -378,18 +397,18 @@ export default {
         </ul>
       </div>
       <div v-if="this.meSave" class="btn btn-secondary btn-sm me-1 float-end" @click="this.eventBtnSave"
-           :title="this.meTranslate.btnSave">
+          :title="this.meTranslate.btnSave">
         <i class="bi bi-save"></i></div>
     </div>
 
-    <textarea :id="'editor-'+ this.id" class="form-control no-control" :class="this.isValide" :value="this.value"
-              @input="update" :rows="this.meRows" @change="this.isValideInput" @keyup="this.isValideInput"></textarea>
+    <textarea :id="'editor-'+ this.id" class="form-control no-control" :class="this.classInputTextArea()" :value="this.value"
+        @input="update" :rows="this.meRows" @change="this.isValideInput" @keyup="this.isValideInput"></textarea>
     <div class="invalid-feedback">
       {{ this.meTranslate.msgEmptyContent }}
     </div>
     <div :id="'emailHelp-' + this.id" class="form-text">
       <div v-html="this.meTranslate.help"></div>
-      <div v-if="this.meSave && this.valueRef !== this.value">
+      <div v-if="this.checkNoSaveData()">
         <b><i><span class="text-warning"><i class="bi bi-exclamation-triangle-fill"></i>
           <span v-html="this.meTranslate.warning_edit"></span></span></i></b>
       </div>
