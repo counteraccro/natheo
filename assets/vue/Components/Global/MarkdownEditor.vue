@@ -30,6 +30,7 @@ export default {
   data() {
     return {
       value: this.meValue,
+      valueRef: this.meValue,
       id: "",
       modal: "",
       modaleMedia: "",
@@ -247,6 +248,15 @@ export default {
         this.isValide = 'is-invalid';
       }
       this.$emit('editor-value-change', this.meId, value);
+    },
+
+    /**
+     * Event sur le bouton save
+     */
+    eventBtnSave()
+    {
+      this.valueRef = this.value;
+      this.$emit('editor-value', this.meId, this.value)
     }
   }
 }
@@ -367,7 +377,7 @@ export default {
           </li>
         </ul>
       </div>
-      <div v-if="this.meSave" class="btn btn-secondary btn-sm me-1 float-end" @click="$emit('editor-value', this.meId, this.value)"
+      <div v-if="this.meSave" class="btn btn-secondary btn-sm me-1 float-end" @click="this.eventBtnSave"
            :title="this.meTranslate.btnSave">
         <i class="bi bi-save"></i></div>
     </div>
@@ -377,7 +387,13 @@ export default {
     <div class="invalid-feedback">
       {{ this.meTranslate.msgEmptyContent }}
     </div>
-    <div :id="'emailHelp-' + this.id" class="form-text" v-html="this.meTranslate.help"></div>
+    <div :id="'emailHelp-' + this.id" class="form-text">
+      <div v-html="this.meTranslate.help"></div>
+      <div v-if="this.meSave && this.valueRef !== this.value">
+        <b><i><span class="text-warning"><i class="bi bi-exclamation-triangle-fill"></i>
+          {{ this.meTranslate.warning_edit }}</span></i></b>
+      </div>
+    </div>
 
     <fieldset class="mt-3" v-if="this.mePreview">
       <legend>{{ this.meTranslate.render }}</legend>
