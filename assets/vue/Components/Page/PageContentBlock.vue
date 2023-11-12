@@ -28,8 +28,9 @@ export default {
   methods: {
     marked,
 
-    updatePageContentText(value)
+    updatePageContentText(id, value)
     {
+      console.log('id : ' + id);
       console.log(value);
     },
 
@@ -67,13 +68,14 @@ export default {
           <div v-if="pCT.locale === this.locale && pageContent.renderBlock === this.renderBlockId">
             <div :set="this.isEmptyBlock = true"></div>
             <markdown-editor :key="pCT.id"
+                :me-id="pCT.id"
                 :me-value="pCT.text"
                 :me-rows="10"
                 :me-translate="this.translate.markdown"
                 :me-key-words="{}"
-                :me-save="false"
+                :me-save="true"
                 :me-preview="false"
-                @editor-value=""
+                @editor-value="this.updatePageContentText"
                 @editor-value-change="this.updatePageContentText"
             >
             </markdown-editor>
