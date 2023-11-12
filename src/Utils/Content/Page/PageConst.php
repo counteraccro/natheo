@@ -29,28 +29,33 @@ class PageConst
 
     /**
      * Affichage du rendu mode 2 bloc l'un en dessous de l'autre
+     * @var integer
      */
     const RENDER_2_BLOCK_BOTTOM = 4;
 
     /**
      * Affichage du rendu mode 3 bloc l'un en dessous de l'autre
+     * @var integer
      */
     const RENDER_3_BLOCK_BOTTOM = 5;
+
+    /**
+     * Affichage du rendu mode 1 block au dessus + 2 block côte à côte dessous
+     * @var integer
+     */
+    const RENDER_1_2_BLOCK = 6;
 
     /**
      * Affichage du rendu mode 2 block côte à côte + 1 block en dessous
      * @var integer
      */
-    const RENDER_2_1_BLOCK = 6;
+    const RENDER_2_1_BLOCK = 7;
 
     /**
      * Affichage du rendu mode 2 block côte à côte + 2 block côte à côte en dessous
      * @var integer
      */
-    const RENDER_2_2_BLOCK = 7;
-
-
-
+    const RENDER_2_2_BLOCK = 8;
 
     /**
      * Status publié pour un article
