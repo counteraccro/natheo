@@ -40,4 +40,4 @@ editor.mediatheque.size_200: 200x200
 editor.mediatheque.size_300: 300x300
 editor.mediatheque.size_400: 400x400
 editor.mediatheque.size_500: 500x500
-editor.warning.edit: "Vos modifications n'ont pas encore été enregistrées !"
+editor.warning.edit: "Vos modifications n'ont pas encore été enregistrées !, cliquez sur le bouton <i class='bi bi-save'></i> pour les sauvegarder."
