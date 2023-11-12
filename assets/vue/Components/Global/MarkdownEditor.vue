@@ -391,7 +391,7 @@ export default {
       <div v-html="this.meTranslate.help"></div>
       <div v-if="this.meSave && this.valueRef !== this.value">
         <b><i><span class="text-warning"><i class="bi bi-exclamation-triangle-fill"></i>
-          {{ this.meTranslate.warning_edit }}</span></i></b>
+          <span v-html="this.meTranslate.warning_edit"></span></span></i></b>
       </div>
     </div>
 
