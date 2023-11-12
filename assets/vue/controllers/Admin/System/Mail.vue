@@ -203,6 +203,7 @@ export default {
                             :me-translate="translateEditor"
                             :me-key-words="mail.keyWords"
                             :me-save="false"
+                            :me-preview="true"
                             @editor-value=""
                             @editor-value-change="saveContent"
                     >
