@@ -2,7 +2,7 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.3
  * Editeur Markdown
  */
 
