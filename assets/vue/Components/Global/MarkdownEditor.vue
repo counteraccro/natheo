@@ -2,7 +2,7 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Editeur Markdown
  */
 
@@ -21,8 +21,9 @@ export default {
     meValue: String,
     meRows: Number,
     meTranslate: Object,
-    meKeyWords: [],
-    meSave: Boolean
+    meKeyWords: Object,
+    meSave: Boolean,
+    mePreview: Boolean,
   },
   emits: ['editor-value', 'editor-value-change'],
   data() {
@@ -377,7 +378,7 @@ export default {
     </div>
     <div :id="'emailHelp-' + this.id" class="form-text" v-html="this.meTranslate.help"></div>
 
-    <fieldset class="mt-3">
+    <fieldset class="mt-3" v-if="this.mePreview">
       <legend>{{ this.meTranslate.render }}</legend>
       <div class="markdown-editor-output" v-html="output"></div>
     </fieldset>
