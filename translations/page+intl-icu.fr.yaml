@@ -75,3 +75,4 @@ page.render.2.2.block: '2 blocs côte à côte + 2 blocs côte à côte en desso
 page.page_content.title: 'Ajouter / Editer les blocs de contenu'
 page.render.2.block.bottom: "2 blocs l'un en dessous de l'autre"
 page.render.3.block.bottom: "3 blocs l'un en dessous de l'autre"
+page.render.1.2.block: 'Un bloc au dessus + 2 blocs côte à côte en dessous'
