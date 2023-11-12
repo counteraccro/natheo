@@ -76,7 +76,7 @@ export default {
                 :me-save="true"
                 :me-preview="false"
                 @editor-value="this.updatePageContentText"
-                @editor-value-change="this.updatePageContentText"
+                @editor-value-change=""
             >
             </markdown-editor>
 
