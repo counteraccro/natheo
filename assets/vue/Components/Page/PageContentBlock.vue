@@ -72,6 +72,7 @@ export default {
                 :me-translate="this.translate.markdown"
                 :me-key-words="{}"
                 :me-save="false"
+                :me-preview="false"
                 @editor-value=""
                 @editor-value-change="this.updatePageContentText"
             >
