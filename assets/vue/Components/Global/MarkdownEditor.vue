@@ -18,6 +18,7 @@ export default {
     MediaModalMarkdown
   },
   props: {
+    meId: Number,
     meValue: String,
     meRows: Number,
     meTranslate: Object,
@@ -245,7 +246,7 @@ export default {
       if (value === "") {
         this.isValide = 'is-invalid';
       }
-      this.$emit('editor-value-change', value);
+      this.$emit('editor-value-change', this.meId, value);
     }
   }
 }
@@ -366,7 +367,7 @@ export default {
           </li>
         </ul>
       </div>
-      <div v-if="this.meSave" class="btn btn-secondary btn-sm me-1 float-end" @click="$emit('editor-value', this.value)"
+      <div v-if="this.meSave" class="btn btn-secondary btn-sm me-1 float-end" @click="$emit('editor-value', this.meId, this.value)"
            :title="this.meTranslate.btnSave">
         <i class="bi bi-save"></i></div>
     </div>
