@@ -31,7 +31,7 @@ export default {
     return {
       value: this.meValue,
       valueRef: this.meValue,
-      id: "",
+      id: this.meId,
       modal: "",
       modaleMedia: "",
       titleModal: "",
@@ -47,9 +47,9 @@ export default {
     }
   },
   mounted() {
-    this.id = this.randomIntFromInterval(1, 9) + '' + this.randomIntFromInterval(1, 9);
-    this.modal = new Modal(document.getElementById("modal-markdown-editor"), {});
-    this.modaleMedia = new Modal(document.getElementById("modal-markdown-mediatheque"), {});
+    //this.id = this.randomIntFromInterval(1, 9) + '' + this.randomIntFromInterval(1, 9);
+    this.modal = new Modal(document.getElementById(this.getNameModale("modal-markdown-editor")), {});
+    this.modaleMedia = new Modal(document.getElementById(this.getNameModale("modal-markdown-mediatheque")), {});
   },
   computed: {
     output() {
@@ -63,6 +63,16 @@ export default {
 
     randomIntFromInterval(min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min)
+    },
+
+    /**
+     * Retourne le nom de la modale fusionné avec un identifiant
+     * @param name
+     * @returns {string}
+     */
+    getNameModale(name)
+    {
+      return name + '-' + this.id;
     },
 
     /**
@@ -283,7 +293,7 @@ export default {
 
 <template>
 
-  <div class="modal fade" id="modal-markdown-editor" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+  <div class="modal fade" :id="this.getNameModale('modal-markdown-editor')" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header bg-secondary">
@@ -314,7 +324,7 @@ export default {
     </div>
   </div>
 
-  <div class="modal fade" id="modal-markdown-mediatheque" data-bs-backdrop="static" data-bs-keyboard="false"
+  <div class="modal fade" :id="this.getNameModale('modal-markdown-mediatheque')" data-bs-backdrop="static" data-bs-keyboard="false"
       tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
