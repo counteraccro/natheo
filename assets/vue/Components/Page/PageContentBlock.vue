@@ -14,7 +14,9 @@ export default {
     locale: String,
     translate: Object,
     pageContents: Object,
-    renderBlockId: Number
+    renderBlockId: Number,
+    indexStart: Number,
+    indexEnd: Number,
   },
   data() {
     return {
@@ -28,8 +30,7 @@ export default {
   methods: {
     marked,
 
-    updatePageContentText(id, value)
-    {
+    updatePageContentText(id, value) {
       console.log('id : ' + id);
       console.log(value);
     },
@@ -62,29 +63,31 @@ export default {
 
 <template>
   <div :set="this.isEmptyBlock = false">
-    <div v-for="pageContent in this.pageContents">
-      <div v-if="pageContent.typeId === null">
-        <div v-for="pCT in pageContent.pageContentTranslations">
-          <div v-if="pCT.locale === this.locale && pageContent.renderBlock === this.renderBlockId">
-            <div :set="this.isEmptyBlock = true"></div>
-            <markdown-editor :key="pCT.id"
-                :me-id="pCT.id"
-                :me-value="pCT.text"
-                :me-rows="10"
-                :me-translate="this.translate.markdown"
-                :me-key-words="[]"
-                :me-save="true"
-                :me-preview="false"
-                @editor-value="this.updatePageContentText"
-                @editor-value-change=""
-            >
-            </markdown-editor>
+    <div v-for="(pageContent, index) in this.pageContents">
+      <div v-if="this.indexStart >= index || index <= this.indexEnd ">
+        <div v-if="pageContent.typeId === null">
+          <div v-for="pCT in pageContent.pageContentTranslations">
+            <div v-if="pCT.locale === this.locale && pageContent.renderBlock === this.renderBlockId">
+              <div :set="this.isEmptyBlock = true"></div>
+              <markdown-editor :key="pCT.id"
+                  :me-id="pCT.id"
+                  :me-value="pCT.text"
+                  :me-rows="10"
+                  :me-translate="this.translate.markdown"
+                  :me-key-words="[]"
+                  :me-save="true"
+                  :me-preview="false"
+                  @editor-value="this.updatePageContentText"
+                  @editor-value-change=""
+              >
+              </markdown-editor>
 
+            </div>
           </div>
         </div>
-      </div>
-      <div v-else-if="pageContent.renderBlock === this.renderBlockId" :set="this.isEmptyBlock = true">
-        block type {{ pageContent.typeId}}
+        <div v-else-if="pageContent.renderBlock === this.renderBlockId" :set="this.isEmptyBlock = true">
+          block type {{ pageContent.typeId }}
+        </div>
       </div>
     </div>
 
