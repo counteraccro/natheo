@@ -48,6 +48,12 @@ export default {
           return 2;
         case 5:
           return 3;
+        case 6:
+          return 2;
+        case 7:
+          return 2;
+        case 8:
+          return 2;
       }
     },
 
@@ -59,6 +65,15 @@ export default {
      */
     inArray(list, number) {
       return list.includes(number)
+    },
+
+    /**
+     * retourne un nombre aléatoire
+     * @returns {string}
+     */
+    randomKey()
+    {
+      return (Math.random() + 1).toString(36).substring(7);
     },
 
     /**
@@ -99,6 +114,8 @@ export default {
             :locale="this.locale"
             :page-contents="this.page.pageContents"
             :render-block-id="n"
+            :index-start="0"
+            :index-end="2"
         />
       </div>
     </div>
@@ -112,16 +129,100 @@ export default {
             :locale="this.locale"
             :page-contents="this.page.pageContents"
             :render-block-id="n"
+            :index-start="0"
+            :index-end="2"
         />
       </div>
     </div>
   </div>
 
   <div v-else-if="this.page.render === 6">
-    2 block + 1 blocs
+    1 block + 2 blocs
+
+    <div class="row">
+      <div class="col-12">
+        <page-content-block :key="this.randomKey()"
+            :translate="this.translate.page_content_block"
+            :locale="this.locale"
+            :page-contents="this.page.pageContents"
+            :render-block-id="1"
+            :index-start="0"
+            :index-end="0"
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div v-for="n in this.getNbIteration()" class="col-6">
+        <page-content-block :key="this.randomKey()"
+            :translate="this.translate.page_content_block"
+            :locale="this.locale"
+            :page-contents="this.page.pageContents"
+            :render-block-id="n+1"
+            :index-start="1"
+            :index-end="2"
+        />
+      </div>
+    </div>
+
   </div>
   <div v-else-if="this.page.render === 7">
+    2 block + 1 block
+
+    <div class="row">
+      <div v-for="n in this.getNbIteration()" class="col-6">
+        <page-content-block :key="this.randomKey()"
+            :translate="this.translate.page_content_block"
+            :locale="this.locale"
+            :page-contents="this.page.pageContents"
+            :render-block-id="n"
+            :index-start="0"
+            :index-end="1"
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <page-content-block :key="this.randomKey()"
+            :translate="this.translate.page_content_block"
+            :locale="this.locale"
+            :page-contents="this.page.pageContents"
+            :render-block-id="3"
+            :index-start="3"
+            :index-end="3"
+        />
+      </div>
+    </div>
+
+  </div>
+  <div v-else-if="this.page.render === 8">
     2 block + 2 block
+
+    <div class="row">
+      <div v-for="n in this.getNbIteration()" class="col-6">
+        <page-content-block :key="this.randomKey()"
+            :translate="this.translate.page_content_block"
+            :locale="this.locale"
+            :page-contents="this.page.pageContents"
+            :render-block-id="n"
+            :index-start="0"
+            :index-end="1"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div v-for="n in this.getNbIteration()" class="col-6">
+        <page-content-block :key="this.randomKey()"
+            :translate="this.translate.page_content_block"
+            :locale="this.locale"
+            :page-contents="this.page.pageContents"
+            :render-block-id="n+2"
+            :index-start="2"
+            :index-end="3"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
