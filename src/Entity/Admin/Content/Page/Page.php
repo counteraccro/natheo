@@ -47,6 +47,7 @@ class Page
     private Collection $pageTranslations;
 
     #[ORM\OneToMany(mappedBy: 'page', targetEntity: PageContent::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(["renderBlock" => "ASC"])]
     private Collection $pageContents;
 
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'pages')]
