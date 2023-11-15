@@ -25,7 +25,7 @@ export default {
 
 <template>
 
-  <div id="content-history">
+  <div id="content-history" class="overflow-auto" style="height: 600px;">
     <h5>{{ this.translate.title }}</h5>
     <div>{{ this.translate.description }}</div>
     <hr/>
