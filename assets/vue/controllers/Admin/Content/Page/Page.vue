@@ -29,6 +29,7 @@ export default {
   emits: [],
   data() {
     return {
+      componentKey: 1,
       loading: false,
       page: [],
       currentLocale: '',
@@ -60,6 +61,14 @@ export default {
   },
   computed: {},
   methods: {
+
+    /**
+     * Change la clé du component pour forcer le rafraichissement
+     */
+    updateComponentKey()
+    {
+      this.componentKey++;
+    },
     /**
      * Permet de changer la locale pour la création/édition d'une page
      * @param event
@@ -160,7 +169,7 @@ export default {
     },
 
     /**
-     * Force l'autoSave après la mise à jour d'un conten
+     * Force l'autoSave après la mise à jour d'un content
      */
     updateContent()
     {
@@ -204,6 +213,7 @@ export default {
       }).finally(() => {
         this.toasts.autoSave.toast.show();
         this.loading = false;
+        this.updateComponentKey();
       });
     },
 
@@ -327,7 +337,7 @@ export default {
             <span class="txt-overlay">{{ this.translate.loading }}</span>
           </div>
         </div>
-        <page-content-form
+        <page-content-form :key="12 + '-' + this.componentKey"
             :locale="this.currentLocale"
             :page="this.page"
             :translate="this.translate.page_content_form"
@@ -335,7 +345,7 @@ export default {
             @auto-save="this.autoSave"
         />
 
-        <page-content
+        <page-content :key="13 + '-' + this.componentKey"
             :locale="this.currentLocale"
             :url="this.urls.au"
             :translate="this.translate.page_content"
