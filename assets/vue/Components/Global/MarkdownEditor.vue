@@ -2,7 +2,7 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.3
+ * @version 1.4
  * Editeur Markdown
  */
 
@@ -59,7 +59,7 @@ export default {
   methods: {
     update: debounce(function (e) {
       this.value = e.target.value
-    }, 100),
+    }, 50),
 
     randomIntFromInterval(min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min)
