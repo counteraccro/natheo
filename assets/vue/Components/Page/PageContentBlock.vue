@@ -10,6 +10,7 @@ import MarkdownEditor from "../Global/MarkdownEditor.vue";
 export default {
   name: 'PageContentBlock',
   components: {MarkdownEditor},
+  emits: ['update-text-content'],
   props: {
     locale: String,
     translate: Object,
@@ -30,9 +31,25 @@ export default {
   methods: {
     marked,
 
+    /**
+     * Met à jour le texte d'un content text en fonction de son id
+     * @param id
+     * @param value
+     */
     updatePageContentText(id, value) {
-      console.log('id : ' + id);
-      console.log(value);
+
+      this.pageContents.forEach((pC) => {
+            if(pC.typeId === null) {
+
+              pC.pageContentTranslations.forEach((pCT) => {
+                if (pCT.id === id) {
+                  pCT.text = value;
+                }
+              })
+            }
+          }
+      );
+      this.$emit('update-text-content');
     },
 
     /**

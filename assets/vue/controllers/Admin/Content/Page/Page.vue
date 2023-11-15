@@ -155,7 +155,16 @@ export default {
      * @param content
      */
     addContent(content) {
-      console.log('addContent');
+      console.log(id);
+      console.log(content);
+    },
+
+    /**
+     * Force l'autoSave après la mise à jour d'un conten
+     */
+    updateContent()
+    {
+      this.autoSave(this.page)
     },
 
     /**
@@ -331,7 +340,7 @@ export default {
             :url="this.urls.au"
             :translate="this.translate.page_content"
             :page="this.page"
-            @add-content="this.addContent"
+            @auto-save="this.autoSave"
         />
 
         <div class="row">
