@@ -76,3 +76,4 @@ page.render.2.block.bottom: __page.render.2.block.bottom
 page.render.3.block.bottom: __page.render.3.block.bottom
 page.page_content.title: __page.page_content.title
 page.render.1.2.block: __page.render.1.2.block
+page.page_content_block.btn.new_content: __page.page_content_block.btn.new_content
