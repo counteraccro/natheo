@@ -278,7 +278,16 @@ class PageService extends AppAdminService
             'page_content' => [
                 'title' => $this->translator->trans('page.page_content.title', domain: 'page'),
                 'page_content_block' => [
-                    'markdown' => $this->markdownEditorService->getTranslate()
+                    'markdown' => $this->markdownEditorService->getTranslate(),
+                    'btn_new_content' =>
+                        $this->translator->trans('page.page_content_block.btn.new_content', domain: 'page'),
+                    'btn_delete_content' =>
+                        $this->translator->trans('page.page_content_block.btn.delete_content', domain: 'page'),
+                    'btn_change_content' =>
+                        $this->translator->trans('page.page_content_block.btn.change_content', domain: 'page'),
+                    'btn_move_content' =>
+                        $this->translator->trans('page.page_content_block.btn.move_content', domain: 'page')
+
                 ],
             ],
             'page_history' => [

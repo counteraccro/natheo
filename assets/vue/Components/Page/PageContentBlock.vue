@@ -90,7 +90,7 @@ export default {
                 <markdown-editor :key="pCT.id"
                     :me-id="pCT.id"
                     :me-value="pCT.text"
-                    :me-rows="10"
+                    :me-rows="14"
                     :me-translate="this.translate.markdown"
                     :me-key-words="[]"
                     :me-save="true"
@@ -99,6 +99,22 @@ export default {
                     @editor-value-change=""
                 >
                 </markdown-editor>
+
+                <div class="block-btn mt-4">
+                  <div class="btn btn-secondary me-2">
+                    <i class="bi bi-arrows-move"></i>
+                     {{ this.translate.btn_change_content }}
+                  </div>
+                  <div class="btn btn-secondary me-2">
+                    <i class="bi bi-arrow-left-right"></i>
+                    {{ this.translate.btn_move_content }}
+                  </div>
+                  <div class="btn btn-danger">
+                    <i class="bi bi-x-circle"></i>
+                    {{ this.translate.btn_delete_content }}
+                  </div>
+                </div>
+
               </div>
 
             </div>
@@ -113,8 +129,11 @@ export default {
     </div>
 
     <div v-if="!this.isEmptyBlock">
-      <div class="block-page-content">
-        Block vide
+      <div class="block-page-content position-relative">
+          <div class="btn btn-secondary position-absolute top-50 start-50 translate-middle">
+            <i class="bi bi-plus-circle"></i>
+            {{ this.translate.btn_new_content }}
+          </div>
       </div>
     </div>
   </div>
