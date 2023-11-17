@@ -39,7 +39,7 @@ export default {
     updatePageContentText(id, value) {
 
       this.pageContents.forEach((pC) => {
-            if(pC.typeId === null) {
+            if (pC.typeId === null) {
 
               pC.pageContentTranslations.forEach((pCT) => {
                 if (pCT.id === id) {
@@ -86,30 +86,36 @@ export default {
           <div v-for="pCT in pageContent.pageContentTranslations">
             <div v-if="pCT.locale === this.locale && pageContent.renderBlock === this.renderBlockId">
               <div :set="this.isEmptyBlock = true"></div>
-              <markdown-editor :key="pCT.id"
-                  :me-id="pCT.id"
-                  :me-value="pCT.text"
-                  :me-rows="10"
-                  :me-translate="this.translate.markdown"
-                  :me-key-words="[]"
-                  :me-save="true"
-                  :me-preview="false"
-                  @editor-value="this.updatePageContentText"
-                  @editor-value-change=""
-              >
-              </markdown-editor>
+              <div class="block-page-content">
+                <markdown-editor :key="pCT.id"
+                    :me-id="pCT.id"
+                    :me-value="pCT.text"
+                    :me-rows="10"
+                    :me-translate="this.translate.markdown"
+                    :me-key-words="[]"
+                    :me-save="true"
+                    :me-preview="false"
+                    @editor-value="this.updatePageContentText"
+                    @editor-value-change=""
+                >
+                </markdown-editor>
+              </div>
 
             </div>
           </div>
         </div>
         <div v-else-if="pageContent.renderBlock === this.renderBlockId" :set="this.isEmptyBlock = true">
-          block type {{ pageContent.typeId }}
+          <div class="block-page-content">
+            block type {{ pageContent.typeId }}
+          </div>
         </div>
       </div>
     </div>
 
-    <div v-if="!this.isEmptyBlock" class="mb4 mt-4">
-      Block vide
+    <div v-if="!this.isEmptyBlock">
+      <div class="block-page-content">
+        Block vide
+      </div>
     </div>
   </div>
 </template>

@@ -53,4 +53,16 @@
     background-color: #036;
     outline: 0 none;
   }
+
+  /** CSS pour les block content du formulaire de création/edition de page */
+  #page-content {
+
+    .block-page-content {
+      border: 1px dashed;
+      border-color: var(--bs-secondary);
+      padding: 10px;
+      border-radius: 2px;
+      min-height: 450px;
+    }
+  }
 }

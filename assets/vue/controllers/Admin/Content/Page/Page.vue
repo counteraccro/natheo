@@ -65,8 +65,7 @@ export default {
     /**
      * Change la clé du component pour forcer le rafraichissement
      */
-    updateComponentKey()
-    {
+    updateComponentKey() {
       this.componentKey++;
     },
     /**
@@ -171,8 +170,7 @@ export default {
     /**
      * Force l'autoSave après la mise à jour d'un content
      */
-    updateContent()
-    {
+    updateContent() {
       this.autoSave(this.page)
     },
 
@@ -345,16 +343,14 @@ export default {
             @auto-save="this.autoSave"
         />
 
-        <page-content :key="13 + '-' + this.componentKey"
-            :locale="this.currentLocale"
-            :url="this.urls.au"
-            :translate="this.translate.page_content"
-            :page="this.page"
-            @auto-save="this.autoSave"
-        />
-
-        <div class="row">
-
+        <div id="page-content">
+          <page-content :key="13 + '-' + this.componentKey"
+              :locale="this.currentLocale"
+              :url="this.urls.au"
+              :translate="this.translate.page_content"
+              :page="this.page"
+              @auto-save="this.autoSave"
+          />
         </div>
 
       </div>

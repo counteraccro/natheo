@@ -141,7 +141,7 @@ export default {
   <div v-else-if="this.page.render === 6">
     1 block + 2 blocs
 
-    <div class="row">
+    <div class="row mb-4">
       <div class="col-12">
         <page-content-block :key="this.randomKey()"
             :translate="this.translate.page_content_block"
@@ -173,7 +173,7 @@ export default {
   <div v-else-if="this.page.render === 7">
     2 block + 1 block
 
-    <div class="row">
+    <div class="row mb-4">
       <div v-for="n in this.getNbIteration()" class="col-6">
         <page-content-block :key="this.randomKey()"
             :translate="this.translate.page_content_block"
@@ -205,7 +205,7 @@ export default {
   <div v-else-if="this.page.render === 8">
     2 block + 2 block
 
-    <div class="row">
+    <div class="row mb-4">
       <div v-for="n in this.getNbIteration()" class="col-6">
         <page-content-block :key="this.randomKey()"
             :translate="this.translate.page_content_block"
