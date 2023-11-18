@@ -10,7 +10,7 @@ import MarkdownEditor from "../Global/MarkdownEditor.vue";
 export default {
   name: 'PageContentBlock',
   components: {MarkdownEditor},
-  emits: ['update-text-content'],
+  emits: ['auto-save'],
   props: {
     locale: String,
     translate: Object,
@@ -27,7 +27,8 @@ export default {
   mounted() {
 
   },
-  computed: {},
+  computed: {
+  },
   methods: {
     marked,
 
@@ -49,7 +50,23 @@ export default {
             }
           }
       );
-      this.$emit('update-text-content');
+      this.$emit('auto-save');
+    },
+
+    /**
+     * Permet de supprimer une page content
+     * @param id
+     */
+    removeContent(id) {
+
+      let indexRemove = '';
+      this.pageContents.forEach((pC, index) => {
+        if (pC.id === id) {
+          this.pageContents.splice(index, 1);
+        }
+      });
+
+      this.$emit('auto-save');
     },
 
     /**
@@ -103,13 +120,13 @@ export default {
                 <div class="block-btn mt-4">
                   <div class="btn btn-secondary me-2">
                     <i class="bi bi-arrows-move"></i>
-                     {{ this.translate.btn_change_content }}
+                    {{ this.translate.btn_change_content }}
                   </div>
                   <div class="btn btn-secondary me-2">
                     <i class="bi bi-arrow-left-right"></i>
                     {{ this.translate.btn_move_content }}
                   </div>
-                  <div class="btn btn-danger">
+                  <div class="btn btn-danger" @click="this.removeContent(pageContent.id)">
                     <i class="bi bi-x-circle"></i>
                     {{ this.translate.btn_delete_content }}
                   </div>
@@ -130,10 +147,10 @@ export default {
 
     <div v-if="!this.isEmptyBlock">
       <div class="block-page-content position-relative">
-          <div class="btn btn-secondary position-absolute top-50 start-50 translate-middle">
-            <i class="bi bi-plus-circle"></i>
-            {{ this.translate.btn_new_content }}
-          </div>
+        <div class="btn btn-secondary position-absolute top-50 start-50 translate-middle">
+          <i class="bi bi-plus-circle"></i>
+          {{ this.translate.btn_new_content }}
+        </div>
       </div>
     </div>
   </div>

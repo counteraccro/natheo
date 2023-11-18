@@ -59,7 +59,9 @@ export default {
     this.currentLocale = this.locales.current;
     this.loadTabContent();
   },
-  computed: {},
+  computed: {
+
+  },
   methods: {
 
     /**
@@ -171,6 +173,7 @@ export default {
      * Force l'autoSave après la mise à jour d'un content
      */
     updateContent() {
+      //this.updateComponentKey();
       this.autoSave(this.page)
     },
 

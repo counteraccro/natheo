@@ -116,7 +116,7 @@ export default {
             :render-block-id="n"
             :index-start="0"
             :index-end="2"
-            @update-text-content="this.autoSave"
+            @auto-save="this.autoSave"
         />
       </div>
     </div>
@@ -132,7 +132,7 @@ export default {
             :render-block-id="n"
             :index-start="0"
             :index-end="2"
-            @update-text-content="this.autoSave"
+            @auto-save="this.autoSave"
         />
       </div>
     </div>
@@ -150,7 +150,7 @@ export default {
             :render-block-id="1"
             :index-start="0"
             :index-end="0"
-            @update-text-content="this.autoSave"
+            @auto-save="this.autoSave"
         />
       </div>
     </div>
@@ -164,7 +164,7 @@ export default {
             :render-block-id="n+1"
             :index-start="1"
             :index-end="2"
-            @update-text-content="this.autoSave"
+            @auto-save="this.autoSave"
         />
       </div>
     </div>
@@ -182,7 +182,7 @@ export default {
             :render-block-id="n"
             :index-start="0"
             :index-end="1"
-            @update-text-content="this.autoSave"
+            @auto-save="this.autoSave"
         />
       </div>
     </div>
@@ -196,7 +196,7 @@ export default {
             :render-block-id="3"
             :index-start="3"
             :index-end="3"
-            @update-text-content="this.autoSave"
+            @auto-save="this.autoSave"
         />
       </div>
     </div>
@@ -214,7 +214,7 @@ export default {
             :render-block-id="n"
             :index-start="0"
             :index-end="1"
-            @update-text-content="this.autoSave"
+            @auto-save="this.autoSave"
         />
       </div>
     </div>
@@ -227,7 +227,7 @@ export default {
             :render-block-id="n+2"
             :index-start="2"
             :index-end="3"
-            @update-text-content="this.autoSave"
+            @auto-save="this.autoSave"
         />
       </div>
     </div>
