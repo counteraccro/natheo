@@ -19,7 +19,7 @@ export default {
     translate: Object,
     page: Object
   },
-  emits: ['auto-save'],
+  emits: ['auto-save', 'remove-content'],
   data() {
     return {
       renderColumn: [1, 2, 3],
@@ -84,6 +84,15 @@ export default {
     },
 
     /**
+     * suppression d'un page content en fonction de son id
+     * @param id
+     */
+    removeContent(id)
+    {
+      this.$emit('remove-content', id);
+    },
+
+    /**
      * Appel ajax pour construire le résultat d'auto-completion
      */
     search() {
@@ -117,6 +126,8 @@ export default {
             :index-start="0"
             :index-end="2"
             @auto-save="this.autoSave"
+            @remove-content="this.removeContent"
+
         />
       </div>
     </div>
@@ -133,14 +144,13 @@ export default {
             :index-start="0"
             :index-end="2"
             @auto-save="this.autoSave"
+            @remove-content="this.removeContent"
         />
       </div>
     </div>
   </div>
 
   <div v-else-if="this.page.render === 6">
-    1 block + 2 blocs
-
     <div class="row mb-4">
       <div class="col-12">
         <page-content-block :key="this.randomKey()"
@@ -151,6 +161,7 @@ export default {
             :index-start="0"
             :index-end="0"
             @auto-save="this.autoSave"
+            @remove-content="this.removeContent"
         />
       </div>
     </div>
@@ -165,14 +176,13 @@ export default {
             :index-start="1"
             :index-end="2"
             @auto-save="this.autoSave"
+            @remove-content="this.removeContent"
         />
       </div>
     </div>
 
   </div>
   <div v-else-if="this.page.render === 7">
-    2 block + 1 block
-
     <div class="row mb-4">
       <div v-for="n in this.getNbIteration()" class="col-6">
         <page-content-block :key="this.randomKey()"
@@ -183,6 +193,7 @@ export default {
             :index-start="0"
             :index-end="1"
             @auto-save="this.autoSave"
+            @remove-content="this.removeContent"
         />
       </div>
     </div>
@@ -197,14 +208,13 @@ export default {
             :index-start="3"
             :index-end="3"
             @auto-save="this.autoSave"
+            @remove-content="this.removeContent"
         />
       </div>
     </div>
 
   </div>
   <div v-else-if="this.page.render === 8">
-    2 block + 2 block
-
     <div class="row mb-4">
       <div v-for="n in this.getNbIteration()" class="col-6">
         <page-content-block :key="this.randomKey()"
@@ -215,6 +225,7 @@ export default {
             :index-start="0"
             :index-end="1"
             @auto-save="this.autoSave"
+            @remove-content="this.removeContent"
         />
       </div>
     </div>
@@ -228,6 +239,7 @@ export default {
             :index-start="2"
             :index-end="3"
             @auto-save="this.autoSave"
+            @remove-content="this.removeContent"
         />
       </div>
     </div>

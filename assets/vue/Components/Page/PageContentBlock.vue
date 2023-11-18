@@ -10,7 +10,7 @@ import MarkdownEditor from "../Global/MarkdownEditor.vue";
 export default {
   name: 'PageContentBlock',
   components: {MarkdownEditor},
-  emits: ['auto-save'],
+  emits: ['auto-save', 'remove-content'],
   props: {
     locale: String,
     translate: Object,
@@ -25,7 +25,6 @@ export default {
     }
   },
   mounted() {
-
   },
   computed: {
   },
@@ -58,15 +57,7 @@ export default {
      * @param id
      */
     removeContent(id) {
-
-      let indexRemove = '';
-      this.pageContents.forEach((pC, index) => {
-        if (pC.id === id) {
-          this.pageContents.splice(index, 1);
-        }
-      });
-
-      this.$emit('auto-save');
+      this.$emit('remove-content', id);
     },
 
     /**

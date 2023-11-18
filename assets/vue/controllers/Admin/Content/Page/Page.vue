@@ -170,10 +170,19 @@ export default {
     },
 
     /**
+     * Supprime un page content en fonction de son id
+     * @param id
+     */
+    removeContent(id)
+    {
+      this.page.pageContents = this.page.pageContents.filter((content) => content.id !== id);
+      this.autoSave(this.page);
+    },
+
+    /**
      * Force l'autoSave après la mise à jour d'un content
      */
     updateContent() {
-      //this.updateComponentKey();
       this.autoSave(this.page)
     },
 
@@ -353,6 +362,7 @@ export default {
               :translate="this.translate.page_content"
               :page="this.page"
               @auto-save="this.autoSave"
+              @remove-content="this.removeContent"
           />
         </div>
 
