@@ -77,6 +77,12 @@ page.render.2.block.bottom: "2 blocs l'un en dessous de l'autre"
 page.render.3.block.bottom: "3 blocs l'un en dessous de l'autre"
 page.render.1.2.block: 'Un bloc au dessus + 2 blocs côte à côte en dessous'
 page.page_content_block.btn.new_content: 'Nouveau contenu'
-page.page_content_block.btn.delete_content: 'Supprimer'
-page.page_content_block.btn.change_content: 'Changer'
-page.page_content_block.btn.move_content: 'Déplacer'
+page.page_content_block.btn.delete_content: Supprimer
+page.page_content_block.btn.change_content: Changer
+page.page_content_block.btn.move_content: Déplacer
+page.page_content_block.modale.remove.title: 'Confirmation suppression du contenu'
+page.page_content_block.modale.remove.body: 'Vous êtes sur le point de supprimer ce contenu, confirmez vous cette action?'
+page.page_content_block.modale.remove.btn.confirm: Supprimer
+page.page_content_block.modale.remove.btn.cancel: Annuler
+page.page_content_block.modale.remove.body.2: "Vous pouvez toujours restaurer ce contenu via l'historique"
+page.msg.remove_content_success: "Suppression du contenu fait avec succès"

@@ -77,3 +77,12 @@ page.render.3.block.bottom: __page.render.3.block.bottom
 page.page_content.title: __page.page_content.title
 page.render.1.2.block: __page.render.1.2.block
 page.page_content_block.btn.new_content: __page.page_content_block.btn.new_content
+page.msg.remove_content_success: __page.msg.remove_content_success
+page.page_content_block.btn.delete_content: __page.page_content_block.btn.delete_content
+page.page_content_block.btn.change_content: __page.page_content_block.btn.change_content
+page.page_content_block.btn.move_content: __page.page_content_block.btn.move_content
+page.page_content_block.modale.remove.title: __page.page_content_block.modale.remove.title
+page.page_content_block.modale.remove.body: __page.page_content_block.modale.remove.body
+page.page_content_block.modale.remove.body.2: __page.page_content_block.modale.remove.body.2
+page.page_content_block.modale.remove.btn.confirm: __page.page_content_block.modale.remove.btn.confirm
+page.page_content_block.modale.remove.btn.cancel: __page.page_content_block.modale.remove.btn.cancel
