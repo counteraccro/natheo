@@ -38,8 +38,14 @@ export default {
         autoSave: {
           toast: [],
           msg: '',
+          bg: 'bg-success'
         },
         tag: {
+          toast: [],
+          msg: '',
+          bg: 'bg-success'
+        },
+        contentRemove : {
           toast: [],
           msg: '',
           bg: 'bg-success'
@@ -53,8 +59,11 @@ export default {
     let toastAutoSave = document.getElementById('live-toast-auto-save');
     this.toasts.autoSave.toast = Toast.getOrCreateInstance(toastAutoSave);
 
-    let toastBootstrap = document.getElementById('live-toast-tag');
-    this.toasts.tag.toast = Toast.getOrCreateInstance(toastBootstrap);
+    let toastTag = document.getElementById('live-toast-tag');
+    this.toasts.tag.toast = Toast.getOrCreateInstance(toastTag);
+
+    let toastContentRemove = document.getElementById('live-toast-content-remove');
+    this.toasts.contentRemove.toast = Toast.getOrCreateInstance(toastContentRemove);
 
     this.currentLocale = this.locales.current;
     this.loadTabContent();
@@ -176,6 +185,8 @@ export default {
     removeContent(id)
     {
       this.page.pageContents = this.page.pageContents.filter((content) => content.id !== id);
+      this.toasts.contentRemove.msg = this.translate.msg_remove_content_success;
+      this.toasts.contentRemove.toast.show();
       this.autoSave(this.page);
     },
 
@@ -446,9 +457,10 @@ export default {
   </div>
 
 
+  <!-- toast -->
   <div class="toast-container position-fixed top-0 end-0 p-2">
     <div id="live-toast-auto-save" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-body text-white bg-success">
+      <div class="toast-body text-white" :class="this.toasts.autoSave.bg">
         <i class="bi bi-check-circle-fill"></i>
         {{ this.toasts.autoSave.msg }}
       </div>
@@ -460,6 +472,14 @@ export default {
         {{ this.toasts.tag.msg }}
       </div>
     </div>
+
+    <div id="live-toast-content-remove" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-body text-white" :class="this.toasts.contentRemove.bg">
+        <i class="bi bi-check-circle-fill"></i>
+        {{ this.toasts.contentRemove.msg }}
+      </div>
+    </div>
   </div>
+  <!-- fin toast -->
 
 </template>
