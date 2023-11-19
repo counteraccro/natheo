@@ -1,4 +1,4 @@
-<script>/**
+<script xmlns="http://www.w3.org/1999/html">/**
  * Block de rendu pour le content
  * @author Gourdon Aymeric
  * @version 1.0
@@ -6,6 +6,7 @@
 
 import {marked} from "marked";
 import MarkdownEditor from "../Global/MarkdownEditor.vue";
+import {Modal} from "bootstrap";
 
 export default {
   name: 'PageContentBlock',
@@ -22,12 +23,14 @@ export default {
   data() {
     return {
       isEmptyBlock: false,
+      idConfirm: 0,
+      modalRemove: null,
     }
   },
   mounted() {
+    this.modalRemove = new Modal(document.getElementById("modal-remove-content-" + this.renderBlockId), {});
   },
-  computed: {
-  },
+  computed: {},
   methods: {
     marked,
 
@@ -55,9 +58,21 @@ export default {
     /**
      * Permet de supprimer une page content
      * @param id
+     * @param confirm
      */
-    removeContent(id) {
-      this.$emit('remove-content', id);
+    removeContent(id, confirm) {
+      if (!confirm) {
+        this.idConfirm = id;
+        this.modalRemove.show();
+      } else {
+        this.closeModalRemove();
+        this.$emit('remove-content', id);
+      }
+
+    },
+
+    closeModalRemove() {
+      this.modalRemove.hide();
     },
 
     /**
@@ -117,7 +132,7 @@ export default {
                     <i class="bi bi-arrow-left-right"></i>
                     {{ this.translate.btn_move_content }}
                   </div>
-                  <div class="btn btn-danger" @click="this.removeContent(pageContent.id)">
+                  <div class="btn btn-danger" @click="this.removeContent(pageContent.id, false)">
                     <i class="bi bi-x-circle"></i>
                     {{ this.translate.btn_delete_content }}
                   </div>
@@ -145,6 +160,37 @@ export default {
       </div>
     </div>
   </div>
+
+
+  <!-- Confirmation modale suppression content -->
+  <div class="modal fade" :id="'modal-remove-content-' + this.renderBlockId" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-secondary">
+          <h1 class="modal-title fs-5 text-white">
+            <i class="bi bi-trash-fill"></i> {{ this.translate.modale_remove_title }}
+          </h1>
+          <button @click="this.closeModalRemove" type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {{ this.translate.modale_remove_body }} <br />
+          <span class="text-info"><i> {{ this.translate.modale_remove_body_2 }}</i></span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" @click="this.closeModalRemove" data-bs-dismiss="modal">
+            {{ this.translate.modale_remove_btn_cancel }}
+          </button>
+          <button type="button" class="btn btn-primary"
+              @click="this.removeContent(this.idConfirm, true)">
+            {{ this.translate.modale_remove_btn_confirm }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 </template>
 
 <style scoped>

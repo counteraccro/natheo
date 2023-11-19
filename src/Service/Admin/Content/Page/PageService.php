@@ -264,6 +264,8 @@ class PageService extends AppAdminService
             'tag_sub_title' => $this->translator->trans('page.onglet.tag.sub_title', domain: 'page'),
             'msg_add_tag_success' => $this->translator->trans('page.onglet.tag.msg.add_tag_success', domain: 'page'),
             'msg_del_tag_success' => $this->translator->trans('page.onglet.tag.msg.del_tag_success', domain: 'page'),
+            'msg_remove_content_success' =>
+                $this->translator->trans('page.msg.remove_content_success', domain: 'page'),
             'page_content_form' => [
                 'title' => $this->translator->trans('page.page_content_form.title', domain: 'page'),
                 'input_url_label' => $this->translator->trans('page.page_content_form.input.url.label', domain: 'page'),
@@ -286,8 +288,17 @@ class PageService extends AppAdminService
                     'btn_change_content' =>
                         $this->translator->trans('page.page_content_block.btn.change_content', domain: 'page'),
                     'btn_move_content' =>
-                        $this->translator->trans('page.page_content_block.btn.move_content', domain: 'page')
-
+                        $this->translator->trans('page.page_content_block.btn.move_content', domain: 'page'),
+                    'modale_remove_title' =>
+                        $this->translator->trans('page.page_content_block.modale.remove.title', domain: 'page'),
+                    'modale_remove_body' =>
+                        $this->translator->trans('page.page_content_block.modale.remove.body', domain: 'page'),
+                    'modale_remove_body_2' =>
+                        $this->translator->trans('page.page_content_block.modale.remove.body.2', domain: 'page'),
+                    'modale_remove_btn_confirm' =>
+                        $this->translator->trans('page.page_content_block.modale.remove.btn.confirm', domain: 'page'),
+                    'modale_remove_btn_cancel' =>
+                        $this->translator->trans('page.page_content_block.modale.remove.btn.cancel', domain: 'page'),
                 ],
             ],
             'page_history' => [
