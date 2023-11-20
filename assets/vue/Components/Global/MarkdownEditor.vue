@@ -307,8 +307,8 @@ export default {
               <input type="text" class="form-control" :id="'link-modal-' + this.id" placeholder="" v-model="linkModal">
             </div>
             <div class="mb-3">
-              <label for="text-modal" class="form-label">Texte</label>
-              <input type="text" class="form-control" id="text-modal" placeholder="" v-model="textModal">
+              <label :for="'text-modal-' + this.id" class="form-label">Texte</label>
+              <input type="text" class="form-control" :id="'text-modal-' + this.id" placeholder="" v-model="textModal">
             </div>
           </div>
         </div>
