@@ -86,3 +86,9 @@ page.page_content_block.modale.remove.body: __page.page_content_block.modale.rem
 page.page_content_block.modale.remove.body.2: __page.page_content_block.modale.remove.body.2
 page.page_content_block.modale.remove.btn.confirm: __page.page_content_block.modale.remove.btn.confirm
 page.page_content_block.modale.remove.btn.cancel: __page.page_content_block.modale.remove.btn.cancel
+page.content.text: __page.content.text
+page.page_content_block.modale.new.title: __page.page_content_block.modale.new.title
+page.page_content_block.modale.new.btn.cancel: __page.page_content_block.modale.new.btn.cancel
+page.page_content_block.modale.new.btn.new: __page.page_content_block.modale.new.btn.new
+page.page_content_block.modale.new.choice_label: __page.page_content_block.modale.new.choice_label
+page.page_content_block.modale.new.choice_info: __page.page_content_block.modale.new.choice_info

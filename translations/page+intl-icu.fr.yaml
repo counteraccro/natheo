@@ -85,4 +85,10 @@ page.page_content_block.modale.remove.body: 'Vous êtes sur le point de supprime
 page.page_content_block.modale.remove.btn.confirm: Supprimer
 page.page_content_block.modale.remove.btn.cancel: Annuler
 page.page_content_block.modale.remove.body.2: "Vous pouvez toujours restaurer ce contenu via l'historique"
-page.msg.remove_content_success: "Suppression du contenu fait avec succès"
+page.msg.remove_content_success: 'Suppression du contenu fait avec succès'
+page.page_content_block.modale.new.title: 'Nouveau contenu'
+page.page_content_block.modale.new.btn.cancel: Annuler
+page.page_content_block.modale.new.btn.new: 'Ajouter le contenu'
+page.page_content_block.modale.new.choice_label: 'Choix du contenu à ajouter'
+page.page_content_block.modale.new.choice_info: 'Le contenu peut être du texte, un cv, une faq etc..'
+page.content.text: 'Bloc de texte'
