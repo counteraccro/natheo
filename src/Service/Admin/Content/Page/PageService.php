@@ -230,6 +230,17 @@ class PageService extends AppAdminService
     }
 
     /**
+     * Retourne la liste de choix de type de content
+     * @return array
+     */
+    public function getAllContent(): array
+    {
+        return [
+            PageConst::CONTENT_TYPE_TEXT => $this->translator->trans('page.content.text', domain: 'page'),
+        ];
+    }
+
+    /**
      * Génère une liste de tags au format HTML
      * @param Collection $tags
      * @return string
@@ -299,6 +310,16 @@ class PageService extends AppAdminService
                         $this->translator->trans('page.page_content_block.modale.remove.btn.confirm', domain: 'page'),
                     'modale_remove_btn_cancel' =>
                         $this->translator->trans('page.page_content_block.modale.remove.btn.cancel', domain: 'page'),
+                    'modale_new_title' =>
+                        $this->translator->trans('page.page_content_block.modale.new.title', domain: 'page'),
+                    'modale_new_btn_cancel' =>
+                        $this->translator->trans('page.page_content_block.modale.new.btn.cancel', domain: 'page'),
+                    'modale_new_btn_new' =>
+                        $this->translator->trans('page.page_content_block.modale.new.btn.new', domain: 'page'),
+                    'modale_new_choice_label' =>
+                        $this->translator->trans('page.page_content_block.modale.new.choice_label', domain: 'page'),
+                    'modale_new_choice_info' =>
+                        $this->translator->trans('page.page_content_block.modale.new.choice_info', domain: 'page'),
                 ],
             ],
             'page_history' => [

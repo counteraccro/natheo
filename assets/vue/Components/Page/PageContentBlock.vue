@@ -11,7 +11,7 @@ import {Modal} from "bootstrap";
 export default {
   name: 'PageContentBlock',
   components: {MarkdownEditor},
-  emits: ['auto-save', 'remove-content'],
+  emits: ['auto-save', 'remove-content', 'new-content'],
   props: {
     locale: String,
     translate: Object,
@@ -19,16 +19,20 @@ export default {
     renderBlockId: Number,
     indexStart: Number,
     indexEnd: Number,
+    listeContent: Object
   },
   data() {
     return {
       isEmptyBlock: false,
       idConfirm: 0,
       modalRemove: null,
+      modalNew: null,
+      idSelectContent: 0,
     }
   },
   mounted() {
     this.modalRemove = new Modal(document.getElementById("modal-remove-content-" + this.renderBlockId), {});
+    this.modalNew = new Modal(document.getElementById("modal-new-content-" + this.renderBlockId), {});
   },
   computed: {},
   methods: {
@@ -63,16 +67,42 @@ export default {
     removeContent(id, confirm) {
       if (!confirm) {
         this.idConfirm = id;
-        this.modalRemove.show();
+        this.showModal(this.modalRemove)
       } else {
-        this.closeModalRemove();
+        this.hideModal(this.modalRemove);
         this.$emit('remove-content', id);
       }
 
     },
 
-    closeModalRemove() {
-      this.modalRemove.hide();
+    /**
+     * AJoute un nouveau content
+     * @param id
+     */
+    newContent()
+    {
+      if(this.idSelectContent > 0)
+      {
+        this.$emit('new-content', this.idSelectContent, this.renderBlockId);
+        this.hideModal(this.modalNew);
+      }
+
+    },
+
+    /**
+     * Affiche les objets modales
+     * @param modale
+     */
+    showModal(modale) {
+      modale.show();
+    },
+
+    /**
+     * Ferme les objets modales
+     * @param modale
+     */
+    hideModal(modale) {
+      modale.hide();
     },
 
     /**
@@ -153,7 +183,7 @@ export default {
 
     <div v-if="!this.isEmptyBlock">
       <div class="block-page-content position-relative">
-        <div class="btn btn-secondary position-absolute top-50 start-50 translate-middle">
+        <div class="btn btn-secondary position-absolute top-50 start-50 translate-middle" @click="this.showModal(this.modalNew)">
           <i class="bi bi-plus-circle"></i>
           {{ this.translate.btn_new_content }}
         </div>
@@ -170,7 +200,7 @@ export default {
           <h1 class="modal-title fs-5 text-white">
             <i class="bi bi-trash-fill"></i> {{ this.translate.modale_remove_title }}
           </h1>
-          <button @click="this.closeModalRemove" type="button" class="btn-close" data-bs-dismiss="modal"
+          <button @click="this.hideModal(this.modalRemove)" type="button" class="btn-close" data-bs-dismiss="modal"
               aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -178,12 +208,47 @@ export default {
           <span class="text-info"><i> {{ this.translate.modale_remove_body_2 }}</i></span>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" @click="this.closeModalRemove" data-bs-dismiss="modal">
+          <button type="button" class="btn btn-secondary" @click="this.hideModal(this.modalRemove)" data-bs-dismiss="modal">
             {{ this.translate.modale_remove_btn_cancel }}
           </button>
           <button type="button" class="btn btn-primary"
               @click="this.removeContent(this.idConfirm, true)">
             {{ this.translate.modale_remove_btn_confirm }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modale d'ajout d'un nouveau content  -->
+  <div class="modal fade" :id="'modal-new-content-' + this.renderBlockId" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-secondary">
+          <h1 class="modal-title fs-5 text-white">
+            <i class="bi bi-plus-circle"></i> {{ this.translate.modale_new_title }}
+          </h1>
+          <button @click="this.hideModal(this.modalNew)" type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <div class="mb-3">
+            <label for="list-choice-content" class="form-label">{{ this.translate.modale_new_choice_label }}</label>
+            <select id="list-choice-content" class="form-select" v-model="this.idSelectContent">
+              <option value="0">---</option>
+              <option v-for="(value, key) in this.listeContent" :value="parseInt(key)">{{ value }}</option>
+            </select>
+            <div id="list-status-help" class="form-text">{{ this.translate.modale_new_choice_info }}</div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" @click="this.hideModal(this.modalNew)" data-bs-dismiss="modal">
+            {{ this.translate.modale_new_btn_cancel }}
+          </button>
+          <button type="button" class="btn btn-primary" @click="this.newContent()">
+            {{ this.translate.modale_new_btn_new }}
           </button>
         </div>
       </div>

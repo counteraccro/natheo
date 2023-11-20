@@ -198,6 +198,17 @@ export default {
     },
 
     /**
+     * Ajoute un nouveau contenu
+     * @param id
+     * @param renderBlockId
+     */
+    newContent(id, renderBlockId)
+    {
+      console.log(id);
+      console.log(renderBlockId);
+    },
+
+    /**
      * Sauvegarde une page
      */
     save() {
@@ -370,10 +381,12 @@ export default {
           <page-content :key="13 + '-' + this.componentKey"
               :locale="this.currentLocale"
               :url="this.urls.au"
+              :list-content="this.page_datas.list_content"
               :translate="this.translate.page_content"
               :page="this.page"
               @auto-save="this.autoSave"
               @remove-content="this.removeContent"
+              @new-content="this.newContent"
           />
         </div>
 

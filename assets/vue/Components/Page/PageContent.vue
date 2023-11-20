@@ -17,9 +17,10 @@ export default {
     url: String,
     locale: String,
     translate: Object,
-    page: Object
+    page: Object,
+    listContent: Object
   },
-  emits: ['auto-save', 'remove-content'],
+  emits: ['auto-save', 'remove-content', 'new-content'],
   data() {
     return {
       renderColumn: [1, 2, 3],
@@ -92,6 +93,11 @@ export default {
       this.$emit('remove-content', id);
     },
 
+    newContent(id, renderBlockId)
+    {
+      this.$emit('new-content', id, renderBlockId);
+    },
+
     /**
      * Appel ajax pour construire le résultat d'auto-completion
      */
@@ -125,8 +131,10 @@ export default {
             :render-block-id="n"
             :index-start="0"
             :index-end="2"
+            :liste-content="this.listContent"
             @auto-save="this.autoSave"
             @remove-content="this.removeContent"
+            @new-content="this.newContent"
 
         />
       </div>
@@ -143,8 +151,10 @@ export default {
             :render-block-id="n"
             :index-start="0"
             :index-end="2"
+            :liste-content="this.listContent"
             @auto-save="this.autoSave"
             @remove-content="this.removeContent"
+            @new-content="this.newContent"
         />
       </div>
     </div>
@@ -160,8 +170,10 @@ export default {
             :render-block-id="1"
             :index-start="0"
             :index-end="0"
+            :liste-content="this.listContent"
             @auto-save="this.autoSave"
             @remove-content="this.removeContent"
+            @new-content="this.newContent"
         />
       </div>
     </div>
@@ -175,8 +187,10 @@ export default {
             :render-block-id="n+1"
             :index-start="1"
             :index-end="2"
+            :liste-content="this.listContent"
             @auto-save="this.autoSave"
             @remove-content="this.removeContent"
+            @new-content="this.newContent"
         />
       </div>
     </div>
@@ -192,8 +206,10 @@ export default {
             :render-block-id="n"
             :index-start="0"
             :index-end="1"
+            :liste-content="this.listContent"
             @auto-save="this.autoSave"
             @remove-content="this.removeContent"
+            @new-content="this.newContent"
         />
       </div>
     </div>
@@ -207,8 +223,10 @@ export default {
             :render-block-id="3"
             :index-start="3"
             :index-end="3"
+            :liste-content="this.listContent"
             @auto-save="this.autoSave"
             @remove-content="this.removeContent"
+            @new-content="this.newContent"
         />
       </div>
     </div>
@@ -224,8 +242,10 @@ export default {
             :render-block-id="n"
             :index-start="0"
             :index-end="1"
+            :liste-content="this.listContent"
             @auto-save="this.autoSave"
             @remove-content="this.removeContent"
+            @new-content="this.newContent"
         />
       </div>
     </div>
@@ -238,8 +258,10 @@ export default {
             :render-block-id="n+2"
             :index-start="2"
             :index-end="3"
+            :liste-content="this.listContent"
             @auto-save="this.autoSave"
             @remove-content="this.removeContent"
+            @new-content="this.newContent"
         />
       </div>
     </div>
