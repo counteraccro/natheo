@@ -93,9 +93,15 @@ export default {
       this.$emit('remove-content', id);
     },
 
-    newContent(id, renderBlockId)
+    /**
+     * Nouveau content
+     * @param type
+     * @param type_id
+     * @param renderBlockId
+     */
+    newContent(type, type_id, renderBlockId)
     {
-      this.$emit('new-content', id, renderBlockId);
+      this.$emit('new-content', type, type_id, renderBlockId);
     },
 
     /**
@@ -132,6 +138,7 @@ export default {
             :index-start="0"
             :index-end="2"
             :liste-content="this.listContent"
+            :url="this.url"
             @auto-save="this.autoSave"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
@@ -152,6 +159,7 @@ export default {
             :index-start="0"
             :index-end="2"
             :liste-content="this.listContent"
+            :url="this.url"
             @auto-save="this.autoSave"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
@@ -171,6 +179,7 @@ export default {
             :index-start="0"
             :index-end="0"
             :liste-content="this.listContent"
+            :url="this.url"
             @auto-save="this.autoSave"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
@@ -188,6 +197,7 @@ export default {
             :index-start="1"
             :index-end="2"
             :liste-content="this.listContent"
+            :url="this.url"
             @auto-save="this.autoSave"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
@@ -207,6 +217,7 @@ export default {
             :index-start="0"
             :index-end="1"
             :liste-content="this.listContent"
+            :url="this.url"
             @auto-save="this.autoSave"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
@@ -224,6 +235,7 @@ export default {
             :index-start="3"
             :index-end="3"
             :liste-content="this.listContent"
+            :url="this.url"
             @auto-save="this.autoSave"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
@@ -243,6 +255,7 @@ export default {
             :index-start="0"
             :index-end="1"
             :liste-content="this.listContent"
+            :url="this.url"
             @auto-save="this.autoSave"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
@@ -259,6 +272,7 @@ export default {
             :index-start="2"
             :index-end="3"
             :liste-content="this.listContent"
+            :url="this.url"
             @auto-save="this.autoSave"
             @remove-content="this.removeContent"
             @new-content="this.newContent"

@@ -199,13 +199,27 @@ export default {
 
     /**
      * Ajoute un nouveau contenu
-     * @param id
+     * @param type
+     * @param type_id
      * @param renderBlockId
      */
-    newContent(id, renderBlockId)
+    newContent(type, type_id, renderBlockId)
     {
-      console.log(id);
-      console.log(renderBlockId);
+      console.log("type : " + type);
+      console.log("type_id : " + type_id);
+      console.log("renderBlockId : " + renderBlockId);
+
+      axios.post(this.urls.new_content, {
+        'type': type,
+        'type_id': type_id,
+        'renderBlock': renderBlockId
+      }).then((response) => {
+          console.log(response)
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+      });
+
     },
 
     /**
@@ -380,7 +394,7 @@ export default {
         <div id="page-content">
           <page-content :key="13 + '-' + this.componentKey"
               :locale="this.currentLocale"
-              :url="this.urls.au"
+              :url="this.urls.liste_content_by_id"
               :list-content="this.page_datas.list_content"
               :translate="this.translate.page_content"
               :page="this.page"

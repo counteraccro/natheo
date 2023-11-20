@@ -168,7 +168,9 @@ class PageController extends AppAdminController
                 'reload_page_history' => $this->generateUrl('admin_page_reload_page_history'),
                 'auto_complete_tag' => $this->generateUrl('admin_tag_search'),
                 'tag_by_name' => $this->generateUrl('admin_tag_tag_by_name'),
-                'save' => $this->generateUrl('admin_page_save')
+                'save' => $this->generateUrl('admin_page_save'),
+                'new_content' => $this->generateUrl('admin_page_new_content'),
+                'liste_content_by_id' => $this->generateUrl('admin_page_liste_content_by_id')
             ]
         ]);
     }
@@ -298,6 +300,8 @@ class PageController extends AppAdminController
     /**
      * Permet de sauvegarder une page
      * @param Request $request
+     * @param PageService $pageService
+     * @param TranslatorInterface $translator
      * @return JsonResponse
      */
     #[Route('/ajax/save', name: 'save')]
@@ -318,6 +322,36 @@ class PageController extends AppAdminController
 
         return $this->json([
             'msg' => $translator->trans('page.save.success', domain: 'page')
+        ]);
+    }
+
+    /**
+     * Permet de créer un nouveau contenu
+     * @param Request $request
+     * @param PageService $pageService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/new-content', name: 'new_content')]
+    public function newContent(Request $request, PageService $pageService): JsonResponse
+    {
+        return $this->json([
+            'oki'
+        ]);
+    }
+
+    /**
+     * Retourne une liste de contenu en fonction d'un id content
+     * @param Request $request
+     * @param PageService $pageService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/content-by-id', name: 'liste_content_by_id')]
+    public function listeContentByIdContent(Request $request, PageService $pageService): JsonResponse
+    {
+        return $this->json([
+            'list' => [100 => 'Rendu test 1', 1000 => 'Rendu test 2'],
+            'label' => 'label à traduire',
+            'help' => 'help à traduire'
         ]);
     }
 }

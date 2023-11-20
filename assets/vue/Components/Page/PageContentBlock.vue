@@ -7,6 +7,7 @@
 import {marked} from "marked";
 import MarkdownEditor from "../Global/MarkdownEditor.vue";
 import {Modal} from "bootstrap";
+import axios from "axios";
 
 export default {
   name: 'PageContentBlock',
@@ -19,7 +20,8 @@ export default {
     renderBlockId: Number,
     indexStart: Number,
     indexEnd: Number,
-    listeContent: Object
+    listeContent: Object,
+    url: String,
   },
   data() {
     return {
@@ -28,6 +30,13 @@ export default {
       modalRemove: null,
       modalNew: null,
       idSelectContent: 0,
+      idSelectTypeContent: 0,
+      typeContent : {
+        list : [],
+        label : '',
+        help: ''
+      },
+      loading: false
     }
   },
   mounted() {
@@ -81,12 +90,40 @@ export default {
      */
     newContent()
     {
-      if(this.idSelectContent > 0)
+      if(this.idSelectContent <= 0)
       {
-        this.$emit('new-content', this.idSelectContent, this.renderBlockId);
-        this.hideModal(this.modalNew);
+        return false;
       }
 
+      this.$emit('new-content', this.idSelectContent, this.idSelectTypeContent, this.renderBlockId);
+      this.hideModal(this.modalNew);
+      this.typeContent.list = [];
+    },
+
+    /**
+     * Charge une liste de type de content en fonction de son id
+     */
+    loadListContenType()
+    {
+      if(this.idSelectContent <= 1)
+      {
+        this.typeContent.list = [];
+        return false;
+      }
+
+      this.loading = true;
+
+      axios.post(this.url, {
+        'id': this.idSelectContent,
+      }).then((response) => {
+          this.typeContent.list = response.data.list;
+          this.typeContent.label = response.data.label;
+          this.typeContent.help = response.data.help;
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+        this.loading = false;
+      });
     },
 
     /**
@@ -231,16 +268,32 @@ export default {
           <button @click="this.hideModal(this.modalNew)" type="button" class="btn-close" data-bs-dismiss="modal"
               aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" :class="this.loading === true ? 'block-grid' : ''">
+
+          <div v-if="this.loading" class="overlay">
+            <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
+              <div class="spinner-border text-primary" role="status"></div>
+              <span class="txt-overlay">{{ this.translate.loading }}</span>
+            </div>
+          </div>
 
           <div class="mb-3">
             <label for="list-choice-content" class="form-label">{{ this.translate.modale_new_choice_label }}</label>
-            <select id="list-choice-content" class="form-select" v-model="this.idSelectContent">
+            <select id="list-choice-content" class="form-select" v-model="this.idSelectContent" @change="this.loadListContenType()">
               <option value="0">---</option>
               <option v-for="(value, key) in this.listeContent" :value="parseInt(key)">{{ value }}</option>
             </select>
             <div id="list-status-help" class="form-text">{{ this.translate.modale_new_choice_info }}</div>
           </div>
+
+          <div v-if="this.typeContent.list.length !== 0" class="mb-3">
+            <label for="list-choice-type-content" class="form-label">{{ this.typeContent.label }}</label>
+            <select id="list-choice-type-content" class="form-select" v-model="this.idSelectTypeContent">
+              <option v-for="(value, key) in this.typeContent.list" :value="parseInt(key)">{{ value }}</option>
+            </select>
+            <div id="list-status-help" class="form-text">{{ this.typeContent.help }}</div>
+          </div>
+
 
         </div>
         <div class="modal-footer">

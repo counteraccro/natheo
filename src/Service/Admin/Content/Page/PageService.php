@@ -237,6 +237,7 @@ class PageService extends AppAdminService
     {
         return [
             PageConst::CONTENT_TYPE_TEXT => $this->translator->trans('page.content.text', domain: 'page'),
+            2 => 'FAQ non traduit Pageservice::getAllContent()'
         ];
     }
 
@@ -320,6 +321,7 @@ class PageService extends AppAdminService
                         $this->translator->trans('page.page_content_block.modale.new.choice_label', domain: 'page'),
                     'modale_new_choice_info' =>
                         $this->translator->trans('page.page_content_block.modale.new.choice_info', domain: 'page'),
+                    'loading' => $this->translator->trans('page.page_content_block.loading', domain: 'page'),
                 ],
             ],
             'page_history' => [
