@@ -97,17 +97,18 @@ export default {
 
       this.$emit('new-content', this.idSelectContent, this.idSelectTypeContent, this.renderBlockId);
       this.hideModal(this.modalNew);
-      this.typeContent.list = [];
+      this.resetDataNewContent();
     },
 
     /**
      * Charge une liste de type de content en fonction de son id
      */
-    loadListContenType()
+    loadListContentType()
     {
       if(this.idSelectContent <= 1)
       {
         this.typeContent.list = [];
+        this.idSelectTypeContent = 0;
         return false;
       }
 
@@ -119,11 +120,22 @@ export default {
           this.typeContent.list = response.data.list;
           this.typeContent.label = response.data.label;
           this.typeContent.help = response.data.help;
+          this.idSelectTypeContent = response.data.selected;
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
         this.loading = false;
       });
+    },
+
+    /**
+     * Reset les données de la modale new content
+     */
+    resetDataNewContent()
+    {
+      this.idSelectContent = 0;
+      this.typeContent.list = [];
+      this.idSelectTypeContent = 0;
     },
 
     /**
@@ -237,7 +249,7 @@ export default {
           <h1 class="modal-title fs-5 text-white">
             <i class="bi bi-trash-fill"></i> {{ this.translate.modale_remove_title }}
           </h1>
-          <button @click="this.hideModal(this.modalRemove)" type="button" class="btn-close" data-bs-dismiss="modal"
+          <button @click="this.hideModal(this.modalRemove);" type="button" class="btn-close" data-bs-dismiss="modal"
               aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -245,7 +257,7 @@ export default {
           <span class="text-info"><i> {{ this.translate.modale_remove_body_2 }}</i></span>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" @click="this.hideModal(this.modalRemove)" data-bs-dismiss="modal">
+          <button type="button" class="btn btn-secondary" @click="this.hideModal(this.modalRemove);" data-bs-dismiss="modal">
             {{ this.translate.modale_remove_btn_cancel }}
           </button>
           <button type="button" class="btn btn-primary"
@@ -265,7 +277,7 @@ export default {
           <h1 class="modal-title fs-5 text-white">
             <i class="bi bi-plus-circle"></i> {{ this.translate.modale_new_title }}
           </h1>
-          <button @click="this.hideModal(this.modalNew)" type="button" class="btn-close" data-bs-dismiss="modal"
+          <button @click="this.hideModal(this.modalNew);this.resetDataNewContent()" type="button" class="btn-close" data-bs-dismiss="modal"
               aria-label="Close"></button>
         </div>
         <div class="modal-body" :class="this.loading === true ? 'block-grid' : ''">
@@ -279,7 +291,7 @@ export default {
 
           <div class="mb-3">
             <label for="list-choice-content" class="form-label">{{ this.translate.modale_new_choice_label }}</label>
-            <select id="list-choice-content" class="form-select" v-model="this.idSelectContent" @change="this.loadListContenType()">
+            <select id="list-choice-content" class="form-select" v-model="this.idSelectContent" @change="this.loadListContentType()">
               <option value="0">---</option>
               <option v-for="(value, key) in this.listeContent" :value="parseInt(key)">{{ value }}</option>
             </select>
@@ -297,7 +309,7 @@ export default {
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" @click="this.hideModal(this.modalNew)" data-bs-dismiss="modal">
+          <button type="button" class="btn btn-secondary" @click="this.hideModal(this.modalNew);this.resetDataNewContent()" data-bs-dismiss="modal">
             {{ this.translate.modale_new_btn_cancel }}
           </button>
           <button type="button" class="btn btn-primary" @click="this.newContent()">

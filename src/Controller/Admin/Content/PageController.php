@@ -350,6 +350,7 @@ class PageController extends AppAdminController
     {
         return $this->json([
             'list' => [100 => 'Rendu test 1', 1000 => 'Rendu test 2'],
+            'selected' => 100,
             'label' => 'label à traduire',
             'help' => 'help à traduire'
         ]);
