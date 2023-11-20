@@ -303,8 +303,8 @@ export default {
         <div class="modal-body">
           <div>
             <div class="mb-3">
-              <label for="link-modal" class="form-label">{{ this.linkLabelModal }}</label>
-              <input type="text" class="form-control" id="link-modal" placeholder="" v-model="linkModal">
+              <label :for="'link-modal-' + this.id" class="form-label">{{ this.linkLabelModal }}</label>
+              <input type="text" class="form-control" :id="'link-modal-' + this.id" placeholder="" v-model="linkModal">
             </div>
             <div class="mb-3">
               <label for="text-modal" class="form-label">Texte</label>
