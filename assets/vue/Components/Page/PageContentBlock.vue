@@ -290,8 +290,8 @@ export default {
           </div>
 
           <div class="mb-3">
-            <label for="list-choice-content" class="form-label">{{ this.translate.modale_new_choice_label }}</label>
-            <select id="list-choice-content" class="form-select" v-model="this.idSelectContent" @change="this.loadListContentType()">
+            <label :for="'list-choice-content-' + this.renderBlockId" class="form-label">{{ this.translate.modale_new_choice_label }}</label>
+            <select :id="'list-choice-content-' + this.renderBlockId" class="form-select" v-model="this.idSelectContent" @change="this.loadListContentType()">
               <option value="0">---</option>
               <option v-for="(value, key) in this.listeContent" :value="parseInt(key)">{{ value }}</option>
             </select>
@@ -299,8 +299,8 @@ export default {
           </div>
 
           <div v-if="this.typeContent.list.length !== 0" class="mb-3">
-            <label for="list-choice-type-content" class="form-label">{{ this.typeContent.label }}</label>
-            <select id="list-choice-type-content" class="form-select" v-model="this.idSelectTypeContent">
+            <label :for="'list-choice-type-content-' + this.renderBlockId" class="form-label">{{ this.typeContent.label }}</label>
+            <select :id="'list-choice-type-content-' + this.renderBlockId" class="form-select" v-model="this.idSelectTypeContent">
               <option v-for="(value, key) in this.typeContent.list" :value="parseInt(key)">{{ value }}</option>
             </select>
             <div id="list-status-help" class="form-text">{{ this.typeContent.help }}</div>

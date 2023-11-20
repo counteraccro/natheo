@@ -68,8 +68,8 @@ export default {
   </div>
 
   <div class="mb-3">
-    <label for="list-status-page" class="form-label">{{ this.translate.list_render_label }}</label>
-    <select id="list-status-page" class="form-select" aria-label="Default select example" v-model="this.page.render" @change="this.autoSave">
+    <label for="list-render-page" class="form-label">{{ this.translate.list_render_label }}</label>
+    <select id="list-render-page" class="form-select" v-model="this.page.render" @change="this.autoSave">
       <option v-for="(value, key) in this.listRender" :value="parseInt(key)">{{ value }}</option>
     </select>
     <div id="list-status-help" class="form-text">{{ this.translate.list_render_help }}</div>
