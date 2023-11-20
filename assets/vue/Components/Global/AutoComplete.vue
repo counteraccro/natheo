@@ -93,7 +93,7 @@ export default {
     </div>
     <div id="emailHelp" class="form-text">{{ this.translate.auto_complete_help }}</div>
     <datalist :id="'data-list-option-' + this.id">
-      <select>
+      <select :id="'select-data-list-option-' + this.id">
         <option v-for="data in this.results" :value="data"/>
       </select>
     </datalist>

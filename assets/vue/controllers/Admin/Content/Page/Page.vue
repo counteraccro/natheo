@@ -343,7 +343,7 @@ export default {
 
   <div id="global-page-form">
     <nav>
-      <select class="form-select float-end w-25" @change="this.switchLocale($event)">
+      <select id="select-language" class="form-select float-end w-25" @change="this.switchLocale($event)">
         <option value="" selected>{{ this.translate.select_locale }}</option>
         <option v-for="(language, key) in this.locales.localesTranslate" :value="key"
             :selected="key===this.currentLocale">{{ language }}

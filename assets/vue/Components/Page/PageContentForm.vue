@@ -52,19 +52,23 @@ export default {
   <h5>{{ this.translate.title }}</h5>
 
   <div class="mb-3">
-    <label for="page-titre" class="form-label">{{ this.translate.input_titre_label }}</label>
     <div v-for="pageTranslation in this.page.pageTranslations">
-      <input v-if="pageTranslation.locale === this.locale" type="text" class="form-control" id="page-titre" v-model="pageTranslation.titre" @change="this.generateUrl(pageTranslation.titre)">
+      <div v-if="pageTranslation.locale === this.locale">
+        <label for="page-titre" class="form-label">{{ this.translate.input_titre_label }}</label>
+        <input type="text" class="form-control" id="page-titre" v-model="pageTranslation.titre" @change="this.generateUrl(pageTranslation.titre)">
+        <div id="pageTitreHelp" class="form-text">{{ this.translate.input_titre_info }}</div>
+      </div>
     </div>
-    <div id="pageTitreHelp" class="form-text">{{ this.translate.input_titre_info }}</div>
   </div>
 
   <div class="mb-3">
-    <label for="page-url" class="form-label">{{ this.translate.input_url_label }}</label>
     <div v-for="pageTranslation in this.page.pageTranslations">
-      <input v-if="pageTranslation.locale === this.locale" type="text" class="form-control" id="page-url" v-model="pageTranslation.url" @change="this.autoSave">
+      <div v-if="pageTranslation.locale === this.locale">
+        <label for="page-url" class="form-label">{{ this.translate.input_url_label }}</label>
+        <input type="text" class="form-control" id="page-url" v-model="pageTranslation.url" @change="this.autoSave">
+        <div id="pageUrlHelp" class="form-text">{{ this.translate.input_url_info }}</div>
+      </div>
     </div>
-    <div id="pageUrlHelp" class="form-text">{{ this.translate.input_url_info }}</div>
   </div>
 
   <div class="mb-3">
