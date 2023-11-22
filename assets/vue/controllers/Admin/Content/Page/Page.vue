@@ -45,7 +45,12 @@ export default {
           msg: '',
           bg: 'bg-success'
         },
-        contentRemove : {
+        contentRemove: {
+          toast: [],
+          msg: '',
+          bg: 'bg-success'
+        },
+        contentAdd: {
           toast: [],
           msg: '',
           bg: 'bg-success'
@@ -65,12 +70,13 @@ export default {
     let toastContentRemove = document.getElementById('live-toast-content-remove');
     this.toasts.contentRemove.toast = Toast.getOrCreateInstance(toastContentRemove);
 
+    let toastContentAdd = document.getElementById('live-toast-content-add');
+    this.toasts.contentAdd.toast = Toast.getOrCreateInstance(toastContentAdd);
+
     this.currentLocale = this.locales.current;
     this.loadTabContent();
   },
-  computed: {
-
-  },
+  computed: {},
   methods: {
 
     /**
@@ -182,8 +188,7 @@ export default {
      * Supprime un page content en fonction de son id
      * @param id
      */
-    removeContent(id)
-    {
+    removeContent(id) {
       this.page.pageContents = this.page.pageContents.filter((content) => content.id !== id);
       this.toasts.contentRemove.msg = this.translate.msg_remove_content_success;
       this.toasts.contentRemove.toast.show();
@@ -203,15 +208,27 @@ export default {
      * @param type_id
      * @param renderBlockId
      */
-    newContent(type, type_id, renderBlockId)
-    {
+    newContent(type, type_id, renderBlockId) {
       axios.post(this.urls.new_content, {
         'type': type,
         'type_id': type_id,
         'renderBlock': renderBlockId
       }).then((response) => {
-          this.page.pageContents.splice((renderBlockId-1), 0, response.data.pageContent);
+
+        // Manipulation manuelle pour éviter les warning récursif
+        let pCtmp = this.page.pageContents;
+        let newPcTmp = [];
+        newPcTmp[(renderBlockId - 1)] = response.data.pageContent;
+        pCtmp.forEach(function (value) {
+          newPcTmp[(value.renderBlock - 1)] = {...value}
+        })
+        this.page.pageContents = newPcTmp;
+
+        this.toasts.contentAdd.msg = this.translate.msg_add_content_success;
+        this.toasts.contentAdd.toast.show();
+        this.autoSave(this.page)
       }).catch((error) => {
+        console.log('erreur');
         console.log(error);
       }).finally(() => {
       });
@@ -502,7 +519,17 @@ export default {
         {{ this.toasts.contentRemove.msg }}
       </div>
     </div>
+
+    <div id="live-toast-content-add" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-body text-white" :class="this.toasts.contentAdd.bg">
+        <i class="bi bi-check-circle-fill"></i>
+        {{ this.toasts.contentAdd.msg }}
+      </div>
+    </div>
+
   </div>
+
+
   <!-- fin toast -->
 
 </template>
