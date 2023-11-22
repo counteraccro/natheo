@@ -205,16 +205,12 @@ export default {
      */
     newContent(type, type_id, renderBlockId)
     {
-      console.log("type : " + type);
-      console.log("type_id : " + type_id);
-      console.log("renderBlockId : " + renderBlockId);
-
       axios.post(this.urls.new_content, {
         'type': type,
         'type_id': type_id,
         'renderBlock': renderBlockId
       }).then((response) => {
-          console.log(response)
+          this.page.pageContents.splice((renderBlockId-1), 0, response.data.pageContent);
       }).catch((error) => {
         console.log(error);
       }).finally(() => {

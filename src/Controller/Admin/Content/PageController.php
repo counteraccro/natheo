@@ -11,8 +11,6 @@ use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
 use App\Service\Admin\Content\Page\PageService;
-use App\Service\Admin\Content\Tag\TagComponentService;
-use App\Service\Admin\Content\Tag\TagService;
 use App\Service\Global\DateService;
 use App\Utils\Breadcrumb;
 use App\Utils\Content\Page\PageFactory;
@@ -193,7 +191,7 @@ class PageController extends AppAdminController
 
         if ($data['id'] === null) {
             $pageFactory = new PageFactory($locales['locales']);
-            $page = $pageFactory->create();
+            $page = $pageFactory->create()->getPage();
         } else {
             $page = $pageService->findOneById(Page::class, $data['id']);
         }
@@ -310,7 +308,7 @@ class PageController extends AppAdminController
         $data = json_decode($request->getContent(), true);
         $pageFactory = new PageFactory($pageService->getLocales()['locales']);
 
-        $page = $pageFactory->create();
+        $page = $pageFactory->create()->getPage();
         if(isset($data['page']['id']) && $data['page']['id'] > 0)
         {
             $page = $pageService->findOneById(Page::class, $data['page']['id']);
@@ -334,8 +332,15 @@ class PageController extends AppAdminController
     #[Route('/ajax/new-content', name: 'new_content')]
     public function newContent(Request $request, PageService $pageService): JsonResponse
     {
+        $data = json_decode($request->getContent(), true);
+
+        $pageFactory = new PageFactory($pageService->getLocales()['locales']);
+        $pageContent = $pageFactory->newPageContent($data['type'], $data['type_id'], $data['renderBlock']);
+
+        $pageContent = $pageService->convertEntityToArray($pageContent);
+
         return $this->json([
-            'oki'
+            'pageContent' => $pageContent
         ]);
     }
 
