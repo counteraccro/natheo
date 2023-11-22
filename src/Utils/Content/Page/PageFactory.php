@@ -12,14 +12,15 @@ use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\Content\Page\PageContentTranslation;
 use App\Entity\Admin\Content\Page\PageStatistique;
 use App\Entity\Admin\Content\Page\PageTranslation;
+use phpDocumentor\Reflection\Types\This;
 
 class PageFactory
 {
 
     /**
-     * @var Page
+     * @var ?Page
      */
-    private Page $page;
+    private ?Page $page = null;
 
     /**
      * @var array
@@ -33,23 +34,35 @@ class PageFactory
 
     /**
      * Créer un nouvel objet Page
-     * @return Page
+     * @return PageFactory
      */
-    public function create(): Page
+    public function create(): PageFactory
     {
         $this->page = new Page();
         $this->createPageTranslation();
         $this->createPageStatistique();
         $this->createPageContent();
 
-        return $this->getPage();
+        return $this;
+    }
+
+    /**
+     * Retourne un objet pageContent en fonction du type et du type_id
+     * @param int $type
+     * @param int $typeId
+     * @param int $renderBlock
+     * @return PageContent
+     */
+    public function newPageContent(int $type, int $typeId, int $renderBlock): PageContent
+    {
+        return $this->createPageContent($type, $typeId, $renderBlock);
     }
 
     /**
      * Créer les pageTranslation en fonctions des langues
      * @return void
      */
-    public function createPageTranslation(): void
+    private function createPageTranslation(): void
     {
         foreach ($this->locales as $locale) {
             $pageTranslation = new PageTranslation();
@@ -63,23 +76,42 @@ class PageFactory
 
     /**
      * Création des pageContent
-     * @return void
+     * @param int $type
+     * @return PageContent
      */
-    private function createPageContent(): void
+    private function createPageContent(
+        int $type = PageConst::CONTENT_TYPE_TEXT,
+        int $type_id = null,
+        int $renderBlock = 1
+    ): PageContent
     {
+        if($type === PageConst::CONTENT_TYPE_TEXT)
+        {
+            $type_id = null;
+        }
+
         $pageContent = new PageContent();
-        $pageContent->setType(PageConst::CONTENT_TYPE_TEXT);
+        $pageContent->setType($type);
+        $pageContent->setTypeId($type_id);
+        $pageContent->setRenderBlock($renderBlock);
         $pageContent->setRenderOrder(1);
 
-        foreach ($this->locales as $locale) {
-            $pageContentTranslation = new PageContentTranslation();
-            $pageContentTranslation->setLocale($locale);
-            $pageContentTranslation->setText('[' . $locale . '] Contenu de votre page');
-            $pageContentTranslation->setPageContent($pageContent);
-            $pageContent->addPageContentTranslation($pageContentTranslation);
+        if($type === PageConst::CONTENT_TYPE_TEXT) {
+            foreach ($this->locales as $locale) {
+                $pageContentTranslation = new PageContentTranslation();
+                $pageContentTranslation->setLocale($locale);
+                $pageContentTranslation->setText('[' . $locale . '] Contenu de votre page');
+                $pageContentTranslation->setPageContent($pageContent);
+                $pageContent->addPageContentTranslation($pageContentTranslation);
+            }
         }
-        $pageContent->setPage($this->page);
-        $this->page->addPageContent($pageContent);
+
+        if ($this->page !== null) {
+            $pageContent->setPage($this->page);
+            $this->page->addPageContent($pageContent);
+        }
+
+        return $pageContent;
     }
 
     /**
@@ -102,7 +134,7 @@ class PageFactory
      * Retourne la page courante
      * @return Page
      */
-    private function getPage(): Page
+    public function getPage(): Page
     {
         return $this->page;
     }
