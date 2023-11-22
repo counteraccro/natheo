@@ -12,7 +12,7 @@ import axios from "axios";
 export default {
   name: 'PageContentBlock',
   components: {MarkdownEditor},
-  emits: ['auto-save', 'remove-content', 'new-content'],
+  emits: ['remove-content', 'new-content', 'update-content-text'],
   props: {
     locale: String,
     translate: Object,
@@ -31,9 +31,9 @@ export default {
       modalNew: null,
       idSelectContent: 0,
       idSelectTypeContent: 0,
-      typeContent : {
-        list : [],
-        label : '',
+      typeContent: {
+        list: [],
+        label: '',
         help: ''
       },
       loading: false
@@ -53,19 +53,7 @@ export default {
      * @param value
      */
     updatePageContentText(id, value) {
-
-      this.pageContents.forEach((pC) => {
-            if (pC.typeId === null) {
-
-              pC.pageContentTranslations.forEach((pCT) => {
-                if (pCT.id === id) {
-                  pCT.text = value;
-                }
-              })
-            }
-          }
-      );
-      this.$emit('auto-save');
+      this.$emit('update-content-text', id, value);
     },
 
     /**
@@ -88,10 +76,8 @@ export default {
      * AJoute un nouveau content
      * @param id
      */
-    newContent()
-    {
-      if(this.idSelectContent <= 0)
-      {
+    newContent() {
+      if (this.idSelectContent <= 0) {
         return false;
       }
 
@@ -103,10 +89,8 @@ export default {
     /**
      * Charge une liste de type de content en fonction de son id
      */
-    loadListContentType()
-    {
-      if(this.idSelectContent <= 1)
-      {
+    loadListContentType() {
+      if (this.idSelectContent <= 1) {
         this.typeContent.list = [];
         this.idSelectTypeContent = 0;
         return false;
@@ -117,10 +101,10 @@ export default {
       axios.post(this.url, {
         'id': this.idSelectContent,
       }).then((response) => {
-          this.typeContent.list = response.data.list;
-          this.typeContent.label = response.data.label;
-          this.typeContent.help = response.data.help;
-          this.idSelectTypeContent = response.data.selected;
+        this.typeContent.list = response.data.list;
+        this.typeContent.label = response.data.label;
+        this.typeContent.help = response.data.help;
+        this.idSelectTypeContent = response.data.selected;
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
@@ -131,8 +115,7 @@ export default {
     /**
      * Reset les données de la modale new content
      */
-    resetDataNewContent()
-    {
+    resetDataNewContent() {
       this.idSelectContent = 0;
       this.typeContent.list = [];
       this.idSelectTypeContent = 0;
@@ -253,7 +236,7 @@ export default {
               aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          {{ this.translate.modale_remove_body }} <br />
+          {{ this.translate.modale_remove_body }} <br/>
           <span class="text-info"><i> {{ this.translate.modale_remove_body_2 }}</i></span>
         </div>
         <div class="modal-footer">

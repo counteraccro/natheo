@@ -20,7 +20,7 @@ export default {
     page: Object,
     listContent: Object
   },
-  emits: ['auto-save', 'remove-content', 'new-content'],
+  emits: ['remove-content', 'new-content', 'update-content-text'],
   data() {
     return {
       renderColumn: [1, 2, 3],
@@ -80,8 +80,8 @@ export default {
     /**
      * Évènement click sur le bouton
      */
-    autoSave() {
-      this.$emit('auto-save', this.page);
+    updateContentText(id, value) {
+      this.$emit('update-content-text', id, value);
     },
 
     /**
@@ -139,7 +139,7 @@ export default {
             :index-end="2"
             :liste-content="this.listContent"
             :url="this.url"
-            @auto-save="this.autoSave"
+            @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
 
@@ -160,7 +160,7 @@ export default {
             :index-end="2"
             :liste-content="this.listContent"
             :url="this.url"
-            @auto-save="this.autoSave"
+            @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
         />
@@ -180,7 +180,7 @@ export default {
             :index-end="0"
             :liste-content="this.listContent"
             :url="this.url"
-            @auto-save="this.autoSave"
+            @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
         />
@@ -198,7 +198,7 @@ export default {
             :index-end="2"
             :liste-content="this.listContent"
             :url="this.url"
-            @auto-save="this.autoSave"
+            @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
         />
@@ -218,7 +218,7 @@ export default {
             :index-end="1"
             :liste-content="this.listContent"
             :url="this.url"
-            @auto-save="this.autoSave"
+            @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
         />
@@ -236,7 +236,7 @@ export default {
             :index-end="3"
             :liste-content="this.listContent"
             :url="this.url"
-            @auto-save="this.autoSave"
+            @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
         />
@@ -256,7 +256,7 @@ export default {
             :index-end="1"
             :liste-content="this.listContent"
             :url="this.url"
-            @auto-save="this.autoSave"
+            @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
         />
@@ -273,7 +273,7 @@ export default {
             :index-end="3"
             :liste-content="this.listContent"
             :url="this.url"
-            @auto-save="this.autoSave"
+            @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
         />

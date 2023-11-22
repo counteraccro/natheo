@@ -196,9 +196,24 @@ export default {
     },
 
     /**
-     * Force l'autoSave après la mise à jour d'un content
+     * Met à jour un contenu de type texte
      */
-    updateContent() {
+    updateContentText(id, value) {
+
+      // Passage par un tableau temporaire pour éviter les warnings de récursivités vueJS
+      // Problème de référence
+      let tmp = JSON.parse(JSON.stringify(this.page.pageContents));
+      tmp.forEach((pC) => {
+            if (pC.typeId === null) {
+              pC.pageContentTranslations.forEach((pCT) => {
+                if (pCT.id === id) {
+                  pCT.text = value;
+                }
+              })
+            }
+          }
+      );
+      this.page.pageContents = tmp;
       this.autoSave(this.page)
     },
 
@@ -411,7 +426,7 @@ export default {
               :list-content="this.page_datas.list_content"
               :translate="this.translate.page_content"
               :page="this.page"
-              @auto-save="this.autoSave"
+              @update-content-text="this.updateContentText"
               @remove-content="this.removeContent"
               @new-content="this.newContent"
           />
