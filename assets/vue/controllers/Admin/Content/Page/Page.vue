@@ -200,6 +200,12 @@ export default {
      */
     updateContentText(id, value) {
 
+      // render_block - curante lang
+      console.log(id);
+
+      return false;
+
+
       // Passage par un tableau temporaire pour éviter les warnings de récursivités vueJS
       // Problème de référence
       let tmp = JSON.parse(JSON.stringify(this.page.pageContents));

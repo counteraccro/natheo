@@ -173,7 +173,7 @@ export default {
               <div :set="this.isEmptyBlock = true"></div>
               <div class="block-page-content">
                 <markdown-editor :key="pCT.id"
-                    :me-id="pCT.id"
+                    :me-id="pageContent.renderBlock + '-' + pCT.locale"
                     :me-value="pCT.text"
                     :me-rows="14"
                     :me-translate="this.translate.markdown"
