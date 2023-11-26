@@ -2,7 +2,7 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.4
+ * @version 1.5
  * Editeur Markdown
  */
 
@@ -18,7 +18,7 @@ export default {
     MediaModalMarkdown
   },
   props: {
-    meId: Number,
+    meId: String,
     meValue: String,
     meRows: Number,
     meTranslate: Object,

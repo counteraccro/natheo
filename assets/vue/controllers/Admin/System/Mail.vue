@@ -198,7 +198,7 @@ export default {
           </div>
 
           <markdown-editor :key="mail.key"
-              :me-id="mail.id"
+              :me-id="String(mail.id)"
               :me-value="mail.contentTrans"
               :me-rows="10"
               :me-translate="translateEditor"
