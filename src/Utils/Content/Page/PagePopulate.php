@@ -8,8 +8,11 @@
 namespace App\Utils\Content\Page;
 
 use App\Entity\Admin\Content\Page\Page;
+use App\Entity\Admin\Content\Page\PageContent;
+use App\Entity\Admin\Content\Page\PageContentTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Service\Admin\Content\Page\PageService;
+use JetBrains\PhpStorm\NoReturn;
 
 class PagePopulate
 {
@@ -19,7 +22,17 @@ class PagePopulate
      */
     const KEY_PAGE_TRANSLATION = 'pageTranslations';
 
+    /**
+     * Clé tags
+     * @var string
+     */
     const KEY_TAGS = 'tags';
+
+    /**
+     * Clé pageContents
+     * @var string
+     */
+    const KEY_PAGE_CONTENT = 'pageContents';
 
     /**
      * @var Page
@@ -56,6 +69,7 @@ class PagePopulate
     {
         $this->populatePage();
         $this->populatePageTranslation();
+        $this->populatePageContent();
         $this->populateTags();
         return $this;
     }
@@ -105,6 +119,50 @@ class PagePopulate
         }
     }
 
+    /**
+     * Reset les pageContent dans $page et ajoute à la place les pageContent présent dans
+     * $populate si la clé 'pageContents' est présente
+     * @return void
+     */
+    private function populatePageContent(): void
+    {
+        if (isset($this->populate[self::KEY_PAGE_CONTENT])) {
+
+            $this->page->getPageContents()->clear();
+
+            $nbContent = $this->getNbContentByRender($this->populate['render']);
+
+            for ($i = 1; $i <= $nbContent; $i++) {
+                foreach ($this->populate[self::KEY_PAGE_CONTENT] as $content) {
+                    if ($content['renderBlock'] === $i) {
+                        $pageContent = new PageContent();
+                        /** @var PageContent $pageContent */
+                        $pageContent = $this->mergeData($pageContent, $content,
+                            ['id', 'page', 'pageContentTranslations', 'typeId']);
+
+                        switch ($content['type']) {
+                            case PageConst::CONTENT_TYPE_TEXT:
+                                foreach ($content['pageContentTranslations'] as $pageContentT) {
+                                    $pageContentTranslation = new PageContentTranslation();
+                                    /** @var PageContentTranslation $pageContentTranslation */
+                                    $pageContentTranslation = $this->mergeData($pageContentTranslation, $pageContentT,
+                                        ['id', 'pageContent']);
+                                    $pageContentTranslation->setPageContent($pageContent);
+                                    $pageContent->addPageContentTranslation($pageContentTranslation);
+                                }
+                                break;
+                            default:
+                                $pageContent->setTypeId($content['type']);
+                                echo "Type " . $content['type'] . " non pris en charge pour le moment";
+                        }
+                        $pageContent->setPage($this->page);
+                        $this->page->addPageContent($pageContent);
+                    }
+                }
+            }
+        }
+    }
+
 
     /**
      * Retourne un objet Page
@@ -128,10 +186,26 @@ class PagePopulate
             if (in_array($key, $exclude)) {
                 continue;
             }
-
             $func = 'set' . ucfirst($key);
             $object->$func($value);
         }
         return $object;
+    }
+
+    /**
+     * Retourne le nombre de PageContent en fonction de render
+     * @param $render
+     * @return int
+     */
+    private function getNbContentByRender($render): int
+    {
+        return match ($render) {
+            PageConst::RENDER_1_BLOCK => 1,
+            PageConst::RENDER_2_BLOCK => 2,
+            PageConst::RENDER_3_BLOCK_BOTTOM, PageConst::RENDER_1_2_BLOCK,
+            PageConst::RENDER_2_1_BLOCK, PageConst::RENDER_3_BLOCK => 3,
+            PageConst::RENDER_2_2_BLOCK, PageConst::RENDER_2_BLOCK_BOTTOM => 4,
+            default => 0,
+        };
     }
 }
