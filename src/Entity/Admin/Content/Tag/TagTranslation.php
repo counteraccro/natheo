@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class TagTranslation
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
     #[ORM\Column]
     private ?int $id = null;
 

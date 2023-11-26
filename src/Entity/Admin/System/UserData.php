@@ -16,7 +16,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class UserData
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
     #[ORM\Column]
     private ?int $id = null;
 
