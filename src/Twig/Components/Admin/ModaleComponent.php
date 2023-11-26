@@ -11,5 +11,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 #[AsTwigComponent()]
 final class ModaleComponent
 {
+    public string $id = 'id-modal';
 
+    public string $bgColor = 'bg-secondary';
 }
