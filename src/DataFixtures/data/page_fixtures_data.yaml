@@ -57,8 +57,13 @@ pages:
             ## Autres informations\n\n
             Consulter notre site pour obtenir d'autres informations sur NatheoCMS"
       presentation_content_2:
-        renderBlock: 1
-        renderOrder: 2
+        renderBlock: 2
+        renderOrder: 1
+        type: 2
+        typeId: 1
+      presentation_content_3:
+        renderBlock: 3
+        renderOrder: 1
         type: 1
         pageContentTranslation:
           fr:
@@ -76,11 +81,7 @@ pages:
             text: "# [ES]Pour les développeurs
             \n\n
             Vous souhaitez contribuer au développement du CMS ou tout simplement le modifier pour l'adapter à vos besoins, consulter [la documentation](https://counteraccro.github.io/natheo.doc/) technique."
-      presentation_content_3:
-        renderBlock: 1
-        renderOrder: 3
-        type: 2
-        typeId: 1
+
     pageStatistique:
       PAGE_NB_VISITEUR:
         key: PAGE_NB_VISITEUR
