@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Ignore;
 class Notification
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
     #[ORM\Column]
     private ?int $id = null;
 
