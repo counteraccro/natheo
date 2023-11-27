@@ -10,6 +10,7 @@ import {Toast, Tab} from "bootstrap";
 import AutoComplete from "../../../../Components/Global/AutoComplete.vue";
 import {emitter} from "../../../../../utils/useEvent";
 import PageContent from "../../../../Components/Page/PageContent.vue";
+import {toInteger} from "lodash-es";
 
 export default {
   name: 'Page',
@@ -200,11 +201,8 @@ export default {
      */
     updateContentText(id, value) {
 
-      // render_block - curante lang
-      console.log(id);
-
-      return false;
-
+      // On utilise renderBlock + langue pour identifiant le bon pageContentTranslation
+      let tmpId = id.split('-');
 
       // Passage par un tableau temporaire pour éviter les warnings de récursivités vueJS
       // Problème de référence
@@ -212,7 +210,7 @@ export default {
       tmp.forEach((pC) => {
             if (pC.typeId === null) {
               pC.pageContentTranslations.forEach((pCT) => {
-                if (pCT.id === id) {
+                if (pC.renderBlock === toInteger(tmpId[0]) && pCT.locale === tmpId[1]) {
                   pCT.text = value;
                 }
               })
