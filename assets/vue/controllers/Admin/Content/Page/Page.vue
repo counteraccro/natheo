@@ -237,9 +237,9 @@ export default {
         // Manipulation manuelle pour éviter les warning récursif
         let pCtmp = this.page.pageContents;
         let newPcTmp = [];
-        newPcTmp[(renderBlockId - 1)] = response.data.pageContent;
+        newPcTmp.push(response.data.pageContent);
         pCtmp.forEach(function (value) {
-          newPcTmp[(value.renderBlock - 1)] = {...value}
+          newPcTmp.push({...value});
         })
         this.page.pageContents = newPcTmp;
 
