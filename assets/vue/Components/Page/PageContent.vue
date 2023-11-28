@@ -129,7 +129,7 @@ export default {
 
   <div v-if="this.inArray(this.renderColumn, this.page.render)">
     <div class="row">
-      <div v-for="n in this.getNbIteration()" :class="'col-' + (12/this.getNbIteration())">
+      <div v-for="n in this.getNbIteration()" :class="'mb-4 col-' + (12/this.getNbIteration())">
         <page-content-block
             :translate="this.translate.page_content_block"
             :locale="this.locale"
@@ -150,7 +150,7 @@ export default {
 
   <div v-if="this.inArray(this.renderRow, this.page.render)">
     <div class="row">
-      <div v-for="n in this.getNbIteration()" class="col-12">
+      <div v-for="n in this.getNbIteration()" class="mb-4 col-12">
         <page-content-block
             :translate="this.translate.page_content_block"
             :locale="this.locale"
