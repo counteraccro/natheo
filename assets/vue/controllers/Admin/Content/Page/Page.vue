@@ -228,6 +228,7 @@ export default {
      * @param renderBlockId
      */
     newContent(type, type_id, renderBlockId) {
+
       axios.post(this.urls.new_content, {
         'type': type,
         'type_id': type_id,
@@ -237,10 +238,10 @@ export default {
         // Manipulation manuelle pour éviter les warning récursif
         let pCtmp = this.page.pageContents;
         let newPcTmp = [];
-        newPcTmp.push(response.data.pageContent);
         pCtmp.forEach(function (value) {
           newPcTmp.push({...value});
         })
+        newPcTmp.splice((renderBlockId-1), 0, response.data.pageContent);
         this.page.pageContents = newPcTmp;
 
         this.toasts.contentAdd.msg = this.translate.msg_add_content_success;
