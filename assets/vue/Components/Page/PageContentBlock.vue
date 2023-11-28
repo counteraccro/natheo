@@ -20,6 +20,7 @@ export default {
     renderBlockId: Number,
     indexStart: Number,
     indexEnd: Number,
+    indexMax: Number,
     listeContent: Object,
     url: String,
   },
@@ -136,28 +137,6 @@ export default {
     hideModal(modale) {
       modale.hide();
     },
-
-    /**
-     * Évènement click sur le bouton
-     */
-    onClick() {
-      //this.$emit('select-value', this.value);
-    },
-
-    /**
-     * Appel ajax pour construire le résultat d'auto-completion
-     */
-    search() {
-      /*axios.post(this.url, {
-        'locale': this.locale
-      }).then((response) => {
-        this.results = response.data.result
-      }).catch((error) => {
-        console.log(error);
-      }).finally(() => {
-      });*/
-    }
-
   }
 }
 
@@ -186,15 +165,37 @@ export default {
                 </markdown-editor>
 
                 <div class="block-btn mt-4">
-                  <div class="btn btn-secondary me-2">
+
+                  Index {{ index }} - IndexMax {{ this.indexMax }} <br /><br />
+                  <!-- <div class="btn btn-secondary me-2">
                     <i class="bi bi-arrows-move"></i>
                     {{ this.translate.btn_change_content }}
+                  </div>-->
+
+                  <div v-if="this.indexStart !== 0 && index !== 0" class="btn btn-sm btn-secondary me-2">
+                    <i class="bi bi-arrow-right"></i> la
                   </div>
-                  <div class="btn btn-secondary me-2">
+
+                  <div v-if="index === this.indexMax && this.indexMax !== 0" class="btn btn-sm btn-secondary me-2">
+                    <i class="bi bi-arrow-left"></i>
+                  </div>
+
+                  <!--<div class="d-inline-flex">
+                    <div class="btn btn-sm btn-secondary me-2">
+                      <i class="bi bi-arrow-left"></i>
+                    </div>
+                    <div class="btn btn-sm btn-secondary me-2">
+                      <i class="bi bi-arrow-right"></i>
+                    </div>
+                  </div> -->
+
+
+
+                  <!--<div class="btn btn-secondary me-2">
                     <i class="bi bi-arrow-left-right"></i>
                     {{ this.translate.btn_move_content }}
-                  </div>
-                  <div class="btn btn-danger" @click="this.removeContent(pageContent.id, false)">
+                  </div>-->
+                  <div class="btn btn-sm btn-danger" @click="this.removeContent(pageContent.id, false)">
                     <i class="bi bi-x-circle"></i>
                     {{ this.translate.btn_delete_content }}
                   </div>
