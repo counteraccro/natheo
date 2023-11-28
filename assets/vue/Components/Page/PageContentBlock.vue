@@ -166,35 +166,30 @@ export default {
 
                 <div class="block-btn mt-4">
 
-                  Index {{ index }} - IndexMax {{ this.indexMax }} <br /><br />
-                  <!-- <div class="btn btn-secondary me-2">
-                    <i class="bi bi-arrows-move"></i>
-                    {{ this.translate.btn_change_content }}
-                  </div>-->
-
-                  <div v-if="this.indexStart !== 0 && index !== 0" class="btn btn-sm btn-secondary me-2">
-                    <i class="bi bi-arrow-right"></i> la
-                  </div>
-
-                  <div v-if="index === this.indexMax && this.indexMax !== 0" class="btn btn-sm btn-secondary me-2">
-                    <i class="bi bi-arrow-left"></i>
-                  </div>
-
-                  <!--<div class="d-inline-flex">
-                    <div class="btn btn-sm btn-secondary me-2">
-                      <i class="bi bi-arrow-left"></i>
+                  <div class="float-start">
+                    <div v-if="this.indexMax !== 0 && index === 0">
+                      <div class="btn btn-sm btn-secondary me-2">
+                        {{ this.translate.btn_move_content }}
+                        <i class="bi bi-arrow-right"></i>
+                      </div>
                     </div>
-                    <div class="btn btn-sm btn-secondary me-2">
-                      <i class="bi bi-arrow-right"></i>
+                    <div v-else-if="index === this.indexMax && this.indexMax !== 0">
+                      <div class="btn btn-sm btn-secondary me-2">
+                        <i class="bi bi-arrow-left"></i>
+                        {{ this.translate.btn_move_content }}
+                      </div>
                     </div>
-                  </div> -->
-
-
-
-                  <!--<div class="btn btn-secondary me-2">
-                    <i class="bi bi-arrow-left-right"></i>
-                    {{ this.translate.btn_move_content }}
-                  </div>-->
+                    <div v-else>
+                      <div class="btn btn-sm btn-secondary me-2">
+                        <i class="bi bi-arrow-left"></i>
+                        {{ this.translate.btn_move_content }}
+                      </div>
+                      <div class="btn btn-sm btn-secondary me-2">
+                        {{ this.translate.btn_move_content }}
+                        <i class="bi bi-arrow-right"></i>
+                      </div>
+                    </div>
+                  </div>
                   <div class="btn btn-sm btn-danger" @click="this.removeContent(pageContent.id, false)">
                     <i class="bi bi-x-circle"></i>
                     {{ this.translate.btn_delete_content }}
