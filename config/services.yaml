@@ -7,7 +7,7 @@ parameters:
     app.supported_locales: 'fr|en|es'
     app.default_locale: 'fr'
     app.version: 'dev-12-2023'
-    app.current_branche: 'update-to-sf-7'
+    app.current_branche: 'master'
 
 services:
     # default configuration for services in *this* file
