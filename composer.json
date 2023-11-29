@@ -44,7 +44,7 @@
         "symfony/ux-vue": "^2.7",
         "symfony/validator": "6.4.*",
         "symfony/web-link": "6.4.*",
-        "symfony/webpack-encore-bundle": "^1.16",
+        "symfony/webpack-encore-bundle": "^2.1",
         "symfony/yaml": "6.4.*",
         "twig/cssinliner-extra": "^3.5",
         "twig/extra-bundle": "^2.12|^3.0",
