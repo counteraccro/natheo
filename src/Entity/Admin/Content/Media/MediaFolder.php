@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MediaFolderRepository::class)]
 #[ORM\Table(name: 'natheo.media_folder')]
+#[ORM\HasLifecycleCallbacks]
 class MediaFolder
 {
     #[ORM\Id]
@@ -48,6 +49,19 @@ class MediaFolder
     {
         $this->children = new ArrayCollection();
         $this->medias = new ArrayCollection();
+    }
+
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        $this->createdAt = new \DateTime();
+        $this->updateAt = new \DateTime();
+    }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->updateAt = new \DateTime();
     }
 
     public function getId(): ?int

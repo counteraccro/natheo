@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name : "natheo.mail")]
 #[ORM\Entity(repositoryClass: MailRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Mail
 {
     #[ORM\Id]
@@ -42,6 +43,19 @@ class Mail
     public function __construct()
     {
         $this->mailTranslations = new ArrayCollection();
+    }
+
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        $this->createdAt = new \DateTime();
+        $this->updateAt = new \DateTime();
+    }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->updateAt = new \DateTime();
     }
 
     public function getId(): ?int

@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name : "natheo.option_system")]
 #[ORM\Entity(repositoryClass: OptionSystemRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class OptionSystem
 {
     #[ORM\Id]
@@ -30,6 +31,19 @@ class OptionSystem
 
     #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updateAt = null;
+
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        $this->createdAt = new \DateTime();
+        $this->updateAt = new \DateTime();
+    }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->updateAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {

@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserDataRepository::class)]
 #[ORM\Table(name: 'natheo.user_data')]
+#[ORM\HasLifecycleCallbacks]
 class UserData
 {
     #[ORM\Id]
@@ -34,6 +35,19 @@ class UserData
 
     #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updateAt = null;
+
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        $this->createdAt = new \DateTime();
+        $this->updateAt = new \DateTime();
+    }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->updateAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {

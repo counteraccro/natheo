@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
 #[ORM\Table(name: 'natheo.notification')]
+#[ORM\HasLifecycleCallbacks]
 class Notification
 {
     #[ORM\Id]
@@ -38,6 +39,12 @@ class Notification
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $parameters = null;
+
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {
