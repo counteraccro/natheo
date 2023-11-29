@@ -5,10 +5,10 @@ namespace App\Entity\Admin\Content\Page;
 use App\Repository\Admin\Content\Page\PageTranslationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: PageTranslationRepository::class)]
 #[ORM\Table(name: 'natheo.page_translation')]
+#[ORM\HasLifecycleCallbacks]
 class PageTranslation
 {
     #[ORM\Id]
@@ -29,13 +29,24 @@ class PageTranslation
     #[ORM\Column(length: 255)]
     private ?string $url = null;
 
-    #[Gedmo\Timestampable(on: "create")]
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
-    #[Gedmo\Timestampable(on: "update")]
     #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updateAt = null;
+
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        $this->createdAt = new \DateTime();
+        $this->updateAt = new \DateTime();
+    }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->updateAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {
