@@ -7,11 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 
 #[ORM\Table(name : "natheo.mail")]
 #[ORM\Entity(repositoryClass: MailRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Mail
 {
     #[ORM\Id]
@@ -31,11 +31,9 @@ class Mail
     #[ORM\Column(type: Types::TEXT)]
     private ?string $keyWords = null;
 
-    #[Gedmo\Timestampable(on : "create")]
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
-    #[Gedmo\Timestampable(on : "update")]
     #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updateAt = null;
 
@@ -45,6 +43,19 @@ class Mail
     public function __construct()
     {
         $this->mailTranslations = new ArrayCollection();
+    }
+
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        $this->createdAt = new \DateTime();
+        $this->updateAt = new \DateTime();
+    }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->updateAt = new \DateTime();
     }
 
     public function getId(): ?int

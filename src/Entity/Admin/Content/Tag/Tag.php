@@ -8,10 +8,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: TagRepository::class)]
 #[ORM\Table(name: 'natheo.tag')]
+#[ORM\HasLifecycleCallbacks]
 class Tag
 {
     #[ORM\Id]
@@ -25,11 +25,9 @@ class Tag
     #[ORM\Column]
     private ?bool $disabled = false;
 
-    #[Gedmo\Timestampable(on: "create")]
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
-    #[Gedmo\Timestampable(on: "update")]
     #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updateAt = null;
 
@@ -43,6 +41,19 @@ class Tag
     {
         $this->tagTranslations = new ArrayCollection();
         $this->pages = new ArrayCollection();
+    }
+
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        $this->createdAt = new \DateTime();
+        $this->updateAt = new \DateTime();
+    }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->updateAt = new \DateTime();
     }
 
     public function getId(): ?int
