@@ -5,7 +5,6 @@ namespace App\Entity\Admin\System;
 use App\Repository\Admin\System\OptionUserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: OptionUserRepository::class)]
 #[ORM\Table(name: 'natheo.option_user')]
@@ -26,11 +25,9 @@ class OptionUser
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $value = null;
 
-    #[Gedmo\Timestampable(on : "create")]
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
-    #[Gedmo\Timestampable(on : "update")]
     #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updateAt = null;
 

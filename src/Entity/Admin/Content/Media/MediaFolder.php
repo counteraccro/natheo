@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: MediaFolderRepository::class)]
 #[ORM\Table(name: 'natheo.media_folder')]
@@ -37,11 +36,9 @@ class MediaFolder
     private ?bool $trash = false;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
-    #[Gedmo\Timestampable(on: "create")]
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Gedmo\Timestampable(on: "update")]
     private ?\DateTimeInterface $updateAt = null;
 
     #[ORM\OneToMany(mappedBy: 'mediaFolder', targetEntity: Media::class, cascade: ['remove'])]

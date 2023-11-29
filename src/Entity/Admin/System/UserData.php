@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Entité UserData, données associées au user
  */
 namespace App\Entity\Admin\System;
@@ -9,7 +9,6 @@ namespace App\Entity\Admin\System;
 use App\Repository\Admin\System\UserDataRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: UserDataRepository::class)]
 #[ORM\Table(name: 'natheo.user_data')]
@@ -30,11 +29,9 @@ class UserData
     #[ORM\Column(type: Types::TEXT)]
     private ?string $value = null;
 
-    #[Gedmo\Timestampable(on: "create")]
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
-    #[Gedmo\Timestampable(on: "update")]
     #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updateAt = null;
 
