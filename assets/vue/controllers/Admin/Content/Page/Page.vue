@@ -246,20 +246,13 @@ export default {
       // Problème de référence
       let tmp = JSON.parse(JSON.stringify(this.page.pageContents));
       let tmp2 = [...tmp];
-
-      tmp.forEach((pC, index, object) => {
+      tmp.forEach((pC) => {
             if (pC.renderBlock === renderBlockId) {
-              console.log('renderBlockIdReplace + index ' + index);
-              console.log(pC);
               pCMove = pC;
               tmp2 = tmp2.filter(item => item.renderBlock !== renderBlockId);
-              //tmp2.splice(index, 0);
             }
 
             if (pC.renderBlock === renderBlockIdReplace) {
-              console.log('renderBlockIdReplace + index ' + index);
-              console.log(pC);
-
               pCForceMove = pC;
               tmp2 = tmp2.filter(item => item.renderBlock !== renderBlockIdReplace);
             }
@@ -268,8 +261,7 @@ export default {
 
       pCMove.renderBlock = renderBlockIdReplace;
       tmp2.push(pCMove);
-      if(pCForceMove !== null)
-      {
+      if (pCForceMove !== null) {
         pCForceMove.renderBlock = renderBlockId;
         tmp2.push(pCForceMove);
       }
@@ -300,7 +292,9 @@ export default {
         pCtmp.forEach(function (value) {
           newPcTmp.push({...value});
         })
-        newPcTmp.splice((renderBlockId - 1), 0, response.data.pageContent);
+
+        newPcTmp.push(response.data.pageContent);
+        newPcTmp.sort((a, b) => (a.renderBlock > b.renderBlock ? 1 : -1));
         this.page.pageContents = newPcTmp;
 
         this.toasts.contentAdd.msg = this.translate.msg_add_content_success;
