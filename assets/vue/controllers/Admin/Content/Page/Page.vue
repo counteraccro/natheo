@@ -190,7 +190,7 @@ export default {
      * @param id
      */
     removeContent(id) {
-      this.page.pageContents = this.page.pageContents.filter((content) => content.id !== id);
+      this.page.pageContents = this.page.pageContents.filter((content) => content.renderBlock !== id);
       this.toasts.contentRemove.msg = this.translate.msg_remove_content_success;
       this.toasts.contentRemove.toast.show();
       this.autoSave(this.page);
