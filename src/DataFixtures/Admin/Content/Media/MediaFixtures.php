@@ -9,6 +9,8 @@ namespace App\DataFixtures\Admin\Content\Media;
 
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\Content\Media\Media;
+use App\Entity\Admin\Content\Media\MediaFolder;
+use App\Entity\Admin\System\User;
 use App\Service\Admin\Content\Media\MediaService;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -43,11 +45,11 @@ class MediaFixtures extends AppFixtures implements FixtureGroupInterface, Ordere
                     case 'folder' :
                         if(!empty($value))
                         {
-                            $media->setMediaFolder($this->getReference($value));
+                            $media->setMediaFolder($this->getReference($value, MediaFolder::class));
                         }
                         break;
                     case 'user' :
-                        $media->setUser($this->getReference($value));
+                        $media->setUser($this->getReference($value, User::class));
                         break;
                     case 'description' :
                         $media->setDescription($value);

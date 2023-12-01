@@ -80,7 +80,7 @@ class MediaFolderFixtures extends AppFixtures implements FixtureGroupInterface, 
     private function setParent(mixed $ref, MediaFolder $mediaFolder): void
     {
         if (!isEmpty($ref) || $ref != null) {
-            $mediaFolder->setParent($this->getReference($ref));
+            $mediaFolder->setParent($this->getReference($ref, MediaFolder::class));
         }
     }
 
