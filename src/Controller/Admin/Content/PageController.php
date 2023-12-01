@@ -13,6 +13,7 @@ use App\Entity\Admin\System\User;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Global\DateService;
 use App\Utils\Breadcrumb;
+use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageFactory;
 use App\Utils\Content\Page\PageHistory;
 use App\Utils\Content\Page\PagePopulate;
@@ -192,6 +193,8 @@ class PageController extends AppAdminController
         if ($data['id'] === null) {
             $pageFactory = new PageFactory($locales['locales']);
             $page = $pageFactory->create()->getPage();
+            $page->setRender(PageConst::RENDER_1_BLOCK);
+            $page->getPageContents()->clear();
         } else {
             $page = $pageService->findOneById(Page::class, $data['id']);
         }
