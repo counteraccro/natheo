@@ -180,10 +180,10 @@ export default {
      * Ajoute un objet content ou le met à jour
      * @param content
      */
-    addContent(content) {
+    /*addContent(content) {
       console.log(id);
       console.log(content);
-    },
+    },*/
 
     /**
      * Supprime un page content en fonction de son id
@@ -200,6 +200,8 @@ export default {
      * Met à jour un contenu de type texte
      */
     updateContentText(id, value) {
+
+      // TODO provoque par moment un warning Maximum recursive updates, peut être lié à l'affichage (pageContentBlock)
 
       // On utilise renderBlock + langue pour identifiant le bon pageContentTranslation
       let tmpId = id.split('-');
@@ -225,13 +227,55 @@ export default {
      * Change le renderBlock en plus ou moins
      */
     moveContent(signe, renderBlockId) {
-      console.log(signe);
-      console.log(renderBlockId);
+
+      // TODO provoque par moment un warning Maximum recursive updates, peut être lié à l'affichage (pageContentBlock)
+
+      let renderBlockIdReplace = 0;
+      if (signe === "+") {
+        renderBlockIdReplace = renderBlockId + 1;
+      } else if (signe === "-") {
+        renderBlockIdReplace = renderBlockId - 1;
+      } else {
+        return false;
+      }
+
+      let pCMove = null;
+      let pCForceMove = null;
 
       // Passage par un tableau temporaire pour éviter les warnings de récursivités vueJS
       // Problème de référence
       let tmp = JSON.parse(JSON.stringify(this.page.pageContents));
-      console.log(tmp);
+      let tmp2 = [...tmp];
+
+      tmp.forEach((pC, index, object) => {
+            if (pC.renderBlock === renderBlockId) {
+              console.log('renderBlockIdReplace + index ' + index);
+              console.log(pC);
+              pCMove = pC;
+              tmp2 = tmp2.filter(item => item.renderBlock !== renderBlockId);
+              //tmp2.splice(index, 0);
+            }
+
+            if (pC.renderBlock === renderBlockIdReplace) {
+              console.log('renderBlockIdReplace + index ' + index);
+              console.log(pC);
+
+              pCForceMove = pC;
+              tmp2 = tmp2.filter(item => item.renderBlock !== renderBlockIdReplace);
+            }
+          }
+      );
+
+      pCMove.renderBlock = renderBlockIdReplace;
+      tmp2.push(pCMove);
+      if(pCForceMove !== null)
+      {
+        pCForceMove.renderBlock = renderBlockId;
+        tmp2.push(pCForceMove);
+      }
+      tmp2.sort((a, b) => (a.renderBlock > b.renderBlock ? 1 : -1));
+      this.page.pageContents = tmp2;
+      this.autoSave(this.page)
     },
 
     /**
@@ -241,6 +285,8 @@ export default {
      * @param renderBlockId
      */
     newContent(type, type_id, renderBlockId) {
+
+      // TODO provoque par moment un warning Maximum recursive updates, peut être lié à l'affichage (pageContentBlock)
 
       axios.post(this.urls.new_content, {
         'type': type,
@@ -254,7 +300,7 @@ export default {
         pCtmp.forEach(function (value) {
           newPcTmp.push({...value});
         })
-        newPcTmp.splice((renderBlockId-1), 0, response.data.pageContent);
+        newPcTmp.splice((renderBlockId - 1), 0, response.data.pageContent);
         this.page.pageContents = newPcTmp;
 
         this.toasts.contentAdd.msg = this.translate.msg_add_content_success;

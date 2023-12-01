@@ -210,6 +210,37 @@ export default {
         <div v-else-if="pageContent.renderBlock === this.renderBlockId" :set="this.isEmptyBlock = true">
           <div class="block-page-content">
             block type {{ pageContent.typeId }}
+
+            <div class="block-btn mt-4">
+              <div class="float-start">
+                <div v-if="this.renderBlockId === 1">
+                  <div v-if="this.indexMax !== 1" class="btn btn-sm btn-secondary me-2" @click="this.moveContent('+', this.renderBlockId)">
+                    {{ this.translate.btn_move_content }}
+                    <i class="bi bi-arrow-right"></i>
+                  </div>
+                </div>
+                <div v-else-if="this.renderBlockId === this.indexMax">
+                  <div class="btn btn-sm btn-secondary me-2" @click="this.moveContent('-', this.renderBlockId)">
+                    <i class="bi bi-arrow-left"></i>
+                    {{ this.translate.btn_move_content }}
+                  </div>
+                </div>
+                <div v-else>
+                  <div class="btn btn-sm btn-secondary me-2" @click="this.moveContent('-', this.renderBlockId)">
+                    <i class="bi bi-arrow-left"></i>
+                    {{ this.translate.btn_move_content }}
+                  </div>
+                  <div class="btn btn-sm btn-secondary me-2" @click="this.moveContent('+', this.renderBlockId)">
+                    {{ this.translate.btn_move_content }}
+                    <i class="bi bi-arrow-right"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="btn btn-sm btn-danger" @click="this.removeContent(this.renderBlockId, false)">
+                <i class="bi bi-x-circle"></i>
+                {{ this.translate.btn_delete_content }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
