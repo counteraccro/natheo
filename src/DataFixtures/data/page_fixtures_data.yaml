@@ -1,7 +1,7 @@
 pages:
   Page_presentation:
     user: Aymeric
-    render: 1
+    render: 6
     status: 1
     tags:
       - Tag_natheo
