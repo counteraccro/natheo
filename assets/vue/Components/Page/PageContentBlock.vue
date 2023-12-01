@@ -12,7 +12,7 @@ import axios from "axios";
 export default {
   name: 'PageContentBlock',
   components: {MarkdownEditor},
-  emits: ['remove-content', 'new-content', 'update-content-text'],
+  emits: ['remove-content', 'new-content', 'update-content-text', 'move-content'],
   props: {
     locale: String,
     translate: Object,
@@ -85,6 +85,13 @@ export default {
       this.$emit('new-content', this.idSelectContent, this.idSelectTypeContent, this.renderBlockId);
       this.hideModal(this.modalNew);
       this.resetDataNewContent();
+    },
+
+    /**
+     * Change le renderBlock en plus ou moins
+     */
+    moveContent(signe, renderBlockId) {
+      this.$emit('move-content', signe, renderBlockId);
     },
 
     /**
@@ -165,32 +172,31 @@ export default {
                 </markdown-editor>
 
                 <div class="block-btn mt-4">
-
                   <div class="float-start">
-                    <div v-if="this.indexMax !== 0 && index === 0">
-                      <div class="btn btn-sm btn-secondary me-2">
+                    <div v-if="this.renderBlockId === 1">
+                      <div v-if="this.indexMax !== 1" class="btn btn-sm btn-secondary me-2" @click="this.moveContent('+', this.renderBlockId)">
                         {{ this.translate.btn_move_content }}
                         <i class="bi bi-arrow-right"></i>
                       </div>
                     </div>
-                    <div v-else-if="index === this.indexMax && this.indexMax !== 0">
-                      <div class="btn btn-sm btn-secondary me-2">
+                    <div v-else-if="this.renderBlockId === this.indexMax">
+                      <div class="btn btn-sm btn-secondary me-2" @click="this.moveContent('-', this.renderBlockId)">
                         <i class="bi bi-arrow-left"></i>
                         {{ this.translate.btn_move_content }}
                       </div>
                     </div>
                     <div v-else>
-                      <div class="btn btn-sm btn-secondary me-2">
+                      <div class="btn btn-sm btn-secondary me-2" @click="this.moveContent('-', this.renderBlockId)">
                         <i class="bi bi-arrow-left"></i>
                         {{ this.translate.btn_move_content }}
                       </div>
-                      <div class="btn btn-sm btn-secondary me-2">
+                      <div class="btn btn-sm btn-secondary me-2" @click="this.moveContent('+', this.renderBlockId)">
                         {{ this.translate.btn_move_content }}
                         <i class="bi bi-arrow-right"></i>
                       </div>
                     </div>
                   </div>
-                  <div class="btn btn-sm btn-danger" @click="this.removeContent(pageContent.id, false)">
+                  <div class="btn btn-sm btn-danger" @click="this.removeContent(this.renderBlockId, false)">
                     <i class="bi bi-x-circle"></i>
                     {{ this.translate.btn_delete_content }}
                   </div>
