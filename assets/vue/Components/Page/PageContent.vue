@@ -20,7 +20,7 @@ export default {
     page: Object,
     listContent: Object
   },
-  emits: ['remove-content', 'new-content', 'update-content-text'],
+  emits: ['remove-content', 'new-content', 'update-content-text', 'move-content'],
   data() {
     return {
       renderColumn: [1, 2, 3],
@@ -58,6 +58,27 @@ export default {
       }
     },
 
+    getNbBlock() {
+      switch (this.page.render) {
+        case 1:
+          return 1;
+        case 2:
+          return 2;
+        case 3:
+          return 3;
+        case 4:
+          return 2;
+        case 5:
+          return 3;
+        case 6:
+          return 3;
+        case 7:
+          return 3;
+        case 8:
+          return 4;
+      }
+    },
+
     /**
      * La valeur existe dans la liste
      * @param list
@@ -91,6 +112,13 @@ export default {
     removeContent(id)
     {
       this.$emit('remove-content', id);
+    },
+
+    /**
+     * Change le renderBlock en plus ou moins
+     */
+    moveContent(signe, renderBlockId) {
+      this.$emit('move-content', signe, renderBlockId);
     },
 
     /**
@@ -137,12 +165,13 @@ export default {
             :render-block-id="n"
             :index-start="0"
             :index-end="2"
-            :index-max="(this.getNbIteration()-1)"
+            :index-max="this.getNbBlock()"
             :liste-content="this.listContent"
             :url="this.url"
             @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
+            @move-content="this.moveContent"
 
         />
       </div>
@@ -159,12 +188,13 @@ export default {
             :render-block-id="n"
             :index-start="0"
             :index-end="2"
-            :index-max="(this.getNbIteration()-1)"
+            :index-max="this.getNbBlock()"
             :liste-content="this.listContent"
             :url="this.url"
             @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
+            @move-content="this.moveContent"
         />
       </div>
     </div>
@@ -180,12 +210,13 @@ export default {
             :render-block-id="1"
             :index-start="0"
             :index-end="0"
-            :index-max="2"
+            :index-max="this.getNbBlock()"
             :liste-content="this.listContent"
             :url="this.url"
             @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
+            @move-content="this.moveContent"
         />
       </div>
     </div>
@@ -199,12 +230,13 @@ export default {
             :render-block-id="n+1"
             :index-start="1"
             :index-end="2"
-            :index-max="2"
+            :index-max="this.getNbBlock()"
             :liste-content="this.listContent"
             :url="this.url"
             @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
+            @move-content="this.moveContent"
         />
       </div>
     </div>
@@ -220,12 +252,13 @@ export default {
             :render-block-id="n"
             :index-start="0"
             :index-end="1"
-            :index-max="2"
+            :index-max="this.getNbBlock()"
             :liste-content="this.listContent"
             :url="this.url"
             @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
+            @move-content="this.moveContent"
         />
       </div>
     </div>
@@ -239,12 +272,13 @@ export default {
             :render-block-id="3"
             :index-start="2"
             :index-end="2"
-            :index-max="2"
+            :index-max="this.getNbBlock()"
             :liste-content="this.listContent"
             :url="this.url"
             @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
+            @move-content="this.moveContent"
         />
       </div>
     </div>
@@ -260,11 +294,13 @@ export default {
             :render-block-id="n"
             :index-start="0"
             :index-end="1"
+            :index-max="this.getNbBlock()"
             :liste-content="this.listContent"
             :url="this.url"
             @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
+            @move-content="this.moveContent"
         />
       </div>
     </div>
@@ -277,12 +313,13 @@ export default {
             :render-block-id="n+2"
             :index-start="2"
             :index-end="3"
-            :index-max="3"
+            :index-max="this.getNbBlock()"
             :liste-content="this.listContent"
             :url="this.url"
             @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
+            @move-content="this.moveContent"
         />
       </div>
     </div>

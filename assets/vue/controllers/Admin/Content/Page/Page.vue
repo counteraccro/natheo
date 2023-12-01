@@ -222,6 +222,19 @@ export default {
     },
 
     /**
+     * Change le renderBlock en plus ou moins
+     */
+    moveContent(signe, renderBlockId) {
+      console.log(signe);
+      console.log(renderBlockId);
+
+      // Passage par un tableau temporaire pour éviter les warnings de récursivités vueJS
+      // Problème de référence
+      let tmp = JSON.parse(JSON.stringify(this.page.pageContents));
+      console.log(tmp);
+    },
+
+    /**
      * Ajoute un nouveau contenu
      * @param type
      * @param type_id
@@ -350,8 +363,6 @@ export default {
      * @param tag
      */
     removeTag(tag) {
-      console.log(tag.id);
-
       for (let i = 0; i < this.page.tags.length; i++) {
         if (this.page.tags[i].id === tag.id) {
           let spliced = this.page.tags.splice(i, 1);
@@ -434,6 +445,7 @@ export default {
               @update-content-text="this.updateContentText"
               @remove-content="this.removeContent"
               @new-content="this.newContent"
+              @move-content="this.moveContent"
           />
         </div>
 
