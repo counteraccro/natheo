@@ -194,6 +194,7 @@ class PageController extends AppAdminController
             $pageFactory = new PageFactory($locales['locales']);
             $page = $pageFactory->create()->getPage();
             $page->setRender(PageConst::RENDER_1_BLOCK);
+            $page->setStatus(PageConst::STATUS_DRAFT);
             $page->getPageContents()->clear();
         } else {
             $page = $pageService->findOneById(Page::class, $data['id']);
