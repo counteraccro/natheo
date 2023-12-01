@@ -8,6 +8,8 @@ use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\Content\Page\PageContentTranslation;
 use App\Entity\Admin\Content\Page\PageStatistique;
 use App\Entity\Admin\Content\Page\PageTranslation;
+use App\Entity\Admin\Content\Tag\Tag;
+use App\Entity\Admin\System\User;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -27,7 +29,7 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
             foreach ($data as $key => $value) {
                 switch ($key) {
                     case "user" :
-                        $page->setUser($this->getReference($value));
+                        $page->setUser($this->getReference($value, User::class));
                         break;
                     case "tags" :
                         $this->addTag($page, $value);
@@ -81,7 +83,7 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     private function addTag(Page $page, array $tabTags): void
     {
         foreach ($tabTags as $tag) {
-            $page->addTag($this->getReference($tag));
+            $page->addTag($this->getReference($tag, Tag::class));
         }
     }
 
