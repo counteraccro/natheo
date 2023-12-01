@@ -309,6 +309,7 @@ class PageController extends AppAdminController
         $pageFactory = new PageFactory($pageService->getLocales()['locales']);
 
         $page = $pageFactory->create()->getPage();
+        $page->setUser($this->getUser());
         if(isset($data['page']['id']) && $data['page']['id'] > 0)
         {
             $page = $pageService->findOneById(Page::class, $data['page']['id']);
