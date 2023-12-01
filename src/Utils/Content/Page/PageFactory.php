@@ -12,7 +12,6 @@ use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\Content\Page\PageContentTranslation;
 use App\Entity\Admin\Content\Page\PageStatistique;
 use App\Entity\Admin\Content\Page\PageTranslation;
-use phpDocumentor\Reflection\Types\This;
 
 class PageFactory
 {
