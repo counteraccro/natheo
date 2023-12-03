@@ -13,6 +13,7 @@ use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\PersonalData;
 use App\Utils\Utils;
 use PhpCsFixer\Finder;
+use phpDocumentor\Reflection\Types\Void_;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
@@ -95,7 +96,7 @@ class PageHistory
     private function getPath(int $id = null): string
     {
         if ($id === null) {
-            $id = 0;
+            $id = 'user-' . $this->user->getId();
         }
         return $this->pathPageHistory . DIRECTORY_SEPARATOR . $this->fileName . $id . $this->fileExt;
     }
@@ -125,7 +126,7 @@ class PageHistory
      * @param int $id
      * @return array
      */
-    private function getContentFile(int $id): array
+    private function getContentFile(int $id = null): array
     {
         $path = $this->getPath($id);
         if (file_exists($path)) {
@@ -139,7 +140,7 @@ class PageHistory
      * @param int $id
      * @return array
      */
-    public function getHistory(int $id): array
+    public function getHistory(int $id = null): array
     {
         $datas = $this->getContentFile($id);
         $return = [];
@@ -156,7 +157,7 @@ class PageHistory
      * @param int $rowId
      * @return array
      */
-    public function getPageHistoryById(int $pageId, int $rowId) : array
+    public function getPageHistoryById(int $rowId, int $pageId = null) : array
     {
         $datas = $this->getContentFile($pageId);
         foreach ($datas as $key => $row) {
@@ -167,5 +168,31 @@ class PageHistory
             }
         }
         return [];
+    }
+
+    /**
+     * Convertie une pageHistory brouillon en pageHistory associé à une page
+     * @param $pageId
+     * @return void
+     */
+    public function renamePageHistorySave($pageId): void
+    {
+        $path = $this->getPath();
+        $newPath = $this->getPath($pageId);
+
+        // Si le fichier de pageHistory existe, on ne fait rien
+        if (file_exists($newPath)) {
+            return;
+        }
+
+        // Si le brouillon n'existe pas, on ne fait rien
+        if(!file_exists($path))
+        {
+            return;
+        }
+
+        $fileSystem = new Filesystem();
+        $fileSystem->rename($path, $newPath);
+        $fileSystem->remove($path);
     }
 }

@@ -318,6 +318,13 @@ export default {
       }).then((response) => {
         this.toasts.autoSave.msg = response.data.msg;
         this.toasts.autoSave.toast.show();
+
+        // Cas première page, on force la redirection pour passer en mode édition
+        if(response.data.redirect === true)
+        {
+          window.location.replace(response.data.url_redirect);
+        }
+
       }).catch((error) => {
         console.log(error);
       }).finally(() => {

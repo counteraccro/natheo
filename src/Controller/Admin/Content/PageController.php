@@ -207,7 +207,7 @@ class PageController extends AppAdminController
     }
 
     /**
-     * Sauvegarde à un instant T l'objet page dans un fichier plat
+     * Sauvegarde à un instant T l'objet page dans un fichier plat au format json
      * @param ContainerBagInterface $containerBag
      * @param Request $request
      * @return JsonResponse
@@ -251,9 +251,6 @@ class PageController extends AppAdminController
         $pageHistory = new PageHistory($containerBag, $user);
 
         $id = $data['id'];
-        if ($id === null) {
-            $id = 0;
-        }
         $history = $pageHistory->getHistory($id);
 
         foreach ($history as &$hist) {
@@ -288,10 +285,7 @@ class PageController extends AppAdminController
         $pageHistory = new PageHistory($containerBag, $user);
 
         $id = $data['id'];
-        if ($id === null) {
-            $id = 0;
-        }
-        $page = $pageHistory->getPageHistoryById($id, $data['row_id']);
+        $page = $pageHistory->getPageHistoryById($data['row_id'], $id);
 
         return $this->json([
             'page' => $page,
@@ -307,24 +301,38 @@ class PageController extends AppAdminController
      * @return JsonResponse
      */
     #[Route('/ajax/save', name: 'save')]
-    public function save(Request $request, PageService $pageService, TranslatorInterface $translator): JsonResponse
+    public function save(
+        Request $request,
+        PageService $pageService,
+        TranslatorInterface $translator,
+        ContainerBagInterface $containerBag
+    ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $pageFactory = new PageFactory($pageService->getLocales()['locales']);
 
         $page = $pageFactory->create()->getPage();
         $page->setUser($this->getUser());
+        $redirect = true;
         if(isset($data['page']['id']) && $data['page']['id'] > 0)
         {
             $page = $pageService->findOneById(Page::class, $data['page']['id']);
+            $redirect = false;
         }
 
         $pagePopulate = new PagePopulate($page, $data['page'], $pageService);
         $page = $pagePopulate->populate()->getPage();
         $pageService->save($page);
 
+        /** @var User $user */
+        $user = $this->getUser();
+        $pageHistory = new PageHistory($containerBag, $user);
+        $pageHistory->renamePageHistorySave($page->getId());
+
         return $this->json([
-            'msg' => $translator->trans('page.save.success', domain: 'page')
+            'msg' => $translator->trans('page.save.success', domain: 'page'),
+            'url_redirect' => $this->generateUrl('admin_page_update', ['id' => $page->getId()]),
+            'redirect' => $redirect
         ]);
     }
 
