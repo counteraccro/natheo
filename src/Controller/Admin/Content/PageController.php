@@ -21,6 +21,7 @@ use App\Utils\System\Options\OptionUserKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -107,12 +108,20 @@ class PageController extends AppAdminController
         Page                $page,
         PageService         $pageService,
         TranslatorInterface $translator,
-        Request             $request
+        Request             $request,
+        ContainerBagInterface $containerBag
     ): JsonResponse
     {
         $titre = $page->getPageTranslationByLocale($request->getLocale())->getTitre();
+        $id = $page->getId();
+        /** @var User $user */
+        $user = $this->getUser();
 
         $pageService->remove($page);
+
+        $pageHistory = new PageHistory($containerBag,$user);
+        $pageHistory->removePageHistory($id);
+
         return $this->json(['type' => 'success', 'msg' => $translator->trans(
             'page.remove.success',
             ['label' => $titre],

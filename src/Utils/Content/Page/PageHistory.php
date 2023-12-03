@@ -195,4 +195,20 @@ class PageHistory
         $fileSystem->rename($path, $newPath);
         $fileSystem->remove($path);
     }
+
+    /**
+     * Supprime une page history en fonction de son id
+     * @param $id
+     * @return void
+     */
+    public function removePageHistory($id = null): void
+    {
+        $path = $this->getPath($id);
+        if(!file_exists($path))
+        {
+            return;
+        }
+        $fileSystem = new Filesystem();
+        $fileSystem->remove($path);
+    }
 }
