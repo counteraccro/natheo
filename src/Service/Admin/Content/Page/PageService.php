@@ -56,7 +56,7 @@ class PageService extends AppAdminService
         ParameterBagInterface  $parameterBag,
         GridService            $gridService,
         OptionSystemService    $optionSystemService,
-        MarkdownEditorService $markdownEditorService
+        MarkdownEditorService  $markdownEditorService
     )
     {
         $this->gridService = $gridService;
@@ -270,7 +270,7 @@ class PageService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getDiffBetweenHistoryAndPage(Page $page) :array
+    public function getDiffBetweenHistoryAndPage(Page $page): array
     {
         $return = [
             'show_msg' => false,
@@ -282,19 +282,22 @@ class PageService extends AppAdminService
         $user = $this->security->getUser();
         $pageHistory = new PageHistory($this->containerBag, $user);
         $history = $pageHistory->getHistory($page->getId());
-        if(empty($history))
-        {
+        if (empty($history)) {
             return $return;
         }
 
-        if($history[0]['time'] > $page->getUpdateAt()->getTimestamp())
-        {
+        if ($page->getUpdateAt() === null || $history[0]['time'] > $page->getUpdateAt()->getTimestamp()) {
+
+            $msg =  $this->translator->trans('page.msg.history.reload', domain: 'page');
+            if($page->getUpdateAt() === null) {
+                $msg =  $this->translator->trans('page.msg.history.new.reload', domain: 'page');
+            }
 
             $return = [
-            'show_msg' => true,
-            'id' => $history[0]['id'],
-            'msg' => $this->translator->trans('page.msg.history.new', domain: 'page'),
-        ];
+                'show_msg' => true,
+                'id' => $history[0]['id'],
+                'msg' => $msg
+            ];
 
         }
 
@@ -325,7 +328,7 @@ class PageService extends AppAdminService
             'msg_titre_restore_history' => $this->translator->trans('page.msg.titre.restore.history', domain: 'page'),
             'msg_btn_restore_history' => $this->translator->trans('page.msg.btn.restore.history', domain: 'page'),
             'msg_btn_cancel_restore_history' => $this->translator->trans(
-                    'page.msg.btn.cancel.restore.history', domain: 'page'),
+                'page.msg.btn.cancel.restore.history', domain: 'page'),
             'page_content_form' => [
                 'title' => $this->translator->trans('page.page_content_form.title', domain: 'page'),
                 'input_url_label' => $this->translator->trans('page.page_content_form.input.url.label', domain: 'page'),
