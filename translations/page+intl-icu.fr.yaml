@@ -93,4 +93,8 @@ page.page_content_block.modale.new.choice_label: 'Choix du contenu à ajouter'
 page.page_content_block.modale.new.choice_info: 'Le contenu peut être du texte, un cv, une faq etc..'
 page.content.text: 'Bloc de texte'
 page.page_content_block.loading: chargement...
-page.msg.add_content_success: "Contenu ajouté avec succès"
+page.msg.add_content_success: 'Contenu ajouté avec succès'
+page.msg.history.new: 'Des modifications non enregistrées ont été détecter, voulez vous les restaurer ?'
+page.msg.titre.restore.history: "Information sur l'historique"
+page.msg.btn.restore.history: Restaurer
+page.msg.btn.cancel.restore.history: Masquer
