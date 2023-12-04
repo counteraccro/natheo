@@ -94,7 +94,6 @@ page.page_content_block.modale.new.choice_label: __page.page_content_block.modal
 page.page_content_block.modale.new.choice_info: __page.page_content_block.modale.new.choice_info
 page.page_content_block.loading: __page.page_content_block.loading
 page.msg.add_content_success: __page.msg.add_content_success
-page.msg.history.new: __page.msg.history.new
 page.msg.titre.restore.history: __page.msg.titre.restore.history
 page.msg.btn.restore.history: __page.msg.btn.restore.history
 page.msg.btn.cancel.restore.history: __page.msg.btn.cancel.restore.history
