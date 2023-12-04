@@ -58,6 +58,7 @@ export default {
         }
       },
       history: [],
+      historyInfo: [],
       list_status: this.page_datas.list_status
     }
   },
@@ -134,6 +135,7 @@ export default {
         'locale': this.currentLocale
       }).then((response) => {
         this.page = response.data.page;
+        this.historyInfo = response.data.history
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
@@ -320,8 +322,7 @@ export default {
         this.toasts.autoSave.toast.show();
 
         // Cas première page, on force la redirection pour passer en mode édition
-        if(response.data.redirect === true)
-        {
+        if (response.data.redirect === true) {
           window.location.replace(response.data.url_redirect);
         }
 
@@ -337,6 +338,7 @@ export default {
      * @param rowId
      */
     reloadPageHistory(rowId) {
+
       this.loading = true;
       axios.post(this.urls.reload_page_history, {
         'row_id': rowId,
@@ -433,6 +435,18 @@ export default {
 <template>
 
   <div id="global-page-form">
+
+    <div v-if="historyInfo.show_msg" class="alert alert-primary alert-dismissible">
+      <h5 class="alert-heading"><i class="bi bi-info-circle"></i> {{ this.translate.msg_titre_restore_history }}</h5>
+      <p>{{ historyInfo.msg }}</p>
+
+      <div class="btn btn-sm btn-secondary" data-bs-dismiss="alert" @click="this.reloadPageHistory(historyInfo.id)">
+        <i class="bi bi-arrow-clockwise"></i>
+        {{ this.translate.msg_btn_restore_history }}
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <nav>
       <select id="select-language" class="form-select float-end w-25" @change="this.switchLocale($event)">
         <option value="" selected>{{ this.translate.select_locale }}</option>

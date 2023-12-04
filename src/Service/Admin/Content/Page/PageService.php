@@ -8,16 +8,20 @@
 namespace App\Service\Admin\Content\Page;
 
 use App\Entity\Admin\Content\Page\Page;
+use App\Entity\Admin\System\User;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Content\Page\PageConst;
+use App\Utils\Content\Page\PageHistory;
 use App\Utils\Content\Page\PageStatistiqueKey;
 use App\Utils\Content\Tag\TagRender;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -258,6 +262,46 @@ class PageService extends AppAdminService
     }
 
     /**
+     * Permet de détecter si la date du dernier history enregistré est supérieur à la date
+     * d'update de la page.
+     * Retourne un tableau avec un message si la date du dernier history est supérieur
+     * @param Page $page
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getDiffBetweenHistoryAndPage(Page $page) :array
+    {
+        $return = [
+            'show_msg' => false,
+            'id' => 0,
+            'msg' => '',
+        ];
+
+        /** @var User $user */
+        $user = $this->security->getUser();
+        $pageHistory = new PageHistory($this->containerBag, $user);
+        $history = $pageHistory->getHistory($page->getId());
+        if(empty($history))
+        {
+            return $return;
+        }
+
+        if($history[0]['time'] > $page->getUpdateAt()->getTimestamp())
+        {
+
+            $return = [
+            'show_msg' => true,
+            'id' => $history[0]['id'],
+            'msg' => $this->translator->trans('page.msg.history.new', domain: 'page'),
+        ];
+
+        }
+
+        return $return;
+    }
+
+    /**
      * Retourne les traductions pour les pages
      * @return array
      */
@@ -278,6 +322,10 @@ class PageService extends AppAdminService
             'msg_del_tag_success' => $this->translator->trans('page.onglet.tag.msg.del_tag_success', domain: 'page'),
             'msg_remove_content_success' => $this->translator->trans('page.msg.remove_content_success', domain: 'page'),
             'msg_add_content_success' => $this->translator->trans('page.msg.add_content_success', domain: 'page'),
+            'msg_titre_restore_history' => $this->translator->trans('page.msg.titre.restore.history', domain: 'page'),
+            'msg_btn_restore_history' => $this->translator->trans('page.msg.btn.restore.history', domain: 'page'),
+            'msg_btn_cancel_restore_history' => $this->translator->trans(
+                    'page.msg.btn.cancel.restore.history', domain: 'page'),
             'page_content_form' => [
                 'title' => $this->translator->trans('page.page_content_form.title', domain: 'page'),
                 'input_url_label' => $this->translator->trans('page.page_content_form.input.url.label', domain: 'page'),

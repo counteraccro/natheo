@@ -208,10 +208,11 @@ class PageController extends AppAdminController
         } else {
             $page = $pageService->findOneById(Page::class, $data['id']);
         }
-        $page = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt', 'user']);
+        $pageArray = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt', 'user']);
 
         return $this->json([
-            'page' => $page
+            'page' => $pageArray,
+            'history' => $pageService->getDiffBetweenHistoryAndPage($page)
         ]);
     }
 
@@ -292,9 +293,7 @@ class PageController extends AppAdminController
         $user = $this->getUser();
 
         $pageHistory = new PageHistory($containerBag, $user);
-
-        $id = $data['id'];
-        $page = $pageHistory->getPageHistoryById($data['row_id'], $id);
+        $page = $pageHistory->getPageHistoryById($data['row_id'], $data['id']);
 
         return $this->json([
             'page' => $page,
