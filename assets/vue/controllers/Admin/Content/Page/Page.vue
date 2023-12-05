@@ -59,6 +59,18 @@ export default {
       },
       history: [],
       historyInfo: [],
+      tabErrorTemplate: {
+        locale: '',
+        error: false,
+      },
+      tabError: {
+        contentForm: {
+          url: {
+            locales: [],
+            msg: this.translate.msg_error_url_no_unique
+          }
+        }
+      },
       list_status: this.page_datas.list_status
     }
   },
@@ -361,14 +373,29 @@ export default {
     /**
      * Vérifie si l'url est unique ou non
      * @param url
+     * @param id
+     * @param locale
      */
-    isUniqueUrl(url)
-    {
+    isUniqueUrl(url, id, locale) {
       axios.post(this.urls.is_unique_url_page, {
-        'id': this.page.id,
-        'url' : url
+        'id': id,
+        'url': url
       }).then((response) => {
-
+        if (response.data.is_unique) {
+          let tab = {
+            error: true,
+            locale: locale
+          }
+          this.tabError.contentForm.url.locales.push(tab);
+        } else {
+          let indexR = -1;
+          this.tabError.contentForm.url.locales.forEach(function (data, index) {
+            if (data.locale === locale) {
+              indexR = index;
+            }
+          })
+          delete this.tabError.contentForm.url.locales[indexR];
+        }
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
@@ -511,6 +538,7 @@ export default {
             :page="this.page"
             :translate="this.translate.page_content_form"
             :list-render="this.page_datas.list_render"
+            :tab-error="this.tabError.contentForm"
             @auto-save="this.autoSave"
             @is-unique-url="this.isUniqueUrl"
         />

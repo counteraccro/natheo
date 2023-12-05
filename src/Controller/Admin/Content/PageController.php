@@ -378,7 +378,7 @@ class PageController extends AppAdminController
         return $this->json([
             'list' => [100 => 'Rendu test 1', 1000 => 'Rendu test 2'],
             'selected' => 100,
-            'label' => 'label à traduire',
+            'label' => 'label à traduire Fonction PageController::listeContentByIdContent',
             'help' => 'help à traduire'
         ]);
     }
@@ -389,7 +389,7 @@ class PageController extends AppAdminController
         $data = json_decode($request->getContent(), true);
 
         return $this->json([
-
+            'is_unique' => $pageService->isUniqueUrl($data['url'], $data['id'])
         ]);
     }
 }

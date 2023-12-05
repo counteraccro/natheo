@@ -8,7 +8,9 @@
 namespace App\Service\Admin\Content\Page;
 
 use App\Entity\Admin\Content\Page\Page;
+use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\System\User;
+use App\Repository\Admin\Content\Page\PageTranslationRepository;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Admin\MarkdownEditorService;
@@ -19,6 +21,8 @@ use App\Utils\Content\Page\PageStatistiqueKey;
 use App\Utils\Content\Tag\TagRender;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -288,9 +292,9 @@ class PageService extends AppAdminService
 
         if ($page->getUpdateAt() === null || $history[0]['time'] > $page->getUpdateAt()->getTimestamp()) {
 
-            $msg =  $this->translator->trans('page.msg.history.reload', domain: 'page');
-            if($page->getUpdateAt() === null) {
-                $msg =  $this->translator->trans('page.msg.history.new.reload', domain: 'page');
+            $msg = $this->translator->trans('page.msg.history.reload', domain: 'page');
+            if ($page->getUpdateAt() === null) {
+                $msg = $this->translator->trans('page.msg.history.new.reload', domain: 'page');
             }
 
             $return = [
@@ -300,8 +304,23 @@ class PageService extends AppAdminService
             ];
 
         }
-
         return $return;
+    }
+
+    /**
+     * @param string $url
+     * @param int|null $id
+     * @return bool
+     */
+    public function isUniqueUrl(string $url, int $id = null) :bool
+    {
+        /** @var PageTranslationRepository $pageTransRepo */
+        $pageTransRepo = $this->getRepository(PageTranslation::class);
+        try {
+            return $pageTransRepo->isUniqueUrl($url, $id);
+        } catch (NonUniqueResultException $e) {
+            die($e->getMessage());
+        }
     }
 
     /**
@@ -329,6 +348,7 @@ class PageService extends AppAdminService
             'msg_btn_restore_history' => $this->translator->trans('page.msg.btn.restore.history', domain: 'page'),
             'msg_btn_cancel_restore_history' => $this->translator->trans(
                 'page.msg.btn.cancel.restore.history', domain: 'page'),
+            'msg_error_url_no_unique' => $this->translator->trans('page.msg.error_url_no_unique', domain: 'page'),
             'page_content_form' => [
                 'title' => $this->translator->trans('page.page_content_form.title', domain: 'page'),
                 'input_url_label' => $this->translator->trans('page.page_content_form.input.url.label', domain: 'page'),

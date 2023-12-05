@@ -1,6 +1,4 @@
-<script>
-
-/**
+<script>/**
  * Formulaire de l'onglet content
  * @author Gourdon Aymeric
  * @version 1.0
@@ -12,7 +10,8 @@ export default {
     page: Object,
     listRender: Object,
     translate: Object,
-    locale: String
+    locale: String,
+    tabError: Object
   },
   emits: ['auto-save', 'is-unique-url'],
   data() {
@@ -31,12 +30,43 @@ export default {
     },
 
     /**
+     * Vérifie si le champ est en erreur ou non
+     * Si c'est le cas, ajoute la class CSS is-
+     */
+    checkIsError(key, locale) {
+
+
+      let isError = false;
+      let tab = this.tabError[key].locales;
+
+      if (tab.length === 0) {
+        return "";
+      }
+
+      console.log(tab)
+      tab.forEach(function (data) {
+        console.log(data);
+        if (data.locale === locale && data.error === true) {
+          isError = true;
+        }
+      })
+
+      if (isError) {
+        return 'is-invalid';
+      } else {
+        return "";
+      }
+
+    },
+
+    /**
      * Vérification que l'url est unique
      * @param url
+     * @param id
+     * @param locale
      */
-    isUniqueUrl(url)
-    {
-      this.$emit('is-unique-url', url);
+    isUniqueUrl(url, id, locale) {
+      this.$emit('is-unique-url', url, id, locale);
     },
 
     /**
@@ -74,7 +104,10 @@ export default {
     <div v-for="pageTranslation in this.page.pageTranslations">
       <div v-if="pageTranslation.locale === this.locale">
         <label for="page-url" class="form-label">{{ this.translate.input_url_label }}</label>
-        <input type="text" class="form-control" id="page-url" v-model="pageTranslation.url" @change="this.isUniqueUrl(pageTranslation.url)">
+        <input type="text" class="form-control" :class="this.checkIsError('url', pageTranslation.locale)" id="page-url" v-model="pageTranslation.url" @change="this.isUniqueUrl(pageTranslation.url, pageTranslation.id, pageTranslation.locale)">
+        <div class="invalid-feedback">
+          {{ this.tabError.url.msg }}
+        </div>
         <div id="pageUrlHelp" class="form-text">{{ this.translate.input_url_info }}</div>
       </div>
     </div>
