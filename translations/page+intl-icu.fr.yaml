@@ -97,5 +97,5 @@ page.msg.add_content_success: 'Contenu ajouté avec succès'
 page.msg.titre.restore.history: "Information sur l'historique"
 page.msg.btn.restore.history: Restaurer
 page.msg.btn.cancel.restore.history: Masquer
-page.msg.history.reload: "Des modifications non enregistrées ont été détecter, voulez vous les restaurer ?"
-page.msg.history.new.reload: "Une nouvelle page à été créée sans être enregistrée, voulez vous la restaurer ?"
+page.msg.history.reload: 'Des modifications non enregistrées ont été détecter, voulez vous les restaurer ?'
+page.msg.history.new.reload: 'Une nouvelle page à été créée sans être enregistrée, voulez vous la restaurer ?'
