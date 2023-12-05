@@ -14,7 +14,7 @@ export default {
     translate: Object,
     locale: String
   },
-  emits: ['auto-save'],
+  emits: ['auto-save', 'is-unique-url'],
   data() {
     return {}
   },
@@ -28,6 +28,15 @@ export default {
      */
     autoSave() {
       this.$emit('auto-save', this.page);
+    },
+
+    /**
+     * Vérification que l'url est unique
+     * @param url
+     */
+    isUniqueUrl(url)
+    {
+      this.$emit('is-unique-url', url);
     },
 
     /**
@@ -65,7 +74,7 @@ export default {
     <div v-for="pageTranslation in this.page.pageTranslations">
       <div v-if="pageTranslation.locale === this.locale">
         <label for="page-url" class="form-label">{{ this.translate.input_url_label }}</label>
-        <input type="text" class="form-control" id="page-url" v-model="pageTranslation.url" @change="this.autoSave">
+        <input type="text" class="form-control" id="page-url" v-model="pageTranslation.url" @change="this.isUniqueUrl(pageTranslation.url)">
         <div id="pageUrlHelp" class="form-text">{{ this.translate.input_url_info }}</div>
       </div>
     </div>

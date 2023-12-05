@@ -178,7 +178,8 @@ class PageController extends AppAdminController
                 'tag_by_name' => $this->generateUrl('admin_tag_tag_by_name'),
                 'save' => $this->generateUrl('admin_page_save'),
                 'new_content' => $this->generateUrl('admin_page_new_content'),
-                'liste_content_by_id' => $this->generateUrl('admin_page_liste_content_by_id')
+                'liste_content_by_id' => $this->generateUrl('admin_page_liste_content_by_id'),
+                'is_unique_url_page' => $this->generateUrl('admin_page_is_unique_url_page')
             ]
         ]);
     }
@@ -379,6 +380,16 @@ class PageController extends AppAdminController
             'selected' => 100,
             'label' => 'label à traduire',
             'help' => 'help à traduire'
+        ]);
+    }
+
+    #[Route('/ajax/is-unique-url-page', name: 'is_unique_url_page')]
+    public function isUniqueUrlPage(Request $request, PageService $pageService): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        return $this->json([
+
         ]);
     }
 }

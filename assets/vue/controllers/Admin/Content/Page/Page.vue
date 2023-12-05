@@ -358,6 +358,24 @@ export default {
       });
     },
 
+    /**
+     * Vérifie si l'url est unique ou non
+     * @param url
+     */
+    isUniqueUrl(url)
+    {
+      axios.post(this.urls.is_unique_url_page, {
+        'id': this.page.id,
+        'url' : url
+      }).then((response) => {
+
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+
+      });
+    },
+
     /*** Bloc Tag ***/
 
     /**
@@ -494,6 +512,7 @@ export default {
             :translate="this.translate.page_content_form"
             :list-render="this.page_datas.list_render"
             @auto-save="this.autoSave"
+            @is-unique-url="this.isUniqueUrl"
         />
 
         <div id="page-content">
