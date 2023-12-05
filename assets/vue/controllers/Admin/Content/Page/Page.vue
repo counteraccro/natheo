@@ -371,6 +371,21 @@ export default {
     },
 
     /**
+     * Vérifie si l'erreur n'existe pas déjà
+     * @param key
+     * @param locale
+     * @returns {boolean}
+     */
+    canAddError(key, locale) {
+      this.tabError.contentForm[key].locales.forEach(function (data) {
+        if (data.locale === locale) {
+          return false;
+        }
+      })
+      return true;
+    },
+
+    /**
      * Vérifie si l'url est unique ou non
      * @param url
      * @param id
@@ -386,15 +401,38 @@ export default {
             error: true,
             locale: locale
           }
-          this.tabError.contentForm.url.locales.push(tab);
+
+          if (this.canAddError('url', locale)) {
+            this.tabError.contentForm.url.locales.push(tab);
+          }
+
         } else {
-          let indexR = -1;
-          this.tabError.contentForm.url.locales.forEach(function (data, index) {
-            if (data.locale === locale) {
-              indexR = index;
+          let tab = {};
+          let isError = false;
+          // Avant d'être sur qu'il n'y à pas de doublons on check ce qu'a saisi l'utilisateur
+          this.page.pageTranslations.forEach(function (data) {
+            if (data.url === url && data.locale !== locale) {
+
+              tab = {
+                error: true,
+                locale: locale
+              }
+              isError = true;
             }
-          })
-          delete this.tabError.contentForm.url.locales[indexR];
+          });
+          if (this.canAddError('url', locale)) {
+            this.tabError.contentForm.url.locales.push(tab);
+          }
+
+          if (!isError) {
+            let tmp = this.tabError.contentForm.url.locales;
+            this.tabError.contentForm.url.locales.forEach(function (data, index) {
+              if (data.locale === locale) {
+                tmp.splice(index, 1);
+              }
+            })
+            this.tabError.contentForm.url.locales = tmp;
+          }
         }
       }).catch((error) => {
         console.log(error);

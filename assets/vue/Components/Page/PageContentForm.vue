@@ -34,18 +34,13 @@ export default {
      * Si c'est le cas, ajoute la class CSS is-
      */
     checkIsError(key, locale) {
-
-
       let isError = false;
       let tab = this.tabError[key].locales;
 
       if (tab.length === 0) {
         return "";
       }
-
-      console.log(tab)
       tab.forEach(function (data) {
-        console.log(data);
         if (data.locale === locale && data.error === true) {
           isError = true;
         }
