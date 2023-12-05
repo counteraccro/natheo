@@ -432,6 +432,7 @@ export default {
               }
             })
             this.tabError.contentForm.url.locales = tmp;
+            this.autoSave(this.page)
           }
         }
       }).catch((error) => {
