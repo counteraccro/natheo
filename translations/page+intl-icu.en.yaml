@@ -97,3 +97,6 @@ page.msg.add_content_success: __page.msg.add_content_success
 page.msg.titre.restore.history: __page.msg.titre.restore.history
 page.msg.btn.restore.history: __page.msg.btn.restore.history
 page.msg.btn.cancel.restore.history: __page.msg.btn.cancel.restore.history
+page.msg.history.reload: __page.msg.history.reload
+page.msg.history.new.reload: __page.msg.history.new.reload
+page.msg.error_url_no_unique: __page.msg.error_url_no_unique
