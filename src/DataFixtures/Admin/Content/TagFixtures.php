@@ -27,7 +27,7 @@ class TagFixtures extends AppFixtures implements FixtureGroupInterface, OrderedF
     public function load(ObjectManager $manager): void
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::TAG_FIXTURES_DATA_FILE);
-        foreach ($data['tag'] as $id => $data) {
+        foreach ($data['tag'] as $ref => $data) {
             $tag = new Tag();
             foreach ($data as $key => $value) {
                 if ($key === 'translate') {
@@ -44,6 +44,7 @@ class TagFixtures extends AppFixtures implements FixtureGroupInterface, OrderedF
                 }
             }
             $manager->persist($tag);
+            $this->addReference($ref, $tag);
         }
         $manager->flush();
     }

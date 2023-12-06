@@ -10,6 +10,7 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
+use App\Service\Admin\Content\Tag\TagComponentService;
 use App\Service\Admin\Content\Tag\TagService;
 use App\Utils\Breadcrumb;
 use App\Utils\Flash\FlashKey;
@@ -208,11 +209,54 @@ class TagController extends AppAdminController
         return $this->json(['etat' => $status]);
     }
 
+    /**
+     * Affiche les statistiques d'un tag
+     * @param Tag|null $tag
+     * @return Response
+     */
     #[Route('/ajax/stats/{id}', name: 'stats', methods: ['GET'])]
     public function statistique(Tag $tag = null): Response
     {
         return $this->render('admin/content/tag/date_update.html.twig', [
             'tag' => $tag
         ]);
+    }
+
+    /**
+     * Permet de rechercher un ou plusieurs tags pour l'auto-complete
+     * @param Request $request
+     * @param TagService $tagService
+     * @return Response
+     */
+    #[Route('/ajax/search/', name: 'search')]
+    public function search(Request $request, TagService $tagService): Response
+    {
+        $data = json_decode($request->getContent(), true);
+        $result = $tagService->searchByLocale($data['locale'], $data['search']);
+        return $this->json(['result' => $result]);
+    }
+
+    /**
+     * Retourne un objet tag depuis un label et la locale
+     * Si le tag n'existe pas, il est créé. (utilisé pour l'auto-complete)
+     * @param Request $request
+     * @param TagService $tagService
+     * @return Response
+     */
+    #[Route('/ajax/tag-by-name/', name: 'tag_by_name')]
+    public function getTagByName(Request $request, TagService $tagService, TranslatorInterface $translator): Response
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $tag = $tagService->newTagByNameAndLocale($data['locale'], $data['label']);
+
+        $msg = '';
+        if ($tag === null) {
+            $msg = $translator->trans('tag.page.error.tag.disabled', domain: 'tag');
+        } else {
+            $tag = $tagService->convertEntityToArray($tag, ['createdAt', 'updateAt']);
+        }
+
+        return $this->json(['tag' => $tag, 'msg' => $msg]);
     }
 }

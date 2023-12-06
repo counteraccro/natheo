@@ -3,3 +3,100 @@ page.index.page_title_h1: 'Gestion des pages'
 page.index.btn.new: 'Nouvelle page'
 page.index.popin.help.title: Aide
 page.index.description: 'Gérer les pages accessibles par vos visiteurs.'
+page.grid.title: Titre
+page.grid.status: Status
+page.grid.tag: Tags
+page.grid.comment: 'Nb Commentaires'
+page.grid.nb_see: Affichage
+page.grid.update_at: 'Dernière modification'
+page.confirm.disabled.msg: 'Confirmez vous la désactivation de la page <b>{label}</b>, cette page deviendra inaccessible'
+page.grid.id: '#'
+page.confirm.delete.msg: 'Confirmez vous la suppression de la page <b>{label}</b>, cette action est définitive'
+page.success.no.disabled: 'La page <b>{label}</b> à été restaurée avec succès'
+page.success.disabled: 'La page <b>{label}</b> à été désactivée avec succès'
+page.remove.success: 'La page <b>{label}</b> à été supprimée avec succès'
+page.status.draft: Brouillon
+page.status.publish: Publiée
+page.status.inconnu: Inconnu
+page.add.page_title: "Création d'une nouvelle page"
+page.add.page_title_h1: 'Nouvelle page'
+page.add.description: 'Créer une nouvelle page pour votre site web'
+page.update.page_title: 'Edition de la page #{id}'
+page.update.page_title_h1: Edition
+page.update.description: 'Modifier une page de votre site web'
+page.onglet.content: Contenu
+page.onglet.seo: SEO
+page.onglet.tag: 'Les tags'
+page.template.btn.show: 'Voir le rendu'
+page.template.btn.hide: 'Masquer le rendu'
+page.template.btn.extern: 'Voir le rendu sur une page externe'
+page.select.locale: 'Choix de la langue'
+page.loading: 'Chargement des données...'
+page.page_content_form.input.url.label: 'Url de la page'
+page.page_content_form.input.url.info: "Url d'accès à votre page"
+page.page_content_form.input.titre.label: 'Titre de la page'
+page.page_content_form.input.titre.info: "Texte qui va permettre d'identifier la page"
+page.onglet.history: Historique
+page.msg.auto_save.success: 'Sauvegarde auto réalisée avec succès'
+page.page_history.title: 'Historique des modifications'
+page.page_history.description: "Liste de l'ensemble des modifications faite sur cette page "
+page.page_history.empty: 'Aucun historique pour le moment'
+page.page_history.update: 'Modification n°'
+page.page_history.for: par
+page.page_history.reload: Restaurer
+page.page_history.success: "Restauration de la page à l'état #{id} faite avec succès"
+page.index.popin.help.disabled_page: 'Désactiver une page'
+page.index.popin.help.enable_page: 'Activer une page'
+page.index.popin.help.delete: Supprimer
+page.index.popin.help.edit: Editer
+page.tag.auto_complete.label: 'Rechercher / Ajouter tag'
+page.tag.auto_complete.placeholder: 'Rechercher un tag'
+page.tag.auto_complete.help: "Si le tag n'existe pas, celui-ci sera créé en même temps qu'associé à la page"
+page.tag.auto_complete.btn: '<i class="bi bi-tag"></i> Associer'
+page.onglet.tag.title: 'Les tags'
+page.onglet.tag.sub_title: 'Tags associés à la page'
+page.onglet.tag.msg.add_tag_success: 'Tag associé avec succès'
+page.onglet.tag.msg.del_tag_success: 'Tag retiré avec succès'
+page.onglet.save: Sauvegarde
+page.page_save.title: 'Sauvegarde de la page'
+page.page_save.list_status_label: 'Etat de la page'
+page.page_save.list_status_help: 'Permet de définir l`état de la page'
+page.page_save.btn.save: Sauvegarder
+page.page_save.btn.see_ext: 'Voir le rendu'
+page.save.success: 'Sauvegarde de la page fait avec succès'
+page.page_content_form.title: 'Contenu de la page'
+page.render.1.block: '1 bloc'
+page.render.2.block: '2 blocs côte à côte'
+page.render.3.block: '3 blocs côte à côte'
+page.page_save.list_render_label: "Choix de l'affichage du contenu de la page"
+page.page_save.list_render_help: 'Permet de définir la structure du contenu de la page'
+page.render.2.1.block: '2 blocs côte à côte + 1 bloc en dessous'
+page.render.2.2.block: '2 blocs côte à côte + 2 blocs côte à côte en dessous'
+page.page_content.title: 'Ajouter / Editer les blocs de contenu'
+page.render.2.block.bottom: "2 blocs l'un en dessous de l'autre"
+page.render.3.block.bottom: "3 blocs l'un en dessous de l'autre"
+page.render.1.2.block: 'Un bloc au dessus + 2 blocs côte à côte en dessous'
+page.page_content_block.btn.new_content: 'Nouveau contenu'
+page.page_content_block.btn.delete_content: Supprimer
+page.page_content_block.btn.change_content: Changer
+page.page_content_block.btn.move_content: Déplacer
+page.page_content_block.modale.remove.title: 'Confirmation suppression du contenu'
+page.page_content_block.modale.remove.body: 'Vous êtes sur le point de supprimer ce contenu, confirmez vous cette action?'
+page.page_content_block.modale.remove.btn.confirm: Supprimer
+page.page_content_block.modale.remove.btn.cancel: Annuler
+page.page_content_block.modale.remove.body.2: "Vous pouvez toujours restaurer ce contenu via l'historique"
+page.msg.remove_content_success: 'Suppression du contenu fait avec succès'
+page.page_content_block.modale.new.title: 'Nouveau contenu'
+page.page_content_block.modale.new.btn.cancel: Annuler
+page.page_content_block.modale.new.btn.new: 'Ajouter le contenu'
+page.page_content_block.modale.new.choice_label: 'Choix du contenu à ajouter'
+page.page_content_block.modale.new.choice_info: 'Le contenu peut être du texte, un cv, une faq etc..'
+page.content.text: 'Bloc de texte'
+page.page_content_block.loading: chargement...
+page.msg.add_content_success: 'Contenu ajouté avec succès'
+page.msg.titre.restore.history: "Information sur l'historique"
+page.msg.btn.restore.history: Restaurer
+page.msg.btn.cancel.restore.history: Masquer
+page.msg.history.reload: 'Des modifications non enregistrées ont été détectées, voulez vous les restaurer ?'
+page.msg.history.new.reload: 'Une nouvelle page à été créée sans être enregistrée, voulez vous la restaurer ?'
+page.msg.error_url_no_unique: "Cette url est déjà utilisée pour une autre page de l'application"

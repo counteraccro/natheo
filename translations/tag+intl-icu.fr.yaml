@@ -46,3 +46,4 @@ tag.form.stat.title: Statistiques
 tag.page_date_update.created: 'Date de création'
 tag.page_date_update.last_update: 'Dernière modification'
 tag.form.input.disabled.label: __tag.form.input.disabled.label
+tag.page.error.tag.disabled: "Ce tag est désactivé, son ajout n'est pas possible"

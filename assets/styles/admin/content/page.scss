@@ -1,0 +1,68 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * CSS pour la création / gestion des pages
+ */
+
+/** Rendu de la démo **/
+#col-adm-page-render {
+
+  .transition-render {
+    transition: all 0.3s;
+  }
+
+  #demo-render-page {
+    border: 3px solid var(--bs-secondary);
+    height: 92%;
+  }
+
+  #content-render {
+    height: 92%;
+  }
+}
+
+/** CSS formulaire de création / édition de pae **/
+#global-page-form {
+
+  #content-history {
+
+    .row-history:hover {
+      background-color: var(--bs-secondary);
+      color:white;
+    }
+  }
+
+  datalist {
+    position: absolute;
+    max-height: 20em;
+    border: 0 none;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  datalist option {
+    font-size: 0.8em;
+    padding: 0.3em 1em;
+    background-color: #ccc;
+    cursor: pointer;
+  }
+
+  /* option active styles */
+  datalist option:hover, datalist option:focus {
+    color: #fff;
+    background-color: #036;
+    outline: 0 none;
+  }
+
+  /** CSS pour les block content du formulaire de création/edition de page */
+  #page-content {
+
+    .block-page-content {
+      border: 1px dashed;
+      border-color: var(--bs-secondary);
+      padding: 10px;
+      border-radius: 2px;
+      min-height: 450px;
+    }
+  }
+}

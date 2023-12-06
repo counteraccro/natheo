@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author Gourdon Aymeric
+ * @version 1.1
+ * Répository pour les tags
+ */
 
 namespace App\Repository\Admin\Content\Tag;
 
@@ -57,6 +62,30 @@ class TagRepository extends ServiceEntityRepository
             ->setMaxResults($limit);
         return $paginator;
 
+    }
+
+    /**
+     * Retourne une liste de tag en fonction de $search et de la locale
+     * si withDisabled est à true, remonte aussi les tags disabled
+     * @param string $locale
+     * @param string $search
+     * @param bool $withDisabled
+     * @return array
+     */
+    public function searchByName(string $locale, string $search, bool $withDisabled = false): array
+    {
+        $query = $this->createQueryBuilder('t')
+            ->select('t.id', 'tt.label', 't.disabled')
+            ->join('t.tagTranslations', 'tt', 'WITH', "tt.locale = '" . $locale . "'")
+            ->andWhere('LOWER(tt.label) LIKE LOWER(:label)')
+            ->setParameter('label', '%' . $search . '%');
+
+        if (!$withDisabled) {
+            $query->andWhere('t.disabled = false');
+        }
+
+        return $query->getQuery()
+            ->getArrayResult();
     }
 
 //    /**

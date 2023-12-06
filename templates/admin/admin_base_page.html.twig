@@ -1,0 +1,79 @@
+{# Template pour la création / édition de page #}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{{ get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_SITE_NAME')) }}{% endblock %}</title>
+    <link rel="icon" type="image/jpg" href="{{ asset('assets/natheo/favico/favicon.ico') }}">
+    {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+    {% block stylesheets %}
+
+        {% set theme = get_option_user_value_by_key(constant('App\\Utils\\System\\Options\\OptionUserKey::OU_THEME_SITE')) %}
+        {{ encore_entry_link_tags('admin_'~theme) }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('admin') }}
+    {% endblock %}
+</head>
+<body>
+<div class="row g-0">
+    <div class="col-8" id="col-adm-page" style="transition: all 0.3s;">
+        <div class="wrapper">
+            <!-- Sidebar  -->
+            {% include "/admin/includes/menu.html.twig" %}
+            <!-- Page Content  -->
+            <div id="content">
+                {% include "/admin/includes/header.html.twig" %}
+                {% include "/admin/includes/flash.html.twig" %}
+                <div id="block-content">
+                    {% block body %}{% endblock %}
+                    <div class="btn btn-secondary btn-action-show-render" onclick="showRender()">
+                        <i class="bi bi-arrow-bar-left"></i><span class="d-none d-xxl-inline"> {{ 'page.template.btn.show' | trans({}, 'page') }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-4 transition-render" id="col-adm-page-render">
+
+        <div id="demo-render-page">
+            <div id="content-render"  class="overflow-y-auto w-100">
+                {% include "/admin/content/page/render.html.twig" %}
+            </div>
+            <div class="mt-2 p-3">
+                <div class="btn btn-secondary btn-action-show-render" onclick="hideRender()">
+                    <i class="bi bi-arrow-bar-right"></i><span class="d-none d-xxl-inline"> {{ 'page.template.btn.hide' | trans({}, 'page') }}</span>
+                </div>
+                <div class="btn btn-secondary ms-2" id="btn-reduce">
+                    <i class="bi bi-arrow-up-right-square"></i><span class="d-none d-xxl-inline"> {{ 'page.template.btn.extern' | trans({}, 'page') }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "/admin/includes/scripts.html.twig" %}
+<script>
+    let btn = document.getElementsByClassName('btn-action-show-render');
+    let colPage = document.getElementById('col-adm-page');
+    let colRender = document.getElementById('col-adm-page-render');
+
+    /**
+     * Masque le rendu démo
+     */
+    function hideRender() {
+        colPage.classList.remove('col-8');
+        colRender.classList.add('d-none');
+    }
+
+    /**
+     * Affiche le rendu démo
+     */
+    function showRender() {
+        colPage.classList.add('col-8');
+        colRender.classList.remove('d-none');
+    }
+</script>
+</body>
+</html>
