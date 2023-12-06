@@ -191,15 +191,6 @@ export default {
     },
 
     /**
-     * Ajoute un objet content ou le met à jour
-     * @param content
-     */
-    /*addContent(content) {
-      console.log(id);
-      console.log(content);
-    },*/
-
-    /**
      * Supprime un page content en fonction de son id
      * @param id
      */
