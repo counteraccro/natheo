@@ -75,7 +75,7 @@ export default {
           }
         },
         globale: {
-          'content': false,
+          content: false,
         }
       },
       list_status: this.page_datas.list_status
@@ -176,6 +176,36 @@ export default {
       }).finally(() => {
         this.loading = false
       });
+    },
+
+    /**
+     * Affichage d'un warning si erreur
+     * @param tab
+     * @returns {string}
+     */
+    showTabError(tab) {
+
+      let str = '';
+      if (this.tabError.globale[tab]) {
+
+        str = '<span class="text-warning">';
+
+        switch (tab) {
+          case "content":
+            str += '<i class="bi bi-exclamation-triangle"></i> ';
+            break;
+          case "seo" :
+            break;
+          case "tags" :
+            break;
+          case "history" :
+            break;
+          default:
+            str = '';
+        }
+        str += '</span> ';
+      }
+      return str;
     },
 
     /**
@@ -521,7 +551,7 @@ export default {
       <div class="nav nav-pills mb-3" id="nav-tab-page" role="tablist">
         <button class="nav-link active" @click="this.switchTab('content')" id="content-tab" data-bs-toggle="tab"
             data-bs-target="#nav-content" type="button" role="tab" aria-selected="true">
-          {{ this.tabError.globale.content }}
+          <span v-html="this.showTabError('content')"></span>
           <i class="bi bi-file-text"></i> {{ this.translate.onglet_content }}
         </button>
         <button class="nav-link" @click="this.switchTab('seo')" id="seo-tab" data-bs-toggle="tab"
