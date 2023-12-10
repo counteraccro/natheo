@@ -67,14 +67,18 @@ export default {
     /**
      * Si l'url est vide, génère l'url en fonction du titre
      */
-    generateUrl(title) {
+    generateUrl(title, id, locale) {
 
+      let url = '';
       this.page.pageTranslations.forEach((pageTranslation, index) => {
         if (pageTranslation.locale === this.locale && pageTranslation.url === '') {
-          pageTranslation.url = title.replaceAll(' ', '-');
+          url = title.replaceAll(' ', '-');
+          pageTranslation.url = url;
         }
       });
-      this.autoSave();
+
+      this.isUniqueUrl(url, id, locale)
+      //this.autoSave();
     }
   }
 }
@@ -89,7 +93,7 @@ export default {
     <div v-for="pageTranslation in this.page.pageTranslations">
       <div v-if="pageTranslation.locale === this.locale">
         <label for="page-titre" class="form-label">{{ this.translate.input_titre_label }}</label>
-        <input type="text" class="form-control" id="page-titre" v-model="pageTranslation.titre" @change="this.generateUrl(pageTranslation.titre)">
+        <input type="text" class="form-control" id="page-titre" v-model="pageTranslation.titre" @change="this.generateUrl(pageTranslation.titre, pageTranslation.id, pageTranslation.locale)">
         <div id="pageTitreHelp" class="form-text">{{ this.translate.input_titre_info }}</div>
       </div>
     </div>
