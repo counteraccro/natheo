@@ -66,9 +66,16 @@ export default {
       tabError: {
         contentForm: {
           url: {
-            locales: [],
+            locales: {
+              fr: false,
+              en: false,
+              es: false
+            },
             msg: this.translate.msg_error_url_no_unique
           }
+        },
+        globale: {
+          'content': false,
         }
       },
       list_status: this.page_datas.list_status
@@ -362,21 +369,6 @@ export default {
     },
 
     /**
-     * Vérifie si l'erreur n'existe pas déjà
-     * @param key
-     * @param locale
-     * @returns {boolean}
-     */
-    canAddError(key, locale) {
-      this.tabError.contentForm[key].locales.forEach(function (data) {
-        if (data.locale === locale) {
-          return false;
-        }
-      })
-      return true;
-    },
-
-    /**
      * Vérifie si l'url est unique ou non
      * @param url
      * @param id
@@ -388,14 +380,9 @@ export default {
         'url': url
       }).then((response) => {
         if (response.data.is_unique) {
-          let tab = {
-            error: true,
-            locale: locale
-          }
 
-          if (this.canAddError('url', locale)) {
-            this.tabError.contentForm.url.locales.push(tab);
-          }
+          this.tabError.contentForm.url.locales[locale] = true;
+          this.tabError.globale.content = true;
 
         } else {
           let tab = {};
@@ -403,26 +390,28 @@ export default {
           // Avant d'être sur qu'il n'y à pas de doublons on check ce qu'a saisi l'utilisateur
           this.page.pageTranslations.forEach(function (data) {
             if (data.url === url && data.locale !== locale) {
-
-              tab = {
-                error: true,
-                locale: locale
-              }
               isError = true;
             }
           });
-          if (this.canAddError('url', locale)) {
-            this.tabError.contentForm.url.locales.push(tab);
+
+          if (isError) {
+            this.tabError.contentForm.url.locales[locale] = true;
+            this.tabError.globale.content = true;
           }
 
+
+          // Pas d'erreur
           if (!isError) {
-            let tmp = this.tabError.contentForm.url.locales;
-            this.tabError.contentForm.url.locales.forEach(function (data, index) {
-              if (data.locale === locale) {
-                tmp.splice(index, 1);
-              }
-            })
-            this.tabError.contentForm.url.locales = tmp;
+
+            console.log(locale);
+            console.log(this.tabError.contentForm.url.locales)
+
+            this.tabError.contentForm.url.locales[locale] = false;
+
+            let check = this.tabError.contentForm.url.locales;
+            if (!check.fr && !check.en && !check.es) {
+              this.tabError.globale.content = false;
+            }
             this.autoSave(this.page)
           }
         }
@@ -532,6 +521,7 @@ export default {
       <div class="nav nav-pills mb-3" id="nav-tab-page" role="tablist">
         <button class="nav-link active" @click="this.switchTab('content')" id="content-tab" data-bs-toggle="tab"
             data-bs-target="#nav-content" type="button" role="tab" aria-selected="true">
+          {{ this.tabError.globale.content }}
           <i class="bi bi-file-text"></i> {{ this.translate.onglet_content }}
         </button>
         <button class="nav-link" @click="this.switchTab('seo')" id="seo-tab" data-bs-toggle="tab"
