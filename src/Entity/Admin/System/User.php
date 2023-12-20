@@ -7,6 +7,7 @@
 
 namespace App\Entity\Admin\System;
 
+use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Notification;
@@ -81,6 +82,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Page::class, orphanRemoval: true)]
     private Collection $pages;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Faq::class, orphanRemoval: true)]
+    private Collection $faqs;
+
     public function __construct()
     {
         $this->optionsUser = new ArrayCollection();
@@ -88,6 +92,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->userData = new ArrayCollection();
         $this->medias = new ArrayCollection();
         $this->pages = new ArrayCollection();
+        $this->faqs = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -477,6 +482,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($page->getUsers() === $this) {
                 $page->setUsers(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Faq>
+     */
+    public function getFaqs(): Collection
+    {
+        return $this->faqs;
+    }
+
+    public function addFaq(Faq $faq): static
+    {
+        if (!$this->faqs->contains($faq)) {
+            $this->faqs->add($faq);
+            $faq->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFaq(Faq $faq): static
+    {
+        if ($this->faqs->removeElement($faq)) {
+            // set the owning side to null (unless already changed)
+            if ($faq->getUsers() === $this) {
+                $faq->setUsers(null);
             }
         }
 
