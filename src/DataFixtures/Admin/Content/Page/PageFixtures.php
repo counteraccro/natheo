@@ -17,7 +17,8 @@ use Symfony\Component\Yaml\Yaml;
 
 class PageFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
-    const PAGE_FIXTURES_DATA_FILE = 'page_fixtures_data.yaml';
+    const PAGE_FIXTURES_DATA_FILE = 'content' . DIRECTORY_SEPARATOR . 'page' . DIRECTORY_SEPARATOR .
+    'page_fixtures_data.yaml';
 
     public function load(ObjectManager $manager): void
     {

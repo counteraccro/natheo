@@ -23,7 +23,7 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
 {
 
 
-    const USER_FIXTURES_DATA_FILE = 'user_fixtures_data.yaml';
+    const USER_FIXTURES_DATA_FILE = 'system' . DIRECTORY_SEPARATOR . 'user_fixtures_data.yaml';
 
     /**
      * @var UserPasswordHasherInterface

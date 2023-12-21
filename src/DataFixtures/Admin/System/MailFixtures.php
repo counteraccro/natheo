@@ -17,7 +17,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class MailFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
-    const MAIL_FIXTURES_DATA_FILE = 'mail_fixtures_data.yaml';
+    const MAIL_FIXTURES_DATA_FILE = 'system' . DIRECTORY_SEPARATOR . 'mail_fixtures_data.yaml';
 
     public function load(ObjectManager $manager): void
     {

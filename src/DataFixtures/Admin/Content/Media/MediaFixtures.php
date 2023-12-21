@@ -20,7 +20,8 @@ use Symfony\Component\Yaml\Yaml;
 
 class MediaFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
-    const MEDIA_FIXTURES_DATA_FILE = 'media_fixtures_data.yaml';
+    const MEDIA_FIXTURES_DATA_FILE = 'content' . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR .
+    'media_fixtures_data.yaml';
 
     private MediaService $mediaService;
 
@@ -43,8 +44,7 @@ class MediaFixtures extends AppFixtures implements FixtureGroupInterface, Ordere
             foreach ($data as $key => $value) {
                 switch ($key) {
                     case 'folder' :
-                        if(!empty($value))
-                        {
+                        if (!empty($value)) {
                             $media->setMediaFolder($this->getReference($value, MediaFolder::class));
                         }
                         break;

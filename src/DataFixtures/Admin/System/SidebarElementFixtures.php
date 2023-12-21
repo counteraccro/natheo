@@ -16,7 +16,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class SidebarElementFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
-    const SIDEBAR_ELEMENT_FIXTURES_DATA_FILE = 'sidebar_element_fixtures_data.yaml';
+    const SIDEBAR_ELEMENT_FIXTURES_DATA_FILE = 'system' . DIRECTORY_SEPARATOR . 'sidebar_element_fixtures_data.yaml';
 
     public function load(ObjectManager $manager): void
     {

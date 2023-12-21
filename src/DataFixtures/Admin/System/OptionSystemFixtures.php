@@ -17,7 +17,7 @@ use Symfony\Component\Yaml\Yaml;
 class OptionSystemFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
 
-    const OPTION_SYSTEM_FIXTURES_DATA_FILE = 'option_system_fixtures_data.yaml';
+    const OPTION_SYSTEM_FIXTURES_DATA_FILE = 'system' . DIRECTORY_SEPARATOR . 'option_system_fixtures_data.yaml';
 
     public function load(ObjectManager $manager): void
     {

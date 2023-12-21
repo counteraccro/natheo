@@ -31,7 +31,8 @@ class MediaFolderFixtures extends AppFixtures implements FixtureGroupInterface, 
         parent::__construct($params);
     }
 
-    const TAG_FIXTURES_DATA_FILE = 'media_folder_fixtures_data.yaml';
+    const TAG_FIXTURES_DATA_FILE = 'content' . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR .
+    'media_folder_fixtures_data.yaml';
 
     public function load(ObjectManager $manager): void
     {
