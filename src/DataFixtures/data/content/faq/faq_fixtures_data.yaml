@@ -1,0 +1,45 @@
+faq:
+  faq-1:
+    user: Aymeric
+    disabled: 0
+    faqTranslation:
+      fr:
+        locale: fr
+        titre: 'La FAQ de NatheoCMS'
+      en:
+        locale: en
+        titre: '[EN] La FAQ de NatheoCMS'
+      es:
+        locale: es
+        titre: '[ES] La FAQ de NatheoCMS'
+    faqCategory:
+      installation:
+        disabled: 0
+        renderOrder: 1
+        faqCategoryTranslation:
+          fr:
+            locale: fr
+            titre: 'Installation'
+          en:
+            locale: en
+            titre: '[EN] Installation'
+          es:
+            locale: es
+            titre: '[ES] Installation'
+        faqQuestion:
+          q-installation-1:
+            disabled: 0
+            renderOrder: 1
+            faqQuestionTranslation:
+              fr:
+                locale: fr
+                titre: 'Comment installer NatheoCMS'
+                answer: 'In sed quam ac arcu fringilla vulputate vitae id est. Donec eleifend purus vel tincidunt ultricies. Integer dapibus erat eu ultrices aliquam. Pellentesque ut porta purus. Vestibulum porttitor vestibulum ante, a aliquam dui pretium sit amet. Aenean vitae mattis arcu. Curabitur semper lorem sed lacinia sodales. Integer et finibus erat. Aenean lectus augue, ullamcorper at felis non, egestas elementum felis. Proin a tortor feugiat, sagittis mi ut, pellentesque libero. Ut in justo eget libero vehicula elementum a ut magna. In quis tristique leo.'
+              en:
+                locale: en
+                titre: '[EN] Comment installer NatheoCMS'
+                answer: '[EN] In sed quam ac arcu fringilla vulputate vitae id est. Donec eleifend purus vel tincidunt ultricies. Integer dapibus erat eu ultrices aliquam. Pellentesque ut porta purus. Vestibulum porttitor vestibulum ante, a aliquam dui pretium sit amet. Aenean vitae mattis arcu. Curabitur semper lorem sed lacinia sodales. Integer et finibus erat. Aenean lectus augue, ullamcorper at felis non, egestas elementum felis. Proin a tortor feugiat, sagittis mi ut, pellentesque libero. Ut in justo eget libero vehicula elementum a ut magna. In quis tristique leo.'
+              es:
+                locale: es
+                titre: '[ES] Comment installer NatheoCMS'
+                answer: '[EN] In sed quam ac arcu fringilla vulputate vitae id est. Donec eleifend purus vel tincidunt ultricies. Integer dapibus erat eu ultrices aliquam. Pellentesque ut porta purus. Vestibulum porttitor vestibulum ante, a aliquam dui pretium sit amet. Aenean vitae mattis arcu. Curabitur semper lorem sed lacinia sodales. Integer et finibus erat. Aenean lectus augue, ullamcorper at felis non, egestas elementum felis. Proin a tortor feugiat, sagittis mi ut, pellentesque libero. Ut in justo eget libero vehicula elementum a ut magna. In quis tristique leo.'
