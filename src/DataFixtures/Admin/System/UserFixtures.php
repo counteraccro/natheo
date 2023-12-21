@@ -89,19 +89,6 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
         $manager->flush();
     }
 
-    /**
-     * Set une valeur pour l'objet User
-     * @param string $key
-     * @param mixed $value
-     * @param User $user
-     * @return void
-     */
-    private function setData(string $key, mixed $value, User $user): void
-    {
-        $func = 'set' . ucfirst($key);
-        $user->$func($value);
-    }
-
     public static function getGroups(): array
     {
         return [self::GROUP_REGISTERED, self::GROUP_USER];

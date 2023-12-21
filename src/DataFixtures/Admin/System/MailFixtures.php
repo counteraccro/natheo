@@ -46,18 +46,6 @@ class MailFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
         $manager->flush();
     }
 
-    /**
-     * Set une valeur pour l'objet Email et EmaiTranslate
-     * @param string $key
-     * @param mixed $value
-     * @param mixed $entity
-     * @return void
-     */
-    private function setData(string $key, mixed $value, mixed $entity): void
-    {
-        $func = 'set' . ucfirst($key);
-        $entity->$func($value);
-    }
 
     public static function getGroups(): array
     {

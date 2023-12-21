@@ -49,19 +49,6 @@ class TagFixtures extends AppFixtures implements FixtureGroupInterface, OrderedF
         $manager->flush();
     }
 
-    /**
-     * Set une valeur pour l'objet Tag et TagTranslate
-     * @param string $key
-     * @param mixed $value
-     * @param mixed $entity
-     * @return void
-     */
-    private function setData(string $key, mixed $value, mixed $entity): void
-    {
-        $func = 'set' . ucfirst($key);
-        $entity->$func($value);
-    }
-
     public static function getGroups(): array
     {
         return [self::GROUP_TAG, self::GROUP_CONTENT];

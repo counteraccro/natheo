@@ -63,19 +63,6 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     }
 
     /**
-     * Set une valeur pour l'objet Page
-     * @param string $key
-     * @param mixed $value
-     * @param mixed $entity
-     * @return void
-     */
-    private function setData(string $key, mixed $value, mixed $entity): void
-    {
-        $func = 'set' . ucfirst($key);
-        $entity->$func($value);
-    }
-
-    /**
      * Ajoute des tags à une page
      * @param Page $page
      * @param array $tabTags

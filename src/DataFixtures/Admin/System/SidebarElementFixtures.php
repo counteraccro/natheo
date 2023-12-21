@@ -48,19 +48,6 @@ class SidebarElementFixtures extends AppFixtures implements FixtureGroupInterfac
         $manager->flush();
     }
 
-    /**
-     * Set une valeur pour l'objet SitebarElement
-     * @param string $key
-     * @param mixed $value
-     * @param SidebarElement $sidebarElement
-     * @return void
-     */
-    private function setData(string $key, mixed $value, SidebarElement $sidebarElement): void
-    {
-        $func = 'set' . ucfirst($key);
-        $sidebarElement->$func($value);
-    }
-
     public static function getGroups(): array
     {
         return [self::GROUP_DEVTOOLS, self::GROUP_SIDEBAR_ELEMENT];
