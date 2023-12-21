@@ -16,7 +16,7 @@ class AppFixtures extends Fixture
      * Chemin d'accès aux données de fixtures
      * @var string
      */
-    protected string $pathDataFixtures = './data/';
+    protected string $pathDataFixtures = '';
 
     /**
      * Lié à toute les données user
@@ -73,6 +73,19 @@ class AppFixtures extends Fixture
         $kernel = $params->get('kernel.project_dir');
         $this->pathDataFixtures = $kernel . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR .
             'DataFixtures' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
+    }
+
+    /**
+     * Set une valeur $value pour l'objet $entity en fonction de la clé $key
+     * @param string $key
+     * @param mixed $value
+     * @param mixed $entity
+     * @return void
+     */
+    protected function setData(string $key, mixed $value, mixed $entity): void
+    {
+        $func = 'set' . ucfirst($key);
+        $entity->$func($value);
     }
 
 
