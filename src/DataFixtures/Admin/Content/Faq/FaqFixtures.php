@@ -3,7 +3,13 @@
 namespace App\DataFixtures\Admin\Content\Faq;
 
 use App\DataFixtures\AppFixtures;
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\Entity\Admin\Content\Faq\Faq;
+use App\Entity\Admin\Content\Faq\FaqCategory;
+use App\Entity\Admin\Content\Faq\FaqCategoryTranslation;
+use App\Entity\Admin\Content\Faq\FaqQuestion;
+use App\Entity\Admin\Content\Faq\FaqQuestionTranslation;
+use App\Entity\Admin\Content\Faq\FaqTranslation;
+use App\Entity\Admin\System\User;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -20,10 +26,123 @@ class FaqFixtures extends AppFixtures implements FixtureGroupInterface, OrderedF
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::FAQ_FIXTURES_DATA_FILE);
 
-        // $product = new Product();
-        // $manager->persist($product);
-
+        foreach ($data['faq'] as $faqData) {
+            $faq = new Faq();
+            foreach ($faqData as $key => $value) {
+                switch ($key) {
+                    case "user" :
+                        $faq->setUser($this->getReference($value, User::class));
+                        break;
+                    case "faqTranslation":
+                        foreach ($value as $faqTrans) {
+                            $faq->addFaqTranslation($this->createFaqTranslation($faqTrans));
+                        }
+                        break;
+                    case "faqCategory" :
+                        foreach ($value as $faqCat) {
+                            $faq->addFaqCategory($this->createFaqCategory($faqCat));
+                        }
+                        break;
+                    default:
+                        $this->setData($key, $value, $faq);
+                }
+            }
+            $manager->persist($faq);
+        }
         $manager->flush();
+    }
+
+    /**
+     * Création d'une faqTranslation
+     * @param array $data
+     * @return FaqTranslation
+     */
+    private function createFaqTranslation(array $data): FaqTranslation
+    {
+        $faqTranslation = new FaqTranslation();
+        foreach ($data as $key => $value) {
+            $this->setData($key, $value, $faqTranslation);
+        }
+        return $faqTranslation;
+    }
+
+    /**
+     * Création d'une FAQCatégorie
+     * @param array $data
+     * @return FaqCategory
+     */
+    private function createFaqCategory(array $data): FaqCategory
+    {
+
+        $faqCategory = new FaqCategory();
+        foreach ($data as $key => $value) {
+
+            switch ($key) {
+                case "faqCategoryTranslation" :
+                    foreach ($value as $faqCatTrans) {
+                        $faqCategory->addFaqCategoryTranslation($this->createFaqCategoryTranslation($faqCatTrans));
+                    }
+                    break;
+                case "faqQuestion" :
+                    foreach ($value as $faqQuestion) {
+                        $faqCategory->addFaqQuestion($this->createFaqQuestion($faqQuestion));
+                    }
+                    break;
+                default:
+                    $this->setData($key, $value, $faqCategory);
+            }
+        }
+        return $faqCategory;
+    }
+
+    /**
+     * Création d'une FaqCategoryTranslation
+     * @param array $data
+     * @return FaqCategoryTranslation
+     */
+    private function createFaqCategoryTranslation(array $data): FaqCategoryTranslation
+    {
+        $faqCategoryTranslation = new FaqCategoryTranslation();
+        foreach ($data as $key => $value) {
+            $this->setData($key, $value, $faqCategoryTranslation);
+        }
+        return $faqCategoryTranslation;
+    }
+
+    /**
+     * Création d'une FaqQuestion
+     * @param array $data
+     * @return FaqQuestion
+     */
+    private function createFaqQuestion(array $data): FaqQuestion
+    {
+        $faqQuestion = new FaqQuestion();
+        foreach ($data as $key => $value) {
+            if ($key === 'faqQuestionTranslation') {
+                foreach ($value as $faqQuestionTranslation) {
+                    $faqQuestion->addFaqQuestionTranslation(
+                        $this->createFaqQuestionTranslation($faqQuestionTranslation));
+                }
+            } else {
+                $this->setData($key, $value, $faqQuestion);
+            }
+
+        }
+        return $faqQuestion;
+    }
+
+    /**
+     * Création d'une FaqQuestionTranslation
+     * @param array $data
+     * @return FaqQuestionTranslation
+     */
+    private function createFaqQuestionTranslation(array $data): FaqQuestionTranslation
+    {
+        $faqQuestionTranslation = new FaqQuestionTranslation();
+        foreach ($data as $key => $value) {
+            $this->setData($key, $value, $faqQuestionTranslation);
+        }
+        return $faqQuestionTranslation;
     }
 
     public static function getGroups(): array
@@ -31,7 +150,7 @@ class FaqFixtures extends AppFixtures implements FixtureGroupInterface, OrderedF
         return [self::GROUP_FAQ, self::GROUP_CONTENT];
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 204;
     }
