@@ -32,10 +32,10 @@ class Faq
     #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updateAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'faq', targetEntity: FaqTranslation::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'faq', targetEntity: FaqTranslation::class,  cascade: ['persist'],  orphanRemoval: true)]
     private Collection $faqTranslations;
 
-    #[ORM\OneToMany(mappedBy: 'faq', targetEntity: FaqCategory::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'faq', targetEntity: FaqCategory::class,  cascade: ['persist'],  orphanRemoval: true)]
     private Collection $faqCategories;
 
     public function __construct()

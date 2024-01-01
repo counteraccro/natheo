@@ -26,10 +26,12 @@ class FaqCategory
     #[ORM\Column(name: 'render_order')]
     private ?int $renderOrder = null;
 
-    #[ORM\OneToMany(mappedBy: 'faqCategory', targetEntity: FaqCategoryTranslation::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'faqCategory', targetEntity: FaqCategoryTranslation::class,
+        cascade: ['persist'], orphanRemoval: true)]
     private Collection $faqCategoryTranslations;
 
-    #[ORM\OneToMany(mappedBy: 'faqCategory', targetEntity: FaqQuestion::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'faqCategory', targetEntity: FaqQuestion::class,
+        cascade: ['persist'], orphanRemoval: true)]
     private Collection $faqQuestions;
 
     public function __construct()
