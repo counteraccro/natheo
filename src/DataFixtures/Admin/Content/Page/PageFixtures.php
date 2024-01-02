@@ -37,7 +37,7 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                         break;
                     case "pageTranslation":
                         foreach ($value as $pageTrans) {
-                            $page->addPageTranslation($this->createPageTranslation($pageTrans));
+                            $page->addPageTranslation($this->populateEntity($pageTrans, new PageTranslation()));
                         }
                         break;
                     case "pageContent":
@@ -47,18 +47,16 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                         break;
                     case "pageStatistique":
                         foreach ($value as $pageStat) {
-                            $page->addPageStatistique($this->createPageStatistique($pageStat));
+                            $page->addPageStatistique($this->populateEntity($pageStat, new PageStatistique()));
                         }
                         break;
                     default:
                         $this->setData($key, $value, $page);
                 }
             }
-
             $manager->persist($page);
             $this->addReference($ref, $page);
         }
-
         $manager->flush();
     }
 
@@ -76,20 +74,6 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     }
 
     /**
-     * Créer une nouvelle pageTranslation
-     * @param array $data
-     * @return PageTranslation
-     */
-    private function createPageTranslation(array $data): PageTranslation
-    {
-        $pageTranslation = new PageTranslation();
-        foreach ($data as $key => $value) {
-            $this->setData($key, $value, $pageTranslation);
-        }
-        return $pageTranslation;
-    }
-
-    /**
      * Permet de créer un nouveau PageContent
      * @param array $data
      * @return PageContent
@@ -101,44 +85,15 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
 
             if ($key === 'pageContentTranslation') {
                 foreach ($value as $pageContTrans) {
-                    $pageContent->addPageContentTranslation($this->createPageContentTranslation($pageContTrans));
+                    $pageContent->addPageContentTranslation($this->populateEntity(
+                        $pageContTrans, new PageContentTranslation()));
                 }
             } else {
                 $this->setData($key, $value, $pageContent);
             }
-
         }
 
         return $pageContent;
-    }
-
-    /**
-     * Permet de créer un nouveau PageContentTranslation
-     * @param array $data
-     * @return PageContentTranslation
-     */
-    private function createPageContentTranslation(array $data): PageContentTranslation
-    {
-        $pageContentTranslation = new PageContentTranslation();
-        foreach ($data as $key => $value) {
-            $this->setData($key, $value, $pageContentTranslation);
-        }
-
-        return $pageContentTranslation;
-    }
-
-    /**
-     * Créer une nouvelle pageStatistique
-     * @param array $data
-     * @return PageStatistique
-     */
-    private function createPageStatistique(array $data): PageStatistique
-    {
-        $pageStatistique = new PageStatistique();
-        foreach ($data as $key => $value) {
-            $this->setData($key, $value, $pageStatistique);
-        }
-        return $pageStatistique;
     }
 
     public static function getGroups(): array

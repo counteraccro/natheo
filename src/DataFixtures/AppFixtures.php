@@ -112,7 +112,7 @@ class AppFixtures extends Fixture
     }
 
     /**
-     * Peuple une entité avec les $data
+     * Peuple une entité avec les $data et renvoi l'entité
      * @param array $data
      * @param mixed $entity
      * @return mixed

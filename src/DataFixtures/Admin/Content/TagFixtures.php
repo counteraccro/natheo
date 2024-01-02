@@ -27,17 +27,12 @@ class TagFixtures extends AppFixtures implements FixtureGroupInterface, OrderedF
     public function load(ObjectManager $manager): void
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::TAG_FIXTURES_DATA_FILE);
-        foreach ($data['tag'] as $ref => $data) {
+        foreach ($data['tag'] as $ref => $dataTag) {
             $tag = new Tag();
-            foreach ($data as $key => $value) {
+            foreach ($dataTag as $key => $value) {
                 if ($key === 'translate') {
                     foreach ($value as $translate) {
-                        $tagTranslate = new TagTranslation();
-                        foreach ($translate as $keyChild => $valueChild) {
-                            $this->setData($keyChild, $valueChild, $tagTranslate);
-                        }
-                        $tagTranslate->setTag($tag);
-                        $manager->persist($tagTranslate);
+                        $tag->addTagTranslation($this->populateEntity($translate, new TagTranslation()));
                     }
                 } else {
                     $this->setData($key, $value, $tag);

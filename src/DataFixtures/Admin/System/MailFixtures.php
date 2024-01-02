@@ -22,17 +22,12 @@ class MailFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     public function load(ObjectManager $manager): void
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::MAIL_FIXTURES_DATA_FILE);
-        foreach ($data['mail'] as $id => $data) {
+        foreach ($data['mail'] as $dataMail) {
             $mail = new Mail();
-            foreach ($data as $key => $value) {
+            foreach ($dataMail as $key => $value) {
                 if ($key === 'translate') {
                     foreach ($value as $translate) {
-                        $mailTranslate = new MailTranslation();
-                        foreach ($translate as $keyChild => $valueChild) {
-                            $this->setData($keyChild, $valueChild, $mailTranslate);
-                        }
-                        $mailTranslate->setMail($mail);
-                        $manager->persist($mailTranslate);
+                        $mail->addMailTranslation($this->populateEntity($translate, new MailTranslation()));
                     }
                 } elseif ($key === 'keyWords') {
                     $keyWord = new KeyWord($value);
