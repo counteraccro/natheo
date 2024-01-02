@@ -4,6 +4,7 @@
  * @version 1.0
  * Class globale pour les fixtures
  */
+
 namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -108,6 +109,20 @@ class AppFixtures extends Fixture
     {
         $func = 'set' . ucfirst($key);
         $entity->$func($value);
+    }
+
+    /**
+     * Peuple une entité avec les $data
+     * @param array $data
+     * @param mixed $entity
+     * @return mixed
+     */
+    public function populateEntity(array $data, mixed $entity): mixed
+    {
+        foreach ($data as $key => $value) {
+            $this->setData($key, $value, $entity);
+        }
+        return $entity;
     }
 
 
