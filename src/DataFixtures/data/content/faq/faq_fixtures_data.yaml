@@ -12,6 +12,13 @@ faq:
       es:
         locale: es
         title: '[ES] La FAQ de NatheoCMS'
+    faqStatistique:
+      FAQ_STAT_NB_CATEGORIES:
+        key: FAQ_STAT_NB_CATEGORIES
+        value: 2
+      FAQ_STAT_NB_QUESTIONS:
+        key: FAQ_STAT_NB_QUESTIONS
+        value: 3
     faqCategory:
       installation:
         disabled: 0

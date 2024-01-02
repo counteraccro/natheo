@@ -8,6 +8,7 @@ use App\Entity\Admin\Content\Faq\FaqCategory;
 use App\Entity\Admin\Content\Faq\FaqCategoryTranslation;
 use App\Entity\Admin\Content\Faq\FaqQuestion;
 use App\Entity\Admin\Content\Faq\FaqQuestionTranslation;
+use App\Entity\Admin\Content\Faq\FaqStatistique;
 use App\Entity\Admin\Content\Faq\FaqTranslation;
 use App\Entity\Admin\System\User;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
@@ -41,6 +42,11 @@ class FaqFixtures extends AppFixtures implements FixtureGroupInterface, OrderedF
                     case "faqCategory" :
                         foreach ($value as $faqCat) {
                             $faq->addFaqCategory($this->createFaqCategory($faqCat));
+                        }
+                        break;
+                    case "faqStatistique" :
+                        foreach ($value as $faqCat) {
+                            $faq->addFaqStatistique($this->createFaqStatistique($faqCat));
                         }
                         break;
                     default:
@@ -143,6 +149,20 @@ class FaqFixtures extends AppFixtures implements FixtureGroupInterface, OrderedF
             $this->setData($key, $value, $faqQuestionTranslation);
         }
         return $faqQuestionTranslation;
+    }
+
+    /**
+     * Création d'une FaqStatistique
+     * @param array $data
+     * @return FaqStatistique
+     */
+    private function createFaqStatistique(array $data): FaqStatistique
+    {
+        $faqStatistique = new FaqStatistique();
+        foreach ($data as $key => $value) {
+            $this->setData($key, $value, $faqStatistique);
+        }
+        return $faqStatistique;
     }
 
     public static function getGroups(): array
