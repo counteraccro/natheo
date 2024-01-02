@@ -38,7 +38,7 @@ class Faq
     #[ORM\OneToMany(mappedBy: 'faq', targetEntity: FaqCategory::class,  cascade: ['persist'],  orphanRemoval: true)]
     private Collection $faqCategories;
 
-    #[ORM\OneToMany(mappedBy: 'faq', targetEntity: FaqStatistique::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'faq', targetEntity: FaqStatistique::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $faqStatistiques;
 
     public function __construct()

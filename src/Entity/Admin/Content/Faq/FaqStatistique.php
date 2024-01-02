@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FaqStatistiqueRepository::class)]
 #[ORM\Table(name: 'natheo.faq_statistique')]
+#[ORM\HasLifecycleCallbacks]
 class FaqStatistique
 {
     #[ORM\Id]
@@ -25,10 +26,10 @@ class FaqStatistique
     #[ORM\Column(length: 255)]
     private ?string $value = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updateAt = null;
 
     #[ORM\PrePersist]
@@ -90,9 +91,9 @@ class FaqStatistique
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): static
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
     {
-        $this->createdAt = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
