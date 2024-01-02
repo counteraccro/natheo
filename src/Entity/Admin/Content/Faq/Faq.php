@@ -38,10 +38,14 @@ class Faq
     #[ORM\OneToMany(mappedBy: 'faq', targetEntity: FaqCategory::class,  cascade: ['persist'],  orphanRemoval: true)]
     private Collection $faqCategories;
 
+    #[ORM\OneToMany(mappedBy: 'faq', targetEntity: FaqStatistique::class, orphanRemoval: true)]
+    private Collection $faqStatistiques;
+
     public function __construct()
     {
         $this->faqTranslations = new ArrayCollection();
         $this->faqCategories = new ArrayCollection();
+        $this->faqStatistiques = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -164,6 +168,36 @@ class Faq
             // set the owning side to null (unless already changed)
             if ($faqCategory->getFaq() === $this) {
                 $faqCategory->setFaq(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FaqStatistique>
+     */
+    public function getFaqStatistiques(): Collection
+    {
+        return $this->faqStatistiques;
+    }
+
+    public function addFaqStatistique(FaqStatistique $faqStatistique): static
+    {
+        if (!$this->faqStatistiques->contains($faqStatistique)) {
+            $this->faqStatistiques->add($faqStatistique);
+            $faqStatistique->setFaq($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFaqStatistique(FaqStatistique $faqStatistique): static
+    {
+        if ($this->faqStatistiques->removeElement($faqStatistique)) {
+            // set the owning side to null (unless already changed)
+            if ($faqStatistique->getFaq() === $this) {
+                $faqStatistique->setFaq(null);
             }
         }
 
