@@ -1,0 +1,37 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+
+{% if id is same as null %}
+    {% set title = 'faq.add.page_title' | trans({}, 'faq') %}
+    {% set titleH1 = 'faq.add.page_title_h1' | trans({}, 'faq') %}
+    {% set description = 'faq.add.description' | trans({}, 'faq') %}
+{% else %}
+    {% set title = 'faq.update.page_title' | trans({'id' : id}, 'faq') %}
+    {% set titleH1 = 'faq.update.page_title_h1' | trans({}, 'faq') %}
+    {% set description = 'faq.update.description' | trans({}, 'faq') %}
+{% endif %}
+
+ {% block title %}
+     {{ title }}
+ {% endblock %}
+
+{% block body %}
+
+    <h1>{{ titleH1 }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    <p>
+        {{ description }}
+    </p>
+
+    <!--<div {{ vue_component('Admin/Content/Page/Page', {
+        'id' : id,
+        'urls' : urls,
+        'translate' : translate,
+        'locales' : locales,
+        'page_datas' : datas
+    }) }}>
+    </div>-->
+
+{% endblock %}
