@@ -72,7 +72,7 @@ sidebarElement:
       - se_faq:
           icon: 'bi-question-circle-fill'
           label: 'global.faq'
-          route: '#'
+          route: 'admin_faq_index'
           disabled: false
           parent: se_content
           role: 'ROLE_CONTRIBUTEUR'
