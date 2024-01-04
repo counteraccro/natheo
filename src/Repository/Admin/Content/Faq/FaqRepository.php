@@ -4,6 +4,7 @@ namespace App\Repository\Admin\Content\Faq;
 
 use App\Entity\Admin\Content\Faq\Faq;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,28 +22,22 @@ class FaqRepository extends ServiceEntityRepository
         parent::__construct($registry, Faq::class);
     }
 
-//    /**
-//     * @return Faq[] Returns an array of Faq objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * Retourne une liste de user Paginé
+     * @param int $page
+     * @param int $limit
+     * @return Paginator
+     */
+    public function getAllPaginate(int $page, int $limit): Paginator
+    {
+        $query = $this->createQueryBuilder('f')
+            ->orderBy('f.id', 'ASC');
 
-//    public function findOneBySomeField($value): ?Faq
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
+
+    }
 }
