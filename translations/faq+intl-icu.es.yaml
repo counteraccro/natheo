@@ -13,3 +13,9 @@ faq.index.page_title: __faq.index.page_title
 faq.index.page_title_h1: __faq.index.page_title_h1
 faq.index.btn.new: __faq.index.btn.new
 faq.index.description: __faq.index.description
+faq.grid.id: __faq.grid.id
+faq.grid.title: __faq.grid.title
+faq.grid.nb_questions: __faq.grid.nb_questions
+faq.grid.update_at: __faq.grid.update_at
+faq.confirm.disabled.msg: __faq.confirm.disabled.msg
+faq.confirm.delete.msg: __faq.confirm.delete.msg
