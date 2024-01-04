@@ -203,4 +203,28 @@ class Faq
 
         return $this;
     }
+
+    /**
+     * Retourne la traduction en fonction de la locale
+     * @param string $locale
+     * @return FaqTranslation
+     */
+    public function getFaqTranslationByLocale(string $locale): FaqTranslation
+    {
+        return $this->getFaqTranslations()->filter(function (FaqTranslation $faqTranslation) use ($locale) {
+            return $faqTranslation->getLocale() === $locale;
+        })->first();
+    }
+
+    /**
+     * Retourne une statistique en fonction de sa clé
+     * @param string $key
+     * @return FaqStatistique;
+     */
+    public function getFaqStatistiqueByKey(string $key): FaqStatistique
+    {
+        return $this->getFaqStatistiques()->filter(function (FaqStatistique $faqStatistique) use ($key) {
+            return $faqStatistique->getKey() === $key;
+        })->first();
+    }
 }
