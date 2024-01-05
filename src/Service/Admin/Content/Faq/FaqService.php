@@ -13,6 +13,7 @@ use App\Service\Admin\GridService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\AppService;
 use App\Utils\Content\Faq\FaqConst;
+use App\Utils\Content\Faq\FaqStatistiqueKey;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -91,7 +92,7 @@ class FaqService extends AppAdminService
                 $this->translator->trans('faq.grid.id', domain: 'faq') => $element->getId() . ' ' . $isDisabled,
                 $this->translator->trans('faq.grid.title', domain: 'faq') => $titre,
                 $this->translator->trans('faq.grid.nb_questions', domain: 'faq') =>
-                    $element->getFaqStatistiqueByKey(FaqConst::FAQ_STAT_NB_QUESTIONS)->getValue(),
+                    $element->getFaqStatistiqueByKey(FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS)->getValue(),
                 $this->translator->trans('faq.grid.update_at', domain: 'faq') => $element
                     ->getUpdateAt()->format('d/m/y H:i'),
                 GridService::KEY_ACTION => json_encode($action),
