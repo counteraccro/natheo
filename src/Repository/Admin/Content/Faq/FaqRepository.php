@@ -31,6 +31,15 @@ class FaqRepository extends ServiceEntityRepository
         }
     }
 
+    public function remove(Faq $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
     /**
      * Retourne une liste de user Paginé
      * @param int $page

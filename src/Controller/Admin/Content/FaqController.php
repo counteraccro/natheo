@@ -133,6 +133,13 @@ class FaqController extends AppAdminController
         TranslatorInterface $translator,
         Request             $request): JsonResponse
     {
-        return $this->json(['type' => 'success', 'msg' => '']);
+        $titre = $faq->getFaqTranslationByLocale($request->getLocale())->getTitle();
+        $faqService->remove($faq);
+
+        return $this->json(['type' => 'success', 'msg' => $translator->trans(
+            'faq.remove.success',
+            ['label' => $titre],
+            domain: 'faq'
+        )]);
     }
 }
