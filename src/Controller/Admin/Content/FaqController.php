@@ -100,11 +100,22 @@ class FaqController extends AppAdminController
     #[Route('/ajax/disabled/{id}', name: 'disabled')]
     public function updateDisabled(
         Faq                 $faq,
-        FaqService $faqService,
+        FaqService          $faqService,
         TranslatorInterface $translator,
         Request             $request): JsonResponse
     {
-        return $this->json(['type' => 'success', 'msg' => '']);
+
+        $faq->setDisabled(!$faq->isDisabled());
+        $faqService->save($faq);
+
+        $faqTranslate = $faq->getFaqTranslationByLocale($request->getLocale());
+
+        $msg = $translator->trans('faq.success.no.disabled', ['label' => $faqTranslate->getTitle()], 'faq');
+        if ($faq->isDisabled()) {
+            $msg = $translator->trans('faq.success.disabled', ['label' => $faqTranslate->getTitle()], 'faq');
+        }
+
+        return $this->json(['type' => 'success', 'msg' => $msg]);
     }
 
     /**
@@ -118,7 +129,7 @@ class FaqController extends AppAdminController
     #[Route('/ajax/delete/{id}', name: 'delete')]
     public function delete(
         Faq                 $faq,
-        FaqService $faqService,
+        FaqService          $faqService,
         TranslatorInterface $translator,
         Request             $request): JsonResponse
     {
