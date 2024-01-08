@@ -15,7 +15,10 @@ faq.index.btn.new: 'Nouvelle Faq'
 faq.index.description: 'Gérer les Faqs de votre site web'
 faq.grid.id: '#'
 faq.grid.title: Titre
-faq.grid.nb_questions: "Nombre de questions"
-faq.grid.update_at: "Dernière modification"
+faq.grid.nb_questions: 'Nombre de questions'
+faq.grid.update_at: 'Dernière modification'
 faq.confirm.disabled.msg: 'Confirmez vous la désactivation de la faq <b>{label}</b>, cette faq deviendra inaccessible'
 faq.confirm.delete.msg: 'Confirmez vous la suppression de la faq <b>{label}</b>, cette action est définitive'
+faq.success.no.disabled: 'La faq <b>{label}</b> à été restaurée avec succès'
+faq.success.disabled: 'La faq <b>{label}</b> à été désactivée avec succès'
+faq.remove.success: 'La faq <b>{label}</b> à été supprimée avec succès'

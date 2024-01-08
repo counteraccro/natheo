@@ -19,3 +19,6 @@ faq.grid.nb_questions: __faq.grid.nb_questions
 faq.grid.update_at: __faq.grid.update_at
 faq.confirm.disabled.msg: __faq.confirm.disabled.msg
 faq.confirm.delete.msg: __faq.confirm.delete.msg
+faq.success.no.disabled: __faq.success.no.disabled
+faq.success.disabled: __faq.success.disabled
+faq.remove.success: __faq.remove.success
