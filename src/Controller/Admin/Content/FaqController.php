@@ -6,12 +6,14 @@ use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Faq\Faq;
 use App\Service\Admin\Content\Faq\FaqService;
 use App\Utils\Breadcrumb;
+use App\Utils\Content\Faq\FaqFactory;
 use App\Utils\System\Options\OptionUserKey;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/faq', name: 'admin_faq_', requirements: ['_locale' => '%app.supported_locales%'])]
@@ -84,7 +86,7 @@ class FaqController extends AppAdminController
             'datas' => [
             ],
             'urls' => [
-                //'load_tab_content' => $this->generateUrl('admin_page_load_tab_content'),
+                'load_faq' => $this->generateUrl('admin_faq_load_faq'),
             ]
         ]);
     }
@@ -141,5 +143,33 @@ class FaqController extends AppAdminController
             ['label' => $titre],
             domain: 'faq'
         )]);
+    }
+
+    /**
+     * Charge une FAQ en fonction de son id
+     * Si pas d'Id, renvoi une nouvelle FAQ
+     * @param Request $request
+     * @param FaqService $faqService
+     * @return JsonResponse
+     * @throws ExceptionInterface
+     */
+    #[Route('/ajax/load-faq', name: 'load_faq')]
+    public function loadFaq(Request $request, FaqService $faqService): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $locales = $faqService->getLocales();
+
+        if ($data['id'] === null) {
+            $faqFactory = new FaqFactory($locales['locales']);
+            $faq = $faqFactory->create()->getFaq();
+        } else {
+            $faq = $faqService->findOneById(Faq::class, $data['id']);
+        }
+        $faqArray = $faqService->convertEntityToArray($faq, ['createdAt', 'updateAt', 'user']);
+
+        $faq = [];
+        return $this->json([
+            'faq' => $faqArray
+        ]);
     }
 }

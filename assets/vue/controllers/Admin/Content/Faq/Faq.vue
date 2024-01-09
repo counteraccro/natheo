@@ -20,22 +20,21 @@ export default {
     }
   },
   mounted() {
-    this.loadData();
+    this.loadFaq();
   },
   methods: {
 
     /**
-     * Chargement des données
+     * Chargement des données FAQ
      */
-    loadData() {
-      /*axios.post(this.url_select, {
-        'time': this.time
+    loadFaq() {
+      axios.post(this.urls.load_faq, {
+        'id': this.id
       }).then((response) => {
-        this.select = response.data.files;
-        this.trans = response.data.trans;
+        console.log(response.data);
       }).catch((error) => {
         console.log(error);
-      }).finally();*/
+      }).finally();
     },
   }
 }
