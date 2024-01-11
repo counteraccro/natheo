@@ -17,6 +17,9 @@ export default {
   },
   data() {
     return {
+      faq: Object,
+      currentLocale: this.locales.current,
+      loading: false,
     }
   },
   mounted() {
@@ -28,19 +31,76 @@ export default {
      * Chargement des données FAQ
      */
     loadFaq() {
+      this.loading = true;
       axios.post(this.urls.load_faq, {
         'id': this.id
       }).then((response) => {
-        console.log(response.data);
+        this.faq = response.data.faq;
       }).catch((error) => {
         console.log(error);
-      }).finally();
+      }).finally(() => {
+        this.loading = false;
+      });
     },
+
+    /**
+     * Permet de changer la locale pour la création/édition d'une page
+     * @param event
+     */
+    switchLocale(event) {
+      this.currentLocale = event.target.value;
+    },
+
+    /**
+     * Retourne la valeur traduite en fonction de la locale pour le tableau d'élément
+     * @param elements
+     * @param property
+     * @returns {string}
+     */
+    getValueByLocale(elements, property) {
+
+      if (elements === undefined) {
+        return "";
+      }
+
+      let str = '';
+      elements.forEach((item) => {
+        if (item.locale === this.currentLocale) {
+          str = item[property];
+          return true;
+        }
+      })
+      return str
+    }
   }
 }
 </script>
 
 <template>
-  <div>Template FAQ</div>
+  <div id="block-faq" :class="this.loading === true ? 'block-grid' : ''">
+
+    <div v-if="this.loading" class="overlay">
+      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
+        <div class="spinner-border text-primary" role="status"></div>
+        <span class="txt-overlay">{{ this.translate.loading }}</span>
+      </div>
+    </div>
+
+    <select id="select-language" class="form-select float-end w-25" @change="this.switchLocale($event)">
+      <option value="" selected>{{ this.translate.select_locale }}</option>
+      <option v-for="(language, key) in this.locales.localesTranslate" :value="key"
+          :selected="key===this.currentLocale">{{ language }}
+      </option>
+    </select>
+
+    <h1 v-html="this.getValueByLocale(this.faq.faqTranslations, 'title')"></h1>
+
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    Blsldlsdsds s ds de fr gt fezdf er fv fg re ez d za e t r t ez fz f ezf ze fe zf
+    Blsldlsdsds s ds de fr gt fezdf er fv fg re ez d za e t r t ez fz f ezf ze fe zf
+    Blsldlsdsds s ds de fr gt fezdf er fv fg re ez d za e t r t ez fz f ezf ze fe zf
+    Blsldlsdsds s ds de fr gt fezdf er fv fg re ez d za e t r t ez fz f ezf ze fe zf Blsldlsdsds s ds de fr gt fezdf er fv fg re ez d za e t r t ez fz f ezf ze fe zf
+    Blsldlsdsds s ds de fr gt fezdf er fv fg re ez d za e t r t ez fz f ezf ze fe zf
+  </div>
 
 </template>

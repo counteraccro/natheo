@@ -169,4 +169,16 @@ class FaqService extends AppAdminService
 
         return $actions;
     }
+
+    /**
+     * Retourne les traductions pour la création / édition d'une FAQ
+     * @return array
+     */
+    public function getFaqTranslation(): array
+    {
+        return [
+            'select_locale' => $this->translator->trans('faq.select.locale', domain: 'faq'),
+            'loading' => $this->translator->trans('faq.select.loading', domain: 'faq'),
+            ];
+    }
 }

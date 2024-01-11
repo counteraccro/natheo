@@ -59,7 +59,8 @@ class FaqController extends AppAdminController
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
     public function add(
-        int $id = null
+        FaqService $faqService,
+        int $id = null,
     ): Response
     {
         $breadcrumbTitle = 'faq.update.page_title_h1';
@@ -75,8 +76,8 @@ class FaqController extends AppAdminController
             ]
         ];
 
-        $translate = '';
-        $locales = '';//$pageService->getLocales();
+        $translate = $faqService->getFaqTranslation();
+        $locales = $faqService->getLocales();
 
         return $this->render('admin/content/faq/add_update.html.twig', [
             'breadcrumb' => $breadcrumb,
