@@ -32,6 +32,7 @@ class FaqCategory
 
     #[ORM\OneToMany(mappedBy: 'faqCategory', targetEntity: FaqQuestion::class,
         cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['renderOrder' => 'asc'])]
     private Collection $faqQuestions;
 
     public function __construct()

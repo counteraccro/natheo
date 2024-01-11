@@ -36,6 +36,7 @@ class Faq
     private Collection $faqTranslations;
 
     #[ORM\OneToMany(mappedBy: 'faq', targetEntity: FaqCategory::class,  cascade: ['persist'],  orphanRemoval: true)]
+    #[ORM\OrderBy(['renderOrder' => 'asc'])]
     private Collection $faqCategories;
 
     #[ORM\OneToMany(mappedBy: 'faq', targetEntity: FaqStatistique::class, cascade: ['persist'], orphanRemoval: true)]
