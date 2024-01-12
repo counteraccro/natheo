@@ -5,10 +5,13 @@
  * Formulaire de création / édition d'une FAQ
  */
 import axios from "axios";
+import FieldEditor from "../../../../Components/Global/FieldEditor.vue";
 
 export default {
   name: "Faq",
-  components: {},
+  components: {
+    FieldEditor
+  },
   props: {
     urls: Object,
     translate: Object,
@@ -95,12 +98,11 @@ export default {
 
     <h1 v-html="this.getValueByLocale(this.faq.faqTranslations, 'title')"></h1>
 
-    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
-    Blsldlsdsds s ds de fr gt fezdf er fv fg re ez d za e t r t ez fz f ezf ze fe zf
-    Blsldlsdsds s ds de fr gt fezdf er fv fg re ez d za e t r t ez fz f ezf ze fe zf
-    Blsldlsdsds s ds de fr gt fezdf er fv fg re ez d za e t r t ez fz f ezf ze fe zf
-    Blsldlsdsds s ds de fr gt fezdf er fv fg re ez d za e t r t ez fz f ezf ze fe zf Blsldlsdsds s ds de fr gt fezdf er fv fg re ez d za e t r t ez fz f ezf ze fe zf
-    Blsldlsdsds s ds de fr gt fezdf er fv fg re ez d za e t r t ez fz f ezf ze fe zf
+    <FieldEditor
+        id="22"
+        :value="this.getValueByLocale(this.faq.faqTranslations, 'title')"
+        balise="h1"
+    />
   </div>
 
 </template>
