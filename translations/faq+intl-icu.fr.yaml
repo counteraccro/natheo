@@ -22,3 +22,5 @@ faq.confirm.delete.msg: 'Confirmez vous la suppression de la faq <b>{label}</b>,
 faq.success.no.disabled: 'La faq <b>{label}</b> à été restaurée avec succès'
 faq.success.disabled: 'La faq <b>{label}</b> à été désactivée avec succès'
 faq.remove.success: 'La faq <b>{label}</b> à été supprimée avec succès'
+faq.select.locale: 'Sélectionner la langue'
+faq.select.loading: 'Chargement des données de la FAQ'
