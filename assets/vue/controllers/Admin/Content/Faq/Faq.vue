@@ -24,6 +24,7 @@ export default {
       currentLocale: this.locales.current,
       loading: false,
       loadData: false,
+      keyVal: 1
     }
   },
   mounted() {
@@ -54,6 +55,7 @@ export default {
      */
     switchLocale(event) {
       this.currentLocale = event.target.value;
+      this.keyVal += 1;
     },
 
     /**
@@ -101,19 +103,19 @@ export default {
     <div v-if="this.loadData">
       <h1 v-html="this.getValueByLocale(this.faq.faqTranslations, 'title')"></h1>
 
-      <FieldEditor key="22"
+      <FieldEditor :key="this.keyVal"
           id="22"
           p-value="tto"
           balise="h1"
       />
 
-      <FieldEditor key="222"
+      <FieldEditor :key="this.keyVal"
           id="222"
           :p-value="this.getValueByLocale(this.faq.faqTranslations, 'title')"
           balise="h3"
       />
 
-      <FieldEditor key="2222"
+      <FieldEditor :key="this.keyVal"
           id="2222"
           :p-value="this.getValueByLocale(this.faq.faqTranslations, 'title')"
           balise="p"
