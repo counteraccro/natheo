@@ -10,13 +10,14 @@ export default {
   name: "FieldEditor",
   components: {},
   props: {
-    value: String,
+    pValue: String,
     balise: String,
     id: String
   },
   data() {
     return {
-      editMode: false
+      editMode: false,
+      value: this.pValue,
     }
   },
   mounted() {
@@ -36,8 +37,16 @@ export default {
       return balise;
     },
 
-    switchMode() {
-      alert('oki');
+    /**
+     * Change le mode entre édition et lecture
+     * @param action
+     */
+    switchMode(action = 'edit') {
+      if (action === 'edit') {
+        this.editMode = true;
+      } else {
+        this.editMode = false;
+      }
     },
 
     /**
@@ -47,14 +56,29 @@ export default {
     getTextValue() {
       return this.getBalise() + this.value + this.getBalise(true);
     },
+
+    save() {
+      this.value = document.getElementById('field-editor-input-' + this.id).value;
+      this.switchMode('see');
+    }
   }
 }
 </script>
 
 <template>
-    <div v-if="!editMode" class="clearfix">
+
+  <div class="clearfix">
+    <div v-if="!editMode">
       <div class="float-start me-2" v-html="this.getTextValue()"></div>
       <span class="btn btn-sm btn-secondary" style=" --bs-btn-font-size: .75rem;" @click="this.switchMode()"><i class="bi bi-pencil-fill"></i></span>
     </div>
+    <div v-else>
+      <div class="input-group">
+        <input type="text" class="form-control" :id="'field-editor-input-' + this.id" :value="this.value">
+        <button class="btn btn-secondary" type="button" @click="this.save"><i class="bi bi-check-circle-fill"></i> </button>
+        <button class="btn btn-secondary" type="button" @click="this.switchMode('read')"><i class="bi bi-x-circle-fill"></i></button>
+      </div>
+    </div>
+  </div>
 
 </template>

@@ -23,6 +23,7 @@ export default {
       faq: Object,
       currentLocale: this.locales.current,
       loading: false,
+      loadData: false,
     }
   },
   mounted() {
@@ -39,6 +40,7 @@ export default {
         'id': this.id
       }).then((response) => {
         this.faq = response.data.faq;
+        this.loadData = true;
       }).catch((error) => {
         console.log(error);
       }).finally(() => {
@@ -96,25 +98,27 @@ export default {
       </option>
     </select>
 
-    <h1 v-html="this.getValueByLocale(this.faq.faqTranslations, 'title')"></h1>
+    <div v-if="this.loadData">
+      <h1 v-html="this.getValueByLocale(this.faq.faqTranslations, 'title')"></h1>
 
-    <FieldEditor
-        id="22"
-        :value="this.getValueByLocale(this.faq.faqTranslations, 'title')"
-        balise="h1"
-    />
+      <FieldEditor key="22"
+          id="22"
+          p-value="tto"
+          balise="h1"
+      />
 
-    <FieldEditor
-        id="222"
-        :value="this.getValueByLocale(this.faq.faqTranslations, 'title')"
-        balise="h3"
-    />
+      <FieldEditor key="222"
+          id="222"
+          :p-value="this.getValueByLocale(this.faq.faqTranslations, 'title')"
+          balise="h3"
+      />
 
-    <FieldEditor
-        id="2222"
-        :value="this.getValueByLocale(this.faq.faqTranslations, 'title')"
-        balise="p"
-    />
+      <FieldEditor key="2222"
+          id="2222"
+          :p-value="this.getValueByLocale(this.faq.faqTranslations, 'title')"
+          balise="p"
+      />
+    </div>
   </div>
 
 </template>
