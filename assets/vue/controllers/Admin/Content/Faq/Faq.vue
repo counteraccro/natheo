@@ -103,6 +103,18 @@ export default {
         :value="this.getValueByLocale(this.faq.faqTranslations, 'title')"
         balise="h1"
     />
+
+    <FieldEditor
+        id="222"
+        :value="this.getValueByLocale(this.faq.faqTranslations, 'title')"
+        balise="h3"
+    />
+
+    <FieldEditor
+        id="2222"
+        :value="this.getValueByLocale(this.faq.faqTranslations, 'title')"
+        balise="p"
+    />
   </div>
 
 </template>

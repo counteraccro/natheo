@@ -15,7 +15,9 @@ export default {
     id: String
   },
   data() {
-    return {}
+    return {
+      editMode: false
+    }
   },
   mounted() {
 
@@ -34,11 +36,15 @@ export default {
       return balise;
     },
 
+    switchMode() {
+      alert('oki');
+    },
+
     /**
      * Construit la valeur à afficher avec la balise
      * @returns {string}
      */
-    getFormatedValue() {
+    getTextValue() {
       return this.getBalise() + this.value + this.getBalise(true);
     },
   }
@@ -46,6 +52,9 @@ export default {
 </script>
 
 <template>
-  <div v-html="this.getFormatedValue()">
-  </div>
+    <div v-if="!editMode" class="clearfix">
+      <div class="float-start me-2" v-html="this.getTextValue()"></div>
+      <span class="btn btn-sm btn-secondary" style=" --bs-btn-font-size: .75rem;" @click="this.switchMode()"><i class="bi bi-pencil-fill"></i></span>
+    </div>
+
 </template>
