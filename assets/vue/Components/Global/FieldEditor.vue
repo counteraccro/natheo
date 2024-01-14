@@ -51,11 +51,16 @@ export default {
      * @param action
      */
     switchMode(action = 'edit') {
+      this.errorClass = '';
       if (action === 'edit') {
         this.editMode = true;
+      } else if (action === 'reset') {
+        this.value = this.pValue;
+        this.editMode = false;
       } else {
         this.editMode = false;
       }
+
     },
 
     /**
@@ -71,24 +76,23 @@ export default {
      * @returns {boolean}
      */
     checkRule(value) {
-      /*if (this.ruleRegex === "") {
-        return true;
+
+      let bReturn = true;
+      switch (this.rule) {
+        case "isEmpty" :
+          bReturn = value.trim() !== "";
+          break;
+        default:
+          bReturn = true;
       }
-
-      console.log(value);
-      console.log(!value.match(this.ruleRegex));
-
-      return value.match(this.ruleRegex);*/
+      return bReturn;
     },
 
     save() {
-      let tmp = document.getElementById('field-editor-input-' + this.id).value;
-      if(this.checkRule(tmp)) {
+      if (this.checkRule(this.value)) {
         this.errorClass = "";
-        this.value = tmp;
         this.switchMode('see');
-      }
-      else {
+      } else {
         this.errorClass = "is-invalid";
       }
     },
@@ -105,15 +109,15 @@ export default {
     </div>
     <div v-else>
       <div class="input-group">
-        <input type="text" class="form-control" :class="this.errorClass" :id="'field-editor-input-' + this.id" :value="this.value">
-        <button class="btn btn-secondary" type="button" @click="this.save"><i class="bi bi-check-circle-fill"></i>
+        <input type="text" class="form-control" :class="this.errorClass" :id="'field-editor-input-' + this.id" v-model="this.value">
+        <button class="btn btn-outline-secondary" type="button" @click="this.save">
+          <i class="bi bi-check-circle"></i>
         </button>
-        <button class="btn btn-secondary" type="button" @click="this.switchMode('read')">
-          <i class="bi bi-x-circle-fill"></i></button>
-        <div class="invalid-feedback">
-          You must agree before submitting.
-        </div>
+        <button class="btn btn-outline-secondary" type="button" @click="this.switchMode('reset')">
+          <i class="bi bi-arrow-counterclockwise"></i>
+        </button>
       </div>
+      <div class="text-danger" v-if="this.errorClass === 'is-invalid'" v-html="this.ruleMsg"></div>
     </div>
   </div>
 
