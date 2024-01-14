@@ -113,6 +113,8 @@ export default {
           id="222"
           :p-value="this.getValueByLocale(this.faq.faqTranslations, 'title')"
           balise="h3"
+          rule="isEmpty"
+          :rule-msg="this.translate.error_empty_value"
       />
 
       <FieldEditor :key="this.keyVal"

@@ -179,6 +179,7 @@ class FaqService extends AppAdminService
         return [
             'select_locale' => $this->translator->trans('faq.select.locale', domain: 'faq'),
             'loading' => $this->translator->trans('faq.select.loading', domain: 'faq'),
+            'error_empty_value' => $this->translator->trans('faq.error.empty.value', domain: 'faq'),
             ];
     }
 }
