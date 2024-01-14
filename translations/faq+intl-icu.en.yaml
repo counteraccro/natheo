@@ -24,3 +24,4 @@ faq.success.disabled: __faq.success.disabled
 faq.remove.success: __faq.remove.success
 faq.select.locale: __faq.select.locale
 faq.select.loading: __faq.select.loading
+faq.error.empty.value: __faq.error.empty.value

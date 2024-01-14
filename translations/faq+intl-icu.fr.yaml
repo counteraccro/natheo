@@ -24,3 +24,4 @@ faq.success.disabled: 'La faq <b>{label}</b> à été désactivée avec succès'
 faq.remove.success: 'La faq <b>{label}</b> à été supprimée avec succès'
 faq.select.locale: 'Sélectionner la langue'
 faq.select.loading: 'Chargement des données de la FAQ'
+faq.error.empty.value: __faq.error.empty.value
