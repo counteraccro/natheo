@@ -9,6 +9,7 @@ import axios from "axios";
 export default {
   name: "FieldEditor",
   components: {},
+  emit: ['get-value'],
   props: {
     pValue: String,
     balise: String,
@@ -88,10 +89,14 @@ export default {
       return bReturn;
     },
 
-    save() {
+    /**
+     * Permet de renvoyer
+     */
+    getValue() {
       if (this.checkRule(this.value)) {
         this.errorClass = "";
         this.switchMode('see');
+        this.$emit('get-value', this.value, this.id);
       } else {
         this.errorClass = "is-invalid";
       }
@@ -110,7 +115,7 @@ export default {
     <div v-else>
       <div class="input-group">
         <input type="text" class="form-control" :class="this.errorClass" :id="'field-editor-input-' + this.id" v-model="this.value">
-        <button class="btn btn-outline-secondary" type="button" @click="this.save">
+        <button class="btn btn-outline-secondary" type="button" @click="this.getValue">
           <i class="bi bi-check-circle"></i>
         </button>
         <button class="btn btn-outline-secondary" type="button" @click="this.switchMode('reset')">

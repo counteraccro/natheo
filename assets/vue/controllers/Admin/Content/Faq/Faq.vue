@@ -60,11 +60,13 @@ export default {
 
     /**
      * Retourne la valeur traduite en fonction de la locale pour le tableau d'élément
+     * Ajoute contatValue au debut de la string avec un séparateur "-"
      * @param elements
      * @param property
+     * @param concatValue
      * @returns {string}
      */
-    getValueByLocale(elements, property) {
+    getValueByLocale(elements, property, concatValue = "") {
 
       if (elements === undefined) {
         return "";
@@ -77,7 +79,21 @@ export default {
           return true;
         }
       })
-      return str
+      if (concatValue !== "") {
+        return concatValue + "-" + str;
+      }
+      return str;
+
+    },
+
+    /**
+     * Mise à jour de la valeur en fonction de son id
+     * @param value
+     * @param id
+     */
+    updateValueByLocale(value, id) {
+      console.log(value);
+      console.log(id);
     }
   }
 }
@@ -110,11 +126,12 @@ export default {
       />
 
       <FieldEditor :key="this.keyVal"
-          id="222"
+          :id="this.getValueByLocale(this.faq.faqTranslations, 'id', 'faqTranslations')"
           :p-value="this.getValueByLocale(this.faq.faqTranslations, 'title')"
           balise="h3"
           rule="isEmpty"
           :rule-msg="this.translate.error_empty_value"
+          @get-value="this.updateValueByLocale"
       />
 
       <FieldEditor :key="this.keyVal"
