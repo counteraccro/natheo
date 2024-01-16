@@ -92,8 +92,41 @@ export default {
      * @param id
      */
     updateValueByLocale(value, id) {
-      console.log(value);
-      console.log(id);
+      let tmp = id.split('-');
+
+      switch (tmp[0]) {
+        case "faqTranslations":
+          this.faq.faqTranslations.forEach((item) => {
+            if (item.id === parseInt(tmp[1])) {
+              item.title = value;
+            }
+          })
+          break;
+        case "faqCategoryTranslations":
+          this.faq.faqCategories.forEach((faqC) => {
+            faqC.faqCategoryTranslationsforEach((item) => {
+              if (item.id === parseInt(tmp[1])) {
+                item.title = value;
+              }
+            })
+          })
+          break;
+        case "faqQuestionTranslations":
+          this.faq.faqCategories.forEach((faqC) => {
+            faqC.faqQuestions.forEach((faqQ) => {
+              faqQ.faqQuestionTranslationsforEach((item) => {
+                if (item.id === parseInt(tmp[1])) {
+                  let tab = value.split('-');
+                  item.title = tab[0];
+                  item.answer = tab[1];
+                }
+              })
+            })
+          })
+          break;
+        default:
+      }
+
     }
   }
 }
