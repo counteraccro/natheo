@@ -46,7 +46,7 @@ export default {
           this.msg_return = response.data.msg;
           this.url_reload = response.data.redirect;
         }).catch((error) => {
-          console.log(error);
+          console.error(error);
         }).finally(() => {
           setTimeout(() => {
             document.location.href = this.url_reload
@@ -67,7 +67,7 @@ export default {
           this.msg_return = response.data.msg;
           this.url_reload = response.data.redirect;
         }).catch((error) => {
-          console.log(error);
+          console.error(error);
         }).finally(() => {
           setTimeout(() => {
             document.location.href = this.url_reload

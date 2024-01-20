@@ -111,7 +111,7 @@ export default {
         this.urlActions = response.data.url;
         this.canDelete = response.data.canDelete;
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         this.getNbTrash();
         this.loading = false
@@ -125,7 +125,7 @@ export default {
       axios.post(this.urlActions.nbTrash, {}).then((response) => {
         this.nbTrash = response.data.nb;
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
       });
     },
@@ -209,7 +209,7 @@ export default {
         this.folderEdit = response.data.folder;
         this.folderName = this.folderEdit.name;
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         this.loading = false;
         this.openModalFolder();
@@ -314,7 +314,7 @@ export default {
           setTimeout(this.loadMedia, 3000);
         }
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
       });
     },
@@ -335,7 +335,7 @@ export default {
       }).then((response) => {
         this.infoData = response.data
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         this.loading = false;
         this.openModalInfo();
@@ -393,7 +393,7 @@ export default {
         setTimeout(this.closeModalUpload, 3000);
         setTimeout(this.loadMedia, 2500);
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
       });
     },
@@ -440,7 +440,7 @@ export default {
           status: '',
         }
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         this.loading = false;
         this.openModalEditMedia();
@@ -459,7 +459,7 @@ export default {
         setTimeout(this.closeModalEditMedia, 3000);
         setTimeout(this.loadMedia, 2500);
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
       });
     },
@@ -497,7 +497,7 @@ export default {
       }).then((response) => {
         this.dataMove = response.data.dataMove;
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         this.loading = false;
         this.openModalMove();
@@ -519,7 +519,7 @@ export default {
       }).then((response) => {
 
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         this.mediaMoveStatus = "success";
         setTimeout(this.closeModalMove, 3000);
@@ -606,7 +606,7 @@ export default {
       }).then((response) => {
 
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
 
         if (this.trash.trash) {
@@ -627,7 +627,7 @@ export default {
       axios.post(this.urlActions.listTrash, {}).then((response) => {
         this.mediasTrash = response.data.mediasTrash
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         this.loading = false;
       });
@@ -676,7 +676,7 @@ export default {
         }).then((response) => {
 
         }).catch((error) => {
-          console.log(error);
+          console.error(error);
         }).finally(() => {
           this.loading = false;
           this.removeMsg = '<span class="text-success"><i class="bi bi-check"></i>' + this.translate.remove.success + '</span>';

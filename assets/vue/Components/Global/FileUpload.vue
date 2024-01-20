@@ -80,7 +80,7 @@ export default {
           // Read uploaded file
           reader.readAsDataURL(file);
         } else {
-          console.log("Invalid file");
+          console.error("Invalid file");
         }
       }
     },

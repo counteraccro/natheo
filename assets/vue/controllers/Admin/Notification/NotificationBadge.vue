@@ -31,7 +31,7 @@ export default {
             ).then((response) => {
                 this.number = response.data.number;
             }).catch((error) => {
-                console.log(error);
+                console.error(error);
             }).finally();
         },
     }

@@ -211,7 +211,7 @@ export default {
         this.msgUpdatePassword = response.data.msg;
         this.redirect = response.data.redirect;
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         this.loading = false
         this.resetAll();

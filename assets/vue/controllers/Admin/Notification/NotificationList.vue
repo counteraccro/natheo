@@ -55,7 +55,7 @@ export default {
         this.locale = response.data.locale;
         this.listLimit = JSON.parse(response.data.listLimit);
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         this.loading = false
         this.canAllRead();
@@ -101,7 +101,7 @@ export default {
       this.loading = true;
       axios.post(this.urlReadAll, {}).then((response) => {
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         this.allReadSuccess = true;
         setTimeout(() => {
@@ -116,7 +116,7 @@ export default {
 
       axios.post(this.urlPurge, {}).then((response) => {
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         this.loadData(this.page, this.limit, 0)
       });
@@ -136,7 +136,7 @@ export default {
           'id': id,
         }).then((response) => {
         }).catch((error) => {
-          console.log(error);
+          console.error(error);
         }).finally();
 
         nbElement.innerHTML = parseInt(nbElement.innerHTML) - 1;

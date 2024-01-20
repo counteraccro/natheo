@@ -72,7 +72,7 @@ export default {
         this.cPage = page;
         this.cLimit = limit;
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => this.loading = false);
     },
 
@@ -105,7 +105,7 @@ export default {
               }, 5000)
             }
           }).catch((error) => {
-            console.log(error);
+            console.error(error);
           }).finally(() => this.loadData(this.cPage, this.cLimit));
         } else {
           window.location.href = url;

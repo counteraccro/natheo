@@ -55,7 +55,7 @@ export default {
         this.url_save = response.data.save_url;
         this.url_demo = response.data.demo_url;
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         this.loading = false
       });
@@ -131,7 +131,7 @@ export default {
       }).then((response) => {
         this.msgSuccess = response.data.msg;
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         setTimeout(this.removeMsg, 3000);
         this.loading = false
@@ -146,7 +146,7 @@ export default {
       axios.post(this.url_demo, {}).then((response) => {
         this.msgSuccess = response.data.msg;
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         setTimeout(this.removeMsg, 3000);
         this.loading = false

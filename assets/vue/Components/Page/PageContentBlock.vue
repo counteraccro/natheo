@@ -114,7 +114,7 @@ export default {
         this.typeContent.help = response.data.help;
         this.idSelectTypeContent = response.data.selected;
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         this.loading = false;
       });

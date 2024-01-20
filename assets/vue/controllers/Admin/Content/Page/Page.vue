@@ -156,7 +156,7 @@ export default {
         this.page = response.data.page;
         this.historyInfo = response.data.history
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         this.loading = false
       });
@@ -172,7 +172,7 @@ export default {
       }).then((response) => {
         this.history = response.data.history;
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         this.loading = false
       });
@@ -220,7 +220,7 @@ export default {
         this.toasts.autoSave.msg = this.translate.msg_auto_save_success;
         this.toasts.autoSave.toast.show();
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         // On lance le rechargement du render
         emitter.emit('load-render');
@@ -343,8 +343,7 @@ export default {
         this.toasts.contentAdd.toast.show();
         this.autoSave(this.page)
       }).catch((error) => {
-        console.log('erreur');
-        console.log(error);
+        console.error(error);
       }).finally(() => {
       });
 
@@ -367,7 +366,7 @@ export default {
         }
 
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         this.loading = false;
       });
@@ -390,7 +389,7 @@ export default {
         this.page = response.data.page;
         this.toasts.autoSave.msg = response.data.msg;
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         this.toasts.autoSave.toast.show();
         this.loading = false;
@@ -446,7 +445,7 @@ export default {
           }
         }
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
 
       });
@@ -479,7 +478,7 @@ export default {
         }
 
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
       });
 

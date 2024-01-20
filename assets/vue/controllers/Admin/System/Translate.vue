@@ -46,7 +46,7 @@ export default {
                 this.languages = response.data.languages;
                 this.trans = response.data.trans;
             }).catch((error) => {
-                console.log(error);
+                console.error(error);
             }).finally();
         },
 
@@ -73,7 +73,7 @@ export default {
             }).then((response) => {
                 this.files = response.data.files;
             }).catch((error) => {
-                console.log(error);
+                console.error(error);
             }).finally();
         },
 
@@ -99,7 +99,7 @@ export default {
                 this.tabTmpTranslate = [];
                 this.file = response.data.file;
             }).catch((error) => {
-                console.log(error);
+                console.error(error);
             }).finally(() => {
                 this.loading = false;
             });
@@ -138,7 +138,7 @@ export default {
             }).then((response) => {
                 this.loadFile();
             }).catch((error) => {
-                console.log(error);
+                console.error(error);
             }).finally();
         },
 
@@ -227,7 +227,7 @@ export default {
                 axios.post(this.url_reload_cache, {}).then((response) => {
 
                 }).catch((error) => {
-                    console.log(error);
+                    console.error(error);
                 }).finally(() => {
                     this.isReloadCacheFinish = true;
                     setTimeout(() => {

@@ -43,7 +43,7 @@ export default {
         this.faq = response.data.faq;
         this.loadData = true;
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         this.loading = false;
       });

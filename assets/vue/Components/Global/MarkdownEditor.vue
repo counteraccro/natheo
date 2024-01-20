@@ -150,10 +150,8 @@ export default {
       }).then((response) => {
         this.dataMedia = response.data.medias;
         this.currentFolder = response.data.currentFolder;
-        /*this.urlActions = response.data.url;
-        this.canDelete = response.data.canDelete;*/
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         this.loadingMedia = false
       });

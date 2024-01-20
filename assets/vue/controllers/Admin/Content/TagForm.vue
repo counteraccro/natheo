@@ -60,7 +60,7 @@ export default {
           window.location = this.url_update;
         }
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
         //this.loading = false
       });
@@ -70,7 +70,7 @@ export default {
       axios.get(this.url_stats).then((response) => {
         this.templateStat = response.data;
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => {
 
       });

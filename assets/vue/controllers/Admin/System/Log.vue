@@ -61,7 +61,7 @@ export default {
         this.select = response.data.files;
         this.trans = response.data.trans;
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally();
     },
     changeTimeFiltre(event) {
@@ -105,7 +105,7 @@ export default {
         this.cLimit = limit;
         this.taille = response.data.taille;
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally(() => this.loading = false);
     },
 
@@ -146,7 +146,7 @@ export default {
           alert('Un erreur est survenue lors de la suppression');
         }
       }).catch((error) => {
-        console.log(error);
+        console.error(error);
       }).finally();
     },
 

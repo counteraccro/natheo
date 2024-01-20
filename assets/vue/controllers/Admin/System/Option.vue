@@ -89,7 +89,7 @@ export default {
       }).catch(function (error) {
         spinner.classList.add('visually-hidden');
         element.disabled = false;
-        console.log(error);
+        console.error(error);
       }).finally(() => {
 
         if(id === 'OU_THEME_SITE')
