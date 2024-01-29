@@ -104,7 +104,7 @@ export default {
           break;
         case "faqCategoryTranslations":
           this.faq.faqCategories.forEach((faqC) => {
-            faqC.faqCategoryTranslationsforEach((item) => {
+            faqC.faqCategoryTranslations.forEach((item) => {
               if (item.id === parseInt(tmp[1])) {
                 item.title = value;
               }
@@ -114,7 +114,7 @@ export default {
         case "faqQuestionTranslations":
           this.faq.faqCategories.forEach((faqC) => {
             faqC.faqQuestions.forEach((faqQ) => {
-              faqQ.faqQuestionTranslationsforEach((item) => {
+              faqQ.faqQuestionTranslations.forEach((item) => {
                 if (item.id === parseInt(tmp[1])) {
                   let tab = value.split('-');
                   item.title = tab[0];
@@ -150,28 +150,54 @@ export default {
     </select>
 
     <div v-if="this.loadData">
-      <h1 v-html="this.getValueByLocale(this.faq.faqTranslations, 'title')"></h1>
-
-      <FieldEditor :key="this.keyVal"
-          id="22"
-          p-value="tto"
-          balise="h1"
-      />
 
       <FieldEditor :key="this.keyVal"
           :id="this.getValueByLocale(this.faq.faqTranslations, 'id', 'faqTranslations')"
           :p-value="this.getValueByLocale(this.faq.faqTranslations, 'title')"
-          balise="h3"
+          balise="h1"
           rule="isEmpty"
           :rule-msg="this.translate.error_empty_value"
           @get-value="this.updateValueByLocale"
       />
 
-      <FieldEditor :key="this.keyVal"
-          id="2222"
-          :p-value="this.getValueByLocale(this.faq.faqTranslations, 'title')"
-          balise="p"
-      />
+      <div v-for="fcat in this.faq.faqCategories">
+
+        <div class="card border border-secondary mt-2 mb-2">
+          <div class="card-header text-white text-bg-secondary">
+            <FieldEditor :key="this.keyVal"
+                :id="this.getValueByLocale(fcat.faqCategoryTranslations, 'id', 'faqCategoryTranslations')"
+                :p-value="this.getValueByLocale(fcat.faqCategoryTranslations, 'title')"
+                balise="span"
+                rule="isEmpty"
+                :rule-msg="this.translate.error_empty_value"
+                @get-value="this.updateValueByLocale"
+            />
+          </div>
+          <div class="card-body">
+
+            <div v-for="fQuestion in fcat.faqQuestions">
+
+              <FieldEditor :key="this.keyVal"
+                  :id="this.getValueByLocale(fQuestion.faqQuestionTranslations, 'id', 'faqQuestionTranslations')"
+                  :p-value="this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title')"
+                  balise="h5"
+                  rule="isEmpty"
+                  :rule-msg="this.translate.error_empty_value"
+                  @get-value="this.updateValueByLocale"
+              />
+
+              <div>{{ this.getValueByLocale(fQuestion.faqQuestionTranslations, 'answer') }}</div>
+
+            </div>
+
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+
+
+      </div>
     </div>
   </div>
 
