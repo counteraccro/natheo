@@ -80,7 +80,7 @@ export default {
         }
       })
       if (concatValue !== "") {
-        return concatValue + "-" + str;
+        return str + "-" + concatValue;
       }
       return str;
 
@@ -93,11 +93,12 @@ export default {
      */
     updateValueByLocale(value, id) {
       let tmp = id.split('-');
+      console.log(tmp);
 
-      switch (tmp[0]) {
+      switch (tmp[1]) {
         case "faqTranslations":
           this.faq.faqTranslations.forEach((item) => {
-            if (item.id === parseInt(tmp[1])) {
+            if (item.id === parseInt(tmp[0])) {
               item.title = value;
             }
           })
@@ -105,7 +106,7 @@ export default {
         case "faqCategoryTranslations":
           this.faq.faqCategories.forEach((faqC) => {
             faqC.faqCategoryTranslations.forEach((item) => {
-              if (item.id === parseInt(tmp[1])) {
+              if (item.id === parseInt(tmp[0])) {
                 item.title = value;
               }
             })
@@ -115,10 +116,8 @@ export default {
           this.faq.faqCategories.forEach((faqC) => {
             faqC.faqQuestions.forEach((faqQ) => {
               faqQ.faqQuestionTranslations.forEach((item) => {
-                if (item.id === parseInt(tmp[1])) {
-                  let tab = value.split('-');
-                  item.title = tab[0];
-                  item.answer = tab[1];
+                if (item.id === parseInt(tmp[0])) {
+                    item[tmp[2]] = value;
                 }
               })
             })
@@ -162,40 +161,44 @@ export default {
 
       <div v-for="fcat in this.faq.faqCategories">
 
-        <div class="card border border-secondary mt-2 mb-2">
-          <div class="card-header text-white text-bg-secondary">
-            <FieldEditor :key="this.keyVal"
-                :id="this.getValueByLocale(fcat.faqCategoryTranslations, 'id', 'faqCategoryTranslations')"
-                :p-value="this.getValueByLocale(fcat.faqCategoryTranslations, 'title')"
-                balise="span"
-                rule="isEmpty"
-                :rule-msg="this.translate.error_empty_value"
-                @get-value="this.updateValueByLocale"
-            />
-          </div>
-          <div class="card-body">
+        <FieldEditor :key="this.keyVal"
+            :id="this.getValueByLocale(fcat.faqCategoryTranslations, 'id', 'faqCategoryTranslations')"
+            :p-value="this.getValueByLocale(fcat.faqCategoryTranslations, 'title')"
+            balise="h3"
+            rule="isEmpty"
+            :rule-msg="this.translate.error_empty_value"
+            @get-value="this.updateValueByLocale"
+        />
 
-            <div v-for="fQuestion in fcat.faqQuestions">
 
-              <FieldEditor :key="this.keyVal"
-                  :id="this.getValueByLocale(fQuestion.faqQuestionTranslations, 'id', 'faqQuestionTranslations')"
-                  :p-value="this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title')"
-                  balise="h5"
-                  rule="isEmpty"
-                  :rule-msg="this.translate.error_empty_value"
-                  @get-value="this.updateValueByLocale"
-              />
+        <div v-for="fQuestion in fcat.faqQuestions">
 
-              <div>{{ this.getValueByLocale(fQuestion.faqQuestionTranslations, 'answer') }}</div>
+          <div class="card text-bg-light mt-2 mb-2">
+            <div class="row">
 
+              <div class="col-11">
+                <div class="card-body">
+
+                  <FieldEditor :key="this.keyVal"
+                      :id="this.getValueByLocale(fQuestion.faqQuestionTranslations, 'id', 'faqQuestionTranslations-title')"
+                      :p-value="this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title')"
+                      balise="h5"
+                      rule="isEmpty"
+                      :rule-msg="this.translate.error_empty_value"
+                      @get-value="this.updateValueByLocale"
+                  />
+
+                  <div>{{ this.getValueByLocale(fQuestion.faqQuestionTranslations, 'answer') }}</div>
+                </div>
+              </div>
+              <div class="col-1">
+                <i class="bi bi-arrow-up"></i>
+                <i class="bi bi-arrow-down"></i>
+              </div>
             </div>
-
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
           </div>
         </div>
-
+        <hr/>
 
       </div>
     </div>
