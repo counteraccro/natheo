@@ -5,6 +5,7 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Faq\Faq;
 use App\Service\Admin\Content\Faq\FaqService;
+use App\Service\Admin\MarkdownEditorService;
 use App\Utils\Breadcrumb;
 use App\Utils\Content\Faq\FaqFactory;
 use App\Utils\System\Options\OptionUserKey;
@@ -60,6 +61,7 @@ class FaqController extends AppAdminController
     #[Route('/update/{id}', name: 'update')]
     public function add(
         FaqService $faqService,
+        MarkdownEditorService $markdownEditorService,
         int $id = null,
     ): Response
     {
@@ -77,6 +79,7 @@ class FaqController extends AppAdminController
         ];
 
         $translate = $faqService->getFaqTranslation();
+        $translate['markdown'] = $markdownEditorService->getTranslate();
         $locales = $faqService->getLocales();
 
         return $this->render('admin/content/faq/add_update.html.twig', [

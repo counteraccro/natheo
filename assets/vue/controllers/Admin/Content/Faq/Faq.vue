@@ -6,10 +6,12 @@
  */
 import axios from "axios";
 import FieldEditor from "../../../../Components/Global/FieldEditor.vue";
+import MarkdownEditor from "../../../../Components/Global/MarkdownEditor.vue";
 
 export default {
   name: "Faq",
   components: {
+    MarkdownEditor,
     FieldEditor
   },
   props: {
@@ -93,7 +95,6 @@ export default {
      */
     updateValueByLocale(value, id) {
       let tmp = id.split('-');
-      console.log(tmp);
 
       switch (tmp[1]) {
         case "faqTranslations":
@@ -126,6 +127,16 @@ export default {
         default:
       }
 
+    },
+
+    /**
+     * Event depuis la sauvegarde du markdown
+     * @param id
+     * @param value
+     */
+    updateAnswer(id, value)
+    {
+      this.updateValueByLocale(value, id);
     }
   }
 }
@@ -188,7 +199,17 @@ export default {
                       @get-value="this.updateValueByLocale"
                   />
 
-                  <div>{{ this.getValueByLocale(fQuestion.faqQuestionTranslations, 'answer') }}</div>
+                  <markdown-editor :key="this.keyVal"
+                      :me-id="this.getValueByLocale(fQuestion.faqQuestionTranslations, 'id', 'faqQuestionTranslations-answer')"
+                      :me-value="this.getValueByLocale(fQuestion.faqQuestionTranslations, 'answer')"
+                      :me-rows="14"
+                      :me-translate="this.translate.markdown"
+                      :me-key-words="[]"
+                      :me-save="true"
+                      :me-preview="false"
+                      @editor-value="this.updateAnswer"
+                      @editor-value-change=""
+                  />
                 </div>
               </div>
               <div class="col-1">
