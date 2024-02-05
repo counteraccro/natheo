@@ -91,6 +91,7 @@ class FaqController extends AppAdminController
             ],
             'urls' => [
                 'load_faq' => $this->generateUrl('admin_faq_load_faq'),
+                'save' => $this->generateUrl('admin_faq_save'),
             ]
         ]);
     }
@@ -174,6 +175,20 @@ class FaqController extends AppAdminController
         $faq = [];
         return $this->json([
             'faq' => $faqArray
+        ]);
+    }
+
+    /**
+     * Permet de sauvegarder une FAQ
+     * @param Request $request
+     * @param FaqService $faqService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/save', name: 'save')]
+    public function save(Request $request, FaqService $faqService)
+    {
+        return $this->json([
+            'success' => true
         ]);
     }
 }

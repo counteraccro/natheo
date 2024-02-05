@@ -7,6 +7,7 @@
 import axios from "axios";
 import FieldEditor from "../../../../Components/Global/FieldEditor.vue";
 import MarkdownEditor from "../../../../Components/Global/MarkdownEditor.vue";
+import {emitter} from "../../../../../utils/useEvent";
 
 export default {
   name: "Faq",
@@ -118,7 +119,7 @@ export default {
             faqC.faqQuestions.forEach((faqQ) => {
               faqQ.faqQuestionTranslations.forEach((item) => {
                 if (item.id === parseInt(tmp[0])) {
-                    item[tmp[2]] = value;
+                  item[tmp[2]] = value;
                 }
               })
             })
@@ -134,15 +135,33 @@ export default {
      * @param id
      * @param value
      */
-    updateAnswer(id, value)
-    {
+    updateAnswer(id, value) {
       this.updateValueByLocale(value, id);
+    },
+
+    /**
+     * Permet de sauvegarder une FAQ
+     */
+    save() {
+
+      this.loading = true;
+      axios.post(this.urls.save, {
+        'faq': this.faq
+      }).then((response) => {
+
+      }).catch((error) => {
+
+      }).finally(() => {
+        // On lance le rechargement du render
+        this.loading = false;
+      });
     }
   }
 }
 </script>
 
 <template>
+
   <div id="block-faq" :class="this.loading === true ? 'block-grid' : ''">
 
     <div v-if="this.loading" class="overlay">
@@ -158,6 +177,12 @@ export default {
           :selected="key===this.currentLocale">{{ language }}
       </option>
     </select>
+
+    <div class="sticky-md-top float-start">
+      <div class="btn btn-secondary" @click="this.save"><i class="bi bi-floppy-fill"></i> {{ this.translate.save }}</div>
+    </div>
+    <br/><br/><br/>
+
 
     <div v-if="this.loadData">
 
