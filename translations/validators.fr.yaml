@@ -106,6 +106,7 @@ Error: Erreur
 'Using hidden overlay characters is not allowed.': "Utiliser des caractères de superposition cachés n'est pas autorisé."
 'The extension of the file is invalid ({{ extension }}). Allowed extensions are {{ extensions }}.': "L'extension du fichier est invalide ({{ extension }}). Les extensions autorisées sont {{ extensions }}."
 'The detected character encoding is invalid ({{ detected }}). Allowed encodings are {{ encodings }}.': "L'encodage de caractères détecté est invalide ({{ detected }}). Les encodages autorisés sont {{ encodings }}."
+'This value is not a valid MAC address.': "Cette valeur n'est pas une adresse MAC valide."
 'This form should not contain extra fields.': 'Ce formulaire ne doit pas contenir de champs supplémentaires.'
 'The uploaded file was too large. Please try to upload a smaller file.': "Le fichier téléchargé est trop volumineux. Merci d'essayer d'envoyer un fichier plus petit."
 'The CSRF token is invalid. Please try to resubmit the form.': 'Le jeton CSRF est invalide. Veuillez renvoyer le formulaire.'
