@@ -1,0 +1,4 @@
+dashboard.index: __dashboard.index
+dashboard.index.flux.activity: __dashboard.index.flux.activity
+dashboard.index.last.comment: __dashboard.index.last.comment
+dashboard.index.last.notification: __dashboard.index.last.notification
