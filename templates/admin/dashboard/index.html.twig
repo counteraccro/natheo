@@ -1,7 +1,51 @@
 {% extends 'admin/admin_base.html.twig' %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}{{ 'dashboard.index' | trans({}, 'dashboard') }}{% endblock %}
 
 {% block body %}
-    <h1>Dashboard</h1>
+    <h1 class="mb-3">{{ 'dashboard.index' | trans({}, 'dashboard') }}</h1>
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <h5 class="card-header"><i class="bi bi-activity"></i> {{ 'dashboard.index.flux.activity' | trans({}, 'dashboard') }}</h5>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <h5 class="card-header"><i class="bi bi-chat-left-text"></i> {{ 'dashboard.index.last.comment' | trans({}, 'dashboard') }}</h5>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-6">
+            <div class="card">
+                <h5 class="card-header"><i class="bi bi-bell"></i> {{ 'dashboard.index.last.notification' | trans({}, 'dashboard') }}</h5>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <h5 class="card-header">{{ 'dashboard.index.last.comment' | trans({}, 'dashboard') }}</h5>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
