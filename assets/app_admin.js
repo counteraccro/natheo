@@ -10,7 +10,7 @@ import bsCustomFileInput from 'bs-custom-file-input';
 
 
 // start the Stimulus application
-import './bootstrap';
+import './bootstrap.js';
 
 bsCustomFileInput.init();
 
