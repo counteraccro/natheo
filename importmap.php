@@ -49,4 +49,32 @@ return [
     '@symfony/ux-vue' => [
         'path' => './vendor/symfony/ux-vue/assets/dist/loader.js',
     ],
+    'bootstrap' => [
+        'version' => '5.3.2',
+    ],
+    '@popperjs/core' => [
+        'version' => '2.11.8',
+    ],
+    'bootstrap/dist/css/bootstrap.min.css' => [
+        'version' => '5.3.2',
+        'type' => 'css',
+    ],
+    'axios' => [
+        'version' => '1.6.7',
+    ],
+    'lodash-es' => [
+        'version' => '4.17.21',
+    ],
+    'marked' => [
+        'version' => '12.0.0',
+    ],
+    'node-sass' => [
+        'version' => '9.0.0',
+    ],
+    'vue-axios' => [
+        'version' => '3.5.2',
+    ],
+    'vue-loader' => [
+        'version' => '17.4.2',
+    ],
 ];
