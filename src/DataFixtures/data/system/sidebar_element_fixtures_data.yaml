@@ -150,6 +150,15 @@ sidebarElement:
           role: 'ROLE_SUPER_ADMIN'
           description: 'sidebar.log.description'
           lock: false
+      - se_update:
+          icon: 'bi-cloud-arrow-down'
+          label: 'global.update'
+          route: '#'
+          disabled: false
+          parent: se_system
+          role: 'ROLE_SUPER_ADMIN'
+          description: 'sidebar.update.description'
+          lock: true
   se_devTools:
     icon: 'bi-tools'
     label: 'global.devtools'
