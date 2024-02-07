@@ -31,10 +31,14 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
      */
     private Security $security;
 
+    private array $tabNotification = [];
+
 
     /**
      * @param SidebarElementService $sidebarElementService
+     * @param Security $security
      * @param RouterInterface $router
+     * @param TranslatorInterface $translator
      */
     public function __construct(SidebarElementService $sidebarElementService, Security $security,
                                 RouterInterface       $router, TranslatorInterface $translator)
@@ -53,6 +57,7 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
     {
         $this->currentRoute = $currentRoute;
         $sidebarElements = $this->sidebarElementService->getAllParent();
+        $this->getNbNotification();
 
         $html = '';
         foreach ($sidebarElements as $element) {
@@ -107,6 +112,7 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
         ];
 
         $html = '';
+        $nbTotalNotification = 0;
         foreach ($sidebarElement->getChildren() as $child) {
             /* @var SidebarElement $child */
 
@@ -125,11 +131,19 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
                 ];
             }
 
+            $notification = '';
+            if (isset($this->tabNotification[$child->getLabel()])) {
+                $nbTotalNotification += $this->tabNotification[$child->getLabel()];
+                $notification = $this->getHTMLNotification($this->tabNotification[$child->getLabel()]);
+            }
+
+
             $url = $this->generateRealUrl($child->getRoute());
             $html .= '<li ' . $active . '>
                     <a href="' . $url . '">
                         <i class="bi ' . $child->getIcon() . '"></i>
-                        <span class="d-none-mini">' . $this->translator->trans($child->getLabel()) . '</span>
+                        <span class="d-none-mini">' . $this->translator->trans($child->getLabel()) .
+                ' ' . $notification . '</span>
                     </a>
                  </li>';
         }
@@ -139,14 +153,43 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
         $route = $sidebarElement->getRoute();
         $routeId = substr($route, 1);
 
+        $notification = '';
+        if ($nbTotalNotification > 0) {
+            $notification = $this->getHTMLNotification($nbTotalNotification);
+        }
+
         return '<li ' . $tabToggle['active'] . '>
-            <a class="' . $tabToggle['collapsed'] . ' nav-toggle" href="' . $route . '" data-bs-toggle="collapse" data-bs-target="' . $route . '" aria-current="page" aria-expanded="' . $tabToggle['aria-expanded'] . '">
+            <a class="' . $tabToggle['collapsed'] . ' nav-toggle" href="' .
+            $route . '" data-bs-toggle="collapse" data-bs-target="' .
+            $route . '" aria-current="page" aria-expanded="' . $tabToggle['aria-expanded'] . '">
                 <i class="bi ' . $sidebarElement->getIcon() . '"></i> <span class="d-none-mini">'
             . $this->translator->trans($sidebarElement->getLabel()) . '</span>
-                <i class="bi bi-chevron-right float-end d-none-mini"></i>
+                <i class="bi bi-chevron-right float-end d-none-mini"></i> ' . $notification . '
             </a>
             <ul class="collapse list-unstyled ' . $tabToggle['show'] . '" id="'
             . $routeId . '" data-bs-parent="#sidebar">' . $html;
+    }
+
+    /**
+     * Génère une notification
+     * @param int $nb
+     * @return string
+     */
+    private function getHTMLNotification(int $nb): string
+    {
+        return '<span class="badge rounded-pill bg-danger float-end d-none-mini" style="margin-right: 10px">'
+            . $nb . '</span>';
+    }
+
+    /**
+     * Récupère les notifications à afficher
+     * @return void
+     */
+    private function getNbNotification(): void
+    {
+        $this->tabNotification = [
+            'global.update' => 1
+        ];
     }
 
     /**
