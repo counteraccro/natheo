@@ -1,0 +1,7 @@
+symfonycasts_sass:
+    root_sass:
+        - 'assets/styles/app_admin_orange.scss'
+        - 'assets/styles/app_admin_purple.scss'
+        - 'assets/styles/app_admin_red.scss'
+        - 'assets/styles/app_email.scss'
+        - 'assets/styles/app_front.scss'

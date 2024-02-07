@@ -328,6 +328,9 @@
             "webpack.config.js"
         ]
     },
+    "symfonycasts/sass-bundle": {
+        "version": "v0.5.1"
+    },
     "twig/extra-bundle": {
         "version": "v3.5.1"
     }

@@ -4,12 +4,12 @@
  * Point d'entrée pour le design front
  */
 
-@import "bootstrap/scss/functions";
-@import "bootstrap/scss/variables";
-@import "bootstrap/scss/variables-dark";
-@import "bootstrap/scss/maps";
-@import "bootstrap/scss/mixins";
-@import "bootstrap/scss/utilities";
+@import "../../vendor/twbs/bootstrap/scss/functions";
+@import "../../vendor/twbs/bootstrap/scss/variables";
+@import "../../vendor/twbs/bootstrap/scss/variables-dark";
+@import "../../vendor/twbs/bootstrap/scss/maps";
+@import "../../vendor/twbs/bootstrap/scss/mixins";
+@import "../../vendor/twbs/bootstrap/scss/utilities";
 
 :root {
   --primary: #{$purple-700};
@@ -50,6 +50,6 @@ $utilities-text-colors: map-loop($utilities-text, rgba-css-var, "$key", "text");
 $utilities-bg: map-merge($utilities-bg, $utilities-colors);
 $utilities-bg-colors: map-loop($utilities-bg, rgba-css-var, "$key", "bg");
 
-@import "~bootstrap/scss/bootstrap";
+@import "../../vendor/twbs/bootstrap/scss/bootstrap";
 
 @import "front/global";
