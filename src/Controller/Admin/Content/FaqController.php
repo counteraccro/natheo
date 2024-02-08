@@ -8,6 +8,7 @@ use App\Service\Admin\Content\Faq\FaqService;
 use App\Service\Admin\MarkdownEditorService;
 use App\Utils\Breadcrumb;
 use App\Utils\Content\Faq\FaqFactory;
+use App\Utils\Content\Faq\FaqPopulate;
 use App\Utils\System\Options\OptionUserKey;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -172,7 +173,6 @@ class FaqController extends AppAdminController
         }
         $faqArray = $faqService->convertEntityToArray($faq, ['createdAt', 'updateAt', 'user']);
 
-        $faq = [];
         return $this->json([
             'faq' => $faqArray
         ]);
@@ -187,6 +187,22 @@ class FaqController extends AppAdminController
     #[Route('/ajax/save', name: 'save')]
     public function save(Request $request, FaqService $faqService)
     {
+        $data = json_decode($request->getContent(), true);
+        $faqFactory = new FaqFactory($faqService->getLocales()['locales']);
+        //var_dump($data);
+
+        if ($data['faq']['id'] === null || $data['faq']['id'] === 0) {
+            $faq = $faqFactory->create()->getFaq();
+            $faq->setUser($this->getUser());
+        } else {
+            $faq = $faqService->findOneById(Faq::class, $data['faq']['id']);
+        }
+
+        $faqPopulate = new FaqPopulate($faq, $data['faq']);
+        $faq = $faqPopulate->populate()->getFaq();
+        $faqService->save($faq);
+
+
         return $this->json([
             'success' => true
         ]);
