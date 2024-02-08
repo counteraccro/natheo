@@ -8,10 +8,35 @@
 namespace App\Utils\Content\Faq;
 
 use App\Entity\Admin\Content\Faq\Faq;
+use App\Entity\Admin\Content\Faq\FaqCategory;
+use App\Entity\Admin\Content\Faq\FaqCategoryTranslation;
+use phpDocumentor\Reflection\Types\Void_;
 
 class FaqPopulate
 {
-    private const KEY_FAQ_TRANSLATION = 'faqTranslations';
+    /**
+     * Clé pour faqTranslations
+     * @var string
+     */
+    private const KEY_FAQ_TRANSLATIONS = 'faqTranslations';
+
+    /**
+     * Clé pour faqCategories
+     * @var string
+     */
+    private const KEY_FAQ_CATEORIES = 'faqCategories';
+
+    /**
+     * Clé pour faqCategoryTranslations
+     * @var string
+     */
+    private const KEY_FAQ_CATEGORY_TRANSLATION = 'faqCategoryTranslations';
+
+    /**
+     * Clé pour faqQuestions
+     * @var string
+     */
+    private const KEY_FAQ_QUESTION = 'faqQuestions';
 
     /**
      * @var Faq
@@ -41,8 +66,39 @@ class FaqPopulate
     public function populate(): static
     {
         $this->populateFAQTranslation();
+        $this->populateFAQCategory();
+
         return $this;
     }
+
+    /**
+     * Merge les données de $populate dans FAQCategory
+     * @return void
+     */
+    private function populateFAQCategory(): void
+    {
+        if(!isset($this->populate[self::KEY_FAQ_CATEORIES]))
+        {
+            return;
+        }
+
+        $this->faq->getFaqCategories()->clear();
+        foreach ($this->populate[self::KEY_FAQ_CATEORIES] as $dataFaqCategorie) {
+            $faqCategory = new FaqCategory();
+            $faqCategory->setFaq($this->faq);
+            $this->mergeData($faqCategory, $dataFaqCategorie,
+                ['id', 'faq', self::KEY_FAQ_CATEGORY_TRANSLATION, self::KEY_FAQ_QUESTION]);
+
+            foreach ($dataFaqCategorie[self::KEY_FAQ_CATEGORY_TRANSLATION] as $dataFaqCatTranslation) {
+                $faqCategoryTranslation = new FaqCategoryTranslation();
+                $faqCategoryTranslation->setFaqCategory($faqCategory);
+                $this->mergeData($faqCategoryTranslation, $dataFaqCatTranslation, ['id', 'faqCategory']);
+                $faqCategory->addFaqCategoryTranslation($faqCategoryTranslation);
+            }
+            $this->faq->addFaqCategory($faqCategory);
+        }
+    }
+
 
     /**
      * Merge les données de $populate dans $faqTranslation
@@ -50,9 +106,9 @@ class FaqPopulate
      */
     private function populateFAQTranslation(): void
     {
-        if (isset($this->populate[self::KEY_FAQ_TRANSLATION])) {
+        if (isset($this->populate[self::KEY_FAQ_TRANSLATIONS])) {
             foreach ($this->faq->getFaqTranslations() as &$faqTranslation) {
-                foreach ($this->populate[self::KEY_FAQ_TRANSLATION] as $dataTranslation) {
+                foreach ($this->populate[self::KEY_FAQ_TRANSLATIONS] as $dataTranslation) {
                     if ($faqTranslation->getLocale() === $dataTranslation['locale']) {
                         $faqTranslation = $this->mergeData($faqTranslation, $dataTranslation,
                             ['id', 'faq', 'locale']);
@@ -66,7 +122,7 @@ class FaqPopulate
      * Retourne une FAQ
      * @return Faq
      */
-    public function getFaq()
+    public function getFaq(): Faq
     {
         return $this->faq;
     }
