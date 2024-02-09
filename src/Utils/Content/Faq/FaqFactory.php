@@ -38,6 +38,7 @@ class FaqFactory
     public function create(): FaqFactory
     {
         $this->faq = new Faq();
+        $this->faq->setDisabled(false);
         $this->createFaqTranslation();
         $this->createFaqCategory();
         $this->createFaqStatistique(FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES, '1');
@@ -77,6 +78,7 @@ class FaqFactory
     {
         $faqCategory = new FaqCategory();
         $faqCategory->setFaq($this->faq);
+        $faqCategory->setDisabled(false);
         $faqCategory->setRenderOrder(1);
         $faqCategory = $this->createFaqCategoryTranslation($faqCategory);
         $faqCategory = $this->createFaqQuestion($faqCategory);
@@ -110,6 +112,7 @@ class FaqFactory
     {
         $faqQuestion = new FaqQuestion();
         $faqQuestion->setRenderOrder(1);
+        $faqQuestion->setDisabled(false);
         $faqQuestion->setFaqCategory($faqCategory);
         $faqQuestion = $this->createFaqQuestionTranslation($faqQuestion);
         $faqCategory->addFaqQuestion($faqQuestion);

@@ -185,11 +185,10 @@ class FaqController extends AppAdminController
      * @return JsonResponse
      */
     #[Route('/ajax/save', name: 'save')]
-    public function save(Request $request, FaqService $faqService)
+    public function save(Request $request, FaqService $faqService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $faqFactory = new FaqFactory($faqService->getLocales()['locales']);
-        //var_dump($data);
 
         if ($data['faq']['id'] === null || $data['faq']['id'] === 0) {
             $faq = $faqFactory->create()->getFaq();
