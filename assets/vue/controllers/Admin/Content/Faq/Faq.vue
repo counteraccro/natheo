@@ -7,7 +7,7 @@
 import axios from "axios";
 import FieldEditor from "../../../../Components/Global/FieldEditor.vue";
 import MarkdownEditor from "../../../../Components/Global/MarkdownEditor.vue";
-import {emitter} from "../../../../../utils/useEvent";
+import {Toast, Tab} from "bootstrap";
 
 export default {
   name: "Faq",
@@ -27,10 +27,21 @@ export default {
       currentLocale: this.locales.current,
       loading: false,
       loadData: false,
-      keyVal: 1
+      keyVal: 1,
+      toasts: {
+        save: {
+          toast: [],
+          msg: '',
+          bg: 'bg-success'
+        },
+      }
     }
   },
   mounted() {
+
+    let toastAutoSave = document.getElementById('live-toast-save');
+    this.toasts.save.toast = Toast.getOrCreateInstance(toastAutoSave);
+
     this.loadFaq();
   },
   methods: {
@@ -148,9 +159,10 @@ export default {
       axios.post(this.urls.save, {
         'faq': this.faq
       }).then((response) => {
-
+        this.toasts.save.msg = this.translate.msg_save_success;
+        this.toasts.save.toast.show();
       }).catch((error) => {
-
+        console.error(error);
       }).finally(() => {
         // On lance le rechargement du render
         this.loading = false;
@@ -246,6 +258,16 @@ export default {
         </div>
         <hr/>
 
+      </div>
+    </div>
+  </div>
+
+  <!-- toast -->
+  <div class="toast-container position-fixed top-0 end-0 p-2">
+    <div id="live-toast-save" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-body text-white" :class="this.toasts.save.bg">
+        <i class="bi bi-check-circle-fill"></i>
+        {{ this.toasts.save.msg }}
       </div>
     </div>
   </div>
