@@ -10,6 +10,8 @@ namespace App\Utils\Content\Faq;
 use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Faq\FaqCategory;
 use App\Entity\Admin\Content\Faq\FaqCategoryTranslation;
+use App\Entity\Admin\Content\Faq\FaqQuestion;
+use App\Entity\Admin\Content\Faq\FaqQuestionTranslation;
 use phpDocumentor\Reflection\Types\Void_;
 
 class FaqPopulate
@@ -37,6 +39,12 @@ class FaqPopulate
      * @var string
      */
     private const KEY_FAQ_QUESTION = 'faqQuestions';
+
+    /**
+     * Clé pour faqQuestionTranslations
+     * @var string
+     */
+    private const KEY_FAQ_QUESTION_TRANSLATION = 'faqQuestionTranslations';
 
     /**
      * @var Faq
@@ -95,8 +103,37 @@ class FaqPopulate
                 $this->mergeData($faqCategoryTranslation, $dataFaqCatTranslation, ['id', 'faqCategory']);
                 $faqCategory->addFaqCategoryTranslation($faqCategoryTranslation);
             }
+
+            $faqCategory = $this->populateFAQQuestion($faqCategory, $dataFaqCategorie);
             $this->faq->addFaqCategory($faqCategory);
         }
+    }
+
+    /**
+     * Merge les données de $populate dans FAQQuestion
+     * @param FaqCategory $faqCategory
+     * @param array $dataFaqCategory
+     * @return FaqCategory
+     */
+    private function populateFAQQuestion(FaqCategory $faqCategory, array $dataFaqCategory) : FaqCategory
+    {
+        foreach ($dataFaqCategory[self::KEY_FAQ_QUESTION] as $dataFaqQuestion)
+        {
+            $faqQuestion = new FaqQuestion();
+            $faqQuestion->setFaqCategory($faqCategory);
+            $this->mergeData($faqQuestion, $dataFaqQuestion,
+                ['id', 'faqCategory', self::KEY_FAQ_QUESTION_TRANSLATION]);
+
+            foreach ($dataFaqQuestion[self::KEY_FAQ_QUESTION_TRANSLATION] as $dataFaqQuestionTranslation)
+            {
+                $faqQuestionTranslation = new FaqQuestionTranslation();
+                $faqQuestionTranslation->setFaqQuestion($faqQuestion);
+                $this->mergeData($faqQuestionTranslation, $dataFaqQuestionTranslation, ['id', 'FaqQuestion']);
+                $faqQuestion->addFaqQuestionTranslation($faqQuestionTranslation);
+            }
+            $faqCategory->addFaqQuestion($faqQuestion);
+        }
+        return $faqCategory;
     }
 
 
