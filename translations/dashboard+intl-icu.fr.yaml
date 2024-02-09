@@ -1,4 +1,4 @@
 dashboard.index: Dashboard
-dashboard.index.flux.activity: Fil d'activité
-dashboard.index.last.comment: Derniers commentaires
-dashboard.index.last.notification: Mes notifications
+dashboard.index.flux.activity: "Fil d'activité"
+dashboard.index.last.comment: 'Derniers commentaires'
+dashboard.index.last.notification: 'Mes notifications'

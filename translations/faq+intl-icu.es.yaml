@@ -26,3 +26,4 @@ faq.select.locale: __faq.select.locale
 faq.select.loading: __faq.select.loading
 faq.error.empty.value: __faq.error.empty.value
 faq.save: __faq.save
+faq.save.success: __faq.save.success
