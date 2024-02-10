@@ -61,9 +61,9 @@ class FaqController extends AppAdminController
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
     public function add(
-        FaqService $faqService,
+        FaqService            $faqService,
         MarkdownEditorService $markdownEditorService,
-        int $id = null,
+        int                   $id = null,
     ): Response
     {
         $breadcrumbTitle = 'faq.update.page_title_h1';
@@ -93,6 +93,7 @@ class FaqController extends AppAdminController
             'urls' => [
                 'load_faq' => $this->generateUrl('admin_faq_load_faq'),
                 'save' => $this->generateUrl('admin_faq_save'),
+                'new_faq' => $this->generateUrl('admin_faq_new_faq')
             ]
         ]);
     }
@@ -188,14 +189,7 @@ class FaqController extends AppAdminController
     public function save(Request $request, FaqService $faqService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $faqFactory = new FaqFactory($faqService->getLocales()['locales']);
-
-        if ($data['faq']['id'] === null || $data['faq']['id'] === 0) {
-            $faq = $faqFactory->create()->getFaq();
-            $faq->setUser($this->getUser());
-        } else {
-            $faq = $faqService->findOneById(Faq::class, $data['faq']['id']);
-        }
+        $faq = $faqService->findOneById(Faq::class, $data['faq']['id']);
 
         $faqPopulate = new FaqPopulate($faq, $data['faq']);
         $faq = $faqPopulate->populate()->getFaq();
@@ -203,6 +197,35 @@ class FaqController extends AppAdminController
 
 
         return $this->json([
+            'success' => true
+        ]);
+    }
+
+    /** Permet de créer une nouvelle FAQ
+     * @param Request $request
+     * @param FaqService $faqService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/new-faq', name: 'new_faq')]
+    public function newFaq(Request $request, FaqService $faqService): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $faqFactory = new FaqFactory($faqService->getLocales()['locales']);
+
+        $faq = $faqFactory->create()->getFaq();
+        $faq->setUser($this->getUser());
+
+        foreach ($faq->getFaqTranslations() as &$faqTranslation) {
+            if ($faqTranslation->getLocale() === $faqService->getLocales()['current']) {
+                $faqTranslation->setTitle($data['title']);
+            } else {
+                $faqTranslation->setTitle($faqTranslation->getLocale() . '-' . $data['title']);
+            }
+        }
+        $faqService->save($faq);
+
+        return $this->json([
+            'url_redirect' => $this->generateUrl('admin_faq_update', ['id' => $faq->getId()]),
             'success' => true
         ]);
     }
