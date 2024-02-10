@@ -158,7 +158,7 @@ export default {
       axios.post(this.urls.save, {
         'faq': this.faq
       }).then((response) => {
-        this.toasts.msg = this.translate.msg_create_success;
+        this.toasts.msg = this.translate.msg_save_success;
         this.toasts.toast.show();
       }).catch((error) => {
         console.error(error);
