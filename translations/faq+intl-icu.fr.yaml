@@ -27,3 +27,9 @@ faq.select.loading: 'Chargement des données de la FAQ'
 faq.error.empty.value: 'Cette valeur ne peux pas être vide'
 faq.save: Sauvegader
 faq.save.success: 'Faq sauvegardée avec succès'
+faq.new.title: "Création d'une nouvelle Faq"
+faq.new.input.title: 'Titre de la Faq'
+faq.new.help: "A la création de la Faq, le titre sera dans la langue par défaut du site, vous pourrez éditer les autres textes dans l'édition de la Faq"
+faq.new.btn: 'Créer la Faq'
+faq.new.input.error.empty: 'Vous devez saisir un titre pour votre nouvelle Faq'
+faq.create.success: "La Faq à été créée avec succès, vous aller être redirigé vers l'édition"

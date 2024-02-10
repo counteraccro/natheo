@@ -27,3 +27,9 @@ faq.select.loading: __faq.select.loading
 faq.error.empty.value: __faq.error.empty.value
 faq.save: __faq.save
 faq.save.success: __faq.save.success
+faq.new.title: __faq.new.title
+faq.new.input.title: __faq.new.input.title
+faq.new.help: __faq.new.help
+faq.new.btn: __faq.new.btn
+faq.new.input.error.empty: __faq.new.input.error.empty
+faq.create.success: __faq.create.success
