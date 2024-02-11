@@ -1,6 +1,6 @@
 grid.search.placeholder: 'Rechercher dans le tableau'
 grid.loading: 'Chargement des données'
-grid.success.titre: 'Action réalisée avec succès !'
+grid.success.titre: 'Succès !'
 grid.confirm.titre: 'Confirmation demandée'
 grid.confirm.texte: 'Êtes vous sur de vouloir faire cela ?'
 grid.confirm.btn.ok: Oui
@@ -9,3 +9,4 @@ grid.page: Page
 grid.on: sur
 grid.row: lignes
 grid.no.result: 'Aucun résultat pour votre recherche'
+grid.toast.time: "A l'instant"
