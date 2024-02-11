@@ -66,10 +66,12 @@ class GridService extends AppAdminService
                 'placeholder' => $this->translator->trans('grid.search.placeholder', domain: 'grid'),
                 'loading' => $this->translator->trans('grid.loading', domain: 'grid'),
                 'titleSuccess' => $this->translator->trans('grid.success.titre', domain: 'grid'),
+                'time' => $this->translator->trans('grid.toast.time', domain: 'grid'),
                 'confirmTitle' => $this->translator->trans('grid.confirm.titre', domain: 'grid'),
                 'confirmText' => $this->translator->trans('grid.confirm.texte', domain: 'grid'),
                 'confirmBtnOK' => $this->translator->trans('grid.confirm.btn.ok', domain: 'grid'),
                 'confirmBtnNo' => $this->translator->trans('grid.confirm.btn.no', domain: 'grid'),
+
             ]),
             'gridPaginate' => json_encode([
                 'page' => $this->translator->trans('grid.page', [], domain: 'grid'),

@@ -9,7 +9,7 @@
 import Grid from '../../Components/Grid/Grid.vue'
 import GridPaginate from "../../Components/Grid/GridPaginate.vue";
 import axios from "axios";
-import {Modal} from 'bootstrap'
+import {Modal, Toast} from 'bootstrap'
 
 export default {
   name: "GenericGrid",
@@ -42,9 +42,26 @@ export default {
       showMsgSuccess: false,
       confirmModal: '',
       msgConfirm: '',
+      toasts: {
+        success: {
+          toast: [],
+          msg: '',
+        },
+        error: {
+          toast: [],
+          msg: '',
+        }
+      },
     }
   },
   mounted() {
+
+    let toastSuccess = document.getElementById('live-toast-success');
+    this.toasts.success.toast = Toast.getOrCreateInstance(toastSuccess);
+
+    let toastError = document.getElementById('live-toast-error');
+    this.toasts.error.toast = Toast.getOrCreateInstance(toastError);
+
     this.loadData(this.page, this.limit);
     this.confirmModal = new Modal(document.getElementById("modal-alert"), {});
 
@@ -100,6 +117,11 @@ export default {
             if (response.data.type === 'success') {
               this.msgSuccess = response.data.msg;
               this.showMsgSuccess = true;
+
+              this.toasts.success.msg = response.data.msg;
+              this.toasts.success.toast.show();
+
+
               setTimeout(() => {
                 this.showMsgSuccess = false;
               }, 5000)
@@ -125,12 +147,12 @@ export default {
     </div>
   </form>
 
-
+  <!-- A supprimer à terme si tout est OK - ancien système d'affichage des messages
   <div v-if="this.showMsgSuccess" class="alert alert-success alert-dismissible">
     <strong><i class="bi bi-check2-circle"></i> {{ translate.titleSuccess }} </strong> <br/>
     <span v-html="this.msgSuccess"></span>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
+  </div>-->
 
   <div class="modal fade" id="modal-alert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -176,7 +198,31 @@ export default {
     </GridPaginate>
   </div>
 
+  <div class="toast-container position-fixed top-0 end-0 p-2">
+
+    <div id="live-toast-success" class="toast border border-secondary bg-white" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header text-success">
+        <i class="bi bi-check-circle-fill"></i> &nbsp;
+        <strong class="me-auto"> {{translate.titleSuccess }}</strong>
+        <small class="text-black">{{ translate.time }}</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body" v-html="this.toasts.success.msg"></div>
+    </div>
+
+    <div id="live-toast-error" class="toast border border-secondary bg-white" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header text-danger">
+        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
+        <strong class="me-auto"> {{ this.translate.toast_title_error }}</strong>
+        <small class="text-black">{{ translate.time }}</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body" v-html="this.toasts.error.msg"></div>
+    </div>
+  </div>
+
 </template>
+
 
 <style scoped>
 
