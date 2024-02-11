@@ -38,8 +38,6 @@ export default {
       translate: {},
       translateGridPaginate: {},
       translateGrid: {},
-      msgSuccess: '',
-      showMsgSuccess: false,
       confirmModal: '',
       msgConfirm: '',
       toasts: {
@@ -114,17 +112,13 @@ export default {
         if (is_ajax) {
           this.loading = true;
           axios.post(url).then((response) => {
-            if (response.data.type === 'success') {
-              this.msgSuccess = response.data.msg;
-              this.showMsgSuccess = true;
-
+            if (response.data.success === true) {
               this.toasts.success.msg = response.data.msg;
               this.toasts.success.toast.show();
-
-
-              setTimeout(() => {
-                this.showMsgSuccess = false;
-              }, 5000)
+            }
+            else {
+              this.toasts.error.msg = response.data.msg;
+              this.toasts.error.toast.show();
             }
           }).catch((error) => {
             console.error(error);
@@ -213,7 +207,7 @@ export default {
     <div id="live-toast-error" class="toast border border-secondary bg-white" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="toast-header text-danger">
         <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.translate.toast_title_error }}</strong>
+        <strong class="me-auto"> {{ translate.titleError }}</strong>
         <small class="text-black">{{ translate.time }}</small>
         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
