@@ -10,3 +10,4 @@ grid.on: sur
 grid.row: lignes
 grid.no.result: 'Aucun résultat pour votre recherche'
 grid.toast.time: "A l'instant"
+grid.error.titre: 'Erreur !'

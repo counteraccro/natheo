@@ -10,3 +10,4 @@ grid.on: __grid.on
 grid.row: __grid.row
 grid.no.result: __grid.no.result
 grid.toast.time: __grid.toast.time
+grid.error.titre: __grid.error.titre
