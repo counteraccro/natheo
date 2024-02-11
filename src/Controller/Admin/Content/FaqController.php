@@ -11,6 +11,8 @@ use App\Utils\Content\Faq\FaqFactory;
 use App\Utils\Content\Faq\FaqPopulate;
 use App\Utils\System\Options\OptionUserKey;
 use Doctrine\DBAL\Exception;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -193,17 +195,15 @@ class FaqController extends AppAdminController
         /** @var Faq $faq */
         $faq = $faqService->findOneById(Faq::class, $data['faq']['id']);
 
-        $faq->setUser(null);
-
         $faqPopulate = new FaqPopulate($faq, $data['faq']);
         $faq = $faqPopulate->populate()->getFaq();
 
         $success = true;
-        $msg =  $translator->trans('faq.save.success', domain: 'faq');
+        $msg = $translator->trans('faq.save.success', domain: 'faq');
         try {
             $faqService->save($faq);
-        } catch (Exception $exception)
-        {
+        } catch (Exception $exception) {
+            $this->logger->error($exception->getMessage());
             $success = false;
             $msg = $translator->trans('faq.save.error', domain: 'faq');
         }
@@ -220,7 +220,9 @@ class FaqController extends AppAdminController
      * @return JsonResponse
      */
     #[Route('/ajax/new-faq', name: 'new_faq')]
-    public function newFaq(Request $request, FaqService $faqService): JsonResponse
+    public function newFaq(Request             $request,
+                           FaqService          $faqService,
+                           TranslatorInterface $translator): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $faqFactory = new FaqFactory($faqService->getLocales()['locales']);
@@ -235,11 +237,21 @@ class FaqController extends AppAdminController
                 $faqTranslation->setTitle($faqTranslation->getLocale() . '-' . $data['title']);
             }
         }
-        $faqService->save($faq);
+
+        $success = true;
+        $msg = $translator->trans('faq.create.success', domain: 'faq');
+        try {
+            $faqService->save($faq);
+        } catch (Exception $exception) {
+            $this->logger->error($exception->getMessage());
+            $success = false;
+            $msg = $translator->trans('faq.create.error', domain: 'faq');
+        }
 
         return $this->json([
             'url_redirect' => $this->generateUrl('admin_faq_update', ['id' => $faq->getId()]),
-            'success' => true
+            'success' => $success,
+            'msg' => $msg
         ]);
     }
 }

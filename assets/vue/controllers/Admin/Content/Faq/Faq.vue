@@ -167,7 +167,7 @@ export default {
         'faq': this.faq
       }).then((response) => {
 
-        if (response.data.success === 'true') {
+        if (response.data.success === true) {
           this.toasts.success.msg = response.data.msg;
           this.toasts.success.toast.show();
         } else {
@@ -210,13 +210,19 @@ export default {
       axios.post(this.urls.new_faq, {
         'title': this.title
       }).then((response) => {
-        this.toasts.success.msg = this.translate.msg_create_success;
-        this.toasts.success.toast.show();
-        window.location.replace(response.data.url_redirect);
+
+        if (response.data.success === true) {
+          this.toasts.success.msg = response.data.msg;
+          this.toasts.success.toast.show();
+          window.location.replace(response.data.url_redirect);
+        } else {
+          this.toasts.error.msg = response.data.msg;
+          this.toasts.error.toast.show();
+          this.loading = false;
+        }
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
-        //this.loading = false;
       });
     }
   }
