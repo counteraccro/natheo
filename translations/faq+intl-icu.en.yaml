@@ -33,3 +33,5 @@ faq.new.help: __faq.new.help
 faq.new.btn: __faq.new.btn
 faq.new.input.error.empty: __faq.new.input.error.empty
 faq.create.success: __faq.create.success
+faq.toast.title.success: __faq.toast.title.success
+faq.toast.time: __faq.toast.time
