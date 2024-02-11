@@ -112,7 +112,14 @@ export default {
         if (is_ajax) {
           this.loading = true;
           axios.post(url).then((response) => {
-            if (response.data.success === true) {
+            if (response.data.success === true || response.data.type === 'success') {
+
+              if(response.data.type === 'success')
+              {
+                alert('Ancient système de retour de la réponse, à changer pour l\'url ' + url + ' \n ' +
+                    'Voir Controller/Admin/Content/FaqController::updateDisabled pour un exemple de la bonne pratique');
+              }
+
               this.toasts.success.msg = response.data.msg;
               this.toasts.success.toast.show();
             }
