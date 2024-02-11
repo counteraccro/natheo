@@ -30,16 +30,17 @@ export default {
       keyVal: 1,
       title: '',
       toasts: {
-        toast: [],
-        msg: '',
-        bg: 'bg-success'
+        success : {
+          toast: [],
+          msg: '',
+        }
       },
     }
   },
   mounted() {
 
-    let toastAutoSave = document.getElementById('live-toast');
-    this.toasts.toast = Toast.getOrCreateInstance(toastAutoSave);
+    let toastSuccess = document.getElementById('live-toast-success');
+    this.toasts.success.toast = Toast.getOrCreateInstance(toastSuccess);
 
     this.loadFaq();
   },
@@ -158,8 +159,8 @@ export default {
       axios.post(this.urls.save, {
         'faq': this.faq
       }).then((response) => {
-        this.toasts.msg = this.translate.msg_save_success;
-        this.toasts.toast.show();
+        this.toasts.success.msg = this.translate.msg_save_success;
+        this.toasts.success.toast.show();
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -195,8 +196,8 @@ export default {
       axios.post(this.urls.new_faq, {
         'title': this.title
       }).then((response) => {
-        this.toasts.msg = this.translate.msg_create_success;
-        this.toasts.toast.show();
+        this.toasts.success.msg = this.translate.msg_create_success;
+        this.toasts.success.toast.show();
         window.location.replace(response.data.url_redirect);
       }).catch((error) => {
         console.error(error);
@@ -336,10 +337,16 @@ export default {
 
   <!-- toast -->
   <div class="toast-container position-fixed top-0 end-0 p-2">
-    <div id="live-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-body text-white" :class="this.toasts.bg">
-        <i class="bi bi-check-circle-fill"></i>
-        {{ this.toasts.msg }}
+
+    <div id="live-toast-success" class="toast border border-secondary bg-white" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header text-success">
+        <i class="bi bi-check-circle-fill"></i> &nbsp;
+        <strong class="me-auto"> {{ this.translate.toast_title_success }}</strong>
+        <small class="text-black">{{ this.translate.toast_time }}</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        {{ this.toasts.success.msg }}
       </div>
     </div>
   </div>
