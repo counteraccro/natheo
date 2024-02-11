@@ -118,16 +118,22 @@ class FaqController extends AppAdminController
     {
 
         $faq->setDisabled(!$faq->isDisabled());
-        $faqService->save($faq);
 
         $faqTranslate = $faq->getFaqTranslationByLocale($request->getLocale());
-
         $msg = $translator->trans('faq.success.no.disabled', ['label' => $faqTranslate->getTitle()], 'faq');
         if ($faq->isDisabled()) {
             $msg = $translator->trans('faq.success.disabled', ['label' => $faqTranslate->getTitle()], 'faq');
         }
 
-        return $this->json(['type' => 'success', 'msg' => $msg]);
+        $success = true;
+        try {
+            $faqService->save($faq);
+        } catch (Exception $exception) {
+            $this->logger->error($exception->getMessage());
+            $success = false;
+            $msg = $translator->trans('faq.disabled.error', domain: 'faq');
+        }
+        return $this->json(['success' => $success, 'msg' => $msg]);
     }
 
     /**
@@ -146,13 +152,17 @@ class FaqController extends AppAdminController
         Request             $request): JsonResponse
     {
         $titre = $faq->getFaqTranslationByLocale($request->getLocale())->getTitle();
-        $faqService->remove($faq);
 
-        return $this->json(['type' => 'success', 'msg' => $translator->trans(
-            'faq.remove.success',
-            ['label' => $titre],
-            domain: 'faq'
-        )]);
+        $success = true;
+        $msg = $translator->trans('faq.remove.success', ['label' => $titre], domain: 'faq');
+        try {
+            $faqService->remove($faq);
+        } catch (Exception $exception) {
+            $this->logger->error($exception->getMessage());
+            $success = false;
+            $msg = $translator->trans('faq.remove.error', domain: 'faq');
+        }
+        return $this->json(['success' => $success, 'msg' => $msg]);
     }
 
     /**
