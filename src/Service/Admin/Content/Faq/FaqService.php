@@ -190,6 +190,7 @@ class FaqService extends AppAdminService
             'msg_create_success' =>  $this->translator->trans('faq.create.success', domain: 'faq'),
             'toast_title_success' => $this->translator->trans('faq.toast.title.success', domain: 'faq'),
             'toast_time' => $this->translator->trans('faq.toast.time', domain: 'faq'),
+            'toast_title_error' => $this->translator->trans('faq.toast.title.error', domain: 'faq'),
             ];
     }
 }

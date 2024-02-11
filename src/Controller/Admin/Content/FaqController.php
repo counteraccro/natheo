@@ -10,6 +10,7 @@ use App\Utils\Breadcrumb;
 use App\Utils\Content\Faq\FaqFactory;
 use App\Utils\Content\Faq\FaqPopulate;
 use App\Utils\System\Options\OptionUserKey;
+use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -186,18 +187,30 @@ class FaqController extends AppAdminController
      * @return JsonResponse
      */
     #[Route('/ajax/save', name: 'save')]
-    public function save(Request $request, FaqService $faqService): JsonResponse
+    public function save(Request $request, FaqService $faqService, TranslatorInterface $translator): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+        /** @var Faq $faq */
         $faq = $faqService->findOneById(Faq::class, $data['faq']['id']);
+
+        $faq->setUser(null);
 
         $faqPopulate = new FaqPopulate($faq, $data['faq']);
         $faq = $faqPopulate->populate()->getFaq();
-        $faqService->save($faq);
 
+        $success = true;
+        $msg =  $translator->trans('faq.save.success', domain: 'faq');
+        try {
+            $faqService->save($faq);
+        } catch (Exception $exception)
+        {
+            $success = false;
+            $msg = $translator->trans('faq.save.error', domain: 'faq');
+        }
 
         return $this->json([
-            'success' => true
+            'success' => $success,
+            'msg' => $msg
         ]);
     }
 

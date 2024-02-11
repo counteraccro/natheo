@@ -30,7 +30,11 @@ export default {
       keyVal: 1,
       title: '',
       toasts: {
-        success : {
+        success: {
+          toast: [],
+          msg: '',
+        },
+        error: {
           toast: [],
           msg: '',
         }
@@ -41,6 +45,9 @@ export default {
 
     let toastSuccess = document.getElementById('live-toast-success');
     this.toasts.success.toast = Toast.getOrCreateInstance(toastSuccess);
+
+    let toastError = document.getElementById('live-toast-error');
+    this.toasts.error.toast = Toast.getOrCreateInstance(toastError);
 
     this.loadFaq();
   },
@@ -159,8 +166,15 @@ export default {
       axios.post(this.urls.save, {
         'faq': this.faq
       }).then((response) => {
-        this.toasts.success.msg = this.translate.msg_save_success;
-        this.toasts.success.toast.show();
+
+        if (response.data.success === 'true') {
+          this.toasts.success.msg = response.data.msg;
+          this.toasts.success.toast.show();
+        } else {
+          this.toasts.error.msg = response.data.msg;
+          this.toasts.error.toast.show();
+        }
+
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -347,6 +361,18 @@ export default {
       </div>
       <div class="toast-body">
         {{ this.toasts.success.msg }}
+      </div>
+    </div>
+
+    <div id="live-toast-error" class="toast border border-secondary bg-white" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header text-danger">
+        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
+        <strong class="me-auto"> {{ this.translate.toast_title_error }}</strong>
+        <small class="text-black">{{ this.translate.toast_time }}</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        {{ this.toasts.error.msg }}
       </div>
     </div>
   </div>
