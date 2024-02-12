@@ -11,8 +11,11 @@ namespace App\Service\Admin;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -68,23 +71,30 @@ class AppAdminService
      */
     protected ParameterBagInterface $parameterBag;
 
+    protected LoggerInterface $logger;
+
     public function __construct(
-        EntityManagerInterface $entityManager,
-        ContainerBagInterface  $containerBag,
-        TranslatorInterface    $translator,
-        UrlGeneratorInterface  $router,
-        Security               $security,
-        RequestStack           $requestStack,
-        ParameterBagInterface  $parameterBag
+        #[AutowireLocator([
+            'logger' => LoggerInterface::class,
+            'entityManager' => EntityManagerInterface::class,
+            'containerBag' => ContainerBagInterface::class,
+            'translator' => TranslatorInterface::class,
+            'router' => UrlGeneratorInterface::class,
+            'security' => Security::class,
+            'requestStack' => RequestStack::class,
+            'parameterBag' => ParameterBagInterface::class
+        ])]
+        private readonly ContainerInterface $handlers
     )
     {
-        $this->requestStack = $requestStack;
-        $this->containerBag = $containerBag;
-        $this->entityManager = $entityManager;
-        $this->translator = $translator;
-        $this->router = $router;
-        $this->security = $security;
-        $this->parameterBag = $parameterBag;
+        $this->requestStack = $this->handlers->get('requestStack');
+        $this->containerBag = $this->handlers->get('containerBag');
+        $this->entityManager = $this->handlers->get('entityManager');
+        $this->translator = $this->handlers->get('translator');
+        $this->router = $this->handlers->get('router');
+        $this->security = $this->handlers->get('security');
+        $this->parameterBag = $this->handlers->get('parameterBag');
+        $this->logger = $this->handlers->get('logger');
     }
 
     /**

@@ -13,7 +13,12 @@ use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -28,28 +33,24 @@ class SidebarElementService extends AppAdminService
     private GridService $gridService;
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param ContainerBagInterface $containerBag
-     * @param TranslatorInterface $translator
-     * @param UrlGeneratorInterface $router
-     * @param GridService $gridService
-     * @param Security $security
-     * @param RequestStack $requestStack
-     * @param ParameterBagInterface $parameterBag
+     * @param ContainerInterface $handlers
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        ContainerBagInterface  $containerBag,
-        TranslatorInterface    $translator,
-        UrlGeneratorInterface  $router,
-        GridService            $gridService,
-        Security               $security,
-        RequestStack           $requestStack,
-        ParameterBagInterface  $parameterBag
-    )
+    public function __construct(#[AutowireLocator([
+        'logger' => LoggerInterface::class,
+        'entityManager' => EntityManagerInterface::class,
+        'containerBag' => ContainerBagInterface::class,
+        'translator' => TranslatorInterface::class,
+        'router' => UrlGeneratorInterface::class,
+        'security' => Security::class,
+        'requestStack' => RequestStack::class,
+        'parameterBag' => ParameterBagInterface::class,
+        'gridService' => GridService::class
+    ])] ContainerInterface $handlers)
     {
-        $this->gridService = $gridService;
-        parent::__construct($entityManager, $containerBag, $translator, $router, $security, $requestStack, $parameterBag);
+        $this->gridService = $handlers->get('gridService');
+        parent::__construct($handlers);
     }
 
     /**
