@@ -8,6 +8,7 @@
 
 namespace App\Service\Admin;
 
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Psr\Container\ContainerExceptionInterface;
@@ -71,7 +72,19 @@ class AppAdminService
      */
     protected ParameterBagInterface $parameterBag;
 
+    /**
+     * @var LoggerInterface|mixed
+     */
     protected LoggerInterface $logger;
+
+    /**
+     * Structure de la réponse d'un appel AJAX
+     * @var array|
+     */
+    private array $ajaxResponse = [
+        'success' => '',
+        'msg' => ''
+    ];
 
     public function __construct(
         #[AutowireLocator([
@@ -115,8 +128,41 @@ class AppAdminService
      */
     public function save(mixed $entity, bool $flush = true): void
     {
-        $repo = $this->getRepository($entity::class);
-        $repo->save($entity, $flush);
+        try {
+            $repo = $this->getRepository($entity::class);
+            $repo->save($entity, $flush);
+            $this->ajaxResponse['success'] = true;
+        } catch (Exception $exception) {
+            $this->logger->error($exception->getMessage());
+            $this->ajaxResponse['success'] = false;
+        }
+    }
+
+    /**
+     * Construit une réponse AJAX sous la forme d'un tableau avec les clés suivantes : <br />
+     * 'success' → true | false<br/>
+     * 'msg' → string
+     * @param string|null $successMessage
+     * @param string|null $errorMessage
+     * @return array
+     */
+    public function getResponseAjax(string $successMessage = null, string $errorMessage = null): array
+    {
+        if ($errorMessage === null) {
+            $errorMessage = $this->translator->trans('response.ajax.error');
+        }
+
+        if ($successMessage === null) {
+            $successMessage = $this->translator->trans('response.ajax.success');
+        }
+
+        if ($this->ajaxResponse['success']) {
+            $this->ajaxResponse['msg'] = $successMessage;
+        } else {
+            $this->ajaxResponse['msg'] = $errorMessage;
+        }
+
+        return $this->ajaxResponse;
     }
 
     /**
@@ -127,8 +173,14 @@ class AppAdminService
      */
     public function remove(mixed $entity, bool $flush = true): void
     {
-        $repo = $this->getRepository($entity::class);
-        $repo->remove($entity, $flush);
+        try {
+            $repo = $this->getRepository($entity::class);
+            $repo->remove($entity, $flush);
+            $this->ajaxResponse['success'] = true;
+        } catch (Exception $exception) {
+            $this->logger->error($exception->getMessage());
+            $this->ajaxResponse['success'] = false;
+        }
     }
 
 
@@ -226,7 +278,7 @@ class AppAdminService
         $normalizer = new ObjectNormalizer(null, null, null, $extractor);
         $serializer = new Serializer([$normalizer, new ArrayDenormalizer()]);
 
-        return  $serializer->denormalize(
+        return $serializer->denormalize(
             $array,
             $objectClass,
             null,
