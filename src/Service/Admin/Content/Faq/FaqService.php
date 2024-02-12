@@ -11,8 +11,6 @@ use App\Entity\Admin\Content\Faq\Faq;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Admin\System\OptionSystemService;
-use App\Service\AppService;
-use App\Utils\Content\Faq\FaqConst;
 use App\Utils\Content\Faq\FaqStatistiqueKey;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
