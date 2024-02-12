@@ -362,7 +362,7 @@ export default {
       <div class="toast-header text-success">
         <i class="bi bi-check-circle-fill"></i> &nbsp;
         <strong class="me-auto"> {{ this.translate.toast_title_success }}</strong>
-        <small class="text-black">{{ this.translate.toast_time }}</small>
+        <small class="text-black-50">{{ this.translate.toast_time }}</small>
         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
       <div class="toast-body">
@@ -374,7 +374,7 @@ export default {
       <div class="toast-header text-danger">
         <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
         <strong class="me-auto"> {{ this.translate.toast_title_error }}</strong>
-        <small class="text-black">{{ this.translate.toast_time }}</small>
+        <small class="text-black-50">{{ this.translate.toast_time }}</small>
         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
       <div class="toast-body">
