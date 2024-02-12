@@ -205,7 +205,7 @@ export default {
       <div class="toast-header text-success">
         <i class="bi bi-check-circle-fill"></i> &nbsp;
         <strong class="me-auto"> {{translate.titleSuccess }}</strong>
-        <small class="text-black">{{ translate.time }}</small>
+        <small class="text-black-50">{{ translate.time }}</small>
         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
       <div class="toast-body" v-html="this.toasts.success.msg"></div>
@@ -215,7 +215,7 @@ export default {
       <div class="toast-header text-danger">
         <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
         <strong class="me-auto"> {{ translate.titleError }}</strong>
-        <small class="text-black">{{ translate.time }}</small>
+        <small class="text-black-50">{{ translate.time }}</small>
         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
       <div class="toast-body" v-html="this.toasts.error.msg"></div>
