@@ -124,16 +124,8 @@ class FaqController extends AppAdminController
         if ($faq->isDisabled()) {
             $msg = $translator->trans('faq.success.disabled', ['label' => $faqTranslate->getTitle()], 'faq');
         }
-
-        $success = true;
-        try {
-            $faqService->save($faq);
-        } catch (Exception $exception) {
-            $this->logger->error($exception->getMessage());
-            $success = false;
-            $msg = $translator->trans('faq.disabled.error', domain: 'faq');
-        }
-        return $this->json(['success' => $success, 'msg' => $msg]);
+        $faqService->save($faq);
+        return $this->json($faqService->getResponseAjax($msg));
     }
 
     /**
@@ -152,17 +144,10 @@ class FaqController extends AppAdminController
         Request             $request): JsonResponse
     {
         $titre = $faq->getFaqTranslationByLocale($request->getLocale())->getTitle();
-
-        $success = true;
         $msg = $translator->trans('faq.remove.success', ['label' => $titre], domain: 'faq');
-        try {
-            $faqService->remove($faq);
-        } catch (Exception $exception) {
-            $this->logger->error($exception->getMessage());
-            $success = false;
-            $msg = $translator->trans('faq.remove.error', domain: 'faq');
-        }
-        return $this->json(['success' => $success, 'msg' => $msg]);
+
+        $faqService->remove($faq);
+        return $this->json($faqService->getResponseAjax($msg));
     }
 
     /**
@@ -208,25 +193,15 @@ class FaqController extends AppAdminController
         $faqPopulate = new FaqPopulate($faq, $data['faq']);
         $faq = $faqPopulate->populate()->getFaq();
 
-        $success = true;
         $msg = $translator->trans('faq.save.success', domain: 'faq');
-        try {
-            $faqService->save($faq);
-        } catch (Exception $exception) {
-            $this->logger->error($exception->getMessage());
-            $success = false;
-            $msg = $translator->trans('faq.save.error', domain: 'faq');
-        }
-
-        return $this->json([
-            'success' => $success,
-            'msg' => $msg
-        ]);
+        $faqService->save($faq);
+        return $this->json($faqService->getResponseAjax($msg));
     }
 
     /** Permet de créer une nouvelle FAQ
      * @param Request $request
      * @param FaqService $faqService
+     * @param TranslatorInterface $translator
      * @return JsonResponse
      */
     #[Route('/ajax/new-faq', name: 'new_faq')]
@@ -248,20 +223,11 @@ class FaqController extends AppAdminController
             }
         }
 
-        $success = true;
+        $faqService->save($faq);
         $msg = $translator->trans('faq.create.success', domain: 'faq');
-        try {
-            $faqService->save($faq);
-        } catch (Exception $exception) {
-            $this->logger->error($exception->getMessage());
-            $success = false;
-            $msg = $translator->trans('faq.create.error', domain: 'faq');
-        }
 
-        return $this->json([
-            'url_redirect' => $this->generateUrl('admin_faq_update', ['id' => $faq->getId()]),
-            'success' => $success,
-            'msg' => $msg
-        ]);
+        $jsonTab = $faqService->getResponseAjax($msg);
+        $jsonTab['url_redirect'] = $this->generateUrl('admin_faq_update', ['id' => $faq->getId()]);
+        return $this->json($jsonTab);
     }
 }
