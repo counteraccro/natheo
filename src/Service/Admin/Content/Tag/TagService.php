@@ -100,7 +100,7 @@ class TagService extends AppAdminService
             /* @var Tag $element */
 
             $action = $this->generateTabAction($element);
-            
+
             $isDisabled = '';
             if ($element->isDisabled()) {
                 $isDisabled = '<i class="bi bi-eye-slash"></i>';
