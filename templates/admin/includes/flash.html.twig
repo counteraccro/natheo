@@ -6,7 +6,13 @@
     {% endfor %}
 {% endfor %}
 
+{% set translate = [] %}
+{% set translate = translate|merge({ title_success: 'flash.title.success'|trans}) %}
+{% set translate = translate|merge({ title_warning: 'flash.title.warning'|trans}) %}
+{% set translate = translate|merge({ title_danger: 'flash.title.danger'|trans}) %}
+{% set translate = translate|merge({ time: 'flash.time'|trans}) %}
+
 {% if array is not empty %}
-    <div {{ vue_component('Admin/Flash', {flashes : array})}}></div>
+    <div {{ vue_component('Admin/Flash', {flashes : array, translate : translate})}}></div>
 {% endif %}
 
