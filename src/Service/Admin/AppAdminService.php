@@ -161,7 +161,6 @@ class AppAdminService
         } else {
             $this->ajaxResponse['msg'] = $errorMessage;
         }
-
         return $this->ajaxResponse;
     }
 
