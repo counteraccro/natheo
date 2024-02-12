@@ -206,3 +206,7 @@ date.diff.and: et
 date.diff.no_data: 'Aucune donnée'
 response.ajax.error: 'Une erreur est survenue, consultez les logs pour en savoir plus'
 response.ajax.success: 'Action réalisée avec succès'
+flash.title.success: 'Succès !'
+flash.title.warning: 'Attention !'
+flash.title.danger: 'Alerte !'
+flash.time: "A l'instant"

@@ -206,3 +206,7 @@ date.diff.no_data: __date.diff.no_data
 date.diff.start.short: __date.diff.start.short
 response.ajax.error: __response.ajax.error
 response.ajax.success: __response.ajax.success
+flash.title.success: __flash.title.success
+flash.title.warning: __flash.title.warning
+flash.title.danger: __flash.title.danger
+flash.time: __flash.time
