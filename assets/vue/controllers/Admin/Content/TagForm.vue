@@ -15,9 +15,9 @@ export default {
     url_stats: String,
     url_index: String,
     url_update: String,
-    translate: [],
-    locales: [],
-    pTag: []
+    translate: Object,
+    locales: Object,
+    pTag: Object
   },
   data() {
     return {
