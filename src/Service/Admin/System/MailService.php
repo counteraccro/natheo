@@ -17,8 +17,13 @@ use App\Utils\System\Options\OptionSystemKey;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use League\CommonMark\Exception\CommonMarkException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -100,35 +105,31 @@ class MailService extends AppAdminService
     private OptionSystemService $optionSystemService;
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param ContainerBagInterface $containerBag
-     * @param TranslatorInterface $translator
-     * @param UrlGeneratorInterface $router
-     * @param Security $security
-     * @param RequestStack $requestStack
-     * @param GridService $gridService
-     * @param MailerInterface $mailer
-     * @param OptionSystemService $optionSystemService
-     * @param ParameterBagInterface $parameterBag
+     * @param ContainerInterface $handlers
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
-        ContainerBagInterface  $containerBag,
-        TranslatorInterface    $translator,
-        UrlGeneratorInterface  $router,
-        Security               $security,
-        RequestStack           $requestStack,
-        GridService            $gridService,
-        MailerInterface        $mailer,
-        OptionSystemService    $optionSystemService,
-        ParameterBagInterface  $parameterBag
+        #[AutowireLocator([
+            'logger' => LoggerInterface::class,
+            'entityManager' => EntityManagerInterface::class,
+            'containerBag' => ContainerBagInterface::class,
+            'translator' => TranslatorInterface::class,
+            'router' => UrlGeneratorInterface::class,
+            'security' => Security::class,
+            'requestStack' => RequestStack::class,
+            'parameterBag' => ParameterBagInterface::class,
+            'optionSystemService' => OptionSystemService::class,
+            'gridService' => GridService::class,
+            'mailer' => MailerInterface::class
+        ])]
+        private readonly ContainerInterface $handlers
     )
     {
-        $this->gridService = $gridService;
-        $this->mailer = $mailer;
-        $this->optionSystemService = $optionSystemService;
-
-        parent::__construct($entityManager, $containerBag, $translator, $router, $security, $requestStack, $parameterBag);
+        $this->gridService = $this->handlers->get('gridService');
+        $this->mailer = $this->handlers->get('mailer');
+        $this->optionSystemService = $this->handlers->get('optionSystemService');
+        parent::__construct($handlers);
     }
 
 
