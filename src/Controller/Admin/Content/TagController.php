@@ -88,7 +88,7 @@ class TagController extends AppAdminController
             $msg = $translator->trans('tag.success.disabled', ['label' => $tagTranslation->getLabel()], 'tag');
         }
 
-        return $this->json(['type' => 'success', 'msg' => $msg]);
+        return $this->json($tagService->getResponseAjax($msg));
     }
 
     /**
@@ -108,13 +108,10 @@ class TagController extends AppAdminController
     ): JsonResponse
     {
         $label = $tag->getTagTranslationByLocale($request->getLocale())->getLabel();
+        $msg = $translator->trans('tag.remove.success', ['label' => $label], domain: 'tag');
 
         $tagService->remove($tag);
-        return $this->json(['type' => 'success', 'msg' => $translator->trans(
-            'tag.remove.success',
-            ['label' => $label],
-            domain: 'tag'
-        )]);
+        return $this->json($tagService->getResponseAjax($msg));
     }
 
     /**
@@ -162,7 +159,6 @@ class TagController extends AppAdminController
         }
         $tag = $tagService->convertEntityToArray($tag, ['createdAt', 'updateAt']);
 
-
         return $this->render('admin/content/tag/add_update.html.twig', [
             'breadcrumb' => $breadcrumb,
             'translate' => $translate,
@@ -199,13 +195,17 @@ class TagController extends AppAdminController
         $tag->setUpdateAt(new \DateTime());
         $tagService->save($tag);
 
-        $msg = $translator->trans(
-            'tag.save.' . $status,
+        $msg = $translator->trans('tag.save.' . $status,
             ['label' => $tag->getTagTranslationByLocale($request->getLocale())->getLabel()],
             domain: 'tag'
         );
-        $this->addFlash(FlashKey::FLASH_SUCCESS, $msg);
+        $tab = $tagService->getResponseAjax($msg);
 
+        if ($tab['success']) {
+            $this->addFlash(FlashKey::FLASH_SUCCESS, $msg);
+        } else {
+            $this->addFlash(FlashKey::FLASH_DANGER, $tab['msg']);
+        }
         return $this->json(['etat' => $status]);
     }
 
