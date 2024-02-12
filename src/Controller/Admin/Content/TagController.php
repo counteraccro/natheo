@@ -157,7 +157,7 @@ class TagController extends AppAdminController
 
             }
         }
-        $tag = $tagService->convertEntityToArray($tag, ['createdAt', 'updateAt']);
+        $tag = $tagService->convertEntityToArray($tag, ['createdAt', 'updateAt', 'pages']);
 
         return $this->render('admin/content/tag/add_update.html.twig', [
             'breadcrumb' => $breadcrumb,
