@@ -16,7 +16,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -41,19 +44,21 @@ class NotificationService extends AppAdminService
      * @param OptionSystemService $optionSystemService
      * @param ParameterBagInterface $parameterBag
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        ContainerBagInterface  $containerBag,
-        TranslatorInterface    $translator,
-        UrlGeneratorInterface  $router,
-        Security               $security,
-        RequestStack           $requestStack,
-        OptionSystemService    $optionSystemService,
-        ParameterBagInterface  $parameterBag
-    )
+
+    public function __construct(#[AutowireLocator([
+        'logger' => LoggerInterface::class,
+        'entityManager' => EntityManagerInterface::class,
+        'containerBag' => ContainerBagInterface::class,
+        'translator' => TranslatorInterface::class,
+        'router' => UrlGeneratorInterface::class,
+        'security' => Security::class,
+        'requestStack' => RequestStack::class,
+        'parameterBag' => ParameterBagInterface::class,
+        'optionSystemService' => OptionSystemService::class
+    ])] ContainerInterface $handlers)
     {
-        $this->optionSystemService = $optionSystemService;
-        parent::__construct($entityManager, $containerBag, $translator, $router, $security, $requestStack, $parameterBag);
+        $this->optionSystemService = $handlers->get('optionSystemService');
+        parent::__construct($handlers);
     }
 
     /**
