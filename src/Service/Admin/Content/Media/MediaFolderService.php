@@ -59,7 +59,7 @@ class MediaFolderService extends AppAdminService
     protected string $webPathThumbnail = '';
 
     protected bool $canCreatePhysicalFolder = true;
-    
+
     /**
      * @param ContainerInterface $handlers
      * @throws ContainerExceptionInterface
