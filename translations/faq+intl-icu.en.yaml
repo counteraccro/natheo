@@ -35,8 +35,4 @@ faq.new.input.error.empty: __faq.new.input.error.empty
 faq.create.success: __faq.create.success
 faq.toast.title.success: __faq.toast.title.success
 faq.toast.time: __faq.toast.time
-faq.save.error: __faq.save.error
-faq.create.error: __faq.create.error
 faq.toast.title.error: __faq.toast.title.error
-faq.disabled.error: __faq.disabled.error
-faq.remove.error: __faq.remove.error

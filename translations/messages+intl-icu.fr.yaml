@@ -204,3 +204,5 @@ date.diff.seconde: "{secondes, plural,\n    =1    {seconde}\n    other {secondes
 date.diff.instant: 'quelques instants'
 date.diff.and: et
 date.diff.no_data: 'Aucune donnée'
+response.ajax.error: 'Une erreur est survenue, consultez les logs pour en savoir plus'
+response.ajax.success: 'Action réalisée avec succès'

@@ -35,8 +35,4 @@ faq.new.input.error.empty: 'Vous devez saisir un titre pour votre nouvelle Faq'
 faq.create.success: "Votre Faq à été créée avec succès, vous aller être redirigé vers l'édition"
 faq.toast.title.success: 'Succès !'
 faq.toast.time: "A l'instant"
-faq.save.error: 'Une erreur est survenue, consultez les logs pour en savoir plus'
 faq.toast.title.error: 'Erreur !'
-faq.create.error: 'Une erreur est survenue, consultez les logs pour en savoir plus'
-faq.remove.error: 'Une erreur est survenue, consultez les logs pour en savoir plus'
-faq.disabled.error: 'Une erreur est survenue, consultez les logs pour en savoir plus'

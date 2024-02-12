@@ -204,3 +204,5 @@ date.diff.instant: "__A l'instant"
 date.diff.and: __et
 date.diff.no_data: __date.diff.no_data
 date.diff.start.short: __date.diff.start.short
+response.ajax.error: __response.ajax.error
+response.ajax.success: __response.ajax.success
