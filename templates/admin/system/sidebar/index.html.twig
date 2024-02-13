@@ -15,7 +15,7 @@
         <i class="bi bi-info-circle"></i> {{ 'sidebar.info' | trans({'icon': '<i class="bi bi-lock-fill"></i>', 'icon2': '<i class="bi bi-eye-slash"></i>'}, 'sidebar') | raw }}
     </p>
 
-    <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_sidebar_load_grid_data'), 'page' : page, 'limit' : limit}) }}></div>
+    <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_sidebar_load_grid_data', {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit}) }}></div>
 
 
     <twig:Admin:ModaleComponent id="help-grid-sidebar" bgColor="bg-secondary">
