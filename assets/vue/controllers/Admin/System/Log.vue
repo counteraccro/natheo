@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       select: [],
-      time: "",
+      time: "all",
       trans: [],
       searchQuery: '',
       gridColumns: [],
@@ -55,9 +55,7 @@ export default {
   },
   methods: {
     loadData() {
-      axios.post(this.url_select, {
-        'time': this.time
-      }).then((response) => {
+      axios.get(this.url_select + '/' + this.time).then((response) => {
         this.select = response.data.files;
         this.trans = response.data.trans;
       }).catch((error) => {
@@ -88,11 +86,7 @@ export default {
      */
     loadContentFile(page, limit) {
       this.loading = true;
-      axios.post(this.url_load_log_file, {
-        file: this.selectFile,
-        page: page,
-        limit: limit
-      }).then((response) => {
+      axios.get(this.url_load_log_file + '/' + this.selectFile + '/' + page + '/' + limit).then((response) => {
         this.gridColumns = response.data.column;
         this.gridData = response.data.data;
         this.nbElements = response.data.nb;
@@ -166,7 +160,7 @@ export default {
     </div>
     <div class="col">
       <select class="form-select no-control" id="select-time" @change="changeTimeFiltre($event)">
-        <option value="">{{ this.trans.log_select_time_all }}</option>
+        <option value="all">{{ this.trans.log_select_time_all }}</option>
         <option value="now">{{ this.trans.log_select_time_now }}</option>
         <option value="yesterday">{{ this.trans.log_select_time_yesterday }}</option>
       </select>

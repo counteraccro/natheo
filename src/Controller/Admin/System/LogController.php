@@ -49,12 +49,14 @@ class LogController extends AppAdminController
      * @return JsonResponse
      * @throws Exception
      */
-    #[Route('/ajax/data-select-log', name: 'ajax_data_select_log', methods: ['POST'])]
-    public function dataSelect(Request $request, LoggerService $loggerService, TranslatorInterface $translator):
+    #[Route('/ajax/data-select-log/{time}', name: 'ajax_data_select_log', methods: ['GET'])]
+    public function dataSelect(
+        LoggerService       $loggerService,
+        TranslatorInterface $translator,
+        string              $time = 'all',
+    ):
     JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-
         $tabTranslate = [
             'log_select_file' => $translator->trans('log.select-file', domain: 'log'),
             'log_select_time_all' => $translator->trans('log.select-time.all', domain: 'log'),
@@ -74,7 +76,7 @@ class LogController extends AppAdminController
         ];
 
         try {
-            $files = $loggerService->getAllFiles($data['time']);
+            $files = $loggerService->getAllFiles($time);
         } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
             die($e->getMessage());
         }
@@ -87,13 +89,18 @@ class LogController extends AppAdminController
      * @param LoggerService $loggerService
      * @return JsonResponse
      */
-    #[Route('/ajax/load-log-file', name: 'ajax_load_log_file', methods: ['POST'])]
-    public function loadLogFile(Request $request, LoggerService $loggerService): JsonResponse
+    #[Route('/ajax/load-log-file', name: 'ajax_load_log_file_empty', methods: ['GET'])]
+    #[Route('/ajax/load-log-file/{file}/{page}/{limit}', name: 'ajax_load_log_file', methods: ['GET'])]
+    public function loadLogFile(
+        LoggerService $loggerService,
+        string        $file = '',
+        int           $page = 1,
+        int           $limit = 20
+    ): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
 
         try {
-            $grid = $loggerService->loadLogFile($data['file'], $data['page'], $data['limit']);
+            $grid = $loggerService->loadLogFile($file, $page, $limit);
         } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
             die($e->getMessage());
         } catch (Exception $e) {

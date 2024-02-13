@@ -210,7 +210,7 @@ class LoggerService extends AppService
         $pathLog = $kernel . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . self::DIRECTORY_LOG;
 
         $finder = new Finder();
-        if ($date !== "") {
+        if ($date !== "all") {
             $date = new \DateTime($date);
             $finder->files()->in($pathLog)->name('*-' . $date->format('Y-m-d') . '.log');
         } else {
