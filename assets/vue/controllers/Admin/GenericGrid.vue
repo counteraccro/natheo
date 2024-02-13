@@ -72,10 +72,7 @@ export default {
      */
     loadData(page, limit) {
       this.loading = true;
-      axios.post(this.url, {
-        page: page,
-        limit: limit
-      }).then((response) => {
+      axios.get(this.url).then((response) => {
         this.gridColumns = response.data.column;
         this.gridData = response.data.data;
         this.nbElements = response.data.nb;
