@@ -18,7 +18,7 @@
     </p>
 
 
-    <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_faq_load_grid_data'), 'page' : page, 'limit' : limit}) }}></div>
+    <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_faq_load_grid_data',  {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit}) }}></div>
 
     <twig:Admin:ModaleComponent id="help-grid-faq" bgColor="bg-secondary">
         <twig:block name="header">

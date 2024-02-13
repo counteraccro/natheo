@@ -44,15 +44,15 @@ class FaqController extends AppAdminController
 
     /**
      * Charge le tableau grid de tag en ajax
-     * @param Request $request
      * @param FaqService $faqService
+     * @param int $page
+     * @param int $limit
      * @return JsonResponse
      */
-    #[Route('/ajax/load-grid-data', name: 'load_grid_data', methods: ['POST'])]
-    public function loadGridData(Request $request, FaqService $faqService): JsonResponse
+    #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
+    public function loadGridData(FaqService $faqService, int $page = 1, int $limit = 20): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-        $grid = $faqService->getAllFormatToGrid($data['page'], $data['limit']);
+        $grid = $faqService->getAllFormatToGrid($page, $limit);
         return $this->json($grid);
     }
 
