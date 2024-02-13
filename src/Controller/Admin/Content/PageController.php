@@ -91,8 +91,7 @@ class PageController extends AppAdminController
         if ($page->isDisabled()) {
             $msg = $translator->trans('page.success.disabled', ['label' => $pageTranslation->getTitre()], 'page');
         }
-
-        return $this->json(['type' => 'success', 'msg' => $msg]);
+        return $this->json($pageService->getResponseAjax($msg));
     }
 
     /**
@@ -122,11 +121,8 @@ class PageController extends AppAdminController
         $pageHistory = new PageHistory($containerBag,$user);
         $pageHistory->removePageHistory($id);
 
-        return $this->json(['type' => 'success', 'msg' => $translator->trans(
-            'page.remove.success',
-            ['label' => $titre],
-            domain: 'page'
-        )]);
+        $msg =  $translator->trans('page.remove.success', ['label' => $titre], domain: 'page');
+        return $this->json($pageService->getResponseAjax($msg));
     }
 
 
