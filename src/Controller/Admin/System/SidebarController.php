@@ -84,6 +84,6 @@ class SidebarController extends AppAdminController
             );
         }
 
-        return $this->json(['type' => 'success', 'msg' => $msg]);
+        return $this->json($sidebarElementService->getResponseAjax($msg));
     }
 }
