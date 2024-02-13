@@ -105,12 +105,16 @@ class UserController extends AppAdminController
      * @param UserService $userService
      * @return JsonResponse
      */
-    #[Route('/ajax/load-grid-data', name: 'load_grid_data', methods: ['POST'])]
+    #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]
-    public function loadGridData(Request $request, UserService $userService): JsonResponse
+    public function loadGridData(
+        Request     $request,
+        UserService $userService,
+        int         $page = 1,
+        int         $limit = 20
+    ): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-        $grid = $userService->getAllFormatToGrid($data['page'], $data['limit']);
+        $grid = $userService->getAllFormatToGrid($page, $limit);
         return $this->json($grid);
     }
 
