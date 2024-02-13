@@ -64,11 +64,14 @@ class MailController extends AppAdminController
      * @param MailService $mailService
      * @return JsonResponse
      */
-    #[Route('/ajax/load-grid-data', name: 'load_grid_data', methods: ['POST'])]
-    public function loadGridData(Request $request, MailService $mailService): JsonResponse
+    #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
+    public function loadGridData(
+        MailService $mailService,
+        int         $page = 1,
+        int         $limit = 20
+    ): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-        $grid = $mailService->getAllFormatToGrid($data['page'], $data['limit']);
+        $grid = $mailService->getAllFormatToGrid($page, $limit);
         return $this->json($grid);
     }
 
@@ -200,7 +203,7 @@ class MailController extends AppAdminController
 
         $tabKeyWord = match ($mail->getKey()) {
             MailKey::MAIL_CHANGE_PASSWORD =>
-            $keyWord->getMailChangePassword($user,  $this->generateUrl('index_index'), $optionSystemService),
+            $keyWord->getMailChangePassword($user, $this->generateUrl('index_index'), $optionSystemService),
             MailKey::MAIL_ACCOUNT_ADM_DISABLE =>
             $keyWord->getTabMailAccountAdmDisabled($user, $user, $optionSystemService),
             MailKey::MAIL_ACCOUNT_ADM_ENABLE =>

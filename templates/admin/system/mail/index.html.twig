@@ -16,7 +16,7 @@
     </p>
 
 
-    <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_mail_load_grid_data'), 'page' : page, 'limit' : limit}) }}></div>
+    <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_mail_load_grid_data', {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit}) }}></div>
 
     <twig:Admin:ModaleComponent id="help-grid-mail" bgColor="bg-secondary">
         <twig:block name="header">
