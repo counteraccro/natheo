@@ -128,7 +128,7 @@ class UserController extends AppAdminController
         $role = new Role($user);
         if ($role->isSuperAdmin() && $user->isFounder()) {
             return $this->json([
-                'type' => 'success',
+                'success' => 'false',
                 'msg' => $translator->trans('user.error_not_disabled', domain: 'user')
             ]);
         }
@@ -140,7 +140,7 @@ class UserController extends AppAdminController
         if ($user->isDisabled()) {
             $msg = $translator->trans('user.success.disabled', ['login' => $user->getLogin()], 'user');
         }
-        return $this->json(['type' => 'success', 'msg' => $msg]);
+        return $this->json($userService->getResponseAjax($msg));
     }
 
     #[Route('/ajax/delete/{id}', name: 'delete', methods: ['POST'])]
@@ -154,24 +154,29 @@ class UserController extends AppAdminController
     {
         $role = new Role($user);
         if ($role->isSuperAdmin() && $user->isFounder()) {
-            $msg = $translator->trans('user.error_not_disabled', domain: 'user');
-        } else {
-            $canDelete = $optionSystemService->getValueByKey(OptionSystemKey::OS_ALLOW_DELETE_DATA);
-            $canReplace = $optionSystemService->getValueByKey(OptionSystemKey::OS_REPLACE_DELETE_USER);
+            return $this->json([
+                'success' => 'false',
+                'msg' => $translator->trans('user.error_not_disabled', domain: 'user')
+            ]);
 
-            if ($canDelete === '1') {
-                if ($canReplace === '1') {
-                    $userService->anonymizer($user);
-                    $msg = $translator->trans('user.success_anonymous', domain: 'user');
-                } else {
-                    $userService->remove($user);
-                    $msg = $translator->trans('user.success_remove', domain: 'user');
-                }
-            } else {
-                $msg = $translator->trans('user.error_not_allowed', domain: 'user');
-            }
         }
-        return $this->json(['type' => 'success', 'msg' => $msg]);
+
+        $canDelete = $optionSystemService->getValueByKey(OptionSystemKey::OS_ALLOW_DELETE_DATA);
+        $canReplace = $optionSystemService->getValueByKey(OptionSystemKey::OS_REPLACE_DELETE_USER);
+
+        $msg = $msg_error = null;
+        if ($canDelete === '1') {
+            if ($canReplace === '1') {
+                $userService->anonymizer($user);
+                $msg = $translator->trans('user.success_anonymous', domain: 'user');
+            } else {
+                $userService->remove($user);
+                $msg = $translator->trans('user.success_remove', domain: 'user');
+            }
+        } else {
+            $msg = $translator->trans('user.error_not_allowed', domain: 'user');
+        }
+        return $this->json($userService->getResponseAjax($msg, $msg_error));
     }
 
     /**
