@@ -43,9 +43,9 @@ class LogController extends AppAdminController
 
     /**
      * Retourne les données des listes déroulantes des filtres pour les logs
-     * @param Request $request
      * @param LoggerService $loggerService
      * @param TranslatorInterface $translator
+     * @param string $time
      * @return JsonResponse
      * @throws Exception
      */
@@ -85,8 +85,10 @@ class LogController extends AppAdminController
 
     /**
      * Retourne le contenu d'un fichier de log
-     * @param Request $request
      * @param LoggerService $loggerService
+     * @param string $file
+     * @param int $page
+     * @param int $limit
      * @return JsonResponse
      */
     #[Route('/ajax/load-log-file', name: 'ajax_load_log_file_empty', methods: ['GET'])]
