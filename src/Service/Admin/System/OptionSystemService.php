@@ -94,7 +94,7 @@ class OptionSystemService extends AppAdminService
         /* @var OptionSystem $optionSystem */
         $optionSystem = $this->getByKey($key);
         $optionSystem->setValue($value);
-        $optionServiceRepo->save($optionSystem, true);
+        $this->save($optionSystem);
     }
 
     /**

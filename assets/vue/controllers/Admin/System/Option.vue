@@ -74,17 +74,26 @@ export default {
         key: id,
         value: value
       }).then(function (response) {
-        spinner.classList.add('visually-hidden');
-        help.classList.add('visually-hidden');
-        success.classList.remove('visually-hidden');
-        element.classList.add('is-valid');
 
-        setTimeout(() => {
-          element.classList.remove('is-valid');
-          help.classList.remove('visually-hidden');
-          success.classList.add('visually-hidden');
-        }, 3000)
-        element.disabled = false;
+        if(response.data.success)
+        {
+          help.classList.add('visually-hidden');
+          success.classList.remove('visually-hidden');
+          element.classList.add('is-valid');
+
+          setTimeout(() => {
+            element.classList.remove('is-valid');
+            help.classList.remove('visually-hidden');
+            success.classList.add('visually-hidden');
+          }, 3000)
+          element.disabled = false;
+        }
+        else {
+          alert(response.data.msg);
+          console.error(response.data.msg);
+        }
+        spinner.classList.add('visually-hidden');
+
 
       }).catch(function (error) {
         spinner.classList.add('visually-hidden');

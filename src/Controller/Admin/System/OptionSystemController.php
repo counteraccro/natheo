@@ -51,6 +51,6 @@ class OptionSystemController extends AppAdminController
     {
         $data = json_decode($request->getContent(), true);
         $optionSystemService->saveValueByKee($data['key'], $data['value']);
-        return $this->json(['success' => 'true']);
+        return $this->json($optionSystemService->getResponseAjax());
     }
 }
