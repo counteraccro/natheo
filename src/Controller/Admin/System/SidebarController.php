@@ -52,10 +52,9 @@ class SidebarController extends AppAdminController
      */
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     public function loadGridData(
-        Request $request,
         SidebarElementService $sidebarElementService,
-        int $page = 1,
-        int $limit = 20
+        int                   $page = 1,
+        int                   $limit = 20
     ): JsonResponse
     {
         $grid = $sidebarElementService->getAllFormatToGrid($page, $limit);

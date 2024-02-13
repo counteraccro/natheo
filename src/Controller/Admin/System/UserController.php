@@ -108,7 +108,6 @@ class UserController extends AppAdminController
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]
     public function loadGridData(
-        Request     $request,
         UserService $userService,
         int         $page = 1,
         int         $limit = 20
