@@ -42,7 +42,7 @@ export default {
          * Charge la liste des langues
          */
         loadListeLanguages() {
-            axios.post(this.url_langue, {}).then((response) => {
+            axios.get(this.url_langue).then((response) => {
                 this.languages = response.data.languages;
                 this.trans = response.data.trans;
             }).catch((error) => {
@@ -68,8 +68,7 @@ export default {
          */
         loadTranslateListeFile() {
             this.files = [];
-            axios.post(this.url_translates_files, {
-                'language': this.currentLanguage
+            axios.get(this.url_translates_files + '/' + this.currentLanguage, {
             }).then((response) => {
                 this.files = response.data.files;
             }).catch((error) => {
@@ -93,9 +92,7 @@ export default {
          */
         loadFile() {
             this.loading = true;
-            axios.post(this.url_translate_file, {
-                'file': this.currentFile
-            }).then((response) => {
+            axios.get(this.url_translate_file + '/' + this.currentFile).then((response) => {
                 this.tabTmpTranslate = [];
                 this.file = response.data.file;
             }).catch((error) => {
