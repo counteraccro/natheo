@@ -82,7 +82,7 @@ class AppAdminService
      * @var array|
      */
     private array $ajaxResponse = [
-        'success' => '',
+        'success' => false,
         'msg' => ''
     ];
 
