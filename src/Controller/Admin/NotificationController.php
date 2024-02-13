@@ -64,7 +64,7 @@ class NotificationController extends AppAdminController
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    #[Route('/ajax/number', name: 'number', methods: ['POST'])]
+    #[Route('/ajax/number', name: 'number', methods: ['GET'])]
     public function number(NotificationService $notificationService): JsonResponse
     {
         /** @var User $user */

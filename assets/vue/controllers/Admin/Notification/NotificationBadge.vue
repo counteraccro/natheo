@@ -27,7 +27,7 @@ export default {
         Chargement des données
          */
         loadData() {
-            axios.post(this.url, {}
+            axios.get(this.url, {}
             ).then((response) => {
                 this.number = response.data.number;
             }).catch((error) => {
