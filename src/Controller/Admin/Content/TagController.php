@@ -50,15 +50,15 @@ class TagController extends AppAdminController
 
     /**
      * Charge le tableau grid de tag en ajax
-     * @param Request $request
      * @param TagService $tagService
+     * @param int $page
+     * @param int $limit
      * @return JsonResponse
      */
-    #[Route('/ajax/load-grid-data', name: 'load_grid_data', methods: ['POST'])]
-    public function loadGridData(Request $request, TagService $tagService): JsonResponse
+    #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
+    public function loadGridData(TagService $tagService, int $page = 1, int $limit = 20): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-        $grid = $tagService->getAllFormatToGrid($data['page'], $data['limit']);
+        $grid = $tagService->getAllFormatToGrid($page, $limit);
         return $this->json($grid);
     }
 
