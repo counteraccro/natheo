@@ -80,21 +80,23 @@ class NotificationController extends AppAdminController
      * @param GridService $gridService
      * @return JsonResponse
      */
-    #[Route('/ajax/list', name: 'list', methods: ['POST'])]
+    #[Route('/ajax/list/{page}/{limit}/{pOnlyNotRead}', name: 'list', methods: ['GET'])]
     public function list(
-        Request             $request,
+        Request $request,
         NotificationService $notificationService,
         GridService         $gridService,
+        int                 $page = 1,
+        int                 $limit = 20,
+        int                 $pOnlyNotRead = 1
     ): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
         $onlyNotRead = false;
-        if ($data['onlyNotRead'] === 1) {
+        if ($pOnlyNotRead === 1) {
             $onlyNotRead = true;
         }
         /** @var User $user */
         $user = $this->getUser();
-        $notifications = $notificationService->getByUserPaginate($data['page'], $data['limit'], $user, $onlyNotRead);
+        $notifications = $notificationService->getByUserPaginate($page, $limit, $user, $onlyNotRead);
 
         return $this->json([
             'notifications' => $notifications,
@@ -131,7 +133,7 @@ class NotificationController extends AppAdminController
      * @param NotificationService $notificationService
      * @return Response
      */
-    #[Route('/ajax/purge', name: 'purge')]
+    #[Route('/ajax/purge', name: 'purge', methods: ['POST'])]
     public function purge(OptionSystemService $optionSystemService, NotificationService $notificationService): Response
     {
         $nbDay = $optionSystemService->getValueByKey(OptionSystemKey::OS_PURGE_NOTIFICATION);

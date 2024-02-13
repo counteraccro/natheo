@@ -43,11 +43,7 @@ export default {
     loadData(page, limit, onlyNotRead) {
 
       this.loading = true;
-      axios.post(this.url, {
-        'page': page,
-        'limit': limit,
-        'onlyNotRead': onlyNotRead,
-      }).then((response) => {
+      axios.get(this.url + '/' + page + '/' + limit + '/' + onlyNotRead).then((response) => {
         this.notifications = response.data.notifications;
         this.translation = response.data.translation;
         this.urlRead = response.data.urlRead;
