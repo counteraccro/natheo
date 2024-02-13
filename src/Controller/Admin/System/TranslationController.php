@@ -84,9 +84,11 @@ class TranslationController extends AppAdminController
 
     /**
      * Récupère la liste des fichiers de traduction en fonction de la langue
-     * @param Request $request
      * @param TranslateService $translateService
+     * @param string $language
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/files-translates/{language}', name: 'files_translate', methods: ['GET'])]
     public function loadFilesTranslates(
@@ -100,8 +102,8 @@ class TranslationController extends AppAdminController
 
     /**
      * Récupère le fichier sélectionné
-     * @param Request $request
      * @param TranslateService $translateService
+     * @param string $file
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface

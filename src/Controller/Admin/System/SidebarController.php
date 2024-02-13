@@ -46,8 +46,9 @@ class SidebarController extends AppAdminController
 
     /**
      * Charge le tableau grid de sidebar en ajax
-     * @param Request $request
      * @param SidebarElementService $sidebarElementService
+     * @param int $page
+     * @param int $limit
      * @return JsonResponse
      */
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]

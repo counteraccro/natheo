@@ -60,8 +60,9 @@ class MailController extends AppAdminController
 
     /**
      * Charge le tableau grid de mail en ajax
-     * @param Request $request
      * @param MailService $mailService
+     * @param int $page
+     * @param int $limit
      * @return JsonResponse
      */
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
