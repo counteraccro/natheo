@@ -18,3 +18,6 @@ mail.input.trans.title.empty: __mail.input.trans.title.empty
 mail.index.popin.help.title: __mail.index.popin.help.title
 mail.index.popin.help.send: __mail.index.popin.help.send
 mail.index.popin.help.edit: __mail.index.popin.help.edit
+mail.toast.title.success: __mail.toast.title.success
+mail.toast.title.error: __mail.toast.title.error
+mail.toast.time: __mail.toast.time

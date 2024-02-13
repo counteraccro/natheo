@@ -18,3 +18,6 @@ mail.input.trans.title.empty: "L'objet de l'email ne peut pas être vide"
 mail.index.popin.help.title: Aide
 mail.index.popin.help.send: "Recevoir l'email en démo"
 mail.index.popin.help.edit: 'Modifier un email'
+mail.toast.title.success: 'succèss !'
+mail.toast.title.error: 'Alerte !'
+mail.toast.time: "A l'instant"
