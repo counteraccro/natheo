@@ -126,6 +126,9 @@ class MailController extends AppAdminController
             'loading' => $translator->trans('mail.loading', domain: 'mail'),
             'titleTrans' => $translator->trans('mail.input.trans.title', domain: 'mail'),
             'msgEmptyTitle' => $translator->trans('mail.input.trans.title.empty', domain: 'mail'),
+            'toast_title_success' => $translator->trans('mail.toast.title.success', domain: 'mail'),
+            'toast_title_error' => $translator->trans('mail.toast.title.error', domain: 'mail'),
+            'toast_time' => $translator->trans('mail.toast.time', domain: 'mail'),
         ];
 
         try {
@@ -168,7 +171,8 @@ class MailController extends AppAdminController
         $mailService->save($mail);
 
         $title = $translator->trans($mail->getTitle());
-        return $this->json(['msg' => $translator->trans('mail.message.success', ['email' => $title], domain: 'mail')]);
+        $msg = $translator->trans('mail.message.success', ['email' => $title], domain: 'mail');
+        return $this->json($mailService->getResponseAjax($msg));
     }
 
     /**
