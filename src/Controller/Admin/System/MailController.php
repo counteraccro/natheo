@@ -226,11 +226,20 @@ class MailController extends AppAdminController
         $params = $mailService->getDefaultParams($mail, $tabKeyWord);
         $params[MailService::TO] = $user->getEmail();
 
-        $mailService->sendMail($params);
+        try {
+            $mailService->sendMail($params);
+            $msg = 'Mail démo <b>"' .
+                $translator->trans($mail->getTitle()) . '"</b> envoyé avec succès à l\'adresse email de votre compte';
+            $success = true;
+        } catch (TransportExceptionInterface $e)
+        {
+            $msg = $e->getMessage();
+            $success = false;
+        }
+
         return $this->json([
-            'type' => 'success',
-            'msg' => 'Mail démo "' .
-                $translator->trans($mail->getTitle()) . '" envoyé avec succès à l\'adresse email de votre compte'
+            'success' => $success,
+            'msg' => $msg
         ]);
     }
 }
