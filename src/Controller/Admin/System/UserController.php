@@ -125,7 +125,7 @@ class UserController extends AppAdminController
      * @param TranslatorInterface $translator
      * @return JsonResponse
      */
-    #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', methods: ['POST'])]
+    #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', methods: ['PUT'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]
     public function updateDisabled(User $user, UserService $userService, TranslatorInterface $translator): JsonResponse
     {
@@ -147,7 +147,7 @@ class UserController extends AppAdminController
         return $this->json($userService->getResponseAjax($msg));
     }
 
-    #[Route('/ajax/delete/{id}', name: 'delete', methods: ['POST'])]
+    #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE', 'PUT'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]
     public function delete(
         User                $user,

@@ -181,13 +181,14 @@ class UserService extends AppAdminService
         if (!$isSuperAdmin) {
             // Bouton disabled
             $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
+                'type' => 'put',
                 'url' => $this->router->generate('admin_user_update_disabled', ['id' => $user->getId()]),
                 'ajax' => true,
                 'confirm' => true,
                 'msgConfirm' =>
                     $this->translator->trans('user.confirm.disabled.msg', ['{login}' => $user->getLogin()], 'user')];
             if ($user->isDisabled()) {
-                $actionDisabled = ['label' => '<i class="bi bi-eye-fill"></i>', 'url' =>
+                $actionDisabled = ['label' => '<i class="bi bi-eye-fill"></i>', 'type' => 'put', 'url' =>
                     $this->router->generate('admin_user_update_disabled', ['id' => $user->getId()]), 'ajax' => true];
             }
 
@@ -200,14 +201,17 @@ class UserService extends AppAdminService
                 $msgConfirm = $this->translator->trans('user.confirm.delete.msg', ['{login}' =>
                     $user->getLogin()], 'user');
                 $label = '<i class="bi bi-trash"></i>';
+                $type = 'delete';
                 if ($this->optionSystemService->canReplace()) {
                     $msgConfirm = $this->translator->trans('user.confirm.replace.msg', ['{login}' =>
                         $user->getLogin()], 'user');
                     $label = '<i class="bi bi-person-fill-slash"></i>';
+                    $type = 'put';
                 }
 
                 $actionDelete = [
                     'label' => $label,
+                    'type' => $type,
                     'url' => $this->router->generate('admin_user_delete', ['id' => $user->getId()]),
                     'ajax' => true,
                     'confirm' => true,
