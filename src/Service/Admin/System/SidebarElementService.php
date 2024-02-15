@@ -157,6 +157,7 @@ class SidebarElementService extends AppAdminService
         if (!$element->isLock()) {
             $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
                 'url' => $this->router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]),
+                'type' => 'put',
                 'ajax' => true,
                 'confirm' => true,
                 'msgConfirm' => $this->translator->trans('sidebar.confirm.disabled.msg', ['{label}' => '<i class="bi ' .
@@ -164,6 +165,7 @@ class SidebarElementService extends AppAdminService
             if ($element->isDisabled()) {
                 $actionDisabled = [
                     'label' => '<i class="bi bi-eye-fill"></i>',
+                    'type' => 'put',
                     'url' => $this->router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]),
                     'ajax' => true
                 ];
