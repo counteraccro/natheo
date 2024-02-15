@@ -34,6 +34,7 @@ export default {
       cLimit: this.limit,
       cUrl: '',
       isAjax: '',
+      httpType: '',
       listLimit: {},
       translate: {},
       translateGridPaginate: {},
@@ -94,11 +95,13 @@ export default {
      * @param is_confirm
      * @param is_ajax
      * @param msg_confirm
+     * @param type
      */
-    redirectAction(url, is_ajax, is_confirm, msg_confirm) {
+    redirectAction(url, is_ajax, is_confirm, msg_confirm, type) {
 
       this.cUrl = url;
       this.isAjax = is_ajax;
+      this.httpType = type;
       this.msgConfirm = this.translate.confirmText;
       this.confirmModal.hide();
 
@@ -108,12 +111,19 @@ export default {
       } else {
         if (is_ajax) {
           this.loading = true;
-          axios.post(url).then((response) => {
+
+          if(type === undefined)
+          {
+            type = 'post';
+            console.error('URL ' + url + 'n\'a aucun type défini');
+          }
+
+          axios[type](url).then((response) => {
             if (response.data.success === true || response.data.type === 'success') {
 
               if(response.data.type === 'success')
               {
-                alert('Ancient système de retour de la réponse, à changer pour l\'url ' + url + ' \n ' +
+                console.error('Ancient système de retour de la réponse, à changer pour l\'url ' + url + ' \n ' +
                     'Voir Controller/Admin/Content/FaqController::updateDisabled pour un exemple de la bonne pratique');
               }
 
@@ -144,14 +154,7 @@ export default {
       <input type="text" class="form-control no-control" :placeholder="translate.placeholder" v-model="searchQuery">
     </div>
   </form>
-
-  <!-- A supprimer à terme si tout est OK - ancien système d'affichage des messages
-  <div v-if="this.showMsgSuccess" class="alert alert-success alert-dismissible">
-    <strong><i class="bi bi-check2-circle"></i> {{ translate.titleSuccess }} </strong> <br/>
-    <span v-html="this.msgSuccess"></span>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>-->
-
+  
   <div class="modal fade" id="modal-alert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -162,7 +165,7 @@ export default {
         <div class="modal-body" v-html="msgConfirm">
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" @click="redirectAction(this.cUrl, this.isAjax, false, '')"><i class="bi bi-check2-circle"></i> {{ translate.confirmBtnOK }}</button>
+          <button type="button" class="btn btn-primary" @click="redirectAction(this.cUrl, this.isAjax, false, '', this.httpType)"><i class="bi bi-check2-circle"></i> {{ translate.confirmBtnOK }}</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> {{ translate.confirmBtnNo }}</button>
         </div>
       </div>
