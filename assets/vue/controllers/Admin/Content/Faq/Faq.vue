@@ -58,9 +58,7 @@ export default {
      */
     loadFaq() {
       this.loading = true;
-      axios.post(this.urls.load_faq, {
-        'id': this.id
-      }).then((response) => {
+      axios.get(this.urls.load_faq + '/' + this.id).then((response) => {
         this.faq = response.data.faq;
         this.loadData = true;
       }).catch((error) => {
@@ -163,7 +161,7 @@ export default {
     save() {
 
       this.loading = true;
-      axios.post(this.urls.save, {
+      axios.put(this.urls.save, {
         'faq': this.faq
       }).then((response) => {
 
@@ -224,6 +222,19 @@ export default {
         console.error(error);
       }).finally(() => {
       });
+    },
+
+    /**
+     * Active ou désactive un element en retournant la class disabled
+     * @returns {string}
+     */
+    isDisabled()
+    {
+      if(this.loading)
+      {
+        return 'disabled';
+      }
+      return '';
     }
   }
 }
@@ -244,26 +255,24 @@ export default {
     <div v-if="this.id !== null">
       <!-- Edition d'un FAQ -->
 
-      <div class="sticky-md-top p-3 mb-2 mt-2 bg-white border border-1 border-right rounded-1">
-        <div class="row">
-          <div class="col-9">
-            <div class="btn btn-secondary" @click="this.save"><i class="bi bi-floppy-fill"></i> {{ this.translate.save }}</div>
-            <div class="btn btn-secondary ms-3"><i class="bi bi-plus-square"></i> {{ this.translate.new_category_btn }}</div>
-            <div class="btn btn-secondary ms-3"><i class="bi bi-question-square"></i> {{ this.translate.new_question_btn }}</div>
-          </div>
-          <div class="col-3">
-            <select id="select-language" class="form-select" @change="this.switchLocale($event)">
-              <option v-for="(language, key) in this.locales.localesTranslate" :value="key"
-                  :selected="key===this.currentLocale">{{ language }}
-              </option>
-            </select>
+      <div v-if="this.loadData">
+
+        <div class="sticky-md-top p-3 mb-2 mt-2 bg-white border border-1 border-right rounded-1">
+          <div class="row">
+            <div class="col-9">
+              <div class="btn btn-secondary" :class="isDisabled()" @click="this.save"><i class="bi bi-floppy-fill"></i> {{ this.translate.save }}</div>
+              <div class="btn btn-secondary ms-3" :class="isDisabled()"><i class="bi bi-plus-square"></i> {{ this.translate.new_category_btn }}</div>
+              <div class="btn btn-secondary ms-3" :class="isDisabled()"><i class="bi bi-question-square"></i> {{ this.translate.new_question_btn }}</div>
+            </div>
+            <div class="col-3">
+              <select id="select-language" class="form-select" @change="this.switchLocale($event)">
+                <option v-for="(language, key) in this.locales.localesTranslate" :value="key"
+                    :selected="key===this.currentLocale">{{ language }}
+                </option>
+              </select>
+            </div>
           </div>
         </div>
-
-      </div>
-
-
-      <div v-if="this.loadData">
 
         <FieldEditor :key="this.keyVal"
             :id="this.getValueByLocale(this.faq.faqTranslations, 'id', 'faqTranslations')"

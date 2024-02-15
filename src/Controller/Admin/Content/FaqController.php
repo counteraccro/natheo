@@ -153,22 +153,21 @@ class FaqController extends AppAdminController
     /**
      * Charge une FAQ en fonction de son id
      * Si pas d'Id, renvoi une nouvelle FAQ
-     * @param Request $request
      * @param FaqService $faqService
+     * @param int|null $id
      * @return JsonResponse
      * @throws ExceptionInterface
      */
-    #[Route('/ajax/load-faq', name: 'load_faq')]
-    public function loadFaq(Request $request, FaqService $faqService): JsonResponse
+    #[Route('/ajax/load-faq/{id}', name: 'load_faq', methods: 'GET')]
+    public function loadFaq(FaqService $faqService, int $id = null): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
         $locales = $faqService->getLocales();
 
-        if ($data['id'] === null) {
+        if ($id === null) {
             $faqFactory = new FaqFactory($locales['locales']);
             $faq = $faqFactory->create()->getFaq();
         } else {
-            $faq = $faqService->findOneById(Faq::class, $data['id']);
+            $faq = $faqService->findOneById(Faq::class, $id);
         }
         $faqArray = $faqService->convertEntityToArray($faq, ['createdAt', 'updateAt', 'user']);
 
@@ -181,9 +180,10 @@ class FaqController extends AppAdminController
      * Permet de sauvegarder une FAQ
      * @param Request $request
      * @param FaqService $faqService
+     * @param TranslatorInterface $translator
      * @return JsonResponse
      */
-    #[Route('/ajax/save', name: 'save')]
+    #[Route('/ajax/save', name: 'save', methods: 'PUT')]
     public function save(Request $request, FaqService $faqService, TranslatorInterface $translator): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -204,7 +204,7 @@ class FaqController extends AppAdminController
      * @param TranslatorInterface $translator
      * @return JsonResponse
      */
-    #[Route('/ajax/new-faq', name: 'new_faq')]
+    #[Route('/ajax/new-faq', name: 'new_faq', methods: 'POST')]
     public function newFaq(Request             $request,
                            FaqService          $faqService,
                            TranslatorInterface $translator): JsonResponse
