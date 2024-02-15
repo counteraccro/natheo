@@ -115,7 +115,7 @@ export default {
           if(type === undefined)
           {
             type = 'post';
-            console.error('URL ' + url + 'n\'a aucun type défini');
+            console.error('URL ' + url + ' n\'a aucun type défini');
           }
 
           axios[type](url).then((response) => {
