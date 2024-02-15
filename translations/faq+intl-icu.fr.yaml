@@ -36,3 +36,5 @@ faq.create.success: "Votre Faq à été créée avec succès, vous aller être r
 faq.toast.title.success: 'Succès !'
 faq.toast.time: "A l'instant"
 faq.toast.title.error: 'Erreur !'
+faq.new.category.btn: 'Nouvelle catégorie'
+faq.new.question.btn: 'Nouvelle question / réponse'

@@ -36,3 +36,5 @@ faq.create.success: __faq.create.success
 faq.toast.title.success: __faq.toast.title.success
 faq.toast.time: __faq.toast.time
 faq.toast.title.error: __faq.toast.title.error
+faq.new.category.btn: __faq.new.category.btn
+faq.new.question.btn: __faq.new.question.btn
