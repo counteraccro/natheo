@@ -138,6 +138,7 @@ class FaqService extends AppAdminService
         $label = $faq->getFaqTranslationByLocale($this->requestStack->getCurrentRequest()->getLocale())->getTitle();
 
         $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
+            'type' => 'put',
             'url' => $this->router->generate('admin_faq_disabled', ['id' => $faq->getId()]),
             'ajax' => true,
             'confirm' => true,
@@ -145,6 +146,7 @@ class FaqService extends AppAdminService
         if ($faq->isDisabled()) {
             $actionDisabled = [
                 'label' => '<i class="bi bi-eye-fill"></i>',
+                'type' => 'put',
                 'url' => $this->router->generate('admin_faq_disabled', ['id' => $faq->getId()]),
                 'ajax' => true
             ];
@@ -155,6 +157,7 @@ class FaqService extends AppAdminService
 
             $actionDelete = [
                 'label' => '<i class="bi bi-trash"></i>',
+                'type' => 'delete',
                 'url' => $this->router->generate('admin_faq_delete', ['id' => $faq->getId()]),
                 'ajax' => true,
                 'confirm' => true,

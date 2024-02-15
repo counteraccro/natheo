@@ -109,7 +109,7 @@ class FaqController extends AppAdminController
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route('/ajax/disabled/{id}', name: 'disabled')]
+    #[Route('/ajax/disabled/{id}', name: 'disabled', methods: ['PUT'])]
     public function updateDisabled(
         Faq                 $faq,
         FaqService          $faqService,
@@ -136,7 +136,7 @@ class FaqController extends AppAdminController
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route('/ajax/delete/{id}', name: 'delete')]
+    #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(
         Faq                 $faq,
         FaqService          $faqService,
