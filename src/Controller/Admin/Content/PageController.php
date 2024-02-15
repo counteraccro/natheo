@@ -74,7 +74,7 @@ class PageController extends AppAdminController
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route('/ajax/update-disabled/{id}', name: 'update_disabled')]
+    #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', methods: 'PUT')]
     public function updateDisabled(
         Page                $page,
         PageService         $pageService,
@@ -102,7 +102,7 @@ class PageController extends AppAdminController
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route('/ajax/delete/{id}', name: 'delete')]
+    #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(
         Page                $page,
         PageService         $pageService,

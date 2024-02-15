@@ -162,12 +162,14 @@ class PageService extends AppAdminService
 
         $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
             'url' => $this->router->generate('admin_page_update_disabled', ['id' => $page->getId()]),
+            'type' => 'put',
             'ajax' => true,
             'confirm' => true,
             'msgConfirm' => $this->translator->trans('page.confirm.disabled.msg', ['label' => $label], 'page')];
         if ($page->isDisabled()) {
             $actionDisabled = [
                 'label' => '<i class="bi bi-eye-fill"></i>',
+                'type' => 'put',
                 'url' => $this->router->generate('admin_page_update_disabled', ['id' => $page->getId()]),
                 'ajax' => true
             ];
@@ -178,6 +180,7 @@ class PageService extends AppAdminService
 
             $actionDelete = [
                 'label' => '<i class="bi bi-trash"></i>',
+                'type' => 'delete',
                 'url' => $this->router->generate('admin_page_delete', ['id' => $page->getId()]),
                 'ajax' => true,
                 'confirm' => true,
