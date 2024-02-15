@@ -101,11 +101,7 @@ export default {
     loadMedia() {
 
       this.loading = true;
-      axios.post(this.url, {
-        'folder': this.folderId,
-        'order': this.order,
-        'filter': this.filter
-      }).then((response) => {
+      axios.get(this.url + '/' + this.folderId + '/' + this.order + '/' + this.filter).then((response) => {
         this.medias = response.data.medias;
         this.currentFolder = response.data.currentFolder;
         this.urlActions = response.data.url;
@@ -122,7 +118,7 @@ export default {
      * Retourne le nombre d'éléments dans la corbeille
      */
     getNbTrash() {
-      axios.post(this.urlActions.nbTrash, {}).then((response) => {
+      axios.get(this.urlActions.nbTrash, {}).then((response) => {
         this.nbTrash = response.data.nb;
       }).catch((error) => {
         console.error(error);
@@ -202,10 +198,7 @@ export default {
      */
     editFolder(id) {
       this.loading = true;
-      axios.post(this.urlActions.loadFolder, {
-        'id': id,
-        'action': 'edit'
-      }).then((response) => {
+      axios.get(this.urlActions.loadFolder + '/' + id + '/edit').then((response) => {
         this.folderEdit = response.data.folder;
         this.folderName = this.folderEdit.name;
       }).catch((error) => {
@@ -329,10 +322,7 @@ export default {
      */
     loadDataInformation(type, id) {
       this.loading = true;
-      axios.post(this.urlActions.loadInfo, {
-        'id': id,
-        'type': type,
-      }).then((response) => {
+      axios.get(this.urlActions.loadInfo + '/' + id + '/' + type).then((response) => {
         this.infoData = response.data
       }).catch((error) => {
         console.error(error);
@@ -429,9 +419,7 @@ export default {
      */
     editMedia(id) {
       this.loading = true;
-      axios.post(this.urlActions.loadMediaEdit, {
-        'id': id,
-      }).then((response) => {
+      axios.get(this.urlActions.loadMediaEdit + '/' + id).then((response) => {
         this.mediaEdit = {
           id: response.data.media.id,
           name: response.data.media.name,
@@ -491,10 +479,7 @@ export default {
      */
     loadListFolderMove(type, id) {
       this.loading = true;
-      axios.post(this.urlActions.listeMove, {
-        'id': id,
-        'type': type
-      }).then((response) => {
+      axios.get(this.urlActions.listeMove + '/' + id + '/' + type).then((response) => {
         this.dataMove = response.data.dataMove;
       }).catch((error) => {
         console.error(error);
@@ -624,7 +609,7 @@ export default {
      */
     loadInTrash() {
       this.loading = true;
-      axios.post(this.urlActions.listTrash, {}).then((response) => {
+      axios.get(this.urlActions.listTrash).then((response) => {
         this.mediasTrash = response.data.mediasTrash
       }).catch((error) => {
         console.error(error);

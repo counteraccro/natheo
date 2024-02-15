@@ -51,24 +51,26 @@ class MediaController extends AppAdminController
     /**
      * Charge une liste de média en fonction d'un dossier ainsi que les données nécessaires au
      * bon fonctionnement de la médiathèque
-     * @param Request $request
      * @param MediaService $mediaService
      * @param OptionSystemService $optionSystemService
+     * @param int $folder
+     * @param string $order
+     * @param string $filter
      * @return JsonResponse
      */
-    #[Route('/ajax/load-medias', name: 'load_medias', methods: ['POST'])]
+    #[Route('/ajax/load-medias/{folder}/{order}/{filter}', name: 'load_medias', methods: ['GET'])]
     public function loadMedias(
-        Request             $request,
         MediaService        $mediaService,
-        OptionSystemService $optionSystemService
+        OptionSystemService $optionSystemService,
+        int                 $folder = 0,
+        string              $order = 'asc',
+        string              $filter = 'created_at'
     ): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-
         /** @var MediaFolder $mediaFolder */
-        $mediaFolder = $mediaService->findOneById(MediaFolder::class, $data['folder']);
+        $mediaFolder = $mediaService->findOneById(MediaFolder::class, $folder);
 
-        $medias = $mediaService->getALlMediaAndMediaFolderByMediaFolder($mediaFolder, $data['filter'], $data['order']);
+        $medias = $mediaService->getALlMediaAndMediaFolderByMediaFolder($mediaFolder, $filter, $order);
         $currentFolder = $mediaService->getMediaFolderInfo($mediaFolder);
 
         return $this->json([
@@ -94,23 +96,26 @@ class MediaController extends AppAdminController
 
     /**
      * Charger un mediaFolder en fonction de son id
-     * @param Request $request
      * @param MediaService $mediaService
+     * @param int $id
+     * @param string $action
      * @return JsonResponse
      * @throws ExceptionInterface
      */
-    #[Route('/ajax/load-folder', name: 'load_folder', methods: ['POST'])]
-    public function loadFolder(Request $request, MediaService $mediaService): JsonResponse
+    #[Route('/ajax/load-folder/{id}/{action}', name: 'load_folder', methods: ['GET'])]
+    public function loadFolder(
+        MediaService $mediaService,
+        int $id = 0,
+        string $action = 'edit'
+    ): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
         /** @var MediaFolder $mediaFolder */
-        $mediaFolder = $mediaService->findOneById(MediaFolder::class, $data['id']);
+        $mediaFolder = $mediaService->findOneById(MediaFolder::class, $id);
 
         $attributes = [];
-        if (isset($data['action']) && $data['action'] === 'edit') {
+        if ($action === 'edit') {
             $attributes = ['medias', 'parent', 'children'];
         }
-
         return $this->json([
             'folder' => $mediaService->convertEntityToArray($mediaFolder, $attributes)
         ]);
@@ -161,25 +166,25 @@ class MediaController extends AppAdminController
 
     /**
      * Charge les informations pour le média ou le dossier sélectionné
-     * @param Request $request
      * @param MediaService $mediaService
+     * @param int $id
+     * @param string $type
      * @return JsonResponse
      */
-    #[Route('/ajax/load-info', name: 'load_info', methods: ['POST'])]
+    #[Route('/ajax/load-info/{id}/{type}', name: 'load_info', methods: ['GET'])]
     public function loadInfo(
-        Request             $request,
-        MediaService        $mediaService,
+        MediaService $mediaService,
+        int          $id = 0,
+        string       $type = 'folder',
     ): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
 
-        if ($data['type'] === 'folder') {
-            $json['data'] = $mediaService->getInfoFolder($data['id']);
+        if ($type === 'folder') {
+            $json['data'] = $mediaService->getInfoFolder($id);
         } else {
-            $json = $mediaService->getInfoMedia($data['id']);
+            $json = $mediaService->getInfoMedia($id);
         }
-        $json['type'] = $data['type'];
-
+        $json['type'] = $type;
         return $this->json($json);
     }
 
@@ -200,17 +205,18 @@ class MediaController extends AppAdminController
 
     /**
      * Charge le nom et la description d'un média en fonction de son id
-     * @param Request $request
      * @param MediaService $mediaService
+     * @param int $id
      * @return JsonResponse
      */
-    #[Route('/ajax/load-media', name: 'load_media_edit', methods: ['POST'])]
-    public function loadMedia(Request $request, MediaService $mediaService): JsonResponse
+    #[Route('/ajax/load-media/{id}', name: 'load_media_edit', methods: ['GET'])]
+    public function loadMedia(
+        MediaService $mediaService,
+        int $id = 0
+    ): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-
         /** @var Media $media */
-        $media = $mediaService->findOneById(Media::class, $data['id']);
+        $media = $mediaService->findOneById(Media::class, $id);
         return $this->json([
             'media' => [
                 'id' => $media->getId(),
@@ -245,22 +251,24 @@ class MediaController extends AppAdminController
 
     /**
      * Retourne la liste des dossiers pour le déplacement
-     * @param Request $request
      * @param MediaFolderService $mediaFolderService
+     * @param int $id
+     * @param string $type
      * @return JsonResponse
      */
-    #[Route('/ajax/liste-move', name: 'liste_move', methods: ['POST'])]
-    public function listeFolderToMove(Request $request, MediaFolderService $mediaFolderService): JsonResponse
+    #[Route('/ajax/liste-move/{id}/{type}', name: 'liste_move', methods: ['GET'])]
+    public function listeFolderToMove(
+        MediaFolderService $mediaFolderService,
+        int $id = 0,
+        string $type = 'folder'
+    ): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-
-        $dataMove = $mediaFolderService->getAllDataForModalMove($data['id'], $data['type']);
-
+        $dataMove = $mediaFolderService->getAllDataForModalMove($id, $type);
         return $this->json(['dataMove' => [
-            'id' => $data['id'],
+            'id' => $id,
             'parentIid' => $dataMove['parentId'],
             'label' => $dataMove['label'],
-            'type' => $data['type'],
+            'type' => $type,
             'listeFolder' => $dataMove['liste']
         ]]);
     }
@@ -298,7 +306,7 @@ class MediaController extends AppAdminController
      * @param MediaService $mediaService
      * @return JsonResponse
      */
-    #[Route('/ajax/nb-trash', name: 'nb_trash', methods: ['POST'])]
+    #[Route('/ajax/nb-trash', name: 'nb_trash', methods: ['GET'])]
     public function nbTrash(MediaService $mediaService): JsonResponse
     {
         $tab = $mediaService->getNbInTrash();
@@ -310,7 +318,7 @@ class MediaController extends AppAdminController
      * @param MediaService $mediaService
      * @return JsonResponse
      */
-    #[Route('/ajax/list-trash', name: 'list_trash', methods: ['POST'])]
+    #[Route('/ajax/list-trash', name: 'list_trash', methods: ['GET'])]
     public function listTrash(MediaService $mediaService): JsonResponse
     {
         return $this->json(['mediasTrash' => $mediaService->getAllMediaAndMediaFolderInTrash()]);
