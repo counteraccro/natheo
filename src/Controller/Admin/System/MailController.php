@@ -106,21 +106,20 @@ class MailController extends AppAdminController
      * @param TranslatorInterface $translator
      * @param MailService $mailService
      * @param Mail $mail
+     * @param string $locale
      * @return JsonResponse
      */
-    #[Route('/ajax/load-data/{id}', name: 'load_data', methods: ['POST'])]
+    #[Route('/ajax/load-data/{id}/{locale}', name: 'load_data', methods: ['GET'])]
     public function loadData(
         MarkdownEditorService $markdownEditorService,
         TranslateService      $translateService,
         Request               $request,
         TranslatorInterface   $translator,
         MailService           $mailService,
-        Mail                  $mail
+        Mail                  $mail,
+        string $locale = 'fr',
     ): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-
-        $locale = $data['locale'];
         if ($locale === null) {
             $locale = $request->getLocale();
         }
@@ -184,17 +183,16 @@ class MailController extends AppAdminController
      * @param Mail $mail
      * @param MailService $mailService
      * @param OptionSystemService $optionSystemService
-     * @param UrlGeneratorInterface $urlGenerator
+     * @param TranslatorInterface $translator
      * @return JsonResponse
      * @throws CommonMarkException
      * @throws TransportExceptionInterface
      */
-    #[Route('/ajax/send-demo-mail/{id}', name: 'send_demo_mail', methods: ['POST'])]
+    #[Route('/ajax/send-demo-mail/{id}', name: 'send_demo_mail', methods: ['GET'])]
     public function sendDemoMail(
         Mail                  $mail,
         MailService           $mailService,
         OptionSystemService   $optionSystemService,
-        UrlGeneratorInterface $urlGenerator,
         TranslatorInterface   $translator
     ): JsonResponse
     {

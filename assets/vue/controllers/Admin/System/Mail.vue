@@ -20,7 +20,7 @@ export default {
       translateEditor: {},
       translate: {},
       languages: {},
-      currentLanguage: null,
+      currentLanguage: 'fr',
       mail: [],
       loading: false,
       url_save: '',
@@ -62,9 +62,7 @@ export default {
 
       this.loading = true;
 
-      axios.post(this.url_data, {
-        'locale': this.currentLanguage
-      }).then((response) => {
+      axios.get(this.url_data + '/' + this.currentLanguage).then((response) => {
         this.translateEditor = response.data.translateEditor
         this.languages = response.data.languages;
         this.translate = response.data.translate;
@@ -168,7 +166,7 @@ export default {
      */
     sendDemoMail() {
       this.loading = true;
-      axios.post(this.url_demo, {}).then((response) => {
+      axios.get(this.url_demo).then((response) => {
         this.msgSuccess = response.data.msg;
       }).catch((error) => {
         console.error(error);
