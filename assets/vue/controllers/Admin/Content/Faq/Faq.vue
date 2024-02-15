@@ -228,10 +228,8 @@ export default {
      * Active ou désactive un element en retournant la class disabled
      * @returns {string}
      */
-    isDisabled()
-    {
-      if(this.loading)
-      {
+    isDisabled() {
+      if (this.loading) {
         return 'disabled';
       }
       return '';
@@ -260,9 +258,15 @@ export default {
         <div class="sticky-md-top p-3 mb-2 mt-2 bg-white border border-1 border-right rounded-1">
           <div class="row">
             <div class="col-9">
-              <div class="btn btn-secondary" :class="isDisabled()" @click="this.save"><i class="bi bi-floppy-fill"></i> {{ this.translate.save }}</div>
-              <div class="btn btn-secondary ms-3" :class="isDisabled()"><i class="bi bi-plus-square"></i> {{ this.translate.new_category_btn }}</div>
-              <div class="btn btn-secondary ms-3" :class="isDisabled()"><i class="bi bi-question-square"></i> {{ this.translate.new_question_btn }}</div>
+              <div class="btn btn-secondary" :class="isDisabled()" @click="this.save">
+                <i class="bi bi-floppy-fill"></i> {{ this.translate.save }}
+              </div>
+              <div class="btn btn-secondary ms-3" :class="isDisabled()">
+                <i class="bi bi-plus-square"></i> {{ this.translate.new_category_btn }}
+              </div>
+              <div class="btn btn-secondary ms-3" :class="isDisabled()">
+                <i class="bi bi-question-square"></i> {{ this.translate.new_question_btn }}
+              </div>
             </div>
             <div class="col-3">
               <select id="select-language" class="form-select" @change="this.switchLocale($event)">
@@ -285,25 +289,35 @@ export default {
 
         <div v-for="fcat in this.faq.faqCategories">
 
-          <FieldEditor :key="this.keyVal"
-              :id="this.getValueByLocale(fcat.faqCategoryTranslations, 'id', 'faqCategoryTranslations')"
-              :p-value="this.getValueByLocale(fcat.faqCategoryTranslations, 'title')"
-              balise="h3"
-              rule="isEmpty"
-              :rule-msg="this.translate.error_empty_value"
-              @get-value="this.updateValueByLocale"
-          />
-
+          <div class="row">
+            <div class="col-10">
+              <FieldEditor :key="this.keyVal"
+                  :id="this.getValueByLocale(fcat.faqCategoryTranslations, 'id', 'faqCategoryTranslations')"
+                  :p-value="this.getValueByLocale(fcat.faqCategoryTranslations, 'title')"
+                  balise="h3"
+                  rule="isEmpty"
+                  :rule-msg="this.translate.error_empty_value"
+                  @get-value="this.updateValueByLocale"
+              />
+            </div>
+            <div class="col-2">
+              <div class="float-end">
+                <div v-if="fcat.renderOrder > 1" class="btn btn-secondary me-1"><i class="bi bi-arrow-up"></i></div>
+                <div class="btn btn-secondary me-1"><i class="bi bi-arrow-down"></i></div>
+                <div class="btn btn-secondary me-1"><i class="bi bi-trash"></i></div>
+              </div>
+            </div>
+          </div>
 
           <div v-for="fQuestion in fcat.faqQuestions">
 
             <div class="card text-bg-light mt-2 mb-2">
-              <div class="row">
+              <div class="row align-items-center">
 
                 <div class="col-11">
                   <div class="card-body">
 
-                    <FieldEditor :key="this.keyVal"
+                    <FieldEditor :key="this.keyVal" class="mb-3"
                         :id="this.getValueByLocale(fQuestion.faqQuestionTranslations, 'id', 'faqQuestionTranslations-title')"
                         :p-value="this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title')"
                         balise="h5"
@@ -326,8 +340,11 @@ export default {
                   </div>
                 </div>
                 <div class="col-1">
-                  <i class="bi bi-arrow-up"></i>
-                  <i class="bi bi-arrow-down"></i>
+                  <div v-if="fQuestion.renderOrder > 1" class="btn btn-secondary mt-1"><i class="bi bi-arrow-up"></i></div>
+                  <div class="clearfix"></div>
+                  <div class="btn btn-secondary mt-1"><i class="bi bi-arrow-down"></i></div>
+                  <div class="clearfix"></div>
+                  <div class="btn btn-secondary mt-1"><i class="bi bi-trash"></i></div>
                 </div>
               </div>
             </div>
