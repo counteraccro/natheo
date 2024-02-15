@@ -140,6 +140,7 @@ class TagService extends AppAdminService
         $label = $tag->getTagTranslationByLocale($this->requestStack->getCurrentRequest()->getLocale())->getLabel();
 
         $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
+            'type' => 'put',
             'url' => $this->router->generate('admin_tag_update_disabled', ['id' => $tag->getId()]),
             'ajax' => true,
             'confirm' => true,
@@ -147,6 +148,7 @@ class TagService extends AppAdminService
         if ($tag->isDisabled()) {
             $actionDisabled = [
                 'label' => '<i class="bi bi-eye-fill"></i>',
+                'type' => 'put',
                 'url' => $this->router->generate('admin_tag_update_disabled', ['id' => $tag->getId()]),
                 'ajax' => true
             ];
@@ -157,6 +159,7 @@ class TagService extends AppAdminService
 
             $actionDelete = [
                 'label' => '<i class="bi bi-trash"></i>',
+                'type' => 'delete',
                 'url' => $this->router->generate('admin_tag_delete', ['id' => $tag->getId()]),
                 'ajax' => true,
                 'confirm' => true,
@@ -173,6 +176,7 @@ class TagService extends AppAdminService
 
         // Bouton edit
         $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
+            'type' => 'post',
             'id' => $tag->getId(),
             'url' => $this->router->generate('admin_tag_update', ['id' => $tag->getId()]),
             'ajax' => false];

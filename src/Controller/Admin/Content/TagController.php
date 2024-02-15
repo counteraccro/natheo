@@ -70,7 +70,7 @@ class TagController extends AppAdminController
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route('/ajax/update-disabled/{id}', name: 'update_disabled')]
+    #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', methods: ['PUT'])]
     public function updateDisabled(
         Tag                 $tag,
         TagService          $tagService,
@@ -99,7 +99,7 @@ class TagController extends AppAdminController
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route('/ajax/delete/{id}', name: 'delete')]
+    #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(
         Tag                 $tag,
         TagService          $tagService,
@@ -109,7 +109,6 @@ class TagController extends AppAdminController
     {
         $label = $tag->getTagTranslationByLocale($request->getLocale())->getLabel();
         $msg = $translator->trans('tag.remove.success', ['label' => $label], domain: 'tag');
-
         $tagService->remove($tag);
         return $this->json($tagService->getResponseAjax($msg));
     }
