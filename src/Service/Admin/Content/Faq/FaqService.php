@@ -196,6 +196,8 @@ class FaqService extends AppAdminService
             'new_faq_input_title' => $this->translator->trans('faq.new.input.title', domain: 'faq'),
             'new_faq_help' => $this->translator->trans('faq.new.help', domain: 'faq'),
             'new_faq_btn' => $this->translator->trans('faq.new.btn', domain: 'faq'),
+            'new_category_btn' => $this->translator->trans('faq.new.category.btn', domain: 'faq'),
+            'new_question_btn' => $this->translator->trans('faq.new.question.btn', domain: 'faq'),
             'new_faq_error_empty' => $this->translator->trans('faq.new.input.error.empty', domain: 'faq'),
             'toast_title_success' => $this->translator->trans('faq.toast.title.success', domain: 'faq'),
             'toast_time' => $this->translator->trans('faq.toast.time', domain: 'faq'),

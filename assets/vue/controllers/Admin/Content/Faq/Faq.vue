@@ -244,18 +244,23 @@ export default {
     <div v-if="this.id !== null">
       <!-- Edition d'un FAQ -->
 
-      <select id="select-language" class="form-select float-end w-25" @change="this.switchLocale($event)">
-        <option value="" selected>{{ this.translate.select_locale }}</option>
-        <option v-for="(language, key) in this.locales.localesTranslate" :value="key"
-            :selected="key===this.currentLocale">{{ language }}
-        </option>
-      </select>
-
-      <div class="sticky-md-top float-start">
-        <div class="btn btn-secondary" @click="this.save"><i class="bi bi-floppy-fill"></i> {{ this.translate.save }}
+      <div class="sticky-md-top p-3 mb-2 mt-2 bg-white border border-1 border-right rounded-1">
+        <div class="row">
+          <div class="col-9">
+            <div class="btn btn-secondary" @click="this.save"><i class="bi bi-floppy-fill"></i> {{ this.translate.save }}</div>
+            <div class="btn btn-secondary ms-3"><i class="bi bi-plus-square"></i> {{ this.translate.new_category_btn }}</div>
+            <div class="btn btn-secondary ms-3"><i class="bi bi-question-square"></i> {{ this.translate.new_question_btn }}</div>
+          </div>
+          <div class="col-3">
+            <select id="select-language" class="form-select" @change="this.switchLocale($event)">
+              <option v-for="(language, key) in this.locales.localesTranslate" :value="key"
+                  :selected="key===this.currentLocale">{{ language }}
+              </option>
+            </select>
+          </div>
         </div>
+
       </div>
-      <br/><br/><br/>
 
 
       <div v-if="this.loadData">
