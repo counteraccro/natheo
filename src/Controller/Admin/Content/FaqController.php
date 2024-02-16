@@ -169,10 +169,12 @@ class FaqController extends AppAdminController
         } else {
             $faq = $faqService->findOneById(Faq::class, $id);
         }
-        $faqArray = $faqService->convertEntityToArray($faq, ['createdAt', 'updateAt', 'user']);
+        $faqArray = $faqService->convertEntityToArray($faq, [
+            'createdAt', 'updateAt', 'user', 'maxRenderOrderQuestion', 'maxRenderOrderCategory', 'allMaxRender']);
 
         return $this->json([
-            'faq' => $faqArray
+            'faq' => $faqArray,
+            'max_render_order' => $faq->getAllMaxRender()
         ]);
     }
 

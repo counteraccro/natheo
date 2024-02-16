@@ -24,6 +24,7 @@ export default {
   data() {
     return {
       faq: Object,
+      tabMaxRenderOrder: Object,
       currentLocale: this.locales.current,
       loading: false,
       loadData: false,
@@ -60,6 +61,7 @@ export default {
       this.loading = true;
       axios.get(this.urls.load_faq + '/' + this.id).then((response) => {
         this.faq = response.data.faq;
+        this.tabMaxRenderOrder = response.data.max_render_order;
         this.loadData = true;
       }).catch((error) => {
         console.error(error);
@@ -233,6 +235,41 @@ export default {
         return 'disabled';
       }
       return '';
+    },
+
+    /**
+     * Affichage ou non un bouton en fonction de son type, idCat et de ordre de rendu
+     * @param idCat
+     * @param renderOrder
+     * @param btnType
+     * @returns {boolean}
+     */
+    showQuestionButton(idCat, renderOrder, btnType) {
+      let r = true;
+      this.tabMaxRenderOrder.max_render_order_questions.forEach((element) => {
+        if (element.id_cat === idCat) {
+          if (btnType === 'up') {
+            r = renderOrder !== 1;
+          } else {
+            r = element.max_render !== renderOrder;
+          }
+        }
+      })
+      return r;
+    },
+
+    /**
+     * Retourne une class bg en fonction si disabled est à true ou false
+     * @param disabled
+     * @returns {string}
+     */
+    getClassByDisabled(disabled)
+    {
+      if(disabled)
+      {
+        return 'bg-body-secondary'
+      }
+      return 'text-bg-light';
     }
   }
 }
@@ -302,16 +339,22 @@ export default {
             </div>
             <div class="col-2">
               <div class="float-end">
-                <div v-if="fcat.renderOrder > 1" class="btn btn-secondary me-1"><i class="bi bi-arrow-up"></i></div>
-                <div class="btn btn-secondary me-1"><i class="bi bi-arrow-down"></i></div>
+                <div v-if="fcat.renderOrder !== 1" class="btn btn-secondary me-1"><i class="bi bi-arrow-up"></i></div>
+                <div v-if="fcat.renderOrder !== this.tabMaxRenderOrder.max_render_order_category" class="btn btn-secondary me-1">
+                  <i class="bi bi-arrow-down"></i></div>
                 <div class="btn btn-secondary me-1"><i class="bi bi-trash"></i></div>
+                <div v-if="fcat.disabled" class="btn btn-secondary me-1"><i class="bi bi-eye"></i></div>
+                <div v-if="!fcat.disabled" class="btn btn-secondary me-1"><i class="bi bi-eye-slash"></i></div>
               </div>
+            </div>
+            <div v-if="fcat.disabled" class="float-end">
+              <i>{{ this.translate.faq_category_disabled }}</i>
             </div>
           </div>
 
           <div v-for="fQuestion in fcat.faqQuestions">
 
-            <div class="card text-bg-light mt-2 mb-2">
+            <div class="card mt-2 mb-2" :class="this.getClassByDisabled(fQuestion.disabled)">
               <div class="row align-items-center">
 
                 <div class="col-11">
@@ -337,14 +380,26 @@ export default {
                         @editor-value="this.updateAnswer"
                         @editor-value-change=""
                     />
+
+                    <div v-if="fQuestion.disabled" class="float-end">
+                      <i>{{ this.translate.faq_question_disabled }}</i>
+                    </div>
+
                   </div>
                 </div>
                 <div class="col-1">
-                  <div v-if="fQuestion.renderOrder > 1" class="btn btn-secondary mt-1"><i class="bi bi-arrow-up"></i></div>
+                  <div v-if="this.showQuestionButton(fQuestion.faqCategory, fQuestion.renderOrder, 'up')" class="btn btn-secondary mt-1">
+                    <i class="bi bi-arrow-up"></i>
+                  </div>
                   <div class="clearfix"></div>
-                  <div class="btn btn-secondary mt-1"><i class="bi bi-arrow-down"></i></div>
+                  <div v-if="this.showQuestionButton(fQuestion.faqCategory, fQuestion.renderOrder, 'down')" class="btn btn-secondary mt-1">
+                    <i class="bi bi-arrow-down"></i></div>
                   <div class="clearfix"></div>
                   <div class="btn btn-secondary mt-1"><i class="bi bi-trash"></i></div>
+                  <div class="clearfix"></div>
+                  <div v-if="fQuestion.disabled" class="btn btn-secondary mt-1"><i class="bi bi-eye"></i></div>
+                  <div class="clearfix"></div>
+                  <div v-if="!fQuestion.disabled" class="btn btn-secondary mt-1"><i class="bi bi-eye-slash"></i></div>
                 </div>
               </div>
             </div>
