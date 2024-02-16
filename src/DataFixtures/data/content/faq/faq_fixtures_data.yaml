@@ -18,7 +18,7 @@ faq:
         value: 2
       FAQ_STAT_NB_QUESTIONS:
         key: KEY_STAT_NB_QUESTIONS
-        value: 3
+        value: 4
     faqCategory:
       installation:
         disabled: 0
@@ -53,6 +53,22 @@ faq:
           q-installation-2:
             disabled: 0
             renderOrder: 2
+            faqQuestionTranslation:
+              fr:
+                locale: fr
+                title: "Comment mettre à jour NateoCMS"
+                answer: 'In sed quam ac arcu fringilla vulputate vitae id est. Donec eleifend purus vel tincidunt ultricies. Integer dapibus erat eu ultrices aliquam. Pellentesque ut porta purus. Vestibulum porttitor vestibulum ante, a aliquam dui pretium sit amet. Aenean vitae mattis arcu. Curabitur semper lorem sed lacinia sodales. Integer et finibus erat. Aenean lectus augue, ullamcorper at felis non, egestas elementum felis. Proin a tortor feugiat, sagittis mi ut, pellentesque libero. Ut in justo eget libero vehicula elementum a ut magna. In quis tristique leo.'
+              en:
+                locale: en
+                title: "[EN] Comment mettre à jour NateoCMS"
+                answer: '[EN] In sed quam ac arcu fringilla vulputate vitae id est. Donec eleifend purus vel tincidunt ultricies. Integer dapibus erat eu ultrices aliquam. Pellentesque ut porta purus. Vestibulum porttitor vestibulum ante, a aliquam dui pretium sit amet. Aenean vitae mattis arcu. Curabitur semper lorem sed lacinia sodales. Integer et finibus erat. Aenean lectus augue, ullamcorper at felis non, egestas elementum felis. Proin a tortor feugiat, sagittis mi ut, pellentesque libero. Ut in justo eget libero vehicula elementum a ut magna. In quis tristique leo.'
+              es:
+                locale: es
+                title: "[ES] Comment mettre à jour NateoCMS"
+                answer: '[ES] In sed quam ac arcu fringilla vulputate vitae id est. Donec eleifend purus vel tincidunt ultricies. Integer dapibus erat eu ultrices aliquam. Pellentesque ut porta purus. Vestibulum porttitor vestibulum ante, a aliquam dui pretium sit amet. Aenean vitae mattis arcu. Curabitur semper lorem sed lacinia sodales. Integer et finibus erat. Aenean lectus augue, ullamcorper at felis non, egestas elementum felis. Proin a tortor feugiat, sagittis mi ut, pellentesque libero. Ut in justo eget libero vehicula elementum a ut magna. In quis tristique leo.'
+          q-installation-3:
+            disabled: 1
+            renderOrder: 3
             faqQuestionTranslation:
               fr:
                 locale: fr
