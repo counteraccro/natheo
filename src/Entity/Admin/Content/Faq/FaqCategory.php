@@ -141,4 +141,13 @@ class FaqCategory
 
         return $this;
     }
+
+    /**
+     * Retourne la valeur MAX de render_order pour les questions
+     * @return int
+     */
+    public function getMaxRenderOrderQuestion(): int
+    {
+        return $this->getFaqQuestions()->count();
+    }
 }

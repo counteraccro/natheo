@@ -32,10 +32,10 @@ class Faq
     #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updateAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'faq', targetEntity: FaqTranslation::class,  cascade: ['persist'],  orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'faq', targetEntity: FaqTranslation::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $faqTranslations;
 
-    #[ORM\OneToMany(mappedBy: 'faq', targetEntity: FaqCategory::class,  cascade: ['persist'],  orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'faq', targetEntity: FaqCategory::class, cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['renderOrder' => 'asc'])]
     private Collection $faqCategories;
 
@@ -227,5 +227,37 @@ class Faq
         return $this->getFaqStatistiques()->filter(function (FaqStatistique $faqStatistique) use ($key) {
             return $faqStatistique->getKey() === $key;
         })->first();
+    }
+
+    /**
+     * Retourne la valeur MAX de render_order pour les catégories
+     * @return int
+     */
+    public function getMaxRenderOrderCategory(): int
+    {
+        return $this->getFaqCategories()->count();
+    }
+
+    /**
+     * Retourne l'ensemble des valeurs maxRender des Category et Question par catégorie pour la FAQ
+     * @return array|array[]
+     */
+    public function getAllMaxRender(): array
+    {
+        $return = [
+                'max_render_order_category' => $this->getMaxRenderOrderCategory(),
+                'max_render_order_questions' => []
+        ];
+
+        foreach($this->getFaqCategories() as $category)
+        {
+            $return['max_render_order_questions'][] = [
+                'id_cat' => $category->getId(),
+                'max_render' => $category->getMaxRenderOrderQuestion()
+            ];
+        }
+
+        return $return;
+
     }
 }
