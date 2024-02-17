@@ -9,13 +9,15 @@
 import Grid from '../../Components/Grid/Grid.vue'
 import GridPaginate from "../../Components/Grid/GridPaginate.vue";
 import axios from "axios";
-import {Modal, Toast} from 'bootstrap'
+import Modal from "../../Components/Global/Modal.vue";
+import {Toast} from 'bootstrap'
 
 export default {
   name: "GenericGrid",
   components: {
     GridPaginate,
-    Grid
+    Grid,
+    Modal
   },
   props: {
     url: String,
@@ -39,7 +41,7 @@ export default {
       translate: {},
       translateGridPaginate: {},
       translateGrid: {},
-      confirmModal: '',
+      showModalGenericGrid: false,
       msgConfirm: '',
       toasts: {
         success: {
@@ -62,7 +64,7 @@ export default {
     this.toasts.error.toast = Toast.getOrCreateInstance(toastError);
 
     this.loadData(this.page, this.limit);
-    this.confirmModal = new Modal(document.getElementById("modal-alert"), {});
+    //this.confirmModal = new Modal(document.getElementById("modal-alert"), {});
 
   },
   methods: {
@@ -103,17 +105,16 @@ export default {
       this.isAjax = is_ajax;
       this.httpType = type;
       this.msgConfirm = this.translate.confirmText;
-      this.confirmModal.hide();
+      this.hideModal();
 
       if (is_confirm) {
         this.msgConfirm = msg_confirm;
-        this.confirmModal.show();
+        this.showModal();
       } else {
         if (is_ajax) {
           this.loading = true;
 
-          if(type === undefined)
-          {
+          if (type === undefined) {
             type = 'post';
             console.error('URL ' + url + ' n\'a aucun type défini');
           }
@@ -121,16 +122,14 @@ export default {
           axios[type](url).then((response) => {
             if (response.data.success === true || response.data.type === 'success') {
 
-              if(response.data.type === 'success')
-              {
+              if (response.data.type === 'success') {
                 console.error('Ancient système de retour de la réponse, à changer pour l\'url ' + url + ' \n ' +
                     'Voir Controller/Admin/Content/FaqController::updateDisabled pour un exemple de la bonne pratique');
               }
 
               this.toasts.success.msg = response.data.msg;
               this.toasts.success.toast.show();
-            }
-            else {
+            } else {
               this.toasts.error.msg = response.data.msg;
               this.toasts.error.toast.show();
             }
@@ -141,6 +140,20 @@ export default {
           window.location.href = url;
         }
       }
+    },
+
+    /**
+     * Affichage la modale
+     */
+    showModal() {
+      this.showModalGenericGrid = true;
+    },
+
+    /**
+     * Ferme la modale
+     */
+    hideModal() {
+      this.showModalGenericGrid = false;
     },
   }
 }
@@ -154,23 +167,28 @@ export default {
       <input type="text" class="form-control no-control" :placeholder="translate.placeholder" v-model="searchQuery">
     </div>
   </form>
-  
-  <div class="modal fade" id="modal-alert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header bg-secondary">
-          <h1 class="modal-title fs-5 text-white"><i class="bi bi-sign-stop"></i> {{ translate.confirmTitle }}</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" v-html="msgConfirm">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" @click="redirectAction(this.cUrl, this.isAjax, false, '', this.httpType)"><i class="bi bi-check2-circle"></i> {{ translate.confirmBtnOK }}</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> {{ translate.confirmBtnNo }}</button>
-        </div>
-      </div>
-    </div>
-  </div>
+
+  <modal
+      :id="'generic-grid-modale'"
+      :show="this.showModalGenericGrid"
+      @close-modal="this.hideModal"
+      :option-show-close-btn="false"
+  >
+    <template #title>
+      <i class="bi bi-sign-stop"></i> {{ translate.confirmTitle }}
+    </template>
+    <template #body>
+      <div v-html="msgConfirm"></div>
+    </template>
+    <template #footer>
+      <button type="button" class="btn btn-primary" @click="redirectAction(this.cUrl, this.isAjax, false, '', this.httpType)">
+        <i class="bi bi-check2-circle"></i> {{ translate.confirmBtnOK }}
+      </button>
+      <button type="button" class="btn btn-secondary" @click="this.hideModal()">
+        <i class="bi bi-x-circle"></i> {{ translate.confirmBtnNo }}
+      </button>
+    </template>
+  </modal>
 
   <div :class="loading === true ? 'block-grid' : ''">
     <div v-if="loading" class="overlay">
@@ -204,7 +222,7 @@ export default {
     <div id="live-toast-success" class="toast border border-secondary bg-white" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="toast-header text-success">
         <i class="bi bi-check-circle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{translate.titleSuccess }}</strong>
+        <strong class="me-auto"> {{ translate.titleSuccess }}</strong>
         <small class="text-black-50">{{ translate.time }}</small>
         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
