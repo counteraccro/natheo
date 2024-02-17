@@ -298,6 +298,10 @@ export default {
       this.updateModale(nameModale, false);
     },
 
+    /**
+     * Ferme un toast en fonction de son id
+     * @param nameToast
+     */
     closeToast(nameToast)
     {
       this.toasts[nameToast].show = false
@@ -536,29 +540,6 @@ export default {
         <div v-html="this.toasts.toastErrorFaq.msg"></div>
       </template>
     </toast>
-
-   <!-- <div id="live-toast-success-2" class="toast border border-secondary bg-white" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header text-success">
-
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-      <div class="toast-body">
-        {{ this.toasts.success.msg }}
-      </div>
-    </div>
-
-    <div id="live-toast-error-2" class="toast border border-secondary bg-white" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header text-danger">
-        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.translate.toast_title_error }}</strong>
-        <small class="text-black-50">{{ this.translate.toast_time }}</small>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-      <div class="toast-body">
-        {{ this.toasts.error.msg }}
-      </div>
-    </div>-->
-
 
   </div>
 
