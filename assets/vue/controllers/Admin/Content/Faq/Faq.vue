@@ -7,13 +7,15 @@
 import axios from "axios";
 import FieldEditor from "../../../../Components/Global/FieldEditor.vue";
 import MarkdownEditor from "../../../../Components/Global/MarkdownEditor.vue";
-import {Toast, Tab} from "bootstrap";
+import Modal from "../../../../Components/Global/Modal.vue";
+import {Toast} from "bootstrap";
 
 export default {
   name: "Faq",
   components: {
     MarkdownEditor,
-    FieldEditor
+    FieldEditor,
+    Modal,
   },
   props: {
     urls: Object,
@@ -30,6 +32,10 @@ export default {
       loadData: false,
       keyVal: 1,
       title: '',
+      modalTab: {
+        newCatFaq: false,
+        newQuestionFaq: false
+      },
       toasts: {
         success: {
           toast: [],
@@ -263,13 +269,34 @@ export default {
      * @param disabled
      * @returns {string}
      */
-    getClassByDisabled(disabled)
-    {
-      if(disabled)
-      {
+    getClassByDisabled(disabled) {
+      if (disabled) {
         return 'bg-body-secondary'
       }
       return 'text-bg-light';
+    },
+
+    /**
+     * Met à jour le status d'une modale défini par son id et son état
+     * @param nameModale
+     * @param state true|false
+     */
+    updateModale(nameModale, state) {
+      this.modalTab[nameModale] = state;
+    },
+
+    /**
+     * Ferme une modale
+     * @param nameModale
+     */
+    closeModal(nameModale)
+    {
+      this.updateModale(nameModale, false);
+    },
+
+    test()
+    {
+      console.log('Yes');
     }
   }
 }
@@ -298,10 +325,10 @@ export default {
               <div class="btn btn-secondary" :class="isDisabled()" @click="this.save">
                 <i class="bi bi-floppy-fill"></i> {{ this.translate.save }}
               </div>
-              <div class="btn btn-secondary ms-3" :class="isDisabled()">
+              <div class="btn btn-secondary ms-3" :class="isDisabled()" @click="this.updateModale('newCatFaq', true)">
                 <i class="bi bi-plus-square"></i> {{ this.translate.new_category_btn }}
               </div>
-              <div class="btn btn-secondary ms-3" :class="isDisabled()">
+              <div class="btn btn-secondary ms-3" :class="isDisabled()" @click="this.updateModale('newQuestionFaq', true)">
                 <i class="bi bi-question-square"></i> {{ this.translate.new_question_btn }}
               </div>
             </div>
@@ -405,10 +432,36 @@ export default {
             </div>
           </div>
           <hr/>
-
         </div>
       </div>
       <!-- FIN Edition d'une FAQ -->
+
+      <modal
+          :id="'newCatFaq'"
+          :show="this.modalTab.newCatFaq"
+          @close-modal="this.closeModal"
+          :option-modal-size="'modal-lg'"
+      >
+        <template #title>Nouvelle CAT</template>
+        <template #body>
+          <div class="btn btn-primary" @click="this.test">Test</div>
+        </template>
+        <template #footer>Ceci est le footer</template>
+      </modal>
+
+      <modal
+          :id="'newQuestionFaq'"
+          :show="this.modalTab.newQuestionFaq"
+          @close-modal="this.closeModal"
+          :option-show-close-btn="false">
+        <template #title>Nouvelle Question</template>
+        <template #body>
+          <div class="btn btn-primary" @click="this.test">Test question FAQ</div>
+        </template>
+        <template #footer>Ceci est le footer</template>
+      </modal>
+
+
     </div>
     <div v-else>
       <!-- Création d'une FAQ -->
