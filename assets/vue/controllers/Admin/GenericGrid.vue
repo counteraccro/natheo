@@ -10,14 +10,15 @@ import Grid from '../../Components/Grid/Grid.vue'
 import GridPaginate from "../../Components/Grid/GridPaginate.vue";
 import axios from "axios";
 import Modal from "../../Components/Global/Modal.vue";
-import {Toast} from 'bootstrap'
+import Toast from "../../Components/Global/Toast.vue";
 
 export default {
   name: "GenericGrid",
   components: {
     GridPaginate,
     Grid,
-    Modal
+    Modal,
+    Toast
   },
   props: {
     url: String,
@@ -44,28 +45,19 @@ export default {
       showModalGenericGrid: false,
       msgConfirm: '',
       toasts: {
-        success: {
-          toast: [],
+        toastSuccessGenericGrid: {
+          show: false,
           msg: '',
         },
-        error: {
-          toast: [],
+        toastErrorGenericGrid: {
+          show: false,
           msg: '',
         }
       },
     }
   },
   mounted() {
-
-    let toastSuccess = document.getElementById('live-toast-success');
-    this.toasts.success.toast = Toast.getOrCreateInstance(toastSuccess);
-
-    let toastError = document.getElementById('live-toast-error');
-    this.toasts.error.toast = Toast.getOrCreateInstance(toastError);
-
     this.loadData(this.page, this.limit);
-    //this.confirmModal = new Modal(document.getElementById("modal-alert"), {});
-
   },
   methods: {
     /**
@@ -127,11 +119,11 @@ export default {
                     'Voir Controller/Admin/Content/FaqController::updateDisabled pour un exemple de la bonne pratique');
               }
 
-              this.toasts.success.msg = response.data.msg;
-              this.toasts.success.toast.show();
+              this.toasts.toastSuccessGenericGrid.msg = response.data.msg;
+              this.toasts.toastSuccessGenericGrid.show = true;
             } else {
-              this.toasts.error.msg = response.data.msg;
-              this.toasts.error.toast.show();
+              this.toasts.toastErrorGenericGrid.msg = response.data.msg;
+              this.toasts.toastErrorGenericGrid.show;
             }
           }).catch((error) => {
             console.error(error);
@@ -154,6 +146,15 @@ export default {
      */
     hideModal() {
       this.showModalGenericGrid = false;
+    },
+
+    /**
+     * Ferme le toast défini par nameToast
+     * @param nameToast
+     */
+    closeToast(nameToast)
+    {
+      this.toasts[nameToast].show = false
     },
   }
 }
@@ -218,26 +219,37 @@ export default {
   </div>
 
   <div class="toast-container position-fixed top-0 end-0 p-2">
-
-    <div id="live-toast-success" class="toast border border-secondary bg-white" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header text-success">
+    <toast
+        :id="'toastSuccessGenericGrid'"
+        :option-class-header="'text-success'"
+        :show="this.toasts.toastSuccessGenericGrid.show"
+        @close-toast="this.closeToast"
+    >
+      <template #header>
         <i class="bi bi-check-circle-fill"></i> &nbsp;
         <strong class="me-auto"> {{ translate.titleSuccess }}</strong>
         <small class="text-black-50">{{ translate.time }}</small>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-      <div class="toast-body" v-html="this.toasts.success.msg"></div>
-    </div>
+      </template>
+      <template #body>
+        <div v-html="this.toasts.toastSuccessGenericGrid.msg"></div>
+      </template>
+    </toast>
 
-    <div id="live-toast-error" class="toast border border-secondary bg-white" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header text-danger">
+    <toast
+        :id="'toastErrorGenericGrid'"
+        :option-class-header="'text-danger'"
+        :show="this.toasts.toastErrorGenericGrid.show"
+        @close-toast="this.closeToast"
+    >
+      <template #header>
         <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
         <strong class="me-auto"> {{ translate.titleError }}</strong>
         <small class="text-black-50">{{ translate.time }}</small>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-      <div class="toast-body" v-html="this.toasts.error.msg"></div>
-    </div>
+      </template>
+      <template #body>
+        <div v-html="this.toasts.toastErrorGenericGrid.msg"></div>
+      </template>
+    </toast>
   </div>
 
 </template>
