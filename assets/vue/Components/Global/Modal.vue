@@ -36,6 +36,9 @@ export default {
             if (newValue) {
               this.modal.show();
             }
+            else {
+              this.modal.hide();
+            }
           }
         }, {immediate: true, deep: true}
     );
