@@ -56,7 +56,11 @@ export default {
     let toastError = document.getElementById('live-toast-error');
     this.toasts.error.toast = Toast.getOrCreateInstance(toastError);
 
-    this.loadFaq();
+    if(this.id !== null)
+    {
+      this.loadFaq();
+    }
+
   },
   methods: {
 
