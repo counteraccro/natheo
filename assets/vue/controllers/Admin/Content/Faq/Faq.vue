@@ -8,7 +8,8 @@ import axios from "axios";
 import FieldEditor from "../../../../Components/Global/FieldEditor.vue";
 import MarkdownEditor from "../../../../Components/Global/MarkdownEditor.vue";
 import Modal from "../../../../Components/Global/Modal.vue";
-import {Toast} from "bootstrap";
+import Toast from "../../../../Components/Global/Toast.vue";
+import toast from "../../../../Components/Global/Toast.vue";
 
 export default {
   name: "Faq",
@@ -16,6 +17,7 @@ export default {
     MarkdownEditor,
     FieldEditor,
     Modal,
+    Toast
   },
   props: {
     urls: Object,
@@ -37,12 +39,12 @@ export default {
         newQuestionFaq: false
       },
       toasts: {
-        success: {
-          toast: [],
+        toastSuccessFaq: {
+          show: false,
           msg: '',
         },
-        error: {
-          toast: [],
+        toastErrorFaq: {
+          show: false,
           msg: '',
         }
       },
@@ -50,14 +52,13 @@ export default {
   },
   mounted() {
 
-    let toastSuccess = document.getElementById('live-toast-success');
+    /*let toastSuccess = document.getElementById('live-toast-success');
     this.toasts.success.toast = Toast.getOrCreateInstance(toastSuccess);
 
     let toastError = document.getElementById('live-toast-error');
-    this.toasts.error.toast = Toast.getOrCreateInstance(toastError);
+    this.toasts.error.toast = Toast.getOrCreateInstance(toastError);*/
 
-    if(this.id !== null)
-    {
+    if (this.id !== null) {
       this.loadFaq();
     }
 
@@ -178,11 +179,11 @@ export default {
       }).then((response) => {
 
         if (response.data.success === true) {
-          this.toasts.success.msg = response.data.msg;
-          this.toasts.success.toast.show();
+          this.toasts.toastSuccessFaq.msg = response.data.msg;
+          this.toasts.toastSuccessFaq.show = true;
         } else {
-          this.toasts.error.msg = response.data.msg;
-          this.toasts.error.toast.show();
+          this.toasts.toastErrorFaq.msg = response.data.msg;
+          this.toasts.toastErrorFaq.show = true;
         }
 
       }).catch((error) => {
@@ -222,12 +223,12 @@ export default {
       }).then((response) => {
 
         if (response.data.success === true) {
-          this.toasts.success.msg = response.data.msg;
-          this.toasts.success.toast.show();
+          this.toasts.toastSuccessFaq.msg = response.data.msg;
+          this.toasts.toastSuccessFaq.show = true;
           window.location.replace(response.data.url_redirect);
         } else {
-          this.toasts.error.msg = response.data.msg;
-          this.toasts.error.toast.show();
+          this.toasts.toastErrorFaq.msg = response.data.msg;
+          this.toasts.toastErrorFaq.show = true;
           this.loading = false;
         }
       }).catch((error) => {
@@ -293,13 +294,16 @@ export default {
      * Ferme une modale
      * @param nameModale
      */
-    closeModal(nameModale)
-    {
+    closeModal(nameModale) {
       this.updateModale(nameModale, false);
     },
 
-    test()
+    closeToast(nameToast)
     {
+      this.toasts[nameToast].show = false
+    },
+
+    test() {
       console.log('Yes');
     }
   }
@@ -501,11 +505,41 @@ export default {
   <!-- toast -->
   <div class="toast-container position-fixed top-0 end-0 p-2">
 
-    <div id="live-toast-success" class="toast border border-secondary bg-white" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header text-success">
+    <toast
+        :id="'toastSuccessFaq'"
+        :option-class-header="'text-success'"
+        :show="this.toasts.toastSuccessFaq.show"
+        @close-toast="this.closeToast"
+    >
+      <template #header>
         <i class="bi bi-check-circle-fill"></i> &nbsp;
         <strong class="me-auto"> {{ this.translate.toast_title_success }}</strong>
         <small class="text-black-50">{{ this.translate.toast_time }}</small>
+      </template>
+      <template #body>
+        <div v-html="this.toasts.toastSuccessFaq.msg"></div>
+      </template>
+    </toast>
+
+    <toast
+        :id="'toastErrorFaq'"
+        :option-class-header="'text-danger'"
+        :show="this.toasts.toastErrorFaq.show"
+        @close-toast="this.closeToast"
+    >
+      <template #header>
+        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
+        <strong class="me-auto"> {{ this.translate.toast_title_error }}</strong>
+        <small class="text-black-50">{{ this.translate.toast_time }}</small>
+      </template>
+      <template #body>
+        <div v-html="this.toasts.toastErrorFaq.msg"></div>
+      </template>
+    </toast>
+
+   <!-- <div id="live-toast-success-2" class="toast border border-secondary bg-white" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header text-success">
+
         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
       <div class="toast-body">
@@ -513,7 +547,7 @@ export default {
       </div>
     </div>
 
-    <div id="live-toast-error" class="toast border border-secondary bg-white" role="alert" aria-live="assertive" aria-atomic="true">
+    <div id="live-toast-error-2" class="toast border border-secondary bg-white" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="toast-header text-danger">
         <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
         <strong class="me-auto"> {{ this.translate.toast_title_error }}</strong>
@@ -523,7 +557,9 @@ export default {
       <div class="toast-body">
         {{ this.toasts.error.msg }}
       </div>
-    </div>
+    </div>-->
+
+
   </div>
 
 </template>
