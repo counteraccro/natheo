@@ -2,7 +2,7 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.5
+ * @version 1.0
  * Modale Bootstrap 5.3
  */
 
