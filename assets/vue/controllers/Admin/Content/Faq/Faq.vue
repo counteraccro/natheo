@@ -9,7 +9,6 @@ import FieldEditor from "../../../../Components/Global/FieldEditor.vue";
 import MarkdownEditor from "../../../../Components/Global/MarkdownEditor.vue";
 import Modal from "../../../../Components/Global/Modal.vue";
 import Toast from "../../../../Components/Global/Toast.vue";
-import toast from "../../../../Components/Global/Toast.vue";
 
 export default {
   name: "Faq",
@@ -33,10 +32,18 @@ export default {
       loading: false,
       loadData: false,
       keyVal: 1,
-      title: '',
+      title: '', // Titre FAQ création
+      msgBodyDisabled: '',
+      titleDisabled : '',
+      dataDisabled: {
+        type : '',
+        id : '',
+        value : ''
+      },
       modalTab: {
         newCatFaq: false,
-        newQuestionFaq: false
+        newQuestionFaq: false,
+        disabledCatQuestFaq: false,
       },
       toasts: {
         toastSuccessFaq: {
@@ -51,17 +58,9 @@ export default {
     }
   },
   mounted() {
-
-    /*let toastSuccess = document.getElementById('live-toast-success');
-    this.toasts.success.toast = Toast.getOrCreateInstance(toastSuccess);
-
-    let toastError = document.getElementById('live-toast-error');
-    this.toasts.error.toast = Toast.getOrCreateInstance(toastError);*/
-
     if (this.id !== null) {
       this.loadFaq();
     }
-
   },
   methods: {
 
@@ -302,13 +301,37 @@ export default {
      * Ferme un toast en fonction de son id
      * @param nameToast
      */
-    closeToast(nameToast)
-    {
+    closeToast(nameToast) {
       this.toasts[nameToast].show = false
     },
 
-    test() {
-      console.log('Yes');
+    /**
+     * Ouvre la modale pour désactiver une catégorie ou une question
+     * @param type
+     * @param id
+     * @param name
+     */
+    openModalDisabled(type, id, name) {
+      this.dataDisabled.type = type;
+      this.dataDisabled.id = id;
+      this.dataDisabled.value = true;
+      this.updateModale('disabledCatQuestFaq', true);
+      if (type === 'category') {
+        this.msgBodyDisabled = this.translate.faq_category_disabled_message.replace("{categorie}", name);
+        this.titleDisabled = this.translate.faq_category_disabled_title;
+      } else {
+        this.msgBodyDisabled = this.translate.faq_question_disabled_message.replace("{question}", name);
+        this.titleDisabled = this.translate.faq_question_disabled_title;
+      }
+    },
+
+
+    /**
+     * Met à jour le champ disabled d'une FAQ ou question
+     */
+    updateDisabledCatQuestionFaq()
+    {
+      console.log(this.dataDisabled);
     }
   }
 }
@@ -383,7 +406,7 @@ export default {
                   <i class="bi bi-arrow-down"></i></div>
                 <div class="btn btn-secondary me-1"><i class="bi bi-trash"></i></div>
                 <div v-if="fcat.disabled" class="btn btn-secondary me-1"><i class="bi bi-eye"></i></div>
-                <div v-if="!fcat.disabled" class="btn btn-secondary me-1"><i class="bi bi-eye-slash"></i></div>
+                <div v-if="!fcat.disabled" @click="this.openModalDisabled('category', fcat.id, this.getValueByLocale(fcat.faqCategoryTranslations, 'title'))" class="btn btn-secondary me-1"><i class="bi bi-eye-slash"></i></div>
               </div>
             </div>
             <div v-if="fcat.disabled" class="float-end">
@@ -438,7 +461,7 @@ export default {
                   <div class="clearfix"></div>
                   <div v-if="fQuestion.disabled" class="btn btn-secondary mt-1"><i class="bi bi-eye"></i></div>
                   <div class="clearfix"></div>
-                  <div v-if="!fQuestion.disabled" class="btn btn-secondary mt-1"><i class="bi bi-eye-slash"></i></div>
+                  <div v-if="!fQuestion.disabled" @click="this.openModalDisabled('question', fQuestion.id, this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title'))" class="btn btn-secondary mt-1"><i class="bi bi-eye-slash"></i></div>
                 </div>
               </div>
             </div>
@@ -448,6 +471,7 @@ export default {
       </div>
       <!-- FIN Edition d'une FAQ -->
 
+      <!-- modale nouvelle categogie -->
       <modal
           :id="'newCatFaq'"
           :show="this.modalTab.newCatFaq"
@@ -460,7 +484,9 @@ export default {
         </template>
         <template #footer>Ceci est le footer</template>
       </modal>
+      <!-- fin modale nouvelle categogie -->
 
+      <!-- modale nouvelle question -->
       <modal
           :id="'newQuestionFaq'"
           :show="this.modalTab.newQuestionFaq"
@@ -472,11 +498,33 @@ export default {
         </template>
         <template #footer>Ceci est le footer</template>
       </modal>
+      <!-- fin modale nouvelle categogie -->
+
+      <!-- modale disabled category -->
+      <modal
+          :id="'disabledCatQuestFaq'"
+          :show="this.modalTab.disabledCatQuestFaq"
+          @close-modal="this.closeModal"
+          :option-show-close-btn="false">
+        <template #title><i class="bi bi-eye-slash"></i> {{ this.titleDisabled }}</template>
+        <template #body>
+          <div v-html="this.msgBodyDisabled"></div>
+        </template>
+        <template #footer>
+          <button type="button" class="btn btn-primary" @click="this.updateDisabledCatQuestionFaq()">
+            <i class="bi bi-check2-circle"></i> {{ translate.faq_disabled_btn_ok }}
+          </button>
+          <button type="button" class="btn btn-secondary" @click="this.closeModal('disabledCatQuestFaq')">
+            <i class="bi bi-x-circle"></i> {{ translate.faq_disabled_btn_ko }}
+          </button>
+        </template>
+      </modal>
+      <!-- fin modale nouvelle categogie -->
 
 
     </div>
+    <!-- Création d'une FAQ -->
     <div v-else>
-      <!-- Création d'une FAQ -->
       <div class="card">
         <div class="card-header">
           {{ this.translate.new_faq }}

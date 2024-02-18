@@ -202,8 +202,14 @@ class FaqService extends AppAdminService
             'toast_title_success' => $this->translator->trans('faq.toast.title.success', domain: 'faq'),
             'toast_time' => $this->translator->trans('faq.toast.time', domain: 'faq'),
             'toast_title_error' => $this->translator->trans('faq.toast.title.error', domain: 'faq'),
+            'faq_disabled_btn_ok' => $this->translator->trans('faq.disabled_btn_ok', domain: 'faq'),
+            'faq_disabled_btn_ko' => $this->translator->trans('faq.disabled_btn_ko', domain: 'faq'),
             'faq_question_disabled' => $this->translator->trans('faq.question.disabled', domain: 'faq'),
             'faq_category_disabled' => $this->translator->trans('faq.category.disabled', domain: 'faq'),
+            'faq_category_disabled_title' => $this->translator->trans('faq.category.disabled.title', domain: 'faq'),
+            'faq_category_disabled_message' => $this->translator->trans('faq.category.disabled.message', domain: 'faq'),
+            'faq_question_disabled_title' => $this->translator->trans('faq.question.disabled.title', domain: 'faq'),
+            'faq_question_disabled_message' => $this->translator->trans('faq.question.disabled.message', domain: 'faq'),
             ];
     }
 }
