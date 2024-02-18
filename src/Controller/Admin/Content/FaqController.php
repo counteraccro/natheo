@@ -96,7 +96,8 @@ class FaqController extends AppAdminController
             'urls' => [
                 'load_faq' => $this->generateUrl('admin_faq_load_faq'),
                 'save' => $this->generateUrl('admin_faq_save'),
-                'new_faq' => $this->generateUrl('admin_faq_new_faq')
+                'new_faq' => $this->generateUrl('admin_faq_new_faq'),
+                'update_disabled' =>  $this->generateUrl('admin_faq_update_disabled'),
             ]
         ]);
     }
@@ -231,5 +232,16 @@ class FaqController extends AppAdminController
         $jsonTab = $faqService->getResponseAjax($msg);
         $jsonTab['url_redirect'] = $this->generateUrl('admin_faq_update', ['id' => $faq->getId()]);
         return $this->json($jsonTab);
+    }
+
+    #[Route('/ajax/update-disabled', name: 'update_disabled', methods: 'PUT')]
+    public function updateDisabledCatQuestion(
+        Request             $request,
+        FaqService          $faqService,
+        TranslatorInterface $translator): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        return $this->json([]);
     }
 }
