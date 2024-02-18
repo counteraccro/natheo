@@ -47,6 +47,7 @@ faq.disabled_btn_ko: Non
 faq.question.disabled.title: 'Masquer une question'
 faq.question.disabled.message: 'Vous êtes sur le point de masquer la question <b>{question}</b>, confirmez-vous cette action ?'
 faq.category.enabled.title: 'Afficher la catégorie'
-faq.category.enabled.message: __faq.category.enabled.message
+faq.category.enabled.message: 'Vous êtes sur le point de rendre visible la catégorie <b>{categorie}</b>, confirmez-vous cette action ?'
 faq.question.enabled.title: 'Afficher la question'
-faq.question.enabled.message: __faq.question.enabled.message
+faq.question.enabled.message: 'Vous êtes sur le point de rendre visible la question <b>{question}</b>, confirmez-vous cette action ?'
+faq.category.enabled.message.2: "Rendre visible l'ensemble des question associées"
