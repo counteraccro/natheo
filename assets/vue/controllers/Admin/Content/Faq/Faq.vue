@@ -325,6 +325,27 @@ export default {
       }
     },
 
+    /**
+     * Ouvre la modale pour réactiver une faq / question
+     * @param type
+     * @param id
+     * @param name
+     */
+    openModalEnabled(type, id, name)
+    {
+      this.dataDisabled.type = type;
+      this.dataDisabled.id = id;
+      this.dataDisabled.value = false;
+      this.updateModale('disabledCatQuestFaq', true);
+      if (type === 'category') {
+        this.msgBodyDisabled = this.translate.faq_category_enabled_message.replace("{categorie}", name);
+        this.titleDisabled = this.translate.faq_category_enabled_title;
+      } else {
+        this.msgBodyDisabled = this.translate.faq_question_enabled_message.replace("{question}", name);
+        this.titleDisabled = this.translate.faq_question_enabled_title;
+      }
+    },
+
 
     /**
      * Met à jour le champ disabled d'une FAQ ou question
@@ -405,7 +426,7 @@ export default {
                 <div v-if="fcat.renderOrder !== this.tabMaxRenderOrder.max_render_order_category" class="btn btn-secondary me-1">
                   <i class="bi bi-arrow-down"></i></div>
                 <div class="btn btn-secondary me-1"><i class="bi bi-trash"></i></div>
-                <div v-if="fcat.disabled" class="btn btn-secondary me-1"><i class="bi bi-eye"></i></div>
+                <div v-if="fcat.disabled" @click="this.openModalEnabled('category', fcat.id, this.getValueByLocale(fcat.faqCategoryTranslations, 'title'))" class="btn btn-secondary me-1"><i class="bi bi-eye"></i></div>
                 <div v-if="!fcat.disabled" @click="this.openModalDisabled('category', fcat.id, this.getValueByLocale(fcat.faqCategoryTranslations, 'title'))" class="btn btn-secondary me-1"><i class="bi bi-eye-slash"></i></div>
               </div>
             </div>
@@ -459,7 +480,7 @@ export default {
                   <div class="clearfix"></div>
                   <div class="btn btn-secondary mt-1"><i class="bi bi-trash"></i></div>
                   <div class="clearfix"></div>
-                  <div v-if="fQuestion.disabled" class="btn btn-secondary mt-1"><i class="bi bi-eye"></i></div>
+                  <div v-if="fQuestion.disabled" @click="this.openModalEnabled('question', fQuestion.id, this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title'))" class="btn btn-secondary mt-1"><i class="bi bi-eye"></i></div>
                   <div class="clearfix"></div>
                   <div v-if="!fQuestion.disabled" @click="this.openModalDisabled('question', fQuestion.id, this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title'))" class="btn btn-secondary mt-1"><i class="bi bi-eye-slash"></i></div>
                 </div>
