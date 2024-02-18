@@ -42,7 +42,11 @@ faq.question.disabled: 'Cette question est invisible'
 faq.category.disabled: 'Cette catégorie est invisible ainsi que ses questions'
 faq.category.disabled.title: 'Masquer une catégorie'
 faq.category.disabled.message: 'Vous êtes sur le point de masquer la catégorie <b>{categorie}</b>, cette action entrainement la désactivation des questions liées, confirmez-vous ?'
-faq.disabled_btn_ok: 'Oui'
-faq.disabled_btn_ko: 'Non'
+faq.disabled_btn_ok: Oui
+faq.disabled_btn_ko: Non
 faq.question.disabled.title: 'Masquer une question'
 faq.question.disabled.message: 'Vous êtes sur le point de masquer la question <b>{question}</b>, confirmez-vous cette action ?'
+faq.category.enabled.title: 'Afficher la catégorie'
+faq.category.enabled.message: __faq.category.enabled.message
+faq.question.enabled.title: 'Afficher la question'
+faq.question.enabled.message: __faq.question.enabled.message

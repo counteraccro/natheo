@@ -46,3 +46,7 @@ faq.category.disabled.title: __faq.category.disabled.title
 faq.category.disabled.message: __faq.category.disabled.message
 faq.question.disabled.title: __faq.question.disabled.title
 faq.question.disabled.message: __faq.question.disabled.message
+faq.category.enabled.title: __faq.category.enabled.title
+faq.category.enabled.message: __faq.category.enabled.message
+faq.question.enabled.title: __faq.question.enabled.title
+faq.question.enabled.message: __faq.question.enabled.message
