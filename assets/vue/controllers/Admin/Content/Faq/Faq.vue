@@ -38,7 +38,8 @@ export default {
       dataDisabled: {
         type : '',
         id : '',
-        value : ''
+        value : '',
+        allQuestion: true
       },
       modalTab: {
         newCatFaq: false,
@@ -352,7 +353,27 @@ export default {
      */
     updateDisabledCatQuestionFaq()
     {
-      console.log(this.dataDisabled);
+      this.updateModale('disabledCatQuestFaq', false);
+      this.loading = true;
+      axios.put(this.urls.update_disabled, {
+        'value': this.dataDisabled.value,
+        'id' : this.dataDisabled.id,
+        'type' : this.dataDisabled.type,
+        'allQuestion' : this.dataDisabled.allQuestion
+      }).then((response) => {
+
+        if (response.data.success === true) {
+          this.toasts.toastSuccessFaq.msg = response.data.msg;
+          this.toasts.toastSuccessFaq.show = true;
+        } else {
+          this.toasts.toastErrorFaq.msg = response.data.msg;
+          this.toasts.toastErrorFaq.show = true;
+        }
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.loading = false;
+      });
     }
   }
 }
@@ -527,9 +548,20 @@ export default {
           :show="this.modalTab.disabledCatQuestFaq"
           @close-modal="this.closeModal"
           :option-show-close-btn="false">
-        <template #title><i class="bi bi-eye-slash"></i> {{ this.titleDisabled }}</template>
+        <template #title>
+          <i v-if="this.dataDisabled.value" class="bi bi-eye-slash"></i>
+          <i v-if="!this.dataDisabled.value" class="bi bi-eye"></i>
+          {{ this.titleDisabled }}</template>
         <template #body>
           <div v-html="this.msgBodyDisabled"></div>
+          <div v-if="!this.dataDisabled.value && this.dataDisabled.type==='category'">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" v-model="this.dataDisabled.allQuestion" id="check-all-question-visible">
+              <label class="form-check-label" for="check-all-question-visible">
+                {{ this.translate.faq_category_enabled_message_2 }}
+              </label>
+            </div>
+          </div>
         </template>
         <template #footer>
           <button type="button" class="btn btn-primary" @click="this.updateDisabledCatQuestionFaq()">
