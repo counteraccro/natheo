@@ -105,4 +105,17 @@ class FaqQuestion
 
         return $this;
     }
+
+    /**
+     * Retourne la traduction en fonction de la locale
+     * @param string $locale
+     * @return FaqQuestionTranslation
+     */
+    public function getFaqQuestionTranslationByLocale(string $locale): FaqQuestionTranslation
+    {
+        return $this->faqQuestionTranslations->filter(
+            function (FaqQuestionTranslation $faqQuestionTranslation) use ($locale) {
+                return $faqQuestionTranslation->getLocale() === $locale;
+            })->first();
+    }
 }

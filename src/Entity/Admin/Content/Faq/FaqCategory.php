@@ -143,6 +143,19 @@ class FaqCategory
     }
 
     /**
+     * Retourne la traduction en fonction de la locale
+     * @param string $locale
+     * @return FaqCategoryTranslation
+     */
+    public function getFaqCategoryTranslationByLocale(string $locale): FaqCategoryTranslation
+    {
+        return $this->faqCategoryTranslations->filter(
+            function (FaqCategoryTranslation $faqCategoryTranslation) use ($locale) {
+                return $faqCategoryTranslation->getLocale() === $locale;
+            })->first();
+    }
+
+    /**
      * Retourne la valeur MAX de render_order pour les questions
      * @return int
      */
