@@ -72,11 +72,8 @@ class DevExtensionRuntime extends AppExtensionRuntime implements RuntimeExtensio
     private function getDevInfo(): string
     {
         $version = $this->parameterBag->get('app.version');
-        $branche = $this->parameterBag->get('app.current_branche');
-
         $infoGit = $this->gitService->getInfoGit();
-
-
+        
         return '<fieldset>
         <legend class="text-white">' . $this->translator->trans('dev.info', domain: 'dev') . '</legend>
             <i class="bi bi-github"></i> <i>
@@ -85,7 +82,7 @@ class DevExtensionRuntime extends AppExtensionRuntime implements RuntimeExtensio
             <i class="bi bi-git"></i> <i>
             ' . $this->translator->trans('dev.info.last.commit', domain: 'dev') .
             ' <b><abbr title="' . $infoGit[GitService::KEY_HASH] . '">'
-            . substr($infoGit[GitService::KEY_HASH], 0, 6) . '</abbr></b></i>
+            . substr($infoGit[GitService::KEY_HASH], 0, 7) . '</abbr></b></i>
             <br />
              <i class="bi bi-calendar3"></i> <i>
             ' . $this->translator->trans('dev.info.date.last.commit', domain: 'dev') .
@@ -95,13 +92,5 @@ class DevExtensionRuntime extends AppExtensionRuntime implements RuntimeExtensio
             <i class="bi bi-bug-fill"></i> <i>
             ' . $this->translator->trans('dev.info.version', domain: 'dev') . ' <b>' . $version . '</b></i>
         </fieldset>';
-    }
-
-    private function getGitInfo(): string
-    {
-
-
-        return "version date: " . $gitDate . "<br>branch: " . $gitBranchName . "<br> commit: " . $gitHash;
-
     }
 }
