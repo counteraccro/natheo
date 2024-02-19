@@ -8,6 +8,8 @@
 namespace App\Service\Admin\Content\Faq;
 
 use App\Entity\Admin\Content\Faq\Faq;
+use App\Entity\Admin\Content\Faq\FaqCategory;
+use App\Entity\Admin\Content\Faq\FaqQuestion;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Admin\System\OptionSystemService;
@@ -182,6 +184,65 @@ class FaqService extends AppAdminService
     }
 
     /**
+     * Met à jour le champ disabled d'une question en fonction de $value
+     * @param int $id
+     * @param bool $value
+     * @return string
+     */
+    public function updateDisabledQuestion(int $id, bool $value): string
+    {
+        /** @var FaqQuestion $question */
+        $question = $this->findOneById(FaqQuestion::class, $id);
+        $question->setDisabled($value);
+        $this->save($question);
+
+        $title = $question->getFaqQuestionTranslationByLocale($this->getLocales()['current'])->getTitle();
+
+        if ($value) {
+            return $this->translator->trans('faq.question.disabled.ok', ['question' => $title], domain: 'faq');
+        }
+        return $this->translator->trans('faq.question.enabled.ok', ['question' => $title], domain: 'faq');
+    }
+
+    /**
+     * Met à jour le champ disabled d'une category en fonction de $value
+     * si allQuestion est à true, réactive l'ensemble des questions associées à la catégorie
+     * @param int $id
+     * @param bool $allQuestion
+     * @param bool $value
+     * @return string
+     */
+    public function updateDisabledCategory(int $id, bool $allQuestion, bool $value): string
+    {
+        /** @var FaqCategory $category */
+        $category = $this->findOneById(FaqCategory::class, $id);
+        $category->setDisabled($value);
+
+        foreach ($category->getFaqQuestions() as $question) {
+            if (!$value && $allQuestion) {
+                $question->setDisabled(false);
+            } elseif ($value) {
+                $question->setDisabled(true);
+            }
+        }
+
+        $this->save($category);
+
+        $title = $category->getFaqCategoryTranslationByLocale($this->getLocales()['current'])->getTitle();
+
+        if ($value) {
+            return $this->translator->trans('faq.category.disabled.ok', ['category' => $title], domain: 'faq');
+        }
+
+        if ($allQuestion) {
+            return $this->translator->trans('faq.category.enabled.all.questions.ok',
+                ['category' => $title], domain: 'faq');
+        }
+        return $this->translator->trans('faq.category.enabled.ok', ['category' => $title], domain: 'faq');
+
+    }
+
+    /**
      * Retourne les traductions pour la création / édition d'une FAQ
      * @return array
      */
@@ -191,7 +252,7 @@ class FaqService extends AppAdminService
             'select_locale' => $this->translator->trans('faq.select.locale', domain: 'faq'),
             'loading' => $this->translator->trans('faq.select.loading', domain: 'faq'),
             'error_empty_value' => $this->translator->trans('faq.error.empty.value', domain: 'faq'),
-            'save' =>  $this->translator->trans('faq.save', domain: 'faq'),
+            'save' => $this->translator->trans('faq.save', domain: 'faq'),
             'new_faq' => $this->translator->trans('faq.new.title', domain: 'faq'),
             'new_faq_input_title' => $this->translator->trans('faq.new.input.title', domain: 'faq'),
             'new_faq_help' => $this->translator->trans('faq.new.help', domain: 'faq'),
@@ -215,6 +276,6 @@ class FaqService extends AppAdminService
             'faq_category_enabled_message_2' => $this->translator->trans('faq.category.enabled.message.2', domain: 'faq'),
             'faq_question_enabled_title' => $this->translator->trans('faq.question.enabled.title', domain: 'faq'),
             'faq_question_enabled_message' => $this->translator->trans('faq.question.enabled.message', domain: 'faq'),
-            ];
+        ];
     }
 }

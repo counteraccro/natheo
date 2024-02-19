@@ -373,6 +373,7 @@ export default {
         console.error(error);
       }).finally(() => {
         this.loading = false;
+        this.loadFaq();
       });
     }
   }

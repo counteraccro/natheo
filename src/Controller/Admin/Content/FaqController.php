@@ -97,7 +97,7 @@ class FaqController extends AppAdminController
                 'load_faq' => $this->generateUrl('admin_faq_load_faq'),
                 'save' => $this->generateUrl('admin_faq_save'),
                 'new_faq' => $this->generateUrl('admin_faq_new_faq'),
-                'update_disabled' =>  $this->generateUrl('admin_faq_update_disabled'),
+                'update_disabled' => $this->generateUrl('admin_faq_update_disabled'),
             ]
         ]);
     }
@@ -234,6 +234,13 @@ class FaqController extends AppAdminController
         return $this->json($jsonTab);
     }
 
+    /**
+     * @param Request $request
+     * @param FaqService $faqService
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     * Active ou désactive une catégorie ou question d'une FAQ
+     */
     #[Route('/ajax/update-disabled', name: 'update_disabled', methods: 'PUT')]
     public function updateDisabledCatQuestion(
         Request             $request,
@@ -242,6 +249,18 @@ class FaqController extends AppAdminController
     {
         $data = json_decode($request->getContent(), true);
 
-        return $this->json([]);
+        $msg = '';
+        switch ($data['type']) {
+            case 'question' :
+                $msg = $faqService->updateDisabledQuestion($data['id'], $data['value']);
+                break;
+            case 'category':
+                $msg = $faqService->updateDisabledCategory($data['id'], $data['allQuestion'], $data['value']);
+                break;
+            default:
+                $msg = 'Erreur type';
+        }
+
+        return $this->json($faqService->getResponseAjax($msg));
     }
 }
