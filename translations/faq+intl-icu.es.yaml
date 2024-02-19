@@ -51,3 +51,8 @@ faq.category.enabled.message: __faq.category.enabled.message
 faq.question.enabled.title: __faq.question.enabled.title
 faq.question.enabled.message: __faq.question.enabled.message
 faq.category.enabled.message.2: __faq.category.enabled.message.2
+faq.question.disabled.ok: __faq.question.disabled.ok
+faq.question.enabled.ok: __faq.question.enabled.ok
+faq.category.disabled.ok: __faq.category.disabled.ok
+faq.category.enabled.all.questions.ok: __faq.category.enabled.all.questions.ok
+faq.category.enabled.ok: __faq.category.enabled.ok

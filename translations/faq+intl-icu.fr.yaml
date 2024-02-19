@@ -51,3 +51,8 @@ faq.category.enabled.message: 'Vous êtes sur le point de rendre visible la cat�
 faq.question.enabled.title: 'Afficher la question'
 faq.question.enabled.message: 'Vous êtes sur le point de rendre visible la question <b>{question}</b>, confirmez-vous cette action ?'
 faq.category.enabled.message.2: "Rendre visible l'ensemble des question associées"
+faq.question.disabled.ok: 'La question <b>{question}</b> à été masquée avec succès'
+faq.question.enabled.ok: 'La question <b>{question}</b> à été rendu visible avec succès'
+faq.category.disabled.ok: 'La catégorie <b>{category}</b> à été masquée avec succès ainsi que toutes ses questions associées'
+faq.category.enabled.all.questions.ok: 'La catégorie <b>{category}</b> à été rendu visible avec succès ainsi que toutes ses questions associées'
+faq.category.enabled.ok: 'La catégorie <b>{category}</b> à été rendu visible avec succès'
