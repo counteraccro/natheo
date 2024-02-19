@@ -16,6 +16,22 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class FaqCategoryRepository extends ServiceEntityRepository
 {
+
+    /**
+     * Save
+     * @param FaqCategory $entity
+     * @param bool $flush
+     * @return void
+     */
+    public function save(FaqCategory $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, FaqCategory::class);

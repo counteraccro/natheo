@@ -21,6 +21,21 @@ class FaqQuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, FaqQuestion::class);
     }
 
+    /**
+     * Save
+     * @param FaqQuestion $entity
+     * @param bool $flush
+     * @return void
+     */
+    public function save(FaqQuestion $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
 //    /**
 //     * @return FaqQuestion[] Returns an array of FaqQuestion objects
 //     */
