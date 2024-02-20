@@ -37,7 +37,6 @@ faq.toast.title.success: 'Succès !'
 faq.toast.time: "A l'instant"
 faq.toast.title.error: 'Erreur !'
 faq.new.category.btn: 'Nouvelle catégorie'
-faq.new.question.btn: 'Nouvelle question / réponse'
 faq.question.disabled: 'Cette question est invisible'
 faq.category.disabled: 'Cette catégorie est invisible ainsi que ses questions'
 faq.category.disabled.title: 'Masquer une catégorie'

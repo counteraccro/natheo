@@ -37,7 +37,6 @@ faq.toast.title.success: __faq.toast.title.success
 faq.toast.time: __faq.toast.time
 faq.toast.title.error: __faq.toast.title.error
 faq.new.category.btn: __faq.new.category.btn
-faq.new.question.btn: __faq.new.question.btn
 faq.question.disabled: __faq.question.disabled
 faq.category.disabled: __faq.category.disabled
 faq.disabled_btn_ok: __faq.disabled_btn_ok
