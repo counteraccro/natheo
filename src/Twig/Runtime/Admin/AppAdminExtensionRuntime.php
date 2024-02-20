@@ -40,6 +40,6 @@ class AppAdminExtensionRuntime
     )
     {
         $this->router = $this->handlers->get('router');
-        $this->translator = $this->handlers->get('translator');;
+        $this->translator = $this->handlers->get('translator');
     }
 }
