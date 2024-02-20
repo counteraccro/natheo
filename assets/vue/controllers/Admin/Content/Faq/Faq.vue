@@ -35,7 +35,12 @@ export default {
       title: '', // Titre FAQ création
       msgBodyDisabled: '',
       titleDisabled: '',
-      newFaqCategoryOrder: Object,
+      newDataOrder: {
+        type: '',
+        id : '',
+        idOrder: 2,
+        orderType: 'before'
+      },
       dataDisabled: {
         type: '',
         id: '',
@@ -381,6 +386,9 @@ export default {
      */
     newFaqCategoryData() {
 
+      this.newDataOrder.id = this.id;
+      this.newDataOrder.type = 'category'
+
       this.loading = true;
       axios.get(this.urls.order_by_type + '/' + this.id + '/category').then((response) => {
 
@@ -551,7 +559,23 @@ export default {
       >
         <template #title><i class="bi bi-plus-square"></i> {{ this.translate.faq_category_new_title }}</template>
         <template #body>
-          <div class="btn btn-primary" @click="this.test">Test</div>
+          <label for="list-order-cat" class="form-label">Disabled select menu</label>
+          <select class="form-select" id="list-order-cat" aria-label="Default select example" v-model="newDataOrder.idOrder">
+            <option selected>Open this select menu</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="check-order-type" id="check-order-type-before" v-model="newDataOrder.orderType" value="before">
+            <label class="form-check-label" for="check-order-type-before">Avant</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="check-order-type" id="check-order-type-after" v-model="newDataOrder.orderType" value="after">
+            <label class="form-check-label" for="check-order-type-after">Après</label>
+          </div>
+
         </template>
         <template #footer>Ceci est le footer</template>
       </modal>
