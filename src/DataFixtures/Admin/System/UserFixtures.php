@@ -15,6 +15,10 @@ use App\Utils\Notification\NotificationKey;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -38,21 +42,24 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     private NotificationService $notificationService;
 
     /**
-     * @param ContainerBagInterface $params
-     * @param UserPasswordHasherInterface $passwordHasher
-     * @param OptionUserService $optionUserService
+     * @param ContainerInterface $handlers
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function __construct(
-        ContainerBagInterface       $params,
-        UserPasswordHasherInterface $passwordHasher,
-        OptionUserService           $optionUserService,
-        NotificationService         $notificationService
+        #[AutowireLocator([
+            'container' => ContainerBagInterface::class,
+            'passwordHasher' => UserPasswordHasherInterface::class,
+            'optionUserService' => OptionUserService::class,
+            'notificationService' => NotificationService::class,
+
+        ])] private readonly ContainerInterface $handlers
     )
     {
-        $this->passwordHasher = $passwordHasher;
-        $this->optionUserService = $optionUserService;
-        $this->notificationService = $notificationService;
-        parent::__construct($params);
+        $this->passwordHasher = $this->handlers->get('passwordHasher');
+        $this->optionUserService = $this->handlers->get('optionUserService');
+        $this->notificationService = $this->handlers->get('notificationService');
+        parent::__construct($this->handlers);
     }
 
     public function load(ObjectManager $manager): void
