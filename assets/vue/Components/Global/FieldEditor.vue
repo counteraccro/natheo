@@ -113,7 +113,7 @@ export default {
       <span class="btn btn-sm btn-secondary" style=" --bs-btn-font-size: .75rem;" @click="this.switchMode()"><i class="bi bi-pencil-fill"></i></span>
     </div>
     <div v-else>
-      <div class="input-group">
+      <div class="input-group mb-2">
         <input type="text" class="form-control" :class="this.errorClass" :id="'field-editor-input-' + this.id" v-model="this.value">
         <button class="btn btn-outline-secondary" type="button" @click="this.getValue">
           <i class="bi bi-check-circle"></i>
