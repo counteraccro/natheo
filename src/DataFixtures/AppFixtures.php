@@ -7,9 +7,16 @@
 
 namespace App\DataFixtures;
 
+use App\Service\Global\DateService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppFixtures extends Fixture
 {
@@ -91,9 +98,23 @@ class AppFixtures extends Fixture
      */
     protected const GROUP_FAQ = 'faq';
 
-    public function __construct(ContainerBagInterface $params)
+    /**
+     * @var ContainerInterface
+     */
+    protected ContainerInterface $container;
+
+    /**
+     * @param ContainerInterface $handlers
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function __construct(#[AutowireLocator([
+        'container' => ContainerBagInterface::class
+    ])] private readonly ContainerInterface $handlers)
     {
-        $kernel = $params->get('kernel.project_dir');
+        $this->container = $this->handlers->get('container');
+
+        $kernel = $this->container->get('kernel.project_dir');
         $this->pathDataFixtures = $kernel . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR .
             'DataFixtures' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
     }
