@@ -56,3 +56,4 @@ faq.question.enabled.ok: 'La question <b>{question}</b> à été rendu visible a
 faq.category.disabled.ok: 'La catégorie <b>{category}</b> à été masquée avec succès ainsi que toutes ses questions associées'
 faq.category.enabled.all.questions.ok: 'La catégorie <b>{category}</b> à été rendu visible avec succès ainsi que toutes ses questions associées'
 faq.category.enabled.ok: 'La catégorie <b>{category}</b> à été rendu visible avec succès'
+faq.category.new.title: 'Nouvelle catégorie'
