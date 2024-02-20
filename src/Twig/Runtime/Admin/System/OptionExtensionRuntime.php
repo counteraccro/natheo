@@ -14,6 +14,10 @@ use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\OptionUserService;
 use App\Twig\Runtime\Admin\AppAdminExtensionRuntime;
 use Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
@@ -50,20 +54,23 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
     private string $globalKey = '';
 
     /**
-     * @param RouterInterface $router
-     * @param TranslatorInterface $translator
-     * @param OptionSystemService $optionSystemService
+     * @param ContainerInterface $handlers
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function __construct(
-        RouterInterface     $router,
-        TranslatorInterface $translator,
-        OptionSystemService $optionSystemService,
-        OptionUserService   $optionUserService
+        #[AutowireLocator([
+            'translator' => TranslatorInterface::class,
+            'router' => RouterInterface::class,
+            'optionUserService' => OptionUserService::class,
+            'optionSystemService' => OptionSystemService::class
+        ])]
+        private readonly ContainerInterface $handlers
     )
     {
-        $this->optionUserService = $optionUserService;
-        $this->optionSystemService = $optionSystemService;
-        parent::__construct($router, $translator);
+        $this->optionUserService = $this->handlers->get('optionUserService');
+        $this->optionSystemService = $this->handlers->get('optionSystemService');
+        parent::__construct($this->handlers);
     }
 
     /**
