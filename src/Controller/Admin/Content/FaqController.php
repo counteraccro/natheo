@@ -98,6 +98,7 @@ class FaqController extends AppAdminController
                 'save' => $this->generateUrl('admin_faq_save'),
                 'new_faq' => $this->generateUrl('admin_faq_new_faq'),
                 'update_disabled' => $this->generateUrl('admin_faq_update_disabled'),
+                'order_by_type' => $this->generateUrl('admin_faq_order_by_type'),
             ]
         ]);
     }
@@ -243,9 +244,8 @@ class FaqController extends AppAdminController
      */
     #[Route('/ajax/update-disabled', name: 'update_disabled', methods: 'PUT')]
     public function updateDisabledCatQuestion(
-        Request             $request,
-        FaqService          $faqService,
-        TranslatorInterface $translator): JsonResponse
+        Request    $request,
+        FaqService $faqService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -262,5 +262,14 @@ class FaqController extends AppAdminController
         }
 
         return $this->json($faqService->getResponseAjax($msg));
+    }
+
+    #[Route('/ajax/order-by/{id}/{type}', name: 'order_by_type', methods: 'GET')]
+    public function orderByEntity(
+        FaqService $faqService,
+        int        $id = 0,
+        string     $type = 'category'): JsonResponse
+    {
+        return $this->json([]);
     }
 }

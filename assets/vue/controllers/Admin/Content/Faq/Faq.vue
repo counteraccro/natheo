@@ -34,11 +34,12 @@ export default {
       keyVal: 1,
       title: '', // Titre FAQ création
       msgBodyDisabled: '',
-      titleDisabled : '',
+      titleDisabled: '',
+      newFaqCategoryOrder: Object,
       dataDisabled: {
-        type : '',
-        id : '',
-        value : '',
+        type: '',
+        id: '',
+        value: '',
         allQuestion: true
       },
       modalTab: {
@@ -332,8 +333,7 @@ export default {
      * @param id
      * @param name
      */
-    openModalEnabled(type, id, name)
-    {
+    openModalEnabled(type, id, name) {
       this.dataDisabled.type = type;
       this.dataDisabled.id = id;
       this.dataDisabled.value = false;
@@ -351,15 +351,14 @@ export default {
     /**
      * Met à jour le champ disabled d'une FAQ ou question
      */
-    updateDisabledCatQuestionFaq()
-    {
+    updateDisabledCatQuestionFaq() {
       this.updateModale('disabledCatQuestFaq', false);
       this.loading = true;
       axios.put(this.urls.update_disabled, {
         'value': this.dataDisabled.value,
-        'id' : this.dataDisabled.id,
-        'type' : this.dataDisabled.type,
-        'allQuestion' : this.dataDisabled.allQuestion
+        'id': this.dataDisabled.id,
+        'type': this.dataDisabled.type,
+        'allQuestion': this.dataDisabled.allQuestion
       }).then((response) => {
 
         if (response.data.success === true) {
@@ -375,8 +374,33 @@ export default {
         this.loading = false;
         this.loadFaq();
       });
+    },
+
+    /**
+     * Charge les données nécessaire à une nouvelle categorie
+     */
+    newFaqCategoryData() {
+
+      this.loading = true;
+      axios.get(this.urls.order_by_type + '/' + this.id + '/category').then((response) => {
+
+        /*if (response.data.success === true) {
+          this.toasts.toastSuccessFaq.msg = response.data.msg;
+          this.toasts.toastSuccessFaq.show = true;
+          window.location.replace(response.data.url_redirect);
+        } else {
+          this.toasts.toastErrorFaq.msg = response.data.msg;
+          this.toasts.toastErrorFaq.show = true;
+          this.loading = false;
+        }*/
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.loading = false;
+        this.updateModale('newCatFaq', true);
+      });
     }
-  }
+  },
 }
 </script>
 
@@ -403,7 +427,7 @@ export default {
               <div class="btn btn-secondary" :class="isDisabled()" @click="this.save">
                 <i class="bi bi-floppy-fill"></i> {{ this.translate.save }}
               </div>
-              <div class="btn btn-secondary ms-3" :class="isDisabled()" @click="this.updateModale('newCatFaq', true)">
+              <div class="btn btn-secondary ms-3" :class="isDisabled()" @click="this.newFaqCategoryData">
                 <i class="bi bi-plus-square"></i> {{ this.translate.new_category_btn }}
               </div>
               <div class="btn btn-secondary ms-3" :class="isDisabled()" @click="this.updateModale('newQuestionFaq', true)">
@@ -448,8 +472,10 @@ export default {
                 <div v-if="fcat.renderOrder !== this.tabMaxRenderOrder.max_render_order_category" class="btn btn-secondary me-1">
                   <i class="bi bi-arrow-down"></i></div>
                 <div class="btn btn-secondary me-1"><i class="bi bi-trash"></i></div>
-                <div v-if="fcat.disabled" @click="this.openModalEnabled('category', fcat.id, this.getValueByLocale(fcat.faqCategoryTranslations, 'title'))" class="btn btn-secondary me-1"><i class="bi bi-eye"></i></div>
-                <div v-if="!fcat.disabled" @click="this.openModalDisabled('category', fcat.id, this.getValueByLocale(fcat.faqCategoryTranslations, 'title'))" class="btn btn-secondary me-1"><i class="bi bi-eye-slash"></i></div>
+                <div v-if="fcat.disabled" @click="this.openModalEnabled('category', fcat.id, this.getValueByLocale(fcat.faqCategoryTranslations, 'title'))" class="btn btn-secondary me-1">
+                  <i class="bi bi-eye"></i></div>
+                <div v-if="!fcat.disabled" @click="this.openModalDisabled('category', fcat.id, this.getValueByLocale(fcat.faqCategoryTranslations, 'title'))" class="btn btn-secondary me-1">
+                  <i class="bi bi-eye-slash"></i></div>
               </div>
             </div>
             <div v-if="fcat.disabled" class="float-end">
@@ -502,9 +528,11 @@ export default {
                   <div class="clearfix"></div>
                   <div class="btn btn-secondary mt-1"><i class="bi bi-trash"></i></div>
                   <div class="clearfix"></div>
-                  <div v-if="fQuestion.disabled" @click="this.openModalEnabled('question', fQuestion.id, this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title'))" class="btn btn-secondary mt-1"><i class="bi bi-eye"></i></div>
+                  <div v-if="fQuestion.disabled" @click="this.openModalEnabled('question', fQuestion.id, this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title'))" class="btn btn-secondary mt-1">
+                    <i class="bi bi-eye"></i></div>
                   <div class="clearfix"></div>
-                  <div v-if="!fQuestion.disabled" @click="this.openModalDisabled('question', fQuestion.id, this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title'))" class="btn btn-secondary mt-1"><i class="bi bi-eye-slash"></i></div>
+                  <div v-if="!fQuestion.disabled" @click="this.openModalDisabled('question', fQuestion.id, this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title'))" class="btn btn-secondary mt-1">
+                    <i class="bi bi-eye-slash"></i></div>
                 </div>
               </div>
             </div>
@@ -521,7 +549,7 @@ export default {
           @close-modal="this.closeModal"
           :option-modal-size="'modal-lg'"
       >
-        <template #title>Nouvelle CAT</template>
+        <template #title><i class="bi bi-plus-square"></i> {{ this.translate.faq_category_new_title }}</template>
         <template #body>
           <div class="btn btn-primary" @click="this.test">Test</div>
         </template>
@@ -552,7 +580,8 @@ export default {
         <template #title>
           <i v-if="this.dataDisabled.value" class="bi bi-eye-slash"></i>
           <i v-if="!this.dataDisabled.value" class="bi bi-eye"></i>
-          {{ this.titleDisabled }}</template>
+          {{ this.titleDisabled }}
+        </template>
         <template #body>
           <div v-html="this.msgBodyDisabled"></div>
           <div v-if="!this.dataDisabled.value && this.dataDisabled.type==='category'">

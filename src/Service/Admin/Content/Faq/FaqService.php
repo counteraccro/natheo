@@ -273,9 +273,11 @@ class FaqService extends AppAdminService
             'faq_question_disabled_message' => $this->translator->trans('faq.question.disabled.message', domain: 'faq'),
             'faq_category_enabled_title' => $this->translator->trans('faq.category.enabled.title', domain: 'faq'),
             'faq_category_enabled_message' => $this->translator->trans('faq.category.enabled.message', domain: 'faq'),
-            'faq_category_enabled_message_2' => $this->translator->trans('faq.category.enabled.message.2', domain: 'faq'),
+            'faq_category_enabled_message_2' =>
+                $this->translator->trans('faq.category.enabled.message.2', domain: 'faq'),
             'faq_question_enabled_title' => $this->translator->trans('faq.question.enabled.title', domain: 'faq'),
             'faq_question_enabled_message' => $this->translator->trans('faq.question.enabled.message', domain: 'faq'),
+            'faq_category_new_title' => $this->translator->trans('faq.category.new.title', domain: 'faq'),
         ];
     }
 }
