@@ -15,6 +15,10 @@ use App\Service\Admin\Content\Media\MediaService;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Yaml\Yaml;
 
@@ -26,13 +30,17 @@ class MediaFixtures extends AppFixtures implements FixtureGroupInterface, Ordere
     private MediaService $mediaService;
 
     /**
-     * @param ContainerBagInterface $params
-     * @param MediaService $mediaService
+     * @param ContainerInterface $handlers
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function __construct(ContainerBagInterface $params, MediaService $mediaService)
+    public function __construct(#[AutowireLocator([
+            'container' => ContainerBagInterface::class,
+            'mediaService' => MediaService::class
+        ])] private readonly ContainerInterface $handlers)
     {
-        $this->mediaService = $mediaService;
-        parent::__construct($params);
+        $this->mediaService = $this->handlers->get('mediaService');
+        parent::__construct($this->handlers);
     }
 
     public function load(ObjectManager $manager): void
