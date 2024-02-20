@@ -438,9 +438,6 @@ export default {
               <div class="btn btn-secondary ms-3" :class="isDisabled()" @click="this.newFaqCategoryData">
                 <i class="bi bi-plus-square"></i> {{ this.translate.new_category_btn }}
               </div>
-              <div class="btn btn-secondary ms-3" :class="isDisabled()" @click="this.updateModale('newQuestionFaq', true)">
-                <i class="bi bi-question-square"></i> {{ this.translate.new_question_btn }}
-              </div>
             </div>
             <div class="col-3">
               <select id="select-language" class="form-select" @change="this.switchLocale($event)">
@@ -476,10 +473,14 @@ export default {
             </div>
             <div class="col-2">
               <div class="float-end">
-                <div v-if="fcat.renderOrder !== 1" class="btn btn-secondary me-1"><i class="bi bi-arrow-up"></i></div>
-                <div v-if="fcat.renderOrder !== this.tabMaxRenderOrder.max_render_order_category" class="btn btn-secondary me-1">
-                  <i class="bi bi-arrow-down"></i></div>
-                <div class="btn btn-secondary me-1"><i class="bi bi-trash"></i></div>
+                <div class="btn btn-secondary me-1 mb-1" @click="this.updateModale('newQuestionFaq', true)">
+                  <i class="bi bi-file-plus"></i>
+                </div>
+                <div v-if="fcat.renderOrder !== 1" class="btn btn-secondary me-1 mb-1"><i class="bi bi-arrow-up"></i></div>
+                <div v-if="fcat.renderOrder !== this.tabMaxRenderOrder.max_render_order_category" class="btn btn-secondary me-1 mb-1">
+                  <i class="bi bi-arrow-down"></i>
+                </div>
+                <div class="btn btn-secondary me-1 mb-1"><i class="bi bi-trash"></i></div>
                 <div v-if="fcat.disabled" @click="this.openModalEnabled('category', fcat.id, this.getValueByLocale(fcat.faqCategoryTranslations, 'title'))" class="btn btn-secondary me-1">
                   <i class="bi bi-eye"></i></div>
                 <div v-if="!fcat.disabled" @click="this.openModalDisabled('category', fcat.id, this.getValueByLocale(fcat.faqCategoryTranslations, 'title'))" class="btn btn-secondary me-1">
