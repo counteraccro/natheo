@@ -7,6 +7,10 @@
  */
 namespace App\Twig\Runtime\Admin;
 
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -23,12 +27,19 @@ class AppAdminExtensionRuntime
     protected TranslatorInterface $translator;
 
     /**
-     * @param RouterInterface $router
-     * @param TranslatorInterface $translator
+     * @param ContainerInterface $handlers
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function __construct(RouterInterface $router, TranslatorInterface $translator)
+    public function __construct(
+        #[AutowireLocator([
+            'translator' => TranslatorInterface::class,
+            'router' => RouterInterface::class,
+        ])]
+        private readonly ContainerInterface $handlers
+    )
     {
-        $this->router = $router;
-        $this->translator = $translator;
+        $this->router = $this->handlers->get('router');
+        $this->translator = $this->handlers->get('translator');
     }
 }

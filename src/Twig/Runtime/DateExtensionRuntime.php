@@ -8,8 +8,11 @@
 namespace App\Twig\Runtime;
 
 use App\Service\Global\DateService;
-use DateTime;
 use DateTimeInterface;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
@@ -19,12 +22,19 @@ class DateExtensionRuntime extends AppExtensionRuntime implements RuntimeExtensi
 
     private DateService $dateService;
 
-    public function __construct(RouterInterface     $router,
-                                TranslatorInterface $translator,
-                                DateService         $dateService)
+    /**
+     * @param ContainerInterface $handlers
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function __construct(#[AutowireLocator([
+        'translator' => TranslatorInterface::class,
+        'router' => RouterInterface::class,
+        'dateService' => DateService::class
+    ])] private readonly ContainerInterface $handlers)
     {
-        $this->dateService = $dateService;
-        parent::__construct($router, $translator);
+        $this->dateService = $this->handlers->get('dateService');
+        parent::__construct($this->handlers);
     }
 
     /**
@@ -35,6 +45,6 @@ class DateExtensionRuntime extends AppExtensionRuntime implements RuntimeExtensi
      */
     public function getDiffNow(DateTimeInterface $dateRef = null, DateTimeInterface $dateDiff = null): string
     {
-       return $this->dateService->getStringDiffDate($dateRef, $dateDiff);
+        return $this->dateService->getStringDiffDate($dateRef, $dateDiff);
     }
 }

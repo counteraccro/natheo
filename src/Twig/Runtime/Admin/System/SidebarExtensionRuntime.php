@@ -9,9 +9,15 @@
 namespace App\Twig\Runtime\Admin\System;
 
 use App\Entity\Admin\System\SidebarElement;
+use App\Service\Admin\System\OptionSystemService;
+use App\Service\Admin\System\OptionUserService;
 use App\Service\Admin\System\SidebarElementService;
 use App\Twig\Runtime\Admin\AppAdminExtensionRuntime;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
@@ -35,17 +41,22 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
 
 
     /**
-     * @param SidebarElementService $sidebarElementService
-     * @param Security $security
-     * @param RouterInterface $router
-     * @param TranslatorInterface $translator
+     * @param ContainerInterface $handlers
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function __construct(SidebarElementService $sidebarElementService, Security $security,
-                                RouterInterface       $router, TranslatorInterface $translator)
+    public function __construct(
+        #[AutowireLocator([
+            'translator' => TranslatorInterface::class,
+            'router' => RouterInterface::class,
+            'sidebarElementService' => SidebarElementService::class,
+            'security' => Security::class
+        ])]
+        private readonly ContainerInterface $handlers)
     {
-        $this->sidebarElementService = $sidebarElementService;
-        $this->security = $security;
-        parent::__construct($router, $translator);
+        $this->sidebarElementService = $this->handlers->get('sidebarElementService');
+        $this->security = $this->handlers->get('security');
+        parent::__construct($this->handlers);
     }
 
     /**

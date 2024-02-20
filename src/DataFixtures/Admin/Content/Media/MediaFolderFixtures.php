@@ -10,9 +10,14 @@ namespace App\DataFixtures\Admin\Content\Media;
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\Content\Media\MediaFolder;
 use App\Service\Admin\Content\Media\MediaFolderService;
+use App\Service\Admin\Content\Media\MediaService;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Yaml\Yaml;
 use function PHPUnit\Framework\isEmpty;
@@ -22,13 +27,18 @@ class MediaFolderFixtures extends AppFixtures implements FixtureGroupInterface, 
     private MediaFolderService $mediaFolderService;
 
 
-    public function __construct(
-        ContainerBagInterface $params,
-        MediaFolderService    $mediaFolderService,
-    )
+    /**
+     * @param ContainerInterface $handlers
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function __construct(#[AutowireLocator([
+        'container' => ContainerBagInterface::class,
+        'mediaFolderService' => MediaFolderService::class
+    ])] private readonly ContainerInterface $handlers)
     {
-        $this->mediaFolderService = $mediaFolderService;
-        parent::__construct($params);
+        $this->mediaFolderService = $this->handlers->get('mediaFolderService');
+        parent::__construct($this->handlers);
     }
 
     const TAG_FIXTURES_DATA_FILE = 'content' . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR .

@@ -8,13 +8,19 @@
 namespace App\Twig\Runtime\Admin;
 
 use App\Service\Admin\Dev\GitService;
+use App\Service\Admin\System\SidebarElementService;
 use App\Twig\Runtime\AppExtensionRuntime;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 
-class DevExtensionRuntime extends AppExtensionRuntime implements RuntimeExtensionInterface
+class DevExtensionRuntime extends AppAdminExtensionRuntime implements RuntimeExtensionInterface
 {
     /**
      * @var ParameterBagInterface
@@ -28,20 +34,22 @@ class DevExtensionRuntime extends AppExtensionRuntime implements RuntimeExtensio
 
 
     /**
-     * @param ParameterBagInterface $parameterBag
-     * @param RouterInterface $router
-     * @param TranslatorInterface $translator
-     * @param GitService $gitService
+     * @param ContainerInterface $handlers
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function __construct(
-        ParameterBagInterface $parameterBag,
-        RouterInterface       $router,
-        TranslatorInterface   $translator,
-        GitService            $gitService)
+        #[AutowireLocator([
+            'translator' => TranslatorInterface::class,
+            'router' => RouterInterface::class,
+            'parameterBag' => ParameterBagInterface::class,
+            'gitService' => GitService::class
+        ])]
+        private readonly ContainerInterface $handlers)
     {
-        $this->parameterBag = $parameterBag;
-        $this->gitService = $gitService;
-        parent::__construct($router, $translator);
+        $this->parameterBag = $this->handlers->get('parameterBag');
+        $this->gitService = $this->handlers->get('gitService');
+        parent::__construct($this->handlers);
     }
 
     /**

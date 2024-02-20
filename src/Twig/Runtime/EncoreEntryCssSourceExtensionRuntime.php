@@ -7,8 +7,12 @@
 namespace App\Twig\Runtime;
 
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\WebpackEncoreBundle\Asset\EntrypointLookupInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 
@@ -30,15 +34,19 @@ class EncoreEntryCssSourceExtensionRuntime implements RuntimeExtensionInterface
     private string $publicDir;
 
     /**
-     * @param ContainerBagInterface $container
-     * @param EntrypointLookupInterface $entrypointLookup
+     * @param ContainerInterface $handlers
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function __construct(ContainerBagInterface $container, EntrypointLookupInterface $entrypointLookup)
+    public function __construct(
+        #[AutowireLocator([
+            'container' => ContainerBagInterface::class,
+            'entrypointLookup' => EntrypointLookupInterface::class,
+        ])]
+        private readonly ContainerInterface $handlers)
     {
-        $this->container = $container;
-        $this->entrypointLookup = $entrypointLookup;
+        $this->container = $this->handlers->get('container');
+        $this->entrypointLookup = $this->handlers->get('entrypointLookup');
         $this->publicDir =$this->container->get('kernel.project_dir') . DIRECTORY_SEPARATOR . 'public';
     }
 

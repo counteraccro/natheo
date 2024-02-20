@@ -11,6 +11,10 @@ namespace App\Twig\Runtime\Admin\System;
 
 use App\Service\Admin\System\OptionUserService;
 use App\Twig\Runtime\Admin\AppAdminExtensionRuntime;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
@@ -22,12 +26,22 @@ class OptionUserExtensionRuntime extends AppAdminExtensionRuntime implements Run
      */
     private OptionUserService $optionUserService;
 
-    public function __construct(RouterInterface   $router, TranslatorInterface $translator,
-                                OptionUserService $optionUserService
+    /**
+     * @param ContainerInterface $handlers
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function __construct(
+        #[AutowireLocator([
+            'translator' => TranslatorInterface::class,
+            'router' => RouterInterface::class,
+            'optionUserService' => OptionUserService::class
+        ])]
+        private readonly ContainerInterface $handlers
     )
     {
-        $this->optionUserService = $optionUserService;
-        parent::__construct($router, $translator);
+        $this->optionUserService = $this->handlers->get('optionUserService');
+        parent::__construct($this->handlers);
     }
 
     /**
