@@ -9,10 +9,12 @@ import FieldEditor from "../../../../Components/Global/FieldEditor.vue";
 import MarkdownEditor from "../../../../Components/Global/MarkdownEditor.vue";
 import Modal from "../../../../Components/Global/Modal.vue";
 import Toast from "../../../../Components/Global/Toast.vue";
+import OptionSystem from "../../System/Option.vue";
 
 export default {
   name: "Faq",
   components: {
+    OptionSystem,
     MarkdownEditor,
     FieldEditor,
     Modal,
@@ -35,10 +37,11 @@ export default {
       title: '', // Titre FAQ création
       msgBodyDisabled: '',
       titleDisabled: '',
+      listeOrderNew: Object,
       newDataOrder: {
         type: '',
         id : '',
-        idOrder: 2,
+        idOrder: 0,
         orderType: 'before'
       },
       dataDisabled: {
@@ -557,24 +560,27 @@ export default {
           :show="this.modalTab.newCatFaq"
           @close-modal="this.closeModal"
           :option-modal-size="'modal-lg'"
+          :option-modal-backdrop="'static'"
       >
         <template #title><i class="bi bi-plus-square"></i> {{ this.translate.faq_category_new_title }}</template>
         <template #body>
-          <label for="list-order-cat" class="form-label">Disabled select menu</label>
+          <p>
+            <i class="bi bi-question-circle-fill"></i> <i>{{ this.translate.faq_category_new_help }}</i>
+          </p>
+          <label for="list-order-cat" class="form-label">{{ this.translate.faq_category_new_liste_cat }}</label>
           <select class="form-select" id="list-order-cat" aria-label="Default select example" v-model="newDataOrder.idOrder">
-            <option selected>Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+            <option v-for="element in this.listeOrderNew" :value="element.id"> {{ element.value }}</option>
           </select>
 
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="check-order-type" id="check-order-type-before" v-model="newDataOrder.orderType" value="before">
-            <label class="form-check-label" for="check-order-type-before">Avant</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="check-order-type" id="check-order-type-after" v-model="newDataOrder.orderType" value="after">
-            <label class="form-check-label" for="check-order-type-after">Après</label>
+          <div class="mt-3">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="check-order-type" id="check-order-type-before" v-model="newDataOrder.orderType" value="before">
+              <label class="form-check-label" for="check-order-type-before">{{ this.translate.faq_category_new_before }}</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="check-order-type" id="check-order-type-after" v-model="newDataOrder.orderType" value="after">
+              <label class="form-check-label" for="check-order-type-after">{{ this.translate.faq_category_new_after }}</label>
+            </div>
           </div>
 
         </template>
