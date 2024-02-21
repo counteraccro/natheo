@@ -56,3 +56,7 @@ faq.category.disabled.ok: 'La catégorie <b>{category}</b> à été masquée ave
 faq.category.enabled.all.questions.ok: 'La catégorie <b>{category}</b> à été rendu visible avec succès ainsi que toutes ses questions associées'
 faq.category.enabled.ok: 'La catégorie <b>{category}</b> à été rendu visible avec succès'
 faq.category.new.title: 'Nouvelle catégorie'
+faq.category.new.liste.cat: 'Liste des catégories'
+faq.category.new.after: Après
+faq.category.new.before: Avant
+faq.category.new.help: "Choisissez la catégorie ou sera intercalé la nouvelle catégorie ainsi que si elle sera avant ou après la catégorie sélectionnée"

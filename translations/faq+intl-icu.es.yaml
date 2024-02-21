@@ -56,3 +56,7 @@ faq.category.disabled.ok: __faq.category.disabled.ok
 faq.category.enabled.all.questions.ok: __faq.category.enabled.all.questions.ok
 faq.category.enabled.ok: __faq.category.enabled.ok
 faq.category.new.title: __faq.category.new.title
+faq.category.new.liste.cat: __faq.category.new.liste.cat
+faq.category.new.after: __faq.category.new.after
+faq.category.new.before: __faq.category.new.before
+faq.category.new.help: __faq.category.new.help
