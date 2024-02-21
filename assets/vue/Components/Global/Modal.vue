@@ -21,6 +21,10 @@ export default {
     optionModalSize: {
       type: String,
       default: ''
+    },
+    optionModalBackdrop: {
+      type: String,
+      default: null
     }
   },
   emits: ['close-modal'],
@@ -53,7 +57,7 @@ export default {
 </script>
 
 <template>
-  <div class="modal fade" :id="this.id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" :id="this.id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" :data-bs-backdrop="this.optionModalBackdrop">
     <div class="modal-dialog modal-dialog-centered" :class="this.optionModalSize">
       <div class="modal-content">
         <div class="modal-header bg-secondary">
