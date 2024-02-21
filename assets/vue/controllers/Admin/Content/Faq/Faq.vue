@@ -395,6 +395,8 @@ export default {
       this.loading = true;
       axios.get(this.urls.order_by_type + '/' + this.id + '/category').then((response) => {
 
+        this.listeOrderNew = response.data.list;
+
         /*if (response.data.success === true) {
           this.toasts.toastSuccessFaq.msg = response.data.msg;
           this.toasts.toastSuccessFaq.show = true;
