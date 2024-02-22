@@ -99,6 +99,7 @@ class FaqController extends AppAdminController
                 'new_faq' => $this->generateUrl('admin_faq_new_faq'),
                 'update_disabled' => $this->generateUrl('admin_faq_update_disabled'),
                 'order_by_type' => $this->generateUrl('admin_faq_order_by_type'),
+                'new_cat_question' => $this->generateUrl('admin_faq_new_cat_question'),
             ]
         ]);
     }
@@ -275,10 +276,10 @@ class FaqController extends AppAdminController
      */
     #[Route('/ajax/order-by/{id}/{type}', name: 'order_by_type', methods: 'GET')]
     public function orderListeByEntity(
-        FaqService $faqService,
+        FaqService          $faqService,
         TranslatorInterface $translator,
-        int        $id = 0,
-        string     $type = 'category'): JsonResponse
+        int                 $id = 0,
+        string              $type = 'category'): JsonResponse
     {
 
         $msg = '';
@@ -286,7 +287,8 @@ class FaqController extends AppAdminController
         $success = false;
         switch ($type) {
             case 'question' :
-                //$msg = $faqService->updateDisabledQuestion($data['id'], $data['value']);
+                $data = $faqService->getListeQuestionOrderByCategory($id);
+                $success = true;
                 break;
             case 'category':
                 $data = $faqService->getListeCategoryOrderByFaq($id);
@@ -297,5 +299,20 @@ class FaqController extends AppAdminController
         }
 
         return $this->json(['list' => $data, 'success' => $success, 'msg' => $msg]);
+    }
+
+    /**Créer une nouvelle question ou catégorie
+     * @param FaqService $faqService
+     * @param Request $request
+     * @return JsonResponse
+     */
+    #[Route('/ajax/new/', name: 'new_cat_question', methods: 'POST')]
+    public function newCatQuestion(FaqService $faqService, Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+
+        var_dump($data);
+
+        return $this->json([]);
     }
 }

@@ -259,8 +259,31 @@ class FaqService extends AppAdminService
             $return[] = [
                 'id' => $faqCategory->getId(),
                 'value' => $this->translator->trans('faq.position', domain: 'faq')
-                    . ' : ' . $faqCategory->getRenderOrder() . ' - '
+                    . ' ' . $faqCategory->getRenderOrder() . ' - '
                     . $faqCategory->getFaqCategoryTranslationByLocale($this->getLocales()['current'])->getTitle()];
+        }
+        return $return;
+    }
+
+    /**
+     * Retourne une liste de question trié par renderOrder
+     * @param int $id
+     * @return array
+     */
+    public function getListeQuestionOrderByCategory(int $id): array
+    {
+        /** @var FaqCategory $category */
+        $category = $this->findOneById(FaqCategory::class, $id);
+
+        $return = [];
+        foreach($category->getFaqQuestions() as $faqQuestion)
+        {
+            /** @var FaqQuestion $faqQuestion */
+            $return[] = [
+                'id' => $faqQuestion->getId(),
+                'value' => $this->translator->trans('faq.position', domain: 'faq')
+                    . ' ' . $faqQuestion->getRenderOrder() . ' - '
+                    . $faqQuestion->getFaqQuestionTranslationByLocale($this->getLocales()['current'])->getTitle()];
         }
         return $return;
     }
@@ -306,6 +329,13 @@ class FaqService extends AppAdminService
             'faq_category_new_help' => $this->translator->trans('faq.category.new.help', domain: 'faq'),
             'faq_category_new_btn_validate' => $this->translator->trans('faq.category.new.btn.validate', domain: 'faq'),
             'faq_category_new_btn_cancel' => $this->translator->trans('faq.category.new.btn.cancel', domain: 'faq'),
+            'faq_question_new_title' => $this->translator->trans('faq.question.new.title', domain: 'faq'),
+            'faq_question_new_liste_cat' => $this->translator->trans('faq.question.new.liste.cat', domain: 'faq'),
+            'faq_question_new_after' => $this->translator->trans('faq.question.new.after', domain: 'faq'),
+            'faq_question_new_before' => $this->translator->trans('faq.question.new.before', domain: 'faq'),
+            'faq_question_new_help' => $this->translator->trans('faq.question.new.help', domain: 'faq'),
+            'faq_question_new_btn_validate' => $this->translator->trans('faq.question.new.btn.validate', domain: 'faq'),
+            'faq_question_new_btn_cancel' => $this->translator->trans('faq.question.new.btn.cancel', domain: 'faq'),
         ];
     }
 }

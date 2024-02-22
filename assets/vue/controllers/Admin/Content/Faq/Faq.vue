@@ -385,23 +385,47 @@ export default {
     },
 
     /**
-     * Charge les données nécessaire à une nouvelle categorie
+     * Charge les données nécessaire à une nouvelle catégorie ou une nouvelle question
      */
-    newFaqCategoryData() {
+    newFaqCategoryQuestionData(id, type, modaleName) {
 
-      this.newDataOrder.id = this.id;
-      this.newDataOrder.type = 'category'
+      this.newDataOrder.id = id;
+      this.newDataOrder.type = type
 
       this.loading = true;
-      axios.get(this.urls.order_by_type + '/' + this.id + '/category').then((response) => {
+      axios.get(this.urls.order_by_type + '/' + id + '/' + type).then((response) => {
 
         if (response.data.success === true) {
           this.listeOrderNew = response.data.list;
-          this.updateModale('newCatFaq', true);
+          this.updateModale(modaleName, true);
         } else {
           this.toasts.toastErrorFaq.msg = response.data.msg;
           this.toasts.toastErrorFaq.show = true;
         }
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.loading = false;
+      });
+    },
+
+    /**
+     * Créer une nouvelle categorie ou question
+     */
+    newFaqCategoryQuestion()
+    {
+      this.loading = true;
+      axios.post(this.urls.new_cat_question, {
+        data : this.newDataOrder
+      }).then((response) => {
+
+        /*if (response.data.success === true) {
+          this.listeOrderNew = response.data.list;
+          this.updateModale(modaleName, true);
+        } else {
+          this.toasts.toastErrorFaq.msg = response.data.msg;
+          this.toasts.toastErrorFaq.show = true;
+        }*/
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -435,7 +459,7 @@ export default {
               <div class="btn btn-secondary" :class="isDisabled()" @click="this.save">
                 <i class="bi bi-floppy-fill"></i> {{ this.translate.save }}
               </div>
-              <div class="btn btn-secondary ms-3" :class="isDisabled()" @click="this.newFaqCategoryData">
+              <div class="btn btn-secondary ms-3" :class="isDisabled()" @click="this.newFaqCategoryQuestionData(this.id, 'category', 'newCatFaq')">
                 <i class="bi bi-plus-square"></i> {{ this.translate.new_category_btn }}
               </div>
             </div>
@@ -473,7 +497,7 @@ export default {
             </div>
             <div class="col-2">
               <div class="float-end">
-                <div class="btn btn-secondary me-1 mb-1" @click="this.updateModale('newQuestionFaq', true)">
+                <div class="btn btn-secondary me-1 mb-1" @click="this.newFaqCategoryQuestionData(fcat.id, 'question', 'newQuestionFaq')">
                   <i class="bi bi-file-plus"></i>
                 </div>
                 <div v-if="fcat.renderOrder !== 1" class="btn btn-secondary me-1 mb-1"><i class="bi bi-arrow-up"></i></div>
@@ -566,24 +590,24 @@ export default {
             <i class="bi bi-question-circle-fill"></i> <i>{{ this.translate.faq_category_new_help }}</i>
           </p>
           <label for="list-order-cat" class="form-label">{{ this.translate.faq_category_new_liste_cat }}</label>
-          <select class="form-select" id="list-order-cat" aria-label="Default select example" v-model="newDataOrder.idOrder">
+          <select class="form-select" id="list-order-cat" v-model="newDataOrder.idOrder">
             <option v-for="element in this.listeOrderNew" :value="element.id"> {{ element.value }}</option>
           </select>
 
           <div class="mt-3">
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="check-order-type" id="check-order-type-before" v-model="newDataOrder.orderType" value="before">
-              <label class="form-check-label" for="check-order-type-before">{{ this.translate.faq_category_new_before }}</label>
+              <input class="form-check-input" type="radio" name="check-order-type-c" id="check-order-type-before-c" v-model="newDataOrder.orderType" value="before">
+              <label class="form-check-label" for="check-order-type-before-c">{{ this.translate.faq_category_new_before }}</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="check-order-type" id="check-order-type-after" v-model="newDataOrder.orderType" value="after">
-              <label class="form-check-label" for="check-order-type-after">{{ this.translate.faq_category_new_after }}</label>
+              <input class="form-check-input" type="radio" name="check-order-type-c" id="check-order-type-after-c" v-model="newDataOrder.orderType" value="after">
+              <label class="form-check-label" for="check-order-type-after-c">{{ this.translate.faq_category_new_after }}</label>
             </div>
           </div>
 
         </template>
         <template #footer>
-          <button type="button" class="btn btn-primary" @click="this.updateDisabledCatQuestionFaq()">
+          <button type="button" class="btn btn-primary" @click="this.newFaqCategoryQuestion()">
             <i class="bi bi-check2-circle"></i> {{ translate.faq_category_new_btn_validate }}
           </button>
           <button type="button" class="btn btn-secondary" @click="this.closeModal('newCatFaq')">
@@ -598,12 +622,39 @@ export default {
           :id="'newQuestionFaq'"
           :show="this.modalTab.newQuestionFaq"
           @close-modal="this.closeModal"
+          :option-modal-size="'modal-lg'"
+          :option-modal-backdrop="'static'"
           :option-show-close-btn="false">
-        <template #title>Nouvelle Question</template>
+        <template #title><i class="bi bi-file-plus"></i> {{ this.translate.faq_question_new_title }}</template>
         <template #body>
-          <div class="btn btn-primary" @click="this.test">Test question FAQ</div>
+          <p>
+            <i class="bi bi-question-circle-fill"></i> <i>{{ this.translate.faq_question_new_help }}</i>
+          </p>
+          <label for="list-order-quest" class="form-label">{{ this.translate.faq_question_new_liste_cat }}</label>
+          <select class="form-select" id="list-order-quest" v-model="newDataOrder.idOrder">
+            <option v-for="element in this.listeOrderNew" :value="element.id"> {{ element.value }}</option>
+          </select>
+
+          <div class="mt-3">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="check-order-type-q" id="check-order-type-before-q" v-model="newDataOrder.orderType" value="before">
+              <label class="form-check-label" for="check-order-type-before-q">{{ this.translate.faq_question_new_before }}</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="check-order-type-q" id="check-order-type-after-q" v-model="newDataOrder.orderType" value="after">
+              <label class="form-check-label" for="check-order-type-after-q">{{ this.translate.faq_question_new_after }}</label>
+            </div>
+          </div>
+
         </template>
-        <template #footer>Ceci est le footer</template>
+        <template #footer>
+          <button type="button" class="btn btn-primary" @click="this.newFaqCategoryQuestion()">
+            <i class="bi bi-check2-circle"></i> {{ translate.faq_question_new_btn_validate }}
+          </button>
+          <button type="button" class="btn btn-secondary" @click="this.closeModal('newQuestionFaq')">
+            <i class="bi bi-x-circle"></i> {{ translate.faq_question_new_btn_cancel }}
+          </button>
+        </template>
       </modal>
       <!-- fin modale nouvelle categogie -->
 
