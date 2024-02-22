@@ -264,18 +264,38 @@ class FaqController extends AppAdminController
         return $this->json($faqService->getResponseAjax($msg));
     }
 
+
+    /**
+     * Retourne une liste de Category ou question dans l'order orderRender en fonction de son type
+     * @param FaqService $faqService
+     * @param TranslatorInterface $translator
+     * @param int $id
+     * @param string $type
+     * @return JsonResponse
+     */
     #[Route('/ajax/order-by/{id}/{type}', name: 'order_by_type', methods: 'GET')]
-    public function orderByEntity(
+    public function orderListeByEntity(
         FaqService $faqService,
+        TranslatorInterface $translator,
         int        $id = 0,
         string     $type = 'category'): JsonResponse
     {
-        $tab = [
-            ['id' => 1, 'value' => '1 - value 1'],
-            ['id' => 2, 'value' => '2 - value 2'],
-            ['id' => 3, 'value' => '3 - value 3']
-        ];
 
-        return $this->json(['list' => $tab]);
+        $msg = '';
+        $data = [];
+        $success = false;
+        switch ($type) {
+            case 'question' :
+                //$msg = $faqService->updateDisabledQuestion($data['id'], $data['value']);
+                break;
+            case 'category':
+                $data = $faqService->getListeCategoryOrderByFaq($id);
+                $success = true;
+                break;
+            default:
+                $msg = $translator->trans('faq.generique.error', domain: 'faq');
+        }
+
+        return $this->json(['list' => $data, 'success' => $success, 'msg' => $msg]);
     }
 }

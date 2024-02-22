@@ -395,22 +395,17 @@ export default {
       this.loading = true;
       axios.get(this.urls.order_by_type + '/' + this.id + '/category').then((response) => {
 
-        this.listeOrderNew = response.data.list;
-
-        /*if (response.data.success === true) {
-          this.toasts.toastSuccessFaq.msg = response.data.msg;
-          this.toasts.toastSuccessFaq.show = true;
-          window.location.replace(response.data.url_redirect);
+        if (response.data.success === true) {
+          this.listeOrderNew = response.data.list;
+          this.updateModale('newCatFaq', true);
         } else {
           this.toasts.toastErrorFaq.msg = response.data.msg;
           this.toasts.toastErrorFaq.show = true;
-          this.loading = false;
-        }*/
+        }
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
         this.loading = false;
-        this.updateModale('newCatFaq', true);
       });
     }
   },
@@ -563,6 +558,7 @@ export default {
           @close-modal="this.closeModal"
           :option-modal-size="'modal-lg'"
           :option-modal-backdrop="'static'"
+          :option-show-close-btn="false"
       >
         <template #title><i class="bi bi-plus-square"></i> {{ this.translate.faq_category_new_title }}</template>
         <template #body>
@@ -586,7 +582,14 @@ export default {
           </div>
 
         </template>
-        <template #footer>Ceci est le footer</template>
+        <template #footer>
+          <button type="button" class="btn btn-primary" @click="this.updateDisabledCatQuestionFaq()">
+            <i class="bi bi-check2-circle"></i> {{ translate.faq_category_new_btn_validate }}
+          </button>
+          <button type="button" class="btn btn-secondary" @click="this.closeModal('newCatFaq')">
+            <i class="bi bi-x-circle"></i> {{ translate.faq_category_new_btn_cancel }}
+          </button>
+        </template>
       </modal>
       <!-- fin modale nouvelle categogie -->
 

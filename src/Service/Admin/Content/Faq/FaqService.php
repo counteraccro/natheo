@@ -243,6 +243,29 @@ class FaqService extends AppAdminService
     }
 
     /**
+     * Retourne une liste de Category trier par renderOrder
+     * @param int $id
+     * @return array
+     */
+    public function getListeCategoryOrderByFaq(int $id): array
+    {
+        /** @var Faq $faq */
+        $faq = $this->findOneById(Faq::class, $id);
+
+        $return = [];
+        foreach($faq->getFaqCategories() as $faqCategory)
+        {
+            /** @var FaqCategory $faqCategory */
+            $return[] = [
+                'id' => $faqCategory->getId(),
+                'value' => $this->translator->trans('faq.position', domain: 'faq')
+                    . ' : ' . $faqCategory->getRenderOrder() . ' - '
+                    . $faqCategory->getFaqCategoryTranslationByLocale($this->getLocales()['current'])->getTitle()];
+        }
+        return $return;
+    }
+
+    /**
      * Retourne les traductions pour la création / édition d'une FAQ
      * @return array
      */
@@ -281,6 +304,8 @@ class FaqService extends AppAdminService
             'faq_category_new_after' => $this->translator->trans('faq.category.new.after', domain: 'faq'),
             'faq_category_new_before' => $this->translator->trans('faq.category.new.before', domain: 'faq'),
             'faq_category_new_help' => $this->translator->trans('faq.category.new.help', domain: 'faq'),
+            'faq_category_new_btn_validate' => $this->translator->trans('faq.category.new.btn.validate', domain: 'faq'),
+            'faq_category_new_btn_cancel' => $this->translator->trans('faq.category.new.btn.cancel', domain: 'faq'),
         ];
     }
 }
