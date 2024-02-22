@@ -60,3 +60,14 @@ faq.category.new.liste.cat: __faq.category.new.liste.cat
 faq.category.new.after: __faq.category.new.after
 faq.category.new.before: __faq.category.new.before
 faq.category.new.help: __faq.category.new.help
+faq.generique.error: __faq.generique.error
+faq.position: __faq.position
+faq.category.new.btn.validate: __faq.category.new.btn.validate
+faq.category.new.btn.cancel: __faq.category.new.btn.cancel
+faq.question.new.title: __faq.question.new.title
+faq.question.new.liste.cat: __faq.question.new.liste.cat
+faq.question.new.after: __faq.question.new.after
+faq.question.new.before: __faq.question.new.before
+faq.question.new.help: __faq.question.new.help
+faq.question.new.btn.validate: __faq.question.new.btn.validate
+faq.question.new.btn.cancel: __faq.question.new.btn.cancel
