@@ -419,7 +419,10 @@ export default {
     newFaqCategoryQuestion() {
       this.loading = true;
       axios.post(this.urls.new_cat_question, {
-        data: this.newDataOrder
+        type : this.newDataOrder.type,
+        orderType : this.newDataOrder.orderType,
+        id: this.newDataOrder.id,
+        idOrder : this.newDataOrder.idOrder,
       }).then((response) => {
 
         /*if (response.data.success === true) {
