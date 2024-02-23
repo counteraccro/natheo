@@ -316,7 +316,7 @@ class FaqController extends AppAdminController
                 $msg = $translator->trans('faq.category.new.success.', domain: 'faq');
                 break;
             case FaqConst::TYPE_QUESTION:
-                //$data = $faqService->getListeCategoryOrderByFaq($id);
+                $faqService->addNewQuestion($data['id'], $data['idOrder'], $data['orderType']);
                 $msg = $translator->trans('faq.question.new.success.', domain: 'faq');
                 break;
             default:

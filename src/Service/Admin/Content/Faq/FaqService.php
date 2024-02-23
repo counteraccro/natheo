@@ -254,8 +254,7 @@ class FaqService extends AppAdminService
         $faq = $this->findOneById(Faq::class, $id);
 
         $return = [];
-        foreach($faq->getFaqCategories() as $faqCategory)
-        {
+        foreach ($faq->getFaqCategories() as $faqCategory) {
             /** @var FaqCategory $faqCategory */
             $return[] = [
                 'id' => $faqCategory->getId(),
@@ -277,8 +276,7 @@ class FaqService extends AppAdminService
         $category = $this->findOneById(FaqCategory::class, $id);
 
         $return = [];
-        foreach($category->getFaqQuestions() as $faqQuestion)
-        {
+        foreach ($category->getFaqQuestions() as $faqQuestion) {
             /** @var FaqQuestion $faqQuestion */
             $return[] = [
                 'id' => $faqQuestion->getId(),
@@ -303,6 +301,21 @@ class FaqService extends AppAdminService
         $faqFactory = new FaqFactory($this->getLocales()['locales']);
         $faq = $faqFactory->createFaqCategory($faq);
         $this->save($faq);
+    }
+
+    /**
+     * Créer une nouvelle question et la range dans l'ordre défini
+     * @param int $idCategory
+     * @param int $idQuestionOrder
+     * @param string $orderPosition
+     * @return void
+     */
+    public function addNewQuestion(int $idCategory, int $idQuestionOrder, string $orderPosition)
+    {
+        $faqCategory = $this->findOneById(FaqCategory::class, $idCategory);
+        $faqFactory = new FaqFactory($this->getLocales()['locales']);
+        $faqFactory = $faqFactory->createFaqQuestion($faqCategory);
+        $this->save($faqCategory);
     }
 
     /**

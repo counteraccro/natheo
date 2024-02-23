@@ -661,7 +661,7 @@ export default {
 
         </template>
         <template #footer>
-          <button type="button" class="btn btn-primary" @click="this.newFaqCategoryQuestion()">
+          <button type="button" class="btn btn-primary" @click="this.newFaqCategoryQuestion('newQuestionFaq')">
             <i class="bi bi-check2-circle"></i> {{ translate.faq_question_new_btn_validate }}
           </button>
           <button type="button" class="btn btn-secondary" @click="this.closeModal('newQuestionFaq')">
