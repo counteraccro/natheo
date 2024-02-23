@@ -21,6 +21,21 @@ class FaqStatistiqueRepository extends ServiceEntityRepository
         parent::__construct($registry, FaqStatistique::class);
     }
 
+    /**
+     * Save
+     * @param FaqStatistique $entity
+     * @param bool $flush
+     * @return void
+     */
+    public function save(FaqStatistique $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
 //    /**
 //     * @return FaqStatistique[] Returns an array of FaqStatistique objects
 //     */
