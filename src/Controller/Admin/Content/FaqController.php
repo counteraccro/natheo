@@ -7,6 +7,7 @@ use App\Entity\Admin\Content\Faq\Faq;
 use App\Service\Admin\Content\Faq\FaqService;
 use App\Service\Admin\MarkdownEditorService;
 use App\Utils\Breadcrumb;
+use App\Utils\Content\Faq\FaqConst;
 use App\Utils\Content\Faq\FaqFactory;
 use App\Utils\Content\Faq\FaqPopulate;
 use App\Utils\System\Options\OptionUserKey;
@@ -250,17 +251,12 @@ class FaqController extends AppAdminController
     {
         $data = json_decode($request->getContent(), true);
 
-        $msg = '';
-        switch ($data['type']) {
-            case 'question' :
-                $msg = $faqService->updateDisabledQuestion($data['id'], $data['value']);
-                break;
-            case 'category':
-                $msg = $faqService->updateDisabledCategory($data['id'], $data['allQuestion'], $data['value']);
-                break;
-            default:
-                $msg = 'Erreur type';
-        }
+        $msg = match ($data['type']) {
+            FaqConst::TYPE_QUESTION => $faqService->updateDisabledQuestion($data['id'], $data['value']),
+            FaqConst::TYPE_CATEGORY => $faqService->updateDisabledCategory($data['id'],
+                $data['allQuestion'], $data['value']),
+            default => 'Erreur type',
+        };
 
         return $this->json($faqService->getResponseAjax($msg));
     }
@@ -286,11 +282,11 @@ class FaqController extends AppAdminController
         $data = [];
         $success = false;
         switch ($type) {
-            case 'question' :
+            case FaqConst::TYPE_QUESTION :
                 $data = $faqService->getListeQuestionOrderByCategory($id);
                 $success = true;
                 break;
-            case 'category':
+            case FaqConst::TYPE_CATEGORY:
                 $data = $faqService->getListeCategoryOrderByFaq($id);
                 $success = true;
                 break;
@@ -307,12 +303,28 @@ class FaqController extends AppAdminController
      * @return JsonResponse
      */
     #[Route('/ajax/new/', name: 'new_cat_question', methods: 'POST')]
-    public function newCatQuestion(FaqService $faqService, Request $request)
+    public function newCatQuestion(
+        FaqService          $faqService,
+        Request             $request,
+        TranslatorInterface $translator): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+        
+        $msg = '';
+        $success = false;
+        switch ($data['type']) {
+            case FaqConst::TYPE_QUESTION :
+                //$data = $faqService->getListeQuestionOrderByCategory($id);
+                $success = true;
+                break;
+            case FaqConst::TYPE_CATEGORY:
+                //$data = $faqService->getListeCategoryOrderByFaq($id);
+                $success = true;
+                break;
+            default:
+                $msg = $translator->trans('faq.generique.error', domain: 'faq');
+        }
 
-        var_dump($data);
-
-        return $this->json([]);
+        return $this->json(['success' => $success, 'msg' => $msg]);
     }
 }
