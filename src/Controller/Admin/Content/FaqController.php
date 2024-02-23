@@ -309,22 +309,20 @@ class FaqController extends AppAdminController
         TranslatorInterface $translator): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        
-        $msg = '';
-        $success = false;
+
         switch ($data['type']) {
-            case FaqConst::TYPE_QUESTION :
-                //$data = $faqService->getListeQuestionOrderByCategory($id);
-                $success = true;
+            case FaqConst::TYPE_CATEGORY :
+                $faqService->addNewCategory($data['id'], $data['idOrder'], $data['orderType']);
+                $msg = $translator->trans('faq.category.new.success.', domain: 'faq');
                 break;
-            case FaqConst::TYPE_CATEGORY:
+            case FaqConst::TYPE_QUESTION:
                 //$data = $faqService->getListeCategoryOrderByFaq($id);
-                $success = true;
+                $msg = $translator->trans('faq.question.new.success.', domain: 'faq');
                 break;
             default:
                 $msg = $translator->trans('faq.generique.error', domain: 'faq');
         }
 
-        return $this->json(['success' => $success, 'msg' => $msg]);
+        return $this->json($faqService->getResponseAjax($msg));
     }
 }

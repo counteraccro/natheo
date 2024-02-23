@@ -385,7 +385,10 @@ export default {
     },
 
     /**
-     * Charge les données nécessaire à une nouvelle catégorie ou une nouvelle question
+     * Charge les données nécessaires à une nouvelle catégorie ou une nouvelle question
+     * @param id
+     * @param type
+     * @param modaleName
      */
     newFaqCategoryQuestionData(id, type, modaleName) {
 
@@ -414,9 +417,10 @@ export default {
     },
 
     /**
-     * Créer une nouvelle categorie ou question
+     * Créer une nouvelle catégorie ou question
+     * @param modaleName
      */
-    newFaqCategoryQuestion() {
+    newFaqCategoryQuestion(modaleName) {
       this.loading = true;
       axios.post(this.urls.new_cat_question, {
         type : this.newDataOrder.type,
@@ -425,13 +429,15 @@ export default {
         idOrder : this.newDataOrder.idOrder,
       }).then((response) => {
 
-        /*if (response.data.success === true) {
-          this.listeOrderNew = response.data.list;
-          this.updateModale(modaleName, true);
+        if (response.data.success === true) {
+          this.toasts.toastSuccessFaq.msg = response.data.msg;
+          this.toasts.toastSuccessFaq.show = true;
+          this.updateModale(modaleName, false);
+          this.loadFaq();
         } else {
           this.toasts.toastErrorFaq.msg = response.data.msg;
           this.toasts.toastErrorFaq.show = true;
-        }*/
+        }
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -614,7 +620,7 @@ export default {
 
         </template>
         <template #footer>
-          <button type="button" class="btn btn-primary" @click="this.newFaqCategoryQuestion()">
+          <button type="button" class="btn btn-primary" @click="this.newFaqCategoryQuestion('newCatFaq')">
             <i class="bi bi-check2-circle"></i> {{ translate.faq_category_new_btn_validate }}
           </button>
           <button type="button" class="btn btn-secondary" @click="this.closeModal('newCatFaq')">

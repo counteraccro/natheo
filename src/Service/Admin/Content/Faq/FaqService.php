@@ -13,6 +13,7 @@ use App\Entity\Admin\Content\Faq\FaqQuestion;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Admin\System\OptionSystemService;
+use App\Utils\Content\Faq\FaqFactory;
 use App\Utils\Content\Faq\FaqStatistiqueKey;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -286,6 +287,22 @@ class FaqService extends AppAdminService
                     . $faqQuestion->getFaqQuestionTranslationByLocale($this->getLocales()['current'])->getTitle()];
         }
         return $return;
+    }
+
+    /**
+     * Créer une nouvelle catégorie et la range dans l'ordre défini
+     * @param int $idFaq
+     * @param int $idCatOrder
+     * @param string $orderPosition
+     * @return void
+     */
+    public function addNewCategory(int $idFaq, int $idCatOrder, string $orderPosition): void
+    {
+        /** @var Faq $faq */
+        $faq = $this->findOneById(Faq::class, $idFaq);
+        $faqFactory = new FaqFactory($this->getLocales()['locales']);
+        $faq = $faqFactory->createFaqCategory($faq);
+        $this->save($faq);
     }
 
     /**
