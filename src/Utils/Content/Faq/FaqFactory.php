@@ -40,7 +40,7 @@ class FaqFactory
         $this->faq = new Faq();
         $this->faq->setDisabled(false);
         $this->createFaqTranslation();
-        $this->faq->addFaqCategory($this->createFaqCategory($this->faq));
+        $this->faq = $this->createFaqCategory($this->faq);
         $this->createFaqStatistique(FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES, '1');
         $this->createFaqStatistique(FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS, '1');
         return $this;
@@ -73,16 +73,18 @@ class FaqFactory
     /**
      * Créer une FAQ catégorie
      * @param Faq $faq
-     * @return FaqCategory
+     * @return Faq
      */
-    public function createFaqCategory(Faq $faq): FaqCategory
+    public function createFaqCategory(Faq $faq): Faq
     {
         $faqCategory = new FaqCategory();
         $faqCategory->setFaq($faq);
         $faqCategory->setDisabled(false);
-        $faqCategory->setRenderOrder(1);
+        $faqCategory->setRenderOrder($faq->getMaxRenderOrderCategory() + 1);
         $faqCategory = $this->createFaqCategoryTranslation($faqCategory);
-        return $this->createFaqQuestion($faqCategory);
+        $faqCategory = $this->createFaqQuestion($faqCategory);
+        $faq->addFaqCategory($faqCategory);
+        return $faq;
     }
 
     /**
@@ -110,7 +112,7 @@ class FaqFactory
     private function createFaqQuestion(FaqCategory $faqCategory): FaqCategory
     {
         $faqQuestion = new FaqQuestion();
-        $faqQuestion->setRenderOrder(1);
+        $faqQuestion->setRenderOrder($faqCategory->getMaxRenderOrderQuestion() + 1);
         $faqQuestion->setDisabled(false);
         $faqQuestion->setFaqCategory($faqCategory);
         $faqQuestion = $this->createFaqQuestionTranslation($faqQuestion);
