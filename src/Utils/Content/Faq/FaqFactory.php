@@ -2,7 +2,7 @@
 /**
  * Permet de créer une FAQ ainsi que l'ensemble de ses données associées
  * @author Gourdon Aymeric
- * @version 1.2
+ * @version 1.3
  */
 namespace App\Utils\Content\Faq;
 
@@ -109,7 +109,7 @@ class FaqFactory
      * @param FaqCategory $faqCategory
      * @return FaqCategory
      */
-    private function createFaqQuestion(FaqCategory $faqCategory): FaqCategory
+    public function createFaqQuestion(FaqCategory $faqCategory): FaqCategory
     {
         $faqQuestion = new FaqQuestion();
         $faqQuestion->setRenderOrder($faqCategory->getMaxRenderOrderQuestion() + 1);
