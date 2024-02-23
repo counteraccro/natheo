@@ -40,7 +40,7 @@ export default {
       listeOrderNew: Object,
       newDataOrder: {
         type: '',
-        id : '',
+        id: '',
         idOrder: 0,
         orderType: 'before'
       },
@@ -397,6 +397,10 @@ export default {
 
         if (response.data.success === true) {
           this.listeOrderNew = response.data.list;
+          if (this.listeOrderNew.length > 0) {
+            this.newDataOrder.idOrder = this.listeOrderNew[0].id;
+          }
+
           this.updateModale(modaleName, true);
         } else {
           this.toasts.toastErrorFaq.msg = response.data.msg;
@@ -412,11 +416,10 @@ export default {
     /**
      * Créer une nouvelle categorie ou question
      */
-    newFaqCategoryQuestion()
-    {
+    newFaqCategoryQuestion() {
       this.loading = true;
       axios.post(this.urls.new_cat_question, {
-        data : this.newDataOrder
+        data: this.newDataOrder
       }).then((response) => {
 
         /*if (response.data.success === true) {
@@ -500,7 +503,8 @@ export default {
                 <div class="btn btn-secondary me-1 mb-1" @click="this.newFaqCategoryQuestionData(fcat.id, 'question', 'newQuestionFaq')">
                   <i class="bi bi-file-plus"></i>
                 </div>
-                <div v-if="fcat.renderOrder !== 1" class="btn btn-secondary me-1 mb-1"><i class="bi bi-arrow-up"></i></div>
+                <div v-if="fcat.renderOrder !== 1" class="btn btn-secondary me-1 mb-1"><i class="bi bi-arrow-up"></i>
+                </div>
                 <div v-if="fcat.renderOrder !== this.tabMaxRenderOrder.max_render_order_category" class="btn btn-secondary me-1 mb-1">
                   <i class="bi bi-arrow-down"></i>
                 </div>
