@@ -2,7 +2,7 @@
 /**
  * Permet de créer une FAQ ainsi que l'ensemble de ses données associées
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  */
 namespace App\Utils\Content\Faq;
 
@@ -40,7 +40,7 @@ class FaqFactory
         $this->faq = new Faq();
         $this->faq->setDisabled(false);
         $this->createFaqTranslation();
-        $this->createFaqCategory();
+        $this->faq->addFaqCategory($this->createFaqCategory($this->faq));
         $this->createFaqStatistique(FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES, '1');
         $this->createFaqStatistique(FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS, '1');
         return $this;
@@ -72,18 +72,17 @@ class FaqFactory
 
     /**
      * Créer une FAQ catégorie
-     * @return void
+     * @param Faq $faq
+     * @return FaqCategory
      */
-    private function createFaqCategory(): void
+    public function createFaqCategory(Faq $faq): FaqCategory
     {
         $faqCategory = new FaqCategory();
-        $faqCategory->setFaq($this->faq);
+        $faqCategory->setFaq($faq);
         $faqCategory->setDisabled(false);
         $faqCategory->setRenderOrder(1);
         $faqCategory = $this->createFaqCategoryTranslation($faqCategory);
-        $faqCategory = $this->createFaqQuestion($faqCategory);
-
-        $this->faq->addFaqCategory($faqCategory);
+        return $this->createFaqQuestion($faqCategory);
     }
 
     /**
