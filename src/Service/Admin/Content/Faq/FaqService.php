@@ -13,6 +13,7 @@ use App\Entity\Admin\Content\Faq\FaqQuestion;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Service\Admin\System\OptionSystemService;
+use App\Utils\Content\Faq\FaqConst;
 use App\Utils\Content\Faq\FaqFactory;
 use App\Utils\Content\Faq\FaqStatistiqueKey;
 use Doctrine\ORM\EntityManagerInterface;
@@ -304,17 +305,12 @@ class FaqService extends AppAdminService
         $faqFactory = new FaqFactory($this->getLocales()['locales']);
         $faq = $faqFactory->createFaqCategory($faq);
 
-        $faqStatistiqueNbCat = $faq->getFaqStatistiqueByKey(FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES);
-        $faqStatistiqueNbCat->setValue($faqStatistiqueNbCat->getValue() + 1);
-
-        $faqStatistiqueNbQ = $faq->getFaqStatistiqueByKey(FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS);
-        $faqStatistiqueNbQ->setValue($faqStatistiqueNbQ->getValue() + 1);
+        $this->updateFaqStatistique($faq,FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES);
+        $this->updateFaqStatistique($faq,FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS);
 
         $this->save($faq);
 
     }
-
-    //public function updateFaqStatistique(Faq)
 
     /**
      * Créer une nouvelle question et la range dans l'ordre défini
@@ -329,10 +325,48 @@ class FaqService extends AppAdminService
         $faqFactory = new FaqFactory($this->getLocales()['locales']);
         $faqCategory = $faqFactory->createFaqQuestion($faqCategory);
 
-        $faqStatistique = $faqCategory->getFaq()->getFaqStatistiqueByKey(FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS);
-        $faqStatistique->setValue($faqStatistique->getValue() + 1);
+        $this->updateFaqStatistique($faqFactory->getFaq(),FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS);
 
         $this->save($faqCategory);
+    }
+
+    /**
+     * Met à jour une FAQ stat en fonction de la FAQ, de sa clé, de son action et de sa valeur<br />
+     * $action peut être FaqConst::STATISTIQUE_ACTION_ADD, FaqConst::STATISTIQUE_ACTION_SUB ou
+     * FaqConst::STATISTIQUE_ACTION_OVERWRITE
+     * @param Faq $faq
+     * @param string $key
+     * @param string $action
+     * @param int $value
+     * @return void
+     */
+    public function updateFaqStatistique(
+        Faq    $faq,
+        string $key,
+        string $action = FaqConst::STATISTIQUE_ACTION_ADD,
+        int    $value = 1
+    ): void
+    {
+        $faqStat = $faq->getFaqStatistiqueByKey($key);
+        $val = $faqStat->getValue();
+
+        switch ($action) {
+            case FaqConst::STATISTIQUE_ACTION_ADD:
+                $val = $val + $value;
+                break;
+            case FaqConst::STATISTIQUE_ACTION_SUB:
+                $val = $val - $value;
+                if ($val < 0) {
+                    $val = 0;
+                }
+                break;
+            case FaqConst::STATISTIQUE_ACTION_OVERWRITE:
+                $val = $value;
+                break;
+            default:
+        }
+        $faqStat->setValue($val);
+        $this->save($faqStat);
     }
 
     /**
