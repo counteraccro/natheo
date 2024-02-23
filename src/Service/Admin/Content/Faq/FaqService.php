@@ -76,6 +76,7 @@ class FaqService extends AppAdminService
         $column = [
             $this->translator->trans('faq.grid.id', domain: 'faq'),
             $this->translator->trans('faq.grid.title', domain: 'faq'),
+            $this->translator->trans('faq.grid.nb_categories', domain: 'faq'),
             $this->translator->trans('faq.grid.nb_questions', domain: 'faq'),
             $this->translator->trans('faq.grid.update_at', domain: 'faq'),
             GridService::KEY_ACTION,
@@ -102,6 +103,8 @@ class FaqService extends AppAdminService
             $data[] = [
                 $this->translator->trans('faq.grid.id', domain: 'faq') => $element->getId() . ' ' . $isDisabled,
                 $this->translator->trans('faq.grid.title', domain: 'faq') => $titre,
+                $this->translator->trans('faq.grid.nb_categories', domain: 'faq') =>
+                    $element->getFaqStatistiqueByKey(FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES)->getValue(),
                 $this->translator->trans('faq.grid.nb_questions', domain: 'faq') =>
                     $element->getFaqStatistiqueByKey(FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS)->getValue(),
                 $this->translator->trans('faq.grid.update_at', domain: 'faq') => $element
@@ -266,7 +269,7 @@ class FaqService extends AppAdminService
     }
 
     /**
-     * Retourne une liste de question trié par renderOrder
+     * Retourne une liste de question triée par renderOrder
      * @param int $id
      * @return array
      */
@@ -300,8 +303,18 @@ class FaqService extends AppAdminService
         $faq = $this->findOneById(Faq::class, $idFaq);
         $faqFactory = new FaqFactory($this->getLocales()['locales']);
         $faq = $faqFactory->createFaqCategory($faq);
+
+        $faqStatistiqueNbCat = $faq->getFaqStatistiqueByKey(FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES);
+        $faqStatistiqueNbCat->setValue($faqStatistiqueNbCat->getValue() + 1);
+
+        $faqStatistiqueNbQ = $faq->getFaqStatistiqueByKey(FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS);
+        $faqStatistiqueNbQ->setValue($faqStatistiqueNbQ->getValue() + 1);
+
         $this->save($faq);
+
     }
+
+    //public function updateFaqStatistique(Faq)
 
     /**
      * Créer une nouvelle question et la range dans l'ordre défini
@@ -310,11 +323,15 @@ class FaqService extends AppAdminService
      * @param string $orderPosition
      * @return void
      */
-    public function addNewQuestion(int $idCategory, int $idQuestionOrder, string $orderPosition)
+    public function addNewQuestion(int $idCategory, int $idQuestionOrder, string $orderPosition): void
     {
         $faqCategory = $this->findOneById(FaqCategory::class, $idCategory);
         $faqFactory = new FaqFactory($this->getLocales()['locales']);
-        $faqFactory = $faqFactory->createFaqQuestion($faqCategory);
+        $faqCategory = $faqFactory->createFaqQuestion($faqCategory);
+
+        $faqStatistique = $faqCategory->getFaq()->getFaqStatistiqueByKey(FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS);
+        $faqStatistique->setValue($faqStatistique->getValue() + 1);
+
         $this->save($faqCategory);
     }
 
