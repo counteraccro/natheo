@@ -19,4 +19,24 @@ class FaqConst
      * @var string
      */
     const TYPE_QUESTION = 'question';
+
+    /**
+     * Action addition sur les statistiques
+     * @var string
+     */
+    const STATISTIQUE_ACTION_ADD = 'add';
+
+    /**
+     * Action soustraction sur les statistiques
+     * @var string
+     */
+    const STATISTIQUE_ACTION_SUB = 'sub';
+
+    /**
+     * Action soustraction sur les statistiques
+     * @var string
+     */
+    const STATISTIQUE_ACTION_OVERWRITE = 'overwrite';
+
+
 }
