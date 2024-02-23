@@ -71,3 +71,5 @@ faq.question.new.before: __faq.question.new.before
 faq.question.new.help: __faq.question.new.help
 faq.question.new.btn.validate: __faq.question.new.btn.validate
 faq.question.new.btn.cancel: __faq.question.new.btn.cancel
+faq.category.new.success.: __faq.category.new.success.
+faq.question.new.success.: __faq.question.new.success.
