@@ -83,6 +83,7 @@ export default {
         this.faq = response.data.faq;
         this.tabMaxRenderOrder = response.data.max_render_order;
         this.loadData = true;
+        this.keyVal += 1;
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -198,7 +199,7 @@ export default {
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
-        this.loading = false;
+        this.loadFaq();
       });
     },
 
