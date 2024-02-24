@@ -7,10 +7,10 @@
 
 namespace App\Utils\Global;
 
+use DeepCopy\Exception\PropertyException;
 use Doctrine\Common\Collections\Collection;
 use Exception;
-use http\Client\Response;
-use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\Asset\Exception\AssetNotFoundException;
 
 class OrderEntity
 {
@@ -20,10 +20,22 @@ class OrderEntity
      */
     const ACTION_AFTER = 'after';
 
+    /**
+     * Clé before
+     * @var string
+     */
     const ACTION_BEFORE = 'before';
 
+    /**
+     * Liste des éléments
+     * @var Collection
+     */
     private Collection $elements;
 
+    /**
+     * Nom de la propriété pour l'ordre
+     * @var string
+     */
     private string $propertyName;
 
     /**
@@ -100,7 +112,7 @@ class OrderEntity
         })->first();
 
         if (!$element) {
-            throw new Exception('Item #' . $id . ' not found in list');
+            throw new AssetNotFoundException('Item #' . $id . ' not found in list');
         } else {
             return $element;
         }
@@ -115,7 +127,7 @@ class OrderEntity
     {
         $element = $this->elements->first();
         if (!property_exists($element::class, $this->propertyName)) {
-            throw new Exception($this->propertyName .
+            throw new PropertyException($this->propertyName .
                 '() property does not exist for object ' . $element::class);
         }
     }
