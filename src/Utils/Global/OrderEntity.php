@@ -14,6 +14,10 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class OrderEntity
 {
+    /**
+     * Clé after
+     * @var string
+     */
     const ACTION_AFTER = 'after';
 
     const ACTION_BEFORE = 'before';
@@ -31,7 +35,7 @@ class OrderEntity
     {
         $this->elements = $elements;
         $this->propertyName = $propertyName;
-        $this->verifPropertyExist();
+        $this->isPropertyExist();
     }
 
     /**
@@ -45,19 +49,22 @@ class OrderEntity
     public function orderByIdByAction(int $idNewOrder, int $idOrder, string $action = self::ACTION_BEFORE): void
     {
         $elementNewOrder = $this->getElementById($idNewOrder);
-        $elementOrder = $this->getElementById($idOrder);
 
         $getPropertyName = 'get' . ucfirst($this->propertyName);
+        $setPropertyName = 'set' . ucfirst($this->propertyName);
         $newOrder = $elementNewOrder->$getPropertyName();
 
         if ($action === self::ACTION_AFTER) {
             $newOrder = $newOrder + 1;
         }
 
-        
-
-        echo 'New order ' . $newOrder . '<br />';
-
+        foreach ($this->elements as &$element) {
+            if ($element->getId() === $idOrder) {
+                $element->$setPropertyName($newOrder);
+            } elseif ($element->$getPropertyName() >= $newOrder) {
+                $element->$setPropertyName($element->$getPropertyName() + 1);
+            }
+        }
     }
 
     /**
@@ -68,7 +75,7 @@ class OrderEntity
      */
     public function orderByNewPosition(int $idOrder, int $position)
     {
-
+        //TODO à écrire
     }
 
     /**
@@ -104,7 +111,7 @@ class OrderEntity
      * @return void
      * @throws Exception
      */
-    private function verifPropertyExist():void
+    private function isPropertyExist(): void
     {
         $element = $this->elements->first();
         if (!property_exists($element::class, $this->propertyName)) {
