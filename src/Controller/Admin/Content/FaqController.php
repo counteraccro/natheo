@@ -4,12 +4,14 @@ namespace App\Controller\Admin\Content;
 
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Faq\Faq;
+use App\Entity\Admin\Content\Faq\FaqCategory;
 use App\Service\Admin\Content\Faq\FaqService;
 use App\Service\Admin\MarkdownEditorService;
 use App\Utils\Breadcrumb;
 use App\Utils\Content\Faq\FaqConst;
 use App\Utils\Content\Faq\FaqFactory;
 use App\Utils\Content\Faq\FaqPopulate;
+use App\Utils\Global\OrderEntity;
 use App\Utils\System\Options\OptionUserKey;
 use Doctrine\DBAL\Exception;
 use Psr\Log\LoggerAwareInterface;
@@ -26,8 +28,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[IsGranted('ROLE_CONTRIBUTEUR')]
 class FaqController extends AppAdminController
 {
+    /**
+     * @throws \Exception
+     */
     #[Route('/', name: 'index')]
-    public function index(): Response
+    public function index(FaqService $faqService): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'faq',

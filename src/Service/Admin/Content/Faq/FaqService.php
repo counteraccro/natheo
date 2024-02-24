@@ -16,8 +16,10 @@ use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Content\Faq\FaqConst;
 use App\Utils\Content\Faq\FaqFactory;
 use App\Utils\Content\Faq\FaqStatistiqueKey;
+use App\Utils\Global\OrderEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -297,6 +299,7 @@ class FaqService extends AppAdminService
      * @param int $idCatOrder
      * @param string $orderPosition
      * @return void
+     * @throws Exception
      */
     public function addNewCategory(int $idFaq, int $idCatOrder, string $orderPosition): void
     {
@@ -310,6 +313,12 @@ class FaqService extends AppAdminService
 
         $this->save($faq);
 
+        $lastCat = $faq->getFaqCategories()->last();
+
+        $orderEntity = new OrderEntity($faq->getFaqCategories());
+        $orderEntity->orderByIdByAction($idCatOrder, $lastCat->getId(), $orderPosition);
+        $this->save($faq);
+
     }
 
     /**
@@ -318,6 +327,7 @@ class FaqService extends AppAdminService
      * @param int $idQuestionOrder
      * @param string $orderPosition
      * @return void
+     * @throws Exception
      */
     public function addNewQuestion(int $idCategory, int $idQuestionOrder, string $orderPosition): void
     {
@@ -325,8 +335,13 @@ class FaqService extends AppAdminService
         $faqFactory = new FaqFactory($this->getLocales()['locales']);
         $faqCategory = $faqFactory->createFaqQuestion($faqCategory);
 
-        $this->updateFaqStatistique($faqFactory->getFaq(),FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS);
+        $this->updateFaqStatistique($faqCategory->getFaq(),FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS);
 
+        $this->save($faqCategory);
+
+        $lastQuest = $faqCategory->getFaqQuestions()->last();
+        $orderEntity = new OrderEntity($faqCategory->getFaqQuestions());
+        $orderEntity->orderByIdByAction($idQuestionOrder, $lastQuest->getId(), $orderPosition);
         $this->save($faqCategory);
     }
 
