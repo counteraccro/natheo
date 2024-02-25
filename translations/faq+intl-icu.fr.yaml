@@ -71,7 +71,9 @@ faq.question.new.before: Avant
 faq.question.new.help: 'Choisissez la question ou sera intercalé la nouvelle question ainsi que si elle sera avant ou après la question sélectionnée'
 faq.question.new.btn.validate: 'Nouvelle question'
 faq.question.new.btn.cancel: Annuler
-faq.category.new.success.: 'La nouvelle catégorie à été ajoutée avec succès'
-faq.question.new.success.: 'La nouvelle question à été ajoutée avec succès'
+faq.category.new.success: 'La nouvelle catégorie à été ajoutée avec succès'
+faq.question.new.success: 'La nouvelle question à été ajoutée avec succès'
 faq.grid.nb_categories: 'Nombre de catégories'
-faq.msg.no.save: "Les derniers changements fait non pas été sauvegardés"
+faq.msg.no.save: 'Les derniers changements fait non pas été sauvegardés'
+faq.category.update.order: 'La catégorie à été déplacée avec succès'
+faq.question.update.order: 'La question à été déplacée avec succès'

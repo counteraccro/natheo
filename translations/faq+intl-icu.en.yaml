@@ -75,3 +75,7 @@ faq.category.new.success.: __faq.category.new.success.
 faq.question.new.success.: __faq.question.new.success.
 faq.grid.nb_categories: __faq.grid.nb_categories
 faq.msg.no.save: __faq.msg.no.save
+faq.category.new.success: __faq.category.new.success
+faq.question.new.success: __faq.question.new.success
+faq.category.update.order: __faq.category.update.order
+faq.question.update.order: __faq.question.update.order
