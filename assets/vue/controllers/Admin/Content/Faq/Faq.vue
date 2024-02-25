@@ -444,6 +444,35 @@ export default {
       }).finally(() => {
         this.loading = false;
       });
+    },
+
+    /**
+     * Met à jour l'ordre d'une question ou réponse
+     * @param id
+     * @param type
+     * @param orderType
+     */
+    updateOrder(id, type, orderType) {
+      axios.put(this.urls.update_order, {
+        type : type,
+        orderType : orderType,
+        id: id,
+      }).then((response) => {
+
+        /*if (response.data.success === true) {
+          this.toasts.toastSuccessFaq.msg = response.data.msg;
+          this.toasts.toastSuccessFaq.show = true;
+          this.updateModale(modaleName, false);
+          this.loadFaq();
+        } else {
+          this.toasts.toastErrorFaq.msg = response.data.msg;
+          this.toasts.toastErrorFaq.show = true;
+        }*/
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.loading = false;
+      });
     }
   },
 }
@@ -513,9 +542,9 @@ export default {
                 <div class="btn btn-secondary me-1 mb-1" @click="this.newFaqCategoryQuestionData(fcat.id, 'question', 'newQuestionFaq')">
                   <i class="bi bi-file-plus"></i>
                 </div>
-                <div v-if="fcat.renderOrder !== 1" class="btn btn-secondary me-1 mb-1"><i class="bi bi-arrow-up"></i>
+                <div v-if="fcat.renderOrder !== 1" class="btn btn-secondary me-1 mb-1" @click="this.updateOrder(fcat.id, 'category', 'before')"><i class="bi bi-arrow-up"></i>
                 </div>
-                <div v-if="fcat.renderOrder !== this.tabMaxRenderOrder.max_render_order_category" class="btn btn-secondary me-1 mb-1">
+                <div v-if="fcat.renderOrder !== this.tabMaxRenderOrder.max_render_order_category" class="btn btn-secondary me-1 mb-1" @click="this.updateOrder(fcat.id, 'category', 'after')">
                   <i class="bi bi-arrow-down"></i>
                 </div>
                 <div class="btn btn-secondary me-1 mb-1"><i class="bi bi-trash"></i></div>
@@ -566,11 +595,11 @@ export default {
                   </div>
                 </div>
                 <div class="col-1">
-                  <div v-if="this.showQuestionButton(fQuestion.faqCategory, fQuestion.renderOrder, 'up')" class="btn btn-secondary mt-1">
+                  <div v-if="this.showQuestionButton(fQuestion.faqCategory, fQuestion.renderOrder, 'up')" class="btn btn-secondary mt-1" @click="this.updateOrder(fQuestion.id, 'question', 'before')">
                     <i class="bi bi-arrow-up"></i>
                   </div>
                   <div class="clearfix"></div>
-                  <div v-if="this.showQuestionButton(fQuestion.faqCategory, fQuestion.renderOrder, 'down')" class="btn btn-secondary mt-1">
+                  <div v-if="this.showQuestionButton(fQuestion.faqCategory, fQuestion.renderOrder, 'down')" class="btn btn-secondary mt-1" @click="this.updateOrder(fQuestion.id, 'question', 'after')">
                     <i class="bi bi-arrow-down"></i></div>
                   <div class="clearfix"></div>
                   <div class="btn btn-secondary mt-1"><i class="bi bi-trash"></i></div>

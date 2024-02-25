@@ -106,7 +106,9 @@ class FaqController extends AppAdminController
                 'update_disabled' => $this->generateUrl('admin_faq_update_disabled'),
                 'order_by_type' => $this->generateUrl('admin_faq_order_by_type'),
                 'new_cat_question' => $this->generateUrl('admin_faq_new_cat_question'),
+                'update_order' => $this->generateUrl('admin_faq_update_order'),
             ]
+
         ]);
     }
 
@@ -328,6 +330,34 @@ class FaqController extends AppAdminController
                 $msg = $translator->trans('faq.generique.error', domain: 'faq');
         }
 
+        return $this->json($faqService->getResponseAjax($msg));
+    }
+
+    /**
+     * Change l'ordre d'une catégorie ou question
+     * @param FaqService $faqService
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     */
+    #[Route('/ajax/update-order/', name: 'update_order', methods: 'PUT')]
+    public function changeOrderRender(FaqService $faqService, Request $request, TranslatorInterface $translator)
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $msg = '';
+        switch ($data['type']) {
+            case FaqConst::TYPE_CATEGORY :
+                //$faqService->addNewCategory($data['id'], $data['idOrder'], $data['orderType']);
+                //$msg = $translator->trans('faq.category.new.success.', domain: 'faq');
+                break;
+            case FaqConst::TYPE_QUESTION:
+                //$faqService->addNewQuestion($data['id'], $data['idOrder'], $data['orderType']);
+                //$msg = $translator->trans('faq.question.new.success.', domain: 'faq');
+                break;
+            default:
+                $msg = $translator->trans('faq.generique.error', domain: 'faq');
+        }
         return $this->json($faqService->getResponseAjax($msg));
     }
 }
