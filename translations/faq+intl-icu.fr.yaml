@@ -74,3 +74,4 @@ faq.question.new.btn.cancel: Annuler
 faq.category.new.success.: 'La nouvelle catégorie à été ajoutée avec succès'
 faq.question.new.success.: 'La nouvelle question à été ajoutée avec succès'
 faq.grid.nb_categories: 'Nombre de catégories'
+faq.msg.no.save: "Les derniers changements fait non pas été sauvegardés"

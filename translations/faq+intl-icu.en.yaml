@@ -74,3 +74,4 @@ faq.question.new.btn.cancel: __faq.question.new.btn.cancel
 faq.category.new.success.: __faq.category.new.success.
 faq.question.new.success.: __faq.question.new.success.
 faq.grid.nb_categories: __faq.grid.nb_categories
+faq.msg.no.save: __faq.msg.no.save
