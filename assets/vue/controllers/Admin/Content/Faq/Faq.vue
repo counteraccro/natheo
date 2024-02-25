@@ -556,11 +556,13 @@ export default {
                   <i class="bi bi-arrow-down"></i>
                 </div>
                 <div class="btn btn-secondary me-1 mb-1"><i class="bi bi-trash"></i></div>
-                <div v-if="fcat.disabled" @click="this.openModalEnabled('category', fcat.id, this.getValueByLocale(fcat.faqCategoryTranslations, 'title'))" class="btn btn-secondary me-1">
+                <div v-if="fcat.disabled" @click="this.openModalEnabled('category', fcat.id, this.getValueByLocale(fcat.faqCategoryTranslations, 'title'))" class="btn btn-secondary me-1 mb-1">
                   <i class="bi bi-eye"></i></div>
-                <div v-if="!fcat.disabled" @click="this.openModalDisabled('category', fcat.id, this.getValueByLocale(fcat.faqCategoryTranslations, 'title'))" class="btn btn-secondary me-1">
+                <div v-if="!fcat.disabled" @click="this.openModalDisabled('category', fcat.id, this.getValueByLocale(fcat.faqCategoryTranslations, 'title'))" class="btn btn-secondary me-1 mb-1">
                   <i class="bi bi-eye-slash"></i></div>
               </div>
+              <div class="clearfix"></div>
+              <div class="float-end text-small text-secondary me-2"><i>#{{ fcat.renderOrder }}</i></div>
             </div>
             <div v-if="fcat.disabled" class="float-end">
               <i>{{ this.translate.faq_category_disabled }}</i>
@@ -574,7 +576,6 @@ export default {
 
                 <div class="col-11">
                   <div class="card-body">
-
                     <FieldEditor :key="this.keyVal" class="mb-3"
                         :id="this.getValueByLocale(fQuestion.faqQuestionTranslations, 'id', 'faqQuestionTranslations-title')"
                         :p-value="this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title')"
@@ -619,6 +620,7 @@ export default {
                     <i class="bi bi-eye-slash"></i></div>
                 </div>
               </div>
+              <div class="position-absolute bottom-0 end-0 text-small text-secondary me-2"><i>#{{ fQuestion.renderOrder }}</i></div>
             </div>
           </div>
           <hr/>
