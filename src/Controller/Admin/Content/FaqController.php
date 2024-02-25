@@ -346,14 +346,13 @@ class FaqController extends AppAdminController
     {
         $data = json_decode($request->getContent(), true);
 
-        $msg = '';
         switch ($data['type']) {
             case FaqConst::TYPE_CATEGORY :
                 $faqService->updateOrderCategory($data['id'], $data['idOrder'], $data['orderType']);
                 $msg = $translator->trans('faq.category.update.order', domain: 'faq');
                 break;
             case FaqConst::TYPE_QUESTION:
-                //$faqService->addNewQuestion($data['id'], $data['idOrder'], $data['orderType']);
+                $faqService->updateOrderQuestion($data['id'], $data['idOrder'], $data['orderType']);
                 $msg = $translator->trans('faq.question.update.order', domain: 'faq');
                 break;
             default:

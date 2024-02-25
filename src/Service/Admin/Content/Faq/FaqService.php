@@ -346,8 +346,9 @@ class FaqService extends AppAdminService
     }
 
     /**
-     * Déplace la position d'une catégorie de -1 ou °+1 en fonction de $orderPosition
+     * Déplace la position d'une catégorie de -1 ou +1 en fonction de $orderPosition
      * @param int $idFaq
+     * @param int $idCategory
      * @param string $orderPosition
      * @return void
      * @throws Exception
@@ -359,6 +360,23 @@ class FaqService extends AppAdminService
         $orderEntity = new OrderEntity($faq->getFaqCategories());
         $orderEntity->orderUpdateByAction($idCategory, $orderPosition);
         $this->save($faq);
+    }
+
+    /**
+     * Déplace la position d'une question de -1 ou +1 en fonction de $orderPosition
+     * @param int $idFaqCategory
+     * @param int $idQuestion
+     * @param string $orderPosition
+     * @return void
+     * @throws Exception
+     */
+    public function updateOrderQuestion(int $idFaqCategory, int $idQuestion, string $orderPosition): void
+    {
+        /** @var FaqCategory $faqCategory */
+        $faqCategory = $this->findOneById(FaqCategory::class, $idFaqCategory);
+        $orderEntity = new OrderEntity($faqCategory->getFaqQuestions());
+        $orderEntity->orderUpdateByAction($idQuestion, $orderPosition);
+        $this->save($faqCategory);
     }
 
     /**
