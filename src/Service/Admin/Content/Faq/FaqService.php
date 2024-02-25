@@ -394,6 +394,7 @@ class FaqService extends AppAdminService
             'select_locale' => $this->translator->trans('faq.select.locale', domain: 'faq'),
             'loading' => $this->translator->trans('faq.select.loading', domain: 'faq'),
             'error_empty_value' => $this->translator->trans('faq.error.empty.value', domain: 'faq'),
+            'msg_no_save' => $this->translator->trans('faq.msg.no.save', domain: 'faq'),
             'save' => $this->translator->trans('faq.save', domain: 'faq'),
             'new_faq' => $this->translator->trans('faq.new.title', domain: 'faq'),
             'new_faq_input_title' => $this->translator->trans('faq.new.input.title', domain: 'faq'),

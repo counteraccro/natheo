@@ -32,6 +32,7 @@ export default {
       tabMaxRenderOrder: Object,
       currentLocale: this.locales.current,
       loading: false,
+      updateNoSave: false,
       loadData: false,
       keyVal: 1,
       title: '', // Titre FAQ création
@@ -135,6 +136,7 @@ export default {
      */
     updateValueByLocale(value, id) {
       let tmp = id.split('-');
+      this.updateNoSave = true;
 
       switch (tmp[1]) {
         case "faqTranslations":
@@ -191,6 +193,7 @@ export default {
         if (response.data.success === true) {
           this.toasts.toastSuccessFaq.msg = response.data.msg;
           this.toasts.toastSuccessFaq.show = true;
+          this.updateNoSave = false;
         } else {
           this.toasts.toastErrorFaq.msg = response.data.msg;
           this.toasts.toastErrorFaq.show = true;
@@ -512,6 +515,9 @@ export default {
                 </option>
               </select>
             </div>
+          </div>
+          <div v-if="this.updateNoSave" class="text-danger mt-3 text-center">
+            <i class="bi bi-exclamation-circle-fill"></i> <i>{{ this.translate.msg_no_save }}</i>
           </div>
         </div>
 
