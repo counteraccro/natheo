@@ -60,7 +60,7 @@ class OrderEntity
      */
     public function orderByIdByAction(int $idNewOrder, int $idOrder, string $action = self::ACTION_BEFORE): void
     {
-        $elementNewOrder = $this->getElementById($idNewOrder);
+        $elementNewOrder = $this->getElementByPropertyAndValue('id', $idNewOrder);
 
         $getPropertyName = 'get' . ucfirst($this->propertyName);
         $setPropertyName = 'set' . ucfirst($this->propertyName);
@@ -80,14 +80,36 @@ class OrderEntity
     }
 
     /**
-     * Positionne $idOrder à la nouvelle $position et réordonne la liste
+     * Déplace $idOrder de +1 ou -1 en fonction de $action
      * @param int $idOrder
-     * @param int $position
+     * @param string $action
      * @return void
      */
-    public function orderByNewPosition(int $idOrder, int $position)
+    public function orderUpdateByAction(int $idOrder, string $action = self::ACTION_BEFORE): void
     {
-        //TODO à écrire
+        $getFunction = 'get' . ucfirst($this->propertyName);
+        $setFunction = 'set' . ucfirst($this->propertyName);
+
+        $elementNewOrder = $this->getElementByPropertyAndValue('id', $idOrder);
+        $orderSwitch = $elementNewOrder->$getFunction();
+
+        if ($elementNewOrder->$getFunction() === 1 && $action === self::ACTION_BEFORE) {
+            return;
+        }
+
+        if ($elementNewOrder->$getFunction() >= $this->elements->count() && $action === self::ACTION_AFTER) {
+            return;
+        }
+
+        if ($action === self::ACTION_BEFORE) {
+            $element = $this->getElementByPropertyAndValue('renderOrder', $orderSwitch - 1);
+        } else {
+            $element = $this->getElementByPropertyAndValue('renderOrder', $orderSwitch + 1);
+        }
+        $orderNew = $element->$getFunction();
+
+        $elementNewOrder->$setFunction($orderNew);
+        $element->$setFunction($orderSwitch);
     }
 
     /**
@@ -100,15 +122,16 @@ class OrderEntity
 
 
     /**
-     * Retourne un element de la liste par son id
-     * @param int $id
+     * Retourne un element de la liste par sa property et sa valeur
+     * @param string $property
+     * @param mixed $value
      * @return object
-     * @throws Exception
      */
-    private function getElementById(int $id): object
+    private function getElementByPropertyAndValue(string $property, mixed $value): object
     {
-        $element = $this->elements->filter(function (object $element) use ($id) {
-            return $element->getId() === $id;
+        $getFunction = 'get' . ucfirst($property);
+        $element = $this->elements->filter(function (object $element) use ($value, $getFunction) {
+            return $element->$getFunction() === $value;
         })->first();
 
         if (!$element) {
