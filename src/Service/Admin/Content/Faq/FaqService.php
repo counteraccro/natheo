@@ -346,6 +346,22 @@ class FaqService extends AppAdminService
     }
 
     /**
+     * Déplace la position d'une catégorie de -1 ou °+1 en fonction de $orderPosition
+     * @param int $idFaq
+     * @param string $orderPosition
+     * @return void
+     * @throws Exception
+     */
+    public function updateOrderCategory(int $idFaq, int $idCategory, string $orderPosition): void
+    {
+        /** @var Faq $faq */
+        $faq = $this->findOneById(Faq::class, $idFaq);
+        $orderEntity = new OrderEntity($faq->getFaqCategories());
+        $orderEntity->orderUpdateByAction($idCategory, $orderPosition);
+        $this->save($faq);
+    }
+
+    /**
      * Met à jour une FAQ stat en fonction de la FAQ, de sa clé, de son action et de sa valeur<br />
      * $action peut être FaqConst::STATISTIQUE_ACTION_ADD, FaqConst::STATISTIQUE_ACTION_SUB ou
      * FaqConst::STATISTIQUE_ACTION_OVERWRITE

@@ -320,11 +320,11 @@ class FaqController extends AppAdminController
         switch ($data['type']) {
             case FaqConst::TYPE_CATEGORY :
                 $faqService->addNewCategory($data['id'], $data['idOrder'], $data['orderType']);
-                $msg = $translator->trans('faq.category.new.success.', domain: 'faq');
+                $msg = $translator->trans('faq.category.new.success', domain: 'faq');
                 break;
             case FaqConst::TYPE_QUESTION:
                 $faqService->addNewQuestion($data['id'], $data['idOrder'], $data['orderType']);
-                $msg = $translator->trans('faq.question.new.success.', domain: 'faq');
+                $msg = $translator->trans('faq.question.new.success', domain: 'faq');
                 break;
             default:
                 $msg = $translator->trans('faq.generique.error', domain: 'faq');
@@ -339,6 +339,7 @@ class FaqController extends AppAdminController
      * @param Request $request
      * @param TranslatorInterface $translator
      * @return JsonResponse
+     * @throws \Exception
      */
     #[Route('/ajax/update-order/', name: 'update_order', methods: 'PUT')]
     public function changeOrderRender(FaqService $faqService, Request $request, TranslatorInterface $translator)
@@ -348,12 +349,12 @@ class FaqController extends AppAdminController
         $msg = '';
         switch ($data['type']) {
             case FaqConst::TYPE_CATEGORY :
-                //$faqService->addNewCategory($data['id'], $data['idOrder'], $data['orderType']);
-                //$msg = $translator->trans('faq.category.new.success.', domain: 'faq');
+                $faqService->updateOrderCategory($data['id'], $data['idOrder'], $data['orderType']);
+                $msg = $translator->trans('faq.category.update.order', domain: 'faq');
                 break;
             case FaqConst::TYPE_QUESTION:
                 //$faqService->addNewQuestion($data['id'], $data['idOrder'], $data['orderType']);
-                //$msg = $translator->trans('faq.question.new.success.', domain: 'faq');
+                $msg = $translator->trans('faq.question.update.order', domain: 'faq');
                 break;
             default:
                 $msg = $translator->trans('faq.generique.error', domain: 'faq');
