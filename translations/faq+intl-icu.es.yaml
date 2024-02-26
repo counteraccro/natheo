@@ -77,3 +77,7 @@ faq.category.new.success: __faq.category.new.success
 faq.question.new.success: __faq.question.new.success
 faq.category.update.order: __faq.category.update.order
 faq.question.update.order: __faq.question.update.order
+faq.question.delete.titre.confirm: __faq.question.delete.titre.confirm
+faq.question.delete.body.confirm: __faq.question.delete.body.confirm
+faq.category.delete.titre.confirm: __faq.category.delete.titre.confirm
+faq.category.delete.body.confirm: __faq.category.delete.body.confirm

@@ -77,3 +77,7 @@ faq.grid.nb_categories: 'Nombre de catégories'
 faq.msg.no.save: 'Les derniers changements fait non pas été sauvegardés'
 faq.category.update.order: 'La catégorie à été déplacée avec succès'
 faq.question.update.order: 'La question à été déplacée avec succès'
+faq.question.delete.titre.confirm: 'Confirmer la suppression de la question'
+faq.question.delete.body.confirm: 'Cette action est définitive et sans possibilité de retour'
+faq.category.delete.titre.confirm: 'Confirmer la suppression de la catégorie'
+faq.category.delete.body.confirm: "La suppression de cette catégorie entrainera la suppression de l'ensemble des questions associées <br /> Cette action est définitive et sans possibilité de retour"
