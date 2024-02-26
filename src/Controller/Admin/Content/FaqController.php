@@ -360,4 +360,16 @@ class FaqController extends AppAdminController
         }
         return $this->json($faqService->getResponseAjax($msg));
     }
+
+    /**Supprime une question ou une réponse
+     * @param int $id
+     * @param string $type
+     * @param FaqService $faqService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/delete-q-r/', name: 'delete_category_question', methods: 'DELETE')]
+    public function deleteCategoryQuestion(int $id, string $type, FaqService $faqService)
+    {
+        return $this->json([]);
+    }
 }

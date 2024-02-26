@@ -51,10 +51,15 @@ export default {
         value: '',
         allQuestion: true
       },
+      dataDelete: {
+        id: '',
+        type: ''
+      },
       modalTab: {
         newCatFaq: false,
         newQuestionFaq: false,
         disabledCatQuestFaq: false,
+        deleteCatQuestFaq: false
       },
       toasts: {
         toastSuccessFaq: {
@@ -478,6 +483,18 @@ export default {
       }).finally(() => {
         //this.loading = false;
       });
+    },
+
+    /**
+     * Affiche la modale de confirmation de supression
+     * @param id
+     * @param type
+     */
+    openModaleDelete(id, type)
+    {
+      this.dataDelete.id = id;
+      this.dataDelete.type = type;
+      this.updateModale('deleteCatQuestFaq', true);
     }
   },
 }
@@ -555,7 +572,7 @@ export default {
                 <div v-if="fcat.renderOrder !== this.tabMaxRenderOrder.max_render_order_category" class="btn btn-secondary me-1 mb-1" @click="this.updateOrder(this.faq.id, fcat.id, 'category', 'after')">
                   <i class="bi bi-arrow-down"></i>
                 </div>
-                <div class="btn btn-secondary me-1 mb-1"><i class="bi bi-trash"></i></div>
+                <div class="btn btn-secondary me-1 mb-1" @click="this.openModaleDelete(fcat.id, 'category')"><i class="bi bi-trash"></i></div>
                 <div v-if="fcat.disabled" @click="this.openModalEnabled('category', fcat.id, this.getValueByLocale(fcat.faqCategoryTranslations, 'title'))" class="btn btn-secondary me-1 mb-1">
                   <i class="bi bi-eye"></i></div>
                 <div v-if="!fcat.disabled" @click="this.openModalDisabled('category', fcat.id, this.getValueByLocale(fcat.faqCategoryTranslations, 'title'))" class="btn btn-secondary me-1 mb-1">
@@ -611,7 +628,7 @@ export default {
                   <div v-if="this.showQuestionButton(fQuestion.faqCategory, fQuestion.renderOrder, 'down')" class="btn btn-secondary mt-1" @click="this.updateOrder(fcat.id, fQuestion.id, 'question', 'after')">
                     <i class="bi bi-arrow-down"></i></div>
                   <div class="clearfix"></div>
-                  <div class="btn btn-secondary mt-1"><i class="bi bi-trash"></i></div>
+                  <div class="btn btn-secondary mt-1" @click="this.openModaleDelete(fcat.id, 'question')"><i class="bi bi-trash"></i></div>
                   <div class="clearfix"></div>
                   <div v-if="fQuestion.disabled" @click="this.openModalEnabled('question', fQuestion.id, this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title'))" class="btn btn-secondary mt-1">
                     <i class="bi bi-eye"></i></div>
@@ -738,6 +755,30 @@ export default {
             <i class="bi bi-check2-circle"></i> {{ translate.faq_disabled_btn_ok }}
           </button>
           <button type="button" class="btn btn-secondary" @click="this.closeModal('disabledCatQuestFaq')">
+            <i class="bi bi-x-circle"></i> {{ translate.faq_disabled_btn_ko }}
+          </button>
+        </template>
+      </modal>
+
+      <!-- modale confirmation suppression -->
+      <modal
+          :id="'deleteCatQuestFaq'"
+          :show="this.modalTab.deleteCatQuestFaq"
+          @close-modal="this.closeModal"
+          :option-show-close-btn="false">
+        <template #title>
+          <div v-if="this.dataDelete.type === 'question'">{{ this.translate.faq_question_delete_titre_confirm }}</div>
+          <div v-if="this.dataDelete.type === 'category'">{{ this.translate.faq_category_delete_titre_confirm }}</div>
+        </template>
+        <template #body>
+          <div v-if="this.dataDelete.type === 'question'" v-html="this.translate.faq_question_delete_body_confirm"></div>
+          <div v-if="this.dataDelete.type === 'category'" v-html="this.translate.faq_category_delete_body_confirm"></div>
+        </template>
+        <template #footer>
+          <button type="button" class="btn btn-primary" @click="">
+            <i class="bi bi-check2-circle"></i> {{ translate.faq_disabled_btn_ok }}
+          </button>
+          <button type="button" class="btn btn-secondary" @click="this.closeModal('deleteCatQuestFaq')">
             <i class="bi bi-x-circle"></i> {{ translate.faq_disabled_btn_ko }}
           </button>
         </template>

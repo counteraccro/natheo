@@ -467,6 +467,15 @@ class FaqService extends AppAdminService
             'faq_question_new_help' => $this->translator->trans('faq.question.new.help', domain: 'faq'),
             'faq_question_new_btn_validate' => $this->translator->trans('faq.question.new.btn.validate', domain: 'faq'),
             'faq_question_new_btn_cancel' => $this->translator->trans('faq.question.new.btn.cancel', domain: 'faq'),
+            'faq_question_delete_titre_confirm' =>
+                $this->translator->trans('faq.question.delete.titre.confirm', domain: 'faq'),
+            'faq_question_delete_body_confirm' =>
+                $this->translator->trans('faq.question.delete.body.confirm', domain: 'faq'),
+            'faq_category_delete_titre_confirm' =>
+                $this->translator->trans('faq.category.delete.titre.confirm', domain: 'faq'),
+            'faq_category_delete_body_confirm' =>
+                $this->translator->trans('faq.category.delete.body.confirm', domain: 'faq'),
+
         ];
     }
 }
