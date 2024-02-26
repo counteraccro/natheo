@@ -113,6 +113,21 @@ class OrderEntity
     }
 
     /**
+     * Met à jour l'ordre de l'ensemble de la liste avec un ordre qui ce suit
+     * @return void
+     */
+    public function reOrderList(): void
+    {
+        $setFunction = 'set' . ucfirst($this->propertyName);
+        $order  = 1;
+        foreach($this->elements as $element)
+        {
+            $element->$setFunction($order);
+            $order++;
+        }
+    }
+
+    /**
      * @return Collection
      */
     public function getCollection(): Collection
