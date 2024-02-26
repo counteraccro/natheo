@@ -561,7 +561,7 @@ export default {
               </select>
             </div>
           </div>
-          <div v-if="this.updateNoSave" class="text-danger mt-3 text-center">
+          <div v-if="this.updateNoSave" class="text-danger mt-3 text-center p-2 bg-danger-subtle rounded-1 border-right border border-1">
             <i class="bi bi-exclamation-circle-fill"></i> <i>{{ this.translate.msg_no_save }}</i>
           </div>
         </div>
