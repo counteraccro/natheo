@@ -12,6 +12,7 @@ export default {
   components: {Modal},
   props: {
     option: String,
+    translate: Object,
   },
   emits: [],
   data() {
@@ -64,7 +65,7 @@ export default {
       let target = ev.target;
       let parent = target.parentElement
 
-      
+
       console.log(target.className);
 
       if(target.href !== undefined || parent.href !== undefined)
@@ -109,7 +110,7 @@ export default {
   >
     <template #title><i class="bi bi-plus-square"></i> Tr alerte</template>
     <template #body>
-      tr mesg
+      {{ this.translate.test }}
     </template>
     <template #footer>
       <button type="button" class="btn btn-primary" @click="this.redirect">

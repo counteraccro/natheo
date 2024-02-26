@@ -1,5 +1,10 @@
 
-<div {{ vue_component('Admin/CheckConfirm', {'option' : get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_CONFIRM_LEAVE_FORM'))}) }}></div>
+<div {{ vue_component('Admin/CheckConfirm', {
+    'option' : get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_CONFIRM_LEAVE_FORM')),
+    'translate' : {
+        'test' : 'message.global.loading' | trans
+    }
+}) }}></div>
 
 
 <script>
