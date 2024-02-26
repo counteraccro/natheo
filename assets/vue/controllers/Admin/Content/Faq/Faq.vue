@@ -279,8 +279,11 @@ export default {
         if (element.id_cat === idCat) {
           if (btnType === 'up') {
             r = renderOrder !== 1;
-          } else {
+          } else if (btnType === 'down') {
             r = element.max_render !== renderOrder;
+          }
+          else {
+            r = element.max_render !== 1
           }
         }
       })
@@ -595,7 +598,7 @@ export default {
                 <div v-if="fcat.renderOrder !== this.tabMaxRenderOrder.max_render_order_category" class="btn btn-secondary me-1 mb-1" @click="this.updateOrder(this.faq.id, fcat.id, 'category', 'after')">
                   <i class="bi bi-arrow-down"></i>
                 </div>
-                <div class="btn btn-secondary me-1 mb-1" @click="this.openModaleDelete(fcat.id, 'category')"><i class="bi bi-trash"></i></div>
+                <div v-if="this.tabMaxRenderOrder.max_render_order_category !== 1" class="btn btn-secondary me-1 mb-1" @click="this.openModaleDelete(fcat.id, 'category')"><i class="bi bi-trash"></i></div>
                 <div v-if="fcat.disabled" @click="this.openModalEnabled('category', fcat.id, this.getValueByLocale(fcat.faqCategoryTranslations, 'title'))" class="btn btn-secondary me-1 mb-1">
                   <i class="bi bi-eye"></i></div>
                 <div v-if="!fcat.disabled" @click="this.openModalDisabled('category', fcat.id, this.getValueByLocale(fcat.faqCategoryTranslations, 'title'))" class="btn btn-secondary me-1 mb-1">
@@ -651,7 +654,7 @@ export default {
                   <div v-if="this.showQuestionButton(fQuestion.faqCategory, fQuestion.renderOrder, 'down')" class="btn btn-secondary mt-1" @click="this.updateOrder(fcat.id, fQuestion.id, 'question', 'after')">
                     <i class="bi bi-arrow-down"></i></div>
                   <div class="clearfix"></div>
-                  <div class="btn btn-secondary mt-1" @click="this.openModaleDelete(fQuestion.id, 'question')"><i class="bi bi-trash"></i></div>
+                  <div v-if="this.showQuestionButton(fQuestion.faqCategory, fQuestion.renderOrder, 'trash')" class="btn btn-secondary mt-1" @click="this.openModaleDelete(fQuestion.id, 'question')"><i class="bi bi-trash"></i></div>
                   <div class="clearfix"></div>
                   <div v-if="fQuestion.disabled" @click="this.openModalEnabled('question', fQuestion.id, this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title'))" class="btn btn-secondary mt-1">
                     <i class="bi bi-eye"></i></div>
