@@ -1,12 +1,15 @@
 
+<div {{ vue_component('Admin/CheckConfirm', {'option' : get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_CONFIRM_LEAVE_FORM'))}) }}></div>
+
+
 <script>
     /**
      * Script JS pour détecter tout changement dans un formulaire
      */
     "use strict";
-    (() => {
+    /*(() => {
         let checkConfirm = '{{ get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_CONFIRM_LEAVE_FORM'))}}';
-        if(checkConfirm === '0')
+        if(checkConfirm === '0' || true)
         {
             return false;
         }
@@ -73,5 +76,5 @@
                 return evt;
             }
         });
-    })();
+    })();*/
 </script>

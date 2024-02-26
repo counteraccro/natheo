@@ -7,6 +7,7 @@
  */
 
 import axios from 'axios'
+import {emitter} from "../../../../utils/useEvent";
 
 export default {
   name: "OptionSystem",
@@ -89,7 +90,6 @@ export default {
           element.disabled = false;
         }
         else {
-          alert(response.data.msg);
           console.error(response.data.msg);
         }
         spinner.classList.add('visually-hidden');
@@ -100,6 +100,8 @@ export default {
         element.disabled = false;
         console.error(error);
       }).finally(() => {
+
+        emitter.emit('reset-check-confirm');
 
         if(id === 'OU_THEME_SITE')
         {

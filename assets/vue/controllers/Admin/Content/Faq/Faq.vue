@@ -10,6 +10,7 @@ import MarkdownEditor from "../../../../Components/Global/MarkdownEditor.vue";
 import Modal from "../../../../Components/Global/Modal.vue";
 import Toast from "../../../../Components/Global/Toast.vue";
 import OptionSystem from "../../System/Option.vue";
+import {emitter} from "../../../../../utils/useEvent";
 
 export default {
   name: "Faq",
@@ -90,6 +91,7 @@ export default {
         this.tabMaxRenderOrder = response.data.max_render_order;
         this.loadData = true;
         this.keyVal += 1;
+        emitter.emit('reset-check-confirm');
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -243,6 +245,7 @@ export default {
         if (response.data.success === true) {
           this.toasts.toastSuccessFaq.msg = response.data.msg;
           this.toasts.toastSuccessFaq.show = true;
+          emitter.emit('reset-check-confirm');
           window.location.replace(response.data.url_redirect);
         } else {
           this.toasts.toastErrorFaq.msg = response.data.msg;
