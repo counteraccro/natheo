@@ -107,6 +107,7 @@ class FaqController extends AppAdminController
                 'order_by_type' => $this->generateUrl('admin_faq_order_by_type'),
                 'new_cat_question' => $this->generateUrl('admin_faq_new_cat_question'),
                 'update_order' => $this->generateUrl('admin_faq_update_order'),
+                'delete_category_question' => $this->generateUrl('admin_faq_delete_category_question')
             ]
 
         ]);
@@ -366,10 +367,28 @@ class FaqController extends AppAdminController
      * @param string $type
      * @param FaqService $faqService
      * @return JsonResponse
+     * @throws \Exception
      */
-    #[Route('/ajax/delete-q-r/', name: 'delete_category_question', methods: 'DELETE')]
-    public function deleteCategoryQuestion(int $id, string $type, FaqService $faqService)
+    #[Route('/ajax/delete-q-r/{id}/{type}', name: 'delete_category_question', methods: 'DELETE')]
+    public function deleteCategoryQuestion(
+        FaqService          $faqService,
+        TranslatorInterface $translator,
+        int                 $id = 0,
+        string              $type = 'category'
+    ): JsonResponse
     {
-        return $this->json([]);
+        switch ($type) {
+            case FaqConst::TYPE_CATEGORY :
+                $faqService->deleteCategory($id);
+                $msg = $translator->trans('faq.category.remove.success', domain: 'faq');
+                break;
+            case FaqConst::TYPE_QUESTION:
+                $faqService->deleteQuestion($id);
+                $msg = $translator->trans('faq.question.remove.success', domain: 'faq');
+                break;
+            default:
+                $msg = $translator->trans('faq.generique.error', domain: 'faq');
+        }
+        return $this->json($faqService->getResponseAjax($msg));
     }
 }

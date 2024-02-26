@@ -495,6 +495,29 @@ export default {
       this.dataDelete.id = id;
       this.dataDelete.type = type;
       this.updateModale('deleteCatQuestFaq', true);
+    },
+
+    /**
+     * Supprime une catégorie ou une question
+     */
+    deleteFaqCategoryQuestion()
+    {
+      this.loading = true;
+      axios.delete(this.urls.delete_category_question + '/' + this.dataDelete.id + '/' + this.dataDelete.type).then((response) => {
+        if (response.data.success === true) {
+          this.toasts.toastSuccessFaq.msg = response.data.msg;
+          this.toasts.toastSuccessFaq.show = true;
+          this.updateModale('deleteCatQuestFaq', false);
+          this.loadFaq();
+        } else {
+          this.toasts.toastErrorFaq.msg = response.data.msg;
+          this.toasts.toastErrorFaq.show = true;
+        }
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        //this.loading = false;
+      });
     }
   },
 }
@@ -628,7 +651,7 @@ export default {
                   <div v-if="this.showQuestionButton(fQuestion.faqCategory, fQuestion.renderOrder, 'down')" class="btn btn-secondary mt-1" @click="this.updateOrder(fcat.id, fQuestion.id, 'question', 'after')">
                     <i class="bi bi-arrow-down"></i></div>
                   <div class="clearfix"></div>
-                  <div class="btn btn-secondary mt-1" @click="this.openModaleDelete(fcat.id, 'question')"><i class="bi bi-trash"></i></div>
+                  <div class="btn btn-secondary mt-1" @click="this.openModaleDelete(fQuestion.id, 'question')"><i class="bi bi-trash"></i></div>
                   <div class="clearfix"></div>
                   <div v-if="fQuestion.disabled" @click="this.openModalEnabled('question', fQuestion.id, this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title'))" class="btn btn-secondary mt-1">
                     <i class="bi bi-eye"></i></div>
@@ -767,15 +790,16 @@ export default {
           @close-modal="this.closeModal"
           :option-show-close-btn="false">
         <template #title>
-          <div v-if="this.dataDelete.type === 'question'">{{ this.translate.faq_question_delete_titre_confirm }}</div>
-          <div v-if="this.dataDelete.type === 'category'">{{ this.translate.faq_category_delete_titre_confirm }}</div>
+          <i class="bi bi-sign-stop-fill"></i>&nbsp;
+          <span v-if="this.dataDelete.type === 'question'">{{ this.translate.faq_question_delete_titre_confirm }}</span>
+          <span v-if="this.dataDelete.type === 'category'">{{ this.translate.faq_category_delete_titre_confirm }}</span>
         </template>
         <template #body>
           <div v-if="this.dataDelete.type === 'question'" v-html="this.translate.faq_question_delete_body_confirm"></div>
           <div v-if="this.dataDelete.type === 'category'" v-html="this.translate.faq_category_delete_body_confirm"></div>
         </template>
         <template #footer>
-          <button type="button" class="btn btn-primary" @click="">
+          <button type="button" class="btn btn-primary" @click="this.deleteFaqCategoryQuestion()">
             <i class="bi bi-check2-circle"></i> {{ translate.faq_disabled_btn_ok }}
           </button>
           <button type="button" class="btn btn-secondary" @click="this.closeModal('deleteCatQuestFaq')">

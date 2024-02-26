@@ -419,6 +419,48 @@ class FaqService extends AppAdminService
     }
 
     /**
+     * Supprime une catégorie et la réordonne
+     * @throws Exception
+     */
+    public function deleteCategory(int $id): void
+    {
+        /** @var FaqCategory $faqCategory */
+        $faqCategory = $this->findOneById(FaqCategory::class, $id);
+        $nbQuestion = $faqCategory->getFaqQuestions()->count();
+        $faq = $faqCategory->getFaq();
+
+        $faq->removeFaqCategory($faqCategory);
+        $this->updateFaqStatistique($faq,FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES, FaqConst::STATISTIQUE_ACTION_SUB);
+        $this->updateFaqStatistique($faq,FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
+            FaqConst::STATISTIQUE_ACTION_SUB, $nbQuestion);
+
+        $orderEntity = new OrderEntity($faq->getFaqCategories());
+        $orderEntity->reOrderList();
+        $this->save($faq);
+    }
+
+    /**
+     * Supprime une question
+     * @param int $id
+     * @return void
+     * @throws Exception
+     */
+    public function deleteQuestion(int $id): void
+    {
+        /** @var FaqQuestion $faqQuestion */
+        $faqQuestion = $this->findOneById(FaqQuestion::class, $id);
+        $faqCategory = $faqQuestion->getFaqCategory();
+
+        $faqCategory->removeFaqQuestion($faqQuestion);
+        $this->updateFaqStatistique($faqCategory->getFaq(),FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
+            FaqConst::STATISTIQUE_ACTION_SUB);
+
+        $orderEntity = new OrderEntity($faqCategory->getFaqQuestions());
+        $orderEntity->reOrderList();
+        $this->save($faqCategory);
+    }
+
+    /**
      * Retourne les traductions pour la création / édition d'une FAQ
      * @return array
      */
