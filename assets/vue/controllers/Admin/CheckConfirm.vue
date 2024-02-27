@@ -30,7 +30,13 @@ export default {
 
     document.addEventListener('click', this.onClick);
     document.addEventListener("input", (evt) => {
-      this.isChange = true;
+
+      let tabClass = evt.target.className.split(' ');
+
+      // Si on détecte la class excluante, on ne fait rien
+      if (!tabClass.includes(this.excludeClass)) {
+        this.isChange = true;
+      }
     });
 
     emitter.on('reset-check-confirm', async () => {
@@ -71,12 +77,6 @@ export default {
 
       let target = ev.target;
       let parent = target.parentElement
-      let tabClass = target.className.split(' ');
-
-      // Si on détecte la class excluante, on ne fait rien
-      if (tabClass.includes(this.excludeClass)) {
-        return true;
-      }
 
       // Si un lien est détecté ou le parent direct est un lien
       if (target.href !== undefined || parent.href !== undefined) {
