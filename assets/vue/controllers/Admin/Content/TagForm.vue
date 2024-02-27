@@ -3,10 +3,11 @@
 /**
  * Permet d'ajouter ou éditer un tag
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  */
 
 import axios from "axios";
+import {emitter} from "../../../../utils/useEvent";
 
 export default {
   name: "TagForm",
@@ -54,6 +55,7 @@ export default {
       axios.post(this.url, {
         'tag': this.tag
       }).then((response) => {
+        emitter.emit('reset-check-confirm');
         if (response.data.etat === 'new') {
           window.location = this.url_index;
         } else {
@@ -241,10 +243,10 @@ export default {
             </div>
 
             <input type="color" @change="this.isErrorHexa = false; this.msgErrorExa = ''"
-                   class="form-control form-control-color float-start no-control" id="tagColor"
+                   class="form-control form-control-color float-start" id="tagColor"
                    v-model="this.tag.color">
 
-            <input type="text" class="form-control no-control"
+            <input type="text" class="form-control"
                    :class="this.msgErrorExa !== '' ? 'is-invalid' : ''"
                    id="tagColorinput"
                    v-model="this.tag.color"
@@ -263,7 +265,7 @@ export default {
                 <div v-if="translation.locale === this.locales.current">
 
                   <div class="form-check form-switch float-end">
-                    <input class="form-check-input no-control" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
                            v-model="this.autoCopy">
                     <label class="form-check-label" for="flexSwitchCheckDefault">{{ this.translate.autoCopy }}</label>
                   </div>
@@ -278,7 +280,7 @@ export default {
                     }} {{ this.locales.localesTranslate[key] }}</label>
                   <input type="text"
                          :class="this.isNoEmptyInput(translation.id)"
-                         class="form-control no-control"
+                         class="form-control"
                          :id="'label-' + translation.locale"
                          placeholder=""
                          :disabled="this.isDisabled(translation.locale)"
