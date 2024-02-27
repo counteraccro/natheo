@@ -8,6 +8,7 @@
 
 import axios from "axios";
 import {Modal} from "bootstrap";
+import {emitter} from "../../../../utils/useEvent";
 
 export default {
     name: "Translate",
@@ -91,6 +92,7 @@ export default {
          * Charge le contenu du fichier sélectionné
          */
         loadFile() {
+            emitter.emit('reset-check-confirm');
             this.loading = true;
             axios.get(this.url_translate_file + '/' + this.currentFile).then((response) => {
                 this.tabTmpTranslate = [];
@@ -331,9 +333,9 @@ export default {
                 <div v-for="(translate, key) in this.file" class="mb-3 row">
                     <label :for="key" class="col-sm-2 col-form-label">{{ key }}</label>
                     <div class="col-sm-10">
-                        <input v-if="translate.length < 120" type="text" class="form-control no-control" :class="this.isChangeInput(key)" :id="key"
+                        <input v-if="translate.length < 120" type="text" class="form-control" :class="this.isChangeInput(key)" :id="key"
                                 :data-id="key" :value="this.getValue(key, translate)" :data-save="translate" @change="this.saveTmpTranslate($event)">
-                        <textarea v-else class="form-control no-control" rows="3" :id="key" :data-id="key" :class="this.isChangeInput(key)"
+                        <textarea v-else class="form-control" rows="3" :id="key" :data-id="key" :class="this.isChangeInput(key)"
                                 :data-save="translate" @change="this.saveTmpTranslate($event)">{{ this.getValue(key, translate) }}</textarea>
                         <div :data-id="key + '-help'" class="form-text text-warning" :class="this.isChangeHelp(key)">
                             {{ this.trans.translate_info_edit }}
