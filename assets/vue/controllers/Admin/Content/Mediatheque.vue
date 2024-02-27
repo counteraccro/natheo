@@ -1,6 +1,8 @@
 <script>
 /**
  * Interface de la médiathèque
+ * @version 1.1
+ * @author Gourdon Aymeric
  */
 
 import MediasGrid from "../../../Components/Mediatheque/MediasGrid.vue";
@@ -716,7 +718,7 @@ export default {
           <div class="float-end">
             <div class="input-group float-start me-1" style="width: 250px">
               <button class="btn btn-secondary" type="button" id="button-addon1"><i class="bi bi-search"></i></button>
-              <input type="text" class="form-control" :placeholder="this.translate.search_placeholder">
+              <input type="text" class="form-control no-control" :placeholder="this.translate.search_placeholder">
             </div>
             <div class="btn-group">
               <button type="button" class="btn btn-secondary dropdown-toggle me-1" data-bs-toggle="dropdown"
@@ -825,7 +827,7 @@ export default {
             <label for="folderName" class="form-label">{{ this.translate.folder.input_label }} *</label>
             <input type="text" v-model="folderName"
                    @keyup="this.validateFolderName()"
-                   class="form-control"
+                   class="form-control no-control"
                    id="input-folder-name"
                    :placeholder="this.translate.folder.input_label_placeholder">
             <div class="invalid-feedback">
