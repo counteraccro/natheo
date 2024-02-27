@@ -8,6 +8,7 @@
 import MarkdownEditor from "../../../Components/Global/MarkdownEditor.vue";
 import axios from "axios";
 import {Toast} from "bootstrap";
+import {emitter} from "../../../../utils/useEvent";
 
 export default {
   name: "Mail",
@@ -156,6 +157,7 @@ export default {
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
+        emitter.emit('reset-check-confirm');
         setTimeout(this.removeMsg, 3000);
         this.loading = false
       });
@@ -214,7 +216,7 @@ export default {
 
           <div class="mb-3">
             <label for="titleTrans" class="form-label">{{ this.translate.titleTrans }}</label>
-            <input type="text" class="form-control no-control" :class="this.isValideTitle" id="titleTrans" v-model="mail.titleTrans" @change="this.checkTitle">
+            <input type="text" class="form-control" :class="this.isValideTitle" id="titleTrans" v-model="mail.titleTrans" @change="this.checkTitle">
             <div id="titleTransError" class="invalid-feedback">
               {{ this.translate.msgEmptyTitle }}
             </div>
