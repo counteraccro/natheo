@@ -2,7 +2,11 @@
 <div {{ vue_component('Admin/CheckConfirm', {
     'option' : get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_CONFIRM_LEAVE_FORM')),
     'translate' : {
-        'test' : 'message.global.loading' | trans
+        'titre' : 'message.global.modal.confirm.titre' | trans,
+        'corps' : 'message.global.modal.confirm.corps' | trans,
+        'oui' : 'message.global.modal.confirm.oui' | trans,
+        'non' : 'message.global.modal.confirm.non' | trans
+
     }
 }) }}></div>
 

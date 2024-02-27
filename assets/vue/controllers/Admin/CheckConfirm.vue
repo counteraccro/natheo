@@ -19,6 +19,7 @@ export default {
   data() {
     return {
       isChange: false,
+      excludeClass: 'no-control',
       tmpUrl: '',
       modalTab: {
         confirmModal: false,
@@ -29,7 +30,6 @@ export default {
 
     document.addEventListener('click', this.onClick);
     document.addEventListener("input", (evt) => {
-      console.log('change');
       this.isChange = true;
     });
 
@@ -57,40 +57,47 @@ export default {
       this.modalTab[nameModale] = state;
     },
 
+    /** Ferme la modale **/
     closeModal(id) {
       this.updateModal(id, false)
     },
 
+    /**
+     * Évènement onclick
+     * @param ev
+     * @returns {boolean}
+     */
     onClick(ev) {
 
       let target = ev.target;
       let parent = target.parentElement
+      let tabClass = target.className.split(' ');
 
+      // Si on détecte la class excluante, on ne fait rien
+      if (tabClass.includes(this.excludeClass)) {
+        return true;
+      }
 
-      console.log(target.className);
-
-      if(target.href !== undefined || parent.href !== undefined)
-      {
-        if(target.href !== undefined)
-        {
+      // Si un lien est détecté ou le parent direct est un lien
+      if (target.href !== undefined || parent.href !== undefined) {
+        if (target.href !== undefined) {
           this.tmpUrl = ev.target.href;
-        }else {
+        } else {
           this.tmpUrl = parent.href;
         }
-        if(this.isChange)
-        {
-          console.log('event change');
+
+        if (this.isChange) {
           this.updateModal('confirmModal', true)
           ev.preventDefault();
           ev.stopImmediatePropagation();
-
         }
       }
-
     },
 
-    redirect()
-    {
+    /**
+     * Redirige vers le lien défini
+     */
+    redirect() {
       this.isChange = false;
       document.location.href = this.tmpUrl;
     }
@@ -100,27 +107,24 @@ export default {
 </script>
 
 <template>
-
   <modal
       :id="'confirmModal'"
       :show="this.modalTab.confirmModal"
       @close-modal="this.closeModal"
-      :option-modal-size="'modal-lg'"
       :option-modal-backdrop="'static'"
       :option-show-close-btn="false"
   >
-    <template #title><i class="bi bi-plus-square"></i> Tr alerte</template>
+    <template #title><i class="bi bi-exclamation-triangle"></i>  {{ this.translate.titre }}</template>
     <template #body>
-      {{ this.translate.test }}
+      {{ this.translate.corps }}
     </template>
     <template #footer>
       <button type="button" class="btn btn-primary" @click="this.redirect">
-        <i class="bi bi-check2-circle"></i> Oui
+        <i class="bi bi-check2-circle"></i> {{ this.translate.oui }}
       </button>
       <button type="button" class="btn btn-secondary" @click="this.updateModal('confirmModal', false)">
-        <i class="bi bi-x-circle"></i> Non
+        <i class="bi bi-x-circle"></i> {{ this.translate.non }}
       </button>
     </template>
   </modal>
-
 </template>
