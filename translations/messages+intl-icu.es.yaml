@@ -210,3 +210,7 @@ flash.title.success: __flash.title.success
 flash.title.warning: __flash.title.warning
 flash.title.danger: __flash.title.danger
 flash.time: __flash.time
+message.global.modal.confirm.titre: __message.global.modal.confirm.titre
+message.global.modal.confirm.corps: __message.global.modal.confirm.corps
+message.global.modal.confirm.oui: __message.global.modal.confirm.oui
+message.global.modal.confirm.non: __message.global.modal.confirm.non
