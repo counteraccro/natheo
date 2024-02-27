@@ -1,5 +1,6 @@
-<script>/**
- * Permet de générer un rendu pour les pages
+<script>
+/**
+ * Permet d'afficher une modale de confirmation si un champ à été modifié sans sauvegarde
  * @author Gourdon Aymeric
  * @version 1.0
  */
