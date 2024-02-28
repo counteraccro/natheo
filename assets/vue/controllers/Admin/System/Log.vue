@@ -54,7 +54,7 @@ export default {
           show: false,
           msg: '',
         },
-        toastError : {
+        toastError: {
           show: false,
           msg: '',
         }
@@ -67,12 +67,13 @@ export default {
   ,
   methods: {
     loadData() {
+      this.loading = true;
       axios.get(this.url_select + '/' + this.time).then((response) => {
         this.select = response.data.files;
         this.trans = response.data.trans;
       }).catch((error) => {
         console.error(error);
-      }).finally();
+      }).finally(() => this.loading = false);
     }
     ,
     changeTimeFiltre(event) {
@@ -102,17 +103,31 @@ export default {
     loadContentFile(page, limit) {
       this.loading = true;
       axios.get(this.url_load_log_file + '/' + this.selectFile + '/' + page + '/' + limit).then((response) => {
-        this.gridColumns = response.data.column;
-        this.gridData = response.data.data;
-        this.nbElements = response.data.nb;
-        this.sortOrders = this.gridColumns.reduce((o, key) => ((o[key] = 1), o), {});
-        this.listLimit = JSON.parse(response.data.listLimit);
-        this.translate = JSON.parse(response.data.translate.genericGrid);
-        this.translateGridPaginate = JSON.parse(response.data.translate.gridPaginate);
-        this.translateGrid = JSON.parse(response.data.translate.grid);
-        this.cPage = page;
-        this.cLimit = limit;
-        this.taille = response.data.taille;
+
+        if (response.data.success === true) {
+          if(page === 1) {
+            this.toasts.toastSuccess.msg = response.data.msg;
+            this.toasts.toastSuccess.show = true;
+          }
+
+          this.gridColumns = response.data.grid.column;
+          this.gridData = response.data.grid.data;
+          this.nbElements = response.data.grid.nb;
+          this.sortOrders = this.gridColumns.reduce((o, key) => ((o[key] = 1), o), {});
+          this.listLimit = JSON.parse(response.data.grid.listLimit);
+          this.translate = JSON.parse(response.data.grid.translate.genericGrid);
+          this.translateGridPaginate = JSON.parse(response.data.grid.translate.gridPaginate);
+          this.translateGrid = JSON.parse(response.data.grid.translate.grid);
+          this.cPage = page;
+          this.cLimit = limit;
+          this.taille = response.data.grid.taille;
+
+        } else {
+          this.toasts.toastError.msg = response.data.msg;
+          this.toasts.toastError.show = true;
+          this.loading = false;
+        }
+
       }).catch((error) => {
         console.error(error);
       }).finally(() => this.loading = false);
@@ -190,149 +205,126 @@ export default {
 </script>
 
 <template>
-  <div class="row">
-    <div class="col">
-      <select class="form-select no-control" id="select-file" @change="selectLogFile($event)">
-        <option value="" selected>{{ this.trans.log_select_file }}</option>
-        <option v-for="option in this.select" v-bind:value="option.path">{{ option.name }}</option>
-      </select>
+  <div :class="loading === true ? 'block-grid' : ''">
+    <div v-if="loading" class="overlay">
+      <div class="position-absolute top-50 start-50 translate-middle">
+        <div class="spinner-border text-primary" role="status"></div>
+        <span class="txt-overlay">{{ translate.loading }}</span>
+      </div>
     </div>
-    <div class="col">
-      <select class="form-select no-control" id="select-time" @change="changeTimeFiltre($event)">
-        <option value="all">{{ this.trans.log_select_time_all }}</option>
-        <option value="now">{{ this.trans.log_select_time_now }}</option>
-        <option value="yesterday">{{ this.trans.log_select_time_yesterday }}</option>
-      </select>
+
+    <div class="row">
+      <div class="col">
+        <select class="form-select no-control" id="select-file" @change="selectLogFile($event)">
+          <option value="" selected>{{ this.trans.log_select_file }}</option>
+          <option v-for="option in this.select" v-bind:value="option.path">{{ option.name }}</option>
+        </select>
+      </div>
+      <div class="col">
+        <select class="form-select no-control" id="select-time" @change="changeTimeFiltre($event)">
+          <option value="all">{{ this.trans.log_select_time_all }}</option>
+          <option value="now">{{ this.trans.log_select_time_now }}</option>
+          <option value="yesterday">{{ this.trans.log_select_time_yesterday }}</option>
+        </select>
+      </div>
     </div>
-  </div>
 
-  <div v-if="selectFile !== ''">
+    <div v-if="selectFile !== ''">
 
-    <div class="card mt-3 border border-secondary">
+      <div class="card mt-3 border border-secondary">
+        <div class="card-header text-bg-secondary">
+
+          <div class="dropdown float-end">
+            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-list"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" href="#" @click="this.loadContentFile(1, this.limit)"><i class="bi bi-arrow-clockwise"></i> {{ this.trans.log_btn_reload }}</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#"><i class="bi bi-download"></i> {{ this.trans.log_btn_download_file }}</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" @click="this.delete(this.selectFile, true)"><i class="bi bi-x-lg"></i> {{ this.trans.log_btn_delete_file }}</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="mt-1"><i class="bi bi-file-earmark-text"></i>
+            {{ this.trans.log_file }}
+            <b>{{ this.selectFile }}</b> - {{ this.trans.log_file_size }} {{ this.taille }} - {{ this.nbElements }} {{ this.trans.log_file_ligne }}
+          </div>
+
+        </div>
+        <div class="card-body">
+
+          <form id="search">
+            <div class="input-group mb-3">
+              <span class="input-group-text"><i class="bi bi-search"></i></span>
+              <input type="text" class="form-control no-control" :placeholder="translate.placeholder" v-model="searchQuery">
+            </div>
+          </form>
+
+          <div>
+
+            <Grid
+                :data="gridData"
+                :columns="gridColumns"
+                :filter-key="searchQuery"
+                :sortOrders="sortOrders"
+                :translate="translateGrid"
+                @redirect-action="redirectAction">
+            </Grid>
+            <GridPaginate
+                :current-page="cPage"
+                :nb-elements="limit"
+                :nb-elements-total="nbElements"
+                :url="url_load_log_file"
+                :list-limit="listLimit"
+                :translate="translateGridPaginate"
+                @change-page-event="loadContentFile"
+            >
+            </GridPaginate>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-else class="card mt-3 border border-secondary">
       <div class="card-header text-bg-secondary">
-
-        <div class="dropdown float-end">
-          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-list"></i>
-          </button>
-          <ul class="dropdown-menu">
-            <li>
-              <a class="dropdown-item" href="#" @click="this.loadContentFile(this.page, this.limit)"><i class="bi bi-arrow-clockwise"></i> {{ this.trans.log_btn_reload }}</a>
-            </li>
-            <li><a class="dropdown-item" href="#"><i class="bi bi-download"></i> {{ this.trans.log_btn_download_file }}</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#" @click="this.delete(this.selectFile, true)"><i class="bi bi-x-lg"></i> {{ this.trans.log_btn_delete_file }}</a>
-            </li>
-          </ul>
+        <div class="btn btn-secondary btn-sm float-end disabled"><i class="bi bi-list"></i></div>
+        <div class="mt-1">
+          <i class="bi bi-file-earmark-text"></i> {{ this.trans.log_file }} -- - {{ this.trans.log_file_size }} 0 Ko - 0 {{ this.trans.log_file_ligne }}
         </div>
-
-        <div class="mt-1"><i class="bi bi-file-earmark-text"></i>
-          {{ this.trans.log_file }}
-          <b>{{ this.selectFile }}</b> - {{ this.trans.log_file_size }} {{ this.taille }} - {{ this.nbElements }} {{ this.trans.log_file_ligne }}
-        </div>
-
       </div>
       <div class="card-body">
-
-        <form id="search">
-          <div class="input-group mb-3">
-            <span class="input-group-text"><i class="bi bi-search"></i></span>
-            <input type="text" class="form-control no-control" :placeholder="translate.placeholder" v-model="searchQuery">
-          </div>
-        </form>
-
-
-        <!--<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header bg-secondary">
-                <h1 class="modal-title fs-5 text-white"><i class="bi bi-sign-stop"></i> {{ translate.confirmTitle }}
-                </h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body" v-html="msgConfirm">
-              </div>
-              <div class="modal-footer" v-if="!loadDeleteFile">
-                <button type="button" class="btn btn-primary" @click="this.delete(this.selectFile, false)">
-                  <i class="bi bi-check2-circle"></i> {{ translate.confirmBtnOK }}
-                </button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                  <i class="bi bi-x-circle"></i> {{ translate.confirmBtnNo }}
-                </button>
-              </div>
-              <div class="modal-footer" v-else>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                  <i class="bi bi-x-circle"></i> {{ trans.log_delete_file_btn_close }}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div> -->
-
-        <!-- modale confirmation suppression -->
-        <modal
-            :id="'modalDeleteLog'"
-            :show="this.modalDeleteLog"
-            @close-modal="this.hideModal"
-            :option-show-close-btn="false">
-          <template #title>
-            <i class="bi bi-sign-stop"></i> {{ translate.confirmTitle }}
-          </template>
-          <template #body>
-            <div v-html="this.msgConfirm"></div>
-          </template>
-          <template #footer>
-            <button type="button" class="btn btn-primary" @click="this.delete(this.selectFile, false)">
-              <i class="bi bi-check2-circle"></i> {{ translate.confirmBtnOK }}
-            </button>
-            <button type="button" class="btn btn-secondary" @click="this.hideModal">
-              <i class="bi bi-x-circle"></i> {{ translate.confirmBtnNo }}
-            </button>
-          </template>
-        </modal>
-        <!-- fin modale confirmation supression -->
-
-        <div :class="loading === true ? 'block-grid' : ''">
-          <div v-if="loading" class="overlay">
-            <div class="position-absolute top-50 start-50 translate-middle">
-              <div class="spinner-border text-primary" role="status"></div>
-              <span class="txt-overlay">{{ translate.loading }}</span>
-            </div>
-          </div>
-          <Grid
-              :data="gridData"
-              :columns="gridColumns"
-              :filter-key="searchQuery"
-              :sortOrders="sortOrders"
-              :translate="translateGrid"
-              @redirect-action="redirectAction">
-          </Grid>
-          <GridPaginate
-              :current-page="cPage"
-              :nb-elements="limit"
-              :nb-elements-total="nbElements"
-              :url="url_load_log_file"
-              :list-limit="listLimit"
-              :translate="translateGridPaginate"
-              @change-page-event="loadContentFile"
-          >
-          </GridPaginate>
-        </div>
+        <p class="text-center"><i class="bi bi-info-circle"></i> <i>{{ this.trans.log_empty_file }}</i></p>
       </div>
     </div>
   </div>
-  <div v-else class="card mt-3 border border-secondary">
-    <div class="card-header text-bg-secondary">
-      <div class="btn btn-secondary btn-sm float-end disabled"><i class="bi bi-list"></i></div>
-      <div class="mt-1">
-        <i class="bi bi-file-earmark-text"></i> {{ this.trans.log_file }} -- - {{ this.trans.log_file_size }} 0 Ko - 0 {{ this.trans.log_file_ligne }}
-      </div>
-    </div>
-    <div class="card-body">
-      <p class="text-center"><i class="bi bi-info-circle"></i> <i>{{ this.trans.log_empty_file }}</i></p>
-    </div>
-  </div>
+
+  <!-- modale confirmation suppression -->
+  <modal
+      :id="'modalDeleteLog'"
+      :show="this.modalDeleteLog"
+      @close-modal="this.hideModal"
+      :option-show-close-btn="false">
+    <template #title>
+      <i class="bi bi-sign-stop"></i> {{ translate.confirmTitle }}
+    </template>
+    <template #body>
+      <div v-html="this.msgConfirm"></div>
+    </template>
+    <template #footer>
+      <button type="button" class="btn btn-primary" @click="this.delete(this.selectFile, false)">
+        <i class="bi bi-check2-circle"></i> {{ translate.confirmBtnOK }}
+      </button>
+      <button type="button" class="btn btn-secondary" @click="this.hideModal">
+        <i class="bi bi-x-circle"></i> {{ translate.confirmBtnNo }}
+      </button>
+    </template>
+  </modal>
+  <!-- fin modale confirmation supression -->
 
   <!-- toast -->
   <div class="toast-container position-fixed top-0 end-0 p-2">

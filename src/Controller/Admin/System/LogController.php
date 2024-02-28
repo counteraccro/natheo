@@ -98,6 +98,7 @@ class LogController extends AppAdminController
     #[Route('/ajax/load-log-file/{file}/{page}/{limit}', name: 'ajax_load_log_file', methods: ['GET'])]
     public function loadLogFile(
         LoggerService $loggerService,
+        TranslatorInterface $translator,
         string        $file = '',
         int           $page = 1,
         int           $limit = 20
@@ -106,13 +107,17 @@ class LogController extends AppAdminController
 
         try {
             $grid = $loggerService->loadLogFile($file, $page, $limit);
+            $success = true;
+            $msg =  $translator->trans('log.load.success.file', ['file' => $file], domain: 'log');
         } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
-            die($e->getMessage());
+            $success = false;
+            $msg = $e->getMessage();
         } catch (Exception $e) {
-            die($e->getMessage());
+            $success = false;
+            $msg = $e->getMessage();
         }
 
-        return $this->json($grid);
+        return $this->json(['success' => $success, 'msg' => $msg, 'grid' => $grid]);
     }
 
     /**
