@@ -44,7 +44,7 @@ export default {
     </div>
 
     <div class="float-end me-3">
-      <select class="form-select form-select-sm" aria-label="Default select example" v-model="cLimit" @change="$emit('change-page-event', 1, cLimit)">
+      <select class="form-select form-select-sm no-control" aria-label="Default select example" v-model="cLimit" @change="$emit('change-page-event', 1, cLimit)">
         <option v-for="(i) in this.listLimit" :value="i">{{i}}</option>
       </select>
     </div>
