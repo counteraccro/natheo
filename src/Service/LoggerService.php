@@ -2,7 +2,7 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Service qui gère les logs de l'application
  */
 
@@ -86,6 +86,7 @@ class LoggerService extends AppService
      */
     const DIRECTORY_LOG = 'log';
 
+
     public function __construct(
         TranslatorInterface   $translator,
         RequestStack          $requestStack,
@@ -106,6 +107,18 @@ class LoggerService extends AppService
         $this->optionUserService = $optionUserService;
         $this->localeAware = $localeAware;
         parent::__construct($translator, $requestStack, $security, $params, $entityManager);
+    }
+
+    /**
+     * Retourne le path des logs
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getPathLog() :string
+    {
+        $kernel = $this->params->get('kernel.project_dir');
+        return $kernel . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . self::DIRECTORY_LOG;
     }
 
     /**
@@ -206,8 +219,7 @@ class LoggerService extends AppService
      */
     public function getAllFiles(string $date = ""): array
     {
-        $kernel = $this->params->get('kernel.project_dir');
-        $pathLog = $kernel . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . self::DIRECTORY_LOG;
+        $pathLog = $this->getPathLog();
 
         $finder = new Finder();
         if ($date !== "all") {
@@ -243,8 +255,7 @@ class LoggerService extends AppService
             $this->translator->trans('log.grid.message', domain: 'log'),
         ];
 
-        $kernel = $this->params->get('kernel.project_dir');
-        $pathLog = $kernel . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . self::DIRECTORY_LOG;
+        $pathLog = $this->getPathLog();
         $finder = new Finder();
         $finder->files()->name($fileName)->in($pathLog);
 
@@ -328,8 +339,7 @@ class LoggerService extends AppService
      */
     public function deleteLog(string $fileName): bool
     {
-        $kernel = $this->params->get('kernel.project_dir');
-        $pathLog = $kernel . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . self::DIRECTORY_LOG;
+        $pathLog = $this->getPathLog();
         $finder = new Finder();
 
         $finder->files()->name($fileName)->in($pathLog);
@@ -342,6 +352,28 @@ class LoggerService extends AppService
             return true;
         }
         return false;
+    }
+
+    /**
+     * Retourne le path d'un fichier
+     * @param string $fileName
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getPathFile(string $fileName) :string
+    {
+        $pathLog = $this->getPathLog();
+        $finder = new Finder();
+
+        $finder->files()->name($fileName)->in($pathLog);
+
+        if ($finder->hasResults()) {
+            foreach ($finder as $file) {
+               return $file->getPathname();
+            }
+        }
+        return '';
     }
 
     /**

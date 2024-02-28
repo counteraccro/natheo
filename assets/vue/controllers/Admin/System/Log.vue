@@ -9,7 +9,6 @@ import GridPaginate from "../../../Components/Grid/GridPaginate.vue";
 import axios from "axios";
 import Modal from "../../../Components/Global/Modal.vue";
 import Toast from "../../../Components/Global/Toast.vue";
-import {emitter} from "../../../../utils/useEvent";
 
 export default {
   name: "Log",
@@ -23,6 +22,7 @@ export default {
     url_select: String,
     url_load_log_file: String,
     url_delete_file: String,
+    url_download_file: String,
     page: Number,
     limit: String,
   },
@@ -243,7 +243,7 @@ export default {
                 <a class="dropdown-item" href="#" @click="this.loadContentFile(1, this.limit)"><i class="bi bi-arrow-clockwise"></i> {{ this.trans.log_btn_reload }}</a>
               </li>
               <li>
-                <a class="dropdown-item" href="#"><i class="bi bi-download"></i> {{ this.trans.log_btn_download_file }}</a>
+                <a class="dropdown-item" target="_blank" :href="this.url_download_file + '/' +this.selectFile"><i class="bi bi-download"></i> {{ this.trans.log_btn_download_file }}</a>
               </li>
               <li>
                 <a class="dropdown-item" href="#" @click="this.delete(this.selectFile, true)"><i class="bi bi-x-lg"></i> {{ this.trans.log_btn_delete_file }}</a>

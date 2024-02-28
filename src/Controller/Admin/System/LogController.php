@@ -14,6 +14,7 @@ use App\Utils\System\Options\OptionUserKey;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -89,6 +90,7 @@ class LogController extends AppAdminController
     /**
      * Retourne le contenu d'un fichier de log
      * @param LoggerService $loggerService
+     * @param TranslatorInterface $translator
      * @param string $file
      * @param int $page
      * @param int $limit
@@ -122,13 +124,13 @@ class LogController extends AppAdminController
 
     /**
      * Permet de supprimer un ou plusieurs fichiers
-     * @param Request $request
      * @param LoggerService $loggerService
+     * @param TranslatorInterface $translator
+     * @param string $file
      * @return JsonResponse
      */
     #[Route('/ajax/delete-file/{file}', name: 'ajax_delete_file', methods: ['DELETE'])]
     public function deleteFile(
-        Request $request,
         LoggerService $loggerService,
         TranslatorInterface $translator,
         string $file = ''
@@ -143,5 +145,20 @@ class LogController extends AppAdminController
         }
 
         return $this->json(['success' => $success, 'msg' => $msg]);
+    }
+
+    /**
+     * Permet de télécharger un fichier de log
+     * @param LoggerService $loggerService
+     * @param string $file
+     * @return BinaryFileResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/download/{file}', name: 'download_log', methods: ['GET'])]
+    public function downloadFile(LoggerService $loggerService, string $file = ''): BinaryFileResponse
+    {
+        $path = $loggerService->getPathFile($file);
+        return $this->file($path, $file);
     }
 }
