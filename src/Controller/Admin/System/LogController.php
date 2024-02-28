@@ -71,9 +71,11 @@ class LogController extends AppAdminController
             'log_delete_file_confirm' => $translator->trans('log.delete.file.confirm', domain: 'log'),
             'log_delete_file_confirm_2' => $translator->trans('log.delete.file.confirm_2', domain: 'log'),
             'log_delete_file_loading' => $translator->trans('log.delete.file.loading', domain: 'log'),
-            'log_delete_file_success' => $translator->trans('log.delete.file.success', domain: 'log'),
             'log_delete_file_btn_close' => $translator->trans('log.delete.file.btn_close', domain: 'log'),
             'log_btn_reload' => $translator->trans('log.btn.reload', domain: 'log'),
+            'toast_title_success' => $translator->trans('log.toast.title.success', domain: 'log'),
+            'toast_time' => $translator->trans('log.toast.time', domain: 'log'),
+            'toast_title_error' => $translator->trans('log.toast.title.error', domain: 'log'),
         ];
 
         try {
@@ -119,17 +121,22 @@ class LogController extends AppAdminController
      * @param LoggerService $loggerService
      * @return JsonResponse
      */
-    #[Route('/ajax/delete-file', name: 'ajax_delete_file', methods: ['POST'])]
-    public function deleteFile(Request $request, LoggerService $loggerService): JsonResponse
+    #[Route('/ajax/delete-file/{file}', name: 'ajax_delete_file', methods: ['DELETE'])]
+    public function deleteFile(
+        Request $request,
+        LoggerService $loggerService,
+        TranslatorInterface $translator,
+        string $file = ''
+    ): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-
         try {
-            $success = $loggerService->deleteLog($data['file']);
+            $success = $loggerService->deleteLog($file);
+            $msg = $translator->trans('log.delete.file.success', domain: 'log');
         } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
-            die($e->getMessage());
+            $success = false;
+            $msg = $e->getMessage();
         }
 
-        return $this->json(['success' => $success]);
+        return $this->json(['success' => $success, 'msg' => $msg]);
     }
 }
