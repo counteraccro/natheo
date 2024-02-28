@@ -66,6 +66,7 @@ class LogController extends AppAdminController
             'log_file_size' => $translator->trans('log.file.size', domain: 'log'),
             'log_file_ligne' => $translator->trans('log.file.ligne', domain: 'log'),
             'log_btn_delete_file' => $translator->trans('log.btn.delete.file', domain: 'log'),
+            'log_btn_download_file' => $translator->trans('log.btn.download.file', domain: 'log'),
             'log_empty_file' => $translator->trans('log.empty.file', domain: 'log'),
             'log_delete_file_confirm' => $translator->trans('log.delete.file.confirm', domain: 'log'),
             'log_delete_file_confirm_2' => $translator->trans('log.delete.file.confirm_2', domain: 'log'),

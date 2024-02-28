@@ -171,9 +171,21 @@ export default {
 
     <div class="card mt-3 border border-secondary">
       <div class="card-header text-bg-secondary">
-        <div class="btn btn-danger btn-sm float-end" @click="this.delete(this.selectFile, true)">{{ this.trans.log_btn_delete_file }}</div>
-        <div class="btn btn-success btn-sm float-end me-2" @click="this.loadContentFile(this.page, this.limit)"><i class="bi bi-arrow-clockwise"></i> {{ this.trans.log_btn_reload }}</div>
-        <div class="mt-1">{{ this.trans.log_file }} {{ this.selectFile }} - {{ this.trans.log_file_size }} {{ this.taille }} - {{ this.nbElements }} {{ this.trans.log_file_ligne }}</div>
+
+        <div class="dropdown float-end">
+          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-list"></i>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#" @click="this.loadContentFile(this.page, this.limit)"><i class="bi bi-arrow-clockwise"></i> {{ this.trans.log_btn_reload }}</a></li>
+            <li><a class="dropdown-item" href="#" ><i class="bi bi-download"></i> {{ this.trans.log_btn_download_file }}</a></li>
+            <li><a class="dropdown-item" href="#" @click="this.delete(this.selectFile, true)"><i class="bi bi-x-lg"></i> {{ this.trans.log_btn_delete_file }}</a></li>
+          </ul>
+        </div>
+
+        <div class="mt-1"><i class="bi bi-file-earmark-text"></i>
+          {{ this.trans.log_file }} <b>{{ this.selectFile }}</b> - {{ this.trans.log_file_size }} {{ this.taille }} - {{ this.nbElements }} {{ this.trans.log_file_ligne }}
+        </div>
 
       </div>
       <div class="card-body">
@@ -248,11 +260,10 @@ export default {
       </div>
     </div>
   </div>
-  <div class="card mt-3 border border-secondary" v-else>
+  <div v-else class="card mt-3 border border-secondary">
     <div class="card-header text-bg-secondary">
-      <div class="btn btn-danger btn-sm float-end disabled">{{ this.trans.log_btn_delete_file }}</div>
-      <div class="btn btn-success btn-sm float-end disabled me-2"><i class="bi bi-arrow-clockwise"></i> {{ this.trans.log_btn_reload }}</div>
-      <div class="mt-1">{{ this.trans.log_file }} -- - {{ this.trans.log_file_size }} 0 Ko - 0 {{ this.trans.log_file_ligne }}</div>
+      <div class="btn btn-secondary btn-sm float-end disabled"> <i class="bi bi-list"></i></div>
+      <div class="mt-1"><i class="bi bi-file-earmark-text"></i> {{ this.trans.log_file }} -- - {{ this.trans.log_file_size }} 0 Ko - 0 {{ this.trans.log_file_ligne }}</div>
     </div>
     <div class="card-body">
       <p class="text-center"><i class="bi bi-info-circle"></i> <i>{{ this.trans.log_empty_file }}</i></p>
