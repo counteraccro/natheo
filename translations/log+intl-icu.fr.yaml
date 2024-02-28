@@ -26,6 +26,7 @@ log.grid.date: Date
 log.grid.message: Message
 log.auth.admin.user.switch: 'Le SUPER_ADMIN <b>{user}</b> à prit le contrôle du compte de <b>{userToSwitch}</b>'
 log.btn.download.file: Télécharger
-log.toast.title.success: 'Success'
+log.toast.title.success: Success
 log.toast.time: "A l'instant"
-log.toast.title.error: 'Erreur'
+log.toast.title.error: Erreur
+log.load.success.file: 'Fichier <b>{file}</b> chargé avec succès'
