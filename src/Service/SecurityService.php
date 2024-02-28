@@ -2,7 +2,7 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Service qui gère les actions de sécurité
  */
 
@@ -17,7 +17,9 @@ use App\Utils\System\User\UserdataKey;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
+use Psr\Container\ContainerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -26,24 +28,17 @@ class SecurityService extends AppService
 {
     private OptionSystemService $optionSystemService;
 
-    /** Constructeur
-     * @param TranslatorInterface $translator
-     * @param RequestStack $requestStack
-     * @param Security $security
-     * @param ContainerBagInterface $params
-     * @param OptionSystemService $optionSystemService
-     */
-    public function __construct(
-        TranslatorInterface    $translator,
-        RequestStack           $requestStack,
-        Security               $security,
-        ContainerBagInterface  $params,
-        EntityManagerInterface $entityManager,
-        OptionSystemService    $optionSystemService
-    )
+    public function __construct(#[AutowireLocator([
+        'entityManager' => EntityManagerInterface::class,
+        'containerBag' => ContainerBagInterface::class,
+        'translator' => TranslatorInterface::class,
+        'security' => Security::class,
+        'requestStack' => RequestStack::class,
+        'OptionSystemService' => OptionSystemService::class
+    ])] private readonly ContainerInterface $handlers)
     {
-        $this->optionSystemService = $optionSystemService;
-        parent::__construct($translator, $requestStack, $security, $params, $entityManager);
+        $this->optionSystemService = $this->handlers->get('OptionSystemService');
+        parent::__construct($handlers);
     }
 
     /**

@@ -2,7 +2,7 @@
 /**
  * Log
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  */
 
 namespace App\Controller\Admin\System;
@@ -14,6 +14,7 @@ use App\Utils\System\Options\OptionUserKey;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,13 +67,16 @@ class LogController extends AppAdminController
             'log_file_size' => $translator->trans('log.file.size', domain: 'log'),
             'log_file_ligne' => $translator->trans('log.file.ligne', domain: 'log'),
             'log_btn_delete_file' => $translator->trans('log.btn.delete.file', domain: 'log'),
+            'log_btn_download_file' => $translator->trans('log.btn.download.file', domain: 'log'),
             'log_empty_file' => $translator->trans('log.empty.file', domain: 'log'),
             'log_delete_file_confirm' => $translator->trans('log.delete.file.confirm', domain: 'log'),
             'log_delete_file_confirm_2' => $translator->trans('log.delete.file.confirm_2', domain: 'log'),
             'log_delete_file_loading' => $translator->trans('log.delete.file.loading', domain: 'log'),
-            'log_delete_file_success' => $translator->trans('log.delete.file.success', domain: 'log'),
             'log_delete_file_btn_close' => $translator->trans('log.delete.file.btn_close', domain: 'log'),
             'log_btn_reload' => $translator->trans('log.btn.reload', domain: 'log'),
+            'toast_title_success' => $translator->trans('log.toast.title.success', domain: 'log'),
+            'toast_time' => $translator->trans('log.toast.time', domain: 'log'),
+            'toast_title_error' => $translator->trans('log.toast.title.error', domain: 'log'),
         ];
 
         try {
@@ -86,6 +90,7 @@ class LogController extends AppAdminController
     /**
      * Retourne le contenu d'un fichier de log
      * @param LoggerService $loggerService
+     * @param TranslatorInterface $translator
      * @param string $file
      * @param int $page
      * @param int $limit
@@ -95,6 +100,7 @@ class LogController extends AppAdminController
     #[Route('/ajax/load-log-file/{file}/{page}/{limit}', name: 'ajax_load_log_file', methods: ['GET'])]
     public function loadLogFile(
         LoggerService $loggerService,
+        TranslatorInterface $translator,
         string        $file = '',
         int           $page = 1,
         int           $limit = 20
@@ -103,32 +109,56 @@ class LogController extends AppAdminController
 
         try {
             $grid = $loggerService->loadLogFile($file, $page, $limit);
+            $success = true;
+            $msg =  $translator->trans('log.load.success.file', ['file' => $file], domain: 'log');
         } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
-            die($e->getMessage());
+            $success = false;
+            $msg = $e->getMessage();
         } catch (Exception $e) {
-            die($e->getMessage());
+            $success = false;
+            $msg = $e->getMessage();
         }
 
-        return $this->json($grid);
+        return $this->json(['success' => $success, 'msg' => $msg, 'grid' => $grid]);
     }
 
     /**
      * Permet de supprimer un ou plusieurs fichiers
-     * @param Request $request
      * @param LoggerService $loggerService
+     * @param TranslatorInterface $translator
+     * @param string $file
      * @return JsonResponse
      */
-    #[Route('/ajax/delete-file', name: 'ajax_delete_file', methods: ['POST'])]
-    public function deleteFile(Request $request, LoggerService $loggerService): JsonResponse
+    #[Route('/ajax/delete-file/{file}', name: 'ajax_delete_file', methods: ['DELETE'])]
+    public function deleteFile(
+        LoggerService $loggerService,
+        TranslatorInterface $translator,
+        string $file = ''
+    ): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-
         try {
-            $success = $loggerService->deleteLog($data['file']);
+            $success = $loggerService->deleteLog($file);
+            $msg = $translator->trans('log.delete.file.success', domain: 'log');
         } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
-            die($e->getMessage());
+            $success = false;
+            $msg = $e->getMessage();
         }
 
-        return $this->json(['success' => $success]);
+        return $this->json(['success' => $success, 'msg' => $msg]);
+    }
+
+    /**
+     * Permet de télécharger un fichier de log
+     * @param LoggerService $loggerService
+     * @param string $file
+     * @return BinaryFileResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/download/{file}', name: 'download_log', methods: ['GET'])]
+    public function downloadFile(LoggerService $loggerService, string $file = ''): BinaryFileResponse
+    {
+        $path = $loggerService->getPathFile($file);
+        return $this->file($path, $file);
     }
 }

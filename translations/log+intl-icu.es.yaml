@@ -25,3 +25,8 @@ log.page_title: __log.page_title
 log.page_title_h1: __log.page_title_h1
 log.description: __log.description
 log.auth.admin.user.switch: __log.auth.admin.user.switch
+log.btn.download.file: __log.btn.download.file
+log.toast.title.success: __log.toast.title.success
+log.toast.time: __log.toast.time
+log.toast.title.error: __log.toast.title.error
+log.load.success.file: __log.load.success.file

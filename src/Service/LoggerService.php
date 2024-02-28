@@ -2,7 +2,7 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Service qui gère les logs de l'application
  */
 
@@ -19,10 +19,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Monolog\Level;
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -86,26 +88,40 @@ class LoggerService extends AppService
      */
     const DIRECTORY_LOG = 'log';
 
-    public function __construct(
-        TranslatorInterface   $translator,
-        RequestStack          $requestStack,
-        LoggerInterface       $authLogger,
-        LoggerInterface       $doctrineLogLogger, Security $security,
-        ContainerBagInterface $params,
-        GridService           $gridService,
-        OptionSystemService   $optionSystemService,
-        OptionUserService     $optionUserService,
-        LocaleAwareInterface  $localeAware,
-        EntityManagerInterface $entityManager
-    )
+
+    public function __construct(#[AutowireLocator([
+        'entityManager' => EntityManagerInterface::class,
+        'containerBag' => ContainerBagInterface::class,
+        'translator' => TranslatorInterface::class,
+        'security' => Security::class,
+        'requestStack' => RequestStack::class,
+        'authLogger' => LoggerInterface::class,
+        'doctrineLogLogger' => LoggerInterface::class,
+        'gridService' => GridService::class,
+        'optionSystemService' => OptionSystemService::class,
+        'optionUserService' => OptionUserService::class,
+        'localeAware' => LocaleAwareInterface::class
+    ])] private readonly ContainerInterface $handlers)
     {
-        $this->authLogger = $authLogger;
-        $this->doctrineLogLogger = $doctrineLogLogger;
-        $this->gridService = $gridService;
-        $this->optionSystemService = $optionSystemService;
-        $this->optionUserService = $optionUserService;
-        $this->localeAware = $localeAware;
-        parent::__construct($translator, $requestStack, $security, $params, $entityManager);
+        $this->authLogger = $this->handlers->get('authLogger');
+        $this->doctrineLogLogger = $this->handlers->get('doctrineLogLogger');
+        $this->gridService = $this->handlers->get('gridService');
+        $this->optionSystemService = $this->handlers->get('optionSystemService');
+        $this->optionUserService = $this->handlers->get('optionUserService');
+        $this->localeAware = $this->handlers->get('localeAware');
+        parent::__construct($handlers);
+    }
+
+    /**
+     * Retourne le path des logs
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getPathLog() :string
+    {
+        $kernel = $this->params->get('kernel.project_dir');
+        return $kernel . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . self::DIRECTORY_LOG;
     }
 
     /**
@@ -206,8 +222,7 @@ class LoggerService extends AppService
      */
     public function getAllFiles(string $date = ""): array
     {
-        $kernel = $this->params->get('kernel.project_dir');
-        $pathLog = $kernel . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . self::DIRECTORY_LOG;
+        $pathLog = $this->getPathLog();
 
         $finder = new Finder();
         if ($date !== "all") {
@@ -243,8 +258,7 @@ class LoggerService extends AppService
             $this->translator->trans('log.grid.message', domain: 'log'),
         ];
 
-        $kernel = $this->params->get('kernel.project_dir');
-        $pathLog = $kernel . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . self::DIRECTORY_LOG;
+        $pathLog = $this->getPathLog();
         $finder = new Finder();
         $finder->files()->name($fileName)->in($pathLog);
 
@@ -328,8 +342,7 @@ class LoggerService extends AppService
      */
     public function deleteLog(string $fileName): bool
     {
-        $kernel = $this->params->get('kernel.project_dir');
-        $pathLog = $kernel . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . self::DIRECTORY_LOG;
+        $pathLog = $this->getPathLog();
         $finder = new Finder();
 
         $finder->files()->name($fileName)->in($pathLog);
@@ -342,6 +355,28 @@ class LoggerService extends AppService
             return true;
         }
         return false;
+    }
+
+    /**
+     * Retourne le path d'un fichier
+     * @param string $fileName
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getPathFile(string $fileName) :string
+    {
+        $pathLog = $this->getPathLog();
+        $finder = new Finder();
+
+        $finder->files()->name($fileName)->in($pathLog);
+
+        if ($finder->hasResults()) {
+            foreach ($finder as $file) {
+               return $file->getPathname();
+            }
+        }
+        return '';
     }
 
     /**

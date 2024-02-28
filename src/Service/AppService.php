@@ -2,7 +2,7 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Service global
  */
 
@@ -10,6 +10,10 @@ namespace App\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -42,19 +46,26 @@ class AppService
      */
     protected EntityManagerInterface $entityManager;
 
+    /**
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     */
     public function __construct(
-        TranslatorInterface   $translator,
-        RequestStack          $requestStack,
-        Security              $security,
-        ContainerBagInterface $params,
-        EntityManagerInterface $entityManager
+        #[AutowireLocator([
+            'entityManager' => EntityManagerInterface::class,
+            'containerBag' => ContainerBagInterface::class,
+            'translator' => TranslatorInterface::class,
+            'security' => Security::class,
+            'requestStack' => RequestStack::class,
+        ])]
+        private readonly ContainerInterface $handlers
     )
     {
-        $this->translator = $translator;
-        $this->requestStack = $requestStack;
-        $this->security = $security;
-        $this->params = $params;
-        $this->entityManager = $entityManager;
+        $this->translator = $this->handlers->get('translator');;
+        $this->requestStack = $this->handlers->get('requestStack');
+        $this->security = $this->handlers->get('security');
+        $this->params = $this->handlers->get('containerBag');
+        $this->entityManager = $this->handlers->get('entityManager');
     }
 
     /**
