@@ -1,7 +1,7 @@
 <script>
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Permet d'afficher les logs sous forme de tableau d'après les fichiers de logs
  */
 import Grid from '../../../Components/Grid/Grid.vue'
