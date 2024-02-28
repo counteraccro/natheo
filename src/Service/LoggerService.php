@@ -19,10 +19,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Monolog\Level;
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -87,26 +89,27 @@ class LoggerService extends AppService
     const DIRECTORY_LOG = 'log';
 
 
-    public function __construct(
-        TranslatorInterface   $translator,
-        RequestStack          $requestStack,
-        LoggerInterface       $authLogger,
-        LoggerInterface       $doctrineLogLogger, Security $security,
-        ContainerBagInterface $params,
-        GridService           $gridService,
-        OptionSystemService   $optionSystemService,
-        OptionUserService     $optionUserService,
-        LocaleAwareInterface  $localeAware,
-        EntityManagerInterface $entityManager
-    )
+    public function __construct(#[AutowireLocator([
+        'entityManager' => EntityManagerInterface::class,
+        'containerBag' => ContainerBagInterface::class,
+        'translator' => TranslatorInterface::class,
+        'security' => Security::class,
+        'requestStack' => RequestStack::class,
+        'authLogger' => LoggerInterface::class,
+        'doctrineLogLogger' => LoggerInterface::class,
+        'gridService' => GridService::class,
+        'optionSystemService' => OptionSystemService::class,
+        'optionUserService' => OptionUserService::class,
+        'localeAware' => LocaleAwareInterface::class
+    ])] private readonly ContainerInterface $handlers)
     {
-        $this->authLogger = $authLogger;
-        $this->doctrineLogLogger = $doctrineLogLogger;
-        $this->gridService = $gridService;
-        $this->optionSystemService = $optionSystemService;
-        $this->optionUserService = $optionUserService;
-        $this->localeAware = $localeAware;
-        parent::__construct($translator, $requestStack, $security, $params, $entityManager);
+        $this->authLogger = $this->handlers->get('authLogger');
+        $this->doctrineLogLogger = $this->handlers->get('doctrineLogLogger');
+        $this->gridService = $this->handlers->get('gridService');
+        $this->optionSystemService = $this->handlers->get('optionSystemService');
+        $this->optionUserService = $this->handlers->get('optionUserService');
+        $this->localeAware = $this->handlers->get('localeAware');
+        parent::__construct($handlers);
     }
 
     /**
