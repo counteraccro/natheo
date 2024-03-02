@@ -9,9 +9,11 @@
 import axios from "axios";
 import {Modal} from "bootstrap";
 import {emitter} from "../../../../utils/useEvent";
+import Toast from "../../../Components/Global/Toast.vue";
 
 export default {
   name: "Translate",
+  components: {Toast},
   props: {
     url_langue: String,
     url_translates_files: String,
@@ -31,7 +33,17 @@ export default {
       loading: false,
       modalReloadCache: {},
       isReloadCache: false,
-      isReloadCacheFinish: false
+      isReloadCacheFinish: false,
+      toasts: {
+        toastSuccess: {
+          show: false,
+          msg: '',
+        },
+        toastError: {
+          show: false,
+          msg: '',
+        }
+      }
     }
   },
   mounted() {
@@ -136,11 +148,22 @@ export default {
      */
     saveTranslate() {
       this.loading = true;
-      axios.post(this.url_translate_save, {
+      axios.put(this.url_translate_save, {
         'file': this.currentFile,
         'translates': this.tabTmpTranslate
       }).then((response) => {
-        this.loadFile();
+
+        if (response.data.success === true) {
+          this.toasts.toastSuccess.msg = response.data.msg;
+          this.toasts.toastSuccess.show = true;
+          this.loadFile();
+
+        } else {
+          this.toasts.toastError.msg = response.data.msg;
+          this.toasts.toastError.show = true;
+          this.loading = false;
+        }
+
       }).catch((error) => {
         console.error(error);
       }).finally();
@@ -252,7 +275,15 @@ export default {
         evt.returnValue = unsaved_changes_warning;
         return unsaved_changes_warning;
       }
-    }
+    },
+
+    /**
+     * Ferme le toast défini par nameToast
+     * @param nameToast
+     */
+    closeToast(nameToast) {
+      this.toasts[nameToast].show = false
+    },
   }
 }
 </script>
@@ -375,5 +406,42 @@ export default {
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- toast -->
+  <div class="toast-container position-fixed top-0 end-0 p-2">
+
+    <toast
+        :id="'toastSuccess'"
+        :option-class-header="'text-success'"
+        :show="this.toasts.toastSuccess.show"
+        @close-toast="this.closeToast"
+    >
+      <template #header>
+        <i class="bi bi-check-circle-fill"></i> &nbsp;
+        <strong class="me-auto"> {{ this.trans.translate_toast_title_success }}</strong>
+        <small class="text-black-50">{{ this.trans.translate_toast_time }}</small>
+      </template>
+      <template #body>
+        <div v-html="this.toasts.toastSuccess.msg"></div>
+      </template>
+    </toast>
+
+    <toast
+        :id="'toastError'"
+        :option-class-header="'text-danger'"
+        :show="this.toasts.toastError.show"
+        @close-toast="this.closeToast"
+    >
+      <template #header>
+        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
+        <strong class="me-auto"> {{ this.trans.translate_toast_title_error }}</strong>
+        <small class="text-black-50">{{ this.trans.translate_toast_time }}</small>
+      </template>
+      <template #body>
+        <div v-html="this.toasts.toastError.msg"></div>
+      </template>
+    </toast>
+
   </div>
 </template>

@@ -47,31 +47,12 @@ class TranslationController extends AppAdminController
 
     /**
      * Récupère la liste de langues
-     * @param TranslatorInterface $translator
      * @param TranslateService $translateService
      * @return JsonResponse
      */
     #[Route('/ajax/languages', name: 'list_languages', methods: ['GET'])]
-    public function loadLanguages(TranslatorInterface $translator, TranslateService $translateService): JsonResponse
+    public function loadLanguages(TranslateService $translateService): JsonResponse
     {
-        $tabTranslate = [
-            'translate_select_language' => $translator->trans('translate.select.language', domain: 'translate'),
-            'translate_select_file' => $translator->trans('translate.select.file', domain: 'translate'),
-            'translate_empty_file' => $translator->trans('translate.empty.file', domain: 'translate'),
-            'translate_btn_save' => $translator->trans('translate.btn.save', domain: 'translate'),
-            'translate_btn_cache' => $translator->trans('translate.btn.cache', domain: 'translate'),
-            'translate_info_edit' => $translator->trans('translate.info.edit', domain: 'translate'),
-            'translate_link_revert' => $translator->trans('translate.link.revert', domain: 'translate'),
-            'translate_nb_edit' => $translator->trans('translate.nb.edit', domain: 'translate'),
-            'translate_loading' => $translator->trans('translate.loading', domain: 'translate'),
-            'translate_cache_titre' => $translator->trans('translate.cache.titre', domain: 'translate'),
-            'translate_cache_info' => $translator->trans('translate.cache.info', domain: 'translate'),
-            'translate_cache_wait' => $translator->trans('translate.cache.wait', domain: 'translate'),
-            'translate_cache_btn_close' => $translator->trans('translate.cache.btn.close', domain: 'translate'),
-            'translate_cache_btn_accept' => $translator->trans('translate.cache.btn.accept', domain: 'translate'),
-            'translate_cache_success' => $translator->trans('translate.cache.success', domain: 'translate'),
-            'translate_confirm_leave' => $translator->trans('translate.confirm.leave', domain: 'translate'),
-        ];
 
         try {
             $languages = $translateService->getListLanguages();
@@ -79,7 +60,7 @@ class TranslationController extends AppAdminController
             die($e->getMessage());
         }
 
-        return $this->json(['trans' => $tabTranslate, 'languages' => $languages]);
+        return $this->json(['trans' => $translateService->getTranslate(), 'languages' => $languages]);
     }
 
     /**
@@ -121,17 +102,28 @@ class TranslationController extends AppAdminController
     /**
      * Sauvegarde les traductions
      * @param Request $request
+     * @param TranslatorInterface $translator
      * @param TranslateService $translateService
      * @return JsonResponse
      * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/save-translate', name: 'save_translate', methods: ['POST'])]
-    public function saveTranslate(Request $request, TranslateService $translateService): JsonResponse
+    #[Route('/ajax/save-translate', name: 'save_translate', methods: ['PUT'])]
+    public function saveTranslate(
+        Request $request,
+        TranslatorInterface $translator,
+        TranslateService $translateService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $translateService->updateTranslateFile($data['file'], $data['translates']);
-        return $this->json(['success' => true]);
+
+        try {
+            $translateService->updateTranslateFile($data['file'], $data['translates']);
+            $msg = $translator->trans('translate.save.success', domain: 'translate');
+            $success = true;
+        } catch (NotFoundExceptionInterface $e) {
+            $msg = $e->getMessage();
+            $success = false;
+        }
+        return $this->json(['success' => $success, 'msg' => $msg]);
     }
 
     /**
