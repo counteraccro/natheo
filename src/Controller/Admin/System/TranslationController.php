@@ -133,7 +133,7 @@ class TranslationController extends AppAdminController
      * @return JsonResponse
      * @throws Exception
      */
-    #[Route('/ajax/reload-cache', name: 'reload_cache', methods: ['POST'])]
+    #[Route('/ajax/reload-cache', name: 'reload_cache', methods: ['GET'])]
     public function reloadCache(Request $request, CommandService $commandService): JsonResponse
     {
         $commandService->reloadCache();

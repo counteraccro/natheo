@@ -7,13 +7,13 @@
  */
 
 import axios from "axios";
-import {Modal} from "bootstrap";
 import {emitter} from "../../../../utils/useEvent";
 import Toast from "../../../Components/Global/Toast.vue";
+import Modal from "../../../Components/Global/Modal.vue";
 
 export default {
   name: "Translate",
-  components: {Toast},
+  components: {Modal, Toast},
   props: {
     url_langue: String,
     url_translates_files: String,
@@ -31,7 +31,7 @@ export default {
       file: [],
       tabTmpTranslate: [],
       loading: false,
-      modalReloadCache: {},
+      modalReloadCache: false,
       isReloadCache: false,
       isReloadCacheFinish: false,
       toasts: {
@@ -48,7 +48,6 @@ export default {
   },
   mounted() {
     this.loadListeLanguages()
-    window.addEventListener('beforeunload', this.checkBeforeLeave)
   },
   methods: {
     /**
@@ -246,12 +245,11 @@ export default {
     reloadCache(confirm) {
 
       if (confirm) {
-        this.modalReloadCache = new Modal(document.getElementById("modal-reload-cache"), {});
-        this.modalReloadCache.show();
+        this.showModal()
         this.isReloadCache = false;
       } else {
         this.isReloadCache = true;
-        axios.post(this.url_reload_cache, {}).then((response) => {
+        axios.get(this.url_reload_cache, {}).then((response) => {
 
         }).catch((error) => {
           console.error(error);
@@ -265,24 +263,25 @@ export default {
     },
 
     /**
-     * Affiche une confirmation si un champ est modifié, mais pas sauvegardé
-     * @param evt
-     * @returns {string}
-     */
-    checkBeforeLeave(evt) {
-      if (this.tabTmpTranslate.length !== 0) {
-        const unsaved_changes_warning = this.trans.translate_confirm_leave;
-        evt.returnValue = unsaved_changes_warning;
-        return unsaved_changes_warning;
-      }
-    },
-
-    /**
      * Ferme le toast défini par nameToast
      * @param nameToast
      */
     closeToast(nameToast) {
       this.toasts[nameToast].show = false
+    },
+
+    /**
+     * Affichage la modale
+     */
+    showModal() {
+      this.modalReloadCache = true;
+    },
+
+    /**
+     * Ferme la modale
+     */
+    hideModal() {
+      this.modalReloadCache = false;
     },
   }
 }
@@ -311,44 +310,6 @@ export default {
           <option value="">{{ this.trans.translate_select_file }}</option>
           <option v-for="(language, key) in this.files" v-bind:value="key">{{ language }}</option>
         </select>
-      </div>
-    </div>
-
-    <div class="modal fade" id="modal-reload-cache" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header bg-secondary">
-            <h1 class="modal-title fs-5 text-white">
-              {{ this.trans.translate_cache_titre }}
-            </h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div v-if="!this.isReloadCacheFinish">
-              <div v-if="!this.isReloadCache">
-                {{ this.trans.translate_cache_info }}
-              </div>
-              <div v-else>
-                <div class="spinner-border text-primary" role="status">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-                {{ this.trans.translate_cache_wait }}
-              </div>
-            </div>
-            <div v-else>
-              <div class="text-success">
-                <i class="bi bi-check-circle-fill"></i> {{ this.trans.translate_cache_success }}
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer" v-if="!isReloadCacheFinish">
-            <button v-if="!this.isReloadCache" type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ this.trans.translate_cache_btn_close }}</button>
-            <button v-if="!this.isReloadCache" type="button" class="btn btn-primary" @click="this.reloadCache(false)">{{ this.trans.translate_cache_btn_accept }}</button>
-          </div>
-          <div class="modal-footer" v-else>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ this.trans.translate_cache_btn_close }}</button>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -407,6 +368,51 @@ export default {
       </div>
     </div>
   </div>
+
+  <!-- modale refresh cache -->
+  <modal
+      :id="'modalReloadCache'"
+      :show="this.modalReloadCache"
+      @close-modal="this.hideModal"
+      :option-show-close-btn="false"
+      :option-modal-backdrop="'static'"
+  >
+    <template #title>
+      <i class="bi bi-exclamation-triangle"></i> {{ this.trans.translate_cache_titre }}
+    </template>
+    <template #body>
+      <div v-if="!this.isReloadCacheFinish">
+        <div v-if="!this.isReloadCache">
+          {{ this.trans.translate_cache_info }}
+        </div>
+        <div v-else>
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          {{ this.trans.translate_cache_wait }}
+        </div>
+      </div>
+      <div v-else>
+        <div class="text-success">
+          <i class="bi bi-check-circle-fill"></i> {{ this.trans.translate_cache_success }}
+        </div>
+      </div>
+    </template>
+    <template #footer>
+      <div v-if="!isReloadCacheFinish">
+        <button v-if="!this.isReloadCache" type="button" class="btn btn-primary" @click="this.reloadCache(false)">
+          <i class="bi bi-check2-circle"></i> {{ this.trans.translate_cache_btn_accept }}
+        </button> &nbsp;
+        <button v-if="!this.isReloadCache" type="button" class="btn btn-secondary" @click="this.hideModal">
+          <i class="bi bi-x-circle"></i> {{ this.trans.translate_cache_btn_close }}
+        </button>
+      </div>
+      <div v-else>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ this.trans.translate_cache_btn_close }}</button>
+      </div>
+    </template>
+  </modal>
+  <!-- fin modale refresh cache -->
 
   <!-- toast -->
   <div class="toast-container position-fixed top-0 end-0 p-2">
