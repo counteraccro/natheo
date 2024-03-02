@@ -63,8 +63,7 @@ export default {
   },
   mounted() {
     this.loadData();
-  }
-  ,
+  },
   methods: {
     loadData() {
       this.loading = true;
@@ -80,8 +79,7 @@ export default {
       this.time = event.target.value;
       this.selectFile = '';
       this.loadData();
-    }
-    ,
+    },
 
     /**
      * Charge le contenu d'un fichier log
@@ -92,8 +90,7 @@ export default {
       if (this.selectFile !== "") {
         this.loadContentFile(this.page, this.limit);
       }
-    }
-    ,
+    },
 
     /**
      * Charge le contenu d'un log
@@ -105,7 +102,7 @@ export default {
       axios.get(this.url_load_log_file + '/' + this.selectFile + '/' + page + '/' + limit).then((response) => {
 
         if (response.data.success === true) {
-          if(page === 1) {
+          if (page === 1) {
             this.toasts.toastSuccess.msg = response.data.msg;
             this.toasts.toastSuccess.show = true;
           }
@@ -131,8 +128,7 @@ export default {
       }).catch((error) => {
         console.error(error);
       }).finally(() => this.loading = false);
-    }
-    ,
+    },
 
     /**
      * Supprimer un fichier
@@ -173,24 +169,21 @@ export default {
       }).catch((error) => {
         console.error(error);
       }).finally();
-    }
-    ,
+    },
 
     /**
      * Affichage la modale
      */
     showModal() {
       this.modalDeleteLog = true;
-    }
-    ,
+    },
 
     /**
      * Ferme la modale
      */
     hideModal() {
       this.modalDeleteLog = false;
-    }
-    ,
+    },
 
     /**
      * Ferme le toast défini par nameToast
@@ -198,8 +191,7 @@ export default {
      */
     closeToast(nameToast) {
       this.toasts[nameToast].show = false
-    }
-    ,
+    },
   }
 }
 </script>

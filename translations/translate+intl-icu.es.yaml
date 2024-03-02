@@ -18,3 +18,7 @@ translate.cache.btn.accept: __translate.cache.btn.accept
 translate.cache.success: __translate.cache.success
 translate.description.2: __translate.description.2
 translate.confirm.leave: __translate.confirm.leave
+translate.save.success: __translate.save.success
+translate.toast.title.success: __translate.toast.title.success
+translate.toast.title.error: __translate.toast.title.error
+translate.toast.time: __translate.toast.time
