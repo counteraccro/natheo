@@ -1,7 +1,7 @@
 <script>
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 2.0
  * Formulaire pour la création / édition d'un email
  */
 

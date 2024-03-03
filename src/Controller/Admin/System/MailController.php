@@ -2,7 +2,7 @@
 /**
  * Gestionnaire des mails
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  */
 
 namespace App\Controller\Admin\System;
