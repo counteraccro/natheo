@@ -2,7 +2,7 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 2.0
  * Permet de gérer les traductions de l'application
  */
 

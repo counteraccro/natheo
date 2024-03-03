@@ -2,7 +2,7 @@
 /**
  * Translation service, traitement des données liés au traductions
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  */
 
 namespace App\Service\Admin\System;
