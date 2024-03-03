@@ -1,7 +1,7 @@
 <script>
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 2.0
  * Formulaire pour la création / édition d'un email
  */
 
@@ -26,7 +26,6 @@ export default {
       loading: false,
       url_save: '',
       url_demo: '',
-      msgSuccess: '',
       isValideTitle: '',
       content: '',
       title: '',
@@ -90,13 +89,6 @@ export default {
     },
 
     /**
-     * Réinitialise le message de sauvegarde
-     */
-    removeMsg() {
-      this.msgSuccess = '';
-    },
-
-    /**
      * Vérifie si on peut sauvegarder ou non
      */
     checkCanSave() {
@@ -140,6 +132,14 @@ export default {
      * Permet de sauvegarder le content
      */
     save() {
+
+      if(!this.canSave)
+      {
+        this.toasts.error.msg = this.translate.msg_cant_save;
+        this.toasts.error.toast.show();
+        return false;
+      }
+
       this.loading = true;
       axios.post(this.url_save, {
         'locale': this.currentLanguage,
@@ -158,7 +158,6 @@ export default {
         console.error(error);
       }).finally(() => {
         emitter.emit('reset-check-confirm');
-        setTimeout(this.removeMsg, 3000);
         this.loading = false
       });
     },
@@ -169,7 +168,13 @@ export default {
     sendDemoMail() {
       this.loading = true;
       axios.get(this.url_demo).then((response) => {
-        this.msgSuccess = response.data.msg;
+        if (response.data.success === true) {
+          this.toasts.success.msg = response.data.msg;
+          this.toasts.success.toast.show();
+        } else {
+          this.toasts.error.msg = response.data.msg;
+          this.toasts.error.toast.show();
+        }
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -203,15 +208,19 @@ export default {
         <div class="card-header text-bg-secondary">
           <div class="mt-1 float-start">{{ mail.title }}</div>
 
-          <div class="btn btn-sm btn-success float-end" :class="!this.canSave ? 'disabled' : ''" @click="this.save">
-            <i class="bi bi-save-fill"></i></div>
-          <div class="btn btn-sm btn-secondary float-end" @click="this.sendDemoMail">
-            <i class="bi bi-send-check-fill"></i></div>
+          <div class="dropdown">
+            <button class="btn btn-secondary btn-sm dropdown-toggle float-end" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-list"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item no-control" href="#"  @click="this.save"><i class="bi bi-save"></i> {{ this.translate.link_save }}</a></li>
+              <li><a class="dropdown-item no-control" href="#" @click="this.sendDemoMail"><i class="bi bi-send-check-fill"></i> {{ this.translate.link_send }}</a></li>
+            </ul>
+          </div>
+
         </div>
         <div class="card-body">
 
-          <div v-if="msgSuccess !== ''" class="alert alert-success" v-html="'<i class=\'bi bi-check-circle-fill\'></i> ' + this.msgSuccess">
-          </div>
           <p>{{ mail.description }}</p>
 
           <div class="mb-3">

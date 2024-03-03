@@ -21,3 +21,6 @@ mail.index.popin.help.edit: 'Modifier un email'
 mail.toast.title.success: 'succèss !'
 mail.toast.title.error: 'Alerte !'
 mail.toast.time: "A l'instant"
+mail.link.save: Sauvegarder
+mail.link.send: "Tester l'email"
+mail.link.cant.save: "La sauvegarde n'est pas possible pour le moment"

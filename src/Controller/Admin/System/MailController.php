@@ -2,7 +2,7 @@
 /**
  * Gestionnaire des mails
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  */
 
 namespace App\Controller\Admin\System;
@@ -124,15 +124,7 @@ class MailController extends AppAdminController
             $locale = $request->getLocale();
         }
 
-        $translate = [
-            'listLanguage' => $translator->trans('mail.list.language', domain: 'mail'),
-            'loading' => $translator->trans('mail.loading', domain: 'mail'),
-            'titleTrans' => $translator->trans('mail.input.trans.title', domain: 'mail'),
-            'msgEmptyTitle' => $translator->trans('mail.input.trans.title.empty', domain: 'mail'),
-            'toast_title_success' => $translator->trans('mail.toast.title.success', domain: 'mail'),
-            'toast_title_error' => $translator->trans('mail.toast.title.error', domain: 'mail'),
-            'toast_time' => $translator->trans('mail.toast.time', domain: 'mail'),
-        ];
+        $translate = $mailService->translate();
 
         try {
             $languages = $translateService->getListLanguages();
