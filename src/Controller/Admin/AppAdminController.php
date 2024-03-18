@@ -3,8 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Service\Admin\System\OptionUserService;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 
 class AppAdminController extends AbstractController
 {
@@ -19,12 +23,19 @@ class AppAdminController extends AbstractController
     protected LoggerInterface $logger;
 
     /**
-     * @param OptionUserService $optionUserService
-     * @param LoggerInterface $logger
+     * @param ContainerInterface $handlers
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function __construct(OptionUserService $optionUserService, LoggerInterface $logger)
+    public function __construct(
+        #[AutowireLocator([
+            'optionUserService' => OptionUserService::class,
+            'logger' => LoggerInterface::class,
+        ])]
+        private readonly ContainerInterface $handlers
+       )
     {
-        $this->optionUserService = $optionUserService;
-        $this->logger = $logger;
+        $this->optionUserService = $this->handlers->get('optionUserService');
+        $this->logger = $this->handlers->get('logger');
     }
 }
