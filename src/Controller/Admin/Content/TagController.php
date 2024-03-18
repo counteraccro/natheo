@@ -10,7 +10,6 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
-use App\Service\Admin\Content\Tag\TagComponentService;
 use App\Service\Admin\Content\Tag\TagService;
 use App\Utils\Breadcrumb;
 use App\Utils\Flash\FlashKey;
