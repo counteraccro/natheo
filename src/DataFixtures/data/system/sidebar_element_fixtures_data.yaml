@@ -27,7 +27,7 @@ sidebarElement:
       - se_menu:
           icon: 'bi-menu-button-wide-fill'
           label: 'global.menu'
-          route: '#'
+          route: 'admin_menu_index'
           disabled: false
           parent: se_content
           role: 'ROLE_CONTRIBUTEUR'
