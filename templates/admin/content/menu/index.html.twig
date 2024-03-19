@@ -1,0 +1,54 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block title %}{{ 'menu.index.page_title' | trans({}, 'menu') }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'menu.index.page_title_h1' | trans({}, 'menu') }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    <button type="button" class="btn btn-secondary float-end ms-2" data-bs-toggle="modal"
+            data-bs-target="#help-grid-menu">
+        <i class="bi bi-question-circle"></i>
+    </button>
+    <a href="{{ path('admin_tag_add') }}" class="float-end btn btn-secondary"><i
+                class="bi bi-menu-app"></i> {{ 'menu.index.btn.new' | trans({}, 'menu') }}</a>
+
+    <p>
+        {{ 'menu.index.description' | trans({}, 'menu') }} <br/>
+        {{ 'menu.index.description2' | trans({'icon' : '<i class="bi-eye-slash-fill"></i>'}, 'menu') | raw }} <br/>
+    </p>
+
+
+    <!--
+    <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_tag_load_grid_data', {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit}) }}></div>
+    -->
+
+    <twig:Admin:ModaleComponent id="help-grid-menu" bgColor="bg-secondary">
+        <twig:block name="header">
+            <i class="bi bi-question-circle"></i> {{ 'menu.index.popin.help.title' | trans({}, 'menu') }}
+        </twig:block>
+
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-eye-slash-fill"></i>
+                </button> {{ 'menu.index.popin.help.disabled_menu' | trans({}, 'menu') }}
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-eye-fill"></i>
+                </button> {{ 'menu.index.popin.help.enable_menu' | trans({}, 'menu') }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-trash"></i>
+                </button> {{ 'menu.index.popin.help.delete' | trans({}, 'menu') }}
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-pencil-fill"></i>
+                </button> {{ 'menu.index.popin.help.edit' | trans({}, 'menu') }}
+            </div>
+        </div>
+    </twig:Admin:ModaleComponent>
+
+{% endblock %}
