@@ -146,7 +146,7 @@ class PageHistory
         $return = [];
         foreach ($datas as $key => $row) {
             $array = json_decode($row, true);
-            $return[] = ['time' => $array['time'], 'id' => $key, 'user' => $array['user']];
+            $return[] = ['time' => $array['time'], 'id' => ($key+1), 'user' => $array['user']];
         }
         return array_reverse($return);
     }

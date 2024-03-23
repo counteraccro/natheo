@@ -103,10 +103,10 @@ class PageController extends AppAdminController
      */
     #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(
-        Page                $page,
-        PageService         $pageService,
-        TranslatorInterface $translator,
-        Request             $request,
+        Page                  $page,
+        PageService           $pageService,
+        TranslatorInterface   $translator,
+        Request               $request,
         ContainerBagInterface $containerBag
     ): JsonResponse
     {
@@ -117,10 +117,10 @@ class PageController extends AppAdminController
 
         $pageService->remove($page);
 
-        $pageHistory = new PageHistory($containerBag,$user);
+        $pageHistory = new PageHistory($containerBag, $user);
         $pageHistory->removePageHistory($id);
 
-        $msg =  $translator->trans('page.remove.success', ['label' => $titre], domain: 'page');
+        $msg = $translator->trans('page.remove.success', ['label' => $titre], domain: 'page');
         return $this->json($pageService->getResponseAjax($msg));
     }
 
@@ -237,26 +237,22 @@ class PageController extends AppAdminController
     /**
      * Charge le tableau d'historique
      * @param ContainerBagInterface $containerBag
-     * @param Request $request
      * @param DateService $dateService
+     * @param int $id
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/load-tab-history', name: 'load_tab_history')]
+    #[Route('/ajax/load-tab-history/{id}', name: 'load_tab_history', methods: ['GET'])]
     public function loadTabHistory(
         ContainerBagInterface $containerBag,
-        Request               $request,
-        DateService           $dateService
+        DateService           $dateService,
+        int                   $id = 0
     ): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
         /** @var User $user */
         $user = $this->getUser();
-
         $pageHistory = new PageHistory($containerBag, $user);
-
-        $id = $data['id'];
         $history = $pageHistory->getHistory($id);
 
         foreach ($history as &$hist) {
@@ -264,7 +260,6 @@ class PageController extends AppAdminController
             $dateDiff->setTimestamp($hist['time']);
             $hist['time'] = $dateService->getStringDiffDate($dateDiff, short: true);
         }
-
         return $this->json(['history' => $history]);
     }
 
@@ -306,9 +301,9 @@ class PageController extends AppAdminController
      */
     #[Route('/ajax/save', name: 'save')]
     public function save(
-        Request $request,
-        PageService $pageService,
-        TranslatorInterface $translator,
+        Request               $request,
+        PageService           $pageService,
+        TranslatorInterface   $translator,
         ContainerBagInterface $containerBag
     ): JsonResponse
     {
@@ -318,8 +313,7 @@ class PageController extends AppAdminController
         $page = $pageFactory->create()->getPage();
         $page->setUser($this->getUser());
         $redirect = true;
-        if(isset($data['page']['id']) && $data['page']['id'] > 0)
-        {
+        if (isset($data['page']['id']) && $data['page']['id'] > 0) {
             $page = $pageService->findOneById(Page::class, $data['page']['id']);
             $redirect = false;
         }

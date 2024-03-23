@@ -167,9 +167,7 @@ export default {
      */
     loadTabHistory() {
       this.loading = true;
-      axios.post(this.urls.load_tab_history, {
-        'id': this.id,
-      }).then((response) => {
+      axios.get(this.urls.load_tab_history + '/' + this.id, {}).then((response) => {
         this.history = response.data.history;
       }).catch((error) => {
         console.error(error);

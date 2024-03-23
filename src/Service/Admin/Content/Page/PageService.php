@@ -410,8 +410,10 @@ class PageService extends AppAdminService
                 'title' => $this->translator->trans('page.page_history.title', domain: 'page'),
                 'description' => $this->translator->trans('page.page_history.description', domain: 'page'),
                 'empty' => $this->translator->trans('page.page_history.empty', domain: 'page'),
-                'update' => $this->translator->trans('page.page_history.update', domain: 'page'),
-                'for' => $this->translator->trans('page.page_history.for', domain: 'page'),
+                'id' => $this->translator->trans('page.page_history.id', domain: 'page'),
+                'time' => $this->translator->trans('page.page_history.time', domain: 'page'),
+                'user' => $this->translator->trans('page.page_history.user', domain: 'page'),
+                'action' => $this->translator->trans('page.page_history.action', domain: 'page'),
                 'reload' => $this->translator->trans('page.page_history.reload', domain: 'page'),
             ],
             'page_save' => [

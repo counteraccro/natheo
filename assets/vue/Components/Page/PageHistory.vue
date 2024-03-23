@@ -29,20 +29,32 @@ export default {
     <h5>{{ this.translate.title }}</h5>
     <div>{{ this.translate.description }}</div>
     <hr/>
-    <div v-if="this.history.length > 0" v-for="history in this.history">
-      <div class="m-0 ms-0 p-2 row-history">
-        {{ this.translate.update }}#{{ history.id }},
-        <span v-html="history.time"></span>,
-        {{ this.translate.for }} {{ history.user }}
 
-        <div class="float-end" style="cursor: pointer" @click="$emit('reload-page-history', history.id)">
-          <div class="icon-link icon-link-hover"><i class="bi bi-arrow-clockwise"></i> {{ this.translate.reload }}</div>
-        </div>
-      </div>
-    </div>
-    <div v-else class="text-center">
-      <i>{{ this.translate.empty }}</i>
-    </div>
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+        <th>{{ this.translate.id }}</th>
+        <th>{{ this.translate.time }}</th>
+        <th>{{ this.translate.user }}</th>
+        <th>{{ this.translate.action }}</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr v-if="this.history.length > 0" v-for="history in this.history">
+        <td>#{{  history.id }}</td>
+        <td v-html="history.time"></td>
+        <td>{{ history.user }}</td>
+        <td>
+          <div class="btn btn-secondary btn-sm" @click="$emit('reload-page-history', history.id)">
+            <i class="bi bi-arrow-clockwise"></i> {{ this.translate.reload }}
+          </div>
+        </td>
+      </tr>
+      <tr v-else>
+        <td colspan="4" class="text-center text-bg-secondary">{{ this.translate.empty }}</td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 
 </template>
