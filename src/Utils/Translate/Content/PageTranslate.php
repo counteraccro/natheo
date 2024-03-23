@@ -1,27 +1,34 @@
 <?php
-
-namespace App\Utils\Content\Page;
+/**
+ * Class pour la génération des traductions pour les scripts vue pour Page
+ * @author Gourdon Aymeric
+ * @version 1.0
+ */
+namespace App\Utils\Translate\Content;
 
 use App\Service\Admin\MarkdownEditorService;
+use App\Utils\Translate\AppTranslate;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class PageTranslate
+class PageTranslate extends AppTranslate
 {
-    private TranslatorInterface $translator;
-
     private MarkdownEditorService $markdownEditorService;
 
     public function __construct(#[AutowireLocator([
         'translator' => TranslatorInterface::class,
         'markdownEditorService' => MarkdownEditorService::class
-    ])] ContainerInterface $handlers)
+    ])] private readonly ContainerInterface $handlers)
     {
-        $this->translator = $handlers->get('translator');
-        $this->markdownEditorService = $handlers->get('markdownEditorService');
+        $this->markdownEditorService = $this->handlers->get('markdownEditorService');
+        parent::__construct($this->handlers);
     }
 
+    /**
+     * Génération du tableau de translate pour le script vue de Page
+     * @return array
+     */
     public function getTranslate(): array
     {
         return [
