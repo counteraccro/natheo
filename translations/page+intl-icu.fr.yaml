@@ -41,8 +41,6 @@ page.msg.auto_save.success: 'Sauvegarde auto réalisée avec succès'
 page.page_history.title: 'Historique des modifications'
 page.page_history.description: "Liste de l'ensemble des modifications faite sur cette page "
 page.page_history.empty: 'Aucun historique pour le moment'
-page.page_history.update: 'Modification n°'
-page.page_history.for: par
 page.page_history.reload: Restaurer
 page.page_history.success: "Restauration de la page à l'état #{id} faite avec succès"
 page.index.popin.help.disabled_page: 'Désactiver une page'
@@ -100,3 +98,7 @@ page.msg.btn.cancel.restore.history: Masquer
 page.msg.history.reload: 'Des modifications non enregistrées ont été détectées, voulez vous les restaurer ?'
 page.msg.history.new.reload: 'Une nouvelle page à été créée sans être enregistrée, voulez vous la restaurer ?'
 page.msg.error_url_no_unique: "Cette url est déjà utilisée pour une autre page de l'application"
+page.page_history.id: "#"
+page.page_history.time: "Date"
+page.page_history.user: "Utilisateur"
+page.page_history.action: "Action"
