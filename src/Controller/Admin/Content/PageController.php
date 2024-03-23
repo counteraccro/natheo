@@ -17,6 +17,7 @@ use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageFactory;
 use App\Utils\Content\Page\PageHistory;
 use App\Utils\Content\Page\PagePopulate;
+use App\Utils\Content\Page\PageTranslate;
 use App\Utils\System\Options\OptionUserKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -135,6 +136,7 @@ class PageController extends AppAdminController
     #[Route('/update/{id}', name: 'update')]
     public function add(
         PageService $pageService,
+        PageTranslate $pageTranslate,
         int         $id = null
     ): Response
     {
@@ -151,7 +153,7 @@ class PageController extends AppAdminController
             ]
         ];
 
-        $translate = $pageService->getPageTranslation();
+        $translate = $pageTranslate->getTranslate();
         $locales = $pageService->getLocales();
 
         return $this->render('admin/content/page/add_update.html.twig', [
