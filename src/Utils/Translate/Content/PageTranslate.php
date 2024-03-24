@@ -7,22 +7,22 @@
 
 namespace App\Utils\Translate\Content;
 
-use App\Service\Admin\MarkdownEditorService;
 use App\Utils\Translate\AppTranslate;
+use App\Utils\Translate\MarkdownEditorTranslate;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PageTranslate extends AppTranslate
 {
-    private MarkdownEditorService $markdownEditorService;
+    private MarkdownEditorTranslate $markdownEditorTranslate;
 
     public function __construct(#[AutowireLocator([
         'translator' => TranslatorInterface::class,
-        'markdownEditorService' => MarkdownEditorService::class
+        'markdownEditorTranslate' => MarkdownEditorTranslate::class
     ])] private readonly ContainerInterface $handlers)
     {
-        $this->markdownEditorService = $this->handlers->get('markdownEditorService');
+        $this->markdownEditorTranslate = $this->handlers->get('markdownEditorTranslate');
         parent::__construct($this->handlers);
     }
 
@@ -88,7 +88,7 @@ class PageTranslate extends AppTranslate
         return [
             'title' => $this->translator->trans('page.page_content.title', domain: 'page'),
             'page_content_block' => [
-                'markdown' => $this->markdownEditorService->getTranslate(),
+                'markdown' => $this->markdownEditorTranslate->getTranslate(),
                 'btn_new_content' =>
                     $this->translator->trans('page.page_content_block.btn.new_content', domain: 'page'),
                 'btn_delete_content' =>
