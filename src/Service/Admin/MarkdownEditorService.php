@@ -11,10 +11,14 @@ class MarkdownEditorService extends AppAdminService
 {
     /**
      *  Retourne les traductions de l'éditeur Markdown
+     * @deprecated
      * @return array
      */
     public function getTranslate(): array
     {
+        trigger_deprecation('Service/Admin/MarkdownEditorService', '1.0',
+            'Méthode "%s()" dépréciée, passer maintenant par MarkdownEditorTranslatepour avoir la traduction.',
+            __METHOD__ );
         return [
             'btnBold' => $this->translator->trans('editor.button.bold', domain: 'editor_markdown'),
             'btnItalic' => $this->translator->trans('editor.button.italic', domain: 'editor_markdown'),
