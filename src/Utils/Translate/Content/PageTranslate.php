@@ -4,6 +4,7 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
+
 namespace App\Utils\Translate\Content;
 
 use App\Service\Admin\MarkdownEditorService;
@@ -51,76 +52,121 @@ class PageTranslate extends AppTranslate
             'msg_btn_cancel_restore_history' => $this->translator->trans(
                 'page.msg.btn.cancel.restore.history', domain: 'page'),
             'msg_error_url_no_unique' => $this->translator->trans('page.msg.error_url_no_unique', domain: 'page'),
-            'page_content_form' => [
-                'title' => $this->translator->trans('page.page_content_form.title', domain: 'page'),
-                'input_url_label' => $this->translator->trans('page.page_content_form.input.url.label', domain: 'page'),
-                'input_url_info' => $this->translator->trans('page.page_content_form.input.url.info', domain: 'page'),
-                'input_titre_label' =>
-                    $this->translator->trans('page.page_content_form.input.titre.label', domain: 'page'),
-                'input_titre_info' =>
-                    $this->translator->trans('page.page_content_form.input.titre.info', domain: 'page'),
-                'list_render_label' => $this->translator->trans('page.page_save.list_render_label', domain: 'page'),
-                'list_render_help' => $this->translator->trans('page.page_save.list_render_help', domain: 'page'),
+            'page_content_form' => $this->getTranslatePageContentForm(),
+            'page_content' => $this->getTranslatePageContent(),
+            'page_history' => $this->getTranslatePageHistory(),
+            'page_save' => $this->getTranslatePageSave(),
+            'auto_complete' => $this->getTranslateAutoComplete()
+        ];
+    }
+
+    /**
+     * Retourne la traduction du bloc page content form
+     * @return array
+     */
+    private function getTranslatePageContentForm(): array
+    {
+        return [
+            'title' => $this->translator->trans('page.page_content_form.title', domain: 'page'),
+            'input_url_label' => $this->translator->trans('page.page_content_form.input.url.label', domain: 'page'),
+            'input_url_info' => $this->translator->trans('page.page_content_form.input.url.info', domain: 'page'),
+            'input_titre_label' =>
+                $this->translator->trans('page.page_content_form.input.titre.label', domain: 'page'),
+            'input_titre_info' =>
+                $this->translator->trans('page.page_content_form.input.titre.info', domain: 'page'),
+            'list_render_label' => $this->translator->trans('page.page_save.list_render_label', domain: 'page'),
+            'list_render_help' => $this->translator->trans('page.page_save.list_render_help', domain: 'page'),
+        ];
+    }
+
+    /**
+     * Retourne la traduction du bloc page content
+     * @return array
+     */
+    private function getTranslatePageContent(): array
+    {
+        return [
+            'title' => $this->translator->trans('page.page_content.title', domain: 'page'),
+            'page_content_block' => [
+                'markdown' => $this->markdownEditorService->getTranslate(),
+                'btn_new_content' =>
+                    $this->translator->trans('page.page_content_block.btn.new_content', domain: 'page'),
+                'btn_delete_content' =>
+                    $this->translator->trans('page.page_content_block.btn.delete_content', domain: 'page'),
+                'btn_change_content' =>
+                    $this->translator->trans('page.page_content_block.btn.change_content', domain: 'page'),
+                'btn_move_content' =>
+                    $this->translator->trans('page.page_content_block.btn.move_content', domain: 'page'),
+                'modale_remove_title' =>
+                    $this->translator->trans('page.page_content_block.modale.remove.title', domain: 'page'),
+                'modale_remove_body' =>
+                    $this->translator->trans('page.page_content_block.modale.remove.body', domain: 'page'),
+                'modale_remove_body_2' =>
+                    $this->translator->trans('page.page_content_block.modale.remove.body.2', domain: 'page'),
+                'modale_remove_btn_confirm' =>
+                    $this->translator->trans('page.page_content_block.modale.remove.btn.confirm', domain: 'page'),
+                'modale_remove_btn_cancel' =>
+                    $this->translator->trans('page.page_content_block.modale.remove.btn.cancel', domain: 'page'),
+                'modale_new_title' =>
+                    $this->translator->trans('page.page_content_block.modale.new.title', domain: 'page'),
+                'modale_new_btn_cancel' =>
+                    $this->translator->trans('page.page_content_block.modale.new.btn.cancel', domain: 'page'),
+                'modale_new_btn_new' =>
+                    $this->translator->trans('page.page_content_block.modale.new.btn.new', domain: 'page'),
+                'modale_new_choice_label' =>
+                    $this->translator->trans('page.page_content_block.modale.new.choice_label', domain: 'page'),
+                'modale_new_choice_info' =>
+                    $this->translator->trans('page.page_content_block.modale.new.choice_info', domain: 'page'),
+                'loading' => $this->translator->trans('page.page_content_block.loading', domain: 'page'),
             ],
-            'page_content' => [
-                'title' => $this->translator->trans('page.page_content.title', domain: 'page'),
-                'page_content_block' => [
-                    'markdown' => $this->markdownEditorService->getTranslate(),
-                    'btn_new_content' =>
-                        $this->translator->trans('page.page_content_block.btn.new_content', domain: 'page'),
-                    'btn_delete_content' =>
-                        $this->translator->trans('page.page_content_block.btn.delete_content', domain: 'page'),
-                    'btn_change_content' =>
-                        $this->translator->trans('page.page_content_block.btn.change_content', domain: 'page'),
-                    'btn_move_content' =>
-                        $this->translator->trans('page.page_content_block.btn.move_content', domain: 'page'),
-                    'modale_remove_title' =>
-                        $this->translator->trans('page.page_content_block.modale.remove.title', domain: 'page'),
-                    'modale_remove_body' =>
-                        $this->translator->trans('page.page_content_block.modale.remove.body', domain: 'page'),
-                    'modale_remove_body_2' =>
-                        $this->translator->trans('page.page_content_block.modale.remove.body.2', domain: 'page'),
-                    'modale_remove_btn_confirm' =>
-                        $this->translator->trans('page.page_content_block.modale.remove.btn.confirm', domain: 'page'),
-                    'modale_remove_btn_cancel' =>
-                        $this->translator->trans('page.page_content_block.modale.remove.btn.cancel', domain: 'page'),
-                    'modale_new_title' =>
-                        $this->translator->trans('page.page_content_block.modale.new.title', domain: 'page'),
-                    'modale_new_btn_cancel' =>
-                        $this->translator->trans('page.page_content_block.modale.new.btn.cancel', domain: 'page'),
-                    'modale_new_btn_new' =>
-                        $this->translator->trans('page.page_content_block.modale.new.btn.new', domain: 'page'),
-                    'modale_new_choice_label' =>
-                        $this->translator->trans('page.page_content_block.modale.new.choice_label', domain: 'page'),
-                    'modale_new_choice_info' =>
-                        $this->translator->trans('page.page_content_block.modale.new.choice_info', domain: 'page'),
-                    'loading' => $this->translator->trans('page.page_content_block.loading', domain: 'page'),
-                ],
-            ],
-            'page_history' => [
-                'title' => $this->translator->trans('page.page_history.title', domain: 'page'),
-                'description' => $this->translator->trans('page.page_history.description', domain: 'page'),
-                'empty' => $this->translator->trans('page.page_history.empty', domain: 'page'),
-                'id' => $this->translator->trans('page.page_history.id', domain: 'page'),
-                'time' => $this->translator->trans('page.page_history.time', domain: 'page'),
-                'user' => $this->translator->trans('page.page_history.user', domain: 'page'),
-                'action' => $this->translator->trans('page.page_history.action', domain: 'page'),
-                'reload' => $this->translator->trans('page.page_history.reload', domain: 'page'),
-            ],
-            'page_save' => [
-                'title' => $this->translator->trans('page.page_save.title', domain: 'page'),
-                'list_status_label' => $this->translator->trans('page.page_save.list_status_label', domain: 'page'),
-                'list_status_help' => $this->translator->trans('page.page_save.list_status_help', domain: 'page'),
-                'btn_save' => $this->translator->trans('page.page_save.btn.save', domain: 'page'),
-                'btn_see_ext' => $this->translator->trans('page.page_save.btn.see_ext', domain: 'page'),
-            ],
-            'auto_complete' => [
-                'auto_complete_label' => $this->translator->trans('page.tag.auto_complete.label', domain: 'page'),
-                'auto_complete_placeholder' =>
-                    $this->translator->trans('page.tag.auto_complete.placeholder', domain: 'page'),
-                'auto_complete_help' => $this->translator->trans('page.tag.auto_complete.help', domain: 'page'),
-                'auto_complete_btn' => $this->translator->trans('page.tag.auto_complete.btn', domain: 'page')
-            ]
+        ];
+    }
+
+    /**
+     * Retourne la traduction du bloc page history
+     * @return array
+     */
+    private function getTranslatePageHistory(): array
+    {
+        return [
+            'title' => $this->translator->trans('page.page_history.title', domain: 'page'),
+            'description' => $this->translator->trans('page.page_history.description', domain: 'page'),
+            'empty' => $this->translator->trans('page.page_history.empty', domain: 'page'),
+            'id' => $this->translator->trans('page.page_history.id', domain: 'page'),
+            'time' => $this->translator->trans('page.page_history.time', domain: 'page'),
+            'user' => $this->translator->trans('page.page_history.user', domain: 'page'),
+            'action' => $this->translator->trans('page.page_history.action', domain: 'page'),
+            'reload' => $this->translator->trans('page.page_history.reload', domain: 'page'),
+        ];
+    }
+
+    /**
+     * Retourne la traduction du bloc page save
+     * @return array
+     */
+    private function getTranslatePageSave(): array
+    {
+        return [
+            'title' => $this->translator->trans('page.page_save.title', domain: 'page'),
+            'list_status_label' => $this->translator->trans('page.page_save.list_status_label', domain: 'page'),
+            'list_status_help' => $this->translator->trans('page.page_save.list_status_help', domain: 'page'),
+            'btn_save' => $this->translator->trans('page.page_save.btn.save', domain: 'page'),
+            'btn_see_ext' => $this->translator->trans('page.page_save.btn.see_ext', domain: 'page'),
+        ];
+    }
+
+    /**
+     * Retourne la traduction du bloc auto complete
+     * @return array
+     */
+    private function getTranslateAutoComplete(): array
+    {
+        return [
+            'auto_complete_label' => $this->translator->trans('page.tag.auto_complete.label', domain: 'page'),
+            'auto_complete_placeholder' =>
+                $this->translator->trans('page.tag.auto_complete.placeholder', domain: 'page'),
+            'auto_complete_help' => $this->translator->trans('page.tag.auto_complete.help', domain: 'page'),
+            'auto_complete_btn' => $this->translator->trans('page.tag.auto_complete.btn', domain: 'page')
         ];
     }
 }
