@@ -98,7 +98,12 @@ page.msg.btn.cancel.restore.history: Masquer
 page.msg.history.reload: 'Des modifications non enregistrées ont été détectées, voulez vous les restaurer ?'
 page.msg.history.new.reload: 'Une nouvelle page à été créée sans être enregistrée, voulez vous la restaurer ?'
 page.msg.error_url_no_unique: "Cette url est déjà utilisée pour une autre page de l'application"
-page.page_history.id: "#"
-page.page_history.time: "Date"
-page.page_history.user: "Utilisateur"
-page.page_history.action: "Action"
+page.page_history.id: '#'
+page.page_history.time: Date
+page.page_history.user: Utilisateur
+page.page_history.action: Action
+page.page_history.error: 'Une erreur est survenue lors de la restauration des données'
+page.toast.title.success: 'Succès !'
+page.toast.title.error: 'Erreur !'
+page.toast.time: "A l'instant"
+page.toast.title.auto_save: 'Sauvegarde auto'

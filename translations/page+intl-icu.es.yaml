@@ -102,3 +102,8 @@ page.page_history.time: __page.page_history.time
 page.page_history.user: __page.page_history.user
 page.page_history.action: __page.page_history.action
 page.page_history.reload: __page.page_history.reload
+page.page_history.error: __page.page_history.error
+page.toast.title.success: __page.toast.title.success
+page.toast.title.error: __page.toast.title.error
+page.toast.title.auto_save: __page.toast.title.auto_save
+page.toast.time: __page.toast.time
