@@ -135,9 +135,9 @@ class PageController extends AppAdminController
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
     public function add(
-        PageService $pageService,
+        PageService   $pageService,
         PageTranslate $pageTranslate,
-        int         $id = null
+        int           $id = null
     ): Response
     {
         $breadcrumbTitle = 'page.update.page_title_h1';
@@ -288,9 +288,17 @@ class PageController extends AppAdminController
         $pageHistory = new PageHistory($containerBag, $user);
         $page = $pageHistory->getPageHistoryById($data['row_id'], $data['id']);
 
+        $success = true;
+        $msg = $translator->trans('page.page_history.success', ['id' => $data['row_id']], domain: 'page');
+        if (empty($page)) {
+            $success = false;
+            $msg = $translator->trans('page.page_history.error', domain: 'page');
+        }
+
         return $this->json([
+            'success' => $success,
             'page' => $page,
-            'msg' => $translator->trans('page.page_history.success', ['id' => $data['row_id']], domain: 'page')
+            'msg' => $msg
         ]);
     }
 

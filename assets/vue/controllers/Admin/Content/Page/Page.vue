@@ -6,11 +6,13 @@
 import axios from "axios";
 import PageContentForm from "../../../../Components/Page/PageContentForm.vue";
 import PageHistory from "../../../../Components/Page/PageHistory.vue";
-import {Toast, Tab} from "bootstrap";
+import {Tab} from "bootstrap";
 import AutoComplete from "../../../../Components/Global/AutoComplete.vue";
 import {emitter} from "../../../../../utils/useEvent";
 import PageContent from "../../../../Components/Page/PageContent.vue";
 import {toInteger} from "lodash-es";
+import Toast from "../../../../Components/Global/Toast.vue";
+import Modal from "../../../../Components/Global/Modal.vue";
 
 export default {
   name: 'Page',
@@ -19,6 +21,7 @@ export default {
     AutoComplete,
     PageContentForm,
     PageHistory,
+    Toast, Modal
   },
   props: {
     urls: Object,
@@ -36,25 +39,17 @@ export default {
       currentLocale: '',
       currentTab: 'content',
       toasts: {
-        autoSave: {
-          toast: [],
+        toastSuccess: {
+          show: false,
           msg: '',
-          bg: 'bg-success'
         },
-        tag: {
-          toast: [],
+        toastError: {
+          show: false,
           msg: '',
-          bg: 'bg-success'
         },
-        contentRemove: {
-          toast: [],
+        toastAutoSave: {
+          show: false,
           msg: '',
-          bg: 'bg-success'
-        },
-        contentAdd: {
-          toast: [],
-          msg: '',
-          bg: 'bg-success'
         }
       },
       history: [],
@@ -82,18 +77,6 @@ export default {
     }
   },
   mounted() {
-    let toastAutoSave = document.getElementById('live-toast-auto-save');
-    this.toasts.autoSave.toast = Toast.getOrCreateInstance(toastAutoSave);
-
-    let toastTag = document.getElementById('live-toast-tag');
-    this.toasts.tag.toast = Toast.getOrCreateInstance(toastTag);
-
-    let toastContentRemove = document.getElementById('live-toast-content-remove');
-    this.toasts.contentRemove.toast = Toast.getOrCreateInstance(toastContentRemove);
-
-    let toastContentAdd = document.getElementById('live-toast-content-add');
-    this.toasts.contentAdd.toast = Toast.getOrCreateInstance(toastContentAdd);
-
     this.currentLocale = this.locales.current;
     this.loadTabContent();
   },
@@ -215,8 +198,8 @@ export default {
       axios.post(this.urls.auto_save, {
         'page': page
       }).then((response) => {
-        this.toasts.autoSave.msg = this.translate.msg_auto_save_success;
-        this.toasts.autoSave.toast.show();
+        this.toasts.toastAutoSave.msg = this.translate.msg_auto_save_success;
+        this.toasts.toastAutoSave.show = true;
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -382,14 +365,22 @@ export default {
         'id': this.id
       }).then((response) => {
 
-        let tabContent = document.querySelector('#nav-tab-page button[data-bs-target="#nav-content"]');
-        Tab.getInstance(tabContent).show();
-        this.page = response.data.page;
-        this.toasts.autoSave.msg = response.data.msg;
+        if (response.data.success === true) {
+          this.toasts.toastSuccess.msg = response.data.msg;
+          this.toasts.toastSuccess.show = true;
+
+          let tabContent = document.querySelector('#nav-tab-page button[data-bs-target="#nav-content"]');
+          Tab.getInstance(tabContent).show();
+          this.page = response.data.page;
+
+        } else {
+          this.toasts.toastError.msg = response.data.msg;
+          this.toasts.toastError.show = true;
+          this.loading = false;
+        }
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
-        this.toasts.autoSave.toast.show();
         this.loading = false;
         this.updateComponentKey();
       });
@@ -512,11 +503,17 @@ export default {
       this.toasts.tag.toast.show();
 
       this.autoSave(this.page);
-
-    }
+    },
 
     /*** Fin bloc tag ***/
 
+    /**
+     * Ferme le toast défini par nameToast
+     * @param nameToast
+     */
+    closeToast(nameToast) {
+      this.toasts[nameToast].show = false
+    },
   }
 }
 
@@ -686,33 +683,54 @@ export default {
 
   <!-- toast -->
   <div class="toast-container position-fixed top-0 end-0 p-2">
-    <div id="live-toast-auto-save" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-body text-white" :class="this.toasts.autoSave.bg">
-        <i class="bi bi-check-circle-fill"></i>
-        {{ this.toasts.autoSave.msg }}
-      </div>
-    </div>
 
-    <div id="live-toast-tag" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-body text-white" :class="this.toasts.tag.bg">
-        <i class="bi bi-check-circle-fill"></i>
-        {{ this.toasts.tag.msg }}
-      </div>
-    </div>
+    <toast
+        :id="'toastSuccess'"
+        :option-class-header="'text-success'"
+        :show="this.toasts.toastSuccess.show"
+        @close-toast="this.closeToast"
+    >
+      <template #header>
+        <i class="bi bi-check-circle-fill"></i> &nbsp;
+        <strong class="me-auto"> {{ this.translate.toast_title_success }}</strong>
+        <small class="text-black-50">{{ this.translate.toast_time }}</small>
+      </template>
+      <template #body>
+        <div v-html="this.toasts.toastSuccess.msg"></div>
+      </template>
+    </toast>
 
-    <div id="live-toast-content-remove" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-body text-white" :class="this.toasts.contentRemove.bg">
-        <i class="bi bi-check-circle-fill"></i>
-        {{ this.toasts.contentRemove.msg }}
-      </div>
-    </div>
+    <toast
+        :id="'toastError'"
+        :option-class-header="'text-danger'"
+        :show="this.toasts.toastError.show"
+        @close-toast="this.closeToast"
+    >
+      <template #header>
+        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
+        <strong class="me-auto"> {{ this.translate.toast_title_error }}</strong>
+        <small class="text-black-50">{{ this.translate.toast_time }}</small>
+      </template>
+      <template #body>
+        <div v-html="this.toasts.toastError.msg"></div>
+      </template>
+    </toast>
 
-    <div id="live-toast-content-add" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-body text-white" :class="this.toasts.contentAdd.bg">
-        <i class="bi bi-check-circle-fill"></i>
-        {{ this.toasts.contentAdd.msg }}
-      </div>
-    </div>
+    <toast
+        :id="'toastAutoSave'"
+        :option-class-header="'text-success'"
+        :show="this.toasts.toastAutoSave.show"
+        @close-toast="this.closeToast"
+    >
+      <template #header>
+        <i class="bi bi-save-fill"></i> &nbsp;
+        <strong class="me-auto"> {{ this.translate.toast_title_auto_save }}</strong>
+        <small class="text-black-50">{{ this.translate.toast_time }}</small>
+      </template>
+      <template #body>
+        <div v-html="this.toasts.toastAutoSave.msg"></div>
+      </template>
+    </toast>
 
   </div>
 
