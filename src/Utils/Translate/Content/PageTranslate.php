@@ -52,11 +52,15 @@ class PageTranslate extends AppTranslate
             'msg_btn_cancel_restore_history' => $this->translator->trans(
                 'page.msg.btn.cancel.restore.history', domain: 'page'),
             'msg_error_url_no_unique' => $this->translator->trans('page.msg.error_url_no_unique', domain: 'page'),
+            'toast_title_success' => $this->translator->trans('page.toast.title.success', domain: 'page'),
+            'toast_title_error' => $this->translator->trans('page.toast.title.error', domain: 'page'),
+            'toast_title_auto_save' => $this->translator->trans('page.toast.title.auto_save', domain: 'page'),
+            'toast_time' => $this->translator->trans('page.toast.time', domain: 'page'),
             'page_content_form' => $this->getTranslatePageContentForm(),
             'page_content' => $this->getTranslatePageContent(),
             'page_history' => $this->getTranslatePageHistory(),
             'page_save' => $this->getTranslatePageSave(),
-            'auto_complete' => $this->getTranslateAutoComplete()
+            'auto_complete' => $this->getTranslateAutoComplete(),
         ];
     }
 
