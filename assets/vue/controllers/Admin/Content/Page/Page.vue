@@ -195,11 +195,16 @@ export default {
      */
     autoSave(page) {
 
-      axios.post(this.urls.auto_save, {
+      axios.put(this.urls.auto_save, {
         'page': page
       }).then((response) => {
-        this.toasts.toastAutoSave.msg = this.translate.msg_auto_save_success;
-        this.toasts.toastAutoSave.show = true;
+        if (response.data.success === true) {
+          this.toasts.toastSuccess.msg = this.translate.msg_auto_save_success;
+          this.toasts.toastSuccess.show = true;
+        } else {
+          this.toasts.toastError.msg = response.data.msg;
+          this.toasts.toastError.show = true;
+        }
       }).catch((error) => {
         console.error(error);
       }).finally(() => {

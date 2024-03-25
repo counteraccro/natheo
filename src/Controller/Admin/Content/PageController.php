@@ -220,7 +220,7 @@ class PageController extends AppAdminController
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route('/ajax/auto-save', name: 'auto_save')]
+    #[Route('/ajax/auto-save', name: 'auto_save', methods: ['PUT'])]
     public function autoSave(ContainerBagInterface $containerBag, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -231,9 +231,9 @@ class PageController extends AppAdminController
             $pageHistory = new PageHistory($containerBag, $user);
             $pageHistory->save($data['page']);
         } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
-            return $this->json(['status' => false, 'error' => $e->getMessage()]);
+            return $this->json(['success' => false, 'msg' => $e->getMessage()]);
         }
-        return $this->json(['status' => true]);
+        return $this->json(['success' => true]);
     }
 
     /**
