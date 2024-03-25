@@ -41,7 +41,7 @@ export default {
       </thead>
       <tbody>
       <tr v-if="this.history.length > 0" v-for="history in this.history">
-        <td>#{{  history.id }}</td>
+        <td>#{{  (history.id + 1) }}</td>
         <td v-html="history.time"></td>
         <td>{{ history.user }}</td>
         <td>
