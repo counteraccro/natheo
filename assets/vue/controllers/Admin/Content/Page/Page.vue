@@ -452,30 +452,20 @@ export default {
      * @param tag
      */
     addTag(tag) {
-
-      axios.post(this.urls.tag_by_name, {
-        'label': tag,
-        'locale': this.currentLocale
-      }).then((response) => {
-        let tag = response.data.tag;
-
-        if (tag !== null) {
-          this.page.tags.push(tag);
-          this.toasts.tag.bg = 'bg-success';
-          this.toasts.tag.msg = this.translate.msg_add_tag_success;
-          this.toasts.tag.toast.show();
+      axios.get(this.urls.tag_by_name + '/' + tag + '/' + this.currentLocale, {}).then((response) => {
+        if (response.data.success) {
+          this.page.tags.push(response.data.tag);
+          this.toasts.toastSuccess.msg = this.translate.msg_add_tag_success;
+          this.toasts.toastSuccess.show = true;
           this.autoSave(this.page)
         } else {
-          this.toasts.tag.bg = 'bg-warning';
-          this.toasts.tag.msg = response.data.msg;
-          this.toasts.tag.toast.show();
+          this.toasts.toastError.msg = response.data.msg;
+          this.toasts.toastError.show = true;
         }
-
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
       });
-
     },
 
     /**
@@ -504,8 +494,8 @@ export default {
           let spliced = this.page.tags.splice(i, 1);
         }
       }
-      this.toasts.tag.msg = this.translate.msg_del_tag_success;
-      this.toasts.tag.toast.show();
+      this.toasts.toastSuccess.msg = this.translate.msg_del_tag_success;
+      this.toasts.toastSuccess.show = true;
 
       this.autoSave(this.page);
     },
