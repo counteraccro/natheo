@@ -170,7 +170,11 @@ class PageTranslate extends AppTranslate
             'auto_complete_placeholder' =>
                 $this->translator->trans('page.tag.auto_complete.placeholder', domain: 'page'),
             'auto_complete_help' => $this->translator->trans('page.tag.auto_complete.help', domain: 'page'),
-            'auto_complete_btn' => $this->translator->trans('page.tag.auto_complete.btn', domain: 'page')
+            'auto_complete_btn' => $this->translator->trans('page.tag.auto_complete.btn', domain: 'page'),
+            'auto_complete_btn_loading' =>
+                $this->translator->trans('page.tag.auto_complete.btn.loading', domain: 'page'),
+            'auto_complete_empty_result' =>
+                $this->translator->trans('page.tag.auto_complete.empty.result', domain: 'page')
         ];
     }
 }
