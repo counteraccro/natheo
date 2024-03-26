@@ -222,15 +222,15 @@ class TagController extends AppAdminController
 
     /**
      * Permet de rechercher un ou plusieurs tags pour l'auto-complete
-     * @param Request $request
      * @param TagService $tagService
+     * @param string $search
+     * @param string $locale
      * @return Response
      */
-    #[Route('/ajax/search/', name: 'search')]
-    public function search(Request $request, TagService $tagService): Response
+    #[Route('/ajax/search/{search}/{locale}', name: 'search', methods: ['GET'])]
+    public function search(TagService $tagService, string $search = '', string $locale = ''): Response
     {
-        $data = json_decode($request->getContent(), true);
-        $result = $tagService->searchByLocale($data['locale'], $data['search']);
+        $result = $tagService->searchByLocale($locale, $search);
         return $this->json(['result' => $result]);
     }
 
@@ -239,22 +239,30 @@ class TagController extends AppAdminController
      * Si le tag n'existe pas, il est créé. (utilisé pour l'auto-complete)
      * @param Request $request
      * @param TagService $tagService
+     * @param TranslatorInterface $translator
+     * @param string $search
+     * @param string $locale
      * @return Response
+     * @throws ExceptionInterface
      */
-    #[Route('/ajax/tag-by-name/', name: 'tag_by_name')]
-    public function getTagByName(Request $request, TagService $tagService, TranslatorInterface $translator): Response
+    #[Route('/ajax/tag-by-name/{search}/{locale}', name: 'tag_by_name', methods: ['GET'])]
+    public function getTagByName(
+        TagService          $tagService,
+        TranslatorInterface $translator,
+        string              $search = '',
+        string              $locale = ''): Response
     {
-        $data = json_decode($request->getContent(), true);
 
-        $tag = $tagService->newTagByNameAndLocale($data['locale'], $data['label']);
+        $tag = $tagService->newTagByNameAndLocale($locale, $search);
 
         $msg = '';
+        $success = false;
         if ($tag === null) {
             $msg = $translator->trans('tag.page.error.tag.disabled', domain: 'tag');
         } else {
             $tag = $tagService->convertEntityToArray($tag, ['createdAt', 'updateAt']);
+            $success = true;
         }
-
-        return $this->json(['tag' => $tag, 'msg' => $msg]);
+        return $this->json(['tag' => $tag, 'msg' => $msg, 'success' => $success]);
     }
 }
