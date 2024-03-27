@@ -337,11 +337,11 @@ class PageController extends AppAdminController
         $pageHistory = new PageHistory($containerBag, $user);
         $pageHistory->renamePageHistorySave($page->getId());
 
-        return $this->json([
-            'msg' => $translator->trans('page.save.success', domain: 'page'),
-            'url_redirect' => $this->generateUrl('admin_page_update', ['id' => $page->getId()]),
-            'redirect' => $redirect
-        ]);
+        $returnArray = $pageService->getResponseAjax($translator->trans('page.save.success', domain: 'page'));
+        $returnArray['url_redirect'] = $this->generateUrl('admin_page_update', ['id' => $page->getId()]);
+        $returnArray['redirect'] = $redirect;
+
+        return $this->json($returnArray);
     }
 
     /**

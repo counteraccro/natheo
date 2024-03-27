@@ -343,12 +343,17 @@ export default {
       axios.post(this.urls.save, {
         'page': this.page
       }).then((response) => {
-        this.toasts.autoSave.msg = response.data.msg;
-        this.toasts.autoSave.toast.show();
 
-        // Cas première page, on force la redirection pour passer en mode édition
-        if (response.data.redirect === true) {
-          window.location.replace(response.data.url_redirect);
+        if (response.data.success === true) {
+          this.toasts.toastSuccess.msg = response.data.msg;
+          this.toasts.toastSuccess.show = true;
+          // Cas première page, on force la redirection pour passer en mode édition
+          if (response.data.redirect === true) {
+            window.location.replace(response.data.url_redirect);
+          }
+        } else {
+          this.toasts.toastError.msg = response.data.msg;
+          this.toasts.toastError.show = true;
         }
 
       }).catch((error) => {
