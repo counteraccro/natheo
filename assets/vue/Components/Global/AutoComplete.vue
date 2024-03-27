@@ -87,7 +87,7 @@ export default {
       }
       this.loading = true;
       axios.get(this.url + '/' + this.value + '/' + this.locale, {}).then((response) => {
-        this.results =response.data.result;
+        this.results = response.data.result;
         this.nbResult = Object.keys(this.results).length;
       }).catch((error) => {
         console.log(error);
