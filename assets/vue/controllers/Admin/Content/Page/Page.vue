@@ -360,6 +360,7 @@ export default {
         console.error(error);
       }).finally(() => {
         this.loading = false;
+        emitter.emit('reset-check-confirm');
       });
     },
 
@@ -427,15 +428,10 @@ export default {
             this.tabError.globale.content = true;
           }
 
-
           // Pas d'erreur
           if (!isError) {
 
-            console.log(locale);
-            console.log(this.tabError.contentForm.url.locales)
-
             this.tabError.contentForm.url.locales[locale] = false;
-
             let check = this.tabError.contentForm.url.locales;
             if (!check.fr && !check.en && !check.es) {
               this.tabError.globale.content = false;
@@ -667,9 +663,9 @@ export default {
         </div>
 
         <div class="mt-3">
-          <div class="btn btn-secondary me-1" @click="this.save">
+          <button class="btn btn-secondary me-1" :disabled="this.tabError.globale.content" @click="this.save">
             <i class="bi bi-floppy"></i> {{ this.translate.page_save.btn_save }}
-          </div>
+          </button>
           <div class="btn btn-secondary">
             <i class="bi bi-box-arrow-up-right"></i> {{ this.translate.page_save.btn_see_ext }}
           </div>
