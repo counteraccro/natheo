@@ -176,7 +176,8 @@ class PageController extends AppAdminController
                 'save' => $this->generateUrl('admin_page_save'),
                 'new_content' => $this->generateUrl('admin_page_new_content'),
                 'liste_content_by_id' => $this->generateUrl('admin_page_liste_content_by_id'),
-                'is_unique_url_page' => $this->generateUrl('admin_page_is_unique_url_page')
+                'is_unique_url_page' => $this->generateUrl('admin_page_is_unique_url_page'),
+                'update_data_page' => $this->generateUrl('admin_page_update_data_page')
             ]
         ]);
     }
@@ -187,7 +188,9 @@ class PageController extends AppAdminController
      * @param PageService $pageService
      * @param Request $request
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
      * @throws ExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-tab-content', name: 'load_tab_content')]
     public function loadTabContent(
@@ -382,7 +385,13 @@ class PageController extends AppAdminController
         ]);
     }
 
-    #[Route('/ajax/is-unique-url-page', name: 'is_unique_url_page')]
+    /**
+     * Vérifie si l'url de la page est unique
+     * @param Request $request
+     * @param PageService $pageService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/is-unique-url-page', name: 'is_unique_url_page', methods: ['POST'])]
     public function isUniqueUrlPage(Request $request, PageService $pageService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -390,5 +399,16 @@ class PageController extends AppAdminController
         return $this->json([
             'is_unique' => $pageService->isUniqueUrl($data['url'], $data['id'])
         ]);
+    }
+
+    #[Route('/ajax/update-data-page', name: 'update_data_page', methods: ['PUT'])]
+    public function updateDataPage(Request $request, PageService $pageService)
+    {
+        $data = json_decode($request->getContent(), true);
+        var_dump($data);
+
+        $msg = 'Message';
+        $success = true;
+        return $this->json(['msg' => $msg, 'success' => $success]);
     }
 }
