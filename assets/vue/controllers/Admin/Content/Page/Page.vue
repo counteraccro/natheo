@@ -228,8 +228,8 @@ export default {
      */
     removeContent(id) {
       this.page.pageContents = this.page.pageContents.filter((content) => content.renderBlock !== id);
-      this.toasts.contentRemove.msg = this.translate.msg_remove_content_success;
-      this.toasts.contentRemove.toast.show();
+      this.toasts.toastSuccess.msg = this.translate.msg_remove_content_success;
+      this.toasts.toastSuccess.show = true;
       this.autoSave(this.page);
     },
 
@@ -240,6 +240,7 @@ export default {
 
       // TODO provoque par moment un warning Maximum recursive updates, peut être lié à l'affichage (pageContentBlock)
       // On utilise renderBlock + langue pour identifiant le bon pageContentTranslation
+      let tmpId = id.split('-');
 
       // Passage par un tableau temporaire pour éviter les warnings de récursivités vueJS
       // Problème de référence
@@ -332,8 +333,8 @@ export default {
         newPcTmp.sort((a, b) => (a.renderBlock > b.renderBlock ? 1 : -1));
         this.page.pageContents = newPcTmp;
 
-        this.toasts.contentAdd.msg = this.translate.msg_add_content_success;
-        this.toasts.contentAdd.toast.show();
+        this.toasts.toastSuccess.msg = this.translate.msg_add_content_success;
+        this.toasts.toastSuccess.show = true;
         this.autoSave(this.page)
       }).catch((error) => {
         console.error(error);
