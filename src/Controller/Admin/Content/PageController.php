@@ -250,7 +250,7 @@ class PageController extends AppAdminController
     public function loadTabHistory(
         ContainerBagInterface $containerBag,
         DateService           $dateService,
-        int                   $id = 0
+        int                   $id = null
     ): JsonResponse
     {
         /** @var User $user */
