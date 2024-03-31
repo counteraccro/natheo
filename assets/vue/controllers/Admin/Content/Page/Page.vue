@@ -152,8 +152,14 @@ export default {
      * Charge l'historique des modifications de la page
      */
     loadTabHistory() {
+
+      let url = this.urls.load_tab_history + '/' + this.id;
+      if(this.id === null) {
+        url = this.urls.load_tab_history;
+      }
+
       this.loading = true;
-      axios.get(this.urls.load_tab_history + '/' + this.id, {}).then((response) => {
+      axios.get(url, {}).then((response) => {
         this.history = response.data.history;
       }).catch((error) => {
         console.error(error);
