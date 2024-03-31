@@ -131,11 +131,14 @@ export default {
      * Charge le contenu de l'onglet content
      */
     loadTabContent() {
+
+      let url = this.urls.load_tab_content + '/' + this.id;
+      if (this.id === null) {
+        url = this.urls.load_tab_content;
+      }
       this.loading = true;
-      axios.post(this.urls.load_tab_content, {
-        'id': this.id,
-        'locale': this.currentLocale
-      }).then((response) => {
+      axios.get(url, {}
+      ).then((response) => {
         this.page = response.data.page;
         this.historyInfo = response.data.history
       }).catch((error) => {
@@ -229,30 +232,8 @@ export default {
      */
     updateContentText(id, value) {
 
-      let tmpId = id.split('-');
-      axios.put(this.urls.update_data_page, {
-        'entity': 'pageContents',
-        'id' : tmpId[0],
-        'language' : tmpId[1],
-        'value' : value
-      }).then((response) => {
-        if (response.data.success === true) {
-          this.toasts.toastSuccess.msg = response.data.msg
-          this.toasts.toastSuccess.show = true;
-        } else {
-          this.toasts.toastError.msg = response.data.msg;
-          this.toasts.toastError.show = true;
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-      });
-
-
       // TODO provoque par moment un warning Maximum recursive updates, peut être lié à l'affichage (pageContentBlock)
-
       // On utilise renderBlock + langue pour identifiant le bon pageContentTranslation
-
 
       // Passage par un tableau temporaire pour éviter les warnings de récursivités vueJS
       // Problème de référence
