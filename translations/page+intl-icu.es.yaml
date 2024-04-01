@@ -112,3 +112,6 @@ page.tag.auto_complete.empty.result: __page.tag.auto_complete.empty.result
 page.content.type.faq: __page.content.type.faq
 page.content.faq.list: __page.content.faq.list
 page.content.faq.list.help: __page.content.faq.list.help
+page.content.type: __page.content.type
+page.content.type.unknown: __page.content.type.unknown
+page.content.info.unknown: __page.content.info.unknown
