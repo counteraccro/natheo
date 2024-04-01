@@ -334,14 +334,19 @@ class PageService extends AppAdminService
         }
     }
 
-    public function getListeContentByTypeId(int $typeId)
+    /**
+     * Retourne une liste d'élements type en fonction du type
+     * @param int $typeId
+     * @return array
+     */
+    public function getListeContentByType(int $type): array
     {
         $locale = $this->getLocales()['current'];
         $list = [];
         $selected = 0;
         $label = $help = '';
 
-        switch ($typeId) {
+        switch ($type) {
             case PageConst::CONTENT_TYPE_FAQ :
                 $repo = $this->getRepository(Faq::class);
                 $list = $repo->getListeFaq($locale);
@@ -357,5 +362,34 @@ class PageService extends AppAdminService
             'label' => $label,
             'help' => $help
         ];
+    }
+
+    /**
+     * Permet de retourner les info du block en fonction du type et de son typeId
+     * @param int $type
+     * @param int $typeId
+     * @return array
+     */
+    public function getInfoContentByTypeAndTypeId(int $type, int $typeId): array
+    {
+        $typeStr = $this->translator->trans('page.content.type', domain: 'page') . ' : ';
+
+        switch ($type) {
+            case PageConst::CONTENT_TYPE_FAQ :
+                /** @var Faq $faq */
+                $faq = $this->findOneById(Faq::class, $typeId);
+                $typeStr .= $this->translator->trans('page.content.type.faq', domain: 'page');
+                $info = $faq->getFaqTranslationByLocale($this->getLocales()['current'])->getTitle();
+                break;
+            default:
+                $typeStr .= $this->translator->trans('page.content.type.unknown', domain: 'page');
+                $info = $this->translator->trans('page.content.info.unknown', domain: 'page');
+        }
+
+        return [
+            'type' => $typeStr,
+            'info' => $info
+        ];
+
     }
 }

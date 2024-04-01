@@ -595,6 +595,7 @@ export default {
           <page-content :key="13 + '-' + this.componentKey"
               :locale="this.currentLocale"
               :url="this.urls.liste_content_by_id"
+              :url-info="this.urls.info_render_block"
               :list-content="this.page_datas.list_content"
               :translate="this.translate.page_content"
               :page="this.page"

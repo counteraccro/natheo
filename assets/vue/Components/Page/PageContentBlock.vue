@@ -23,6 +23,7 @@ export default {
     indexMax: Number,
     listeContent: Object,
     url: String,
+    urlInfo: String
   },
   data() {
     return {
@@ -32,6 +33,10 @@ export default {
       modalNew: null,
       idSelectContent: 0,
       idSelectTypeContent: 0,
+      infoBlock_1: 'Chargement',
+      infoBlock_2: 'Chargement',
+      infoBlock_3: 'Chargement',
+      infoBlock_4: 'Chargement',
       typeContent: {
         list: [],
         label: '',
@@ -129,7 +134,27 @@ export default {
     },
 
     /**
-     * Affiche les objets modales
+     * Retourne les informations d'un content block et le set dans une variable infoBlock_
+     * hack pour simuler un appel ajax, pas propre à changer à terme
+     * @param type
+     * @param typeId
+     * @param renderBlock
+     */
+    getInfoRenderBlockByType(type, typeId, renderBlock)
+    {
+      axios.get(this.urlInfo + '/' + type + '/' + typeId, {})
+          .then((response) => {
+            let value = response.data.type + '<br />' + response.data.info;
+            this.changeVal('infoBlock_' + renderBlock, value);
+
+          }).catch((error) => {
+        console.error(error);
+      }).finally(() => {});
+      return 'text-center';
+    },
+
+    /**
+     * Affiche les objets modals
      * @param modale
      */
     showModal(modale) {
@@ -143,6 +168,10 @@ export default {
     hideModal(modale) {
       modale.hide();
     },
+
+    changeVal(varName, newValue) {
+      this[varName] = newValue;
+    }
   }
 }
 
@@ -208,7 +237,13 @@ export default {
         </div>
         <div v-else-if="pageContent.renderBlock === this.renderBlockId" :set="this.isEmptyBlock = true">
           <div class="block-page-content">
-            block type {{ pageContent.typeId }}
+            <div class="render-block-info" :class="this.getInfoRenderBlockByType(pageContent.type, pageContent.typeId, pageContent.renderBlock)">
+
+            <div v-if="pageContent.renderBlock === 1" v-html="this.infoBlock_1"></div>
+            <div v-if="pageContent.renderBlock === 2" v-html="this.infoBlock_2"></div>
+            <div v-if="pageContent.renderBlock === 3" v-html="this.infoBlock_3"></div>
+            <div v-if="pageContent.renderBlock === 4" v-html="this.infoBlock_4"></div>
+            </div>
 
             <div class="block-btn mt-4">
               <div class="float-start">

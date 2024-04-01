@@ -177,6 +177,7 @@ class PageController extends AppAdminController
                 'new_content' => $this->generateUrl('admin_page_new_content'),
                 'liste_content_by_id' => $this->generateUrl('admin_page_liste_content_by_id'),
                 'is_unique_url_page' => $this->generateUrl('admin_page_is_unique_url_page'),
+                'info_render_block' => $this->generateUrl('admin_page_info_render_block')
             ]
         ]);
     }
@@ -372,11 +373,10 @@ class PageController extends AppAdminController
      * @param PageService $pageService
      * @return JsonResponse
      */
-    #[Route('/ajax/content-by-id/{typeId}', name: 'liste_content_by_id', methods: ['GET'])]
-    public function listeContentByIdContent(PageService $pageService, int $typeId = null): JsonResponse
+    #[Route('/ajax/content-by-id/{type}', name: 'liste_content_by_id', methods: ['GET'])]
+    public function listeContentByIdContent(PageService $pageService, int $type = null): JsonResponse
     {
-        $return = $pageService->getListeContentByTypeId($typeId);
-
+        $return = $pageService->getListeContentByType($type);
         return $this->json($return);
     }
 
@@ -394,5 +394,12 @@ class PageController extends AppAdminController
         return $this->json([
             'is_unique' => $pageService->isUniqueUrl($data['url'], $data['id'])
         ]);
+    }
+
+    #[Route('/ajax/get-info-render-bock/{type}/{typeId}', name: 'info_render_block', methods: ['GET'])]
+    public function getInfoRenderBlock(PageService $pageService, int $type = 0, int $typeId = 0): JsonResponse
+    {
+        $return = $pageService->getInfoContentByTypeAndTypeId($type, $typeId);
+        return $this->json($return);
     }
 }
