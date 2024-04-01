@@ -88,7 +88,12 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                     $pageContent->addPageContentTranslation($this->populateEntity(
                         $pageContTrans, new PageContentTranslation()));
                 }
-            } else {
+            }
+            elseif($key === 'typeId')
+            {
+               $pageContent->setTypeId($this->getReference($value)->getId());
+            }
+            else {
                 $this->setData($key, $value, $pageContent);
             }
         }
