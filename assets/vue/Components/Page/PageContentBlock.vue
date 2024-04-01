@@ -322,7 +322,16 @@ export default {
   <!-- Modale d'ajout d'un nouveau content  -->
   <div class="modal fade" :id="'modal-new-content-' + this.renderBlockId" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content">
+
+      <div class="modal-content" :class="this.loading === true ? 'block-grid' : ''">
+
+        <div v-if="this.loading" class="overlay">
+          <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
+            <div class="spinner-border text-primary" role="status"></div>
+            <span class="txt-overlay">{{ this.translate.loading }}</span>
+          </div>
+        </div>
+        
         <div class="modal-header bg-secondary">
           <h1 class="modal-title fs-5 text-white">
             <i class="bi bi-plus-circle"></i> {{ this.translate.modale_new_title }}
@@ -330,14 +339,7 @@ export default {
           <button @click="this.hideModal(this.modalNew);this.resetDataNewContent()" type="button" class="btn-close" data-bs-dismiss="modal"
               aria-label="Close"></button>
         </div>
-        <div class="modal-body" :class="this.loading === true ? 'block-grid' : ''">
-
-          <div v-if="this.loading" class="overlay">
-            <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
-              <div class="spinner-border text-primary" role="status"></div>
-              <span class="txt-overlay">{{ this.translate.loading }}</span>
-            </div>
-          </div>
+        <div class="modal-body">
 
           <div class="mb-3">
             <label :for="'list-choice-content-' + this.renderBlockId" class="form-label">{{ this.translate.modale_new_choice_label }}</label>
