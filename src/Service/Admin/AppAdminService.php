@@ -222,6 +222,27 @@ class AppAdminService
     }
 
     /**
+     * Retourne une liste d'entité en fonction de critères
+     * @param string $entity
+     * @param array $criteria
+     * @param array $orderBy
+     * @param int|null $limit
+     * @param int|null $offset
+     * @return array
+     */
+    public function findBy(
+        string $entity,
+        array  $criteria = [],
+        array  $orderBy = [],
+        int    $limit = null,
+        int    $offset = null
+    ): array
+    {
+        $repo = $this->getRepository($entity);
+        return $repo->findBy($criteria, $orderBy, $limit, $offset);
+    }
+
+    /**
      * Convertie une entité en tableau PHP
      * @param object $object
      * @param array $ignoredAttributes

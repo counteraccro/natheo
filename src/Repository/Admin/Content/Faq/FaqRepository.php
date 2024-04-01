@@ -3,7 +3,10 @@
 namespace App\Repository\Admin\Content\Faq;
 
 use App\Entity\Admin\Content\Faq\Faq;
+use App\Entity\Admin\Content\Faq\FaqTranslation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\AST\Join;
+use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -57,5 +60,30 @@ class FaqRepository extends ServiceEntityRepository
             ->setMaxResults($limit);
         return $paginator;
 
+    }
+
+    /**
+     * Retourne une liste de FAQ sous la forme id => label en fonction de la locale précisé
+     * @param string $locale
+     * @param bool $disabled
+     * @return array
+     */
+    public function getListeFaq(string $locale = 'fr', bool $disabled = false): array
+    {
+        $result =  $this->createQueryBuilder('f')
+            ->select('f.id', 'ft.title')
+            ->leftJoin('f.faqTranslations', 'ft')
+            ->where('f.disabled = :disabled')
+            ->andWhere('ft.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->setParameter('disabled', $disabled)
+            ->getQuery()->getArrayResult();
+
+        $return = array();
+        foreach($result as $data)
+        {
+            $return[$data['id']] = $data['title'];
+        }
+        return $return;
     }
 }

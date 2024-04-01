@@ -7,6 +7,7 @@
 
 namespace App\Service\Admin\Content\Page;
 
+use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\System\User;
@@ -22,7 +23,6 @@ use App\Utils\Content\Tag\TagRender;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -332,5 +332,30 @@ class PageService extends AppAdminService
         } catch (NonUniqueResultException $e) {
             die($e->getMessage());
         }
+    }
+
+    public function getListeContentByTypeId(int $typeId)
+    {
+        $locale = $this->getLocales()['current'];
+        $list = [];
+        $selected = 0;
+        $label = $help = '';
+
+        switch ($typeId) {
+            case PageConst::CONTENT_TYPE_FAQ :
+                $repo = $this->getRepository(Faq::class);
+                $list = $repo->getListeFaq($locale);
+                $selected = array_key_first($list);
+                $label = $this->translator->trans('page.content.faq.list', domain: 'page');
+                $help = $this->translator->trans('page.content.faq.list.help', domain: 'page');
+                break;
+        }
+
+        return [
+            'list' => $list,
+            'selected' => $selected,
+            'label' => $label,
+            'help' => $help
+        ];
     }
 }
