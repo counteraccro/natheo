@@ -106,14 +106,13 @@ export default {
 
       this.loading = true;
 
-      axios.post(this.url, {
-        'id': this.idSelectContent,
-      }).then((response) => {
-        this.typeContent.list = response.data.list;
-        this.typeContent.label = response.data.label;
-        this.typeContent.help = response.data.help;
-        this.idSelectTypeContent = response.data.selected;
-      }).catch((error) => {
+      axios.get(this.url + '/' + this.idSelectContent, {})
+          .then((response) => {
+            this.typeContent.list = response.data.list;
+            this.typeContent.label = response.data.label;
+            this.typeContent.help = response.data.help;
+            this.idSelectTypeContent = response.data.selected;
+          }).catch((error) => {
         console.error(error);
       }).finally(() => {
         this.loading = false;

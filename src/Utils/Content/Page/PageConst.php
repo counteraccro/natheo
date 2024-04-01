@@ -74,6 +74,11 @@ class PageConst
      */
     const CONTENT_TYPE_TEXT = 1;
 
+    /**
+     * Type FAQ pour les pages contents
+     */
+    const CONTENT_TYPE_FAQ = 2;
+
 
 
 

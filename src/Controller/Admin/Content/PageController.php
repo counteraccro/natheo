@@ -372,8 +372,8 @@ class PageController extends AppAdminController
      * @param PageService $pageService
      * @return JsonResponse
      */
-    #[Route('/ajax/content-by-id', name: 'liste_content_by_id')]
-    public function listeContentByIdContent(Request $request, PageService $pageService): JsonResponse
+    #[Route('/ajax/content-by-id/{typeId}', name: 'liste_content_by_id', methods: ['GET'])]
+    public function listeContentByIdContent(PageService $pageService, int $typeId = null): JsonResponse
     {
         return $this->json([
             'list' => [100 => 'Rendu test 1', 1000 => 'Rendu test 2'],

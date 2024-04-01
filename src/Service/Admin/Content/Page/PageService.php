@@ -256,7 +256,7 @@ class PageService extends AppAdminService
     {
         return [
             PageConst::CONTENT_TYPE_TEXT => $this->translator->trans('page.content.text', domain: 'page'),
-            2 => 'FAQ non traduit Pageservice::getAllContent()'
+            PageConst::CONTENT_TYPE_FAQ => $this->translator->trans('page.content.type.faq', domain: 'page'),
         ];
     }
 
