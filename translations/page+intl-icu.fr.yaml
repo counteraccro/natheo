@@ -109,3 +109,4 @@ page.toast.title.error: 'Erreur !'
 page.toast.time: "A l'instant"
 page.toast.title.auto_save: 'Sauvegarde auto'
 page.tag.auto_complete.empty.result: 'Aucun résultat pour ce tag, cliquez sur "ajouter" pour le créer'
+page.content.type.faq: Faq

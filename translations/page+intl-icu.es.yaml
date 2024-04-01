@@ -109,3 +109,4 @@ page.toast.title.auto_save: __page.toast.title.auto_save
 page.toast.time: __page.toast.time
 page.tag.auto_complete.btn.loading: __page.tag.auto_complete.btn.loading
 page.tag.auto_complete.empty.result: __page.tag.auto_complete.empty.result
+page.content.type.faq: __page.content.type.faq
