@@ -152,8 +152,8 @@ class PagePopulate
                                 }
                                 break;
                             default:
-                                $pageContent->setTypeId($content['type']);
-                                echo "Type " . $content['type'] . " non pris en charge pour le moment";
+                                $pageContent->setTypeId($content['typeId']);
+                                $pageContent->setType($content['type']);
                         }
                         $pageContent->setPage($this->page);
                         $this->page->addPageContent($pageContent);

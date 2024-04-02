@@ -15,6 +15,7 @@ export default {
   },
   props: {
     url: String,
+    urlInfo: String,
     locale: String,
     translate: Object,
     page: Object,
@@ -168,6 +169,7 @@ export default {
             :index-max="this.getNbBlock()"
             :liste-content="this.listContent"
             :url="this.url"
+            :url-info="this.urlInfo"
             @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
@@ -191,6 +193,7 @@ export default {
             :index-max="this.getNbBlock()"
             :liste-content="this.listContent"
             :url="this.url"
+            :url-info="this.urlInfo"
             @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
@@ -213,6 +216,7 @@ export default {
             :index-max="this.getNbBlock()"
             :liste-content="this.listContent"
             :url="this.url"
+            :url-info="this.urlInfo"
             @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
@@ -233,6 +237,7 @@ export default {
             :index-max="this.getNbBlock()"
             :liste-content="this.listContent"
             :url="this.url"
+            :url-info="this.urlInfo"
             @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
@@ -255,6 +260,7 @@ export default {
             :index-max="this.getNbBlock()"
             :liste-content="this.listContent"
             :url="this.url"
+            :url-info="this.urlInfo"
             @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
@@ -275,6 +281,7 @@ export default {
             :index-max="this.getNbBlock()"
             :liste-content="this.listContent"
             :url="this.url"
+            :url-info="this.urlInfo"
             @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
@@ -297,6 +304,7 @@ export default {
             :index-max="this.getNbBlock()"
             :liste-content="this.listContent"
             :url="this.url"
+            :url-info="this.urlInfo"
             @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"
@@ -316,6 +324,7 @@ export default {
             :index-max="this.getNbBlock()"
             :liste-content="this.listContent"
             :url="this.url"
+            :url-info="this.urlInfo"
             @update-content-text="this.updateContentText"
             @remove-content="this.removeContent"
             @new-content="this.newContent"

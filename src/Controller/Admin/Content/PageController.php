@@ -18,6 +18,7 @@ use App\Utils\Content\Page\PageFactory;
 use App\Utils\Content\Page\PageHistory;
 use App\Utils\Content\Page\PagePopulate;
 use App\Utils\System\Options\OptionUserKey;
+use App\Utils\Translate\Content\PageTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
@@ -103,10 +104,10 @@ class PageController extends AppAdminController
      */
     #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(
-        Page                $page,
-        PageService         $pageService,
-        TranslatorInterface $translator,
-        Request             $request,
+        Page                  $page,
+        PageService           $pageService,
+        TranslatorInterface   $translator,
+        Request               $request,
         ContainerBagInterface $containerBag
     ): JsonResponse
     {
@@ -117,10 +118,10 @@ class PageController extends AppAdminController
 
         $pageService->remove($page);
 
-        $pageHistory = new PageHistory($containerBag,$user);
+        $pageHistory = new PageHistory($containerBag, $user);
         $pageHistory->removePageHistory($id);
 
-        $msg =  $translator->trans('page.remove.success', ['label' => $titre], domain: 'page');
+        $msg = $translator->trans('page.remove.success', ['label' => $titre], domain: 'page');
         return $this->json($pageService->getResponseAjax($msg));
     }
 
@@ -134,8 +135,9 @@ class PageController extends AppAdminController
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
     public function add(
-        PageService $pageService,
-        int         $id = null
+        PageService   $pageService,
+        PageTranslate $pageTranslate,
+        int           $id = null
     ): Response
     {
         $breadcrumbTitle = 'page.update.page_title_h1';
@@ -151,7 +153,7 @@ class PageController extends AppAdminController
             ]
         ];
 
-        $translate = $pageService->getPageTranslation();
+        $translate = $pageTranslate->getTranslate();
         $locales = $pageService->getLocales();
 
         return $this->render('admin/content/page/add_update.html.twig', [
@@ -174,7 +176,8 @@ class PageController extends AppAdminController
                 'save' => $this->generateUrl('admin_page_save'),
                 'new_content' => $this->generateUrl('admin_page_new_content'),
                 'liste_content_by_id' => $this->generateUrl('admin_page_liste_content_by_id'),
-                'is_unique_url_page' => $this->generateUrl('admin_page_is_unique_url_page')
+                'is_unique_url_page' => $this->generateUrl('admin_page_is_unique_url_page'),
+                'info_render_block' => $this->generateUrl('admin_page_info_render_block')
             ]
         ]);
     }
@@ -185,24 +188,25 @@ class PageController extends AppAdminController
      * @param PageService $pageService
      * @param Request $request
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
      * @throws ExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/load-tab-content', name: 'load_tab_content')]
+    #[Route('/ajax/load-tab-content/{id}', name: 'load_tab_content', methods: ['GET'])]
     public function loadTabContent(
         PageService $pageService,
-        Request     $request): JsonResponse
+        int $id = null,
+    ): JsonResponse
     {
         $locales = $pageService->getLocales();
-        $data = json_decode($request->getContent(), true);
-
-        if ($data['id'] === null) {
+        if ($id === null) {
             $pageFactory = new PageFactory($locales['locales']);
             $page = $pageFactory->create()->getPage();
             $page->setRender(PageConst::RENDER_1_BLOCK);
             $page->setStatus(PageConst::STATUS_DRAFT);
             $page->getPageContents()->clear();
         } else {
-            $page = $pageService->findOneById(Page::class, $data['id']);
+            $page = $pageService->findOneById(Page::class, $id);
         }
         $pageArray = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt', 'user']);
 
@@ -218,7 +222,7 @@ class PageController extends AppAdminController
      * @param Request $request
      * @return JsonResponse
      */
-    #[Route('/ajax/auto-save', name: 'auto_save')]
+    #[Route('/ajax/auto-save', name: 'auto_save', methods: ['PUT'])]
     public function autoSave(ContainerBagInterface $containerBag, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -229,34 +233,30 @@ class PageController extends AppAdminController
             $pageHistory = new PageHistory($containerBag, $user);
             $pageHistory->save($data['page']);
         } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
-            return $this->json(['status' => false, 'error' => $e->getMessage()]);
+            return $this->json(['success' => false, 'msg' => $e->getMessage()]);
         }
-        return $this->json(['status' => true]);
+        return $this->json(['success' => true]);
     }
 
     /**
      * Charge le tableau d'historique
      * @param ContainerBagInterface $containerBag
-     * @param Request $request
      * @param DateService $dateService
+     * @param int $id
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/load-tab-history', name: 'load_tab_history')]
+    #[Route('/ajax/load-tab-history/{id}', name: 'load_tab_history', methods: ['GET'])]
     public function loadTabHistory(
         ContainerBagInterface $containerBag,
-        Request               $request,
-        DateService           $dateService
+        DateService           $dateService,
+        int                   $id = null
     ): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
         /** @var User $user */
         $user = $this->getUser();
-
         $pageHistory = new PageHistory($containerBag, $user);
-
-        $id = $data['id'];
         $history = $pageHistory->getHistory($id);
 
         foreach ($history as &$hist) {
@@ -264,7 +264,6 @@ class PageController extends AppAdminController
             $dateDiff->setTimestamp($hist['time']);
             $hist['time'] = $dateService->getStringDiffDate($dateDiff, short: true);
         }
-
         return $this->json(['history' => $history]);
     }
 
@@ -291,9 +290,17 @@ class PageController extends AppAdminController
         $pageHistory = new PageHistory($containerBag, $user);
         $page = $pageHistory->getPageHistoryById($data['row_id'], $data['id']);
 
+        $success = true;
+        $msg = $translator->trans('page.page_history.success', ['id' => $data['row_id']], domain: 'page');
+        if (empty($page)) {
+            $success = false;
+            $msg = $translator->trans('page.page_history.error', domain: 'page');
+        }
+
         return $this->json([
+            'success' => $success,
             'page' => $page,
-            'msg' => $translator->trans('page.page_history.success', ['id' => $data['row_id']], domain: 'page')
+            'msg' => $msg
         ]);
     }
 
@@ -306,9 +313,9 @@ class PageController extends AppAdminController
      */
     #[Route('/ajax/save', name: 'save')]
     public function save(
-        Request $request,
-        PageService $pageService,
-        TranslatorInterface $translator,
+        Request               $request,
+        PageService           $pageService,
+        TranslatorInterface   $translator,
         ContainerBagInterface $containerBag
     ): JsonResponse
     {
@@ -318,8 +325,7 @@ class PageController extends AppAdminController
         $page = $pageFactory->create()->getPage();
         $page->setUser($this->getUser());
         $redirect = true;
-        if(isset($data['page']['id']) && $data['page']['id'] > 0)
-        {
+        if (isset($data['page']['id']) && $data['page']['id'] > 0) {
             $page = $pageService->findOneById(Page::class, $data['page']['id']);
             $redirect = false;
         }
@@ -333,11 +339,11 @@ class PageController extends AppAdminController
         $pageHistory = new PageHistory($containerBag, $user);
         $pageHistory->renamePageHistorySave($page->getId());
 
-        return $this->json([
-            'msg' => $translator->trans('page.save.success', domain: 'page'),
-            'url_redirect' => $this->generateUrl('admin_page_update', ['id' => $page->getId()]),
-            'redirect' => $redirect
-        ]);
+        $returnArray = $pageService->getResponseAjax($translator->trans('page.save.success', domain: 'page'));
+        $returnArray['url_redirect'] = $this->generateUrl('admin_page_update', ['id' => $page->getId()]);
+        $returnArray['redirect'] = $redirect;
+
+        return $this->json($returnArray);
     }
 
     /**
@@ -367,18 +373,20 @@ class PageController extends AppAdminController
      * @param PageService $pageService
      * @return JsonResponse
      */
-    #[Route('/ajax/content-by-id', name: 'liste_content_by_id')]
-    public function listeContentByIdContent(Request $request, PageService $pageService): JsonResponse
+    #[Route('/ajax/content-by-id/{type}', name: 'liste_content_by_id', methods: ['GET'])]
+    public function listeContentByIdContent(PageService $pageService, int $type = null): JsonResponse
     {
-        return $this->json([
-            'list' => [100 => 'Rendu test 1', 1000 => 'Rendu test 2'],
-            'selected' => 100,
-            'label' => 'label à traduire Fonction PageController::listeContentByIdContent',
-            'help' => 'help à traduire'
-        ]);
+        $return = $pageService->getListeContentByType($type);
+        return $this->json($return);
     }
 
-    #[Route('/ajax/is-unique-url-page', name: 'is_unique_url_page')]
+    /**
+     * Vérifie si l'url de la page est unique
+     * @param Request $request
+     * @param PageService $pageService
+     * @return JsonResponse
+     */
+    #[Route('/ajax/is-unique-url-page', name: 'is_unique_url_page', methods: ['POST'])]
     public function isUniqueUrlPage(Request $request, PageService $pageService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -386,5 +394,12 @@ class PageController extends AppAdminController
         return $this->json([
             'is_unique' => $pageService->isUniqueUrl($data['url'], $data['id'])
         ]);
+    }
+
+    #[Route('/ajax/get-info-render-bock/{type}/{typeId}', name: 'info_render_block', methods: ['GET'])]
+    public function getInfoRenderBlock(PageService $pageService, int $type = 0, int $typeId = 0): JsonResponse
+    {
+        $return = $pageService->getInfoContentByTypeAndTypeId($type, $typeId);
+        return $this->json($return);
     }
 }

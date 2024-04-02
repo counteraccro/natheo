@@ -1,24 +1,19 @@
 <?php
 /**
- * Service pour la génération de l'éditeur Markdown du site
+ * Class pour la génération des traductions pour les scripts vue pour MarkdownEditor
  * @author Gourdon Aymeric
  * @version 1.0
  */
+namespace App\Utils\Translate;
 
-namespace App\Service\Admin;
-
-class MarkdownEditorService extends AppAdminService
+class MarkdownEditorTranslate extends AppTranslate
 {
     /**
-     *  Retourne les traductions de l'éditeur Markdown
-     * @deprecated
+     * Génération du tableau de translate pour le script vue de markdownEditor
      * @return array
      */
-    public function getTranslate(): array
+    public function getTranslate():array
     {
-        trigger_deprecation('Service/Admin/MarkdownEditorService', '1.0',
-            'Méthode "%s()" dépréciée, passer maintenant par MarkdownEditorTranslatepour avoir la traduction.',
-            __METHOD__ );
         return [
             'btnBold' => $this->translator->trans('editor.button.bold', domain: 'editor_markdown'),
             'btnItalic' => $this->translator->trans('editor.button.italic', domain: 'editor_markdown'),
@@ -51,21 +46,29 @@ class MarkdownEditorService extends AppAdminService
             'msgEmptyContent' => $this->translator->trans('editor.input.empty', domain: 'editor_markdown'),
             'btnMediatheque' => $this->translator->trans('editor.btn.mediatheque', domain: 'editor_markdown'),
             'warning_edit'  => $this->translator->trans('editor.warning.edit', domain: 'editor_markdown'),
-            'mediathequeMarkdown' => [
-                'title' => $this->translator->trans('editor.mediatheque.title', domain: 'editor_markdown'),
-                'btn_close' => $this->translator->trans('editor.mediatheque.btn.close', domain: 'editor_markdown'),
-                'loading' => $this->translator->trans('editor.mediatheque.loading', domain: 'editor_markdown'),
-                'no_media' => $this->translator->trans('editor.mediatheque.no_media', domain: 'editor_markdown'),
-                'btn_size' => $this->translator->trans('editor.mediatheque.btn.size', domain: 'editor_markdown'),
-                'size_fluide' => $this->translator->trans('editor.mediatheque.size.fluide', domain: 'editor_markdown'),
-                'size_max' => $this->translator->trans('editor.mediatheque.size_max', domain: 'editor_markdown'),
-                'size_100' => $this->translator->trans('editor.mediatheque.size_100', domain: 'editor_markdown'),
-                'size_200' => $this->translator->trans('editor.mediatheque.size_200', domain: 'editor_markdown'),
-                'size_300' => $this->translator->trans('editor.mediatheque.size_300', domain: 'editor_markdown'),
-                'size_400' => $this->translator->trans('editor.mediatheque.size_400', domain: 'editor_markdown'),
-                'size_500' => $this->translator->trans('editor.mediatheque.size_500', domain: 'editor_markdown'),
+            'mediathequeMarkdown' => $this->getTranslateMediateque()
+        ];
+    }
 
-            ]
+    /**
+     * Génère le boc médiatheque
+     * @return array
+     */
+    private function getTranslateMediateque() : array
+    {
+        return [
+            'title' => $this->translator->trans('editor.mediatheque.title', domain: 'editor_markdown'),
+            'btn_close' => $this->translator->trans('editor.mediatheque.btn.close', domain: 'editor_markdown'),
+            'loading' => $this->translator->trans('editor.mediatheque.loading', domain: 'editor_markdown'),
+            'no_media' => $this->translator->trans('editor.mediatheque.no_media', domain: 'editor_markdown'),
+            'btn_size' => $this->translator->trans('editor.mediatheque.btn.size', domain: 'editor_markdown'),
+            'size_fluide' => $this->translator->trans('editor.mediatheque.size.fluide', domain: 'editor_markdown'),
+            'size_max' => $this->translator->trans('editor.mediatheque.size_max', domain: 'editor_markdown'),
+            'size_100' => $this->translator->trans('editor.mediatheque.size_100', domain: 'editor_markdown'),
+            'size_200' => $this->translator->trans('editor.mediatheque.size_200', domain: 'editor_markdown'),
+            'size_300' => $this->translator->trans('editor.mediatheque.size_300', domain: 'editor_markdown'),
+            'size_400' => $this->translator->trans('editor.mediatheque.size_400', domain: 'editor_markdown'),
+            'size_500' => $this->translator->trans('editor.mediatheque.size_500', domain: 'editor_markdown'),
         ];
     }
 }

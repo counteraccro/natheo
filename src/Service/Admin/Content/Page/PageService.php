@@ -7,6 +7,7 @@
 
 namespace App\Service\Admin\Content\Page;
 
+use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\System\User;
@@ -22,7 +23,6 @@ use App\Utils\Content\Tag\TagRender;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -256,7 +256,7 @@ class PageService extends AppAdminService
     {
         return [
             PageConst::CONTENT_TYPE_TEXT => $this->translator->trans('page.content.text', domain: 'page'),
-            2 => 'FAQ non traduit Pageservice::getAllContent()'
+            PageConst::CONTENT_TYPE_FAQ => $this->translator->trans('page.content.type.faq', domain: 'page'),
         ];
     }
 
@@ -335,99 +335,61 @@ class PageService extends AppAdminService
     }
 
     /**
-     * Retourne les traductions pour les pages
+     * Retourne une liste d'élements type en fonction du type
+     * @param int $typeId
      * @return array
      */
-    public function getPageTranslation(): array
+    public function getListeContentByType(int $type): array
     {
+        $locale = $this->getLocales()['current'];
+        $list = [];
+        $selected = 0;
+        $label = $help = '';
+
+        switch ($type) {
+            case PageConst::CONTENT_TYPE_FAQ :
+                $repo = $this->getRepository(Faq::class);
+                $list = $repo->getListeFaq($locale);
+                $selected = array_key_first($list);
+                $label = $this->translator->trans('page.content.faq.list', domain: 'page');
+                $help = $this->translator->trans('page.content.faq.list.help', domain: 'page');
+                break;
+        }
+
         return [
-            'select_locale' => $this->translator->trans('page.select.locale', domain: 'page'),
-            'onglet_content' => $this->translator->trans('page.onglet.content', domain: 'page'),
-            'onglet_seo' => $this->translator->trans('page.onglet.seo', domain: 'page'),
-            'onglet_tags' => $this->translator->trans('page.onglet.tag', domain: 'page'),
-            'onglet_history' => $this->translator->trans('page.onglet.history', domain: 'page'),
-            'onglet_save' => $this->translator->trans('page.onglet.save', domain: 'page'),
-            'loading' => $this->translator->trans('page.loading', domain: 'page'),
-            'msg_auto_save_success' => $this->translator->trans('page.msg.auto_save.success', domain: 'page'),
-            'tag_title' => $this->translator->trans('page.onglet.tag.title', domain: 'page'),
-            'tag_sub_title' => $this->translator->trans('page.onglet.tag.sub_title', domain: 'page'),
-            'msg_add_tag_success' => $this->translator->trans('page.onglet.tag.msg.add_tag_success', domain: 'page'),
-            'msg_del_tag_success' => $this->translator->trans('page.onglet.tag.msg.del_tag_success', domain: 'page'),
-            'msg_remove_content_success' => $this->translator->trans('page.msg.remove_content_success', domain: 'page'),
-            'msg_add_content_success' => $this->translator->trans('page.msg.add_content_success', domain: 'page'),
-            'msg_titre_restore_history' => $this->translator->trans('page.msg.titre.restore.history', domain: 'page'),
-            'msg_btn_restore_history' => $this->translator->trans('page.msg.btn.restore.history', domain: 'page'),
-            'msg_btn_cancel_restore_history' => $this->translator->trans(
-                'page.msg.btn.cancel.restore.history', domain: 'page'),
-            'msg_error_url_no_unique' => $this->translator->trans('page.msg.error_url_no_unique', domain: 'page'),
-            'page_content_form' => [
-                'title' => $this->translator->trans('page.page_content_form.title', domain: 'page'),
-                'input_url_label' => $this->translator->trans('page.page_content_form.input.url.label', domain: 'page'),
-                'input_url_info' => $this->translator->trans('page.page_content_form.input.url.info', domain: 'page'),
-                'input_titre_label' =>
-                    $this->translator->trans('page.page_content_form.input.titre.label', domain: 'page'),
-                'input_titre_info' =>
-                    $this->translator->trans('page.page_content_form.input.titre.info', domain: 'page'),
-                'list_render_label' => $this->translator->trans('page.page_save.list_render_label', domain: 'page'),
-                'list_render_help' => $this->translator->trans('page.page_save.list_render_help', domain: 'page'),
-            ],
-            'page_content' => [
-                'title' => $this->translator->trans('page.page_content.title', domain: 'page'),
-                'page_content_block' => [
-                    'markdown' => $this->markdownEditorService->getTranslate(),
-                    'btn_new_content' =>
-                        $this->translator->trans('page.page_content_block.btn.new_content', domain: 'page'),
-                    'btn_delete_content' =>
-                        $this->translator->trans('page.page_content_block.btn.delete_content', domain: 'page'),
-                    'btn_change_content' =>
-                        $this->translator->trans('page.page_content_block.btn.change_content', domain: 'page'),
-                    'btn_move_content' =>
-                        $this->translator->trans('page.page_content_block.btn.move_content', domain: 'page'),
-                    'modale_remove_title' =>
-                        $this->translator->trans('page.page_content_block.modale.remove.title', domain: 'page'),
-                    'modale_remove_body' =>
-                        $this->translator->trans('page.page_content_block.modale.remove.body', domain: 'page'),
-                    'modale_remove_body_2' =>
-                        $this->translator->trans('page.page_content_block.modale.remove.body.2', domain: 'page'),
-                    'modale_remove_btn_confirm' =>
-                        $this->translator->trans('page.page_content_block.modale.remove.btn.confirm', domain: 'page'),
-                    'modale_remove_btn_cancel' =>
-                        $this->translator->trans('page.page_content_block.modale.remove.btn.cancel', domain: 'page'),
-                    'modale_new_title' =>
-                        $this->translator->trans('page.page_content_block.modale.new.title', domain: 'page'),
-                    'modale_new_btn_cancel' =>
-                        $this->translator->trans('page.page_content_block.modale.new.btn.cancel', domain: 'page'),
-                    'modale_new_btn_new' =>
-                        $this->translator->trans('page.page_content_block.modale.new.btn.new', domain: 'page'),
-                    'modale_new_choice_label' =>
-                        $this->translator->trans('page.page_content_block.modale.new.choice_label', domain: 'page'),
-                    'modale_new_choice_info' =>
-                        $this->translator->trans('page.page_content_block.modale.new.choice_info', domain: 'page'),
-                    'loading' => $this->translator->trans('page.page_content_block.loading', domain: 'page'),
-                ],
-            ],
-            'page_history' => [
-                'title' => $this->translator->trans('page.page_history.title', domain: 'page'),
-                'description' => $this->translator->trans('page.page_history.description', domain: 'page'),
-                'empty' => $this->translator->trans('page.page_history.empty', domain: 'page'),
-                'update' => $this->translator->trans('page.page_history.update', domain: 'page'),
-                'for' => $this->translator->trans('page.page_history.for', domain: 'page'),
-                'reload' => $this->translator->trans('page.page_history.reload', domain: 'page'),
-            ],
-            'page_save' => [
-                'title' => $this->translator->trans('page.page_save.title', domain: 'page'),
-                'list_status_label' => $this->translator->trans('page.page_save.list_status_label', domain: 'page'),
-                'list_status_help' => $this->translator->trans('page.page_save.list_status_help', domain: 'page'),
-                'btn_save' => $this->translator->trans('page.page_save.btn.save', domain: 'page'),
-                'btn_see_ext' => $this->translator->trans('page.page_save.btn.see_ext', domain: 'page'),
-            ],
-            'auto_complete' => [
-                'auto_complete_label' => $this->translator->trans('page.tag.auto_complete.label', domain: 'page'),
-                'auto_complete_placeholder' =>
-                    $this->translator->trans('page.tag.auto_complete.placeholder', domain: 'page'),
-                'auto_complete_help' => $this->translator->trans('page.tag.auto_complete.help', domain: 'page'),
-                'auto_complete_btn' => $this->translator->trans('page.tag.auto_complete.btn', domain: 'page')
-            ]
+            'list' => $list,
+            'selected' => $selected,
+            'label' => $label,
+            'help' => $help
         ];
+    }
+
+    /**
+     * Permet de retourner les info du block en fonction du type et de son typeId
+     * @param int $type
+     * @param int $typeId
+     * @return array
+     */
+    public function getInfoContentByTypeAndTypeId(int $type, int $typeId): array
+    {
+        $typeStr = $this->translator->trans('page.content.type', domain: 'page') . ' : ';
+
+        switch ($type) {
+            case PageConst::CONTENT_TYPE_FAQ :
+                /** @var Faq $faq */
+                $faq = $this->findOneById(Faq::class, $typeId);
+                $typeStr .= $this->translator->trans('page.content.type.faq', domain: 'page');
+                $info = $faq->getFaqTranslationByLocale($this->getLocales()['current'])->getTitle();
+                break;
+            default:
+                $typeStr .= $this->translator->trans('page.content.type.unknown', domain: 'page');
+                $info = $this->translator->trans('page.content.info.unknown', domain: 'page');
+        }
+
+        return [
+            'type' => $typeStr,
+            'info' => $info
+        ];
+
     }
 }

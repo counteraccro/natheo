@@ -75,7 +75,7 @@ class TagRepository extends ServiceEntityRepository
     public function searchByName(string $locale, string $search, bool $withDisabled = false): array
     {
         $query = $this->createQueryBuilder('t')
-            ->select('t.id', 'tt.label', 't.disabled')
+            ->select('t.id', 'tt.label', 't.disabled', 't.color')
             ->join('t.tagTranslations', 'tt', 'WITH', "tt.locale = '" . $locale . "'")
             ->andWhere('LOWER(tt.label) LIKE LOWER(:label)')
             ->setParameter('label', '%' . $search . '%');

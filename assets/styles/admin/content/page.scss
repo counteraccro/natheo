@@ -32,27 +32,6 @@
     }
   }
 
-  datalist {
-    position: absolute;
-    max-height: 20em;
-    border: 0 none;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-
-  datalist option {
-    font-size: 0.8em;
-    padding: 0.3em 1em;
-    background-color: #ccc;
-    cursor: pointer;
-  }
-
-  /* option active styles */
-  datalist option:hover, datalist option:focus {
-    color: #fff;
-    background-color: #036;
-    outline: 0 none;
-  }
 
   /** CSS pour les block content du formulaire de création/edition de page */
   #page-content {
@@ -65,4 +44,12 @@
       min-height: 450px;
     }
   }
+}
+
+.auto-complete-result {
+  border: 1px solid var(--bs-secondary);
+  width: 100%;
+  margin-top: 37px;
+  max-height: 200px;
+  overflow: auto;
 }

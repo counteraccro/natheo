@@ -41,8 +41,6 @@ page.msg.auto_save.success: 'Sauvegarde auto réalisée avec succès'
 page.page_history.title: 'Historique des modifications'
 page.page_history.description: "Liste de l'ensemble des modifications faite sur cette page "
 page.page_history.empty: 'Aucun historique pour le moment'
-page.page_history.update: 'Modification n°'
-page.page_history.for: par
 page.page_history.reload: Restaurer
 page.page_history.success: "Restauration de la page à l'état #{id} faite avec succès"
 page.index.popin.help.disabled_page: 'Désactiver une page'
@@ -52,7 +50,8 @@ page.index.popin.help.edit: Editer
 page.tag.auto_complete.label: 'Rechercher / Ajouter tag'
 page.tag.auto_complete.placeholder: 'Rechercher un tag'
 page.tag.auto_complete.help: "Si le tag n'existe pas, celui-ci sera créé en même temps qu'associé à la page"
-page.tag.auto_complete.btn: '<i class="bi bi-tag"></i> Associer'
+page.tag.auto_complete.btn: '<i class="bi bi-tag"></i> Créer'
+page.tag.auto_complete.btn.loading: '<i class="bi bi-arrow-clockwise"></i> Loading'
 page.onglet.tag.title: 'Les tags'
 page.onglet.tag.sub_title: 'Tags associés à la page'
 page.onglet.tag.msg.add_tag_success: 'Tag associé avec succès'
@@ -100,3 +99,19 @@ page.msg.btn.cancel.restore.history: Masquer
 page.msg.history.reload: 'Des modifications non enregistrées ont été détectées, voulez vous les restaurer ?'
 page.msg.history.new.reload: 'Une nouvelle page à été créée sans être enregistrée, voulez vous la restaurer ?'
 page.msg.error_url_no_unique: "Cette url est déjà utilisée pour une autre page de l'application"
+page.page_history.id: '#'
+page.page_history.time: Date
+page.page_history.user: Utilisateur
+page.page_history.action: Action
+page.page_history.error: 'Une erreur est survenue lors de la restauration des données'
+page.toast.title.success: 'Succès !'
+page.toast.title.error: 'Erreur !'
+page.toast.time: "A l'instant"
+page.toast.title.auto_save: 'Sauvegarde auto'
+page.tag.auto_complete.empty.result: 'Aucun résultat pour ce tag, cliquez sur "ajouter" pour le créer'
+page.content.type.faq: Faq
+page.content.faq.list: 'Choisir une FAQ parmi la liste'
+page.content.faq.list.help: 'Seule les FAQs non désactivées sont listées'
+page.content.type.unknown: Inconnu
+page.content.info.unknown: 'Information non disponible pour le moment'
+page.content.type: 'Type'

@@ -23,6 +23,7 @@ export default {
     indexMax: Number,
     listeContent: Object,
     url: String,
+    urlInfo: String
   },
   data() {
     return {
@@ -32,6 +33,10 @@ export default {
       modalNew: null,
       idSelectContent: 0,
       idSelectTypeContent: 0,
+      infoBlock_1: 'Chargement',
+      infoBlock_2: 'Chargement',
+      infoBlock_3: 'Chargement',
+      infoBlock_4: 'Chargement',
       typeContent: {
         list: [],
         label: '',
@@ -106,14 +111,13 @@ export default {
 
       this.loading = true;
 
-      axios.post(this.url, {
-        'id': this.idSelectContent,
-      }).then((response) => {
-        this.typeContent.list = response.data.list;
-        this.typeContent.label = response.data.label;
-        this.typeContent.help = response.data.help;
-        this.idSelectTypeContent = response.data.selected;
-      }).catch((error) => {
+      axios.get(this.url + '/' + this.idSelectContent, {})
+          .then((response) => {
+            this.typeContent.list = response.data.list;
+            this.typeContent.label = response.data.label;
+            this.typeContent.help = response.data.help;
+            this.idSelectTypeContent = response.data.selected;
+          }).catch((error) => {
         console.error(error);
       }).finally(() => {
         this.loading = false;
@@ -130,7 +134,27 @@ export default {
     },
 
     /**
-     * Affiche les objets modales
+     * Retourne les informations d'un content block et le set dans une variable infoBlock_
+     * hack pour simuler un appel ajax, pas propre à changer à terme
+     * @param type
+     * @param typeId
+     * @param renderBlock
+     */
+    getInfoRenderBlockByType(type, typeId, renderBlock)
+    {
+      axios.get(this.urlInfo + '/' + type + '/' + typeId, {})
+          .then((response) => {
+            let value = response.data.type + '<br />' + response.data.info;
+            this.changeVal('infoBlock_' + renderBlock, value);
+
+          }).catch((error) => {
+        console.error(error);
+      }).finally(() => {});
+      return 'text-center';
+    },
+
+    /**
+     * Affiche les objets modals
      * @param modale
      */
     showModal(modale) {
@@ -144,6 +168,10 @@ export default {
     hideModal(modale) {
       modale.hide();
     },
+
+    changeVal(varName, newValue) {
+      this[varName] = newValue;
+    }
   }
 }
 
@@ -209,7 +237,13 @@ export default {
         </div>
         <div v-else-if="pageContent.renderBlock === this.renderBlockId" :set="this.isEmptyBlock = true">
           <div class="block-page-content">
-            block type {{ pageContent.typeId }}
+            <div class="render-block-info" :class="this.getInfoRenderBlockByType(pageContent.type, pageContent.typeId, pageContent.renderBlock)">
+
+            <div v-if="pageContent.renderBlock === 1" v-html="this.infoBlock_1"></div>
+            <div v-if="pageContent.renderBlock === 2" v-html="this.infoBlock_2"></div>
+            <div v-if="pageContent.renderBlock === 3" v-html="this.infoBlock_3"></div>
+            <div v-if="pageContent.renderBlock === 4" v-html="this.infoBlock_4"></div>
+            </div>
 
             <div class="block-btn mt-4">
               <div class="float-start">
@@ -288,7 +322,16 @@ export default {
   <!-- Modale d'ajout d'un nouveau content  -->
   <div class="modal fade" :id="'modal-new-content-' + this.renderBlockId" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content">
+
+      <div class="modal-content" :class="this.loading === true ? 'block-grid' : ''">
+
+        <div v-if="this.loading" class="overlay">
+          <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
+            <div class="spinner-border text-primary" role="status"></div>
+            <span class="txt-overlay">{{ this.translate.loading }}</span>
+          </div>
+        </div>
+        
         <div class="modal-header bg-secondary">
           <h1 class="modal-title fs-5 text-white">
             <i class="bi bi-plus-circle"></i> {{ this.translate.modale_new_title }}
@@ -296,14 +339,7 @@ export default {
           <button @click="this.hideModal(this.modalNew);this.resetDataNewContent()" type="button" class="btn-close" data-bs-dismiss="modal"
               aria-label="Close"></button>
         </div>
-        <div class="modal-body" :class="this.loading === true ? 'block-grid' : ''">
-
-          <div v-if="this.loading" class="overlay">
-            <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
-              <div class="spinner-border text-primary" role="status"></div>
-              <span class="txt-overlay">{{ this.translate.loading }}</span>
-            </div>
-          </div>
+        <div class="modal-body">
 
           <div class="mb-3">
             <label :for="'list-choice-content-' + this.renderBlockId" class="form-label">{{ this.translate.modale_new_choice_label }}</label>

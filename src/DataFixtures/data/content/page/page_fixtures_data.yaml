@@ -60,7 +60,7 @@ pages:
         renderBlock: 2
         renderOrder: 1
         type: 2
-        typeId: 1
+        typeId: faq-1
       presentation_content_3:
         renderBlock: 3
         renderOrder: 1

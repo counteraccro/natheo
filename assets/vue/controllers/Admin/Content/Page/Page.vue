@@ -6,11 +6,13 @@
 import axios from "axios";
 import PageContentForm from "../../../../Components/Page/PageContentForm.vue";
 import PageHistory from "../../../../Components/Page/PageHistory.vue";
-import {Toast, Tab} from "bootstrap";
+import {Tab} from "bootstrap";
 import AutoComplete from "../../../../Components/Global/AutoComplete.vue";
 import {emitter} from "../../../../../utils/useEvent";
 import PageContent from "../../../../Components/Page/PageContent.vue";
 import {toInteger} from "lodash-es";
+import Toast from "../../../../Components/Global/Toast.vue";
+import Modal from "../../../../Components/Global/Modal.vue";
 
 export default {
   name: 'Page',
@@ -19,6 +21,7 @@ export default {
     AutoComplete,
     PageContentForm,
     PageHistory,
+    Toast, Modal
   },
   props: {
     urls: Object,
@@ -36,25 +39,17 @@ export default {
       currentLocale: '',
       currentTab: 'content',
       toasts: {
-        autoSave: {
-          toast: [],
+        toastSuccess: {
+          show: false,
           msg: '',
-          bg: 'bg-success'
         },
-        tag: {
-          toast: [],
+        toastError: {
+          show: false,
           msg: '',
-          bg: 'bg-success'
         },
-        contentRemove: {
-          toast: [],
+        toastAutoSave: {
+          show: false,
           msg: '',
-          bg: 'bg-success'
-        },
-        contentAdd: {
-          toast: [],
-          msg: '',
-          bg: 'bg-success'
         }
       },
       history: [],
@@ -82,18 +77,6 @@ export default {
     }
   },
   mounted() {
-    let toastAutoSave = document.getElementById('live-toast-auto-save');
-    this.toasts.autoSave.toast = Toast.getOrCreateInstance(toastAutoSave);
-
-    let toastTag = document.getElementById('live-toast-tag');
-    this.toasts.tag.toast = Toast.getOrCreateInstance(toastTag);
-
-    let toastContentRemove = document.getElementById('live-toast-content-remove');
-    this.toasts.contentRemove.toast = Toast.getOrCreateInstance(toastContentRemove);
-
-    let toastContentAdd = document.getElementById('live-toast-content-add');
-    this.toasts.contentAdd.toast = Toast.getOrCreateInstance(toastContentAdd);
-
     this.currentLocale = this.locales.current;
     this.loadTabContent();
   },
@@ -148,11 +131,14 @@ export default {
      * Charge le contenu de l'onglet content
      */
     loadTabContent() {
+
+      let url = this.urls.load_tab_content + '/' + this.id;
+      if (this.id === null) {
+        url = this.urls.load_tab_content;
+      }
       this.loading = true;
-      axios.post(this.urls.load_tab_content, {
-        'id': this.id,
-        'locale': this.currentLocale
-      }).then((response) => {
+      axios.get(url, {}
+      ).then((response) => {
         this.page = response.data.page;
         this.historyInfo = response.data.history
       }).catch((error) => {
@@ -166,10 +152,14 @@ export default {
      * Charge l'historique des modifications de la page
      */
     loadTabHistory() {
+
+      let url = this.urls.load_tab_history + '/' + this.id;
+      if(this.id === null) {
+        url = this.urls.load_tab_history;
+      }
+
       this.loading = true;
-      axios.post(this.urls.load_tab_history, {
-        'id': this.id,
-      }).then((response) => {
+      axios.get(url, {}).then((response) => {
         this.history = response.data.history;
       }).catch((error) => {
         console.error(error);
@@ -214,11 +204,16 @@ export default {
      */
     autoSave(page) {
 
-      axios.post(this.urls.auto_save, {
+      axios.put(this.urls.auto_save, {
         'page': page
       }).then((response) => {
-        this.toasts.autoSave.msg = this.translate.msg_auto_save_success;
-        this.toasts.autoSave.toast.show();
+        if (response.data.success === true) {
+          this.toasts.toastSuccess.msg = this.translate.msg_auto_save_success;
+          this.toasts.toastSuccess.show = true;
+        } else {
+          this.toasts.toastError.msg = response.data.msg;
+          this.toasts.toastError.show = true;
+        }
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -233,8 +228,8 @@ export default {
      */
     removeContent(id) {
       this.page.pageContents = this.page.pageContents.filter((content) => content.renderBlock !== id);
-      this.toasts.contentRemove.msg = this.translate.msg_remove_content_success;
-      this.toasts.contentRemove.toast.show();
+      this.toasts.toastSuccess.msg = this.translate.msg_remove_content_success;
+      this.toasts.toastSuccess.show = true;
       this.autoSave(this.page);
     },
 
@@ -244,7 +239,6 @@ export default {
     updateContentText(id, value) {
 
       // TODO provoque par moment un warning Maximum recursive updates, peut être lié à l'affichage (pageContentBlock)
-
       // On utilise renderBlock + langue pour identifiant le bon pageContentTranslation
       let tmpId = id.split('-');
 
@@ -339,8 +333,8 @@ export default {
         newPcTmp.sort((a, b) => (a.renderBlock > b.renderBlock ? 1 : -1));
         this.page.pageContents = newPcTmp;
 
-        this.toasts.contentAdd.msg = this.translate.msg_add_content_success;
-        this.toasts.contentAdd.toast.show();
+        this.toasts.toastSuccess.msg = this.translate.msg_add_content_success;
+        this.toasts.toastSuccess.show = true;
         this.autoSave(this.page)
       }).catch((error) => {
         console.error(error);
@@ -357,18 +351,24 @@ export default {
       axios.post(this.urls.save, {
         'page': this.page
       }).then((response) => {
-        this.toasts.autoSave.msg = response.data.msg;
-        this.toasts.autoSave.toast.show();
 
-        // Cas première page, on force la redirection pour passer en mode édition
-        if (response.data.redirect === true) {
-          window.location.replace(response.data.url_redirect);
+        if (response.data.success === true) {
+          this.toasts.toastSuccess.msg = response.data.msg;
+          this.toasts.toastSuccess.show = true;
+          // Cas première page, on force la redirection pour passer en mode édition
+          if (response.data.redirect === true) {
+            window.location.replace(response.data.url_redirect);
+          }
+        } else {
+          this.toasts.toastError.msg = response.data.msg;
+          this.toasts.toastError.show = true;
         }
 
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
         this.loading = false;
+        emitter.emit('reset-check-confirm');
       });
     },
 
@@ -384,14 +384,22 @@ export default {
         'id': this.id
       }).then((response) => {
 
-        let tabContent = document.querySelector('#nav-tab-page button[data-bs-target="#nav-content"]');
-        Tab.getInstance(tabContent).show();
-        this.page = response.data.page;
-        this.toasts.autoSave.msg = response.data.msg;
+        if (response.data.success === true) {
+          this.toasts.toastSuccess.msg = response.data.msg;
+          this.toasts.toastSuccess.show = true;
+
+          let tabContent = document.querySelector('#nav-tab-page button[data-bs-target="#nav-content"]');
+          Tab.getInstance(tabContent).show();
+          this.page = response.data.page;
+
+        } else {
+          this.toasts.toastError.msg = response.data.msg;
+          this.toasts.toastError.show = true;
+          this.loading = false;
+        }
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
-        this.toasts.autoSave.toast.show();
         this.loading = false;
         this.updateComponentKey();
       });
@@ -428,15 +436,10 @@ export default {
             this.tabError.globale.content = true;
           }
 
-
           // Pas d'erreur
           if (!isError) {
 
-            console.log(locale);
-            console.log(this.tabError.contentForm.url.locales)
-
             this.tabError.contentForm.url.locales[locale] = false;
-
             let check = this.tabError.contentForm.url.locales;
             if (!check.fr && !check.en && !check.es) {
               this.tabError.globale.content = false;
@@ -458,30 +461,20 @@ export default {
      * @param tag
      */
     addTag(tag) {
-
-      axios.post(this.urls.tag_by_name, {
-        'label': tag,
-        'locale': this.currentLocale
-      }).then((response) => {
-        let tag = response.data.tag;
-
-        if (tag !== null) {
-          this.page.tags.push(tag);
-          this.toasts.tag.bg = 'bg-success';
-          this.toasts.tag.msg = this.translate.msg_add_tag_success;
-          this.toasts.tag.toast.show();
+      axios.get(this.urls.tag_by_name + '/' + tag + '/' + this.currentLocale, {}).then((response) => {
+        if (response.data.success) {
+          this.page.tags.push(response.data.tag);
+          this.toasts.toastSuccess.msg = this.translate.msg_add_tag_success;
+          this.toasts.toastSuccess.show = true;
           this.autoSave(this.page)
         } else {
-          this.toasts.tag.bg = 'bg-warning';
-          this.toasts.tag.msg = response.data.msg;
-          this.toasts.tag.toast.show();
+          this.toasts.toastError.msg = response.data.msg;
+          this.toasts.toastError.show = true;
         }
-
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
       });
-
     },
 
     /**
@@ -510,15 +503,21 @@ export default {
           let spliced = this.page.tags.splice(i, 1);
         }
       }
-      this.toasts.tag.msg = this.translate.msg_del_tag_success;
-      this.toasts.tag.toast.show();
+      this.toasts.toastSuccess.msg = this.translate.msg_del_tag_success;
+      this.toasts.toastSuccess.show = true;
 
       this.autoSave(this.page);
-
-    }
+    },
 
     /*** Fin bloc tag ***/
 
+    /**
+     * Ferme le toast défini par nameToast
+     * @param nameToast
+     */
+    closeToast(nameToast) {
+      this.toasts[nameToast].show = false
+    },
   }
 }
 
@@ -531,7 +530,7 @@ export default {
 
     <div v-if="historyInfo.show_msg" class="alert alert-primary alert-dismissible">
       <h5 class="alert-heading"><i class="bi bi-info-circle"></i> {{ this.translate.msg_titre_restore_history }}</h5>
-      <p>{{ historyInfo.msg }}</p>
+      <p class="text-black">{{ historyInfo.msg }}</p>
 
       <div class="btn btn-sm btn-secondary" data-bs-dismiss="alert" @click="this.reloadPageHistory(historyInfo.id)">
         <i class="bi bi-arrow-clockwise"></i>
@@ -596,6 +595,7 @@ export default {
           <page-content :key="13 + '-' + this.componentKey"
               :locale="this.currentLocale"
               :url="this.urls.liste_content_by_id"
+              :url-info="this.urls.info_render_block"
               :list-content="this.page_datas.list_content"
               :translate="this.translate.page_content"
               :page="this.page"
@@ -672,9 +672,9 @@ export default {
         </div>
 
         <div class="mt-3">
-          <div class="btn btn-secondary me-1" @click="this.save">
+          <button class="btn btn-secondary me-1" :disabled="this.tabError.globale.content" @click="this.save">
             <i class="bi bi-floppy"></i> {{ this.translate.page_save.btn_save }}
-          </div>
+          </button>
           <div class="btn btn-secondary">
             <i class="bi bi-box-arrow-up-right"></i> {{ this.translate.page_save.btn_see_ext }}
           </div>
@@ -688,33 +688,54 @@ export default {
 
   <!-- toast -->
   <div class="toast-container position-fixed top-0 end-0 p-2">
-    <div id="live-toast-auto-save" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-body text-white" :class="this.toasts.autoSave.bg">
-        <i class="bi bi-check-circle-fill"></i>
-        {{ this.toasts.autoSave.msg }}
-      </div>
-    </div>
 
-    <div id="live-toast-tag" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-body text-white" :class="this.toasts.tag.bg">
-        <i class="bi bi-check-circle-fill"></i>
-        {{ this.toasts.tag.msg }}
-      </div>
-    </div>
+    <toast
+        :id="'toastSuccess'"
+        :option-class-header="'text-success'"
+        :show="this.toasts.toastSuccess.show"
+        @close-toast="this.closeToast"
+    >
+      <template #header>
+        <i class="bi bi-check-circle-fill"></i> &nbsp;
+        <strong class="me-auto"> {{ this.translate.toast_title_success }}</strong>
+        <small class="text-black-50">{{ this.translate.toast_time }}</small>
+      </template>
+      <template #body>
+        <div v-html="this.toasts.toastSuccess.msg"></div>
+      </template>
+    </toast>
 
-    <div id="live-toast-content-remove" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-body text-white" :class="this.toasts.contentRemove.bg">
-        <i class="bi bi-check-circle-fill"></i>
-        {{ this.toasts.contentRemove.msg }}
-      </div>
-    </div>
+    <toast
+        :id="'toastError'"
+        :option-class-header="'text-danger'"
+        :show="this.toasts.toastError.show"
+        @close-toast="this.closeToast"
+    >
+      <template #header>
+        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
+        <strong class="me-auto"> {{ this.translate.toast_title_error }}</strong>
+        <small class="text-black-50">{{ this.translate.toast_time }}</small>
+      </template>
+      <template #body>
+        <div v-html="this.toasts.toastError.msg"></div>
+      </template>
+    </toast>
 
-    <div id="live-toast-content-add" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-body text-white" :class="this.toasts.contentAdd.bg">
-        <i class="bi bi-check-circle-fill"></i>
-        {{ this.toasts.contentAdd.msg }}
-      </div>
-    </div>
+    <toast
+        :id="'toastAutoSave'"
+        :option-class-header="'text-success'"
+        :show="this.toasts.toastAutoSave.show"
+        @close-toast="this.closeToast"
+    >
+      <template #header>
+        <i class="bi bi-save-fill"></i> &nbsp;
+        <strong class="me-auto"> {{ this.translate.toast_title_auto_save }}</strong>
+        <small class="text-black-50">{{ this.translate.toast_time }}</small>
+      </template>
+      <template #body>
+        <div v-html="this.toasts.toastAutoSave.msg"></div>
+      </template>
+    </toast>
 
   </div>
 

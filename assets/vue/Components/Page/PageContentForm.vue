@@ -61,11 +61,9 @@ export default {
         if (pageTranslation.locale === this.locale && pageTranslation.url === '') {
           url = title.replaceAll(' ', '-');
           pageTranslation.url = url;
+          this.isUniqueUrl(url, id, locale)
         }
       });
-
-      this.isUniqueUrl(url, id, locale)
-      //this.autoSave();
     }
   }
 }
