@@ -170,7 +170,7 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
         }
 
         return '<li ' . $tabToggle['active'] . '>
-            <a class="' . $tabToggle['collapsed'] . ' nav-toggle" href="' .
+            <a class="' . $tabToggle['collapsed'] . ' nav-toggle no-control" href="' .
             $route . '" data-bs-toggle="collapse" data-bs-target="' .
             $route . '" aria-current="page" aria-expanded="' . $tabToggle['aria-expanded'] . '">
                 <i class="bi ' . $sidebarElement->getIcon() . '"></i> <span class="d-none-mini">'
