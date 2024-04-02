@@ -530,7 +530,7 @@ export default {
 
     <div v-if="historyInfo.show_msg" class="alert alert-primary alert-dismissible">
       <h5 class="alert-heading"><i class="bi bi-info-circle"></i> {{ this.translate.msg_titre_restore_history }}</h5>
-      <p>{{ historyInfo.msg }}</p>
+      <p class="text-black">{{ historyInfo.msg }}</p>
 
       <div class="btn btn-sm btn-secondary" data-bs-dismiss="alert" @click="this.reloadPageHistory(historyInfo.id)">
         <i class="bi bi-arrow-clockwise"></i>
