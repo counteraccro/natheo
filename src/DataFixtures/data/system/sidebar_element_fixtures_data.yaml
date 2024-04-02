@@ -159,6 +159,15 @@ sidebarElement:
           role: 'ROLE_SUPER_ADMIN'
           description: 'sidebar.update.description'
           lock: true
+      - se_info:
+          icon: 'bi-info-circle'
+          label: 'global.info'
+          route: '#'
+          disabled: false
+          parent: se_system
+          role: 'ROLE_SUPER_ADMIN'
+          description: 'sidebar.info.description'
+          lock: true
   se_devTools:
     icon: 'bi-tools'
     label: 'global.devtools'
@@ -176,6 +185,15 @@ sidebarElement:
           parent: se_devTools
           role: 'ROLE_SUPER_ADMIN'
           description: 'sidebar.dev_options.description'
+          lock: false
+      - se_sql:
+          icon: 'bi-database-fill-gear'
+          label: 'global.sql'
+          route: '#'
+          disabled: false
+          parent: se_devTools
+          role: 'ROLE_SUPER_ADMIN'
+          description: 'sidebar.sql.description'
           lock: false
       - se_database:
           icon: 'bi-database-fill'
