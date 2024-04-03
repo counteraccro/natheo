@@ -400,16 +400,16 @@
         },
         {
             "name": "amphp/http",
-            "version": "v1.7.2",
+            "version": "v1.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/http.git",
-                "reference": "68c61d2f81be3495b692367df2246d9548748db0"
+                "reference": "3a33e68a3b53f7279217238e89748cf0cb30b8a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/http/zipball/68c61d2f81be3495b692367df2246d9548748db0",
-                "reference": "68c61d2f81be3495b692367df2246d9548748db0",
+                "url": "https://api.github.com/repos/amphp/http/zipball/3a33e68a3b53f7279217238e89748cf0cb30b8a6",
+                "reference": "3a33e68a3b53f7279217238e89748cf0cb30b8a6",
                 "shasum": ""
             },
             "require": {
@@ -447,7 +447,7 @@
             "description": "Basic HTTP primitives which can be shared by servers and clients.",
             "support": {
                 "issues": "https://github.com/amphp/http/issues",
-                "source": "https://github.com/amphp/http/tree/v1.7.2"
+                "source": "https://github.com/amphp/http/tree/v1.7.3"
             },
             "funding": [
                 {
@@ -455,7 +455,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-21T19:15:28+00:00"
+            "time": "2024-04-03T17:45:14+00:00"
         },
         {
             "name": "amphp/http-client",
