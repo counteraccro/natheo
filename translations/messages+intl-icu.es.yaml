@@ -191,9 +191,9 @@ options_user.default_personal_data_render.name: '__Votre nom et prénom'
 options_user.default_personal_data_render.help: "__Si les données personnelles n'on pas été saisies, l'option inférieure sera prise en compte"
 global.update: '__Mise à jour'
 sidebar.update.description: '__Gestion des mises à jour du CMS'
-global.info: "__Information"
+global.info: __Information
 sidebar.info.description: '__Information sur le CMS'
-global.sql: "__Gestionnaire SQL"
+global.sql: '__Gestionnaire SQL'
 sidebar.sql.description: '__Créer / Executer des requêtes SQL (uniquement SELECT)'
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: __pagedemo.page_title_h1

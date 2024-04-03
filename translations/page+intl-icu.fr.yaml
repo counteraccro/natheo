@@ -114,4 +114,4 @@ page.content.faq.list: 'Choisir une FAQ parmi la liste'
 page.content.faq.list.help: 'Seule les FAQs non désactivées sont listées'
 page.content.type.unknown: Inconnu
 page.content.info.unknown: 'Information non disponible pour le moment'
-page.content.type: 'Type'
+page.content.type: Type
