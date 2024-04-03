@@ -162,7 +162,7 @@ sidebarElement:
       - se_info:
           icon: 'bi-info-circle'
           label: 'global.info'
-          route: '#'
+          route: 'admin_info_index'
           disabled: false
           parent: se_system
           role: 'ROLE_SUPER_ADMIN'
