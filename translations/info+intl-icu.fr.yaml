@@ -1,3 +1,7 @@
 info.page.title: Information
 info.page.title.h1: Information
-info.description: Information du CMS
+info.description: 'Information du CMS'
+info.serveur.title: Information du serveur
+info.cms.title: Mon site
+info.database.title: Information base de données
+info.info.title: Information navigateur
