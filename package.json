@@ -33,6 +33,7 @@
         "emittery": "^1.0.1",
         "lodash-es": "^4.17.21",
         "marked": "^4.3.0",
+        "masonry-layout": "^4.2.2",
         "node-sass": "^9.0.0",
         "typescript": "^4.9.5",
         "vue-axios": "^3.5.2",

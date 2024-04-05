@@ -7,6 +7,7 @@
 // any CSS you import will output into a single css file (app.css in this case)
 import 'bootstrap';
 import bsCustomFileInput from 'bs-custom-file-input';
+import 'masonry-layout';
 
 
 // start the Stimulus application
