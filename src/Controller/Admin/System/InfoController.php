@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin\System;
 
+use App\Service\Admin\System\InformationService;
 use App\Utils\Breadcrumb;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +14,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class InfoController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(): Response
+    public function index(InformationService $informationService): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'info',
@@ -22,8 +23,11 @@ class InfoController extends AbstractController
             ]
         ];
 
+        $tabInformation = $informationService->getAllInformation();
+
         return $this->render('admin/system/info/index.html.twig', [
             'breadcrumb' => $breadcrumb,
+            'tabInfo' => $tabInformation
         ]);
     }
 }

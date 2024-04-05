@@ -9,5 +9,55 @@
 
     <p>{{ 'info.description' | trans({}, 'info') }}</p>
 
+    <div class="row" data-masonry='{"percentPosition": true }'>
+        <div class="col-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="bi bi-server"></i> {{ 'info.serveur.title' | trans({}, 'info') }}
+                </div>
+                <div class="card-body">
+                   PHPVersion : {{ tabInfo.serveur.php_version }}
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="bi bi-info-circle-fill"></i> {{ 'info.cms.title' | trans({}, 'info') }}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <br />aaaa<br />aaaa<br />aaaa<br />aaaa<br />aaaa
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-database-fill"></i> {{ 'info.database.title' | trans({}, 'info') }}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-database-fill"></i> {{ 'info.info.title' | trans({}, 'info') }}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 {% endblock %}
