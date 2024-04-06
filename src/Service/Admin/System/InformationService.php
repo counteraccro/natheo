@@ -7,7 +7,10 @@
 
 namespace App\Service\Admin\System;
 
-class InformationService
+use App\Entity\Admin\System\User;
+use App\Service\Admin\AppAdminService;
+
+class InformationService extends AppAdminService
 {
 
     /**
@@ -23,8 +26,25 @@ class InformationService
 
     public function getInformationServer(): array
     {
+        var_dump($_SERVER);
+
         return [
-            'php_version' => phpversion()
+            'server_info' => $_SERVER['SERVER_SIGNATURE'],
+            'server_software_version' => $_SERVER['SERVER_SOFTWARE'],
+            'php_version' => phpversion(),
+            'memory_limit' => ini_get('memory_limit'),
+            'upload_max_file_size' => ini_get(' upload_max_filesize')
+        ];
+    }
+
+    /**
+     * Retourne les informations de la base de données
+     * @return array
+     */
+    public function getInformationDatabase(): array
+    {
+        return [
+
         ];
     }
 }

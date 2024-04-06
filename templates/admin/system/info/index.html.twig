@@ -16,7 +16,11 @@
                     <i class="bi bi-server"></i> {{ 'info.serveur.title' | trans({}, 'info') }}
                 </div>
                 <div class="card-body">
-                   PHPVersion : {{ tabInfo.serveur.php_version }}
+                    {{ 'info.server.info' | trans({}, 'info') }} : {{ tabInfo.serveur.server_info | raw }} <br />
+                    {{ 'info.server.software.version' | trans({}, 'info') }} : {{ tabInfo.serveur.server_software_version }} <br />
+                    {{ 'info.php.version' | trans({}, 'info') }} : {{ tabInfo.serveur.php_version }} <br />
+                    {{ 'info.memory.limit' | trans({}, 'info') }} : {{ tabInfo.serveur.memory_limit }} <br />
+                    {{ 'info.upload.max.file' | trans({}, 'info') }} : {{ tabInfo.serveur.upload_max_file_size }} <br />
                 </div>
             </div>
         </div>
