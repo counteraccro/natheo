@@ -1,7 +1,12 @@
 info.page.title: Information
 info.page.title.h1: Information
 info.description: 'Information du CMS'
-info.serveur.title: Information du serveur
-info.cms.title: Mon site
-info.database.title: Information base de données
-info.info.title: Information navigateur
+info.serveur.title: 'Information du serveur'
+info.cms.title: 'Mon site'
+info.database.title: 'Information base de données'
+info.info.title: 'Information navigateur'
+info.server.info: __info.server.info
+info.server.software.version: __info.server.software.version
+info.php.version: __info.php.version
+info.memory.limit: __info.memory.limit
+info.upload.max.file: __info.upload.max.file

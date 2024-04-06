@@ -5,3 +5,8 @@ info.serveur.title: __info.serveur.title
 info.cms.title: __info.cms.title
 info.database.title: __info.database.title
 info.info.title: __info.info.title
+info.server.info: __info.server.info
+info.server.software.version: __info.server.software.version
+info.php.version: __info.php.version
+info.memory.limit: __info.memory.limit
+info.upload.max.file: __info.upload.max.file
