@@ -5,8 +5,15 @@ info.serveur.title: 'Information du serveur'
 info.cms.title: 'Mon site'
 info.database.title: 'Information base de données'
 info.info.title: 'Information navigateur'
-info.server.info: __info.server.info
-info.server.software.version: __info.server.software.version
-info.php.version: __info.php.version
-info.memory.limit: __info.memory.limit
-info.upload.max.file: __info.upload.max.file
+info.server.software.version: Serveur
+info.php.version: 'Version PHP'
+info.memory.limit: 'Limite mémoire'
+info.upload.max.file: 'Taille max upload'
+info.php.version.moreinfo: "plus d'informations"
+info.website.version: Version
+info.website.url: Url
+info.database.type: Type
+info.database.server: Serveur
+info.database.user: Utilisateur
+info.database.name: 'Base de données'
+info.navigateur.info: 'Navigateur'

@@ -10,3 +10,11 @@ info.server.software.version: __info.server.software.version
 info.php.version: __info.php.version
 info.memory.limit: __info.memory.limit
 info.upload.max.file: __info.upload.max.file
+info.php.version.moreinfo: __info.php.version.moreinfo
+info.website.version: __info.website.version
+info.website.url: __info.website.url
+info.database.type: __info.database.type
+info.database.server: __info.database.server
+info.database.user: __info.database.user
+info.database.name: __info.database.name
+info.navigateur.info: __info.navigateur.info
