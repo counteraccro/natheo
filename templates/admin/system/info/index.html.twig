@@ -16,9 +16,10 @@
                     <i class="bi bi-server"></i> {{ 'info.serveur.title' | trans({}, 'info') }}
                 </div>
                 <div class="card-body">
-                    {{ 'info.server.info' | trans({}, 'info') }} : {{ tabInfo.serveur.server_info | raw }} <br />
                     {{ 'info.server.software.version' | trans({}, 'info') }} : {{ tabInfo.serveur.server_software_version }} <br />
-                    {{ 'info.php.version' | trans({}, 'info') }} : {{ tabInfo.serveur.php_version }} <br />
+                    {{ 'info.php.version' | trans({}, 'info') }} : {{ tabInfo.serveur.php_version }}
+                    (<a href="{{ path('admin_info_phpinfo') }}" target="_blank">{{ 'info.php.version.moreinfo' | trans({}, 'info') }} <i class="bi bi-box-arrow-in-up-right"></i>
+                    </a>) <br />
                     {{ 'info.memory.limit' | trans({}, 'info') }} : {{ tabInfo.serveur.memory_limit }} <br />
                     {{ 'info.upload.max.file' | trans({}, 'info') }} : {{ tabInfo.serveur.upload_max_file_size }} <br />
                 </div>
@@ -30,10 +31,8 @@
                     <i class="bi bi-info-circle-fill"></i> {{ 'info.cms.title' | trans({}, 'info') }}
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <br />aaaa<br />aaaa<br />aaaa<br />aaaa<br />aaaa
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    {{ 'info.website.version' | trans({}, 'info') }} : {{ tabInfo.website.website_version }} <br />
+                    {{ 'info.website.url' | trans({}, 'info') }} : {{ tabInfo.website.website_url }} <br />
                 </div>
             </div>
         </div>
@@ -43,9 +42,10 @@
                     <i class="bi bi-database-fill"></i> {{ 'info.database.title' | trans({}, 'info') }}
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    {{ 'info.database.type' | trans({}, 'info') }} : {{ tabInfo.database.database_type | raw }} <br />
+                    {{ 'info.database.server' | trans({}, 'info') }} : {{ tabInfo.database.database_server | raw }} <br />
+                    {{ 'info.database.user' | trans({}, 'info') }} : {{ tabInfo.database.database_user | raw }} <br />
+                    {{ 'info.database.name' | trans({}, 'info') }} : {{ tabInfo.database.database_name | raw }} <br />
                 </div>
             </div>
         </div>
@@ -55,9 +55,7 @@
                     <i class="bi bi-database-fill"></i> {{ 'info.info.title' | trans({}, 'info') }}
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    {{ 'info.navigateur.info' | trans({}, 'info') }} : {{ tabInfo.navigateur.navigateur_info | raw }} <br />
                 </div>
             </div>
         </div>

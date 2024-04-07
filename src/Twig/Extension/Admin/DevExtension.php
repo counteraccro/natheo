@@ -16,6 +16,7 @@ class DevExtension extends AbstractExtension
             // parameter: ['is_safe' => ['html']]
             // Reference: https://twig.symfony.com/doc/3.x/advanced.html#automatic-escaping
             new TwigFilter('getVersion', [DevExtensionRuntime::class, 'getVersion'], ['is_safe' => ['html']]),
+            new TwigFilter('getPhpInfo', [DevExtensionRuntime::class, 'getPhpInfo'], ['is_safe' => ['html']]),
         ];
     }
 

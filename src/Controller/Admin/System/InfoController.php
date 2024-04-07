@@ -30,4 +30,14 @@ class InfoController extends AbstractController
             'tabInfo' => $tabInformation
         ]);
     }
+
+    /**
+     * Information PHP
+     * @return Response
+     */
+    #[Route('/phpinfo', name: 'phpinfo')]
+    public function phpInfo(): Response
+    {
+        return $this->render('admin/system/info/phpinfo.html.twig');
+    }
 }

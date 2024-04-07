@@ -101,4 +101,13 @@ class DevExtensionRuntime extends AppAdminExtensionRuntime implements RuntimeExt
             ' . $this->translator->trans('dev.info.version', domain: 'dev') . ' <b>' . $version . '</b></i>
         </fieldset>';
     }
+
+    /**
+     * Retourne les informations PHP
+     * @return void
+     */
+    public function getPhpInfo()
+    {
+        phpinfo();
+    }
 }
