@@ -6,7 +6,7 @@
 parameters:
     app.supported_locales: 'fr|en|es'
     app.default_locale: 'fr'
-    app.version: 'dev-12-2023'
+    app.version: 'dev-04-2024'
     app.current_branche: 'master'
 
 services:
