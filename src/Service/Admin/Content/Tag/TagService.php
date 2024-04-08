@@ -117,7 +117,7 @@ class TagService extends AppAdminService
                     ->getCreatedAt()->format('d/m/y H:i'),
                 $this->translator->trans('tag.grid.update_at', domain: 'tag') => $element
                     ->getUpdateAt()->format('d/m/y H:i'),
-                GridService::KEY_ACTION => json_encode($action),
+                GridService::KEY_ACTION => $action,
             ];
         }
 

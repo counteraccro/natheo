@@ -112,7 +112,7 @@ class FaqService extends AppAdminService
                     $element->getFaqStatistiqueByKey(FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS)->getValue(),
                 $this->translator->trans('faq.grid.update_at', domain: 'faq') => $element
                     ->getUpdateAt()->format('d/m/y H:i'),
-                GridService::KEY_ACTION => json_encode($action),
+                GridService::KEY_ACTION => $action,
             ];
         }
 

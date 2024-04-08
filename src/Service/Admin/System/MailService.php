@@ -218,7 +218,7 @@ class MailService extends AppAdminService
                 format('d/m/y H:i'),
                 $this->translator->trans('mail.grid.update_at', domain: 'mail') => $mail->getUpdateAt()->
                 format('d/m/y H:i'),
-                GridService::KEY_ACTION => json_encode($actions)
+                GridService::KEY_ACTION => $actions
             ];
         }
 

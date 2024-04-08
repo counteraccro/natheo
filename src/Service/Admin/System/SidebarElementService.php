@@ -133,7 +133,7 @@ class SidebarElementService extends AppAdminService
                     ->getCreatedAt()->format('d/m/y H:i'),
                 $this->translator->trans('sidebar.grid.update_at', domain: 'sidebar') => $element
                     ->getUpdateAt()->format('d/m/y H:i'),
-                GridService::KEY_ACTION => json_encode($action),
+                GridService::KEY_ACTION => $action,
             ];
         }
 

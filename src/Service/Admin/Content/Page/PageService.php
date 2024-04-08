@@ -138,7 +138,7 @@ class PageService extends AppAdminService
                     $element->getPageStatistiqueByKey(PageStatistiqueKey::KEY_PAGE_NB_VISITEUR)->getValue(),
                 $this->translator->trans('page.grid.update_at', domain: 'page') => $element
                     ->getUpdateAt()->format('d/m/y H:i'),
-                GridService::KEY_ACTION => json_encode($action),
+                GridService::KEY_ACTION => $action,
             ];
         }
 
