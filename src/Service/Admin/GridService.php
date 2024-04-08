@@ -48,8 +48,7 @@ class GridService extends AppAdminService
      */
     public function addOptionsSelectLimit(array $tab): array
     {
-        $optionLimitGrid = [5 => 5, 10 => 10, 20 => 20, 50 => 50, 100 => 100];
-        $tab['listLimit'] = json_encode($optionLimitGrid);
+        $tab['listLimit'] = [5 => 5, 10 => 10, 20 => 20, 50 => 50, 100 => 100];
         return $tab;
     }
 
@@ -62,7 +61,7 @@ class GridService extends AppAdminService
     {
 
         $tab['translate'] = [
-            'genericGrid' => json_encode([
+            'genericGrid' => [
                 'placeholder' => $this->translator->trans('grid.search.placeholder', domain: 'grid'),
                 'loading' => $this->translator->trans('grid.loading', domain: 'grid'),
                 'titleSuccess' => $this->translator->trans('grid.success.titre', domain: 'grid'),
@@ -73,15 +72,15 @@ class GridService extends AppAdminService
                 'confirmBtnOK' => $this->translator->trans('grid.confirm.btn.ok', domain: 'grid'),
                 'confirmBtnNo' => $this->translator->trans('grid.confirm.btn.no', domain: 'grid'),
 
-            ]),
-            'gridPaginate' => json_encode([
+            ],
+            'gridPaginate' => [
                 'page' => $this->translator->trans('grid.page', [], domain: 'grid'),
                 'on' => $this->translator->trans('grid.on', [], domain: 'grid'),
                 'row' => $this->translator->trans('grid.row', [], domain: 'grid')
-            ]),
-            'grid' => json_encode([
+            ],
+            'grid' => [
                 'noresult' => $this->translator->trans('grid.no.result', [], domain: 'grid')
-            ])
+            ]
         ];
 
         return $tab;

@@ -149,7 +149,7 @@ class UserService extends AppAdminService
                 format('d/m/y H:i'),
                 $this->translator->trans('user.grid.update_at', domain: 'user') => $user->getUpdateAt()->
                 format('d/m/y H:i'),
-                GridService::KEY_ACTION => json_encode($actions)
+                GridService::KEY_ACTION => $actions
             ];
         }
 
