@@ -44,6 +44,8 @@ export default {
       translateGrid: {},
       showModalGenericGrid: false,
       msgConfirm: '',
+      searchMode: 'table',
+      searchPlaceholder : '',
       toasts: {
         toastSuccessGenericGrid: {
           show: false,
@@ -78,6 +80,9 @@ export default {
         this.translateGrid = response.data.translate.grid;
         this.cPage = page;
         this.cLimit = limit;
+
+        this.searchPlaceholder = this.translate.placeholder;
+
       }).catch((error) => {
         console.error(error);
       }).finally(() => this.loading = false);
@@ -86,8 +91,7 @@ export default {
     /**
      * Rechargement de la page
      */
-    reloadData()
-    {
+    reloadData() {
       this.loadData(this.page, this.limit);
     },
 
@@ -131,7 +135,7 @@ export default {
               this.toasts.toastSuccessGenericGrid.show = true;
             } else {
               this.toasts.toastErrorGenericGrid.msg = response.data.msg;
-              this.toasts.toastErrorGenericGrid.show;
+              this.toasts.toastErrorGenericGrid.show = true;
             }
           }).catch((error) => {
             console.error(error);
@@ -160,10 +164,26 @@ export default {
      * Ferme le toast défini par nameToast
      * @param nameToast
      */
-    closeToast(nameToast)
-    {
+    closeToast(nameToast) {
       this.toasts[nameToast].show = false
     },
+
+    /**
+     * Permet de changer de mode de recherche
+     * @param mode
+     */
+    changeSearchMode(mode) {
+      this.searchMode = mode;
+      if(this.searchMode === 'table')
+      {
+        this.searchPlaceholder = this.translate.placeholder;
+      }
+      else {
+        this.searchPlaceholder = this.translate.placeholderBddSearch
+      }
+
+      return false;
+    }
   }
 }
 
@@ -172,23 +192,23 @@ export default {
 <template>
   <form id="search">
     <div class="row">
-      <div class="col-8">
+      <div class="col-11">
         <div class="input-group mb-3">
           <span class="input-group-text"><i class="bi bi-search"></i></span>
-          <input type="text" class="form-control no-control" :placeholder="translate.placeholder" v-model="searchQuery">
+          <input type="text" class="form-control no-control" :placeholder="this.searchPlaceholder" v-model="searchQuery">
+          <button v-if="this.searchMode === 'bdd'" type="button" class="btn btn-secondary">{{ this.translate.btnSearch }}</button>
           <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="visually-hidden">Toggle Dropdown</span>
           </button>
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Separated link</a></li>
+            <li><a class="dropdown-item" href="#" @click="this.changeSearchMode('table')"><i class="bi bi-table"></i> {{ this.translate.placeholder }}</a></li>
+            <li>
+              <a class="dropdown-item" href="#" @click="this.changeSearchMode('bdd')"><i class="bi bi-database-down"></i> {{ this.translate.placeholderBddSearch }}</a>
+            </li>
           </ul>
         </div>
       </div>
-      <div class="col-4">
+      <div class="col-1">
         <div class="btn btn-secondary" @click="this.reloadData"><i class="bi bi-arrow-clockwise"></i></div>
       </div>
     </div>

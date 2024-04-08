@@ -11,3 +11,5 @@ grid.row: lignes
 grid.no.result: 'Aucun résultat pour votre recherche'
 grid.toast.time: "A l'instant"
 grid.error.titre: 'Erreur !'
+grid.search.placeholder.bdd.search: 'Rechercher dans la base de données'
+grid.btn.search: 'Rechercher'

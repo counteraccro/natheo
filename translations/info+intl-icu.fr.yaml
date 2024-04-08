@@ -16,4 +16,4 @@ info.database.type: Type
 info.database.server: Serveur
 info.database.user: Utilisateur
 info.database.name: 'Base de données'
-info.navigateur.info: 'Navigateur'
+info.navigateur.info: Navigateur

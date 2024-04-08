@@ -90,7 +90,6 @@ class GridService extends AppAdminService
      */
     public function addTranslateGrid(array $tab): array
     {
-
         $tab['translate'] = $this->gridTranslate->getTranslate();
         return $tab;
     }
