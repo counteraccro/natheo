@@ -106,7 +106,7 @@ export default {
       <td v-for="key in columns">
         <span v-if="key !== 'action'" v-html="this.highlightSearch(entry[key])"></span>
         <div v-else>
-          <button class="btn btn-secondary btn-sm m-1" v-for="data in this.jsonParse(entry[key])"
+          <button class="btn btn-secondary btn-sm m-1" v-for="data in entry[key]"
                   @click="$emit('redirect-action', data.url, data.ajax, data.confirm, data.msgConfirm, data.type)"
                   v-html="data.label">
           </button>
