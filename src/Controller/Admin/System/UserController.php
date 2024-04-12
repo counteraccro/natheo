@@ -102,6 +102,7 @@ class UserController extends AppAdminController
     /**
      * Charge le tableau grid de user en ajax
      * @param UserService $userService
+     * @param Request $request
      * @param int $page
      * @param int $limit
      * @return JsonResponse
@@ -110,11 +111,13 @@ class UserController extends AppAdminController
     #[IsGranted('ROLE_SUPER_ADMIN')]
     public function loadGridData(
         UserService $userService,
+        Request     $request,
         int         $page = 1,
         int         $limit = 20
     ): JsonResponse
     {
-        $grid = $userService->getAllFormatToGrid($page, $limit);
+        $search = $request->query->get('search');
+        $grid = $userService->getAllFormatToGrid($page, $limit, $search);
         return $this->json($grid);
     }
 
