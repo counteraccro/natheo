@@ -10,6 +10,7 @@ namespace App\Service\Admin;
 
 use App\Utils\Translate\GridTranslate;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -42,6 +43,11 @@ class GridService extends AppAdminService
      * Clé pour les colonnes
      */
     const KEY_COLUMN = 'column';
+
+    /**
+     * Clé pour la raw SQL
+     */
+    const KEY_RAW_SQL = 'sql';
 
     private GridTranslate $gridTranslate;
 
@@ -81,6 +87,22 @@ class GridService extends AppAdminService
     {
         $tab['listLimit'] = [5 => 5, 10 => 10, 20 => 20, 50 => 50, 100 => 100];
         return $tab;
+    }
+
+    /**
+     * Génère une requête SQL runnable du grid
+     * @param Paginator $paginator
+     * @return array|string|string[]
+     */
+    public function getFormatedSQLQuery(Paginator $paginator): array|string
+    {
+        $sql = $paginator->getQuery()->getSQL();
+        $parameters = $paginator->getQuery()->getParameters();
+        foreach ($parameters as $parameter) {
+            $sql = str_replace('?', "'" . $parameter->getValue() . "'", $sql);
+        }
+        return $sql;
+
     }
 
     /**
