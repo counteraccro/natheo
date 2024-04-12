@@ -50,7 +50,7 @@ export default {
       msgConfirm: '',
       searchMode: 'table',
       searchPlaceholder: '',
-      searchSubmit: false,
+      cQuery: '',
       toasts: {
         toastSuccessGenericGrid: {
           show: false,
@@ -88,6 +88,11 @@ export default {
         this.cPage = page;
         this.cLimit = limit;
 
+
+        if (response.data.sql !== undefined) {
+          this.cQuery = response.data.sql;
+        }
+
         this.searchPlaceholder = this.translate.placeholder;
 
       }).catch((error) => {
@@ -97,7 +102,7 @@ export default {
 
     getSearchParams() {
       if (this.searchMode !== 'table') {
-          return "?search=" + this.searchQuery;
+        return "?search=" + this.searchQuery;
       }
       return "";
     },
@@ -223,7 +228,8 @@ export default {
         </div>
       </div>
       <div class="col-1">
-        <div class="btn btn-secondary" @click="this.reloadData"><i class="bi bi-arrow-clockwise"></i></div>
+        <div class="btn btn-secondary m-1 mt-0" @click="this.reloadData"><i class="bi bi-arrow-clockwise"></i></div>
+        <div class="btn btn-secondary m-1 mt-0" @click="this.reloadData"><i class="bi bi-database"></i></div>
       </div>
     </div>
   </form>
