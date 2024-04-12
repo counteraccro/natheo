@@ -249,6 +249,7 @@ export default {
         :filter-key="searchQuery"
         :sortOrders="sortOrders"
         :translate="translateGrid"
+        :search-mode="this.searchMode"
         @redirect-action="redirectAction">
     </Grid>
     <GridPaginate
