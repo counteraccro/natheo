@@ -209,7 +209,7 @@ export default {
           <span class="input-group-text"><i class="bi bi-search"></i></span>
           <input type="text" class="form-control no-control" :placeholder="this.searchPlaceholder" v-model="searchQuery">
           <button :disabled="!this.activeSearchData" v-if="this.searchMode === 'bdd'" type="button" @click="this.loadData(this.cPage, this.cLimit)" class="btn btn-secondary">{{ this.translate.btnSearch }}</button>
-          <button :disabled="!this.activeSearchData" type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+          <button :disabled="!this.activeSearchData" v-if="this.activeSearchData" type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="visually-hidden">Toggle Dropdown</span>
           </button>
           <ul class="dropdown-menu dropdown-menu-end">
