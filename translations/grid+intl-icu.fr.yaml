@@ -12,4 +12,7 @@ grid.no.result: 'Aucun résultat pour votre recherche'
 grid.toast.time: "A l'instant"
 grid.error.titre: 'Erreur !'
 grid.search.placeholder.bdd.search: 'Rechercher dans la base de données'
-grid.btn.search: 'Rechercher'
+grid.btn.search: Rechercher
+grid.copy.success: 'Donnée copiée dans le presse papier'
+grid.copy.error: 'Une erreur est survenue lors de la copie'
+grid.query.title: 'Requête SQL'
