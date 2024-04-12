@@ -41,7 +41,7 @@ export default {
           })
         })
       }
-      
+
       if (sortKey) {
         data = data.slice().sort((a, b) => {
           a = a[sortKey]

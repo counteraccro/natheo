@@ -24,6 +24,10 @@ export default {
     url: String,
     page: Number,
     limit: String,
+    activeSearchData: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -45,7 +49,8 @@ export default {
       showModalGenericGrid: false,
       msgConfirm: '',
       searchMode: 'table',
-      searchPlaceholder : '',
+      searchPlaceholder: '',
+      searchSubmit: false,
       toasts: {
         toastSuccessGenericGrid: {
           show: false,
@@ -69,7 +74,9 @@ export default {
      */
     loadData(page, limit) {
       this.loading = true;
-      axios.get(this.url + '/' + page + '/' + limit).then((response) => {
+
+      let strSearch = this.getSearchParams();
+      axios.get(this.url + '/' + page + '/' + limit + strSearch).then((response) => {
         this.gridColumns = response.data.column;
         this.gridData = response.data.data;
         this.nbElements = response.data.nb;
@@ -86,6 +93,13 @@ export default {
       }).catch((error) => {
         console.error(error);
       }).finally(() => this.loading = false);
+    },
+
+    getSearchParams() {
+      if (this.searchMode !== 'table') {
+          return "?search=" + this.searchQuery;
+      }
+      return "";
     },
 
     /**
@@ -174,11 +188,9 @@ export default {
      */
     changeSearchMode(mode) {
       this.searchMode = mode;
-      if(this.searchMode === 'table')
-      {
+      if (this.searchMode === 'table') {
         this.searchPlaceholder = this.translate.placeholder;
-      }
-      else {
+      } else {
         this.searchPlaceholder = this.translate.placeholderBddSearch
       }
 
@@ -196,12 +208,14 @@ export default {
         <div class="input-group mb-3">
           <span class="input-group-text"><i class="bi bi-search"></i></span>
           <input type="text" class="form-control no-control" :placeholder="this.searchPlaceholder" v-model="searchQuery">
-          <button v-if="this.searchMode === 'bdd'" type="button" class="btn btn-secondary">{{ this.translate.btnSearch }}</button>
-          <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+          <button :disabled="!this.activeSearchData" v-if="this.searchMode === 'bdd'" type="button" @click="this.loadData(this.cPage, this.cLimit)" class="btn btn-secondary">{{ this.translate.btnSearch }}</button>
+          <button :disabled="!this.activeSearchData" type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="visually-hidden">Toggle Dropdown</span>
           </button>
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#" @click="this.changeSearchMode('table')"><i class="bi bi-table"></i> {{ this.translate.placeholder }}</a></li>
+            <li>
+              <a class="dropdown-item" href="#" @click="this.changeSearchMode('table')"><i class="bi bi-table"></i> {{ this.translate.placeholder }}</a>
+            </li>
             <li>
               <a class="dropdown-item" href="#" @click="this.changeSearchMode('bdd')"><i class="bi bi-database-down"></i> {{ this.translate.placeholderBddSearch }}</a>
             </li>
