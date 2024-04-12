@@ -11,6 +11,7 @@ import GridPaginate from "../../Components/Grid/GridPaginate.vue";
 import axios from "axios";
 import Modal from "../../Components/Global/Modal.vue";
 import Toast from "../../Components/Global/Toast.vue";
+import {copyToClipboard} from "../../../utils/copyToClipboard";
 
 export default {
   name: "GenericGrid",
@@ -51,6 +52,7 @@ export default {
       searchMode: 'table',
       searchPlaceholder: '',
       cQuery: '',
+      showQuery: false,
       toasts: {
         toastSuccessGenericGrid: {
           show: false,
@@ -200,6 +202,28 @@ export default {
       }
 
       return false;
+    },
+
+    /**
+     * Affiche la requete SQL
+     * @param bool
+     */
+    showQueryRun(bool) {
+      this.showQuery = bool;
+    },
+
+    /**
+     * Fait un copier coller
+     */
+    async copyQueryRun() {
+      try {
+        await copyToClipboard(this.cQuery);
+        this.toasts.toastSuccessGenericGrid.msg = this.translate.copySuccess;
+        this.toasts.toastSuccessGenericGrid.show = true;
+      } catch (error) {
+        this.toasts.toastErrorGenericGrid.msg = this.translate.copyError;
+        this.toasts.toastErrorGenericGrid.show = true;
+      }
     }
   }
 }
@@ -208,6 +232,20 @@ export default {
 
 <template>
   <form id="search">
+    <div v-if="this.showQuery" class="card mb-4">
+      <div class="card-header">
+        <div class="float-end">
+          <div class="btn btn-secondary btn-sm m-1 mt-0"><i class="bi bi-save"></i></div>
+          <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.copyQueryRun"><i class="bi bi-clipboard"></i></div>
+          <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.showQueryRun(false)"><i class="bi bi-x"></i></div>
+        </div>
+        {{ this.translate.queryTitle }}
+      </div>
+      <div class="card-body">
+        {{ this.cQuery }}
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-11">
         <div class="input-group mb-3">
@@ -229,7 +267,8 @@ export default {
       </div>
       <div class="col-1">
         <div class="btn btn-secondary m-1 mt-0" @click="this.reloadData"><i class="bi bi-arrow-clockwise"></i></div>
-        <div class="btn btn-secondary m-1 mt-0" @click="this.reloadData"><i class="bi bi-database"></i></div>
+        <div v-if="this.cQuery !== ''" class="btn btn-secondary m-1 mt-0" @click="this.showQueryRun(true)">
+          <i class="bi bi-database"></i></div>
       </div>
     </div>
   </form>
@@ -322,14 +361,4 @@ export default {
 
 
 <style scoped>
-
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
 </style>

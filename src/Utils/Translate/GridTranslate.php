@@ -39,7 +39,10 @@ class GridTranslate extends AppTranslate
             'confirmTitle' => $this->translator->trans('grid.confirm.titre', domain: 'grid'),
             'confirmText' => $this->translator->trans('grid.confirm.texte', domain: 'grid'),
             'confirmBtnOK' => $this->translator->trans('grid.confirm.btn.ok', domain: 'grid'),
-            'confirmBtnNo' => $this->translator->trans('grid.confirm.btn.no', domain: 'grid')
+            'confirmBtnNo' => $this->translator->trans('grid.confirm.btn.no', domain: 'grid'),
+            'copySuccess' => $this->translator->trans('grid.copy.success', domain: 'grid'),
+            'copyError' => $this->translator->trans('grid.copy.error', domain: 'grid'),
+            'queryTitle' => $this->translator->trans('grid.query.title', domain: 'grid'),
         ];
     }
 
