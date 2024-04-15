@@ -47,12 +47,19 @@ class FaqRepository extends ServiceEntityRepository
      * Retourne une liste de user Paginé
      * @param int $page
      * @param int $limit
+     * @param string|null $search
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit): Paginator
+    public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
     {
         $query = $this->createQueryBuilder('f')
             ->orderBy('f.id', 'ASC');
+
+        if ($search !== null) {
+            $query->join('f.faqTranslations', 'ft')
+                ->where('ft.title like :search')
+                ->setParameter('search', '%' . $search . '%');
+        }
 
         $paginator = new Paginator($query->getQuery(), true);
         $paginator->getQuery()
