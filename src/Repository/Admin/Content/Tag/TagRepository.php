@@ -49,12 +49,19 @@ class TagRepository extends ServiceEntityRepository
      * Retourne une liste de tag Paginé
      * @param int $page
      * @param int $limit
+     * @param string|null $search
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit): Paginator
+    public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
     {
         $query = $this->createQueryBuilder('t')
             ->orderBy('t.id', 'ASC');
+
+        if ($search !== null) {
+            $query->join('t.tagTranslations', 'tt')
+                ->where('tt.label like :search')
+                ->setParameter('search', '%' . $search . '%');
+        }
 
         $paginator = new Paginator($query->getQuery(), true);
         $paginator->getQuery()
