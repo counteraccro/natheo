@@ -82,21 +82,23 @@ class PageService extends AppAdminService
      * Retourne une liste de tag paginé
      * @param int $page
      * @param int $limit
+     * @param string|null $search
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit): Paginator
+    public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
     {
         $repo = $this->getRepository(Page::class);
-        return $repo->getAllPaginate($page, $limit);
+        return $repo->getAllPaginate($page, $limit, $search);
     }
 
     /**
      * Construit le tableau de donnée à envoyé au tableau GRID
      * @param int $page
      * @param int $limit
+     * @param string|null $search
      * @return array
      */
-    public function getAllFormatToGrid(int $page, int $limit): array
+    public function getAllFormatToGrid(int $page, int $limit, string $search = null): array
     {
         $column = [
             $this->translator->trans('page.grid.id', domain: 'page'),
@@ -109,7 +111,7 @@ class PageService extends AppAdminService
             GridService::KEY_ACTION,
         ];
 
-        $dataPaginate = $this->getAllPaginate($page, $limit);
+        $dataPaginate = $this->getAllPaginate($page, $limit, $search);
 
         $nb = $dataPaginate->count();
         $data = [];
@@ -146,6 +148,7 @@ class PageService extends AppAdminService
             GridService::KEY_NB => $nb,
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
+            GridService::KEY_RAW_SQL => $this->gridService->getFormatedSQLQuery($dataPaginate)
         ];
         return $this->gridService->addAllDataRequiredGrid($tabReturn);
 
