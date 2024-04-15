@@ -52,7 +52,10 @@ class PageRepository extends ServiceEntityRepository
             ->orderBy('p.id', 'ASC');
         if ($search !== null) {
             $query->join('p.pageTranslations', 'ppt')
-                ->where('ppt.titre like :search')
+                ->join('p.tags', 't')
+                ->join('t.tagTranslations', 'tt')
+                ->where('tt.label like :search')
+                ->orWhere('ppt.titre like :search')
                 ->setParameter('search', '%' . $search . '%');
         }
 
