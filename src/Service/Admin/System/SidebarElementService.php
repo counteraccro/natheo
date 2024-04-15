@@ -141,6 +141,7 @@ class SidebarElementService extends AppAdminService
             GridService::KEY_NB => $nb,
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
+            GridService::KEY_RAW_SQL => $this->gridService->getFormatedSQLQuery($dataPaginate)
         ];
         return $this->gridService->addAllDataRequiredGrid($tabReturn);
 
