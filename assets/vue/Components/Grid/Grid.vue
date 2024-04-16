@@ -13,6 +13,7 @@ export default {
     filterKey: String,
     sortOrders: Object,
     translate: Object,
+    searchMode: String
   },
   emits: ['redirect-action'],
   data() {
@@ -28,17 +29,19 @@ export default {
      */
     filteredData() {
 
+
       const sortKey = this.sortKey
       const filterKey = this.filterKey && this.filterKey.toLowerCase()
       const order = this.sortOrders[sortKey] || 1
       let data = this.data
-      if (filterKey) {
+      if (filterKey && this.isCanSearch()) {
         data = data.filter((row) => {
           return Object.keys(row).some((key) => {
             return String(row[key]).toLowerCase().indexOf(filterKey) > -1
           })
         })
       }
+
       if (sortKey) {
         data = data.slice().sort((a, b) => {
           a = a[sortKey]
@@ -52,6 +55,14 @@ export default {
   methods: {
 
     /**
+     * Détermine si on peut rechercher ou non
+     * @returns {boolean}
+     */
+    isCanSearch() {
+      return (this.searchMode === 'table');
+    },
+
+    /**
      * Permet de trier en fonction d'une clé
      * @param key
      */
@@ -59,6 +70,7 @@ export default {
       this.sortKey = key
       this.sortOrders[key] = this.sortOrders[key] * -1
     },
+
     capitalize(str) {
       return str.charAt(0).toUpperCase() + str.slice(1)
     },
@@ -77,7 +89,7 @@ export default {
     },
 
     highlightSearch(text) {
-      if (!this.filterKey) {
+      if (!this.filterKey || !this.isCanSearch()) {
         return text;
       }
       return text.toString().replace(new RegExp(this.filterKey, "gi"), match => {
@@ -106,9 +118,9 @@ export default {
       <td v-for="key in columns">
         <span v-if="key !== 'action'" v-html="this.highlightSearch(entry[key])"></span>
         <div v-else>
-          <button class="btn btn-secondary btn-sm m-1" v-for="data in this.jsonParse(entry[key])"
-                  @click="$emit('redirect-action', data.url, data.ajax, data.confirm, data.msgConfirm, data.type)"
-                  v-html="data.label">
+          <button class="btn btn-secondary btn-sm m-1" v-for="data in entry[key]"
+              @click="$emit('redirect-action', data.url, data.ajax, data.confirm, data.msgConfirm, data.type)"
+              v-html="data.label">
           </button>
         </div>
       </td>

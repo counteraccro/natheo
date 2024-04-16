@@ -74,7 +74,7 @@ class FaqService extends AppAdminService
      * @param int $limit
      * @return array
      */
-    public function getAllFormatToGrid(int $page, int $limit): array
+    public function getAllFormatToGrid(int $page, int $limit, string $search = null): array
     {
         $column = [
             $this->translator->trans('faq.grid.id', domain: 'faq'),
@@ -85,7 +85,7 @@ class FaqService extends AppAdminService
             GridService::KEY_ACTION,
         ];
 
-        $dataPaginate = $this->getAllPaginate($page, $limit);
+        $dataPaginate = $this->getAllPaginate($page, $limit, $search);
 
         $nb = $dataPaginate->count();
         $data = [];
@@ -112,7 +112,7 @@ class FaqService extends AppAdminService
                     $element->getFaqStatistiqueByKey(FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS)->getValue(),
                 $this->translator->trans('faq.grid.update_at', domain: 'faq') => $element
                     ->getUpdateAt()->format('d/m/y H:i'),
-                GridService::KEY_ACTION => json_encode($action),
+                GridService::KEY_ACTION => $action,
             ];
         }
 
@@ -120,6 +120,7 @@ class FaqService extends AppAdminService
             GridService::KEY_NB => $nb,
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
+            GridService::KEY_RAW_SQL => $this->gridService->getFormatedSQLQuery($dataPaginate)
         ];
         return $this->gridService->addAllDataRequiredGrid($tabReturn);
 
@@ -129,12 +130,13 @@ class FaqService extends AppAdminService
      * Retourne une liste de tag paginé
      * @param int $page
      * @param int $limit
+     * @param string|null $search
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit): Paginator
+    public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
     {
         $repo = $this->getRepository(Faq::class);
-        return $repo->getAllPaginate($page, $limit);
+        return $repo->getAllPaginate($page, $limit, $search);
     }
 
     /**

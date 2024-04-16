@@ -55,14 +55,21 @@ class PageController extends AppAdminController
     /**
      * Charge le tableau grid de tag en ajax
      * @param PageService $pageService
+     * @param Request $request
      * @param int $page
      * @param int $limit
      * @return JsonResponse
      */
-    #[Route('/ajax/load-grid-data/{page}/limit}', name: 'load_grid_data', methods: ['GET'])]
-    public function loadGridData(PageService $pageService, int $page = 1, int $limit = 20): JsonResponse
+    #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
+    public function loadGridData(
+        PageService $pageService,
+        Request     $request,
+        int         $page = 1,
+        int         $limit = 20
+    ): JsonResponse
     {
-        $grid = $pageService->getAllFormatToGrid($page, $limit);
+        $search = $request->query->get('search');
+        $grid = $pageService->getAllFormatToGrid($page, $limit, $search);
         return $this->json($grid);
     }
 
@@ -195,7 +202,7 @@ class PageController extends AppAdminController
     #[Route('/ajax/load-tab-content/{id}', name: 'load_tab_content', methods: ['GET'])]
     public function loadTabContent(
         PageService $pageService,
-        int $id = null,
+        int         $id = null,
     ): JsonResponse
     {
         $locales = $pageService->getLocales();

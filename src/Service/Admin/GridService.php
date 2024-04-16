@@ -8,6 +8,20 @@
 
 namespace App\Service\Admin;
 
+use App\Utils\Translate\GridTranslate;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 class GridService extends AppAdminService
 {
     /**
@@ -31,6 +45,29 @@ class GridService extends AppAdminService
     const KEY_COLUMN = 'column';
 
     /**
+     * Clé pour la raw SQL
+     */
+    const KEY_RAW_SQL = 'sql';
+
+    private GridTranslate $gridTranslate;
+
+    public function __construct(#[AutowireLocator([
+        'logger' => LoggerInterface::class,
+        'entityManager' => EntityManagerInterface::class,
+        'containerBag' => ContainerBagInterface::class,
+        'translator' => TranslatorInterface::class,
+        'router' => UrlGeneratorInterface::class,
+        'security' => Security::class,
+        'requestStack' => RequestStack::class,
+        'parameterBag' => ParameterBagInterface::class,
+        'gridTranslate' => GridTranslate::class
+    ])] private readonly ContainerInterface $handlers)
+    {
+        $this->gridTranslate = $this->handlers->get('gridTranslate');
+        parent::__construct($this->handlers);
+    }
+
+    /**
      * Retourne l'ensemble des données obligatoires pour le grid
      * @param array $tab
      * @return array
@@ -48,9 +85,24 @@ class GridService extends AppAdminService
      */
     public function addOptionsSelectLimit(array $tab): array
     {
-        $optionLimitGrid = [5 => 5, 10 => 10, 20 => 20, 50 => 50, 100 => 100];
-        $tab['listLimit'] = json_encode($optionLimitGrid);
+        $tab['listLimit'] = [5 => 5, 10 => 10, 20 => 20, 50 => 50, 100 => 100];
         return $tab;
+    }
+
+    /**
+     * Génère une requête SQL runnable du grid
+     * @param Paginator $paginator
+     * @return array|string|string[]
+     */
+    public function getFormatedSQLQuery(Paginator $paginator): array|string
+    {
+        $sql = $paginator->getQuery()->getSQL();
+        $parameters = $paginator->getQuery()->getParameters();
+        foreach ($parameters as $parameter) {
+            $sql = str_replace('?', "'" . $parameter->getValue() . "'", $sql);
+        }
+        return $sql;
+
     }
 
     /**
@@ -60,30 +112,7 @@ class GridService extends AppAdminService
      */
     public function addTranslateGrid(array $tab): array
     {
-
-        $tab['translate'] = [
-            'genericGrid' => json_encode([
-                'placeholder' => $this->translator->trans('grid.search.placeholder', domain: 'grid'),
-                'loading' => $this->translator->trans('grid.loading', domain: 'grid'),
-                'titleSuccess' => $this->translator->trans('grid.success.titre', domain: 'grid'),
-                'titleError' => $this->translator->trans('grid.error.titre', domain: 'grid'),
-                'time' => $this->translator->trans('grid.toast.time', domain: 'grid'),
-                'confirmTitle' => $this->translator->trans('grid.confirm.titre', domain: 'grid'),
-                'confirmText' => $this->translator->trans('grid.confirm.texte', domain: 'grid'),
-                'confirmBtnOK' => $this->translator->trans('grid.confirm.btn.ok', domain: 'grid'),
-                'confirmBtnNo' => $this->translator->trans('grid.confirm.btn.no', domain: 'grid'),
-
-            ]),
-            'gridPaginate' => json_encode([
-                'page' => $this->translator->trans('grid.page', [], domain: 'grid'),
-                'on' => $this->translator->trans('grid.on', [], domain: 'grid'),
-                'row' => $this->translator->trans('grid.row', [], domain: 'grid')
-            ]),
-            'grid' => json_encode([
-                'noresult' => $this->translator->trans('grid.no.result', [], domain: 'grid')
-            ])
-        ];
-
+        $tab['translate'] = $this->gridTranslate->getTranslate();
         return $tab;
     }
 

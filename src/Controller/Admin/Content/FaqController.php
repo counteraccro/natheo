@@ -4,6 +4,7 @@
  * @version 1.0
  * Controller pour la gestion des faqs
  */
+
 namespace App\Controller\Admin\Content;
 
 use App\Controller\Admin\AppAdminController;
@@ -50,14 +51,21 @@ class FaqController extends AppAdminController
     /**
      * Charge le tableau grid de tag en ajax
      * @param FaqService $faqService
+     * @param Request $request
      * @param int $page
      * @param int $limit
      * @return JsonResponse
      */
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
-    public function loadGridData(FaqService $faqService, int $page = 1, int $limit = 20): JsonResponse
+    public function loadGridData(
+        FaqService $faqService,
+        Request    $request,
+        int        $page = 1,
+        int        $limit = 20
+    ): JsonResponse
     {
-        $grid = $faqService->getAllFormatToGrid($page, $limit);
+        $search = $request->query->get('search');
+        $grid = $faqService->getAllFormatToGrid($page, $limit, $search);
         return $this->json($grid);
     }
 

@@ -11,3 +11,8 @@ grid.row: __grid.row
 grid.no.result: __grid.no.result
 grid.toast.time: __grid.toast.time
 grid.error.titre: __grid.error.titre
+grid.search.placeholder.bdd.search: __grid.search.placeholder.bdd.search
+grid.btn.search: __grid.btn.search
+grid.copy.success: __grid.copy.success
+grid.copy.error: __grid.copy.error
+grid.query.title: __grid.query.title

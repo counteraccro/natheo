@@ -46,10 +46,18 @@ class PageRepository extends ServiceEntityRepository
      * @param int $limit
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit): Paginator
+    public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
     {
         $query = $this->createQueryBuilder('p')
             ->orderBy('p.id', 'ASC');
+        if ($search !== null) {
+            $query->join('p.pageTranslations', 'ppt')
+                ->join('p.tags', 't')
+                ->join('t.tagTranslations', 'tt')
+                ->where('tt.label like :search')
+                ->orWhere('ppt.titre like :search')
+                ->setParameter('search', '%' . $search . '%');
+        }
 
         $paginator = new Paginator($query->getQuery(), true);
         $paginator->getQuery()

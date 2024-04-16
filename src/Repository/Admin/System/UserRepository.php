@@ -66,12 +66,22 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
      * Retourne une liste de user Paginé
      * @param int $page
      * @param int $limit
+     * @param string|null $search
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit): Paginator
+    public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
     {
         $query = $this->createQueryBuilder('u')
             ->orderBy('u.id', 'ASC');
+
+        if($search !== null)
+        {
+            $query->where('u.email like :search');
+            $query->orWhere('u.login like :search');
+            $query->orWhere('u.firstname like :search');
+            $query->orWhere('u.lastname like :search');
+            $query->setParameter('search', '%' . $search . '%');
+        }
 
         $paginator = new Paginator($query->getQuery(), true);
         $paginator->getQuery()

@@ -81,21 +81,23 @@ class UserService extends AppAdminService
      * Retourne une liste de user paginé
      * @param int $page
      * @param int $limit
+     * @param string|null $search
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit): Paginator
+    public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
     {
         $repo = $this->getRepository(User::class);
-        return $repo->getAllPaginate($page, $limit);
+        return $repo->getAllPaginate($page, $limit, $search);
     }
 
     /**
      * Construit le tableau de donnée à envoyer au tableau GRID
      * @param int $page
      * @param int $limit
+     * @param string|null $search
      * @return array
      */
-    public function getAllFormatToGrid(int $page, int $limit): array
+    public function getAllFormatToGrid(int $page, int $limit, string $search = null): array
     {
         $column = [
             $this->translator->trans('user.grid.id', domain: 'user'),
@@ -108,7 +110,7 @@ class UserService extends AppAdminService
             GridService::KEY_ACTION,
         ];
 
-        $dataPaginate = $this->getAllPaginate($page, $limit);
+        $dataPaginate = $this->getAllPaginate($page, $limit, $search);
 
         $nb = $dataPaginate->count();
         $data = [];
@@ -149,7 +151,7 @@ class UserService extends AppAdminService
                 format('d/m/y H:i'),
                 $this->translator->trans('user.grid.update_at', domain: 'user') => $user->getUpdateAt()->
                 format('d/m/y H:i'),
-                GridService::KEY_ACTION => json_encode($actions)
+                GridService::KEY_ACTION => $actions
             ];
         }
 
@@ -157,6 +159,7 @@ class UserService extends AppAdminService
             GridService::KEY_NB => $nb,
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
+            GridService::KEY_RAW_SQL => $this->gridService->getFormatedSQLQuery($dataPaginate)
         ];
         return $this->gridService->addAllDataRequiredGrid($tabReturn);
 
