@@ -1,20 +1,47 @@
-<!DOCTYPE html>
+{% extends 'admin/admin_base.html.twig' %}
 
-<title>Hello SqlManagerController!</title>
+{% block title %}{{ 'sql_manager.index.page_title' | trans({}, 'sql_manager') }}{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <h1>{{ 'sql_manager.index.page_title_h1' | trans({}, 'sql_manager') }}</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    {{ breadcrumb(breadcrumb) }}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/wamp64/www/natheo/src/Controller/Admin/Tools/SqlManagerController.php</code></li>
-        <li>Your template at <code>C:/wamp64/www/natheo/templates/admin/tools/sql_manager/index.html.twig</code></li>
-    </ul>
-</div>
+    <button type="button" class="btn btn-secondary float-end ms-2" data-bs-toggle="modal" data-bs-target="#help-grid-faq">
+        <i class="bi bi-question-circle"></i>
+    </button>
+    <a href="{{ path('admin_faq_add') }}" class="float-end btn btn-secondary"><i class="bi bi-question-circle-fill"></i> {{ 'sql_manager.index.btn.new' | trans({}, 'sql_manager') }}</a>
+
+    <p>
+        {{ 'sql_manager.index.description' | trans({}, 'sql_manager') }} <br/>
+        {#  {{ 'tag.index.description2' | trans({'icon' : '<i class="bi-eye-slash-fill"></i>'}, 'tag') | raw }} #}<br/>
+    </p>
+
+
+    <!-- div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_faq_load_grid_data',  {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true}) }}></div>
+    -->
+
+    <twig:Admin:ModaleComponent id="help-grid-faq" bgColor="bg-secondary">
+        <twig:block name="header">
+            <i class="bi bi-question-circle"></i> {{ 'sql_manager.index.popin.help.title' | trans({}, 'sql_manager') }}
+        </twig:block>
+
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-eye-slash-fill"></i></button> {{ 'sql_manager.index.popin.help.disabled' | trans({}, 'sql_manager') }}
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-eye-fill"></i></button> {{ 'sql_manager.index.popin.help.enable' | trans({}, 'sql_manager') }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-trash"></i></button> {{ 'sql_manager.index.popin.help.delete' | trans({}, 'sql_manager') }}
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-pencil-fill"></i></button> {{ 'sql_manager.index.popin.help.edit' | trans({}, 'sql_manager') }}
+            </div>
+        </div>
+    </twig:Admin:ModaleComponent>
+
 {% endblock %}

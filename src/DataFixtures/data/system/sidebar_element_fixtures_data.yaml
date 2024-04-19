@@ -189,7 +189,7 @@ sidebarElement:
       - se_sql:
           icon: 'bi-database-fill-gear'
           label: 'global.sql'
-          route: '#'
+          route: 'admin_sql_manager_index'
           disabled: false
           parent: se_devTools
           role: 'ROLE_SUPER_ADMIN'
