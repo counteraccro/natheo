@@ -11,6 +11,7 @@ use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Notification;
+use App\Entity\Admin\Utils\SqlManager;
 use App\Repository\Admin\System\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -85,6 +86,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Faq::class, orphanRemoval: true)]
     private Collection $faqs;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: SqlManager::class, orphanRemoval: true)]
+    private Collection $sqlManagers;
+
     public function __construct()
     {
         $this->optionsUser = new ArrayCollection();
@@ -93,6 +97,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->medias = new ArrayCollection();
         $this->pages = new ArrayCollection();
         $this->faqs = new ArrayCollection();
+        $this->sqlManagers = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -512,6 +517,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($faq->getUsers() === $this) {
                 $faq->setUsers(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SqlManager>
+     */
+    public function getSqlManagers(): Collection
+    {
+        return $this->sqlManagers;
+    }
+
+    public function addSqlManager(SqlManager $sqlManager): static
+    {
+        if (!$this->sqlManagers->contains($sqlManager)) {
+            $this->sqlManagers->add($sqlManager);
+            $sqlManager->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSqlManager(SqlManager $sqlManager): static
+    {
+        if ($this->sqlManagers->removeElement($sqlManager)) {
+            // set the owning side to null (unless already changed)
+            if ($sqlManager->getUsers() === $this) {
+                $sqlManager->setUsers(null);
             }
         }
 
