@@ -1,0 +1,11 @@
+sql_manager:
+  sql-manager-1:
+    user: Aymeric
+    disabled: 0
+    name: 'Liste des utilisateurs'
+    query : 'SELECT u0_.id AS id_0, u0_.email AS email_1, u0_.roles AS roles_2, u0_.password AS password_3, u0_.login AS login_4, u0_.firstname AS firstname_5, u0_.lastname AS lastname_6, u0_.disabled AS disabled_7, u0_.anonymous AS anonymous_8, u0_.founder AS founder_9, u0_.created_at AS created_at_10, u0_.update_at AS update_at_11 FROM natheo.user u0_ ORDER BY u0_.id ASC LIMIT 20'
+  sql-manager1-2:
+    user: Aymeric
+    disabled: 0
+    name: 'Liste des requetes SQL'
+    query: ''

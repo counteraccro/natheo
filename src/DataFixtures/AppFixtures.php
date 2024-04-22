@@ -72,6 +72,12 @@ class AppFixtures extends Fixture
     protected const GROUP_CONTENT = 'content';
 
     /**
+     * Lié à tous les elements tools
+     * @var string
+     */
+    protected const GROUP_TOOLS = 'tools';
+
+    /**
      * Lié à tous les elements tags
      * @var string
      */
@@ -94,6 +100,12 @@ class AppFixtures extends Fixture
      * @var string
      */
     protected const GROUP_FAQ = 'faq';
+
+    /**
+     * Lié à tous les éléments sql manager
+     * @var string
+     */
+    protected const GROUP_SQL_MANAGER = 'sql_manager';
 
     /**
      * @var ContainerInterface
