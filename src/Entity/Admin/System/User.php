@@ -11,7 +11,7 @@ use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Notification;
-use App\Entity\Admin\Utils\SqlManager;
+use App\Entity\Admin\Tools\SqlManager;
 use App\Repository\Admin\System\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

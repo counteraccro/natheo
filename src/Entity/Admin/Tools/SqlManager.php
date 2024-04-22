@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Admin\Utils;
+namespace App\Entity\Admin\Tools;
 
 use App\Entity\Admin\System\User;
 use App\Repository\Admin\Utils\SqlManagerRepository;

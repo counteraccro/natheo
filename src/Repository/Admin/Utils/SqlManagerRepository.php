@@ -2,7 +2,7 @@
 
 namespace App\Repository\Admin\Utils;
 
-use App\Entity\Admin\Utils\SqlManager;
+use App\Entity\Admin\Tools\SqlManager;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
