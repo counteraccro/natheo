@@ -3,17 +3,35 @@
 namespace App\DataFixtures\Admin\Tools;
 
 use App\DataFixtures\AppFixtures;
+use App\Entity\Admin\System\User;
+use App\Entity\Admin\Tools\SqlManager;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Yaml\Yaml;
 
 class SqlManagerFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
+    const SQL_MANAGER_FIXTURES_DATA_FILE = 'tools' . DIRECTORY_SEPARATOR . 'sql_manager_fixtures_data.yaml';
+
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
+        $data = Yaml::parseFile($this->pathDataFixtures . self::SQL_MANAGER_FIXTURES_DATA_FILE);
 
+        foreach ($data['sql_manager'] as $ref => $sqlManagerData) {
+            $sqlManager = new SqlManager();
+            foreach ($sqlManagerData as $key => $value) {
+                switch ($key) {
+                    case "user" :
+                        $sqlManager->setUser($this->getReference($value, User::class));
+                        break;
+                    default:
+                        $this->setData($key, $value, $sqlManager);
+                }
+            }
+            $manager->persist($sqlManager);
+            $this->addReference($ref, $sqlManager);
+        }
         $manager->flush();
     }
 

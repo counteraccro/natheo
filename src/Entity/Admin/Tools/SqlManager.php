@@ -31,10 +31,23 @@ class SqlManager
     private ?bool $disabled = null;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeImmutable $updateAt = null;
+    private ?\DateTimeInterface $updateAt = null;
+
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        $this->createdAt = new \DateTime();
+        $this->updateAt = new \DateTime();
+    }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->updateAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -46,7 +59,7 @@ class SqlManager
         return $this->user;
     }
 
-    public function setUser(?User $user): static
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 
@@ -58,7 +71,7 @@ class SqlManager
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -70,7 +83,7 @@ class SqlManager
         return $this->query;
     }
 
-    public function setQuery(string $query): static
+    public function setQuery(string $query): self
     {
         $this->query = $query;
 
@@ -82,33 +95,33 @@ class SqlManager
         return $this->disabled;
     }
 
-    public function setDisabled(bool $disabled): static
+    public function setDisabled(bool $disabled): self
     {
         $this->disabled = $disabled;
 
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->createdAt = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdateAt(): ?\DateTimeImmutable
+    public function getUpdateAt(): ?\DateTimeInterface
     {
         return $this->updateAt;
     }
 
-    public function setUpdateAt(\DateTimeImmutable $update_at): static
+    public function setUpdateAt(\DateTimeInterface $updateAt): self
     {
-        $this->updateAt = $update_at;
+        $this->updateAt = $updateAt;
 
         return $this;
     }
