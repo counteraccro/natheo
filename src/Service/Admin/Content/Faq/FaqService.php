@@ -72,6 +72,7 @@ class FaqService extends AppAdminService
      * Construit le tableau de donnée à envoyé au tableau GRID
      * @param int $page
      * @param int $limit
+     * @param string|null $search
      * @return array
      */
     public function getAllFormatToGrid(int $page, int $limit, string $search = null): array
