@@ -131,7 +131,7 @@ class SqlManagerService extends AppAdminService
     {
         $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
             'type' => 'put',
-            'url' => $this->router->generate('admin_faq_disabled', ['id' => $sqlManager->getId()]),
+            'url' => $this->router->generate('admin_sql_manager_disabled', ['id' => $sqlManager->getId()]),
             'ajax' => true,
             'confirm' => true,
             'msgConfirm' => $this->translator->trans('sql_manager.confirm.disabled.msg',
@@ -140,7 +140,7 @@ class SqlManagerService extends AppAdminService
             $actionDisabled = [
                 'label' => '<i class="bi bi-eye-fill"></i>',
                 'type' => 'put',
-                'url' => $this->router->generate('admin_faq_disabled', ['id' => $sqlManager->getId()]),
+                'url' => $this->router->generate('admin_sql_manager_disabled', ['id' => $sqlManager->getId()]),
                 'ajax' => true
             ];
         }
@@ -151,7 +151,7 @@ class SqlManagerService extends AppAdminService
             $actionDelete = [
                 'label' => '<i class="bi bi-trash"></i>',
                 'type' => 'delete',
-                'url' => $this->router->generate('admin_faq_delete', ['id' => $sqlManager->getId()]),
+                'url' => $this->router->generate('admin_sql_manager_delete', ['id' => $sqlManager->getId()]),
                 'ajax' => true,
                 'confirm' => true,
                 'msgConfirm' => $this->translator->trans('sql_manager.confirm.delete.msg', ['label' =>
@@ -168,7 +168,7 @@ class SqlManagerService extends AppAdminService
         // Bouton edit
         $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
             'id' => $sqlManager->getId(),
-            'url' => $this->router->generate('admin_faq_update', ['id' => $sqlManager->getId()]),
+            'url' => $this->router->generate('admin_sql_manager_update', ['id' => $sqlManager->getId()]),
             'ajax' => false];
 
         return $actions;

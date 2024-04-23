@@ -66,7 +66,7 @@ class SqlManagerRepository extends ServiceEntityRepository
 
         if ($search !== null) {
             $query->where('sm.name like :search')
-                ->orWhere('sm.query like : search')
+                ->orWhere('sm.query like :search')
                 ->setParameter('search', '%' . $search . '%');
         }
 

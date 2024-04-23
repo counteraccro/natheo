@@ -8,4 +8,4 @@ sql_manager:
     user: Aymeric
     disabled: 0
     name: 'Liste des requetes SQL'
-    query: ''
+    query: 'SELECT s0_.id AS id_0, s0_.name AS name_1, s0_.query AS query_2, s0_.disabled AS disabled_3, s0_.created_at AS created_at_4, s0_.update_at AS update_at_5, s0_.user_id AS user_id_6 FROM natheo.sql_manager s0_ ORDER BY s0_.id ASC LIMIT 20'
