@@ -71,6 +71,8 @@ class FaqController extends AppAdminController
 
     /**
      * Création / édition d'une faq
+     * @param FaqService $faqService
+     * @param MarkdownEditorService $markdownEditorService
      * @param int|null $id
      * @return Response
      */
