@@ -7,3 +7,9 @@ sql_manager.index.page_title: __sql_manager.index.page_title
 sql_manager.index.page_title_h1: __sql_manager.index.page_title_h1
 sql_manager.index.btn.new: __sql_manager.index.btn.new
 sql_manager.index.description: __sql_manager.index.description
+sql_manager.grid.id: __sql_manager.grid.id
+sql_manager.grid.name: __sql_manager.grid.name
+sql_manager.grid.query: __sql_manager.grid.query
+sql_manager.grid.update_at: __sql_manager.grid.update_at
+sql_manager.confirm.disabled.msg: __sql_manager.confirm.disabled.msg
+sql_manager.confirm.delete.msg: __sql_manager.confirm.delete.msg
