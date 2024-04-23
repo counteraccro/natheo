@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.1
+ * Fixture des sqlManager
+ */
 namespace App\DataFixtures\Admin\Tools;
 
 use App\DataFixtures\AppFixtures;
@@ -14,6 +18,10 @@ class SqlManagerFixtures extends AppFixtures implements FixtureGroupInterface, O
 {
     const SQL_MANAGER_FIXTURES_DATA_FILE = 'tools' . DIRECTORY_SEPARATOR . 'sql_manager_fixtures_data.yaml';
 
+    /**
+     * @param ObjectManager $manager
+     * @return void
+     */
     public function load(ObjectManager $manager): void
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::SQL_MANAGER_FIXTURES_DATA_FILE);
@@ -35,11 +43,17 @@ class SqlManagerFixtures extends AppFixtures implements FixtureGroupInterface, O
         $manager->flush();
     }
 
+    /**
+     * @return array|string[]
+     */
     public static function getGroups(): array
     {
         return [self::GROUP_TOOLS, self::GROUP_SQL_MANAGER];
     }
 
+    /**
+     * @return int
+     */
     public function getOrder(): int
     {
         return 301;

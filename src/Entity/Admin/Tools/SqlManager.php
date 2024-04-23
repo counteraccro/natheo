@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.1
+ * Entité SQLmanager, données associées au user
+ */
 namespace App\Entity\Admin\Tools;
 
 use App\Entity\Admin\System\User;
