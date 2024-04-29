@@ -14,3 +14,5 @@ sql_manager.grid.update_at: __sql_manager.grid.update_at
 sql_manager.confirm.disabled.msg: __sql_manager.confirm.disabled.msg
 sql_manager.confirm.delete.msg: __sql_manager.confirm.delete.msg
 sql_manager.remove.success: __sql_manager.remove.success
+sql_manager.success.no.disabled: __sql_manager.success.no.disabled
+sql_manager.success.disabled: __sql_manager.success.disabled
