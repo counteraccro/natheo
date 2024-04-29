@@ -106,13 +106,10 @@ class SqlManagerController extends AppAdminController
         TranslatorInterface $translator,
         Request             $request): JsonResponse
     {
-        /*$titre = $faq->getFaqTranslationByLocale($request->getLocale())->getTitle();
-        $msg = $translator->trans('faq.remove.success', ['label' => $titre], domain: 'faq');
-
-        $faqService->remove($faq);
-        return $this->json($faqService->getResponseAjax($msg));*/
-
-        return $this->json([]);
+        $msg = $translator->trans('sql_manager.remove.success', ['label' => $sqlManager->getName()],
+            domain: 'sql_manager');
+        $sqlManagerService->remove($sqlManager);
+        return $this->json($sqlManagerService->getResponseAjax($msg));
     }
 
     /**
