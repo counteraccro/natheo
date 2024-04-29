@@ -7,9 +7,10 @@ sql_manager.index.page_title: 'Gestionnaire SQL'
 sql_manager.index.page_title_h1: 'Gestionnaire SQL'
 sql_manager.index.btn.new: 'Nouvelle requête SQL'
 sql_manager.index.description: 'Créer / éditer des requêtes SQL afin de pouvoir interroger la base de données'
-sql_manager.grid.id: 'id'
-sql_manager.grid.name: 'Nom'
-sql_manager.grid.query: 'Requête'
+sql_manager.grid.id: id
+sql_manager.grid.name: Nom
+sql_manager.grid.query: Requête
 sql_manager.grid.update_at: 'Dernière modification'
 sql_manager.confirm.disabled.msg: 'Confirmez vous la désactivation de la requête sql <b>{label}</b>, cette requête ne pourra plus être utilisée'
 sql_manager.confirm.delete.msg: 'Confirmez vous la suppression de la requête sql <b>{label}</b>, cette action est définitive'
+sql_manager.remove.success: 'La requête <b>{label}</b> à été supprimé avec succès'
