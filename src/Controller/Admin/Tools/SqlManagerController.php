@@ -75,20 +75,19 @@ class SqlManagerController extends AppAdminController
     public function updateDisabled(
         SqlManager          $sqlManager,
         SqlManagerService   $sqlManagerService,
-        TranslatorInterface $translator,
-        Request             $request): JsonResponse
+        TranslatorInterface $translator): JsonResponse
     {
 
-        /*$faq->setDisabled(!$faq->isDisabled());
+        $sqlManager->setDisabled(!$sqlManager->isDisabled());
 
-        $faqTranslate = $faq->getFaqTranslationByLocale($request->getLocale());
-        $msg = $translator->trans('faq.success.no.disabled', ['label' => $faqTranslate->getTitle()], 'faq');
-        if ($faq->isDisabled()) {
-            $msg = $translator->trans('faq.success.disabled', ['label' => $faqTranslate->getTitle()], 'faq');
+        $msg = $translator->trans('sql_manager.success.no.disabled',
+            ['label' => $sqlManager->getName()], 'sql_manager');
+        if ($sqlManager->isDisabled()) {
+            $msg = $translator->trans('sql_manager.success.disabled',
+                ['label' => $sqlManager->getName()], 'sql_manager');
         }
-        $faqService->save($faq);
-        return $this->json($faqService->getResponseAjax($msg));*/
-        return $this->json([]);
+        $sqlManagerService->save($sqlManager);
+        return $this->json($sqlManagerService->getResponseAjax($msg));
     }
 
     /**
@@ -103,8 +102,7 @@ class SqlManagerController extends AppAdminController
     public function delete(
         SqlManager          $sqlManager,
         SqlManagerService   $sqlManagerService,
-        TranslatorInterface $translator,
-        Request             $request): JsonResponse
+        TranslatorInterface $translator): JsonResponse
     {
         $msg = $translator->trans('sql_manager.remove.success', ['label' => $sqlManager->getName()],
             domain: 'sql_manager');
@@ -121,8 +119,8 @@ class SqlManagerController extends AppAdminController
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
     public function add(
-        SqlManager            $sqlManager,
-        int                   $id = null,
+        SqlManager $sqlManager,
+        int        $id = null,
     ): Response
     {
         $breadcrumbTitle = 'faq.update.page_title_h1';

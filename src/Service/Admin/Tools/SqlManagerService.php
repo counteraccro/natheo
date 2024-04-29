@@ -146,7 +146,7 @@ class SqlManagerService extends AppAdminService
         }
 
         $actionDelete = '';
-        if ($this->optionSystemService->canDelete()) {
+        if ($this->optionSystemService->canDelete() && !$sqlManager->isDisabled()) {
 
             $actionDelete = [
                 'label' => '<i class="bi bi-trash"></i>',
@@ -165,11 +165,13 @@ class SqlManagerService extends AppAdminService
             $actions[] = $actionDelete;
         }
 
-        // Bouton edit
-        $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
-            'id' => $sqlManager->getId(),
-            'url' => $this->router->generate('admin_sql_manager_update', ['id' => $sqlManager->getId()]),
-            'ajax' => false];
+        if(!$sqlManager->isDisabled()) {
+            // Bouton edit
+            $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
+                'id' => $sqlManager->getId(),
+                'url' => $this->router->generate('admin_sql_manager_update', ['id' => $sqlManager->getId()]),
+                'ajax' => false];
+        }
 
         return $actions;
     }
