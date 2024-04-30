@@ -1,0 +1,39 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+
+{% if id is same as null %}
+    {% set title = 'sql_manager.add.page_title' | trans({}, 'sql_manager') %}
+    {% set titleH1 = 'sql_manager.add.page_title_h1' | trans({}, 'sql_manager') %}
+    {% set description = 'sql_manager.add.description' | trans({}, 'sql_manager') %}
+{% elseif isExecute %}
+    {% set title = 'sql_manager.execute.page_title' | trans({'id' : id}, 'sql_manager') %}
+    {% set titleH1 = 'sql_manager.execute.page_title_h1' | trans({}, 'sql_manager') %}
+    {% set description = 'sql_manager.execute.description' | trans({}, 'sql_manager') %}
+{% else %}
+    {% set title = 'sql_manager.update.page_title' | trans({'id' : id}, 'sql_manager') %}
+    {% set titleH1 = 'sql_manager.update.page_title_h1' | trans({}, 'sql_manager') %}
+    {% set description = 'sql_manager.update.description' | trans({}, 'sql_manager') %}
+{% endif %}
+
+ {% block title %}
+     {{ title }}
+ {% endblock %}
+
+{% block body %}
+
+    <h1>{{ titleH1 }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    <p>
+        {{ description }}
+    </p>
+
+    <div {{ vue_component('Admin/Tools/SqlManager', {
+        'id' : id,
+        'urls' : urls,
+        'translate' : translate,
+    }) }}>
+    </div>
+
+{% endblock %}

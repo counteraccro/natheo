@@ -107,7 +107,10 @@ class PageController extends AppAdminController
      * @param PageService $pageService
      * @param TranslatorInterface $translator
      * @param Request $request
+     * @param ContainerBagInterface $containerBag
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(
@@ -136,6 +139,7 @@ class PageController extends AppAdminController
     /**
      * Création / édition d'une page
      * @param PageService $pageService
+     * @param PageTranslate $pageTranslate
      * @param int|null $id
      * @return Response
      */

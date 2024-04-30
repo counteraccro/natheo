@@ -12,7 +12,7 @@ use App\Entity\Admin\Tools\SqlManager;
 use App\Service\Admin\Tools\SqlManagerService;
 use App\Utils\Breadcrumb;
 use App\Utils\System\Options\OptionUserKey;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Utils\Translate\Tools\SqlManagerTranslate;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -95,7 +95,6 @@ class SqlManagerController extends AppAdminController
      * @param SqlManager $sqlManager
      * @param SqlManagerService $sqlManagerService
      * @param TranslatorInterface $translator
-     * @param Request $request
      * @return JsonResponse
      */
     #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
@@ -112,46 +111,46 @@ class SqlManagerController extends AppAdminController
 
     /**
      * Création / édition d'une faq
-     * @param SqlManager $sqlManager
+     * @param SqlManagerService $sqlManagerService
+     * @param SqlManagerTranslate $sqlManagerTranslate
      * @param int|null $id
+     * @param bool $isExecute
      * @return Response
      */
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
+    #[Route('/execute/{id}/{isExecute}', name: 'execute')]
     public function add(
-        SqlManager $sqlManager,
-        int        $id = null,
+        SqlManagerService   $sqlManagerService,
+        SqlManagerTranslate $sqlManagerTranslate,
+        int                 $id = null,
+        bool                $isExecute = false,
     ): Response
     {
-        $breadcrumbTitle = 'faq.update.page_title_h1';
+        $breadcrumbTitle = 'sql_manager.update.page_title_h1';
         if ($id === null) {
-            $breadcrumbTitle = 'faq.add.page_title_h1';
+            $breadcrumbTitle = 'sql_manager.add.page_title_h1';
+        } elseif ($isExecute) {
+            $breadcrumbTitle = 'sql_manager.execute.page_title_h1';
         }
 
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'faq',
+            Breadcrumb::DOMAIN => 'sql_manager',
             Breadcrumb::BREADCRUMB => [
-                'faq.index.page_title' => 'admin_faq_index',
+                'sql_manager.index.page_title' => 'admin_sql_manager_index',
                 $breadcrumbTitle => '#'
             ]
         ];
 
-        return $this->render('admin/content/faq/add_update.html.twig', [
+        return $this->render('admin/tools/sql_manager/add_update.html.twig', [
             'breadcrumb' => $breadcrumb,
-            'translate' => [],
-            'locales' => [],
+            'translate' => $sqlManagerTranslate->getTranslate(),
             'id' => $id,
+            'isExecute' => $isExecute,
             'datas' => [
             ],
             'urls' => [
-                'load_faq' => $this->generateUrl('admin_faq_load_faq'),
-                'save' => $this->generateUrl('admin_faq_save'),
-                'new_faq' => $this->generateUrl('admin_faq_new_faq'),
-                'update_disabled' => $this->generateUrl('admin_faq_update_disabled'),
-                'order_by_type' => $this->generateUrl('admin_faq_order_by_type'),
-                'new_cat_question' => $this->generateUrl('admin_faq_new_cat_question'),
-                'update_order' => $this->generateUrl('admin_faq_update_order'),
-                'delete_category_question' => $this->generateUrl('admin_faq_delete_category_question')
+
             ]
 
         ]);

@@ -171,6 +171,12 @@ class SqlManagerService extends AppAdminService
                 'id' => $sqlManager->getId(),
                 'url' => $this->router->generate('admin_sql_manager_update', ['id' => $sqlManager->getId()]),
                 'ajax' => false];
+
+            $actions[] = ['label' => '<i class="bi bi-database-fill-check"></i>',
+                'id' => $sqlManager->getId(),
+                'url' => $this->router->generate('admin_sql_manager_execute', ['id' => $sqlManager->getId(),
+                    'isExecute' => true]),
+                'ajax' => false];
         }
 
         return $actions;
