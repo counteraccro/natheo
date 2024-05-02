@@ -8,9 +8,11 @@
 namespace App\Controller\Admin\Tools;
 
 use App\Controller\Admin\AppAdminController;
+use App\Entity\Admin\System\User;
 use App\Entity\Admin\Tools\SqlManager;
 use App\Service\Admin\Tools\SqlManagerService;
 use App\Utils\Breadcrumb;
+use App\Utils\Global\DataBase;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Tools\SqlManagerTranslate;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,6 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/sql-manager', name: 'admin_sql_manager_',
@@ -68,7 +71,6 @@ class SqlManagerController extends AppAdminController
      * @param SqlManager $sqlManager
      * @param SqlManagerService $sqlManagerService
      * @param TranslatorInterface $translator
-     * @param Request $request
      * @return JsonResponse
      */
     #[Route('/ajax/disabled/{id}', name: 'disabled', methods: ['PUT'])]
@@ -111,7 +113,6 @@ class SqlManagerController extends AppAdminController
 
     /**
      * Création / édition d'une faq
-     * @param SqlManagerService $sqlManagerService
      * @param SqlManagerTranslate $sqlManagerTranslate
      * @param int|null $id
      * @param bool $isExecute
@@ -121,7 +122,6 @@ class SqlManagerController extends AppAdminController
     #[Route('/update/{id}', name: 'update')]
     #[Route('/execute/{id}/{isExecute}', name: 'execute')]
     public function add(
-        SqlManagerService   $sqlManagerService,
         SqlManagerTranslate $sqlManagerTranslate,
         int                 $id = null,
         bool                $isExecute = false,
@@ -150,9 +150,46 @@ class SqlManagerController extends AppAdminController
             'datas' => [
             ],
             'urls' => [
-
+                'load_sql_manager' => $this->generateUrl('admin_sql_manager_load_data'),
+                'load_data_database' => $this->generateUrl('admin_sql_manager_load_data_database'),
             ]
 
         ]);
+    }
+
+    /**
+     * Charge les données de SQLManager
+     * @param SqlManagerService $sqlManagerService
+     * @param int|null $id
+     * @return JsonResponse
+     * @throws ExceptionInterface
+     */
+    #[Route('/ajax/load-data/{id}', name: 'load_data', methods: ['GET'])]
+    public function loadData(
+        SqlManagerService $sqlManagerService,
+        int               $id = null
+    ): JsonResponse
+    {
+        if ($id === null) {
+            $sqlManager = new SqlManager();
+        } else {
+            $sqlManager = $sqlManagerService->findOneById(SqlManager::class, $id);
+        }
+        $sqlManagerArray = $sqlManagerService->convertEntityToArray($sqlManager, ['user']);
+        return $this->json(['sqlManager' => $sqlManagerArray]);
+    }
+
+    /**
+     * Charge les informations de la base de données
+     * @param DataBase $dataBase
+     * @return JsonResponse
+     */
+    #[Route('/ajax/load-data-database', name: 'load_data_database', methods: ['GET'])]
+    public function loadDataDataBase(
+        DataBase $dataBase,
+    ): JsonResponse
+    {
+        $dataBdd = $dataBase->getAllNameAndColumn();
+        return $this->json(['data-info' => $dataBdd]);
     }
 }
