@@ -197,7 +197,7 @@ class PageController extends AppAdminController
     /**
      * Permet de charger le contenu du tab content
      * @param PageService $pageService
-     * @param Request $request
+     * @param int|null $id
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws ExceptionInterface
@@ -253,7 +253,7 @@ class PageController extends AppAdminController
      * Charge le tableau d'historique
      * @param ContainerBagInterface $containerBag
      * @param DateService $dateService
-     * @param int $id
+     * @param int|null $id
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
