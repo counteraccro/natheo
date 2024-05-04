@@ -190,6 +190,6 @@ class SqlManagerController extends AppAdminController
     ): JsonResponse
     {
         $dataBdd = $dataBase->getAllNameAndColumn();
-        return $this->json(['data-info' => $dataBdd]);
+        return $this->json(['dataInfo' => $dataBdd]);
     }
 }

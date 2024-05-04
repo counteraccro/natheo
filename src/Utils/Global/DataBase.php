@@ -37,7 +37,7 @@ class DataBase
             function (ClassMetadata $meta) {
                 return [
                     'name' => $meta->getTableName(),
-                    'column' => $meta->getFieldNames()
+                    'columns' => $meta->getFieldNames()
                 ];
             }, $allMetadata);
 
