@@ -5,11 +5,6 @@ import tab from "bootstrap/js/src/tab";
 
 export default {
   name: "SqlManager",
-  computed: {
-    tab() {
-      return tab
-    }
-  },
   props: {
     urls: Object,
     translate: Object,
@@ -28,6 +23,11 @@ export default {
   mounted() {
     this.loadSqlManager();
     this.loadDataDatabase();
+  },
+  computed: {
+    filteredTable() {
+      return tab
+    }
   },
   methods: {
 
@@ -103,6 +103,7 @@ export default {
         <div class="row">
           <div class="col-6">
             <label for="sql-table" class="form-label">Example textarea</label>
+            <input type="text" class="form-control">
             <select class="form-select" multiple id="sql-table">
               <option v-for="(table) in this.dataBaseData" @click="this.loadColumn(table.name)">
                 {{ table.name }}
@@ -110,12 +111,11 @@ export default {
             </select>
           </div>
           <div class="col-6">
-            <label for="sql-table" class="form-label">Example textarea</label>
+            <label for="sql-table" class="form-label">{{ this.selectTable }}</label>
             <select class="form-select" multiple id="sql-table">
-              <option selected>Open this select menu</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+              <option v-for="(column) in this.selectColumns">
+                {{ column }}
+              </option>
             </select>
           </div>
         </div>
