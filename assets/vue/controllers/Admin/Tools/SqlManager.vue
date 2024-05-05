@@ -144,6 +144,7 @@ export default {
                 {{ table.name }}
               </option>
             </select>
+            <div class="btn btn-secondary btn-sm mt-1 float-end">aaaa</div>
           </div>
           <div class="col-6">
             <label for="sql-field" class="form-label">{{ this.selectTable }}</label>
