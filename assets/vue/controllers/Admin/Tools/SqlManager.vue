@@ -18,7 +18,8 @@ export default {
       selectTable : '',
       selectField : '',
       selectColumns : [],
-      searchTable: ''
+      searchTable: '',
+      searchField: '',
     }
   },
   mounted() {
@@ -26,6 +27,11 @@ export default {
     this.loadDataDatabase();
   },
   computed: {
+
+    /**
+     * Filtre sur tables
+     * @returns {ObjectConstructor}
+     */
     filteredTable() {
 
       const searchTable = this.searchTable && this.searchTable.toLowerCase()
@@ -38,7 +44,24 @@ export default {
         })
       }
       return data;
+    },
 
+    /**
+     * Filtre sur champs d'une table
+     * @returns {ObjectConstructor}
+     */
+    filteredFieldName() {
+
+      const searchTable = this.searchField && this.searchField.toLowerCase()
+      let data = this.selectColumns
+      if (searchTable) {
+        data = data.filter((row) => {
+          return Object.keys(row).some((key) => {
+            return String(row).toLowerCase().indexOf(searchTable) > -1
+          })
+        })
+      }
+      return data;
     }
   },
   methods: {
@@ -115,7 +138,7 @@ export default {
         <div class="row">
           <div class="col-6">
             <label for="sql-table" class="form-label">Example textarea</label>
-            <input type="text" class="form-control" v-model="this.searchTable">
+            <input type="text" class="form-control" v-model="this.searchTable" placeholder="aaa">
             <select class="form-select" multiple id="sql-table">
               <option v-for="(table) in filteredTable" @click="this.loadColumn(table.name)">
                 {{ table.name }}
@@ -123,9 +146,10 @@ export default {
             </select>
           </div>
           <div class="col-6">
-            <label for="sql-table" class="form-label">{{ this.selectTable }}</label>
-            <select class="form-select" multiple id="sql-table">
-              <option v-for="(column) in this.selectColumns">
+            <label for="sql-field" class="form-label">{{ this.selectTable }}</label>
+            <input type="text" class="form-control" v-model="this.searchField" placeholder="aaa">
+            <select class="form-select" multiple id="sql-field">
+              <option v-for="(column) in filteredFieldName">
                 {{ column }}
               </option>
             </select>
