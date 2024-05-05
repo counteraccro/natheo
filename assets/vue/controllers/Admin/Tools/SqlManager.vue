@@ -17,7 +17,8 @@ export default {
       dataBaseData : Object,
       selectTable : '',
       selectField : '',
-      selectColumns : []
+      selectColumns : [],
+      searchTable: ''
     }
   },
   mounted() {
@@ -26,7 +27,18 @@ export default {
   },
   computed: {
     filteredTable() {
-      return tab
+
+      const searchTable = this.searchTable && this.searchTable.toLowerCase()
+      let data = this.dataBaseData
+      if (searchTable) {
+        data = data.filter((row) => {
+          return Object.keys(row).some((key) => {
+            return String(row.name).toLowerCase().indexOf(searchTable) > -1
+          })
+        })
+      }
+      return data;
+
     }
   },
   methods: {
@@ -103,9 +115,9 @@ export default {
         <div class="row">
           <div class="col-6">
             <label for="sql-table" class="form-label">Example textarea</label>
-            <input type="text" class="form-control">
+            <input type="text" class="form-control" v-model="this.searchTable">
             <select class="form-select" multiple id="sql-table">
-              <option v-for="(table) in this.dataBaseData" @click="this.loadColumn(table.name)">
+              <option v-for="(table) in filteredTable" @click="this.loadColumn(table.name)">
                 {{ table.name }}
               </option>
             </select>
