@@ -37,13 +37,38 @@ class DataBase
             function (ClassMetadata $meta) {
                 return [
                     'name' => $meta->getTableName(),
-                    'columns' => $meta->getFieldNames()
+                    'columns' => $meta->getFieldNames(),
+                    'assocationMapping' => $meta->getAssociationMappings()
                 ];
             }, $allMetadata);
 
+
+        $array = $this->mergeAssociationColumnsInColumns($array);
         $tabName = array_column($array, 'name');
         array_multisort($tabName, SORT_ASC, $array);
         return $array;
+    }
+
+    /**
+     * Merge les champs d'associations dans le tableau de champs
+     * @param array $tables
+     * @return array
+     */
+    private function mergeAssociationColumnsInColumns(array $tables): array
+    {
+        foreach ($tables as &$table) {
+            foreach ($table['assocationMapping'] as $associationMapping) {
+                if (isset($associationMapping['joinColumnFieldNames'])) {
+                    $i = 1;
+                    foreach ($associationMapping['joinColumnFieldNames'] as $field) {
+                        array_splice($table['columns'], $i, 0, $field);
+                        $i++;
+                    }
+                }
+            }
+        }
+
+        return $tables;
     }
 
     /**
