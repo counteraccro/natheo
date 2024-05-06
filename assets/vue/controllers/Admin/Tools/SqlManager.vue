@@ -84,6 +84,7 @@ export default {
       this.loading = true;
       axios.get(this.urls.load_data_database).then((response) => {
        this.dataBaseData = response.data.dataInfo;
+       this.selectTable = this.translate.label_list_field;
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -110,6 +111,14 @@ export default {
 <template>
   <div id="block-sql-manager" :class="this.loading === true ? 'block-grid' : ''">
 
+    <div class="alert alert-warning">
+      <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
+      <h4 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> {{ this.translate.alert_waring_title }}</h4>
+      <p>
+        {{ this.translate.alert_waring_msg }}
+      </p>
+    </div>
+
     <div v-if="this.loading" class="overlay">
       <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
         <div class="spinner-border text-primary" role="status"></div>
@@ -118,12 +127,12 @@ export default {
     </div>
 
     <div>
-      <label for="sql-textarea" class="form-label">Example textarea</label>
-      <textarea class="form-control" id="sql-textarea" rows="10"></textarea>
+      <label for="sql-textarea" class="form-label">{{ this.translate.label_textarea_query }}</label>
+      <textarea class="form-control" id="sql-textarea" rows="10">{{ this.sqlManager.query }}</textarea>
       <div class="float-end mt-2">
-        <div class="btn btn-secondary me-2">aaa</div>
-        <div class="btn btn-secondary me-2">aaa</div>
-        <div class="btn btn-secondary">aaa</div>
+        <div class="btn btn-secondary me-2"><i class="bi bi-terminal"></i> {{ this.translate.btn_execute_query }}</div>
+        <div class="btn btn-secondary me-2"><i class="bi bi-floppy"></i> {{ this.translate.btn_save_query }}</div>
+        <div class="btn btn-secondary"><i class="bi bi-eye-slash"></i> {{ this.translate.btn_disabled_query }}</div>
       </div>
     </div>
 
@@ -131,25 +140,29 @@ export default {
 
     <div class="card mt-4">
       <div class="card-header">
-        Featured
-        <div class="float-end btn btn-secondary btn-sm">aa</div>
+        {{ this.translate.bloc_query }}
+        <div class="float-end btn btn-secondary btn-sm">
+          <i class="bi bi-chevron-up"></i>
+        </div>
       </div>
       <div class="card-body">
         <div class="row">
           <div class="col-6">
-            <label for="sql-table" class="form-label">Example textarea</label>
+            <label for="sql-table" class="form-label">{{ this.translate.label_list_table }}</label>
             <input type="text" class="form-control" v-model="this.searchTable" placeholder="aaa">
-            <select class="form-select" multiple id="sql-table">
+            <select class="form-select" multiple id="sql-table" size="8">
               <option v-for="(table) in filteredTable" @click="this.loadColumn(table.name)">
                 {{ table.name }}
               </option>
             </select>
-            <div class="btn btn-secondary btn-sm mt-1 float-end">aaaa</div>
+            <div class="btn btn-secondary btn-sm mt-1 float-end">
+              {{ this.translate.btn_add_table }}
+            </div>
           </div>
           <div class="col-6">
             <label for="sql-field" class="form-label">{{ this.selectTable }}</label>
             <input type="text" class="form-control" v-model="this.searchField" placeholder="aaa">
-            <select class="form-select" multiple id="sql-field">
+            <select class="form-select" multiple id="sql-field" size="8">
               <option v-for="(column) in filteredFieldName">
                 {{ column }}
               </option>
