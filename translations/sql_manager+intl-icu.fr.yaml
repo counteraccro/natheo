@@ -25,3 +25,14 @@ sql_manager.update.description: 'Editer la requête SQL selon vos besoins'
 sql_manager.execute.page_title: 'Execution de la requête #{id}'
 sql_manager.execute.page_title_h1: 'Execution de la requête'
 sql_manager.execute.description: 'Tester et éditer la requête SQL selon vos besoins'
+sql_manager.alert.warning.title: __sql_manager.alert.warning.title
+sql_manager.alert.warning.msg: __sql_manager.alert.warning.msg
+sql_manager.label.textarea.query: __sql_manager.label.textarea.query
+sql_manager.btn.execute.query: __sql_manager.btn.execute.query
+sql_manager.btn.save.query: __sql_manager.btn.save.query
+sql_manager.btn.disabled.query: __sql_manager.btn.disabled.query
+sql_manager.btn.enabled.query: __sql_manager.btn.enabled.query
+sql_manager.bloc.query: __sql_manager.bloc.query
+sql_manager.label.liste.table: __sql_manager.label.liste.table
+sql_manager.btn.add.table: __sql_manager.btn.add.table
+sql_manager.label.liste.field: __sql_manager.label.liste.field
