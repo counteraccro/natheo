@@ -36,3 +36,7 @@ sql_manager.bloc.query: __sql_manager.bloc.query
 sql_manager.label.liste.table: __sql_manager.label.liste.table
 sql_manager.btn.add.table: __sql_manager.btn.add.table
 sql_manager.label.liste.field: __sql_manager.label.liste.field
+sql_manager.placeholder.table: __sql_manager.placeholder.table
+sql_manager.placeholder.field: __sql_manager.placeholder.field
+sql_manager.bloc.result: __sql_manager.bloc.result
+sql_manager.label.liste.field.2: __sql_manager.label.liste.field.2
