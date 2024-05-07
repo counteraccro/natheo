@@ -94,9 +94,9 @@ export default {
 
     loadColumn(selectTable)
     {
-      this.selectTable = selectTable;
+      this.selectTable = this.translate.label_list_field_2 + ' ' + selectTable;
       this.dataBaseData.forEach((table) => {
-          if(table.name === this.selectTable)
+          if(table.name === selectTable)
           {
             this.selectColumns = table.columns;
             return false;
@@ -149,7 +149,7 @@ export default {
         <div class="row">
           <div class="col-6">
             <label for="sql-table" class="form-label">{{ this.translate.label_list_table }}</label>
-            <input type="text" class="form-control" v-model="this.searchTable" placeholder="aaa">
+            <input type="text" class="form-control" v-model="this.searchTable" :placeholder="this.translate.placeholder_table">
             <select class="form-select" multiple id="sql-table" size="8">
               <option v-for="(table) in filteredTable" @click="this.loadColumn(table.name)">
                 {{ table.name }}
@@ -161,7 +161,7 @@ export default {
           </div>
           <div class="col-6">
             <label for="sql-field" class="form-label">{{ this.selectTable }}</label>
-            <input type="text" class="form-control" v-model="this.searchField" placeholder="aaa">
+            <input type="text" class="form-control" v-model="this.searchField" :placeholder="this.translate.placeholder_field">
             <select class="form-select" multiple id="sql-field" size="8">
               <option v-for="(column) in filteredFieldName">
                 {{ column }}
@@ -174,7 +174,7 @@ export default {
 
       <div class="card mt-4">
         <div class="card-header">
-          Featured
+          {{ this.translate.bloc_result }}
         </div>
         <div class="card-body">
 

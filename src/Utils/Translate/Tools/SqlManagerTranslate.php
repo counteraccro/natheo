@@ -24,6 +24,10 @@ class SqlManagerTranslate extends AppTranslate
             'label_list_table' => $this->translator->trans('sql_manager.label.liste.table', domain: 'sql_manager'),
             'btn_add_table' => $this->translator->trans('sql_manager.btn.add.table', domain: 'sql_manager'),
             'label_list_field' => $this->translator->trans('sql_manager.label.liste.field', domain: 'sql_manager'),
+            'label_list_field_2' => $this->translator->trans('sql_manager.label.liste.field.2', domain: 'sql_manager'),
+            'placeholder_table' => $this->translator->trans('sql_manager.placeholder.table', domain: 'sql_manager'),
+            'placeholder_field' => $this->translator->trans('sql_manager.placeholder.field', domain: 'sql_manager'),
+            'bloc_result' => $this->translator->trans('sql_manager.bloc.result', domain: 'sql_manager'),
 
         ];
     }
