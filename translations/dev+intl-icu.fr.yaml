@@ -3,3 +3,4 @@ dev.info.branche: Branche
 dev.info.version: Version
 dev.info.last.commit: Commit
 dev.info.date.last.commit: Date
+dev.info.env: Environnement

@@ -61,8 +61,6 @@ class DevExtensionRuntime extends AppAdminExtensionRuntime implements RuntimeExt
         $version = $this->parameterBag->get('app.version');
         $debug = $this->parameterBag->get('kernel.debug');
 
-        $return = '';
-
         if ($debug) {
             $return = $this->getDevInfo();
         } else {
@@ -80,6 +78,7 @@ class DevExtensionRuntime extends AppAdminExtensionRuntime implements RuntimeExt
     private function getDevInfo(): string
     {
         $version = $this->parameterBag->get('app.version');
+        $env = $this->parameterBag->get('kernel.environment');
         $infoGit = $this->gitService->getInfoGit();
         
         return '<fieldset>
@@ -99,6 +98,9 @@ class DevExtensionRuntime extends AppAdminExtensionRuntime implements RuntimeExt
             <br />
             <i class="bi bi-bug-fill"></i> <i>
             ' . $this->translator->trans('dev.info.version', domain: 'dev') . ' <b>' . $version . '</b></i>
+             <br />
+            <i class="bi bi-hdd-fill"></i> <i>
+            ' . $this->translator->trans('dev.info.env', domain: 'dev') . ' <b>' . $env . '</b></i>
         </fieldset>';
     }
 

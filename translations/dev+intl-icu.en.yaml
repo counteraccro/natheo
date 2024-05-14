@@ -3,3 +3,4 @@ dev.info.branche: __dev.info.branche
 dev.info.version: __dev.info.version
 dev.info.last.commit: __dev.info.last.commit
 dev.info.date.last.commit: __dev.info.date.last.commit
+dev.info.env: __dev.info.env
