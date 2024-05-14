@@ -7,6 +7,7 @@
 
 namespace App\Utils\Global;
 
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Psr\Container\ContainerInterface;
@@ -91,5 +92,39 @@ class DataBase
             }, $allMetadata);
 
         return array_values(array_filter($array))[0];
+    }
+
+    /**
+     * @param string $query
+     * @return array
+     * @throws Exception
+     */
+    public function executeRawQuery(string $query): array
+    {
+        try {
+            $statement = $this->entityManager->getConnection()->prepare($query);
+        } catch (Exception $e) {
+
+
+            return [
+                'result' => [],
+                'error' => $e->getMessage()
+            ];
+        }
+
+        try {
+            $result = $statement->executeQuery()->fetchAllAssociative();
+        } catch (Exception $e) {
+            return [
+                'result' => [],
+                'error' => $e->getMessage(),
+            ];
+        }
+
+        return [
+            'result' => $result,
+            'error' => '',
+        ];
+
     }
 }

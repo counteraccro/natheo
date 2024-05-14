@@ -15,6 +15,7 @@ use App\Utils\Breadcrumb;
 use App\Utils\Global\DataBase;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Tools\SqlManagerTranslate;
+use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -152,6 +153,7 @@ class SqlManagerController extends AppAdminController
             'urls' => [
                 'load_sql_manager' => $this->generateUrl('admin_sql_manager_load_data'),
                 'load_data_database' => $this->generateUrl('admin_sql_manager_load_data_database'),
+                'execute_sql' => $this->generateUrl('admin_sql_manager_execute_sql'),
             ]
 
         ]);
@@ -191,5 +193,23 @@ class SqlManagerController extends AppAdminController
     {
         $dataBdd = $dataBase->getAllNameAndColumn();
         return $this->json(['dataInfo' => $dataBdd]);
+    }
+
+    /**
+     * Charge les informations de la base de données
+     * @param DataBase $dataBase
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Exception
+     */
+    #[Route('/ajax/execute', name: 'execute_sql', methods: ['POST'])]
+    public function executeSQL(
+        DataBase $dataBase,
+        Request $request
+    ): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $result = $dataBase->executeRawQuery($data['query']);
+        return $this->json(['result' => $result]);
     }
 }

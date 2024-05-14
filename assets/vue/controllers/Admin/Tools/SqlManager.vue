@@ -80,11 +80,31 @@ export default {
       });
     },
 
+    /**
+     * Charge les informations de la base de données
+     */
     loadDataDatabase() {
       this.loading = true;
       axios.get(this.urls.load_data_database).then((response) => {
        this.dataBaseData = response.data.dataInfo;
        this.selectTable = this.translate.label_list_field;
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.loading = false;
+      });
+    },
+
+    /**
+     * Execute une requête SQL
+     */
+    execute()
+    {
+      this.loading = true;
+      axios.post(this.urls.execute_sql, {
+        query : this.sqlManager.query
+      }).then((response) => {
+
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -128,9 +148,9 @@ export default {
 
     <div>
       <label for="sql-textarea" class="form-label">{{ this.translate.label_textarea_query }}</label>
-      <textarea class="form-control" id="sql-textarea" rows="10">{{ this.sqlManager.query }}</textarea>
+      <textarea class="form-control" id="sql-textarea" rows="10" v-model="this.sqlManager.query"></textarea>
       <div class="float-end mt-2">
-        <div class="btn btn-secondary me-2"><i class="bi bi-terminal"></i> {{ this.translate.btn_execute_query }}</div>
+        <div class="btn btn-secondary me-2" @click="this.execute()"><i class="bi bi-terminal"></i> {{ this.translate.btn_execute_query }}</div>
         <div class="btn btn-secondary me-2"><i class="bi bi-floppy"></i> {{ this.translate.btn_save_query }}</div>
         <div class="btn btn-secondary"><i class="bi bi-eye-slash"></i> {{ this.translate.btn_disabled_query }}</div>
       </div>
