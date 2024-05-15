@@ -1,10 +1,11 @@
 <script>
 
 import axios from "axios";
-import tab from "bootstrap/js/src/tab";
+import Toast from "../../../Components/Global/Toast.vue";
 
 export default {
   name: "SqlManager",
+  components: {Toast},
   props: {
     urls: Object,
     translate: Object,
@@ -14,12 +15,24 @@ export default {
     return {
       loading: false,
       sqlManager: Object,
-      dataBaseData : Object,
-      selectTable : '',
-      selectField : '',
-      selectColumns : [],
+      dataBaseData: Object,
+      selectTable: '',
+      selectField: '',
+      selectColumns: [],
       searchTable: '',
       searchField: '',
+      result: Object,
+      error: '',
+      toasts: {
+        toastSuccess: {
+          show: false,
+          msg: '',
+        },
+        toastError: {
+          show: false,
+          msg: '',
+        }
+      },
     }
   },
   mounted() {
@@ -86,8 +99,8 @@ export default {
     loadDataDatabase() {
       this.loading = true;
       axios.get(this.urls.load_data_database).then((response) => {
-       this.dataBaseData = response.data.dataInfo;
-       this.selectTable = this.translate.label_list_field;
+        this.dataBaseData = response.data.dataInfo;
+        this.selectTable = this.translate.label_list_field;
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -98,12 +111,21 @@ export default {
     /**
      * Execute une requête SQL
      */
-    execute()
-    {
+    execute() {
       this.loading = true;
       axios.post(this.urls.execute_sql, {
-        query : this.sqlManager.query
+        query: this.sqlManager.query
       }).then((response) => {
+        this.error = response.data.data.error;
+        this.result = response.data.data.result;
+
+        if (this.error === '') {
+          this.toasts.toastSuccess.show = true;
+          this.toasts.toastSuccess.msg = this.translate.toast_msg_exec_success;
+        } else {
+          this.toasts.toastError.show = true;
+          this.toasts.toastError.msg = this.translate.toast_msg_exec_error;
+        }
 
       }).catch((error) => {
         console.error(error);
@@ -112,17 +134,23 @@ export default {
       });
     },
 
-    loadColumn(selectTable)
-    {
+    loadColumn(selectTable) {
       this.selectTable = this.translate.label_list_field_2 + ' ' + selectTable;
       this.dataBaseData.forEach((table) => {
-          if(table.name === selectTable)
-          {
-            this.selectColumns = table.columns;
-            return false;
-          }
+        if (table.name === selectTable) {
+          this.selectColumns = table.columns;
+          return false;
+        }
       });
-    }
+    },
+
+    /**
+     * Ferme un toast en fonction de son id
+     * @param nameToast
+     */
+    closeToast(nameToast) {
+      this.toasts[nameToast].show = false
+    },
   }
 }
 
@@ -131,14 +159,6 @@ export default {
 <template>
   <div id="block-sql-manager" :class="this.loading === true ? 'block-grid' : ''">
 
-    <div class="alert alert-warning">
-      <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
-      <h4 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> {{ this.translate.alert_waring_title }}</h4>
-      <p>
-        {{ this.translate.alert_waring_msg }}
-      </p>
-    </div>
-
     <div v-if="this.loading" class="overlay">
       <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
         <div class="spinner-border text-primary" role="status"></div>
@@ -146,11 +166,26 @@ export default {
       </div>
     </div>
 
+    <div class="alert alert-warning">
+      <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
+      <h4 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> {{ this.translate.alert_waring_title }}
+      </h4>
+      <p>
+        {{ this.translate.alert_waring_msg }}
+      </p>
+    </div>
+
+    <div v-if="this.error !== ''" class="alert alert-danger">
+      {{ this.error }}
+    </div>
+
     <div>
       <label for="sql-textarea" class="form-label">{{ this.translate.label_textarea_query }}</label>
       <textarea class="form-control" id="sql-textarea" rows="10" v-model="this.sqlManager.query"></textarea>
       <div class="float-end mt-2">
-        <div class="btn btn-secondary me-2" @click="this.execute()"><i class="bi bi-terminal"></i> {{ this.translate.btn_execute_query }}</div>
+        <div class="btn btn-secondary me-2" @click="this.execute()">
+          <i class="bi bi-terminal"></i> {{ this.translate.btn_execute_query }}
+        </div>
         <div class="btn btn-secondary me-2"><i class="bi bi-floppy"></i> {{ this.translate.btn_save_query }}</div>
         <div class="btn btn-secondary"><i class="bi bi-eye-slash"></i> {{ this.translate.btn_disabled_query }}</div>
       </div>
@@ -192,14 +227,50 @@ export default {
       </div>
     </div>
 
-      <div class="card mt-4">
-        <div class="card-header">
-          {{ this.translate.bloc_result }}
-        </div>
-        <div class="card-body">
-
-        </div>
+    <div class="card mt-4">
+      <div class="card-header">
+        {{ this.translate.bloc_result }}
       </div>
+      <div class="card-body">
 
+      </div>
     </div>
+
+  </div>
+
+  <div class="toast-container position-fixed top-0 end-0 p-2">
+
+    <toast
+        :id="'toastSuccess'"
+        :option-class-header="'text-success'"
+        :show="this.toasts.toastSuccess.show"
+        @close-toast="this.closeToast"
+    >
+      <template #header>
+        <i class="bi bi-check-circle-fill"></i> &nbsp;
+        <strong class="me-auto"> {{ this.translate.toast_title_success }}</strong>
+        <small class="text-black-50">{{ this.translate.toast_time }}</small>
+      </template>
+      <template #body>
+        <div v-html="this.toasts.toastSuccess.msg"></div>
+      </template>
+    </toast>
+
+    <toast
+        :id="'toastError'"
+        :option-class-header="'text-danger'"
+        :show="this.toasts.toastError.show"
+        @close-toast="this.closeToast"
+    >
+      <template #header>
+        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
+        <strong class="me-auto"> {{ this.translate.toast_title_error }}</strong>
+        <small class="text-black-50">{{ this.translate.toast_time }}</small>
+      </template>
+      <template #body>
+        <div v-html="this.toasts.toastError.msg"></div>
+      </template>
+    </toast>
+
+  </div>
 </template>

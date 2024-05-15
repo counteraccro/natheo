@@ -28,6 +28,17 @@ class SqlManagerTranslate extends AppTranslate
             'placeholder_table' => $this->translator->trans('sql_manager.placeholder.table', domain: 'sql_manager'),
             'placeholder_field' => $this->translator->trans('sql_manager.placeholder.field', domain: 'sql_manager'),
             'bloc_result' => $this->translator->trans('sql_manager.bloc.result', domain: 'sql_manager'),
+            'toast_title_success' => $this->translator->trans('sql_manager.toast.title.success', domain: 'sql_manager'),
+            'toast_title_error' => $this->translator->trans('sql_manager.toast.title.error', domain: 'sql_manager'),
+            'toast_time' => $this->translator->trans('sql_manager.toast.time', domain: 'sql_manager'),
+            'toast_msg_exec_error' => $this->translator->trans('sql_manager.toast.msg.exec.error',
+                domain: 'sql_manager'),
+            'toast_msg_exec_success' => $this->translator->trans('sql_manager.toast.msg.exec.success',
+                domain: 'sql_manager'),
+            'toast_msg_save_error' => $this->translator->trans('sql_manager.toast.msg.save.error',
+                domain: 'sql_manager'),
+            'toast_msg_save_success' => $this->translator->trans('sql_manager.toast.msg.save.success',
+                domain: 'sql_manager'),
 
         ];
     }

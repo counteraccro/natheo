@@ -97,7 +97,6 @@ class DataBase
     /**
      * @param string $query
      * @return array
-     * @throws Exception
      */
     public function executeRawQuery(string $query): array
     {
@@ -108,6 +107,7 @@ class DataBase
 
             return [
                 'result' => [],
+                'header' => [],
                 'error' => $e->getMessage()
             ];
         }
@@ -117,12 +117,19 @@ class DataBase
         } catch (Exception $e) {
             return [
                 'result' => [],
+                'header' => [],
                 'error' => $e->getMessage(),
             ];
         }
 
+        $header = [];
+        if (!empty($result)) {
+            $header = array_keys($result[0]);
+        }
+
         return [
             'result' => $result,
+            'header' => $header,
             'error' => '',
         ];
 

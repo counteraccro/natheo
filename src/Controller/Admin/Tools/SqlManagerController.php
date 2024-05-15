@@ -210,6 +210,6 @@ class SqlManagerController extends AppAdminController
     {
         $data = json_decode($request->getContent(), true);
         $result = $dataBase->executeRawQuery($data['query']);
-        return $this->json(['result' => $result]);
+        return $this->json(['data' => $result]);
     }
 }
