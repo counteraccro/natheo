@@ -40,3 +40,10 @@ sql_manager.placeholder.table: 'Rechercher une table'
 sql_manager.placeholder.field: 'Rechercher un champ'
 sql_manager.bloc.result: Résultat
 sql_manager.label.liste.field.2: 'Champs de la table'
+sql_manager.toast.title.success: 'Succès !'
+sql_manager.toast.title.error: 'Erreur !'
+sql_manager.toast.time: "A l'instant"
+sql_manager.toast.msg.exec.error: 'Une erreur est survenue dans votre requête SQL'
+sql_manager.toast.msg.exec.success: 'Requête SQL executé avec succès'
+sql_manager.toast.msg.save.error: 'Une erreur est survenue sur la sauvegarde'
+sql_manager.toast.msg.save.success: 'Sauvegarde réalisée avec succès'

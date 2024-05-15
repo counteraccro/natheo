@@ -40,3 +40,10 @@ sql_manager.placeholder.table: __sql_manager.placeholder.table
 sql_manager.placeholder.field: __sql_manager.placeholder.field
 sql_manager.bloc.result: __sql_manager.bloc.result
 sql_manager.label.liste.field.2: __sql_manager.label.liste.field.2
+sql_manager.toast.title.success: __sql_manager.toast.title.success
+sql_manager.toast.title.error: __sql_manager.toast.title.error
+sql_manager.toast.time: __sql_manager.toast.time
+sql_manager.toast.msg.exec.error: __sql_manager.toast.msg.exec.error
+sql_manager.toast.msg.exec.success: __sql_manager.toast.msg.exec.success
+sql_manager.toast.msg.save.error: __sql_manager.toast.msg.save.error
+sql_manager.toast.msg.save.success: __sql_manager.toast.msg.save.success
