@@ -166,7 +166,7 @@ class SqlManagerService extends AppAdminService
             $actions[] = $actionDelete;
         }
 
-        if(!$sqlManager->isDisabled()) {
+        if (!$sqlManager->isDisabled()) {
             // Bouton edit
             $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
                 'id' => $sqlManager->getId(),
@@ -181,6 +181,27 @@ class SqlManagerService extends AppAdminService
         }
 
         return $actions;
+    }
+
+    /**
+     * Vérifie si la query est uniquement un select
+     * retourne true si c'est vrai, false sinon
+     * @param $query
+     * @return bool
+     */
+    public function isOnlySelectQuery($query): bool
+    {
+        $arrayWords = [
+            'UPDATE', 'DELETE', 'INSERT',
+            'CREATE', 'ALTER', 'DROP',
+        ];
+
+        foreach ($arrayWords as $word) {
+            if (stripos($query, $word) !== false) {
+                return false;
+            }
+        }
+        return true;
     }
 
 

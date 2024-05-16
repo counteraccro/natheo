@@ -198,18 +198,29 @@ class SqlManagerController extends AppAdminController
     /**
      * Charge les informations de la base de données
      * @param DataBase $dataBase
+     * @param SqlManagerService $sqlManagerService
      * @param Request $request
      * @return JsonResponse
-     * @throws Exception
      */
     #[Route('/ajax/execute', name: 'execute_sql', methods: ['POST'])]
     public function executeSQL(
-        DataBase $dataBase,
-        Request $request
+        DataBase            $dataBase,
+        SqlManagerService   $sqlManagerService,
+        TranslatorInterface $translator,
+        Request             $request
     ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $result = $dataBase->executeRawQuery($data['query']);
+        if ($sqlManagerService->isOnlySelectQuery($data['query'])) {
+            $result = $dataBase->executeRawQuery($data['query']);
+        } else {
+            $result = [
+                'result' => [],
+                'header' => [],
+                'error' => $translator->trans('sql_manager.error.not.only.select.query', domain: 'sql_manager')
+            ];
+        }
+
         return $this->json(['data' => $result]);
     }
 }
