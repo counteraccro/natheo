@@ -24,6 +24,7 @@ export default {
       result: Object,
       resultHeader: Object,
       error: '',
+      showHelp: false,
       toasts: {
         toastSuccess: {
           show: false,
@@ -168,14 +169,29 @@ export default {
       </div>
     </div>
 
-    <div class="alert alert-warning">
+    <div class="card mb-3" v-if="this.showHelp">
+      <div class="card-header">
+        Featured
+        <button type="button" class="btn-close float-end" aria-label="Close" @click="this.showHelp = false"></button>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Special title treatment</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
+
+    <div class="btn btn-sm btn-secondary float-end mb-1" @click="this.showHelp = true"><i class="bi bi-info-circle"></i>
+    </div>
+
+    <!--<div class="alert alert-warning">
       <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
       <h4 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> {{ this.translate.alert_waring_title }}
       </h4>
       <p>
         {{ this.translate.alert_waring_msg }}
       </p>
-    </div>
+    </div>-->
 
     <div v-if="this.error !== ''" class="alert alert-danger">
       {{ this.error }}
