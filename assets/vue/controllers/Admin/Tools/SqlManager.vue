@@ -235,22 +235,24 @@ export default {
       </div>
       <div class="card-body overflow-x-auto">
 
-        <table class="table table-striped table-hover" aria-describedby="table">
-          <thead>
-          <tr>
-            <th v-for="header in this.resultHeader">
-              {{ header }}
-            </th>
-          </tr>
-          </thead>
-          <tbody>
+        <div class="table-responsive">
+          <table class="table table-sm table-striped table-hover" aria-describedby="table">
+            <thead>
+            <tr>
+              <th v-for="header in this.resultHeader">
+                {{ header }}
+              </th>
+            </tr>
+            </thead>
+            <tbody>
             <tr v-for="row in this.result">
               <td v-for="header in this.resultHeader">
                 {{ row[header] }}
               </td>
             </tr>
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
 
       </div>
     </div>
