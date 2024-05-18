@@ -22,6 +22,7 @@ export default {
       searchTable: '',
       searchField: '',
       result: Object,
+      resultHeader: Object,
       error: '',
       toasts: {
         toastSuccess: {
@@ -118,6 +119,7 @@ export default {
       }).then((response) => {
         this.error = response.data.data.error;
         this.result = response.data.data.result;
+        this.resultHeader = response.data.data.header;
 
         if (this.error === '') {
           this.toasts.toastSuccess.show = true;
@@ -231,7 +233,24 @@ export default {
       <div class="card-header">
         {{ this.translate.bloc_result }}
       </div>
-      <div class="card-body">
+      <div class="card-body overflow-x-auto">
+
+        <table class="table table-striped table-hover" aria-describedby="table">
+          <thead>
+          <tr>
+            <th v-for="header in this.resultHeader">
+              {{ header }}
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr v-for="row in this.result">
+              <td v-for="header in this.resultHeader">
+                {{ row[header] }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
       </div>
     </div>
