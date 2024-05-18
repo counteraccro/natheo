@@ -196,11 +196,11 @@ class SqlManagerService extends AppAdminService
             'CREATE', 'ALTER', 'DROP',
         ];
 
-        foreach ($arrayWords as $word) {
-            if (stripos($query, $word) !== false) {
-                return false;
-            }
+        $pattern = '/(' . implode('|', $arrayWords) . ')\b/i';
+        if (preg_match($pattern, $query) !== 0) {
+            return false;
         }
+
         return true;
     }
 
