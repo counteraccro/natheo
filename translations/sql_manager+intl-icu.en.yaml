@@ -46,3 +46,8 @@ sql_manager.toast.msg.exec.success: __sql_manager.toast.msg.exec.success
 sql_manager.toast.msg.save.error: __sql_manager.toast.msg.save.error
 sql_manager.toast.msg.save.success: __sql_manager.toast.msg.save.success
 sql_manager.error.not.only.select.query: __sql_manager.error.not.only.select.query
+sql_manager.help.title: __sql_manager.help.title
+sql_manager.help.sub.title.1: __sql_manager.help.sub.title.1
+sql_manager.help.text.1: __sql_manager.help.text.1
+sql_manager.help.sub.title.2: __sql_manager.help.sub.title.2
+sql_manager.help.text.2: __sql_manager.help.text.2
