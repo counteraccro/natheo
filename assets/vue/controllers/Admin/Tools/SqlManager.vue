@@ -171,17 +171,18 @@ export default {
 
     <div class="card mb-3" v-if="this.showHelp">
       <div class="card-header">
-        Featured
+        <i class="bi bi-question-circle"></i> {{ this.translate.help_title }}
         <button type="button" class="btn-close float-end" aria-label="Close" @click="this.showHelp = false"></button>
       </div>
       <div class="card-body">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+        <h5 class="card-title"><i class="bi bi-exclamation-circle-fill"></i> {{ this.translate.help_sub_title_1 }}</h5>
+        <p class="card-text">{{ this.translate.help_text_1 }}</p>
+        <h5 class="card-title"><i class="bi bi-question-circle-fill"></i> {{ this.translate.help_sub_title_2 }}</h5>
+        <p class="card-text"><i class="bi bi-arrow-right"></i> {{ this.translate.help_text_2 }}</p>
       </div>
     </div>
 
-    <div class="btn btn-sm btn-secondary float-end mb-1" @click="this.showHelp = true"><i class="bi bi-info-circle"></i>
+    <div class="btn btn-sm btn-secondary float-end mb-1" @click="this.showHelp = true"><i class="bi bi-question-circle"></i>
     </div>
 
     <!--<div class="alert alert-warning">

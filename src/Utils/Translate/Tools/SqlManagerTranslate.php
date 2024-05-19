@@ -12,8 +12,6 @@ class SqlManagerTranslate extends AppTranslate
     public function getTranslate(): array
     {
         return [
-            'alert_waring_title' => $this->translator->trans('sql_manager.alert.warning.title', domain: 'sql_manager'),
-            'alert_waring_msg' => $this->translator->trans('sql_manager.alert.warning.msg', domain: 'sql_manager'),
             'label_textarea_query' => $this->translator->trans('sql_manager.label.textarea.query',
                 domain: 'sql_manager'),
             'btn_execute_query' => $this->translator->trans('sql_manager.btn.execute.query', domain: 'sql_manager'),
@@ -39,6 +37,11 @@ class SqlManagerTranslate extends AppTranslate
                 domain: 'sql_manager'),
             'toast_msg_save_success' => $this->translator->trans('sql_manager.toast.msg.save.success',
                 domain: 'sql_manager'),
+            'help_title' => $this->translator->trans('sql_manager.help.title', domain: 'sql_manager'),
+            'help_sub_title_1' => $this->translator->trans('sql_manager.help.sub.title.1', domain: 'sql_manager'),
+            'help_text_1' => $this->translator->trans('sql_manager.help.text.1', domain: 'sql_manager'),
+            'help_sub_title_2' => $this->translator->trans('sql_manager.help.sub.title.2', domain: 'sql_manager'),
+            'help_text_2' => $this->translator->trans('sql_manager.help.text.2', domain: 'sql_manager'),
 
         ];
     }
