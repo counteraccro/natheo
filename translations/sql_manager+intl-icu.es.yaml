@@ -25,8 +25,6 @@ sql_manager.execute.description: __sql_manager.execute.description
 sql_manager.update.page_title: __sql_manager.update.page_title
 sql_manager.update.page_title_h1: __sql_manager.update.page_title_h1
 sql_manager.update.description: __sql_manager.update.description
-sql_manager.alert.warning.title: __sql_manager.alert.warning.title
-sql_manager.alert.warning.msg: __sql_manager.alert.warning.msg
 sql_manager.label.textarea.query: __sql_manager.label.textarea.query
 sql_manager.btn.execute.query: __sql_manager.btn.execute.query
 sql_manager.btn.save.query: __sql_manager.btn.save.query
@@ -48,3 +46,8 @@ sql_manager.toast.msg.exec.success: __sql_manager.toast.msg.exec.success
 sql_manager.toast.msg.save.error: __sql_manager.toast.msg.save.error
 sql_manager.toast.msg.save.success: __sql_manager.toast.msg.save.success
 sql_manager.error.not.only.select.query: __sql_manager.error.not.only.select.query
+sql_manager.help.title: __sql_manager.help.title
+sql_manager.help.sub.title.1: __sql_manager.help.sub.title.1
+sql_manager.help.text.1: __sql_manager.help.text.1
+sql_manager.help.sub.title.2: __sql_manager.help.sub.title.2
+sql_manager.help.text.2: __sql_manager.help.text.2
