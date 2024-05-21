@@ -42,6 +42,8 @@ class SqlManagerTranslate extends AppTranslate
             'help_text_1' => $this->translator->trans('sql_manager.help.text.1', domain: 'sql_manager'),
             'help_sub_title_2' => $this->translator->trans('sql_manager.help.sub.title.2', domain: 'sql_manager'),
             'help_text_2' => $this->translator->trans('sql_manager.help.text.2', domain: 'sql_manager'),
+            'help_select_table' => $this->translator->trans('sql_manager.help.select.table', domain: 'sql_manager'),
+            'help_select_field' => $this->translator->trans('sql_manager.help.select.field', domain: 'sql_manager'),
 
         ];
     }

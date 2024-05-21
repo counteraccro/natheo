@@ -17,6 +17,7 @@ export default {
       sqlManager: Object,
       dataBaseData: Object,
       selectTable: '',
+      selectLabelTable : '',
       selectField: '',
       selectColumns: [],
       searchTable: '',
@@ -102,7 +103,7 @@ export default {
       this.loading = true;
       axios.get(this.urls.load_data_database).then((response) => {
         this.dataBaseData = response.data.dataInfo;
-        this.selectTable = this.translate.label_list_field;
+        this.selectLabelTable = this.translate.label_list_field;
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -137,8 +138,12 @@ export default {
       });
     },
 
+    /**
+     * Retourne la liste des colonnes en fonction d'une table
+     * @param selectTable
+     */
     loadColumn(selectTable) {
-      this.selectTable = this.translate.label_list_field_2 + ' ' + selectTable;
+      this.selectLabelTable = this.translate.label_list_field_2 + ' ' + '<b>' + selectTable + '</b>';
       this.dataBaseData.forEach((table) => {
         if (table.name === selectTable) {
           this.selectColumns = table.columns;
@@ -153,6 +158,53 @@ export default {
      */
     closeToast(nameToast) {
       this.toasts[nameToast].show = false
+    },
+
+    /**
+     * Ajoute un élément dans l'input
+     * @param balise
+     * @param position
+     * @param separate
+     * @returns {boolean}
+     */
+    addElement(balise, position, separate) {
+
+      let input = document.getElementById('sql-textarea');
+      let start = input.selectionStart;
+      let end = input.selectionEnd;
+      let value = this.sqlManager.query;
+
+      let select = window.getSelection().toString();
+
+      if (select === '') {
+        this.sqlManager.query = value.slice(0, start) + balise + value.slice(end);
+        input.value = this.sqlManager.query;
+        let caretPos = start + balise.length;
+        input.focus();
+        input.setSelectionRange(caretPos - position, caretPos - position);
+
+      } else {
+
+        let before = value.slice(0, start);
+        let after = value.slice(end);
+        let replace = '';
+
+        if (separate) {
+          let b = balise.slice(balise.length / 2);
+          replace = b + select.toString() + b;
+        } else {
+          replace = balise + select.toString()
+        }
+
+        this.sqlManager.query = before + replace + after;
+        input.value = this.sqlManager.query;
+
+        let caretPos = start + replace.length;
+        input.focus();
+        input.setSelectionRange(caretPos, caretPos);
+
+      }
+      return false;
     },
   }
 }
@@ -182,17 +234,9 @@ export default {
       </div>
     </div>
 
-    <div class="btn btn-sm btn-secondary float-end mb-1" @click="this.showHelp = true"><i class="bi bi-question-circle"></i>
+    <div class="btn btn-sm btn-secondary float-end mb-1" @click="this.showHelp = true">
+      <i class="bi bi-question-circle"></i>
     </div>
-
-    <!--<div class="alert alert-warning">
-      <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
-      <h4 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> {{ this.translate.alert_waring_title }}
-      </h4>
-      <p>
-        {{ this.translate.alert_waring_msg }}
-      </p>
-    </div>-->
 
     <div v-if="this.error !== ''" class="alert alert-danger">
       {{ this.error }}
@@ -224,23 +268,28 @@ export default {
           <div class="col-6">
             <label for="sql-table" class="form-label">{{ this.translate.label_list_table }}</label>
             <input type="text" class="form-control" v-model="this.searchTable" :placeholder="this.translate.placeholder_table">
-            <select class="form-select" multiple id="sql-table" size="8">
+            <select class="form-select" multiple id="sql-table" size="8" v-model="this.selectTable">
               <option v-for="(table) in filteredTable" @click="this.loadColumn(table.name)">
                 {{ table.name }}
               </option>
             </select>
-            <div class="btn btn-secondary btn-sm mt-1 float-end">
+            <div class="btn btn-secondary btn-sm mt-1 float-end" @click="this.addElement('natheo.' + this.selectTable, 0, false)">
               {{ this.translate.btn_add_table }}
             </div>
+            <div class="form-text">{{ this.translate.help_select_table }}</div>
           </div>
           <div class="col-6">
-            <label for="sql-field" class="form-label">{{ this.selectTable }}</label>
+            <label for="sql-field" class="form-label" v-html="this.selectLabelTable"></label>
             <input type="text" class="form-control" v-model="this.searchField" :placeholder="this.translate.placeholder_field">
-            <select class="form-select" multiple id="sql-field" size="8">
+            <select class="form-select" multiple id="sql-field" size="8" v-model="this.selectField">
               <option v-for="(column) in filteredFieldName">
                 {{ column }}
               </option>
             </select>
+            <div class="btn btn-secondary btn-sm mt-1 float-end" @click="this.addElement(this.selectField, 0, false)">
+              {{ this.translate.btn_add_table }}
+            </div>
+            <div class="form-text">{{ this.translate.help_select_field }}</div>
           </div>
         </div>
       </div>

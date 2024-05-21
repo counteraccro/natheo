@@ -8,14 +8,12 @@
 namespace App\Controller\Admin\Tools;
 
 use App\Controller\Admin\AppAdminController;
-use App\Entity\Admin\System\User;
 use App\Entity\Admin\Tools\SqlManager;
 use App\Service\Admin\Tools\SqlManagerService;
 use App\Utils\Breadcrumb;
 use App\Utils\Global\DataBase;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Tools\SqlManagerTranslate;
-use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
