@@ -50,4 +50,6 @@ sql_manager.help.title: Aide
 sql_manager.help.text.1: "Seule les requêtes de type SELECT seront exécutées, les mots clés suivants : [UPDATE, DELETE, INSERT, CREATE, ALTER, DROP] sont bloqués afin d'éviter toutes tentatives de malversation sur la base de données"
 sql_manager.help.sub.title.1: Attention
 sql_manager.help.sub.title.2: Information
-sql_manager.help.text.2: "Si vous utilisez un schéma SQL, penser à bien préciser le nom du schéma SQL avec le nom de votre table, exemple : schema.nom_table"
+sql_manager.help.text.2: 'Si vous utilisez un schéma SQL, penser à bien préciser le nom du schéma SQL avec le nom de votre table, exemple : schema.nom_table'
+sql_manager.help.select.table: "Cliquez sur le bouton 'Ajouter' pour ajouter la table sélectionnée dans la requête"
+sql_manager.help.select.field: "Cliquez sur le bouton 'Ajouter' pour ajouter la champ sélectionné dans la requête"
