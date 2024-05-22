@@ -26,7 +26,7 @@ export default {
       resultHeader: Object,
       error: '',
       showHelp: false,
-      showQueryBuilder: false,
+      showQueryBuilder: true,
       toasts: {
         toastSuccess: {
           show: false,
@@ -132,6 +132,32 @@ export default {
           this.toasts.toastError.msg = this.translate.toast_msg_exec_error;
         }
 
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.loading = false;
+      });
+    },
+
+    /**
+     * Sauvegarde une query
+     */
+    save() {
+      this.loading = true;
+      axios.post(this.urls.save, {
+        query: this.sqlManager.query
+      }).then((response) => {
+        if (response.data.success === true) {
+          this.toasts.toastSuccess.msg = response.data.msg;
+          this.toasts.toastSuccess.show = true;
+          // Cas première query, on force la redirection pour passer en mode édition
+          if (response.data.redirect === true) {
+            window.location.replace(response.data.url_redirect);
+          }
+        } else {
+          this.toasts.toastError.msg = response.data.msg;
+          this.toasts.toastError.show = true;
+        }
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -257,7 +283,7 @@ export default {
         <div class="btn btn-secondary me-2" @click="this.execute()">
           <i class="bi bi-terminal"></i> {{ this.translate.btn_execute_query }}
         </div>
-        <div class="btn btn-secondary me-2"><i class="bi bi-floppy"></i> {{ this.translate.btn_save_query }}</div>
+        <div class="btn btn-secondary me-2" @click="this.save"><i class="bi bi-floppy"></i> {{ this.translate.btn_save_query }}</div>
         <div class="btn btn-secondary"><i class="bi bi-eye-slash"></i> {{ this.translate.btn_disabled_query }}</div>
       </div>
     </div>

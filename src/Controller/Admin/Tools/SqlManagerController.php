@@ -152,6 +152,7 @@ class SqlManagerController extends AppAdminController
                 'load_sql_manager' => $this->generateUrl('admin_sql_manager_load_data'),
                 'load_data_database' => $this->generateUrl('admin_sql_manager_load_data_database'),
                 'execute_sql' => $this->generateUrl('admin_sql_manager_execute_sql'),
+                'save' => $this->generateUrl('admin_sql_manager_save'),
             ]
 
         ]);
@@ -197,6 +198,7 @@ class SqlManagerController extends AppAdminController
      * Charge les informations de la base de données
      * @param DataBase $dataBase
      * @param SqlManagerService $sqlManagerService
+     * @param TranslatorInterface $translator
      * @param Request $request
      * @return JsonResponse
      */
@@ -220,5 +222,25 @@ class SqlManagerController extends AppAdminController
         }
 
         return $this->json(['data' => $result]);
+    }
+
+    /**
+     * Sauvegarde une query
+     * @param SqlManagerService $sqlManagerService
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     */
+    #[Route('/ajax/save', name: 'save', methods: ['POST'])]
+    public function save(
+        SqlManagerService $sqlManagerService,
+        Request             $request,
+        TranslatorInterface $translator
+    ): JsonResponse
+    {
+        $returnArray = $sqlManagerService->getResponseAjax($translator->trans('page.save.success', domain: 'page'));
+        $returnArray['url_redirect'] = $this->generateUrl('admin_sql_manager_update', ['id' => 0]);
+        $returnArray['redirect'] = false;
+        return $this->json($returnArray);
     }
 }
