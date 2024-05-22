@@ -17,7 +17,7 @@ export default {
       sqlManager: Object,
       dataBaseData: Object,
       selectTable: '',
-      selectLabelTable : '',
+      selectLabelTable: '',
       selectField: '',
       selectColumns: [],
       searchTable: '',
@@ -26,6 +26,7 @@ export default {
       resultHeader: Object,
       error: '',
       showHelp: false,
+      showQueryBuilder: false,
       toasts: {
         toastSuccess: {
           show: false,
@@ -161,6 +162,13 @@ export default {
     },
 
     /**
+     * Affichage ou masque le query builder
+     */
+    renderQueryBuilder() {
+      this.showQueryBuilder = !this.showQueryBuilder;
+    },
+
+    /**
      * Ajoute un élément dans l'input
      * @param balise
      * @param position
@@ -260,10 +268,11 @@ export default {
       <div class="card-header">
         {{ this.translate.bloc_query }}
         <div class="float-end btn btn-secondary btn-sm">
-          <i class="bi bi-chevron-up"></i>
+          <i class="bi bi-chevron-up" v-if="this.showQueryBuilder" @click="this.renderQueryBuilder()"></i>
+          <i class="bi bi-chevron-down" v-if="!this.showQueryBuilder"  @click="this.renderQueryBuilder()"></i>
         </div>
       </div>
-      <div class="card-body">
+      <div class="card-body" v-if="this.showQueryBuilder">
         <div class="row">
           <div class="col-6">
             <label for="sql-table" class="form-label">{{ this.translate.label_list_table }}</label>
