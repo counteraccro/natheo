@@ -7,10 +7,8 @@ use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadataInfo as ClassMetadataInfo;
 
-/*
- * Setup information directly from Doctrine
- * https://www.doctrine-project.org/projects/doctrine-orm/en/2.16/cookbook/sql-table-prefixes.html#telling-the-entitymanager-about-our-listener
- * https://symfony.com/doc/current/doctrine/events.html#doctrine-entity-listeners
+/**
+ * Ajoute un prefix et un schema aux tables de la base de données
  */
 #[AsDoctrineListener(event: Events::loadClassMetadata, priority: 500, connection: 'default')]
 class DatabaseTablePrefixListener
@@ -18,12 +16,20 @@ class DatabaseTablePrefixListener
     protected string $prefix = '';
     protected string $schema = '';
 
+    /**
+     * @param string $prefix
+     * @param string $schema
+     */
     public function __construct(string $prefix, string $schema)
     {
         $this->prefix = $prefix;
         $this->schema = $schema;
     }
 
+    /**
+     * @param LoadClassMetadataEventArgs $eventArgs
+     * @return void
+     */
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
     {
         $classMetadata = $eventArgs->getClassMetadata();
