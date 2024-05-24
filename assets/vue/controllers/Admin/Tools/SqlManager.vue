@@ -11,7 +11,8 @@ export default {
     urls: Object,
     translate: Object,
     id: Number,
-    isExecute: Boolean
+    isExecute: Boolean,
+    schema: String
   },
   data() {
     return {
@@ -356,7 +357,7 @@ export default {
                 {{ table.name }}
               </option>
             </select>
-            <div class="btn btn-secondary btn-sm mt-1 float-end" @click="this.addElement('natheo.' + this.selectTable, 0, false)">
+            <div class="btn btn-secondary btn-sm mt-1 float-end" @click="this.addElement(this.schema + this.selectTable, 0, false)">
               {{ this.translate.btn_add_table }}
             </div>
             <div class="form-text">{{ this.translate.help_select_table }}</div>

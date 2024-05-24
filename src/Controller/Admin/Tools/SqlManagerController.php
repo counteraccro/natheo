@@ -157,6 +157,7 @@ class SqlManagerController extends AppAdminController
             'translate' => $sqlManagerTranslate->getTranslate(),
             'id' => $id,
             'isExecute' => $isExecute,
+            'schema' => $this->getParameter('app.default_database_schema'),
             'datas' => [
             ],
             'urls' => [
