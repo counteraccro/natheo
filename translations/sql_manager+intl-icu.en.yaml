@@ -58,3 +58,5 @@ sql_manager.label.name.placeholder: __sql_manager.label.name.placeholder
 sql_manager.save.error.validate: __sql_manager.save.error.validate
 sql_manager.save.error.no.select: __sql_manager.save.error.no.select
 sql_manager.save.success: __sql_manager.save.success
+sql_manager.error.query.empty: __sql_manager.error.query.empty
+sql_manager.error.name.empty: __sql_manager.error.name.empty

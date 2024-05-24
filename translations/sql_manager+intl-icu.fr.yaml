@@ -58,3 +58,5 @@ sql_manager.label.name.placeholder: 'Le nom de la requête SQL'
 sql_manager.save.error.validate: 'Erreur de validation, vérifier vos donnes'
 sql_manager.save.success: 'Requête sauvegardée avec succèss'
 sql_manager.save.error.no.select: "La requête n'est pas de type SELECT"
+sql_manager.error.query.empty: "Le champ SQL ne peux pas être vide"
+sql_manager.error.name.empty: "Le nom ne peux pas être vide"
