@@ -10,7 +10,7 @@ use App\Repository\Admin\System\OptionSystemRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name : "natheo.option_system")]
+#[ORM\Table(name : "option_system")]
 #[ORM\Entity(repositoryClass: OptionSystemRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class OptionSystem

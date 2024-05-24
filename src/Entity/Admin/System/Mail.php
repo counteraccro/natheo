@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 
-#[ORM\Table(name : "natheo.mail")]
+#[ORM\Table(name : "mail")]
 #[ORM\Entity(repositoryClass: MailRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Mail

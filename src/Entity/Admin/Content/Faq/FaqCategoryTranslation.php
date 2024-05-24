@@ -7,7 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FaqCategoryTranslationRepository::class)]
-#[ORM\Table(name: 'natheo.faq_category_translation')]
+#[ORM\Table(name: 'faq_category_translation')]
 class FaqCategoryTranslation
 {
     #[ORM\Id]

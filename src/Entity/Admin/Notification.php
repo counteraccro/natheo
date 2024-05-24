@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
-#[ORM\Table(name: 'natheo.notification')]
+#[ORM\Table(name: 'notification')]
 #[ORM\HasLifecycleCallbacks]
 class Notification
 {

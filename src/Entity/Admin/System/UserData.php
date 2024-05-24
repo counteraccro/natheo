@@ -11,7 +11,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserDataRepository::class)]
-#[ORM\Table(name: 'natheo.user_data')]
+#[ORM\Table(name: 'user_data')]
 #[ORM\HasLifecycleCallbacks]
 class UserData
 {

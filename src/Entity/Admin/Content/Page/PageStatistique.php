@@ -6,7 +6,7 @@ use App\Repository\Admin\Content\Page\PageStatistiqueRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PageStatistiqueRepository::class)]
-#[ORM\Table(name: 'natheo.page_statistique')]
+#[ORM\Table(name: 'page_statistique')]
 class PageStatistique
 {
     #[ORM\Id]

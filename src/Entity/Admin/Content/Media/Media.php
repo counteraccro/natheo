@@ -8,7 +8,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
-#[ORM\Table(name: 'natheo.media')]
+#[ORM\Table(name: 'media')]
 #[ORM\HasLifecycleCallbacks]
 class Media
 {

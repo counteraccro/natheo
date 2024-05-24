@@ -7,7 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PageTranslationRepository::class)]
-#[ORM\Table(name: 'natheo.page_translation')]
+#[ORM\Table(name: 'page_translation')]
 #[ORM\HasLifecycleCallbacks]
 class PageTranslation
 {

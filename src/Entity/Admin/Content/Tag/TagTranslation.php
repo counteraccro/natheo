@@ -6,7 +6,7 @@ use App\Repository\Admin\Content\Tag\TagTranslationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TagTranslationRepository::class)]
-#[ORM\Table(name: 'natheo.tag_translation')]
+#[ORM\Table(name: 'tag_translation')]
 class TagTranslation
 {
     #[ORM\Id]

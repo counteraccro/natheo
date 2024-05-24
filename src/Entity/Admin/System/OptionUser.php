@@ -7,7 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OptionUserRepository::class)]
-#[ORM\Table(name: 'natheo.option_user')]
+#[ORM\Table(name: 'option_user')]
 #[ORM\HasLifecycleCallbacks]
 class OptionUser
 {
