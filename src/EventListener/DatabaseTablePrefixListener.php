@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\EventListener;
 
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo as ClassMetadataInfo;
  * https://symfony.com/doc/current/doctrine/events.html#doctrine-entity-listeners
  */
 #[AsDoctrineListener(event: Events::loadClassMetadata, priority: 500, connection: 'default')]
-class DatabaseTablePrefix
+class DatabaseTablePrefixListener
 {
     protected string $prefix = '';
     protected string $schema = '';
