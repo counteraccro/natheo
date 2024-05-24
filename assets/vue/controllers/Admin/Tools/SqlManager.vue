@@ -88,7 +88,7 @@ export default {
      */
     loadSqlManager() {
       this.loading = true;
-      axios.get(this.urls.load_sql_manager + '/' + this.id).then((response) => {
+      axios.get(this.urls.load_sql_manager).then((response) => {
         this.sqlManager = response.data.sqlManager;
       }).catch((error) => {
         console.error(error);
@@ -145,7 +145,8 @@ export default {
     save() {
       this.loading = true;
       axios.post(this.urls.save, {
-        query: this.sqlManager.query
+        query: this.sqlManager.query,
+        id : this.sqlManager.id
       }).then((response) => {
         if (response.data.success === true) {
           this.toasts.toastSuccess.msg = response.data.msg;

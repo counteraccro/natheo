@@ -149,7 +149,7 @@ class SqlManagerController extends AppAdminController
             'datas' => [
             ],
             'urls' => [
-                'load_sql_manager' => $this->generateUrl('admin_sql_manager_load_data'),
+                'load_sql_manager' => $this->generateUrl('admin_sql_manager_load_data', ['id' => $id]),
                 'load_data_database' => $this->generateUrl('admin_sql_manager_load_data_database'),
                 'execute_sql' => $this->generateUrl('admin_sql_manager_execute_sql'),
                 'save' => $this->generateUrl('admin_sql_manager_save'),
@@ -238,6 +238,9 @@ class SqlManagerController extends AppAdminController
         TranslatorInterface $translator
     ): JsonResponse
     {
+
+
+
         $returnArray = $sqlManagerService->getResponseAjax($translator->trans('page.save.success', domain: 'page'));
         $returnArray['url_redirect'] = $this->generateUrl('admin_sql_manager_update', ['id' => 0]);
         $returnArray['redirect'] = false;
