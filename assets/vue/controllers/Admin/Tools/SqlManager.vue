@@ -10,7 +10,8 @@ export default {
   props: {
     urls: Object,
     translate: Object,
-    id: Number
+    id: Number,
+    isExecute: Boolean
   },
   data() {
     return {
@@ -26,6 +27,8 @@ export default {
       result: Object,
       resultHeader: Object,
       error: '',
+      isErrorValidateName: false,
+      isErrorValidateQuery: false,
       showHelp: false,
       showQueryBuilder: true,
       toasts: {
@@ -95,6 +98,13 @@ export default {
         console.error(error);
       }).finally(() => {
         this.loading = false;
+
+        if (this.isExecute) {
+          console.log('ici');
+          //this.isExecute = false;
+          this.execute();
+        }
+
       });
     },
 
@@ -117,6 +127,11 @@ export default {
      * Execute une requête SQL
      */
     execute() {
+
+      if(!this.isValidate()) {
+        return false;
+      }
+
       this.loading = true;
       axios.post(this.urls.execute_sql, {
         query: this.sqlManager.query
@@ -144,11 +159,16 @@ export default {
      * Sauvegarde une query
      */
     save() {
+
+      if(!this.isValidate()) {
+        return false;
+      }
+
       this.loading = true;
       axios.post(this.urls.save, {
         query: this.sqlManager.query,
-        name : this.sqlManager.name,
-        id : this.sqlManager.id
+        name: this.sqlManager.name,
+        id: this.sqlManager.id
       }).then((response) => {
         if (response.data.success === true) {
           this.toasts.toastSuccess.msg = response.data.msg;
@@ -196,6 +216,18 @@ export default {
      */
     renderQueryBuilder() {
       this.showQueryBuilder = !this.showQueryBuilder;
+    },
+
+    /**
+     * Renvoi true si tout est ok, false sinon
+     * @returns {boolean}
+     */
+    isValidate() {
+      this.isErrorValidateQuery = this.sqlManager.query === null || this.sqlManager.query === '';
+      this.isErrorValidateName = this.sqlManager.name === null || this.sqlManager.name === '';
+
+      return !(this.isErrorValidateName || this.isErrorValidateQuery);
+
     },
 
     /**
@@ -278,7 +310,10 @@ export default {
 
     <div class="mb-3">
       <label for="name-query" class="form-label">{{ this.translate.label_name }}</label>
-      <input type="text" class="form-control" id="name-query" :placeholder="this.translate.label_name_placeholder" v-model="this.sqlManager.name">
+      <input type="text" class="form-control" :class="this.isErrorValidateName ? 'is-invalid' : ''" id="name-query" :placeholder="this.translate.label_name_placeholder" v-model="this.sqlManager.name">
+      <div class="invalid-feedback">
+        {{ this.translate.error_name_empty }}
+      </div>
     </div>
 
     <div class="btn btn-sm btn-secondary float-end mb-1" @click="this.showHelp = true">
@@ -287,13 +322,17 @@ export default {
 
     <div class="mb-3">
       <label for="sql-textarea" class="form-label">{{ this.translate.label_textarea_query }}</label>
-      <textarea class="form-control" id="sql-textarea" rows="10" v-model="this.sqlManager.query"></textarea>
+      <textarea class="form-control" :class="this.isErrorValidateQuery ? 'is-invalid' : ''" id="sql-textarea" rows="10" v-model="this.sqlManager.query"></textarea>
+      <div class="invalid-feedback">
+        {{ this.translate.error_query_empty }}
+      </div>
       <div class="float-end mt-2">
         <div class="btn btn-secondary me-2" @click="this.execute()">
           <i class="bi bi-terminal"></i> {{ this.translate.btn_execute_query }}
         </div>
-        <div class="btn btn-secondary me-2" @click="this.save"><i class="bi bi-floppy"></i> {{ this.translate.btn_save_query }}</div>
-        <div class="btn btn-secondary"><i class="bi bi-eye-slash"></i> {{ this.translate.btn_disabled_query }}</div>
+        <div class="btn btn-secondary me-2" @click="this.save">
+          <i class="bi bi-floppy"></i> {{ this.translate.btn_save_query }}
+        </div>
       </div>
     </div>
 
@@ -304,7 +343,7 @@ export default {
         {{ this.translate.bloc_query }}
         <div class="float-end btn btn-secondary btn-sm">
           <i class="bi bi-chevron-up" v-if="this.showQueryBuilder" @click="this.renderQueryBuilder()"></i>
-          <i class="bi bi-chevron-down" v-if="!this.showQueryBuilder"  @click="this.renderQueryBuilder()"></i>
+          <i class="bi bi-chevron-down" v-if="!this.showQueryBuilder" @click="this.renderQueryBuilder()"></i>
         </div>
       </div>
       <div class="card-body" v-if="this.showQueryBuilder">

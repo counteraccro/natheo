@@ -113,6 +113,7 @@ class SqlManagerController extends AppAdminController
     /**
      * Création / édition d'une faq
      * @param SqlManagerTranslate $sqlManagerTranslate
+     * @param SqlManager $sqlManager
      * @param int|null $id
      * @param bool $isExecute
      * @return Response
@@ -122,6 +123,7 @@ class SqlManagerController extends AppAdminController
     #[Route('/execute/{id}/{isExecute}', name: 'execute')]
     public function add(
         SqlManagerTranslate $sqlManagerTranslate,
+        SqlManagerService   $sqlManagerService,
         int                 $id = null,
         bool                $isExecute = false,
     ): Response
@@ -131,6 +133,15 @@ class SqlManagerController extends AppAdminController
             $breadcrumbTitle = 'sql_manager.add.page_title_h1';
         } elseif ($isExecute) {
             $breadcrumbTitle = 'sql_manager.execute.page_title_h1';
+        }
+
+        if ($id !== null) {
+            /** @var SqlManager $sqlManager */
+            $sqlManager = $sqlManagerService->findOneById(SqlManager::class, $id);
+            if($sqlManager->isDisabled())
+            {
+                return $this->redirect($this->generateUrl('admin_sql_manager_index'));
+            }
         }
 
         $breadcrumb = [

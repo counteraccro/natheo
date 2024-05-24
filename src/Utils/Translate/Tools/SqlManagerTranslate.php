@@ -47,7 +47,8 @@ class SqlManagerTranslate extends AppTranslate
             'label_name' =>  $this->translator->trans('sql_manager.label.name', domain: 'sql_manager'),
             'label_name_placeholder' =>  $this->translator->trans('sql_manager.label.name.placeholder',
                 domain: 'sql_manager'),
-
+            'error_query_empty' => $this->translator->trans('sql_manager.error.query.empty', domain: 'sql_manager'),
+            'error_name_empty' => $this->translator->trans('sql_manager.error.name.empty', domain: 'sql_manager'),
         ];
     }
 }
