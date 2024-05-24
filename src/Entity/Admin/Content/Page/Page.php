@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping\JoinTable;
 
 
 #[ORM\Entity(repositoryClass: PageRepository::class)]
-#[ORM\Table(name: 'natheo.page')]
+#[ORM\Table(name: 'page')]
 #[ORM\HasLifecycleCallbacks]
 class Page
 {
@@ -49,7 +49,7 @@ class Page
     private Collection $pageContents;
 
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'pages')]
-    #[JoinTable(name: 'natheo.page_tag')]
+    #[JoinTable(name: 'page_tag')]
     private Collection $tags;
 
     #[ORM\OneToMany(mappedBy: 'page', targetEntity: PageStatistique::class, cascade: ['persist'] , orphanRemoval: true)]
