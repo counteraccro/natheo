@@ -55,3 +55,6 @@ sql_manager.help.select.table: __sql_manager.help.select.table
 sql_manager.help.select.field: __sql_manager.help.select.field
 sql_manager.label.name: __sql_manager.label.name
 sql_manager.label.name.placeholder: __sql_manager.label.name.placeholder
+sql_manager.save.error.validate: __sql_manager.save.error.validate
+sql_manager.save.success: __sql_manager.save.success
+sql_manager.save.error.no.select: __sql_manager.save.error.no.select
