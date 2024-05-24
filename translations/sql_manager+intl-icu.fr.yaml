@@ -53,3 +53,5 @@ sql_manager.help.sub.title.2: Information
 sql_manager.help.text.2: 'Si vous utilisez un schéma SQL, penser à bien préciser le nom du schéma SQL avec le nom de votre table, exemple : schema.nom_table'
 sql_manager.help.select.table: "Cliquez sur le bouton 'Ajouter' pour ajouter la table sélectionnée dans la requête"
 sql_manager.help.select.field: "Cliquez sur le bouton 'Ajouter' pour ajouter la champ sélectionné dans la requête"
+sql_manager.label.name: 'Nom'
+sql_manager.label.name.placeholder: 'Le nom de la requête SQL'
