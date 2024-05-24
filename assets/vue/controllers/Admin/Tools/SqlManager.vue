@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import Toast from "../../../Components/Global/Toast.vue";
+import {emitter} from "../../../../utils/useEvent";
 
 export default {
   name: "SqlManager",
@@ -146,6 +147,7 @@ export default {
       this.loading = true;
       axios.post(this.urls.save, {
         query: this.sqlManager.query,
+        name : this.sqlManager.name,
         id : this.sqlManager.id
       }).then((response) => {
         if (response.data.success === true) {
@@ -163,6 +165,7 @@ export default {
         console.error(error);
       }).finally(() => {
         this.loading = false;
+        emitter.emit('reset-check-confirm');
       });
     },
 

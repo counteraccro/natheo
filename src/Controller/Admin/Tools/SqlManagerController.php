@@ -233,22 +233,43 @@ class SqlManagerController extends AppAdminController
      */
     #[Route('/ajax/save', name: 'save', methods: ['POST'])]
     public function save(
-        SqlManagerService $sqlManagerService,
+        SqlManagerService   $sqlManagerService,
         Request             $request,
         TranslatorInterface $translator
     ): JsonResponse
     {
-
         $data = json_decode($request->getContent(), true);
-        if($data['id'] === null)
-        {
-            $sqlManager = new SqlManager();
-            $sqlManager->setUser($this->getUser())->setName('')->setQuery($data['query'])->setDisabled(false);
+
+        if ($data['name'] === null || $data['query'] === null) {
+            return $this->json($sqlManagerService->getResponseAjax(null,
+                $translator->trans('sql_manager.save.error.validate', domain: 'sql_manager')));
         }
 
-        $returnArray = $sqlManagerService->getResponseAjax($translator->trans('page.save.success', domain: 'page'));
-        $returnArray['url_redirect'] = $this->generateUrl('admin_sql_manager_update', ['id' => 0]);
-        $returnArray['redirect'] = false;
+        if (!$sqlManagerService->isOnlySelectQuery($data['query'])) {
+            return $this->json($sqlManagerService->getResponseAjax(null,
+                $translator->trans('sql_manager.save.error.no.select', domain: 'sql_manager')));
+        }
+
+
+        $redirect = false;
+        if ($data['id'] === null) {
+            $sqlManager = new SqlManager();
+            $sqlManager->setUser($this->getUser())->setName($data['name'])
+                ->setQuery($data['query'])
+                ->setDisabled(false);
+            $redirect = true;
+        } else {
+            /** @var SqlManager $sqlManager */
+            $sqlManager = $sqlManagerService->findOneById(SqlManager::class, $data['id']);
+            $sqlManager->setQuery($data['query'])->setName($data['name']);
+        }
+        $sqlManagerService->save($sqlManager);
+
+
+        $returnArray = $sqlManagerService->getResponseAjax(
+            $translator->trans('sql_manager.save.success', domain: 'sql_manager'));
+        $returnArray['url_redirect'] = $this->generateUrl('admin_sql_manager_update', ['id' => $sqlManager->getId()]);
+        $returnArray['redirect'] = $redirect;
         return $this->json($returnArray);
     }
 }
