@@ -269,15 +269,20 @@ export default {
       </div>
     </div>
 
-    <div class="btn btn-sm btn-secondary float-end mb-1" @click="this.showHelp = true">
-      <i class="bi bi-question-circle"></i>
-    </div>
-
     <div v-if="this.error !== ''" class="alert alert-danger">
       {{ this.error }}
     </div>
 
-    <div>
+    <div class="mb-3">
+      <label for="name-query" class="form-label">{{ this.translate.label_name }}</label>
+      <input type="text" class="form-control" id="name-query" :placeholder="this.translate.label_name_placeholder" v-model="this.sqlManager.name">
+    </div>
+
+    <div class="btn btn-sm btn-secondary float-end mb-1" @click="this.showHelp = true">
+      <i class="bi bi-question-circle"></i>
+    </div>
+
+    <div class="mb-3">
       <label for="sql-textarea" class="form-label">{{ this.translate.label_textarea_query }}</label>
       <textarea class="form-control" id="sql-textarea" rows="10" v-model="this.sqlManager.query"></textarea>
       <div class="float-end mt-2">

@@ -239,7 +239,12 @@ class SqlManagerController extends AppAdminController
     ): JsonResponse
     {
 
-
+        $data = json_decode($request->getContent(), true);
+        if($data['id'] === null)
+        {
+            $sqlManager = new SqlManager();
+            $sqlManager->setUser($this->getUser())->setName('')->setQuery($data['query'])->setDisabled(false);
+        }
 
         $returnArray = $sqlManagerService->getResponseAjax($translator->trans('page.save.success', domain: 'page'));
         $returnArray['url_redirect'] = $this->generateUrl('admin_sql_manager_update', ['id' => 0]);
