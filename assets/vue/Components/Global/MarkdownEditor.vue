@@ -143,11 +143,7 @@ export default {
     loadMedia(folderId, order, filter) {
 
       this.loadingMedia = true;
-      axios.post(this.urlMedia, {
-        'folder': folderId,
-        'order': order,
-        'filter': filter
-      }).then((response) => {
+      axios.get(this.urlMedia + '/' + folderId + '/' + order + '/' + filter, {}).then((response) => {
         this.dataMedia = response.data.medias;
         this.currentFolder = response.data.currentFolder;
       }).catch((error) => {
