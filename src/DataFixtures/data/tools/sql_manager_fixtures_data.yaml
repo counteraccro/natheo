@@ -3,9 +3,14 @@ sql_manager:
     user: Aymeric
     disabled: 0
     name: 'Liste des utilisateurs'
-    query : 'SELECT u0_.id AS id_0, u0_.email AS email_1, u0_.roles AS roles_2, u0_.password AS password_3, u0_.login AS login_4, u0_.firstname AS firstname_5, u0_.lastname AS lastname_6, u0_.disabled AS disabled_7, u0_.anonymous AS anonymous_8, u0_.founder AS founder_9, u0_.created_at AS created_at_10, u0_.update_at AS update_at_11 FROM natheo.user u0_ ORDER BY u0_.id ASC LIMIT 20'
+    query : 'SELECT email, login, firstname, lastname from natheo.user'
   sql-manager1-2:
     user: Aymeric
     disabled: 0
-    name: 'Liste des requetes SQL'
-    query: 'SELECT s0_.id AS id_0, s0_.name AS name_1, s0_.query AS query_2, s0_.disabled AS disabled_3, s0_.created_at AS created_at_4, s0_.update_at AS update_at_5, s0_.user_id AS user_id_6 FROM natheo.sql_manager s0_ ORDER BY s0_.id ASC LIMIT 20'
+    name: 'Liste des requêtes SQL'
+    query: 'SELECT name, query from natheo.sql_manager'
+  sql-manager1-3:
+    user: Aymeric
+    disabled: 0
+    name: 'Liste des FAQs avec nombres de categories et questions'
+    query: 'SELECT nf.id, ft.title, ft.locale, count(fc.id) as categories, count(fq.id) as questions FROM natheo.faq AS nf LEFT JOIN natheo.faq_translation AS ft on nf.id = ft.faq_id LEFT JOIN natheo.faq_category AS fc on nf.id = fc.faq_id LEFT JOIN natheo.faq_question fq on fc.id = fq.faq_category_id GROUP BY nf.id, ft.title, ft.locale'
