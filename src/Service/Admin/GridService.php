@@ -49,6 +49,11 @@ class GridService extends AppAdminService
      */
     const KEY_RAW_SQL = 'sql';
 
+    /**
+     * Clé pour l'url de sauvegarde de la raw sql
+     */
+    const KEY_URL_SAVE_RAW_SQL = 'urlSaveSql';
+
     private GridTranslate $gridTranslate;
 
     public function __construct(#[AutowireLocator([
@@ -74,6 +79,7 @@ class GridService extends AppAdminService
      */
     public function addAllDataRequiredGrid(array $tab): array
     {
+        $tab[GridService::KEY_URL_SAVE_RAW_SQL] = $this->router->generate('admin_sql_manager_save_generic_query');
         $tab = $this->addOptionsSelectLimit($tab);
         return $this->addTranslateGrid($tab);
     }

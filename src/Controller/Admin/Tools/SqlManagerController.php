@@ -138,8 +138,7 @@ class SqlManagerController extends AppAdminController
         if ($id !== null) {
             /** @var SqlManager $sqlManager */
             $sqlManager = $sqlManagerService->findOneById(SqlManager::class, $id);
-            if($sqlManager->isDisabled())
-            {
+            if ($sqlManager->isDisabled()) {
                 return $this->redirect($this->generateUrl('admin_sql_manager_index'));
             }
         }
@@ -283,5 +282,33 @@ class SqlManagerController extends AppAdminController
         $returnArray['url_redirect'] = $this->generateUrl('admin_sql_manager_update', ['id' => $sqlManager->getId()]);
         $returnArray['redirect'] = $redirect;
         return $this->json($returnArray);
+    }
+
+    /**
+     * Sauvegarde les requêtes SQL généré par le CMS
+     * @param SqlManagerService $sqlManagerService
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     */
+    #[Route('/ajax/save-generic-query', name: 'save_generic_query', methods: ['POST'])]
+    public function saveGenericQuery(
+        SqlManagerService   $sqlManagerService,
+        Request             $request,
+        TranslatorInterface $translator
+    ): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $sqlManager = new SqlManager();
+        $sqlManager->setUser($this->getUser())
+            ->setName($translator->trans('sql_manager.name.generic.query.success', domain: 'sql_manager'))
+            ->setQuery($data['query'])->setDisabled(false);
+
+        $sqlManagerService->save($sqlManager);
+
+        return $this->json($sqlManagerService->getResponseAjax(
+            $translator->trans('sql_manager.save.generic.query.success', domain: 'sql_manager'))
+        );
     }
 }

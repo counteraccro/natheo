@@ -12,6 +12,7 @@ import axios from "axios";
 import Modal from "../../Components/Global/Modal.vue";
 import Toast from "../../Components/Global/Toast.vue";
 import {copyToClipboard} from "../../../utils/copyToClipboard";
+import {emitter} from "../../../utils/useEvent";
 
 export default {
   name: "GenericGrid",
@@ -53,6 +54,7 @@ export default {
       searchPlaceholder: '',
       cQuery: '',
       showQuery: false,
+      urlSaveQuery: '',
       toasts: {
         toastSuccessGenericGrid: {
           show: false,
@@ -89,6 +91,7 @@ export default {
         this.translateGrid = response.data.translate.grid;
         this.cPage = page;
         this.cLimit = limit;
+        this.urlSaveQuery = response.data.urlSaveSql;
 
 
         if (response.data.sql !== undefined) {
@@ -224,6 +227,27 @@ export default {
         this.toasts.toastErrorGenericGrid.msg = this.translate.copyError;
         this.toasts.toastErrorGenericGrid.show = true;
       }
+    },
+
+    saveQueryRun()
+    {
+      this.loading = true;
+      axios.post(this.urlSaveQuery, {
+        'query': this.cQuery
+      }).then((response) => {
+        if (response.data.success === true) {
+          this.toasts.toastSuccessGenericGrid.msg = response.data.msg;
+          this.toasts.toastSuccessGenericGrid.show = true;
+        } else {
+          this.toasts.toastErrorGenericGrid.msg = response.data.msg;
+          this.toasts.toastErrorGenericGrid.show = true;
+        }
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.loading = false
+        this.loadData(this.page, this.limit);
+      });
     }
   }
 }
@@ -235,7 +259,7 @@ export default {
     <div v-if="this.showQuery" class="card mb-4">
       <div class="card-header">
         <div class="float-end">
-          <div class="btn btn-secondary btn-sm m-1 mt-0"><i class="bi bi-save"></i></div>
+          <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.saveQueryRun"><i class="bi bi-save"></i></div>
           <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.copyQueryRun"><i class="bi bi-clipboard"></i></div>
           <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.showQueryRun(false)"><i class="bi bi-x"></i></div>
         </div>
