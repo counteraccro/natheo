@@ -1,8 +1,8 @@
 sql_manager.index.popin.help.title: Aide
-sql_manager.index.popin.help.disabled: __sql_manager.index.popin.help.disabled
-sql_manager.index.popin.help.enable: __sql_manager.index.popin.help.enable
-sql_manager.index.popin.help.delete: __sql_manager.index.popin.help.delete
-sql_manager.index.popin.help.edit: __sql_manager.index.popin.help.edit
+sql_manager.index.popin.help.disabled: Désactivé
+sql_manager.index.popin.help.enable: Activer
+sql_manager.index.popin.help.delete: Supprimer
+sql_manager.index.popin.help.edit: Editer
 sql_manager.index.page_title: 'Gestionnaire SQL'
 sql_manager.index.page_title_h1: 'Gestionnaire SQL'
 sql_manager.index.btn.new: 'Nouvelle requête SQL'
@@ -60,3 +60,4 @@ sql_manager.save.success: 'Requête sauvegardée avec succèss'
 sql_manager.save.error.no.select: "La requête n'est pas de type SELECT"
 sql_manager.error.query.empty: 'Le champ SQL ne peux pas être vide'
 sql_manager.error.name.empty: 'Le nom ne peux pas être vide'
+sql_manager.index.popin.help.execute: 'Executer'
