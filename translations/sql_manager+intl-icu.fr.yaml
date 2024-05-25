@@ -60,4 +60,6 @@ sql_manager.save.success: 'Requête sauvegardée avec succèss'
 sql_manager.save.error.no.select: "La requête n'est pas de type SELECT"
 sql_manager.error.query.empty: 'Le champ SQL ne peux pas être vide'
 sql_manager.error.name.empty: 'Le nom ne peux pas être vide'
-sql_manager.index.popin.help.execute: 'Executer'
+sql_manager.index.popin.help.execute: Executer
+sql_manager.name.generic.query.success: '-- Requête générique --'
+sql_manager.save.generic.query.success: 'Requête sauvegardée avec succès'
