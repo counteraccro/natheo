@@ -18,7 +18,7 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 #[AsDoctrineListener('postPersist')]
 #[AsDoctrineListener('postRemove')]
 #[AsDoctrineListener('postUpdate')]
-class DatabaseActivitySubscriber
+class DatabaseActivityListener
 {
 
     private OptionSystemService $optionSystemService;

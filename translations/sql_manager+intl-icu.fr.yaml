@@ -1,0 +1,65 @@
+sql_manager.index.popin.help.title: Aide
+sql_manager.index.popin.help.disabled: Désactivé
+sql_manager.index.popin.help.enable: Activer
+sql_manager.index.popin.help.delete: Supprimer
+sql_manager.index.popin.help.edit: Editer
+sql_manager.index.page_title: 'Gestionnaire SQL'
+sql_manager.index.page_title_h1: 'Gestionnaire SQL'
+sql_manager.index.btn.new: 'Nouvelle requête SQL'
+sql_manager.index.description: 'Créer / éditer des requêtes SQL afin de pouvoir interroger la base de données'
+sql_manager.grid.id: id
+sql_manager.grid.name: Nom
+sql_manager.grid.query: Requête
+sql_manager.grid.update_at: 'Dernière modification'
+sql_manager.confirm.disabled.msg: 'Confirmez vous la désactivation de la requête sql <b>{label}</b>, cette requête ne pourra plus être utilisée'
+sql_manager.confirm.delete.msg: 'Confirmez vous la suppression de la requête sql <b>{label}</b>, cette action est définitive'
+sql_manager.remove.success: 'La requête <b>{label}</b> à été supprimé avec succès'
+sql_manager.success.no.disabled: 'La requête <b>{label}</b> à été activé avec succès'
+sql_manager.success.disabled: 'La requête <b>{label}</b> à été désactivé avec succès'
+sql_manager.add.page_title: 'Nouvelle requête'
+sql_manager.add.page_title_h1: 'Nouvelle requête'
+sql_manager.add.description: 'Créer une nouvelle requête SQL en vous aidant du nom des tables et des champs.'
+sql_manager.update.page_title: 'Edition la requête #{id}'
+sql_manager.update.page_title_h1: 'Edition la requête'
+sql_manager.update.description: 'Editer la requête SQL selon vos besoins'
+sql_manager.execute.page_title: 'Execution de la requête #{id}'
+sql_manager.execute.page_title_h1: 'Execution de la requête'
+sql_manager.execute.description: 'Tester et éditer la requête SQL selon vos besoins'
+sql_manager.label.textarea.query: Requête
+sql_manager.btn.execute.query: Exécuter
+sql_manager.btn.save.query: Sauvegarder
+sql_manager.btn.disabled.query: Désactiver
+sql_manager.btn.enabled.query: Activer
+sql_manager.bloc.query: 'Assistant query builder'
+sql_manager.label.liste.table: Tables
+sql_manager.btn.add.table: Ajouter
+sql_manager.label.liste.field: 'sélectionner une table'
+sql_manager.placeholder.table: 'Rechercher une table'
+sql_manager.placeholder.field: 'Rechercher un champ'
+sql_manager.bloc.result: Résultat
+sql_manager.label.liste.field.2: 'Champs de la table'
+sql_manager.toast.title.success: 'Succès !'
+sql_manager.toast.title.error: 'Erreur !'
+sql_manager.toast.time: "A l'instant"
+sql_manager.toast.msg.exec.error: 'Une erreur est survenue dans votre requête SQL'
+sql_manager.toast.msg.exec.success: 'Requête SQL executé avec succès'
+sql_manager.toast.msg.save.error: 'Une erreur est survenue sur la sauvegarde'
+sql_manager.toast.msg.save.success: 'Sauvegarde réalisée avec succès'
+sql_manager.error.not.only.select.query: 'La requête SQL doit être uniquement de type SELECT'
+sql_manager.help.title: Aide
+sql_manager.help.text.1: "Seule les requêtes de type SELECT seront exécutées, les mots clés suivants : [UPDATE, DELETE, INSERT, CREATE, ALTER, DROP] sont bloqués afin d'éviter toutes tentatives de malversation sur la base de données"
+sql_manager.help.sub.title.1: Attention
+sql_manager.help.sub.title.2: Information
+sql_manager.help.text.2: 'Si vous utilisez un schéma SQL, penser à bien préciser le nom du schéma SQL avec le nom de votre table, exemple : schema.nom_table'
+sql_manager.help.select.table: "Cliquez sur le bouton 'Ajouter' pour ajouter la table sélectionnée dans la requête"
+sql_manager.help.select.field: "Cliquez sur le bouton 'Ajouter' pour ajouter la champ sélectionné dans la requête"
+sql_manager.label.name: Nom
+sql_manager.label.name.placeholder: 'Le nom de la requête SQL'
+sql_manager.save.error.validate: 'Erreur de validation, vérifier vos donnes'
+sql_manager.save.success: 'Requête sauvegardée avec succèss'
+sql_manager.save.error.no.select: "La requête n'est pas de type SELECT"
+sql_manager.error.query.empty: 'Le champ SQL ne peux pas être vide'
+sql_manager.error.name.empty: 'Le nom ne peux pas être vide'
+sql_manager.index.popin.help.execute: Executer
+sql_manager.name.generic.query.success: '-- Requête générique --'
+sql_manager.save.generic.query.success: 'Requête sauvegardée avec succès'

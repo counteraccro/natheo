@@ -1,0 +1,16 @@
+sql_manager:
+  sql-manager-1:
+    user: Aymeric
+    disabled: 0
+    name: 'Liste des utilisateurs'
+    query : 'SELECT email, login, firstname, lastname from natheo.user'
+  sql-manager1-2:
+    user: Aymeric
+    disabled: 0
+    name: 'Liste des requêtes SQL'
+    query: 'SELECT name, query from natheo.sql_manager'
+  sql-manager1-3:
+    user: Aymeric
+    disabled: 0
+    name: 'Liste des FAQs avec nombres de categories et questions'
+    query: 'SELECT nf.id, ft.title, ft.locale, count(fc.id) as categories, count(fq.id) as questions FROM natheo.faq AS nf LEFT JOIN natheo.faq_translation AS ft on nf.id = ft.faq_id LEFT JOIN natheo.faq_category AS fc on nf.id = fc.faq_id LEFT JOIN natheo.faq_question fq on fc.id = fq.faq_category_id GROUP BY nf.id, ft.title, ft.locale'

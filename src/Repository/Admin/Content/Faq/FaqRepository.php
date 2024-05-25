@@ -25,6 +25,12 @@ class FaqRepository extends ServiceEntityRepository
         parent::__construct($registry, Faq::class);
     }
 
+    /**
+     * Sauvegarde
+     * @param Faq $entity
+     * @param bool $flush
+     * @return void
+     */
     public function save(Faq $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -34,6 +40,12 @@ class FaqRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Supprime
+     * @param Faq $entity
+     * @param bool $flush
+     * @return void
+     */
     public function remove(Faq $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);

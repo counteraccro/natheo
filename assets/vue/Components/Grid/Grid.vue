@@ -89,6 +89,11 @@ export default {
     },
 
     highlightSearch(text) {
+
+      if (text === undefined) {
+        return '';
+      }
+
       if (!this.filterKey || !this.isCanSearch()) {
         return text;
       }

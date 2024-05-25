@@ -107,7 +107,10 @@ class PageController extends AppAdminController
      * @param PageService $pageService
      * @param TranslatorInterface $translator
      * @param Request $request
+     * @param ContainerBagInterface $containerBag
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(
@@ -136,6 +139,7 @@ class PageController extends AppAdminController
     /**
      * Création / édition d'une page
      * @param PageService $pageService
+     * @param PageTranslate $pageTranslate
      * @param int|null $id
      * @return Response
      */
@@ -193,7 +197,7 @@ class PageController extends AppAdminController
     /**
      * Permet de charger le contenu du tab content
      * @param PageService $pageService
-     * @param Request $request
+     * @param int|null $id
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws ExceptionInterface
@@ -249,7 +253,7 @@ class PageController extends AppAdminController
      * Charge le tableau d'historique
      * @param ContainerBagInterface $containerBag
      * @param DateService $dateService
-     * @param int $id
+     * @param int|null $id
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface

@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PageContentRepository::class)]
-#[ORM\Table(name: 'natheo.page_content')]
+#[ORM\Table(name: 'page_content')]
 class PageContent
 {
     #[ORM\Id]

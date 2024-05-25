@@ -35,4 +35,24 @@ class Utils
             }
         }
     }
+
+    /**
+     * Convertie une string en camelCase vers snake_case
+     * @param string $camelCase
+     * @return string
+     */
+    public static function convertCamelCaseToSnakeCase(string $camelCase) {
+        $result = '';
+
+        for ($i = 0; $i < strlen($camelCase); $i++) {
+            $char = $camelCase[$i];
+
+            if (ctype_upper($char)) {
+                $result .= '_' . strtolower($char);
+            } else {
+                $result .= $char;
+            }
+        }
+        return ltrim($result, '_');
+    }
 }

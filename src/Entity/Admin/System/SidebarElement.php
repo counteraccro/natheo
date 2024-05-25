@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name : "natheo.sidebar_element")]
+#[ORM\Table(name : "sidebar_element")]
 #[ORM\Entity(repositoryClass: SidebarElementRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class SidebarElement

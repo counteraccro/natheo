@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MediaFolderRepository::class)]
-#[ORM\Table(name: 'natheo.media_folder')]
+#[ORM\Table(name: 'media_folder')]
 #[ORM\HasLifecycleCallbacks]
 class MediaFolder
 {

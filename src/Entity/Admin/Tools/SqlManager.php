@@ -1,30 +1,38 @@
 <?php
+/**
+ * @author Gourdon Aymeric
+ * @version 1.1
+ * Entité SQLmanager, données associées au user
+ */
+namespace App\Entity\Admin\Tools;
 
-namespace App\Entity\Admin\System;
-
-use App\Repository\Admin\System\OptionUserRepository;
+use App\Entity\Admin\System\User;
+use App\Repository\Admin\Utils\SqlManagerRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: OptionUserRepository::class)]
-#[ORM\Table(name: 'option_user')]
+#[ORM\Table(name : "sql_manager")]
+#[ORM\Entity(repositoryClass: SqlManagerRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class OptionUser
+class SqlManager
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'optionsUser')]
+    #[ORM\ManyToOne(inversedBy: 'sqlManagers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $key = null;
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $value = null;
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $query = null;
+
+    #[ORM\Column]
+    private ?bool $disabled = null;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
@@ -62,26 +70,38 @@ class OptionUser
         return $this;
     }
 
-    public function getKey(): ?string
+    public function getName(): ?string
     {
-        return $this->key;
+        return $this->name;
     }
 
-    public function setKey(string $key): self
+    public function setName(string $name): self
     {
-        $this->key = $key;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getValue(): ?string
+    public function getQuery(): ?string
     {
-        return $this->value;
+        return $this->query;
     }
 
-    public function setValue(?string $value): self
+    public function setQuery(string $query): self
     {
-        $this->value = $value;
+        $this->query = $query;
+
+        return $this;
+    }
+
+    public function isDisabled(): ?bool
+    {
+        return $this->disabled;
+    }
+
+    public function setDisabled(bool $disabled): self
+    {
+        $this->disabled = $disabled;
 
         return $this;
     }
@@ -91,7 +111,7 @@ class OptionUser
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
     {
         $this->createdAt = $createdAt;
 
@@ -103,7 +123,7 @@ class OptionUser
         return $this->updateAt;
     }
 
-    public function setUpdateAt(\DateTimeInterface $updateAt): self
+    public function setUpdateAt(\DateTimeInterface $updateAt): static
     {
         $this->updateAt = $updateAt;
 

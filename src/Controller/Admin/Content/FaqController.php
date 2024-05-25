@@ -49,7 +49,7 @@ class FaqController extends AppAdminController
     }
 
     /**
-     * Charge le tableau grid de tag en ajax
+     * Charge le tableau grid de faq en ajax
      * @param FaqService $faqService
      * @param Request $request
      * @param int $page
@@ -71,6 +71,8 @@ class FaqController extends AppAdminController
 
     /**
      * Création / édition d'une faq
+     * @param FaqService $faqService
+     * @param MarkdownEditorService $markdownEditorService
      * @param int|null $id
      * @return Response
      */

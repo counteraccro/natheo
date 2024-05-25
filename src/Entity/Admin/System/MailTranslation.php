@@ -6,7 +6,7 @@ use App\Repository\Admin\System\MailTranslationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name : "natheo.mail_translation")]
+#[ORM\Table(name : "mail_translation")]
 #[ORM\Entity(repositoryClass: MailTranslationRepository::class)]
 class MailTranslation
 {
