@@ -83,4 +83,3 @@ faq.category.delete.titre.confirm: __faq.category.delete.titre.confirm
 faq.category.delete.body.confirm: __faq.category.delete.body.confirm
 faq.category.remove.success: __faq.category.remove.success
 faq.question.remove.success: __faq.question.remove.success
-sql_manager.grid.update_at: __sql_manager.grid.update_at

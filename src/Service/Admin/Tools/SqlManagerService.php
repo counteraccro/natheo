@@ -93,7 +93,7 @@ class SqlManagerService extends AppAdminService
                     $element->getId() . ' ' . $isDisabled,
                 $this->translator->trans('sql_manager.grid.name', domain: 'sql_manager') => $element->getName(),
                 $this->translator->trans('sql_manager.grid.query', domain: 'sql_manager') => $element->getQuery(),
-                $this->translator->trans('sql_manager.grid.update_at', domain: 'faq') => $element
+                $this->translator->trans('sql_manager.grid.update_at', domain: 'sql_manager') => $element
                     ->getUpdateAt()->format('d/m/y H:i'),
                 GridService::KEY_ACTION => $action,
             ];

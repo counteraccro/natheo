@@ -83,4 +83,3 @@ faq.category.delete.titre.confirm: 'Confirmer la suppression de la catégorie'
 faq.category.delete.body.confirm: "La suppression de cette catégorie entrainera la suppression de l'ensemble des questions associées <br /> Cette action est définitive et sans possibilité de retour"
 faq.category.remove.success: 'La catégorie à été supprimée avec succès'
 faq.question.remove.success: 'La question à été supprimée avec succès'
-sql_manager.grid.update_at: __sql_manager.grid.update_at
