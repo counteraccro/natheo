@@ -188,35 +188,6 @@ class TagService extends AppAdminService
     }
 
     /**
-     * Traduction pour le formulaire de création / édition d'un tag
-     * @return array
-     */
-    public function getTranslateTagForm(): array
-    {
-        return [
-            'loading' => $this->translator->trans('tag.form.loading', domain: 'tag'),
-            'formTitleCreate' => $this->translator->trans('tag.form.title.create', domain: 'tag'),
-            'formTitleUpdate' => $this->translator->trans('tag.form.title.update', domain: 'tag'),
-            'formInputColorLabel' => $this->translator->trans('tag.form.input.color.label', domain: 'tag'),
-            'formInputColorError' => $this->translator->trans('tag.form.input.color.error', domain: 'tag'),
-            'formInputLabelLabel' => $this->translator->trans('tag.form.input.label.label', domain: 'tag'),
-            'formInputLabelError' => $this->translator->trans('tag.form.input.label.error', domain: 'tag'),
-            'linkColorChoice' => $this->translator->trans('tag.form.link.color.choice', domain: 'tag'),
-            'colorTitle' => $this->translator->trans('tag.form.color.title', domain: 'tag'),
-            'colorDescription' => $this->translator->trans('tag.form.color.description', domain: 'tag'),
-            'labelCurrent' => $this->translator->trans('tag.form.title.label.current', domain: 'tag'),
-            'labelOther' => $this->translator->trans('tag.form.title.label.other', domain: 'tag'),
-            'autoCopy' => $this->translator->trans('tag.form.check.auto.copy', domain: 'tag'),
-            'renduTitle' => $this->translator->trans('tag.form.rendu.title', domain: 'tag'),
-            'btnSubmitUpdate' => $this->translator->trans('tag.form.submit.update', domain: 'tag'),
-            'btnSubmitCreate' => $this->translator->trans('tag.form.submit.create', domain: 'tag'),
-            'statTitle' => $this->translator->trans('tag.form.stat.title', domain: 'tag'),
-            'formDisabledLabel' => $this->translator->trans('tag.form.input.disabled.label', domain: 'tag'),
-        ];
-
-    }
-
-    /**
      * Recherche une liste de tag en fonction de la locale
      * @param string $locale
      * @param string $search
