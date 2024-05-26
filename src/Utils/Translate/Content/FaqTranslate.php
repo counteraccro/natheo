@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Class pour la génération des traductions pour les scripts vue pour FAQ
+ * @author Gourdon Aymeric
+ * @version 1.0
+ */
 namespace App\Utils\Translate\Content;
 
 use App\Utils\Translate\AppTranslate;
