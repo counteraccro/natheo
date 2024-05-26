@@ -14,6 +14,7 @@ use App\Service\Admin\Content\Tag\TagService;
 use App\Utils\Breadcrumb;
 use App\Utils\Flash\FlashKey;
 use App\Utils\System\Options\OptionUserKey;
+use App\Utils\Translate\Content\TagTranslate;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -129,9 +130,10 @@ class TagController extends AppAdminController
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
     public function add(
-        TagService $tagService,
-        Request    $request,
-        Tag        $tag = null
+        TagService   $tagService,
+        TagTranslate $tagTranslate,
+        Request      $request,
+        Tag          $tag = null
     ): Response
     {
         $breadcrumbTitle = 'tag.update.page_title_h1';
@@ -147,8 +149,8 @@ class TagController extends AppAdminController
             ]
         ];
 
-        $translate = $tagService->getTranslateTagForm();
-        $locales = $tagService->getLocales(false);
+        $translate = $tagTranslate->getTranslate();
+        $locales = $tagService->getLocales();
         $locales['current'] = $request->getLocale();
 
 

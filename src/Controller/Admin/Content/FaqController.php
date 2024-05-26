@@ -16,6 +16,8 @@ use App\Utils\Content\Faq\FaqConst;
 use App\Utils\Content\Faq\FaqFactory;
 use App\Utils\Content\Faq\FaqPopulate;
 use App\Utils\System\Options\OptionUserKey;
+use App\Utils\Translate\Content\FaqTranslate;
+use App\Utils\Translate\MarkdownEditorTranslate;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -72,16 +74,18 @@ class FaqController extends AppAdminController
     /**
      * Création / édition d'une faq
      * @param FaqService $faqService
-     * @param MarkdownEditorService $markdownEditorService
+     * @param FaqTranslate $faqTranslate
+     * @param MarkdownEditorTranslate $markdownEditorTranslate
      * @param int|null $id
      * @return Response
      */
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
     public function add(
-        FaqService            $faqService,
-        MarkdownEditorService $markdownEditorService,
-        int                   $id = null,
+        FaqService              $faqService,
+        FaqTranslate            $faqTranslate,
+        MarkdownEditorTranslate $markdownEditorTranslate,
+        int                     $id = null,
     ): Response
     {
         $breadcrumbTitle = 'faq.update.page_title_h1';
@@ -97,8 +101,8 @@ class FaqController extends AppAdminController
             ]
         ];
 
-        $translate = $faqService->getFaqTranslation();
-        $translate['markdown'] = $markdownEditorService->getTranslate();
+        $translate = $faqTranslate->getTranslate();
+        $translate['markdown'] = $markdownEditorTranslate->getTranslate();
         $locales = $faqService->getLocales();
 
         return $this->render('admin/content/faq/add_update.html.twig', [

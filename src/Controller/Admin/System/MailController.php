@@ -18,6 +18,8 @@ use App\Utils\Breadcrumb;
 use App\Utils\System\Mail\KeyWord;
 use App\Utils\System\Mail\MailKey;
 use App\Utils\System\Options\OptionUserKey;
+use App\Utils\Translate\MarkdownEditorTranslate;
+use App\Utils\Translate\System\MailTranslate;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -108,20 +110,20 @@ class MailController extends AppAdminController
      */
     #[Route('/ajax/load-data/{id}/{locale}', name: 'load_data', methods: ['GET'])]
     public function loadData(
-        MarkdownEditorService $markdownEditorService,
-        TranslateService      $translateService,
-        Request               $request,
-        TranslatorInterface   $translator,
-        MailService           $mailService,
-        Mail                  $mail,
-        string $locale = 'fr',
+        MarkdownEditorTranslate $markdownEditorTranslate,
+        TranslateService        $translateService,
+        Request                 $request,
+        MailService             $mailService,
+        MailTranslate           $mailTranslate,
+        Mail                    $mail,
+        string                  $locale = 'fr',
     ): JsonResponse
     {
         if ($locale === null) {
             $locale = $request->getLocale();
         }
 
-        $translate = $mailService->translate();
+        $translate = $mailTranslate->getTranslate();
 
         try {
             $languages = $translateService->getListLanguages();
@@ -131,7 +133,7 @@ class MailController extends AppAdminController
 
         $tabEmail = $mailService->getMailFormat($locale, $mail);
 
-        return $this->json(['translateEditor' => $markdownEditorService->getTranslate(),
+        return $this->json(['translateEditor' => $markdownEditorTranslate->getTranslate(),
             'languages' => $languages, 'locale' => $locale,
             'translate' => $translate, 'mail' => $tabEmail,
             'save_url' => $this->generateUrl('admin_mail_save', ['id' => $mail->getId()]),
@@ -179,10 +181,10 @@ class MailController extends AppAdminController
      */
     #[Route('/ajax/send-demo-mail/{id}', name: 'send_demo_mail', methods: ['GET'])]
     public function sendDemoMail(
-        Mail                  $mail,
-        MailService           $mailService,
-        OptionSystemService   $optionSystemService,
-        TranslatorInterface   $translator
+        Mail                $mail,
+        MailService         $mailService,
+        OptionSystemService $optionSystemService,
+        TranslatorInterface $translator
     ): JsonResponse
     {
         /* @var User $user */
@@ -220,8 +222,7 @@ class MailController extends AppAdminController
             $msg = 'Mail démo <b>"' .
                 $translator->trans($mail->getTitle()) . '"</b> envoyé avec succès à l\'adresse email de votre compte';
             $success = true;
-        } catch (TransportExceptionInterface $e)
-        {
+        } catch (TransportExceptionInterface $e) {
             $msg = $e->getMessage();
             $success = false;
         }

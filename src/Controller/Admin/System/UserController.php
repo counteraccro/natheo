@@ -29,6 +29,7 @@ use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\Role;
 use App\Utils\System\User\UserdataKey;
+use App\Utils\Translate\System\UserTranslate;
 use League\CommonMark\Exception\CommonMarkException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -257,6 +258,7 @@ class UserController extends AppAdminController
     #[IsGranted('ROLE_USER')]
     public function updateMyAccount(
         UserService         $userService,
+        UserTranslate       $userTranslate,
         Request             $request,
         OptionSystemService $optionSystemService,
         TranslatorInterface $translator
@@ -289,8 +291,8 @@ class UserController extends AppAdminController
             'breadcrumb' => $breadcrumb,
             'form' => $form,
             'user' => $user,
-            'changePasswordTranslate' => $userService->getTranslateChangePassword(),
-            'dangerZoneTranslate' => $userService->getTranslateDangerZone(),
+            'changePasswordTranslate' => $userTranslate->getTranslateChangePassword(),
+            'dangerZoneTranslate' => $userTranslate->getTranslateDangerZone(),
             'canDelete' => $canDelete,
             'canReplace' => $canReplace
         ]);

@@ -11,6 +11,7 @@ use App\Controller\Admin\AppAdminController;
 use App\Service\Admin\CommandService;
 use App\Service\Admin\System\TranslateService;
 use App\Utils\Breadcrumb;
+use App\Utils\Translate\System\TranslationTranslate;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -48,10 +49,14 @@ class TranslationController extends AppAdminController
     /**
      * Récupère la liste de langues
      * @param TranslateService $translateService
+     * @param TranslationTranslate $translationTranslate
      * @return JsonResponse
      */
     #[Route('/ajax/languages', name: 'list_languages', methods: ['GET'])]
-    public function loadLanguages(TranslateService $translateService): JsonResponse
+    public function loadLanguages(
+        TranslateService $translateService,
+        TranslationTranslate $translationTranslate
+    ): JsonResponse
     {
 
         try {
@@ -60,7 +65,7 @@ class TranslationController extends AppAdminController
             die($e->getMessage());
         }
 
-        return $this->json(['trans' => $translateService->getTranslate(), 'languages' => $languages]);
+        return $this->json(['trans' => $translationTranslate->getTranslate(), 'languages' => $languages]);
     }
 
     /**

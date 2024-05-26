@@ -14,6 +14,7 @@ use App\Service\Admin\Content\Media\MediaFolderService;
 use App\Service\Admin\Content\Media\MediaService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Breadcrumb;
+use App\Utils\Translate\Content\MediaTranslate;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +34,7 @@ class MediaController extends AppAdminController
      * @return Response
      */
     #[Route('/', name: 'index')]
-    public function index(MediaService $mediaService): Response
+    public function index(MediaTranslate $mediaTranslate): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'media',
@@ -44,7 +45,7 @@ class MediaController extends AppAdminController
 
         return $this->render('admin/content/media/index.html.twig', [
             'breadcrumb' => $breadcrumb,
-            'translate' => $mediaService->getMediathequeTranslation()
+            'translate' => $mediaTranslate->getTranslate()
         ]);
     }
 

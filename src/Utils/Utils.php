@@ -41,7 +41,8 @@ class Utils
      * @param string $camelCase
      * @return string
      */
-    public static function convertCamelCaseToSnakeCase(string $camelCase) {
+    public static function convertCamelCaseToSnakeCase(string $camelCase): string
+    {
         $result = '';
 
         for ($i = 0; $i < strlen($camelCase); $i++) {
