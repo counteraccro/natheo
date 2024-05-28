@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "44c79d5dbb6e22c5767f98949627efb5",
+    "content-hash": "24ffccb67d028105822a337259b43ccd",
     "packages": [
         {
             "name": "amphp/amp",
@@ -453,16 +453,16 @@
         },
         {
             "name": "amphp/http-client",
-            "version": "v4.2.1",
+            "version": "v4.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/http-client.git",
-                "reference": "7ab9ee09c29865133a54060267665c7ad7c6fb17"
+                "reference": "fa7925363e6d5a0d0d337e2e6eb1affb93cf226e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/http-client/zipball/7ab9ee09c29865133a54060267665c7ad7c6fb17",
-                "reference": "7ab9ee09c29865133a54060267665c7ad7c6fb17",
+                "url": "https://api.github.com/repos/amphp/http-client/zipball/fa7925363e6d5a0d0d337e2e6eb1affb93cf226e",
+                "reference": "fa7925363e6d5a0d0d337e2e6eb1affb93cf226e",
                 "shasum": ""
             },
             "require": {
@@ -477,15 +477,20 @@
                 "psr/http-message": "^1"
             },
             "conflict": {
-                "amphp/file": "<0.2 || >=2"
+                "amphp/file": "<0.2"
             },
             "require-dev": {
                 "amphp/file": "^1 || ^0.3 || ^0.2",
-                "amphp/http-server": "^2-rc4",
+                "amphp/http-server": "^2",
                 "amphp/php-cs-fixer-config": "dev-master",
                 "amphp/phpunit-util": "^1.1",
+                "amphp/react-adapter": "^2.1",
+                "clue/socks-react": "^1.0",
                 "ext-json": "*",
-                "phpunit/phpunit": "^7 || ^8"
+                "kelunik/link-header-rfc5988": "^1.0",
+                "laminas/laminas-diactoros": "^2.3",
+                "phpunit/phpunit": "^7 || ^8 || ^9",
+                "vimeo/psalm": "^3.9@dev"
             },
             "suggest": {
                 "amphp/file": "Required for file request bodies and HTTP archive logging",
@@ -499,6 +504,9 @@
                 }
             },
             "autoload": {
+                "files": [
+                    "src/Internal/functions.php"
+                ],
                 "psr-4": {
                     "Amp\\Http\\Client\\": "src"
                 }
@@ -533,9 +541,9 @@
             ],
             "support": {
                 "issues": "https://github.com/amphp/http-client/issues",
-                "source": "https://github.com/amphp/http-client/tree/master"
+                "source": "https://github.com/amphp/http-client/tree/v4.4.0"
             },
-            "time": "2020-03-07T18:12:27+00:00"
+            "time": "2020-06-16T20:45:05+00:00"
         },
         {
             "name": "amphp/parser",
@@ -12134,5 +12142,5 @@
         "ext-iconv": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.6.0"
 }
