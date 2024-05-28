@@ -1,0 +1,50 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block title %}{{ 'database_manager.index.page_title' | trans({}, 'database_manager') }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'database_manager.index.page_title_h1' | trans({}, 'database_manager') }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    <button type="button" class="btn btn-secondary float-end ms-2" data-bs-toggle="modal" data-bs-target="#help-grid-data-manager">
+        <i class="bi bi-question-circle"></i>
+    </button>
+
+    <p>
+        {{ 'database_manager.index.description' | trans({}, 'database_manager') }} <br/>
+        {#  {{ 'tag.index.description2' | trans({'icon' : '<i class="bi-eye-slash-fill"></i>'}, 'tag') | raw }} #}<br/>
+    </p>
+
+
+    <!-- <div {#{vue_component('Admin/GenericGrid', {'url' : path('admin_sql_manager_load_grid_data',  {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true}) }#}></div >!-->
+
+    <twig:Admin:ModaleComponent id="help-grid-data-manager" bgColor="bg-secondary">
+        <twig:block name="header">
+            <i class="bi bi-question-circle"></i> {{ 'sql_manager.index.popin.help.title' | trans({}, 'sql_manager') }}
+        </twig:block>
+
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-eye-slash-fill"></i></button> {{ 'sql_manager.index.popin.help.disabled' | trans({}, 'sql_manager') }}
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-eye-fill"></i></button> {{ 'sql_manager.index.popin.help.enable' | trans({}, 'sql_manager') }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-trash"></i></button> {{ 'sql_manager.index.popin.help.delete' | trans({}, 'sql_manager') }}
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-pencil-fill"></i></button> {{ 'sql_manager.index.popin.help.edit' | trans({}, 'sql_manager') }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-database-fill-check"></i></button> {{ 'sql_manager.index.popin.help.execute' | trans({}, 'sql_manager') }}
+            </div>
+        </div>
+    </twig:Admin:ModaleComponent>
+
+{% endblock %}
