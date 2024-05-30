@@ -7,6 +7,9 @@
 namespace App\Controller\Admin\Tools;
 
 use App\Utils\Breadcrumb;
+use App\Utils\Debug;
+use App\Utils\Global\DataBase;
+use App\Utils\Tools\RawQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -18,7 +21,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class DatabaseManagerController extends AbstractController
 {
     #[Route('/', name: 'index', methods: ['GET'])]
-    public function index(): Response
+    public function index(DataBase $dataBase): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'database_manager',
@@ -26,6 +29,11 @@ class DatabaseManagerController extends AbstractController
                 'database_manager.index.page_title_h1' => '#'
             ]
         ];
+
+        $query = RawQuery::getQueryStructureTable('faq');
+        $query = RawQuery::getQueryAllInformationSchema('natheo');
+
+        Debug::printR($dataBase->executeRawQuery($query));
 
         return $this->render('admin/tools/database_manager/index.html.twig', [
             'breadcrumb' => $breadcrumb
