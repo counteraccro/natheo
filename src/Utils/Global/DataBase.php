@@ -77,7 +77,6 @@ class DataBase
                 }
             }
         }
-
         return $tables;
     }
 
@@ -93,7 +92,6 @@ class DataBase
                 $table['columns'][$key] = Utils::convertCamelCaseToSnakeCase($column);
             }
         }
-
         return $tables;
     }
 

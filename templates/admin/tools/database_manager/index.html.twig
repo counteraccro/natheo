@@ -16,8 +16,12 @@
         {#  {{ 'tag.index.description2' | trans({'icon' : '<i class="bi-eye-slash-fill"></i>'}, 'tag') | raw }} #}<br/>
     </p>
 
+    <div {{ vue_component('Admin/Tools/DatabaseManager', {
+        'urls' : urls,
+        'translate' : translate,
+    }) }}>
+    </div>
 
-    <!-- <div {#{vue_component('Admin/GenericGrid', {'url' : path('admin_sql_manager_load_grid_data',  {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true}) }#}></div >!-->
 
     <twig:Admin:ModaleComponent id="help-grid-data-manager" bgColor="bg-secondary">
         <twig:block name="header">

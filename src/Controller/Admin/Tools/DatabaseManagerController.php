@@ -9,8 +9,10 @@ namespace App\Controller\Admin\Tools;
 use App\Utils\Breadcrumb;
 use App\Utils\Debug;
 use App\Utils\Global\DataBase;
-use App\Utils\Tools\RawQuery;
+use App\Utils\Tools\RawPostgresQuery;
+use App\Utils\Translate\Tools\DatabaseManagerTranslate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -20,8 +22,14 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_SUPER_ADMIN')]
 class DatabaseManagerController extends AbstractController
 {
+
+    /**
+     * Point d'entrée
+     * @param DatabaseManagerTranslate $databaseManagerTranslate
+     * @return Response
+     */
     #[Route('/', name: 'index', methods: ['GET'])]
-    public function index(DataBase $dataBase): Response
+    public function index(DatabaseManagerTranslate $databaseManagerTranslate): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'database_manager',
@@ -30,13 +38,44 @@ class DatabaseManagerController extends AbstractController
             ]
         ];
 
-        $query = RawQuery::getQueryStructureTable('faq');
-        $query = RawQuery::getQueryAllInformationSchema('natheo');
+        //$query = RawPostgresQuery::getQueryStructureTable('faq');
 
-        Debug::printR($dataBase->executeRawQuery($query));
+
+        //Debug::printR($dataBase->executeRawQuery($query));
 
         return $this->render('admin/tools/database_manager/index.html.twig', [
-            'breadcrumb' => $breadcrumb
+            'breadcrumb' => $breadcrumb,
+            'translate' => $databaseManagerTranslate->getTranslate(),
+            'urls' => [
+                'load_schema_database' => $this->generateUrl('admin_database_manager_load_schema_database'),
+                'save_database' => $this->generateUrl('admin_database_manager_save_database'),
+            ]
         ]);
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    #[Route('/ajax/load-schema-database', name: 'load_schema_database', methods: ['GET'])]
+    public function schemaDataBase(): JsonResponse
+    {
+        $query = RawPostgresQuery::getQueryAllInformationSchema('natheo');
+        //$dataBase->executeRawQuery($query)
+        return $this->json([]);
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    #[Route('/ajax/save-database/{option}', name: 'save_database', methods: ['GET'])]
+    public function saveBdd($option = null): JsonResponse
+    {
+        /* A faire en asyncrone
+        Voir ici https://symfony.com/doc/current/messenger.html#creating-a-message-handler
+
+        Génération schema : https://www.doctrine-project.org/projects/doctrine-orm/en/3.2/reference/tools.html#database-schema-generation
+        */
+
+        return $this->json([]);
     }
 }
