@@ -1,13 +1,13 @@
 <?php
 /**
- * Class Qui permet d'obtenir des requêtes SQL
+ * Class Qui permet d'obtenir des requêtes SQL venant de postgres
  * @author Gourdon Aymeric
  * @version 1.0
  */
 
 namespace App\Utils\Tools;
 
-class RawQuery
+class RawPostgresQuery
 {
     /**
      * Requête SQL pour obtenir l'ensemble des tables de la base de données
