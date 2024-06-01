@@ -54,7 +54,7 @@ export default {
     /**
      * Créer une nouvelle FAQ
      */
-    saveBdd() {
+    dumpSQL() {
 
       this.loading = true;
       axios.get(this.urls.save_database).then((response) => {
@@ -99,6 +99,7 @@ export default {
 
     <div>
       SqlManager
+      <div class="btn btn-secondary" @click="this.dumpSQL">Dump</div>
     </div>
 
   </div>

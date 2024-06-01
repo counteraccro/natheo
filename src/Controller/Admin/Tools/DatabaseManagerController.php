@@ -6,14 +6,14 @@
  */
 namespace App\Controller\Admin\Tools;
 
+use App\Message\Tools\DumpSql;
 use App\Utils\Breadcrumb;
-use App\Utils\Debug;
-use App\Utils\Global\DataBase;
-use App\Utils\Tools\RawPostgresQuery;
+use App\Utils\Tools\Query\RawPostgresQuery;
 use App\Utils\Translate\Tools\DatabaseManagerTranslate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -68,13 +68,15 @@ class DatabaseManagerController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/ajax/save-database/{option}', name: 'save_database', methods: ['GET'])]
-    public function saveBdd($option = null): JsonResponse
+    public function saveBdd(MessageBusInterface $bus, string $option = null): JsonResponse
     {
         /* A faire en asyncrone
         Voir ici https://symfony.com/doc/current/messenger.html#creating-a-message-handler
 
         Génération schema : https://www.doctrine-project.org/projects/doctrine-orm/en/3.2/reference/tools.html#database-schema-generation
         */
+
+        $bus->dispatch(new DumpSql(['option']));
 
         return $this->json([]);
     }
