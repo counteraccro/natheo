@@ -108,7 +108,7 @@ export default {
   <div class="toast-container position-fixed top-0 end-0 p-2">
 
     <toast
-        :id="'toastSuccessFaq'"
+        :id="'toastSuccess'"
         :option-class-header="'text-success'"
         :show="this.toasts.toastSuccess.show"
         @close-toast="this.closeToast"
@@ -124,7 +124,7 @@ export default {
     </toast>
 
     <toast
-        :id="'toastErrorFaq'"
+        :id="'toastError'"
         :option-class-header="'text-danger'"
         :show="this.toasts.toastError.show"
         @close-toast="this.closeToast"

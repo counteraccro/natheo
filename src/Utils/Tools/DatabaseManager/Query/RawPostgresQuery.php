@@ -5,7 +5,7 @@
  * @version 1.0
  */
 
-namespace App\Utils\Tools\Query;
+namespace App\Utils\Tools\DatabaseManager\Query;
 
 class RawPostgresQuery
 {

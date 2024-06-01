@@ -7,8 +7,9 @@
 namespace App\Controller\Admin\Tools;
 
 use App\Message\Tools\DumpSql;
+use App\Service\Admin\Tools\SqlManagerService;
 use App\Utils\Breadcrumb;
-use App\Utils\Tools\Query\RawPostgresQuery;
+use App\Utils\Tools\DatabaseManager\Query\RawPostgresQuery;
 use App\Utils\Translate\Tools\DatabaseManagerTranslate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -68,7 +69,11 @@ class DatabaseManagerController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/ajax/save-database/{option}', name: 'save_database', methods: ['GET'])]
-    public function saveBdd(MessageBusInterface $bus, string $option = null): JsonResponse
+    public function saveBdd(
+        MessageBusInterface $bus,
+        SqlManagerService $sqlManagerService,
+        string $option = null
+    ): JsonResponse
     {
         /* A faire en asyncrone
         Voir ici https://symfony.com/doc/current/messenger.html#creating-a-message-handler
@@ -77,7 +82,6 @@ class DatabaseManagerController extends AbstractController
         */
 
         $bus->dispatch(new DumpSql(['option']));
-
-        return $this->json([]);
+        return $this->json($sqlManagerService->getResponseAjax());
     }
 }
