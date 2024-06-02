@@ -6,6 +6,8 @@ notification.msg.self_delete.title: 'Suppression de compte'
 notification.msg.self_delete.content: '{login} à décidé de supprimer son compte'
 notification.msg.self_anonymous.title: 'Anonymisation de compte'
 notification.msg.self_anonymous.content: "{login} à décidé d'anonymiser son compte"
+notification.msg.dump_sql.title: 'Dump SQL disponible'
+notification.msg.dump_sql.content: "Le dump SQL {file} est disponible, vous pouvez le télécharger <a href='{url}'>ici</a> ou directement depuis l'interface de sauvegarde"
 notification.page_title: 'Mes notifications'
 notification.page_title_h1: 'Mes notifications'
 notification.description: 'Liste de mes notifications, passez votre souris {mouse} dessus pour les considérez comme lu.'
