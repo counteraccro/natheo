@@ -76,6 +76,12 @@ class NotificationKey
     const NOTIFICATION_SELF_ANONYMOUS = 'NOTIFICATION_SELF_ANONYMOUS';
 
     /**
+     * Notification lors de la création d'un nouveau dump SQL
+     * @const
+     */
+    const NOTIFICATION_DUMP_SQL = 'NOTIFICATION_DUMP_SQL';
+
+    /**
      * Tableau de notification
      */
     const TAB_NOTIFICATIONS = [
@@ -112,6 +118,15 @@ class NotificationKey
             self::KEY_TITLE => 'notification.msg.self_anonymous.title',
             self::KEY_CONTENT => 'notification.msg.self_anonymous.content',
             self::KEY_LEVEL => self::LEVEL_WARNING
+        ],
+        self::NOTIFICATION_DUMP_SQL => [
+            self::KEY_PARAMETER => [
+                'file' => '',
+                'url' => ''
+            ],
+            self::KEY_TITLE => 'notification.msg.dump_sql.title',
+            self::KEY_CONTENT => 'notification.msg.dump_sql.content',
+            self::KEY_LEVEL => self::LEVEL_INFO
         ]
     ];
 }
