@@ -6,8 +6,11 @@
  */
 namespace App\MessageHandler\Tools;
 
+use App\Entity\Admin\System\User;
 use App\Message\Tools\DumpSql;
-use App\Utils\Content\Media\MediaFolderConst;
+use App\Repository\Admin\System\UserRepository;
+use App\Service\Admin\NotificationService;
+use App\Utils\Notification\NotificationKey;
 use App\Utils\Tools\DatabaseManager\DatabaseManagerConst;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -16,6 +19,12 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 class DumpSqlHandler
 {
+
+    public function __construct(
+        private NotificationService $notificationService,
+    ) {
+    }
+
     public function __invoke(DumpSql $dumpSql): void
     {
         $filesystem = new Filesystem();
@@ -28,6 +37,8 @@ class DumpSqlHandler
         }
 
         $filesystem->appendToFile(DatabaseManagerConst::ROOT_FOLDER_NAME . 'logs.txt', 'Email sent to user@example.com', true);
-        var_dump($dumpSql->getOption());
+
+        $user = $this->notificationService->findOneById(User::class, $dumpSql->getUserId());
+        $this->notificationService->add($user, NotificationKey::NOTIFICATION_DUMP_SQL, ['file' => 'demo', 'url' => "#"]);
     }
 }
