@@ -16,7 +16,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
@@ -35,16 +37,10 @@ class NotificationService extends AppAdminService
     private OptionSystemService $optionSystemService;
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param ContainerBagInterface $containerBag
-     * @param TranslatorInterface $translator
-     * @param UrlGeneratorInterface $router
-     * @param Security $security
-     * @param RequestStack $requestStack
-     * @param OptionSystemService $optionSystemService
-     * @param ParameterBagInterface $parameterBag
+     * @param ContainerInterface $handlers
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-
     public function __construct(#[AutowireLocator([
         'logger' => LoggerInterface::class,
         'entityManager' => EntityManagerInterface::class,

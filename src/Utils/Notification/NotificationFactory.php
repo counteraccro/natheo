@@ -64,12 +64,6 @@ class NotificationFactory
                 $tabParameter[$key] = $value;
             }
         }
-        /*$parameter = implode('|', array_map(
-            function ($v, $k) {
-                return sprintf("%s:%s", $k, $v);
-            },
-            $tab,
-            array_keys($tab)));*/
 
         $notification = $this->createNotification();
         $notification->setTitle($tabNotif[NotificationKey::KEY_TITLE]);
