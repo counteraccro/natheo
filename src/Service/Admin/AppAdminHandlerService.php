@@ -89,6 +89,17 @@ class AppAdminHandlerService
     }
 
     /**
+     * Retourne l'interface ParameterBagInterface
+     * @return ParameterBagInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getParameterBag() : ParameterBagInterface
+    {
+        return $this->handlers->get('parameterBag');
+    }
+
+    /**
      * Retourne la class MarkdownEditorService
      * @return MarkdownEditorService
      * @throws ContainerExceptionInterface

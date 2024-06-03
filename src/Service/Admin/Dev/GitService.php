@@ -37,7 +37,9 @@ class GitService extends AppAdminService
      */
     public function getInfoGit(): array
     {
-        $root = $this->parameterBag->get('kernel.project_dir');
+        $parameterBag = $this->getParameterBag();
+
+        $root = $parameterBag->get('kernel.project_dir');
         $gitBasePath = $root . '/.git'; // e.g in laravel: base_path().'/.git';
 
         $gitStr = file_get_contents($gitBasePath . '/HEAD');
