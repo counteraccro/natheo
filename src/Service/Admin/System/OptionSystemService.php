@@ -62,7 +62,9 @@ class OptionSystemService extends AppAdminService
      */
     private function getPathConfig(): string
     {
-        $kernel = $this->containerBag->get('kernel.project_dir');
+        $containerBag = $this->getContainerBag();
+
+        $kernel = $containerBag->get('kernel.project_dir');
         return $kernel . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'cms' . DIRECTORY_SEPARATOR .
             self::OPTION_SYSTEM_CONFIG_FILE;
     }
@@ -90,7 +92,6 @@ class OptionSystemService extends AppAdminService
      */
     public function saveValueByKee(string $key, string $value): void
     {
-        $optionServiceRepo = $this->entityManager->getRepository(OptionSystem::class);
         /* @var OptionSystem $optionSystem */
         $optionSystem = $this->getByKey($key);
         $optionSystem->setValue($value);
