@@ -27,31 +27,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SidebarElementService extends AppAdminService
 {
-    /**
-     * @var GridService
-     */
-    private GridService $gridService;
-
-    /**
-     * @param ContainerInterface $handlers
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function __construct(#[AutowireLocator([
-        'logger' => LoggerInterface::class,
-        'entityManager' => EntityManagerInterface::class,
-        'containerBag' => ContainerBagInterface::class,
-        'translator' => TranslatorInterface::class,
-        'router' => UrlGeneratorInterface::class,
-        'security' => Security::class,
-        'requestStack' => RequestStack::class,
-        'parameterBag' => ParameterBagInterface::class,
-        'gridService' => GridService::class
-    ])] ContainerInterface $handlers)
-    {
-        $this->gridService = $handlers->get('gridService');
-        parent::__construct($handlers);
-    }
 
     /**
      * Récupère l'ensemble des sidebarElement parent
@@ -81,17 +56,22 @@ class SidebarElementService extends AppAdminService
      * @param int $page
      * @param int $limit
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function getAllFormatToGrid(int $page, int $limit)
+    public function getAllFormatToGrid(int $page, int $limit): array
     {
+        $translator = $this->getTranslator();
+        $gridService = $this->getGridService();
+
         $column = [
-            $this->translator->trans('sidebar.grid.id', domain: 'sidebar'),
-            $this->translator->trans('sidebar.grid.parent', domain: 'sidebar'),
-            $this->translator->trans('sidebar.grid.label', domain: 'sidebar'),
-            $this->translator->trans('sidebar.grid.role', domain: 'sidebar'),
-            $this->translator->trans('sidebar.grid.description', domain: 'sidebar'),
-            $this->translator->trans('sidebar.grid.created_at', domain: 'sidebar'),
-            $this->translator->trans('sidebar.grid.update_at', domain: 'sidebar'),
+            $translator->trans('sidebar.grid.id', domain: 'sidebar'),
+            $translator->trans('sidebar.grid.parent', domain: 'sidebar'),
+            $translator->trans('sidebar.grid.label', domain: 'sidebar'),
+            $translator->trans('sidebar.grid.role', domain: 'sidebar'),
+            $translator->trans('sidebar.grid.description', domain: 'sidebar'),
+            $translator->trans('sidebar.grid.created_at', domain: 'sidebar'),
+            $translator->trans('sidebar.grid.update_at', domain: 'sidebar'),
             GridService::KEY_ACTION,
         ];
 
@@ -105,7 +85,7 @@ class SidebarElementService extends AppAdminService
             $parent = '---';
             if ($element->getParent() !== null) {
                 $parent = '<i class="bi ' . $element->getParent()->getIcon() . '"></i> ' .
-                    $this->translator->trans($element->getParent()->getLabel());
+                    $translator->trans($element->getParent()->getLabel());
             }
 
             $action = $this->generateTabAction($element);
@@ -120,18 +100,18 @@ class SidebarElementService extends AppAdminService
             }
 
             $data[] = [
-                $this->translator->trans('sidebar.grid.id', domain: 'sidebar') => $element->getId() . ' ' . $isLock .
+                $translator->trans('sidebar.grid.id', domain: 'sidebar') => $element->getId() . ' ' . $isLock .
                     ' ' . $isDisabled,
-                $this->translator->trans('sidebar.grid.parent', domain: 'sidebar') => $parent,
-                $this->translator->trans('sidebar.grid.label', domain: 'sidebar') => '<i class="bi ' .
-                    $element->getIcon() . '"></i> ' . $this->translator->trans($element->getLabel()),
-                $this->translator->trans('sidebar.grid.role', domain: 'sidebar') => $this->gridService
+                $translator->trans('sidebar.grid.parent', domain: 'sidebar') => $parent,
+                $translator->trans('sidebar.grid.label', domain: 'sidebar') => '<i class="bi ' .
+                    $element->getIcon() . '"></i> ' . $translator->trans($element->getLabel()),
+                $translator->trans('sidebar.grid.role', domain: 'sidebar') => $gridService
                     ->renderRole($element->getRole()),
-                $this->translator->trans('sidebar.grid.description', domain: 'sidebar') => $this->translator
+                $translator->trans('sidebar.grid.description', domain: 'sidebar') => $translator
                     ->trans($element->getDescription()),
-                $this->translator->trans('sidebar.grid.created_at', domain: 'sidebar') => $element
+                $translator->trans('sidebar.grid.created_at', domain: 'sidebar') => $element
                     ->getCreatedAt()->format('d/m/y H:i'),
-                $this->translator->trans('sidebar.grid.update_at', domain: 'sidebar') => $element
+                $translator->trans('sidebar.grid.update_at', domain: 'sidebar') => $element
                     ->getUpdateAt()->format('d/m/y H:i'),
                 GridService::KEY_ACTION => $action,
             ];
@@ -141,9 +121,9 @@ class SidebarElementService extends AppAdminService
             GridService::KEY_NB => $nb,
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
-            GridService::KEY_RAW_SQL => $this->gridService->getFormatedSQLQuery($dataPaginate)
+            GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate)
         ];
-        return $this->gridService->addAllDataRequiredGrid($tabReturn);
+        return $gridService->addAllDataRequiredGrid($tabReturn);
 
     }
 
@@ -151,23 +131,28 @@ class SidebarElementService extends AppAdminService
      * Génère le tableau d'action pour le Grid des sidebarElement
      * @param SidebarElement $element
      * @return array[]|string[]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function generateTabAction(SidebarElement $element): array
     {
+        $translator = $this->getTranslator();
+        $router = $this->getRouter();
+
         $actionDisabled = '';
         if (!$element->isLock()) {
             $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
-                'url' => $this->router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]),
+                'url' => $router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]),
                 'type' => 'put',
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $this->translator->trans('sidebar.confirm.disabled.msg', ['{label}' => '<i class="bi ' .
-                    $element->getIcon() . '"></i> ' . $this->translator->trans($element->getLabel())], 'sidebar')];
+                'msgConfirm' => $translator->trans('sidebar.confirm.disabled.msg', ['{label}' => '<i class="bi ' .
+                    $element->getIcon() . '"></i> ' . $translator->trans($element->getLabel())], 'sidebar')];
             if ($element->isDisabled()) {
                 $actionDisabled = [
                     'label' => '<i class="bi bi-eye-fill"></i>',
                     'type' => 'put',
-                    'url' => $this->router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]),
+                    'url' => $router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]),
                     'ajax' => true
                 ];
             }
