@@ -16,7 +16,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
@@ -30,38 +32,6 @@ class NotificationService extends AppAdminService
 {
 
     /**
-     * @var OptionSystemService
-     */
-    private OptionSystemService $optionSystemService;
-
-    /**
-     * @param EntityManagerInterface $entityManager
-     * @param ContainerBagInterface $containerBag
-     * @param TranslatorInterface $translator
-     * @param UrlGeneratorInterface $router
-     * @param Security $security
-     * @param RequestStack $requestStack
-     * @param OptionSystemService $optionSystemService
-     * @param ParameterBagInterface $parameterBag
-     */
-
-    public function __construct(#[AutowireLocator([
-        'logger' => LoggerInterface::class,
-        'entityManager' => EntityManagerInterface::class,
-        'containerBag' => ContainerBagInterface::class,
-        'translator' => TranslatorInterface::class,
-        'router' => UrlGeneratorInterface::class,
-        'security' => Security::class,
-        'requestStack' => RequestStack::class,
-        'parameterBag' => ParameterBagInterface::class,
-        'optionSystemService' => OptionSystemService::class
-    ])] ContainerInterface $handlers)
-    {
-        $this->optionSystemService = $handlers->get('optionSystemService');
-        parent::__construct($handlers);
-    }
-
-    /**
      * Permet d'ajouter une notification
      * @param User $user
      * @param string $key
@@ -70,7 +40,8 @@ class NotificationService extends AppAdminService
      */
     public function add(User $user, string $key, array $params): void
     {
-        if (!$this->optionSystemService->canNotification()) {
+        $optionSystemService = $this->getOptionSystemService();
+        if (!$optionSystemService->canNotification()) {
             return;
         }
 
@@ -85,10 +56,13 @@ class NotificationService extends AppAdminService
      * @param string $key
      * @param array $params
      * @return User
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function addForFixture(User $user, string $key, array $params): User
     {
-        if (!$this->optionSystemService->canNotification()) {
+        $optionSystemService = $this->getOptionSystemService();
+        if (!$optionSystemService->canNotification()) {
             return $user;
         }
 
@@ -115,9 +89,13 @@ class NotificationService extends AppAdminService
      * @param User $user
      * @param bool $onlyNotRead : si true, ne retourne que les non lu
      * @return Paginator
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getByUserPaginate(int $page, int $limit, User $user, bool $onlyNotRead = false): Paginator
     {
+        $translator = $this->getTranslator();
+
         /** @var NotificationRepository $repo */
         $repo = $this->getRepository(Notification::class);
         $list = $repo->getByUserPaginate($page, $limit, $user, $onlyNotRead);
@@ -125,8 +103,8 @@ class NotificationService extends AppAdminService
         /** @var Notification $notification */
         foreach ($list as $notification) {
             $parameter = json_decode($notification->getParameters(), true);
-            $notification->setTitle($this->translator->trans($notification->getTitle(), domain: 'notification'));
-            $notification->setContent($this->translator->trans(
+            $notification->setTitle($translator->trans($notification->getTitle(), domain: 'notification'));
+            $notification->setContent($translator->trans(
                 $notification->getContent(),
                 $parameter,
                 domain: 'notification'
