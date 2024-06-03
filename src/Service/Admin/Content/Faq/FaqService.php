@@ -45,9 +45,9 @@ class FaqService extends AppAdminService
      */
     public function getAllFormatToGrid(int $page, int $limit, string $search = null): array
     {
-        $translator = $this->handlers->get('translator');
-        $requestStack = $this->handlers->get('requestStack');
-        $gridService = $this->handlers->get('gridService');
+        $translator = $this->getTranslator();
+        $requestStack = $this->getRequestStack();
+        $gridService =  $this->getGridService();
 
         $column = [
             $translator->trans('faq.grid.id', domain: 'faq'),
@@ -116,36 +116,43 @@ class FaqService extends AppAdminService
      * Génère le tableau d'action pour le Grid des faqs
      * @param Faq $faq
      * @return array[]|string[]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function generateTabAction(Faq $faq): array
     {
-        $label = $faq->getFaqTranslationByLocale($this->requestStack->getCurrentRequest()->getLocale())->getTitle();
+        $requestStack = $this->getRequestStack();
+        $router = $this->getRouter();
+        $translator = $this->getTranslator();
+        $optionSystemService = $this->getOptionSystemService();
+
+        $label = $faq->getFaqTranslationByLocale($requestStack->getCurrentRequest()->getLocale())->getTitle();
 
         $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
             'type' => 'put',
-            'url' => $this->router->generate('admin_faq_disabled', ['id' => $faq->getId()]),
+            'url' => $router->generate('admin_faq_disabled', ['id' => $faq->getId()]),
             'ajax' => true,
             'confirm' => true,
-            'msgConfirm' => $this->translator->trans('faq.confirm.disabled.msg', ['label' => $label], 'faq')];
+            'msgConfirm' => $translator->trans('faq.confirm.disabled.msg', ['label' => $label], 'faq')];
         if ($faq->isDisabled()) {
             $actionDisabled = [
                 'label' => '<i class="bi bi-eye-fill"></i>',
                 'type' => 'put',
-                'url' => $this->router->generate('admin_faq_disabled', ['id' => $faq->getId()]),
+                'url' => $router->generate('admin_faq_disabled', ['id' => $faq->getId()]),
                 'ajax' => true
             ];
         }
 
         $actionDelete = '';
-        if ($this->optionSystemService->canDelete()) {
+        if ($optionSystemService->canDelete()) {
 
             $actionDelete = [
                 'label' => '<i class="bi bi-trash"></i>',
                 'type' => 'delete',
-                'url' => $this->router->generate('admin_faq_delete', ['id' => $faq->getId()]),
+                'url' => $router->generate('admin_faq_delete', ['id' => $faq->getId()]),
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $this->translator->trans('faq.confirm.delete.msg', ['label' =>
+                'msgConfirm' => $translator->trans('faq.confirm.delete.msg', ['label' =>
                     $label], 'faq')
             ];
         }
@@ -159,7 +166,7 @@ class FaqService extends AppAdminService
         // Bouton edit
         $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
             'id' => $faq->getId(),
-            'url' => $this->router->generate('admin_faq_update', ['id' => $faq->getId()]),
+            'url' => $router->generate('admin_faq_update', ['id' => $faq->getId()]),
             'ajax' => false];
 
         return $actions;
@@ -170,9 +177,13 @@ class FaqService extends AppAdminService
      * @param int $id
      * @param bool $value
      * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function updateDisabledQuestion(int $id, bool $value): string
     {
+        $translator = $this->getTranslator();
+
         /** @var FaqQuestion $question */
         $question = $this->findOneById(FaqQuestion::class, $id);
         $question->setDisabled($value);
@@ -181,9 +192,9 @@ class FaqService extends AppAdminService
         $title = $question->getFaqQuestionTranslationByLocale($this->getLocales()['current'])->getTitle();
 
         if ($value) {
-            return $this->translator->trans('faq.question.disabled.ok', ['question' => $title], domain: 'faq');
+            return $translator->trans('faq.question.disabled.ok', ['question' => $title], domain: 'faq');
         }
-        return $this->translator->trans('faq.question.enabled.ok', ['question' => $title], domain: 'faq');
+        return $translator->trans('faq.question.enabled.ok', ['question' => $title], domain: 'faq');
     }
 
     /**
@@ -193,9 +204,13 @@ class FaqService extends AppAdminService
      * @param bool $allQuestion
      * @param bool $value
      * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function updateDisabledCategory(int $id, bool $allQuestion, bool $value): string
     {
+        $translator = $this->getTranslator();
+
         /** @var FaqCategory $category */
         $category = $this->findOneById(FaqCategory::class, $id);
         $category->setDisabled($value);
@@ -213,14 +228,14 @@ class FaqService extends AppAdminService
         $title = $category->getFaqCategoryTranslationByLocale($this->getLocales()['current'])->getTitle();
 
         if ($value) {
-            return $this->translator->trans('faq.category.disabled.ok', ['category' => $title], domain: 'faq');
+            return $translator->trans('faq.category.disabled.ok', ['category' => $title], domain: 'faq');
         }
 
         if ($allQuestion) {
-            return $this->translator->trans('faq.category.enabled.all.questions.ok',
+            return $translator->trans('faq.category.enabled.all.questions.ok',
                 ['category' => $title], domain: 'faq');
         }
-        return $this->translator->trans('faq.category.enabled.ok', ['category' => $title], domain: 'faq');
+        return $translator->trans('faq.category.enabled.ok', ['category' => $title], domain: 'faq');
 
     }
 
@@ -228,9 +243,13 @@ class FaqService extends AppAdminService
      * Retourne une liste de Category trier par renderOrder
      * @param int $id
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getListeCategoryOrderByFaq(int $id): array
     {
+        $translator = $this->getTranslator();
+
         /** @var Faq $faq */
         $faq = $this->findOneById(Faq::class, $id);
 
@@ -239,7 +258,7 @@ class FaqService extends AppAdminService
             /** @var FaqCategory $faqCategory */
             $return[] = [
                 'id' => $faqCategory->getId(),
-                'value' => $this->translator->trans('faq.position', domain: 'faq')
+                'value' => $translator->trans('faq.position', domain: 'faq')
                     . ' ' . $faqCategory->getRenderOrder() . ' - '
                     . $faqCategory->getFaqCategoryTranslationByLocale($this->getLocales()['current'])->getTitle()];
         }
@@ -250,9 +269,13 @@ class FaqService extends AppAdminService
      * Retourne une liste de question triée par renderOrder
      * @param int $id
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getListeQuestionOrderByCategory(int $id): array
     {
+        $translator = $this->getTranslator();
+
         /** @var FaqCategory $category */
         $category = $this->findOneById(FaqCategory::class, $id);
 
@@ -261,7 +284,7 @@ class FaqService extends AppAdminService
             /** @var FaqQuestion $faqQuestion */
             $return[] = [
                 'id' => $faqQuestion->getId(),
-                'value' => $this->translator->trans('faq.position', domain: 'faq')
+                'value' => $translator->trans('faq.position', domain: 'faq')
                     . ' ' . $faqQuestion->getRenderOrder() . ' - '
                     . $faqQuestion->getFaqQuestionTranslationByLocale($this->getLocales()['current'])->getTitle()];
         }

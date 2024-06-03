@@ -14,6 +14,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppAdminHandlerService
@@ -86,6 +87,38 @@ class AppAdminHandlerService
         $this->logger = $this->handlers->get('logger');
     }
 
+    /** Retourne l'interface UrlGeneratorInterface
+     * @return UrlGeneratorInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getRouter(): UrlGeneratorInterface
+    {
+        return $this->handlers->get('router');
+    }
+
+    /**
+     * Retourne la class GridService
+     * @return GridService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getGridService(): GridService
+    {
+        return $this->handlers->get('gridService');
+    }
+
+    /**
+     * Retourne la class OptionSystemService
+     * @return OptionSystemService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getOptionSystemService(): OptionSystemService
+    {
+        return $this->handlers->get('optionSystemService');
+    }
+
     /**
      * Récupère la class RequestStack
      * @return RequestStack
@@ -95,5 +128,27 @@ class AppAdminHandlerService
     protected function getRequestStack(): RequestStack
     {
         return $this->handlers->get('requestStack');
+    }
+
+    /**
+     * Retourne l'interface ContainerBagInterface
+     * @return ContainerBagInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getContainerBag(): ContainerBagInterface
+    {
+        return $this->handlers->get('containerBag');
+    }
+
+    /**
+     * Retourne l'interface Translator
+     * @return TranslatorInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getTranslator(): TranslatorInterface
+    {
+        return $this->handlers->get('translator');
     }
 }
