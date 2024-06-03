@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Service pour SQLManager
+ */
 namespace App\Service\Admin\Tools;
 
 use App\Entity\Admin\Tools\SqlManager;
