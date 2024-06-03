@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.1
+ * Service gérant les données de l'utilisateur
+ */
 namespace App\Service\Admin\System\User;
 
 use App\Entity\Admin\System\User;
@@ -7,6 +11,8 @@ use App\Entity\Admin\System\UserData;
 use App\Service\Admin\AppAdminService;
 use App\Utils\System\User\UserdataKey;
 use DateTime;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class UserDataService extends AppAdminService
 {
@@ -17,6 +23,8 @@ class UserDataService extends AppAdminService
      * @param mixed $value
      * @param User $user
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function update(string $key, mixed $value, User $user): void
     {
@@ -35,6 +43,8 @@ class UserDataService extends AppAdminService
      * @param string $key
      * @param User $user
      * @return UserData|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function findKeyAndUser(string $key, User $user): ?UserData
     {
@@ -47,6 +57,8 @@ class UserDataService extends AppAdminService
      * @param string $key
      * @param string $value
      * @return UserData|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function findKeyAndValue(string $key, string $value) :?UserData
     {

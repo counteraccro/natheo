@@ -2,7 +2,7 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Service lier aux options système
  */
 
@@ -23,6 +23,8 @@ class OptionSystemService extends AppAdminService
     /**
      * Retourne l'ensemble des options systèmes
      * @return array|object[]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getAll(): array
     {
@@ -34,6 +36,8 @@ class OptionSystemService extends AppAdminService
      * Retourne une option système en fonction de sa clé
      * @param string $key
      * @return object|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getByKey(string $key): ?object
     {
@@ -45,6 +49,8 @@ class OptionSystemService extends AppAdminService
      * Retourne la valeur d'une option système en fonction de sa clé
      * @param string $key
      * @return string|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getValueByKey(string $key): ?string
     {

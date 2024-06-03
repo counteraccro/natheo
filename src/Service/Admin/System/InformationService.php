@@ -1,16 +1,13 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Information sur le CMS
  */
 
 namespace App\Service\Admin\System;
 
-use App\Entity\Admin\System\User;
-use App\Kernel;
 use App\Service\Admin\AppAdminService;
-use App\Utils\Debug;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 

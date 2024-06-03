@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Service lier à l'objet mail
  */
 
@@ -14,23 +14,12 @@ use App\Utils\Markdown;
 use App\Utils\System\Mail\KeyWord;
 use App\Utils\System\Mail\MailTemplate;
 use App\Utils\System\Options\OptionSystemKey;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MailService extends AppAdminService
 {
@@ -244,8 +233,10 @@ class MailService extends AppAdminService
      *  replayTo => string || array - si son défini alors la valeur de OS_MAIL_REPLAY_TO sera utilisée<br/>
      *  template => string <br />
      * @return void
-     * @throws TransportExceptionInterface
      * @throws CommonMarkException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function sendMail(array $params): void
     {

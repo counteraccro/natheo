@@ -1,8 +1,14 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.1
+ * Service gérant les grids de l'application
+ */
 namespace App\Service\Admin\Dev;
 
 use App\Service\Admin\AppAdminService;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class GitService extends AppAdminService
 {
@@ -34,6 +40,8 @@ class GitService extends AppAdminService
     /**
      * Retourne les infos git locales sous la forme d'un tableau
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getInfoGit(): array
     {
