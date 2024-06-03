@@ -87,6 +87,17 @@ class AppAdminHandlerService
         $this->logger = $this->handlers->get('logger');
     }
 
+    /**
+     * Retourne la class Security
+     * @return Security
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getSecurity() : Security
+    {
+        return $this->handlers->get('security');
+    }
+
     /** Retourne l'interface UrlGeneratorInterface
      * @return UrlGeneratorInterface
      * @throws ContainerExceptionInterface
