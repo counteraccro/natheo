@@ -73,6 +73,7 @@ class AppAdminHandlerService
             'parameterBag' => ParameterBagInterface::class,
             'optionSystemService' => OptionSystemService::class,
             'gridService' => GridService::class,
+            'markdownEditorService' => MarkdownEditorService::class
         ])]
         protected ContainerInterface $handlers
     )
@@ -85,6 +86,17 @@ class AppAdminHandlerService
         $this->security = $this->handlers->get('security');
         $this->parameterBag = $this->handlers->get('parameterBag');
         $this->logger = $this->handlers->get('logger');
+    }
+
+    /**
+     * Retourne la class MarkdownEditorService
+     * @return MarkdownEditorService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getMarkdownEditorService() : MarkdownEditorService
+    {
+        return $this->handlers->get('markdownEditorService');
     }
 
     /**
