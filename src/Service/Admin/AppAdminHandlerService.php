@@ -3,6 +3,7 @@
 namespace App\Service\Admin;
 
 use App\Service\Admin\System\OptionSystemService;
+use App\Utils\Translate\GridTranslate;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -78,7 +79,8 @@ class AppAdminHandlerService
             'markdownEditorService' => MarkdownEditorService::class,
             'userPasswordHasher' => UserPasswordHasherInterface::class,
             'mailer' => MailerInterface::class,
-            'kernel' => KernelInterface::class
+            'kernel' => KernelInterface::class,
+            'gridTranslate' => GridTranslate::class
         ])]
         protected ContainerInterface $handlers
     )
@@ -91,6 +93,17 @@ class AppAdminHandlerService
         $this->security = $this->handlers->get('security');
         $this->parameterBag = $this->handlers->get('parameterBag');
         $this->logger = $this->handlers->get('logger');
+    }
+
+    /**
+     * Retourne la class GridTranslate
+     * @return GridTranslate
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getGridTranslate() : GridTranslate
+    {
+        return $this->handlers->get('gridTranslate');
     }
 
     /**
