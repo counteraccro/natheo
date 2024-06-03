@@ -2,7 +2,7 @@
 /**
  * Translation service, traitement des données liés au traductions
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  */
 
 namespace App\Service\Admin\System;
@@ -23,11 +23,14 @@ class TranslateService extends AppAdminService
      */
     public function getListLanguages(): array
     {
-        $tab = explode('|', $this->containerBag->get('app.supported_locales'));
+        $containerBag = $this->getContainerBag();
+        $translator = $this->getTranslator();
+
+        $tab = explode('|', $containerBag->get('app.supported_locales'));
 
         $return = [];
         foreach ($tab as $language) {
-            $return[$language] = $this->translator->trans('global.' . $language);
+            $return[$language] = $translator->trans('global.' . $language);
         }
         return $return;
     }
@@ -41,7 +44,8 @@ class TranslateService extends AppAdminService
      */
     public function getTranslationFilesByLanguage(string $language): array
     {
-        $kernel = $this->containerBag->get('kernel.project_dir');
+        $containerBag = $this->getContainerBag();
+        $kernel = $containerBag->get('kernel.project_dir');
         $pathLog = $kernel . DIRECTORY_SEPARATOR . 'translations' . DIRECTORY_SEPARATOR;
         $finder = new Finder();
         $finder->files()->in($pathLog)->name('*.' . $language . '.*');
@@ -62,7 +66,9 @@ class TranslateService extends AppAdminService
      */
     public function getTranslationFile(string $fileName): array
     {
-        $kernel = $this->containerBag->get('kernel.project_dir');
+        $containerBag = $this->getContainerBag();
+
+        $kernel = $containerBag->get('kernel.project_dir');
         $pathLog = $kernel . DIRECTORY_SEPARATOR . 'translations' . DIRECTORY_SEPARATOR;
         $finder = new Finder();
         $finder->files()->in($pathLog)->name($fileName);
@@ -88,7 +94,8 @@ class TranslateService extends AppAdminService
      */
     public function updateTranslateFile(string $fileName, array $updateContent): void
     {
-        $kernel = $this->containerBag->get('kernel.project_dir');
+        $containerBag = $this->getContainerBag();
+        $kernel = $containerBag->get('kernel.project_dir');
         $pathLog = $kernel . DIRECTORY_SEPARATOR . 'translations' . DIRECTORY_SEPARATOR;
         $finder = new Finder();
         $finder->files()->in($pathLog)->name($fileName);

@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Service qui gère les médias
  */
 
@@ -34,7 +34,9 @@ class MediaService extends MediaFolderService
      */
     public function moveMediaFixture(string $file, Media $media): void
     {
-        $rootPath = $this->containerBag->get('kernel.project_dir');
+        $containerBag = $this->getContainerBag();
+
+        $rootPath = $containerBag->get('kernel.project_dir');
         $fixturesPath = $rootPath . DIRECTORY_SEPARATOR .
             MediaFolderConst::ROOT_FOLDER_NAME . 'fixtures' . DIRECTORY_SEPARATOR;
 
@@ -213,9 +215,13 @@ class MediaService extends MediaFolderService
      * Retourne les informations d'un média
      * @param int $idMedia
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getInfoMedia(int $idMedia): array
     {
+        $translator = $this->getTranslator();
+
         /** @var Media $media */
         $media = $this->findOneById(Media::class, $idMedia);
         $user = $media->getUser();
@@ -224,23 +230,19 @@ class MediaService extends MediaFolderService
 
         return [
             'data' => [
-                $this->translator->trans('media.mediatheque.info.media.name', domain: 'media')
-                => $media->getName(),
-                $this->translator->trans('media.mediatheque.info.media.titre', domain: 'media')
-                => $media->getTitle(),
-                $this->translator->trans('media.mediatheque.info.media.description', domain: 'media')
+                $translator->trans('media.mediatheque.info.media.name', domain: 'media') => $media->getName(),
+                $translator->trans('media.mediatheque.info.media.titre', domain: 'media') => $media->getTitle(),
+                $translator->trans('media.mediatheque.info.media.description', domain: 'media')
                 => $media->getDescription(),
-                $this->translator->trans('media.mediatheque.info.media.extension', domain: 'media')
-                => $media->getExtension(),
-                $this->translator->trans('media.mediatheque.info.media.user', domain: 'media')
+                $translator->trans('media.mediatheque.info.media.extension', domain: 'media') => $media->getExtension(),
+                $translator->trans('media.mediatheque.info.media.user', domain: 'media')
                 => $personalData->getPersonalData(),
-                $this->translator->trans('media.mediatheque.info.media.emplacement', domain: 'media')
-                => $media->getPath(),
-                $this->translator->trans('media.mediatheque.info.media.size', domain: 'media')
+                $translator->trans('media.mediatheque.info.media.emplacement', domain: 'media') => $media->getPath(),
+                $translator->trans('media.mediatheque.info.media.size', domain: 'media')
                 => Utils::getSizeName($media->getSize()),
-                $this->translator->trans('media.mediatheque.info.media.date_created', domain: 'media')
+                $translator->trans('media.mediatheque.info.media.date_created', domain: 'media')
                 => $media->getCreatedAt()->format('d/m/y H:i'),
-                $this->translator->trans('media.mediatheque.info.media.date_update', domain: 'media')
+                $translator->trans('media.mediatheque.info.media.date_update', domain: 'media')
                 => $media->getUpdateAt()->format('d/m/y H:i'),
             ],
             'thumbnail' => $this->getThumbnail($media),
@@ -257,6 +259,8 @@ class MediaService extends MediaFolderService
      */
     public function uploadMediaFile(int $idFolder, array $file): void
     {
+        $security = $this->getSecurity();
+
         /** @var MediaFolder $folder */
         $folder = $this->findOneById(MediaFolder::class, $idFolder);
         $path = $this->rootPathMedia . DIRECTORY_SEPARATOR;
@@ -274,7 +278,7 @@ class MediaService extends MediaFolderService
 
         $media = new Media();
         $media->setMediaFolder($folder);
-        $media->setUser($this->security->getUser());
+        $media->setUser($security->getUser());
         $this->UpdateMediaFile($media, $name);
         $media->setTitle($file['name']);
         $media->setDescription($file['description']);

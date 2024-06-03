@@ -2,7 +2,7 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Service lier aux options user
  */
 
@@ -14,19 +14,9 @@ use App\Entity\Admin\System\User;
 use App\Service\Admin\AppAdminService;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Yaml\Yaml;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class OptionUserService extends AppAdminService
 {
@@ -39,41 +29,16 @@ class OptionUserService extends AppAdminService
     const KEY_SESSION_TAB_OPTIONS = 'users_options';
 
     /**
-     * @var OptionSystemService
-     */
-    private OptionSystemService $optionSystemService;
-
-    /**
-     * @param ContainerInterface $handlers
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function __construct(
-        #[AutowireLocator([
-            'logger' => LoggerInterface::class,
-            'entityManager' => EntityManagerInterface::class,
-            'containerBag' => ContainerBagInterface::class,
-            'translator' => TranslatorInterface::class,
-            'router' => UrlGeneratorInterface::class,
-            'security' => Security::class,
-            'requestStack' => RequestStack::class,
-            'parameterBag' => ParameterBagInterface::class,
-            'optionSystemService' => OptionSystemService::class,
-        ])]
-        private readonly ContainerInterface $handlers
-    )
-    {
-        $this->optionSystemService = $this->handlers->get('optionSystemService');
-        parent::__construct($handlers);
-    }
-
-    /**
      * Permet de créer les options avec les valeurs par défaut pour le nouveau user
      * @param User $user
      * @return User
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function createOptionsUser(User $user): User
     {
+        $optionSystemService = $this->getOptionSystemService();
+
         $options = [
             OptionSystemKey::OS_THEME_SITE => OptionUserKey::OU_THEME_SITE,
             OptionSystemKey::OS_DEFAULT_LANGUAGE => OptionUserKey::OU_DEFAULT_LANGUAGE,
@@ -82,7 +47,7 @@ class OptionUserService extends AppAdminService
 
         foreach ($options as $optionSystemKey => $optionUserKey) {
             /** @var OptionSystem $option */
-            $option = $this->optionSystemService->getByKey($optionSystemKey);
+            $option = $optionSystemService->getByKey($optionSystemKey);
             $optionUser = new OptionUser();
             $optionUser->setKey($optionUserKey)->setValue($option->getValue());
             $user->addOptionsUser($optionUser);
@@ -104,17 +69,22 @@ class OptionUserService extends AppAdminService
      * Si le user n'existe pas, retourne l'équivalent en option système
      * @param string $key
      * @return object|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getByKey(string $key): ?object
     {
+        $optionSystemService = $this->getOptionSystemService();
+        $security = $this->getSecurity();
+
         // Si pas de user, on cherche l'option système par défaut
-        if ($this->security->getUser() === null) {
+        if ($security->getUser() === null) {
             $key = str_replace('OU_', 'OS_', $key);
-            return $this->optionSystemService->getByKey($key);
+            return $optionSystemService->getByKey($key);
         }
 
         $repo = $this->getRepository(OptionUser::class);
-        return $repo->findOneBy(['key' => $key, 'user' => $this->security->getUser()->getId()]);
+        return $repo->findOneBy(['key' => $key, 'user' => $security->getUser()->getId()]);
     }
 
     /**
@@ -122,12 +92,16 @@ class OptionUserService extends AppAdminService
      * @param string $key
      * @param bool $session
      * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getValueByKey(string $key, bool $session = true): string
     {
+        $requestStack = $this->getRequestStack();
+
         if ($session) {
             // Priorité à la valeur en session
-            $tabOptions = $this->requestStack->getSession()->get(self::KEY_SESSION_TAB_OPTIONS, []);
+            $tabOptions = $requestStack->getSession()->get(self::KEY_SESSION_TAB_OPTIONS, []);
             if (isset($tabOptions[$key])) {
                 return $tabOptions[$key];
             }
@@ -143,9 +117,9 @@ class OptionUserService extends AppAdminService
         }
 
         // Mise à jour de la session avec les options sauvegardées
-        if ($this->requestStack->getCurrentRequest() != null) {
+        if ($requestStack->getCurrentRequest() != null) {
             $tabOptions[$key] = $value;
-            $this->requestStack->getSession()->set(self::KEY_SESSION_TAB_OPTIONS, $tabOptions);
+            $requestStack->getSession()->set(self::KEY_SESSION_TAB_OPTIONS, $tabOptions);
         }
         return $value;
     }
@@ -158,7 +132,8 @@ class OptionUserService extends AppAdminService
      */
     private function getPathConfig(): string
     {
-        $kernel = $this->containerBag->get('kernel.project_dir');
+        $containerBag = $this->getContainerBag();
+        $kernel = $containerBag->get('kernel.project_dir');
         return $kernel . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'cms' . DIRECTORY_SEPARATOR .
             self::OPTION_USER_CONFIG_FILE;
     }
@@ -184,8 +159,9 @@ class OptionUserService extends AppAdminService
      */
     public function getAll(): array
     {
+        $security = $this->getSecurity();
         $repo = $this->getRepository(OptionUser::class);
-        return $repo->findBy(['user' => $this->security->getUser()->getId()]);
+        return $repo->findBy(['user' => $security->getUser()->getId()]);
     }
 
     /**
@@ -193,18 +169,22 @@ class OptionUserService extends AppAdminService
      * @param string $key
      * @param string $value
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function saveValueByKee(string $key, string $value): void
     {
-        $repo = $this->entityManager->getRepository(OptionUser::class);
+        $requestStack = $this->getRequestStack();
+
+        $repo = $this->getRepository(OptionUser::class);
         /* @var OptionUser $optionUser */
         $optionUser = $this->getByKey($key);
         $optionUser->setValue($value);
         $repo->save($optionUser, true);
 
         // Mise à jour de la session avec les options sauvegardées
-        $tabOptions = $this->requestStack->getSession()->get(self::KEY_SESSION_TAB_OPTIONS, []);
+        $tabOptions = $requestStack->getSession()->get(self::KEY_SESSION_TAB_OPTIONS, []);
         $tabOptions[$key] = $value;
-        $this->requestStack->getSession()->set(self::KEY_SESSION_TAB_OPTIONS, $tabOptions);
+        $requestStack->getSession()->set(self::KEY_SESSION_TAB_OPTIONS, $tabOptions);
     }
 }

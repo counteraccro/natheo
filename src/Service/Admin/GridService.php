@@ -2,25 +2,15 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Service pour la génération du grid
  */
 
 namespace App\Service\Admin;
 
-use App\Utils\Translate\GridTranslate;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Psr\Container\ContainerInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class GridService extends AppAdminService
 {
@@ -54,32 +44,18 @@ class GridService extends AppAdminService
      */
     const KEY_URL_SAVE_RAW_SQL = 'urlSaveSql';
 
-    private GridTranslate $gridTranslate;
-
-    public function __construct(#[AutowireLocator([
-        'logger' => LoggerInterface::class,
-        'entityManager' => EntityManagerInterface::class,
-        'containerBag' => ContainerBagInterface::class,
-        'translator' => TranslatorInterface::class,
-        'router' => UrlGeneratorInterface::class,
-        'security' => Security::class,
-        'requestStack' => RequestStack::class,
-        'parameterBag' => ParameterBagInterface::class,
-        'gridTranslate' => GridTranslate::class
-    ])] private readonly ContainerInterface $handlers)
-    {
-        $this->gridTranslate = $this->handlers->get('gridTranslate');
-        parent::__construct($this->handlers);
-    }
-
     /**
      * Retourne l'ensemble des données obligatoires pour le grid
      * @param array $tab
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function addAllDataRequiredGrid(array $tab): array
     {
-        $tab[GridService::KEY_URL_SAVE_RAW_SQL] = $this->router->generate('admin_sql_manager_save_generic_query');
+        $router = $this->getRouter();
+
+        $tab[GridService::KEY_URL_SAVE_RAW_SQL] = $router->generate('admin_sql_manager_save_generic_query');
         $tab = $this->addOptionsSelectLimit($tab);
         return $this->addTranslateGrid($tab);
     }
@@ -115,10 +91,14 @@ class GridService extends AppAdminService
      * Ajoute les traductions au tableau de donnée du GRID
      * @param array $tab
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function addTranslateGrid(array $tab): array
     {
-        $tab['translate'] = $this->gridTranslate->getTranslate();
+        $gridTranslate = $this->getGridTranslate();
+
+        $tab['translate'] = $gridTranslate->getTranslate();
         return $tab;
     }
 
@@ -126,14 +106,18 @@ class GridService extends AppAdminService
      * Format le role de symfony en donnée à afficher pour le grid
      * @param string $role
      * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function renderRole(string $role): string
     {
+        $translator = $this->getTranslator();
+
         $tabRole = [
-            'ROLE_USER' => $this->translator->trans('global.role.user', domain: 'global'),
-            'ROLE_CONTRIBUTEUR' => $this->translator->trans('global.role.contributeur', domain: 'global'),
-            'ROLE_ADMIN' => $this->translator->trans('global.role.admin', domain: 'global'),
-            'ROLE_SUPER_ADMIN' => $this->translator->trans('global.role.superadmin', domain: 'global')
+            'ROLE_USER' => $translator->trans('global.role.user', domain: 'global'),
+            'ROLE_CONTRIBUTEUR' => $translator->trans('global.role.contributeur', domain: 'global'),
+            'ROLE_ADMIN' => $translator->trans('global.role.admin', domain: 'global'),
+            'ROLE_SUPER_ADMIN' => $translator->trans('global.role.superadmin', domain: 'global')
         ];
         return $tabRole[$role];
     }
