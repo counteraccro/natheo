@@ -13,6 +13,7 @@ use App\Repository\Admin\Content\Media\MediaFolderRepository;
 use App\Repository\Admin\Content\Media\MediaRepository;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
+use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Content\Media\MediaFolderConst;
 use App\Utils\System\Options\OptionSystemKey;
@@ -86,6 +87,7 @@ class MediaFolderService extends AppAdminService
         'parameterBag' => ParameterBagInterface::class,
         'optionSystemService' => OptionSystemService::class,
         'gridService' => GridService::class,
+        'markdownEditorService' => MarkdownEditorService::class
     ])] protected ContainerInterface $handlers)
     {
         $this->initValue();
