@@ -9,56 +9,12 @@ namespace App\Service\Admin\Tools;
 use App\Entity\Admin\Tools\SqlManager;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
-use App\Service\Admin\System\OptionSystemService;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SqlManagerService extends AppAdminService
 {
-
-    /**
-     * @var GridService
-     */
-    private GridService $gridService;
-
-    /**
-     * @var OptionSystemService
-     */
-    private OptionSystemService $optionSystemService;
-
-    /**
-     * @param ContainerInterface $handlers
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function __construct(#[AutowireLocator([
-        'logger' => LoggerInterface::class,
-        'entityManager' => EntityManagerInterface::class,
-        'containerBag' => ContainerBagInterface::class,
-        'translator' => TranslatorInterface::class,
-        'router' => UrlGeneratorInterface::class,
-        'security' => Security::class,
-        'requestStack' => RequestStack::class,
-        'parameterBag' => ParameterBagInterface::class,
-        'optionSystemService' => OptionSystemService::class,
-        'gridService' => GridService::class,
-    ])] ContainerInterface $handlers)
-    {
-        $this->gridService = $handlers->get('gridService');
-        $this->optionSystemService = $handlers->get('optionSystemService');
-        parent::__construct($handlers);
-    }
 
     /**
      * Construit le tableau de donnée à envoyé au tableau GRID
@@ -66,14 +22,19 @@ class SqlManagerService extends AppAdminService
      * @param int $limit
      * @param string|null $search
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getAllFormatToGrid(int $page, int $limit, string $search = null): array
     {
+        $translator = $this->getTranslator();
+        $gridService = $this->getGridService();
+
         $column = [
-            $this->translator->trans('sql_manager.grid.id', domain: 'sql_manager'),
-            $this->translator->trans('sql_manager.grid.name', domain: 'sql_manager'),
-            $this->translator->trans('sql_manager.grid.query', domain: 'sql_manager'),
-            $this->translator->trans('sql_manager.grid.update_at', domain: 'sql_manager'),
+            $translator->trans('sql_manager.grid.id', domain: 'sql_manager'),
+            $translator->trans('sql_manager.grid.name', domain: 'sql_manager'),
+            $translator->trans('sql_manager.grid.query', domain: 'sql_manager'),
+            $translator->trans('sql_manager.grid.update_at', domain: 'sql_manager'),
             GridService::KEY_ACTION,
         ];
 
@@ -93,11 +54,11 @@ class SqlManagerService extends AppAdminService
             }
 
             $data[] = [
-                $this->translator->trans('sql_manager.grid.id', domain: 'sql_manager') =>
+                $translator->trans('sql_manager.grid.id', domain: 'sql_manager') =>
                     $element->getId() . ' ' . $isDisabled,
-                $this->translator->trans('sql_manager.grid.name', domain: 'sql_manager') => $element->getName(),
-                $this->translator->trans('sql_manager.grid.query', domain: 'sql_manager') => $element->getQuery(),
-                $this->translator->trans('sql_manager.grid.update_at', domain: 'sql_manager') => $element
+                $translator->trans('sql_manager.grid.name', domain: 'sql_manager') => $element->getName(),
+                $translator->trans('sql_manager.grid.query', domain: 'sql_manager') => $element->getQuery(),
+                $translator->trans('sql_manager.grid.update_at', domain: 'sql_manager') => $element
                     ->getUpdateAt()->format('d/m/y H:i'),
                 GridService::KEY_ACTION => $action,
             ];
@@ -107,9 +68,9 @@ class SqlManagerService extends AppAdminService
             GridService::KEY_NB => $nb,
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
-            GridService::KEY_RAW_SQL => $this->gridService->getFormatedSQLQuery($dataPaginate),
+            GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate),
         ];
-        return $this->gridService->addAllDataRequiredGrid($tabReturn);
+        return $gridService->addAllDataRequiredGrid($tabReturn);
 
     }
 
@@ -130,35 +91,41 @@ class SqlManagerService extends AppAdminService
      * Génère le tableau d'action pour le Grid des faqs
      * @param SqlManager $sqlManager
      * @return array[]|string[]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function generateTabAction(SqlManager $sqlManager): array
     {
+        $translator = $this->getTranslator();
+        $router = $this->getRouter();
+        $optionSystemService = $this->getOptionSystemService();
+
         $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
             'type' => 'put',
-            'url' => $this->router->generate('admin_sql_manager_disabled', ['id' => $sqlManager->getId()]),
+            'url' => $router->generate('admin_sql_manager_disabled', ['id' => $sqlManager->getId()]),
             'ajax' => true,
             'confirm' => true,
-            'msgConfirm' => $this->translator->trans('sql_manager.confirm.disabled.msg',
+            'msgConfirm' => $translator->trans('sql_manager.confirm.disabled.msg',
                 ['label' => $sqlManager->getName()], 'sql_manager')];
         if ($sqlManager->isDisabled()) {
             $actionDisabled = [
                 'label' => '<i class="bi bi-eye-fill"></i>',
                 'type' => 'put',
-                'url' => $this->router->generate('admin_sql_manager_disabled', ['id' => $sqlManager->getId()]),
+                'url' => $router->generate('admin_sql_manager_disabled', ['id' => $sqlManager->getId()]),
                 'ajax' => true
             ];
         }
 
         $actionDelete = '';
-        if ($this->optionSystemService->canDelete() && !$sqlManager->isDisabled()) {
+        if ($optionSystemService->canDelete() && !$sqlManager->isDisabled()) {
 
             $actionDelete = [
                 'label' => '<i class="bi bi-trash"></i>',
                 'type' => 'delete',
-                'url' => $this->router->generate('admin_sql_manager_delete', ['id' => $sqlManager->getId()]),
+                'url' => $router->generate('admin_sql_manager_delete', ['id' => $sqlManager->getId()]),
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $this->translator->trans('sql_manager.confirm.delete.msg', ['label' =>
+                'msgConfirm' => $translator->trans('sql_manager.confirm.delete.msg', ['label' =>
                     $sqlManager->getName()], 'sql_manager')
             ];
         }
@@ -173,12 +140,12 @@ class SqlManagerService extends AppAdminService
             // Bouton edit
             $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
                 'id' => $sqlManager->getId(),
-                'url' => $this->router->generate('admin_sql_manager_update', ['id' => $sqlManager->getId()]),
+                'url' => $router->generate('admin_sql_manager_update', ['id' => $sqlManager->getId()]),
                 'ajax' => false];
 
             $actions[] = ['label' => '<i class="bi bi-database-fill-check"></i>',
                 'id' => $sqlManager->getId(),
-                'url' => $this->router->generate('admin_sql_manager_execute', ['id' => $sqlManager->getId(),
+                'url' => $router->generate('admin_sql_manager_execute', ['id' => $sqlManager->getId(),
                     'isExecute' => true]),
                 'ajax' => false];
         }

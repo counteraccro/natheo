@@ -10,52 +10,15 @@ namespace App\Service\Admin;
 use App\Entity\Admin\Notification;
 use App\Entity\Admin\System\User;
 use App\Repository\Admin\NotificationRepository;
-use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Notification\NotificationFactory;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class NotificationService extends AppAdminService
 {
-
-    /**
-     * @var OptionSystemService
-     */
-    private OptionSystemService $optionSystemService;
-
-    /**
-     * @param ContainerInterface $handlers
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function __construct(#[AutowireLocator([
-        'logger' => LoggerInterface::class,
-        'entityManager' => EntityManagerInterface::class,
-        'containerBag' => ContainerBagInterface::class,
-        'translator' => TranslatorInterface::class,
-        'router' => UrlGeneratorInterface::class,
-        'security' => Security::class,
-        'requestStack' => RequestStack::class,
-        'parameterBag' => ParameterBagInterface::class,
-        'optionSystemService' => OptionSystemService::class
-    ])] ContainerInterface $handlers)
-    {
-        $this->optionSystemService = $handlers->get('optionSystemService');
-        parent::__construct($handlers);
-    }
 
     /**
      * Permet d'ajouter une notification
@@ -63,10 +26,13 @@ class NotificationService extends AppAdminService
      * @param string $key
      * @param array $params
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function add(User $user, string $key, array $params): void
     {
-        if (!$this->optionSystemService->canNotification()) {
+        $optionSystemService = $this->getOptionSystemService();
+        if (!$optionSystemService->canNotification()) {
             return;
         }
 
@@ -81,10 +47,13 @@ class NotificationService extends AppAdminService
      * @param string $key
      * @param array $params
      * @return User
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function addForFixture(User $user, string $key, array $params): User
     {
-        if (!$this->optionSystemService->canNotification()) {
+        $optionSystemService = $this->getOptionSystemService();
+        if (!$optionSystemService->canNotification()) {
             return $user;
         }
 
@@ -111,9 +80,13 @@ class NotificationService extends AppAdminService
      * @param User $user
      * @param bool $onlyNotRead : si true, ne retourne que les non lu
      * @return Paginator
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getByUserPaginate(int $page, int $limit, User $user, bool $onlyNotRead = false): Paginator
     {
+        $translator = $this->getTranslator();
+
         /** @var NotificationRepository $repo */
         $repo = $this->getRepository(Notification::class);
         $list = $repo->getByUserPaginate($page, $limit, $user, $onlyNotRead);
@@ -121,8 +94,8 @@ class NotificationService extends AppAdminService
         /** @var Notification $notification */
         foreach ($list as $notification) {
             $parameter = json_decode($notification->getParameters(), true);
-            $notification->setTitle($this->translator->trans($notification->getTitle(), domain: 'notification'));
-            $notification->setContent($this->translator->trans(
+            $notification->setTitle($translator->trans($notification->getTitle(), domain: 'notification'));
+            $notification->setContent($translator->trans(
                 $notification->getContent(),
                 $parameter,
                 domain: 'notification'
@@ -134,24 +107,28 @@ class NotificationService extends AppAdminService
     /**
      * Retourne les traductions pour le listing des notifications
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getTranslateListNotifications(): array
     {
+        $translator = $this->getTranslator();
+
         return [
-            'nb_notifification_show_start' => $this->translator->trans(
+            'nb_notifification_show_start' => $translator->trans(
                 'notification.nb.show.start',
                 domain: 'notification'
             ),
-            'nb_notifification_show_end' => $this->translator->trans(
+            'nb_notifification_show_end' => $translator->trans(
                 'notification.nb.show.end',
                 domain: 'notification'
             ),
-            'loading' => $this->translator->trans('notification.loading', domain: 'notification'),
-            'empty' => $this->translator->trans('notification.empty', domain: 'notification'),
-            'onlyNotRead' => $this->translator->trans('notification.only_not_read', domain: 'notification'),
-            'readAll' => $this->translator->trans('notification.read_All', domain: 'notification'),
-            'all' => $this->translator->trans('notification.all', domain: 'notification'),
-            'allSuccess' => $this->translator->trans('notification.all_success', domain: 'notification'),
+            'loading' => $translator->trans('notification.loading', domain: 'notification'),
+            'empty' => $translator->trans('notification.empty', domain: 'notification'),
+            'onlyNotRead' => $translator->trans('notification.only_not_read', domain: 'notification'),
+            'readAll' => $translator->trans('notification.read_All', domain: 'notification'),
+            'all' => $translator->trans('notification.all', domain: 'notification'),
+            'allSuccess' => $translator->trans('notification.all_success', domain: 'notification'),
         ];
     }
 

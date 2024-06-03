@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Service qui gère les médiaFolder
  */
 
@@ -12,6 +12,8 @@ use App\Entity\Admin\Content\Media\MediaFolder;
 use App\Repository\Admin\Content\Media\MediaFolderRepository;
 use App\Repository\Admin\Content\Media\MediaRepository;
 use App\Service\Admin\AppAdminService;
+use App\Service\Admin\GridService;
+use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Content\Media\MediaFolderConst;
 use App\Utils\System\Options\OptionSystemKey;
@@ -34,8 +36,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class MediaFolderService extends AppAdminService
 {
 
-    private OptionSystemService $optionSystemService;
-
     /**
      * Path de la médiathèque
      * @var string
@@ -54,14 +54,25 @@ class MediaFolderService extends AppAdminService
      */
     protected string $rootPath = '';
 
+    /**
+     * Path des miniatures
+     * @var string
+     */
     protected string $rootPathThumbnail = '';
 
+    /**
+     * Url des miniatures
+     * @var string
+     */
     protected string $webPathThumbnail = '';
 
+    /**
+     * Option pour créer ou non un dossier physique
+     * @var bool
+     */
     protected bool $canCreatePhysicalFolder = true;
 
     /**
-     * @param ContainerInterface $handlers
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -75,11 +86,12 @@ class MediaFolderService extends AppAdminService
         'requestStack' => RequestStack::class,
         'parameterBag' => ParameterBagInterface::class,
         'optionSystemService' => OptionSystemService::class,
-    ])] ContainerInterface $handlers)
+        'gridService' => GridService::class,
+        'markdownEditorService' => MarkdownEditorService::class
+    ])] protected ContainerInterface $handlers)
     {
-        $this->optionSystemService = $handlers->get('optionSystemService');
-        parent::__construct($handlers);
         $this->initValue();
+        parent::__construct($handlers);
     }
 
     /**
@@ -90,9 +102,12 @@ class MediaFolderService extends AppAdminService
      */
     private function initValue(): void
     {
-        $this->rootPath = $this->containerBag->get('kernel.project_dir');
-        $mediaFolder = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_PATH);
-        $rootWebPath = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_URL);
+        $optionSystemService = $this->getOptionSystemService();
+        $containerBag = $this->getContainerBag();
+
+        $this->rootPath = $containerBag->get('kernel.project_dir');
+        $mediaFolder = $optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_PATH);
+        $rootWebPath = $optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_URL);
 
         if($mediaFolder === null || $mediaFolder === '')
         {
@@ -107,7 +122,7 @@ class MediaFolderService extends AppAdminService
         $this->rootPathThumbnail = $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_THUMBNAILS;
         $this->webPathThumbnail = $rootWebPath . MediaFolderConst::PATH_WEB_THUMBNAILS;
 
-        $optCanCreatePhysicalFolder = $this->optionSystemService->getValueByKey(
+        $optCanCreatePhysicalFolder = $optionSystemService->getValueByKey(
             OptionSystemKey::OS_MEDIA_CREATE_PHYSICAL_FOLDER
         );
 
@@ -360,7 +375,7 @@ class MediaFolderService extends AppAdminService
         $repoM = $this->getRepository(Media::class);
         $listeMedia = $repoM->getAllByLikePath($old);
 
-        /** @var \App\Entity\Admin\Content\Media\Media $media */
+        /** @var Media $media */
         $nb = count($listeMedia);
 
         $i = 0;
@@ -381,28 +396,29 @@ class MediaFolderService extends AppAdminService
      * Retourne les informations d'un dossier
      * @param int $idFolderMedia
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getInfoFolder(int $idFolderMedia): array
     {
+        $translator = $this->getTranslator();
+
         /** @var MediaFolder $mediaFolder */
         $mediaFolder = $this->findOneById(MediaFolder::class, $idFolderMedia);
         $content = $this->getContentFolder($mediaFolder);
 
         return [
-            $this->translator->trans('media.mediatheque.info.folder.name', domain: 'media')
-            => $mediaFolder->getName(),
-            $this->translator->trans('media.mediatheque.info.folder.emplacement', domain: 'media')
-            => $mediaFolder->getPath(),
-            $this->translator->trans('media.mediatheque.info.folder.taille.disque', domain: 'media')
+            $translator->trans('media.mediatheque.info.folder.name', domain: 'media') => $mediaFolder->getName(),
+            $translator->trans('media.mediatheque.info.folder.emplacement', domain: 'media') => $mediaFolder->getPath(),
+            $translator->trans('media.mediatheque.info.folder.taille.disque', domain: 'media')
             => Utils::getSizeName($this->getFolderSize($mediaFolder)),
-            $this->translator->trans('media.mediatheque.info.folder.contenu', domain: 'media')
-            => $content['files'] . ' ' .
-                $this->translator->trans('media.mediatheque.info.folder.files', domain: 'media') . ', ' .
+            $translator->trans('media.mediatheque.info.folder.contenu', domain: 'media') => $content['files'] . ' ' .
+                $translator->trans('media.mediatheque.info.folder.files', domain: 'media') . ', ' .
                 $content['directory'] . ' ' .
-                $this->translator->trans('media.mediatheque.info.folder.folder', domain: 'media'),
-            $this->translator->trans('media.mediatheque.info.folder.date_creation', domain: 'media')
+                $translator->trans('media.mediatheque.info.folder.folder', domain: 'media'),
+            $translator->trans('media.mediatheque.info.folder.date_creation', domain: 'media')
             => $mediaFolder->getCreatedAt()->format('d/m/y H:i'),
-            $this->translator->trans('media.mediatheque.info.folder.date_update', domain: 'media')
+            $translator->trans('media.mediatheque.info.folder.date_update', domain: 'media')
             => $mediaFolder->getUpdateAt()->format('d/m/y H:i')
         ];
     }
@@ -430,21 +446,25 @@ class MediaFolderService extends AppAdminService
      * @param int $id
      * @param string $type
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getAllDataForModalMove(int $id, string $type = 'media'): array
     {
+        $translator = $this->getTranslator();
+
         if ($type === 'media') {
             /** @var Media $entity */
             $entity = $this->findOneById(Media::class, $id);
             $folder = $entity->getMediaFolder();
 
-            $label = $this->translator->trans('media.mediatheque.move.label.media',
+            $label = $translator->trans('media.mediatheque.move.label.media',
                 ['name' => $entity->getName()], domain: 'media');
 
         } else {
             /** @var MediaFolder $folder */
             $folder = $this->findOneById(MediaFolder::class, $id);
-            $label = $this->translator->trans('media.mediatheque.move.label.folder',
+            $label = $translator->trans('media.mediatheque.move.label.folder',
                 ['name' => $folder->getName()], domain: 'media');
         }
 

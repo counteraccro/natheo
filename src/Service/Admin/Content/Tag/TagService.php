@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.2
+ * @version 1.3
  * Service gérant les tags de l'application
  */
 
@@ -12,56 +12,13 @@ use App\Entity\Admin\Content\Tag\TagTranslation;
 use App\Repository\Admin\Content\Tag\TagRepository;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
-use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Content\Tag\TagRender;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TagService extends AppAdminService
 {
-    /**
-     * @var GridService
-     */
-    private GridService $gridService;
-
-    /**
-     * @var OptionSystemService
-     */
-    private OptionSystemService $optionSystemService;
-
-    /**
-     * @param ContainerInterface $handlers
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function __construct(#[AutowireLocator([
-        'logger' => LoggerInterface::class,
-        'entityManager' => EntityManagerInterface::class,
-        'containerBag' => ContainerBagInterface::class,
-        'translator' => TranslatorInterface::class,
-        'router' => UrlGeneratorInterface::class,
-        'security' => Security::class,
-        'requestStack' => RequestStack::class,
-        'parameterBag' => ParameterBagInterface::class,
-        'optionSystemService' => OptionSystemService::class,
-        'gridService' => GridService::class,
-    ])] ContainerInterface $handlers)
-    {
-        $this->gridService = $handlers->get('gridService');
-        $this->optionSystemService = $handlers->get('optionSystemService');
-        parent::__construct($handlers);
-    }
 
     /**
      * Retourne une liste de tag paginé
@@ -85,12 +42,17 @@ class TagService extends AppAdminService
      */
     public function getAllFormatToGrid(int $page, int $limit, string $search = null): array
     {
+        $translator = $this->getTranslator();
+        $gridService = $this->getGridService();
+        $requestStack = $this->getRequestStack();
+
+
         $column = [
-            $this->translator->trans('tag.grid.id', domain: 'tag'),
-            $this->translator->trans('tag.grid.label', domain: 'tag'),
-            $this->translator->trans('tag.grid.color', domain: 'tag'),
-            $this->translator->trans('tag.grid.created_at', domain: 'tag'),
-            $this->translator->trans('tag.grid.update_at', domain: 'tag'),
+            $translator->trans('tag.grid.id', domain: 'tag'),
+            $translator->trans('tag.grid.label', domain: 'tag'),
+            $translator->trans('tag.grid.color', domain: 'tag'),
+            $translator->trans('tag.grid.created_at', domain: 'tag'),
+            $translator->trans('tag.grid.update_at', domain: 'tag'),
             GridService::KEY_ACTION,
         ];
 
@@ -108,16 +70,16 @@ class TagService extends AppAdminService
                 $isDisabled = '<i class="bi bi-eye-slash"></i>';
             }
 
-            $locale = $this->requestStack->getCurrentRequest()->getLocale();
+            $locale = $requestStack->getCurrentRequest()->getLocale();
             $tagRender = new TagRender($element, $locale);
 
             $data[] = [
-                $this->translator->trans('tag.grid.id', domain: 'tag') => $element->getId() . ' ' . $isDisabled,
-                $this->translator->trans('tag.grid.label', domain: 'tag') => $tagRender->getHtml(),
-                $this->translator->trans('tag.grid.color', domain: 'tag') => $element->getColor(),
-                $this->translator->trans('tag.grid.created_at', domain: 'tag') => $element
+                $translator->trans('tag.grid.id', domain: 'tag') => $element->getId() . ' ' . $isDisabled,
+                $translator->trans('tag.grid.label', domain: 'tag') => $tagRender->getHtml(),
+                $translator->trans('tag.grid.color', domain: 'tag') => $element->getColor(),
+                $translator->trans('tag.grid.created_at', domain: 'tag') => $element
                     ->getCreatedAt()->format('d/m/y H:i'),
-                $this->translator->trans('tag.grid.update_at', domain: 'tag') => $element
+                $translator->trans('tag.grid.update_at', domain: 'tag') => $element
                     ->getUpdateAt()->format('d/m/y H:i'),
                 GridService::KEY_ACTION => $action,
             ];
@@ -127,9 +89,9 @@ class TagService extends AppAdminService
             GridService::KEY_NB => $nb,
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
-            GridService::KEY_RAW_SQL => $this->gridService->getFormatedSQLQuery($dataPaginate)
+            GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate)
         ];
-        return $this->gridService->addAllDataRequiredGrid($tabReturn);
+        return $gridService->addAllDataRequiredGrid($tabReturn);
 
     }
 
@@ -137,36 +99,43 @@ class TagService extends AppAdminService
      * Génère le tableau d'action pour le Grid des sidebarElement
      * @param Tag $tag
      * @return array[]|string[]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function generateTabAction(Tag $tag): array
     {
-        $label = $tag->getTagTranslationByLocale($this->requestStack->getCurrentRequest()->getLocale())->getLabel();
+        $translator = $this->getTranslator();
+        $requestStack = $this->getRequestStack();
+        $router = $this->getRouter();
+        $optionSystemService = $this->getOptionSystemService();
+
+        $label = $tag->getTagTranslationByLocale($requestStack->getCurrentRequest()->getLocale())->getLabel();
 
         $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
             'type' => 'put',
-            'url' => $this->router->generate('admin_tag_update_disabled', ['id' => $tag->getId()]),
+            'url' => $router->generate('admin_tag_update_disabled', ['id' => $tag->getId()]),
             'ajax' => true,
             'confirm' => true,
-            'msgConfirm' => $this->translator->trans('tag.confirm.disabled.msg', ['label' => $label], 'tag')];
+            'msgConfirm' => $translator->trans('tag.confirm.disabled.msg', ['label' => $label], 'tag')];
         if ($tag->isDisabled()) {
             $actionDisabled = [
                 'label' => '<i class="bi bi-eye-fill"></i>',
                 'type' => 'put',
-                'url' => $this->router->generate('admin_tag_update_disabled', ['id' => $tag->getId()]),
+                'url' => $router->generate('admin_tag_update_disabled', ['id' => $tag->getId()]),
                 'ajax' => true
             ];
         }
 
         $actionDelete = '';
-        if ($this->optionSystemService->canDelete()) {
+        if ($optionSystemService->canDelete()) {
 
             $actionDelete = [
                 'label' => '<i class="bi bi-trash"></i>',
                 'type' => 'delete',
-                'url' => $this->router->generate('admin_tag_delete', ['id' => $tag->getId()]),
+                'url' => $router->generate('admin_tag_delete', ['id' => $tag->getId()]),
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $this->translator->trans('tag.confirm.delete.msg', ['label' =>
+                'msgConfirm' => $translator->trans('tag.confirm.delete.msg', ['label' =>
                     $label], 'tag')
             ];
         }
@@ -181,7 +150,7 @@ class TagService extends AppAdminService
         $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
             'type' => 'post',
             'id' => $tag->getId(),
-            'url' => $this->router->generate('admin_tag_update', ['id' => $tag->getId()]),
+            'url' => $router->generate('admin_tag_update', ['id' => $tag->getId()]),
             'ajax' => false];
 
         return $actions;

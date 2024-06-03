@@ -2,68 +2,75 @@
 /**
  * Service pour la génération de l'éditeur Markdown du site
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  */
 
 namespace App\Service\Admin;
+
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class MarkdownEditorService extends AppAdminService
 {
     /**
      *  Retourne les traductions de l'éditeur Markdown
-     * @deprecated
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @deprecated
      */
     public function getTranslate(): array
     {
+        $translator = $this->getTranslator();
+
         trigger_deprecation('Service/Admin/MarkdownEditorService', '1.0',
             'Méthode "%s()" dépréciée, passer maintenant par MarkdownEditorTranslate pour avoir la traduction.',
             __METHOD__ );
         return [
-            'btnBold' => $this->translator->trans('editor.button.bold', domain: 'editor_markdown'),
-            'btnItalic' => $this->translator->trans('editor.button.italic', domain: 'editor_markdown'),
-            'btnStrike' => $this->translator->trans('editor.button.strike', domain: 'editor_markdown'),
-            'btnQuote' => $this->translator->trans('editor.button.quote', domain: 'editor_markdown'),
-            'btnList' => $this->translator->trans('editor.button.list', domain: 'editor_markdown'),
-            'btnListNumber' => $this->translator->trans('editor.button.list.number', domain: 'editor_markdown'),
-            'btnTable' => $this->translator->trans('editor.button.table', domain: 'editor_markdown'),
-            'btnLink' => $this->translator->trans('editor.button.link', domain: 'editor_markdown'),
-            'btnImage' => $this->translator->trans('editor.button.image', domain: 'editor_markdown'),
-            'btnCode' => $this->translator->trans('editor.button.code', domain: 'editor_markdown'),
-            'btnSave' => $this->translator->trans('editor.button.save', domain: 'editor_markdown'),
-            'btnKeyWord' => $this->translator->trans('editor.button.keyword', domain: 'editor_markdown'),
-            'titreLabel'  => $this->translator->trans('editor.titre.label', domain: 'editor_markdown'),
-            'titreH1'  => $this->translator->trans('editor.titre.h1', domain: 'editor_markdown'),
-            'titreH2'  => $this->translator->trans('editor.titre.h2', domain: 'editor_markdown'),
-            'titreH3'  => $this->translator->trans('editor.titre.h3', domain: 'editor_markdown'),
-            'titreH4'  => $this->translator->trans('editor.titre.h4', domain: 'editor_markdown'),
-            'titreH5'  => $this->translator->trans('editor.titre.h5', domain: 'editor_markdown'),
-            'titreH6'  => $this->translator->trans('editor.titre.h6', domain: 'editor_markdown'),
-            'help'  => $this->translator->trans('editor.help', domain: 'editor_markdown'),
-            'render'  => $this->translator->trans('editor.render', domain: 'editor_markdown'),
-            'modalTitreLink' => $this->translator->trans('editor.modal.titre.link', domain: 'editor_markdown'),
-            'modalInputUrlLink' => $this->translator->trans('editor.modal.input.link', domain: 'editor_markdown'),
-            'modalTitreImage' => $this->translator->trans('editor.modal.titre.image', domain: 'editor_markdown'),
-            'modalInputUrlImage' => $this->translator->trans('editor.modal.input.image', domain: 'editor_markdown'),
-            'modalBtnClose' => $this->translator->trans('editor.modal.button.close', domain: 'editor_markdown'),
-            'modalBtnValide' => $this->translator->trans('editor.modal.button.valide', domain: 'editor_markdown'),
-            'modalInputText' => $this->translator->trans('editor.modal.input.text', domain: 'editor_markdown'),
-            'msgEmptyContent' => $this->translator->trans('editor.input.empty', domain: 'editor_markdown'),
-            'btnMediatheque' => $this->translator->trans('editor.btn.mediatheque', domain: 'editor_markdown'),
-            'warning_edit'  => $this->translator->trans('editor.warning.edit', domain: 'editor_markdown'),
+            'btnBold' => $translator->trans('editor.button.bold', domain: 'editor_markdown'),
+            'btnItalic' => $translator->trans('editor.button.italic', domain: 'editor_markdown'),
+            'btnStrike' => $translator->trans('editor.button.strike', domain: 'editor_markdown'),
+            'btnQuote' => $translator->trans('editor.button.quote', domain: 'editor_markdown'),
+            'btnList' => $translator->trans('editor.button.list', domain: 'editor_markdown'),
+            'btnListNumber' => $translator->trans('editor.button.list.number', domain: 'editor_markdown'),
+            'btnTable' => $translator->trans('editor.button.table', domain: 'editor_markdown'),
+            'btnLink' => $translator->trans('editor.button.link', domain: 'editor_markdown'),
+            'btnImage' => $translator->trans('editor.button.image', domain: 'editor_markdown'),
+            'btnCode' => $translator->trans('editor.button.code', domain: 'editor_markdown'),
+            'btnSave' => $translator->trans('editor.button.save', domain: 'editor_markdown'),
+            'btnKeyWord' => $translator->trans('editor.button.keyword', domain: 'editor_markdown'),
+            'titreLabel'  => $translator->trans('editor.titre.label', domain: 'editor_markdown'),
+            'titreH1'  => $translator->trans('editor.titre.h1', domain: 'editor_markdown'),
+            'titreH2'  => $translator->trans('editor.titre.h2', domain: 'editor_markdown'),
+            'titreH3'  => $translator->trans('editor.titre.h3', domain: 'editor_markdown'),
+            'titreH4'  => $translator->trans('editor.titre.h4', domain: 'editor_markdown'),
+            'titreH5'  => $translator->trans('editor.titre.h5', domain: 'editor_markdown'),
+            'titreH6'  => $translator->trans('editor.titre.h6', domain: 'editor_markdown'),
+            'help'  => $translator->trans('editor.help', domain: 'editor_markdown'),
+            'render'  => $translator->trans('editor.render', domain: 'editor_markdown'),
+            'modalTitreLink' => $translator->trans('editor.modal.titre.link', domain: 'editor_markdown'),
+            'modalInputUrlLink' => $translator->trans('editor.modal.input.link', domain: 'editor_markdown'),
+            'modalTitreImage' => $translator->trans('editor.modal.titre.image', domain: 'editor_markdown'),
+            'modalInputUrlImage' => $translator->trans('editor.modal.input.image', domain: 'editor_markdown'),
+            'modalBtnClose' => $translator->trans('editor.modal.button.close', domain: 'editor_markdown'),
+            'modalBtnValide' => $translator->trans('editor.modal.button.valide', domain: 'editor_markdown'),
+            'modalInputText' => $translator->trans('editor.modal.input.text', domain: 'editor_markdown'),
+            'msgEmptyContent' => $translator->trans('editor.input.empty', domain: 'editor_markdown'),
+            'btnMediatheque' => $translator->trans('editor.btn.mediatheque', domain: 'editor_markdown'),
+            'warning_edit'  => $translator->trans('editor.warning.edit', domain: 'editor_markdown'),
             'mediathequeMarkdown' => [
-                'title' => $this->translator->trans('editor.mediatheque.title', domain: 'editor_markdown'),
-                'btn_close' => $this->translator->trans('editor.mediatheque.btn.close', domain: 'editor_markdown'),
-                'loading' => $this->translator->trans('editor.mediatheque.loading', domain: 'editor_markdown'),
-                'no_media' => $this->translator->trans('editor.mediatheque.no_media', domain: 'editor_markdown'),
-                'btn_size' => $this->translator->trans('editor.mediatheque.btn.size', domain: 'editor_markdown'),
-                'size_fluide' => $this->translator->trans('editor.mediatheque.size.fluide', domain: 'editor_markdown'),
-                'size_max' => $this->translator->trans('editor.mediatheque.size_max', domain: 'editor_markdown'),
-                'size_100' => $this->translator->trans('editor.mediatheque.size_100', domain: 'editor_markdown'),
-                'size_200' => $this->translator->trans('editor.mediatheque.size_200', domain: 'editor_markdown'),
-                'size_300' => $this->translator->trans('editor.mediatheque.size_300', domain: 'editor_markdown'),
-                'size_400' => $this->translator->trans('editor.mediatheque.size_400', domain: 'editor_markdown'),
-                'size_500' => $this->translator->trans('editor.mediatheque.size_500', domain: 'editor_markdown'),
+                'title' => $translator->trans('editor.mediatheque.title', domain: 'editor_markdown'),
+                'btn_close' => $translator->trans('editor.mediatheque.btn.close', domain: 'editor_markdown'),
+                'loading' => $translator->trans('editor.mediatheque.loading', domain: 'editor_markdown'),
+                'no_media' => $translator->trans('editor.mediatheque.no_media', domain: 'editor_markdown'),
+                'btn_size' => $translator->trans('editor.mediatheque.btn.size', domain: 'editor_markdown'),
+                'size_fluide' => $translator->trans('editor.mediatheque.size.fluide', domain: 'editor_markdown'),
+                'size_max' => $translator->trans('editor.mediatheque.size_max', domain: 'editor_markdown'),
+                'size_100' => $translator->trans('editor.mediatheque.size_100', domain: 'editor_markdown'),
+                'size_200' => $translator->trans('editor.mediatheque.size_200', domain: 'editor_markdown'),
+                'size_300' => $translator->trans('editor.mediatheque.size_300', domain: 'editor_markdown'),
+                'size_400' => $translator->trans('editor.mediatheque.size_400', domain: 'editor_markdown'),
+                'size_500' => $translator->trans('editor.mediatheque.size_500', domain: 'editor_markdown'),
 
             ]
         ];

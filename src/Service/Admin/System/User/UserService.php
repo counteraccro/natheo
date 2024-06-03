@@ -2,7 +2,7 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Service lier à l'objet user
  */
 
@@ -11,71 +11,16 @@ namespace App\Service\Admin\System\User;
 use App\Entity\Admin\System\User;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
-use App\Service\Admin\System\OptionSystemService;
 use App\Utils\System\User\Anonymous;
 use App\Utils\System\User\Role;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\String\ByteString;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserService extends AppAdminService
 {
-
-    /**
-     * @var GridService
-     */
-    private GridService $gridService;
-
-    /**
-     * @var OptionSystemService
-     */
-    private OptionSystemService $optionSystemService;
-
-    /**
-     * @var UserPasswordHasherInterface
-     */
-    private UserPasswordHasherInterface $passwordHasher;
-
-    /**
-     * @param ContainerInterface $handlers
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function __construct(
-        #[AutowireLocator([
-            'logger' => LoggerInterface::class,
-            'entityManager' => EntityManagerInterface::class,
-            'containerBag' => ContainerBagInterface::class,
-            'translator' => TranslatorInterface::class,
-            'router' => UrlGeneratorInterface::class,
-            'security' => Security::class,
-            'requestStack' => RequestStack::class,
-            'parameterBag' => ParameterBagInterface::class,
-            'optionSystemService' => OptionSystemService::class,
-            'gridService' => GridService::class,
-            'userPasswordHasher' => UserPasswordHasherInterface::class
-        ])]
-        private readonly ContainerInterface $handlers
-    )
-    {
-        $this->gridService = $this->handlers->get('gridService');
-        $this->passwordHasher = $this->handlers->get('userPasswordHasher');
-        $this->optionSystemService = $this->handlers->get('optionSystemService');
-        parent::__construct($handlers);
-    }
 
     /**
      * Retourne une liste de user paginé
@@ -96,17 +41,22 @@ class UserService extends AppAdminService
      * @param int $limit
      * @param string|null $search
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getAllFormatToGrid(int $page, int $limit, string $search = null): array
     {
+        $translator = $this->getTranslator();
+        $gridService = $this->getGridService();
+
         $column = [
-            $this->translator->trans('user.grid.id', domain: 'user'),
-            $this->translator->trans('user.grid.login', domain: 'user'),
-            $this->translator->trans('user.grid.email', domain: 'user'),
-            $this->translator->trans('user.grid.name', domain: 'user'),
-            $this->translator->trans('user.grid.role', domain: 'user'),
-            $this->translator->trans('user.grid.created_at', domain: 'user'),
-            $this->translator->trans('user.grid.update_at', domain: 'user'),
+            $translator->trans('user.grid.id', domain: 'user'),
+            $translator->trans('user.grid.login', domain: 'user'),
+            $translator->trans('user.grid.email', domain: 'user'),
+            $translator->trans('user.grid.name', domain: 'user'),
+            $translator->trans('user.grid.role', domain: 'user'),
+            $translator->trans('user.grid.created_at', domain: 'user'),
+            $translator->trans('user.grid.update_at', domain: 'user'),
             GridService::KEY_ACTION,
         ];
 
@@ -129,11 +79,11 @@ class UserService extends AppAdminService
             }
 
             if ($user->isFounder()) {
-                $roles = $this->translator->trans('user.form_update.role.founder', domain: 'user');
+                $roles = $translator->trans('user.form_update.role.founder', domain: 'user');
             } else {
                 $roles = '';
                 foreach ($user->getRoles() as $role) {
-                    $roles .= $this->gridService->renderRole($role) . ', ';
+                    $roles .= $gridService->renderRole($role) . ', ';
                 }
                 $roles = substr($roles, 0, -2);
             }
@@ -141,15 +91,15 @@ class UserService extends AppAdminService
 
             $actions = $this->generateTabAction($user);
             $data[] = [
-                $this->translator->trans('user.grid.id', domain: 'user') => $user->getId() . ' ' . $isDisabled,
-                $this->translator->trans('user.grid.login', domain: 'user') => $user->getLogin(),
-                $this->translator->trans('user.grid.email', domain: 'user') => $email,
-                $this->translator->trans('user.grid.name', domain: 'user') => $user->getFirstname() . ' ' . $user->
+                $translator->trans('user.grid.id', domain: 'user') => $user->getId() . ' ' . $isDisabled,
+                $translator->trans('user.grid.login', domain: 'user') => $user->getLogin(),
+                $translator->trans('user.grid.email', domain: 'user') => $email,
+                $translator->trans('user.grid.name', domain: 'user') => $user->getFirstname() . ' ' . $user->
                     getLastname(),
-                $this->translator->trans('user.grid.role', domain: 'user') => $roles,
-                $this->translator->trans('user.grid.created_at', domain: 'user') => $user->getCreatedAt()->
+                $translator->trans('user.grid.role', domain: 'user') => $roles,
+                $translator->trans('user.grid.created_at', domain: 'user') => $user->getCreatedAt()->
                 format('d/m/y H:i'),
-                $this->translator->trans('user.grid.update_at', domain: 'user') => $user->getUpdateAt()->
+                $translator->trans('user.grid.update_at', domain: 'user') => $user->getUpdateAt()->
                 format('d/m/y H:i'),
                 GridService::KEY_ACTION => $actions
             ];
@@ -159,9 +109,9 @@ class UserService extends AppAdminService
             GridService::KEY_NB => $nb,
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
-            GridService::KEY_RAW_SQL => $this->gridService->getFormatedSQLQuery($dataPaginate)
+            GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate)
         ];
-        return $this->gridService->addAllDataRequiredGrid($tabReturn);
+        return $gridService->addAllDataRequiredGrid($tabReturn);
 
     }
 
@@ -169,9 +119,15 @@ class UserService extends AppAdminService
      * Génère le tableau d'action pour le Grid des users
      * @param User $user
      * @return array[]|string[]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function generateTabAction(User $user): array
     {
+        $translator = $this->getTranslator();
+        $router = $this->getRouter();
+        $optionSystemService = $this->getOptionSystemService();
+        $security = $this->getSecurity();
 
         $actions = [];
 
@@ -185,28 +141,28 @@ class UserService extends AppAdminService
             // Bouton disabled
             $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
                 'type' => 'put',
-                'url' => $this->router->generate('admin_user_update_disabled', ['id' => $user->getId()]),
+                'url' => $router->generate('admin_user_update_disabled', ['id' => $user->getId()]),
                 'ajax' => true,
                 'confirm' => true,
                 'msgConfirm' =>
-                    $this->translator->trans('user.confirm.disabled.msg', ['{login}' => $user->getLogin()], 'user')];
+                    $translator->trans('user.confirm.disabled.msg', ['{login}' => $user->getLogin()], 'user')];
             if ($user->isDisabled()) {
                 $actionDisabled = ['label' => '<i class="bi bi-eye-fill"></i>', 'type' => 'put', 'url' =>
-                    $this->router->generate('admin_user_update_disabled', ['id' => $user->getId()]), 'ajax' => true];
+                    $router->generate('admin_user_update_disabled', ['id' => $user->getId()]), 'ajax' => true];
             }
 
             $actions[] = $actionDisabled;
 
             // Bouton Delete
             $actionDelete = '';
-            if ($this->optionSystemService->canDelete()) {
+            if ($optionSystemService->canDelete()) {
 
-                $msgConfirm = $this->translator->trans('user.confirm.delete.msg', ['{login}' =>
+                $msgConfirm = $translator->trans('user.confirm.delete.msg', ['{login}' =>
                     $user->getLogin()], 'user');
                 $label = '<i class="bi bi-trash"></i>';
                 $type = 'delete';
-                if ($this->optionSystemService->canReplace()) {
-                    $msgConfirm = $this->translator->trans('user.confirm.replace.msg', ['{login}' =>
+                if ($optionSystemService->canReplace()) {
+                    $msgConfirm = $translator->trans('user.confirm.replace.msg', ['{login}' =>
                         $user->getLogin()], 'user');
                     $label = '<i class="bi bi-person-fill-slash"></i>';
                     $type = 'put';
@@ -215,7 +171,7 @@ class UserService extends AppAdminService
                 $actionDelete = [
                     'label' => $label,
                     'type' => $type,
-                    'url' => $this->router->generate('admin_user_delete', ['id' => $user->getId()]),
+                    'url' => $router->generate('admin_user_delete', ['id' => $user->getId()]),
                     'ajax' => true,
                     'confirm' => true,
                     'msgConfirm' => $msgConfirm
@@ -229,18 +185,18 @@ class UserService extends AppAdminService
             if (!$user->isDisabled()) {
                 $actions[] = ['label' => '<i class="bi bi-arrow-left-right"></i>',
                     'id' => $user->getId(),
-                    'url' => $this->router->generate('admin_user_switch', ['user' => $user->getEmail()]),
+                    'url' => $router->generate('admin_user_switch', ['user' => $user->getEmail()]),
                     'ajax' => false];
             }
 
         }
 
         // Bouton édition affiché sauf pour le fondateur ou si l'utilisateur courant est le fondateur
-        if (($user->isFounder() && $this->security->getUser()->isFounder()) || !$user->isFounder()) {
+        if (($user->isFounder() && $security->getUser()->isFounder()) || !$user->isFounder()) {
             // Bouton edit
             $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
                 'id' => $user->getId(),
-                'url' => $this->router->generate('admin_user_update', ['id' => $user->getId()]),
+                'url' => $router->generate('admin_user_update', ['id' => $user->getId()]),
                 'ajax' => false];
         }
 
@@ -252,10 +208,14 @@ class UserService extends AppAdminService
      * @param User $user
      * @param $password
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function updatePassword(User $user, $password): void
     {
-        $user->setPassword($this->passwordHasher->hashPassword($user, $password));
+        $passwordHasher = $this->getUserPasswordHasher();
+
+        $user->setPassword($passwordHasher->hashPassword($user, $password));
         $this->save($user);
     }
 
@@ -303,6 +263,8 @@ class UserService extends AppAdminService
      * Si le champ login est null, la valeur avant le @ de l'email sera prise.
      * @param User $user
      * @return User
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function addUser(User $user): User
     {

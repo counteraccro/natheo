@@ -2,28 +2,19 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Service global pour l'administration
  */
 
 namespace App\Service\Admin;
 
 use Doctrine\DBAL\Exception;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -31,51 +22,9 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
-class AppAdminService
+class AppAdminService extends AppAdminHandlerService
 {
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected EntityManagerInterface $entityManager;
-
-    /**
-     * Paramètre globaux de Symfony
-     * @var ContainerBagInterface
-     */
-    protected ContainerBagInterface $containerBag;
-
-    /**
-     * @var TranslatorInterface
-     */
-    protected TranslatorInterface $translator;
-
-    /**
-     * @var UrlGeneratorInterface
-     */
-    protected UrlGeneratorInterface $router;
-
-    /**
-     * @var Security
-     */
-    protected Security $security;
-
-    /**
-     * @var RequestStack
-     */
-    protected RequestStack $requestStack;
-
-    /**
-     * @var ParameterBagInterface
-     */
-    protected ParameterBagInterface $parameterBag;
-
-    /**
-     * @var LoggerInterface|mixed
-     */
-    protected LoggerInterface $logger;
 
     /**
      * Structure de la réponse d'un appel AJAX
@@ -86,38 +35,16 @@ class AppAdminService
         'msg' => ''
     ];
 
-    public function __construct(
-        #[AutowireLocator([
-            'logger' => LoggerInterface::class,
-            'entityManager' => EntityManagerInterface::class,
-            'containerBag' => ContainerBagInterface::class,
-            'translator' => TranslatorInterface::class,
-            'router' => UrlGeneratorInterface::class,
-            'security' => Security::class,
-            'requestStack' => RequestStack::class,
-            'parameterBag' => ParameterBagInterface::class
-        ])]
-        private readonly ContainerInterface $handlers
-    )
-    {
-        $this->requestStack = $this->handlers->get('requestStack');
-        $this->containerBag = $this->handlers->get('containerBag');
-        $this->entityManager = $this->handlers->get('entityManager');
-        $this->translator = $this->handlers->get('translator');
-        $this->router = $this->handlers->get('router');
-        $this->security = $this->handlers->get('security');
-        $this->parameterBag = $this->handlers->get('parameterBag');
-        $this->logger = $this->handlers->get('logger');
-    }
-
     /**
      * Retourne le repository en fonction de l'entité
      * @param string $entity
      * @return EntityRepository
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     protected function getRepository(string $entity): EntityRepository
     {
-        return $this->entityManager->getRepository($entity);
+        return $this->getEntityManager()->getRepository($entity);
     }
 
     /**
@@ -125,6 +52,8 @@ class AppAdminService
      * @param mixed $entity
      * @param bool $flush
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function save(mixed $entity, bool $flush = true): void
     {
@@ -133,7 +62,7 @@ class AppAdminService
             $repo->save($entity, $flush);
             $this->ajaxResponse['success'] = true;
         } catch (Exception $exception) {
-            $this->logger->error($exception->getMessage());
+            $this->getLogger()->error($exception->getMessage());
             $this->ajaxResponse['success'] = false;
         }
     }
@@ -145,15 +74,19 @@ class AppAdminService
      * @param string|null $successMessage
      * @param string|null $errorMessage
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getResponseAjax(string $successMessage = null, string $errorMessage = null): array
     {
+        $translator = $this->getTranslator();
+
         if ($errorMessage === null) {
-            $errorMessage = $this->translator->trans('response.ajax.error');
+            $errorMessage = $translator->trans('response.ajax.error');
         }
 
         if ($successMessage === null) {
-            $successMessage = $this->translator->trans('response.ajax.success');
+            $successMessage = $translator->trans('response.ajax.success');
         }
 
         if ($this->ajaxResponse['success']) {
@@ -169,6 +102,8 @@ class AppAdminService
      * @param mixed $entity
      * @param bool $flush
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function remove(mixed $entity, bool $flush = true): void
     {
@@ -177,7 +112,7 @@ class AppAdminService
             $repo->remove($entity, $flush);
             $this->ajaxResponse['success'] = true;
         } catch (Exception $exception) {
-            $this->logger->error($exception->getMessage());
+            $this->getLogger()->error($exception->getMessage());
             $this->ajaxResponse['success'] = false;
         }
     }
@@ -193,7 +128,7 @@ class AppAdminService
      */
     protected function isGranted(mixed $attribute, mixed $subject = null): bool
     {
-        return $this->containerBag->get('security.authorization_checker')->isGranted($attribute, $subject);
+        return $this->getContainerBag()->get('security.authorization_checker')->isGranted($attribute, $subject);
     }
 
 
@@ -214,6 +149,8 @@ class AppAdminService
      * @param string $field
      * @param mixed $value
      * @return object|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function findOneBy(string $entity, string $field, mixed $value): ?object
     {
@@ -229,6 +166,8 @@ class AppAdminService
      * @param int|null $limit
      * @param int|null $offset
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function findBy(
         string $entity,
@@ -315,17 +254,19 @@ class AppAdminService
      *  ['localesTranslate'] => listes des locales avec traduction dans la langue courante<br />
      * ['current'] => la langue courante
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getLocales(): array
     {
-        $current = $this->requestStack->getCurrentRequest()->getLocale();
+        $current = $this->getRequestStack()->getCurrentRequest()->getLocale();
 
-        $locales = explode('|', $this->parameterBag->get('app.supported_locales'));
+        $locales = explode('|', $this->getParameterBag()->get('app.supported_locales'));
         array_unshift($locales, $current);
         $localesTranslate = [];
 
         foreach ($locales as $locale) {
-            $localesTranslate[$locale] = $this->translator->trans('global.' . $locale);
+            $localesTranslate[$locale] = $this->getTranslator()->trans('global.' . $locale);
         }
 
         return [
