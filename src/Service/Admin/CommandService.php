@@ -27,39 +27,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CommandService extends AppAdminService
 {
-    /**
-     * @var KernelInterface
-     */
-    private KernelInterface $kernel;
-
-    /**
-     * @param ContainerInterface $handlers
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function __construct(#[AutowireLocator([
-        'logger' => LoggerInterface::class,
-        'entityManager' => EntityManagerInterface::class,
-        'containerBag' => ContainerBagInterface::class,
-        'translator' => TranslatorInterface::class,
-        'router' => UrlGeneratorInterface::class,
-        'security' => Security::class,
-        'requestStack' => RequestStack::class,
-        'parameterBag' => ParameterBagInterface::class,
-        'kernel' => KernelInterface::class
-    ])] ContainerInterface $handlers)
-    {
-        $this->kernel = $handlers->get('kernel');
-        parent::__construct($handlers);
-    }
 
     /**
      * Permet de recharger le cache applicatif de Symfony
-     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function reloadCache(): void
     {
-        $application = new Application($this->kernel);
+        $kernel = $this->getKernel();
+
+        $application = new Application($kernel);
         $application->setAutoExit(false);
 
         $input = new ArrayInput([
