@@ -5,7 +5,7 @@
  * Formulaire de création / édition d'une FAQ
  */
 import axios from "axios";
-import Toast from "../../../Components/Global/Toast.vue";
+import Toast from "../../../../Components/Global/Toast.vue";
 
 export default {
   name: "DatabaseManager",
@@ -19,6 +19,7 @@ export default {
   data() {
     return {
       loading: false,
+      result: Object,
       toasts: {
         toastSuccess: {
           show: false,
@@ -42,7 +43,7 @@ export default {
     loadSchemaDataBase() {
       this.loading = true;
       axios.get(this.urls.load_schema_database).then((response) => {
-
+        this.result = response.data.query;
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -98,8 +99,29 @@ export default {
     </div>
 
     <div>
-      SqlManager
       <div class="btn btn-secondary" @click="this.dumpSQL">Dump</div>
+      <div class="btn btn-secondary" @click="this.dumpSQL">Rafraichir</div>
+      <div class="btn btn-secondary" @click="this.dumpSQL">Suavegardes</div>
+      <div class="block-page">
+        <div class="table-responsive">
+          <table class="table table-sm table-striped table-hover" aria-describedby="table">
+            <thead>
+            <tr>
+              <th v-for="header in this.result.header">
+                {{ header }}
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="row in this.result.result">
+              <td v-for="header in this.result.header">
+                {{ row[header] }}
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
   </div>
