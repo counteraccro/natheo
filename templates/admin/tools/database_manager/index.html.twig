@@ -16,7 +16,7 @@
         {#  {{ 'tag.index.description2' | trans({'icon' : '<i class="bi-eye-slash-fill"></i>'}, 'tag') | raw }} #}<br/>
     </p>
 
-    <div {{ vue_component('Admin/Tools/DatabaseManager', {
+    <div {{ vue_component('Admin/Tools/DatabaseManager/DatabaseManager', {
         'urls' : urls,
         'translate' : translate,
     }) }}>

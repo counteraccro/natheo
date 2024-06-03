@@ -7,10 +7,14 @@
 namespace App\Controller\Admin\Tools;
 
 use App\Message\Tools\DumpSql;
+use App\Service\Admin\Tools\DatabaseManagerService;
 use App\Service\Admin\Tools\SqlManagerService;
 use App\Utils\Breadcrumb;
+use App\Utils\Global\DataBase;
 use App\Utils\Tools\DatabaseManager\Query\RawPostgresQuery;
 use App\Utils\Translate\Tools\DatabaseManagerTranslate;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,14 +59,15 @@ class DatabaseManagerController extends AbstractController
     }
 
     /**
+     * @param DatabaseManagerService $databaseManagerService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-schema-database', name: 'load_schema_database', methods: ['GET'])]
-    public function schemaDataBase(): JsonResponse
+    public function schemaDataBase(DatabaseManagerService $databaseManagerService): JsonResponse
     {
-        $query = RawPostgresQuery::getQueryAllInformationSchema('natheo');
-        //$dataBase->executeRawQuery($query)
-        return $this->json([]);
+        return $this->json(['query' => $databaseManagerService->getAllInformationSchemaDatabase()]);
     }
 
     /**

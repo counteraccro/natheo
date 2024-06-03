@@ -28,6 +28,7 @@ class RawPostgresQuery
                      , TABLE_NAME
                      , row_estimate
                      , pg_size_pretty(total_bytes) AS total
+                     , total_bytes
                      --, pg_size_pretty(index_bytes) AS INDEX
                      --, pg_size_pretty(toast_bytes) AS toast
                      --, pg_size_pretty(table_bytes) AS TABLE
