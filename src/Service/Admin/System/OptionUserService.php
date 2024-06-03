@@ -60,7 +60,7 @@ class OptionUserService extends AppAdminService
             'parameterBag' => ParameterBagInterface::class,
             'optionSystemService' => OptionSystemService::class,
         ])]
-        private readonly ContainerInterface $handlers
+        protected ContainerInterface $handlers
     )
     {
         $this->optionSystemService = $this->handlers->get('optionSystemService');

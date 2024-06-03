@@ -68,7 +68,7 @@ class UserService extends AppAdminService
             'gridService' => GridService::class,
             'userPasswordHasher' => UserPasswordHasherInterface::class
         ])]
-        private readonly ContainerInterface $handlers
+        protected ContainerInterface $handlers
     )
     {
         $this->gridService = $this->handlers->get('gridService');

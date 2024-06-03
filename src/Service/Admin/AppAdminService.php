@@ -8,6 +8,7 @@
 
 namespace App\Service\Admin;
 
+use App\Service\Admin\System\OptionSystemService;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -33,49 +34,8 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class AppAdminService
+class AppAdminService extends AppAdminHandlerService
 {
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected EntityManagerInterface $entityManager;
-
-    /**
-     * Paramètre globaux de Symfony
-     * @var ContainerBagInterface
-     */
-    protected ContainerBagInterface $containerBag;
-
-    /**
-     * @var TranslatorInterface
-     */
-    protected TranslatorInterface $translator;
-
-    /**
-     * @var UrlGeneratorInterface
-     */
-    protected UrlGeneratorInterface $router;
-
-    /**
-     * @var Security
-     */
-    protected Security $security;
-
-    /**
-     * @var RequestStack
-     */
-    protected RequestStack $requestStack;
-
-    /**
-     * @var ParameterBagInterface
-     */
-    protected ParameterBagInterface $parameterBag;
-
-    /**
-     * @var LoggerInterface|mixed
-     */
-    protected LoggerInterface $logger;
 
     /**
      * Structure de la réponse d'un appel AJAX
@@ -85,30 +45,6 @@ class AppAdminService
         'success' => false,
         'msg' => ''
     ];
-
-    public function __construct(
-        #[AutowireLocator([
-            'logger' => LoggerInterface::class,
-            'entityManager' => EntityManagerInterface::class,
-            'containerBag' => ContainerBagInterface::class,
-            'translator' => TranslatorInterface::class,
-            'router' => UrlGeneratorInterface::class,
-            'security' => Security::class,
-            'requestStack' => RequestStack::class,
-            'parameterBag' => ParameterBagInterface::class
-        ])]
-        private readonly ContainerInterface $handlers
-    )
-    {
-        $this->requestStack = $this->handlers->get('requestStack');
-        $this->containerBag = $this->handlers->get('containerBag');
-        $this->entityManager = $this->handlers->get('entityManager');
-        $this->translator = $this->handlers->get('translator');
-        $this->router = $this->handlers->get('router');
-        $this->security = $this->handlers->get('security');
-        $this->parameterBag = $this->handlers->get('parameterBag');
-        $this->logger = $this->handlers->get('logger');
-    }
 
     /**
      * Retourne le repository en fonction de l'entité

@@ -34,55 +34,27 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FaqService extends AppAdminService
 {
-
-    /**
-     * @var GridService
-     */
-    private GridService $gridService;
-
-    /**
-     * @var OptionSystemService
-     */
-    private OptionSystemService $optionSystemService;
-
-    /**
-     * @param ContainerInterface $handlers
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function __construct(#[AutowireLocator([
-        'logger' => LoggerInterface::class,
-        'entityManager' => EntityManagerInterface::class,
-        'containerBag' => ContainerBagInterface::class,
-        'translator' => TranslatorInterface::class,
-        'router' => UrlGeneratorInterface::class,
-        'security' => Security::class,
-        'requestStack' => RequestStack::class,
-        'parameterBag' => ParameterBagInterface::class,
-        'optionSystemService' => OptionSystemService::class,
-        'gridService' => GridService::class,
-    ])] ContainerInterface $handlers)
-    {
-        $this->gridService = $handlers->get('gridService');
-        $this->optionSystemService = $handlers->get('optionSystemService');
-        parent::__construct($handlers);
-    }
-
     /**
      * Construit le tableau de donnée à envoyé au tableau GRID
      * @param int $page
      * @param int $limit
      * @param string|null $search
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getAllFormatToGrid(int $page, int $limit, string $search = null): array
     {
+        $translator = $this->handlers->get('translator');
+        $requestStack = $this->handlers->get('requestStack');
+        $gridService = $this->handlers->get('gridService');
+
         $column = [
-            $this->translator->trans('faq.grid.id', domain: 'faq'),
-            $this->translator->trans('faq.grid.title', domain: 'faq'),
-            $this->translator->trans('faq.grid.nb_categories', domain: 'faq'),
-            $this->translator->trans('faq.grid.nb_questions', domain: 'faq'),
-            $this->translator->trans('faq.grid.update_at', domain: 'faq'),
+            $translator->trans('faq.grid.id', domain: 'faq'),
+            $translator->trans('faq.grid.title', domain: 'faq'),
+            $translator->trans('faq.grid.nb_categories', domain: 'faq'),
+            $translator->trans('faq.grid.nb_questions', domain: 'faq'),
+            $translator->trans('faq.grid.update_at', domain: 'faq'),
             GridService::KEY_ACTION,
         ];
 
@@ -101,17 +73,17 @@ class FaqService extends AppAdminService
                 $isDisabled = '<i class="bi bi-eye-slash"></i>';
             }
 
-            $locale = $this->requestStack->getCurrentRequest()->getLocale();
+            $locale = $requestStack->getCurrentRequest()->getLocale();
             $titre = $element->getFaqTranslationByLocale($locale)->getTitle();
 
             $data[] = [
-                $this->translator->trans('faq.grid.id', domain: 'faq') => $element->getId() . ' ' . $isDisabled,
-                $this->translator->trans('faq.grid.title', domain: 'faq') => $titre,
-                $this->translator->trans('faq.grid.nb_categories', domain: 'faq') =>
+                $translator->trans('faq.grid.id', domain: 'faq') => $element->getId() . ' ' . $isDisabled,
+                $translator->trans('faq.grid.title', domain: 'faq') => $titre,
+                $translator->trans('faq.grid.nb_categories', domain: 'faq') =>
                     $element->getFaqStatistiqueByKey(FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES)->getValue(),
-                $this->translator->trans('faq.grid.nb_questions', domain: 'faq') =>
+                $translator->trans('faq.grid.nb_questions', domain: 'faq') =>
                     $element->getFaqStatistiqueByKey(FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS)->getValue(),
-                $this->translator->trans('faq.grid.update_at', domain: 'faq') => $element
+                $translator->trans('faq.grid.update_at', domain: 'faq') => $element
                     ->getUpdateAt()->format('d/m/y H:i'),
                 GridService::KEY_ACTION => $action,
             ];
@@ -121,9 +93,9 @@ class FaqService extends AppAdminService
             GridService::KEY_NB => $nb,
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
-            GridService::KEY_RAW_SQL => $this->gridService->getFormatedSQLQuery($dataPaginate)
+            GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate)
         ];
-        return $this->gridService->addAllDataRequiredGrid($tabReturn);
+        return $gridService->addAllDataRequiredGrid($tabReturn);
 
     }
 

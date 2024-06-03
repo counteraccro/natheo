@@ -66,7 +66,7 @@ class GridService extends AppAdminService
         'requestStack' => RequestStack::class,
         'parameterBag' => ParameterBagInterface::class,
         'gridTranslate' => GridTranslate::class
-    ])] private readonly ContainerInterface $handlers)
+    ])] protected ContainerInterface $handlers)
     {
         $this->gridTranslate = $this->handlers->get('gridTranslate');
         parent::__construct($this->handlers);

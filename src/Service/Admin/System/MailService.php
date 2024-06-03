@@ -123,7 +123,7 @@ class MailService extends AppAdminService
             'gridService' => GridService::class,
             'mailer' => MailerInterface::class
         ])]
-        private readonly ContainerInterface $handlers
+        protected ContainerInterface $handlers
     )
     {
         $this->gridService = $this->handlers->get('gridService');
