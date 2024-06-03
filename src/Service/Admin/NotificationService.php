@@ -37,6 +37,8 @@ class NotificationService extends AppAdminService
      * @param string $key
      * @param array $params
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function add(User $user, string $key, array $params): void
     {
@@ -116,24 +118,28 @@ class NotificationService extends AppAdminService
     /**
      * Retourne les traductions pour le listing des notifications
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getTranslateListNotifications(): array
     {
+        $translator = $this->getTranslator();
+
         return [
-            'nb_notifification_show_start' => $this->translator->trans(
+            'nb_notifification_show_start' => $translator->trans(
                 'notification.nb.show.start',
                 domain: 'notification'
             ),
-            'nb_notifification_show_end' => $this->translator->trans(
+            'nb_notifification_show_end' => $translator->trans(
                 'notification.nb.show.end',
                 domain: 'notification'
             ),
-            'loading' => $this->translator->trans('notification.loading', domain: 'notification'),
-            'empty' => $this->translator->trans('notification.empty', domain: 'notification'),
-            'onlyNotRead' => $this->translator->trans('notification.only_not_read', domain: 'notification'),
-            'readAll' => $this->translator->trans('notification.read_All', domain: 'notification'),
-            'all' => $this->translator->trans('notification.all', domain: 'notification'),
-            'allSuccess' => $this->translator->trans('notification.all_success', domain: 'notification'),
+            'loading' => $translator->trans('notification.loading', domain: 'notification'),
+            'empty' => $translator->trans('notification.empty', domain: 'notification'),
+            'onlyNotRead' => $translator->trans('notification.only_not_read', domain: 'notification'),
+            'readAll' => $translator->trans('notification.read_All', domain: 'notification'),
+            'all' => $translator->trans('notification.all', domain: 'notification'),
+            'allSuccess' => $translator->trans('notification.all_success', domain: 'notification'),
         ];
     }
 
