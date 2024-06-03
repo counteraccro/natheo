@@ -89,65 +89,26 @@ class MailService extends AppAdminService
      */
     public const BODY = 'body';
 
-    /**
-     * @var GridService
-     */
-    private GridService $gridService;
-
-    /**
-     * @var MailerInterface
-     */
-    private MailerInterface $mailer;
-
-    /**
-     * @var OptionSystemService
-     */
-    private OptionSystemService $optionSystemService;
-
-    /**
-     * @param ContainerInterface $handlers
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function __construct(
-        #[AutowireLocator([
-            'logger' => LoggerInterface::class,
-            'entityManager' => EntityManagerInterface::class,
-            'containerBag' => ContainerBagInterface::class,
-            'translator' => TranslatorInterface::class,
-            'router' => UrlGeneratorInterface::class,
-            'security' => Security::class,
-            'requestStack' => RequestStack::class,
-            'parameterBag' => ParameterBagInterface::class,
-            'optionSystemService' => OptionSystemService::class,
-            'gridService' => GridService::class,
-            'mailer' => MailerInterface::class
-        ])]
-        protected ContainerInterface $handlers
-    )
-    {
-        $this->gridService = $this->handlers->get('gridService');
-        $this->mailer = $this->handlers->get('mailer');
-        $this->optionSystemService = $this->handlers->get('optionSystemService');
-        parent::__construct($handlers);
-    }
-
 
     /**
      * Retourne une liste de mail formaté pour vueJs et automatiquement traduit en fonction de langue par défaut
      * @param string $locale
      * @param Mail $mail
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getMailFormat(string $locale, Mail $mail): array
     {
+        $translator = $this->getTranslator();
+
         $return = [];
         $mailTranslation = $mail->geMailTranslationByLocale($locale);
         $return[$mail->getId()] = [
             'id' => $mail->getId(),
             'key' => rand(1, 9) . rand(1, 9) . rand(1, 9) . rand(1, 9),
-            'title' => $this->translator->trans($mail->getTitle()),
-            'description' => $this->translator->trans($mail->getDescription()),
+            'title' => $translator->trans($mail->getTitle()),
+            'description' => $translator->trans($mail->getDescription()),
             'keyWords' => $this->formatKeyWord($mail->getKeyWords()),
             'titleTrans' => $mailTranslation->getTitle(),
             'contentTrans' => $mailTranslation->getContent()
@@ -162,11 +123,13 @@ class MailService extends AppAdminService
      */
     private function formatKeyWord(string $keyWord): array
     {
+        $translator = $this->getTranslator();
+
         $tab = explode('|', $keyWord);
 
         $return = [];
         foreach ($tab as $keyWord) {
-            $return[$keyWord] = $this->translator->trans('mail.' . $keyWord);
+            $return[$keyWord] = $translator->trans('mail.' . $keyWord);
         }
         return $return;
     }
@@ -188,15 +151,20 @@ class MailService extends AppAdminService
      * @param int $page
      * @param int $limit
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getAllFormatToGrid(int $page, int $limit): array
     {
+        $translator = $this->getTranslator();
+        $gridService = $this->getGridService();
+
         $column = [
-            $this->translator->trans('mail.grid.id', domain: 'mail'),
-            $this->translator->trans('mail.grid.title', domain: 'mail'),
-            $this->translator->trans('mail.grid.description', domain: 'mail'),
-            $this->translator->trans('mail.grid.created_at', domain: 'mail'),
-            $this->translator->trans('mail.grid.update_at', domain: 'mail'),
+            $translator->trans('mail.grid.id', domain: 'mail'),
+            $translator->trans('mail.grid.title', domain: 'mail'),
+            $translator->trans('mail.grid.description', domain: 'mail'),
+            $translator->trans('mail.grid.created_at', domain: 'mail'),
+            $translator->trans('mail.grid.update_at', domain: 'mail'),
             GridService::KEY_ACTION,
         ];
 
@@ -209,14 +177,13 @@ class MailService extends AppAdminService
 
             $actions = $this->generateTabAction($mail);
             $data[] = [
-                $this->translator->trans('mail.grid.id', domain: 'mail') => $mail->getId(),
-                $this->translator->trans('mail.grid.title', domain: 'mail') =>
-                    $this->translator->trans($mail->getTitle()),
-                $this->translator->trans('mail.grid.description', domain: 'mail') =>
-                    $this->translator->trans($mail->getDescription()),
-                $this->translator->trans('mail.grid.created_at', domain: 'mail') => $mail->getCreatedAt()->
+                $translator->trans('mail.grid.id', domain: 'mail') => $mail->getId(),
+                $translator->trans('mail.grid.title', domain: 'mail') => $translator->trans($mail->getTitle()),
+                $translator->trans('mail.grid.description', domain: 'mail') =>
+                    $translator->trans($mail->getDescription()),
+                $translator->trans('mail.grid.created_at', domain: 'mail') => $mail->getCreatedAt()->
                 format('d/m/y H:i'),
-                $this->translator->trans('mail.grid.update_at', domain: 'mail') => $mail->getUpdateAt()->
+                $translator->trans('mail.grid.update_at', domain: 'mail') => $mail->getUpdateAt()->
                 format('d/m/y H:i'),
                 GridService::KEY_ACTION => $actions
             ];
@@ -226,9 +193,9 @@ class MailService extends AppAdminService
             GridService::KEY_NB => $nb,
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
-            GridService::KEY_RAW_SQL => $this->gridService->getFormatedSQLQuery($dataPaginate)
+            GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate)
         ];
-        return $this->gridService->addAllDataRequiredGrid($tabReturn);
+        return $gridService->addAllDataRequiredGrid($tabReturn);
 
     }
 
@@ -236,9 +203,12 @@ class MailService extends AppAdminService
      * Génère le tableau d'action pour le Grid des mails
      * @param Mail $mail
      * @return array[]|string[]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function generateTabAction(Mail $mail): array
     {
+        $router = $this->getRouter();
 
         $actions = [];
 
@@ -246,7 +216,7 @@ class MailService extends AppAdminService
         $actions[] = [
             'label' => '<i class="bi bi-send-check-fill"></i>',
             'type' => 'get',
-            'url' => $this->router->generate('admin_mail_send_demo_mail', ['id' => $mail->getId()]),
+            'url' => $router->generate('admin_mail_send_demo_mail', ['id' => $mail->getId()]),
             'ajax' => true,
             'confirm' => false,
         ];
@@ -254,7 +224,7 @@ class MailService extends AppAdminService
         // Bouton edit
         $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>', 'type' => 'get',
             'id' => $mail->getId(),
-            'url' => $this->router->generate('admin_mail_edit', ['id' => $mail->getId()]),
+            'url' => $router->generate('admin_mail_edit', ['id' => $mail->getId()]),
             'ajax' => false];
         return $actions;
 
@@ -280,6 +250,9 @@ class MailService extends AppAdminService
     public function sendMail(array $params): void
     {
 
+        $mailer = $this->getMailer();
+        $optionSystemService = $this->getOptionSystemService();
+
         $to = $this->getParamsValue($params, self::TO);
         $from = $this->getParamsValue($params, self::FROM);
         $replyTo = $this->getParamsValue($params, self::REPLY_TO);
@@ -287,7 +260,7 @@ class MailService extends AppAdminService
         $content = $this->getParamsValue($params, self::CONTENT);
         $title = $this->getParamsValue($params, self::TITLE);
         $body = $this->getParamsValue($params, self::BODY);
-        $signature = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_SIGNATURE);
+        $signature = $optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_SIGNATURE);
 
         $markdown = new Markdown();
         $content = $markdown->convertMarkdownToHtml($content);
@@ -313,7 +286,7 @@ class MailService extends AppAdminService
             $email->cc($bcc);
         }
 
-        $this->mailer->send($email);
+        $mailer->send($email);
     }
 
     /**
@@ -321,16 +294,20 @@ class MailService extends AppAdminService
      * @param $params
      * @param $key
      * @return string|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function getParamsValue($params, $key): ?string
     {
+        $optionSystemService = $this->getOptionSystemService();
+
         if (isset($params[$key]) && ($params[$key] !== "" || $params !== null)) {
             return $params[$key];
         }
 
         return match ($key) {
-            self::FROM => $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_FROM),
-            self::REPLY_TO => $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_REPLY_TO),
+            self::FROM => $optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_FROM),
+            self::REPLY_TO => $optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_REPLY_TO),
             default => null,
         };
     }
@@ -360,7 +337,9 @@ class MailService extends AppAdminService
      */
     public function getDefaultParams(Mail $mail, array $tabKeyWord): array
     {
-        $mailTranslate = $mail->geMailTranslationByLocale($this->optionSystemService
+        $optionSystemService = $this->getOptionSystemService();
+
+        $mailTranslate = $mail->geMailTranslationByLocale($optionSystemService
             ->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE));
         $content = str_replace(
             $tabKeyWord[KeyWord::KEY_SEARCH],
