@@ -77,10 +77,9 @@ class InformationService extends AppAdminService
      */
     public function getInformationWebsite(): array
     {
-        $this->containerBag->get('app.version');
-
+        $containerBag = $this->getContainerBag();
         return [
-            'website_version' => $this->containerBag->get('app.version'),
+            'website_version' => $containerBag->get('app.version'),
             'website_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
         ];
     }
