@@ -13,8 +13,8 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppAdminHandlerService
@@ -73,7 +73,8 @@ class AppAdminHandlerService
             'parameterBag' => ParameterBagInterface::class,
             'optionSystemService' => OptionSystemService::class,
             'gridService' => GridService::class,
-            'markdownEditorService' => MarkdownEditorService::class
+            'markdownEditorService' => MarkdownEditorService::class,
+            'userPasswordHasher' => UserPasswordHasherInterface::class
         ])]
         protected ContainerInterface $handlers
     )
@@ -86,6 +87,17 @@ class AppAdminHandlerService
         $this->security = $this->handlers->get('security');
         $this->parameterBag = $this->handlers->get('parameterBag');
         $this->logger = $this->handlers->get('logger');
+    }
+
+    /**
+     * Retourne l'interface UserPasswordHasherInterface
+     * @return UserPasswordHasherInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getUserPasswordHasher() : UserPasswordHasherInterface
+    {
+        return $this->handlers->get('userPasswordHasher');
     }
 
     /**
