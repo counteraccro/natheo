@@ -22,47 +22,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppAdminHandlerService
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    protected EntityManagerInterface $entityManager;
-
-    /**
-     * Paramètre globaux de Symfony
-     * @var ContainerBagInterface
-     */
-    protected ContainerBagInterface $containerBag;
-
-    /**
-     * @var TranslatorInterface
-     */
-    protected TranslatorInterface $translator;
-
-    /**
-     * @var UrlGeneratorInterface
-     */
-    protected UrlGeneratorInterface $router;
-
-    /**
-     * @var Security
-     */
-    protected Security $security;
-
-    /**
-     * @var RequestStack
-     */
-    protected RequestStack $requestStack;
-
-    /**
-     * @var ParameterBagInterface
-     */
-    protected ParameterBagInterface $parameterBag;
-
-    /**
-     * @var LoggerInterface|mixed
-     */
-    protected LoggerInterface $logger;
-
 
     public function __construct(
         #[AutowireLocator([
@@ -82,17 +41,28 @@ class AppAdminHandlerService
             'kernel' => KernelInterface::class,
             'gridTranslate' => GridTranslate::class
         ])]
-        protected ContainerInterface $handlers
-    )
+        protected ContainerInterface $handlers){}
+
+    /**
+     * Retourne l'interface LoggerInterface
+     * @return LoggerInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getLogger(): LoggerInterface
     {
-        $this->requestStack = $this->handlers->get('requestStack');
-        $this->containerBag = $this->handlers->get('containerBag');
-        $this->entityManager = $this->handlers->get('entityManager');
-        $this->translator = $this->handlers->get('translator');
-        $this->router = $this->handlers->get('router');
-        $this->security = $this->handlers->get('security');
-        $this->parameterBag = $this->handlers->get('parameterBag');
-        $this->logger = $this->handlers->get('logger');
+        return $this->handlers->get('logger');
+    }
+
+    /**
+     * Retourne l'interface EntityManagerInterface
+     * @return EntityManagerInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getEntityManager(): EntityManagerInterface
+    {
+        return $this->handlers->get('entityManager');
     }
 
     /**

@@ -50,10 +50,12 @@ class AppAdminService extends AppAdminHandlerService
      * Retourne le repository en fonction de l'entité
      * @param string $entity
      * @return EntityRepository
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     protected function getRepository(string $entity): EntityRepository
     {
-        return $this->entityManager->getRepository($entity);
+        return $this->getEntityManager()->getRepository($entity);
     }
 
     /**
@@ -61,6 +63,8 @@ class AppAdminService extends AppAdminHandlerService
      * @param mixed $entity
      * @param bool $flush
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function save(mixed $entity, bool $flush = true): void
     {
@@ -69,7 +73,7 @@ class AppAdminService extends AppAdminHandlerService
             $repo->save($entity, $flush);
             $this->ajaxResponse['success'] = true;
         } catch (Exception $exception) {
-            $this->logger->error($exception->getMessage());
+            $this->getLogger()->error($exception->getMessage());
             $this->ajaxResponse['success'] = false;
         }
     }
@@ -81,15 +85,19 @@ class AppAdminService extends AppAdminHandlerService
      * @param string|null $successMessage
      * @param string|null $errorMessage
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getResponseAjax(string $successMessage = null, string $errorMessage = null): array
     {
+        $translator = $this->getTranslator();
+
         if ($errorMessage === null) {
-            $errorMessage = $this->translator->trans('response.ajax.error');
+            $errorMessage = $translator->trans('response.ajax.error');
         }
 
         if ($successMessage === null) {
-            $successMessage = $this->translator->trans('response.ajax.success');
+            $successMessage = $translator->trans('response.ajax.success');
         }
 
         if ($this->ajaxResponse['success']) {
@@ -105,6 +113,8 @@ class AppAdminService extends AppAdminHandlerService
      * @param mixed $entity
      * @param bool $flush
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function remove(mixed $entity, bool $flush = true): void
     {
@@ -113,7 +123,7 @@ class AppAdminService extends AppAdminHandlerService
             $repo->remove($entity, $flush);
             $this->ajaxResponse['success'] = true;
         } catch (Exception $exception) {
-            $this->logger->error($exception->getMessage());
+            $this->getLogger()->error($exception->getMessage());
             $this->ajaxResponse['success'] = false;
         }
     }
@@ -129,7 +139,7 @@ class AppAdminService extends AppAdminHandlerService
      */
     protected function isGranted(mixed $attribute, mixed $subject = null): bool
     {
-        return $this->containerBag->get('security.authorization_checker')->isGranted($attribute, $subject);
+        return $this->getContainerBag()->get('security.authorization_checker')->isGranted($attribute, $subject);
     }
 
 
@@ -150,6 +160,8 @@ class AppAdminService extends AppAdminHandlerService
      * @param string $field
      * @param mixed $value
      * @return object|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function findOneBy(string $entity, string $field, mixed $value): ?object
     {
@@ -165,6 +177,8 @@ class AppAdminService extends AppAdminHandlerService
      * @param int|null $limit
      * @param int|null $offset
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function findBy(
         string $entity,
@@ -251,17 +265,19 @@ class AppAdminService extends AppAdminHandlerService
      *  ['localesTranslate'] => listes des locales avec traduction dans la langue courante<br />
      * ['current'] => la langue courante
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getLocales(): array
     {
-        $current = $this->requestStack->getCurrentRequest()->getLocale();
+        $current = $this->getRequestStack()->getCurrentRequest()->getLocale();
 
-        $locales = explode('|', $this->parameterBag->get('app.supported_locales'));
+        $locales = explode('|', $this->getParameterBag()->get('app.supported_locales'));
         array_unshift($locales, $current);
         $localesTranslate = [];
 
         foreach ($locales as $locale) {
-            $localesTranslate[$locale] = $this->translator->trans('global.' . $locale);
+            $localesTranslate[$locale] = $this->getTranslator()->trans('global.' . $locale);
         }
 
         return [
