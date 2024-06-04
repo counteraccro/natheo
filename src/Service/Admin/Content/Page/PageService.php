@@ -121,8 +121,9 @@ class PageService extends AppAdminService
         $translator = $this->getTranslator();
         $router = $this->getRouter();
         $optionSystemService = $this->getOptionSystemService();
+        $requestStack = $this->getRequestStack();
 
-        $label = $page->getPageTranslationByLocale($this->requestStack->getCurrentRequest()->getLocale())->getTitre();
+        $label = $page->getPageTranslationByLocale($requestStack->getCurrentRequest()->getLocale())->getTitre();
 
         $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
             'url' => $router->generate('admin_page_update_disabled', ['id' => $page->getId()]),
