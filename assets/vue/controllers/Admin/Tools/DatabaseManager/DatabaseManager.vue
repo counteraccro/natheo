@@ -44,6 +44,7 @@ export default {
       this.loading = true;
       axios.get(this.urls.load_schema_database).then((response) => {
         this.result = response.data.query;
+        console.log(this.result.stat.nbElement);
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -107,18 +108,26 @@ export default {
           <table class="table table-sm table-striped table-hover" aria-describedby="table">
             <thead>
             <tr>
-              <th v-for="header in this.result.header">
+              <th v-for="(header, key) in this.result.header">
                 {{ header }}
               </th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="row in this.result.result">
-              <td v-for="header in this.result.header">
-                {{ row[header] }}
+              <td v-for="(header, key) in this.result.header">
+                {{ row[key] }}
               </td>
             </tr>
             </tbody>
+            <tfoot>
+            <tr class="table-secondary" v-if="!this.result.length">
+              <th>{{ this.translate.nb_row_total }} :</th>
+              <th>{{ this.result.stat.nbTable }}</th>
+              <th>{{ this.result.stat.nbElement }}</th>
+              <th>{{ this.result.stat.sizeBite }}</th>
+            </tr>
+            </tfoot>
           </table>
         </div>
       </div>

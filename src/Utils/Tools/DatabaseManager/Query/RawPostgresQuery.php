@@ -24,10 +24,10 @@ class RawPostgresQuery
                     FROM pg_inherit child, pg_inherits parent
                     WHERE child.inhparent = parent.inhrelid),
                pg_inherit_short AS (SELECT * FROM pg_inherit WHERE inhparent NOT IN (SELECT inhrelid FROM pg_inherit))
-                SELECT table_schema
-                     , TABLE_NAME
-                     , row_estimate
-                     , pg_size_pretty(total_bytes) AS total
+                SELECT table_schema as schema
+                     , TABLE_NAME as  table_name
+                     , row_estimate as row
+                     , pg_size_pretty(total_bytes) as size
                      , total_bytes
                      --, pg_size_pretty(index_bytes) AS INDEX
                      --, pg_size_pretty(toast_bytes) AS toast
