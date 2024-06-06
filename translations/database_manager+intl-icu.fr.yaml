@@ -1,3 +1,10 @@
 database_manager.index.page_title: 'Gestionnaire de base de données'
 database_manager.index.page_title_h1: 'Gestionnaire de base de données'
 database_manager.index.description: 'Gérer / restaurer / sauvegarder votre base de données'
+database_manager.schema.all.bdd.row.schema: Schema
+database_manager.schema.all.bdd.row.table_name: Table
+database_manager.schema.all.bdd.row.row: "Nombre d'éléments"
+database_manager.schema.all.bdd.row.size: Taille
+database_manager.schema.all.bdd.error_row.: 'calcul impossible'
+database_manager.loading: 'Chargement'
+database_manager.nb.row.total: 'Statistique'

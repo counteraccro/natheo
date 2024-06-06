@@ -1,3 +1,10 @@
 database_manager.index.page_title: __database_manager.index.page_title
 database_manager.index.page_title_h1: __database_manager.index.page_title_h1
 database_manager.index.description: __database_manager.index.description
+database_manager.schema.all.bdd.row.schema: _Schema
+database_manager.schema.all.bdd.row.table_name: _Table
+database_manager.schema.all.bdd.row.row: _Elements
+database_manager.schema.all.bdd.row.size: _Taille
+database_manager.schema.all.bdd.error_row.: __database_manager.schema.all.bdd.error_row.
+database_manager.loading: __database_manager.loading
+database_manager.nb.row.total: __database_manager.nb.row.total
