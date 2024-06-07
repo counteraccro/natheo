@@ -8,3 +8,4 @@ database_manager.schema.all.bdd.row.size: _Taille
 database_manager.schema.all.bdd.error_row.: __database_manager.schema.all.bdd.error_row.
 database_manager.loading: __database_manager.loading
 database_manager.nb.row.total: __database_manager.nb.row.total
+database_manager.modale.dump.title: __database_manager.modale.dump.title

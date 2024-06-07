@@ -6,5 +6,6 @@ database_manager.schema.all.bdd.row.table_name: Table
 database_manager.schema.all.bdd.row.row: "Nombre d'éléments"
 database_manager.schema.all.bdd.row.size: Taille
 database_manager.schema.all.bdd.error_row.: 'calcul impossible'
-database_manager.loading: 'Chargement'
-database_manager.nb.row.total: 'Statistique'
+database_manager.loading: Chargement
+database_manager.nb.row.total: Statistique
+database_manager.modale.dump.title: __database_manager.modale.dump.title
