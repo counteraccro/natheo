@@ -6,10 +6,12 @@
  */
 import axios from "axios";
 import Toast from "../../../../Components/Global/Toast.vue";
+import Modal from "../../../../Components/Global/Modal.vue";
 
 export default {
   name: "DatabaseManager",
   components: {
+    Modal,
     Toast
   },
   props: {
@@ -20,6 +22,9 @@ export default {
     return {
       loading: false,
       result: Object,
+      modalTab: {
+        modaleDumpOption: false,
+      },
       toasts: {
         toastSuccess: {
           show: false,
@@ -83,6 +88,23 @@ export default {
     closeToast(nameToast) {
       this.toasts[nameToast].show = false
     },
+
+    /**
+     * Met à jour le status d'une modale défini par son id et son état
+     * @param nameModale
+     * @param state true|false
+     */
+    updateModale(nameModale, state) {
+      this.modalTab[nameModale] = state;
+    },
+
+    /**
+     * Ferme une modale
+     * @param nameModale
+     */
+    closeModal(nameModale) {
+      this.updateModale(nameModale, false);
+    },
   },
 }
 </script>
@@ -100,7 +122,7 @@ export default {
     </div>
 
     <div>
-      <div class="btn btn-secondary" @click="this.dumpSQL">Dump</div>
+      <div class="btn btn-secondary" @click="this.updateModale('modaleDumpOption', true);">Dump</div>
       <div class="btn btn-secondary" @click="this.dumpSQL">Rafraichir</div>
       <div class="btn btn-secondary" @click="this.dumpSQL">Suavegardes</div>
       <div class="block-page">
@@ -132,6 +154,26 @@ export default {
         </div>
       </div>
     </div>
+
+    <!-- modale confirmation suppression -->
+    <modal
+        :id="'modaleDumpOption'"
+        :show="this.modalTab.modaleDumpOption"
+        @close-modal="this.closeModal"
+        :optionModalSize="'modal-lg'"
+        :option-show-close-btn="false">
+      <template #title>
+        <i class="bi bi-sign-stop-fill"></i>
+        {{ this.translate.modale_dump_option.title }}
+      </template>
+      <template #body>
+        option
+      </template>
+      <template #footer>
+        footer
+      </template>
+    </modal>
+    <!-- fin modale nouvelle categogie -->
 
   </div>
 

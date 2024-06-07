@@ -16,6 +16,14 @@ class DatabaseManagerTranslate extends AppTranslate
         return [
             'loading' => $this->translator->trans('database_manager.loading', domain: 'database_manager'),
             'nb_row_total' => $this->translator->trans('database_manager.nb.row.total', domain: 'database_manager'),
+            'modale_dump_option' => $this->getModaleDumpOptionTranslate()
+        ];
+    }
+
+    private function getModaleDumpOptionTranslate(): array
+    {
+        return [
+            'title' => $this->translator->trans('database_manager.modale.dump.title', domain: 'database_manager'),
         ];
     }
 }
