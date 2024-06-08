@@ -9,3 +9,12 @@ database_manager.schema.all.bdd.error_row.: __database_manager.schema.all.bdd.er
 database_manager.loading: __database_manager.loading
 database_manager.nb.row.total: __database_manager.nb.row.total
 database_manager.modale.dump.title: __database_manager.modale.dump.title
+database_manager.modale.dump.sub_title_1: __database_manager.modale.dump.sub_title_1
+database_manager.modale.dump.sub_title_2: __database_manager.modale.dump.sub_title_2
+database_manager.modale.dump.select_all: __database_manager.modale.dump.select_all
+database_manager.modale.dump.select_tables: __database_manager.modale.dump.select_tables
+database_manager.modale.dump.option_data: __database_manager.modale.dump.option_data
+database_manager.modale.dump.option_table: __database_manager.modale.dump.option_table
+database_manager.modale.dump.option_table_data: __database_manager.modale.dump.option_table_data
+database_manager.modale.dump.help.title: __database_manager.modale.dump.help.title
+database_manager.modale.dump.help.body: __database_manager.modale.dump.help.body

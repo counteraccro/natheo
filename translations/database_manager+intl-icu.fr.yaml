@@ -8,4 +8,13 @@ database_manager.schema.all.bdd.row.size: Taille
 database_manager.schema.all.bdd.error_row.: 'calcul impossible'
 database_manager.loading: Chargement
 database_manager.nb.row.total: Statistique
-database_manager.modale.dump.title: __database_manager.modale.dump.title
+database_manager.modale.dump.title: "Génération d'un dump SQL"
+database_manager.modale.dump.sub_title_1: 'Choix des tables'
+database_manager.modale.dump.sub_title_2: 'Option sur les données'
+database_manager.modale.dump.select_all: 'Toutes les tables'
+database_manager.modale.dump.select_tables: 'Ou uniquement les tables'
+database_manager.modale.dump.option_data: 'Uniquement les données'
+database_manager.modale.dump.option_table: 'Uniquement les schemas SQL'
+database_manager.modale.dump.option_table_data: 'Schema SQL et données'
+database_manager.modale.dump.help.title: 'Information'
+database_manager.modale.dump.help.body: "La génération d'un dump SQL peut prendre du temps, cette action va être réalisée en arrière plan. <br />Une notification vous sera envoyée une fois celle-ci terminée"
