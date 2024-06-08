@@ -22,6 +22,13 @@ export default {
     return {
       loading: false,
       result: Object,
+      tables: Object,
+      disabledListeTales: true,
+      optionData : {
+        all : true,
+        tables : '',
+        data: 'dump',
+      },
       modalTab: {
         modaleDumpOption: false,
       },
@@ -57,6 +64,22 @@ export default {
       });
     },
 
+    /**
+     * Ouverture de la modale pour la génération du dump SQL
+     */
+    openModalDumpSQL() {
+      this.loading = true;
+      axios.get(this.urls.load_tables_database).then((response) => {
+        this.tables = response.data.tables;
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.loading = false;
+        this.updateModale('modaleDumpOption', true);
+      });
+
+    },
+
 
     /**
      * Créer une nouvelle FAQ
@@ -64,7 +87,9 @@ export default {
     dumpSQL() {
 
       this.loading = true;
-      axios.get(this.urls.save_database).then((response) => {
+      axios.post(this.urls.save_database, {
+        'options' : this.optionData
+      }).then((response) => {
 
         if (response.data.success === true) {
           this.toasts.toastSuccess.msg = response.data.msg;
@@ -77,6 +102,7 @@ export default {
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
+        this.closeModal('modaleDumpOption');
       });
     },
 
@@ -122,7 +148,7 @@ export default {
     </div>
 
     <div>
-      <div class="btn btn-secondary" @click="this.updateModale('modaleDumpOption', true);">Dump</div>
+      <div class="btn btn-secondary" @click="this.openModalDumpSQL">Dump</div>
       <div class="btn btn-secondary" @click="this.dumpSQL">Rafraichir</div>
       <div class="btn btn-secondary" @click="this.dumpSQL">Suavegardes</div>
       <div class="block-page">
@@ -163,14 +189,62 @@ export default {
         :optionModalSize="'modal-lg'"
         :option-show-close-btn="false">
       <template #title>
-        <i class="bi bi-sign-stop-fill"></i>
+        <i class="bi bi-database-fill-down"></i>
         {{ this.translate.modale_dump_option.title }}
       </template>
       <template #body>
-        option
+        <div class="row">
+          <div class="col-6">
+            <h5>{{ this.translate.modale_dump_option.sub_title_1 }}</h5>
+            <div class="mb-2">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value=""
+                    id="flexCheckDefault" v-model="this.optionData.all" @click="this.optionData.all === false ? this.disabledListeTales = true : this.disabledListeTales = false">
+                <label class="form-check-label" for="flexCheckDefault">
+                  {{ this.translate.modale_dump_option.select_all }}
+                </label>
+              </div>
+            </div>
+            <div class="mb-2">
+              <label for="select-multi-table" class="form-label">{{ this.translate.modale_dump_option.select_tables }}</label>
+              <select id="select-multi-table" class="form-select" size="15" :disabled="this.disabledListeTales" multiple v-model="this.optionData.tables">
+                <option v-for="table in this.tables" :value="table.name">
+                    {{ table.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-6">
+            <h5>{{ this.translate.modale_dump_option.sub_title_2 }}</h5>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="option-dump-data" id="option-dump-data-1" value="table" v-model="this.optionData.data" checked >
+              <label class="form-check-label" for="option-dump-data-1">
+                {{ this.translate.modale_dump_option.option_table }}
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="option-dump-data" id="option-dump-data-2" value="data" v-model="this.optionData.data">
+              <label class="form-check-label" for="option-dump-data-2">
+                {{ this.translate.modale_dump_option.option_data }}
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="option-dump-data" id="option-dump-data-3" value="table_data" v-model="this.optionData.data">
+              <label class="form-check-label" for="option-dump-data-3">
+                {{ this.translate.modale_dump_option.option_table_data }}
+              </label>
+            </div>
+
+            <div class="alert alert-secondary mt-5">
+              <h6><i class="bi bi-info-circle-fill"></i> {{ this.translate.modale_dump_option.help_title }}</h6>
+              <div v-html="this.translate.modale_dump_option.help_body"></div>
+            </div>
+
+          </div>
+        </div>
       </template>
       <template #footer>
-        footer
+        <div class="btn btn-secondary" @click="this.dumpSQL"> dump SQL </div>
       </template>
     </modal>
     <!-- fin modale nouvelle categogie -->

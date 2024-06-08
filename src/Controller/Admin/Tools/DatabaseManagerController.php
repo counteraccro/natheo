@@ -11,12 +11,12 @@ use App\Service\Admin\Tools\DatabaseManagerService;
 use App\Service\Admin\Tools\SqlManagerService;
 use App\Utils\Breadcrumb;
 use App\Utils\Global\DataBase;
-use App\Utils\Tools\DatabaseManager\Query\RawPostgresQuery;
 use App\Utils\Translate\Tools\DatabaseManagerTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -53,6 +53,7 @@ class DatabaseManagerController extends AbstractController
             'translate' => $databaseManagerTranslate->getTranslate(),
             'urls' => [
                 'load_schema_database' => $this->generateUrl('admin_database_manager_load_schema_database'),
+                'load_tables_database' => $this->generateUrl('admin_database_manager_load_tables_database'),
                 'save_database' => $this->generateUrl('admin_database_manager_save_database'),
             ]
         ]);
@@ -65,28 +66,43 @@ class DatabaseManagerController extends AbstractController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-schema-database', name: 'load_schema_database', methods: ['GET'])]
-    public function schemaDataBase(DatabaseManagerService $databaseManagerService): JsonResponse
+    public function schemaDatabase(DatabaseManagerService $databaseManagerService): JsonResponse
     {
         return $this->json(['query' => $databaseManagerService->getAllInformationSchemaDatabase()]);
     }
 
     /**
+     * Retourne la liste des tables de la base de données
+     * @param DataBase $dataBase
      * @return JsonResponse
      */
-    #[Route('/ajax/save-database/{option}', name: 'save_database', methods: ['GET'])]
+    #[Route('/ajax/load-tables-database', name: 'load_tables_database', methods: ['GET'])]
+    public function listeTablesDatabase(DataBase $dataBase): JsonResponse
+    {
+        return $this->json(['tables' => $dataBase->getAllNameAndColumn()]);
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    #[Route('/ajax/save-database', name: 'save_database', methods: ['POST'])]
     public function saveBdd(
         MessageBusInterface $bus,
         SqlManagerService $sqlManagerService,
-        string $option = null
+        Request $request,
     ): JsonResponse
     {
+        $data = json_decode($request->getContent(), true);
+
+        var_dump($data);
+
         /* A faire en asyncrone
         Voir ici https://symfony.com/doc/current/messenger.html#creating-a-message-handler
 
         Génération schema : https://www.doctrine-project.org/projects/doctrine-orm/en/3.2/reference/tools.html#database-schema-generation
         */
 
-        $bus->dispatch(new DumpSql(['option'], $this->getUser()->getId()));
+        //$bus->dispatch(new DumpSql(['option'], $this->getUser()->getId()));
         return $this->json($sqlManagerService->getResponseAjax());
     }
 }
