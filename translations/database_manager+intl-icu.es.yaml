@@ -18,3 +18,8 @@ database_manager.modale.dump.option_table: __database_manager.modale.dump.option
 database_manager.modale.dump.option_table_data: __database_manager.modale.dump.option_table_data
 database_manager.modale.dump.help.title: __database_manager.modale.dump.help.title
 database_manager.modale.dump.help.body: __database_manager.modale.dump.help.body
+database_manager.btn_generate_dump: __database_manager.btn_generate_dump
+database_manager.btn_schema_bdd: __database_manager.btn_schema_bdd
+database_manager.btn_liste_dump: __database_manager.btn_liste_dump
+database_manager.modale.dump.btn.generate: __database_manager.modale.dump.btn.generate
+database_manager.schema.database.title: __database_manager.schema.database.title

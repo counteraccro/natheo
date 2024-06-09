@@ -16,5 +16,10 @@ database_manager.modale.dump.select_tables: 'Ou uniquement les tables'
 database_manager.modale.dump.option_data: 'Uniquement les données'
 database_manager.modale.dump.option_table: 'Uniquement les schemas SQL'
 database_manager.modale.dump.option_table_data: 'Schema SQL et données'
-database_manager.modale.dump.help.title: 'Information'
+database_manager.modale.dump.help.title: Information
 database_manager.modale.dump.help.body: "La génération d'un dump SQL peut prendre du temps, cette action va être réalisée en arrière plan. <br />Une notification vous sera envoyée une fois celle-ci terminée"
+database_manager.btn_generate_dump: "Nouvelle sauvegarde"
+database_manager.btn_schema_bdd: "Schema de la base de données"
+database_manager.btn_liste_dump: "Liste des sauvegardes"
+database_manager.modale.dump.btn.generate: "Générer la sauvegarde"
+database_manager.schema.database.title: "Schema de la base de données"
