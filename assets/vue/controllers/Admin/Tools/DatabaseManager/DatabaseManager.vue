@@ -7,10 +7,12 @@
 import axios from "axios";
 import Toast from "../../../../Components/Global/Toast.vue";
 import Modal from "../../../../Components/Global/Modal.vue";
+import SchemaDatabase from "../../../../Components/DatabaseManager/SchemaDatabse.vue";
 
 export default {
   name: "DatabaseManager",
   components: {
+    SchemaDatabase,
     Modal,
     Toast
   },
@@ -24,9 +26,10 @@ export default {
       result: Object,
       tables: Object,
       disabledListeTales: true,
-      optionData : {
-        all : true,
-        tables : '',
+      show: 'schemaDatabase',
+      optionData: {
+        all: true,
+        tables: [],
         data: 'dump',
       },
       modalTab: {
@@ -53,6 +56,7 @@ export default {
      * Chargement du schema de la base de donnée
      */
     loadSchemaDataBase() {
+      this.show = 'schemaDatabase';
       this.loading = true;
       axios.get(this.urls.load_schema_database).then((response) => {
         this.result = response.data.query;
@@ -62,6 +66,30 @@ export default {
       }).finally(() => {
         this.loading = false;
       });
+    },
+
+    /**
+     * Affiche le schema de la base de donnée
+     */
+    showSchemaDatabase()
+    {
+      this.show = 'schemaDatabase';
+    },
+
+    /**
+     * Charge le schema de la table
+     * @param table
+     */
+    loadSchemaTable(table) {
+      console.log(table);
+      this.show = 'schemaTable';
+    },
+
+    /**
+     * Charge les listes des sauvegardes faites
+     */
+    loadListeDump() {
+      this.show = 'dumps';
     },
 
     /**
@@ -88,7 +116,7 @@ export default {
 
       this.loading = true;
       axios.post(this.urls.save_database, {
-        'options' : this.optionData
+        'options': this.optionData
       }).then((response) => {
 
         if (response.data.success === true) {
@@ -148,35 +176,20 @@ export default {
     </div>
 
     <div>
-      <div class="btn btn-secondary" @click="this.openModalDumpSQL">Dump</div>
-      <div class="btn btn-secondary" @click="this.dumpSQL">Rafraichir</div>
-      <div class="btn btn-secondary" @click="this.dumpSQL">Suavegardes</div>
+      <div class="btn btn-secondary me-2" @click="this.showSchemaDatabase"><i class="bi bi-table"></i> {{ this.translate.btn_schema_bdd }}</div>
+      <div class="btn btn-secondary me-2" @click="this.openModalDumpSQL"><i class="bi bi-database-fill-down"></i> {{ this.translate.btn_generate_dump }}</div>
+      <div class="btn btn-secondary" @click="this.loadListeDump"><i class="bi bi-filetype-sql"></i> {{ this.translate.btn_liste_dump }}</div>
       <div class="block-page">
-        <div class="table-responsive">
-          <table class="table table-sm table-striped table-hover" aria-describedby="table">
-            <thead>
-            <tr>
-              <th v-for="(header, key) in this.result.header">
-                {{ header }}
-              </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="row in this.result.result">
-              <td v-for="(header, key) in this.result.header">
-                {{ row[key] }}
-              </td>
-            </tr>
-            </tbody>
-            <tfoot>
-            <tr class="table-secondary" v-if="!this.result.length">
-              <th>{{ this.translate.nb_row_total }} :</th>
-              <th>{{ this.result.stat.nbTable }}</th>
-              <th>{{ this.result.stat.nbElement }}</th>
-              <th>{{ this.result.stat.sizeBite }}</th>
-            </tr>
-            </tfoot>
-          </table>
+        <SchemaDatabase v-if="this.show === 'schemaDatabase' && !this.result.length"
+            :data="this.result"
+            :translate="this.translate.schema_database"
+            @load-schema-table="this.loadSchemaTable"
+        ></SchemaDatabase>
+        <div v-if="this.show === 'schemaTable'">
+          schema table
+        </div>
+        <div v-if="this.show === 'dumps'">
+          Liste dump
         </div>
       </div>
     </div>
@@ -209,7 +222,7 @@ export default {
               <label for="select-multi-table" class="form-label">{{ this.translate.modale_dump_option.select_tables }}</label>
               <select id="select-multi-table" class="form-select" size="15" :disabled="this.disabledListeTales" multiple v-model="this.optionData.tables">
                 <option v-for="table in this.tables" :value="table.name">
-                    {{ table.name }}
+                  {{ table.name }}
                 </option>
               </select>
             </div>
@@ -217,7 +230,7 @@ export default {
           <div class="col-6">
             <h5>{{ this.translate.modale_dump_option.sub_title_2 }}</h5>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="option-dump-data" id="option-dump-data-1" value="table" v-model="this.optionData.data" checked >
+              <input class="form-check-input" type="radio" name="option-dump-data" id="option-dump-data-1" value="table" v-model="this.optionData.data" checked>
               <label class="form-check-label" for="option-dump-data-1">
                 {{ this.translate.modale_dump_option.option_table }}
               </label>
@@ -244,7 +257,7 @@ export default {
         </div>
       </template>
       <template #footer>
-        <div class="btn btn-secondary" @click="this.dumpSQL"> dump SQL </div>
+        <div class="btn btn-secondary" @click="this.dumpSQL">{{ this.translate.modale_dump_option.btn_generate }}</div>
       </template>
     </modal>
     <!-- fin modale nouvelle categogie -->
