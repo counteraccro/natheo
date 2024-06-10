@@ -5,7 +5,7 @@ database_manager.schema.all.bdd.row.schema: Schema
 database_manager.schema.all.bdd.row.table_name: Table
 database_manager.schema.all.bdd.row.row: "Nombre d'éléments"
 database_manager.schema.all.bdd.row.size: Taille
-database_manager.schema.all.bdd.error_row.: 'calcul impossible'
+database_manager.schema.all.bdd.error_row.: 'données indisponible'
 database_manager.loading: Chargement
 database_manager.nb.row.total: Statistique
 database_manager.modale.dump.title: "Génération d'un dump SQL"
@@ -18,8 +18,14 @@ database_manager.modale.dump.option_table: 'Uniquement les schemas SQL'
 database_manager.modale.dump.option_table_data: 'Schema SQL et données'
 database_manager.modale.dump.help.title: Information
 database_manager.modale.dump.help.body: "La génération d'un dump SQL peut prendre du temps, cette action va être réalisée en arrière plan. <br />Une notification vous sera envoyée une fois celle-ci terminée"
-database_manager.btn_generate_dump: "Nouvelle sauvegarde"
-database_manager.btn_schema_bdd: "Schema de la base de données"
-database_manager.btn_liste_dump: "Liste des sauvegardes"
-database_manager.modale.dump.btn.generate: "Générer la sauvegarde"
-database_manager.schema.database.title: "Schema de la base de données"
+database_manager.btn_generate_dump: 'Nouvelle sauvegarde'
+database_manager.btn_schema_bdd: 'Schema de la base de données'
+database_manager.btn_liste_dump: 'Liste des sauvegardes'
+database_manager.modale.dump.btn.generate: 'Générer la sauvegarde'
+database_manager.schema.database.title: 'Schema de la base de données'
+database_manager.schema.table.row.column_name: Nom
+database_manager.schema.table.row.data_type: Type
+database_manager.schema.table.row.character_maximum_length: 'Taille maximum'
+database_manager.schema.table.row.is_nullable: 'Null possible'
+database_manager.schema.table.row.column_default: 'Valeur par défaut'
+database_manager.schema.table.title: 'Schema de la table'
