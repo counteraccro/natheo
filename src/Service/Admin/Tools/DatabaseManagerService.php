@@ -36,7 +36,10 @@ class DatabaseManagerService extends AppAdminService
         /** @var DataBase $database */
         $database = $this->handlers->get('database');
         $translator = $this->getTranslator();
-        $query = RawPostgresQuery::getQueryAllInformationSchema('natheo');
+        $parameterBag = $this->getParameterBag();
+        $query = RawPostgresQuery::getQueryAllInformationSchema(
+            str_replace('.', '',$parameterBag->get('app.default_database_schema'))
+        );
         $result = $database->executeRawQuery($query);
 
         $newHeader = [];
@@ -70,6 +73,33 @@ class DatabaseManagerService extends AppAdminService
             'nbTable' => $nbTable,
         ];
 
+        return $result;
+    }
+
+    /**
+     * Retourne le schema d'une table
+     * @param string $tableName
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getSchemaTableByTable(string $tableName): array
+    {
+        $database = $this->handlers->get('database');
+        $translator = $this->getTranslator();
+        $query = RawPostgresQuery::getQueryStructureTable($tableName);
+
+        $result = $database->executeRawQuery($query);
+
+        $newHeader = [];
+        foreach ($result['header'] as $header) {
+
+            $newHeader[$header] = $translator->trans('database_manager.schema.table.row.' . $header,
+                domain: 'database_manager');
+        }
+
+        $result['header'] = $newHeader;
+        $result['table'] = $tableName;
         return $result;
     }
 }

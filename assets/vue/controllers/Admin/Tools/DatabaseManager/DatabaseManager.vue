@@ -8,10 +8,12 @@ import axios from "axios";
 import Toast from "../../../../Components/Global/Toast.vue";
 import Modal from "../../../../Components/Global/Modal.vue";
 import SchemaDatabase from "../../../../Components/DatabaseManager/SchemaDatabse.vue";
+import SchemaTable from "../../../../Components/DatabaseManager/SchemaTable.vue";
 
 export default {
   name: "DatabaseManager",
   components: {
+    SchemaTable,
     SchemaDatabase,
     Modal,
     Toast
@@ -26,6 +28,7 @@ export default {
       result: Object,
       tables: Object,
       disabledListeTales: true,
+      schemaTable: Object,
       show: 'schemaDatabase',
       optionData: {
         all: true,
@@ -60,7 +63,6 @@ export default {
       this.loading = true;
       axios.get(this.urls.load_schema_database).then((response) => {
         this.result = response.data.query;
-        console.log(this.result.stat.nbElement);
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -71,8 +73,7 @@ export default {
     /**
      * Affiche le schema de la base de donnée
      */
-    showSchemaDatabase()
-    {
+    showSchemaDatabase() {
       this.show = 'schemaDatabase';
     },
 
@@ -81,8 +82,17 @@ export default {
      * @param table
      */
     loadSchemaTable(table) {
-      console.log(table);
+      this.schemaTable = Object;
       this.show = 'schemaTable';
+      this.loading = true;
+      axios.get(this.urls.load_schema_table + '/' + table).then((response) => {
+        this.schemaTable = response.data.result;
+        console.log(this.schemaTable);
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.loading = false;
+      });
     },
 
     /**
@@ -176,9 +186,15 @@ export default {
     </div>
 
     <div>
-      <div class="btn btn-secondary me-2" @click="this.showSchemaDatabase"><i class="bi bi-table"></i> {{ this.translate.btn_schema_bdd }}</div>
-      <div class="btn btn-secondary me-2" @click="this.openModalDumpSQL"><i class="bi bi-database-fill-down"></i> {{ this.translate.btn_generate_dump }}</div>
-      <div class="btn btn-secondary" @click="this.loadListeDump"><i class="bi bi-filetype-sql"></i> {{ this.translate.btn_liste_dump }}</div>
+      <div class="btn btn-secondary me-2" @click="this.showSchemaDatabase">
+        <i class="bi bi-table"></i> {{ this.translate.btn_schema_bdd }}
+      </div>
+      <div class="btn btn-secondary me-2" @click="this.openModalDumpSQL">
+        <i class="bi bi-database-fill-down"></i> {{ this.translate.btn_generate_dump }}
+      </div>
+      <div class="btn btn-secondary" @click="this.loadListeDump">
+        <i class="bi bi-filetype-sql"></i> {{ this.translate.btn_liste_dump }}
+      </div>
       <div class="block-page">
         <SchemaDatabase v-if="this.show === 'schemaDatabase' && !this.result.length"
             :data="this.result"
@@ -186,7 +202,11 @@ export default {
             @load-schema-table="this.loadSchemaTable"
         ></SchemaDatabase>
         <div v-if="this.show === 'schemaTable'">
-          schema table
+          <SchemaTable
+              :data="this.schemaTable"
+              :translate="this.translate.schema_table"
+          >
+          </SchemaTable>
         </div>
         <div v-if="this.show === 'dumps'">
           Liste dump

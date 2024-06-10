@@ -43,16 +43,12 @@ class DatabaseManagerController extends AbstractController
             ]
         ];
 
-        //$query = RawPostgresQuery::getQueryStructureTable('faq');
-
-
-        //Debug::printR($dataBase->executeRawQuery($query));
-
         return $this->render('admin/tools/database_manager/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'translate' => $databaseManagerTranslate->getTranslate(),
             'urls' => [
                 'load_schema_database' => $this->generateUrl('admin_database_manager_load_schema_database'),
+                'load_schema_table' => $this->generateUrl('admin_database_manager_load_schema_table'),
                 'load_tables_database' => $this->generateUrl('admin_database_manager_load_tables_database'),
                 'save_database' => $this->generateUrl('admin_database_manager_save_database'),
             ]
@@ -60,6 +56,7 @@ class DatabaseManagerController extends AbstractController
     }
 
     /**
+     * Schema de la base de donnée
      * @param DatabaseManagerService $databaseManagerService
      * @return JsonResponse
      * @throws ContainerExceptionInterface
@@ -69,6 +66,21 @@ class DatabaseManagerController extends AbstractController
     public function schemaDatabase(DatabaseManagerService $databaseManagerService): JsonResponse
     {
         return $this->json(['query' => $databaseManagerService->getAllInformationSchemaDatabase()]);
+    }
+
+    /**
+     * Schéma d'une table
+     * @param DatabaseManagerService $databaseManagerService
+     * @param $table
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/ajax/load-schema-table/{table}', name: 'load_schema_table', methods: ['GET'])]
+    public function schemaTable(DatabaseManagerService $databaseManagerService, $table = null) : JsonResponse
+    {
+        $result = $databaseManagerService->getSchemaTableByTable($table);
+        return $this->json(['result' => $result]);
     }
 
     /**
