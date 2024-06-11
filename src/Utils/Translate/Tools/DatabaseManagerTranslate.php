@@ -18,6 +18,9 @@ class DatabaseManagerTranslate extends AppTranslate
             'btn_generate_dump' => $this->translator->trans('database_manager.btn_generate_dump', domain: 'database_manager'),
             'btn_schema_bdd' => $this->translator->trans('database_manager.btn_schema_bdd', domain: 'database_manager'),
             'btn_liste_dump' => $this->translator->trans('database_manager.btn_liste_dump', domain: 'database_manager'),
+            'toast_title_success' => $this->translator->trans('database_manager.toast.title.success', domain: 'database_manager'),
+            'toast_title_error' => $this->translator->trans('database_manager.toast.title.error', domain: 'database_manager'),
+            'toast_time' => $this->translator->trans('database_manager.toast.time', domain: 'database_manager'),
             'schema_database' => $this->getTranslateSchemaDatabase(),
             'schema_table' => $this->getTranslateSchemaTable(),
             'modale_dump_option' => $this->getTranslateModaleDumpOption()

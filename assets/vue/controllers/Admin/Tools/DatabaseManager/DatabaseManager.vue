@@ -33,7 +33,7 @@ export default {
       optionData: {
         all: true,
         tables: [],
-        data: 'dump',
+        data: 'table',
       },
       modalTab: {
         modaleDumpOption: false,
@@ -135,11 +135,11 @@ export default {
         } else {
           this.toasts.toastError.msg = response.data.msg;
           this.toasts.toastError.show = true;
-          this.loading = false;
         }
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
+        this.loading = false;
         this.closeModal('modaleDumpOption');
       });
     },
