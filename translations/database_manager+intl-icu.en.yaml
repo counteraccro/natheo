@@ -29,3 +29,7 @@ database_manager.schema.table.row.character_maximum_length: '_Taille maximum'
 database_manager.schema.table.row.is_nullable: '_Null possible'
 database_manager.schema.table.row.column_default: '_Valeur par défaut'
 database_manager.schema.table.title: __database_manager.schema.table.title
+database_manager.success.dump: __database_manager.success.dump
+database_manager.toast.title.success: __database_manager.toast.title.success
+database_manager.toast.title.error: __database_manager.toast.title.error
+database_manager.toast.time: __database_manager.toast.time
