@@ -24,7 +24,7 @@ class DumpSql
      * Retourne les options
      * @return array
      */
-    public function getOption(): array
+    public function getOptions(): array
     {
         return $this->options;
     }

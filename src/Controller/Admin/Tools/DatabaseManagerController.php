@@ -123,7 +123,7 @@ class DatabaseManagerController extends AbstractController
         Génération schema : https://www.doctrine-project.org/projects/doctrine-orm/en/3.2/reference/tools.html#database-schema-generation
         */
 
-        $bus->dispatch(new DumpSql($data, $this->getUser()->getId()));
+        $bus->dispatch(new DumpSql($data['options'], $this->getUser()->getId()));
         $return['msg'] = $translator->trans('database_manager.success.dump', domain: 'database_manager');
         $return['success'] = true;
         return $this->json($return);
