@@ -33,3 +33,5 @@ database_manager.success.dump: 'Génération de la sauvegarde prise en compte'
 database_manager.toast.title.success: 'Succès !'
 database_manager.toast.title.error: 'Erreur !'
 database_manager.toast.time: "A l'instant"
+database_manager.modale.dump.warning.title: 'Attention !'
+database_manager.modale.dump.warning.body: 'Utilisez des outils adaptés dès que votre site grandi. Une sauvegarde sur une base de donnée trop grande peut provoquer des crash de votre application voir de votre serveur !'
