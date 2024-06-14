@@ -11,6 +11,7 @@ use App\Entity\Admin\System\User;
 use App\Message\Tools\DumpSql;
 use App\Repository\Admin\System\UserRepository;
 use App\Service\Admin\NotificationService;
+use App\Utils\Global\DataBase;
 use App\Utils\Notification\NotificationKey;
 use App\Utils\Tools\DatabaseManager\DatabaseManagerConst;
 use Doctrine\DBAL\Exception;
@@ -56,19 +57,21 @@ class DumpSqlHandler
 
         $tables = $this->getListeTable($options);
 
-        if($options['data'] === 'table' || $options['data'] === 'table_data')
-        {
+        if ($options['data'] === 'table' || $options['data'] === 'table_data') {
             $abstractPlatform = $this->entityManager->getConnection()->getDatabasePlatform();
             $tableQuery = $abstractPlatform->getCreateTablesSQL($tables);
-            foreach($tableQuery as $query)
-            {
+            foreach ($tableQuery as $query) {
                 $filesystem->appendToFile($path, $query . "\n");
             }
         }
 
-        if($options['data'] === 'data' || $options['data'] === 'table_data')
-        {
-            // A rmeplir
+        $filesystem->appendToFile($path, "/* DATA GENERATION */\n");
+        if ($options['data'] === 'data' || $options['data'] === 'table_data') {
+            foreach ($tables as $table) {
+                $query = $this->generateInsertQuery($table);
+                $filesystem->appendToFile($path, $query . "\n");
+            }
+
         }
 
         $user = $this->notificationService->findOneById(User::class, $dumpSql->getUserId());
@@ -102,5 +105,47 @@ class DumpSqlHandler
         }
 
         return $tables;
+    }
+
+    /**
+     * Génère une requête SQL de type insert pour la table
+     * @param Table $table
+     * @return string|null
+     * @throws Exception
+     */
+    private function generateInsertQuery(Table $table): ?string
+    {
+        $query = 'SELECT * from ' . $table->getName();
+        $result = $this->entityManager->getConnection()->prepare($query)->executeQuery()->fetchAllAssociative();
+
+        if (empty($result)) {
+            return null;
+        }
+
+        $query = 'INSERT INTO ' . $table->getName() . ' (';
+        $keys = array_keys($result[0]);
+        foreach ($keys as $key) {
+            $query .= $key . ', ';
+        }
+        $query = substr($query, 0, -2) . ') VALUES ';
+
+        foreach ($result as $row) {
+            $query .= '(';
+            foreach ($row as $value) {
+                if (is_int($value)) {
+                    $query .= $value . ', ';
+                } elseif (is_bool($value)) {
+                    if ($value) {
+                        $query .= 'true, ';
+                    } else {
+                        $query .= 'false, ';
+                    }
+                } else {
+                    $query .= "'" . $value . "', ";
+                }
+            }
+            $query = substr($query, 0, -2) . '),';
+        }
+        return substr($query, 0, -1) . ';';
     }
 }

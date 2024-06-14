@@ -240,7 +240,7 @@ export default {
             </div>
             <div class="mb-2">
               <label for="select-multi-table" class="form-label">{{ this.translate.modale_dump_option.select_tables }}</label>
-              <select id="select-multi-table" class="form-select" size="15" :disabled="this.disabledListeTales" multiple v-model="this.optionData.tables">
+              <select id="select-multi-table" class="form-select" size="18" :disabled="this.disabledListeTales" multiple v-model="this.optionData.tables">
                 <option v-for="table in this.tables" :value="table.name">
                   {{ table.name }}
                 </option>
@@ -268,9 +268,14 @@ export default {
               </label>
             </div>
 
-            <div class="alert alert-secondary mt-5">
+            <div class="alert alert-secondary mt-2">
               <h6><i class="bi bi-info-circle-fill"></i> {{ this.translate.modale_dump_option.help_title }}</h6>
               <div v-html="this.translate.modale_dump_option.help_body"></div>
+            </div>
+
+            <div class="alert alert-danger mt-2">
+              <h6><i class="bi bi-exclamation-circle-fill"></i> {{ this.translate.modale_dump_option.warning_title }}</h6>
+              <div v-html="this.translate.modale_dump_option.warning_body"></div>
             </div>
 
           </div>

@@ -53,6 +53,10 @@ class DatabaseManagerTranslate extends AppTranslate
                 domain: 'database_manager'),
             'help_body' =>  $this->translator->trans('database_manager.modale.dump.help.body',
                 domain: 'database_manager'),
+            'warning_title' =>  $this->translator->trans('database_manager.modale.dump.warning.title',
+                domain: 'database_manager'),
+            'warning_body' =>  $this->translator->trans('database_manager.modale.dump.warning.body',
+                domain: 'database_manager'),
             'btn_generate' =>  $this->translator->trans('database_manager.modale.dump.btn.generate',
                 domain: 'database_manager'),
         ];
