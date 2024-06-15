@@ -36,3 +36,6 @@ database_manager.toast.time: __database_manager.toast.time
 database_manager.modale.dump.warning.title: __database_manager.modale.dump.warning.title
 database_manager.modale.dump.warning.body: __database_manager.modale.dump.warning.body
 database_manager.list.dump.title: __database_manager.list.dump.title
+database_manager.list.dump.file.name: __database_manager.list.dump.file.name
+database_manager.list.dump.action: __database_manager.list.dump.action
+database_manager.list.dump.no.data: __database_manager.list.dump.no.data
