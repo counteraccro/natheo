@@ -9,10 +9,12 @@ import Toast from "../../../../Components/Global/Toast.vue";
 import Modal from "../../../../Components/Global/Modal.vue";
 import SchemaDatabase from "../../../../Components/DatabaseManager/SchemaDatabse.vue";
 import SchemaTable from "../../../../Components/DatabaseManager/SchemaTable.vue";
+import ListDump from "../../../../Components/DatabaseManager/ListDump.vue";
 
 export default {
   name: "DatabaseManager",
   components: {
+    ListDump,
     SchemaTable,
     SchemaDatabase,
     Modal,
@@ -29,6 +31,7 @@ export default {
       tables: Object,
       disabledListeTales: true,
       schemaTable: Object,
+      listDump: Object,
       show: 'schemaDatabase',
       optionData: {
         all: true,
@@ -87,7 +90,6 @@ export default {
       this.loading = true;
       axios.get(this.urls.load_schema_table + '/' + table).then((response) => {
         this.schemaTable = response.data.result;
-        console.log(this.schemaTable);
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -96,10 +98,18 @@ export default {
     },
 
     /**
-     * Charge les listes des sauvegardes faites
+     * Charge les listes des sauvegardes, faites
      */
     loadListeDump() {
       this.show = 'dumps';
+      this.loading = true;
+      axios.get(this.urls.all_dump_file).then((response) => {
+        this.listDump = response.data.result;
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.loading = false;
+      });
     },
 
     /**
@@ -209,7 +219,10 @@ export default {
           </SchemaTable>
         </div>
         <div v-if="this.show === 'dumps'">
-          Liste dump
+          <ListDump
+            :data="this.listDump"
+              :translate="this.translate.list_dump"
+            ></ListDump>
         </div>
       </div>
     </div>

@@ -23,7 +23,8 @@ class DatabaseManagerTranslate extends AppTranslate
             'toast_time' => $this->translator->trans('database_manager.toast.time', domain: 'database_manager'),
             'schema_database' => $this->getTranslateSchemaDatabase(),
             'schema_table' => $this->getTranslateSchemaTable(),
-            'modale_dump_option' => $this->getTranslateModaleDumpOption()
+            'modale_dump_option' => $this->getTranslateModaleDumpOption(),
+            'list_dump' => $this->getTranslateListDump()
         ];
     }
 
@@ -82,6 +83,17 @@ class DatabaseManagerTranslate extends AppTranslate
     {
         return [
             'title' => $this->translator->trans('database_manager.schema.table.title', domain: 'database_manager'),
+        ];
+    }
+
+    /**
+     * Retourne les traductions du tableau du schema de la table
+     * @return array
+     */
+    private function getTranslateListDump():array
+    {
+        return [
+            'title' => $this->translator->trans('database_manager.list.dump.title', domain: 'database_manager'),
         ];
     }
 }

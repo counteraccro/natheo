@@ -55,6 +55,7 @@ class DatabaseManagerController extends AbstractController
                 'load_schema_table' => $this->generateUrl('admin_database_manager_load_schema_table'),
                 'load_tables_database' => $this->generateUrl('admin_database_manager_load_tables_database'),
                 'save_database' => $this->generateUrl('admin_database_manager_save_database'),
+                'all_dump_file' => $this->generateUrl('admin_database_manager_all_dump_file'),
             ]
         ]);
     }
@@ -100,32 +101,30 @@ class DatabaseManagerController extends AbstractController
 
     /**
      * @param MessageBusInterface $bus
-     * @param SqlManagerService $sqlManagerService
      * @param Request $request
+     * @param TranslatorInterface $translator
      * @return JsonResponse
-     * @throws ContainerExceptionInterface
      * @throws ExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/save-database', name: 'save_database', methods: ['POST'])]
     public function saveBdd(
         MessageBusInterface $bus,
-        SqlManagerService   $sqlManagerService,
         Request             $request,
         TranslatorInterface $translator
     ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-
-        /* A faire en asyncrone
-        Voir ici https://symfony.com/doc/current/messenger.html#creating-a-message-handler
-
-        Génération schema : https://www.doctrine-project.org/projects/doctrine-orm/en/3.2/reference/tools.html#database-schema-generation
-        */
-
         $bus->dispatch(new DumpSql($data['options'], $this->getUser()->getId()));
         $return['msg'] = $translator->trans('database_manager.success.dump', domain: 'database_manager');
         $return['success'] = true;
         return $this->json($return);
+    }
+
+    #[Route('/ajax/all-dump-file', name: 'all_dump_file', methods: ['GET'])]
+    public function getAllFileDump(
+        DatabaseManagerService $databaseManagerService
+    ):JsonResponse
+    {
+        return $this->json(['result' => []]);
     }
 }
