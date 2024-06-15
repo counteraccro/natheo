@@ -2,7 +2,7 @@
 /**
  * Service pour les notifications
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.0
  */
 
 namespace App\Service\Admin;

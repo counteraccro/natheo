@@ -12,11 +12,11 @@ use App\Entity\Admin\System\User;
 
 class NotificationFactory
 {
-    private User $user;
-
-    public function __construct(User $user)
+    public function __construct(
+        private User $user
+    )
     {
-        $this->user = $user;
+
     }
 
     /**
@@ -38,7 +38,7 @@ class NotificationFactory
      * Retourne le user avec les notifications associées
      * @return User
      */
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }
@@ -50,7 +50,7 @@ class NotificationFactory
      * @param array $params
      * @return NotificationFactory
      */
-    public function addNotification(string $key, array $params) : NotificationFactory
+    public function addNotification(string $key, array $params): NotificationFactory
     {
 
         if (!isset(NotificationKey::TAB_NOTIFICATIONS[$key])) {
@@ -64,12 +64,6 @@ class NotificationFactory
                 $tabParameter[$key] = $value;
             }
         }
-        /*$parameter = implode('|', array_map(
-            function ($v, $k) {
-                return sprintf("%s:%s", $k, $v);
-            },
-            $tab,
-            array_keys($tab)));*/
 
         $notification = $this->createNotification();
         $notification->setTitle($tabNotif[NotificationKey::KEY_TITLE]);

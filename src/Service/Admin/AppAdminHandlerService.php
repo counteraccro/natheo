@@ -3,6 +3,7 @@
 namespace App\Service\Admin;
 
 use App\Service\Admin\System\OptionSystemService;
+use App\Utils\Global\DataBase;
 use App\Utils\Translate\GridTranslate;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
@@ -39,7 +40,8 @@ class AppAdminHandlerService
             'userPasswordHasher' => UserPasswordHasherInterface::class,
             'mailer' => MailerInterface::class,
             'kernel' => KernelInterface::class,
-            'gridTranslate' => GridTranslate::class
+            'gridTranslate' => GridTranslate::class,
+            'database' => Database::class,
         ])]
         protected ContainerInterface $handlers){}
 

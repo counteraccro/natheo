@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Class pour la génération des traductions pour les scripts vue de SqlManager
+ * @author Gourdon Aymeric
+ * @version 1.0
+ */
 namespace App\Utils\Translate\Tools;
 
 use App\Utils\Translate\AppTranslate;

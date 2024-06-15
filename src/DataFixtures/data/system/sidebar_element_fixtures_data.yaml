@@ -198,7 +198,7 @@ sidebarElement:
       - se_database:
           icon: 'bi-database-fill'
           label: 'global.database'
-          route: '#'
+          route: 'admin_database_manager_index'
           disabled: false
           parent: se_devTools
           role: 'ROLE_SUPER_ADMIN'

@@ -1,0 +1,41 @@
+database_manager.index.page_title: 'Gestionnaire de base de données'
+database_manager.index.page_title_h1: 'Gestionnaire de base de données'
+database_manager.index.description: 'Gérer / restaurer / sauvegarder votre base de données'
+database_manager.schema.all.bdd.row.schema: Schema
+database_manager.schema.all.bdd.row.table_name: Table
+database_manager.schema.all.bdd.row.row: "Nombre d'éléments"
+database_manager.schema.all.bdd.row.size: Taille
+database_manager.schema.all.bdd.error_row.: 'données indisponible'
+database_manager.loading: Chargement
+database_manager.nb.row.total: Statistique
+database_manager.modale.dump.title: "Génération d'un dump SQL"
+database_manager.modale.dump.sub_title_1: 'Choix des tables'
+database_manager.modale.dump.sub_title_2: 'Option sur les données'
+database_manager.modale.dump.select_all: 'Toutes les tables'
+database_manager.modale.dump.select_tables: 'Ou uniquement les tables'
+database_manager.modale.dump.option_data: 'Uniquement les données'
+database_manager.modale.dump.option_table: 'Uniquement les schemas SQL'
+database_manager.modale.dump.option_table_data: 'Schema SQL et données'
+database_manager.modale.dump.help.title: Information
+database_manager.modale.dump.help.body: "La génération d'un dump SQL peut prendre du temps, cette action va être réalisée en arrière plan. <br />Une notification vous sera envoyée une fois celle-ci terminée"
+database_manager.btn_generate_dump: 'Nouvelle sauvegarde'
+database_manager.btn_schema_bdd: 'Schema de la base de données'
+database_manager.btn_liste_dump: 'Liste des sauvegardes'
+database_manager.modale.dump.btn.generate: 'Générer la sauvegarde'
+database_manager.schema.database.title: 'Schema de la base de données'
+database_manager.schema.table.row.column_name: Nom
+database_manager.schema.table.row.data_type: Type
+database_manager.schema.table.row.character_maximum_length: 'Taille maximum'
+database_manager.schema.table.row.is_nullable: 'Null possible'
+database_manager.schema.table.row.column_default: 'Valeur par défaut'
+database_manager.schema.table.title: 'Schema de la table'
+database_manager.success.dump: 'Génération de la sauvegarde prise en compte'
+database_manager.toast.title.success: 'Succès !'
+database_manager.toast.title.error: 'Erreur !'
+database_manager.toast.time: "A l'instant"
+database_manager.modale.dump.warning.title: 'Attention !'
+database_manager.modale.dump.warning.body: 'Utilisez des outils adaptés dès que votre site grandi. Une sauvegarde sur une base de donnée trop grande peut provoquer des crash de votre application voir de votre serveur !'
+database_manager.list.dump.title: 'Liste des sauvegardes SQL'
+database_manager.list.dump.file.name: 'Fichier'
+database_manager.list.dump.action: 'Action'
+database_manager.list.dump.no.data: 'Aucune sauvegarde pour le moment'

@@ -24,7 +24,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/sql-manager', name: 'admin_sql_manager_',
     requirements: ['_locale' => '%app.supported_locales%'])]
-#[IsGranted('ROLE_CONTRIBUTEUR')]
+#[IsGranted('ROLE_SUPER_ADMIN')]
 class SqlManagerController extends AppAdminController
 {
     #[Route('/', name: 'index')]

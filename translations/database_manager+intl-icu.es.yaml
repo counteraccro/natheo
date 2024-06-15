@@ -1,0 +1,41 @@
+database_manager.index.page_title: __database_manager.index.page_title
+database_manager.index.page_title_h1: __database_manager.index.page_title_h1
+database_manager.index.description: __database_manager.index.description
+database_manager.schema.all.bdd.row.schema: _Schema
+database_manager.schema.all.bdd.row.table_name: _Table
+database_manager.schema.all.bdd.row.row: _Elements
+database_manager.schema.all.bdd.row.size: _Taille
+database_manager.schema.all.bdd.error_row.: __database_manager.schema.all.bdd.error_row.
+database_manager.loading: __database_manager.loading
+database_manager.nb.row.total: __database_manager.nb.row.total
+database_manager.modale.dump.title: __database_manager.modale.dump.title
+database_manager.modale.dump.sub_title_1: __database_manager.modale.dump.sub_title_1
+database_manager.modale.dump.sub_title_2: __database_manager.modale.dump.sub_title_2
+database_manager.modale.dump.select_all: __database_manager.modale.dump.select_all
+database_manager.modale.dump.select_tables: __database_manager.modale.dump.select_tables
+database_manager.modale.dump.option_data: __database_manager.modale.dump.option_data
+database_manager.modale.dump.option_table: __database_manager.modale.dump.option_table
+database_manager.modale.dump.option_table_data: __database_manager.modale.dump.option_table_data
+database_manager.modale.dump.help.title: __database_manager.modale.dump.help.title
+database_manager.modale.dump.help.body: __database_manager.modale.dump.help.body
+database_manager.btn_generate_dump: __database_manager.btn_generate_dump
+database_manager.btn_schema_bdd: __database_manager.btn_schema_bdd
+database_manager.btn_liste_dump: __database_manager.btn_liste_dump
+database_manager.modale.dump.btn.generate: __database_manager.modale.dump.btn.generate
+database_manager.schema.database.title: __database_manager.schema.database.title
+database_manager.schema.table.row.column_name: _Nom
+database_manager.schema.table.row.data_type: _Type
+database_manager.schema.table.row.character_maximum_length: '_Taille maximum'
+database_manager.schema.table.row.is_nullable: '_Null possible'
+database_manager.schema.table.row.column_default: '_Valeur par défaut'
+database_manager.schema.table.title: __database_manager.schema.table.title
+database_manager.success.dump: __database_manager.success.dump
+database_manager.toast.title.success: __database_manager.toast.title.success
+database_manager.toast.title.error: __database_manager.toast.title.error
+database_manager.toast.time: __database_manager.toast.time
+database_manager.modale.dump.warning.title: __database_manager.modale.dump.warning.title
+database_manager.modale.dump.warning.body: __database_manager.modale.dump.warning.body
+database_manager.list.dump.title: __database_manager.list.dump.title
+database_manager.list.dump.file.name: __database_manager.list.dump.file.name
+database_manager.list.dump.action: __database_manager.list.dump.action
+database_manager.list.dump.no.data: __database_manager.list.dump.no.data
