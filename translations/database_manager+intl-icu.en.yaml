@@ -35,3 +35,4 @@ database_manager.toast.title.error: __database_manager.toast.title.error
 database_manager.toast.time: __database_manager.toast.time
 database_manager.modale.dump.warning.title: __database_manager.modale.dump.warning.title
 database_manager.modale.dump.warning.body: __database_manager.modale.dump.warning.body
+database_manager.list.dump.title: __database_manager.list.dump.title
