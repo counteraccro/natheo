@@ -180,7 +180,7 @@ sidebarElement:
       - se_devOptions:
           icon: 'bi-sign-do-not-enter-fill'
           label: 'global.dev_options'
-          route: '#'
+          route: 'admin_advanced_options_index'
           disabled: false
           parent: se_devTools
           role: 'ROLE_SUPER_ADMIN'

@@ -11,6 +11,9 @@ use App\Utils\Translate\AppTranslate;
 
 class DatabaseManagerTranslate extends AppTranslate
 {
+    /**
+     * @return array
+     */
     public function getTranslate(): array
     {
         return [
