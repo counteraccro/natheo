@@ -32,13 +32,24 @@ export default {
       <thead>
       <tr>
         <th>
-          data
+          {{ this.translate.file_name }}
+        </th>
+        <th>
+          {{ this.translate.action }}
         </th>
       </tr>
       </thead>
       <tbody>
-      <tr v-for="row in this.data.result">
-        <td>TD</td>
+      <tr v-if="this.data.length" v-for="row in this.data">
+        <td>
+          {{ row.name }}
+        </td>
+        <td>
+          <a :href="row.url" class="btn btn-secondary btn-sm"><i class="bi bi-download"></i></a>
+        </td>
+      </tr>
+      <tr v-else>
+        <td colspan="2" class="text-center"><i>{{ this.translate.no_data }}</i></td>
       </tr>
       </tbody>
     </table>

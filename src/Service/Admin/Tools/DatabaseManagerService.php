@@ -10,9 +10,11 @@ namespace App\Service\Admin\Tools;
 use App\Service\Admin\AppAdminService;
 use App\Service\AppService;
 use App\Utils\Global\DataBase;
+use App\Utils\Tools\DatabaseManager\DatabaseManagerConst;
 use App\Utils\Tools\DatabaseManager\Query\RawPostgresQuery;
 use App\Utils\Utils;
 use Doctrine\ORM\EntityManagerInterface;
+use Nette\Utils\Finder;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -101,5 +103,25 @@ class DatabaseManagerService extends AppAdminService
         $result['header'] = $newHeader;
         $result['table'] = $tableName;
         return $result;
+    }
+
+    /**
+     * Retourne la liste des dumps SQL
+     * @return array
+     */
+    public function getAllDump(): array
+    {
+        $finder = new Finder();
+        $finder->files()->in('../' . DatabaseManagerConst::ROOT_FOLDER_NAME);
+
+        $return = [];
+        foreach ($finder as $file) {
+
+            $return[] = [
+                'name' => $file->getFilename(),
+                'url' => '/' . DatabaseManagerConst::FOLDER_NAME . '/' . $file->getFilename()
+            ];
+        }
+        return array_reverse($return);
     }
 }

@@ -125,6 +125,6 @@ class DatabaseManagerController extends AbstractController
         DatabaseManagerService $databaseManagerService
     ):JsonResponse
     {
-        return $this->json(['result' => []]);
+        return $this->json(['result' => $databaseManagerService->getAllDump()]);
     }
 }

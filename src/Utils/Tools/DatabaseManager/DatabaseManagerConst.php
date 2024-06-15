@@ -8,13 +8,21 @@ namespace App\Utils\Tools\DatabaseManager;
 
 class DatabaseManagerConst
 {
+    public const FOLDER_NAME = 'dump';
+
     /**
      * Nom du dossier root des dumps
      */
-    public const ROOT_FOLDER_NAME = 'public' . DIRECTORY_SEPARATOR . 'dump' . DIRECTORY_SEPARATOR;
+    public const ROOT_FOLDER_NAME = 'public' . DIRECTORY_SEPARATOR . self::FOLDER_NAME . DIRECTORY_SEPARATOR;
 
+    /**
+     * Nom du fichier
+     */
     public const FILE_NAME_DUMP = 'file_dump_';
 
+    /**
+     * Extension du fichier
+     */
     public const FILE_DUMP_EXTENSION = '.sql';
 }
 

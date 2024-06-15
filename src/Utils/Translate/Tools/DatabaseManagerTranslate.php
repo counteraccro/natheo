@@ -94,6 +94,9 @@ class DatabaseManagerTranslate extends AppTranslate
     {
         return [
             'title' => $this->translator->trans('database_manager.list.dump.title', domain: 'database_manager'),
+            'file_name' => $this->translator->trans('database_manager.list.dump.file.name', domain: 'database_manager'),
+            'action' => $this->translator->trans('database_manager.list.dump.action', domain: 'database_manager'),
+            'no_data' => $this->translator->trans('database_manager.list.dump.no.data', domain: 'database_manager'),
         ];
     }
 }

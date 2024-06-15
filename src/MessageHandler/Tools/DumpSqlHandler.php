@@ -53,7 +53,7 @@ class DumpSqlHandler
         $options = $dumpSql->getOptions();
         $fileName = DatabaseManagerConst::FILE_NAME_DUMP . date('d-m-Y-H-i-s') . DatabaseManagerConst::FILE_DUMP_EXTENSION;
         $path = DatabaseManagerConst::ROOT_FOLDER_NAME . $fileName;
-        $url = '/dump/' . $fileName;
+        $url = '/' . DatabaseManagerConst::FOLDER_NAME . '/' . $fileName;
 
         $tables = $this->getListeTable($options);
 
