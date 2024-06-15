@@ -178,7 +178,7 @@ sidebarElement:
     lock: false
     children:
       - se_devOptions:
-          icon: 'bi-sign-do-not-enter-fill'
+          icon: 'bi-code-slash'
           label: 'global.dev_options'
           route: '#'
           disabled: false
