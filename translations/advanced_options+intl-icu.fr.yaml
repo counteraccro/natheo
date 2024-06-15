@@ -1,0 +1,6 @@
+advanced_options.index.page_title: 'Options avancées'
+advanced_options.index.page_title_h1: 'Options avancées'
+advanced_options.index.description: 'Gérer les options avancées du CMS, certaines options ne sont accessible que si le CMS est configuré dans un environnement de développement'
+advanced_options.toast.title.success: 'Succès !'
+advanced_options.toast.title.error: 'Erreur !'
+advanced_options.toast.time: "A l'instant"

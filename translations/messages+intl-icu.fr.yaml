@@ -4,7 +4,7 @@ global.user: Utilisateurs
 global.system: Système
 global.sidebar: Sidebar
 global.system_options: Options
-global.devtools: 'Tools'
+global.devtools: Tools
 global.dev_options: 'Options avancées'
 global.database: 'Base de données'
 global.translate: Traduction

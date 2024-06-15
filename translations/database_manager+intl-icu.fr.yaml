@@ -36,6 +36,6 @@ database_manager.toast.time: "A l'instant"
 database_manager.modale.dump.warning.title: 'Attention !'
 database_manager.modale.dump.warning.body: 'Utilisez des outils adaptés dès que votre site grandi. Une sauvegarde sur une base de donnée trop grande peut provoquer des crash de votre application voir de votre serveur !'
 database_manager.list.dump.title: 'Liste des sauvegardes SQL'
-database_manager.list.dump.file.name: 'Fichier'
-database_manager.list.dump.action: 'Action'
+database_manager.list.dump.file.name: Fichier
+database_manager.list.dump.action: Action
 database_manager.list.dump.no.data: 'Aucune sauvegarde pour le moment'
