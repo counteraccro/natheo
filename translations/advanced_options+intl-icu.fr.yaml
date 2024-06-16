@@ -8,8 +8,16 @@ advanced_options.switch.env.title: Environnement
 advanced_options.switch.subtitle.env.prod: 'Votre site est actuellement configuré en mode PRODUCTION'
 advanced_options.switch.subtitle.env.dev: 'Votre site est actuellement configuré en mode DEVELOPPEMENT'
 advanced_options.switch.define.env.dev: 'En mode DEVELOPEMENT, vous pouvez faire les choses suivantes :'
-advanced_options.switch.define.env.prod: __advanced_options.switch.define.env.prod
+advanced_options.switch.define.env.prod: 'En mode PRODUCTION, le site est optimisé pour une utilisation la plus fluide possible par :'
 advanced_options.switch.define.env.dev.1: "Faciliter le débug de l'application en cas de soucis"
 advanced_options.switch.define.env.dev.2: 'Permettre de réinstaller le site'
 advanced_options.switch.define.env.dev.3: 'Avoir accès à des outils internes masqués du site'
-advanced_options.switch.define.env.dev.4: __advanced_options.switch.define.env.dev.4
+advanced_options.switch.define.env.dev.4: 'Ce mode est utilisé pour le développement du CMS'
+advanced_options.switch.define.env.dev.warning: 'Ce mode ne doit pas être utilisé autrement que pour du débug ou du développement, utilisé en situation de production peut provoquer des ralentissements et donner des informations critiques à des personnes mal intentionnées'
+advanced_options.switch.define.env.prod.1: 'Une gestion du cache précise des vues et des requêtes SQL'
+advanced_options.switch.define.env.prod.2: 'Afficher uniquement des erreurs génériques'
+advanced_options.switch.define.env.prod.warning: "Ce mode ne doit pas être utilisé pour du débug puisque aucun outils de débug n'est accessible mise à part les logs fichiers"
+advanced_options.switch.define.env.prod.3: 'Limitation des logs au strict minimum pour maximiser la fluidité du site'
+advanced_options.switch.env.btn.dev: 'Passer en mode DEVELOPPEMENT'
+advanced_options.switch.env.btn.prod: 'Passer en mode PRODUCTION'
+advanced_options.success.switch.env: 'Changement de mode fait avec succès, rechargement de la page...'

@@ -4,3 +4,20 @@ advanced_options.index.description: __advanced_options.index.description
 advanced_options.toast.title.success: '_Succès !'
 advanced_options.toast.title.error: '_Erreur !'
 advanced_options.toast.time: "_A l'instant"
+advanced_options.success.switch.env: __advanced_options.success.switch.env
+advanced_options.switch.env.title: __advanced_options.switch.env.title
+advanced_options.switch.subtitle.env.prod: __advanced_options.switch.subtitle.env.prod
+advanced_options.switch.subtitle.env.dev: __advanced_options.switch.subtitle.env.dev
+advanced_options.switch.define.env.dev: __advanced_options.switch.define.env.dev
+advanced_options.switch.define.env.dev.1: __advanced_options.switch.define.env.dev.1
+advanced_options.switch.define.env.dev.2: __advanced_options.switch.define.env.dev.2
+advanced_options.switch.define.env.dev.3: __advanced_options.switch.define.env.dev.3
+advanced_options.switch.define.env.dev.4: __advanced_options.switch.define.env.dev.4
+advanced_options.switch.define.env.dev.warning: __advanced_options.switch.define.env.dev.warning
+advanced_options.switch.define.env.prod: __advanced_options.switch.define.env.prod
+advanced_options.switch.define.env.prod.1: __advanced_options.switch.define.env.prod.1
+advanced_options.switch.define.env.prod.2: __advanced_options.switch.define.env.prod.2
+advanced_options.switch.define.env.prod.3: __advanced_options.switch.define.env.prod.3
+advanced_options.switch.define.env.prod.warning: __advanced_options.switch.define.env.prod.warning
+advanced_options.switch.env.btn.dev: __advanced_options.switch.env.btn.dev
+advanced_options.switch.env.btn.prod: __advanced_options.switch.env.btn.prod
