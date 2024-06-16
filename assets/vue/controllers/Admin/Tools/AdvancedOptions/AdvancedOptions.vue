@@ -120,7 +120,14 @@ export default {
           <span v-if="this.isDevEnv()">{{ this.translate.switch_env_subtitle_dev }}</span>
           <span v-else>{{ this.translate.switch_env_subtitle_prod }}</span>
         </h5>
-        <p v-if="this.isDevEnv()" class="card-text">{{ this.translate.switch_env_define_dev }}</p>
+        <div v-if="this.isDevEnv()">
+          <span class="card-text">{{ this.translate.switch_env_define_dev }}</span>
+          <ul>
+            <li>{{ this.translate.switch_env_define_dev_1 }}</li>
+            <li>{{ this.translate.switch_env_define_dev_2 }}</li>
+            <li>{{ this.translate.switch_env_define_dev_3 }}</li>
+          </ul>
+        </div>
         <p v-else class="card-text">{{ this.translate.switch_env_define_prod }}</p>
         <a href="#" class="btn btn-primary">Go somewhere</a>
       </div>
