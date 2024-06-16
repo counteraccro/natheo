@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[\Symfony\Component\Routing\Annotation\Route('/admin/{_locale}/advanced-options', name: 'admin_advanced_options_',
     requirements: ['_locale' => '%app.supported_locales%'])]
@@ -34,11 +35,6 @@ class AdvancedOptionsController extends AbstractController
     ): Response
     {
 
-        $debug = $parameterBag->get('kernel.debug');
-        $env = $parameterBag->get('kernel.environment');
-
-        var_dump($env);
-
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'advanced_options',
             Breadcrumb::BREADCRUMB => [
@@ -54,18 +50,24 @@ class AdvancedOptionsController extends AbstractController
                 'app_env' => $parameterBag->get('kernel.environment')
             ],
             'urls' => [
-                //'load_schema_database' => $this->generateUrl('admin_database_manager_load_schema_database'),
+                'switch_env' => $this->generateUrl('admin_advanced_options_switch_env'),
             ]
         ]);
     }
 
     /**
      * Permet de changer la variable d'environnement
+     * @param TranslatorInterface $translator
      * @return JsonResponse
      */
     #[Route('/ajax/switch-env', name: 'switch_env', methods: ['GET'])]
-    public function switchEnv(): JsonResponse
+    public function switchEnv(TranslatorInterface $translator): JsonResponse
     {
+        //$debug = $parameterBag->get('kernel.debug');
+        //$env = $parameterBag->get('kernel.environment');
+
+        //var_dump($env);
+
         /*$filesystem = new Filesystem();
         $contents = $filesystem->readFile('../.env');
         $contents = str_replace('APP_ENV=dev', 'APP_ENV=prod', $contents);
@@ -73,6 +75,9 @@ class AdvancedOptionsController extends AbstractController
         //$filesystem->dumpFile('../.env-test-demo', $contents);
         var_dump($contents);*/
 
-        return $this->json([]);
+        $return['msg'] = $translator->trans('advanced_options.success.switch.env', domain: 'advanced_options');
+        $return['success'] = true;
+
+        return $this->json($return);
     }
 }

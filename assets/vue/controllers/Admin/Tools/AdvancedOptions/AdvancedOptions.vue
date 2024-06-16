@@ -26,7 +26,7 @@ export default {
     return {
       loading: false,
       modalTab: {
-        modaleDumpOption: false,
+        modaleConfirmSwitchEnv: false,
       },
       toasts: {
         toastSuccess: {
@@ -50,30 +50,38 @@ export default {
      */
     /*loadSchemaDataBase() {
       this.show = 'schemaDatabase';
-      this.loading = true;
-      axios.get(this.urls.load_schema_database).then((response) => {
-        this.result = response.data.query;
-         if (response.data.success === true) {
-          this.toasts.toastSuccess.msg = response.data.msg;
-          this.toasts.toastSuccess.show = true;
-        } else {
-          this.toasts.toastError.msg = response.data.msg;
-          this.toasts.toastError.show = true;
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.loading = false;
-      });
+
     },*/
+
+    switchMode(confirm) {
+      if (!confirm) {
+        this.updateModale('modaleConfirmSwitchEnv', true);
+      } else {
+        this.updateModale('modaleConfirmSwitchEnv', false);
+
+        this.loading = true;
+        axios.get(this.urls.switch_env).then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccess.msg = response.data.msg;
+            this.toasts.toastSuccess.show = true;
+          } else {
+            this.toasts.toastError.msg = response.data.msg;
+            this.toasts.toastError.show = true;
+          }
+        }).catch((error) => {
+          console.error(error);
+        }).finally(() => {
+          this.loading = false;
+        });
+
+      }
+    },
 
     /**
      * Défini si on est en environnement de dev ou non
      * @returns {boolean}
      */
-    isDevEnv()
-    {
-      console.log(this.data.app_env);
+    isDevEnv() {
       return this.data.app_env === 'dev';
     },
 
@@ -126,18 +134,37 @@ export default {
             <li>{{ this.translate.switch_env_define_dev_1 }}</li>
             <li>{{ this.translate.switch_env_define_dev_2 }}</li>
             <li>{{ this.translate.switch_env_define_dev_3 }}</li>
+            <li>{{ this.translate.switch_env_define_dev_4 }}</li>
           </ul>
+
+          <div class="alert alert-danger">
+            <i>{{ this.translate.switch_env_define_dev_warning }}</i>
+          </div>
+
         </div>
-        <p v-else class="card-text">{{ this.translate.switch_env_define_prod }}</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+        <div v-else>
+          <span class="card-text"> {{ this.translate.switch_env_define_prod }}</span>
+          <ul>
+            <li>{{ this.translate.switch_env_define_prod_1 }}</li>
+            <li>{{ this.translate.switch_env_define_prod_2 }}</li>
+            <li>{{ this.translate.switch_env_define_prod_3 }}</li>
+          </ul>
+          <div class="alert alert-danger">
+            <i>{{ this.translate.switch_env_define_prod_warning }}</i>
+          </div>
+        </div>
+        <div @click="this.switchMode(false)" class="btn btn-secondary float-end">
+          <span v-if="!this.isDevEnv()"> {{ this.translate.switch_env_btn_dev }} </span>
+          <span v-else> {{ this.translate.switch_env_btn_prod }}</span>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- modale confirmation suppression -->
   <modal
-      :id="'modaleDumpOption'"
-      :show="this.modalTab.modaleDumpOption"
+      :id="'modaleConfirmSwitchEnv'"
+      :show="this.modalTab.modaleConfirmSwitchEnv"
       @close-modal="this.closeModal"
       :optionModalSize="'modal-lg'"
       :option-show-close-btn="false">
@@ -148,7 +175,7 @@ export default {
       body
     </template>
     <template #footer>
-      footer
+      <div class="btn btn-secondary" @click="this.switchMode(true)">btn</div>
     </template>
   </modal>
   <!-- fin modale confirmation suppression -->
