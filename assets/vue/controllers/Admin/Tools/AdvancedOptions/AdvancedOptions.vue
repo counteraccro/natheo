@@ -20,6 +20,7 @@ export default {
   props: {
     urls: Object,
     translate: Object,
+    data: Object
   },
   data() {
     return {
@@ -66,6 +67,16 @@ export default {
       });
     },*/
 
+    /**
+     * Défini si on est en environnement de dev ou non
+     * @returns {boolean}
+     */
+    isDevEnv()
+    {
+      console.log(this.data.app_env);
+      return this.data.app_env === 'dev';
+    },
+
 
     /**
      * Ferme un toast en fonction de son id
@@ -100,7 +111,21 @@ export default {
 
   <div id="block-advanced-options" :class="this.loading === true ? 'block-grid' : ''">
 
-    Options avancées
+    <div class="card border-secondary">
+      <div class="card-header text-bg-secondary">
+        {{ this.translate.switch_env_title }}
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">
+          <span v-if="this.isDevEnv()">{{ this.translate.switch_env_subtitle_dev }}</span>
+          <span v-else>{{ this.translate.switch_env_subtitle_prod }}</span>
+        </h5>
+        <p v-if="this.isDevEnv()" class="card-text">{{ this.translate.switch_env_define_dev }}</p>
+        <p v-else class="card-text">{{ this.translate.switch_env_define_prod }}</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
+  </div>
 
   <!-- modale confirmation suppression -->
   <modal
@@ -120,8 +145,6 @@ export default {
     </template>
   </modal>
   <!-- fin modale confirmation suppression -->
-
-  </div>
   <!-- toast -->
   <div class="toast-container position-fixed top-0 end-0 p-2">
 

@@ -15,6 +15,12 @@ class AdvancedOptionsTranslate extends AppTranslate
      */
     public function getTranslate(): array
     {
-        return [];
+        return [
+            'switch_env_title' => $this->translator->trans('advanced_options.switch.env.title', domain: 'advanced_options'),
+            'switch_env_subtitle_prod' => $this->translator->trans('advanced_options.switch.subtitle.env.prod', domain: 'advanced_options'),
+            'switch_env_subtitle_dev' => $this->translator->trans('advanced_options.switch.subtitle.env.dev', domain: 'advanced_options'),
+            'switch_env_define_dev' => $this->translator->trans('advanced_options.switch.define.env.dev', domain: 'advanced_options'),
+            'switch_env_define_prod' => $this->translator->trans('advanced_options.switch.define.env.prod', domain: 'advanced_options'),
+        ];
     }
 }
