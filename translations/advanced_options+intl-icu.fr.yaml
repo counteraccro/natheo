@@ -4,3 +4,8 @@ advanced_options.index.description: 'Gérer les options avancées du CMS, certai
 advanced_options.toast.title.success: 'Succès !'
 advanced_options.toast.title.error: 'Erreur !'
 advanced_options.toast.time: "A l'instant"
+advanced_options.switch.env.title: Environnement
+advanced_options.switch.subtitle.env.prod: 'Votre site est configuré en environnement de production'
+advanced_options.switch.subtitle.env.dev: 'Votre site est configuré en environnement de développement'
+advanced_options.switch.define.env.dev: 'En environnement de développement, vous pouvez faire les choses suivantes :'
+advanced_options.switch.define.env.prod: __advanced_options.switch.define.env.prod
