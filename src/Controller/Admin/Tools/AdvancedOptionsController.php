@@ -7,8 +7,12 @@
 
 namespace App\Controller\Admin\Tools;
 
+use App\Service\Admin\CommandService;
+use App\Service\Admin\Tools\AdvancedOptionsService;
 use App\Utils\Breadcrumb;
 use App\Utils\Translate\Tools\AdvancedOptionsTranslate;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -58,23 +62,20 @@ class AdvancedOptionsController extends AbstractController
     /**
      * Permet de changer la variable d'environnement
      * @param TranslatorInterface $translator
+     * @param AdvancedOptionsService $advancedOptionsService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/switch-env', name: 'switch_env', methods: ['GET'])]
-    public function switchEnv(TranslatorInterface $translator): JsonResponse
+    public function switchEnv(
+        TranslatorInterface $translator,
+        AdvancedOptionsService $advancedOptionsService,
+        CommandService $commandService
+    ): JsonResponse
     {
-        //$debug = $parameterBag->get('kernel.debug');
-        //$env = $parameterBag->get('kernel.environment');
-
-        //var_dump($env);
-
-        /*$filesystem = new Filesystem();
-        $contents = $filesystem->readFile('../.env');
-        $contents = str_replace('APP_ENV=dev', 'APP_ENV=prod', $contents);
-
-        //$filesystem->dumpFile('../.env-test-demo', $contents);
-        var_dump($contents);*/
-
+        $advancedOptionsService->switchEnv();
+        $commandService->reloadCache();
         $return['msg'] = $translator->trans('advanced_options.success.switch.env', domain: 'advanced_options');
         $return['success'] = true;
 
