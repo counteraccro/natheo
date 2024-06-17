@@ -21,3 +21,10 @@ advanced_options.switch.define.env.prod.3: __advanced_options.switch.define.env.
 advanced_options.switch.define.env.prod.warning: __advanced_options.switch.define.env.prod.warning
 advanced_options.switch.env.btn.dev: __advanced_options.switch.env.btn.dev
 advanced_options.switch.env.btn.prod: __advanced_options.switch.env.btn.prod
+advanced_options.switch.env.msg.info.switch: __advanced_options.switch.env.msg.info.switch
+advanced_options.switch.env.msg.info.switch.end: __advanced_options.switch.env.msg.info.switch.end
+advanced_options.modale.confirm.env.title: __advanced_options.modale.confirm.env.title
+advanced_options.modale.confirm.env.body.text.1: __advanced_options.modale.confirm.env.body.text.1
+advanced_options.modale.confirm.env.body.text.2: __advanced_options.modale.confirm.env.body.text.2
+advanced_options.modale.confirm.env.btn.confirm: __advanced_options.modale.confirm.env.btn.confirm
+advanced_options.modale.confirm.env.btn.undo: __advanced_options.modale.confirm.env.btn.undo
