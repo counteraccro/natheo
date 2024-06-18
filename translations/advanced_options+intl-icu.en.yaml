@@ -29,3 +29,9 @@ advanced_options.modale.confirm.env.body.text.2: __advanced_options.modale.confi
 advanced_options.modale.confirm.env.btn.confirm: __advanced_options.modale.confirm.env.btn.confirm
 advanced_options.modale.confirm.env.btn.undo: __advanced_options.modale.confirm.env.btn.undo
 advanced_options.switch.env.msg.info.title: __advanced_options.switch.env.msg.info.title
+advanced_options.title.danger.zone: __advanced_options.title.danger.zone
+advanced_options.warning.danger.zone: __advanced_options.warning.danger.zone
+advanced_options.reload.data.title: __advanced_options.reload.data.title
+advanced_options.reload.data.text_1: __advanced_options.reload.data.text_1
+advanced_options.reload.data.warning: __advanced_options.reload.data.warning
+advanced_options.reload.data.btn: __advanced_options.reload.data.btn
