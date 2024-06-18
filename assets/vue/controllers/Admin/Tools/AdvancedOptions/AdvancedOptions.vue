@@ -184,8 +184,24 @@ export default {
 
     <div v-if="this.isDevEnv()">
 
-      <fieldset class="border-1 border-danger mt-3">
-        <legend class="text-danger">toto</legend>
+      <fieldset class="border-1 border-danger mt-3 p-3">
+        <legend class="text-danger">{{ this.translate.title_danger_zone }}</legend>
+
+        <p class="text-danger"><b>{{ this.translate.warning_danger_zone }}</b></p>
+
+        <div class="card border-secondary">
+          <div class="card-header text-bg-secondary">
+            {{ this.translate.reload_data.title }}
+          </div>
+          <div class="card-body">
+            <p class="text-black"> {{ this.translate.reload_data.text_1 }}</p>
+            <p class="text-danger"><i>{{ this.translate.reload_data.warning }}</i></p>
+            <div class="btn btn-secondary float-end">
+              {{ this.translate.reload_data.btn }}
+            </div>
+          </div>
+        </div>
+
       </fieldset>
     </div>
 

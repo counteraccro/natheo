@@ -36,8 +36,25 @@ class AdvancedOptionsTranslate extends AppTranslate
             'switch_env_define_prod_warning' => $this->translator->trans('advanced_options.switch.define.env.prod.warning', domain: 'advanced_options'),
             'switch_env_btn_dev' => $this->translator->trans('advanced_options.switch.env.btn.dev', domain: 'advanced_options'),
             'switch_env_btn_prod' => $this->translator->trans('advanced_options.switch.env.btn.prod', domain: 'advanced_options'),
+            'title_danger_zone' => $this->translator->trans('advanced_options.title.danger.zone', domain: 'advanced_options'),
+            'warning_danger_zone' => $this->translator->trans('advanced_options.warning.danger.zone', domain: 'advanced_options'),
             'confirm_modale_env' => $this->getModaleConfirmSwitchEnvTranslate(),
-            'msg_info' => $this->getMsgInfoTranslate()
+            'msg_info' => $this->getMsgInfoTranslate(),
+            'reload_data' => $this->getBlocReloadDataTranslate(),
+        ];
+    }
+
+    /**
+     * Retourne les traductions du bloc reload data
+     * @return array
+     */
+    private function getBlocReloadDataTranslate(): array
+    {
+        return [
+            'title' => $this->translator->trans('advanced_options.reload.data.title', domain: 'advanced_options'),
+            'text_1' => $this->translator->trans('advanced_options.reload.data.text_1', domain: 'advanced_options'),
+            'warning' => $this->translator->trans('advanced_options.reload.data.warning', domain: 'advanced_options'),
+            'btn' => $this->translator->trans('advanced_options.reload.data.btn', domain: 'advanced_options'),
         ];
     }
 
