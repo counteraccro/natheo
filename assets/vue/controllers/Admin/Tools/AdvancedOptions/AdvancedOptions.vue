@@ -26,8 +26,17 @@ export default {
     return {
       loading: false,
       msgInfo: '',
+      currentConfirmAction: '',
+      modalConfirm: {
+        title: '',
+        text_1: '',
+        text_2: '',
+        btn_undo: '',
+        btn_go: ''
+      },
+
       modalTab: {
-        modaleConfirmSwitchEnv: false,
+        modaleConfirm: false,
       },
       toasts: {
         toastSuccess: {
@@ -46,38 +55,97 @@ export default {
   },
   methods: {
 
-    /**
-     * Chargement du schema de la base de donnée
-     */
-    /*loadSchemaDataBase() {
-      this.show = 'schemaDatabase';
+    openConfirmModale(action, confirm) {
 
-    },*/
+      this.currentConfirmAction = action;
+      if (!confirm) {
+        this.updateModale('modaleConfirm', true);
+      } else {
+        this.updateModale('modaleConfirm', false);
+      }
+
+      switch (action) {
+        case 'switchEnv' :
+          this.switchMode(confirm);
+          break;
+        case 'resetDatabase' :
+          this.resetDatabase(confirm);
+          break;
+        case 'resetData' :
+          this.resetData(confirm);
+          break;
+      }
+    },
+
+    /**
+     * Changement d'env
+     */
 
     switchMode(confirm) {
+
       if (!confirm) {
-        this.updateModale('modaleConfirmSwitchEnv', true);
-      } else {
-        this.updateModale('modaleConfirmSwitchEnv', false);
-
-        this.loading = true;
-        this.msgInfo = this.translate.msg_info.switch_env;
-        axios.get(this.urls.switch_env).then((response) => {
-          if (response.data.success === true) {
-            this.toasts.toastSuccess.msg = response.data.msg;
-            this.toasts.toastSuccess.show = true;
-          } else {
-            this.toasts.toastError.msg = response.data.msg;
-            this.toasts.toastError.show = true;
-          }
-        }).catch((error) => {
-          console.error(error);
-        }).finally(() => {
-          this.msgInfo = this.translate.msg_info.switch_env_end;
-          location.reload();
-        });
-
+        this.modalConfirm.title = this.translate.confirm_modale_env.modale_title;
+        this.modalConfirm.text_1 = this.translate.confirm_modale_env.modale_body_text_1;
+        this.modalConfirm.text_2 = this.translate.confirm_modale_env.modale_body_text_2;
+        this.modalConfirm.btn_go = this.translate.confirm_modale_env.modale_btn_confirm;
+        this.modalConfirm.btn_undo = this.translate.confirm_modale_env.modale_btn_undo;
+        return;
       }
+
+
+      this.loading = true;
+      this.msgInfo = this.translate.msg_info.switch_env;
+      axios.get(this.urls.switch_env).then((response) => {
+        if (response.data.success === true) {
+          this.toasts.toastSuccess.msg = response.data.msg;
+          this.toasts.toastSuccess.show = true;
+        } else {
+          this.toasts.toastError.msg = response.data.msg;
+          this.toasts.toastError.show = true;
+        }
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.msgInfo = this.translate.msg_info.switch_env_end;
+        location.reload();
+      });
+
+    },
+
+    /**
+     * Reset de la base de donnée
+     * @param confirm
+     */
+    resetDatabase(confirm)
+    {
+      if (!confirm) {
+        this.modalConfirm.title = this.translate.confirm_modale_reset_database.modale_title;
+        this.modalConfirm.text_1 = this.translate.confirm_modale_reset_database.modale_body_text_1;
+        this.modalConfirm.text_2 = this.translate.confirm_modale_reset_database.modale_body_text_2;
+        this.modalConfirm.btn_go = this.translate.confirm_modale_reset_database.modale_btn_confirm;
+        this.modalConfirm.btn_undo = this.translate.confirm_modale_reset_database.modale_btn_undo;
+        return;
+      }
+
+      alert('reset database')
+    },
+
+    /**
+     * Réinstallation des données
+     * @param confirm
+     */
+    resetData(confirm)
+    {
+      if (!confirm) {
+        this.modalConfirm.title = this.translate.confirm_modale_reset_data.modale_title;
+        this.modalConfirm.text_1 = this.translate.confirm_modale_reset_data.modale_body_text_1;
+        this.modalConfirm.text_2 = this.translate.confirm_modale_reset_data.modale_body_text_2;
+        this.modalConfirm.btn_go = this.translate.confirm_modale_reset_data.modale_btn_confirm;
+        this.modalConfirm.btn_undo = this.translate.confirm_modale_reset_data.modale_btn_undo;
+        return;
+      }
+
+      alert('reset data')
     },
 
     /**
@@ -130,7 +198,7 @@ export default {
         <div class="spinner-border text-secondary spinner-border-sm" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
-         {{ this.msgInfo }}
+        {{ this.msgInfo }}
       </div>
     </div>
 
@@ -143,7 +211,7 @@ export default {
 
     <div class="card border-secondary">
       <div class="card-header text-bg-secondary">
-        <i class="bi bi-arrow-left-right"></i>  {{ this.translate.switch_env_title }}
+        <i class="bi bi-arrow-left-right"></i> {{ this.translate.switch_env_title }}
       </div>
       <div class="card-body">
         <h5 class="card-title">
@@ -175,7 +243,7 @@ export default {
             <i>{{ this.translate.switch_env_define_prod_warning }}</i>
           </div>
         </div>
-        <div @click="this.switchMode(false)" class="btn btn-secondary float-end">
+        <div @click="this.openConfirmModale('switchEnv', false)" class="btn btn-secondary float-end">
           <span v-if="!this.isDevEnv()"> {{ this.translate.switch_env_btn_dev }} </span>
           <span v-else> {{ this.translate.switch_env_btn_prod }}</span>
         </div>
@@ -185,32 +253,39 @@ export default {
     <div v-if="this.isDevEnv()">
 
       <fieldset class="border-1 border-danger mt-3 p-3">
-        <legend class="text-danger"><i class="bi bi-exclamation-octagon-fill"></i>  {{ this.translate.title_danger_zone }}</legend>
+        <legend class="text-danger">
+          <i class="bi bi-exclamation-octagon-fill"></i> {{ this.translate.title_danger_zone }}
+        </legend>
 
         <p class="text-danger"><b>{{ this.translate.warning_danger_zone }}</b></p>
 
-        <div class="card border-secondary">
-          <div class="card-header text-bg-secondary">
-            <i class="bi bi-database-fill-down"></i>  {{ this.translate.reload_data.title }}
-          </div>
-          <div class="card-body">
-            <p class="text-black"> {{ this.translate.reload_data.text_1 }}</p>
-            <p class="text-danger"><i>{{ this.translate.reload_data.warning }}</i></p>
-            <div class="btn btn-secondary float-end">
-              {{ this.translate.reload_data.btn }}
+        <div class="row">
+          <div class="col-6">
+            <div class="card border-secondary">
+              <div class="card-header text-bg-secondary">
+                <i class="bi bi-database-fill-down"></i> {{ this.translate.reload_data.title }}
+              </div>
+              <div class="card-body">
+                <p class="text-black"> {{ this.translate.reload_data.text_1 }}</p>
+                <p class="text-danger"><i>{{ this.translate.reload_data.warning }}</i></p>
+                <div class="btn btn-secondary float-end" @click="this.openConfirmModale('resetData', false)">
+                  {{ this.translate.reload_data.btn }}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div class="card border-secondary mt-3">
-          <div class="card-header text-bg-secondary">
-           <i class="bi bi-database-fill-x"></i> {{ this.translate.reset_database.title }}
-          </div>
-          <div class="card-body">
-            <p class="text-black"> {{ this.translate.reset_database.text_1 }}</p>
-            <p class="text-danger"><i>{{ this.translate.reset_database.warning }}</i></p>
-            <div class="btn btn-secondary float-end">
-              {{ this.translate.reset_database.btn }}
+          <div class="col-6">
+            <div class="card border-secondary">
+              <div class="card-header text-bg-secondary">
+                <i class="bi bi-database-fill-x"></i> {{ this.translate.reset_database.title }}
+              </div>
+              <div class="card-body">
+                <p class="text-black"> {{ this.translate.reset_database.text_1 }}</p>
+                <p class="text-danger"><i>{{ this.translate.reset_database.warning }}</i></p>
+                <div class="btn btn-secondary float-end" @click="this.openConfirmModale('resetDatabase', false)">
+                  {{ this.translate.reset_database.btn }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -222,25 +297,25 @@ export default {
 
   <!-- modale confirmation suppression -->
   <modal
-      :id="'modaleConfirmSwitchEnv'"
-      :show="this.modalTab.modaleConfirmSwitchEnv"
+      :id="'modaleConfirm'"
+      :show="this.modalTab.modaleConfirm"
       @close-modal="this.closeModal"
       :optionModalSize="'modal-lg'"
       :option-modal-backdrop="'static'"
       :option-show-close-btn="false">
     <template #title>
-      <i class="bi bi-exclamation-circle-fill"></i> {{ this.translate.confirm_modale_env.modale_title }}
+      <i class="bi bi-exclamation-circle-fill"></i> {{ this.modalConfirm.title }}
     </template>
     <template #body>
-      <p class="text-black">{{ this.translate.confirm_modale_env.modale_body_text_1 }}</p>
-      <p><i>{{ this.translate.confirm_modale_env.modale_body_text_2 }}</i></p>
+      <p class="text-black">{{ this.modalConfirm.text_1 }}</p>
+      <p><i>{{ this.modalConfirm.text_2 }}</i></p>
     </template>
     <template #footer>
-      <div class="btn btn-secondary float-end" @click="this.closeModal('modaleConfirmSwitchEnv')">
-        <i class="bi bi-x-circle-fill"></i> {{ this.translate.confirm_modale_env.modale_btn_undo }}
+      <div class="btn btn-secondary float-end" @click="this.closeModal('modaleConfirm')">
+        <i class="bi bi-x-circle-fill"></i> {{ this.modalConfirm.btn_undo }}
       </div>
-      <div class="btn btn-secondary float-end" @click="this.switchMode(true)">
-        <i class="bi bi-check-circle-fill"></i> {{ this.translate.confirm_modale_env.modale_btn_confirm }}
+      <div class="btn btn-secondary float-end" @click="this.openConfirmModale(this.currentConfirmAction, true)">
+        <i class="bi bi-check-circle-fill"></i> {{ this.modalConfirm.btn_go }}
       </div>
     </template>
   </modal>

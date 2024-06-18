@@ -39,6 +39,8 @@ class AdvancedOptionsTranslate extends AppTranslate
             'title_danger_zone' => $this->translator->trans('advanced_options.title.danger.zone', domain: 'advanced_options'),
             'warning_danger_zone' => $this->translator->trans('advanced_options.warning.danger.zone', domain: 'advanced_options'),
             'confirm_modale_env' => $this->getModaleConfirmSwitchEnvTranslate(),
+            'confirm_modale_reset_database' => $this->getModaleConfirmResetDatabaseTranslate(),
+            'confirm_modale_reset_data' => $this->getModaleConfirmResetDataTranslate(),
             'msg_info' => $this->getMsgInfoTranslate(),
             'reload_data' => $this->getBlocReloadDataTranslate(),
             'reset_database' => $this->getBlocResetDatabaseTranslate()
@@ -85,6 +87,36 @@ class AdvancedOptionsTranslate extends AppTranslate
             'modale_body_text_2' => $this->translator->trans('advanced_options.modale.confirm.env.body.text.2', domain: 'advanced_options'),
             'modale_btn_confirm' => $this->translator->trans('advanced_options.modale.confirm.env.btn.confirm', domain: 'advanced_options'),
             'modale_btn_undo' => $this->translator->trans('advanced_options.modale.confirm.env.btn.undo', domain: 'advanced_options'),
+        ];
+    }
+
+    /**
+     * Traduction de la modale de confirmation de switch d'environnement
+     * @return array
+     */
+    private function getModaleConfirmResetDatabaseTranslate(): array
+    {
+        return [
+            'modale_title' => $this->translator->trans('advanced_options.modale.confirm.reset.database.title', domain: 'advanced_options'),
+            'modale_body_text_1' => $this->translator->trans('advanced_options.modale.confirm.reset.database.body.text.1', domain: 'advanced_options'),
+            'modale_body_text_2' => $this->translator->trans('advanced_options.modale.confirm.reset.database.body.text.2', domain: 'advanced_options'),
+            'modale_btn_confirm' => $this->translator->trans('advanced_options.modale.confirm.reset.database.btn.confirm', domain: 'advanced_options'),
+            'modale_btn_undo' => $this->translator->trans('advanced_options.modale.confirm.reset.database.btn.undo', domain: 'advanced_options'),
+        ];
+    }
+
+    /**
+     * Traduction de la modale de confirmation de switch d'environnement
+     * @return array
+     */
+    private function getModaleConfirmResetDataTranslate(): array
+    {
+        return [
+            'modale_title' => $this->translator->trans('advanced_options.modale.confirm.reset.data.title', domain: 'advanced_options'),
+            'modale_body_text_1' => $this->translator->trans('advanced_options.modale.confirm.reset.data.body.text.1', domain: 'advanced_options'),
+            'modale_body_text_2' => $this->translator->trans('advanced_options.modale.confirm.reset.data.body.text.2', domain: 'advanced_options'),
+            'modale_btn_confirm' => $this->translator->trans('advanced_options.modale.confirm.reset.data.btn.confirm', domain: 'advanced_options'),
+            'modale_btn_undo' => $this->translator->trans('advanced_options.modale.confirm.reset.data.btn.undo', domain: 'advanced_options'),
         ];
     }
 

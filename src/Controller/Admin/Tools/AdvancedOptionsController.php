@@ -15,7 +15,6 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -30,6 +29,7 @@ class AdvancedOptionsController extends AbstractController
     /**
      * Point d'entrée des options avancées
      * @param AdvancedOptionsTranslate $advancedOptionsTranslate
+     * @param ParameterBagInterface $parameterBag
      * @return Response
      */
     #[Route('/', name: 'index', methods: ['GET'])]
