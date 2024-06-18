@@ -143,7 +143,7 @@ export default {
 
     <div class="card border-secondary">
       <div class="card-header text-bg-secondary">
-        {{ this.translate.switch_env_title }}
+        <i class="bi bi-arrow-left-right"></i>  {{ this.translate.switch_env_title }}
       </div>
       <div class="card-body">
         <h5 class="card-title">
@@ -185,19 +185,32 @@ export default {
     <div v-if="this.isDevEnv()">
 
       <fieldset class="border-1 border-danger mt-3 p-3">
-        <legend class="text-danger">{{ this.translate.title_danger_zone }}</legend>
+        <legend class="text-danger"><i class="bi bi-exclamation-octagon-fill"></i>  {{ this.translate.title_danger_zone }}</legend>
 
         <p class="text-danger"><b>{{ this.translate.warning_danger_zone }}</b></p>
 
         <div class="card border-secondary">
           <div class="card-header text-bg-secondary">
-            {{ this.translate.reload_data.title }}
+            <i class="bi bi-database-fill-down"></i>  {{ this.translate.reload_data.title }}
           </div>
           <div class="card-body">
             <p class="text-black"> {{ this.translate.reload_data.text_1 }}</p>
             <p class="text-danger"><i>{{ this.translate.reload_data.warning }}</i></p>
             <div class="btn btn-secondary float-end">
               {{ this.translate.reload_data.btn }}
+            </div>
+          </div>
+        </div>
+
+        <div class="card border-secondary mt-3">
+          <div class="card-header text-bg-secondary">
+           <i class="bi bi-database-fill-x"></i> {{ this.translate.reset_database.title }}
+          </div>
+          <div class="card-body">
+            <p class="text-black"> {{ this.translate.reset_database.text_1 }}</p>
+            <p class="text-danger"><i>{{ this.translate.reset_database.warning }}</i></p>
+            <div class="btn btn-secondary float-end">
+              {{ this.translate.reset_database.btn }}
             </div>
           </div>
         </div>

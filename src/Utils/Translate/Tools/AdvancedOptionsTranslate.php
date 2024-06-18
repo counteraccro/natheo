@@ -41,6 +41,21 @@ class AdvancedOptionsTranslate extends AppTranslate
             'confirm_modale_env' => $this->getModaleConfirmSwitchEnvTranslate(),
             'msg_info' => $this->getMsgInfoTranslate(),
             'reload_data' => $this->getBlocReloadDataTranslate(),
+            'reset_database' => $this->getBlocResetDatabaseTranslate()
+        ];
+    }
+
+    /**
+     * Retourne les traductions du bloc reset database
+     * @return array
+     */
+    private function getBlocResetDatabaseTranslate(): array
+    {
+        return [
+            'title' => $this->translator->trans('advanced_options.reset.database.title', domain: 'advanced_options'),
+            'text_1' => $this->translator->trans('advanced_options.reset.database.text_1', domain: 'advanced_options'),
+            'warning' => $this->translator->trans('advanced_options.reset.database.warning', domain: 'advanced_options'),
+            'btn' => $this->translator->trans('advanced_options.reset.database.btn', domain: 'advanced_options'),
         ];
     }
 
