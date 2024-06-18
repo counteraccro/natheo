@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       loading: false,
-      msgInfoSwitch: '',
+      msgInfo: '',
       modalTab: {
         modaleConfirmSwitchEnv: false,
       },
@@ -61,7 +61,7 @@ export default {
         this.updateModale('modaleConfirmSwitchEnv', false);
 
         this.loading = true;
-        this.msgInfoSwitch = this.translate.msg_info_switch;
+        this.msgInfo = this.translate.msg_info.switch_env;
         axios.get(this.urls.switch_env).then((response) => {
           if (response.data.success === true) {
             this.toasts.toastSuccess.msg = response.data.msg;
@@ -73,7 +73,7 @@ export default {
         }).catch((error) => {
           console.error(error);
         }).finally(() => {
-          this.msgInfoSwitch = this.translate.msg_info_switch_end;
+          this.msgInfo = this.translate.msg_info.switch_env_end;
           location.reload();
         });
 
@@ -122,8 +122,16 @@ export default {
 
   <div id="block-advanced-options" :class="this.loading === true ? 'block-grid' : ''">
 
-    <div v-if="this.msgInfoSwitch !== ''" class="alert alert-secondary mb-3">
-      {{ this.msgInfoSwitch }}
+    <div v-if="this.msgInfo !== ''" class="card border-secondary mb-3">
+      <div class="card-header text-bg-secondary">
+        {{ this.translate.msg_info.title }}
+      </div>
+      <div class="card-body">
+        <div class="spinner-border text-secondary spinner-border-sm" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+         {{ this.msgInfo }}
+      </div>
     </div>
 
     <div v-if="this.loading" class="overlay">
@@ -173,6 +181,14 @@ export default {
         </div>
       </div>
     </div>
+
+    <div v-if="this.isDevEnv()">
+
+      <fieldset class="border-1 border-danger mt-3">
+        <legend class="text-danger">toto</legend>
+      </fieldset>
+    </div>
+
   </div>
 
   <!-- modale confirmation suppression -->
@@ -191,7 +207,9 @@ export default {
       <p><i>{{ this.translate.confirm_modale_env.modale_body_text_2 }}</i></p>
     </template>
     <template #footer>
-      <div class="btn btn-secondary float-end" @click="this.closeModal('modaleConfirmSwitchEnv')"><i class="bi bi-x-circle-fill"></i> {{ this.translate.confirm_modale_env.modale_btn_undo }}</div>
+      <div class="btn btn-secondary float-end" @click="this.closeModal('modaleConfirmSwitchEnv')">
+        <i class="bi bi-x-circle-fill"></i> {{ this.translate.confirm_modale_env.modale_btn_undo }}
+      </div>
       <div class="btn btn-secondary float-end" @click="this.switchMode(true)">
         <i class="bi bi-check-circle-fill"></i> {{ this.translate.confirm_modale_env.modale_btn_confirm }}
       </div>

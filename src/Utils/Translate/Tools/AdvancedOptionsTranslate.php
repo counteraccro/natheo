@@ -36,9 +36,8 @@ class AdvancedOptionsTranslate extends AppTranslate
             'switch_env_define_prod_warning' => $this->translator->trans('advanced_options.switch.define.env.prod.warning', domain: 'advanced_options'),
             'switch_env_btn_dev' => $this->translator->trans('advanced_options.switch.env.btn.dev', domain: 'advanced_options'),
             'switch_env_btn_prod' => $this->translator->trans('advanced_options.switch.env.btn.prod', domain: 'advanced_options'),
-            'msg_info_switch' => $this->translator->trans('advanced_options.switch.env.msg.info.switch', domain: 'advanced_options'),
-            'msg_info_switch_end' => $this->translator->trans('advanced_options.switch.env.msg.info.switch.end', domain: 'advanced_options'),
-            'confirm_modale_env' => $this->getModaleConfirmSwitchEnvTranslate()
+            'confirm_modale_env' => $this->getModaleConfirmSwitchEnvTranslate(),
+            'msg_info' => $this->getMsgInfoTranslate()
         ];
     }
 
@@ -54,6 +53,19 @@ class AdvancedOptionsTranslate extends AppTranslate
             'modale_body_text_2' => $this->translator->trans('advanced_options.modale.confirm.env.body.text.2', domain: 'advanced_options'),
             'modale_btn_confirm' => $this->translator->trans('advanced_options.modale.confirm.env.btn.confirm', domain: 'advanced_options'),
             'modale_btn_undo' => $this->translator->trans('advanced_options.modale.confirm.env.btn.undo', domain: 'advanced_options'),
+        ];
+    }
+
+    /**
+     * Traduction des messages d'informations
+     * @return array
+     */
+    private function getMsgInfoTranslate() : array
+    {
+        return [
+            'title' => $this->translator->trans('advanced_options.switch.env.msg.info.title', domain: 'advanced_options'),
+            'switch_env' => $this->translator->trans('advanced_options.switch.env.msg.info.switch', domain: 'advanced_options'),
+            'switch_env_end' => $this->translator->trans('advanced_options.switch.env.msg.info.switch.end', domain: 'advanced_options'),
         ];
     }
 }
