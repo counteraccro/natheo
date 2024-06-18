@@ -28,3 +28,4 @@ advanced_options.modale.confirm.env.btn.confirm: 'Oui je confirme'
 advanced_options.modale.confirm.env.btn.undo: Non
 advanced_options.switch.env.msg.info.switch: 'Changement de mode en cours, cela peut prendre du temps.... Ne touchez à rien, le site ce rafraichira automatiquement une fois le mode changé'
 advanced_options.switch.env.msg.info.switch.end: 'Rechargement de la page en cours...'
+advanced_options.switch.env.msg.info.title: 'Action en cours, veuillez patienter...'
