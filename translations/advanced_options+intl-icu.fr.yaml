@@ -34,4 +34,8 @@ advanced_options.reload.data.title: 'Réinstallation des données pré-installé
 advanced_options.reload.data.text_1: "Permet de réinstaller le site avec les données définies lors de l'installation de celui-ci. A n'utiliser que si vous souhaitez réinstaller votre site en conservant uniquement les données définies lors de l'installation"
 advanced_options.reload.data.warning: "L'ensemble de vos données créées seront supprimées, aucun retour ne sera possible."
 advanced_options.reload.data.btn: 'Réinstaller les données pré-installées'
-advanced_options.warning.danger.zone: "Avant toutes actions dans cette zone, pensez à faire une sauvegarde votre base de données afin de vous prémunir de toute fausse manipulation"
+advanced_options.warning.danger.zone: 'Avant toutes actions dans cette zone, pensez à faire une sauvegarde votre base de données afin de vous prémunir de toute fausse manipulation'
+advanced_options.reset.database.title: 'Réinitialisation du site'
+advanced_options.reset.database.text_1: 'Permet de relancer une installation complète de votre site et de pouvoir à nouveau le configurer'
+advanced_options.reset.database.warning: "Cette action entrainera la perte totale de l'ensemble de vos données, aucun retour ne sera possible"
+advanced_options.reset.database.btn: 'Réinitialiser mon site'

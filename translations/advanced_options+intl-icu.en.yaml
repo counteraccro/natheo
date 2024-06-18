@@ -35,3 +35,7 @@ advanced_options.reload.data.title: __advanced_options.reload.data.title
 advanced_options.reload.data.text_1: __advanced_options.reload.data.text_1
 advanced_options.reload.data.warning: __advanced_options.reload.data.warning
 advanced_options.reload.data.btn: __advanced_options.reload.data.btn
+advanced_options.reset.database.title: __advanced_options.reset.database.title
+advanced_options.reset.database.text_1: __advanced_options.reset.database.text_1
+advanced_options.reset.database.warning: __advanced_options.reset.database.warning
+advanced_options.reset.database.btn: __advanced_options.reset.database.btn
