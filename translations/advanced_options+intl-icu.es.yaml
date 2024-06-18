@@ -39,3 +39,13 @@ advanced_options.reset.database.title: __advanced_options.reset.database.title
 advanced_options.reset.database.text_1: __advanced_options.reset.database.text_1
 advanced_options.reset.database.warning: __advanced_options.reset.database.warning
 advanced_options.reset.database.btn: __advanced_options.reset.database.btn
+advanced_options.modale.confirm.reset.database.title: __advanced_options.modale.confirm.reset.database.title
+advanced_options.modale.confirm.reset.database.body.text.1: __advanced_options.modale.confirm.reset.database.body.text.1
+advanced_options.modale.confirm.reset.database.body.text.2: __advanced_options.modale.confirm.reset.database.body.text.2
+advanced_options.modale.confirm.reset.database.btn.confirm: __advanced_options.modale.confirm.reset.database.btn.confirm
+advanced_options.modale.confirm.reset.database.btn.undo: __advanced_options.modale.confirm.reset.database.btn.undo
+advanced_options.modale.confirm.reset.data.title: __advanced_options.modale.confirm.reset.data.title
+advanced_options.modale.confirm.reset.data.body.text.1: __advanced_options.modale.confirm.reset.data.body.text.1
+advanced_options.modale.confirm.reset.data.body.text.2: __advanced_options.modale.confirm.reset.data.body.text.2
+advanced_options.modale.confirm.reset.data.btn.confirm: __advanced_options.modale.confirm.reset.data.btn.confirm
+advanced_options.modale.confirm.reset.data.btn.undo: __advanced_options.modale.confirm.reset.data.btn.undo
