@@ -1,17 +1,21 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * EventListener qui va intercepter toute exception
+ */
 namespace App\EventListener;
 
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class ExceptionListener
 {
     public function __invoke(ExceptionEvent $event): void
     {
+        // TODO A REFAIRE PROPREMENT
+
         // You get the exception object from the received event
         $exception = $event->getThrowable();
         /*$message = sprintf(
