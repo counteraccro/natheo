@@ -36,3 +36,6 @@ services:
     public: true
     tags:
       - { name: doctrine.event_subscriber }
+
+  App\EventListener\ExceptionListener:
+    tags: [ kernel.event_listener ]

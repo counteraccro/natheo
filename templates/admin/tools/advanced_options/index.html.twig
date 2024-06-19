@@ -1,0 +1,22 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block title %}{{ 'advanced_options.index.page_title' | trans({}, 'advanced_options') }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'advanced_options.index.page_title_h1' | trans({}, 'advanced_options') }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    <p>
+        {{ 'advanced_options.index.description' | trans({}, 'advanced_options') }} <br/>
+        {#  {{ 'tag.index.description2' | trans({'icon' : '<i class="bi-eye-slash-fill"></i>'}, 'tag') | raw }} #}<br/>
+    </p>
+
+    <div {{ vue_component('Admin/Tools/AdvancedOptions/AdvancedOptions', {
+        'urls' : urls,
+        'translate' : translate,
+        'data' : data
+    }) }}>
+    </div>
+
+{% endblock %}

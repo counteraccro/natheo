@@ -1,0 +1,57 @@
+advanced_options.index.page_title: 'Options avancées'
+advanced_options.index.page_title_h1: 'Options avancées'
+advanced_options.index.description: 'Gérer les options avancées du CMS, certaines options ne sont accessible que si le CMS est configuré dans un environnement de développement'
+advanced_options.toast.title.success: 'Succès !'
+advanced_options.toast.title.error: 'Erreur !'
+advanced_options.toast.time: "A l'instant"
+advanced_options.switch.env.title: Environnement
+advanced_options.switch.subtitle.env.prod: 'Votre site est actuellement configuré en mode PRODUCTION'
+advanced_options.switch.subtitle.env.dev: 'Votre site est actuellement configuré en mode DEVELOPPEMENT'
+advanced_options.switch.define.env.dev: 'En mode DEVELOPEMENT, vous pouvez faire les choses suivantes :'
+advanced_options.switch.define.env.prod: 'En mode PRODUCTION, le site est optimisé pour une utilisation la plus fluide possible par :'
+advanced_options.switch.define.env.dev.1: "Faciliter le débug de l'application en cas de soucis"
+advanced_options.switch.define.env.dev.2: 'Permettre de réinstaller le site'
+advanced_options.switch.define.env.dev.3: 'Avoir accès à des outils internes masqués du site'
+advanced_options.switch.define.env.dev.4: 'Ce mode est utilisé pour le développement du CMS'
+advanced_options.switch.define.env.dev.warning: 'Ce mode ne doit pas être utilisé autrement que pour du débug ou du développement, utilisé en situation de production peut provoquer des ralentissements et donner des informations critiques à des personnes mal intentionnées'
+advanced_options.switch.define.env.prod.1: 'Une gestion du cache précise des vues et des requêtes SQL'
+advanced_options.switch.define.env.prod.2: 'Afficher uniquement des erreurs génériques'
+advanced_options.switch.define.env.prod.warning: "Ce mode ne doit pas être utilisé pour du débug puisque aucun outils de débug n'est accessible mise à part les logs fichiers"
+advanced_options.switch.define.env.prod.3: 'Limitation des logs au strict minimum pour maximiser la fluidité du site'
+advanced_options.switch.env.btn.dev: 'Passer en mode DEVELOPPEMENT'
+advanced_options.switch.env.btn.prod: 'Passer en mode PRODUCTION'
+advanced_options.success.switch.env: 'Changement de mode fait avec succès, rechargement de la page...'
+advanced_options.modale.confirm.env.title: 'Confirmation du changement de mode'
+advanced_options.modale.confirm.env.body.text.1: "Confirmez vous le changement de mode de votre site ? Cette action n'est pas anodine et peut avoir des conséquences lourdes pour votre site. Cette action peut prendre un peut de temps et la page ce rafraichira une fois le script terminé"
+advanced_options.modale.confirm.env.body.text.2: "Assurez vous d'avoir un accès au code source de votre site, dans le cas d'un crash suite au changement de mode"
+advanced_options.modale.confirm.env.btn.confirm: 'Oui je confirme'
+advanced_options.modale.confirm.env.btn.undo: Non
+advanced_options.switch.env.msg.info.switch: 'Changement de mode en cours, cela peut prendre du temps.... Ne touchez à rien, le site ce rafraichira automatiquement une fois le mode changé'
+advanced_options.switch.env.msg.info.switch.end: 'Rechargement de la page en cours...'
+advanced_options.switch.env.msg.info.title: 'Action en cours, veuillez patienter...'
+advanced_options.title.danger.zone: 'Zone de danger'
+advanced_options.reload.data.title: 'Réinstallation des données pré-installées'
+advanced_options.reload.data.text_1: "Permet de réinstaller le site avec les données définies lors de l'installation de celui-ci. A n'utiliser que si vous souhaitez réinstaller votre site en conservant uniquement les données définies lors de l'installation"
+advanced_options.reload.data.warning: "L'ensemble de vos données créées seront supprimées, aucun retour ne sera possible."
+advanced_options.reload.data.btn: 'Réinstaller les données pré-installées'
+advanced_options.warning.danger.zone: 'Avant toutes actions dans cette zone, pensez à faire une sauvegarde votre base de données afin de vous prémunir de toute fausse manipulation'
+advanced_options.reset.database.title: 'Réinitialisation du site'
+advanced_options.reset.database.text_1: "Permet de relancer une installation complète de votre site et de pouvoir à nouveau le configurer. A n'utiliser que pour recommencer un site de zero"
+advanced_options.reset.database.warning: "Cette action entrainera la perte totale de l'ensemble de vos données, aucun retour ne sera possible"
+advanced_options.reset.database.btn: 'Réinitialiser mon site'
+advanced_options.modale.confirm.reset.database.title: 'Confirmation de la réinitialisation de votre site'
+advanced_options.modale.confirm.reset.database.body.text.1: "Confirmez vous l'effacement totale de vos données et la réinstallation à zero de votre site ? il n'y aura aucune possibilité de revenir en arrière"
+advanced_options.modale.confirm.reset.database.body.text.2: "Assurez vous d'avoir une sauvegarde votre base de données pour pouvoir revenir en arrière"
+advanced_options.modale.confirm.reset.database.btn.confirm: 'Oui je confirme'
+advanced_options.modale.confirm.reset.database.btn.undo: Non
+advanced_options.modale.confirm.reset.data.title: 'Confirmation de la réinstallation des données'
+advanced_options.modale.confirm.reset.data.body.text.1: "Confirmez vous la réinstallation de votre site avec les données définies lors de l'installation ? il n'y aura aucune possibilité de revenir en arrière"
+advanced_options.modale.confirm.reset.data.body.text.2: "Assurez vous d'avoir une sauvegarde votre base de données pour pouvoir revenir en arrière"
+advanced_options.modale.confirm.reset.data.btn.confirm: 'Oui je confirme'
+advanced_options.modale.confirm.reset.data.btn.undo: Non
+advanced_options.reset.data.msg.info.reset: 'Réinstallation des données en cours... cela peut prendre un peut de temps'
+advanced_options.reset.data.msg.info.reset.end: "Données réinitialisées, retour à l'authentification..."
+advanced_options.success.reset.data: 'Réinitialisation des données faite avec succès. redirection en cours...'
+advanced_options.success.reset.database: 'Base de données supprimée avec succès redirection en cours...'
+advanced_options.reset.database.msg.info.reset: 'Suppression de la base de données en cours....'
+advanced_options.reset.database.msg.info.reset.end: "Base de données supprimée, redirection vers l'installation..."
