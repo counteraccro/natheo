@@ -51,3 +51,7 @@ advanced_options.modale.confirm.reset.data.btn.confirm: 'Oui je confirme'
 advanced_options.modale.confirm.reset.data.btn.undo: Non
 advanced_options.reset.data.msg.info.reset: 'Réinstallation des données en cours... cela peut prendre un peut de temps'
 advanced_options.reset.data.msg.info.reset.end: "Données réinitialisées, retour à l'authentification..."
+advanced_options.success.reset.data: 'Réinitialisation des données faite avec succès. redirection en cours...'
+advanced_options.success.reset.database: 'Base de données supprimée avec succès redirection en cours...'
+advanced_options.reset.database.msg.info.reset: 'Suppression de la base de données en cours....'
+advanced_options.reset.database.msg.info.reset.end: "Base de données supprimée, redirection vers l'installation..."

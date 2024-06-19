@@ -51,3 +51,7 @@ advanced_options.modale.confirm.reset.data.btn.confirm: __advanced_options.modal
 advanced_options.modale.confirm.reset.data.btn.undo: __advanced_options.modale.confirm.reset.data.btn.undo
 advanced_options.reset.data.msg.info.reset: __advanced_options.reset.data.msg.info.reset
 advanced_options.reset.data.msg.info.reset.end: __advanced_options.reset.data.msg.info.reset.end
+advanced_options.success.reset.data: __advanced_options.success.reset.data
+advanced_options.success.reset.database: __advanced_options.success.reset.database
+advanced_options.reset.database.msg.info.reset: __advanced_options.reset.database.msg.info.reset
+advanced_options.reset.database.msg.info.reset.end: __advanced_options.reset.database.msg.info.reset.end
