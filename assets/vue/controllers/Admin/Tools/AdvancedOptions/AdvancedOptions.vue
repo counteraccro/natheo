@@ -27,6 +27,7 @@ export default {
       loading: false,
       msgInfo: '',
       currentConfirmAction: '',
+      urlRedirect: '',
       modalConfirm: {
         title: '',
         text_1: '',
@@ -127,7 +128,23 @@ export default {
         return;
       }
 
-      alert('reset database')
+      this.loading = true;
+      this.msgInfo = this.translate.msg_info.reset_database;
+      axios.get(this.urls.reset_database).then((response) => {
+        this.urlRedirect = response.data.redirect;
+        if (response.data.success === true) {
+          this.toasts.toastSuccess.msg = response.data.msg;
+          this.toasts.toastSuccess.show = true;
+        } else {
+          this.toasts.toastError.msg = response.data.msg;
+          this.toasts.toastError.show = true;
+        }
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.msgInfo = this.translate.msg_info.reset_database_end;
+        window.location = this.urlRedirect;
+      });
     },
 
     /**
@@ -158,9 +175,8 @@ export default {
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
-        this.msgInfo = this.translate.msg_info.reset_data;
-        this.loading = false;
-        //location.reload();
+        this.msgInfo = this.translate.msg_info.reset_data_end;
+        location.reload();
       });
     },
 

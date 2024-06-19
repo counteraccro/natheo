@@ -132,6 +132,8 @@ class AdvancedOptionsTranslate extends AppTranslate
             'switch_env_end' => $this->translator->trans('advanced_options.switch.env.msg.info.switch.end', domain: 'advanced_options'),
             'reset_data' => $this->translator->trans('advanced_options.reset.data.msg.info.reset', domain: 'advanced_options'),
             'reset_data_end' => $this->translator->trans('advanced_options.reset.data.msg.info.reset.end', domain: 'advanced_options'),
+            'reset_database' => $this->translator->trans('advanced_options.reset.database.msg.info.reset', domain: 'advanced_options'),
+            'reset_database_end' => $this->translator->trans('advanced_options.reset.database.msg.info.reset.end', domain: 'advanced_options'),
         ];
     }
 }

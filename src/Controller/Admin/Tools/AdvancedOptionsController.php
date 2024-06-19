@@ -56,6 +56,7 @@ class AdvancedOptionsController extends AbstractController
             'urls' => [
                 'switch_env' => $this->generateUrl('admin_advanced_options_switch_env'),
                 'reset_data' => $this->generateUrl('admin_advanced_options_reset_data'),
+                'reset_database' => $this->generateUrl('admin_advanced_options_reset_database'),
             ]
         ]);
     }
@@ -84,10 +85,17 @@ class AdvancedOptionsController extends AbstractController
         return $this->json($return);
     }
 
+    /**
+     * Réinstalle les données du site
+     * @param TranslatorInterface $translator
+     * @param CommandService $commandService
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     #[Route('/ajax/reset-data', name: 'reset_data', methods: ['GET'])]
     public function resetData(
         TranslatorInterface $translator,
-        AdvancedOptionsService $advancedOptionsService,
         CommandService $commandService
     ): JsonResponse
     {
@@ -98,7 +106,32 @@ class AdvancedOptionsController extends AbstractController
         $commandService->createSchema();
         $commandService->loadFixtures();
 
-        $return['msg'] = $translator->trans('advanced_options.success.switch.env', domain: 'advanced_options');
+        $return['msg'] = $translator->trans('advanced_options.success.reset.data', domain: 'advanced_options');
+        $return['success'] = true;
+
+        return $this->json($return);
+    }
+
+    /**
+     * Suppression de la base de données
+     * @param TranslatorInterface $translator
+     * @param CommandService $commandService
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/ajax/reset-database', name: 'reset_database', methods: ['GET'])]
+    public function resetDatabase(
+        TranslatorInterface $translator,
+        CommandService $commandService
+    )
+    {
+        set_time_limit(0);
+
+        $commandService->dropDatabase();
+
+        $return['msg'] = $translator->trans('advanced_options.success.reset.database', domain: 'advanced_options');
+        $return['redirect'] = $this->generateUrl('index_index');
         $return['success'] = true;
 
         return $this->json($return);
