@@ -39,13 +39,15 @@ advanced_options.reset.database.title: 'Réinitialisation du site'
 advanced_options.reset.database.text_1: "Permet de relancer une installation complète de votre site et de pouvoir à nouveau le configurer. A n'utiliser que pour recommencer un site de zero"
 advanced_options.reset.database.warning: "Cette action entrainera la perte totale de l'ensemble de vos données, aucun retour ne sera possible"
 advanced_options.reset.database.btn: 'Réinitialiser mon site'
-advanced_options.modale.confirm.reset.database.title: "Confirmation de la réinitialisation de votre site"
+advanced_options.modale.confirm.reset.database.title: 'Confirmation de la réinitialisation de votre site'
 advanced_options.modale.confirm.reset.database.body.text.1: "Confirmez vous l'effacement totale de vos données et la réinstallation à zero de votre site ? il n'y aura aucune possibilité de revenir en arrière"
 advanced_options.modale.confirm.reset.database.body.text.2: "Assurez vous d'avoir une sauvegarde votre base de données pour pouvoir revenir en arrière"
 advanced_options.modale.confirm.reset.database.btn.confirm: 'Oui je confirme'
 advanced_options.modale.confirm.reset.database.btn.undo: Non
-advanced_options.modale.confirm.reset.data.title: "Confirmation de la réinstallation des données"
+advanced_options.modale.confirm.reset.data.title: 'Confirmation de la réinstallation des données'
 advanced_options.modale.confirm.reset.data.body.text.1: "Confirmez vous la réinstallation de votre site avec les données définies lors de l'installation ? il n'y aura aucune possibilité de revenir en arrière"
 advanced_options.modale.confirm.reset.data.body.text.2: "Assurez vous d'avoir une sauvegarde votre base de données pour pouvoir revenir en arrière"
 advanced_options.modale.confirm.reset.data.btn.confirm: 'Oui je confirme'
 advanced_options.modale.confirm.reset.data.btn.undo: Non
+advanced_options.reset.data.msg.info.reset: 'Réinstallation des données en cours... cela peut prendre un peut de temps'
+advanced_options.reset.data.msg.info.reset.end: "Données réinitialisées, retour à l'authentification..."
