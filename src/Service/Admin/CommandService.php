@@ -130,10 +130,6 @@ class CommandService extends AppAdminService
 
         $output = new BufferedOutput();
         $application->doRun($input, $output);
-
-        $content = $output->fetch();
-
-        echo $content;
     }
 
     /**
