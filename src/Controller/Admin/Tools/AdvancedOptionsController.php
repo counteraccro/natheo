@@ -55,6 +55,7 @@ class AdvancedOptionsController extends AbstractController
             ],
             'urls' => [
                 'switch_env' => $this->generateUrl('admin_advanced_options_switch_env'),
+                'reset_data' => $this->generateUrl('admin_advanced_options_reset_data'),
             ]
         ]);
     }
@@ -63,6 +64,7 @@ class AdvancedOptionsController extends AbstractController
      * Permet de changer la variable d'environnement
      * @param TranslatorInterface $translator
      * @param AdvancedOptionsService $advancedOptionsService
+     * @param CommandService $commandService
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -76,6 +78,26 @@ class AdvancedOptionsController extends AbstractController
     {
         $advancedOptionsService->switchEnv();
         $commandService->reloadCache();
+        $return['msg'] = $translator->trans('advanced_options.success.switch.env', domain: 'advanced_options');
+        $return['success'] = true;
+
+        return $this->json($return);
+    }
+
+    #[Route('/ajax/reset-data', name: 'reset_data', methods: ['GET'])]
+    public function resetData(
+        TranslatorInterface $translator,
+        AdvancedOptionsService $advancedOptionsService,
+        CommandService $commandService
+    ): JsonResponse
+    {
+        set_time_limit(0);
+
+        $commandService->dropDatabase();
+        $commandService->createDatabase();
+        $commandService->createSchema();
+        $commandService->loadFixtures();
+
         $return['msg'] = $translator->trans('advanced_options.success.switch.env', domain: 'advanced_options');
         $return['success'] = true;
 

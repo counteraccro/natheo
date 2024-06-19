@@ -1,6 +1,6 @@
 <?php
 /**
- * Constante pour les données venant de DatabaseManag
+ * Constante pour les données venant de DatabaseManagement
  * @author Gourdon Aymeric
  * @version 1.0
  */

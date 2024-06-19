@@ -4,35 +4,20 @@ namespace App\Service\Admin\Tools;
 
 use App\Kernel;
 use App\Service\Admin\AppAdminService;
+use App\Utils\Tools\AdvancedOptions\AdvancedOptionsConst;
+use Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader;
+use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+use Doctrine\Common\DataFixtures\Loader;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Twig\Environment;
 
 class AdvancedOptionsService extends AppAdminService
 {
-    /**
-     * Path fichier env de l'application
-     */
-    private const FILE_ENV = '..' . DIRECTORY_SEPARATOR . '.env';
 
     /**
-     * Path fichier env.local de l'application
-     */
-    private const FILE_ENV_LOCAL = '..' . DIRECTORY_SEPARATOR . '.env.local';
-
-    /**
-     * Dev mode
-     */
-    private const ENV_DEV = 'dev';
-
-    /**
-     * Prod mode
-     */
-    private const ENV_PROD = 'prod';
-
-    /**
-     * Permet de changer de l'environment de l'application
+     * Permet de changer d'environment de l'application
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -44,19 +29,21 @@ class AdvancedOptionsService extends AppAdminService
 
         $filesystem = new Filesystem();
 
-        $envFile = self::FILE_ENV;
-        if($filesystem->exists(self::FILE_ENV_LOCAL)) {
-            $envFile = self::FILE_ENV_LOCAL;
+        $envFile = AdvancedOptionsConst::FILE_ENV;
+        if($filesystem->exists(AdvancedOptionsConst::FILE_ENV_LOCAL)) {
+            $envFile = AdvancedOptionsConst::FILE_ENV_LOCAL;
         }
 
         $contents = $filesystem->readFile($envFile);
 
-        if($env === self::ENV_DEV) {
-            $contents = str_replace('APP_ENV=' . self::ENV_DEV, 'APP_ENV=' . self::ENV_PROD, $contents);
+        if($env === AdvancedOptionsConst::ENV_DEV) {
+            $contents = str_replace('APP_ENV=' . AdvancedOptionsConst::ENV_DEV,
+                'APP_ENV=' . AdvancedOptionsConst::ENV_PROD, $contents);
             $contents = str_replace('APP_DEBUG=1', 'APP_DEBUG=0', $contents);
         }
         else {
-            $contents = str_replace('APP_ENV=' . self::ENV_PROD, 'APP_ENV=' . self::ENV_DEV, $contents);
+            $contents = str_replace('APP_ENV=' . AdvancedOptionsConst::ENV_PROD,
+                'APP_ENV=' . AdvancedOptionsConst::ENV_DEV, $contents);
             $contents = str_replace('APP_DEBUG=0', 'APP_DEBUG=1', $contents);
         }
         $filesystem->dumpFile($envFile, $contents);

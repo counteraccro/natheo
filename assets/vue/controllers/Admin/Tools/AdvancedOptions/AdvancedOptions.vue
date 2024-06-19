@@ -145,7 +145,23 @@ export default {
         return;
       }
 
-      alert('reset data')
+      this.loading = true;
+      this.msgInfo = this.translate.msg_info.reset_data;
+      axios.get(this.urls.reset_data).then((response) => {
+        if (response.data.success === true) {
+          this.toasts.toastSuccess.msg = response.data.msg;
+          this.toasts.toastSuccess.show = true;
+        } else {
+          this.toasts.toastError.msg = response.data.msg;
+          this.toasts.toastError.show = true;
+        }
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.msgInfo = this.translate.msg_info.reset_data;
+        this.loading = false;
+        //location.reload();
+      });
     },
 
     /**
