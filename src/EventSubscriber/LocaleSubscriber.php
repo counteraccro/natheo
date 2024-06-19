@@ -57,6 +57,11 @@ class LocaleSubscriber implements EventSubscriberInterface
         } else {
             $locales = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE);
         }
+
+        if ($locales === null) {
+            $locales = 'fr';
+        }
+
         $this->localeSwitcher->setLocale($locales);
     }
 
