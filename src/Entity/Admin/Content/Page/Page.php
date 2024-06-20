@@ -2,6 +2,8 @@
 
 namespace App\Entity\Admin\Content\Page;
 
+use App\Entity\Admin\Content\Menu\Menu;
+use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
 use App\Repository\Admin\Content\Page\PageRepository;
@@ -55,12 +57,27 @@ class Page
     #[ORM\OneToMany(mappedBy: 'page', targetEntity: PageStatistique::class, cascade: ['persist'] , orphanRemoval: true)]
     private Collection $pageStatistiques;
 
+    /**
+     * @var Collection<int, MenuElement>
+     */
+    #[ORM\OneToMany(mappedBy: 'page', targetEntity: MenuElement::class)]
+    #[JoinTable(name: 'page_menu')]
+    private Collection $menuElements;
+
+    /**
+     * @var Collection<int, Menu>
+     */
+    #[ORM\ManyToMany(targetEntity: Menu::class, mappedBy: 'page')]
+    private Collection $menus;
+
     public function __construct()
     {
         $this->pageTranslations = new ArrayCollection();
         $this->pageContents = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->pageStatistiques = new ArrayCollection();
+        $this->menuElements = new ArrayCollection();
+        $this->menus = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -289,5 +306,62 @@ class Page
         return $this->getPageStatistiques()->filter(function (PageStatistique $pageStatistique) use ($key) {
             return $pageStatistique->getKey() === $key;
         })->first();
+    }
+
+    /**
+     * @return Collection<int, MenuElement>
+     */
+    public function getMenuElements(): Collection
+    {
+        return $this->menuElements;
+    }
+
+    public function addMenuElement(MenuElement $menuElement): static
+    {
+        if (!$this->menuElements->contains($menuElement)) {
+            $this->menuElements->add($menuElement);
+            $menuElement->setPage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMenuElement(MenuElement $menuElement): static
+    {
+        if ($this->menuElements->removeElement($menuElement)) {
+            // set the owning side to null (unless already changed)
+            if ($menuElement->getPage() === $this) {
+                $menuElement->setPage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Menu>
+     */
+    public function getMenus(): Collection
+    {
+        return $this->menus;
+    }
+
+    public function addMenu(Menu $menu): static
+    {
+        if (!$this->menus->contains($menu)) {
+            $this->menus->add($menu);
+            $menu->addPage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMenu(Menu $menu): static
+    {
+        if ($this->menus->removeElement($menu)) {
+            $menu->removePage($this);
+        }
+
+        return $this;
     }
 }
