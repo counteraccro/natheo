@@ -3,6 +3,7 @@ pages:
     user: Aymeric
     render: 6
     status: 1
+    category: 1
     tags:
       - Tag_natheo
       - Tag_evolution
