@@ -236,6 +236,7 @@ class PageService extends AppAdminService
         return [
             PageConst::CONTENT_TYPE_TEXT => $translator->trans('page.content.text', domain: 'page'),
             PageConst::CONTENT_TYPE_FAQ => $translator->trans('page.content.type.faq', domain: 'page'),
+            PageConst::CONTENT_TYPE_LISTING => $translator->trans('page.content.type.listing', domain: 'page'),
         ];
     }
 
@@ -245,7 +246,7 @@ class PageService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllCategories()
+    public function getAllCategories(): array
     {
         $translator = $this->getTranslator();
         return [
@@ -253,6 +254,7 @@ class PageService extends AppAdminService
             PageConst::PAGE_CATEGORY_PROJET => $translator->trans('page.category.projet', domain: 'page'),
             PageConst::PAGE_CATEGORY_ARTICLE => $translator->trans('page.category.article', domain: 'page'),
             PageConst::PAGE_CATEGORY_BLOG => $translator->trans('page.category.blog', domain: 'page'),
+            PageConst::PAGE_CATEGORY_EVENEMEMT => $translator->trans('page.category.evenement', domain: 'page'),
         ];
     }
 
@@ -340,8 +342,10 @@ class PageService extends AppAdminService
 
     /**
      * Retourne une liste d'élements type en fonction du type
-     * @param int $typeId
+     * @param int $type
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getListeContentByType(int $type): array
     {
@@ -360,6 +364,14 @@ class PageService extends AppAdminService
                 $label = $translator->trans('page.content.faq.list', domain: 'page');
                 $help = $translator->trans('page.content.faq.list.help', domain: 'page');
                 break;
+            case PageConst::CONTENT_TYPE_LISTING:
+                $list = $this->getAllCategories();
+                $selected = array_key_first($list);
+                $label = $translator->trans('page.content.listing.list', domain: 'page');
+                $help = $translator->trans('page.content.listing.list.help', domain: 'page');
+                break;
+            default:
+                break;
         }
 
         return [
@@ -375,6 +387,8 @@ class PageService extends AppAdminService
      * @param int $type
      * @param int $typeId
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getInfoContentByTypeAndTypeId(int $type, int $typeId): array
     {
@@ -388,6 +402,10 @@ class PageService extends AppAdminService
                 $faq = $this->findOneById(Faq::class, $typeId);
                 $typeStr .= $translator->trans('page.content.type.faq', domain: 'page');
                 $info = $faq->getFaqTranslationByLocale($this->getLocales()['current'])->getTitle();
+                break;
+            case PageConst::CONTENT_TYPE_LISTING :
+                $typeStr .= $translator->trans('page.content.type.listing', domain: 'page');
+                $info = $translator->trans('page.content.type.listing.info', ['type' => $this->getAllCategories()[$type]], domain: 'page');
                 break;
             default:
                 $typeStr .= $translator->trans('page.content.type.unknown', domain: 'page');
