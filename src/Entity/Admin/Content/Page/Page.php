@@ -35,6 +35,9 @@ class Page
     #[ORM\Column]
     private ?bool $disabled = false;
 
+    #[ORM\Column]
+    private ?int $category = null;
+
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
@@ -54,6 +57,7 @@ class Page
 
     #[ORM\OneToMany(mappedBy: 'page', targetEntity: PageStatistique::class, cascade: ['persist'] , orphanRemoval: true)]
     private Collection $pageStatistiques;
+
 
     public function __construct()
     {
@@ -289,5 +293,17 @@ class Page
         return $this->getPageStatistiques()->filter(function (PageStatistique $pageStatistique) use ($key) {
             return $pageStatistique->getKey() === $key;
         })->first();
+    }
+
+    public function getCategory(): ?int
+    {
+        return $this->category;
+    }
+
+    public function setCategory(int $category): static
+    {
+        $this->category = $category;
+
+        return $this;
     }
 }
