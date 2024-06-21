@@ -111,6 +111,12 @@ class PageConst
      */
     const PAGE_CATEGORY_BLOG = 4;
 
+    /**
+     * Catégorie évènement
+     * @var integer
+     */
+    const PAGE_CATEGORY_EVENEMEMT = 5;
+
 
 
 
