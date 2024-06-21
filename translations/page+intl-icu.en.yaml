@@ -121,3 +121,8 @@ page.category.article: __page.category.article
 page.category.blog: __page.category.blog
 page.page_content.list_categories_label: __page.page_content.list_categories_label
 page.page_content.list_categories_help: __page.page_content.list_categories_help
+page.content.type.listing: __page.content.type.listing
+page.category.evenement: __page.category.evenement
+page.content.listing.list: __page.content.listing.list
+page.content.listing.list.help: __page.content.listing.list.help
+page.content.type.listing.info: __page.content.type.listing.info

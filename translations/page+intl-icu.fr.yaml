@@ -119,5 +119,10 @@ page.category.page: Page
 page.category.projet: Projet
 page.category.article: Article
 page.category.blog: Blog
-page.page_content.list_categories_label: "Catégorie de la page"
-page.page_content.list_categories_help: "Définie la catégorie de la page"
+page.page_content.list_categories_label: 'Catégorie de la page'
+page.page_content.list_categories_help: 'Définie la catégorie de la page'
+page.category.evenement: Évènement
+page.content.type.listing: Listing
+page.content.listing.list: 'Choisir quel type de listing vous voulez'
+page.content.listing.list.help: 'La page sera une liste paginée de page avec la catégorie choisie'
+page.content.type.listing.info: 'Listing des pages {type}'
