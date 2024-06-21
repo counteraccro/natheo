@@ -240,6 +240,23 @@ class PageService extends AppAdminService
     }
 
     /**
+     * Retourne la liste des catégories
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getAllCategories()
+    {
+        $translator = $this->getTranslator();
+        return [
+            PageConst::PAGE_CATEGORY_PAGE => $translator->trans('page.category.page', domain: 'page'),
+            PageConst::PAGE_CATEGORY_PROJET => $translator->trans('page.category.projet', domain: 'page'),
+            PageConst::PAGE_CATEGORY_ARTICLE => $translator->trans('page.category.article', domain: 'page'),
+            PageConst::PAGE_CATEGORY_BLOG => $translator->trans('page.category.blog', domain: 'page'),
+        ];
+    }
+
+    /**
      * Génère une liste de tags au format HTML
      * @param Collection $tags
      * @return string

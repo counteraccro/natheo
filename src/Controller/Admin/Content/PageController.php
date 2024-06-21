@@ -175,7 +175,8 @@ class PageController extends AppAdminController
             'datas' => [
                 'list_status' => $pageService->getAllStatus(),
                 'list_render' => $pageService->getAllRender(),
-                'list_content' => $pageService->getAllContent()
+                'list_content' => $pageService->getAllContent(),
+                'list_categories' => $pageService->getAllCategories()
             ],
             'urls' => [
                 'load_tab_content' => $this->generateUrl('admin_page_load_tab_content'),

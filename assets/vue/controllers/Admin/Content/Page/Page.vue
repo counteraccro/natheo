@@ -586,6 +586,7 @@ export default {
             :page="this.page"
             :translate="this.translate.page_content_form"
             :list-render="this.page_datas.list_render"
+            :list-categories="this.page_datas.list_categories"
             :tab-error="this.tabError.contentForm"
             @auto-save="this.autoSave"
             @is-unique-url="this.isUniqueUrl"

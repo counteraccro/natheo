@@ -9,6 +9,7 @@ export default {
   props: {
     page: Object,
     listRender: Object,
+    listCategories: Object,
     translate: Object,
     locale: String,
     tabError: Object
@@ -34,8 +35,7 @@ export default {
      * Si c'est le cas, ajoute la class CSS is-
      */
     checkIsError(key, locale) {
-      if(this.tabError[key].locales[locale])
-      {
+      if (this.tabError[key].locales[locale]) {
         return 'is-invalid';
       }
       return "";
@@ -49,6 +49,15 @@ export default {
      */
     isUniqueUrl(url, id, locale) {
       this.$emit('is-unique-url', url, id, locale);
+    },
+
+    /**
+     * Génère la catégorie pour l'url de la page
+     * @param key
+     */
+    renderCategory(key) {
+      let category = this.listCategories[key] + '/';
+      return category.toLowerCase();
     },
 
     /**
@@ -75,6 +84,14 @@ export default {
   <h5>{{ this.translate.title }}</h5>
 
   <div class="mb-3">
+    <label for="list-render-page" class="form-label">{{ this.translate.list_categories_label }}</label>
+    <select id="list-render-page" class="form-select" v-model="this.page.category" @change="this.renderCategory(this.page.category); this.autoSave();">
+      <option v-for="(value, key) in this.listCategories" :value="parseInt(key)">{{ value }}</option>
+    </select>
+    <div id="list-status-help" class="form-text">{{ this.translate.list_categories_help }}</div>
+  </div>
+
+  <div class="mb-3">
     <div v-for="pageTranslation in this.page.pageTranslations">
       <div v-if="pageTranslation.locale === this.locale">
         <label for="page-titre" class="form-label">{{ this.translate.input_titre_label }}</label>
@@ -88,7 +105,10 @@ export default {
     <div v-for="pageTranslation in this.page.pageTranslations">
       <div v-if="pageTranslation.locale === this.locale">
         <label for="page-url" class="form-label">{{ this.translate.input_url_label }}</label>
-        <input type="text" class="form-control" :class="this.checkIsError('url', pageTranslation.locale)" id="page-url" v-model="pageTranslation.url" @change="this.isUniqueUrl(pageTranslation.url, pageTranslation.id, pageTranslation.locale)">
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon3" v-html="this.renderCategory(this.page.category)"></span>
+          <input type="text" class="form-control" :class="this.checkIsError('url', pageTranslation.locale)" id="page-url" v-model="pageTranslation.url" @change="this.isUniqueUrl(pageTranslation.url, pageTranslation.id, pageTranslation.locale)">
+        </div>
         <div class="invalid-feedback">
           {{ this.tabError.url.msg }}
         </div>
