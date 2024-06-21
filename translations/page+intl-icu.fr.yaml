@@ -115,3 +115,9 @@ page.content.faq.list.help: 'Seule les FAQs non désactivées sont listées'
 page.content.type.unknown: Inconnu
 page.content.info.unknown: 'Information non disponible pour le moment'
 page.content.type: Type
+page.category.page: Page
+page.category.projet: Projet
+page.category.article: Article
+page.category.blog: Blog
+page.page_content.list_categories_label: "Catégorie de la page"
+page.page_content.list_categories_help: "Définie la catégorie de la page"
