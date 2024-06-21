@@ -12,15 +12,15 @@ pages:
       fr:
         locale: fr
         titre: Bienvenue sur NatheoCMS
-        url: article/bienvenue
+        url: 'bienvenue'
       en:
         locale: en
         titre: '[EN] Bienvenue sur NatheoCMS'
-        url: 'article-en/welcome'
+        url: 'welcome'
       es:
         locale: es
         titre: '[ES] Bienvenue sur NatheoCMS'
-        url: 'article-es/bienvenido'
+        url: 'bienvenido'
     pageContent:
       presentation_content_1:
         renderBlock: 1
