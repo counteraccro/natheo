@@ -71,3 +71,12 @@ tag:
         label: 'Page (ES)'
       - locale: en
         label: 'Page (EN)'
+  Tag_blog:
+    color: '#b8db0a'
+    translate:
+      - locale: fr
+        label: 'Blog'
+      - locale: es
+        label: 'Blog (ES)'
+      - locale: en
+        label: 'Blog (EN)'
