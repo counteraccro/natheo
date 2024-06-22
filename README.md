@@ -7,7 +7,7 @@ Consulter la [documentation](https://counteraccro.github.io/natheo.doc/) pour pl
 # Installation
 Étape 1 : cloner le dépôt GIT
 
-```[https://github.com/counteraccro/TLMC.git](https://github.com/counteraccro/natheo.git)```
+```https://github.com/counteraccro/natheo.git```
 
 Étape 2 : Installer Symfony
 
