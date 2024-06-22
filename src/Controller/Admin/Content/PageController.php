@@ -216,6 +216,7 @@ class PageController extends AppAdminController
             $page = $pageFactory->create()->getPage();
             $page->setRender(PageConst::RENDER_1_BLOCK);
             $page->setStatus(PageConst::STATUS_DRAFT);
+            $page->setCategory(PageConst::PAGE_CATEGORY_PAGE);
             $page->getPageContents()->clear();
         } else {
             $page = $pageService->findOneById(Page::class, $id);
