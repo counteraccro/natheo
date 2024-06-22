@@ -34,6 +34,41 @@ pages:
         key: PAGE_NB_READ
         value: 30
 
+  Page_listing_blog:
+    user: Aymeric
+    render: 1
+    status: 1
+    category: 4
+    tags:
+      - Tag_listing
+      - Tag_blog
+    pageTranslation:
+      fr:
+        locale: fr
+        titre: 'Dernières articles du blog'
+        url: blogs
+      es:
+        locale: es
+        titre: 'es Dernières articles du blog'
+        url: es-blogs
+      en:
+        locale: en
+        titre: 'en Dernières articles du blog'
+        url: en-blogs
+    pageContent:
+      presentation_content_1:
+        renderBlock: 1
+        renderOrder: 1
+        type: 3
+        typeId: 4
+    pageStatistique:
+      PAGE_NB_VISITEUR:
+        key: PAGE_NB_VISITEUR
+        value: 100
+      PAGE_NB_READ:
+        key: PAGE_NB_READ
+        value: 30
+
   Page_faq:
     user: Aymeric
     render: 4
@@ -74,6 +109,149 @@ pages:
         renderOrder: 1
         type: 2
         typeId: faq-1
+    pageStatistique:
+      PAGE_NB_VISITEUR:
+        key: PAGE_NB_VISITEUR
+        value: 100
+      PAGE_NB_READ:
+        key: PAGE_NB_READ
+        value: 30
+
+  Page_nouveaute:
+    user: Aymeric
+    render: 5
+    status: 1
+    category: 7
+    tags:
+      - Tag_page
+      - Tag_evolution
+    pageTranslation:
+      fr:
+        locale: fr
+        titre: 'Les nouveautés de Natheo CMS'
+        url: new-in-natheo-cms
+      es:
+        locale: es
+        titre: '[ES] Faq de Natheo CMS'
+        url: es-new-in-natheo-cms
+      en:
+        locale: en
+        titre: '[EN] Faq de Natheo CMS'
+        url: en-new-in-natheo-cms
+    pageContent:
+      presentation_content_1:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+          en:
+            locale: en
+            text: "EN - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+          es:
+            locale: es
+            text: "ES - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+      presentation_content_2:
+        renderBlock: 2
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+          en:
+            locale: en
+            text: "EN - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+          es:
+            locale: es
+            text: "ES - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+      presentation_content_3:
+        renderBlock: 3
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+          en:
+            locale: en
+            text: "EN - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+          es:
+            locale: es
+            text: "ES - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+    pageStatistique:
+      PAGE_NB_VISITEUR:
+        key: PAGE_NB_VISITEUR
+        value: 100
+      PAGE_NB_READ:
+        key: PAGE_NB_READ
+        value: 30
+
+  Page_demo:
+    user: Aymeric
+    render: 3
+    status: 1
+    category: 1
+    tags:
+      - Tag_page
+    pageTranslation:
+      fr:
+        locale: fr
+        titre: 'Page de démonstration'
+        url: demo-page
+      es:
+        locale: es
+        titre: 'Page de démonstration'
+        url: demo-page
+      en:
+        locale: en
+        titre: 'Page de démonstration'
+        url: demo-page
+    pageContent:
+      presentation_content_1:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+          en:
+            locale: en
+            text: "EN - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+          es:
+            locale: es
+            text: "ES - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+      presentation_content_2:
+        renderBlock: 2
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+          en:
+            locale: en
+            text: "EN - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+          es:
+            locale: es
+            text: "ES - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+      presentation_content_3:
+        renderBlock: 3
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+          en:
+            locale: en
+            text: "EN - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+          es:
+            locale: es
+            text: "ES - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
     pageStatistique:
       PAGE_NB_VISITEUR:
         key: PAGE_NB_VISITEUR
@@ -165,7 +343,63 @@ pages:
             text: "# [ES]Pour les développeurs
             \n\n
             Vous souhaitez contribuer au développement du CMS ou tout simplement le modifier pour l'adapter à vos besoins, consulter [la documentation](https://counteraccro.github.io/natheo.doc/) technique."
+    pageStatistique:
+      PAGE_NB_VISITEUR:
+        key: PAGE_NB_VISITEUR
+        value: 100
+      PAGE_NB_READ:
+        key: PAGE_NB_READ
+        value: 30
 
+  Page_blog:
+    user: Aymeric
+    render: 4
+    status: 1
+    category: 4
+    tags:
+      - Tag_blog
+    pageTranslation:
+      fr:
+        locale: fr
+        titre: 'Article de blog'
+        url: article-blog
+      es:
+        locale: es
+        titre: '[ES] Article de blog'
+        url: es-article-blog
+      en:
+        locale: en
+        titre: '[EN] Article de blog'
+        url: en-article-blog
+    pageContent:
+      presentation_content_1:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+          en:
+            locale: en
+            text: "EN - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+          es:
+            locale: es
+            text: "ES - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+      presentation_content_2:
+        renderBlock: 2
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+          en:
+            locale: en
+            text: "EN - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
+          es:
+            locale: es
+            text: "ES - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra condimentum sapien, quis pellentesque lectus viverra quis. Phasellus ut massa hendrerit orci scelerisque dignissim a et purus. Vestibulum ullamcorper venenatis turpis nec pharetra. Mauris dui nunc, faucibus sit amet ullamcorper ac, mattis non neque. Fusce auctor nisi dolor, a sollicitudin eros lacinia in. Pellentesque sollicitudin, ipsum eget vehicula porta, nisi nisl varius lacus, eget rhoncus massa sapien sed dui. Vestibulum tincidunt ex a hendrerit congue."
     pageStatistique:
       PAGE_NB_VISITEUR:
         key: PAGE_NB_VISITEUR
