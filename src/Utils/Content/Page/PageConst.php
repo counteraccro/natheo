@@ -135,6 +135,12 @@ class PageConst
      */
     const PAGE_CATEGORY_DOCUMENTATION = 8;
 
+    /**
+     * Catégorie faq
+     * @var integer
+     */
+    const PAGE_CATEGORY_FAQ = 9;
+
 
 
 
