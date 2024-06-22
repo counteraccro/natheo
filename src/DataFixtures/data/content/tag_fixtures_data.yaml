@@ -44,3 +44,39 @@ tag:
         label: 'Evolution (ES)'
       - locale: en
         label: 'Evolution (EN)'
+  Tag_listing:
+    color: '#e19f0e'
+    translate:
+      - locale: fr
+        label: 'Listing'
+      - locale: es
+        label: 'Listing (ES)'
+      - locale: en
+        label: 'Listing (EN)'
+  Tag_faq:
+    color: '#262cdf'
+    translate:
+      - locale: fr
+        label: 'FAQ'
+      - locale: es
+        label: 'FAQ (ES)'
+      - locale: en
+        label: 'FAQ (EN)'
+  Tag_page:
+    color: '#23e515'
+    translate:
+      - locale: fr
+        label: 'Page'
+      - locale: es
+        label: 'Page (ES)'
+      - locale: en
+        label: 'Page (EN)'
+  Tag_blog:
+    color: '#b8db0a'
+    translate:
+      - locale: fr
+        label: 'Blog'
+      - locale: es
+        label: 'Blog (ES)'
+      - locale: en
+        label: 'Blog (EN)'

@@ -37,6 +37,9 @@ class Page
     #[ORM\Column]
     private ?bool $disabled = false;
 
+    #[ORM\Column]
+    private ?int $category = null;
+
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
@@ -361,6 +364,18 @@ class Page
         if ($this->menus->removeElement($menu)) {
             $menu->removePage($this);
         }
+
+        return $this;
+    }
+
+    public function getCategory(): ?int
+    {
+        return $this->category;
+    }
+
+    public function setCategory(int $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }
