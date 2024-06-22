@@ -82,6 +82,7 @@ class PagePopulate
     {
         $this->page->setRender($this->populate['render']);
         $this->page->setStatus($this->populate['status']);
+        $this->page->setCategory($this->populate['category']);
     }
 
     /**

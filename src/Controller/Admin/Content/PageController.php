@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Controller pour la gestion des pages
  */
 
@@ -175,7 +175,8 @@ class PageController extends AppAdminController
             'datas' => [
                 'list_status' => $pageService->getAllStatus(),
                 'list_render' => $pageService->getAllRender(),
-                'list_content' => $pageService->getAllContent()
+                'list_content' => $pageService->getAllContent(),
+                'list_categories' => $pageService->getAllCategories()
             ],
             'urls' => [
                 'load_tab_content' => $this->generateUrl('admin_page_load_tab_content'),
@@ -215,6 +216,7 @@ class PageController extends AppAdminController
             $page = $pageFactory->create()->getPage();
             $page->setRender(PageConst::RENDER_1_BLOCK);
             $page->setStatus(PageConst::STATUS_DRAFT);
+            $page->setCategory(PageConst::PAGE_CATEGORY_PAGE);
             $page->getPageContents()->clear();
         } else {
             $page = $pageService->findOneById(Page::class, $id);

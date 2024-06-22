@@ -1,7 +1,7 @@
 <script>/**
  * Permet d'ajouter ou éditer une page
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  */
 import axios from "axios";
 import PageContentForm from "../../../../Components/Page/PageContentForm.vue";
@@ -586,6 +586,7 @@ export default {
             :page="this.page"
             :translate="this.translate.page_content_form"
             :list-render="this.page_datas.list_render"
+            :list-categories="this.page_datas.list_categories"
             :tab-error="this.tabError.contentForm"
             @auto-save="this.autoSave"
             @is-unique-url="this.isUniqueUrl"
