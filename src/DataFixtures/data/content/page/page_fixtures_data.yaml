@@ -1,4 +1,38 @@
 pages:
+  Page_listing_page:
+    user: Aymeric
+    render: 1
+    status: 1
+    category: 1
+    tags:
+      - Tag_listing
+    pageTranslation:
+      fr:
+        locale: fr
+        titre: 'Dernières pages'
+        url: pages
+      es:
+        locale: es
+        titre: 'Últimas páginas'
+        url: paginas
+      en:
+        locale: en
+        titre: 'Last pages'
+        url: page
+    pageContent:
+      presentation_content_1:
+        renderBlock: 1
+        renderOrder: 1
+        type: 3
+        typeId: 1
+    pageStatistique:
+      PAGE_NB_VISITEUR:
+        key: PAGE_NB_VISITEUR
+        value: 100
+      PAGE_NB_READ:
+        key: PAGE_NB_READ
+        value: 30
+
   Page_presentation:
     user: Aymeric
     render: 6
