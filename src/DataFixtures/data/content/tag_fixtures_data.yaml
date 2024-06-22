@@ -44,3 +44,12 @@ tag:
         label: 'Evolution (ES)'
       - locale: en
         label: 'Evolution (EN)'
+  Tag_listing:
+    color: '#e19f0e'
+    translate:
+      - locale: fr
+        label: 'Listing'
+      - locale: es
+        label: 'Listing (ES)'
+      - locale: en
+        label: 'Listing (EN)'
