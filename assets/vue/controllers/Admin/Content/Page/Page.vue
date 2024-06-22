@@ -1,7 +1,7 @@
 <script>/**
  * Permet d'ajouter ou éditer une page
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  */
 import axios from "axios";
 import PageContentForm from "../../../../Components/Page/PageContentForm.vue";

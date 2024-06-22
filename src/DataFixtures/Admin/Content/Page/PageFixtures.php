@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.1
+ * Fixtures pour générer des pages
+ */
 namespace App\DataFixtures\Admin\Content\Page;
 
 use App\DataFixtures\AppFixtures;
