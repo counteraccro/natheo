@@ -25,6 +25,10 @@ Consulter la [documentation](https://counteraccro.github.io/natheo.doc/) pour pl
 
 ```php bin/console doctrine:fixture:load```
 
+Étape 6: Génération des assets
+
+```yarn encore dev -- watch```
+
 # Accès au site
 Sur votre environnement de développement
 * Créer un virtual host qui pointe vers le dossier suivant : ```[path-complet-vers-mon-dossier]\www\natheo\public```
