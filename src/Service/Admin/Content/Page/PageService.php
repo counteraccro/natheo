@@ -255,6 +255,9 @@ class PageService extends AppAdminService
             PageConst::PAGE_CATEGORY_ARTICLE => $translator->trans('page.category.article', domain: 'page'),
             PageConst::PAGE_CATEGORY_BLOG => $translator->trans('page.category.blog', domain: 'page'),
             PageConst::PAGE_CATEGORY_EVENEMEMT => $translator->trans('page.category.evenement', domain: 'page'),
+            PageConst::PAGE_CATEGORY_NEWS => $translator->trans('page.category.news', domain: 'page'),
+            PageConst::PAGE_CATEGORY_EVOLUTION => $translator->trans('page.category.evolution', domain: 'page'),
+            PageConst::PAGE_CATEGORY_DOCUMENTATION => $translator->trans('page.category.documentation', domain: 'page'),
         ];
     }
 

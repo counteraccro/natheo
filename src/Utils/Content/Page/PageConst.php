@@ -117,6 +117,24 @@ class PageConst
      */
     const PAGE_CATEGORY_EVENEMEMT = 5;
 
+    /**
+     * Catégorie news
+     * @var integer
+     */
+    const PAGE_CATEGORY_NEWS = 6;
+
+    /**
+     * Catégorie évolution
+     * @var integer
+     */
+    const PAGE_CATEGORY_EVOLUTION = 7;
+
+    /**
+     * Catégorie documentation
+     * @var integer
+     */
+    const PAGE_CATEGORY_DOCUMENTATION = 8;
+
 
 
 
