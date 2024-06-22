@@ -4,6 +4,14 @@ Le projet Natheo est un projet PHP pour développer un CMS avec Symfony
 
 Consulter la [documentation](https://counteraccro.github.io/natheo.doc/) pour plus d'information
 
+# Pré-requis
+
+Environnement obligatoire pour faire tourner le CMS :
+* PHP 8.3 ou +
+* Base de données : PostgresSql 15.2
+* Yarn 1.22.19 ou +
+* Composer 2.7.7 ou +
+
 # Installation
 Étape 1 : cloner le dépôt GIT
 
