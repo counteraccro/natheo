@@ -129,3 +129,4 @@ page.content.type.listing.info: 'Listing des pages {type}'
 page.category.news: Nouveauté
 page.category.evolution: Evolution
 page.category.documentation: Documentation
+page.category.faq: FAQ
