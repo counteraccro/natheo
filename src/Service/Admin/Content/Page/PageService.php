@@ -409,7 +409,7 @@ class PageService extends AppAdminService
                 break;
             case PageConst::CONTENT_TYPE_LISTING :
                 $typeStr .= $translator->trans('page.content.type.listing', domain: 'page');
-                $info = $translator->trans('page.content.type.listing.info', ['type' => $this->getAllCategories()[$type]], domain: 'page');
+                $info = $translator->trans('page.content.type.listing.info', ['type' => $this->getAllCategories()[$typeId]], domain: 'page');
                 break;
             default:
                 $typeStr .= $translator->trans('page.content.type.unknown', domain: 'page');
