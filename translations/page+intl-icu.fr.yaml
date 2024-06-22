@@ -126,3 +126,6 @@ page.content.type.listing: Listing
 page.content.listing.list: 'Choisir quel type de listing vous voulez'
 page.content.listing.list.help: 'La page sera une liste paginée de page avec la catégorie choisie'
 page.content.type.listing.info: 'Listing des pages {type}'
+page.category.news: Nouveauté
+page.category.evolution: Evolution
+page.category.documentation: Documentation

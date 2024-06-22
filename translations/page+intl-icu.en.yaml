@@ -126,3 +126,6 @@ page.category.evenement: __page.category.evenement
 page.content.listing.list: __page.content.listing.list
 page.content.listing.list.help: __page.content.listing.list.help
 page.content.type.listing.info: __page.content.type.listing.info
+page.category.news: __page.category.news
+page.category.evolution: __page.category.evolution
+page.category.documentation: __page.category.documentation
