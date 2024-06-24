@@ -74,9 +74,8 @@ class OverwriteListener
      * @param ControllerEvent $event
      * @return void
      */
-    public function onControllerRequest(ControllerEvent $event): void
+    public function __invoke(ControllerEvent $event): void
     {
-
         if (!$event->isMainRequest()) {
             return;
         }
