@@ -1,0 +1,9 @@
+overwrite:
+    -
+      controller: App\Controller\Admin\DashboardController
+      route: admin_dashboard_page_demo
+      overwrite:
+        controller: App\Overwrite\Controller\Admin\Tools\TestOverwriteController
+        route: admin_overwrite_page_demo
+        parameters:
+          param : id
