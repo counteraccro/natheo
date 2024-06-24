@@ -116,7 +116,7 @@ export default {
      * Rechargement de la page
      */
     reloadData() {
-      this.loadData(this.page, this.limit);
+      this.loadData(this.page, this.cLimit);
     },
 
     /**
