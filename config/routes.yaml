@@ -3,3 +3,10 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+overwrite:
+    resource:
+        path: ../src/Overwrite/Controller/
+        namespace: App\Overwrite\Controller
+    type: attribute
+

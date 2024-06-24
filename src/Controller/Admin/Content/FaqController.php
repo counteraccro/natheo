@@ -18,6 +18,8 @@ use App\Utils\Content\Faq\FaqPopulate;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Content\FaqTranslate;
 use App\Utils\Translate\MarkdownEditorTranslate;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +33,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class FaqController extends AppAdminController
 {
     /**
-     * @throws \Exception
+     * @param FaqService $faqService
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/', name: 'index')]
     public function index(FaqService $faqService): Response
@@ -57,6 +62,8 @@ class FaqController extends AppAdminController
      * @param int $page
      * @param int $limit
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     public function loadGridData(

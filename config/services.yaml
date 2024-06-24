@@ -39,3 +39,9 @@ services:
 
   App\EventListener\ExceptionListener:
     tags: [ kernel.event_listener ]
+
+  App\EventListener\OverwriteListener:
+    tags:
+      - { name: kernel.event_listener, method: onControllerRequest }
+    arguments:
+      $serviceLocator: !tagged_locator { tag: 'controller.service_arguments' }
