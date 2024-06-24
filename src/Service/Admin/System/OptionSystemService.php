@@ -35,7 +35,7 @@ class OptionSystemService extends AppAdminService
     /**
      * Retourne une option système en fonction de sa clé
      * @param string $key
-     * @return object|null
+     * @return OptionSystem|null
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
