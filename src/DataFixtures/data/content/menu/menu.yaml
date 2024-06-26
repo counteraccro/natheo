@@ -1,0 +1,24 @@
+menu:
+  menu_header:
+    user: Aymeric
+    name: Header
+    type: 1
+    position: 1
+    renderOrder: 1
+    menuElement:
+      element_1:
+        page: Page_listing_page
+        renderOrder: 1
+        menuElementTranslation:
+          fr :
+            locale: fr
+            textLink: Articles
+            externalLink: ''
+          es:
+            locale: es
+            textLink: es-Articles
+            externalLink: ''
+          en:
+            locale: en
+            textLink: en-Articles
+            externalLink: ''
