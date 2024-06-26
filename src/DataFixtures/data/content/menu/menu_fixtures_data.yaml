@@ -9,6 +9,7 @@ menu:
       element_1:
         page: Page_listing_page
         renderOrder: 1
+        disabled: 0
         menuElementTranslation:
           fr :
             locale: fr
