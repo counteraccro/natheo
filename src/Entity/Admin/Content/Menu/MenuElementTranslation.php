@@ -16,7 +16,7 @@ class MenuElementTranslation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'menuElementTranslations')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'menuElementTranslations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?MenuElement $menuElement = null;
 

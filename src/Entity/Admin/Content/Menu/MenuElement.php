@@ -30,10 +30,10 @@ class MenuElement
     /**
      * @var Collection<int, MenuElementTranslation>
      */
-    #[ORM\OneToMany(mappedBy: 'menuElement', targetEntity: MenuElementTranslation::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'menuElement', targetEntity: MenuElementTranslation::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $menuElementTranslations;
 
-    #[ORM\ManyToOne(inversedBy: 'menuElements')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'menuElements')]
     private ?Page $page = null;
 
     public function __construct()

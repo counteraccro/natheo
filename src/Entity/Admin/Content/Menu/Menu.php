@@ -44,13 +44,13 @@ class Menu
     /**
      * @var Collection<int, MenuElement>
      */
-    #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuElement::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuElement::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $menuElements;
 
     /**
      * @var Collection<int, Page>
      */
-    #[ORM\ManyToMany(targetEntity: Page::class, inversedBy: 'menus')]
+    #[ORM\ManyToMany(targetEntity: Page::class, inversedBy: 'menus', cascade: ['persist'])]
     private Collection $page;
 
     public function __construct()
