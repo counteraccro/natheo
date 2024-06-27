@@ -53,12 +53,14 @@ class PageController extends AppAdminController
     }
 
     /**
-     * Charge le tableau grid de tag en ajax
+     * Charge le tableau grid de page en ajax
      * @param PageService $pageService
      * @param Request $request
      * @param int $page
      * @param int $limit
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     public function loadGridData(
@@ -80,6 +82,8 @@ class PageController extends AppAdminController
      * @param TranslatorInterface $translator
      * @param Request $request
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', methods: 'PUT')]
     public function updateDisabled(
@@ -142,6 +146,8 @@ class PageController extends AppAdminController
      * @param PageTranslate $pageTranslate
      * @param int|null $id
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
