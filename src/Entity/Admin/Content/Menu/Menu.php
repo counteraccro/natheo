@@ -35,6 +35,9 @@ class Menu
     #[ORM\Column]
     private ?int $renderOrder = null;
 
+    #[ORM\Column]
+    private ?bool $disabled = false;
+
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
@@ -211,6 +214,18 @@ class Menu
     public function removePage(Page $page): static
     {
         $this->page->removeElement($page);
+
+        return $this;
+    }
+
+    public function isDisabled(): ?bool
+    {
+        return $this->disabled;
+    }
+
+    public function setDisabled(bool $disabled): static
+    {
+        $this->disabled = $disabled;
 
         return $this;
     }
