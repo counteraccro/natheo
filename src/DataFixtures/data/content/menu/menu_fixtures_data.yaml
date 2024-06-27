@@ -5,6 +5,7 @@ menu:
     type: 1
     position: 1
     renderOrder: 1
+    disabled: 0
     menuElement:
       element_1:
         page: Page_listing_page
