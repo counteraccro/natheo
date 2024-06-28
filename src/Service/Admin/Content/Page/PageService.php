@@ -28,11 +28,13 @@ class PageService extends AppAdminService
 {
 
     /**
-     * Retourne une liste de tag paginé
+     * Retourne une liste de page paginé
      * @param int $page
      * @param int $limit
      * @param string|null $search
      * @return Paginator
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
     {
