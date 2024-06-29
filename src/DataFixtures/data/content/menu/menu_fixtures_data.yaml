@@ -9,8 +9,9 @@ menu:
     menuElement:
       element_1:
         page: Page_listing_page
-        renderOrder: 1
         disabled: 0
+        columnPosition: 1
+        rowPosition: 1
         menuElementTranslation:
           fr :
             locale: fr
@@ -23,4 +24,78 @@ menu:
           en:
             locale: en
             textLink: en-Articles
+            externalLink: ''
+      element_2:
+        page: Page_faq
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 2
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: Faq
+            externalLink: ''
+          es:
+            locale: es
+            textLink: es-Faq
+            externalLink: ''
+          en:
+            locale: en
+            textLink: en-Faq
+            externalLink: ''
+      element_3:
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 3
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: Autre
+            externalLink: ''
+          es:
+            locale: es
+            textLink: es-Autre
+            externalLink: ''
+          en:
+            locale: en
+            textLink: en-Autre
+            externalLink: ''
+      element_4:
+        page: ''
+        parent: element_3
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 4
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: sub-element-3
+            externalLink: ''
+          es:
+            locale: es
+            textLink: es-sub-element-3
+            externalLink: ''
+          en:
+            locale: en
+            textLink: en-sub-element-3
+            externalLink: ''
+      element_5:
+        page: ''
+        parent: element_4
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 5
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: sub-element-3-4
+            externalLink: ''
+          es:
+            locale: es
+            textLink: es-sub-element-3-4
+            externalLink: ''
+          en:
+            locale: en
+            textLink: en-sub-element-3-4
             externalLink: ''

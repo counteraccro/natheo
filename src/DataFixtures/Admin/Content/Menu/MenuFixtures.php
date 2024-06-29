@@ -30,8 +30,8 @@ class MenuFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
             foreach ($dataMenu as $key => $value) {
                 switch ($key) {
                     case 'menuElement':
-                        foreach ($value as $menuElement) {
-                            $menu->addMenuElement($this->createMenuElement($menuElement));
+                        foreach ($value as $menuElRef => $menuElement) {
+                            $menu->addMenuElement($this->createMenuElement($menuElement, $menuElRef));
                         }
                         break;
                     case 'user':
@@ -55,7 +55,7 @@ class MenuFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
      * @param array $data
      * @return MenuElement
      */
-    private function createMenuElement(array $data): MenuElement
+    private function createMenuElement(array $data, string $ref): MenuElement
     {
         $menuElement = new MenuElement();
         foreach ($data as $key => $value) {
@@ -68,10 +68,15 @@ class MenuFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                 if (!empty($value)) {
                     $menuElement->setPage($this->getReference($value));
                 }
+            } elseif ($key === 'parent') {
+                if (!empty($value)) {
+                    $menuElement->addChild($this->getReference($value));
+                }
             } else {
                 $this->setData($key, $value, $menuElement);
             }
         }
+        $this->addReference($ref, $menuElement);
         return $menuElement;
     }
 
