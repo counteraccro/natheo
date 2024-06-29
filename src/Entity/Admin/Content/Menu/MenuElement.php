@@ -21,11 +21,14 @@ class MenuElement
     #[ORM\JoinColumn(nullable: false)]
     private ?Menu $menu = null;
 
-    #[ORM\Column]
-    private ?int $renderOrder = null;
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
+    private ?self $parent = null;
 
-    #[ORM\Column]
-    private ?bool $disabled = null;
+    /**
+     * @var Collection<int, self>
+     */
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class, cascade: ['remove'])]
+    private Collection $children;
 
     /**
      * @var Collection<int, MenuElementTranslation>
@@ -36,9 +39,20 @@ class MenuElement
     #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'menuElements')]
     private ?Page $page = null;
 
+    #[ORM\Column]
+    private ?int $columnPosition = null;
+
+    #[ORM\Column]
+    private ?int $rowPosition = null;
+
+    #[ORM\Column]
+    private ?bool $disabled = null;
+
+
     public function __construct()
     {
         $this->menuElementTranslations = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -54,18 +68,6 @@ class MenuElement
     public function setMenu(?Menu $menu): static
     {
         $this->menu = $menu;
-
-        return $this;
-    }
-
-    public function getRenderOrder(): ?int
-    {
-        return $this->renderOrder;
-    }
-
-    public function setRenderOrder(int $renderOrder): static
-    {
-        $this->renderOrder = $renderOrder;
 
         return $this;
     }
@@ -120,6 +122,72 @@ class MenuElement
     public function setPage(?Page $page): static
     {
         $this->page = $page;
+
+        return $this;
+    }
+
+    public function getParent(): ?self
+    {
+        return $this->parent;
+    }
+
+    public function setParent(?self $parent): static
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getChildren(): Collection
+    {
+        return $this->children;
+    }
+
+    public function addChild(self $child): static
+    {
+        if (!$this->children->contains($child)) {
+            $this->children->add($child);
+            $child->setParent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChild(self $child): static
+    {
+        if ($this->children->removeElement($child)) {
+            // set the owning side to null (unless already changed)
+            if ($child->getParent() === $this) {
+                $child->setParent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getColumnPosition(): ?int
+    {
+        return $this->columnPosition;
+    }
+
+    public function setColumnPosition(int $columnPosition): static
+    {
+        $this->columnPosition = $columnPosition;
+
+        return $this;
+    }
+
+    public function getRowPosition(): ?int
+    {
+        return $this->rowPosition;
+    }
+
+    public function setRowPosition(int $rowPosition): static
+    {
+        $this->rowPosition = $rowPosition;
 
         return $this;
     }
