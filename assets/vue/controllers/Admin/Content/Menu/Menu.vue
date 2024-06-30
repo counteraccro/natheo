@@ -32,6 +32,7 @@ export default {
       loading: false,
       menu: [],
       currentLocale: '',
+      currentPosition: '',
       toasts: {
         toastSuccess: {
           show: false,
@@ -61,6 +62,14 @@ export default {
      */
     switchLocale(event) {
       this.currentLocale = event.target.value;
+    },
+
+    /**
+     * Permet de changer de position
+     * @param event
+     */
+    switchPosition(event) {
+      this.currentPosition = event.target.value;
     },
 
 
@@ -101,27 +110,45 @@ export default {
 
 <template>
 
-  <div id="global-menu">
+  <div id="global-menu" :class="this.loading === true ? 'block-grid' : ''">
 
-    <nav>
-      <select id="select-language" class="form-select float-end w-25" @change="this.switchLocale($event)">
-        <option value="" selected>{{ this.translate.select_locale }}</option>
-        <option v-for="(language, key) in this.locales.localesTranslate" :value="key"
-            :selected="key===this.currentLocale">{{ language }}
-        </option>
-      </select>
-    </nav>
-    <div class="tab-content" id="page-tab" :class="this.loading === true ? 'block-grid' : ''">
-
-
-      <div v-if="this.loading" class="overlay">
-        <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
-          <div class="spinner-border text-primary" role="status"></div>
-          <span class="txt-overlay">{{ this.translate.loading }}</span>
-        </div>
+    <div v-if="this.loading" class="overlay">
+      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
+        <div class="spinner-border text-primary" role="status"></div>
+        <span class="txt-overlay">{{ this.translate.loading }}</span>
       </div>
-
     </div>
+
+
+
+    <div class="row">
+      <div class="col-2">
+        <select id="select-language" class="form-select w-auto" @change="this.switchPosition($event)">
+          <option value="" selected>{{ this.translate.select_position }}</option>
+          <option v-for="(position, key) in this.menu_datas.list_position" :value="key">{{ position }}
+          </option>
+        </select>
+      </div>
+      <div class="col-2">
+        <select id="select-language" class="form-select w-auto" @change="this.switchPosition($event)">
+          <option value="" selected>{{ this.translate.select_position }}</option>
+          <option v-for="(position, key) in this.menu_datas.list_position" :value="key">{{ position }}
+          </option>
+        </select>
+      </div>
+      <div class="col-8">
+        <select id="select-language" class="form-select w-auto float-end" @change="this.switchLocale($event)">
+          <option value="" selected>{{ this.translate.select_locale }}</option>
+          <option v-for="(language, key) in this.locales.localesTranslate" :value="key"
+              :selected="key===this.currentLocale">{{ language }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+
+
+
   </div>
 
 
