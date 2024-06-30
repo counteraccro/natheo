@@ -5,6 +5,7 @@ namespace App\Service\Admin\Content\Menu;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
+use App\Utils\Content\Menu\MenuConst;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -143,5 +144,23 @@ class MenuService extends AppAdminService
             'ajax' => false];
 
         return $actions;
+    }
+
+    /**
+     * Retourne une liste des positions
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getListPosition(): array
+    {
+        $translator = $this->getTranslator();
+
+        return [
+            MenuConst::POSITION_HEADER =>  $translator->trans('menu.position.header', domain: 'menu'),
+            MenuConst::POSITION_RIGHT =>  $translator->trans('menu.position.right', domain: 'menu'),
+            MenuConst::POSITION_FOOTER =>  $translator->trans('menu.position.footer', domain: 'menu'),
+            MenuConst::POSITION_LEFT =>  $translator->trans('menu.position.left', domain: 'menu')
+        ];
     }
 }

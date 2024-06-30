@@ -157,7 +157,7 @@ class MenuController extends AppAdminController
             'locales' => $locales,
             'id' => $id,
             'datas' => [
-                //'list_status' => $pageService->getAllStatus(),
+                'list_position' => $menuService->getListPosition(),
 
             ],
             'urls' => [

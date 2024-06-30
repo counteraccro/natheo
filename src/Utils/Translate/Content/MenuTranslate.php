@@ -16,6 +16,9 @@ class MenuTranslate extends AppTranslate
      */
     public function getTranslate(): array
     {
-        return [];
+        return [
+            'select_locale' => $this->translator->trans('menu.select.locale', domain: 'menu'),
+            'select_position' => $this->translator->trans('menu.select.position', domain: 'menu'),
+        ];
     }
 }
