@@ -18,9 +18,15 @@ menu.update.menu_title: 'Edition du menu #{id}'
 menu.update.menu_title_h1: Edition
 menu.update.description: 'Modifier le menu de votre site web'
 menu.grid.id: '#'
-menu.grid.name: 'Nom'
-menu.grid.type: 'Type'
+menu.grid.name: Nom
+menu.grid.type: Type
 menu.grid.create_at: 'Date de création'
 menu.grid.update_at: 'Date de modification'
 menu.confirm.disabled.msg: 'Confirmez vous la désactivation du menu <b>{label}</b>, cette action est définitive'
 menu.confirm.delete.msg: 'Confirmez vous la suppression du menu <b>{label}</b>, cette action est définitive'
+menu.position.header: 'En haut de la page'
+menu.position.right: 'A droite de la page'
+menu.position.footer: 'Au pied de la page'
+menu.position.left: 'A gauche de la page'
+menu.select.locale: 'Choix de la langue'
+menu.select.position: 'Choix de la position du menu'
