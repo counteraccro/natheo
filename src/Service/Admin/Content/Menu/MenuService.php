@@ -163,4 +163,43 @@ class MenuService extends AppAdminService
             MenuConst::POSITION_LEFT =>  $translator->trans('menu.position.left', domain: 'menu')
         ];
     }
+
+    /**
+     * Retourne une liste de type de menu
+     * @return array[]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getListType()
+    {
+        $translator = $this->getTranslator();
+        return [
+            MenuConst::POSITION_HEADER => [
+                MenuConst::TYPE_HEADER_SIDE_BAR => $translator->trans('menu.header.type.side-bar', domain: 'menu'),
+                MenuConst::TYPE_HEADER_MENU_DEROULANT => $translator->trans('menu.header.type.deroulant', domain: 'menu'),
+                MenuConst::TYPE_HEADER_MENU_DEROULANT_1_LIGNE_1_COLONNE => $translator->trans('menu.header.type.deroulant.1ligne.1col', domain: 'menu'),
+                MenuConst::TYPE_HEADER_MENU_DEROULANT_1_LIGNE_2_COLONNES => $translator->trans('menu.header.type.deroulant.1ligne.2col', domain: 'menu'),
+                MenuConst::TYPE_HEADER_MENU_DEROULANT_1_LIGNE_3_COLONNES => $translator->trans('menu.header.type.deroulant.1ligne.3col', domain: 'menu'),
+                MenuConst::TYPE_HEADER_MENU_DEROULANT_1_LIGNE_4_COLONNES => $translator->trans('menu.header.type.deroulant.1ligne.4col', domain: 'menu'),
+                MenuConst::TYPE_HEADER_MENU_DEROULANT_2_LIGNES_1_COLONNE => $translator->trans('menu.header.type.deroulant.2lignes.1col', domain: 'menu'),
+                MenuConst::TYPE_HEADER_MENU_DEROULANT_2_LIGNES_2_COLONNES => $translator->trans('menu.header.type.deroulant.2lignes.2col', domain: 'menu'),
+                MenuConst::TYPE_HEADER_MENU_DEROULANT_2_LIGNES_3_COLONNES => $translator->trans('menu.header.type.deroulant.2lignes.3col', domain: 'menu'),
+                MenuConst::TYPE_HEADER_MENU_DEROULANT_2_LIGNES_4_COLONNES => $translator->trans('menu.header.type.deroulant.2lignes.4col', domain: 'menu'),
+            ],
+            MenuConst::POSITION_LEFT => [
+                MenuConst::TYPE_LEFT_RIGHT_SIDE_BAR => $translator->trans('menu.left.right.type.side-bar', domain: 'menu'),
+                MenuConst::TYPE_LEFT_RIGHT_SIDE_BAR_ACCORDEON => $translator->trans('menu.left.right.type.side-bar.accordeon', domain: 'menu'),
+            ],
+            MenuConst::POSITION_RIGHT => [
+                MenuConst::TYPE_LEFT_RIGHT_SIDE_BAR => $translator->trans('menu.left.right.type.side-bar', domain: 'menu'),
+                MenuConst::TYPE_LEFT_RIGHT_SIDE_BAR_ACCORDEON => $translator->trans('menu.left.right.type.side-bar.accordeon', domain: 'menu'),
+            ],
+            MenuConst::POSITION_FOOTER => [
+                MenuConst::TYPE_FOOTER_1_COLONNE => $translator->trans('menu.footer.type.col1', domain: 'menu'),
+                MenuConst::TYPE_FOOTER_2_COLONNES => $translator->trans('menu.footer.type.col2', domain: 'menu'),
+                MenuConst::TYPE_FOOTER_3_COLONNES => $translator->trans('menu.footer.type.col3', domain: 'menu'),
+                MenuConst::TYPE_FOOTER_4_COLONNES => $translator->trans('menu.footer.type.col4', domain: 'menu'),
+            ]
+        ];
+    }
 }

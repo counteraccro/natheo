@@ -158,6 +158,7 @@ class MenuController extends AppAdminController
             'id' => $id,
             'datas' => [
                 'list_position' => $menuService->getListPosition(),
+                'list_type' => $menuService->getListType()
 
             ],
             'urls' => [

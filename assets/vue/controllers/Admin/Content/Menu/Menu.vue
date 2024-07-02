@@ -4,13 +4,6 @@
  * @version 1.O
  */
 import axios from "axios";
-import PageContentForm from "../../../../Components/Page/PageContentForm.vue";
-import PageHistory from "../../../../Components/Page/PageHistory.vue";
-import {Tab} from "bootstrap";
-import AutoComplete from "../../../../Components/Global/AutoComplete.vue";
-import {emitter} from "../../../../../utils/useEvent";
-import PageContent from "../../../../Components/Page/PageContent.vue";
-import {toInteger} from "lodash-es";
 import Toast from "../../../../Components/Global/Toast.vue";
 import Modal from "../../../../Components/Global/Modal.vue";
 
@@ -33,6 +26,7 @@ export default {
       menu: [],
       currentLocale: '',
       currentPosition: '',
+      listTypeByPosition: [],
       toasts: {
         toastSuccess: {
           show: false,
@@ -70,6 +64,19 @@ export default {
      */
     switchPosition(event) {
       this.currentPosition = event.target.value;
+      this.listTypeByPosition = [];
+
+      for (let key in this.menu_datas.list_type) {
+
+        if (!this.menu_datas.list_position.hasOwnProperty(key)) continue;
+
+        if (key === this.currentPosition) {
+          this.listTypeByPosition = this.menu_datas.list_type[key];
+          console.log(this.listTypeByPosition);
+          break;
+        }
+      }
+
     },
 
 
@@ -120,23 +127,24 @@ export default {
     </div>
 
 
-
     <div class="row">
-      <div class="col-2">
+      <div class="col-3">
         <select id="select-language" class="form-select w-auto" @change="this.switchPosition($event)">
           <option value="" selected>{{ this.translate.select_position }}</option>
           <option v-for="(position, key) in this.menu_datas.list_position" :value="key">{{ position }}
           </option>
         </select>
       </div>
-      <div class="col-2">
-        <select id="select-language" class="form-select w-auto" @change="this.switchPosition($event)">
-          <option value="" selected>{{ this.translate.select_position }}</option>
-          <option v-for="(position, key) in this.menu_datas.list_position" :value="key">{{ position }}
+      <div class="col-3">
+        <select id="select-language" class="form-select w-auto" :disabled="this.listTypeByPosition.length === 0">
+          <option value="" selected v-if="this.listTypeByPosition.length === 0">
+            {{ this.translate.select_type }}
+          </option>
+          <option v-for="(position, key) in this.listTypeByPosition" :value="key">{{ position }}
           </option>
         </select>
       </div>
-      <div class="col-8">
+      <div class="col-6">
         <select id="select-language" class="form-select w-auto float-end" @change="this.switchLocale($event)">
           <option value="" selected>{{ this.translate.select_locale }}</option>
           <option v-for="(language, key) in this.locales.localesTranslate" :value="key"
@@ -145,8 +153,6 @@ export default {
         </select>
       </div>
     </div>
-
-
 
 
   </div>
