@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/menu', name: 'admin_menu_', requirements: ['_locale' => '%app.supported_locales%'])]
@@ -162,8 +163,32 @@ class MenuController extends AppAdminController
 
             ],
             'urls' => [
-                //'load_tab_content' => $this->generateUrl('admin_page_load_tab_content'),
+                'load_menu' => $this->generateUrl('admin_menu_load_menu'),
             ]
         ]);
+    }
+
+    /**
+     * Charge un menu en fonction de son id
+     * @param int|null $id
+     * @return JsonResponse
+     * @throws ExceptionInterface
+     */
+    #[Route('/ajax/load-menu/{id}', name: 'load_menu', methods: ['GET'])]
+    public function getMenuById(
+        MenuService $menuService,
+        int $id = null
+    )
+    {
+        if($id === null)
+        {
+            $menu = '';
+        } else {
+            $menu = $menuService->findOneById(Menu::class, $id);
+        }
+
+        $menuArray = $menuService->convertEntityToArray($menu,
+            ['createdAt', 'updateAt', 'user', 'pageContents', 'pageStatistiques', 'tags', 'menus']);
+        return $this->json(['menu' => $menuArray]);
     }
 }

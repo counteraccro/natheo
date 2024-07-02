@@ -45,6 +45,7 @@ export default {
   },
   mounted() {
     this.currentLocale = this.locales.current;
+    this.loadMenu();
   },
   computed: {},
   methods: {
@@ -58,25 +59,30 @@ export default {
       this.currentLocale = event.target.value;
     },
 
+
     /**
      * Permet de changer de position
-     * @param event
      */
-    switchPosition(event) {
-      this.currentPosition = event.target.value;
+    switchPosition() {
+      this.selectListTypeByPosition(this.menu.position);
+    },
+
+    /**
+     * Selectionne la liste de type en fonction en fonction de la position
+     * @param position
+     */
+    selectListTypeByPosition(position) {
       this.listTypeByPosition = [];
 
       for (let key in this.menu_datas.list_type) {
 
         if (!this.menu_datas.list_position.hasOwnProperty(key)) continue;
 
-        if (key === this.currentPosition) {
+        if (key === position) {
           this.listTypeByPosition = this.menu_datas.list_type[key];
-          console.log(this.listTypeByPosition);
           break;
         }
       }
-
     },
 
 
@@ -84,21 +90,20 @@ export default {
      * Charge le menu
      */
     loadMenu() {
-
-      /*let url = this.urls.load_tab_content + '/' + this.id;
+      let url = this.urls.load_menu + '/' + this.id;
       if (this.id === null) {
-        url = this.urls.load_tab_content;
+        url = this.urls.load_menu;
       }
       this.loading = true;
       axios.get(url, {}
       ).then((response) => {
-        this.page = response.data.page;
-        this.historyInfo = response.data.history
+        this.menu = response.data.menu;
+        this.selectListTypeByPosition(this.menu.position);
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
         this.loading = false
-      });*/
+      });
     },
 
 
@@ -129,14 +134,14 @@ export default {
 
     <div class="row">
       <div class="col-3">
-        <select id="select-language" class="form-select w-auto" @change="this.switchPosition($event)">
+        <select id="select-language" class="form-select w-auto" v-model="this.menu.position" @change="this.switchPosition($event)">
           <option value="" selected>{{ this.translate.select_position }}</option>
           <option v-for="(position, key) in this.menu_datas.list_position" :value="key">{{ position }}
           </option>
         </select>
       </div>
       <div class="col-3">
-        <select id="select-language" class="form-select w-auto" :disabled="this.listTypeByPosition.length === 0">
+        <select id="select-language" class="form-select w-auto" v-model="this.menu.type" :disabled="this.listTypeByPosition.length === 0">
           <option value="" selected v-if="this.listTypeByPosition.length === 0">
             {{ this.translate.select_type }}
           </option>
