@@ -178,13 +178,12 @@ class MenuController extends AppAdminController
     #[Route('/ajax/load-menu/{id}', name: 'load_menu', methods: ['GET'])]
     public function getMenuById(
         MenuConvertToArray $menuJson,
-        MenuService        $menuService,
         int                $id = null
     ): JsonResponse
     {
-        $menuN = $menuJson->convertToArray($id);
+        $menu= $menuJson->convertToArray($id);
 
-        if($id === null)
+        /*if($id === null)
         {
             $menu = '';
         } else {
@@ -192,7 +191,7 @@ class MenuController extends AppAdminController
         }
 
         $menuArray = $menuService->convertEntityToArray($menu,
-            ['createdAt', 'updateAt', 'user', 'pageContents', 'pageStatistiques', 'tags', 'menus']);
-        return $this->json(['menu_old' => $menuArray, 'menu' => $menuN]);
+            ['createdAt', 'updateAt', 'user', 'pageContents', 'pageStatistiques', 'tags', 'menus']);*/
+        return $this->json(['menu' => $menu]);
     }
 }

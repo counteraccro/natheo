@@ -52,15 +52,15 @@ menu:
           fr:
             locale: fr
             textLink: Autre
-            externalLink: ''
+            externalLink: '#'
           es:
             locale: es
             textLink: es-Autre
-            externalLink: ''
+            externalLink: '#'
           en:
             locale: en
             textLink: en-Autre
-            externalLink: ''
+            externalLink: '#'
       element_4:
         page: ''
         parent: element_3
@@ -71,15 +71,15 @@ menu:
           fr:
             locale: fr
             textLink: sub-element-3
-            externalLink: ''
+            externalLink: '#'
           es:
             locale: es
             textLink: es-sub-element-3
-            externalLink: ''
+            externalLink: '#'
           en:
             locale: en
             textLink: en-sub-element-3
-            externalLink: ''
+            externalLink: '#'
       element_5:
         page: ''
         parent: element_4
@@ -90,12 +90,12 @@ menu:
           fr:
             locale: fr
             textLink: sub-element-3-4
-            externalLink: ''
+            externalLink: '#'
           es:
             locale: es
             textLink: es-sub-element-3-4
-            externalLink: ''
+            externalLink: '#'
           en:
             locale: en
             textLink: en-sub-element-3-4
-            externalLink: ''
+            externalLink: '#'
