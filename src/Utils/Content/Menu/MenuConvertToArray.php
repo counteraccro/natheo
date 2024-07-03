@@ -69,13 +69,28 @@ class MenuConvertToArray
      * @param Collection $menuElements
      * @return array
      */
-    private function mergeMenuElements(array $structure, Collection $menuElements): array
+    private function mergeMenuElements(array $structure, Collection $menuElements, array $exclude = []): array
     {
         $structureMenuElement = $this->createStructure(MenuElement::class);
-        foreach ($menuElements as $menuElement) {
-            $structure['menuElements'][] = $this->generiqueMerge($structureMenuElement, $menuElement);
 
-            //if($menuElement->)
+        //var_dump($exclude);
+
+        $key = 0;
+        foreach ($menuElements as $menuElement) {
+            /** @var MenuElement $menuElement */
+            $structure['menuElements'][$key] = $this->generiqueMerge($structureMenuElement, $menuElement);
+
+            if (!$menuElement->getMenuElementTranslations()->isEmpty()) {
+
+                $structure['menuElements'][$key]['menuElementTranslations'] =
+                    $this->mergeMenuElementTranslation($menuElement->getMenuElementTranslations());
+            }
+
+            if (!$menuElement->getChildren()->isEmpty()) {
+                $structure['menuElements'][$key]['children'][] = $this->mergeMenuElements([], $menuElement->getChildren(), $exclude);
+            }
+            $key++;
+
         }
         return $structure;
     }
@@ -86,14 +101,15 @@ class MenuConvertToArray
      * @param Collection $menuElementTranslations
      * @return array
      */
-    private function mergeMenuElementTranslation(array $structure, Collection $menuElementTranslations): array
+    private function mergeMenuElementTranslation(Collection $menuElementTranslations): array
     {
+        $return = [];
         $structureMenuElementTranslation = $this->createStructure(MenuElementTranslation::class);
-        foreach($menuElementTranslations as $menuElementTranslation) {
-            $structure['menuElementTranslations'][] = $this->generiqueMerge($structureMenuElementTranslation, $menuElementTranslation);
+        foreach ($menuElementTranslations as $menuElementTranslation) {
+            $return[] = $this->generiqueMerge($structureMenuElementTranslation, $menuElementTranslation);
         }
 
-        return $structure;
+        return $return;
     }
 
     /**
