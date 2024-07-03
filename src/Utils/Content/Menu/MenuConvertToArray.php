@@ -9,6 +9,7 @@ namespace App\Utils\Content\Menu;
 
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
+use App\Entity\Admin\Content\Menu\MenuElementTranslation;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Tools\SqlManagerService;
 use App\Utils\Global\DataBase;
@@ -73,7 +74,25 @@ class MenuConvertToArray
         $structureMenuElement = $this->createStructure(MenuElement::class);
         foreach ($menuElements as $menuElement) {
             $structure['menuElements'][] = $this->generiqueMerge($structureMenuElement, $menuElement);
+
+            //if($menuElement->)
         }
+        return $structure;
+    }
+
+    /**
+     * Merge les données du menuElementTranslation
+     * @param array $structure
+     * @param Collection $menuElementTranslations
+     * @return array
+     */
+    private function mergeMenuElementTranslation(array $structure, Collection $menuElementTranslations): array
+    {
+        $structureMenuElementTranslation = $this->createStructure(MenuElementTranslation::class);
+        foreach($menuElementTranslations as $menuElementTranslation) {
+            $structure['menuElementTranslations'][] = $this->generiqueMerge($structureMenuElementTranslation, $menuElementTranslation);
+        }
+
         return $structure;
     }
 
