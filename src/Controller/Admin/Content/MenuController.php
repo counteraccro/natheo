@@ -6,6 +6,7 @@ use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Utils\Breadcrumb;
+use App\Utils\Content\Menu\MenuConvertToArray;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Content\MenuTranslate;
 use App\Utils\Translate\Content\PageTranslate;
@@ -176,10 +177,13 @@ class MenuController extends AppAdminController
      */
     #[Route('/ajax/load-menu/{id}', name: 'load_menu', methods: ['GET'])]
     public function getMenuById(
-        MenuService $menuService,
-        int $id = null
-    )
+        MenuConvertToArray $menuJson,
+        MenuService        $menuService,
+        int                $id = null
+    ): JsonResponse
     {
+        $menuN = $menuJson->convertToArray($id);
+
         if($id === null)
         {
             $menu = '';
@@ -189,6 +193,6 @@ class MenuController extends AppAdminController
 
         $menuArray = $menuService->convertEntityToArray($menu,
             ['createdAt', 'updateAt', 'user', 'pageContents', 'pageStatistiques', 'tags', 'menus']);
-        return $this->json(['menu' => $menuArray]);
+        return $this->json(['menu_old' => $menuArray, 'menu' => $menuN]);
     }
 }
