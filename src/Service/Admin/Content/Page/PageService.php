@@ -265,6 +265,22 @@ class PageService extends AppAdminService
     }
 
     /**
+     * Retourne une catégorie en fonction de son id
+     * @param int $id
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getCategoryById(int $id): string
+    {
+        $categories = $this->getAllCategories();
+        if(isset($categories[$id])) {
+            return $categories[$id];
+        }
+        return '';
+    }
+
+    /**
      * Génère une liste de tags au format HTML
      * @param Collection $tags
      * @return string
