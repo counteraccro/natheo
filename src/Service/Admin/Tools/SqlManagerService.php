@@ -80,6 +80,8 @@ class SqlManagerService extends AppAdminService
      * @param int $limit
      * @param string|null $search
      * @return Paginator
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
     {
