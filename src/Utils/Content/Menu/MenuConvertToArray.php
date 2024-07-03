@@ -58,6 +58,14 @@ class MenuConvertToArray
 
         if (!$menu->getMenuElements()->isEmpty()) {
             $structure = $this->mergeMenuElements($structure, $menu->getMenuElements());
+
+            $toRemove = $structure['refChilds'];
+            foreach($structure['menuElements'] as  $key => $menuElement) {
+                if (in_array($menuElement['id'], $toRemove, true))
+                {
+                    unset($structure['menuElements'][$key]);
+                }
+            }
         }
 
         return $structure;
@@ -69,25 +77,28 @@ class MenuConvertToArray
      * @param Collection $menuElements
      * @return array
      */
-    private function mergeMenuElements(array $structure, Collection $menuElements, array $exclude = []): array
+    private function mergeMenuElements(array $structure, Collection $menuElements): array
     {
         $structureMenuElement = $this->createStructure(MenuElement::class);
-
-        //var_dump($exclude);
 
         $key = 0;
         foreach ($menuElements as $menuElement) {
             /** @var MenuElement $menuElement */
+
             $structure['menuElements'][$key] = $this->generiqueMerge($structureMenuElement, $menuElement);
 
             if (!$menuElement->getMenuElementTranslations()->isEmpty()) {
-
                 $structure['menuElements'][$key]['menuElementTranslations'] =
                     $this->mergeMenuElementTranslation($menuElement->getMenuElementTranslations());
             }
 
+            if($menuElement->getParent() !== null)
+            {
+                $structure['refChilds'][] = $menuElement->getId();
+            }
+
             if (!$menuElement->getChildren()->isEmpty()) {
-                $structure['menuElements'][$key]['children'][] = $this->mergeMenuElements([], $menuElement->getChildren(), $exclude);
+                $structure['menuElements'][$key]['children'][] = $this->mergeMenuElements([], $menuElement->getChildren());
             }
             $key++;
 
