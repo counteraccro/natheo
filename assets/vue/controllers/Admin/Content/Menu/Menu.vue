@@ -168,14 +168,14 @@ export default {
 
     <div class="row">
       <div class="col-3">
-        <select id="select-language" class="form-select w-auto" v-model="this.menu.position" @change="this.switchPosition($event)">
+        <select id="select-position" class="form-select w-auto" v-model="this.menu.position" @change="this.switchPosition($event)">
           <option value="" selected>{{ this.translate.select_position }}</option>
           <option v-for="(position, key) in this.menu_datas.list_position" :value="key">{{ position }}
           </option>
         </select>
       </div>
       <div class="col-3">
-        <select id="select-language" class="form-select w-auto" v-model="this.menu.type" :disabled="this.listTypeByPosition.length === 0">
+        <select id="select-type" class="form-select w-auto" v-model="this.menu.type" :disabled="this.listTypeByPosition.length === 0">
           <option value="" selected v-if="this.listTypeByPosition.length === 0">
             {{ this.translate.select_type }}
           </option>
@@ -197,6 +197,8 @@ export default {
 
       <Component :is="this.selectComponent"
           :menu="this.menu"
+          :type="this.menu.type"
+          :data="[]"
       />
 
 

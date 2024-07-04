@@ -11,6 +11,8 @@ export default {
   emit: [],
   props: {
     menu: Object,
+    type: String,
+    data: Object
   },
   data() {
     return {
