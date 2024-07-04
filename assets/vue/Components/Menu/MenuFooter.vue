@@ -14,6 +14,9 @@ export default {
     type: String,
     data: Object
   },
+  watch: {
+    type: 'switchType'
+  },
   data() {
     return {
 
@@ -22,12 +25,33 @@ export default {
   mounted() {
 
   },
-  methods: {}
+  methods: {
+
+    /**
+     * Permet de déterminer le type de rendu
+     */
+    switchType() {
+        switch (this.type) {
+          case '13' :
+            console.log('TYPE_FOOTER_1_COLONNE');
+            break;
+          case '14' :
+            console.log('TYPE_FOOTER_2_COLONNE');
+            break;
+          case '15' :
+            console.log('TYPE_FOOTER_3_COLONNE');
+            break;
+          case '16' :
+            console.log('TYPE_FOOTER_4_COLONNE');
+            break;
+        }
+    }
+  }
 }
 </script>
 
 <template>
 
-  <div>Menu footer</div>
+  <div>Menu footer {{this.type}}</div>
 
 </template>

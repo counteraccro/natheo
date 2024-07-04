@@ -14,6 +14,9 @@ export default {
     type: String,
     data: Object
   },
+  watch: {
+    type: 'switchType'
+  },
   data() {
     return {
 
@@ -22,7 +25,21 @@ export default {
   mounted() {
 
   },
-  methods: {}
+  methods: {
+    /**
+     * Permet de déterminer le type de rendu
+     */
+    switchType() {
+      switch (this.type) {
+        case '11' :
+          console.log('TYPE_LEFT_RIGHT_SIDE_BAR');
+          break;
+        case '12' :
+          console.log('TYPE_LEFT_RIGHT_SIDE_BAR_ACCORDEON');
+          break;
+      }
+    }
+  }
 }
 </script>
 
