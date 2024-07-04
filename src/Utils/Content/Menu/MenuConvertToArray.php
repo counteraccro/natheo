@@ -40,6 +40,8 @@ class MenuConvertToArray
     public function convertToArray(int $id = null): array
     {
         $return = $this->createStructure(Menu::class, ['createdAt', 'updateAt', 'userId']);
+        $return['position'] = MenuConst::POSITION_HEADER;
+        $return['type'] = MenuConst::TYPE_HEADER_SIDE_BAR;
         if ($id !== null) {
             $menu = $this->menuService->findOneById(Menu::class, $id);
             $return = $this->mergeData($return, $menu);
