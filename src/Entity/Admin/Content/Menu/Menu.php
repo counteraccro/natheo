@@ -29,8 +29,8 @@ class Menu
     #[ORM\Column]
     private ?int $type = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $position = null;
+    #[ORM\Column]
+    private ?int $position = null;
 
     #[ORM\Column]
     private ?int $renderOrder = null;
@@ -116,12 +116,12 @@ class Menu
         return $this;
     }
 
-    public function getPosition(): ?string
+    public function getPosition(): ?int
     {
         return $this->position;
     }
 
-    public function setPosition(string $position): static
+    public function setPosition(int $position): static
     {
         $this->position = $position;
 
