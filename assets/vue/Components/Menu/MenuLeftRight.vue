@@ -11,7 +11,7 @@ export default {
   emit: [],
   props: {
     menu: Object,
-    type: String,
+    type: Number,
     data: Object
   },
   watch: {
@@ -31,10 +31,10 @@ export default {
      */
     switchType() {
       switch (this.type) {
-        case '11' :
+        case 11 :
           console.log('TYPE_LEFT_RIGHT_SIDE_BAR');
           break;
-        case '12' :
+        case 12 :
           console.log('TYPE_LEFT_RIGHT_SIDE_BAR_ACCORDEON');
           break;
       }

@@ -11,7 +11,7 @@ export default {
   emit: [],
   props: {
     menu: Object,
-    type: String,
+    type: Number,
     data: Object
   },
   watch: {
@@ -23,7 +23,7 @@ export default {
     }
   },
   mounted() {
-
+    
   },
   methods: {
 
@@ -32,34 +32,34 @@ export default {
      */
     switchType() {
       switch (this.type) {
-        case '1' :
+        case 1 :
           console.log('TYPE_HEADER_SIDE_BAR');
           break;
-        case '2' :
+        case 2 :
           console.log('TYPE_HEADER_MENU_DEROULANT');
           break;
-        case '3' :
+        case 3 :
           console.log('TYPE_HEADER_MENU_DEROULANT_1_LIGNE_1_COLONNE');
           break;
-        case '4' :
+        case 4 :
           console.log('TYPE_HEADER_MENU_DEROULANT_1_LIGNE_2_COLONNES');
           break;
-        case '5' :
+        case 5 :
           console.log('TYPE_HEADER_MENU_DEROULANT_1_LIGNE_3_COLONNES');
           break;
-        case '6' :
+        case 6 :
           console.log('TYPE_HEADER_MENU_DEROULANT_1_LIGNE_4_COLONNES');
           break;
-        case '7' :
+        case 7 :
           console.log('TYPE_HEADER_MENU_DEROULANT_2_LIGNES_1_COLONNE');
           break;
-        case '8' :
+        case 8 :
           console.log('TYPE_HEADER_MENU_DEROULANT_2_LIGNES_2_COLONNES');
           break;
-        case '9' :
+        case 9 :
           console.log('TYPE_HEADER_MENU_DEROULANT_2_LIGNES_3_COLONNES');
           break;
-        case '10' :
+        case 10 :
           console.log('TYPE_HEADER_MENU_DEROULANT_2_LIGNES_4_COLONNES');
           break;
       }

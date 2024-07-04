@@ -11,7 +11,7 @@ export default {
   emit: [],
   props: {
     menu: Object,
-    type: String,
+    type: Number,
     data: Object
   },
   watch: {
@@ -32,16 +32,16 @@ export default {
      */
     switchType() {
         switch (this.type) {
-          case '13' :
+          case 13 :
             console.log('TYPE_FOOTER_1_COLONNE');
             break;
-          case '14' :
+          case 14 :
             console.log('TYPE_FOOTER_2_COLONNE');
             break;
-          case '15' :
+          case 15 :
             console.log('TYPE_FOOTER_3_COLONNE');
             break;
-          case '16' :
+          case 16 :
             console.log('TYPE_FOOTER_4_COLONNE');
             break;
         }

@@ -104,18 +104,18 @@ export default {
      * @param position
      */
     selectListTypeByPosition(position) {
+
       this.listTypeByPosition = [];
 
       for (let key in this.menu_datas.list_type) {
 
         if (!this.menu_datas.list_position.hasOwnProperty(key)) continue;
 
-        if (key === position) {
+        if (key === position.toString()) {
           this.listTypeByPosition = this.menu_datas.list_type[key];
           break;
         }
       }
-
       this.switchComposant(position);
     },
 
@@ -197,7 +197,7 @@ export default {
 
       <Component :is="this.selectComponent"
           :menu="this.menu"
-          :type="this.menu.type"
+          :type="parseInt(this.menu.type)"
           :data="[]"
       />
 
