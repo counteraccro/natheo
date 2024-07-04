@@ -6,10 +6,16 @@
 import axios from "axios";
 import Toast from "../../../../Components/Global/Toast.vue";
 import Modal from "../../../../Components/Global/Modal.vue";
+import MenuFooter from "../../../../Components/Menu/MenuFooter.vue";
+import MenuHeader from "../../../../Components/Menu/MenuHeader.vue";
+import MenuLeftRight from "../../../../Components/Menu/MenuLeftRight.vue";
 
 export default {
   name: 'Menu',
   components: {
+    MenuLeftRight,
+    MenuHeader,
+    MenuFooter,
     Toast, Modal
   },
   props: {
@@ -27,6 +33,7 @@ export default {
       currentLocale: '',
       currentPosition: '',
       listTypeByPosition: [],
+      selectComponent: 'MenuHeader',
       toasts: {
         toastSuccess: {
           show: false,
@@ -68,7 +75,32 @@ export default {
     },
 
     /**
-     * Selectionne la liste de type en fonction en fonction de la position
+     * Permet de changer de composant
+     * @param idPosition
+     */
+    switchComposant(idPosition) {
+
+      console.log(idPosition);
+
+      switch (idPosition) {
+        case "1" :
+          this.selectComponent = 'MenuHeader';
+          break;
+        case "2" :
+        case "4" :
+          this.selectComponent = 'MenuLeftRight';
+          break;
+        case "3":
+          this.selectComponent = 'MenuFooter';
+          break;
+        default:
+          this.selectComponent = 'MenuHeader'
+          break;
+      }
+    },
+
+    /**
+     * Sélectionne la liste de type en fonction de la position
      * @param position
      */
     selectListTypeByPosition(position) {
@@ -83,6 +115,8 @@ export default {
           break;
         }
       }
+
+      this.switchComposant(position);
     },
 
 
@@ -157,6 +191,15 @@ export default {
           </option>
         </select>
       </div>
+    </div>
+
+    <div class="block-create-menu">
+
+      <Component :is="this.selectComponent"
+          :menu="this.menu"
+      />
+
+
     </div>
 
 
