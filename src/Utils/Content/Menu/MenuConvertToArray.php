@@ -55,6 +55,8 @@ class MenuConvertToArray
      * @param array $structure
      * @param Menu $menu
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function mergeData(array $structure, Menu $menu): array
     {
@@ -106,7 +108,7 @@ class MenuConvertToArray
             }
 
             if (!$menuElement->getChildren()->isEmpty()) {
-                $structure['menuElements'][$key]['children'][] = $this->mergeMenuElements([], $menuElement->getChildren());
+                $structure['menuElements'][$key]['children'] = $this->mergeMenuElements([], $menuElement->getChildren());
             }
             $key++;
 
