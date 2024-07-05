@@ -193,11 +193,12 @@ export default {
       </div>
     </div>
 
-    <div class="block-create-menu">
+    <div class="block-create-menu mt-5">
 
       <Component :is="this.selectComponent"
           :menu="this.menu"
           :type="parseInt(this.menu.type)"
+          :locale="this.currentLocale"
           :data="[]"
       />
 
