@@ -99,3 +99,22 @@ menu:
             locale: en
             textLink: en-sub-element-3-4
             externalLink: '#'
+      element_6:
+        page: ''
+        parent: element_4
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 6
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: sub-element-3-4-e6
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: es-sub-element-3-4-e6
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: en-sub-element-3-4-e6
+            externalLink: '#'
