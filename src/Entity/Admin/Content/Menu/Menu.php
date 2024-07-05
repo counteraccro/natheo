@@ -48,6 +48,7 @@ class Menu
      * @var Collection<int, MenuElement>
      */
     #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuElement::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(["id" => "ASC"])]
     private Collection $menuElements;
 
     /**

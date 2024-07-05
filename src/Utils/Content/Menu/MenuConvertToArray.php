@@ -23,6 +23,7 @@ class MenuConvertToArray
     /**
      * @param MenuService $menuService
      * @param DataBase $dataBase
+     * @param PageService $pageService
      */
     public function __construct(
         private readonly MenuService $menuService,
@@ -78,6 +79,8 @@ class MenuConvertToArray
      * @param array $structure
      * @param Collection $menuElements
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function mergeMenuElements(array $structure, Collection $menuElements): array
     {
