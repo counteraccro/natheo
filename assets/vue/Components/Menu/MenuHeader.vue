@@ -1,12 +1,17 @@
-<script>
-/**
+<script>/**
  * @author Gourdon Aymeric
  * @version 1.0
  * Composant header pour la création /edition d'un menu
  */
+import translate from "../../controllers/Admin/System/Translate.vue";
 
 export default {
   name: "MenuHeader",
+  computed: {
+    translate() {
+      return translate
+    }
+  },
   components: {},
   emit: [],
   props: {
@@ -37,7 +42,7 @@ export default {
       switch (this.type) {
         case 1 :
           console.log('TYPE_HEADER_SIDE_BAR');
-          this.generateHeaderSiteBar();
+          //this.generateHeaderSiteBar();
           break;
         case 2 :
           console.log('TYPE_HEADER_MENU_DEROULANT');
@@ -71,20 +76,57 @@ export default {
       console.log(this.demoMenu);
     },
 
-    generateHeaderSiteBar()
-    {
-        this.menu.menuElements.forEach((menuElement) => {
-            let element = [];
-            menuElement.menuElementTranslations.forEach((menuElementTranslation) => {
-              if(menuElementTranslation.locale === this.locale) {
-                console.log(menuElementTranslation.textLink);
-                element['link'] = menuElementTranslation.textLink;
-              }
-          })
+    generateHeaderSiteBar() {
+      this.menu.menuElements.forEach((menuElement) => {
+        let element = [];
+        element = this.getTranslationByLocale(menuElement.menuElementTranslations, element, this.locale);
 
-          this.demoMenu.push(element);
-        })
+        if (menuElement.hasOwnProperty('children') && menuElement.children.length > 0) {
+          element = this.addChildInElement(menuElement, element);
+        }
+
+        this.demoMenu.push(element);
+      })
+    },
+
+    addChildInElement(menuElement, element) {
+
+      element['children'] = [];
+
+      menuElement.children[0].menuElements.forEach((menuChildren) => {
+
+        //console.log('menuchildren');
+        //console.log(menuChildren);
+
+        let children = [];
+        children = this.getTranslationByLocale(menuChildren.menuElementTranslations, element, this.locale);
+
+        if (menuChildren.hasOwnProperty('children') && menuChildren.children.length > 0) {
+          //return this.addChildInElement(menuChildren, children);
+        }
+        element.children.push(children);
+
+      })
+      return element
+    },
+
+    /**
+     * Retourne le lien avec la traduction en fonction de la locale
+     * @param tabMenuElementTranslation
+     */
+    getTranslationByLocale(tabMenuElementTranslation) {
+
+      let element = ['text', 'link'];
+
+      tabMenuElementTranslation.forEach((menuElementTranslation) => {
+        if (menuElementTranslation.locale === this.locale) {
+          element['text'] = menuElementTranslation.textLink;
+          element['link'] = menuElementTranslation.link;
+        }
+      })
+      return element;
     }
+
   }
 }
 </script>
@@ -98,18 +140,9 @@ export default {
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Features</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Pricing</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+        <ul class="navbar-nav" v-if="this.type === 1">
+          <li v-for="(element) in this.menu.menuElements" :set="toto = this.getTranslationByLocale(element.menuElementTranslations)">
+            <a class="nav-link" :href="toto.link">{{ toto.text }}</a>
           </li>
         </ul>
       </div>
