@@ -70,7 +70,7 @@ class MenuFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                 }
             } elseif ($key === 'parent') {
                 if (!empty($value)) {
-                    $menuElement->addChild($this->getReference($value));
+                    $menuElement->setParent($this->getReference($value));
                 }
             } else {
                 $this->setData($key, $value, $menuElement);
