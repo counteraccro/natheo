@@ -47,3 +47,6 @@ menu.footer.type.col2: __menu.footer.type.col2
 menu.footer.type.col3: __menu.footer.type.col3
 menu.footer.type.col4: __menu.footer.type.col4
 menu.select.type: __menu.select.type
+menu.title.demo: __menu.title.demo
+menu.title.demo_warning: __menu.title.demo_warning
+menu.title.architecture: __menu.title.architecture
