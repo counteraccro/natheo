@@ -210,14 +210,24 @@ export default {
       </div>
     </div>
 
-    <div class="block-create-menu mt-5">
+    <div class="block-create-menu mt-2">
 
-      <Component :is="this.selectComponent"
-          :menu="this.menu"
-          :type="parseInt(this.menu.type)"
-          :locale="this.currentLocale"
-          :data="[]"
-      />
+      <fieldset>
+        <legend>{{ this.translate.title_demo }}</legend>
+        <Component :is="this.selectComponent" class="mb-5 mt-2"
+            :menu="this.menu"
+            :type="parseInt(this.menu.type)"
+            :locale="this.currentLocale"
+            :data="[]"
+        />
+
+        <i>{{ this.translate.title_demo_warning }}</i>
+      </fieldset>
+
+      <fieldset class="mt-2">
+        <legend>{{ this.translate.title_architecture }}</legend>
+      </fieldset>
+
 
 
     </div>

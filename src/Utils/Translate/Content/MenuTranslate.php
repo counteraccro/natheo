@@ -20,6 +20,9 @@ class MenuTranslate extends AppTranslate
             'select_locale' => $this->translator->trans('menu.select.locale', domain: 'menu'),
             'select_position' => $this->translator->trans('menu.select.position', domain: 'menu'),
             'select_type' => $this->translator->trans('menu.select.type', domain: 'menu'),
+            'title_demo' => $this->translator->trans('menu.title.demo', domain: 'menu'),
+            'title_demo_warning' => $this->translator->trans('menu.title.demo_warning', domain: 'menu'),
+            'title_architecture' => $this->translator->trans('menu.title.architecture', domain: 'menu'),
         ];
     }
 }
