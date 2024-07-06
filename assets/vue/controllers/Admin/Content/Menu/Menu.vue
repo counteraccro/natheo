@@ -57,6 +57,25 @@ export default {
   computed: {},
   methods: {
 
+    /**
+     * event pour détecter le dropdown et le masqyer
+     * @param e
+     */
+    handleClick(e) {
+      const elt = e.target.closest(".dropdown-toggle");
+      if (elt) {
+        let el = elt.nextElementSibling
+        el.style.display = el.style.display==='block'?'none':'block'
+      }
+      else {
+        let el = document.getElementsByClassName("dropdown-toggle");
+        for (let item of el) {
+          let next = item.nextElementSibling
+          next.style.display = 'none';
+        }
+      }
+    },
+
 
     /**
      * Permet de changer la locale pour la création/édition d'une page
@@ -108,9 +127,7 @@ export default {
       this.listTypeByPosition = [];
 
       for (let key in this.menu_datas.list_type) {
-
         if (!this.menu_datas.list_position.hasOwnProperty(key)) continue;
-
         if (key === position.toString()) {
           this.listTypeByPosition = this.menu_datas.list_type[key];
           break;
@@ -156,7 +173,7 @@ export default {
 
 <template>
 
-  <div id="global-menu" :class="this.loading === true ? 'block-grid' : ''">
+  <div id="global-menu" :class="this.loading === true ? 'block-grid' : ''" @click="handleClick">
 
     <div v-if="this.loading" class="overlay">
       <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">

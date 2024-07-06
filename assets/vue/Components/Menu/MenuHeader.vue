@@ -13,7 +13,7 @@ export default {
     }
   },
   components: {},
-  emit: [],
+  emit: ['reset-dropdown'],
   props: {
     menu: Object,
     type: Number,
@@ -21,8 +21,8 @@ export default {
     locale: String,
   },
   watch: {
-    type: 'switchType',
-    locale: 'switchType'
+    //type: 'switchType',
+    //locale: 'switchType'
   },
   data() {
     return {
@@ -30,7 +30,6 @@ export default {
     }
   },
   mounted() {
-
   },
   methods: {
 
@@ -72,42 +71,6 @@ export default {
           console.log('TYPE_HEADER_MENU_DEROULANT_2_LIGNES_4_COLONNES');
           break;
       }
-
-      console.log(this.demoMenu);
-    },
-
-    generateHeaderSiteBar() {
-      this.menu.menuElements.forEach((menuElement) => {
-        let element = [];
-        element = this.getTranslationByLocale(menuElement.menuElementTranslations, element, this.locale);
-
-        if (menuElement.hasOwnProperty('children') && menuElement.children.length > 0) {
-          element = this.addChildInElement(menuElement, element);
-        }
-
-        this.demoMenu.push(element);
-      })
-    },
-
-    addChildInElement(menuElement, element) {
-
-      element['children'] = [];
-
-      menuElement.children[0].menuElements.forEach((menuChildren) => {
-
-        //console.log('menuchildren');
-        //console.log(menuChildren);
-
-        let children = [];
-        children = this.getTranslationByLocale(menuChildren.menuElementTranslations, element, this.locale);
-
-        if (menuChildren.hasOwnProperty('children') && menuChildren.children.length > 0) {
-          //return this.addChildInElement(menuChildren, children);
-        }
-        element.children.push(children);
-
-      })
-      return element
     },
 
     /**
@@ -125,6 +88,39 @@ export default {
         }
       })
       return element;
+    },
+
+    /**
+     *  Détermine si le menuElement possède des enfants ou non
+     * @param menuElement
+     */
+    isHaveChildren(menuElement) {
+      return menuElement.hasOwnProperty('children');
+    },
+
+    /**
+     * Génère les dropdown
+     * @param menuElement
+     * @param html
+     * @returns {*}
+     */
+    renderDeepDropDown(menuElement, html) {
+
+      menuElement.children.menuElements.forEach((element) => {
+        let elementTranslate = this.getTranslationByLocale(element.menuElementTranslations);
+
+        if (!this.isHaveChildren(element)) {
+          html += '<li><a class="dropdown-item" href="">' + elementTranslate.text + '</a></li>'
+        } else {
+          html += '<li class="dropdown dropend">' +
+              '<a class="dropdown-item dropdown-toggle no-control" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + elementTranslate.text + '</a>\n' +
+              '<ul class="dropdown-menu">';
+              html = this.renderDeepDropDown(element, html);
+          html += '</ul>' +
+              '</li>';
+        }
+      })
+      return html;
     }
 
   }
@@ -133,16 +129,33 @@ export default {
 
 <template>
 
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary" id="navbar-header-demo">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Navbar</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
+
+        <!-- TYPE_HEADER_SIDE_BAR -->
         <ul class="navbar-nav" v-if="this.type === 1">
-          <li v-for="(element) in this.menu.menuElements" :set="toto = this.getTranslationByLocale(element.menuElementTranslations)">
-            <a class="nav-link" :href="toto.link">{{ toto.text }}</a>
+          <li v-for="(element) in this.menu.menuElements" class="nav-item"
+              :set="elementTranslate = this.getTranslationByLocale(element.menuElementTranslations)">
+            <a class="nav-link" :href="elementTranslate.link">{{ elementTranslate.text }}</a>
+          </li>
+        </ul>
+
+        <!-- TYPE_HEADER_MENU_DEROULANT -->
+        <ul class="navbar-nav" v-if="this.type === 2">
+          <li v-for="(element) in this.menu.menuElements" class="nav-item" :class="this.isHaveChildren(element) === true ? 'dropdown' : '' "
+              :set="elementTranslate = this.getTranslationByLocale(element.menuElementTranslations)">
+            <a v-if="!this.isHaveChildren(element)" class="nav-link" :href="elementTranslate.link">{{ elementTranslate.text }}</a>
+            <a v-else class="nav-link dropdown-toggle no-control" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ elementTranslate.text }}
+            </a>
+            <ul v-if="this.isHaveChildren(element)" class="dropdown-menu" v-html="this.renderDeepDropDown(element, '')">
+
+            </ul>
           </li>
         </ul>
       </div>
