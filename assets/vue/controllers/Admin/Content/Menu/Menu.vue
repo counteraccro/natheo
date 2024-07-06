@@ -30,6 +30,7 @@ export default {
     return {
       loading: false,
       menu: [],
+      dataMenu: [],
       currentLocale: '',
       currentPosition: '',
       listTypeByPosition: [],
@@ -149,6 +150,7 @@ export default {
       axios.get(url, {}
       ).then((response) => {
         this.menu = response.data.menu;
+        this.dataMenu = response.data.data;
         this.selectListTypeByPosition(this.menu.position);
       }).catch((error) => {
         console.error(error);
@@ -218,7 +220,7 @@ export default {
             :menu="this.menu"
             :type="parseInt(this.menu.type)"
             :locale="this.currentLocale"
-            :data="[]"
+            :data="this.dataMenu"
         />
 
         <i>{{ this.translate.title_demo_warning }}</i>

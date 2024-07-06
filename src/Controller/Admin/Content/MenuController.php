@@ -5,8 +5,10 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Service\Admin\Content\Menu\MenuService;
+use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Breadcrumb;
 use App\Utils\Content\Menu\MenuConvertToArray;
+use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Content\MenuTranslate;
 use App\Utils\Translate\Content\PageTranslate;
@@ -107,9 +109,9 @@ class MenuController extends AppAdminController
      */
     #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(
-        Menu                  $menu,
-        MenuService           $menuService,
-        TranslatorInterface   $translator,
+        Menu                $menu,
+        MenuService         $menuService,
+        TranslatorInterface $translator,
     ): JsonResponse
     {
         $titre = $menu->getName();
@@ -171,27 +173,29 @@ class MenuController extends AppAdminController
 
     /**
      * Charge un menu en fonction de son id
+     * @param MenuConvertToArray $menuJson
+     * @param OptionSystemService $optionSystemService
      * @param int|null $id
      * @return JsonResponse
-     * @throws ExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-menu/{id}', name: 'load_menu', methods: ['GET'])]
     public function getMenuById(
-        MenuConvertToArray $menuJson,
-        int                $id = null
+        MenuConvertToArray  $menuJson,
+        OptionSystemService $optionSystemService,
+        int                 $id = null
     ): JsonResponse
     {
-        $menu= $menuJson->convertToArray($id);
+        $menu = $menuJson->convertToArray($id);
+        $name = $optionSystemService->getValueByKey(OptionSystemKey::OS_SITE_NAME);
+        $logo = $optionSystemService->getValueByKey(OptionSystemKey::OS_LOGO_SITE);
+        $urlSite = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
 
-        /*if($id === null)
-        {
-            $menu = '';
-        } else {
-            $menu = $menuService->findOneById(Menu::class, $id);
-        }
-
-        $menuArray = $menuService->convertEntityToArray($menu,
-            ['createdAt', 'updateAt', 'user', 'pageContents', 'pageStatistiques', 'tags', 'menus']);*/
-        return $this->json(['menu' => $menu]);
+        return $this->json(['menu' => $menu, 'data' => [
+            'name' => $name,
+            'logo' => $logo,
+            'url_site' => $urlSite
+        ]]);
     }
 }
