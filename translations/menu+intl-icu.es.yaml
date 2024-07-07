@@ -50,3 +50,8 @@ menu.select.type: __menu.select.type
 menu.title.demo: __menu.title.demo
 menu.title.demo_warning: __menu.title.demo_warning
 menu.title.architecture: __menu.title.architecture
+menu.default.name: __menu.default.name
+menu.error.empty.value: __menu.error.empty.value
+menu.msg.wait.loading: __menu.msg.wait.loading
+menu.btn.save: __menu.btn.save
+menu.btn.new: __menu.btn.new

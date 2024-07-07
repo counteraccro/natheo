@@ -50,3 +50,8 @@ menu.footer.type.col4: 'Pied de page 4 colonnes'
 menu.title.demo: 'Rendu du menu'
 menu.title.demo_warning: 'Ce rendu est un aperçu de la structure et peut être différent du rendu de votre site'
 menu.title.architecture: 'Architecture du menu'
+menu.error.empty.value: 'Cette valeur ne peut pas être vide'
+menu.msg.wait.loading: 'Préparation de vos données...'
+menu.btn.save: Sauvegarder
+menu.btn.new: 'Nouveau menu'
+menu.default.name: 'Titre nouveau menu'
