@@ -1,14 +1,14 @@
-<script>
-/**
+<script>/**
  * @author Gourdon Aymeric
  * @version 1.0
  * Composant pour gérer l'arbre du menu
  */
+import {emitter} from "../../../utils/useEvent";
 
 export default {
   name: "MenuTree",
   components: {},
-  emit: ['update-element'],
+  emit: ['update-element', 'new-element'],
   props: {
     menuElement: Object,
     locale: String
@@ -30,10 +30,24 @@ export default {
 
   methods: {
 
+    /**
+     * Edit un élément au menu
+     */
     updateElement()
     {
       console.log('Emit : ' + this.menuElement.id);
-      this.$emit('update-element', this.menuElement.id)
+      //this.$emit('update-element', this.menuElement.id)
+      emitter.emit('update-menu-element', this.menuElement.id);
+    },
+
+    /**
+     * Créer un nouvel élément au menu
+     */
+    newElement()
+    {
+      console.log('New element:');
+      emitter.emit('new-menu-element');
+      //this.$emit('new-element')
     },
 
     toggle() {
@@ -65,10 +79,11 @@ export default {
 <template>
 
   <li>
-    <div
+    <div class="icon-link icon-link-hover no-control"
         @click="this.toggle"
     >
       {{ this.getTranslationValueByKeyAndByLocale(this.menuElement.menuElementTranslations, 'textLink') }}
+      <span v-if="this.haveChildren"><i class="bi" :class="this.isOpen ? 'bi-chevron-down' : 'bi-chevron-right'"></i></span>
     </div>
     <div class="btn btn-sm"
         @click="this.updateElement"
@@ -80,8 +95,11 @@ export default {
           v-for="menuElement in this.menuElement.children.menuElements"
           :menu-element="menuElement"
           :locale="this.locale"
-          :update-element="this.updateElement">
+          :update-element="this.updateElement"
+          :new="this.newElement"
+          >
       </menu-tree>
+      <li @click="this.newElement">Nouveau</li>
     </ul>
   </li>
 

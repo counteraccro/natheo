@@ -11,6 +11,7 @@ import MenuHeader from "../../../../Components/Menu/MenuHeader.vue";
 import MenuLeftRight from "../../../../Components/Menu/MenuLeftRight.vue";
 import MenuTree from "../../../../Components/Menu/MenuTree.vue";
 import FieldEditor from "../../../../Components/Global/FieldEditor.vue";
+import {emitter} from "../../../../../utils/useEvent";
 
 export default {
   name: 'Menu',
@@ -58,6 +59,14 @@ export default {
   mounted() {
     this.currentLocale = this.locales.current;
     this.loadMenu();
+    emitter.on('new-menu-element', async () => {
+      this.newElement();
+    });
+
+    emitter.on('update-menu-element', async (id) => {
+      this.updateElement(id);
+
+    });
   },
   computed: {},
   methods: {
@@ -169,7 +178,12 @@ export default {
 
     updateElement(id)
     {
-      console.log('edit ' + id);
+      console.log('edit menu.vue' + id);
+    },
+
+    newElement()
+    {
+      console.log('new element menu.vue');
     },
 
 
@@ -270,15 +284,18 @@ export default {
 
         </field-editor>
 
+        <ul>
         <menu-tree
             v-for="menuElement in this.menu.menuElements"
             :menu-element="menuElement"
             :locale="this.currentLocale"
-            :update-element="updateElement"
-
+            :update-element="this.updateElement"
+            :new-element="this.newElement"
         >
 
         </menu-tree>
+
+        </ul>
 
       </fieldset>
 
