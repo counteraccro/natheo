@@ -1,0 +1,88 @@
+<script>
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Composant pour gérer l'arbre du menu
+ */
+
+export default {
+  name: "MenuTree",
+  components: {},
+  emit: ['update-element'],
+  props: {
+    menuElement: Object,
+    locale: String
+  },
+  data() {
+    return {
+      isOpen: false
+    }
+  },
+  mounted() {
+
+  },
+
+  computed: {
+    haveChildren() {
+      return this.menuElement.hasOwnProperty('children') && this.menuElement.children.menuElements.length
+    }
+  },
+
+  methods: {
+
+    updateElement()
+    {
+      console.log('Emit : ' + this.menuElement.id);
+      this.$emit('update-element', this.menuElement.id)
+    },
+
+    toggle() {
+      if (this.haveChildren) {
+        this.isOpen = !this.isOpen
+      }
+    },
+
+    /**
+     * Retourne le lien avec la traduction en fonction de la locale
+     * @param tabMenuElementTranslation
+     * @param key
+     */
+    getTranslationValueByKeyAndByLocale(tabMenuElementTranslation, key) {
+
+      let str = '';
+      tabMenuElementTranslation.forEach((menuElementTranslation) => {
+        if (menuElementTranslation.locale === this.locale) {
+          console.log(menuElementTranslation[key]);
+          str = menuElementTranslation[key];
+        }
+      })
+      return str;
+    },
+  }
+}
+</script>
+
+<template>
+
+  <li>
+    <div
+        @click="this.toggle"
+    >
+      {{ this.getTranslationValueByKeyAndByLocale(this.menuElement.menuElementTranslations, 'textLink') }}
+    </div>
+    <div class="btn btn-sm"
+        @click="this.updateElement"
+    >
+      Edit
+    </div>
+    <ul v-show="this.isOpen" v-if="this.haveChildren">
+      <menu-tree
+          v-for="menuElement in this.menuElement.children.menuElements"
+          :menu-element="menuElement"
+          :locale="this.locale"
+          :update-element="this.updateElement">
+      </menu-tree>
+    </ul>
+  </li>
+
+</template>

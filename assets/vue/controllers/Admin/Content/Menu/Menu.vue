@@ -9,10 +9,12 @@ import Modal from "../../../../Components/Global/Modal.vue";
 import MenuFooter from "../../../../Components/Menu/MenuFooter.vue";
 import MenuHeader from "../../../../Components/Menu/MenuHeader.vue";
 import MenuLeftRight from "../../../../Components/Menu/MenuLeftRight.vue";
+import MenuTree from "../../../../Components/Menu/MenuTree.vue";
 
 export default {
   name: 'Menu',
   components: {
+    MenuTree,
     MenuLeftRight,
     MenuHeader,
     MenuFooter,
@@ -66,9 +68,8 @@ export default {
       const elt = e.target.closest(".dropdown-toggle");
       if (elt) {
         let el = elt.nextElementSibling
-        el.style.display = el.style.display==='block'?'none':'block'
-      }
-      else {
+        el.style.display = el.style.display === 'block' ? 'none' : 'block'
+      } else {
         let el = document.getElementsByClassName("dropdown-toggle");
         for (let item of el) {
           let next = item.nextElementSibling
@@ -159,6 +160,11 @@ export default {
       });
     },
 
+    updateElement(id)
+    {
+      console.log('edit ' + id);
+    },
+
 
     /**
      * Ferme le toast défini par nameToast
@@ -184,33 +190,13 @@ export default {
       </div>
     </div>
 
-
-    <div class="row">
-      <div class="col-3">
-        <select id="select-position" class="form-select w-auto" v-model="this.menu.position" @change="this.switchPosition($event)">
-          <option value="" selected>{{ this.translate.select_position }}</option>
-          <option v-for="(position, key) in this.menu_datas.list_position" :value="key">{{ position }}
-          </option>
-        </select>
-      </div>
-      <div class="col-3">
-        <select id="select-type" class="form-select w-auto" v-model="this.menu.type" :disabled="this.listTypeByPosition.length === 0">
-          <option value="" selected v-if="this.listTypeByPosition.length === 0">
-            {{ this.translate.select_type }}
-          </option>
-          <option v-for="(position, key) in this.listTypeByPosition" :value="key">{{ position }}
-          </option>
-        </select>
-      </div>
-      <div class="col-6">
-        <select id="select-language" class="form-select w-auto float-end" @change="this.switchLocale($event)">
-          <option value="" selected>{{ this.translate.select_locale }}</option>
-          <option v-for="(language, key) in this.locales.localesTranslate" :value="key"
-              :selected="key===this.currentLocale">{{ language }}
-          </option>
-        </select>
-      </div>
-    </div>
+    <select id="select-language" class="form-select w-auto float-end" @change="this.switchLocale($event)">
+      <option value="" selected>{{ this.translate.select_locale }}</option>
+      <option v-for="(language, key) in this.locales.localesTranslate" :value="key"
+          :selected="key===this.currentLocale">{{ language }}
+      </option>
+    </select>
+    <div class="clearfix"></div>
 
     <div class="block-create-menu mt-2">
 
@@ -228,8 +214,37 @@ export default {
 
       <fieldset class="mt-2">
         <legend>{{ this.translate.title_architecture }}</legend>
-      </fieldset>
 
+        <div class="row">
+          <div class="col-6">
+            <select id="select-position" class="form-select w-auto" v-model="this.menu.position" @change="this.switchPosition($event)">
+              <option value="" selected>{{ this.translate.select_position }}</option>
+              <option v-for="(position, key) in this.menu_datas.list_position" :value="key">{{ position }}
+              </option>
+            </select>
+          </div>
+          <div class="col-6">
+            <select id="select-type" class="form-select w-auto" v-model="this.menu.type" :disabled="this.listTypeByPosition.length === 0">
+              <option value="" selected v-if="this.listTypeByPosition.length === 0">
+                {{ this.translate.select_type }}
+              </option>
+              <option v-for="(position, key) in this.listTypeByPosition" :value="key">{{ position }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <menu-tree
+            v-for="menuElement in this.menu.menuElements"
+            :menu-element="menuElement"
+            :locale="this.currentLocale"
+            :update-element="updateElement"
+
+        >
+
+        </menu-tree>
+
+      </fieldset>
 
 
     </div>
