@@ -17,6 +17,7 @@ use App\Utils\Global\DataBase;
 use Doctrine\Common\Collections\Collection;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MenuConvertToArray
 {
@@ -24,11 +25,13 @@ class MenuConvertToArray
      * @param MenuService $menuService
      * @param DataBase $dataBase
      * @param PageService $pageService
+     * @param TranslatorInterface $translator
      */
     public function __construct(
         private readonly MenuService $menuService,
         private readonly DataBase    $dataBase,
-        private readonly PageService $pageService
+        private readonly PageService $pageService,
+        private readonly TranslatorInterface $translator
     )
     {
     }
@@ -37,12 +40,15 @@ class MenuConvertToArray
      * Convertie un menu trouvé par son id en array adapté aux scripts côté vue
      * @param int|null $id
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function convertToArray(int $id = null): array
     {
         $return = $this->createStructure(Menu::class, ['createdAt', 'updateAt', 'userId']);
         $return['position'] = MenuConst::POSITION_HEADER;
         $return['type'] = MenuConst::TYPE_HEADER_SIDE_BAR;
+        $return['name'] = $this->translator->trans('menu.default.name', domain: 'menu');
         if ($id !== null) {
             $menu = $this->menuService->findOneById(Menu::class, $id);
             $return = $this->mergeData($return, $menu);

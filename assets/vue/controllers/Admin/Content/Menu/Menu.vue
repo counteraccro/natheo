@@ -10,10 +10,12 @@ import MenuFooter from "../../../../Components/Menu/MenuFooter.vue";
 import MenuHeader from "../../../../Components/Menu/MenuHeader.vue";
 import MenuLeftRight from "../../../../Components/Menu/MenuLeftRight.vue";
 import MenuTree from "../../../../Components/Menu/MenuTree.vue";
+import FieldEditor from "../../../../Components/Global/FieldEditor.vue";
 
 export default {
   name: 'Menu',
   components: {
+    FieldEditor,
     MenuTree,
     MenuLeftRight,
     MenuHeader,
@@ -160,6 +162,11 @@ export default {
       });
     },
 
+    updateValueMenu(value, id)
+    {
+      console.log('id' + id + ' value : ' + value);
+    },
+
     updateElement(id)
     {
       console.log('edit ' + id);
@@ -198,7 +205,12 @@ export default {
     </select>
     <div class="clearfix"></div>
 
-    <div class="block-create-menu mt-2">
+    <div class="mt-5" v-if="this.menu.length === 0">
+      <div class="text-center">
+        <i>{{ this.translate.msg_wait_loading }}</i>
+      </div>
+    </div>
+    <div v-else class="block-create-menu mt-2">
 
       <fieldset>
         <legend>{{ this.translate.title_demo }}</legend>
@@ -216,14 +228,14 @@ export default {
         <legend>{{ this.translate.title_architecture }}</legend>
 
         <div class="row">
-          <div class="col-6">
+          <div class="col-5">
             <select id="select-position" class="form-select w-auto" v-model="this.menu.position" @change="this.switchPosition($event)">
               <option value="" selected>{{ this.translate.select_position }}</option>
               <option v-for="(position, key) in this.menu_datas.list_position" :value="key">{{ position }}
               </option>
             </select>
           </div>
-          <div class="col-6">
+          <div class="col-5">
             <select id="select-type" class="form-select w-auto" v-model="this.menu.type" :disabled="this.listTypeByPosition.length === 0">
               <option value="" selected v-if="this.listTypeByPosition.length === 0">
                 {{ this.translate.select_type }}
@@ -232,7 +244,31 @@ export default {
               </option>
             </select>
           </div>
+          <div class="col-2">
+            <div v-if="this.id !== null" class="btn btn-secondary float-end">
+              <i class="bi bi-floppy-fill"></i>
+              {{ this.translate.btn_save }}
+            </div>
+            <div v-else class="btn btn-secondary float-end">
+              <i class="bi bi-menu-button-wide-fill"></i>
+              {{ this.translate.btn_new }}
+            </div>
+          </div>
         </div>
+
+        <div>{{ this.menu.name }}</div>
+
+        <field-editor :key="1"
+            class="mb-3"
+            :id="'' + this.menu.id + ''"
+            :p-value="this.menu.name"
+            balise="h5"
+            rule="isEmpty"
+            :rule-msg="this.translate.error_empty_value"
+            @get-value="this.updateValueMenu"
+          >
+
+        </field-editor>
 
         <menu-tree
             v-for="menuElement in this.menu.menuElements"
