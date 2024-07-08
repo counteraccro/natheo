@@ -40,6 +40,7 @@ export default {
       currentPosition: '',
       listTypeByPosition: [],
       selectComponent: 'MenuHeader',
+      showForm: false,
       toasts: {
         toastSuccess: {
           show: false,
@@ -59,8 +60,8 @@ export default {
   mounted() {
     this.currentLocale = this.locales.current;
     this.loadMenu();
-    emitter.on('new-menu-element', async () => {
-      this.newElement();
+    emitter.on('new-menu-element', async (id) => {
+      this.newElement(id);
     });
 
     emitter.on('update-menu-element', async (id) => {
@@ -171,19 +172,51 @@ export default {
       });
     },
 
-    updateValueMenu(value, id)
-    {
+    /**
+     * Retourne un menuElement en fonction de son id
+     * @param elements
+     * @param id
+     * @returns {null}
+     */
+    getElementMenuById(elements, id) {
+      let findElement = null
+      elements.forEach((element) => {
+        if (element.id === id) {
+          findElement = element
+        } else if (element.hasOwnProperty('children') && element.children.menuElements.length) {
+            findElement = this.getElementMenuById(element.children.menuElements, id);
+        }
+      });
+      return findElement;
+    },
+
+    /**
+     * Mise à jour des données du menu
+     * @param value
+     * @param id
+     */
+    updateValueMenu(value, id) {
+      this.showForm = true;
       console.log('id' + id + ' value : ' + value);
     },
 
-    updateElement(id)
-    {
+    /**
+     * Mise à jour d'un élément
+     * @param id
+     */
+    updateElement(id) {
+      this.showForm = true;
       console.log('edit menu.vue' + id);
+      let element = this.getElementMenuById(this.menu.menuElements, id);
+      console.log(element);
     },
 
-    newElement()
-    {
-      console.log('new element menu.vue');
+    /**
+     * Nouvel élément
+     * @param parent
+     */
+    newElement(parent) {
+      console.log('new element menu.vue parent : ' + parent);
     },
 
 
@@ -280,22 +313,38 @@ export default {
             rule="isEmpty"
             :rule-msg="this.translate.error_empty_value"
             @get-value="this.updateValueMenu"
-          >
+        >
 
         </field-editor>
 
-        <ul>
-        <menu-tree
-            v-for="menuElement in this.menu.menuElements"
-            :menu-element="menuElement"
-            :locale="this.currentLocale"
-            :update-element="this.updateElement"
-            :new-element="this.newElement"
-        >
+        <div class="row">
+          <div class="col-4">
+            <ul>
+              <menu-tree
+                  v-for="menuElement in this.menu.menuElements"
+                  :menu-element="menuElement"
+                  :locale="this.currentLocale"
+                  :update-element="this.updateElement"
+                  :new-element="this.newElement"
+              >
 
-        </menu-tree>
+              </menu-tree>
+              <li @click="this.newElement(0)">Nouveau</li>
 
-        </ul>
+            </ul>
+          </div>
+          <div class="col-8">
+
+            <div v-if="this.showForm" class="card border border-secondary">
+              <h5 class="card-header text-bg-secondary">Featured</h5>
+              <div class="card-body">
+                <h5 class="card-title">Special title treatment</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+              </div>
+            </div>
+          </div>
+        </div>
 
       </fieldset>
 

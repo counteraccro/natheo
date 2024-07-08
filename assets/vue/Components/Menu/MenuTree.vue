@@ -35,8 +35,6 @@ export default {
      */
     updateElement()
     {
-      console.log('Emit : ' + this.menuElement.id);
-      //this.$emit('update-element', this.menuElement.id)
       emitter.emit('update-menu-element', this.menuElement.id);
     },
 
@@ -45,9 +43,7 @@ export default {
      */
     newElement()
     {
-      console.log('New element:');
-      emitter.emit('new-menu-element');
-      //this.$emit('new-element')
+      emitter.emit('new-menu-element', this.menuElement.id);
     },
 
     toggle() {
