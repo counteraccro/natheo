@@ -55,3 +55,5 @@ menu.error.empty.value: __menu.error.empty.value
 menu.msg.wait.loading: __menu.msg.wait.loading
 menu.btn.save: __menu.btn.save
 menu.btn.new: __menu.btn.new
+menu.form.title.edit: __menu.form.title.edit
+menu.form.title.new: __menu.form.title.new
