@@ -12,10 +12,12 @@ import MenuLeftRight from "../../../../Components/Menu/MenuLeftRight.vue";
 import MenuTree from "../../../../Components/Menu/MenuTree.vue";
 import FieldEditor from "../../../../Components/Global/FieldEditor.vue";
 import {emitter} from "../../../../../utils/useEvent";
+import MenuForm from "../../../../Components/Menu/MenuForm.vue";
 
 export default {
   name: 'Menu',
   components: {
+    MenuForm,
     FieldEditor,
     MenuTree,
     MenuLeftRight,
@@ -40,6 +42,7 @@ export default {
       currentPosition: '',
       listTypeByPosition: [],
       selectComponent: 'MenuHeader',
+      selectMenuElement: [],
       showForm: false,
       toasts: {
         toastSuccess: {
@@ -179,15 +182,14 @@ export default {
      * @returns {null}
      */
     getElementMenuById(elements, id) {
-      let findElement = null
-      elements.forEach((element) => {
+      for (let element of elements) {
         if (element.id === id) {
-          findElement = element
+          return element
         } else if (element.hasOwnProperty('children') && element.children.menuElements.length) {
-            findElement = this.getElementMenuById(element.children.menuElements, id);
+          return this.getElementMenuById(element.children.menuElements, id);
         }
-      });
-      return findElement;
+      }
+      return null;
     },
 
     /**
@@ -205,10 +207,17 @@ export default {
      * @param id
      */
     updateElement(id) {
-      this.showForm = true;
+
       console.log('edit menu.vue' + id);
       let element = this.getElementMenuById(this.menu.menuElements, id);
-      console.log(element);
+      if (element === null) {
+        console.warn(`id ${id} not found in menuElement`);
+        this.showForm = false;
+      } else {
+        this.selectMenuElement = element;
+        this.showForm = true;
+      }
+
     },
 
     /**
@@ -335,14 +344,13 @@ export default {
           </div>
           <div class="col-8">
 
-            <div v-if="this.showForm" class="card border border-secondary">
-              <h5 class="card-header text-bg-secondary">Featured</h5>
-              <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
+            <menu-form
+                v-if="this.showForm"
+                :menu-element="this.selectMenuElement"
+            >
+            </menu-form>
+
+
           </div>
         </div>
 
