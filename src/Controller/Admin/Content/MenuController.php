@@ -198,7 +198,7 @@ class MenuController extends AppAdminController
             'name' => $name,
             'logo' => $logo,
             'url_site' => $urlSite,
-            'pages' => $pageService->getAllTitleAndUrlPage()
+            'pages' => $pageService->getAllTitleAndUrlPage(),
         ]]);
     }
 }
