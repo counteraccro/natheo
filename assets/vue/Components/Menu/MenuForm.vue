@@ -16,7 +16,8 @@ export default {
     pages: Object
   },
   watch: {
-    menuElement: 'entryPoint'
+    menuElement: 'entryPoint',
+    locale: 'createListePage',
   },
   data() {
     return {
@@ -56,7 +57,6 @@ export default {
      * Point d'entrée
      */
     entryPoint() {
-      this.orderElementTranslation();
       this.renderTitle();
       this.createListePage();
     },
@@ -65,13 +65,16 @@ export default {
      * Construit la liste de page en fonction de la locale
      */
     createListePage() {
+      this.listPages = [];
+      this.selectPage = '';
+      this.searchPage = '';
       for (const property in this.pages) {
         this.listPages.push({title : this.pages[property][this.locale]['title'], id: property});
       }
     },
 
 
-    orderElementTranslation() {
+    /*orderElementTranslation() {
       let tmp, tmpIndex = '';
       this.menuElement.menuElementTranslations.forEach((element, index) => {
 
@@ -83,7 +86,7 @@ export default {
       this.menuElement.menuElementTranslations.splice(tmpIndex, 1);
       this.menuElement.menuElementTranslations.unshift(tmp);
 
-    },
+    },*/
 
     /**
      * Affiche le titre du formulaire
@@ -108,7 +111,7 @@ export default {
 
       <label for="sql-table" class="form-label">A traduire </label>
       <input type="text" class="form-control" v-model="this.searchPage" placeholder="place_holder">
-      <select class="form-select" id="sql-table" size="8" v-model="this.selectPage">
+      <select class="form-select" id="id-list-page" size="1" v-model="this.selectPage">
         <option v-for="page in this.filteredPage" :value="page.id">
           {{ page.title }}
         </option>
