@@ -347,6 +347,7 @@ export default {
             <menu-form
                 v-if="this.showForm"
                 :menu-element="this.selectMenuElement"
+                :translate="this.translate.menu_form"
             >
             </menu-form>
 

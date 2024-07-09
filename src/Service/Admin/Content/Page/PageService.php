@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.2
+ * @version 1.3
  * Service gérant la création de page
  */
 
@@ -274,7 +274,7 @@ class PageService extends AppAdminService
     public function getCategoryById(int $id): string
     {
         $categories = $this->getAllCategories();
-        if(isset($categories[$id])) {
+        if (isset($categories[$id])) {
             return $categories[$id];
         }
         return '';
@@ -439,5 +439,29 @@ class PageService extends AppAdminService
             'info' => $info
         ];
 
+    }
+
+    /**
+     * Retourne l'ensemble des titres et url des pages du site
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getAllTitleAndUrlPage(): array
+    {
+        $return = [];
+        $tab = $this->getAllPaginate(1, 100000);
+
+        foreach ($tab as $page) {
+            /** @var Page $page */
+            $pageTranslations = $page->getPageTranslations();
+            foreach ($pageTranslations as $pageTranslation) {
+                $return[$page->getId()][$pageTranslation->getLocale()]
+                    = [
+                    'title' => $pageTranslation->getTitre(),
+                    'url' => $pageTranslation->getUrl(),
+                ];
+            }
+        }
+        return $return;
     }
 }

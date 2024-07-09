@@ -27,6 +27,19 @@ class MenuTranslate extends AppTranslate
             'msg_wait_loading' => $this->translator->trans('menu.msg.wait.loading', domain: 'menu'),
             'btn_save' => $this->translator->trans('menu.btn.save', domain: 'menu'),
             'btn_new' => $this->translator->trans('menu.btn.new', domain: 'menu'),
+            'menu_form' => $this->getMenuFormTranslate()
+        ];
+    }
+
+    /**
+     * Retourne les traductions pour le menu form
+     * @return array
+     */
+    public function getMenuFormTranslate() :array
+    {
+        return [
+            'title_edit' => $this->translator->trans('menu.form.title.edit', domain: 'menu'),
+            'title_new' => $this->translator->trans('menu.form.title.new', domain: 'menu'),
         ];
     }
 }

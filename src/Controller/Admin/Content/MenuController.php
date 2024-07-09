@@ -5,6 +5,7 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Service\Admin\Content\Menu\MenuService;
+use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Breadcrumb;
 use App\Utils\Content\Menu\MenuConvertToArray;
@@ -184,6 +185,7 @@ class MenuController extends AppAdminController
     public function getMenuById(
         MenuConvertToArray  $menuJson,
         OptionSystemService $optionSystemService,
+        PageService $pageService,
         int                 $id = null
     ): JsonResponse
     {
@@ -195,7 +197,8 @@ class MenuController extends AppAdminController
         return $this->json(['menu' => $menu, 'data' => [
             'name' => $name,
             'logo' => $logo,
-            'url_site' => $urlSite
+            'url_site' => $urlSite,
+            'pages' => $pageService->getAllTitleAndUrlPage()
         ]]);
     }
 }
