@@ -349,6 +349,7 @@ export default {
                 :menu-element="this.selectMenuElement"
                 :translate="this.translate.menu_form"
                 :locale="this.currentLocale"
+                :pages="this.dataMenu.pages"
             >
             </menu-form>
 
