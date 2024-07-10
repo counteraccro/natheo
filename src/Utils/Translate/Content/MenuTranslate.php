@@ -48,6 +48,9 @@ class MenuTranslate extends AppTranslate
             'input_link_text' => $this->translator->trans('menu.form.input.link.text', domain: 'menu'),
             'input_link_url' => $this->translator->trans('menu.form.input.link.url', domain: 'menu'),
             'input_link_external_url' => $this->translator->trans('menu.form.input.link.external.url', domain: 'menu'),
+            'radio_label_url_interne' => $this->translator->trans('menu.form.radio.label.url.interne', domain: 'menu'),
+            'radio_label_url_externe' => $this->translator->trans('menu.form.radio.label.url.externe', domain: 'menu'),
+            'title_position' => $this->translator->trans('menu.form.title.position', domain: 'menu'),
         ];
     }
 }
