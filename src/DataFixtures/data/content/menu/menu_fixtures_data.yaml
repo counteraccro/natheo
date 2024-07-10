@@ -13,7 +13,7 @@ menu:
         columnPosition: 1
         rowPosition: 1
         menuElementTranslation:
-          fr :
+          fr:
             locale: fr
             textLink: Articles
             externalLink: ''
@@ -66,7 +66,7 @@ menu:
         parent: element_3
         disabled: 0
         columnPosition: 1
-        rowPosition: 4
+        rowPosition: 1
         menuElementTranslation:
           fr:
             locale: fr
@@ -85,7 +85,7 @@ menu:
         parent: element_4
         disabled: 0
         columnPosition: 1
-        rowPosition: 5
+        rowPosition: 1
         menuElementTranslation:
           fr:
             locale: fr
@@ -104,7 +104,7 @@ menu:
         parent: element_4
         disabled: 0
         columnPosition: 1
-        rowPosition: 6
+        rowPosition: 2
         menuElementTranslation:
           fr:
             locale: fr
@@ -117,4 +117,80 @@ menu:
           en:
             locale: en
             textLink: en-sub-element-3-4-e6
+            externalLink: '#'
+      element_7:
+        page: ''
+        parent: element_4
+        disabled: 0
+        columnPosition: 2
+        rowPosition: 1
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: el-7
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: es-el-7
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: en-el-7
+            externalLink: '#'
+      element_8:
+        page: ''
+        parent: element_4
+        disabled: 0
+        columnPosition: 2
+        rowPosition: 2
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: el-8
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: es-el-8
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: en-el-8
+            externalLink: '#'
+      element_9:
+        page: ''
+        parent: element_4
+        disabled: 0
+        columnPosition: 3
+        rowPosition: 1
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: el-9
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: es-el-9
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: en-el-9
+            externalLink: '#'
+      element_10:
+        page: ''
+        parent: element_4
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 3
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: el-10
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: es-el-10
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: en-el-10
             externalLink: '#'
