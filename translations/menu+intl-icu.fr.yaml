@@ -58,10 +58,13 @@ menu.default.name: 'Titre nouveau menu'
 menu.form.title.edit: 'Edition du menuElement'
 menu.form.title.new: 'Nouveau menuElement'
 menu.form.input.search.page: "Associer une page à l'élément de votre menu"
-menu.form.input.search.page.placeholder: "Rechercher une page"
-menu.form.block.fr: "Données en français"
-menu.form.block.es: "Données en espagnole"
-menu.form.block.en: "Données en anglais"
-menu.form.input.link.text: "Label"
-menu.form.input.link.url: "Url interne"
-menu.form.input.link.external.url: "Url externe"
+menu.form.input.search.page.placeholder: 'Rechercher une page'
+menu.form.block.fr: 'Données en français'
+menu.form.block.es: 'Données en espagnole'
+menu.form.block.en: 'Données en anglais'
+menu.form.input.link.text: Label
+menu.form.input.link.url: 'Url interne'
+menu.form.input.link.external.url: 'Url externe'
+menu.form.radio.label.url.interne: 'Lien interne'
+menu.form.radio.label.url.externe: 'Lien externe'
+menu.form.title.position: 'Positionnement'

@@ -65,3 +65,6 @@ menu.form.block.en: __menu.form.block.en
 menu.form.input.link.text: __menu.form.input.link.text
 menu.form.input.link.url: __menu.form.input.link.url
 menu.form.input.link.external.url: __menu.form.input.link.external.url
+menu.form.radio.label.url.interne: __menu.form.radio.label.url.interne
+menu.form.radio.label.url.externe: __menu.form.radio.label.url.externe
+menu.form.title.position: __menu.form.title.position
