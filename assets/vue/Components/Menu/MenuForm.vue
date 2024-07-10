@@ -137,8 +137,8 @@ export default {
     <h5 class="card-header text-bg-secondary">{{ this.titleForm }}</h5>
     <div class="card-body">
 
-      <label for="sql-table" class="form-label">A traduire </label>
-      <input type="text" class="form-control" v-model="this.searchPage" placeholder="place_holder">
+      <label for="sql-table" class="form-label">{{ this.translate.input_search_page }}</label>
+      <input type="text" class="form-control" v-model="this.searchPage" :placeholder="this.translate.input_search_page_placeholder">
       <select class="form-select" id="id-list-page" size="1" v-model="this.selectPage" @change="updateUrlByPage">
         <option v-for="page in this.filteredPage" :value="page.id">
           {{ page.title }}
@@ -149,17 +149,17 @@ export default {
 
         <fieldset :class="meElTranslation.locale === locale ? 'border border-primary' : ''">
           <legend v-if="meElTranslation.locale === locale" class="text-primary">
-            <b>data {{ meElTranslation.locale }}</b>
+            <b>{{ this.translate['block_'+ meElTranslation.locale] }}</b>
           </legend>
           <legend v-else>
-            data {{ meElTranslation.locale }}
+            {{ this.translate['block_'+ meElTranslation.locale] }}
           </legend>
           <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">toto</label>
+            <label for="exampleFormControlInput1" class="form-label">{{ this.translate.input_link_text }}</label>
             <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" v-model="meElTranslation.textLink">
           </div>
           <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">toto</label>
+            <label for="exampleFormControlInput1" class="form-label">{{ this.translate.input_link_url }}</label>
             <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" v-model="meElTranslation.link">
           </div>
         </fieldset>

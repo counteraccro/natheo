@@ -40,6 +40,14 @@ class MenuTranslate extends AppTranslate
         return [
             'title_edit' => $this->translator->trans('menu.form.title.edit', domain: 'menu'),
             'title_new' => $this->translator->trans('menu.form.title.new', domain: 'menu'),
+            'input_search_page' => $this->translator->trans('menu.form.input.search.page', domain: 'menu'),
+            'input_search_page_placeholder' => $this->translator->trans('menu.form.input.search.page.placeholder', domain: 'menu'),
+            'block_fr' => $this->translator->trans('menu.form.block.fr', domain: 'menu'),
+            'block_es' => $this->translator->trans('menu.form.block.es', domain: 'menu'),
+            'block_en' => $this->translator->trans('menu.form.block.en', domain: 'menu'),
+            'input_link_text' => $this->translator->trans('menu.form.input.link.text', domain: 'menu'),
+            'input_link_url' => $this->translator->trans('menu.form.input.link.url', domain: 'menu'),
+            'input_link_external_url' => $this->translator->trans('menu.form.input.link.external.url', domain: 'menu'),
         ];
     }
 }
