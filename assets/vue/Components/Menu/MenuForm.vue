@@ -68,21 +68,33 @@ export default {
       this.selectPage = '';
       this.searchPage = '';
       for (const property in this.pages) {
-        this.listPages.push({title : this.pages[property][this.locale]['title'], id: property});
+        this.listPages.push({title: this.pages[property][this.locale]['title'], id: property});
       }
     },
 
-    updateUrlByPage(event)
-    {
+    /**
+     * Met à jour l'url en fonction de la page
+     * @param event
+     */
+    updateUrlByPage(event) {
       let tmp = this.getDataPageById(event.target.value);
+      let tabTmp = this.menuElement.menuElementTranslations;
+      tabTmp.forEach((element) => {
+        element.link = tmp[element.locale]['url']
+      })
+
+      this.menuElement.menuElementTranslations = tabTmp;
     },
 
-    getDataPageById(id)
-    {
+    /**
+     * Retourne les données d'une page en fonction de son id
+     * @param id
+     * @returns {*[]}
+     */
+    getDataPageById(id) {
       let tmp = [];
       for (const property in this.pages) {
-        if(property === id)
-        {
+        if (property === id) {
           tmp = this.pages[property];
         }
       }
