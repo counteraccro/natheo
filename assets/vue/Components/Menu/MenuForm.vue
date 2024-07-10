@@ -1,5 +1,4 @@
-<script>
-/**
+<script>/**
  * @author Gourdon Aymeric
  * @version 1.0
  * Composant pour éditer / créer un menu
@@ -73,6 +72,23 @@ export default {
       }
     },
 
+    updateUrlByPage(event)
+    {
+      let tmp = this.getDataPageById(event.target.value);
+    },
+
+    getDataPageById(id)
+    {
+      let tmp = [];
+      for (const property in this.pages) {
+        if(property === id)
+        {
+          tmp = this.pages[property];
+        }
+      }
+      return tmp;
+    },
+
 
     /*orderElementTranslation() {
       let tmp, tmpIndex = '';
@@ -111,7 +127,7 @@ export default {
 
       <label for="sql-table" class="form-label">A traduire </label>
       <input type="text" class="form-control" v-model="this.searchPage" placeholder="place_holder">
-      <select class="form-select" id="id-list-page" size="1" v-model="this.selectPage">
+      <select class="form-select" id="id-list-page" size="1" v-model="this.selectPage" @change="updateUrlByPage">
         <option v-for="page in this.filteredPage" :value="page.id">
           {{ page.title }}
         </option>
