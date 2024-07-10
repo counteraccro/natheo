@@ -57,3 +57,11 @@ menu.btn.save: __menu.btn.save
 menu.btn.new: __menu.btn.new
 menu.form.title.edit: __menu.form.title.edit
 menu.form.title.new: __menu.form.title.new
+menu.form.input.search.page: __menu.form.input.search.page
+menu.form.input.search.page.placeholder: __menu.form.input.search.page.placeholder
+menu.form.block.fr: __menu.form.block.fr
+menu.form.block.es: __menu.form.block.es
+menu.form.block.en: __menu.form.block.en
+menu.form.input.link.text: __menu.form.input.link.text
+menu.form.input.link.url: __menu.form.input.link.url
+menu.form.input.link.external.url: __menu.form.input.link.external.url
