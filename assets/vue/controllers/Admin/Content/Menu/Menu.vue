@@ -182,14 +182,18 @@ export default {
      * @returns {null}
      */
     getElementMenuById(elements, id) {
-      for (let element of elements) {
-        if (element.id === id) {
-          return element
-        } else if (element.hasOwnProperty('children') && element.children.menuElements.length) {
-          return this.getElementMenuById(element.children.menuElements, id);
+
+      let element = null;
+
+      Object.entries(elements).forEach((value) => {
+        let obj = value[1];
+        if (obj.id === id) {
+          element = obj;
+        } else if (obj.hasOwnProperty('children') && obj.children.menuElements.length && element === null) {
+          element = this.getElementMenuById(obj.children.menuElements, id)
         }
-      }
-      return null;
+      });
+      return element;
     },
 
     /**
@@ -210,6 +214,7 @@ export default {
 
       console.log('edit menu.vue' + id);
       let element = this.getElementMenuById(this.menu.menuElements, id);
+      console.log(element);
       if (element === null) {
         console.warn(`id ${id} not found in menuElement`);
         this.showForm = false;
