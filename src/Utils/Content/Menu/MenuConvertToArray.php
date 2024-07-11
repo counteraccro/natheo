@@ -111,6 +111,7 @@ class MenuConvertToArray
 
             if ($menuElement->getParent() !== null) {
                 $structure['refChilds'][] = $menuElement->getId();
+                $structure['menuElements'][$key]['parent'] = $menuElement->getParent()->getId();
             }
 
             if (!$menuElement->getChildren()->isEmpty()) {

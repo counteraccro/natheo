@@ -43,6 +43,7 @@ export default {
       listTypeByPosition: [],
       selectComponent: 'MenuHeader',
       selectMenuElement: [],
+      positions: [],
       showForm: false,
       toasts: {
         toastSuccess: {
@@ -197,6 +198,47 @@ export default {
     },
 
     /**
+     * Calcul la valeur de columnMax et rowMax en fonction du parent
+     * @param elements
+     * @param idParent
+     */
+    calculMaxColAndRowMaxByIdParent(elements, idParent) {
+
+      /**
+       * Fonction temporaire pour calculer columnMax et rowMax en fonction
+       * de la column
+       * @param data
+       * @param obj
+       * @returns {*}
+       */
+      function tmp(data, obj) {
+        if (obj.columnPosition > data.columnMax) {
+          data.columnMax = obj.columnPosition;
+          data[obj.columnPosition] = {'colum': obj.columnPosition, 'rowMax': 0};
+        }
+
+        if (obj.rowPosition > data[obj.columnPosition].rowMax) {
+          data[obj.columnPosition].rowMax = obj.rowPosition;
+        }
+        return data;
+      }
+
+      let data = {'columnMax': 0}
+      Object.entries(elements).forEach((value) => {
+        let obj = value[1];
+
+        if (obj.hasOwnProperty('parent') && idParent === obj.parent) {
+          data = tmp(data, obj);
+        } else if (obj.hasOwnProperty('children') && obj.children.menuElements.length) {
+          data = this.calculMaxColAndRowMaxByIdParent(obj.children.menuElements, idParent);
+        } else if (idParent === null) {
+          data = tmp(data, obj);
+        }
+      });
+      return data;
+    },
+
+    /**
      * Mise à jour des données du menu
      * @param value
      * @param id
@@ -211,14 +253,17 @@ export default {
      * @param id
      */
     updateElement(id) {
-
-      console.log('edit menu.vue' + id);
       let element = this.getElementMenuById(this.menu.menuElements, id);
       console.log(element);
       if (element === null) {
         console.warn(`id ${id} not found in menuElement`);
         this.showForm = false;
       } else {
+        if (element.hasOwnProperty('parent')) {
+          this.positions = this.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, element.parent);
+        } else {
+          this.positions = this.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, null);
+        }
         this.selectMenuElement = element;
         this.showForm = true;
       }
@@ -355,6 +400,7 @@ export default {
                 :translate="this.translate.menu_form"
                 :locale="this.currentLocale"
                 :pages="this.dataMenu.pages"
+                :positions="this.positions"
             >
             </menu-form>
 

@@ -12,7 +12,8 @@ export default {
     menuElement: Object,
     translate: Object,
     locale: String,
-    pages: Object
+    pages: Object,
+    positions : Object,
   },
   watch: {
     menuElement: 'entryPoint',
@@ -74,7 +75,6 @@ export default {
      */
     createListePage() {
       this.listPages = [];
-      this.selectPage = '';
       this.searchPage = '';
       for (const property in this.pages) {
         this.listPages.push({title: this.pages[property][this.locale]['title'], id: property});
@@ -159,6 +159,7 @@ export default {
 
       <fieldset class="mb-3">
         <legend>{{ this.translate.title_position }}</legend>
+        
       </fieldset>
 
       <fieldset v-if="this.modeLink === 'interne'" class="mb-3">
