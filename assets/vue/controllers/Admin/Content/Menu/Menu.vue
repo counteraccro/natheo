@@ -117,8 +117,6 @@ export default {
      */
     switchComposant(idPosition) {
 
-      console.log(idPosition);
-
       switch (idPosition) {
         case "1" :
           this.selectComponent = 'MenuHeader';
@@ -229,12 +227,13 @@ export default {
 
         if (obj.hasOwnProperty('parent') && idParent === obj.parent) {
           data = tmp(data, obj);
-        } else if (obj.hasOwnProperty('children') && obj.children.menuElements.length) {
+        } else if (obj.hasOwnProperty('children') && obj.children.menuElements.length && idParent !== null) {
           data = this.calculMaxColAndRowMaxByIdParent(obj.children.menuElements, idParent);
         } else if (idParent === null) {
           data = tmp(data, obj);
         }
       });
+
       return data;
     },
 
@@ -254,7 +253,6 @@ export default {
      */
     updateElement(id) {
       let element = this.getElementMenuById(this.menu.menuElements, id);
-      console.log(element);
       if (element === null) {
         console.warn(`id ${id} not found in menuElement`);
         this.showForm = false;

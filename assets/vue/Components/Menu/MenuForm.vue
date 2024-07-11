@@ -25,6 +25,8 @@ export default {
       selectPage: '',
       searchPage: '',
       listPages: [],
+      listColumn: [],
+      listRow: [],
       modeLink: 'interne'
     }
   },
@@ -61,6 +63,8 @@ export default {
 
       this.renderTitle();
       this.createListePage();
+      this.createListeColumn();
+      this.createListRow(this.menuElement.columnPosition);
 
       this.modeLink = 'externe';
       this.selectPage = '';
@@ -68,6 +72,40 @@ export default {
         this.modeLink = 'interne';
         this.selectPage = this.menuElement.page;
       }
+    },
+
+    /**
+     * Génère la liste de column
+     */
+    createListeColumn()
+    {
+      console.log(this.positions);
+      this.listColumn = [];
+      for (let i = 1; i <= (this.positions.columnMax); i++) {
+        this.listColumn.push({ value: i, label: i });
+      }
+    },
+
+    /**
+     * Génère la liste de row en fonction de column
+     * @param column
+     */
+    createListRow(column)
+    {
+      console.log(this.positions[column]['rowMax']);
+      this.listRow = [];
+      for (let i = 1; i <= (this.positions[column]['rowMax']); i++) {
+        this.listRow.push({ value: i, label: i });
+      }
+    },
+
+    /**
+     * Mise à jour de la liste de row
+     * @param event
+     */
+    updateListRow(event)
+    {
+      this.createListRow(event.target.value)
     },
 
     /**
@@ -159,7 +197,19 @@ export default {
 
       <fieldset class="mb-3">
         <legend>{{ this.translate.title_position }}</legend>
-        
+        <div class="row">
+          <div class="col">
+            <select class="form-select" v-model="this.menuElement.columnPosition" @change="this.updateListRow">
+              <option v-for="column in this.listColumn" :value="column.value">{{ column.label }}</option>
+
+            </select>
+          </div>
+          <div class="col">
+            <select class="form-select" v-model="this.menuElement.rowPosition">
+              <option v-for="row in this.listRow" :value="row.value">{{ row.label }}</option>
+            </select>
+          </div>
+        </div>
       </fieldset>
 
       <fieldset v-if="this.modeLink === 'interne'" class="mb-3">
