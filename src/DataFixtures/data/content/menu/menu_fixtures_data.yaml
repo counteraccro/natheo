@@ -25,6 +25,63 @@ menu:
             locale: en
             textLink: en-Articles
             externalLink: ''
+      element_11:
+        page: ''
+        parent: element_1
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: el-11
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: es-el-11
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: en-el-11
+            externalLink: '#'
+      element_12:
+        page: ''
+        parent: element_1
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 2
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: el-12
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: es-el-12
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: en-el-12
+            externalLink: '#'
+      element_13:
+        page: ''
+        parent: element_12
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: el-13
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: es-el-13
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: en-el-13
+            externalLink: '#'
       element_2:
         page: Page_faq
         disabled: 0
