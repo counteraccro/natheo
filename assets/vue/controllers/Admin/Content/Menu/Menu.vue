@@ -224,10 +224,9 @@ export default {
       let data = {'columnMax': 0}
       Object.entries(elements).forEach((value) => {
         let obj = value[1];
-
         if (obj.hasOwnProperty('parent') && idParent === obj.parent) {
           data = tmp(data, obj);
-        } else if (obj.hasOwnProperty('children') && obj.children.menuElements.length && idParent !== null) {
+        } else if (obj.hasOwnProperty('children') && obj.children.menuElements.length && idParent !== null && data.columnMax === 0) {
           data = this.calculMaxColAndRowMaxByIdParent(obj.children.menuElements, idParent);
         } else if (idParent === null) {
           data = tmp(data, obj);
@@ -262,6 +261,9 @@ export default {
         } else {
           this.positions = this.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, null);
         }
+
+        console.log(this.positions);
+
         this.selectMenuElement = element;
         this.showForm = true;
       }
@@ -274,6 +276,27 @@ export default {
      */
     newElement(parent) {
       console.log('new element menu.vue parent : ' + parent);
+    },
+
+    /**
+     * Réordonne les élements d'un menu
+     * @param data
+     */
+    reorderElement(data) {
+      function reorderByRowPosition(a, b) {
+        console.log(a[1]['rowPosition']);
+        return a[1]['rowPosition'] > b[1]['rowPosition'];
+      }
+
+      let elements = this.menu.menuElements;
+      if (data.parent !== 0) {
+        elements = this.getElementMenuById(this.menu.menuElements, data.parent);
+      }
+      else {
+        console.log(this.menu.menuElements);
+        elements = Object.entries(elements).sort(reorderByRowPosition)
+        console.log(elements);
+      }
     },
 
 
@@ -399,6 +422,7 @@ export default {
                 :locale="this.currentLocale"
                 :pages="this.dataMenu.pages"
                 :positions="this.positions"
+                @reorder-element="this.reorderElement"
             >
             </menu-form>
 

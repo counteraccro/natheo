@@ -7,7 +7,7 @@
 export default {
   name: "MenuForm",
   components: {},
-  emit: [],
+  emit: ['reorder-element'],
   props: {
     menuElement: Object,
     translate: Object,
@@ -27,7 +27,9 @@ export default {
       listPages: [],
       listColumn: [],
       listRow: [],
-      modeLink: 'interne'
+      modeLink: 'interne',
+      oldColumnPosition : '',
+      oldRowPosition: '',
     }
   },
   mounted() {
@@ -65,6 +67,8 @@ export default {
       this.createListePage();
       this.createListeColumn();
       this.createListRow(this.menuElement.columnPosition);
+      this.oldColumnPosition = this.menuElement.columnPosition;
+      this.oldRowPosition = this.menuElement.rowPosition;
 
       this.modeLink = 'externe';
       this.selectPage = '';
@@ -79,7 +83,6 @@ export default {
      */
     createListeColumn()
     {
-      console.log(this.positions);
       this.listColumn = [];
       for (let i = 1; i <= (this.positions.columnMax); i++) {
         this.listColumn.push({ value: i, label: i });
@@ -92,7 +95,6 @@ export default {
      */
     createListRow(column)
     {
-      console.log(this.positions[column]['rowMax']);
       this.listRow = [];
       for (let i = 1; i <= (this.positions[column]['rowMax']); i++) {
         this.listRow.push({ value: i, label: i });
@@ -117,6 +119,27 @@ export default {
       for (const property in this.pages) {
         this.listPages.push({title: this.pages[property][this.locale]['title'], id: property});
       }
+    },
+
+    /**
+     * Prépare les données pour les renvoyer à Menu.vue pour générer le trie
+     */
+    reorderElements()
+    {
+      let data = {
+        'newColumn' : this.menuElement.columnPosition,
+        'oldColumn' : this.oldColumnPosition,
+        'newRow' : this.menuElement.rowPosition,
+        'oldRow' : this.oldRowPosition,
+        'id' : this.menuElement.id,
+        'parent' : 0
+      };
+
+      if (this.menuElement.hasOwnProperty('parent')) {
+        data.parent = this.menuElement.parent;
+      }
+
+      this.$emit('reorder-element', data);
     },
 
     /**
@@ -199,13 +222,13 @@ export default {
         <legend>{{ this.translate.title_position }}</legend>
         <div class="row">
           <div class="col">
-            <select class="form-select" v-model="this.menuElement.columnPosition" @change="this.updateListRow">
+            <select class="form-select" v-model="this.menuElement.columnPosition" @change="this.updateListRow;this.reorderElements">
               <option v-for="column in this.listColumn" :value="column.value">{{ column.label }}</option>
 
             </select>
           </div>
           <div class="col">
-            <select class="form-select" v-model="this.menuElement.rowPosition">
+            <select class="form-select" v-model="this.menuElement.rowPosition" @change="this.reorderElements">
               <option v-for="row in this.listRow" :value="row.value">{{ row.label }}</option>
             </select>
           </div>
