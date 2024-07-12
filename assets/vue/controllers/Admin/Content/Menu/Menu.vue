@@ -278,7 +278,7 @@ export default {
     },
 
     /**
-     * Réordonne les élements d'un menu
+     * Réordonne-les élements d'un menu
      * @param data
      */
     reorderElement(data) {
@@ -299,6 +299,17 @@ export default {
 
       console.log(elements);
 
+      // Traitement du champ column
+      /*Object.entries(elements).forEach((value, index) => {
+        let obj = value[1];
+        if (obj.id !== data.id && obj.columnPosition === data.newColumn) {
+          obj.rowPosition = obj.rowPosition + 1;
+        } else if (obj.columnPosition !== data.newColumn) {
+          obj.rowPosition = obj.rowPosition + 1
+        }
+      });
+
+      // Traitement du champ row
       Object.entries(elements).forEach((value, index) => {
         let obj = value[1];
         if (obj.columnPosition === data.newColumn) {
@@ -308,7 +319,7 @@ export default {
             obj.rowPosition = obj.rowPosition + 1
           }
         }
-      });
+      });*/
 
       console.log(elements);
 
@@ -416,19 +427,28 @@ export default {
 
         <div class="row">
           <div class="col-4">
-            <ul>
-              <menu-tree
-                  v-for="menuElement in this.menu.menuElements"
-                  :menu-element="menuElement"
-                  :locale="this.currentLocale"
-                  :update-element="this.updateElement"
-                  :new-element="this.newElement"
-              >
 
-              </menu-tree>
-              <li @click="this.newElement(0)">Nouveau</li>
+            <div class="card border border-secondary">
+              <div class="card-header text-bg-secondary">
+                {{ this.translate.title_architecture }}
+              </div>
+              <div class="card-body">
 
-            </ul>
+                <ul class="tree-menu">
+                  <menu-tree
+                      v-for="menuElement in this.menu.menuElements"
+                      :menu-element="menuElement"
+                      :locale="this.currentLocale"
+                      :update-element="this.updateElement"
+                      :new-element="this.newElement"
+                  >
+
+                  </menu-tree>
+                  <li @click="this.newElement(0)">Nouveau</li>
+
+                </ul>
+              </div>
+            </div>
           </div>
           <div class="col-8">
 

@@ -36,6 +36,9 @@ export default {
     this.entryPoint();
   },
   computed: {
+    events() {
+      return events
+    },
 
     /**
      * Filtre sur tables
@@ -204,7 +207,7 @@ export default {
 <template>
 
   <div class="card border border-secondary">
-    <h5 class="card-header text-bg-secondary">{{ this.titleForm }}</h5>
+    <div class="card-header text-bg-secondary">{{ this.titleForm }}</div>
     <div class="card-body">
 
       <div class="mb-3">
@@ -222,7 +225,7 @@ export default {
         <legend>{{ this.translate.title_position }}</legend>
         <div class="row">
           <div class="col">
-            <select class="form-select" v-model="this.menuElement.columnPosition" @change="this.updateListRow;this.reorderElements">
+            <select class="form-select" v-model="this.menuElement.columnPosition" @change="(event) => {this.updateListRow(event); this.reorderElements()}">
               <option v-for="column in this.listColumn" :value="column.value">{{ column.label }}</option>
 
             </select>

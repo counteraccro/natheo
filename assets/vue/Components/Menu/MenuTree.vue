@@ -25,6 +25,10 @@ export default {
   computed: {
     haveChildren() {
       return this.menuElement.hasOwnProperty('children') && this.menuElement.children.menuElements.length
+    },
+
+    haveParent() {
+      return this.menuElement.hasOwnProperty('parent');
     }
   },
 
@@ -75,18 +79,16 @@ export default {
 <template>
 
   <li>
-    <div class="icon-link icon-link-hover no-control"
-        @click="this.toggle"
-    >
+    <span class="no-control" @click="this.toggle">
+      <i v-if="this.haveParent" class="bi bi-arrow-return-right"></i>
+      <i v-else class="bi bi-arrow-right-square"></i>
       {{ this.getTranslationValueByKeyAndByLocale(this.menuElement.menuElementTranslations, 'textLink') }}
-      <span v-if="this.haveChildren"><i class="bi" :class="this.isOpen ? 'bi-chevron-down' : 'bi-chevron-right'"></i></span>
-    </div>
-    <div class="btn btn-sm"
-        @click="this.updateElement"
-    >
-      Edit
-    </div>
-    <ul v-show="this.isOpen" v-if="this.haveChildren">
+      <span v-if="this.haveChildren">
+        <i class="bi" :class="this.isOpen ? 'bi-chevron-down' : 'bi-chevron-right'"></i>
+      </span>
+    </span>
+    <i class="bi bi-pencil-fill float-end" @click="this.updateElement"></i>
+    <ul class="tree-menu" v-show="this.isOpen" v-if="this.haveChildren">
       <menu-tree
           v-for="menuElement in this.menuElement.children.menuElements"
           :menu-element="menuElement"
