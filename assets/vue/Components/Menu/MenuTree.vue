@@ -97,7 +97,10 @@ export default {
           :new="this.newElement"
           >
       </menu-tree>
-      <li @click="this.newElement">Nouveau</li>
+      <li @click="this.newElement">
+        <i class="bi bi-plus-square"></i>
+        Nouveau
+      </li>
     </ul>
   </li>
 
