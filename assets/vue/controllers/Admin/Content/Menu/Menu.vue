@@ -261,7 +261,6 @@ export default {
         } else {
           this.positions = this.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, null);
         }
-
         console.log(this.positions);
 
         this.selectMenuElement = element;
@@ -284,19 +283,37 @@ export default {
      */
     reorderElement(data) {
       function reorderByRowPosition(a, b) {
-        console.log(a[1]['rowPosition']);
-        return a[1]['rowPosition'] > b[1]['rowPosition'];
+        return (a[1]['columnPosition'] - b[1]['columnPosition']) || (a[1]['rowPosition'] - b[1]['rowPosition']);
       }
+
+      console.log(data);
 
       let elements = this.menu.menuElements;
       if (data.parent !== 0) {
-        elements = this.getElementMenuById(this.menu.menuElements, data.parent);
+        let tmp = this.getElementMenuById(this.menu.menuElements, data.parent);
+        elements = tmp.children.menuElements;
+      } else {
+        //console.log(this.menu.menuElements);
+        //console.log(elements);
       }
-      else {
-        console.log(this.menu.menuElements);
-        elements = Object.entries(elements).sort(reorderByRowPosition)
-        console.log(elements);
-      }
+
+      console.log(elements);
+
+      Object.entries(elements).forEach((value, index) => {
+        let obj = value[1];
+        if (obj.columnPosition === data.newColumn) {
+          if (obj.id !== data.id && obj.rowPosition === data.newRow) {
+            obj.rowPosition = obj.rowPosition + 1;
+          } else if (obj.rowPosition !== data.newRow) {
+            obj.rowPosition = obj.rowPosition + 1
+          }
+        }
+      });
+
+      console.log(elements);
+
+      elements = Object.entries(elements).sort(reorderByRowPosition)
+      console.log(elements);
     },
 
 
