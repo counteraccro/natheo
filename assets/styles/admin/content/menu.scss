@@ -1,0 +1,18 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * CSS la gestion des menus
+ */
+
+#global-menu {
+
+  .tree-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li ul li {
+      padding-left: 1.5em;
+    }
+  }
+}
