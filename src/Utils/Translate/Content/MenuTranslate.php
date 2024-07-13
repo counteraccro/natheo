@@ -27,7 +27,12 @@ class MenuTranslate extends AppTranslate
             'msg_wait_loading' => $this->translator->trans('menu.msg.wait.loading', domain: 'menu'),
             'btn_save' => $this->translator->trans('menu.btn.save', domain: 'menu'),
             'btn_new' => $this->translator->trans('menu.btn.new', domain: 'menu'),
-            'menu_form' => $this->getMenuFormTranslate()
+            'no_select_menu_form' => $this->translator->trans('menu.no_select.menu.form', domain: 'menu'),
+            'no_select_menu_form_msg' => $this->translator->trans('menu.no_select.menu.form.msg', domain: 'menu'),
+            'help_title' => $this->translator->trans('menu.help.title', domain: 'menu'),
+            'help_edition' => $this->translator->trans('menu.help.edition', domain: 'menu'),
+            'help_delete' => $this->translator->trans('menu.help.delete', domain: 'menu'),
+            'menu_form' => $this->getMenuFormTranslate(),
         ];
     }
 

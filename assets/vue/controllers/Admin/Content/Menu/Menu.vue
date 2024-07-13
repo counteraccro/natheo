@@ -444,7 +444,10 @@ export default {
                   >
 
                   </menu-tree>
-                  <li @click="this.newElement(0)">Nouveau</li>
+                  <li @click="this.newElement(0)">
+                    <i class="bi bi-plus-square"></i>
+                    Nouveau
+                  </li>
 
                 </ul>
               </div>
@@ -462,6 +465,22 @@ export default {
                 @reorder-element="this.reorderElement"
             >
             </menu-form>
+
+            <div v-else class="card border border-secondary h-100">
+              <div class="card-header text-bg-secondary">
+                {{ this.translate.no_select_menu_form }}
+              </div>
+              <div class="card-body">
+                <p class="text-black"><i>{{ this.translate.no_select_menu_form_msg }}</i></p>
+
+                {{ this.translate.help_title }} <br/>
+
+                <i class="bi bi-arrow-right"></i> <i class="bi bi-pencil-fill"></i> {{ this.translate.help_edition }}
+                <br/>
+                <i class="bi bi-arrow-right"></i> <i class="bi bi-x-lg"></i> {{ this.translate.help_delete }} <br />
+
+              </div>
+            </div>
 
 
           </div>

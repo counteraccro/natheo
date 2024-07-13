@@ -37,16 +37,14 @@ export default {
     /**
      * Edit un élément au menu
      */
-    updateElement()
-    {
+    updateElement() {
       emitter.emit('update-menu-element', this.menuElement.id);
     },
 
     /**
      * Créer un nouvel élément au menu
      */
-    newElement()
-    {
+    newElement() {
       emitter.emit('new-menu-element', this.menuElement.id);
     },
 
@@ -87,7 +85,10 @@ export default {
         <i class="bi" :class="this.isOpen ? 'bi-chevron-down' : 'bi-chevron-right'"></i>
       </span>
     </span>
-    <i class="bi bi-pencil-fill float-end" @click="this.updateElement"></i>
+    <span class="float-end">
+      <i class="bi bi-pencil-fill" @click="this.updateElement"></i>&nbsp;
+      <i class="bi bi-x-lg" @click="this.updateElement"></i>
+    </span>
     <ul class="tree-menu" v-show="this.isOpen" v-if="this.haveChildren">
       <menu-tree
           v-for="menuElement in this.menuElement.children.menuElements"
@@ -95,7 +96,7 @@ export default {
           :locale="this.locale"
           :update-element="this.updateElement"
           :new="this.newElement"
-          >
+      >
       </menu-tree>
       <li @click="this.newElement">
         <i class="bi bi-plus-square"></i>
