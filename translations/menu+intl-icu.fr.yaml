@@ -67,4 +67,9 @@ menu.form.input.link.url: 'Url interne'
 menu.form.input.link.external.url: 'Url externe'
 menu.form.radio.label.url.interne: 'Lien interne'
 menu.form.radio.label.url.externe: 'Lien externe'
-menu.form.title.position: 'Positionnement'
+menu.form.title.position: Positionnement
+menu.no_select.menu.form: 'Edition du menuElement #-'
+menu.no_select.menu.form.msg: "Sélectionner un élement du menu pour pouvoir l'éditer"
+menu.help.edition: 'Editer un menuElement'
+menu.help.delete: 'Supprime un menuElement'
+menu.help.title: 'Aide'
