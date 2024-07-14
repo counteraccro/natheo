@@ -15,15 +15,15 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: Articles
+            textLink: fr-col-1-row-1
             externalLink: ''
           es:
             locale: es
-            textLink: es-Articles
+            textLink: es-col-1-row-1
             externalLink: ''
           en:
             locale: en
-            textLink: en-Articles
+            textLink: en-col-1-row-1
             externalLink: ''
       element_11:
         page: ''
@@ -34,15 +34,15 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: el-11
+            textLink: fr-sub-col-1-row-1
             externalLink: '#'
           es:
             locale: es
-            textLink: es-el-11
+            textLink: es-sub-col-1-row-1
             externalLink: '#'
           en:
             locale: en
-            textLink: en-el-11
+            textLink: en-sub-col-1-row-1
             externalLink: '#'
       element_12:
         page: ''
@@ -53,15 +53,15 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: el-12
+            textLink: fr-sub-col-1-row-2
             externalLink: '#'
           es:
             locale: es
-            textLink: es-el-12
+            textLink: es-sub-col-1-row-2
             externalLink: '#'
           en:
             locale: en
-            textLink: en-el-12
+            textLink: en-sub-col-1-row-2
             externalLink: '#'
       element_13:
         page: ''
@@ -72,15 +72,15 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: el-13
+            textLink: fr-sub-sub-col-1-row-1
             externalLink: '#'
           es:
             locale: es
-            textLink: es-el-13
+            textLink: es-sub-sub-col-1-row-1
             externalLink: '#'
           en:
             locale: en
-            textLink: en-el-13
+            textLink: en-sub-sub-col-1-row-1
             externalLink: '#'
       element_2:
         page: Page_faq
@@ -90,15 +90,15 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: Faq
+            textLink: fr-col-1-row-2
             externalLink: ''
           es:
             locale: es
-            textLink: es-Faq
+            textLink: es-col-1-row-2
             externalLink: ''
           en:
             locale: en
-            textLink: en-Faq
+            textLink: en-col-1-row-2
             externalLink: ''
       element_3:
         page: ''
@@ -108,15 +108,15 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: Autre
+            textLink: fr-col-1-row-3
             externalLink: '#'
           es:
             locale: es
-            textLink: es-Autre
+            textLink: es-col-1-row-3
             externalLink: '#'
           en:
             locale: en
-            textLink: en-Autre
+            textLink: en-col-1-row-3
             externalLink: '#'
       element_4:
         page: ''
@@ -127,15 +127,15 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: sub-element-3
+            textLink: fr-sub-col-1-row-1
             externalLink: '#'
           es:
             locale: es
-            textLink: es-sub-element-3
+            textLink: es-sub-col-1-row-1
             externalLink: '#'
           en:
             locale: en
-            textLink: en-sub-element-3
+            textLink: en-sub-col-1-row-1
             externalLink: '#'
       element_5:
         page: ''
@@ -146,15 +146,15 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: sub-element-3-4
+            textLink: fr-sub-sub-col-1-row-1
             externalLink: '#'
           es:
             locale: es
-            textLink: es-sub-element-3-4
+            textLink: es-sub-sub-col-1-row-1
             externalLink: '#'
           en:
             locale: en
-            textLink: en-sub-element-3-4
+            textLink: en-sub-sub-col-1-row-1
             externalLink: '#'
       element_6:
         page: ''
@@ -165,15 +165,15 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: sub-element-3-4-e6
+            textLink: fr-sub-sub-col-1-row-2
             externalLink: '#'
           es:
             locale: es
-            textLink: es-sub-element-3-4-e6
+            textLink: es-sub-sub-col-1-row-2
             externalLink: '#'
           en:
             locale: en
-            textLink: en-sub-element-3-4-e6
+            textLink: en-sub-sub-col-1-row-2
             externalLink: '#'
       element_7:
         page: ''
@@ -184,15 +184,15 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: el-7
+            textLink: fr-sub-sub-col-2-row-1
             externalLink: '#'
           es:
             locale: es
-            textLink: es-el-7
+            textLink: es-sub-sub-col-2-row-1
             externalLink: '#'
           en:
             locale: en
-            textLink: en-el-7
+            textLink: en-sub-sub-col-2-row-1
             externalLink: '#'
       element_8:
         page: ''
@@ -203,15 +203,15 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: el-8
+            textLink: fr-sub-sub-col-2-row-2
             externalLink: '#'
           es:
             locale: es
-            textLink: es-el-8
+            textLink: es-sub-sub-col-2-row-2
             externalLink: '#'
           en:
             locale: en
-            textLink: en-el-8
+            textLink: en-sub-sub-col-2-row-2
             externalLink: '#'
       element_9:
         page: ''
@@ -222,15 +222,15 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: el-9
+            textLink: fr-sub-sub-col-3-row-1
             externalLink: '#'
           es:
             locale: es
-            textLink: es-el-9
+            textLink: es-sub-sub-col-3-row-1
             externalLink: '#'
           en:
             locale: en
-            textLink: en-el-9
+            textLink: en-sub-sub-col-3-row-1
             externalLink: '#'
       element_10:
         page: ''
@@ -241,13 +241,13 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: el-10
+            textLink: fr-sub-sub-col-1-row-3
             externalLink: '#'
           es:
             locale: es
-            textLink: es-el-10
+            textLink: es-sub-sub-col-1-row-3
             externalLink: '#'
           en:
             locale: en
-            textLink: en-el-10
+            textLink: en-sub-sub-col-1-row-3
             externalLink: '#'
