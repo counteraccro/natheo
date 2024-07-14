@@ -11,7 +11,8 @@ export default {
   emit: ['update-element', 'new-element'],
   props: {
     menuElement: Object,
-    locale: String
+    locale: String,
+    idSelect: Number
   },
   data() {
     return {
@@ -29,7 +30,21 @@ export default {
 
     haveParent() {
       return this.menuElement.hasOwnProperty('parent');
+    },
+
+    /**
+     * Si l'élément est sélectionné
+     * @returns {string}
+     */
+    isSelected() {
+      if (this.menuElement.id === this.idSelect) {
+        return "selected";
+      } else {
+        return '';
+      }
     }
+
+
   },
 
   methods: {
@@ -48,6 +63,9 @@ export default {
       emitter.emit('new-menu-element', this.menuElement.id);
     },
 
+    /**
+     * Ouvre ou ferme un noeud
+     */
     toggle() {
       if (this.haveChildren) {
         this.isOpen = !this.isOpen
@@ -64,7 +82,6 @@ export default {
       let str = '';
       tabMenuElementTranslation.forEach((menuElementTranslation) => {
         if (menuElementTranslation.locale === this.locale) {
-          console.log(menuElementTranslation[key]);
           str = menuElementTranslation[key];
         }
       })
@@ -77,6 +94,7 @@ export default {
 <template>
 
   <li>
+    <div class="li-hover" :class="this.isSelected">
     <span class="no-control" @click="this.toggle">
       <i v-if="this.haveParent" class="bi bi-arrow-return-right"></i>
       <i v-else class="bi bi-arrow-right-square"></i>
@@ -85,22 +103,26 @@ export default {
         <i class="bi" :class="this.isOpen ? 'bi-chevron-down' : 'bi-chevron-right'"></i>
       </span>
     </span>
-    <span class="float-end">
+      <span class="float-end">
       <i class="bi bi-pencil-fill" @click="this.updateElement"></i>&nbsp;
       <i class="bi bi-x-lg" @click="this.updateElement"></i>
     </span>
+    </div>
     <ul class="tree-menu" v-show="this.isOpen" v-if="this.haveChildren">
       <menu-tree
           v-for="menuElement in this.menuElement.children.menuElements"
           :menu-element="menuElement"
           :locale="this.locale"
+          :id-select="this.idSelect"
           :update-element="this.updateElement"
           :new="this.newElement"
       >
       </menu-tree>
-      <li @click="this.newElement">
-        <i class="bi bi-plus-square"></i>
-        Nouveau
+      <li>
+        <div @click="this.newElement">
+          <i class="bi bi-plus-square"></i>
+          Nouveau
+        </div>
       </li>
     </ul>
   </li>

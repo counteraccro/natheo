@@ -439,14 +439,17 @@ export default {
                       v-for="menuElement in this.menu.menuElements"
                       :menu-element="menuElement"
                       :locale="this.currentLocale"
+                      :id-select="this.selectMenuElement.id"
                       :update-element="this.updateElement"
                       :new-element="this.newElement"
                   >
 
                   </menu-tree>
-                  <li @click="this.newElement(0)">
-                    <i class="bi bi-plus-square"></i>
-                    Nouveau
+                  <li>
+                    <div @click="this.newElement(0)">
+                      <i class="bi bi-plus-square"></i>
+                      Nouveau
+                    </div>
                   </li>
 
                 </ul>
@@ -477,7 +480,7 @@ export default {
 
                 <i class="bi bi-arrow-right"></i> <i class="bi bi-pencil-fill"></i> {{ this.translate.help_edition }}
                 <br/>
-                <i class="bi bi-arrow-right"></i> <i class="bi bi-x-lg"></i> {{ this.translate.help_delete }} <br />
+                <i class="bi bi-arrow-right"></i> <i class="bi bi-x-lg"></i> {{ this.translate.help_delete }} <br/>
 
               </div>
             </div>
