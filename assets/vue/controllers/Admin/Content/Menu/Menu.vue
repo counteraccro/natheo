@@ -45,6 +45,7 @@ export default {
       selectMenuElement: [],
       positions: [],
       showForm: false,
+      labelDisabled: '',
       toasts: {
         toastSuccess: {
           show: false,
@@ -167,6 +168,7 @@ export default {
         this.menu = response.data.menu;
         this.dataMenu = response.data.data;
         this.selectListTypeByPosition(this.menu.position);
+        this.renderLabelDisabled();
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -327,6 +329,18 @@ export default {
       console.log(elements);
     },
 
+    /**
+     * Rendu du label pour la checkbox disabled
+     * @returns {*}
+     */
+    renderLabelDisabled() {
+      if (this.menu.disabled) {
+        this.labelDisabled = this.translate.checkbox_disabled_label;
+      } else {
+        this.labelDisabled = this.translate.checkbox_enabled_label;
+      }
+    },
+
 
     /**
      * Ferme le toast défini par nameToast
@@ -380,40 +394,67 @@ export default {
       </fieldset>
 
       <fieldset class="mt-2">
-        <legend>{{ this.translate.title_architecture }}</legend>
+        <legend>{{ this.translate.title_global_form }}</legend>
 
-        <div class="row">
-          <div class="col-5">
-            <select id="select-position" class="form-select w-auto" v-model="this.menu.position" @change="this.switchPosition($event)">
-              <option value="" selected>{{ this.translate.select_position }}</option>
-              <option v-for="(position, key) in this.menu_datas.list_position" :value="key">{{ position }}
-              </option>
-            </select>
+
+        <div class="w-100">
+          <div v-if="this.id !== null" class="btn btn-secondary float-end">
+            <i class="bi bi-floppy-fill"></i>
+            {{ this.translate.btn_save }}
           </div>
-          <div class="col-5">
-            <select id="select-type" class="form-select w-auto" v-model="this.menu.type" :disabled="this.listTypeByPosition.length === 0">
-              <option value="" selected v-if="this.listTypeByPosition.length === 0">
-                {{ this.translate.select_type }}
-              </option>
-              <option v-for="(position, key) in this.listTypeByPosition" :value="key">{{ position }}
-              </option>
-            </select>
+          <div v-else class="btn btn-secondary float-end">
+            <i class="bi bi-menu-button-wide-fill"></i>
+            {{ this.translate.btn_new }}
           </div>
-          <div class="col-2">
-            <div v-if="this.id !== null" class="btn btn-secondary float-end">
-              <i class="bi bi-floppy-fill"></i>
-              {{ this.translate.btn_save }}
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="card border border-secondary mt-3 mb-3">
+          <div class="card-header text-bg-secondary">
+            {{ this.translate.title_generic_data }}
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <div class="mb-3">
+                  <label for="menu-title" class="form-label">{{ this.translate.input_name_label }}</label>
+                  <input type="text" class="form-control" id="menu-title" v-model="this.menu.name" placeholder="{{ this.translate.input_name_placeholder }}">
+                  <div class="invalid-feedback">
+                    {{ this.translate.input_name_error }}
+                  </div>
+                </div>
+
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="mnu-diabled" v-model="menu.disabled" @change="this.renderLabelDisabled">
+                  <label class="form-check-label" for="menu-disabled">
+                    {{ this.labelDisabled }}
+                  </label>
+                </div>
+
+              </div>
+              <div class="col">
+                <label for="menu-position" class="form-label">{{ this.translate.select_position_label }}</label>
+                <select id="menu-position" class="form-select mb-3" v-model="this.menu.position" @change="this.switchPosition($event)">
+                  <option value="" selected>{{ this.translate.select_position }}</option>
+                  <option v-for="(position, key) in this.menu_datas.list_position" :value="key">{{ position }}
+                  </option>
+                </select>
+
+                <label for="menu-type" class="form-label">{{ this.translate.select_type_label }}</label>
+                <select id="menu-type" class="form-select" v-model="this.menu.type" :disabled="this.listTypeByPosition.length === 0">
+                  <option value="" selected v-if="this.listTypeByPosition.length === 0">
+                    {{ this.translate.select_type }}
+                  </option>
+                  <option v-for="(position, key) in this.listTypeByPosition" :value="key">{{ position }}
+                  </option>
+                </select>
+              </div>
             </div>
-            <div v-else class="btn btn-secondary float-end">
-              <i class="bi bi-menu-button-wide-fill"></i>
-              {{ this.translate.btn_new }}
-            </div>
+
           </div>
         </div>
 
-        <div>{{ this.menu.name }}</div>
-
-        <field-editor :key="1"
+        <!--<field-editor :key="1"
             class="mb-3"
             :id="'' + this.menu.id + ''"
             :p-value="this.menu.name"
@@ -423,7 +464,7 @@ export default {
             @get-value="this.updateValueMenu"
         >
 
-        </field-editor>
+        </field-editor> -->
 
         <div class="row">
           <div class="col-4">

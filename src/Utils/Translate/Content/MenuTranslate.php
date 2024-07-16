@@ -23,6 +23,7 @@ class MenuTranslate extends AppTranslate
             'title_demo' => $this->translator->trans('menu.title.demo', domain: 'menu'),
             'title_demo_warning' => $this->translator->trans('menu.title.demo_warning', domain: 'menu'),
             'title_architecture' => $this->translator->trans('menu.title.architecture', domain: 'menu'),
+            'title_global_form' => $this->translator->trans('menu.title.global_form', domain: 'menu'),
             'error_empty_value' => $this->translator->trans('menu.error.empty.value', domain: 'menu'),
             'msg_wait_loading' => $this->translator->trans('menu.msg.wait.loading', domain: 'menu'),
             'btn_save' => $this->translator->trans('menu.btn.save', domain: 'menu'),
@@ -32,6 +33,14 @@ class MenuTranslate extends AppTranslate
             'help_title' => $this->translator->trans('menu.help.title', domain: 'menu'),
             'help_edition' => $this->translator->trans('menu.help.edition', domain: 'menu'),
             'help_delete' => $this->translator->trans('menu.help.delete', domain: 'menu'),
+            'title_generic_data' => $this->translator->trans('menu.title.generic.data', domain: 'menu'),
+            'input_name_label' => $this->translator->trans('menu.input.name.label', domain: 'menu'),
+            'input_name_placeholder' => $this->translator->trans('menu.input.name.placeholder', domain: 'menu'),
+            'input_name_error' => $this->translator->trans('menu.input.name.error', domain: 'menu'),
+            'select_position_label' => $this->translator->trans('menu.select.position.label', domain: 'menu'),
+            'select_type_label' => $this->translator->trans('menu.select.type.label', domain: 'menu'),
+            'checkbox_disabled_label' => $this->translator->trans('menu.checkbox.disabled.label', domain: 'menu'),
+            'checkbox_enabled_label' => $this->translator->trans('menu.checkbox.enabled.label', domain: 'menu'),
             'menu_form' => $this->getMenuFormTranslate(),
         ];
     }
