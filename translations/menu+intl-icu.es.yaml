@@ -73,3 +73,12 @@ menu.no_select.menu.form.msg: __menu.no_select.menu.form.msg
 menu.help.title: __menu.help.title
 menu.help.edition: __menu.help.edition
 menu.help.delete: __menu.help.delete
+menu.title.global_form: __menu.title.global_form
+menu.title.generic.data: __menu.title.generic.data
+menu.input.name.label: __menu.input.name.label
+menu.input.name.placeholder: __menu.input.name.placeholder
+menu.input.name.error: __menu.input.name.error
+menu.select.position.label: __menu.select.position.label
+menu.select.type.label: __menu.select.type.label
+menu.checkbox.disabled.label: __menu.checkbox.disabled.label
+menu.checkbox.enabled.label: __menu.checkbox.enabled.label
