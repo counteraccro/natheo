@@ -82,3 +82,8 @@ menu.select.position.label: __menu.select.position.label
 menu.select.type.label: __menu.select.type.label
 menu.checkbox.disabled.label: __menu.checkbox.disabled.label
 menu.checkbox.enabled.label: __menu.checkbox.enabled.label
+menu.form.parent.label: __menu.form.parent.label
+menu.form.parent.empty: __menu.form.parent.empty
+menu.form.url.type.label: __menu.form.url.type.label
+menu.form.position.column.label: __menu.form.position.column.label
+menu.form.position.row.label: __menu.form.position.row.label
