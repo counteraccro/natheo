@@ -193,8 +193,11 @@ class MenuController extends AppAdminController
         $name = $optionSystemService->getValueByKey(OptionSystemKey::OS_SITE_NAME);
         $logo = $optionSystemService->getValueByKey(OptionSystemKey::OS_LOGO_SITE);
         $urlSite = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
+        $allElement = $menu['allElements'];
+        unset($menu['allElements']);
 
         return $this->json(['menu' => $menu, 'data' => [
+            'all_elements' => $allElement,
             'name' => $name,
             'logo' => $logo,
             'url_site' => $urlSite,

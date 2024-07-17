@@ -28,9 +28,9 @@ class MenuConvertToArray
      * @param TranslatorInterface $translator
      */
     public function __construct(
-        private readonly MenuService $menuService,
-        private readonly DataBase    $dataBase,
-        private readonly PageService $pageService,
+        private readonly MenuService         $menuService,
+        private readonly DataBase            $dataBase,
+        private readonly PageService         $pageService,
         private readonly TranslatorInterface $translator
     )
     {
@@ -71,14 +71,23 @@ class MenuConvertToArray
         if (!$menu->getMenuElements()->isEmpty()) {
             $structure = $this->mergeMenuElements($structure, $menu->getMenuElements());
 
+            $allElements = [];
             $toRemove = $structure['refChilds'];
             foreach ($structure['menuElements'] as $key => $menuElement) {
+
+                // Récupération de l'ensemble des élements avec label + all traduction
+                // AG - 17/07/2024 Pas propre mais éviter de boucler à nouveau, à refaire ?
+                foreach ($menuElement['menuElementTranslations'] as $menuElementTranslation) {
+                    $allElements[$menuElement['id']][$menuElementTranslation['locale']] = $menuElementTranslation['textLink'];
+                }
+
                 if (in_array($menuElement['id'], $toRemove, true)) {
                     unset($structure['menuElements'][$key]);
                 }
             }
         }
 
+        $structure['allElements'] = $allElements;
         return $structure;
     }
 
@@ -189,6 +198,11 @@ class MenuConvertToArray
                 $structure[$key] = $object->{'is' . ucfirst($key)}();
             }
         }
+
+        if ($object instanceof MenuElement) {
+            $structure['parent'] = "";
+        }
+
         return $structure;
     }
 }
