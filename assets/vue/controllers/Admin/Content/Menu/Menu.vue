@@ -506,6 +506,7 @@ export default {
                 :locale="this.currentLocale"
                 :pages="this.dataMenu.pages"
                 :positions="this.positions"
+                :all-elements="this.dataMenu.all_elements"
                 @reorder-element="this.reorderElement"
             >
             </menu-form>
