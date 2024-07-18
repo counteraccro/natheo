@@ -177,6 +177,35 @@ export default {
     },
 
     /**
+     * Permet de sauvegarder un menu
+     */
+    saveMenu() {
+      this.loading = true;
+      axios.post(this.urls.save_menu, {
+        'menu' : this.menu
+          }
+      ).then((response) => {
+
+        if (response.data.success === true) {
+          this.toasts.toastSuccess.msg = response.data.msg;
+          this.toasts.toastSuccess.show = true;
+          // Cas première page, on force la redirection pour passer en mode édition
+          /*if (response.data.redirect === true) {
+            window.location.replace(response.data.url_redirect);
+          }*/
+        } else {
+          this.toasts.toastError.msg = response.data.msg;
+          this.toasts.toastError.show = true;
+        }
+
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.loading = false
+      });
+    },
+
+    /**
      * Retourne un menuElement en fonction de son id
      * @param elements
      * @param id
@@ -398,7 +427,7 @@ export default {
 
 
         <div class="w-100">
-          <div v-if="this.id !== null" class="btn btn-secondary float-end">
+          <div v-if="this.id !== null" class="btn btn-secondary float-end" @click="this.saveMenu">
             <i class="bi bi-floppy-fill"></i>
             {{ this.translate.btn_save }}
           </div>

@@ -168,6 +168,7 @@ class MenuController extends AppAdminController
             ],
             'urls' => [
                 'load_menu' => $this->generateUrl('admin_menu_load_menu'),
+                'save_menu' => $this->generateUrl('admin_menu_save_menu')
             ]
         ]);
     }
@@ -176,6 +177,7 @@ class MenuController extends AppAdminController
      * Charge un menu en fonction de son id
      * @param MenuConvertToArray $menuJson
      * @param OptionSystemService $optionSystemService
+     * @param PageService $pageService
      * @param int|null $id
      * @return JsonResponse
      * @throws ContainerExceptionInterface
@@ -203,5 +205,19 @@ class MenuController extends AppAdminController
             'url_site' => $urlSite,
             'pages' => $pageService->getAllTitleAndUrlPage(),
         ]]);
+    }
+
+    /**
+     * @param MenuService $menuService
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/ajax/save-menu', name: 'save_menu', methods: ['POST'])]
+    public function save(
+        MenuService $menuService
+    ): JsonResponse
+    {
+        return $this->json($menuService->getResponseAjax());
     }
 }
