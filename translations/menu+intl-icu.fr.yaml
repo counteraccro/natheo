@@ -54,7 +54,6 @@ menu.error.empty.value: 'Cette valeur ne peut pas être vide'
 menu.msg.wait.loading: 'Préparation de vos données...'
 menu.btn.save: Sauvegarder
 menu.btn.new: 'Nouveau menu'
-menu.default.name: 'Titre nouveau menu'
 menu.form.title.edit: 'Edition du menuElement'
 menu.form.title.new: 'Nouveau menuElement'
 menu.form.input.search.page: "Associer une page à l'élément de votre menu"
@@ -82,8 +81,9 @@ menu.select.position.label: 'Position du menu'
 menu.select.type.label: 'Type du menu'
 menu.checkbox.disabled.label: 'Menu désactivé '
 menu.checkbox.enabled.label: 'Menu Activé'
-menu.form.parent.label: 'Parent'
+menu.form.parent.label: Parent
 menu.form.parent.empty: 'Aucun parent'
 menu.form.url.type.label: "Type d'url"
 menu.form.position.column.label: 'Numéro de la colonne'
 menu.form.position.row.label: 'Numéro de la ligne'
+menu.error.no.element: 'Vous devez créer au moins un élement dans votre menu'
