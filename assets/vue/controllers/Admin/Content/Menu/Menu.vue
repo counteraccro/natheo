@@ -46,6 +46,9 @@ export default {
       positions: [],
       showForm: false,
       labelDisabled: '',
+      canSave: true,
+      isValideName: true,
+      isErrorNoElement: false,
       toasts: {
         toastSuccess: {
           show: false,
@@ -169,6 +172,11 @@ export default {
         this.dataMenu = response.data.data;
         this.selectListTypeByPosition(this.menu.position);
         this.renderLabelDisabled();
+
+        if (this.menu.id === "") {
+          this.canSave = false;
+        }
+
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -180,9 +188,14 @@ export default {
      * Permet de sauvegarder un menu
      */
     saveMenu() {
+
+      if (!this.verifCanSave()) {
+        return false;
+      }
+
       this.loading = true;
       axios.post(this.urls.save_menu, {
-        'menu' : this.menu
+            'menu': this.menu
           }
       ).then((response) => {
 
@@ -203,6 +216,18 @@ export default {
       }).finally(() => {
         this.loading = false
       });
+    },
+
+    /**
+     * Vérification si on peut lancer la sauvegarde ou non
+     * @returns {boolean}
+     */
+    verifCanSave() {
+      if (Object.entries(this.menu.menuElements).length === 0) {
+        this.isErrorNoElement = true;
+        return false;
+      }
+      return this.canSave;
     },
 
     /**
@@ -378,6 +403,19 @@ export default {
     closeToast(nameToast) {
       this.toasts[nameToast].show = false
     },
+
+    /**
+     * Test si le nom du menu est vide ou non
+     */
+    isEmptyName() {
+      if (this.menu.name === '') {
+        this.isValideName = false;
+        this.canSave = false;
+      } else {
+        this.isValideName = true;
+        this.canSave = true;
+      }
+    }
   }
 }
 
@@ -427,11 +465,11 @@ export default {
 
 
         <div class="w-100">
-          <div v-if="this.id !== null" class="btn btn-secondary float-end" @click="this.saveMenu">
+          <div v-if="this.id !== null" class="btn btn-secondary float-end" :class="!this.canSave ? 'disabled' : ''" @click="this.saveMenu">
             <i class="bi bi-floppy-fill"></i>
             {{ this.translate.btn_save }}
           </div>
-          <div v-else class="btn btn-secondary float-end">
+          <div v-else class="btn btn-secondary float-end" :class="!this.canSave ? 'disabled' : ''" @click="this.saveMenu">
             <i class="bi bi-menu-button-wide-fill"></i>
             {{ this.translate.btn_new }}
           </div>
@@ -447,7 +485,8 @@ export default {
               <div class="col">
                 <div class="mb-3">
                   <label for="menu-title" class="form-label">{{ this.translate.input_name_label }}</label>
-                  <input type="text" class="form-control" id="menu-title" v-model="this.menu.name" placeholder="{{ this.translate.input_name_placeholder }}">
+                  <input type="text" class="form-control" :class="!this.isValideName ? 'is-invalid' : ''" id="menu-title"
+                      v-model="this.menu.name" :placeholder="this.translate.input_name_placeholder" @change="this.isEmptyName()">
                   <div class="invalid-feedback">
                     {{ this.translate.input_name_error }}
                   </div>
@@ -498,8 +537,8 @@ export default {
         <div class="row">
           <div class="col-4">
 
-            <div class="card border border-secondary">
-              <div class="card-header text-bg-secondary">
+            <div class="card border" :class="this.isErrorNoElement ? 'border-danger' : 'border-secondary'">
+              <div class="card-header" :class="this.isErrorNoElement ? 'text-bg-danger' : 'text-bg-secondary'">
                 {{ this.translate.title_architecture }}
               </div>
               <div class="card-body">
@@ -523,6 +562,11 @@ export default {
                   </li>
 
                 </ul>
+
+                <div class="text-danger" v-if="this.isErrorNoElement">
+                 <i class="bi bi-exclamation-triangle-fill"></i> <i>{{ this.translate.error_no_element }}</i>
+                </div>
+
               </div>
             </div>
           </div>

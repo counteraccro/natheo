@@ -41,6 +41,7 @@ class MenuTranslate extends AppTranslate
             'select_type_label' => $this->translator->trans('menu.select.type.label', domain: 'menu'),
             'checkbox_disabled_label' => $this->translator->trans('menu.checkbox.disabled.label', domain: 'menu'),
             'checkbox_enabled_label' => $this->translator->trans('menu.checkbox.enabled.label', domain: 'menu'),
+            'error_no_element' => $this->translator->trans('menu.error.no.element', domain: 'menu'),
             'menu_form' => $this->getMenuFormTranslate(),
         ];
     }

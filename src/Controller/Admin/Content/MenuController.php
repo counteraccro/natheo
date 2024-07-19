@@ -58,6 +58,8 @@ class MenuController extends AppAdminController
      * @param int $page
      * @param int $limit
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     public function loadGridData(
@@ -68,7 +70,6 @@ class MenuController extends AppAdminController
     ): JsonResponse
     {
         $search = $request->query->get('search');
-        $grid = [];
         $grid = $menuService->getAllFormatToGrid($page, $limit, $search);
         return $this->json($grid);
     }
@@ -195,8 +196,13 @@ class MenuController extends AppAdminController
         $name = $optionSystemService->getValueByKey(OptionSystemKey::OS_SITE_NAME);
         $logo = $optionSystemService->getValueByKey(OptionSystemKey::OS_LOGO_SITE);
         $urlSite = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
-        $allElement = $menu['allElements'];
-        unset($menu['allElements']);
+        $allElement = [];
+        if(isset($menu['allElements'])) {
+            $allElement = $menu['allElements'];
+            unset($menu['allElements']);
+        }
+
+
 
         return $this->json(['menu' => $menu, 'data' => [
             'all_elements' => $allElement,

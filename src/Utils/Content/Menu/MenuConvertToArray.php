@@ -48,10 +48,13 @@ class MenuConvertToArray
         $return = $this->createStructure(Menu::class, ['createdAt', 'updateAt', 'userId']);
         $return['position'] = MenuConst::POSITION_HEADER;
         $return['type'] = MenuConst::TYPE_HEADER_SIDE_BAR;
-        $return['name'] = $this->translator->trans('menu.default.name', domain: 'menu');
+        $return['name'] = '';
         if ($id !== null) {
             $menu = $this->menuService->findOneById(Menu::class, $id);
             $return = $this->mergeData($return, $menu);
+        }
+        else {
+            $return['menuElements'] = [];
         }
         return $return;
     }
