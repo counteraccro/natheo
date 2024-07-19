@@ -9,6 +9,7 @@ use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Breadcrumb;
 use App\Utils\Content\Menu\MenuConvertToArray;
+use App\Utils\Content\Menu\MenuPopulate;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Content\MenuTranslate;
@@ -221,9 +222,24 @@ class MenuController extends AppAdminController
      */
     #[Route('/ajax/save-menu', name: 'save_menu', methods: ['POST'])]
     public function save(
+        Request $request,
         MenuService $menuService
     ): JsonResponse
     {
+        $data = json_decode($request->getContent(), true);
+        $menu = new Menu();
+        $menu->setUser($this->getUser());
+        $redirect = true;
+        if (isset($data['menu']['id']) && $data['menu']['id'] > 0) {
+            $menu = $menuService->findOneById(Menu::class, $data['menu']['id']);
+            $redirect = false;
+        }
+
+        $menuPopulate = new MenuPopulate($menu, $data['menu']);
+        $menu = $menuPopulate->populate()->getMenu();
+
+        echo $menu->getName();
+
         return $this->json($menuService->getResponseAjax());
     }
 }
