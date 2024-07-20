@@ -17,6 +17,9 @@ class MenuTranslate extends AppTranslate
     public function getTranslate(): array
     {
         return [
+            'toast_title_success' => $this->translator->trans('menu.toast.title.success', domain: 'menu'),
+            'toast_title_error' => $this->translator->trans('menu.toast.title.error',  domain: 'menu'),
+            'toast_time' => $this->translator->trans('menu.toast.time',  domain: 'menu'),
             'select_locale' => $this->translator->trans('menu.select.locale', domain: 'menu'),
             'select_position' => $this->translator->trans('menu.select.position', domain: 'menu'),
             'select_type' => $this->translator->trans('menu.select.type', domain: 'menu'),

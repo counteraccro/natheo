@@ -4,23 +4,46 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
+
 namespace App\Utils\Content\Menu;
 
 use App\Entity\Admin\Content\Menu\Menu;
+use App\Entity\Admin\Content\Menu\MenuElement;
+use App\Entity\Admin\Content\Menu\MenuElementTranslation;
 
 class MenuPopulate
 {
+
+    /**
+     * Clé pour les menuElements
+     * @var string
+     */
+    private const KEY_MENU_ELEMENTS = 'menuElements';
+
+    /**
+     * Clé pour les menuElementTranslations
+     * @var string
+     */
+    private const KEY_MENU_ELEMENTS_TRANSLATIONS = 'menuElementTranslations';
+
+    /**
+     * Clé pour les menuElement enfants
+     * @var string
+     */
+    private const KEY_MENU_ELEMENTS_CHILDREN = 'children';
+
     /**
      * @param Menu $menu
      * @param array $populate
      */
-    public function __construct(private Menu $menu, private array $populate)
+    public function __construct(private Menu $menu, private readonly array $populate)
     {
     }
 
     public function populate(): static
     {
         $this->populateMenu();
+        $this->populateMenuElement();
         return $this;
     }
 
@@ -39,7 +62,82 @@ class MenuPopulate
      */
     private function populateMenu(): void
     {
-        $this->menu = $this->mergeData($this->menu, $this->populate, ['menuElements', 'refChilds', 'id']);
+        $this->menu = $this->mergeData($this->menu, $this->populate, [self::KEY_MENU_ELEMENTS, 'refChilds', 'id']);
+    }
+
+    /**
+     * Met à jour les menuElements
+     * @return void
+     */
+    private function populateMenuElement(): void
+    {
+        if (!isset($this->populate[self::KEY_MENU_ELEMENTS]) || !is_array($this->populate[self::KEY_MENU_ELEMENTS])
+            || count($this->populate[self::KEY_MENU_ELEMENTS]) === 0) {
+            return;
+        }
+
+        $this->menu->getMenuElements()->clear();
+
+        foreach ($this->populate[self::KEY_MENU_ELEMENTS] as $populateMenuElement) {
+            $menuElement = $this->createMenuElement($populateMenuElement);
+            $this->menu->addMenuElement($menuElement);
+
+        }
+    }
+
+    /**
+     * Créer un objet menuElement
+     * @param mixed $populateChildren
+     * @return MenuElement
+     */
+    private function createMenuElement(array $populateChildren): MenuElement
+    {
+        $menuElement = new MenuElement();
+        $menuElement->setMenu($this->menu);
+
+        $menuElement = $this->mergeData($menuElement, $populateChildren,
+            [self::KEY_MENU_ELEMENTS_CHILDREN, self::KEY_MENU_ELEMENTS_TRANSLATIONS, 'id', 'page', 'parent', 'refChilds']
+        );
+
+        $menuElement = $this->populateMenuElementTranslation($populateChildren[self::KEY_MENU_ELEMENTS_TRANSLATIONS], $menuElement);
+
+        if (isset($populateChildren[self::KEY_MENU_ELEMENTS_CHILDREN]) && count($populateChildren[self::KEY_MENU_ELEMENTS_CHILDREN]) > 0) {
+            $menuElement = $this->populateMenuElementChildren($populateChildren[self::KEY_MENU_ELEMENTS_CHILDREN][self::KEY_MENU_ELEMENTS], $menuElement);
+        }
+        return $menuElement;
+    }
+
+    /**
+     * Met à jour les menusElement enfants
+     * @param array $populateMenuElementChildren
+     * @param MenuElement|null $parent
+     * @return MenuElement
+     */
+    private function populateMenuElementChildren(array $populateMenuElementChildren, MenuElement $parent): MenuElement
+    {
+        foreach ($populateMenuElementChildren as $populateChildren) {
+            $children = $this->createMenuElement($populateChildren);
+            $children->setParent($parent);
+            $parent->addChild($children);
+        }
+        return $parent;
+    }
+
+    /**
+     * Merge les données pour les traductions
+     * @param array $populateMenuElementTranslations
+     * @param MenuElement $menuElement
+     * @return MenuElement
+     */
+    private function populateMenuElementTranslation(array $populateMenuElementTranslations, MenuElement $menuElement): MenuElement
+    {
+        foreach ($populateMenuElementTranslations as $populateMenuElementTranslation) {
+            $menuElementTranslation = new MenuElementTranslation();
+            $menuElementTranslation = $this->mergeData($menuElementTranslation, $populateMenuElementTranslation, ['id', 'link']);
+            $menuElementTranslation->setMenuElement($menuElement);
+            $menuElement->addMenuElementTranslation($menuElementTranslation);
+        }
+        return $menuElement;
     }
 
     /**
@@ -55,6 +153,15 @@ class MenuPopulate
             if (in_array($key, $exclude)) {
                 continue;
             }
+
+            if (is_array($value)) {
+                echo "ici";
+                continue;
+            }
+
+            /*var_dump($key);
+            var_dump('----');
+            var_dump($value);*/
 
             $func = 'set' . ucfirst($key);
             $object->$func($value);

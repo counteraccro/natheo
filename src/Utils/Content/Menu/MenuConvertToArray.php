@@ -52,8 +52,7 @@ class MenuConvertToArray
         if ($id !== null) {
             $menu = $this->menuService->findOneById(Menu::class, $id);
             $return = $this->mergeData($return, $menu);
-        }
-        else {
+        } else {
             $return['menuElements'] = [];
         }
         return $return;
@@ -74,8 +73,11 @@ class MenuConvertToArray
         if (!$menu->getMenuElements()->isEmpty()) {
             $structure = $this->mergeMenuElements($structure, $menu->getMenuElements());
 
-            $allElements = [];
-            $toRemove = $structure['refChilds'];
+            $allElements = $toRemove = [];
+            if (isset($structure['refChilds'])) {
+                $toRemove = $structure['refChilds'];
+            }
+
             foreach ($structure['menuElements'] as $key => $menuElement) {
 
                 // Récupération de l'ensemble des élements avec label + all traduction

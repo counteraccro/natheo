@@ -215,6 +215,7 @@ class MenuController extends AppAdminController
     }
 
     /**
+     * @param Request $request
      * @param MenuService $menuService
      * @return JsonResponse
      * @throws ContainerExceptionInterface
@@ -234,11 +235,9 @@ class MenuController extends AppAdminController
             $menu = $menuService->findOneById(Menu::class, $data['menu']['id']);
             $redirect = false;
         }
-
         $menuPopulate = new MenuPopulate($menu, $data['menu']);
         $menu = $menuPopulate->populate()->getMenu();
-
-        echo $menu->getName();
+        $menuService->save($menu);
 
         return $this->json($menuService->getResponseAjax());
     }
