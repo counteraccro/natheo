@@ -87,3 +87,6 @@ menu.form.url.type.label: "Type d'url"
 menu.form.position.column.label: 'Numéro de la colonne'
 menu.form.position.row.label: 'Numéro de la ligne'
 menu.error.no.element: 'Vous devez créer au moins un élement dans votre menu'
+menu.toast.title.success: 'Succès !'
+menu.toast.title.error: 'Erreur !'
+menu.toast.time: "A l'instant"

@@ -87,3 +87,6 @@ menu.form.url.type.label: __menu.form.url.type.label
 menu.form.position.column.label: __menu.form.position.column.label
 menu.form.position.row.label: __menu.form.position.row.label
 menu.error.no.element: __menu.error.no.element
+menu.toast.title.success: __menu.toast.title.success
+menu.toast.title.error: __menu.toast.title.error
+menu.toast.time: __menu.toast.time
