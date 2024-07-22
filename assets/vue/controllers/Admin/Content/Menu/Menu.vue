@@ -13,6 +13,7 @@ import MenuTree from "../../../../Components/Menu/MenuTree.vue";
 import FieldEditor from "../../../../Components/Global/FieldEditor.vue";
 import {emitter} from "../../../../../utils/useEvent";
 import MenuForm from "../../../../Components/Menu/MenuForm.vue";
+import {MenuElementTools} from "../../../../../utils/Admin/Content/Menu/MenuElementsTools";
 
 export default {
   name: 'Menu',
@@ -238,67 +239,7 @@ export default {
       return this.canSave;
     },
 
-    /**
-     * Retourne un menuElement en fonction de son id
-     * @param elements
-     * @param id
-     * @returns {null}
-     */
-    getElementMenuById(elements, id) {
 
-      let element = null;
-
-      Object.entries(elements).forEach((value) => {
-        let obj = value[1];
-        if (obj.id === id) {
-          element = obj;
-        } else if (obj.hasOwnProperty('children') && obj.children.menuElements.length && element === null) {
-          element = this.getElementMenuById(obj.children.menuElements, id)
-        }
-      });
-      return element;
-    },
-
-    /**
-     * Calcul la valeur de columnMax et rowMax en fonction du parent
-     * @param elements
-     * @param idParent
-     */
-    calculMaxColAndRowMaxByIdParent(elements, idParent) {
-
-      /**
-       * Fonction temporaire pour calculer columnMax et rowMax en fonction
-       * de la column
-       * @param data
-       * @param obj
-       * @returns {*}
-       */
-      function tmp(data, obj) {
-        if (obj.columnPosition > data.columnMax) {
-          data.columnMax = obj.columnPosition;
-          data[obj.columnPosition] = {'colum': obj.columnPosition, 'rowMax': 0};
-        }
-
-        if (obj.rowPosition > data[obj.columnPosition].rowMax) {
-          data[obj.columnPosition].rowMax = obj.rowPosition;
-        }
-        return data;
-      }
-
-      let data = {'columnMax': 0}
-      Object.entries(elements).forEach((value) => {
-        let obj = value[1];
-        if (obj.hasOwnProperty('parent') && idParent === obj.parent) {
-          data = tmp(data, obj);
-        } else if (obj.hasOwnProperty('children') && obj.children.menuElements.length && idParent !== null && data.columnMax === 0) {
-          data = this.calculMaxColAndRowMaxByIdParent(obj.children.menuElements, idParent);
-        } else if (idParent === null) {
-          data = tmp(data, obj);
-        }
-      });
-
-      return data;
-    },
 
     /**
      * Mise à jour des données du menu
@@ -315,15 +256,15 @@ export default {
      * @param id
      */
     updateElement(id) {
-      let element = this.getElementMenuById(this.menu.menuElements, id);
+      let element = MenuElementTools.getElementMenuById(this.menu.menuElements, id);
       if (element === null) {
         console.warn(`id ${id} not found in menuElement`);
         this.showForm = false;
       } else {
         if (element.hasOwnProperty('parent')) {
-          this.positions = this.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, element.parent);
+          this.positions = MenuElementTools.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, element.parent);
         } else {
-          this.positions = this.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, null);
+          this.positions = MenuElementTools.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, null);
         }
         console.log(this.positions);
 
