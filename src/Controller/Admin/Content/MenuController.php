@@ -4,6 +4,7 @@ namespace App\Controller\Admin\Content;
 
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Menu\Menu;
+use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
@@ -170,7 +171,8 @@ class MenuController extends AppAdminController
             ],
             'urls' => [
                 'load_menu' => $this->generateUrl('admin_menu_load_menu'),
-                'save_menu' => $this->generateUrl('admin_menu_save_menu')
+                'save_menu' => $this->generateUrl('admin_menu_save_menu'),
+                'delete_menu_element' => $this->generateUrl('admin_menu_delete_menu_element'),
             ]
         ]);
     }
@@ -189,7 +191,7 @@ class MenuController extends AppAdminController
     public function getMenuById(
         MenuConvertToArray  $menuJson,
         OptionSystemService $optionSystemService,
-        PageService $pageService,
+        PageService         $pageService,
         int                 $id = null
     ): JsonResponse
     {
@@ -198,11 +200,10 @@ class MenuController extends AppAdminController
         $logo = $optionSystemService->getValueByKey(OptionSystemKey::OS_LOGO_SITE);
         $urlSite = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
         $allElement = [];
-        if(isset($menu['allElements'])) {
+        if (isset($menu['allElements'])) {
             $allElement = $menu['allElements'];
             unset($menu['allElements']);
         }
-
 
 
         return $this->json(['menu' => $menu, 'data' => [
@@ -223,7 +224,7 @@ class MenuController extends AppAdminController
      */
     #[Route('/ajax/save-menu', name: 'save_menu', methods: ['POST'])]
     public function save(
-        Request $request,
+        Request     $request,
         MenuService $menuService
     ): JsonResponse
     {
@@ -240,5 +241,28 @@ class MenuController extends AppAdminController
         $menuService->save($menu);
 
         return $this->json($menuService->getResponseAjax());
+    }
+
+    /**
+     * @param int $id
+     * @param MenuService $menuService
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/ajax/delete-menu-element/{id}', name: 'delete_menu_element', methods: ['DELETE'])]
+    public function deleteMenuElement(
+        MenuService         $menuService,
+        TranslatorInterface $translator,
+        int                 $id = null,
+    ): JsonResponse
+    {
+        if ($id === null) {
+            return $this->json($menuService->getResponseAjax());
+        }
+
+        $menuElement = $menuService->findOneById(MenuElement::class, $id);
+        $menuService->remove($menuElement);
+        return $this->json($menuService->getResponseAjax($translator->trans('menu.element.remove.success', [], 'menu')));
     }
 }

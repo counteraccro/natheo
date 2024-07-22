@@ -14,6 +14,7 @@ import FieldEditor from "../../../../Components/Global/FieldEditor.vue";
 import {emitter} from "../../../../../utils/useEvent";
 import MenuForm from "../../../../Components/Menu/MenuForm.vue";
 import {MenuElementTools} from "../../../../../utils/Admin/Content/Menu/MenuElementsTools";
+import {reactive} from "vue";
 
 export default {
   name: 'Menu',
@@ -240,7 +241,6 @@ export default {
     },
 
 
-
     /**
      * Mise à jour des données du menu
      * @param value
@@ -295,9 +295,24 @@ export default {
         this.updateModale('deleteMenuElement', true);
         return true;
       }
-
       this.updateModale('deleteMenuElement', false);
-      console.log('delete element menu.vue : ' + this.idToDelete);
+
+      this.loading = true;
+      axios.delete(this.urls.delete_menu_element + '/' + this.idToDelete).then((response) => {
+        if (response.data.success === true) {
+          this.toasts.toastSuccess.msg = response.data.msg;
+          this.toasts.toastSuccess.show = true;
+          this.loadMenu();
+        } else {
+          this.toasts.toastError.msg = response.data.msg;
+          this.toasts.toastError.show = true;
+          this.loading = false
+        }
+
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {});
+
 
     },
 
@@ -596,7 +611,7 @@ export default {
       :option-show-close-btn="false">
     <template #title>
       <i class="bi bi-sign-stop-fill"></i>&nbsp;
-      {{ this.translate.menu_element_confirm_delete_title }}
+                                          {{ this.translate.menu_element_confirm_delete_title }}
     </template>
     <template #body>
       {{ this.translate.menu_element_confirm_delete_body }}

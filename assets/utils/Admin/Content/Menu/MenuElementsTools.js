@@ -3,6 +3,7 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
+import {reactive} from "vue";
 
 class MenuElementTools {
 
@@ -12,8 +13,7 @@ class MenuElementTools {
      * @param id
      * @returns {null}
      */
-    static getElementMenuById(elements, id)
-    {
+    static getElementMenuById(elements, id) {
         let element = null;
 
         Object.entries(elements).forEach((value) => {
@@ -67,7 +67,6 @@ class MenuElementTools {
 
         return data;
     }
-
 }
 
-export { MenuElementTools };
+export {MenuElementTools};

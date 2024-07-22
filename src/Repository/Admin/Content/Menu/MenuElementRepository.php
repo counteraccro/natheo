@@ -16,6 +16,20 @@ class MenuElementRepository extends ServiceEntityRepository
         parent::__construct($registry, MenuElement::class);
     }
 
+    /**
+     * @param MenuElement $entity
+     * @param bool $flush
+     * @return void
+     */
+    public function remove(MenuElement $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
 //    /**
 //     * @return MenuElement[] Returns an array of MenuElement objects
 //     */
