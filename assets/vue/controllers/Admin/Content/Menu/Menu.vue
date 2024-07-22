@@ -49,6 +49,10 @@ export default {
       canSave: true,
       isValideName: true,
       isErrorNoElement: false,
+      idToDelete: 0,
+      modalTab: {
+        deleteMenuElement: false,
+      },
       toasts: {
         toastSuccess: {
           show: false,
@@ -74,7 +78,11 @@ export default {
 
     emitter.on('update-menu-element', async (id) => {
       this.updateElement(id);
+    });
 
+    emitter.on('delete-menu-element', async (id) => {
+      this.idToDelete = id
+      this.deleteElement(true);
     });
   },
   computed: {},
@@ -333,6 +341,25 @@ export default {
       console.log('new element menu.vue parent : ' + parent);
     },
 
+
+    /**
+     * Supprime un élement
+     * @param id
+     * @param confirm
+     */
+    deleteElement(confirm) {
+
+      console.log(this.idToDelete);
+      if (confirm) {
+        this.updateModale('deleteMenuElement', true);
+        return true;
+      }
+
+      this.updateModale('deleteMenuElement', false);
+      console.log('delete element menu.vue : ' + this.idToDelete);
+
+    },
+
     /**
      * Réordonne-les élements d'un menu
      * @param data
@@ -393,6 +420,23 @@ export default {
       } else {
         this.labelDisabled = this.translate.checkbox_enabled_label;
       }
+    },
+
+    /**
+     * Met à jour le status d'une modale défini par son id et son état
+     * @param nameModale
+     * @param state true|false
+     */
+    updateModale(nameModale, state) {
+      this.modalTab[nameModale] = state;
+    },
+
+    /**
+     * Ferme une modale
+     * @param nameModale
+     */
+    closeModal(nameModale) {
+      this.updateModale(nameModale, false);
     },
 
 
@@ -549,8 +593,6 @@ export default {
                       :menu-element="menuElement"
                       :locale="this.currentLocale"
                       :id-select="this.selectMenuElement.id"
-                      :update-element="this.updateElement"
-                      :new-element="this.newElement"
                   >
 
                   </menu-tree>
@@ -564,7 +606,7 @@ export default {
                 </ul>
 
                 <div class="text-danger" v-if="this.isErrorNoElement">
-                 <i class="bi bi-exclamation-triangle-fill"></i> <i>{{ this.translate.error_no_element }}</i>
+                  <i class="bi bi-exclamation-triangle-fill"></i> <i>{{ this.translate.error_no_element }}</i>
                 </div>
 
               </div>
@@ -599,18 +641,35 @@ export default {
 
               </div>
             </div>
-
-
           </div>
         </div>
-
       </fieldset>
-
-
     </div>
-
-
   </div>
+
+  <!-- modale confirmation suppression -->
+  <modal
+      :id="'deleteMenuElement'"
+      :show="this.modalTab.deleteMenuElement"
+      @close-modal="this.closeModal"
+      :option-show-close-btn="false">
+    <template #title>
+      <i class="bi bi-sign-stop-fill"></i>&nbsp;
+      {{ this.translate.menu_element_confirm_delete_title }}
+    </template>
+    <template #body>
+      {{ this.translate.menu_element_confirm_delete_body }}
+    </template>
+    <template #footer>
+      <button type="button" class="btn btn-primary" @click="this.deleteElement(false)">
+        <i class="bi bi-check2-circle"></i> {{ translate.menu_element_confirm_delete_btn_ok }}
+      </button>
+      <button type="button" class="btn btn-secondary" @click="this.closeModal('deleteMenuElement')">
+        <i class="bi bi-x-circle"></i> {{ translate.menu_element_confirm_delete_btn_ko }}
+      </button>
+    </template>
+  </modal>
+  <!-- fin modale confirmation suppression -->
 
 
   <!-- toast -->
