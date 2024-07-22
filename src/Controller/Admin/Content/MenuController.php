@@ -244,8 +244,10 @@ class MenuController extends AppAdminController
     }
 
     /**
-     * @param int $id
+     * Supprime un menuElement
      * @param MenuService $menuService
+     * @param TranslatorInterface $translator
+     * @param int|null $id
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
