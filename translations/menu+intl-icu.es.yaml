@@ -90,3 +90,8 @@ menu.error.no.element: __menu.error.no.element
 menu.toast.title.success: __menu.toast.title.success
 menu.toast.title.error: __menu.toast.title.error
 menu.toast.time: __menu.toast.time
+menu.element.confirm.delete.title: __menu.element.confirm.delete.title
+menu.element.confirm.delete.body: __menu.element.confirm.delete.body
+menu.element.confirm.delete.body.2: __menu.element.confirm.delete.body.2
+menu.element.confirm.delete.btn.ok: __menu.element.confirm.delete.btn.ok
+menu.element.confirm.delete.btn.ko: __menu.element.confirm.delete.btn.ko

@@ -90,3 +90,8 @@ menu.error.no.element: 'Vous devez créer au moins un élement dans votre menu'
 menu.toast.title.success: 'Succès !'
 menu.toast.title.error: 'Erreur !'
 menu.toast.time: "A l'instant"
+menu.element.confirm.delete.title: "Suppression d'un élément du menu"
+menu.element.confirm.delete.body: 'Confirmez vous la suppression de cet élément de votre menu ?'
+menu.element.confirm.delete.body.2: 'Attention, si cet élément possède des enfants, ceux-ci seront aussi supprimés'
+menu.element.confirm.delete.btn.ok: 'Oui'
+menu.element.confirm.delete.btn.ko: 'Non'
