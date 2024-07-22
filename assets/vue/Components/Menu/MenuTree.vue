@@ -8,7 +8,7 @@ import {emitter} from "../../../utils/useEvent";
 export default {
   name: "MenuTree",
   components: {},
-  emit: ['update-element', 'new-element'],
+  emit: [],
   props: {
     menuElement: Object,
     locale: String,
@@ -64,7 +64,14 @@ export default {
     },
 
     /**
-     * Ouvre ou ferme un noeud
+     * supprime un nouvel élément
+     */
+    deleteElement() {
+      emitter.emit('delete-menu-element', this.menuElement.id);
+    },
+
+    /**
+     * Ouvre ou ferme un nœud
      */
     toggle() {
       if (this.haveChildren) {
@@ -105,7 +112,7 @@ export default {
     </span>
       <span class="float-end">
       <i class="bi bi-pencil-fill" @click="this.updateElement"></i>&nbsp;
-      <i class="bi bi-x-lg" @click="this.updateElement"></i>
+      <i class="bi bi-x-lg" @click="this.deleteElement"></i>
     </span>
     </div>
     <ul class="tree-menu" v-show="this.isOpen" v-if="this.haveChildren">
@@ -114,8 +121,6 @@ export default {
           :menu-element="menuElement"
           :locale="this.locale"
           :id-select="this.idSelect"
-          :update-element="this.updateElement"
-          :new="this.newElement"
       >
       </menu-tree>
       <li>
