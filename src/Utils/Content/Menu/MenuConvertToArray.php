@@ -69,6 +69,7 @@ class MenuConvertToArray
     private function mergeData(array $structure, Menu $menu): array
     {
         $structure = $this->generiqueMerge($structure, $menu);
+        $allElements = [];
 
         if (!$menu->getMenuElements()->isEmpty()) {
             $structure = $this->mergeMenuElements($structure, $menu->getMenuElements());
