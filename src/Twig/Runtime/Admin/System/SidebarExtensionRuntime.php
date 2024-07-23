@@ -175,7 +175,7 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
             $route . '" aria-current="page" aria-expanded="' . $tabToggle['aria-expanded'] . '">
                 <i class="bi ' . $sidebarElement->getIcon() . '"></i> <span class="d-none-mini">'
             . $this->translator->trans($sidebarElement->getLabel()) . '</span>
-                <i class="bi bi-chevron-right float-end d-none-mini"></i> ' . $notification . '
+                <i class="bi bi-chevron-right float-end d-none-mini no-control"></i> ' . $notification . '
             </a>
             <ul class="collapse list-unstyled ' . $tabToggle['show'] . '" id="'
             . $routeId . '" data-bs-parent="#sidebar">' . $html;
