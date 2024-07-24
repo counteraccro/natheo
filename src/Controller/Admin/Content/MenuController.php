@@ -173,6 +173,7 @@ class MenuController extends AppAdminController
                 'load_menu' => $this->generateUrl('admin_menu_load_menu'),
                 'save_menu' => $this->generateUrl('admin_menu_save_menu'),
                 'delete_menu_element' => $this->generateUrl('admin_menu_delete_menu_element'),
+                'new_menu_element' => $this->generateUrl('admin_menu_new_menu_element'),
             ]
         ]);
     }
@@ -266,5 +267,21 @@ class MenuController extends AppAdminController
         $menuElement = $menuService->findOneById(MenuElement::class, $id);
         $menuService->remove($menuElement);
         return $this->json($menuService->getResponseAjax($translator->trans('menu.element.remove.success', [], 'menu')));
+    }
+
+    /**
+     * Créer un nouveau menuElement
+     * @param MenuService $menuService
+     * @return JsonResponse
+     * @throws ExceptionInterface
+     */
+    #[Route('/ajax/new-menu-element', name: 'new_menu_element', methods: ['GET'])]
+    public function newMenuElement(
+        MenuService $menuService
+    ): JsonResponse
+    {
+        $menuElement = new MenuElement();
+        $menuElement = $menuService->convertEntityToArray($menuElement);
+        return $this->json(['menuElement' => $menuElement]);
     }
 }

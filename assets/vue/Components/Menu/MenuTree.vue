@@ -10,6 +10,7 @@ export default {
   components: {},
   emit: [],
   props: {
+    translate: Object,
     menuElement: Object,
     locale: String,
     idSelect: Number
@@ -119,14 +120,16 @@ export default {
       <menu-tree
           v-for="menuElement in this.menuElement.children.menuElements"
           :menu-element="menuElement"
+          :translate="this.translate"
           :locale="this.locale"
           :id-select="this.idSelect"
       >
       </menu-tree>
       <li>
         <div @click="this.newElement">
-          <i class="bi bi-plus-square"></i>
-          Nouveau
+          <span class="btn btn-outline-secondary btn-sm"><i class="bi bi-plus-square"></i>
+            {{ this.translate.btn_new_menu_element }}
+          </span>
         </div>
       </li>
     </ul>

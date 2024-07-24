@@ -50,7 +50,9 @@ class MenuTranslate extends AppTranslate
             'menu_element_confirm_delete_body.2' => $this->translator->trans('menu.element.confirm.delete.body.2', domain: 'menu'),
             'menu_element_confirm_delete_btn_ok' => $this->translator->trans('menu.element.confirm.delete.btn.ok', domain: 'menu'),
             'menu_element_confirm_delete_btn_ko' => $this->translator->trans('menu.element.confirm.delete.btn.ko', domain: 'menu'),
+            'btn_new_menu_element' => $this->translator->trans('menu.btn.new.menu.element', domain: 'menu'),
             'menu_form' => $this->getMenuFormTranslate(),
+            'menu_tree' => $this->getMenuTreeTranslate(),
         ];
     }
 
@@ -79,7 +81,17 @@ class MenuTranslate extends AppTranslate
             'url_type_label' => $this->translator->trans('menu.form.url.type.label', domain: 'menu'),
             'position_column_label' =>  $this->translator->trans('menu.form.position.column.label', domain: 'menu'),
             'position_row_label' => $this->translator->trans('menu.form.position.row.label', domain: 'menu'),
+        ];
+    }
 
+    /**
+     * Traduction pour l'arbre de menuElement
+     * @return array
+     */
+    public function getMenuTreeTranslate() :array
+    {
+        return [
+            'btn_new_menu_element' => $this->translator->trans('menu.tree.btn.new.menu.element', domain: 'menu')
         ];
     }
 }

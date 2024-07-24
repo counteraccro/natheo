@@ -549,13 +549,15 @@ export default {
                       :menu-element="menuElement"
                       :locale="this.currentLocale"
                       :id-select="this.selectMenuElement.id"
+                      :translate="this.translate.menu_tree"
                   >
 
                   </menu-tree>
                   <li>
                     <div @click="this.newElement(0)">
-                      <i class="bi bi-plus-square"></i>
-                      Nouveau
+                      <span class="btn btn-outline-secondary btn-sm"><i class="bi bi-plus-square"></i>
+                        {{ this.translate.btn_new_menu_element }}
+                      </span>
                     </div>
                   </li>
 
