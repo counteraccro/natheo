@@ -178,6 +178,7 @@ export default {
       this.loading = true;
       axios.get(url, {}
       ).then((response) => {
+
         this.menu = response.data.menu;
         this.dataMenu = response.data.data;
         this.selectListTypeByPosition(this.menu.position);
@@ -279,7 +280,19 @@ export default {
      * @param parent
      */
     newElement(parent) {
-      console.log('new element menu.vue parent : ' + parent);
+      this.loading = true;
+      axios.get(this.urls.new_menu_element + '/' + parent).then((response) => {
+        if (response.data.success === true) {
+          this.toasts.toastSuccess.msg = response.data.msg;
+          this.toasts.toastSuccess.show = true;
+        } else {
+          this.toasts.toastError.msg = response.data.msg;
+          this.toasts.toastError.show = true;
+          this.loading = false
+        }
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {});
     },
 
 

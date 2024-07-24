@@ -275,13 +275,14 @@ class MenuController extends AppAdminController
      * @return JsonResponse
      * @throws ExceptionInterface
      */
-    #[Route('/ajax/new-menu-element', name: 'new_menu_element', methods: ['GET'])]
+    #[Route('/ajax/new-menu-element/{idParent}', name: 'new_menu_element', methods: ['GET'])]
     public function newMenuElement(
-        MenuService $menuService
+        MenuService $menuService,
+        int $idParent = null,
     ): JsonResponse
     {
         $menuElement = new MenuElement();
         $menuElement = $menuService->convertEntityToArray($menuElement);
-        return $this->json(['menuElement' => $menuElement]);
+        return $this->json(['succes' => true, 'msg' => 'message', 'menuElement' => $menuElement]);
     }
 }
