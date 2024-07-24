@@ -102,7 +102,7 @@ class MenuPopulate
         $menuElement = $this->populateMenuElementTranslation($populateChildren[self::KEY_MENU_ELEMENTS_TRANSLATIONS], $menuElement);
 
         if (isset($populateChildren[self::KEY_MENU_ELEMENTS_CHILDREN]) && count($populateChildren[self::KEY_MENU_ELEMENTS_CHILDREN]) > 0) {
-            $menuElement = $this->populateMenuElementChildren($populateChildren[self::KEY_MENU_ELEMENTS_CHILDREN][self::KEY_MENU_ELEMENTS], $menuElement);
+            $menuElement = $this->populateMenuElementChildren($populateChildren[self::KEY_MENU_ELEMENTS_CHILDREN], $menuElement);
         }
         return $menuElement;
     }
@@ -110,7 +110,7 @@ class MenuPopulate
     /**
      * Met à jour les menusElement enfants
      * @param array $populateMenuElementChildren
-     * @param MenuElement|null $parent
+     * @param MenuElement $parent
      * @return MenuElement
      */
     private function populateMenuElementChildren(array $populateMenuElementChildren, MenuElement $parent): MenuElement
@@ -158,11 +158,7 @@ class MenuPopulate
                 echo "ici";
                 continue;
             }
-
-            /*var_dump($key);
-            var_dump('----');
-            var_dump($value);*/
-
+            
             $func = 'set' . ucfirst($key);
             $object->$func($value);
         }

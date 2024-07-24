@@ -72,14 +72,19 @@ class MenuConvertToArray
         $allElements = [];
 
         if (!$menu->getMenuElements()->isEmpty()) {
-            $structure = $this->mergeMenuElements($structure, $menu->getMenuElements());
+            $structure['menuElements'] = $this->mergeMenuElements($menu->getMenuElements());
 
             $allElements = $toRemove = [];
-            if (isset($structure['refChilds'])) {
-                $toRemove = $structure['refChilds'];
+            if (isset($structure['menuElements']['refChilds'])) {
+                $toRemove = $structure['menuElements']['refChilds'];
             }
 
             foreach ($structure['menuElements'] as $key => $menuElement) {
+
+                if ($key === "refChilds") {
+                    unset($structure['menuElements']['refChilds']);
+                    continue;
+                }
 
                 // Récupération de l'ensemble des élements avec label + all traduction
                 // AG - 17/07/2024 Pas propre mais éviter de boucler à nouveau, à refaire ?
@@ -105,7 +110,7 @@ class MenuConvertToArray
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function mergeMenuElements(array $structure, Collection $menuElements): array
+    private function mergeMenuElements(Collection $menuElements, $deep = 0): array
     {
         $structureMenuElement = $this->createStructure(MenuElement::class);
 
@@ -113,24 +118,26 @@ class MenuConvertToArray
         foreach ($menuElements as $menuElement) {
             /** @var MenuElement $menuElement */
 
-            $structure['menuElements'][$key] = $this->generiqueMerge($structureMenuElement, $menuElement);
-            $structure['menuElements'][$key]['page'] = '';
+            $structure[$key] = $this->generiqueMerge($structureMenuElement, $menuElement);
+            $structure[$key]['page'] = '';
             if ($menuElement->getPage() !== null) {
-                $structure['menuElements'][$key]['page'] = $menuElement->getPage()->getId();
+                $structure[$key]['page'] = $menuElement->getPage()->getId();
             }
 
             if (!$menuElement->getMenuElementTranslations()->isEmpty()) {
-                $structure['menuElements'][$key]['menuElementTranslations'] =
+                $structure[$key]['menuElementTranslations'] =
                     $this->mergeMenuElementTranslation($menuElement->getMenuElementTranslations(), $menuElement->getPage());
             }
 
             if ($menuElement->getParent() !== null) {
-                $structure['refChilds'][] = $menuElement->getId();
-                $structure['menuElements'][$key]['parent'] = $menuElement->getParent()->getId();
+                if ($deep === 0) {
+                    $structure['refChilds'][] = $menuElement->getId();
+                }
+                $structure[$key]['parent'] = $menuElement->getParent()->getId();
             }
 
             if (!$menuElement->getChildren()->isEmpty()) {
-                $structure['menuElements'][$key]['children'] = $this->mergeMenuElements([], $menuElement->getChildren());
+                $structure[$key]['children'] = $this->mergeMenuElements($menuElement->getChildren(), $deep + 1);
             }
             $key++;
 

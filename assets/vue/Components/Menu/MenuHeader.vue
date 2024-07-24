@@ -80,6 +80,7 @@ export default {
     getTranslationByLocale(tabMenuElementTranslation) {
 
       let element = ['text', 'link'];
+      console.log(tabMenuElementTranslation);
 
       tabMenuElementTranslation.forEach((menuElementTranslation) => {
         if (menuElementTranslation.locale === this.locale) {
@@ -106,7 +107,7 @@ export default {
      */
     renderDeepDropDown(menuElement, html) {
 
-      menuElement.children.menuElements.forEach((element) => {
+      menuElement.children.forEach((element) => {
         let elementTranslate = this.getTranslationByLocale(element.menuElementTranslations);
 
         if (!this.isHaveChildren(element)) {

@@ -20,8 +20,8 @@ class MenuElementTools {
             let obj = value[1];
             if (obj.id === id) {
                 element = obj;
-            } else if (obj.hasOwnProperty('children') && obj.children.menuElements.length && element === null) {
-                element = this.getElementMenuById(obj.children.menuElements, id)
+            } else if (obj.hasOwnProperty('children') && obj.children.length > 0 && element === null) {
+                element = this.getElementMenuById(obj.children, id)
             }
         });
         return element;
@@ -58,8 +58,8 @@ class MenuElementTools {
             let obj = value[1];
             if (obj.hasOwnProperty('parent') && idParent === obj.parent) {
                 data = tmp(data, obj);
-            } else if (obj.hasOwnProperty('children') && obj.children.menuElements.length && idParent !== null && data.columnMax === 0) {
-                data = this.calculMaxColAndRowMaxByIdParent(obj.children.menuElements, idParent);
+            } else if (obj.hasOwnProperty('children') && obj.children.length && idParent !== null && data.columnMax === 0) {
+                data = this.calculMaxColAndRowMaxByIdParent(obj.children, idParent);
             } else if (idParent === null) {
                 data = tmp(data, obj);
             }

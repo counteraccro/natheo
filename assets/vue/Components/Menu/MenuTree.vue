@@ -26,7 +26,7 @@ export default {
 
   computed: {
     haveChildren() {
-      return this.menuElement.hasOwnProperty('children') && this.menuElement.children.menuElements.length
+      return this.menuElement.hasOwnProperty('children') && this.menuElement.children.length
     },
 
     haveParent() {
@@ -118,7 +118,7 @@ export default {
     </div>
     <ul class="tree-menu" v-show="this.isOpen" v-if="this.haveChildren">
       <menu-tree
-          v-for="menuElement in this.menuElement.children.menuElements"
+          v-for="menuElement in this.menuElement.children"
           :menu-element="menuElement"
           :translate="this.translate"
           :locale="this.locale"
