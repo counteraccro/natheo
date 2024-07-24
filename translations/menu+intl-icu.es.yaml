@@ -96,3 +96,5 @@ menu.element.confirm.delete.body.2: __menu.element.confirm.delete.body.2
 menu.element.confirm.delete.btn.ok: __menu.element.confirm.delete.btn.ok
 menu.element.confirm.delete.btn.ko: __menu.element.confirm.delete.btn.ko
 menu.element.remove.success: __menu.element.remove.success
+menu.btn.new.menu.element: __menu.btn.new.menu.element
+menu.tree.btn.new.menu.element: __menu.tree.btn.new.menu.element
