@@ -169,8 +169,9 @@ export default {
 
     /**
      * Charge le menu
+     * Si forceUpdate est à true, affiche le formulaire du menuElemet défini par id
      */
-    loadMenu() {
+    loadMenu(idToOpen) {
       let url = this.urls.load_menu + '/' + this.id;
       if (this.id === null) {
         url = this.urls.load_menu;
@@ -186,6 +187,11 @@ export default {
 
         if (this.menu.id === "") {
           this.canSave = false;
+        }
+
+        if(Number.isInteger(idToOpen) && idToOpen > 0)
+        {
+          this.updateElement(idToOpen)
         }
 
       }).catch((error) => {
@@ -267,8 +273,6 @@ export default {
         } else {
           this.positions = MenuElementTools.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, null);
         }
-        console.log(this.positions);
-
         this.selectMenuElement = element;
         this.showForm = true;
       }
@@ -296,7 +300,7 @@ export default {
         if (response.data.success === true) {
           this.toasts.toastSuccess.msg = response.data.msg;
           this.toasts.toastSuccess.show = true;
-          this.loadMenu();
+          this.loadMenu(response.data.id);
 
         } else {
           this.toasts.toastError.msg = response.data.msg;

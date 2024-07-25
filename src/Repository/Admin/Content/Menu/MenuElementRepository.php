@@ -21,6 +21,20 @@ class MenuElementRepository extends ServiceEntityRepository
      * @param bool $flush
      * @return void
      */
+    public function save(MenuElement $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    /**
+     * @param MenuElement $entity
+     * @param bool $flush
+     * @return void
+     */
     public function remove(MenuElement $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);

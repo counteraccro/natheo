@@ -288,7 +288,9 @@ class MenuController extends AppAdminController
     ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $menuService->addMenuElement($data['idMenu'], $data['columP'], $data['rowP'], $data['idParent']);
-        return $this->json($menuService->getResponseAjax($translator->trans('menu.element.new.success', domain: 'menu')));
+        $id = $menuService->addMenuElement($data['idMenu'], $data['columP'], $data['rowP'], $data['idParent']);
+        $response = $menuService->getResponseAjax($translator->trans('menu.element.new.success', domain: 'menu'));
+        $response['id'] = $id;
+        return $this->json($response);
     }
 }

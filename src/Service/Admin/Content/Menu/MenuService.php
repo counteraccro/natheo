@@ -3,6 +3,7 @@
 namespace App\Service\Admin\Content\Menu;
 
 use App\Entity\Admin\Content\Menu\Menu;
+use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Utils\Content\Menu\MenuConst;
@@ -205,16 +206,16 @@ class MenuService extends AppAdminService
     }
 
     /**
-     * Ajoute un menuElement au menu et le sauvegarde
+     * Ajoute un menuElement au menu et le sauvegarde, retourne son id
      * @param int $idMenu
      * @param int $columnP
      * @param int $rowP
      * @param int|null $idParent
-     * @return void
+     * @return int
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function addMenuElement(int $idMenu, int $columnP, int $rowP, int $idParent = null): void
+    public function addMenuElement(int $idMenu, int $columnP, int $rowP, int $idParent = null): int
     {
         $menuFactory = new MenuFactory($this->getLocales()['locales']);
         $menuElement = $menuFactory->createMenuElement();
@@ -223,10 +224,19 @@ class MenuService extends AppAdminService
 
         /** @var Menu $menu */
         $menu = $this->findOneById(Menu::class, $idMenu);
+        $menuElement->setMenu($menu);
 
         if ($idParent === null || $idParent === 0) {
             $menu->addMenuElement($menuElement);
+            $this->save($menu);
         }
-        $this->save($menu);
+        else  {
+            /** @var MenuElement $parent */
+            $parent = $this->findOneById(MenuElement::class, $idParent);
+            $parent->addChild($menuElement);
+            $this->save($menuElement);
+        }
+
+        return $menuElement->getId();
     }
 }
