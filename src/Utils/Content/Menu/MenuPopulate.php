@@ -155,10 +155,9 @@ class MenuPopulate
             }
 
             if (is_array($value)) {
-                echo "ici";
                 continue;
             }
-            
+
             $func = 'set' . ucfirst($key);
             $object->$func($value);
         }
