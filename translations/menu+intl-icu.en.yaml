@@ -99,3 +99,4 @@ menu.element.remove.success: __menu.element.remove.success
 menu.btn.new.menu.element: __menu.btn.new.menu.element
 menu.tree.btn.new.menu.element: __menu.tree.btn.new.menu.element
 menu.element.new.success: __menu.element.new.success
+menu.help.new: __menu.help.new
