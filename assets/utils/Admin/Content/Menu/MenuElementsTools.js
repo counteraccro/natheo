@@ -65,6 +65,11 @@ class MenuElementTools {
             }
         });
 
+        if(data.columnMax === 0)
+        {
+            
+        }
+
         return data;
     }
 }

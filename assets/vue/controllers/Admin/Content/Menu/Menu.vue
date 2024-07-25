@@ -290,6 +290,8 @@ export default {
       }
       let positions = MenuElementTools.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, parent);
 
+      if()
+
       this.loading = true;
       axios.post(this.urls.new_menu_element, {
         'idParent' : parent,

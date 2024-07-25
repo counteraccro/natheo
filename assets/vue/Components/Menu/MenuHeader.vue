@@ -80,7 +80,7 @@ export default {
     getTranslationByLocale(tabMenuElementTranslation) {
 
       let element = ['text', 'link'];
-      console.log(tabMenuElementTranslation);
+      //console.log(tabMenuElementTranslation);
 
       tabMenuElementTranslation.forEach((menuElementTranslation) => {
         if (menuElementTranslation.locale === this.locale) {

@@ -65,6 +65,14 @@ export default {
     },
 
     /**
+     * CRéer un nouvel élément enfant autre que celui par défaut
+     * @param id
+     */
+    newChildren(id) {
+      emitter.emit('new-menu-element', id);
+    },
+
+    /**
      * supprime un nouvel élément
      */
     deleteElement() {
@@ -112,8 +120,9 @@ export default {
       </span>
     </span>
       <span class="float-end">
-      <i class="bi bi-pencil-fill" @click="this.updateElement"></i>&nbsp;
-      <i class="bi bi-x-lg" @click="this.deleteElement"></i>
+        <i class="bi bi-pencil-fill" @click="this.updateElement"></i>&nbsp;
+        <i class="bi bi-x-lg" @click="this.deleteElement"></i>
+        <i v-if="!this.haveChildren" class="bi bi-plus-square" @click="this.newElement"></i>
     </span>
     </div>
     <ul class="tree-menu" v-show="this.isOpen" v-if="this.haveChildren">
