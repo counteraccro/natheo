@@ -96,5 +96,6 @@ menu.element.confirm.delete.body.2: 'Attention, si cet élément possède des en
 menu.element.confirm.delete.btn.ok: Oui
 menu.element.confirm.delete.btn.ko: Non
 menu.element.remove.success: "L'élément à été supprimé avec succès"
-menu.btn.new.menu.element: 'Nouveau'
-menu.tree.btn.new.menu.element: 'Nouveau'
+menu.btn.new.menu.element: Nouveau
+menu.tree.btn.new.menu.element: Nouveau
+menu.element.new.success: 'Nouveau élement ajouté au menu'
