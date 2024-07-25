@@ -36,6 +36,7 @@ class MenuTranslate extends AppTranslate
             'help_title' => $this->translator->trans('menu.help.title', domain: 'menu'),
             'help_edition' => $this->translator->trans('menu.help.edition', domain: 'menu'),
             'help_delete' => $this->translator->trans('menu.help.delete', domain: 'menu'),
+            'help_new' => $this->translator->trans('menu.help.new', domain: 'menu'),
             'title_generic_data' => $this->translator->trans('menu.title.generic.data', domain: 'menu'),
             'input_name_label' => $this->translator->trans('menu.input.name.label', domain: 'menu'),
             'input_name_placeholder' => $this->translator->trans('menu.input.name.placeholder', domain: 'menu'),

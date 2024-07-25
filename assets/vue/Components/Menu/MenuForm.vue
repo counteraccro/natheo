@@ -90,7 +90,7 @@ export default {
       this.listParents = [];
       Object.entries(this.allElements).forEach((data) => {
 
-        console.log(data[0] + ' !== ' + this.menuElement.id);
+       // console.log(data[0] + ' !== ' + this.menuElement.id);
 
         if (parseInt(data[0]) !== this.menuElement.id) {
           this.listParents.push({value: data[0], label: data[1][this.locale]});

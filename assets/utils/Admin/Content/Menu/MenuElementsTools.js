@@ -64,12 +64,6 @@ class MenuElementTools {
                 data = tmp(data, obj);
             }
         });
-
-        if(data.columnMax === 0)
-        {
-            
-        }
-
         return data;
     }
 }

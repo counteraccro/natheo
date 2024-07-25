@@ -21,7 +21,6 @@ export default {
     }
   },
   mounted() {
-
   },
 
   computed: {
@@ -120,9 +119,9 @@ export default {
       </span>
     </span>
       <span class="float-end">
+        <i v-if="!this.haveChildren" class="bi bi-plus-square" @click="this.newElement"></i>&nbsp;
         <i class="bi bi-pencil-fill" @click="this.updateElement"></i>&nbsp;
         <i class="bi bi-x-lg" @click="this.deleteElement"></i>
-        <i v-if="!this.haveChildren" class="bi bi-plus-square" @click="this.newElement"></i>
     </span>
     </div>
     <ul class="tree-menu" v-show="this.isOpen" v-if="this.haveChildren">
@@ -135,8 +134,8 @@ export default {
       >
       </menu-tree>
       <li>
-        <div @click="this.newElement">
-          <span class="btn btn-outline-secondary btn-sm"><i class="bi bi-plus-square"></i>
+        <div>
+          <span class="btn btn-outline-secondary btn-sm" @click="this.newElement"><i class="bi bi-plus-square"></i>
             {{ this.translate.btn_new_menu_element }}
           </span>
         </div>

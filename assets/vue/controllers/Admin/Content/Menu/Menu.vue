@@ -247,17 +247,6 @@ export default {
       return this.canSave;
     },
 
-
-    /**
-     * Mise à jour des données du menu
-     * @param value
-     * @param id
-     */
-    updateValueMenu(value, id) {
-      this.showForm = true;
-      console.log('id' + id + ' value : ' + value);
-    },
-
     /**
      * Mise à jour d'un élément
      * @param id
@@ -289,8 +278,11 @@ export default {
         parent = null;
       }
       let positions = MenuElementTools.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, parent);
-
-      if()
+      if(positions.columnMax === 0)
+      {
+        positions.columnMax = 1;
+        positions[positions.columnMax] = {'colum': 1, 'rowMax': 0};
+      }
 
       this.loading = true;
       axios.post(this.urls.new_menu_element, {
@@ -322,7 +314,6 @@ export default {
      */
     deleteElement(confirm) {
 
-      console.log(this.idToDelete);
       if (confirm) {
         this.updateModale('deleteMenuElement', true);
         return true;
@@ -587,8 +578,8 @@ export default {
 
                   </menu-tree>
                   <li>
-                    <div @click="this.newElement(0)">
-                      <span class="btn btn-outline-secondary btn-sm"><i class="bi bi-plus-square"></i>
+                    <div>
+                      <span class="btn btn-outline-secondary btn-sm" @click="this.newElement(0)"><i class="bi bi-plus-square"></i>
                         {{ this.translate.btn_new_menu_element }}
                       </span>
                     </div>
@@ -626,9 +617,9 @@ export default {
 
                 {{ this.translate.help_title }} <br/>
 
-                <i class="bi bi-arrow-right"></i> <i class="bi bi-pencil-fill"></i> {{ this.translate.help_edition }}
-                <br/>
+                <i class="bi bi-arrow-right"></i> <i class="bi bi-pencil-fill"></i> {{ this.translate.help_edition }} <br/>
                 <i class="bi bi-arrow-right"></i> <i class="bi bi-x-lg"></i> {{ this.translate.help_delete }} <br/>
+                <i class="bi bi-arrow-right"></i> <i class="bi bi-plus-square"></i> {{ this.translate.help_new }}
 
               </div>
             </div>
