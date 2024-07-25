@@ -20,14 +20,25 @@ export default {
       isOpen: false
     }
   },
-  mounted() {
+  mounted() {},
+  updated() {
+    this.forceOpen();
   },
 
   computed: {
+
+    /**
+     * Test si des enfants existent
+     * @returns {false}
+     */
     haveChildren() {
       return this.menuElement.hasOwnProperty('children') && this.menuElement.children.length
     },
 
+    /**
+     * Test si l'élément possède un parent
+     * @returns {boolean}
+     */
     haveParent() {
       return this.menuElement.hasOwnProperty('parent');
     },
@@ -48,6 +59,20 @@ export default {
   },
 
   methods: {
+
+    /**
+     * Force l'ouverture d'un noeud dans le cas d'une création
+     */
+    forceOpen() {
+      if (this.menuElement.hasOwnProperty('children')) {
+        Object.entries(this.menuElement.children).forEach((value) => {
+          let obj = value[1];
+          if (obj.id === this.idSelect) {
+            this.isOpen = true;
+          }
+        });
+      }
+    },
 
     /**
      * Edit un élément au menu
