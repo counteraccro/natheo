@@ -87,7 +87,7 @@ class MenuConvertToArray
                 }
 
                 // Récupération de l'ensemble des élements avec label + all traduction
-                // AG - 17/07/2024 Pas propre mais éviter de boucler à nouveau, à refaire ?
+                // AG - 17/07/2024 Pas propre mais possible d'éviter de boucler à nouveau ?, à refaire ?
                 foreach ($menuElement['menuElementTranslations'] as $menuElementTranslation) {
                     $allElements[$menuElement['id']][$menuElementTranslation['locale']] = $menuElementTranslation['textLink'];
                 }
@@ -98,6 +98,7 @@ class MenuConvertToArray
             }
         }
 
+        $structure['menuElements'] = array_values($structure['menuElements']);
         $structure['allElements'] = $allElements;
         return $structure;
     }

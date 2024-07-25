@@ -6,6 +6,7 @@ use App\Entity\Admin\Content\Menu\Menu;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Utils\Content\Menu\MenuConst;
+use App\Utils\Content\Menu\MenuFactory;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -157,10 +158,10 @@ class MenuService extends AppAdminService
         $translator = $this->getTranslator();
 
         return [
-            MenuConst::POSITION_HEADER =>  $translator->trans('menu.position.header', domain: 'menu'),
-            MenuConst::POSITION_RIGHT =>  $translator->trans('menu.position.right', domain: 'menu'),
-            MenuConst::POSITION_FOOTER =>  $translator->trans('menu.position.footer', domain: 'menu'),
-            MenuConst::POSITION_LEFT =>  $translator->trans('menu.position.left', domain: 'menu')
+            MenuConst::POSITION_HEADER => $translator->trans('menu.position.header', domain: 'menu'),
+            MenuConst::POSITION_RIGHT => $translator->trans('menu.position.right', domain: 'menu'),
+            MenuConst::POSITION_FOOTER => $translator->trans('menu.position.footer', domain: 'menu'),
+            MenuConst::POSITION_LEFT => $translator->trans('menu.position.left', domain: 'menu')
         ];
     }
 
@@ -201,5 +202,31 @@ class MenuService extends AppAdminService
                 MenuConst::TYPE_FOOTER_4_COLONNES => $translator->trans('menu.footer.type.col4', domain: 'menu'),
             ]
         ];
+    }
+
+    /**
+     * Ajoute un menuElement au menu et le sauvegarde
+     * @param int $idMenu
+     * @param int $columnP
+     * @param int $rowP
+     * @param int|null $idParent
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function addMenuElement(int $idMenu, int $columnP, int $rowP, int $idParent = null): void
+    {
+        $menuFactory = new MenuFactory($this->getLocales()['locales']);
+        $menuElement = $menuFactory->createMenuElement();
+        $menuElement->setColumnPosition($columnP);
+        $menuElement->setRowPosition($rowP);
+
+        /** @var Menu $menu */
+        $menu = $this->findOneById(Menu::class, $idMenu);
+
+        if ($idParent === null || $idParent === 0) {
+            $menu->addMenuElement($menuElement);
+        }
+        $this->save($menu);
     }
 }

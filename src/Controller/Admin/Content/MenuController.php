@@ -10,6 +10,7 @@ use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Breadcrumb;
 use App\Utils\Content\Menu\MenuConvertToArray;
+use App\Utils\Content\Menu\MenuFactory;
 use App\Utils\Content\Menu\MenuPopulate;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
@@ -272,17 +273,22 @@ class MenuController extends AppAdminController
     /**
      * Créer un nouveau menuElement
      * @param MenuService $menuService
+     * @param TranslatorInterface $translator
+     * @param int|null $idMenu
+     * @param int|null $idParent
      * @return JsonResponse
-     * @throws ExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/new-menu-element/{idParent}', name: 'new_menu_element', methods: ['GET'])]
+    #[Route('/ajax/new-menu-element', name: 'new_menu_element', methods: ['POST'])]
     public function newMenuElement(
         MenuService $menuService,
-        int $idParent = null,
+        TranslatorInterface $translator,
+        Request $request
     ): JsonResponse
     {
-        $menuElement = new MenuElement();
-        $menuElement = $menuService->convertEntityToArray($menuElement);
-        return $this->json(['succes' => true, 'msg' => 'message', 'menuElement' => $menuElement]);
+        $data = json_decode($request->getContent(), true);
+        $menuService->addMenuElement($data['idMenu'], $data['columP'], $data['rowP'], $data['idParent']);
+        return $this->json($menuService->getResponseAjax($translator->trans('menu.element.new.success', domain: 'menu')));
     }
 }

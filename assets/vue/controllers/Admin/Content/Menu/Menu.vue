@@ -276,15 +276,28 @@ export default {
     },
 
     /**
-     * Nouvel élément
+     * Nouvel menuElement
      * @param parent
      */
     newElement(parent) {
+
+      if(parent === 0) {
+        parent = null;
+      }
+      let positions = MenuElementTools.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, parent);
+
       this.loading = true;
-      axios.get(this.urls.new_menu_element + '/' + parent).then((response) => {
+      axios.post(this.urls.new_menu_element, {
+        'idParent' : parent,
+        'idMenu' : this.menu.id,
+        'columP' : positions.columnMax,
+        'rowP' : (positions[positions.columnMax].rowMax) + 1,
+      }).then((response) => {
         if (response.data.success === true) {
           this.toasts.toastSuccess.msg = response.data.msg;
           this.toasts.toastSuccess.show = true;
+          this.loadMenu();
+
         } else {
           this.toasts.toastError.msg = response.data.msg;
           this.toasts.toastError.show = true;
@@ -324,7 +337,8 @@ export default {
 
       }).catch((error) => {
         console.error(error);
-      }).finally(() => {});
+      }).finally(() => {
+      });
 
 
     },
