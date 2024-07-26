@@ -100,3 +100,7 @@ menu.btn.new.menu.element: __menu.btn.new.menu.element
 menu.tree.btn.new.menu.element: __menu.tree.btn.new.menu.element
 menu.element.new.success: __menu.element.new.success
 menu.help.new: __menu.help.new
+menu.form.radio.label.disabled.element: __menu.form.radio.label.disabled.element
+menu.form.radio.label.enabled.element: __menu.form.radio.label.enabled.element
+menu.form.text.info.disabled.element: __menu.form.text.info.disabled.element
+menu.form.text.info.enabled.element: __menu.form.text.info.enabled.element

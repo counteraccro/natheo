@@ -100,3 +100,7 @@ menu.btn.new.menu.element: Nouveau
 menu.tree.btn.new.menu.element: Nouveau
 menu.element.new.success: 'Nouveau élement ajouté au menu'
 menu.help.new: 'Nouveau noeud'
+menu.form.radio.label.disabled.element: 'Elément masqué'
+menu.form.radio.label.enabled.element: 'Elément visible'
+menu.form.text.info.disabled.element: 'Cet élément est masqué, il ne sera pas visible dans votre menu'
+menu.form.text.info.enabled.element: 'Cet élément est visible, il sera affiché dans votre menu'
