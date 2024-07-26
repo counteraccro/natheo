@@ -32,6 +32,8 @@ export default {
       modeLink: 'interne',
       oldColumnPosition: '',
       oldRowPosition: '',
+      labelDisabled: '',
+      infoDisabled: '',
     }
   },
   mounted() {
@@ -67,6 +69,7 @@ export default {
      */
     entryPoint() {
 
+      this.renderDisabledLabel();
       this.renderTitle();
       this.createListeAllElement();
       this.createListePage();
@@ -90,12 +93,25 @@ export default {
       this.listParents = [];
       Object.entries(this.allElements).forEach((data) => {
 
-       // console.log(data[0] + ' !== ' + this.menuElement.id);
+        // console.log(data[0] + ' !== ' + this.menuElement.id);
 
         if (parseInt(data[0]) !== this.menuElement.id) {
           this.listParents.push({value: data[0], label: data[1][this.locale]});
         }
       })
+    },
+
+    /**
+     * Gère le rendu des labels pour le disabled
+     */
+    renderDisabledLabel() {
+
+      this.labelDisabled = this.translate.radio_label_disabled_element;
+      this.infoDisabled = this.translate.text_info_disabled_element;
+      if (!this.menuElement.disabled) {
+        this.labelDisabled = this.translate.radio_label_enabled_element;
+        this.infoDisabled = this.translate.text_info_enabled_element;
+      }
     },
 
     /**
@@ -190,25 +206,10 @@ export default {
     /**
      * Permet de changer de parent
      */
-    switchParent(event)
-    {
+    switchParent(event) {
       alert('switchParent() à écrire => ' + event.target.value);
     },
 
-
-    /*orderElementTranslation() {
-      let tmp, tmpIndex = '';
-      this.menuElement.menuElementTranslations.forEach((element, index) => {
-
-        if (element.locale === this.locale) {
-          tmp = element;
-          tmpIndex = index;
-        }
-      })
-      this.menuElement.menuElementTranslations.splice(tmpIndex, 1);
-      this.menuElement.menuElementTranslations.unshift(tmp);
-
-    },*/
 
     /**
      * Affiche le titre du formulaire
@@ -314,8 +315,21 @@ export default {
         </div>
       </div>
 
-      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
+      <div class="mb-3 mt-4">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" v-model="this.menuElement.disabled" type="radio" name="elementDisabled" id="el-enabled" :value="false" @change="this.renderDisabledLabel">
+          <label class="form-check-label" for="el-enabled"> {{ this.translate.radio_label_enabled_element }}</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" v-model="this.menuElement.disabled" type="radio" name="elementDisabled" id="el-disabled" :value="true" @change="this.renderDisabledLabel">
+          <label class="form-check-label" for="el-disabled">{{ this.translate.radio_label_disabled_element }}</label>
+        </div>
+      </div>
+
+      <div class="float-end">
+        <i> {{ this.infoDisabled }} </i>
+      </div>
+
     </div>
   </div>
 

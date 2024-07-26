@@ -29,7 +29,7 @@ export default {
 
     /**
      * Test si des enfants existent
-     * @returns {false}
+     * @returns {boolean}
      */
     haveChildren() {
       return this.menuElement.hasOwnProperty('children') && this.menuElement.children.length
@@ -40,7 +40,16 @@ export default {
      * @returns {boolean}
      */
     haveParent() {
-      return this.menuElement.hasOwnProperty('parent');
+      return this.menuElement.hasOwnProperty('parent') && this.menuElement.parent !== "";
+    },
+
+    /**
+     * Test si le menuElement est désactivé ou non
+     * @returns {boolean}
+     */
+    isDisabled()
+    {
+      return this.menuElement.disabled;
     },
 
     /**
@@ -138,6 +147,7 @@ export default {
     <span class="no-control" @click="this.toggle">
       <i v-if="this.haveParent" class="bi bi-arrow-return-right"></i>
       <i v-else class="bi bi-arrow-right-square"></i>
+      &nbsp;<i v-if="this.isDisabled" class="bi bi-eye-slash-fill"></i>
       {{ this.getTranslationValueByKeyAndByLocale(this.menuElement.menuElementTranslations, 'textLink') }}
       <span v-if="this.haveChildren">
         <i class="bi" :class="this.isOpen ? 'bi-chevron-down' : 'bi-chevron-right'"></i>

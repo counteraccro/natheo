@@ -82,6 +82,10 @@ class MenuTranslate extends AppTranslate
             'url_type_label' => $this->translator->trans('menu.form.url.type.label', domain: 'menu'),
             'position_column_label' =>  $this->translator->trans('menu.form.position.column.label', domain: 'menu'),
             'position_row_label' => $this->translator->trans('menu.form.position.row.label', domain: 'menu'),
+            'radio_label_disabled_element' => $this->translator->trans('menu.form.radio.label.disabled.element', domain: 'menu'),
+            'radio_label_enabled_element' => $this->translator->trans('menu.form.radio.label.enabled.element', domain: 'menu'),
+            'text_info_disabled_element' => $this->translator->trans('menu.form.text.info.disabled.element', domain: 'menu'),
+            'text_info_enabled_element' => $this->translator->trans('menu.form.text.info.enabled.element', domain: 'menu'),
         ];
     }
 
