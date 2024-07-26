@@ -619,7 +619,8 @@ export default {
 
                 <i class="bi bi-arrow-right"></i> <i class="bi bi-pencil-fill"></i> {{ this.translate.help_edition }} <br/>
                 <i class="bi bi-arrow-right"></i> <i class="bi bi-x-lg"></i> {{ this.translate.help_delete }} <br/>
-                <i class="bi bi-arrow-right"></i> <i class="bi bi-plus-square"></i> {{ this.translate.help_new }}
+                <i class="bi bi-arrow-right"></i> <i class="bi bi-plus-square"></i> {{ this.translate.help_new }} <br />
+                <i class="bi bi-arrow-right"></i> <i class="bi bi-eye-slash-fill"></i> {{ this.translate.help_disabled }}
 
               </div>
             </div>

@@ -110,15 +110,17 @@ export default {
       menuElement.children.forEach((element) => {
         let elementTranslate = this.getTranslationByLocale(element.menuElementTranslations);
 
-        if (!this.isHaveChildren(element)) {
-          html += '<li><a class="dropdown-item" href="">' + elementTranslate.text + '</a></li>'
-        } else {
-          html += '<li class="dropdown dropend">' +
-              '<a class="dropdown-item dropdown-toggle no-control" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + elementTranslate.text + '</a>\n' +
-              '<ul class="dropdown-menu">';
-              html = this.renderDeepDropDown(element, html);
-          html += '</ul>' +
-              '</li>';
+        if(!element.disabled) {
+          if (!this.isHaveChildren(element)) {
+            html += '<li><a class="dropdown-item" href="">' + elementTranslate.text + '</a></li>'
+          } else {
+            html += '<li class="dropdown dropend">' +
+                '<a class="dropdown-item dropdown-toggle no-control" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' + elementTranslate.text + '</a>\n' +
+                '<ul class="dropdown-menu">';
+            html = this.renderDeepDropDown(element, html);
+            html += '</ul>' +
+                '</li>';
+          }
         }
       })
       return html;
@@ -142,7 +144,7 @@ export default {
         <ul class="navbar-nav" v-if="this.type === 1">
           <li v-for="(element) in this.menu.menuElements" class="nav-item"
               :set="elementTranslate = this.getTranslationByLocale(element.menuElementTranslations)">
-            <a class="nav-link" :href="elementTranslate.link">{{ elementTranslate.text }}</a>
+            <a v-if="!element.disabled" class="nav-link" :href="elementTranslate.link">{{ elementTranslate.text }}</a>
           </li>
         </ul>
 
@@ -150,8 +152,8 @@ export default {
         <ul class="navbar-nav" v-if="this.type === 2">
           <li v-for="(element) in this.menu.menuElements" class="nav-item" :class="this.isHaveChildren(element) === true ? 'dropdown' : '' "
               :set="elementTranslate = this.getTranslationByLocale(element.menuElementTranslations)">
-            <a v-if="!this.isHaveChildren(element)" class="nav-link" :href="elementTranslate.link">{{ elementTranslate.text }}</a>
-            <a v-else class="nav-link dropdown-toggle no-control" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a v-if="!this.isHaveChildren(element) && !element.disabled" class="nav-link" :href="elementTranslate.link">{{ elementTranslate.text }}</a>
+            <a v-else-if="!element.disabled" class="nav-link dropdown-toggle no-control" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               {{ elementTranslate.text }}
             </a>
             <ul v-if="this.isHaveChildren(element)" class="dropdown-menu" v-html="this.renderDeepDropDown(element, '')">
