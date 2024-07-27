@@ -325,6 +325,8 @@ export default {
         if (response.data.success === true) {
           this.toasts.toastSuccess.msg = response.data.msg;
           this.toasts.toastSuccess.show = true;
+          this.selectMenuElement = [];
+          this.showForm = false;
           this.loadMenu();
         } else {
           this.toasts.toastError.msg = response.data.msg;

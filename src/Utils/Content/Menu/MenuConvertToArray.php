@@ -70,6 +70,7 @@ class MenuConvertToArray
     {
         $structure = $this->generiqueMerge($structure, $menu);
         $allElements = [];
+        $structure['menuElements'] = [];
 
         if (!$menu->getMenuElements()->isEmpty()) {
             $structure['menuElements'] = $this->mergeMenuElements($menu->getMenuElements());
