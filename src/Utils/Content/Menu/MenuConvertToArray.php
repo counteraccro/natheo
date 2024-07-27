@@ -69,7 +69,6 @@ class MenuConvertToArray
     private function mergeData(array $structure, Menu $menu): array
     {
         $structure = $this->generiqueMerge($structure, $menu);
-        $allElements = [];
         $structure['menuElements'] = [];
 
         if (!$menu->getMenuElements()->isEmpty()) {
@@ -87,12 +86,6 @@ class MenuConvertToArray
                     continue;
                 }
 
-                // Récupération de l'ensemble des élements avec label + all traduction
-                // AG - 17/07/2024 Pas propre mais possible d'éviter de boucler à nouveau ?, à refaire ?
-                foreach ($menuElement['menuElementTranslations'] as $menuElementTranslation) {
-                    $allElements[$menuElement['id']][$menuElementTranslation['locale']] = $menuElementTranslation['textLink'];
-                }
-
                 if (in_array($menuElement['id'], $toRemove, true)) {
                     unset($structure['menuElements'][$key]);
                 }
@@ -100,7 +93,6 @@ class MenuConvertToArray
         }
 
         $structure['menuElements'] = array_values($structure['menuElements']);
-        $structure['allElements'] = $allElements;
         return $structure;
     }
 

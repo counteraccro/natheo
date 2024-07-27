@@ -44,6 +44,23 @@ class MenuElementRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Retourne une liste de menuElements d'un menu uniquement de premier niveau (parent null)
+     * @param int $idMenu
+     * @return float|int|mixed|string
+     */
+    public function getMenuElementFirstLevelByMenu(int $idMenu): mixed
+    {
+        return $this->createQueryBuilder('me')
+            ->where('me.menu =  :idMenu')
+            ->setParameter('idMenu', $idMenu)
+            ->andWhere('me.parent is NULL')
+            ->orderBy('me.columnPosition', 'ASC')
+            ->orderBy('me.rowPosition', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return MenuElement[] Returns an array of MenuElement objects
 //     */

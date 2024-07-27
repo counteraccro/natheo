@@ -175,6 +175,8 @@ class MenuController extends AppAdminController
                 'save_menu' => $this->generateUrl('admin_menu_save_menu'),
                 'delete_menu_element' => $this->generateUrl('admin_menu_delete_menu_element'),
                 'new_menu_element' => $this->generateUrl('admin_menu_new_menu_element'),
+                'update_parent_menu_element' => $this->generateUrl('admin_menu_update_parent_menu_element'),
+                'list_parent_menu_element' => $this->generateUrl('admin_menu_list_parent_menu_element')
             ]
         ]);
     }
@@ -274,8 +276,7 @@ class MenuController extends AppAdminController
      * Créer un nouveau menuElement
      * @param MenuService $menuService
      * @param TranslatorInterface $translator
-     * @param int|null $idMenu
-     * @param int|null $idParent
+     * @param Request $request
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -292,5 +293,46 @@ class MenuController extends AppAdminController
         $response = $menuService->getResponseAjax($translator->trans('menu.element.new.success', domain: 'menu'));
         $response['id'] = $id;
         return $this->json($response);
+    }
+
+    /**
+     * Change le parent d'un menuElement
+     * @param MenuService $menuService
+     * @param TranslatorInterface $translator
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/ajax/update-parent', name: 'update_parent_menu_element', methods: ['PATCH'])]
+    public function changeParent(
+        MenuService $menuService,
+        TranslatorInterface $translator,
+        Request $request
+    ) {
+        $data = json_decode($request->getContent(), true);
+        $menuService->updateParent($data['id'], $data['idParent']);
+
+        $response = $menuService->getResponseAjax($translator->trans('menu.element.change.parent.success', domain: 'menu'));
+        $response['id'] = $data['id'];
+        return $this->json($response);
+    }
+
+    /**
+     * Retourne la liste des parents disponible
+     * @param MenuService $menuService
+     * @param int|null $menuId
+     * @param int|null $elementId
+     * @return JsonResponse
+     */
+    #[Route('/ajax/get-list-parent/{elementId}', name: 'list_parent_menu_element', methods: ['GET'])]
+    public function getListParent(
+        MenuService $menuService,
+        int        $elementId = null
+    )
+    {
+        $listeParent = $menuService->getListeParentByMenuElement($elementId);
+
+        return $this->json(['listParent' => $listeParent]);
     }
 }

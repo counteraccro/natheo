@@ -7,7 +7,7 @@
 export default {
   name: "MenuForm",
   components: {},
-  emit: ['reorder-element'],
+  emit: ['reorder-element', 'change-parent'],
   props: {
     menuElement: Object,
     translate: Object,
@@ -92,12 +92,7 @@ export default {
     createListeAllElement() {
       this.listParents = [];
       Object.entries(this.allElements).forEach((data) => {
-
-        // console.log(data[0] + ' !== ' + this.menuElement.id);
-
-        if (parseInt(data[0]) !== this.menuElement.id) {
           this.listParents.push({value: data[0], label: data[1][this.locale]});
-        }
       })
     },
 
@@ -207,7 +202,13 @@ export default {
      * Permet de changer de parent
      */
     switchParent(event) {
-      alert('switchParent() à écrire => ' + event.target.value);
+
+      let parent = event.target.value;
+      if (parent === "") {
+        parent = 0;
+      }
+
+      this.$emit('change-parent', this.menuElement.id, parent);
     },
 
 

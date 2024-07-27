@@ -4,6 +4,7 @@ namespace App\Service\Admin\Content\Menu;
 
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
+use App\Repository\Admin\Content\Menu\MenuElementRepository;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Utils\Content\Menu\MenuConst;
@@ -229,8 +230,7 @@ class MenuService extends AppAdminService
         if ($idParent === null || $idParent === 0) {
             $menu->addMenuElement($menuElement);
             $this->save($menu);
-        }
-        else  {
+        } else {
             /** @var MenuElement $parent */
             $parent = $this->findOneById(MenuElement::class, $idParent);
             $parent->addChild($menuElement);
@@ -239,4 +239,72 @@ class MenuService extends AppAdminService
 
         return $menuElement->getId();
     }
+
+    /**
+     * Met à jour le parent d'un menuElement
+     * @param int $idElement
+     * @param int $newIdParent
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function updateParent(int $idElement, int $newIdParent = 0): void
+    {
+        $menuElement = $this->findOneById(MenuElement::class, $idElement);
+        if ($newIdParent === 0) {
+            $menuElement->setParent(null);
+        } else {
+            $parent = $this->findOneById(MenuElement::class, $newIdParent);
+            $menuElement->setParent($parent);
+        }
+        $this->save($menuElement);
+    }
+
+    /**
+     * Retourne une liste de parent valide pour le menuElement choisi
+     * @param int $idElement
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getListeParentByMenuElement(int $idElement): array
+    {
+        /** @var MenuElement $menuElement */
+        $menuElement = $this->findOneById(MenuElement::class, $idElement);
+        $menu = $menuElement->getMenu();
+
+        /** @var MenuElementRepository $repo */
+        $repo = $this->getRepository(MenuElement::class);
+        $result = $repo->getMenuElementFirstLevelByMenu($menu->getId());
+
+        return $this->constructListeParent($result, $idElement, []);
+    }
+
+    /**
+     * Construit de façon recursive une liste de parent valide
+     * @param array $menuElements
+     * @param int $idElementExclude
+     * @param array $return
+     * @return array
+     */
+    private function constructListeParent(array $menuElements, int $idElementExclude, array $return): array
+    {
+        foreach ($menuElements as $menuElement) {
+            /** @var MenuElement $menuElement */
+
+            if ($menuElement->getId() === $idElementExclude) {
+                continue;
+            }
+
+            foreach ($menuElement->getMenuElementTranslations() as $translation) {
+                $return[$menuElement->getId()][$translation->getLocale()] = $translation->getTextLink();
+            }
+
+            if (!$menuElement->getChildren()->isEmpty()) {
+                $return = $this->constructListeParent($menuElement->getChildren()->toArray(), $idElementExclude, $return);
+            }
+        }
+        return $return;
+    }
+
 }

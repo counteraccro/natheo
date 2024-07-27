@@ -43,6 +43,7 @@ export default {
       currentLocale: '',
       currentPosition: '',
       listTypeByPosition: [],
+      listValidParent: [],
       selectComponent: 'MenuHeader',
       selectMenuElement: [],
       positions: [],
@@ -189,8 +190,7 @@ export default {
           this.canSave = false;
         }
 
-        if(Number.isInteger(idToOpen) && idToOpen > 0)
-        {
+        if (Number.isInteger(idToOpen) && idToOpen > 0) {
           this.updateElement(idToOpen)
         }
 
@@ -252,44 +252,44 @@ export default {
      * @param id
      */
     updateElement(id) {
-      let element = MenuElementTools.getElementMenuById(this.menu.menuElements, id);
-      if (element === null) {
-        console.warn(`id ${id} not found in menuElement`);
-        this.showForm = false;
-      } else {
-        if (element.hasOwnProperty('parent')) {
-          this.positions = MenuElementTools.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, element.parent);
+
+      this.loading = true;
+      axios.get(this.urls.list_parent_menu_element + '/' + id).then((response) => {
+        this.listValidParent = response.data.listParent;
+
+        let element = MenuElementTools.getElementMenuById(this.menu.menuElements, id);
+        if (element === null) {
+          console.warn(`id ${id} not found in menuElement`);
+          this.showForm = false;
         } else {
-          this.positions = MenuElementTools.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, null);
+          if (element.hasOwnProperty('parent')) {
+            this.positions = MenuElementTools.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, element.parent);
+          } else {
+            this.positions = MenuElementTools.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, null);
+          }
+          this.selectMenuElement = element;
+          this.showForm = true;
         }
-        this.selectMenuElement = element;
-        this.showForm = true;
-      }
+
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.loading = false;
+      });
 
     },
 
     /**
-     * Nouvel menuElement
-     * @param parent
+     * Met à jour le parent d'un élément
+     * @param id
+     * @param idParent
      */
-    newElement(parent) {
-
-      if(parent === 0) {
-        parent = null;
-      }
-      let positions = MenuElementTools.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, parent);
-      if(positions.columnMax === 0)
-      {
-        positions.columnMax = 1;
-        positions[positions.columnMax] = {'colum': 1, 'rowMax': 0};
-      }
-
+    updateParent(id, idParent) {
       this.loading = true;
-      axios.post(this.urls.new_menu_element, {
-        'idParent' : parent,
-        'idMenu' : this.menu.id,
-        'columP' : positions.columnMax,
-        'rowP' : (positions[positions.columnMax].rowMax) + 1,
+      axios.patch(this.urls.update_parent_menu_element, {
+        'id': id,
+        'idParent': idParent,
+
       }).then((response) => {
         if (response.data.success === true) {
           this.toasts.toastSuccess.msg = response.data.msg;
@@ -303,7 +303,46 @@ export default {
         }
       }).catch((error) => {
         console.error(error);
-      }).finally(() => {});
+      }).finally(() => {
+      });
+    },
+
+    /**
+     * Nouvel menuElement
+     * @param parent
+     */
+    newElement(parent) {
+
+      if (parent === 0) {
+        parent = null;
+      }
+      let positions = MenuElementTools.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, parent);
+      if (positions.columnMax === 0) {
+        positions.columnMax = 1;
+        positions[positions.columnMax] = {'colum': 1, 'rowMax': 0};
+      }
+
+      this.loading = true;
+      axios.post(this.urls.new_menu_element, {
+        'idParent': parent,
+        'idMenu': this.menu.id,
+        'columP': positions.columnMax,
+        'rowP': (positions[positions.columnMax].rowMax) + 1,
+      }).then((response) => {
+        if (response.data.success === true) {
+          this.toasts.toastSuccess.msg = response.data.msg;
+          this.toasts.toastSuccess.show = true;
+          this.loadMenu(response.data.id);
+
+        } else {
+          this.toasts.toastError.msg = response.data.msg;
+          this.toasts.toastError.show = true;
+          this.loading = false
+        }
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+      });
     },
 
 
@@ -605,8 +644,9 @@ export default {
                 :locale="this.currentLocale"
                 :pages="this.dataMenu.pages"
                 :positions="this.positions"
-                :all-elements="this.dataMenu.all_elements"
+                :all-elements="this.listValidParent"
                 @reorder-element="this.reorderElement"
+                @change-parent="this.updateParent"
             >
             </menu-form>
 
@@ -619,10 +659,12 @@ export default {
 
                 {{ this.translate.help_title }} <br/>
 
-                <i class="bi bi-arrow-right"></i> <i class="bi bi-pencil-fill"></i> {{ this.translate.help_edition }} <br/>
+                <i class="bi bi-arrow-right"></i> <i class="bi bi-pencil-fill"></i> {{ this.translate.help_edition }}
+                <br/>
                 <i class="bi bi-arrow-right"></i> <i class="bi bi-x-lg"></i> {{ this.translate.help_delete }} <br/>
-                <i class="bi bi-arrow-right"></i> <i class="bi bi-plus-square"></i> {{ this.translate.help_new }} <br />
-                <i class="bi bi-arrow-right"></i> <i class="bi bi-eye-slash-fill"></i> {{ this.translate.help_disabled }}
+                <i class="bi bi-arrow-right"></i> <i class="bi bi-plus-square"></i> {{ this.translate.help_new }} <br/>
+                <i class="bi bi-arrow-right"></i>
+                <i class="bi bi-eye-slash-fill"></i> {{ this.translate.help_disabled }}
 
               </div>
             </div>
