@@ -71,27 +71,11 @@ class MenuConvertToArray
         $structure = $this->generiqueMerge($structure, $menu);
         $structure['menuElements'] = [];
 
-        if (!$menu->getMenuElements()->isEmpty()) {
-            $structure['menuElements'] = $this->mergeMenuElements($menu->getMenuElements());
-
-            $allElements = $toRemove = [];
-            if (isset($structure['menuElements']['refChilds'])) {
-                $toRemove = $structure['menuElements']['refChilds'];
-            }
-
-            foreach ($structure['menuElements'] as $key => $menuElement) {
-
-                if ($key === "refChilds") {
-                    unset($structure['menuElements']['refChilds']);
-                    continue;
-                }
-
-                if (in_array($menuElement['id'], $toRemove, true)) {
-                    unset($structure['menuElements'][$key]);
-                }
-            }
+        $menuElement = $this->menuService->getALlElementFirstLevelByMenu($menu->getId());
+        if(!empty($menuElement)){
+            $structure['menuElements'] = $this->mergeMenuElements($menuElement);
         }
-
+        
         $structure['menuElements'] = array_values($structure['menuElements']);
         return $structure;
     }
@@ -104,7 +88,7 @@ class MenuConvertToArray
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function mergeMenuElements(Collection $menuElements, $deep = 0): array
+    private function mergeMenuElements(array $menuElements): array
     {
         $structureMenuElement = $this->createStructure(MenuElement::class);
 
@@ -124,14 +108,11 @@ class MenuConvertToArray
             }
 
             if ($menuElement->getParent() !== null) {
-                if ($deep === 0) {
-                    $structure['refChilds'][] = $menuElement->getId();
-                }
                 $structure[$key]['parent'] = $menuElement->getParent()->getId();
             }
 
             if (!$menuElement->getChildren()->isEmpty()) {
-                $structure[$key]['children'] = $this->mergeMenuElements($menuElement->getChildren(), $deep + 1);
+                $structure[$key]['children'] = $this->mergeMenuElements($menuElement->getChildren()->toArray());
             }
             $key++;
 

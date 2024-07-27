@@ -261,6 +261,19 @@ class MenuService extends AppAdminService
     }
 
     /**
+     * Retourne une liste de menuElement de premier niveau en fonction d'un Menu
+     * @param int $idMenu
+     * @return mixed
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getALlElementFirstLevelByMenu(int $idMenu): mixed
+    {
+        $repo = $this->getRepository(MenuElement::class);
+        return $repo->getMenuElementFirstLevelByMenu($idMenu);
+    }
+
+    /**
      * Retourne une liste de parent valide pour le menuElement choisi
      * @param int $menuId
      * @param int $idElement
@@ -271,8 +284,7 @@ class MenuService extends AppAdminService
     public function getListeParentByMenuElement(int $menuId, int $idElement): array
     {
         /** @var MenuElementRepository $repo */
-        $repo = $this->getRepository(MenuElement::class);
-        $result = $repo->getMenuElementFirstLevelByMenu($menuId);
+        $result = $this->getALlElementFirstLevelByMenu($menuId);
         return $this->constructListeParent($result, $idElement, []);
     }
 
