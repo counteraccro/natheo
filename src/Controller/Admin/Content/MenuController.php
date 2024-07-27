@@ -283,9 +283,9 @@ class MenuController extends AppAdminController
      */
     #[Route('/ajax/new-menu-element', name: 'new_menu_element', methods: ['POST'])]
     public function newMenuElement(
-        MenuService $menuService,
+        MenuService         $menuService,
         TranslatorInterface $translator,
-        Request $request
+        Request             $request
     ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -306,10 +306,11 @@ class MenuController extends AppAdminController
      */
     #[Route('/ajax/update-parent', name: 'update_parent_menu_element', methods: ['PATCH'])]
     public function changeParent(
-        MenuService $menuService,
+        MenuService         $menuService,
         TranslatorInterface $translator,
-        Request $request
-    ) {
+        Request             $request
+    )
+    {
         $data = json_decode($request->getContent(), true);
         $menuService->updateParent($data['id'], $data['idParent']);
 
@@ -324,14 +325,17 @@ class MenuController extends AppAdminController
      * @param int|null $menuId
      * @param int|null $elementId
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/get-list-parent/{elementId}', name: 'list_parent_menu_element', methods: ['GET'])]
+    #[Route('/ajax/get-list-parent/{menuId}/{elementId}', name: 'list_parent_menu_element', methods: ['GET'])]
     public function getListParent(
         MenuService $menuService,
-        int        $elementId = null
-    )
+        int         $menuId = null,
+        int         $elementId = null
+    ): JsonResponse
     {
-        $listeParent = $menuService->getListeParentByMenuElement($elementId);
+        $listeParent = $menuService->getListeParentByMenuElement($menuId, $elementId);
 
         return $this->json(['listParent' => $listeParent]);
     }

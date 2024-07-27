@@ -254,7 +254,7 @@ export default {
     updateElement(id) {
 
       this.loading = true;
-      axios.get(this.urls.list_parent_menu_element + '/' + id).then((response) => {
+      axios.get(this.urls.list_parent_menu_element + '/' + this.menu.id + '/' + id).then((response) => {
         this.listValidParent = response.data.listParent;
 
         let element = MenuElementTools.getElementMenuById(this.menu.menuElements, id);
