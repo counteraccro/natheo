@@ -33,7 +33,7 @@ class MenuElementTools {
      * @param idParent
      */
     static calculMaxColAndRowMaxByIdParent(elements, idParent) {
-
+        
         /**
          * Fonction temporaire pour calculer columnMax et rowMax en fonction
          * de la column
@@ -60,7 +60,7 @@ class MenuElementTools {
                 data = tmp(data, obj);
             } else if (obj.hasOwnProperty('children') && obj.children.length && idParent !== null && data.columnMax === 0) {
                 data = this.calculMaxColAndRowMaxByIdParent(obj.children, idParent);
-            } else if (idParent === null) {
+            } else if (idParent === null || idParent === 0) {
                 data = tmp(data, obj);
             }
         });

@@ -243,12 +243,14 @@ class MenuService extends AppAdminService
     /**
      * Met à jour le parent d'un menuElement
      * @param int $idElement
+     * @param int $columnP
+     * @param int $rowP
      * @param int $newIdParent
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function updateParent(int $idElement, int $newIdParent = 0): void
+    public function updateParent(int $idElement, int $columnP, int $rowP, int $newIdParent = 0): void
     {
         $menuElement = $this->findOneById(MenuElement::class, $idElement);
         if ($newIdParent === 0) {
@@ -257,7 +259,40 @@ class MenuService extends AppAdminService
             $parent = $this->findOneById(MenuElement::class, $newIdParent);
             $menuElement->setParent($parent);
         }
+        $menuElement->setColumnPosition($columnP);
+        $menuElement->setRowPosition($rowP);
+
         $this->save($menuElement);
+        $elements = $this->getALlElementFirstLevelByMenu($menuElement->getMenu()->getId());
+        $this->regenerateColumnAndRowPosition($elements);
+    }
+
+    /**
+     * Reconstruit les positions de column et row en fonction du menu
+     * @param array $menuElements
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function regenerateColumnAndRowPosition(array $menuElements): void
+    {
+        $columnRef = null;
+        $rowRef = 0;
+        foreach ($menuElements as $menuElement) {
+            /** @var MenuElement $menuElement */
+
+            if ($columnRef === null || $columnRef != $menuElement->getColumnPosition()) {
+                $columnRef++;
+                $rowRef = 1;
+            }
+
+            $menuElement->setColumnPosition($columnRef);
+            $menuElement->setRowPosition($rowRef++);
+            if (!$menuElement->getChildren()->isEmpty()) {
+                $this->regenerateColumnAndRowPosition($menuElement->getChildren()->toArray());
+            }
+            $this->save($menuElement);
+        }
     }
 
     /**

@@ -285,11 +285,21 @@ export default {
      * @param idParent
      */
     updateParent(id, idParent) {
+
+      idParent = parseInt(idParent);
+      let positions = MenuElementTools.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, idParent);
+      console.log(positions);
+      if (positions.columnMax === 0) {
+        positions.columnMax = 1;
+        positions[positions.columnMax] = {'colum': 1, 'rowMax': 0};
+      }
+
       this.loading = true;
       axios.patch(this.urls.update_parent_menu_element, {
         'id': id,
         'idParent': idParent,
-
+        'columP': positions.columnMax,
+        'rowP': (positions[positions.columnMax].rowMax) + 1,
       }).then((response) => {
         if (response.data.success === true) {
           this.toasts.toastSuccess.msg = response.data.msg;

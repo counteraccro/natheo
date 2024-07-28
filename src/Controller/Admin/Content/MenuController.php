@@ -312,7 +312,7 @@ class MenuController extends AppAdminController
     )
     {
         $data = json_decode($request->getContent(), true);
-        $menuService->updateParent($data['id'], $data['idParent']);
+        $menuService->updateParent($data['id'], $data['columP'], $data['rowP'], $data['idParent']);
 
         $response = $menuService->getResponseAjax($translator->trans('menu.element.change.parent.success', domain: 'menu'));
         $response['id'] = $data['id'];
