@@ -229,22 +229,27 @@ class MenuController extends AppAdminController
     #[Route('/ajax/save-menu', name: 'save_menu', methods: ['POST'])]
     public function save(
         Request     $request,
-        MenuService $menuService
+        MenuService $menuService,
+        TranslatorInterface $translator
     ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $menu = new Menu();
         $menu->setUser($this->getUser());
         $redirect = true;
+        $msgSuccess = $translator->trans('menu.new.success.save', domain: 'menu');
         if (isset($data['menu']['id']) && $data['menu']['id'] > 0) {
             $menu = $menuService->findOneById(Menu::class, $data['menu']['id']);
             $redirect = false;
+            $msgSuccess = $translator->trans('menu.edit.success.save', domain: 'menu');
         }
         $menuPopulate = new MenuPopulate($menu, $data['menu']);
         $menu = $menuPopulate->populate()->getMenu();
         $menuService->save($menu);
-
-        return $this->json($menuService->getResponseAjax());
+        $response = $menuService->getResponseAjax($msgSuccess);
+        $response['redirect'] = $redirect;
+        $response['url'] = $this->generateUrl('admin_menu_update', ['id' => $menu->getId()]);
+        return $this->json($response);
     }
 
     /**

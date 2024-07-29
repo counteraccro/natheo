@@ -220,9 +220,9 @@ export default {
           this.toasts.toastSuccess.msg = response.data.msg;
           this.toasts.toastSuccess.show = true;
           // Cas première page, on force la redirection pour passer en mode édition
-          /*if (response.data.redirect === true) {
-            window.location.replace(response.data.url_redirect);
-          }*/
+          if (response.data.redirect === true) {
+            window.location.replace(response.data.url);
+          }
         } else {
           this.toasts.toastError.msg = response.data.msg;
           this.toasts.toastError.show = true;
@@ -232,6 +232,7 @@ export default {
         console.error(error);
       }).finally(() => {
         this.loading = false
+        emitter.emit('reset-check-confirm');
       });
     },
 
@@ -240,7 +241,7 @@ export default {
      * @returns {boolean}
      */
     verifCanSave() {
-      if (Object.entries(this.menu.menuElements).length === 0) {
+      if (Object.entries(this.menu.menuElements).length === 0 && this.menu.id !== "") {
         this.isErrorNoElement = true;
         return false;
       }
@@ -597,18 +598,6 @@ export default {
           </div>
         </div>
 
-        <!--<field-editor :key="1"
-            class="mb-3"
-            :id="'' + this.menu.id + ''"
-            :p-value="this.menu.name"
-            balise="h5"
-            rule="isEmpty"
-            :rule-msg="this.translate.error_empty_value"
-            @get-value="this.updateValueMenu"
-        >
-
-        </field-editor> -->
-
         <div class="row">
           <div class="col-4">
 
@@ -618,70 +607,71 @@ export default {
               </div>
               <div class="card-body">
 
-                <ul class="tree-menu">
-                  <menu-tree
-                      v-for="menuElement in this.menu.menuElements"
-                      :menu-element="menuElement"
-                      :locale="this.currentLocale"
-                      :id-select="this.selectMenuElement.id"
-                      :translate="this.translate.menu_tree"
-                  >
+                <div v-if="this.menu.id !== ''">
+                  <ul class=" tree-menu">
+                    <menu-tree
+                        v-for="menuElement in this.menu.menuElements"
+                        :menu-element="menuElement"
+                        :locale="this.currentLocale"
+                        :id-select="this.selectMenuElement.id"
+                        :translate="this.translate.menu_tree"
+                    />
+                    <li>
+                      <div>
+                          <span class="btn btn-outline-secondary btn-sm" @click="this.newElement(0)"><i class="bi bi-plus-square"></i>
+                            {{ this.translate.btn_new_menu_element }}
+                          </span>
+                      </div>
+                    </li>
+                  </ul>
 
-                  </menu-tree>
-                  <li>
-                    <div>
-                      <span class="btn btn-outline-secondary btn-sm" @click="this.newElement(0)"><i class="bi bi-plus-square"></i>
-                        {{ this.translate.btn_new_menu_element }}
-                      </span>
-                    </div>
-                  </li>
-
-                </ul>
-
-                <div class="text-danger" v-if="this.isErrorNoElement">
-                  <i class="bi bi-exclamation-triangle-fill"></i> <i>{{ this.translate.error_no_element }}</i>
+                  <div class="text-danger" v-if="this.isErrorNoElement">
+                    <i class="bi bi-exclamation-triangle-fill"></i> <i>{{ this.translate.error_no_element }}</i>
+                  </div>
                 </div>
-
-              </div>
-            </div>
-          </div>
-          <div class="col-8">
-
-            <menu-form
-                v-if="this.showForm"
-                :menu-element="this.selectMenuElement"
-                :translate="this.translate.menu_form"
-                :locale="this.currentLocale"
-                :pages="this.dataMenu.pages"
-                :positions="this.positions"
-                :all-elements="this.listValidParent"
-                @reorder-element="this.reorderElement"
-                @change-parent="this.updateParent"
-            >
-            </menu-form>
-
-            <div v-else class="card border border-secondary h-100">
-              <div class="card-header text-bg-secondary">
-                {{ this.translate.no_select_menu_form }}
-              </div>
-              <div class="card-body">
-                <p class="text-black"><i>{{ this.translate.no_select_menu_form_msg }}</i></p>
-
-                {{ this.translate.help_title }} <br/>
-
-                <i class="bi bi-arrow-right"></i> <i class="bi bi-pencil-fill"></i> {{ this.translate.help_edition }}
-                <br/>
-                <i class="bi bi-arrow-right"></i> <i class="bi bi-x-lg"></i> {{ this.translate.help_delete }} <br/>
-                <i class="bi bi-arrow-right"></i> <i class="bi bi-plus-square"></i> {{ this.translate.help_new }} <br/>
-                <i class="bi bi-arrow-right"></i>
-                <i class="bi bi-eye-slash-fill"></i> {{ this.translate.help_disabled }}
-
-              </div>
+                <div v-else>
+                  <i class="bi bi-info-circle"></i> {{ this.translate.msg_no_element_new_menu }}
+                </div>
             </div>
           </div>
         </div>
-      </fieldset>
+        <div class="col-8">
+
+          <menu-form
+              v-if="this.showForm"
+              :menu-element="this.selectMenuElement"
+              :translate="this.translate.menu_form"
+              :locale="this.currentLocale"
+              :pages="this.dataMenu.pages"
+              :positions="this.positions"
+              :all-elements="this.listValidParent"
+              @reorder-element="this.reorderElement"
+              @change-parent="this.updateParent"
+          >
+          </menu-form>
+
+          <div v-else class="card border border-secondary h-100">
+            <div class="card-header text-bg-secondary">
+              {{ this.translate.no_select_menu_form }}
+            </div>
+            <div class="card-body">
+              <p class="text-black"><i>{{ this.translate.no_select_menu_form_msg }}</i></p>
+
+              {{ this.translate.help_title }} <br/>
+
+              <i class="bi bi-arrow-right"></i> <i class="bi bi-pencil-fill"></i> {{ this.translate.help_edition }}
+              <br/>
+              <i class="bi bi-arrow-right"></i> <i class="bi bi-x-lg"></i> {{ this.translate.help_delete }} <br/>
+              <i class="bi bi-arrow-right"></i> <i class="bi bi-plus-square"></i> {{ this.translate.help_new }} <br/>
+              <i class="bi bi-arrow-right"></i>
+              <i class="bi bi-eye-slash-fill"></i> {{ this.translate.help_disabled }}
+
+            </div>
+          </div>
+        </div>
     </div>
+    </fieldset>
+  </div>
   </div>
 
   <!-- modale confirmation suppression -->

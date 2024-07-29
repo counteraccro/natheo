@@ -33,7 +33,7 @@ class MenuElementTools {
      * @param idParent
      */
     static calculMaxColAndRowMaxByIdParent(elements, idParent) {
-        
+
         /**
          * Fonction temporaire pour calculer columnMax et rowMax en fonction
          * de la column

@@ -53,6 +53,7 @@ class MenuTranslate extends AppTranslate
             'menu_element_confirm_delete_btn_ok' => $this->translator->trans('menu.element.confirm.delete.btn.ok', domain: 'menu'),
             'menu_element_confirm_delete_btn_ko' => $this->translator->trans('menu.element.confirm.delete.btn.ko', domain: 'menu'),
             'btn_new_menu_element' => $this->translator->trans('menu.btn.new.menu.element', domain: 'menu'),
+            'msg_no_element_new_menu' => $this->translator->trans('menu.msg.no.element.new.menu', domain: 'menu'),
             'menu_form' => $this->getMenuFormTranslate(),
             'menu_tree' => $this->getMenuTreeTranslate(),
         ];
