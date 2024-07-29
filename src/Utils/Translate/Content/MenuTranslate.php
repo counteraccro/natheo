@@ -46,6 +46,8 @@ class MenuTranslate extends AppTranslate
             'select_type_label' => $this->translator->trans('menu.select.type.label', domain: 'menu'),
             'checkbox_disabled_label' => $this->translator->trans('menu.checkbox.disabled.label', domain: 'menu'),
             'checkbox_enabled_label' => $this->translator->trans('menu.checkbox.enabled.label', domain: 'menu'),
+            'checkbox_disabled_label_msg' => $this->translator->trans('menu.checkbox.disabled.label.msg', domain: 'menu'),
+            'checkbox_enabled_label_msg' => $this->translator->trans('menu.checkbox.enabled.label.msg', domain: 'menu'),
             'error_no_element' => $this->translator->trans('menu.error.no.element', domain: 'menu'),
             'menu_element_confirm_delete_title' => $this->translator->trans('menu.element.confirm.delete.title', domain: 'menu'),
             'menu_element_confirm_delete_body' => $this->translator->trans('menu.element.confirm.delete.body', domain: 'menu'),

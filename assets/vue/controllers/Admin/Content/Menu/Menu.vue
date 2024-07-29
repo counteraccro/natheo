@@ -448,9 +448,9 @@ export default {
      */
     renderLabelDisabled() {
       if (this.menu.disabled) {
-        this.labelDisabled = this.translate.checkbox_disabled_label;
+        this.labelDisabled = this.translate.checkbox_disabled_label_msg;
       } else {
-        this.labelDisabled = this.translate.checkbox_enabled_label;
+        this.labelDisabled = this.translate.checkbox_enabled_label_msg;
       }
     },
 
@@ -568,110 +568,121 @@ export default {
                   </div>
                 </div>
 
-                <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" role="switch" id="mnu-diabled" v-model="menu.disabled" @change="this.renderLabelDisabled">
-                  <label class="form-check-label" for="menu-disabled">
-                    {{ this.labelDisabled }}
-                  </label>
+                <div class="mb-3">
+
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" v-model="this.menu.disabled" type="radio" name="menuDisabled" id="menu-enabled" :value="false" @change="this.renderLabelDisabled">
+                    <label class="form-check-label" for="menu-enabled"> {{ this.translate.checkbox_enabled_label }}</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" v-model="this.menu.disabled" type="radio" name="menuDisabled" id="menu-disabled" :value="true" @change="this.renderLabelDisabled">
+                    <label class="form-check-label" for="menu-disabled">{{ this.translate.checkbox_disabled_label }}</label>
+                  </div>
+
+                  <div class="clearfix"></div>
+                  <div class="mt-2">
+                    <i> {{ this.labelDisabled }} </i>
+                  </div>
                 </div>
 
-              </div>
-              <div class="col">
-                <label for="menu-position" class="form-label">{{ this.translate.select_position_label }}</label>
-                <select id="menu-position" class="form-select mb-3" v-model="this.menu.position" @change="this.switchPosition($event)">
-                  <option value="" selected>{{ this.translate.select_position }}</option>
-                  <option v-for="(position, key) in this.menu_datas.list_position" :value="key">{{ position }}
-                  </option>
-                </select>
+                </div>
+                <div class="col">
+                  <label for="menu-position" class="form-label">{{ this.translate.select_position_label }}</label>
+                  <select id="menu-position" class="form-select mb-3" v-model="this.menu.position" @change="this.switchPosition($event)">
+                    <option value="" selected>{{ this.translate.select_position }}</option>
+                    <option v-for="(position, key) in this.menu_datas.list_position" :value="key">{{ position }}
+                    </option>
+                  </select>
 
-                <label for="menu-type" class="form-label">{{ this.translate.select_type_label }}</label>
-                <select id="menu-type" class="form-select" v-model="this.menu.type" :disabled="this.listTypeByPosition.length === 0">
-                  <option value="" selected v-if="this.listTypeByPosition.length === 0">
-                    {{ this.translate.select_type }}
-                  </option>
-                  <option v-for="(position, key) in this.listTypeByPosition" :value="key">{{ position }}
-                  </option>
-                </select>
+                  <label for="menu-type" class="form-label">{{ this.translate.select_type_label }}</label>
+                  <select id="menu-type" class="form-select" v-model="this.menu.type" :disabled="this.listTypeByPosition.length === 0">
+                    <option value="" selected v-if="this.listTypeByPosition.length === 0">
+                      {{ this.translate.select_type }}
+                    </option>
+                    <option v-for="(position, key) in this.listTypeByPosition" :value="key">{{ position }}
+                    </option>
+                  </select>
+                </div>
               </div>
+
             </div>
-
           </div>
-        </div>
 
-        <div class="row">
-          <div class="col-4">
+          <div class="row">
+            <div class="col-4">
 
-            <div class="card border" :class="this.isErrorNoElement ? 'border-danger' : 'border-secondary'">
-              <div class="card-header" :class="this.isErrorNoElement ? 'text-bg-danger' : 'text-bg-secondary'">
-                {{ this.translate.title_architecture }}
-              </div>
-              <div class="card-body">
+              <div class="card border" :class="this.isErrorNoElement ? 'border-danger' : 'border-secondary'">
+                <div class="card-header" :class="this.isErrorNoElement ? 'text-bg-danger' : 'text-bg-secondary'">
+                  {{ this.translate.title_architecture }}
+                </div>
+                <div class="card-body">
 
-                <div v-if="this.menu.id !== ''">
-                  <ul class=" tree-menu">
-                    <menu-tree
-                        v-for="menuElement in this.menu.menuElements"
-                        :menu-element="menuElement"
-                        :locale="this.currentLocale"
-                        :id-select="this.selectMenuElement.id"
-                        :translate="this.translate.menu_tree"
-                    />
-                    <li>
-                      <div>
+                  <div v-if="this.menu.id !== ''">
+                    <ul class=" tree-menu">
+                      <menu-tree
+                          v-for="menuElement in this.menu.menuElements"
+                          :menu-element="menuElement"
+                          :locale="this.currentLocale"
+                          :id-select="this.selectMenuElement.id"
+                          :translate="this.translate.menu_tree"
+                      />
+                      <li>
+                        <div>
                           <span class="btn btn-outline-secondary btn-sm" @click="this.newElement(0)"><i class="bi bi-plus-square"></i>
                             {{ this.translate.btn_new_menu_element }}
                           </span>
-                      </div>
-                    </li>
-                  </ul>
+                        </div>
+                      </li>
+                    </ul>
 
-                  <div class="text-danger" v-if="this.isErrorNoElement">
-                    <i class="bi bi-exclamation-triangle-fill"></i> <i>{{ this.translate.error_no_element }}</i>
+                    <div class="text-danger" v-if="this.isErrorNoElement">
+                      <i class="bi bi-exclamation-triangle-fill"></i> <i>{{ this.translate.error_no_element }}</i>
+                    </div>
+                  </div>
+                  <div v-else>
+                    <i class="bi bi-info-circle"></i> {{ this.translate.msg_no_element_new_menu }}
                   </div>
                 </div>
-                <div v-else>
-                  <i class="bi bi-info-circle"></i> {{ this.translate.msg_no_element_new_menu }}
+              </div>
+            </div>
+            <div class="col-8">
+
+              <menu-form
+                  v-if="this.showForm"
+                  :menu-element="this.selectMenuElement"
+                  :translate="this.translate.menu_form"
+                  :locale="this.currentLocale"
+                  :pages="this.dataMenu.pages"
+                  :positions="this.positions"
+                  :all-elements="this.listValidParent"
+                  @reorder-element="this.reorderElement"
+                  @change-parent="this.updateParent"
+              >
+              </menu-form>
+
+              <div v-else class="card border border-secondary h-100">
+                <div class="card-header text-bg-secondary">
+                  {{ this.translate.no_select_menu_form }}
                 </div>
+                <div class="card-body">
+                  <p class="text-black"><i>{{ this.translate.no_select_menu_form_msg }}</i></p>
+
+                  {{ this.translate.help_title }} <br/>
+
+                  <i class="bi bi-arrow-right"></i> <i class="bi bi-pencil-fill"></i> {{ this.translate.help_edition }}
+                  <br/>
+                  <i class="bi bi-arrow-right"></i> <i class="bi bi-x-lg"></i> {{ this.translate.help_delete }} <br/>
+                  <i class="bi bi-arrow-right"></i> <i class="bi bi-plus-square"></i> {{ this.translate.help_new }}
+                  <br/>
+                  <i class="bi bi-arrow-right"></i>
+                  <i class="bi bi-eye-slash-fill"></i> {{ this.translate.help_disabled }}
+
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-8">
-
-          <menu-form
-              v-if="this.showForm"
-              :menu-element="this.selectMenuElement"
-              :translate="this.translate.menu_form"
-              :locale="this.currentLocale"
-              :pages="this.dataMenu.pages"
-              :positions="this.positions"
-              :all-elements="this.listValidParent"
-              @reorder-element="this.reorderElement"
-              @change-parent="this.updateParent"
-          >
-          </menu-form>
-
-          <div v-else class="card border border-secondary h-100">
-            <div class="card-header text-bg-secondary">
-              {{ this.translate.no_select_menu_form }}
-            </div>
-            <div class="card-body">
-              <p class="text-black"><i>{{ this.translate.no_select_menu_form_msg }}</i></p>
-
-              {{ this.translate.help_title }} <br/>
-
-              <i class="bi bi-arrow-right"></i> <i class="bi bi-pencil-fill"></i> {{ this.translate.help_edition }}
-              <br/>
-              <i class="bi bi-arrow-right"></i> <i class="bi bi-x-lg"></i> {{ this.translate.help_delete }} <br/>
-              <i class="bi bi-arrow-right"></i> <i class="bi bi-plus-square"></i> {{ this.translate.help_new }} <br/>
-              <i class="bi bi-arrow-right"></i>
-              <i class="bi bi-eye-slash-fill"></i> {{ this.translate.help_disabled }}
-
-            </div>
-          </div>
-        </div>
+      </fieldset>
     </div>
-    </fieldset>
-  </div>
   </div>
 
   <!-- modale confirmation suppression -->

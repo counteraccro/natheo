@@ -49,7 +49,7 @@ class MenuConvertToArray
         $return['position'] = MenuConst::POSITION_HEADER;
         $return['type'] = MenuConst::TYPE_HEADER_SIDE_BAR;
         $return['renderOrder'] = 1;
-        $return['disabled'] = false;
+        $return['disabled'] = true;
         $return['name'] = '';
         if ($id !== null) {
             $menu = $this->menuService->findOneById(Menu::class, $id);
