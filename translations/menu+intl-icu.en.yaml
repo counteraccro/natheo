@@ -106,3 +106,6 @@ menu.form.text.info.disabled.element: __menu.form.text.info.disabled.element
 menu.form.text.info.enabled.element: __menu.form.text.info.enabled.element
 menu.help.disabled: __menu.help.disabled
 menu.element.change.parent.success: __menu.element.change.parent.success
+menu.new.success.save: __menu.new.success.save
+menu.edit.success.save: __menu.edit.success.save
+menu.msg.no.element.new.menu: __menu.msg.no.element.new.menu

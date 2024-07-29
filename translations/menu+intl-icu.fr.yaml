@@ -106,3 +106,6 @@ menu.form.text.info.disabled.element: 'Cet élément est masqué, il ne sera pas
 menu.form.text.info.enabled.element: 'Cet élément est visible, il sera affiché dans votre menu'
 menu.help.disabled: 'cet élément est masqué'
 menu.element.change.parent.success: 'Parent modifié avec succès'
+menu.msg.no.element.new.menu: 'Il faut créer le menu avant de pouvoir lui ajouter des éléments'
+menu.new.success.save: 'Menu Créé avec succès, redirection vers le mode édition...'
+menu.edit.success.save: 'Menu édité avec succès !'
