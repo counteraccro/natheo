@@ -109,3 +109,5 @@ menu.element.change.parent.success: __menu.element.change.parent.success
 menu.new.success.save: __menu.new.success.save
 menu.edit.success.save: __menu.edit.success.save
 menu.msg.no.element.new.menu: __menu.msg.no.element.new.menu
+menu.checkbox.disabled.label.msg: __menu.checkbox.disabled.label.msg
+menu.checkbox.enabled.label.msg: __menu.checkbox.enabled.label.msg
