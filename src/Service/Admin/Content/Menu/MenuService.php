@@ -68,11 +68,14 @@ class MenuService extends AppAdminService
             }
 
             $name = $element->getName();
+            $listeType = $this->getListType();
+            $listePosition = $this->getListPosition();
+            $strType = $listePosition[$element->getPosition()] . ' / ' . $listeType[$element->getPosition()][$element->getType()];
 
             $data[] = [
                 $translator->trans('menu.grid.id', domain: 'menu') => $element->getId() . ' ' . $isDisabled,
                 $translator->trans('menu.grid.name', domain: 'menu') => $name,
-                $translator->trans('menu.grid.type', domain: 'menu') => $element->getType(),
+                $translator->trans('menu.grid.type', domain: 'menu') => $strType,
                 $translator->trans('menu.grid.create_at', domain: 'menu') => $element
                     ->getCreatedAt()->format('d/m/y H:i'),
                 $translator->trans('menu.grid.update_at', domain: 'menu') => $element
