@@ -46,6 +46,9 @@ class MenuElement
     #[ORM\Column]
     private ?int $rowPosition = null;
 
+    #[ORM\Column(length: 100)]
+    private ?string $linkTarget = null;
+
     #[ORM\Column]
     private ?bool $disabled = null;
 
@@ -189,6 +192,18 @@ class MenuElement
     public function setRowPosition(int $rowPosition): static
     {
         $this->rowPosition = $rowPosition;
+
+        return $this;
+    }
+
+    public function getLinkTarget(): ?string
+    {
+        return $this->linkTarget;
+    }
+
+    public function setLinkTarget(string $linkTarget): static
+    {
+        $this->linkTarget = $linkTarget;
 
         return $this;
     }
