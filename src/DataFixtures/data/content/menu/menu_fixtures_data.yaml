@@ -12,6 +12,7 @@ menu:
         disabled: 0
         columnPosition: 1
         rowPosition: 1
+        linkTarget: '_blank'
         menuElementTranslation:
           fr:
             locale: fr
@@ -31,6 +32,7 @@ menu:
         disabled: 0
         columnPosition: 1
         rowPosition: 1
+        linkTarget: '_blank'
         menuElementTranslation:
           fr:
             locale: fr
@@ -50,6 +52,7 @@ menu:
         disabled: 0
         columnPosition: 1
         rowPosition: 2
+        linkTarget: '_blank'
         menuElementTranslation:
           fr:
             locale: fr
@@ -69,6 +72,7 @@ menu:
         disabled: 0
         columnPosition: 1
         rowPosition: 1
+        linkTarget: '_blank'
         menuElementTranslation:
           fr:
             locale: fr
@@ -87,6 +91,7 @@ menu:
         disabled: 0
         columnPosition: 1
         rowPosition: 2
+        linkTarget: '_self'
         menuElementTranslation:
           fr:
             locale: fr
@@ -105,6 +110,7 @@ menu:
         disabled: 0
         columnPosition: 1
         rowPosition: 3
+        linkTarget: '_blank'
         menuElementTranslation:
           fr:
             locale: fr
@@ -124,6 +130,7 @@ menu:
         disabled: 0
         columnPosition: 1
         rowPosition: 1
+        linkTarget: '_blank'
         menuElementTranslation:
           fr:
             locale: fr
@@ -143,6 +150,7 @@ menu:
         disabled: 0
         columnPosition: 1
         rowPosition: 1
+        linkTarget: '_blank'
         menuElementTranslation:
           fr:
             locale: fr
@@ -162,6 +170,7 @@ menu:
         disabled: 0
         columnPosition: 1
         rowPosition: 2
+        linkTarget: '_blank'
         menuElementTranslation:
           fr:
             locale: fr
@@ -181,6 +190,7 @@ menu:
         disabled: 0
         columnPosition: 2
         rowPosition: 1
+        linkTarget: '_blank'
         menuElementTranslation:
           fr:
             locale: fr
@@ -200,6 +210,7 @@ menu:
         disabled: 0
         columnPosition: 2
         rowPosition: 2
+        linkTarget: '_blank'
         menuElementTranslation:
           fr:
             locale: fr
@@ -219,6 +230,7 @@ menu:
         disabled: 0
         columnPosition: 3
         rowPosition: 1
+        linkTarget: '_blank'
         menuElementTranslation:
           fr:
             locale: fr
@@ -238,6 +250,7 @@ menu:
         disabled: 0
         columnPosition: 1
         rowPosition: 3
+        linkTarget: '_blank'
         menuElementTranslation:
           fr:
             locale: fr
