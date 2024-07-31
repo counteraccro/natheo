@@ -110,4 +110,7 @@ menu.msg.no.element.new.menu: 'Il faut créer le menu avant de pouvoir lui ajout
 menu.new.success.save: 'Menu Créé avec succès, redirection vers le mode édition...'
 menu.edit.success.save: 'Menu édité avec succès !'
 menu.checkbox.disabled.label.msg: "Le menu est actuellement désactivé, il n'apparaitra pas sur le site "
-menu.checkbox.enabled.label.msg: "Le menu est visible sur le site"
+menu.checkbox.enabled.label.msg: 'Le menu est visible sur le site'
+menu.form.link.target.label: 'Cible du lien'
+menu.form.link.target.label.self: 'Même page'
+menu.form.link.target.label.blank: 'Nouvel onglet'

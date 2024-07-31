@@ -111,3 +111,6 @@ menu.edit.success.save: __menu.edit.success.save
 menu.msg.no.element.new.menu: __menu.msg.no.element.new.menu
 menu.checkbox.disabled.label.msg: __menu.checkbox.disabled.label.msg
 menu.checkbox.enabled.label.msg: __menu.checkbox.enabled.label.msg
+menu.form.link.target.label: __menu.form.link.target.label
+menu.form.link.target.label.self: __menu.form.link.target.label.self
+menu.form.link.target.label.blank: __menu.form.link.target.label.blank
