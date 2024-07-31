@@ -90,6 +90,9 @@ class MenuTranslate extends AppTranslate
             'radio_label_enabled_element' => $this->translator->trans('menu.form.radio.label.enabled.element', domain: 'menu'),
             'text_info_disabled_element' => $this->translator->trans('menu.form.text.info.disabled.element', domain: 'menu'),
             'text_info_enabled_element' => $this->translator->trans('menu.form.text.info.enabled.element', domain: 'menu'),
+            'element_link_target_label' => $this->translator->trans('menu.form.link.target.label', domain: 'menu'),
+            'element_link_target_label_self' => $this->translator->trans('menu.form.link.target.label.self', domain: 'menu'),
+            'element_link_target_label_blank' => $this->translator->trans('menu.form.link.target.label.blank', domain: 'menu'),
         ];
     }
 

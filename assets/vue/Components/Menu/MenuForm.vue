@@ -248,6 +248,14 @@ export default {
               <label class="form-check-label" for="url-externe">{{ this.translate.radio_label_url_externe }}</label>
             </div>
           </div>
+
+          <div class="mt-1 mb-3">
+          <label for="liste-target" class="form-label">{{ this.translate.element_link_target_label }}</label>
+          <select class="form-select" id="liste-target" v-model="this.menuElement.linkTarget">
+            <option value="_self">{{ this.translate.element_link_target_label_self }}</option>
+            <option value="_blank">{{ this.translate.element_link_target_label_blank }}</option>
+          </select>
+          </div>
         </div>
         <div class="col">
           <label for="liste-parent" class="form-label">{{ this.translate.parent_label }}</label>
