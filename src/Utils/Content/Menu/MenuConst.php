@@ -123,4 +123,16 @@ class MenuConst
      * @var integer
      */
     const TYPE_FOOTER_4_COLONNES = 16;
+
+    /**
+     * Link target blank
+     * @var string
+     */
+    const LINK_TARGET_BLANK = '_blank';
+
+    /**
+     * Link target self
+     * @var string
+     */
+    const LINK_TARGET_SELF = '_self';
 }

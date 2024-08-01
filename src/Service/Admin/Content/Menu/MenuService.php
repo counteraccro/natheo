@@ -225,6 +225,7 @@ class MenuService extends AppAdminService
         $menuElement = $menuFactory->createMenuElement();
         $menuElement->setColumnPosition($columnP);
         $menuElement->setRowPosition($rowP);
+        $menuElement->setLinkTarget(MenuConst::LINK_TARGET_SELF);
 
         /** @var Menu $menu */
         $menu = $this->findOneById(Menu::class, $idMenu);
