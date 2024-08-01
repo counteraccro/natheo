@@ -10,6 +10,8 @@ namespace App\Utils\Content\Menu;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Menu\MenuElementTranslation;
+use App\Entity\Admin\Content\Page\Page;
+use App\Service\Admin\Content\Menu\MenuService;
 
 class MenuPopulate
 {
@@ -36,7 +38,10 @@ class MenuPopulate
      * @param Menu $menu
      * @param array $populate
      */
-    public function __construct(private Menu $menu, private readonly array $populate)
+    public function __construct(
+        private Menu                 $menu,
+        private readonly array       $populate,
+        private readonly MenuService $menuService)
     {
     }
 
@@ -98,6 +103,7 @@ class MenuPopulate
         $menuElement = $this->mergeData($menuElement, $populateChildren,
             [self::KEY_MENU_ELEMENTS_CHILDREN, self::KEY_MENU_ELEMENTS_TRANSLATIONS, 'id', 'page', 'parent', 'refChilds']
         );
+        $menuElement = $this->setPageToMenuElement($menuElement, $populateChildren['page']);
 
         $menuElement = $this->populateMenuElementTranslation($populateChildren[self::KEY_MENU_ELEMENTS_TRANSLATIONS], $menuElement);
 
@@ -136,6 +142,25 @@ class MenuPopulate
             $menuElementTranslation = $this->mergeData($menuElementTranslation, $populateMenuElementTranslation, ['id', 'link']);
             $menuElementTranslation->setMenuElement($menuElement);
             $menuElement->addMenuElementTranslation($menuElementTranslation);
+        }
+        return $menuElement;
+    }
+
+    /**
+     * Met à jour de la page associé à un menuElement
+     * @param MenuElement $menuElement
+     * @param int|null $pageId
+     * @return MenuElement
+     */
+    private function setPageToMenuElement(MenuElement $menuElement, mixed $pageId = ""): MenuElement
+    {
+        if ($pageId === "" || $pageId < 0) {
+            return $menuElement;
+        }
+
+        $page = $this->menuService->findOneById(Page::class, $pageId);
+        if ($page !== null) {
+            $menuElement->setPage($page);
         }
         return $menuElement;
     }

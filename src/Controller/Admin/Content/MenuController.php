@@ -240,7 +240,7 @@ class MenuController extends AppAdminController
             $redirect = false;
             $msgSuccess = $translator->trans('menu.edit.success.save', domain: 'menu');
         }
-        $menuPopulate = new MenuPopulate($menu, $data['menu']);
+        $menuPopulate = new MenuPopulate($menu, $data['menu'], $menuService);
         $menu = $menuPopulate->populate()->getMenu();
         $menuService->save($menu);
         $response = $menuService->getResponseAjax($msgSuccess);

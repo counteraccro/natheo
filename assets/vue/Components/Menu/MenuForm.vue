@@ -178,7 +178,7 @@ export default {
       tabTmp.forEach((element) => {
         element.link = tmp[element.locale]['url']
       })
-
+      this.menuElement.page = parseInt(event.target.value);
       this.menuElement.menuElementTranslations = tabTmp;
     },
 
