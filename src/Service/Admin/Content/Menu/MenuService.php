@@ -266,7 +266,7 @@ class MenuService extends AppAdminService
         $menuElement->setRowPosition($rowP);
 
         $this->save($menuElement);
-        $elements = $this->getALlElementFirstLevelByMenu($menuElement->getMenu()->getId());
+        $elements = $this->getMenuElementByMenuAndParent($menuElement->getMenu()->getId());
         $this->regenerateColumnAndRowPosition($elements);
     }
 
@@ -299,16 +299,18 @@ class MenuService extends AppAdminService
     }
 
     /**
-     * Retourne une liste de menuElement de premier niveau en fonction d'un Menu
+     * Retourne une liste de menuElement en fonction d'un Menu et de son parent. Si parent = null, retour
+     * la liste de menuElement de premier niveau
      * @param int $idMenu
+     * @param int|null $parent
      * @return mixed
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getALlElementFirstLevelByMenu(int $idMenu): mixed
+    public function getMenuElementByMenuAndParent(int $idMenu, int $parent = null): mixed
     {
         $repo = $this->getRepository(MenuElement::class);
-        return $repo->getMenuElementFirstLevelByMenu($idMenu);
+        return $repo->getMenuElementByMenuAndParent($idMenu, $parent);
     }
 
     /**
@@ -322,7 +324,7 @@ class MenuService extends AppAdminService
     public function getListeParentByMenuElement(int $menuId, int $idElement): array
     {
         /** @var MenuElementRepository $repo */
-        $result = $this->getALlElementFirstLevelByMenu($menuId);
+        $result = $this->getMenuElementByMenuAndParent($menuId);
         return $this->constructListeParent($result, $idElement, []);
     }
 
@@ -351,6 +353,29 @@ class MenuService extends AppAdminService
             }
         }
         return $return;
+    }
+
+    /**
+     * Met à jour l'ordre de la colum ou row d'une liste de menuElement en fonction de parent
+     * @param array $data
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function reorderMenuElement(array $data): void
+    {
+        $parent = $data['parent'];
+        if($parent === "") {
+            $parent = null;
+        }
+
+        $listeMenuElements = $this->getMenuElementByMenuAndParent($data['menu'], $parent);
+        foreach ($listeMenuElements as $menuElement) {
+            /** @var MenuElement $menuElement */
+            foreach($menuElement->getMenuElementTranslations() as $translation) {
+                echo $translation->getTextLink() . '<br />';
+            }
+        }
     }
 
 }

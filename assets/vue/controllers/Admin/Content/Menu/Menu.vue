@@ -397,49 +397,29 @@ export default {
      * @param data
      */
     reorderElement(data) {
-      function reorderByRowPosition(a, b) {
-        return (a[1]['columnPosition'] - b[1]['columnPosition']) || (a[1]['rowPosition'] - b[1]['rowPosition']);
-      }
 
-      console.log(data);
+      data['menu'] = this.menu.id;
 
-      let elements = this.menu.menuElements;
-      if (data.parent !== 0) {
-        let tmp = this.getElementMenuById(this.menu.menuElements, data.parent);
-        elements = tmp.children.menuElements;
-      } else {
-        //console.log(this.menu.menuElements);
-        //console.log(elements);
-      }
+      this.loading = true;
+      axios.patch(this.urls.reorder_menu_element, {
+        data
+      }).then((response) => {
+        if (response.data.success === true) {
+          this.toasts.toastSuccess.msg = response.data.msg;
+          this.toasts.toastSuccess.show = true;
+          //this.loadMenu(response.data.id);
+          this.loading = true;
 
-      console.log(elements);
-
-      // Traitement du champ column
-      /*Object.entries(elements).forEach((value, index) => {
-        let obj = value[1];
-        if (obj.id !== data.id && obj.columnPosition === data.newColumn) {
-          obj.rowPosition = obj.rowPosition + 1;
-        } else if (obj.columnPosition !== data.newColumn) {
-          obj.rowPosition = obj.rowPosition + 1
+        } else {
+          this.toasts.toastError.msg = response.data.msg;
+          this.toasts.toastError.show = true;
+          this.loading = false
         }
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
       });
 
-      // Traitement du champ row
-      Object.entries(elements).forEach((value, index) => {
-        let obj = value[1];
-        if (obj.columnPosition === data.newColumn) {
-          if (obj.id !== data.id && obj.rowPosition === data.newRow) {
-            obj.rowPosition = obj.rowPosition + 1;
-          } else if (obj.rowPosition !== data.newRow) {
-            obj.rowPosition = obj.rowPosition + 1
-          }
-        }
-      });*/
-
-      console.log(elements);
-
-      elements = Object.entries(elements).sort(reorderByRowPosition)
-      console.log(elements);
     },
 
     /**

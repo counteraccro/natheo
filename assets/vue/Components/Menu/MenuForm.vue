@@ -114,7 +114,7 @@ export default {
      */
     createListeColumn() {
       this.listColumn = [];
-      for (let i = 1; i <= (this.positions.columnMax); i++) {
+      for (let i = 1; i <= (this.positions.columnMax) + 1; i++) {
         this.listColumn.push({value: i, label: i});
       }
     },
@@ -134,9 +134,9 @@ export default {
      * Mise à jour de la liste de row
      * @param event
      */
-    updateListRow(event) {
+    /*updateListRow(event) {
       this.createListRow(event.target.value)
-    },
+    },*/
 
     /**
      * Construit la liste de page en fonction de la locale
@@ -152,20 +152,19 @@ export default {
     /**
      * Prépare les données pour les renvoyer à Menu.vue pour générer le trie
      */
-    reorderElements() {
+    reorderElements(type) {
       let data = {
+        'reorderType': type,
         'newColumn': this.menuElement.columnPosition,
         'oldColumn': this.oldColumnPosition,
         'newRow': this.menuElement.rowPosition,
         'oldRow': this.oldRowPosition,
         'id': this.menuElement.id,
-        'parent': 0
       };
 
       if (this.menuElement.hasOwnProperty('parent')) {
         data.parent = this.menuElement.parent;
       }
-
       this.$emit('reorder-element', data);
     },
 
@@ -271,14 +270,14 @@ export default {
         <div class="row">
           <div class="col">
             <label for="liste-column-position" class="form-label">{{ this.translate.position_column_label }}</label>
-            <select class="form-select" id="liste-column-position" v-model="this.menuElement.columnPosition" @change="(event) => {this.updateListRow(event); this.reorderElements()}">
+            <select class="form-select" id="liste-column-position" v-model="this.menuElement.columnPosition" @change="this.reorderElements('column')">
               <option v-for="column in this.listColumn" :value="column.value">{{ column.label }}</option>
 
             </select>
           </div>
           <div class="col">
             <label for="liste-column-row" class="form-label">{{ this.translate.position_row_label }}</label>
-            <select class="form-select" id="liste-column-row" v-model="this.menuElement.rowPosition" @change="this.reorderElements">
+            <select class="form-select" id="liste-column-row" v-model="this.menuElement.rowPosition" @change="this.reorderElements('row')">
               <option v-for="row in this.listRow" :value="row.value">{{ row.label }}</option>
             </select>
           </div>

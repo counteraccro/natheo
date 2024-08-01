@@ -10,21 +10,17 @@ use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Breadcrumb;
 use App\Utils\Content\Menu\MenuConvertToArray;
-use App\Utils\Content\Menu\MenuFactory;
 use App\Utils\Content\Menu\MenuPopulate;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Content\MenuTranslate;
-use App\Utils\Translate\Content\PageTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/menu', name: 'admin_menu_', requirements: ['_locale' => '%app.supported_locales%'])]
@@ -176,7 +172,8 @@ class MenuController extends AppAdminController
                 'delete_menu_element' => $this->generateUrl('admin_menu_delete_menu_element'),
                 'new_menu_element' => $this->generateUrl('admin_menu_new_menu_element'),
                 'update_parent_menu_element' => $this->generateUrl('admin_menu_update_parent_menu_element'),
-                'list_parent_menu_element' => $this->generateUrl('admin_menu_list_parent_menu_element')
+                'list_parent_menu_element' => $this->generateUrl('admin_menu_list_parent_menu_element'),
+                'reorder_menu_element' => $this->generateUrl('admin_menu_reorder_menu_element')
             ]
         ]);
     }
@@ -343,5 +340,27 @@ class MenuController extends AppAdminController
         $listeParent = $menuService->getListeParentByMenuElement($menuId, $elementId);
 
         return $this->json(['listParent' => $listeParent]);
+    }
+
+    /**
+     * Réordonne les colonnes ou row des menus elements
+     * @param Request $request
+     * @param MenuService $menuService
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/ajax/reorder-menu-element', name: 'reorder_menu_element', methods: ['PATCH'])]
+    public function reorderMenuElement(
+        Request $request,
+        MenuService $menuService,
+        TranslatorInterface $translator,
+    )
+    {
+        $data = json_decode($request->getContent(), true);
+        $menuService->reorderMenuElement($data);
+        $return = $menuService->getResponseAjax($translator->trans('menu.element.reorder.success', domain: 'menu'));
+        return $this->json($return);
     }
 }
