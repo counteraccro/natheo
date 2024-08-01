@@ -114,3 +114,4 @@ menu.checkbox.enabled.label.msg: __menu.checkbox.enabled.label.msg
 menu.form.link.target.label: __menu.form.link.target.label
 menu.form.link.target.label.self: __menu.form.link.target.label.self
 menu.form.link.target.label.blank: __menu.form.link.target.label.blank
+menu.element.reorder.success: __menu.element.reorder.success
