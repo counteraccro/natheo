@@ -407,8 +407,8 @@ export default {
         if (response.data.success === true) {
           this.toasts.toastSuccess.msg = response.data.msg;
           this.toasts.toastSuccess.show = true;
-          //this.loadMenu(response.data.id);
-          this.loading = true;
+          this.loadMenu(response.data.id);
+          //this.loading = true;
 
         } else {
           this.toasts.toastError.msg = response.data.msg;

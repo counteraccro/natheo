@@ -9,7 +9,10 @@ use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Utils\Content\Menu\MenuConst;
 use App\Utils\Content\Menu\MenuFactory;
+use App\Utils\Global\OrderEntity;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -362,21 +365,45 @@ class MenuService extends AppAdminService
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws Exception
      */
     public function reorderMenuElement(array $data): void
     {
         $parent = $data['parent'];
-        if($parent === "") {
+        if ($parent === "") {
             $parent = null;
         }
-
         $listeMenuElements = $this->getMenuElementByMenuAndParent($data['menu'], $parent);
-        foreach ($listeMenuElements as $menuElement) {
-            /** @var MenuElement $menuElement */
-            foreach($menuElement->getMenuElementTranslations() as $translation) {
-                echo $translation->getTextLink() . '<br />';
+
+        // trie de la colonne
+        if($data['reorderType'] === 'row')
+        {
+            $tabElement = [];
+            foreach ($listeMenuElements as $menuElement) {
+                if($data['oldColumn'] === $menuElement->getColumnPosition()) {
+                    $tabElement[] = $menuElement;
+                }
+            }
+
+            $action = OrderEntity::ACTION_AFTER;
+            if ($data['oldRow'] > $data['newRow']) {
+                $action = OrderEntity::ACTION_BEFORE;
+            }
+
+            $orderEntity = new OrderEntity(new ArrayCollection($tabElement), 'rowPosition');
+            $idRowReplace = $orderEntity->getIdByOrder($data['newRow']);
+            $listeMenuElements = $orderEntity->orderByIdByAction($idRowReplace, $data['id'], $action)
+                ->sortByProperty()->reOrderList()->getCollection();
+
+            foreach ($listeMenuElements as $menuElement) {
+                $this->save($menuElement);
             }
         }
+
+
+
+        /*
+        }*/
     }
 
 }

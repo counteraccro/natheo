@@ -359,7 +359,7 @@ class MenuController extends AppAdminController
     )
     {
         $data = json_decode($request->getContent(), true);
-        $menuService->reorderMenuElement($data);
+        $menuService->reorderMenuElement($data['data']);
         $return = $menuService->getResponseAjax($translator->trans('menu.element.reorder.success', domain: 'menu'));
         return $this->json($return);
     }
