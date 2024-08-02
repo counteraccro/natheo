@@ -375,35 +375,60 @@ class MenuService extends AppAdminService
         }
         $listeMenuElements = $this->getMenuElementByMenuAndParent($data['menu'], $parent);
 
-        // trie de la colonne
+        // trie de la ligne
         if($data['reorderType'] === 'row')
         {
-            $tabElement = [];
-            foreach ($listeMenuElements as $menuElement) {
-                if($data['oldColumn'] === $menuElement->getColumnPosition()) {
-                    $tabElement[] = $menuElement;
-                }
-            }
+            $this->reorderMenuElementRow($listeMenuElements, $data);
+        }
+        // trie par la colonne
+        else {
+            $this->reorderMenuElementColumn($listeMenuElements, $data);
+        }
 
-            $action = OrderEntity::ACTION_AFTER;
-            if ($data['oldRow'] > $data['newRow']) {
-                $action = OrderEntity::ACTION_BEFORE;
-            }
+    }
 
-            $orderEntity = new OrderEntity(new ArrayCollection($tabElement), 'rowPosition');
-            $idRowReplace = $orderEntity->getIdByOrder($data['newRow']);
-            $listeMenuElements = $orderEntity->orderByIdByAction($idRowReplace, $data['id'], $action)
-                ->sortByProperty()->reOrderList()->getCollection();
+    /**
+     * Réordonne la propriété columnPosition de la liste de menuElement passé en paramètre en fonction de $data
+     * @param array $listeMenuElements
+     * @param array $data
+     * @return void
+     */
+    private function reorderMenuElementColumn(array $listeMenuElements, array $data):void
+    {
 
-            foreach ($listeMenuElements as $menuElement) {
-                $this->save($menuElement);
+    }
+
+    /**
+     * Réordonne la propriété rowPosition de la liste de menuElement passé en paramètre en fonction de $data
+     * @param array $listeMenuElements
+     * @param array $data
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws Exception
+     */
+    private function reorderMenuElementRow(array $listeMenuElements, array $data): void
+    {
+        $tabElement = [];
+        foreach ($listeMenuElements as $menuElement) {
+            if($data['oldColumn'] === $menuElement->getColumnPosition()) {
+                $tabElement[] = $menuElement;
             }
         }
 
+        $action = OrderEntity::ACTION_AFTER;
+        if ($data['oldRow'] > $data['newRow']) {
+            $action = OrderEntity::ACTION_BEFORE;
+        }
 
+        $orderEntity = new OrderEntity(new ArrayCollection($tabElement), 'rowPosition');
+        $idRowReplace = $orderEntity->getIdByOrder($data['newRow']);
+        $listeMenuElements = $orderEntity->orderByIdByAction($idRowReplace, $data['id'], $action)
+            ->sortByProperty()->reOrderList()->getCollection();
 
-        /*
-        }*/
+        foreach ($listeMenuElements as $menuElement) {
+            $this->save($menuElement);
+        }
     }
 
 }
