@@ -114,4 +114,4 @@ menu.checkbox.enabled.label.msg: 'Le menu est visible sur le site'
 menu.form.link.target.label: 'Cible du lien'
 menu.form.link.target.label.self: 'Même page'
 menu.form.link.target.label.blank: 'Nouvel onglet'
-menu.element.reorder.success: __menu.element.reorder.success
+menu.element.reorder.success: 'Elément réordonné avec succès'
