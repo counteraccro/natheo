@@ -219,6 +219,7 @@ class MenuController extends AppAdminController
     /**
      * @param Request $request
      * @param MenuService $menuService
+     * @param TranslatorInterface $translator
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface

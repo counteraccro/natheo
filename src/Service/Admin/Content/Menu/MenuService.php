@@ -376,11 +376,9 @@ class MenuService extends AppAdminService
         $listeMenuElements = $this->getMenuElementByMenuAndParent($data['menu'], $parent);
 
         // trie de la ligne
-        if($data['reorderType'] === 'row')
-        {
+        if ($data['reorderType'] === 'row') {
             $this->reorderMenuElementRow($listeMenuElements, $data);
-        }
-        // trie par la colonne
+        } // trie par la colonne
         else {
             $this->reorderMenuElementColumn($listeMenuElements, $data);
         }
@@ -392,10 +390,89 @@ class MenuService extends AppAdminService
      * @param array $listeMenuElements
      * @param array $data
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws Exception
      */
-    private function reorderMenuElementColumn(array $listeMenuElements, array $data):void
+    private function reorderMenuElementColumn(array $listeMenuElements, array $data): void
     {
+        $nbMax = count($listeMenuElements);
+        if ($data['newColumn'] > $nbMax) {
+            $data['newColumn'] = $nbMax;
+        }
+        $tabColumnRowMax = $this->getTabColumnAndRowMax($listeMenuElements, [$data['id']]);
 
+        // Etape 1 on met à jour newColumn et rowPosition
+        foreach ($listeMenuElements as $menuElement) {
+            /** @var MenuElement $menuElement */
+            if ($menuElement->getId() === $data['id']) {
+                $menuElement->setColumnPosition($data['newColumn']);
+                if (isset($tabColumnRowMax[$data['newColumn']])) {
+                    $menuElement->setRowPosition($tabColumnRowMax[$data['newColumn']]['row'] + 1);
+                } else {
+                    $menuElement->setRowPosition(1);
+                }
+            }
+        }
+
+        // On re-tri le tableau
+        $orderEntity = new OrderEntity(new ArrayCollection($listeMenuElements), 'columnPosition');
+        $listeMenuElements = $orderEntity->sortByProperty()->getCollection();
+
+        // Etape 2, on ré-ordonne correctement columnPosition (supression ecart etc...) + rassemblement par columnPosition
+        $columnRef = "";
+        $newColumn = 1;
+        $tabTmp = [];
+        foreach ($listeMenuElements as $menuElement) {
+            if ($columnRef === "") {
+                $columnRef = $menuElement->getColumnPosition();
+                $menuElement->setColumnPosition($newColumn);
+            } elseif ($columnRef === $menuElement->getColumnPosition()) {
+                $menuElement->setColumnPosition($newColumn);
+            } else {
+                $columnRef = $menuElement->getColumnPosition();
+                $newColumn++;
+                $menuElement->setColumnPosition($newColumn);
+            }
+
+            $tabTmp[$columnRef][] = $menuElement;
+        }
+
+        // Etape 3 on re-tri les rowPosition + sauvegarde globale des élements
+        foreach ($tabTmp as $columnRef => $menuElements) {
+            $orderEntity = new OrderEntity(new ArrayCollection($menuElements), 'rowPosition');
+            $tab = $orderEntity->sortByProperty()->reOrderList()->getCollection();
+            foreach($tab as $menuElement) {
+                $this->save($menuElement);
+            }
+        }
+
+    }
+
+    /**
+     * Retourne le nombre de column et rowMax par column pour la liste en paramètre
+     * @param array $menuElements
+     * @return array
+     */
+    private function getTabColumnAndRowMax(array $menuElements, array $exclude = []): array
+    {
+        $return = [];
+        foreach ($menuElements as $menuElement) {
+            /** @var MenuElement $menuElement */
+
+            if(in_array($menuElement->getId(), $exclude)) {
+                continue;
+            }
+
+            if (!isset($return[$menuElement->getColumnPosition()])) {
+                $return[$menuElement->getColumnPosition()] = ['column' => $menuElement->getColumnPosition(), 'row' => 0];
+            }
+
+            if ($return[$menuElement->getColumnPosition()]['row'] < $menuElement->getRowPosition()) {
+                $return[$menuElement->getColumnPosition()]['row'] = $menuElement->getRowPosition();
+            }
+        }
+        return $return;
     }
 
     /**
@@ -411,7 +488,7 @@ class MenuService extends AppAdminService
     {
         $tabElement = [];
         foreach ($listeMenuElements as $menuElement) {
-            if($data['oldColumn'] === $menuElement->getColumnPosition()) {
+            if ($data['oldColumn'] === $menuElement->getColumnPosition()) {
                 $tabElement[] = $menuElement;
             }
         }

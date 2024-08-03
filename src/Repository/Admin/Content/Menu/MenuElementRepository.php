@@ -63,8 +63,8 @@ class MenuElementRepository extends ServiceEntityRepository
                 ->setParameter('parent', $parent);
         }
 
-        $queryB->orderBy('me.columnPosition', 'ASC')
-            ->orderBy('me.rowPosition', 'ASC');
+        $queryB->addOrderBy('me.columnPosition', 'ASC')
+            ->addOrderBy('me.rowPosition', 'ASC');
 
         return $queryB->getQuery()->getResult();
     }
