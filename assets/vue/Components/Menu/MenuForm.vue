@@ -130,13 +130,6 @@ export default {
       }
     },
 
-    /**
-     * Mise à jour de la liste de row
-     * @param event
-     */
-    /*updateListRow(event) {
-      this.createListRow(event.target.value)
-    },*/
 
     /**
      * Construit la liste de page en fonction de la locale
