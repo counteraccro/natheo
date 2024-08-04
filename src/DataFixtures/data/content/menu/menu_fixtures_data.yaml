@@ -16,7 +16,7 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: 'fr-contenu'
+            textLink: 'Contenu'
             externalLink: ''
           es:
             locale: es
@@ -36,7 +36,7 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: 'fr-listing-page'
+            textLink: 'Listing des pages'
             externalLink: '#'
           es:
             locale: es
@@ -56,7 +56,7 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: 'fr-page-nouveaute'
+            textLink: 'Les nouveautées'
             externalLink: '#'
           es:
             locale: es
@@ -76,7 +76,7 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: 'fr-page-demo'
+            textLink: 'Démonstration'
             externalLink: '#'
           es:
             locale: es
@@ -96,7 +96,7 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: 'fr-listing-blog'
+            textLink: 'Liste des articles de blogs'
             externalLink: '#'
           es:
             locale: es
@@ -116,7 +116,7 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: 'fr-page-blog'
+            textLink: 'Page de blog'
             externalLink: '#'
           es:
             locale: es
@@ -135,14 +135,173 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: 'fr-git'
+            textLink: 'Documentation'
+            externalLink: 'https://counteraccro.github.io/natheo.doc/'
+          es:
+            locale: es
+            textLink: 'es-doc'
+            externalLink: 'https://counteraccro.github.io/natheo.doc/'
+          en:
+            locale: en
+            textLink: 'en-doc'
+            externalLink: 'https://counteraccro.github.io/natheo.doc/'
+      autre:
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 3
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Autre'
             externalLink: '#'
           es:
             locale: es
-            textLink: 'es-git'
+            textLink: 'es-autre'
             externalLink: '#'
           en:
             locale: en
-            textLink: 'en-git'
+            textLink: 'en-autre'
+            externalLink: '#'
+      natheo:
+        page: ''
+        parent: autre
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Natheo'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-Natheo'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-Natheo'
+            externalLink: '#'
+      natheo-git:
+        page: ''
+        parent: natheo
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'GitHub'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-GitHub'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-GitHub'
+            externalLink: '#'
+      natheo-site:
+        page: ''
+        parent: natheo
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 2
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Site officiel'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-site-officiel'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-site-officiel'
+            externalLink: '#'
+      partenaire:
+        page: ''
+        parent: autre
+        disabled: 0
+        columnPosition: 2
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Partenaires'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-Partenaire'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-Partenaire'
+            externalLink: '#'
+      partenaire-1:
+        page: ''
+        parent: partenaire
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Natheo agency'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-Partenaire-1'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-Partenaire-1'
+            externalLink: '#'
+      partenaire-2:
+        page: ''
+        parent: partenaire
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 2
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Natheo community'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-Partenaire-2'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-Partenaire-2'
+            externalLink: '#'
+      partenaire-3:
+        page: ''
+        parent: partenaire
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 3
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Natheo Book'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-Partenaire-3'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-Partenaire-3'
             externalLink: '#'
 
