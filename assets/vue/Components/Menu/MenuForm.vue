@@ -223,7 +223,7 @@ export default {
 <template>
 
   <div class="card border border-secondary">
-    <div class="card-header text-bg-secondary">{{ this.titleForm }} -- deep : {{ this.deep }}</div>
+    <div class="card-header text-bg-secondary">{{ this.titleForm }}</div>
     <div class="card-body">
 
       <div class="row">

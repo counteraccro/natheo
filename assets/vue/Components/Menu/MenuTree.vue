@@ -151,7 +151,6 @@ export default {
       <i v-else class="bi bi-arrow-right-square"></i>
       &nbsp;<i v-if="this.isDisabled" class="bi bi-eye-slash-fill"></i>
       {{ this.getTranslationValueByKeyAndByLocale(this.menuElement.menuElementTranslations, 'textLink') }}
-      [{{ this.deep }}]
       <span v-if="this.haveChildren">
         <i class="bi" :class="this.isOpen ? 'bi-chevron-down' : 'bi-chevron-right'"></i>
       </span>
