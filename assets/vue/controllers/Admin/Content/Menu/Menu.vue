@@ -42,6 +42,7 @@ export default {
       dataMenu: [],
       currentLocale: '',
       currentPosition: '',
+      currentDeep: 0,
       listTypeByPosition: [],
       listValidParent: [],
       selectComponent: 'MenuHeader',
@@ -75,12 +76,14 @@ export default {
   mounted() {
     this.currentLocale = this.locales.current;
     this.loadMenu();
-    emitter.on('new-menu-element', async (id) => {
-      this.newElement(id);
+    emitter.on('new-menu-element', async (params) => {
+      this.currentDeep = params.deep;
+      this.newElement(params.id);
     });
 
-    emitter.on('update-menu-element', async (id) => {
-      this.updateElement(id);
+    emitter.on('update-menu-element', async (params) => {
+      this.currentDeep = params.deep;
+      this.updateElement(params.id);
     });
 
     emitter.on('delete-menu-element', async (id) => {
@@ -605,6 +608,7 @@ export default {
                           :locale="this.currentLocale"
                           :id-select="this.selectMenuElement.id"
                           :translate="this.translate.menu_tree"
+                          :deep="0"
                       />
                       <li>
                         <div>
@@ -635,6 +639,7 @@ export default {
                   :pages="this.dataMenu.pages"
                   :positions="this.positions"
                   :all-elements="this.listValidParent"
+                  :deep="this.currentDeep"
                   @reorder-element="this.reorderElement"
                   @change-parent="this.updateParent"
               >

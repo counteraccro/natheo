@@ -110,7 +110,7 @@ export default {
       menuElement.children.forEach((element) => {
         let elementTranslate = this.getTranslationByLocale(element.menuElementTranslations);
 
-        if(!element.disabled) {
+        if (!element.disabled) {
           if (!this.isHaveChildren(element)) {
             html += '<li><a class="dropdown-item" href="">' + elementTranslate.text + '</a></li>'
           } else {
@@ -161,8 +161,48 @@ export default {
             </ul>
           </li>
         </ul>
+
+        <ul class="navbar-nav" v-if="this.type > 2">
+          <li v-for="(element) in this.menu.menuElements" class="nav-item" :class="this.isHaveChildren(element) === true ? 'dropdown has-megamenu' : '' "
+              :set="elementTranslate = this.getTranslationByLocale(element.menuElementTranslations)">
+            <a v-if="!this.isHaveChildren(element) && !element.disabled" class="nav-link" :href="elementTranslate.link">{{ elementTranslate.text }}</a>
+            <a v-else-if="!element.disabled" class="nav-link dropdown-toggle no-control" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ elementTranslate.text }}
+            </a>
+            <div v-if="this.isHaveChildren(element)" class="dropdown-menu megamenu" role="menu">
+              aaa
+            </div>
+          </li>
+
+          <li class="nav-item dropdown has-megamenu">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"> Mega menu </a>
+            <div class="dropdown-menu megamenu" role="menu">
+              <div class="row">
+                <div class="col">
+                  <ul class="list-unstyled">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  </ul>
+                </div>
+                <div class="col">
+                  <ul class="list-unstyled">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div> <!-- dropdown-mega-menu.// -->
+          </li>
+
+        </ul>
+
       </div>
     </div>
   </nav>
+
 
 </template>

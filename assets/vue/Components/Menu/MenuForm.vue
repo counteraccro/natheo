@@ -15,6 +15,7 @@ export default {
     pages: Object,
     positions: Object,
     allElements: Object,
+    deep: Number
   },
   watch: {
     menuElement: 'entryPoint',
@@ -222,7 +223,7 @@ export default {
 <template>
 
   <div class="card border border-secondary">
-    <div class="card-header text-bg-secondary">{{ this.titleForm }}</div>
+    <div class="card-header text-bg-secondary">{{ this.titleForm }} -- deep : {{ this.deep }}</div>
     <div class="card-body">
 
       <div class="row">
@@ -261,7 +262,7 @@ export default {
       <fieldset class="mb-3">
         <legend>{{ this.translate.title_position }}</legend>
         <div class="row">
-          <div class="col">
+          <div class="col" v-if="this.deep === 1">
             <label for="liste-column-position" class="form-label">{{ this.translate.position_column_label }}</label>
             <select class="form-select" id="liste-column-position" v-model="this.menuElement.columnPosition" @change="this.reorderElements('column')">
               <option v-for="column in this.listColumn" :value="column.value">{{ column.label }}</option>

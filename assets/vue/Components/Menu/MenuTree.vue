@@ -13,7 +13,8 @@ export default {
     translate: Object,
     menuElement: Object,
     locale: String,
-    idSelect: Number
+    idSelect: Number,
+    deep: Number
   },
   data() {
     return {
@@ -87,14 +88,15 @@ export default {
      * Edit un élément au menu
      */
     updateElement() {
-      emitter.emit('update-menu-element', this.menuElement.id);
+      console.log(this.deep);
+      emitter.emit('update-menu-element', {id : this.menuElement.id, deep : this.deep});
     },
 
     /**
      * Créer un nouvel élément au menu
      */
     newElement() {
-      emitter.emit('new-menu-element', this.menuElement.id);
+      emitter.emit('new-menu-element', {id : this.menuElement.id, deep : this.deep + 1});
     },
 
     /**
@@ -102,7 +104,7 @@ export default {
      * @param id
      */
     newChildren(id) {
-      emitter.emit('new-menu-element', id);
+      emitter.emit('new-menu-element', {id : this.menuElement.id, deep : this.deep +1});
     },
 
     /**
@@ -149,6 +151,7 @@ export default {
       <i v-else class="bi bi-arrow-right-square"></i>
       &nbsp;<i v-if="this.isDisabled" class="bi bi-eye-slash-fill"></i>
       {{ this.getTranslationValueByKeyAndByLocale(this.menuElement.menuElementTranslations, 'textLink') }}
+      [{{ this.deep }}]
       <span v-if="this.haveChildren">
         <i class="bi" :class="this.isOpen ? 'bi-chevron-down' : 'bi-chevron-right'"></i>
       </span>
@@ -166,6 +169,7 @@ export default {
           :translate="this.translate"
           :locale="this.locale"
           :id-select="this.idSelect"
+          :deep="(this.deep+1)"
       >
       </menu-tree>
       <li>
