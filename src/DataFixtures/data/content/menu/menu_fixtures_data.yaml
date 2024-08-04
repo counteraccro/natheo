@@ -7,48 +7,127 @@ menu:
     renderOrder: 1
     disabled: 0
     menuElement:
+      listing:
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'fr-contenu'
+            externalLink: ''
+          es:
+            locale: es
+            textLink: 'es-contenu'
+            externalLink: ''
+          en:
+            locale: en
+            textLink: 'en-contenu'
+            externalLink: ''
+      listing_page:
+        page: 'Page_listing_page'
+        parent: listing
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'fr-listing-page'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-listing-page'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-listing-page'
+            externalLink: '#'
+      page_nouveaute:
+        page: Page_nouveaute
+        parent: listing_page
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'fr-page-nouveaute'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-page-nouveaute'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-page-noueaute'
+            externalLink: '#'
+      page_demo:
+        page: Page_demo
+        parent: listing_page
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 2
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'fr-page-demo'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-page-demo'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-page-demo'
+            externalLink: '#'
+      listing_blog:
+        page: 'Page_listing_blog'
+        parent: listing
+        disabled: 0
+        columnPosition: 2
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'fr-listing-blog'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-listing-blog'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-listing-blog'
+            externalLink: '#'
+      page_blog:
+        page: 'Page_blog'
+        parent: listing_blog
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'fr-page-blog'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-page-blog'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-page-blog'
+            externalLink: '#'
       element_1:
-        page: Page_listing_page
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 1
-        linkTarget: '_blank'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: fr-col-1-row-1
-            externalLink: ''
-          es:
-            locale: es
-            textLink: es-col-1-row-1
-            externalLink: ''
-          en:
-            locale: en
-            textLink: en-col-1-row-1
-            externalLink: ''
-      element_11:
         page: ''
-        parent: element_1
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 1
-        linkTarget: '_blank'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: fr-sub-col-1-row-1
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: es-sub-col-1-row-1
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: en-sub-col-1-row-1
-            externalLink: '#'
-      element_12:
-        page: ''
-        parent: element_1
         disabled: 0
         columnPosition: 1
         rowPosition: 2
@@ -56,211 +135,14 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: fr-sub-col-1-row-2
+            textLink: 'fr-git'
             externalLink: '#'
           es:
             locale: es
-            textLink: es-sub-col-1-row-2
+            textLink: 'es-git'
             externalLink: '#'
           en:
             locale: en
-            textLink: en-sub-col-1-row-2
+            textLink: 'en-git'
             externalLink: '#'
-      element_13:
-        page: ''
-        parent: element_12
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 1
-        linkTarget: '_blank'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: fr-sub-sub-col-1-row-1
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: es-sub-sub-col-1-row-1
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: en-sub-sub-col-1-row-1
-            externalLink: '#'
-      element_2:
-        page: Page_faq
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 2
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: fr-col-1-row-2
-            externalLink: ''
-          es:
-            locale: es
-            textLink: es-col-1-row-2
-            externalLink: ''
-          en:
-            locale: en
-            textLink: en-col-1-row-2
-            externalLink: ''
-      element_3:
-        page: ''
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 3
-        linkTarget: '_blank'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: fr-col-1-row-3
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: es-col-1-row-3
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: en-col-1-row-3
-            externalLink: '#'
-      element_4:
-        page: ''
-        parent: element_3
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 1
-        linkTarget: '_blank'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: fr-sub-col-1-row-1
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: es-sub-col-1-row-1
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: en-sub-col-1-row-1
-            externalLink: '#'
-      element_5:
-        page: ''
-        parent: element_4
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 1
-        linkTarget: '_blank'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: fr-sub-sub-col-1-row-1
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: es-sub-sub-col-1-row-1
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: en-sub-sub-col-1-row-1
-            externalLink: '#'
-      element_6:
-        page: ''
-        parent: element_4
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 2
-        linkTarget: '_blank'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: fr-sub-sub-col-1-row-2
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: es-sub-sub-col-1-row-2
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: en-sub-sub-col-1-row-2
-            externalLink: '#'
-      element_7:
-        page: ''
-        parent: element_4
-        disabled: 0
-        columnPosition: 2
-        rowPosition: 1
-        linkTarget: '_blank'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: fr-sub-sub-col-2-row-1
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: es-sub-sub-col-2-row-1
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: en-sub-sub-col-2-row-1
-            externalLink: '#'
-      element_8:
-        page: ''
-        parent: element_4
-        disabled: 0
-        columnPosition: 2
-        rowPosition: 2
-        linkTarget: '_blank'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: fr-sub-sub-col-2-row-2
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: es-sub-sub-col-2-row-2
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: en-sub-sub-col-2-row-2
-            externalLink: '#'
-      element_9:
-        page: ''
-        parent: element_4
-        disabled: 0
-        columnPosition: 3
-        rowPosition: 1
-        linkTarget: '_blank'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: fr-sub-sub-col-3-row-1
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: es-sub-sub-col-3-row-1
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: en-sub-sub-col-3-row-1
-            externalLink: '#'
-      element_10:
-        page: ''
-        parent: element_4
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 3
-        linkTarget: '_blank'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: fr-sub-sub-col-1-row-3
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: es-sub-sub-col-1-row-3
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: en-sub-sub-col-1-row-3
-            externalLink: '#'
+
