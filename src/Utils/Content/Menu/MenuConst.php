@@ -41,52 +41,28 @@ class MenuConst
     const TYPE_HEADER_MENU_DEROULANT = 2;
 
     /**
-     * Menu header de type menu déroulant, 1 ligne et 1 colonne
+     * Menu header de type menu déroulant, big menu
      * @var integer
      */
-    const TYPE_HEADER_MENU_DEROULANT_1_LIGNE_1_COLONNE = 3;
+    const TYPE_HEADER_MENU_DEROULANT_BIG_MENU = 3;
 
     /**
-     * Menu header de type menu déroulant, 1 ligne et 2 colonnes
+     * Menu header de type menu déroulant, big menu 2 colonnes
      * @var integer
      */
-    const TYPE_HEADER_MENU_DEROULANT_1_LIGNE_2_COLONNES = 4;
+    const TYPE_HEADER_MENU_DEROULANT_BIG_MENU_2_COLONNES = 4;
 
     /**
-     * Menu header de type menu déroulant, 1 ligne et 3 colonnes
+     * Menu header de type menu déroulant, big menu 3 colonnes
      * @var integer
      */
-    const TYPE_HEADER_MENU_DEROULANT_1_LIGNE_3_COLONNES = 5;
+    const TYPE_HEADER_MENU_DEROULANT_BIG_MENU_3_COLONNES = 5;
 
     /**
-     * Menu header de type menu déroulant, 1 ligne et 4 colonnes
+     * Menu header de type menu déroulant, big menu 4 colonnes
      * @var integer
      */
-    const TYPE_HEADER_MENU_DEROULANT_1_LIGNE_4_COLONNES = 6;
-
-    /**
-     * Menu header de type menu déroulant, 2 lignes et 1 colonne
-     * @var integer
-     */
-    const TYPE_HEADER_MENU_DEROULANT_2_LIGNES_1_COLONNE = 7;
-
-    /**
-     * Menu header de type menu déroulant, 2 lignes et 2 colonnes
-     * @var integer
-     */
-    const TYPE_HEADER_MENU_DEROULANT_2_LIGNES_2_COLONNES = 8;
-
-    /**
-     * Menu header de type menu déroulant, 2 ligne et 3 colonnes
-     * @var integer
-     */
-    const TYPE_HEADER_MENU_DEROULANT_2_LIGNES_3_COLONNES = 9;
-
-    /**
-     * Menu header de type menu déroulant, 2 lignes et 4 colonnes
-     * @var integer
-     */
-    const TYPE_HEADER_MENU_DEROULANT_2_LIGNES_4_COLONNES = 10;
+    const TYPE_HEADER_MENU_DEROULANT_BIG_MENU_4_COLONNES = 6;
 
     /**
      * Menu gauche - droite side-bar
