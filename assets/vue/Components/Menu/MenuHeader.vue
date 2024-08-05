@@ -124,6 +124,70 @@ export default {
         }
       })
       return html;
+    },
+
+    /**
+     * Génère le rendu des bigs menus
+     * @param menuElement
+     * @param html
+     */
+    renderBigMenu(menuElement, html) {
+      let column = 0;
+      let row = 0;
+      menuElement.children.forEach((element, key) => {
+
+        let elementTranslate = this.getTranslationByLocale(element.menuElementTranslations);
+        if (!element.disabled) {
+
+          if (column !== element.columnPosition) {
+            column = element.columnPosition;
+            row = element.rowPosition;
+            html += '<div class="col"><ul class="list-unstyled">';
+          }
+
+          if (row !== element.rowPosition) {
+            row = element.rowPosition;
+            html += '<li><hr class="dropdown-divider"></li>';
+          }
+
+          html += '<li><a class="dropdown-item" href="">' + elementTranslate.text + '</a>';
+          if (this.isHaveChildren(element)) {
+            html += '<ul class="list-custom">';
+            html = this.renderBigMenuDeep(element, html);
+            html += '</ul>';
+          }
+          html += '</li>';
+
+          if (menuElement.children[key + 1] === undefined || menuElement.children[key + 1].columnPosition !== column) {
+            html += '</ul></div>';
+          }
+        }
+      });
+      return html;
+    },
+
+    /**
+     * Génère les profondeurs de deepMenu
+     * @param menuElement
+     * @param html
+     * @return string
+     */
+    renderBigMenuDeep(menuElement, html) {
+
+      menuElement.children.forEach((element) => {
+        let elementTranslate = this.getTranslationByLocale(element.menuElementTranslations);
+        if (!element.disabled) {
+          html += '<li><a class="dropdown-item" href="">' + elementTranslate.text + '</a>'
+          if (this.isHaveChildren(element)) {
+            html += '<ul class="list-custom">';
+            html = this.renderBigMenuDeep(element, html);
+            html += '</ul>';
+          }
+          html += '</li>';
+        }
+      });
+
+      return html;
     }
 
   }
@@ -170,7 +234,9 @@ export default {
               {{ elementTranslate.text }}
             </a>
             <div v-if="this.isHaveChildren(element)" class="dropdown-menu megamenu" role="menu">
-              aaa
+              <div class="row" v-html="this.renderBigMenu(element, '')">
+
+              </div>
             </div>
           </li>
 
@@ -182,7 +248,9 @@ export default {
                   <ul class="list-unstyled">
                     <li><a class="dropdown-item" href="#">Action</a></li>
                     <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                      <hr class="dropdown-divider">
+                    </li>
                     <li><a class="dropdown-item" href="#">Something else here</a></li>
                   </ul>
                 </div>
@@ -190,7 +258,9 @@ export default {
                   <ul class="list-unstyled">
                     <li><a class="dropdown-item" href="#">Action</a></li>
                     <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                      <hr class="dropdown-divider">
+                    </li>
                     <li><a class="dropdown-item" href="#">Something else here</a></li>
                   </ul>
                 </div>
