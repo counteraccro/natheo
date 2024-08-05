@@ -32,14 +32,10 @@ menu.select.locale: __menu.select.locale
 menu.select.position: __menu.select.position
 menu.header.type.side-bar: __menu.header.type.side-bar
 menu.header.type.deroulant: __menu.header.type.deroulant
-menu.header.type.deroulant.1ligne.1col: __menu.header.type.deroulant.1ligne.1col
-menu.header.type.deroulant.1ligne.2col: __menu.header.type.deroulant.1ligne.2col
-menu.header.type.deroulant.1ligne.3col: __menu.header.type.deroulant.1ligne.3col
-menu.header.type.deroulant.1ligne.4col: __menu.header.type.deroulant.1ligne.4col
-menu.header.type.deroulant.2lignes.1col: __menu.header.type.deroulant.2lignes.1col
-menu.header.type.deroulant.2lignes.2col: __menu.header.type.deroulant.2lignes.2col
-menu.header.type.deroulant.2lignes.3col: __menu.header.type.deroulant.2lignes.3col
-menu.header.type.deroulant.2lignes.4col: __menu.header.type.deroulant.2lignes.4col
+menu.header.type.deroulant.big.menu: '__Menu déroulant géant'
+menu.header.type.deroulant.big.menu.2col: '__Menu déroulant géant, 2 colonnes'
+menu.header.type.deroulant.big.menu.3col: '__Menu déroulant géant, 3 colonnes'
+menu.header.type.deroulant.big.menu.4col: '__Menu déroulant géant, 4 colonnes'
 menu.left.right.type.side-bar: __menu.left.right.type.side-bar
 menu.left.right.type.side-bar.accordeon: __menu.left.right.type.side-bar.accordeon
 menu.footer.type.col1: __menu.footer.type.col1
