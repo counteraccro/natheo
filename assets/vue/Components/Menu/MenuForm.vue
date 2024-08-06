@@ -7,7 +7,7 @@
 export default {
   name: "MenuForm",
   components: {},
-  emit: ['reorder-element', 'change-parent'],
+  emit: ['reorder-element', 'change-parent', 'close-form'],
   props: {
     menuElement: Object,
     translate: Object,
@@ -213,6 +213,14 @@ export default {
       this.$emit('change-parent', this.menuElement.id, parent, deep);
     },
 
+    /**
+     * Masque le formulaire
+     */
+    closeForm()
+    {
+      this.$emit('close-form');
+    },
+
 
     /**
      * Affiche le titre du formulaire
@@ -232,7 +240,10 @@ export default {
 <template>
 
   <div class="card border border-secondary">
-    <div class="card-header text-bg-secondary">{{ this.titleForm }}</div>
+    <div class="card-header text-bg-secondary">
+      {{ this.titleForm }}
+      <button type="button" class="btn-close float-end" aria-label="Close" @click="this.closeForm"></button>
+    </div>
     <div class="card-body">
 
       <div class="row">

@@ -284,6 +284,15 @@ export default {
     },
 
     /**
+     * Permet de fermer le formulaire d'édition
+     */
+    closeForm()
+    {
+      this.showForm = false;
+      this.selectMenuElement = [];
+    },
+
+    /**
      * Met à jour le parent d'un élément
      * @param id
      * @param idParent
@@ -341,6 +350,10 @@ export default {
       if (positions.columnMax === 0) {
         positions.columnMax = 1;
         positions[positions.columnMax] = {'colum': 1, 'rowMax': 0};
+      }
+
+      if(this.currentDeep !== 1) {
+        positions.columnMax = 1;
       }
 
       this.loading = true;
@@ -649,6 +662,7 @@ export default {
                   :deep="this.currentDeep"
                   @reorder-element="this.reorderElement"
                   @change-parent="this.updateParent"
+                  @close-form="this.closeForm"
               >
               </menu-form>
 
