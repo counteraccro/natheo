@@ -91,9 +91,10 @@ export default {
      * Génère la liste de parent en fonction de la locale
      */
     createListeAllElement() {
+      console.log(this.allElements);
       this.listParents = [];
       Object.entries(this.allElements).forEach((data) => {
-          this.listParents.push({value: data[0], label: data[1][this.locale]});
+        this.listParents.push({value: data[0], label: data[1][this.locale]});
       })
     },
 
@@ -196,12 +197,20 @@ export default {
      */
     switchParent(event) {
 
+      let deep = 0;
       let parent = event.target.value;
       if (parent === "") {
         parent = 0;
       }
 
-      this.$emit('change-parent', this.menuElement.id, parent);
+      Object.entries(this.allElements).forEach((data) => {
+        if (data[0] === parent) {
+          // On rajoute +1 car on remonte la profondeur du parent
+          deep = (data[1]['deep'] + 1);
+        }
+      })
+
+      this.$emit('change-parent', this.menuElement.id, parent, deep);
     },
 
 
@@ -243,11 +252,11 @@ export default {
           </div>
 
           <div class="mt-1 mb-3">
-          <label for="liste-target" class="form-label">{{ this.translate.element_link_target_label }}</label>
-          <select class="form-select" id="liste-target" v-model="this.menuElement.linkTarget">
-            <option value="_self">{{ this.translate.element_link_target_label_self }}</option>
-            <option value="_blank">{{ this.translate.element_link_target_label_blank }}</option>
-          </select>
+            <label for="liste-target" class="form-label">{{ this.translate.element_link_target_label }}</label>
+            <select class="form-select" id="liste-target" v-model="this.menuElement.linkTarget">
+              <option value="_self">{{ this.translate.element_link_target_label_self }}</option>
+              <option value="_blank">{{ this.translate.element_link_target_label_blank }}</option>
+            </select>
           </div>
         </div>
         <div class="col">

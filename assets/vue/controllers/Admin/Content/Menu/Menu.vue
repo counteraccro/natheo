@@ -287,8 +287,9 @@ export default {
      * Met à jour le parent d'un élément
      * @param id
      * @param idParent
+     * @param deep
      */
-    updateParent(id, idParent) {
+    updateParent(id, idParent, deep) {
 
       idParent = parseInt(idParent);
       let positions = MenuElementTools.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, idParent);
@@ -296,6 +297,11 @@ export default {
       if (positions.columnMax === 0) {
         positions.columnMax = 1;
         positions[positions.columnMax] = {'colum': 1, 'rowMax': 0};
+      }
+
+      // Si la profondeur n'est pas 1 alors on force la valeur de column max
+      if(deep !== 1) {
+        positions.columnMax = 1;
       }
 
       this.loading = true;
@@ -308,6 +314,7 @@ export default {
         if (response.data.success === true) {
           this.toasts.toastSuccess.msg = response.data.msg;
           this.toasts.toastSuccess.show = true;
+          this.currentDeep = deep;
           this.loadMenu(response.data.id);
 
         } else {

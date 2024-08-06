@@ -325,17 +325,18 @@ class MenuService extends AppAdminService
     {
         /** @var MenuElementRepository $repo */
         $result = $this->getMenuElementByMenuAndParent($menuId);
-        return $this->constructListeParent($result, $idElement, []);
+        return $this->constructListeParent($result, $idElement, 0, []);
     }
 
     /**
      * Construit de façon recursive une liste de parent valide
      * @param array $menuElements
      * @param int $idElementExclude
+     * @param int $deep
      * @param array $return
      * @return array
      */
-    private function constructListeParent(array $menuElements, int $idElementExclude, array $return): array
+    private function constructListeParent(array $menuElements, int $idElementExclude, int $deep, array $return): array
     {
         foreach ($menuElements as $menuElement) {
             /** @var MenuElement $menuElement */
@@ -347,9 +348,10 @@ class MenuService extends AppAdminService
             foreach ($menuElement->getMenuElementTranslations() as $translation) {
                 $return[$menuElement->getId()][$translation->getLocale()] = $translation->getTextLink();
             }
+            $return[$menuElement->getId()]['deep'] = $deep;
 
             if (!$menuElement->getChildren()->isEmpty()) {
-                $return = $this->constructListeParent($menuElement->getChildren()->toArray(), $idElementExclude, $return);
+                $return = $this->constructListeParent($menuElement->getChildren()->toArray(), $idElementExclude, $deep +1, $return);
             }
         }
         return $return;
@@ -448,6 +450,7 @@ class MenuService extends AppAdminService
     /**
      * Retourne le nombre de column et rowMax par column pour la liste en paramètre
      * @param array $menuElements
+     * @param array $exclude
      * @return array
      */
     private function getTabColumnAndRowMax(array $menuElements, array $exclude = []): array
