@@ -195,15 +195,15 @@ menu:
           fr:
             locale: fr
             textLink: 'GitHub'
-            externalLink: '#'
+            externalLink: 'https://github.com/counteraccro/natheo'
           es:
             locale: es
             textLink: 'es-GitHub'
-            externalLink: '#'
+            externalLink: 'https://github.com/counteraccro/natheo'
           en:
             locale: en
             textLink: 'en-GitHub'
-            externalLink: '#'
+            externalLink: 'https://github.com/counteraccro/natheo'
       natheo-site:
         page: ''
         parent: natheo
@@ -235,15 +235,15 @@ menu:
           fr:
             locale: fr
             textLink: 'Partenaires'
-            externalLink: '#'
+            externalLink: 'https://www.google.fr/'
           es:
             locale: es
             textLink: 'es-Partenaire'
-            externalLink: '#'
+            externalLink: 'https://www.google.fr/'
           en:
             locale: en
             textLink: 'en-Partenaire'
-            externalLink: '#'
+            externalLink: 'https://www.google.fr/'
       partenaire-1:
         page: ''
         parent: partenaire
@@ -255,15 +255,15 @@ menu:
           fr:
             locale: fr
             textLink: 'Natheo agency'
-            externalLink: '#'
+            externalLink: 'https://www.natheo-agency.fr/'
           es:
             locale: es
             textLink: 'es-Partenaire-1'
-            externalLink: '#'
+            externalLink: 'https://www.natheo-agency.fr/'
           en:
             locale: en
             textLink: 'en-Partenaire-1'
-            externalLink: '#'
+            externalLink: 'https://www.natheo-agency.fr/'
       partenaire-2:
         page: ''
         parent: partenaire
@@ -275,15 +275,15 @@ menu:
           fr:
             locale: fr
             textLink: 'Natheo community'
-            externalLink: '#'
+            externalLink: 'https://www.natheo-community.fr/'
           es:
             locale: es
             textLink: 'es-Partenaire-2'
-            externalLink: '#'
+            externalLink: 'https://www.natheo-community.es/'
           en:
             locale: en
             textLink: 'en-Partenaire-2'
-            externalLink: '#'
+            externalLink: 'https://www.natheo-community.com/'
       partenaire-3:
         page: ''
         parent: partenaire
@@ -295,13 +295,13 @@ menu:
           fr:
             locale: fr
             textLink: 'Natheo Book'
-            externalLink: '#'
+            externalLink: 'https://www.natheo-book.fr/'
           es:
             locale: es
             textLink: 'es-Partenaire-3'
-            externalLink: '#'
+            externalLink: 'https://www.natheo-book.es/'
           en:
             locale: en
             textLink: 'en-Partenaire-3'
-            externalLink: '#'
+            externalLink: 'https://www.natheo-book.com/'
 
