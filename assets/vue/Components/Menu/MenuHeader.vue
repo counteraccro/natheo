@@ -4,6 +4,7 @@
  * Composant header pour la création /edition d'un menu
  */
 import translate from "../../controllers/Admin/System/Translate.vue";
+import {MenuElementTools} from "../../../utils/Admin/Content/Menu/MenuElementsTools";
 
 export default {
   name: "MenuHeader",
@@ -35,21 +36,7 @@ export default {
      * @param tabMenuElementTranslation
      */
     getTranslationByLocale(tabMenuElementTranslation) {
-
-      let element = ['text', 'link'];
-
-      tabMenuElementTranslation.forEach((menuElementTranslation) => {
-        if (menuElementTranslation.locale === this.locale) {
-          element['text'] = menuElementTranslation.textLink;
-          if (menuElementTranslation.hasOwnProperty('link') && menuElementTranslation.link !== "") {
-            element['link'] = menuElementTranslation.link;
-          } else {
-            element['link'] = menuElementTranslation.externalLink;
-          }
-
-        }
-      })
-      return element;
+      return MenuElementTools.getTranslationByLocale(tabMenuElementTranslation, this.locale);
     },
 
     /**

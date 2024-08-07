@@ -3,7 +3,6 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
-import {reactive} from "vue";
 
 class MenuElementTools {
 
@@ -65,6 +64,29 @@ class MenuElementTools {
             }
         });
         return data;
+    }
+
+    /**
+     * Retourne le lien avec la traduction en fonction de la locale
+     * @param tabMenuElementTranslation
+     * @param locale
+     */
+    static getTranslationByLocale(tabMenuElementTranslation, locale) {
+
+        let element = ['text', 'link'];
+
+        tabMenuElementTranslation.forEach((menuElementTranslation) => {
+            if (menuElementTranslation.locale === locale) {
+                element['text'] = menuElementTranslation.textLink;
+                if (menuElementTranslation.hasOwnProperty('link') && menuElementTranslation.link !== "") {
+                    element['link'] = menuElementTranslation.link;
+                } else {
+                    element['link'] = menuElementTranslation.externalLink;
+                }
+
+            }
+        })
+        return element;
     }
 }
 
