@@ -1,9 +1,9 @@
-<script>
-/**
+<script>/**
  * @author Gourdon Aymeric
  * @version 1.0
  * Composant left ou right pour la création /edition d'un menu
  */
+import {MenuElementTools} from "../../../utils/Admin/Content/Menu/MenuElementsTools";
 
 export default {
   name: "MenuLeftRight",
@@ -18,9 +18,7 @@ export default {
     type: 'switchType'
   },
   data() {
-    return {
-
-    }
+    return {}
   },
   mounted() {
     console.log(this.data);
@@ -42,11 +40,28 @@ export default {
     },
 
     definePosition() {
-      if(parseInt(this.data.position) === 2) {
+      if (parseInt(this.data.position) === 2) {
         return 'float-end'
       }
       return "";
-    }
+    },
+
+    /**
+     * Retourne le lien avec la traduction en fonction de la locale
+     * @param tabMenuElementTranslation
+     */
+    getTranslationByLocale(tabMenuElementTranslation) {
+      return MenuElementTools.getTranslationByLocale(tabMenuElementTranslation, this.locale);
+    },
+
+    /**
+     *  Détermine si le menuElement possède des enfants ou non
+     * @param menuElement
+     */
+    isHaveChildren(menuElement) {
+      return menuElement.hasOwnProperty('children');
+    },
+
   }
 }
 </script>
@@ -62,31 +77,41 @@ export default {
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
         <a href="#" class="nav-link active" aria-current="page">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+          <svg class="bi pe-none me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+          </svg>
           Home
         </a>
       </li>
       <li>
         <a href="#" class="nav-link link-body-emphasis">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+          <svg class="bi pe-none me-2" width="16" height="16">
+            <use xlink:href="#speedometer2"></use>
+          </svg>
           Dashboard
         </a>
       </li>
       <li>
         <a href="#" class="nav-link link-body-emphasis">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+          <svg class="bi pe-none me-2" width="16" height="16">
+            <use xlink:href="#table"></use>
+          </svg>
           Orders
         </a>
       </li>
       <li>
         <a href="#" class="nav-link link-body-emphasis">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+          <svg class="bi pe-none me-2" width="16" height="16">
+            <use xlink:href="#grid"></use>
+          </svg>
           Products
         </a>
       </li>
       <li>
         <a href="#" class="nav-link link-body-emphasis">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+          <svg class="bi pe-none me-2" width="16" height="16">
+            <use xlink:href="#people-circle"></use>
+          </svg>
           Customers
         </a>
       </li>
