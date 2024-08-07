@@ -23,6 +23,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.data);
 
   },
   methods: {
@@ -38,6 +39,13 @@ export default {
           console.log('TYPE_LEFT_RIGHT_SIDE_BAR_ACCORDEON');
           break;
       }
+    },
+
+    definePosition() {
+      if(parseInt(this.data.position) === 2) {
+        return 'float-end'
+      }
+      return "";
     }
   }
 }
@@ -45,6 +53,44 @@ export default {
 
 <template>
 
-  <div>Menu left right</div>
+  <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" :class="this.definePosition()" style="width: 280px;">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+      <i class="bi pe-none me-2 h5" :class="this.data.logo"></i>
+      <span class="fs-4">{{ this.data.name }}</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="#" class="nav-link active" aria-current="page">
+          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+          Home
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link link-body-emphasis">
+          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link link-body-emphasis">
+          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+          Orders
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link link-body-emphasis">
+          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+          Products
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link link-body-emphasis">
+          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+          Customers
+        </a>
+      </li>
+    </ul>
+  </div>
 
 </template>

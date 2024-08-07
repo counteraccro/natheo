@@ -176,6 +176,7 @@ export default {
         let first = Object.entries(this.listTypeByPosition)[0];
         this.menu.type = first[0];
       }
+      this.dataMenu.position = position;
 
       this.switchComposant(position);
     },
@@ -545,6 +546,7 @@ export default {
             :data="this.dataMenu"
         />
 
+        <div class="clearfix"></div>
         <i>{{ this.translate.title_demo_warning }}</i>
       </fieldset>
 
