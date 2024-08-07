@@ -14,7 +14,6 @@ import FieldEditor from "../../../../Components/Global/FieldEditor.vue";
 import {emitter} from "../../../../../utils/useEvent";
 import MenuForm from "../../../../Components/Menu/MenuForm.vue";
 import {MenuElementTools} from "../../../../../utils/Admin/Content/Menu/MenuElementsTools";
-import {reactive} from "vue";
 
 export default {
   name: 'Menu',
@@ -45,7 +44,7 @@ export default {
       currentDeep: 0,
       listTypeByPosition: [],
       listValidParent: [],
-      selectComponent: 'MenuHeader',
+      selectComponent: '',
       selectMenuElement: [],
       positions: [],
       showForm: false,
@@ -134,16 +133,15 @@ export default {
      * @param idPosition
      */
     switchComposant(idPosition) {
-
-      switch (idPosition) {
-        case "1" :
+      switch (parseInt(idPosition)) {
+        case 1 :
           this.selectComponent = 'MenuHeader';
           break;
-        case "2" :
-        case "4" :
+        case 2 :
+        case 4 :
           this.selectComponent = 'MenuLeftRight';
           break;
-        case "3":
+        case 3:
           this.selectComponent = 'MenuFooter';
           break;
         default:
@@ -158,6 +156,12 @@ export default {
      */
     selectListTypeByPosition(position) {
 
+      // Premier chargement car listType est forcement vide
+      let isFirstLoad = false;
+      if (this.listTypeByPosition.length === 0) {
+        isFirstLoad = true;
+      }
+
       this.listTypeByPosition = [];
 
       for (let key in this.menu_datas.list_type) {
@@ -167,6 +171,12 @@ export default {
           break;
         }
       }
+
+      if (!isFirstLoad) {
+        let first = Object.entries(this.listTypeByPosition)[0];
+        this.menu.type = first[0];
+      }
+
       this.switchComposant(position);
     },
 
@@ -286,8 +296,7 @@ export default {
     /**
      * Permet de fermer le formulaire d'édition
      */
-    closeForm()
-    {
+    closeForm() {
       this.showForm = false;
       this.selectMenuElement = [];
     },
@@ -309,7 +318,7 @@ export default {
       }
 
       // Si la profondeur n'est pas 1 alors on force la valeur de column max
-      if(deep !== 1) {
+      if (deep !== 1) {
         positions.columnMax = 1;
       }
 
@@ -352,7 +361,7 @@ export default {
         positions[positions.columnMax] = {'colum': 1, 'rowMax': 0};
       }
 
-      if(this.currentDeep !== 1) {
+      if (this.currentDeep !== 1) {
         positions.columnMax = 1;
       }
 
@@ -588,105 +597,105 @@ export default {
                   </div>
                 </div>
 
-                </div>
-                <div class="col">
-                  <label for="menu-position" class="form-label">{{ this.translate.select_position_label }}</label>
-                  <select id="menu-position" class="form-select mb-3" v-model="this.menu.position" @change="this.switchPosition($event)">
-                    <option value="" selected>{{ this.translate.select_position }}</option>
-                    <option v-for="(position, key) in this.menu_datas.list_position" :value="key">{{ position }}
-                    </option>
-                  </select>
-
-                  <label for="menu-type" class="form-label">{{ this.translate.select_type_label }}</label>
-                  <select id="menu-type" class="form-select" v-model="this.menu.type" :disabled="this.listTypeByPosition.length === 0">
-                    <option value="" selected v-if="this.listTypeByPosition.length === 0">
-                      {{ this.translate.select_type }}
-                    </option>
-                    <option v-for="(position, key) in this.listTypeByPosition" :value="key">{{ position }}
-                    </option>
-                  </select>
-                </div>
               </div>
+              <div class="col">
+                <label for="menu-position" class="form-label">{{ this.translate.select_position_label }}</label>
+                <select id="menu-position" class="form-select mb-3" v-model="this.menu.position" @change="this.switchPosition($event)">
+                  <option value="" selected>{{ this.translate.select_position }}</option>
+                  <option v-for="(position, key) in this.menu_datas.list_position" :value="key">{{ position }}
+                  </option>
+                </select>
 
+                <label for="menu-type" class="form-label">{{ this.translate.select_type_label }}</label>
+                <select id="menu-type" class="form-select" v-model="this.menu.type" :disabled="this.listTypeByPosition.length === 0">
+                  <option value="" selected v-if="this.listTypeByPosition.length === 0">
+                    {{ this.translate.select_type }}
+                  </option>
+                  <option v-for="(position, key) in this.listTypeByPosition" :value="key">{{ position }}
+                  </option>
+                </select>
+              </div>
             </div>
+
           </div>
+        </div>
 
-          <div class="row">
-            <div class="col-4">
+        <div class="row">
+          <div class="col-4">
 
-              <div class="card border" :class="this.isErrorNoElement ? 'border-danger' : 'border-secondary'">
-                <div class="card-header" :class="this.isErrorNoElement ? 'text-bg-danger' : 'text-bg-secondary'">
-                  {{ this.translate.title_architecture }}
-                </div>
-                <div class="card-body">
+            <div class="card border" :class="this.isErrorNoElement ? 'border-danger' : 'border-secondary'">
+              <div class="card-header" :class="this.isErrorNoElement ? 'text-bg-danger' : 'text-bg-secondary'">
+                {{ this.translate.title_architecture }}
+              </div>
+              <div class="card-body">
 
-                  <div v-if="this.menu.id !== ''">
-                    <ul class=" tree-menu">
-                      <menu-tree
-                          v-for="menuElement in this.menu.menuElements"
-                          :menu-element="menuElement"
-                          :locale="this.currentLocale"
-                          :id-select="this.selectMenuElement.id"
-                          :translate="this.translate.menu_tree"
-                          :deep="0"
-                      />
-                      <li>
-                        <div>
+                <div v-if="this.menu.id !== ''">
+                  <ul class=" tree-menu">
+                    <menu-tree
+                        v-for="menuElement in this.menu.menuElements"
+                        :menu-element="menuElement"
+                        :locale="this.currentLocale"
+                        :id-select="this.selectMenuElement.id"
+                        :translate="this.translate.menu_tree"
+                        :deep="0"
+                    />
+                    <li>
+                      <div>
                           <span class="btn btn-outline-secondary btn-sm" @click="this.newElement(0)"><i class="bi bi-plus-square"></i>
                             {{ this.translate.btn_new_menu_element }}
                           </span>
-                        </div>
-                      </li>
-                    </ul>
+                      </div>
+                    </li>
+                  </ul>
 
-                    <div class="text-danger" v-if="this.isErrorNoElement">
-                      <i class="bi bi-exclamation-triangle-fill"></i> <i>{{ this.translate.error_no_element }}</i>
-                    </div>
-                  </div>
-                  <div v-else>
-                    <i class="bi bi-info-circle"></i> {{ this.translate.msg_no_element_new_menu }}
+                  <div class="text-danger" v-if="this.isErrorNoElement">
+                    <i class="bi bi-exclamation-triangle-fill"></i> <i>{{ this.translate.error_no_element }}</i>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="col-8">
-
-              <menu-form
-                  v-if="this.showForm"
-                  :menu-element="this.selectMenuElement"
-                  :translate="this.translate.menu_form"
-                  :locale="this.currentLocale"
-                  :pages="this.dataMenu.pages"
-                  :positions="this.positions"
-                  :all-elements="this.listValidParent"
-                  :deep="this.currentDeep"
-                  @reorder-element="this.reorderElement"
-                  @change-parent="this.updateParent"
-                  @close-form="this.closeForm"
-              >
-              </menu-form>
-
-              <div v-else class="card border border-secondary h-100">
-                <div class="card-header text-bg-secondary">
-                  {{ this.translate.no_select_menu_form }}
-                </div>
-                <div class="card-body">
-                  <p class="text-black"><i>{{ this.translate.no_select_menu_form_msg }}</i></p>
-
-                  {{ this.translate.help_title }} <br/>
-
-                  <i class="bi bi-arrow-right"></i> <i class="bi bi-pencil-fill"></i> {{ this.translate.help_edition }}
-                  <br/>
-                  <i class="bi bi-arrow-right"></i> <i class="bi bi-x-lg"></i> {{ this.translate.help_delete }} <br/>
-                  <i class="bi bi-arrow-right"></i> <i class="bi bi-plus-square"></i> {{ this.translate.help_new }}
-                  <br/>
-                  <i class="bi bi-arrow-right"></i>
-                  <i class="bi bi-eye-slash-fill"></i> {{ this.translate.help_disabled }}
-
+                <div v-else>
+                  <i class="bi bi-info-circle"></i> {{ this.translate.msg_no_element_new_menu }}
                 </div>
               </div>
             </div>
           </div>
+          <div class="col-8">
+
+            <menu-form
+                v-if="this.showForm"
+                :menu-element="this.selectMenuElement"
+                :translate="this.translate.menu_form"
+                :locale="this.currentLocale"
+                :pages="this.dataMenu.pages"
+                :positions="this.positions"
+                :all-elements="this.listValidParent"
+                :deep="this.currentDeep"
+                @reorder-element="this.reorderElement"
+                @change-parent="this.updateParent"
+                @close-form="this.closeForm"
+            >
+            </menu-form>
+
+            <div v-else class="card border border-secondary h-100">
+              <div class="card-header text-bg-secondary">
+                {{ this.translate.no_select_menu_form }}
+              </div>
+              <div class="card-body">
+                <p class="text-black"><i>{{ this.translate.no_select_menu_form_msg }}</i></p>
+
+                {{ this.translate.help_title }} <br/>
+
+                <i class="bi bi-arrow-right"></i> <i class="bi bi-pencil-fill"></i> {{ this.translate.help_edition }}
+                <br/>
+                <i class="bi bi-arrow-right"></i> <i class="bi bi-x-lg"></i> {{ this.translate.help_delete }} <br/>
+                <i class="bi bi-arrow-right"></i> <i class="bi bi-plus-square"></i> {{ this.translate.help_new }}
+                <br/>
+                <i class="bi bi-arrow-right"></i>
+                <i class="bi bi-eye-slash-fill"></i> {{ this.translate.help_disabled }}
+
+              </div>
+            </div>
+          </div>
+        </div>
       </fieldset>
     </div>
   </div>
