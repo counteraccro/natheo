@@ -101,6 +101,18 @@ class MenuConst
     const TYPE_FOOTER_4_COLONNES = 16;
 
     /**
+     * Menu footer 1 ligne à droite
+     * @var integer
+     */
+    const TYPE_FOOTER_1_ROW_RIGHT = 17;
+
+    /**
+     * Menu footer 1 ligne centrée
+     * @var integer
+     */
+    const TYPE_FOOTER_1_ROW_CENTER = 18;
+
+    /**
      * Link target blank
      * @var string
      */
