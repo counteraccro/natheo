@@ -111,3 +111,5 @@ menu.form.link.target.label: __menu.form.link.target.label
 menu.form.link.target.label.self: __menu.form.link.target.label.self
 menu.form.link.target.label.blank: __menu.form.link.target.label.blank
 menu.element.reorder.success: __menu.element.reorder.success
+menu.footer.type.row1.right: __menu.footer.type.row1.right
+menu.footer.type.row1.center: __menu.footer.type.row1.center
