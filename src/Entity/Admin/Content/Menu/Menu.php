@@ -36,6 +36,9 @@ class Menu
     private ?int $renderOrder = null;
 
     #[ORM\Column]
+    private ?bool $defaultMenu = false;
+
+    #[ORM\Column]
     private ?bool $disabled = false;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
@@ -227,6 +230,18 @@ class Menu
     public function setDisabled(bool $disabled): static
     {
         $this->disabled = $disabled;
+
+        return $this;
+    }
+
+    public function isDefaultMenu(): ?bool
+    {
+        return $this->defaultMenu;
+    }
+
+    public function setDefaultMenu(bool $defaultMenu): static
+    {
+        $this->defaultMenu = $defaultMenu;
 
         return $this;
     }
