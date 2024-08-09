@@ -156,6 +156,10 @@ class PageTranslate extends AppTranslate
             'title' => $this->translator->trans('page.page_save.title', domain: 'page'),
             'list_status_label' => $this->translator->trans('page.page_save.list_status_label', domain: 'page'),
             'list_status_help' => $this->translator->trans('page.page_save.list_status_help', domain: 'page'),
+            'list_menu_label' => $this->translator->trans('page.page_save.list_menu_label', domain: 'page'),
+            'list_menu_help' => $this->translator->trans('page.page_save.list_menu_help', domain: 'page'),
+            'list_menu_empty' => $this->translator->trans('page.page_save.list_menu_empty', domain: 'page'),
+            'list_menu_disabled' => $this->translator->trans('page.page_save.list_menu_disabled', domain: 'page'),
             'btn_save' => $this->translator->trans('page.page_save.btn.save', domain: 'page'),
             'btn_see_ext' => $this->translator->trans('page.page_save.btn.see_ext', domain: 'page'),
         ];

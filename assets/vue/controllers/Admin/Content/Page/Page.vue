@@ -36,6 +36,7 @@ export default {
       componentKey: 1,
       loading: false,
       page: [],
+      menus: [],
       currentLocale: '',
       currentTab: 'content',
       toasts: {
@@ -141,6 +142,7 @@ export default {
       ).then((response) => {
         this.page = response.data.page;
         this.historyInfo = response.data.history
+        this.menus = response.data.menus
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -664,7 +666,21 @@ export default {
 
         <h5>{{ this.translate.page_save.title }}</h5>
 
-        <div class="mb3">
+        <div class="mb-3">
+          <label for="list-menu-page" class="form-label">{{ this.translate.page_save.list_menu_label }}</label>
+          <select id="list-menu-page" class="form-select" aria-label="Default select example" v-model="this.page.menu" multiple @change="this.autoSave(this.page)">
+            <option value="-1">{{ this.translate.page_save.list_menu_empty }}</option>
+            <option v-for="menu in this.menus" :value="parseInt(menu.id)" v-html="(menu.disabled) ? menu.name + ' (' + this.translate.page_save.list_menu_disabled + ')' : menu.name">
+            </option>
+          </select>
+
+          <div class="alert alert-light mt-2">
+            {{ this.translate.page_save.list_menu_help }}
+          </div>
+
+        </div>
+
+        <div class="mb-3">
           <label for="list-status-page" class="form-label">{{ this.translate.page_save.list_status_label }}</label>
           <select id="list-status-page" class="form-select" aria-label="Default select example" v-model="this.page.status">
             <option v-for="(value, key) in this.list_status" :value="parseInt(key)">{{ value }}</option>
