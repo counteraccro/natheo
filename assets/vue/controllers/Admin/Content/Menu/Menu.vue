@@ -49,6 +49,7 @@ export default {
       positions: [],
       showForm: false,
       labelDisabled: '',
+      labelDefaultMenu: '',
       canSave: true,
       isValideName: true,
       isErrorNoElement: false,
@@ -199,6 +200,7 @@ export default {
         this.dataMenu = response.data.data;
         this.selectListTypeByPosition(this.menu.position);
         this.renderLabelDisabled();
+        this.renderLabelDefaultMenu();
 
         if (this.menu.id === "") {
           this.canSave = false;
@@ -468,6 +470,18 @@ export default {
     },
 
     /**
+     * Rendu du label pour la checkbox disabled
+     * @returns {*}
+     */
+    renderLabelDefaultMenu() {
+      if (!this.menu.defaultMenu) {
+        this.labelDefaultMenu = this.translate.checkbox_default_menu_true_label_msg;
+      } else {
+        this.labelDefaultMenu = this.translate.checkbox_default_menu_false_label_msg;
+      }
+    },
+
+    /**
      * Met à jour le status d'une modale défini par son id et son état
      * @param nameModale
      * @param state true|false
@@ -585,6 +599,23 @@ export default {
                 <div class="mb-3">
 
                   <div class="form-check form-check-inline">
+                    <input class="form-check-input" v-model="this.menu.defaultMenu" type="radio" name="defaultMenu" id="default-menu-false" :value="false" @change="this.renderLabelDefaultMenu">
+                    <label class="form-check-label" for="default-menu-false"> {{ this.translate.checkbox_default_menu_false_label }}</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" v-model="this.menu.defaultMenu" type="radio" name="defaultMenu" id="default-menu-true" :value="true" @change="this.renderLabelDefaultMenu">
+                    <label class="form-check-label" for="default-menu-true">{{ this.translate.checkbox_default_menu_true_label }}</label>
+                  </div>
+
+                  <div class="clearfix"></div>
+                  <div class="mt-1">
+                    <i> {{ this.labelDefaultMenu }} </i>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+
+                  <div class="form-check form-check-inline">
                     <input class="form-check-input" v-model="this.menu.disabled" type="radio" name="menuDisabled" id="menu-enabled" :value="false" @change="this.renderLabelDisabled">
                     <label class="form-check-label" for="menu-enabled"> {{ this.translate.checkbox_enabled_label }}</label>
                   </div>
@@ -594,7 +625,7 @@ export default {
                   </div>
 
                   <div class="clearfix"></div>
-                  <div class="mt-2">
+                  <div class="mt-1">
                     <i> {{ this.labelDisabled }} </i>
                   </div>
                 </div>

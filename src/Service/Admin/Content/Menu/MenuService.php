@@ -51,6 +51,7 @@ class MenuService extends AppAdminService
             $translator->trans('menu.grid.id', domain: 'menu'),
             $translator->trans('menu.grid.name', domain: 'menu'),
             $translator->trans('menu.grid.type', domain: 'menu'),
+            $translator->trans('menu.grid.default', domain: 'menu'),
             $translator->trans('menu.grid.create_at', domain: 'menu'),
             $translator->trans('menu.grid.update_at', domain: 'menu'),
             GridService::KEY_ACTION,
@@ -75,10 +76,16 @@ class MenuService extends AppAdminService
             $listePosition = $this->getListPosition();
             $strType = $listePosition[$element->getPosition()] . ' / ' . $listeType[$element->getPosition()][$element->getType()];
 
+            $strDefault = $translator->trans('menu.grid.default.no', domain: 'menu');
+            if ($element->isDefaultMenu()) {
+                $strDefault = $translator->trans('menu.grid.default.yes', domain: 'menu');
+            }
+
             $data[] = [
                 $translator->trans('menu.grid.id', domain: 'menu') => $element->getId() . ' ' . $isDisabled,
                 $translator->trans('menu.grid.name', domain: 'menu') => $name,
                 $translator->trans('menu.grid.type', domain: 'menu') => $strType,
+                $translator->trans('menu.grid.default', domain: 'menu') => $strDefault,
                 $translator->trans('menu.grid.create_at', domain: 'menu') => $element
                     ->getCreatedAt()->format('d/m/y H:i'),
                 $translator->trans('menu.grid.update_at', domain: 'menu') => $element
@@ -350,7 +357,7 @@ class MenuService extends AppAdminService
             $return[$menuElement->getId()]['deep'] = $deep;
 
             if (!$menuElement->getChildren()->isEmpty()) {
-                $return = $this->constructListeParent($menuElement->getChildren()->toArray(), $idElementExclude, $deep +1, $return);
+                $return = $this->constructListeParent($menuElement->getChildren()->toArray(), $idElementExclude, $deep + 1, $return);
             }
         }
         return $return;
@@ -439,7 +446,7 @@ class MenuService extends AppAdminService
         foreach ($tabTmp as $columnRef => $menuElements) {
             $orderEntity = new OrderEntity(new ArrayCollection($menuElements), 'rowPosition');
             $tab = $orderEntity->sortByProperty()->reOrderList()->getCollection();
-            foreach($tab as $menuElement) {
+            foreach ($tab as $menuElement) {
                 $this->save($menuElement);
             }
         }
@@ -458,7 +465,7 @@ class MenuService extends AppAdminService
         foreach ($menuElements as $menuElement) {
             /** @var MenuElement $menuElement */
 
-            if(in_array($menuElement->getId(), $exclude)) {
+            if (in_array($menuElement->getId(), $exclude)) {
                 continue;
             }
 
@@ -516,7 +523,7 @@ class MenuService extends AppAdminService
     {
         $return = [];
         $menus = $this->findBy(Menu::class);
-        foreach($menus as $menu) {
+        foreach ($menus as $menu) {
             $return[$menu->getId()] = ['name' => $menu->getName(), 'disabled' => $menu->isDisabled(), 'id' => $menu->getId()];
         }
         return $return;
