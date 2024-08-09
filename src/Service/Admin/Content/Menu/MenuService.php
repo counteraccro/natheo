@@ -506,4 +506,20 @@ class MenuService extends AppAdminService
         }
     }
 
+    /**
+     * Retourne sous la forme id => [nom menu, disabled ou enabled], la liste des menus disponibles
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getListMenus(): array
+    {
+        $return = [];
+        $menus = $this->findBy(Menu::class);
+        foreach($menus as $menu) {
+            $return[$menu->getId()] = ['name' => $menu->getName(), 'disabled' => $menu->isDisabled(), 'id' => $menu->getId()];
+        }
+        return $return;
+    }
+
 }

@@ -10,6 +10,7 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
+use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Global\DateService;
 use App\Utils\Breadcrumb;
@@ -213,6 +214,7 @@ class PageController extends AppAdminController
     #[Route('/ajax/load-tab-content/{id}', name: 'load_tab_content', methods: ['GET'])]
     public function loadTabContent(
         PageService $pageService,
+        MenuService $menuService,
         int         $id = null,
     ): JsonResponse
     {
@@ -227,11 +229,19 @@ class PageController extends AppAdminController
         } else {
             $page = $pageService->findOneById(Page::class, $id);
         }
-        $pageArray = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt', 'user']);
+        $pageArray = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt', 'user', 'menuElements', 'menus']);
+
+        // On lie les menus à la page
+        if (!$page->getMenus()->isEmpty()) {
+            foreach ($page->getMenus() as $menu) {
+                $pageArray['menu'] = [$menu->getId()];
+            }
+        }
 
         return $this->json([
             'page' => $pageArray,
-            'history' => $pageService->getDiffBetweenHistoryAndPage($page)
+            'history' => $pageService->getDiffBetweenHistoryAndPage($page),
+            'menus' => $menuService->getListMenus()
         ]);
     }
 
@@ -328,7 +338,10 @@ class PageController extends AppAdminController
      * @param Request $request
      * @param PageService $pageService
      * @param TranslatorInterface $translator
+     * @param ContainerBagInterface $containerBag
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/save', name: 'save')]
     public function save(
@@ -370,6 +383,9 @@ class PageController extends AppAdminController
      * @param Request $request
      * @param PageService $pageService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws ExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/new-content', name: 'new_content')]
     public function newContent(Request $request, PageService $pageService): JsonResponse
