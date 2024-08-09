@@ -15,30 +15,13 @@ export default {
     data: Object,
     locale: String
   },
-  watch: {
-    type: 'switchType'
-  },
   data() {
     return {}
   },
   mounted() {
-    console.log(this.data);
 
   },
   methods: {
-    /**
-     * Permet de déterminer le type de rendu
-     */
-    switchType() {
-      switch (this.type) {
-        case 11 :
-          console.log('TYPE_LEFT_RIGHT_SIDE_BAR');
-          break;
-        case 12 :
-          console.log('TYPE_LEFT_RIGHT_SIDE_BAR_ACCORDEON');
-          break;
-      }
-    },
 
     definePosition() {
       if (parseInt(this.data.position) === 2) {
@@ -52,7 +35,6 @@ export default {
      * @param tabMenuElementTranslation
      */
     getTranslationByLocale(tabMenuElementTranslation) {
-      console.log(tabMenuElementTranslation)
       return MenuElementTools.getTranslationByLocale(tabMenuElementTranslation, this.locale);
     },
 
