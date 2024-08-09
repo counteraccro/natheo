@@ -130,3 +130,7 @@ page.category.news: __page.category.news
 page.category.evolution: __page.category.evolution
 page.category.documentation: __page.category.documentation
 page.category.faq: __page.category.faq
+page.page_save.list_menu_label: __page.page_save.list_menu_label
+page.page_save.list_menu_help: __page.page_save.list_menu_help
+page.page_save.list_menu_empty: __page.page_save.list_menu_empty
+page.page_save.list_menu_disabled: __page.page_save.list_menu_disabled
