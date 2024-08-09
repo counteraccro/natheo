@@ -7,7 +7,9 @@
 
 namespace App\Utils\Translate;
 
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -18,6 +20,10 @@ class AppTranslate
      */
     protected TranslatorInterface $translator;
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function __construct(#[AutowireLocator([
         'translator' => TranslatorInterface::class,
     ])] private readonly ContainerInterface $handlers)

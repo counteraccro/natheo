@@ -1,0 +1,37 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+
+{% if id is same as null %}
+    {% set title = 'menu.add.menu_title' | trans({}, 'menu') %}
+    {% set titleH1 = 'menu.add.menu_title_h1' | trans({}, 'menu') %}
+    {% set description = 'menu.add.description' | trans({}, 'menu') %}
+{% else %}
+    {% set title = 'menu.update.menu_title' | trans({'id' : id}, 'menu') %}
+    {% set titleH1 = 'menu.update.menu_title_h1' | trans({}, 'menu') %}
+    {% set description = 'menu.update.description' | trans({}, 'menu') %}
+{% endif %}
+
+ {% block title %}
+     {{ title }}
+ {% endblock %}
+
+{% block body %}
+
+    <h1>{{ titleH1 }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    <p>
+        {{ description }}
+    </p>
+
+    <div {{ vue_component('Admin/Content/Menu/Menu', {
+        'id' : id,
+        'urls' : urls,
+        'translate' : translate,
+        'locales' : locales,
+        'menu_datas' : datas
+    }) }}>
+    </div>
+
+{% endblock %}

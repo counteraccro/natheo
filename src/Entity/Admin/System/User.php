@@ -9,6 +9,7 @@ namespace App\Entity\Admin\System;
 
 use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Media\Media;
+use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Notification;
 use App\Entity\Admin\Tools\SqlManager;
@@ -89,6 +90,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: SqlManager::class, orphanRemoval: true)]
     private Collection $sqlManagers;
 
+    /**
+     * @var Collection<int, Menu>
+     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Menu::class, orphanRemoval: true)]
+    private Collection $menus;
+
     public function __construct()
     {
         $this->optionsUser = new ArrayCollection();
@@ -98,6 +105,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->pages = new ArrayCollection();
         $this->faqs = new ArrayCollection();
         $this->sqlManagers = new ArrayCollection();
+        $this->menus = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -547,6 +555,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($sqlManager->getUsers() === $this) {
                 $sqlManager->setUsers(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Menu>
+     */
+    public function getMenus(): Collection
+    {
+        return $this->menus;
+    }
+
+    public function addMenu(Menu $menu): static
+    {
+        if (!$this->menus->contains($menu)) {
+            $this->menus->add($menu);
+            $menu->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMenu(Menu $menu): static
+    {
+        if ($this->menus->removeElement($menu)) {
+            // set the owning side to null (unless already changed)
+            if ($menu->getUsers() === $this) {
+                $menu->setUsers(null);
             }
         }
 

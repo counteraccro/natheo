@@ -1,10 +1,9 @@
 <script>
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Permet de transformer un texte après un double click dessus en un champ éditable
  */
-import axios from "axios";
 
 export default {
   name: "FieldEditor",

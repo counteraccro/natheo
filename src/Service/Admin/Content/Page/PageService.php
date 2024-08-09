@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.2
+ * @version 1.3
  * Service gérant la création de page
  */
 
@@ -28,11 +28,13 @@ class PageService extends AppAdminService
 {
 
     /**
-     * Retourne une liste de tag paginé
+     * Retourne une liste de page paginé
      * @param int $page
      * @param int $limit
      * @param string|null $search
      * @return Paginator
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
     {
@@ -263,6 +265,22 @@ class PageService extends AppAdminService
     }
 
     /**
+     * Retourne une catégorie en fonction de son id
+     * @param int $id
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getCategoryById(int $id): string
+    {
+        $categories = $this->getAllCategories();
+        if (isset($categories[$id])) {
+            return $categories[$id];
+        }
+        return '';
+    }
+
+    /**
      * Génère une liste de tags au format HTML
      * @param Collection $tags
      * @return string
@@ -421,5 +439,29 @@ class PageService extends AppAdminService
             'info' => $info
         ];
 
+    }
+
+    /**
+     * Retourne l'ensemble des titres et url des pages du site
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getAllTitleAndUrlPage(): array
+    {
+        $return = [];
+        $tab = $this->getAllPaginate(1, 100000);
+
+        foreach ($tab as $page) {
+            /** @var Page $page */
+            $pageTranslations = $page->getPageTranslations();
+            foreach ($pageTranslations as $pageTranslation) {
+                $return[$page->getId()][$pageTranslation->getLocale()]
+                    = [
+                    'title' => $pageTranslation->getTitre(),
+                    'url' => $pageTranslation->getUrl(),
+                ];
+            }
+        }
+        return $return;
     }
 }

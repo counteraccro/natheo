@@ -108,6 +108,12 @@ class AppFixtures extends Fixture
     protected const GROUP_SQL_MANAGER = 'sql_manager';
 
     /**
+     * Lié à tous les éléments menu
+     * @var string
+     */
+    protected const GROUP_MENU = 'menu';
+
+    /**
      * @var ContainerInterface
      */
     protected ContainerInterface $container;

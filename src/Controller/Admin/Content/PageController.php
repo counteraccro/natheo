@@ -10,6 +10,7 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
+use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Global\DateService;
 use App\Utils\Breadcrumb;
@@ -53,12 +54,14 @@ class PageController extends AppAdminController
     }
 
     /**
-     * Charge le tableau grid de tag en ajax
+     * Charge le tableau grid de page en ajax
      * @param PageService $pageService
      * @param Request $request
      * @param int $page
      * @param int $limit
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     public function loadGridData(
@@ -80,6 +83,8 @@ class PageController extends AppAdminController
      * @param TranslatorInterface $translator
      * @param Request $request
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', methods: 'PUT')]
     public function updateDisabled(
@@ -142,6 +147,8 @@ class PageController extends AppAdminController
      * @param PageTranslate $pageTranslate
      * @param int|null $id
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
@@ -207,6 +214,7 @@ class PageController extends AppAdminController
     #[Route('/ajax/load-tab-content/{id}', name: 'load_tab_content', methods: ['GET'])]
     public function loadTabContent(
         PageService $pageService,
+        MenuService $menuService,
         int         $id = null,
     ): JsonResponse
     {
@@ -221,11 +229,21 @@ class PageController extends AppAdminController
         } else {
             $page = $pageService->findOneById(Page::class, $id);
         }
-        $pageArray = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt', 'user']);
+        $pageArray = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt', 'user', 'menuElements', 'menus']);
+
+        // On lie les menus à la page
+        if (!$page->getMenus()->isEmpty()) {
+            foreach ($page->getMenus() as $menu) {
+                $pageArray['menus'][] = $menu->getId();
+            }
+        } else {
+            $pageArray['menus'][] = "-1";
+        }
 
         return $this->json([
             'page' => $pageArray,
-            'history' => $pageService->getDiffBetweenHistoryAndPage($page)
+            'history' => $pageService->getDiffBetweenHistoryAndPage($page),
+            'menus' => $menuService->getListMenus()
         ]);
     }
 
@@ -322,7 +340,10 @@ class PageController extends AppAdminController
      * @param Request $request
      * @param PageService $pageService
      * @param TranslatorInterface $translator
+     * @param ContainerBagInterface $containerBag
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/save', name: 'save')]
     public function save(
@@ -364,6 +385,9 @@ class PageController extends AppAdminController
      * @param Request $request
      * @param PageService $pageService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws ExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/new-content', name: 'new_content')]
     public function newContent(Request $request, PageService $pageService): JsonResponse

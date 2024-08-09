@@ -6,5 +6,114 @@ menu.index.popin.help.edit: Editer
 menu.index.page_title: 'Gestion des menus'
 menu.index.page_title_h1: 'Gestion des menus'
 menu.index.btn.new: 'Nouveau menu'
-menu.index.description: 'A écrire'
-menu.index.description2: 'A écrire'
+menu.index.description: 'Gérer les menus de votre site web'
+menu.index.description2: 'Vous pouvez attribué un menu à une page unique, ou à un ensemble de page'
+menu.success.no.disabled: 'Menu activé avec succès'
+menu.success.disabled: 'Menu désactivé avec succès'
+menu.remove.success: 'Menu supprimé avec succès'
+menu.add.menu_title: "Création d'un nouveau menu"
+menu.add.menu_title_h1: 'Nouveau menu'
+menu.add.description: 'Créer un nouveau menu pour votre site web'
+menu.update.menu_title: 'Edition du menu #{id}'
+menu.update.menu_title_h1: Edition
+menu.update.description: 'Modifier le menu de votre site web'
+menu.grid.id: '#'
+menu.grid.name: Nom
+menu.grid.type: Type
+menu.grid.create_at: 'Date de création'
+menu.grid.update_at: 'Date de modification'
+menu.confirm.disabled.msg: 'Confirmez vous la désactivation du menu <b>{label}</b>, cette action est définitive'
+menu.confirm.delete.msg: 'Confirmez vous la suppression du menu <b>{label}</b>, cette action est définitive'
+menu.position.header: 'Haut de page'
+menu.position.right: 'A droite'
+menu.position.footer: 'Pied de page'
+menu.position.left: 'A gauche'
+menu.select.locale: 'Choix de la langue'
+menu.select.position: 'Position du menu'
+menu.header.type.side-bar: 'Menu side-bar'
+menu.header.type.deroulant: 'Menu déroulant classique'
+menu.header.type.deroulant.big.menu: 'Menu déroulant géant'
+menu.header.type.deroulant.big.menu.2col: 'Menu déroulant géant, 2 colonnes'
+menu.header.type.deroulant.big.menu.3col: 'Menu déroulant géant, 3 colonnes'
+menu.header.type.deroulant.big.menu.4col: 'Menu déroulant géant, 4 colonnes'
+menu.select.type: 'Type de menu'
+menu.left.right.type.side-bar: 'Menu side-bar'
+menu.left.right.type.side-bar.accordeon: 'Menu side-bar avec accordéons'
+menu.footer.type.col: 'Pied de page avec colonne'
+menu.title.demo: 'Rendu du menu'
+menu.title.demo_warning: 'Ce rendu est un aperçu de la structure et peut être différent du rendu de votre site'
+menu.title.architecture: 'Architecture du menu'
+menu.error.empty.value: 'Cette valeur ne peut pas être vide'
+menu.msg.wait.loading: 'Préparation de vos données...'
+menu.btn.save: Sauvegarder
+menu.btn.new: 'Nouveau menu'
+menu.form.title.edit: 'Edition du menuElement'
+menu.form.title.new: 'Nouveau menuElement'
+menu.form.input.search.page: "Associer une page à l'élément de votre menu"
+menu.form.input.search.page.placeholder: 'Rechercher une page'
+menu.form.block.fr: 'Données en français'
+menu.form.block.es: 'Données en espagnole'
+menu.form.block.en: 'Données en anglais'
+menu.form.input.link.text: Label
+menu.form.input.link.url: 'Url interne'
+menu.form.input.link.external.url: 'Url externe'
+menu.form.radio.label.url.interne: 'Lien interne'
+menu.form.radio.label.url.externe: 'Lien externe'
+menu.form.title.position: Positionnement
+menu.no_select.menu.form: 'Edition du menuElement #-'
+menu.no_select.menu.form.msg: "Sélectionner un élement du menu pour pouvoir l'éditer"
+menu.help.edition: 'Editer un menuElement'
+menu.help.delete: 'Supprime un menuElement'
+menu.help.title: Aide
+menu.title.global_form: 'Gestion du menu'
+menu.title.generic.data: 'Données globales'
+menu.input.name.label: 'Nom du menu'
+menu.input.name.placeholder: 'Nom du menu'
+menu.input.name.error: 'Le nom du menu ne peux pas être vide'
+menu.select.position.label: 'Position du menu'
+menu.select.type.label: 'Type du menu'
+menu.checkbox.disabled.label: 'Menu désactivé '
+menu.checkbox.enabled.label: 'Menu Activé'
+menu.form.parent.label: Parent
+menu.form.parent.empty: 'Aucun parent'
+menu.form.url.type.label: "Type d'url"
+menu.form.position.column.label: 'Numéro de la colonne'
+menu.form.position.row.label: 'Numéro de la ligne'
+menu.error.no.element: 'Vous devez créer au moins un élement dans votre menu'
+menu.toast.title.success: 'Succès !'
+menu.toast.title.error: 'Erreur !'
+menu.toast.time: "A l'instant"
+menu.element.confirm.delete.title: "Suppression d'un élément du menu"
+menu.element.confirm.delete.body: 'Confirmez vous la suppression de cet élément de votre menu ?'
+menu.element.confirm.delete.body.2: 'Attention, si cet élément possède des enfants, ceux-ci seront aussi supprimés'
+menu.element.confirm.delete.btn.ok: Oui
+menu.element.confirm.delete.btn.ko: Non
+menu.element.remove.success: "L'élément à été supprimé avec succès"
+menu.btn.new.menu.element: Nouveau
+menu.tree.btn.new.menu.element: Nouveau
+menu.element.new.success: 'Nouveau élement ajouté au menu'
+menu.help.new: 'Nouveau noeud'
+menu.form.radio.label.disabled.element: 'Elément masqué'
+menu.form.radio.label.enabled.element: 'Elément visible'
+menu.form.text.info.disabled.element: 'Cet élément est masqué, il ne sera pas visible dans votre menu'
+menu.form.text.info.enabled.element: 'Cet élément est visible, il sera affiché dans votre menu'
+menu.help.disabled: 'cet élément est masqué'
+menu.element.change.parent.success: 'Parent modifié avec succès'
+menu.msg.no.element.new.menu: 'Il faut créer le menu avant de pouvoir lui ajouter des éléments'
+menu.new.success.save: 'Menu Créé avec succès, redirection vers le mode édition...'
+menu.edit.success.save: 'Menu édité avec succès !'
+menu.checkbox.disabled.label.msg: "Le menu est actuellement désactivé, il n'apparaitra pas sur le site "
+menu.checkbox.enabled.label.msg: 'Le menu est visible sur le site'
+menu.form.link.target.label: 'Cible du lien'
+menu.form.link.target.label.self: 'Même page'
+menu.form.link.target.label.blank: 'Nouvel onglet'
+menu.element.reorder.success: 'Elément réordonné avec succès'
+menu.footer.type.row1.right: 'Pied de page 1 ligne à droite'
+menu.footer.type.row1.center: 'Pied de page 1 ligne centrée'
+menu.grid.default: 'Affichage par défaut'
+menu.grid.default.no: Non
+menu.grid.default.yes: Oui
+menu.checkbox.default.menu.true.label: 'Menu par défaut'
+menu.checkbox.default.menu.false.label: 'Menu classique'
+menu.checkbox.default.menu.false.label.msg: 'Ce menu doit être rattaché à une page pour apparaitre'
+menu.checkbox.default.menu.true.label.msg: "Ce menu apparaitra par défaut si la page affichée n'a pas de menu défini"

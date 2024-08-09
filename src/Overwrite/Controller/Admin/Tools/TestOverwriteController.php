@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Dashboard
+ * Controller de test pour la surcharge
  * @author Gourdon Aymeric
  * @version 1.0
  */
@@ -11,7 +11,6 @@ namespace App\Overwrite\Controller\Admin\Tools;
 use App\Controller\Admin\AppAdminController;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Breadcrumb;
-use App\Utils\System\Options\OptionSystemKey;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;

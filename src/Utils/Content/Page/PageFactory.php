@@ -26,6 +26,9 @@ class PageFactory
      */
     private array $locales;
 
+    /**
+     * @param array $locales
+     */
     public function __construct(array $locales)
     {
         $this->locales = $locales;
