@@ -110,3 +110,10 @@ menu.form.link.target.label.blank: 'Nouvel onglet'
 menu.element.reorder.success: 'Elément réordonné avec succès'
 menu.footer.type.row1.right: 'Pied de page 1 ligne à droite'
 menu.footer.type.row1.center: 'Pied de page 1 ligne centrée'
+menu.grid.default: 'Affichage par défaut'
+menu.grid.default.no: Non
+menu.grid.default.yes: Oui
+menu.checkbox.default.menu.true.label: 'Menu par défaut'
+menu.checkbox.default.menu.false.label: 'Menu classique'
+menu.checkbox.default.menu.false.label.msg: 'Ce menu doit être rattaché à une page pour apparaitre'
+menu.checkbox.default.menu.true.label.msg: "Ce menu apparaitra par défaut si la page affichée n'a pas de menu défini"
