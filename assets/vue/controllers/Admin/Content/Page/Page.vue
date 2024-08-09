@@ -668,7 +668,7 @@ export default {
 
         <div class="mb-3">
           <label for="list-menu-page" class="form-label">{{ this.translate.page_save.list_menu_label }}</label>
-          <select id="list-menu-page" class="form-select" aria-label="Default select example" v-model="this.page.menu" multiple @change="this.autoSave(this.page)">
+          <select id="list-menu-page" class="form-select" aria-label="Default select example" v-model="this.page.menus" multiple @change="this.autoSave(this.page)">
             <option value="-1">{{ this.translate.page_save.list_menu_empty }}</option>
             <option v-for="menu in this.menus" :value="parseInt(menu.id)" v-html="(menu.disabled) ? menu.name + ' (' + this.translate.page_save.list_menu_disabled + ')' : menu.name">
             </option>

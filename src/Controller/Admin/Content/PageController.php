@@ -234,8 +234,10 @@ class PageController extends AppAdminController
         // On lie les menus à la page
         if (!$page->getMenus()->isEmpty()) {
             foreach ($page->getMenus() as $menu) {
-                $pageArray['menu'] = [$menu->getId()];
+                $pageArray['menus'][] = $menu->getId();
             }
+        } else {
+            $pageArray['menus'][] = "-1";
         }
 
         return $this->json([
