@@ -202,10 +202,7 @@ class MenuService extends AppAdminService
             MenuConst::POSITION_FOOTER => [
                 MenuConst::TYPE_FOOTER_1_ROW_RIGHT => $translator->trans('menu.footer.type.row1.right', domain: 'menu'),
                 MenuConst::TYPE_FOOTER_1_ROW_CENTER => $translator->trans('menu.footer.type.row1.center', domain: 'menu'),
-                MenuConst::TYPE_FOOTER_1_COLONNE => $translator->trans('menu.footer.type.col1', domain: 'menu'),
-                MenuConst::TYPE_FOOTER_2_COLONNES => $translator->trans('menu.footer.type.col2', domain: 'menu'),
-                MenuConst::TYPE_FOOTER_3_COLONNES => $translator->trans('menu.footer.type.col3', domain: 'menu'),
-                MenuConst::TYPE_FOOTER_4_COLONNES => $translator->trans('menu.footer.type.col4', domain: 'menu'),
+                MenuConst::TYPE_FOOTER_COLONNES => $translator->trans('menu.footer.type.col', domain: 'menu'),
             ]
         ];
     }

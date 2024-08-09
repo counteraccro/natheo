@@ -32,32 +32,6 @@ export default {
     },
 
     /**
-     * Retourne le nombre de colonne en fonction du type
-     */
-    getCurrentCol() {
-      let col = 'col-3';
-
-      switch (this.type) {
-        case 13 :
-          col = 'col-10'
-          break
-        case 14 :
-          col = 'col-5'
-          break
-        case 15 :
-          col = 'col-3'
-          break
-        case 16 :
-          col = 'col-2'
-          break
-        default :
-          col = 'col-3'
-          break;
-      }
-      return col;
-    },
-
-    /**
      * Génère le footer de type Col avec profondeur
      * @param menuElement
      * @param html
@@ -139,8 +113,8 @@ export default {
     </footer>
   </div>
 
-  <div class="container" v-if="this.type < 17">
-    <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
+  <div class="container" v-if="this.type === 16">
+    <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 pt-5 mt-5 border-top">
       <div class="col mb-2">
         <a :href="this.data.ur_site" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none">
           <i class="bi" :class="this.data.logo"></i>&nbsp;{{ this.data.name }}
@@ -148,9 +122,9 @@ export default {
         <p class="text-body-secondary">© <span v-html="this.getCurrentYear()"></span></p>
       </div>
 
-      <div class="col-1 mb-3"></div>
+      <div class="col mb-2"></div>
 
-      <div v-for="(element) in this.menu.menuElements" class="mb-2" :class="this.getCurrentCol()" :set="elementTranslate = this.getTranslationByLocale(element.menuElementTranslations)">
+      <div v-for="(element) in this.menu.menuElements" class="col mb-2" :set="elementTranslate = this.getTranslationByLocale(element.menuElementTranslations)">
         <div v-if="this.isHaveChildren(element) && !element.disabled">
           <h5>{{ elementTranslate.text }}</h5>
           <ul class="nav flex-column" v-html="this.renderColDeep(element, '')"></ul>

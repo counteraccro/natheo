@@ -77,28 +77,10 @@ class MenuConst
     const TYPE_LEFT_RIGHT_SIDE_BAR_ACCORDEON = 12;
 
     /**
-     * Menu footer 1 colonne
-     * @var integer
-     */
-    const TYPE_FOOTER_1_COLONNE = 13;
-
-    /**
-     * Menu footer 2 colonnes
-     * @var integer
-     */
-    const TYPE_FOOTER_2_COLONNES = 14;
-
-    /**
-     * Menu footer 3 colonnes
-     * @var integer
-     */
-    const TYPE_FOOTER_3_COLONNES = 15;
-
-    /**
      * Menu footer 4 colonnes
      * @var integer
      */
-    const TYPE_FOOTER_4_COLONNES = 16;
+    const TYPE_FOOTER_COLONNES = 16;
 
     /**
      * Menu footer 1 ligne à droite
