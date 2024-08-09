@@ -93,6 +93,6 @@ class MenuFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
      */
     public function getOrder(): int
     {
-        return 299;
+        return 298;
     }
 }
