@@ -1,11 +1,12 @@
 menu:
-  menu_header:
+  menu_generic_header:
     user: Aymeric
-    name: Header
+    name: Generic header
     type: 1
     position: 1
     renderOrder: 1
     disabled: 0
+    defaultMenu: true
     menuElement:
       listing:
         page: ''
@@ -304,4 +305,69 @@ menu:
             locale: en
             textLink: 'en-Partenaire-3'
             externalLink: 'https://www.natheo-book.com/'
-
+  menu_generic_footer:
+    user: Aymeric
+    name: Generic footer
+    type: 17
+    position: 3
+    renderOrder: 1
+    disabled: 0
+    defaultMenu: true
+    menuElement:
+      siteOfficiel:
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Site officiel'
+            externalLink: 'https://www.google.fr'
+          es:
+            locale: es
+            textLink: 'es-site-officiel'
+            externalLink: 'https://www.google.es'
+          en:
+            locale: en
+            textLink: 'en-site-officiel'
+            externalLink: 'https://www.google.com'
+      documentation:
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 2
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Documentation'
+            externalLink: 'https://github.com/counteraccro/natheo'
+          es:
+            locale: es
+            textLink: 'es-documentation'
+            externalLink: 'https://github.com/counteraccro/natheo'
+          en:
+            locale: en
+            textLink: 'en-documentation'
+            externalLink: 'https://github.com/counteraccro/natheo'
+      gitHub:
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 3
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'GitHub'
+            externalLink: 'https://github.com/counteraccro/natheo'
+          es:
+            locale: es
+            textLink: 'es-GitHub'
+            externalLink: 'https://github.com/counteraccro/natheo'
+          en:
+            locale: en
+            textLink: 'en-GitHub'
+            externalLink: 'https://github.com/counteraccro/natheo'
