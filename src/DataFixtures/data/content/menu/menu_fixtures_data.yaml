@@ -371,3 +371,259 @@ menu:
             locale: en
             textLink: 'en-GitHub'
             externalLink: 'https://github.com/counteraccro/natheo'
+  menu_generic_left:
+    user: Aymeric
+    name: Generic menu
+    type: 12
+    position: 4
+    renderOrder: 1
+    disabled: 0
+    defaultMenu: true
+    menuElement:
+      listing_menu_left:
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Contenu'
+            externalLink: ''
+          es:
+            locale: es
+            textLink: 'es-contenu'
+            externalLink: ''
+          en:
+            locale: en
+            textLink: 'en-contenu'
+            externalLink: ''
+      page_menu_left:
+        page: ''
+        parent: listing_menu_left
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Pages'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-page'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-page'
+            externalLink: '#'
+      listing_page_menu_left:
+        page: 'Page_listing_page'
+        parent: page_menu_left
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Listing des pages'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-listing-page'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-listing-page'
+            externalLink: '#'
+      page_nouveaute_menu_left:
+        page: Page_nouveaute
+        parent: page_menu_left
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 2
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Les nouveautées'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-page-nouveaute'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-page-noueaute'
+            externalLink: '#'
+      page_demo_menu_left:
+        page: Page_demo
+        parent: page_menu_left
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 3
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Démonstration'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-page-demo'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-page-demo'
+            externalLink: '#'
+      blog_menu_left:
+        page: ''
+        parent: listing_menu_left
+        disabled: 0
+        columnPosition: 2
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Blogs'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-blog'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-blog'
+            externalLink: '#'
+      listing_blog_menu_left:
+        page: 'Page_listing_blog'
+        parent: blog_menu_left
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Listing des blogs'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-listing-blog'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-listing-blog'
+            externalLink: '#'
+      page_blog_menu_left:
+        page: 'Page_blog'
+        parent: blog_menu_left
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 2
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Page de blog'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-page-blog'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-page-blog'
+            externalLink: '#'
+  menu_left_page:
+    user: Aymeric
+    name: Menu left pour Page
+    type: 12
+    position: 4
+    renderOrder: 1
+    disabled: 0
+    defaultMenu: false
+    menuElement:
+      page_menu_page_left:
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Pages'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-page'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-page'
+            externalLink: '#'
+      listing_page_menu_page:
+        page: 'Page_listing_page'
+        parent: page_menu_page_left
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Listing des pages'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-listing-page'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-listing-page'
+            externalLink: '#'
+      page_nouveaute_menu_page:
+        page: Page_nouveaute
+        parent: page_menu_page_left
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 2
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Les nouveautées'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-page-nouveaute'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-page-noueaute'
+            externalLink: '#'
+      page_demo_menu_page:
+        page: Page_demo
+        parent: page_menu_page_left
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 3
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Démonstration'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'es-page-demo'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'en-page-demo'
+            externalLink: '#'
