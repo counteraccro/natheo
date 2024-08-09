@@ -2,7 +2,7 @@ menu:
   menu_generic_header:
     user: Aymeric
     name: Generic header
-    type: 1
+    type: 3
     position: 1
     renderOrder: 1
     disabled: 0
