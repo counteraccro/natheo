@@ -64,13 +64,13 @@ class Page
      * @var Collection<int, MenuElement>
      */
     #[ORM\OneToMany(mappedBy: 'page', targetEntity: MenuElement::class)]
-    #[JoinTable(name: 'page_menu')]
     private Collection $menuElements;
 
     /**
      * @var Collection<int, Menu>
      */
-    #[ORM\ManyToMany(targetEntity: Menu::class, mappedBy: 'page')]
+    #[ORM\ManyToMany(targetEntity: Menu::class, inversedBy: 'pages')]
+    #[JoinTable(name: 'page_menu')]
     private Collection $menus;
 
     public function __construct()

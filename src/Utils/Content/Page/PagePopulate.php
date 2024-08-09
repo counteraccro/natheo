@@ -7,6 +7,7 @@
 
 namespace App\Utils\Content\Page;
 
+use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\Content\Page\PageContentTranslation;
@@ -26,6 +27,11 @@ class PagePopulate
      * @var string
      */
     const KEY_TAGS = 'tags';
+
+    /**
+     * Clé menus
+     */
+    const KEY_MENUS = 'menus';
 
     /**
      * Clé pageContents
@@ -70,6 +76,7 @@ class PagePopulate
         $this->populatePageTranslation();
         $this->populatePageContent();
         $this->populateTags();
+        $this->populateMenus();
         return $this;
     }
 
@@ -115,6 +122,24 @@ class PagePopulate
             foreach ($this->populate[self::KEY_TAGS] as $dataTag) {
                 $tag = $this->pageService->findOneById(Tag::class, $dataTag['id']);
                 $this->page->addTag($tag);
+            }
+        }
+    }
+
+    /**
+     * Reset les menus présents dans $page et ajoute à la place les menus associés à la page avec $populate si
+     * la clé "menu" est présente
+     * @return void
+     */
+    private function populateMenus():void
+    {
+        if (isset($this->populate[self::KEY_MENUS])) {
+            $this->page->getMenus()->clear();
+            if(!in_array('-1', $this->populate[self::KEY_MENUS])) {
+                foreach ($this->populate[self::KEY_MENUS] as $dataMenu) {
+                    $menu = $this->pageService->findOneById(Menu::class, $dataMenu);
+                    $this->page->addMenu($menu);
+                }
             }
         }
     }

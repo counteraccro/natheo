@@ -54,13 +54,13 @@ class Menu
     /**
      * @var Collection<int, Page>
      */
-    #[ORM\ManyToMany(targetEntity: Page::class, inversedBy: 'menus', cascade: ['persist'])]
-    private Collection $page;
+    #[ORM\ManyToMany(targetEntity: Page::class, mappedBy: 'menus', cascade: ['persist'])]
+    private Collection $pages;
 
     public function __construct()
     {
         $this->menuElements = new ArrayCollection();
-        $this->page = new ArrayCollection();
+        $this->pages = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -198,15 +198,15 @@ class Menu
     /**
      * @return Collection<int, Page>
      */
-    public function getPage(): Collection
+    public function getPages(): Collection
     {
-        return $this->page;
+        return $this->pages;
     }
 
     public function addPage(Page $page): static
     {
-        if (!$this->page->contains($page)) {
-            $this->page->add($page);
+        if (!$this->pages->contains($page)) {
+            $this->pages->add($page);
         }
 
         return $this;
@@ -214,7 +214,7 @@ class Menu
 
     public function removePage(Page $page): static
     {
-        $this->page->removeElement($page);
+        $this->pages->removeElement($page);
 
         return $this;
     }
