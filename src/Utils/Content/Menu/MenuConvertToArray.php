@@ -48,6 +48,7 @@ class MenuConvertToArray
         $return = $this->createStructure(Menu::class, ['createdAt', 'updateAt', 'userId']);
         $return['position'] = MenuConst::POSITION_HEADER;
         $return['type'] = MenuConst::TYPE_HEADER_SIDE_BAR;
+        $return['defaultMenu'] = false;
         $return['renderOrder'] = 1;
         $return['disabled'] = true;
         $return['name'] = '';
