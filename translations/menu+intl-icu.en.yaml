@@ -29,7 +29,6 @@ menu.position.right: __menu.position.right
 menu.position.footer: __menu.position.footer
 menu.position.left: __menu.position.left
 menu.select.locale: __menu.select.locale
-menu.select.position: __menu.select.position
 menu.header.type.side-bar: __menu.header.type.side-bar
 menu.header.type.deroulant: __menu.header.type.deroulant
 menu.header.type.deroulant.big.menu: '__Menu déroulant géant'
