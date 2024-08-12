@@ -35,8 +35,15 @@ class MenuPopulate
     private const KEY_MENU_ELEMENTS_CHILDREN = 'children';
 
     /**
+     * Clé pour les pageMenu
+     * @var string
+     */
+    private const KEY_PAGE_MENU = 'pageMenu';
+
+    /**
      * @param Menu $menu
      * @param array $populate
+     * @param MenuService $menuService
      */
     public function __construct(
         private Menu                 $menu,
@@ -49,6 +56,7 @@ class MenuPopulate
     {
         $this->populateMenu();
         $this->populateMenuElement();
+        $this->populatePageMenu();
         return $this;
     }
 
@@ -68,6 +76,31 @@ class MenuPopulate
     private function populateMenu(): void
     {
         $this->menu = $this->mergeData($this->menu, $this->populate, [self::KEY_MENU_ELEMENTS, 'refChilds', 'id']);
+    }
+
+    /**
+     * Met à jour les liaisons entre page et menu
+     * @return void
+     */
+    private function populatePageMenu(): void
+    {
+        if(isset($this->populate[self::KEY_PAGE_MENU])){
+
+            foreach($this->menu->getPages() as $page)
+            {
+                $page->removeMenu($this->menu);
+                $this->menu->removePage($page);
+            }
+
+            if(!in_array('-1', $this->populate[self::KEY_PAGE_MENU])){
+                foreach($this->populate[self::KEY_PAGE_MENU] as $id){
+                    /** @var Page $page */
+                    $page = $this->menuService->findOneById(Page::class, $id);
+                    $this->menu->addPage($page);
+                    $page->addMenu($this->menu);
+                }
+            }
+        }
     }
 
     /**

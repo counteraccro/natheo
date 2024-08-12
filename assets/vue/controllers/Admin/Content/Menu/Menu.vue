@@ -632,20 +632,36 @@ export default {
 
               </div>
               <div class="col">
-                <label for="menu-position" class="form-label">{{ this.translate.select_position_label }}</label>
-                <select id="menu-position" class="form-select mb-3" v-model="this.menu.position" @change="this.switchPosition($event)">
-                  <option v-for="(position, key) in this.menu_datas.list_position" :value="key">{{ position }}
-                  </option>
-                </select>
+                <div class="mb-3">
+                  <label for="menu-position" class="form-label">{{ this.translate.select_position_label }}</label>
+                  <select id="menu-position" class="form-select" v-model="this.menu.position" @change="this.switchPosition($event)">
+                    <option v-for="(position, key) in this.menu_datas.list_position" :value="key">{{ position }}
+                    </option>
+                  </select>
+                </div>
 
-                <label for="menu-type" class="form-label">{{ this.translate.select_type_label }}</label>
-                <select id="menu-type" class="form-select" v-model="this.menu.type" :disabled="this.listTypeByPosition.length === 0">
-                  <option value="" selected v-if="this.listTypeByPosition.length === 0">
-                    {{ this.translate.select_type }}
-                  </option>
-                  <option v-for="(position, key) in this.listTypeByPosition" :value="key">{{ position }}
-                  </option>
-                </select>
+                <div class="mb-3">
+                  <label for="menu-type" class="form-label">{{ this.translate.select_type_label }}</label>
+                  <select id="menu-type" class="form-select" v-model="this.menu.type" :disabled="this.listTypeByPosition.length === 0">
+                    <option value="" selected v-if="this.listTypeByPosition.length === 0">
+                      {{ this.translate.select_type }}
+                    </option>
+                    <option v-for="(position, key) in this.listTypeByPosition" :value="key">{{ position }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label for="menu-page" class="form-label">{{ this.translate.select_page_label }}</label>
+                  <select id="menu-page" class="form-select" size="10" v-model="this.menu.pageMenu" multiple>
+                    <option value="-1">{{ this.translate.select_page_no_page }}</option>
+                    <option v-for="(page, id) in this.dataMenu.pages" :value=id>{{ page[this.currentLocale]['title'] }}
+                    </option>
+                  </select>
+                  <div class="form-text">
+                    {{ this.translate.select_page_info }}
+                  </div>
+                </div>
               </div>
             </div>
 

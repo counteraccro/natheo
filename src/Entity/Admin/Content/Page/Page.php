@@ -69,7 +69,7 @@ class Page
     /**
      * @var Collection<int, Menu>
      */
-    #[ORM\ManyToMany(targetEntity: Menu::class, inversedBy: 'pages')]
+    #[ORM\ManyToMany(targetEntity: Menu::class, inversedBy: 'pages', cascade: ['persist', 'remove'])]
     #[JoinTable(name: 'page_menu')]
     private Collection $menus;
 

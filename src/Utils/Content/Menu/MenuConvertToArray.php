@@ -75,18 +75,17 @@ class MenuConvertToArray
         $structure['menuElements'] = [];
 
         $menuElement = $this->menuService->getMenuElementByMenuAndParent($menu->getId());
-        if(!empty($menuElement)){
+        if (!empty($menuElement)) {
             $structure['menuElements'] = $this->mergeMenuElements($menuElement);
         }
-        
+
         $structure['menuElements'] = array_values($structure['menuElements']);
         return $structure;
     }
 
     /**
      * Merge les données du menuElement
-     * @param array $structure
-     * @param Collection $menuElements
+     * @param array $menuElements
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -194,6 +193,17 @@ class MenuConvertToArray
             $structure['parent'] = "";
         }
 
+        if ($object instanceof Menu) {
+            $structure['pageMenu'] = [];
+            if (!$object->getPages()->isEmpty()) {
+                foreach ($object->getPages() as $page) {
+                    $structure['pageMenu'][] = $page->getId();
+                }
+            } else {
+                $structure['pageMenu'] = ['-1'];
+            }
+
+        }
         return $structure;
     }
 }

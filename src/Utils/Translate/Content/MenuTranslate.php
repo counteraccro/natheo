@@ -59,6 +59,9 @@ class MenuTranslate extends AppTranslate
             'menu_element_confirm_delete_btn_ko' => $this->translator->trans('menu.element.confirm.delete.btn.ko', domain: 'menu'),
             'btn_new_menu_element' => $this->translator->trans('menu.btn.new.menu.element', domain: 'menu'),
             'msg_no_element_new_menu' => $this->translator->trans('menu.msg.no.element.new.menu', domain: 'menu'),
+            'select_page_label' => $this->translator->trans('menu.select.page.label', domain: 'menu'),
+            'select_page_no_page' => $this->translator->trans('menu.select.page.no.page', domain: 'menu'),
+            'select_page_info' => $this->translator->trans('menu.select.page.info', domain: 'menu'),
             'menu_form' => $this->getMenuFormTranslate(),
             'menu_tree' => $this->getMenuTreeTranslate(),
         ];

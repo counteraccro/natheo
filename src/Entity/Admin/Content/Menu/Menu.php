@@ -57,7 +57,7 @@ class Menu
     /**
      * @var Collection<int, Page>
      */
-    #[ORM\ManyToMany(targetEntity: Page::class, mappedBy: 'menus', cascade: ['persist'])]
+    #[ORM\ManyToMany(targetEntity: Page::class, mappedBy: 'menus', cascade: ['persist', 'remove'])]
     private Collection $pages;
 
     public function __construct()
