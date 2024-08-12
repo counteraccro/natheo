@@ -634,7 +634,6 @@ export default {
               <div class="col">
                 <label for="menu-position" class="form-label">{{ this.translate.select_position_label }}</label>
                 <select id="menu-position" class="form-select mb-3" v-model="this.menu.position" @change="this.switchPosition($event)">
-                  <option value="" selected>{{ this.translate.select_position }}</option>
                   <option v-for="(position, key) in this.menu_datas.list_position" :value="key">{{ position }}
                   </option>
                 </select>
