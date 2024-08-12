@@ -116,3 +116,6 @@ menu.checkbox.default.menu.true.label: __menu.checkbox.default.menu.true.label
 menu.checkbox.default.menu.false.label: __menu.checkbox.default.menu.false.label
 menu.checkbox.default.menu.false.label.msg: __menu.checkbox.default.menu.false.label.msg
 menu.checkbox.default.menu.true.label.msg: __menu.checkbox.default.menu.true.label.msg
+menu.select.page.label: __menu.select.page.label
+menu.select.page.no.page: __menu.select.page.no.page
+menu.select.page.info: __menu.select.page.info

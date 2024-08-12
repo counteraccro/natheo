@@ -116,3 +116,6 @@ menu.checkbox.default.menu.true.label: 'Menu par défaut'
 menu.checkbox.default.menu.false.label: 'Menu classique'
 menu.checkbox.default.menu.false.label.msg: 'Ce menu doit être rattaché à une page pour apparaitre'
 menu.checkbox.default.menu.true.label.msg: "Ce menu apparaitra par défaut si la page affichée n'a pas de menu défini"
+menu.select.page.label: 'Associer une ou plusieurs page au menu'
+menu.select.page.no.page: 'Aucune page'
+menu.select.page.info: 'Si "Aucune page" est sélectionné, toute page associée à ce menu sera supprimée'
