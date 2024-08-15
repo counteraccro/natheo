@@ -1,1 +1,7 @@
-installation.titre.no.bdd.config: 'Base de données non configurée'
+installation.connectionException.titre: 'Base de données non configurée'
+installation.connectionException.h1: 'Installation de Natheo CMS'
+installation.connectionException.p.help.1: "Votre fichier .env n'est pas correctement configuré et l'installateur de Natheo CMS à détecté un problème."
+installation.connectionException.p.help.2: 'Pré-requis, pour installer correctement Natheo CMS vous devez :'
+installation.connectionException.p.help.3: 'Avoir un accès à votre serveur'
+installation.connectionException.p.help.4: 'Avoir un éditeur sur votre serveur'
+installation.connectionException.p.help.5: "Editer le fichier .env à l'adresse"
