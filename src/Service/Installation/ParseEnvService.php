@@ -107,7 +107,6 @@ class ParseEnvService
      */
     private function replace(string $pattern, string $replacement, string $subject): array|string|null
     {
-        echo $pattern;
         return preg_replace($pattern, $replacement, $subject, 1, $this->count);
     }
 
