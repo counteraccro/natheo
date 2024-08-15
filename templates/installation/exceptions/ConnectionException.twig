@@ -1,22 +1,33 @@
 {% extends 'installation/installation_base.html.twig' %}
-{% block title %}aaa{% endblock %}
+{% block title %}
+    {{ 'installation.connectionException.titre' | trans({}, 'installation') }}
+{% endblock %}
 
 {% block body %}
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    </style>
 
-    <div class="example-wrapper">
+    <div class="col-lg-8 mx-auto p-4 py-md-5">
 
-        {{ 'installation.titre.no.bdd.config' | trans({}, 'installation') }}
 
-        <h1>Hello too! ✅</h1>
+        <header class="d-flex align-items-center pb-3 mb-5 border-bottom">
+            <i class="bi bi-database-fill-slash h3 me-2"></i>
+            <span class="fs-4"> {{ 'installation.connectionException.titre' | trans({}, 'installation') }}</span>
+        </header>
 
-        This friendly message is coming from:
-        <ul>
-            <li>Your controller at <code>C:/wamp64/www/natheo/src/Controller/Install/InstallBddController.php</code></li>
-            <li>Your template at <code>C:/wamp64/www/natheo/templates/install/install_bdd/index.html.twig</code></li>
-        </ul>
+        <main>
+            <h1 class="text-body-emphasis">{{ 'installation.connectionException.h1' | trans({}, 'installation') }}</h1>
+            <p class="fs-5">
+                {{ 'installation.connectionException.p.help.1' | trans({}, 'installation') }} <br/>
+                {{ 'installation.connectionException.p.help.2' | trans({}, 'installation') }}
+            </p>
+            <ul>
+                <li> <i class="bi bi-server"></i> {{ 'installation.connectionException.p.help.3' | trans({}, 'installation') }}</li>
+                <li> <i class="bi bi-file-code-fill"></i> {{ 'installation.connectionException.p.help.4' | trans({}, 'installation') }}</li>
+                <li> <i class="bi bi-pencil-square"></i> {{ 'installation.connectionException.p.help.5' | trans({}, 'installation') }} : <b>{{ envPath }}</b></li>
+            </ul>
+
+
+        </main>
+
+        <pre class="p-3"><code>{{ file }}</code></pre>
     </div>
 {% endblock %}
