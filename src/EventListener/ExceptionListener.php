@@ -13,10 +13,8 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -55,7 +53,7 @@ class ExceptionListener
 
             $parseResult = $parseEnv->parseEnvFile();
             $msg = $twig->render('installation/exceptions/ConnectionException.twig',
-                ['file' => $parseResult['rowFile'], 'envPath'=> $parseEnv->getPathEnvFile()]
+                ['file' => $parseResult['file'], 'envPath'=> $parseEnv->getPathEnvFile(), 'errors' => $parseResult['errors']]
             );
             $response->setContent($msg);
             $event->setResponse($response);

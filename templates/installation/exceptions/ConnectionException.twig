@@ -24,10 +24,17 @@
                 <li> <i class="bi bi-file-code-fill"></i> {{ 'installation.connectionException.p.help.4' | trans({}, 'installation') }}</li>
                 <li> <i class="bi bi-pencil-square"></i> {{ 'installation.connectionException.p.help.5' | trans({}, 'installation') }} : <b>{{ envPath }}</b></li>
             </ul>
-
-
         </main>
 
-        <pre class="p-3"><code>{{ file }}</code></pre>
+        <pre class="p-3"><code>{{ file | raw }}</code></pre>
+
+        <h3> <i class="bi bi-bug-fill"></i> {{ 'installation.connectionException.error.h3' | trans({}, 'installation') }} </h3>
+        <div>
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 {% endblock %}
