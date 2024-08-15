@@ -13,9 +13,12 @@ use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
 use App\Service\SecurityService;
+use App\Utils\Global\DataBase;
 use App\Utils\System\Mail\KeyWord;
 use App\Utils\System\Mail\MailKey;
 use App\Utils\System\User\UserdataKey;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\NonUniqueResultException;
 use League\CommonMark\Exception\CommonMarkException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,18 +31,28 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\String\ByteString;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route('{_locale}/security/', name: 'auth_', requirements: ['_locale' => '%app.supported_locales%'],
+#[Route('{_locale}/admin/', name: 'auth_', requirements: ['_locale' => '%app.supported_locales%'],
     defaults: ["_locale" => "%app.default_locale%"])]
 class SecurityController extends AbstractController
 {
     /**
      * Authentification
      * @param AuthenticationUtils $authenticationUtils
+     * @param DataBase $dataBase
      * @return Response
+     * @throws Exception
      */
-    #[Route(path: 'user/login', name: 'user_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    #[Route(path: 'login', name: 'user_login')]
+    public function login(AuthenticationUtils $authenticationUtils, DataBase $dataBase): Response
     {
+        if (!$dataBase->isSchemaExist()) {
+            return $this->redirectToRoute('installation_no_schema');
+        }
+
+        if (!$dataBase->isTableExiste()) {
+            die('Pas de table');
+        }
+
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
