@@ -41,9 +41,9 @@ class ExceptionListener
     public function __invoke(ExceptionEvent $event): void
     {
 
-        /** @var Environment $twig */
+        // TODO : A virer
+/*
         $twig = $this->handlers->get('twig');
-        /** @var ParseEnvService $parseEnv */
         $parseEnv = $this->handlers->get('parseEnv');
 
         $exception = $event->getThrowable();
@@ -59,11 +59,11 @@ class ExceptionListener
             $event->setResponse($response);
 
         } elseif ($exception instanceof TableNotFoundException) {
-            echo 'Pas de tables';
-            echo __FILE__;
-            die('A modifier');
+            //echo 'Pas de tables';
+            //echo __FILE__;
+            //die('A modifier');
         } else {
             $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        }*/
     }
 }

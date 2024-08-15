@@ -8,6 +8,7 @@
 namespace App\Utils\Global;
 
 use App\Utils\Utils;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -23,15 +24,64 @@ class DataBase
      */
     protected EntityManagerInterface $entityManager;
 
+    protected Connection $connection;
+
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     public function __construct(#[AutowireLocator([
         'entityManager' => EntityManagerInterface::class,
+        'connexion' => Connection::class
     ])] private readonly ContainerInterface $handlers)
     {
         $this->entityManager = $this->handlers->get('entityManager');
+        $this->connection = $this->handlers->get('connexion');
+    }
+
+    /**
+     * Détecte si la base de données est connecté ou non
+     * @return bool
+     */
+    public function isConnected(): bool
+    {
+        return $this->entityManager->getConnection()->isConnected();
+    }
+
+    /**
+     * @param array $tableNames
+     * @return bool
+     * @throws Exception
+     */
+    public function isTableExiste(string $tableName = null): bool
+    {
+        if ($tableName === null) {
+            $tableName = 'user';
+        }
+
+        $query = "SELECT EXISTS (
+                SELECT FROM information_schema.tables 
+           WHERE  table_schema = 'natheo'
+            AND    table_name   = '" . $tableName . "')";
+
+        $result = $this->executeRawQuery($query);
+        if(isset($result['result'][0]['exists']))
+        {
+            return $result['result'][0]['exists'];
+        }
+        return false;
+
+    }
+
+    public function isSchemaExist(): bool
+    {
+        $schemaMananger = $this->connection->createSchemaManager();
+        try {
+            $schemaMananger->listDatabases();
+        } catch (\Doctrine\DBAL\Driver\Exception $exception) {
+            return false;
+        }
+        return true;
     }
 
     /**

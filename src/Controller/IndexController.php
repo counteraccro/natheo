@@ -7,6 +7,8 @@
 
 namespace App\Controller;
 
+use App\Service\Admin\System\OptionUserService;
+use App\Utils\Global\DataBase;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,31 +21,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class IndexController extends AbstractController
 {
     /**
-     * Route qui sert uniquement à redirigé vers l'index avec la bonne local
+     * Route qui sert uniquement à redirigé vers la connexion avec la bonne local
      * @return RedirectResponse
      */
     #[Route('/', name: 'no_local')]
     public function indexNoLocale(): RedirectResponse
     {
         $defaultLocal = $this->getParameter('app.default_locale');
-        return $this->redirectToRoute('index_index', ['_locale' => $defaultLocal]);
+        return $this->redirectToRoute('auth_user_login', ['_locale' => $defaultLocal]);
     }
 
     /**
-     * @throws Exception
+     * Redirige vers la connexion
+     * @return Response
      */
     #[Route('/{_locale}/', name: 'index')]
-    public function index(Connection $connection): Response
+    public function index(): Response
     {
-        $cs = $connection->createSchemaManager();
-        try {
-            var_dump($cs->listDatabases());
-        } catch (Exception $exception) {
-            die($exception->getMessage());
-        }
-
-        return $this->render('index/index.html.twig', [
-            'controller_name' => 'IndexController',
-        ]);
+        return $this->redirectToRoute('auth_user_login');
     }
 }
