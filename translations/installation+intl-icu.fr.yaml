@@ -5,3 +5,6 @@ installation.connectionException.p.help.2: 'Pré-requis, pour installer correcte
 installation.connectionException.p.help.3: 'Avoir un accès à votre serveur'
 installation.connectionException.p.help.4: 'Avoir un éditeur sur votre serveur'
 installation.connectionException.p.help.5: "Editer le fichier .env à l'adresse"
+installation.connectionException.error.default.secret: 'Il est recommandé de changer le APP_SECRET'
+installation.connectionException.error.default.secret.info: "Le APP_SECRET est celui par défaut, il est recommandé de le changer pour qu'il soit unique à votre site"
+installation.connectionException.error.h3: 'Erreur(s) remontée(s) depuis le fichier .env'
