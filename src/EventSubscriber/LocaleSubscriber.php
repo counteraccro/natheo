@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Force la locale en fonction des options du user
+ */
 namespace App\EventSubscriber;
 
 use App\Service\Admin\System\OptionSystemService;
