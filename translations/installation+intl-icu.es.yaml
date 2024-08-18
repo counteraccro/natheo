@@ -1,10 +1,5 @@
-installation.connectionException.error.default.secret: __installation.connectionException.error.default.secret
-installation.connectionException.error.default.secret.info: __installation.connectionException.error.default.secret.info
-installation.connectionException.titre: __installation.connectionException.titre
-installation.connectionException.h1: __installation.connectionException.h1
-installation.connectionException.p.help.1: __installation.connectionException.p.help.1
-installation.connectionException.p.help.2: __installation.connectionException.p.help.2
-installation.connectionException.p.help.3: __installation.connectionException.p.help.3
-installation.connectionException.p.help.4: __installation.connectionException.p.help.4
-installation.connectionException.p.help.5: __installation.connectionException.p.help.5
-installation.connectionException.error.h3: __installation.connectionException.error.h3
+installation.step.1.titre: __installation.step.1.titre
+installation.step.1.titre.h1: __installation.step.1.titre.h1
+installation.toast.title.success: __installation.toast.title.success
+installation.toast.time: __installation.toast.time
+installation.toast.title.error: __installation.toast.title.error

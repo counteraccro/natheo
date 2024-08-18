@@ -1,10 +1,6 @@
-installation.connectionException.titre: 'Base de données non configurée'
-installation.connectionException.h1: 'Installation de Natheo CMS'
-installation.connectionException.p.help.1: "Votre fichier .env n'est pas correctement configuré et l'installateur de Natheo CMS à détecté un problème."
-installation.connectionException.p.help.2: 'Pré-requis, pour installer correctement Natheo CMS vous devez :'
-installation.connectionException.p.help.3: 'Avoir un accès à votre serveur'
-installation.connectionException.p.help.4: 'Avoir un éditeur sur votre serveur'
-installation.connectionException.p.help.5: "Editer le fichier .env à l'adresse"
-installation.connectionException.error.default.secret: 'Il est recommandé de changer le APP_SECRET'
-installation.connectionException.error.default.secret.info: "Le APP_SECRET est celui par défaut, il est recommandé de le changer pour qu'il soit unique à votre site"
-installation.connectionException.error.h3: 'Erreur(s) remontée(s) depuis le fichier .env'
+installation.toast.title.success: 'Succès !'
+installation.toast.time: "A l'instant"
+installation.toast.title.error: 'Erreur !'
+installation.step.1.titre: 'Installation étape 1'
+installation.step.1.titre.h1: 'Installation de Natheo CMS'
+
