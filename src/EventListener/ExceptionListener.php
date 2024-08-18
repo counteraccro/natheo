@@ -6,7 +6,6 @@
  */
 namespace App\EventListener;
 
-use App\Service\Installation\ParseEnvService;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Psr\Container\ContainerExceptionInterface;
@@ -26,7 +25,6 @@ class ExceptionListener
     public function __construct(#[AutowireLocator([
         'router' => RouterInterface::class,
         'twig' => Environment::class,
-        'parseEnv' => ParseEnvService::class,
     ])] protected ContainerInterface $handlers){}
 
     /**
