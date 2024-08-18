@@ -7,9 +7,8 @@
     
        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
     {% block stylesheets %}
-        {{ encore_entry_link_tags('install') }}
+        {{ encore_entry_link_tags('install_css') }}
     {% endblock %}
-    <link rel="stylesheet" href="/build/install.css">
 
     {% block javascripts %}
         {{ encore_entry_script_tags('install') }}

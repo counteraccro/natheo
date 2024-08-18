@@ -7,8 +7,9 @@
 
 namespace App\Controller\Installation;
 
-use App\Service\Installation\ParseEnvService;
+use App\Service\Installation\InstallationService;
 use App\Utils\Global\DataBase;
+use App\Utils\Translate\Installation\InstallationTranslate;
 use Doctrine\DBAL\Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -30,35 +31,40 @@ class InstallationController extends AbstractController
     }
 
     #[Route('/', name: 'index', methods: ['GET'])]
-    public function index(ParseEnvService $parseEnvService): Response
+    public function index(): Response
     {
         return $this->redirectToRoute('installation_no_schema');
     }
 
     /**
-     * @param ParseEnvService $parseEnvService
      * @return Response
      * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/config-database', name: 'no_schema', methods: ['GET'])]
-    public function configDatabase(ParseEnvService $parseEnvService): Response
+    #[Route('/step-1', name: 'no_schema', methods: ['GET'])]
+    public function configDatabase(
+        InstallationTranslate $installationTranslate,
+        InstallationService $installationService
+    ): Response
     {
         $forceToRedirect = $this->forceRedirect();
         if ($forceToRedirect !== null) {
             return $forceToRedirect;
         }
-        $parseResult = $parseEnvService->parseEnvFile();
 
-        return $this->render('installation/installation/config_database.html.twig', [
-            'file' => $parseResult['file'], 'envPath' => $parseEnvService->getPathEnvFile(), 'errors' => $parseResult['errors']
+        return $this->render('installation/installation/step_one.html.twig', [
+            'urls' => [],
+            'translate' => $installationTranslate->getTranslateStepOne(),
+            'locales' => $installationService->getLocales(),
         ]);
     }
 
     /**
-     * @return RedirectResponse
+     * @return RedirectResponse|null
+     * @throws ContainerExceptionInterface
      * @throws Exception
+     * @throws NotFoundExceptionInterface
      */
     private function forceRedirect(): ?RedirectResponse
     {

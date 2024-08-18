@@ -1,0 +1,13 @@
+{% extends 'installation/installation_base.html.twig' %}
+{% block title %}
+    {{ 'installation.step.1.titre' | trans({}, 'installation') }}
+{% endblock %}
+
+{% block body %}
+
+<div {{ vue_component('Installation/installation', {
+    'urls' : urls,
+    'translate' : translate,
+    'locales' : locales,
+}) }}>
+{% endblock %}
