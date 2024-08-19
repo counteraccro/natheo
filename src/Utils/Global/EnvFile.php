@@ -19,23 +19,33 @@ class EnvFile
 
     /**
      * Nom fichier env de l'application
+     * @var string
      */
     public const NAME_FILE_ENV = '.env';
 
     /**
      * Nom fichier env.local de l'application
+     * @var string
      */
     public const NAME_FILE_ENV_LOCAL = '.env.local';
 
     /**
      * Dev mode
+     * @var string
      */
     public const ENV_DEV = 'dev';
 
     /**
      * Prod mode
+     * @var string
      */
     public const ENV_PROD = 'prod';
+
+    /**
+     * Clé DATABASE_URL
+     * @var string
+     */
+    public const KEY_DATABASE_URL = 'DATABASE_URL';
 
     public function __construct(#[AutowireLocator([
         'kernel' => KernelInterface::class,
@@ -64,6 +74,33 @@ class EnvFile
     }
 
     /**
+     * Retourne le contenu du fichier .env
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getContentEnvFile(): string
+    {
+        $filesystem = new Filesystem();
+        $pathEnv = $this->getPathEnvFile();
+        return $filesystem->readFile($pathEnv);
+    }
+
+    /**
+     * Ecrase le fichier .env avec $content
+     * @param string $content
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function dumpEnvFile(string $content): void
+    {
+        $filesystem = new Filesystem();
+        $pathEnv = $this->getPathEnvFile();
+        $filesystem->dumpFile($pathEnv, $content);
+    }
+
+    /**
      * Switch le APP_ENV de DEV vers PROD ou PROD vers DEV
      * en fonction de APP_ENV défini par le kernel
      * @return void
@@ -74,10 +111,7 @@ class EnvFile
     {
         $parameterBag = $this->handlers->get('parameterBag');
         $env = $parameterBag->get('kernel.environment');
-
-        $filesystem = new Filesystem();
-        $pathEnv = $this->getPathEnvFile();
-        $contents = $filesystem->readFile($pathEnv);
+        $contents = $this->getContentEnvFile();
 
         if($env === self::ENV_DEV) {
             $contents = str_replace('APP_ENV=' . self::ENV_DEV,
@@ -89,6 +123,22 @@ class EnvFile
                 'APP_ENV=' . self::ENV_DEV, $contents);
             $contents = str_replace('APP_DEBUG=0', 'APP_DEBUG=1', $contents);
         }
-        $filesystem->dumpFile($pathEnv, $contents);
+        $this->dumpEnvFile($contents);
     }
+
+    /**
+     * Retourne une valeur en fonction de sa clé
+     * @param string $key
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getValueByKey(string $key): string
+    {
+        $pattern = '/[^# ](' . $key . '.*\n)/m';
+        $contents = $this->getContentEnvFile();
+        preg_match_all($pattern, $contents, $matches, PREG_SET_ORDER, 0);
+        return $matches[0][0];
+    }
+
 }

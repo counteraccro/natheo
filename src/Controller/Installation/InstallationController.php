@@ -53,6 +53,8 @@ class InstallationController extends AbstractController
             return $forceToRedirect;
         }
 
+        $installationService->getDatabaseUrl();
+
         return $this->render('installation/installation/step_one.html.twig', [
             'urls' => [],
             'translate' => $installationTranslate->getTranslateStepOne(),
