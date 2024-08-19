@@ -7,6 +7,7 @@
 
 namespace App\Utils\Global;
 
+use App\Utils\Tools\DatabaseManager\Query\RawPostgresQuery;
 use App\Utils\Utils;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
@@ -47,15 +48,15 @@ class DataBase
      */
     public function isConnected(): bool
     {
-        $query = 'SELECT * FROM pg_database';
+        $query = RawPostgresQuery::getQueryAllDatabase();
         $this->executeRawQuery($query);
         return $this->entityManager->getConnection()->isConnected();
     }
 
     /**
-     * @param array $tableNames
+     * Vérifie si la table existe
+     * @param string|null $tableName
      * @return bool
-     * @throws Exception
      */
     public function isTableExiste(string $tableName = null): bool
     {
@@ -63,10 +64,7 @@ class DataBase
             $tableName = 'user';
         }
 
-        $query = "SELECT EXISTS (
-                SELECT FROM information_schema.tables 
-           WHERE  table_schema = 'natheo'
-            AND    table_name   = '" . $tableName . "')";
+        $query = RawPostgresQuery::getQueryExistTable('natheo', $tableName);
 
         $result = $this->executeRawQuery($query);
         if(isset($result['result'][0]['exists']))
@@ -77,12 +75,16 @@ class DataBase
 
     }
 
+    /**
+     * test si le schema existe
+     * @throws Exception
+     */
     public function isSchemaExist(): bool
     {
-        $schemaMananger = $this->connection->createSchemaManager();
+        $schemaManager = $this->connection->createSchemaManager();
         try {
-            $schemaMananger->listDatabases();
-        } catch (\Doctrine\DBAL\Driver\Exception $exception) {
+            $schemaManager->listDatabases();
+        } catch (Exception $exception) {
             return false;
         }
         return true;
