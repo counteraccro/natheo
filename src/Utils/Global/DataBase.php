@@ -9,7 +9,9 @@ namespace App\Utils\Global;
 
 use App\Utils\Utils;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Tools\DsnParser;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Psr\Container\ContainerExceptionInterface;
@@ -45,6 +47,8 @@ class DataBase
      */
     public function isConnected(): bool
     {
+        $query = 'SELECT * FROM pg_database';
+        $this->executeRawQuery($query);
         return $this->entityManager->getConnection()->isConnected();
     }
 

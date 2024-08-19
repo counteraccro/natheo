@@ -10,6 +10,7 @@ class InstallationTranslate extends AppTranslate
     {
         return [
             'toast' => $this->getTranslateToast(),
+            'loading' => $this->translator->trans('installation.loading', domain: 'installation'),
             'title' => $this->translator->trans('installation.step.1.titre', domain:'installation'),
             'title_h1' => $this->translator->trans('installation.step.1.titre.h1', domain:'installation'),
         ];

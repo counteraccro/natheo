@@ -16,6 +16,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -37,15 +38,18 @@ class InstallationController extends AbstractController
     }
 
     /**
+     * Etape 1 de l'installation
+     * @param InstallationTranslate $installationTranslate
+     * @param InstallationService $installationService
      * @return Response
-     * @throws Exception
      * @throws ContainerExceptionInterface
+     * @throws Exception
      * @throws NotFoundExceptionInterface
      */
     #[Route('/step-1', name: 'no_schema', methods: ['GET'])]
-    public function configDatabase(
+    public function stepOne(
         InstallationTranslate $installationTranslate,
-        InstallationService $installationService
+        InstallationService   $installationService
     ): Response
     {
         $forceToRedirect = $this->forceRedirect();
@@ -56,10 +60,24 @@ class InstallationController extends AbstractController
         $installationService->getDatabaseUrl();
 
         return $this->render('installation/installation/step_one.html.twig', [
-            'urls' => [],
+            'urls' => [
+                'check_database' => $this->generateUrl('installation_check_database'),
+            ],
             'translate' => $installationTranslate->getTranslateStepOne(),
             'locales' => $installationService->getLocales(),
         ]);
+    }
+
+    /**
+     * Test la connexion de la base de données
+     * @param DataBase $dataBase
+     * @return JsonResponse
+     */
+    #[Route('/check-database', name: 'check_database', methods: ['GET'])]
+    public function testConnexionDatabase(
+        DataBase $dataBase): JsonResponse
+    {
+        return $this->json(['connexion' => $dataBase->isConnected()]);
     }
 
     /**
@@ -73,7 +91,7 @@ class InstallationController extends AbstractController
         /** @var DataBase $dataBase */
         $dataBase = $this->handlers->get('dataBase');
         if ($dataBase->isTableExiste()) {
-            return $this->redirectToRoute('admin_dashboard_index');
+            //return $this->redirectToRoute('admin_dashboard_index');
         }
         return null;
     }
