@@ -6,6 +6,7 @@
  */
 import axios from "axios";
 import Toast from "../../Components/Global/Toast.vue";
+import {emitter} from "../../../utils/useEvent";
 
 export default {
   name: "Installation-step-one",
@@ -20,6 +21,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       toasts: {
         toastSuccess: {
           show: false,
@@ -33,9 +35,20 @@ export default {
     }
   },
   mounted() {
-
+    this.testConnexion();
   },
   methods: {
+
+    testConnexion()
+    {
+      this.loading = true;
+      axios.get(this.urls.check_database).then((response) => {
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.loading = false;
+      });
+    },
 
     /**
      * Ferme un toast en fonction de son id
@@ -50,8 +63,13 @@ export default {
 
 <template>
 
-  <div class="col-lg-8 mx-auto p-4 py-md-5">
-
+  <div id="installation-step-one" class="col-lg-8 mx-auto p-4 py-md-5" :class="this.loading === true ? 'block-grid' : ''">
+      <div v-if="this.loading" class="overlay">
+        <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
+          <div class="spinner-border text-primary" role="status"></div>
+          <span class="txt-overlay">{{ this.translate.loading }}</span>
+        </div>
+      </div>
 
     <header class="d-flex align-items-center pb-3 mb-5 border-bottom">
       <i class="bi bi-database-fill-slash h3 me-2"></i>
