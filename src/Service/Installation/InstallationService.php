@@ -35,15 +35,31 @@ class InstallationService extends AppAdminService
         $pattern = '/DATABASE_URL="(.*):\/\/(.*):(.*)@(.*):(.*)\/(.*)\?serverVersion=(.*)\&charset=(.*)"/';
         preg_match_all($pattern, $databaseUrl, $matches, PREG_SET_ORDER, 0);
 
-        return [
-            'type' => $matches[0][1],
-            'login' => $matches[0][2],
-            'password' => $matches[0][3],
-            'ip' => $matches[0][4],
-            'port' => $matches[0][5],
-            'dbb_name' => $matches[0][6],
-            'version' => $matches[0][7],
-            'charset' => $matches[0][8],
+        $return = [
+            'type' => '', 'login' => '', 'password' => '',
+            'ip' => '', 'port' => '', 'dbb_name' => '',
+            'version' => '', 'charset' => '',
         ];
+
+        if (empty($matches)) {
+            $pattern = '/DATABASE_URL="(.*):\/\/(.*):(.*)@(.*):(.*)\//';
+            preg_match_all($pattern, $databaseUrl, $matches, PREG_SET_ORDER, 0);
+        }
+
+        if (!empty($matches)) {
+            $return = [
+                'type' => $matches[0][1],
+                'login' => $matches[0][2],
+                'password' => $matches[0][3],
+                'ip' => $matches[0][4],
+                'port' => $matches[0][5],
+            ];
+            if (isset($matches[0][6])) {
+                $return['dbb_name'] = $matches[0][6];
+                $return['version'] = $matches[0][7];
+                $return['charset'] = $matches[0][8];
+            }
+        }
+        return $return;
     }
 }

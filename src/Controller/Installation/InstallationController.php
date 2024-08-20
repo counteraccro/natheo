@@ -9,6 +9,7 @@ namespace App\Controller\Installation;
 
 use App\Service\Installation\InstallationService;
 use App\Utils\Global\DataBase;
+use App\Utils\Global\EnvFile;
 use App\Utils\Translate\Installation\InstallationTranslate;
 use Doctrine\DBAL\Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -18,6 +19,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -57,14 +59,20 @@ class InstallationController extends AbstractController
             return $forceToRedirect;
         }
 
-        $installationService->getDatabaseUrl();
 
         return $this->render('installation/installation/step_one.html.twig', [
             'urls' => [
                 'check_database' => $this->generateUrl('installation_check_database'),
+                'update_env' => $this->generateUrl('installation_update_env'),
             ],
             'translate' => $installationTranslate->getTranslateStepOne(),
             'locales' => $installationService->getLocales(),
+            'datas' => [
+                'bdd_config' => $installationService->getDatabaseUrl(),
+                'config_key' => [
+                    'database_url' => EnvFile::KEY_DATABASE_URL
+                ]
+            ]
         ]);
     }
 
@@ -78,6 +86,20 @@ class InstallationController extends AbstractController
         DataBase $dataBase): JsonResponse
     {
         return $this->json(['connexion' => $dataBase->isConnected()]);
+    }
+
+    /**
+     * Mise à jour du fichier env
+     * @param Request $request
+     * @return JsonResponse
+     */
+    #[Route('/update-env', name: 'update_env', methods: ['POST'])]
+    public function updateEnvConfig(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        var_dump($data);
+
+        return $this->json([]);
     }
 
     /**

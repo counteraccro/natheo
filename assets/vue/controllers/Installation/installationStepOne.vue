@@ -6,7 +6,6 @@
  */
 import axios from "axios";
 import Toast from "../../Components/Global/Toast.vue";
-import {emitter} from "../../../utils/useEvent";
 
 export default {
   name: "Installation-step-one",
@@ -18,10 +17,15 @@ export default {
     urls: Object,
     translate: Object,
     locales: Object,
+    datas: Object
   },
   data() {
     return {
       loading: false,
+      testConnexion: {
+        isConnected: null,
+        loading: false
+      },
       toasts: {
         toastSuccess: {
           show: false,
@@ -35,19 +39,75 @@ export default {
     }
   },
   mounted() {
-    this.testConnexion();
+    //this.testConnexion();
   },
+
+  computed: {},
+
   methods: {
 
-    testConnexion()
-    {
-      this.loading = true;
+    /**
+     * Mise à jour fichier env
+     */
+    updateConfigBddEnv(type) {
+
+      this.testConnexion.loading = true;
+
+      axios.post(this.urls.update_env, {
+        'config_key': this.datas.config_key.database_url,
+        'config': this.datas.bdd_config,
+        'type': type
+      }).then((response) => {
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.testConnexion.isConnected = false;
+        this.testConnexion.loading = false;
+      });
+    },
+
+    /**
+     * Test la connexion à la bdd
+     */
+    checkConnexion() {
       axios.get(this.urls.check_database).then((response) => {
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
-        this.loading = false;
       });
+    },
+
+    /**
+     * Met à jour le fieldset en fonction de isConnected
+     * @return {string}
+     */
+    isConnectedFieldset() {
+      if (this.testConnexion.isConnected === null) {
+        return "";
+      }
+
+      if (this.testConnexion.isConnected) {
+        return "border border-1 border-success";
+      } else {
+        return "border border-1 border-danger";
+      }
+
+    },
+
+    /**
+     * Met à jour le legend en fonction de isConnected
+     * @return {string}
+     */
+    isConnectedLegend() {
+      if (this.testConnexion.isConnected === null) {
+        return '<i class="bi bi-database-gear"></i> ' + this.translate.config_bdd_title;
+      }
+
+      if (this.testConnexion.isConnected) {
+        return '<span class="text-success"><strong><i class="bi bi-database-check"></i> ' + this.translate.config_bdd_title + '</strong></span>';
+      } else {
+        return '<span class="text-danger font-weight-bold"><strong><i class="bi bi-database-x"></i> ' + this.translate.config_bdd_title + '</strong></span>';
+      }
     },
 
     /**
@@ -63,23 +123,77 @@ export default {
 
 <template>
 
-  <div id="installation-step-one" class="col-lg-8 mx-auto p-4 py-md-5" :class="this.loading === true ? 'block-grid' : ''">
-      <div v-if="this.loading" class="overlay">
-        <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
-          <div class="spinner-border text-primary" role="status"></div>
-          <span class="txt-overlay">{{ this.translate.loading }}</span>
+  <div id="installation-step-one" class="col-lg-10 mx-auto p-4 py-md-5" :class="this.loading === true ? 'block-grid' : ''">
+    <div v-if="this.loading" class="overlay">
+      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
+        <div class="spinner-border text-primary" role="status"></div>
+        <span class="txt-overlay">{{ this.translate.loading }}</span>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center pb-3 mb-5 border-bottom">
+      <i class="bi bi-box-seam h3 me-2"></i>
+      <span class="fs-4"> {{ this.translate.title }}</span>
+    </div>
+
+    <h1 class="text-body-emphasis">{{ this.translate.title_h1 }}</h1>
+    <p>
+      {{ this.translate.description_1 }} <br/>
+      {{ this.translate.description_2 }}
+    </p>
+
+    <fieldset :class="this.isConnectedFieldset()">
+      <legend v-html="this.isConnectedLegend()"></legend>
+
+      <div class="row">
+
+        <div class="col">
+          <div class="mb-3">
+            <label for="bdd-config-type" class="form-label">{{ this.translate.config_bdd_input_type_label }}</label>
+            <input type="text" class="form-control" id="bdd-config-type" v-model="this.datas.bdd_config.type" disabled>
+          </div>
+        </div>
+        <div class="col">
+          <div class="mb-3">
+            <label for="bdd-config-login" class="form-label">{{ this.translate.config_bdd_input_login_label }}</label>
+            <input type="text" class="form-control" id="bdd-config-login" v-model="this.datas.bdd_config.login">
+          </div>
+        </div>
+        <div class="col">
+          <div class="mb-3">
+            <label for="bdd-config-password" class="form-label">{{ this.translate.config_bdd_input_password_label }}</label>
+            <input type="text" class="form-control" id="bdd-config-password" v-model="this.datas.bdd_config.password">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="mb-3">
+            <label for="bdd-config-password" class="form-label">{{ this.translate.config_bdd_input_ip_label }}</label>
+            <input type="text" class="form-control" id="bdd-config-password" v-model="this.datas.bdd_config.ip">
+          </div>
+        </div>
+        <div class="col">
+          <div class="mb-3">
+            <label for="bdd-config-password" class="form-label">{{ this.translate.config_bdd_input_port_label }}</label>
+            <input type="text" class="form-control" id="bdd-config-password" v-model="this.datas.bdd_config.port">
+          </div>
+        </div>
+        <div class="col">
         </div>
       </div>
 
-    <header class="d-flex align-items-center pb-3 mb-5 border-bottom">
-      <i class="bi bi-database-fill-slash h3 me-2"></i>
-      <span class="fs-4"> {{ this.translate.title }}</span>
-    </header>
+      <div class="btn btn-secondary float-end" :class="this.testConnexion.loading ? 'disabled' : ''" @click="this.updateConfigBddEnv('test')">
+        <span v-if="!this.testConnexion.loading">
+          <i class="bi  bi-gear-fill"></i> {{ this.translate.config_bdd_btn_test_config }}
+        </span>
+        <span v-else>
+          <span class="spinner-border spinner-border-sm" aria-hidden="true"></span> {{ this.translate.config_bdd_btn_test_config_loading }}
+        </span>
+      </div>
 
-    <main>
-      <h1 class="text-body-emphasis">{{ this.translate.title_h1 }}</h1>
 
-    </main>
+    </fieldset>
   </div>
 
 
