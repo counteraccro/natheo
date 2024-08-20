@@ -1,6 +1,16 @@
 installation.toast.title.success: 'Succès !'
 installation.toast.time: "A l'instant"
 installation.toast.title.error: 'Erreur !'
-installation.step.1.titre: 'Installation étape 1'
-installation.step.1.titre.h1: 'Installation de Natheo CMS'
-
+installation.step.1.titre: 'Installation de Natheo CMS'
+installation.step.1.titre.h1: 'Etape 1 - Configuration de la base de données'
+installation.loading: Chargement
+installation.step.1.description_1: "Merci d'avoir choisi Natheo CMS ! Nous allons maintenant procédé à l'installation de la base de données."
+installation.step.1.description_2: "Rassurez vous, cela est très simple, il vous suffi de remplir les champs suivants et Natheo CMS s'occupera du reste"
+installation.step.1.config.bdd.title: 'Configuration base de données'
+installation.step.1.config.bdd.input.type.label: Type
+installation.step.1.config.bdd.input.login.label: Login
+installation.step.1.config.bdd.input.password.label: 'Mot de passe'
+installation.step.1.config.bdd.input.ip.label: 'IP du serveur'
+installation.step.1.config.bdd.input.port.label: Port
+installation.step.1.config.bdd.btn.test.config: Vérifier
+installation.step.1.config.bdd.btn.test.config.loading: 'Tentative de connexion'

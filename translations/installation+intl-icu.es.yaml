@@ -3,3 +3,14 @@ installation.step.1.titre.h1: __installation.step.1.titre.h1
 installation.toast.title.success: __installation.toast.title.success
 installation.toast.time: __installation.toast.time
 installation.toast.title.error: __installation.toast.title.error
+installation.loading: __installation.loading
+installation.step.1.description_1: __installation.step.1.description_1
+installation.step.1.description_2: __installation.step.1.description_2
+installation.step.1.config.bdd.title: __installation.step.1.config.bdd.title
+installation.step.1.config.bdd.input.type.label: __installation.step.1.config.bdd.input.type.label
+installation.step.1.config.bdd.input.login.label: __installation.step.1.config.bdd.input.login.label
+installation.step.1.config.bdd.input.password.label: __installation.step.1.config.bdd.input.password.label
+installation.step.1.config.bdd.input.ip.label: __installation.step.1.config.bdd.input.ip.label
+installation.step.1.config.bdd.input.port.label: __installation.step.1.config.bdd.input.port.label
+installation.step.1.config.bdd.btn.test.config: __installation.step.1.config.bdd.btn.test.config
+installation.step.1.config.bdd.btn.test.config.loading: __installation.step.1.config.bdd.btn.test.config.loading
