@@ -23,6 +23,8 @@ class InstallationTranslate extends AppTranslate
             'config_bdd_input_port_label' => $this->translator->trans('installation.step.1.config.bdd.input.port.label', domain:'installation'),
             'config_bdd_btn_test_config' => $this->translator->trans('installation.step.1.config.bdd.btn.test.config', domain:'installation'),
             'config_bdd_btn_test_config_loading' => $this->translator->trans('installation.step.1.config.bdd.btn.test.config.loading', domain:'installation'),
+            'title_thx_h1' => $this->translator->trans('installation.step.1.titre.thx.h1', domain:'installation'),
+            'description_thx_1' => $this->translator->trans('installation.step.1.description.thx.1', domain:'installation'),
         ];
     }
 

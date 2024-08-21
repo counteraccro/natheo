@@ -24,6 +24,20 @@ class InstallationService extends AppAdminService
     }
 
     /**
+     * Met à jour la valeur de $key avec $value
+     * @param string $key
+     * @param string $value
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function updateValueByKeyInEnvFile(string $key, string $value): void
+    {
+        $envFile = $this->getEnvFile();
+        $envFile->updateValueByKey($key, $value);
+    }
+
+    /**
      * Retourne la valeur de DATABASE_URL formaté
      * @return array
      * @throws ContainerExceptionInterface

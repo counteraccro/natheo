@@ -136,6 +136,11 @@ export default {
       <span class="fs-4"> {{ this.translate.title }}</span>
     </div>
 
+    <h1 class="text-body-emphasis">{{ this.translate.title_thx_h1 }}</h1>
+    <p>
+      {{ this.translate.description_thx_1 }} <br/>
+    </p>
+
     <h1 class="text-body-emphasis">{{ this.translate.title_h1 }}</h1>
     <p>
       {{ this.translate.description_1 }} <br/>
@@ -183,7 +188,8 @@ export default {
         </div>
       </div>
 
-      <div class="btn btn-secondary float-end" :class="this.testConnexion.loading ? 'disabled' : ''" @click="this.updateConfigBddEnv('test')">
+      <div class="btn btn-secondary float-end" :class="this.testConnexion.loading ? 'disabled' : ''"
+          @click="this.updateConfigBddEnv('text_connexion')">
         <span v-if="!this.testConnexion.loading">
           <i class="bi  bi-gear-fill"></i> {{ this.translate.config_bdd_btn_test_config }}
         </span>

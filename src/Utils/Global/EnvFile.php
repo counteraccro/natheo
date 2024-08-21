@@ -138,7 +138,26 @@ class EnvFile
         $pattern = '/[^# ](' . $key . '.*\n)/m';
         $contents = $this->getContentEnvFile();
         preg_match_all($pattern, $contents, $matches, PREG_SET_ORDER, 0);
-        return $matches[0][0];
+        return trim($matches[0][0]);
+    }
+
+    /**
+     * @param string $key
+     * @param string $newValue
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function updateValueByKey(string $key, string $newValue): void
+    {
+        $oldValue = $this->getValueByKey($key);
+        var_dump($oldValue);
+
+        $content = $this->getContentEnvFile();
+
+        $content = str_replace($oldValue, $newValue, $content);
+
+        var_dump($content);
     }
 
 }

@@ -91,13 +91,16 @@ class InstallationController extends AbstractController
     /**
      * Mise à jour du fichier env
      * @param Request $request
+     * @param InstallationService $installationService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/update-env', name: 'update_env', methods: ['POST'])]
-    public function updateEnvConfig(Request $request): JsonResponse
+    public function updateEnvConfig(Request $request, InstallationService $installationService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        var_dump($data);
+        $installationService->updateValueByKeyInEnvFile(EnvFile::KEY_DATABASE_URL, 'toot');
 
         return $this->json([]);
     }
