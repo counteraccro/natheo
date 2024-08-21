@@ -151,13 +151,9 @@ class EnvFile
     public function updateValueByKey(string $key, string $newValue): void
     {
         $oldValue = $this->getValueByKey($key);
-        var_dump($oldValue);
-
         $content = $this->getContentEnvFile();
-
         $content = str_replace($oldValue, $newValue, $content);
-
-        var_dump($content);
+        $this->dumpEnvFile($content);
     }
 
 }

@@ -4,6 +4,7 @@ namespace App\Service\Installation;
 
 use App\Service\Admin\AppAdminService;
 use App\Utils\Global\EnvFile;
+use App\Utils\Installation\InstallationConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -38,6 +39,27 @@ class InstallationService extends AppAdminService
     }
 
     /**
+     * Formate les données database_url pour l'enregistrement dans le fichier .env
+     * @param array $data
+     * @param string $option
+     * @return string
+     */
+    public function formatDatabaseUrlForEnvFile(array $data, string $option): string
+    {
+        $return = EnvFile::KEY_DATABASE_URL . '="';
+        $return .= $data['type'] . '://' . $data['login'] . ':' . $data['password']  . '@' . $data['ip'] . ':' . $data['port'];
+
+        if($option === InstallationConst::OPTION_DATABASE_URL_CREATE_DATABASE)
+        {
+
+        }
+
+        $return .= '"';
+
+        return $return;
+    }
+
+    /**
      * Retourne la valeur de DATABASE_URL formaté
      * @return array
      * @throws ContainerExceptionInterface
@@ -56,7 +78,7 @@ class InstallationService extends AppAdminService
         ];
 
         if (empty($matches)) {
-            $pattern = '/DATABASE_URL="(.*):\/\/(.*):(.*)@(.*):(.*)\//';
+            $pattern = '/DATABASE_URL="(.*):\/\/(.*):(.*)@(.*):([[:digit:]]+)/';
             preg_match_all($pattern, $databaseUrl, $matches, PREG_SET_ORDER, 0);
         }
 

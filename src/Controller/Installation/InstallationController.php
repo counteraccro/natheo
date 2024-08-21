@@ -10,6 +10,7 @@ namespace App\Controller\Installation;
 use App\Service\Installation\InstallationService;
 use App\Utils\Global\DataBase;
 use App\Utils\Global\EnvFile;
+use App\Utils\Installation\InstallationConst;
 use App\Utils\Translate\Installation\InstallationTranslate;
 use Doctrine\DBAL\Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -71,6 +72,10 @@ class InstallationController extends AbstractController
                 'bdd_config' => $installationService->getDatabaseUrl(),
                 'config_key' => [
                     'database_url' => EnvFile::KEY_DATABASE_URL
+                ],
+                'option_connexion' => [
+                    'test_connexion' => InstallationConst::OPTION_DATABASE_URL_TEST,
+                    'create_database' => InstallationConst::OPTION_DATABASE_URL_CREATE_DATABASE
                 ]
             ]
         ]);
@@ -100,7 +105,8 @@ class InstallationController extends AbstractController
     public function updateEnvConfig(Request $request, InstallationService $installationService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $installationService->updateValueByKeyInEnvFile(EnvFile::KEY_DATABASE_URL, 'toot');
+        $newValue = $installationService->formatDatabaseUrlForEnvFile($data['config'], $data['type']);
+        $installationService->updateValueByKeyInEnvFile(EnvFile::KEY_DATABASE_URL, $newValue);
 
         return $this->json([]);
     }

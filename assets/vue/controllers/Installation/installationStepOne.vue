@@ -24,7 +24,9 @@ export default {
       loading: false,
       testConnexion: {
         isConnected: null,
-        loading: false
+        loading: false,
+        updateFile: 0,
+        testConn: 0
       },
       toasts: {
         toastSuccess: {
@@ -39,7 +41,7 @@ export default {
     }
   },
   mounted() {
-    //this.testConnexion();
+    this.checkConnexion();
   },
 
   computed: {},
@@ -52,17 +54,20 @@ export default {
     updateConfigBddEnv(type) {
 
       this.testConnexion.loading = true;
+      this.testConnexion.updateFile = 1;
+      this.testConnexion.testConn = 1;
 
       axios.post(this.urls.update_env, {
         'config_key': this.datas.config_key.database_url,
         'config': this.datas.bdd_config,
         'type': type
       }).then((response) => {
+        this.testConnexion.updateFile = 2;
+        this.checkConnexion();
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
-        this.testConnexion.isConnected = false;
-        this.testConnexion.loading = false;
+
       });
     },
 
@@ -70,10 +75,14 @@ export default {
      * Test la connexion à la bdd
      */
     checkConnexion() {
+      this.testConnexion.testConn = 1;
       axios.get(this.urls.check_database).then((response) => {
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
+        this.testConnexion.testConn = 2;
+        this.testConnexion.isConnected = false;
+        this.testConnexion.loading = false;
       });
     },
 
@@ -123,7 +132,7 @@ export default {
 
 <template>
 
-  <div id="installation-step-one" class="col-lg-10 mx-auto p-4 py-md-5" :class="this.loading === true ? 'block-grid' : ''">
+  <div id="installation-step-one" class="col-lg-8 mx-auto p-4 py-md-5" :class="this.loading === true ? 'block-grid' : ''">
     <div v-if="this.loading" class="overlay">
       <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
         <div class="spinner-border text-primary" role="status"></div>
@@ -188,14 +197,44 @@ export default {
         </div>
       </div>
 
-      <div class="btn btn-secondary float-end" :class="this.testConnexion.loading ? 'disabled' : ''"
-          @click="this.updateConfigBddEnv('text_connexion')">
+      <div class="row">
+        <div class="col">
+          <div v-if="this.testConnexion.updateFile === 1">
+            <span class="spinner-border spinner-border-sm text-secondary" aria-hidden="true"></span>
+            <i>&nbsp;{{ this.translate.config_bdd_loading_msg_update_file }}</i>
+          </div>
+          <div v-else-if="this.testConnexion.updateFile === 2">
+            <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_update_file }}</span>
+          </div>
+          <div v-else-if="this.testConnexion.updateFile === 3">
+            <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_update_file }}</span>
+          </div>
+
+        </div>
+        <div class="col">
+
+          <div v-if="this.testConnexion.testConn === 1">
+            <span class="spinner-border spinner-border-sm text-secondary" aria-hidden="true"></span>
+            <i>&nbsp;{{ this.translate.config_bdd_loading_msg_test_connexion }}</i>
+          </div>
+          <div v-else-if="this.testConnexion.testConn === 2">
+            <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_test_connexion }}</span>
+          </div>
+          <div v-else-if="this.testConnexion.testConn === 3">
+            <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_test_connexion }}</span>
+          </div>
+        </div>
+        <div class="col">
+          <div class="btn btn-secondary float-end" :class="this.testConnexion.loading ? 'disabled' : ''"
+              @click="this.updateConfigBddEnv(this.datas.option_connexion.test_connexion)">
         <span v-if="!this.testConnexion.loading">
           <i class="bi  bi-gear-fill"></i> {{ this.translate.config_bdd_btn_test_config }}
         </span>
-        <span v-else>
+            <span v-else>
           <span class="spinner-border spinner-border-sm" aria-hidden="true"></span> {{ this.translate.config_bdd_btn_test_config_loading }}
         </span>
+          </div>
+        </div>
       </div>
 
 
