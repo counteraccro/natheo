@@ -56,6 +56,7 @@ export default {
       this.testConnexion.loading = true;
       this.testConnexion.updateFile = 1;
       this.testConnexion.testConn = 1;
+      this.testConnexion.isConnected = null;
 
       axios.post(this.urls.update_env, {
         'config_key': this.datas.config_key.database_url,
@@ -77,28 +78,44 @@ export default {
     checkConnexion() {
       this.testConnexion.testConn = 1;
       axios.get(this.urls.check_database).then((response) => {
+
+        console.log(response.data.connexion);
+        this.testConnexion.isConnected = response.data.connexion;
+
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
         this.testConnexion.testConn = 2;
-        this.testConnexion.isConnected = false;
         this.testConnexion.loading = false;
       });
+    },
+
+    isConnectedCardBorder()
+    {
+      if (this.testConnexion.isConnected === null) {
+        return "";
+      }
+
+      if (this.testConnexion.isConnected) {
+        return "border-success";
+      } else {
+        return "border-danger";
+      }
     },
 
     /**
      * Met à jour le fieldset en fonction de isConnected
      * @return {string}
      */
-    isConnectedFieldset() {
+    isConnectedCardHeaderClass() {
       if (this.testConnexion.isConnected === null) {
         return "";
       }
 
       if (this.testConnexion.isConnected) {
-        return "border border-1 border-success";
+        return "text-bg-success";
       } else {
-        return "border border-1 border-danger";
+        return "text-bg-danger";
       }
 
     },
@@ -107,15 +124,15 @@ export default {
      * Met à jour le legend en fonction de isConnected
      * @return {string}
      */
-    isConnectedLegend() {
+    isConnectedCardHeader() {
       if (this.testConnexion.isConnected === null) {
         return '<i class="bi bi-database-gear"></i> ' + this.translate.config_bdd_title;
       }
 
       if (this.testConnexion.isConnected) {
-        return '<span class="text-success"><strong><i class="bi bi-database-check"></i> ' + this.translate.config_bdd_title + '</strong></span>';
+        return '<strong><i class="bi bi-database-check"></i> ' + this.translate.config_bdd_title + '</strong>';
       } else {
-        return '<span class="text-danger font-weight-bold"><strong><i class="bi bi-database-x"></i> ' + this.translate.config_bdd_title + '</strong></span>';
+        return '<strong><i class="bi bi-database-x"></i> ' + this.translate.config_bdd_title + '</strong>';
       }
     },
 
@@ -140,7 +157,7 @@ export default {
       </div>
     </div>
 
-    <div class="d-flex align-items-center pb-3 mb-5 border-bottom">
+    <div class="d-flex align-items-center pb-3 mb-3 border-bottom">
       <i class="bi bi-box-seam h3 me-2"></i>
       <span class="fs-4"> {{ this.translate.title }}</span>
     </div>
@@ -156,89 +173,98 @@ export default {
       {{ this.translate.description_2 }}
     </p>
 
-    <fieldset :class="this.isConnectedFieldset()">
-      <legend v-html="this.isConnectedLegend()"></legend>
+    <div class="card" :class="this.isConnectedCardBorder()">
+      <div class="card-header" :class="this.isConnectedCardHeaderClass()" v-html="this.isConnectedCardHeader()">
+      </div>
+      <div class="card-body">
 
-      <div class="row">
+        <div class="row">
 
-        <div class="col">
-          <div class="mb-3">
-            <label for="bdd-config-type" class="form-label">{{ this.translate.config_bdd_input_type_label }}</label>
-            <input type="text" class="form-control" id="bdd-config-type" v-model="this.datas.bdd_config.type" disabled>
+          <div class="col">
+            <div class="mb-3">
+              <label for="bdd-config-type" class="form-label">{{ this.translate.config_bdd_input_type_label }}</label>
+              <input type="text" class="form-control" id="bdd-config-type" v-model="this.datas.bdd_config.type" disabled>
+            </div>
+          </div>
+          <div class="col">
+            <div class="mb-3">
+              <label for="bdd-config-login" class="form-label">{{ this.translate.config_bdd_input_login_label }}</label>
+              <input type="text" class="form-control" id="bdd-config-login" v-model="this.datas.bdd_config.login">
+            </div>
+          </div>
+          <div class="col">
+            <div class="mb-3">
+              <label for="bdd-config-password" class="form-label">{{ this.translate.config_bdd_input_password_label }}</label>
+              <input type="text" class="form-control" id="bdd-config-password" v-model="this.datas.bdd_config.password">
+            </div>
           </div>
         </div>
-        <div class="col">
-          <div class="mb-3">
-            <label for="bdd-config-login" class="form-label">{{ this.translate.config_bdd_input_login_label }}</label>
-            <input type="text" class="form-control" id="bdd-config-login" v-model="this.datas.bdd_config.login">
+        <div class="row">
+          <div class="col">
+            <div class="mb-3">
+              <label for="bdd-config-password" class="form-label">{{ this.translate.config_bdd_input_ip_label }}</label>
+              <input type="text" class="form-control" id="bdd-config-password" v-model="this.datas.bdd_config.ip">
+            </div>
           </div>
-        </div>
-        <div class="col">
-          <div class="mb-3">
-            <label for="bdd-config-password" class="form-label">{{ this.translate.config_bdd_input_password_label }}</label>
-            <input type="text" class="form-control" id="bdd-config-password" v-model="this.datas.bdd_config.password">
+          <div class="col">
+            <div class="mb-3">
+              <label for="bdd-config-password" class="form-label">{{ this.translate.config_bdd_input_port_label }}</label>
+              <input type="text" class="form-control" id="bdd-config-password" v-model="this.datas.bdd_config.port">
+            </div>
+          </div>
+          <div class="col">
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col">
-          <div class="mb-3">
-            <label for="bdd-config-password" class="form-label">{{ this.translate.config_bdd_input_ip_label }}</label>
-            <input type="text" class="form-control" id="bdd-config-password" v-model="this.datas.bdd_config.ip">
-          </div>
-        </div>
-        <div class="col">
-          <div class="mb-3">
-            <label for="bdd-config-password" class="form-label">{{ this.translate.config_bdd_input_port_label }}</label>
-            <input type="text" class="form-control" id="bdd-config-password" v-model="this.datas.bdd_config.port">
-          </div>
-        </div>
-        <div class="col">
-        </div>
-      </div>
 
-      <div class="row">
-        <div class="col">
-          <div v-if="this.testConnexion.updateFile === 1">
-            <span class="spinner-border spinner-border-sm text-secondary" aria-hidden="true"></span>
-            <i>&nbsp;{{ this.translate.config_bdd_loading_msg_update_file }}</i>
-          </div>
-          <div v-else-if="this.testConnexion.updateFile === 2">
-            <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_update_file }}</span>
-          </div>
-          <div v-else-if="this.testConnexion.updateFile === 3">
-            <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_update_file }}</span>
+      <div class="card-footer text-body-secondary">
+
+        <div class="row">
+
+          <div class="col">
+            <div v-if="this.testConnexion.testConn === 1">
+              <span class="spinner-border spinner-border-sm text-secondary" aria-hidden="true"></span>
+              <i>&nbsp;{{ this.translate.config_bdd_loading_msg_test_connexion }}</i>
+            </div>
+            <div v-else-if="this.testConnexion.testConn === 2">
+              <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_test_connexion }}</span>
+            </div>
+            <div v-else-if="this.testConnexion.testConn === 3">
+              <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_test_connexion }}</span>
+            </div>
           </div>
 
-        </div>
-        <div class="col">
+          <div class="col">
+            <div v-if="this.testConnexion.updateFile === 1">
+              <span class="spinner-border spinner-border-sm text-secondary" aria-hidden="true"></span>
+              <i>&nbsp;{{ this.translate.config_bdd_loading_msg_update_file }}</i>
+            </div>
+            <div v-else-if="this.testConnexion.updateFile === 2">
+              <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_update_file }}</span>
+            </div>
+            <div v-else-if="this.testConnexion.updateFile === 3">
+              <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_update_file }}</span>
+            </div>
 
-          <div v-if="this.testConnexion.testConn === 1">
-            <span class="spinner-border spinner-border-sm text-secondary" aria-hidden="true"></span>
-            <i>&nbsp;{{ this.translate.config_bdd_loading_msg_test_connexion }}</i>
           </div>
-          <div v-else-if="this.testConnexion.testConn === 2">
-            <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_test_connexion }}</span>
-          </div>
-          <div v-else-if="this.testConnexion.testConn === 3">
-            <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_test_connexion }}</span>
-          </div>
-        </div>
-        <div class="col">
-          <div class="btn btn-secondary float-end" :class="this.testConnexion.loading ? 'disabled' : ''"
-              @click="this.updateConfigBddEnv(this.datas.option_connexion.test_connexion)">
+
+          <div class="col">
+            <div class="btn btn-secondary float-end" :class="this.testConnexion.loading ? 'disabled' : ''"
+                @click="this.updateConfigBddEnv(this.datas.option_connexion.test_connexion)">
         <span v-if="!this.testConnexion.loading">
           <i class="bi  bi-gear-fill"></i> {{ this.translate.config_bdd_btn_test_config }}
         </span>
-            <span v-else>
+              <span v-else>
           <span class="spinner-border spinner-border-sm" aria-hidden="true"></span> {{ this.translate.config_bdd_btn_test_config_loading }}
         </span>
+            </div>
           </div>
         </div>
       </div>
+    </div>
 
 
-    </fieldset>
+    <!--</fieldset>-->
   </div>
 
 
