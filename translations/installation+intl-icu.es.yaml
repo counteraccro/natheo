@@ -14,3 +14,7 @@ installation.step.1.config.bdd.input.ip.label: __installation.step.1.config.bdd.
 installation.step.1.config.bdd.input.port.label: __installation.step.1.config.bdd.input.port.label
 installation.step.1.config.bdd.btn.test.config: __installation.step.1.config.bdd.btn.test.config
 installation.step.1.config.bdd.btn.test.config.loading: __installation.step.1.config.bdd.btn.test.config.loading
+installation.step.1.titre.thx.h1: __installation.step.1.titre.thx.h1
+installation.step.1.description.thx.1: __installation.step.1.description.thx.1
+installation.step.1.config.bdd.loading.msg.update.file: __installation.step.1.config.bdd.loading.msg.update.file
+installation.step.1.config.bdd.loading.msg.test.connexion: __installation.step.1.config.bdd.loading.msg.test.connexion
