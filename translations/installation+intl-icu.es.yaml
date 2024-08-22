@@ -29,3 +29,5 @@ installation.step.1.create.bdd.alert.text.2: __installation.step.1.create.bdd.al
 installation.step.1.create.bdd.alert.text.3: __installation.step.1.create.bdd.alert.text.3
 installation.step.1.create.bdd.alert.text.4: __installation.step.1.create.bdd.alert.text.4
 installation.step.1.create.bdd.alert.text.5: __installation.step.1.create.bdd.alert.text.5
+installation.step.1.create.bdd.title: __installation.step.1.create.bdd.title
+installation.step.1.create.bdd.input.bdd.name.label: __installation.step.1.create.bdd.input.bdd.name.label
