@@ -79,19 +79,21 @@ export default {
       this.testConnexion.testConn = 1;
       axios.get(this.urls.check_database).then((response) => {
 
-        console.log(response.data.connexion);
         this.testConnexion.isConnected = response.data.connexion;
+        if (this.testConnexion.isConnected) {
+          this.testConnexion.testConn = 2;
+        } else {
+          this.testConnexion.testConn = 3;
+        }
 
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
-        this.testConnexion.testConn = 2;
         this.testConnexion.loading = false;
       });
     },
 
-    isConnectedCardBorder()
-    {
+    isConnectedCardBorder() {
       if (this.testConnexion.isConnected === null) {
         return "";
       }
@@ -227,10 +229,10 @@ export default {
               <i>&nbsp;{{ this.translate.config_bdd_loading_msg_test_connexion }}</i>
             </div>
             <div v-else-if="this.testConnexion.testConn === 2">
-              <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_test_connexion }}</span>
+              <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_test_connexion_success }}</span>
             </div>
             <div v-else-if="this.testConnexion.testConn === 3">
-              <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_test_connexion }}</span>
+              <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_test_connexion_ko }}</span>
             </div>
           </div>
 
@@ -263,8 +265,14 @@ export default {
       </div>
     </div>
 
+    <div v-if="this.testConnexion.isConnected" class="mt-3">
+      <h1 class="text-body-emphasis">{{ this.translate.create_bdd_h1 }}</h1>
+      <p>
+        {{ this.translate.create_bdd_description_1 }} <br/>
+        {{ this.translate.create_bdd_description_2 }}
+      </p>
+    </div>
 
-    <!--</fieldset>-->
   </div>
 
 

@@ -10,15 +10,14 @@ namespace App\Utils\Global;
 use App\Utils\Tools\DatabaseManager\Query\RawPostgresQuery;
 use App\Utils\Utils;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Tools\DsnParser;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class DataBase
 {
@@ -35,7 +34,8 @@ class DataBase
      */
     public function __construct(#[AutowireLocator([
         'entityManager' => EntityManagerInterface::class,
-        'connexion' => Connection::class
+        'connexion' => Connection::class,
+        'parameterBag' => ParameterBagInterface::class,
     ])] private readonly ContainerInterface $handlers)
     {
         $this->entityManager = $this->handlers->get('entityManager');
@@ -67,8 +67,7 @@ class DataBase
         $query = RawPostgresQuery::getQueryExistTable('natheo', $tableName);
 
         $result = $this->executeRawQuery($query);
-        if(isset($result['result'][0]['exists']))
-        {
+        if (isset($result['result'][0]['exists'])) {
             return $result['result'][0]['exists'];
         }
         return false;
@@ -77,13 +76,27 @@ class DataBase
 
     /**
      * test si le schema existe
+     * @return bool
+     * @throws ContainerExceptionInterface
      * @throws Exception
+     * @throws NotFoundExceptionInterface
      */
     public function isSchemaExist(): bool
     {
+        /** @var ParameterBagInterface $parameterBag */
+        $parameterBag = $this->handlers->get('parameterBag');
+        $schema = $parameterBag->get('app.default_database_schema');
+        if (str_contains($schema, '.')) {
+            $schema = str_replace('.', '', $schema);
+        }
+
         $schemaManager = $this->connection->createSchemaManager();
         try {
             $schemaManager->listDatabases();
+            if ($schema !== "") {
+
+            }
+
         } catch (Exception $exception) {
             return false;
         }
