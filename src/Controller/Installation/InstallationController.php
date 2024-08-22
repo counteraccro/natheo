@@ -38,7 +38,7 @@ class InstallationController extends AbstractController
     #[Route('/', name: 'index', methods: ['GET'])]
     public function index(): Response
     {
-        return $this->redirectToRoute('installation_no_schema');
+        return $this->redirectToRoute('installation_step_1');
     }
 
     /**
