@@ -18,3 +18,14 @@ installation.step.1.titre.thx.h1: __installation.step.1.titre.thx.h1
 installation.step.1.description.thx.1: __installation.step.1.description.thx.1
 installation.step.1.config.bdd.loading.msg.update.file: __installation.step.1.config.bdd.loading.msg.update.file
 installation.step.1.config.bdd.loading.msg.test.connexion: __installation.step.1.config.bdd.loading.msg.test.connexion
+installation.step.1.config.bdd.loading.msg.test.connexion.ko: __installation.step.1.config.bdd.loading.msg.test.connexion.ko
+installation.step.1.config.bdd.loading.msg.test.connexion.success: __installation.step.1.config.bdd.loading.msg.test.connexion.success
+installation.step.1.create.bdd.h1: __installation.step.1.create.bdd.h1
+installation.step.1.create.bdd.description.1: __installation.step.1.create.bdd.description.1
+installation.step.1.create.bdd.description.2: __installation.step.1.create.bdd.description.2
+installation.step.1.create.bdd.alert.title: __installation.step.1.create.bdd.alert.title
+installation.step.1.create.bdd.alert.text.1: __installation.step.1.create.bdd.alert.text.1
+installation.step.1.create.bdd.alert.text.2: __installation.step.1.create.bdd.alert.text.2
+installation.step.1.create.bdd.alert.text.3: __installation.step.1.create.bdd.alert.text.3
+installation.step.1.create.bdd.alert.text.4: __installation.step.1.create.bdd.alert.text.4
+installation.step.1.create.bdd.alert.text.5: __installation.step.1.create.bdd.alert.text.5
