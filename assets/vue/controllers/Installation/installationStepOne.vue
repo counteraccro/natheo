@@ -271,6 +271,19 @@ export default {
         {{ this.translate.create_bdd_description_1 }} <br/>
         {{ this.translate.create_bdd_description_2 }}
       </p>
+
+      <div class="alert alert-secondary">
+        <h5 class="alert-heading">{{ this.translate.create_bdd_alert_title }}</h5>
+        <p>{{ this.translate.create_bdd_alert_text_1 }}</p>
+        <ul>
+          <li>{{ this.translate.create_bdd_alert_text_2 }} : <b>{{ this.datas.bdd_params.database_schema }}</b></li>
+          <li>{{ this.translate.create_bdd_alert_text_3 }} : <b v-html="this.datas.bdd_params.database_prefix === '' ? this.translate.create_bdd_alert_text_4 : this.datas.bdd_params.database_prefix + '_'"></b></li>
+        </ul>
+        <p>
+          <span v-html="this.translate.create_bdd_alert_text_5"></span>
+        </p>
+      </div>
+
     </div>
 
   </div>

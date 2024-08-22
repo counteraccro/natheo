@@ -92,10 +92,11 @@ class DataBase
 
         $schemaManager = $this->connection->createSchemaManager();
         try {
-            $schemaManager->listDatabases();
-            if ($schema !== "") {
-
+            //$schemaManager->listDatabases();
+            if ($schema !== "" && !in_array($schema, $schemaManager->listDatabases())) {
+                return false;
             }
+            return true;
 
         } catch (Exception $exception) {
             return false;

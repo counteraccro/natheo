@@ -21,6 +21,8 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\NonUniqueResultException;
 use League\CommonMark\Exception\CommonMarkException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,12 +43,14 @@ class SecurityController extends AbstractController
      * @param DataBase $dataBase
      * @return Response
      * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route(path: 'login', name: 'user_login')]
     public function login(AuthenticationUtils $authenticationUtils, DataBase $dataBase): Response
     {
         if (!$dataBase->isSchemaExist()) {
-            return $this->redirectToRoute('installation_no_schema');
+            return $this->redirectToRoute('installation_step_1');
         }
 
         if (!$dataBase->isTableExiste()) {

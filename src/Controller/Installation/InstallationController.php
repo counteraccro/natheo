@@ -18,6 +18,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,10 +50,11 @@ class InstallationController extends AbstractController
      * @throws Exception
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/step-1', name: 'no_schema', methods: ['GET'])]
+    #[Route('/step-1', name: 'step_1', methods: ['GET'])]
     public function stepOne(
         InstallationTranslate $installationTranslate,
-        InstallationService   $installationService
+        InstallationService   $installationService,
+        ParameterBagInterface $parameterBag
     ): Response
     {
         $forceToRedirect = $this->forceRedirect();
@@ -76,6 +78,10 @@ class InstallationController extends AbstractController
                 'option_connexion' => [
                     'test_connexion' => InstallationConst::OPTION_DATABASE_URL_TEST,
                     'create_database' => InstallationConst::OPTION_DATABASE_URL_CREATE_DATABASE
+                ],
+                'bdd_params' => [
+                    'database_schema' => $parameterBag->get('app.default_database_schema'),
+                    'database_prefix' => $parameterBag->get('app.default_database_prefix'),
                 ]
             ]
         ]);
