@@ -273,15 +273,36 @@ export default {
       </p>
 
       <div class="alert alert-secondary">
-        <h5 class="alert-heading">{{ this.translate.create_bdd_alert_title }}</h5>
+        <h5 class="alert-heading"><i class="bi bi-info-circle"></i> {{ this.translate.create_bdd_alert_title }}</h5>
         <p>{{ this.translate.create_bdd_alert_text_1 }}</p>
         <ul>
           <li>{{ this.translate.create_bdd_alert_text_2 }} : <b>{{ this.datas.bdd_params.database_schema }}</b></li>
-          <li>{{ this.translate.create_bdd_alert_text_3 }} : <b v-html="this.datas.bdd_params.database_prefix === '' ? this.translate.create_bdd_alert_text_4 : this.datas.bdd_params.database_prefix + '_'"></b></li>
+          <li>{{ this.translate.create_bdd_alert_text_3 }} :
+            <b v-html="this.datas.bdd_params.database_prefix === '' ? this.translate.create_bdd_alert_text_4 : this.datas.bdd_params.database_prefix + '_'"></b>
+          </li>
         </ul>
         <p>
           <span v-html="this.translate.create_bdd_alert_text_5"></span>
         </p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <i class="bi bi-database-add"></i> {{ this.translate.create_bdd_title }}
+        </div>
+        <div class="card-body">
+
+          <div class="row">
+
+            <div class="col">
+              <div class="mb-3">
+                <label for="bdd-config-bdd-name" class="form-label">{{ this.translate.create_bdd_input_bdd_name_label }}</label>
+                <input type="text" class="form-control" id="bdd-config-bdd-name" v-model="this.datas.bdd_config.dbb_name">
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
 
     </div>

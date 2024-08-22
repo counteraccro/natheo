@@ -83,13 +83,15 @@ class InstallationService extends AppAdminService
         }
 
         if (!empty($matches)) {
-            $return = [
+            $tmp = [
                 'type' => $matches[0][1],
                 'login' => $matches[0][2],
                 'password' => $matches[0][3],
                 'ip' => $matches[0][4],
                 'port' => $matches[0][5],
             ];
+            $return  = array_replace($return, $tmp);
+
             if (isset($matches[0][6])) {
                 $return['dbb_name'] = $matches[0][6];
                 $return['version'] = $matches[0][7];
