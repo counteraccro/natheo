@@ -78,7 +78,6 @@ class DataBase
      * test si le schema existe
      * @return bool
      * @throws ContainerExceptionInterface
-     * @throws Exception
      * @throws NotFoundExceptionInterface
      */
     public function isSchemaExist(): bool
@@ -90,15 +89,13 @@ class DataBase
             $schema = str_replace('.', '', $schema);
         }
 
-        $schemaManager = $this->connection->createSchemaManager();
         try {
-            //$schemaManager->listDatabases();
+            $schemaManager = $this->connection->createSchemaManager();
             if ($schema !== "" && !in_array($schema, $schemaManager->listDatabases())) {
                 return false;
             }
-            return true;
 
-        } catch (Exception $exception) {
+        } catch (Exception) {
             return false;
         }
         return true;
