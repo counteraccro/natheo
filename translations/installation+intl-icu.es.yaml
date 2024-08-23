@@ -31,3 +31,8 @@ installation.step.1.create.bdd.alert.text.4: __installation.step.1.create.bdd.al
 installation.step.1.create.bdd.alert.text.5: __installation.step.1.create.bdd.alert.text.5
 installation.step.1.create.bdd.title: __installation.step.1.create.bdd.title
 installation.step.1.create.bdd.input.bdd.name.label: __installation.step.1.create.bdd.input.bdd.name.label
+installation.step.1.create.bdd.input.version.label: __installation.step.1.create.bdd.input.version.label
+installation.step.1.create.bdd.input.charset.label: __installation.step.1.create.bdd.input.charset.label
+installation.step.1.create.bdd.input.bdd.name.error: __installation.step.1.create.bdd.input.bdd.name.error
+installation.step.1.create.bdd.input.version.error: __installation.step.1.create.bdd.input.version.error
+installation.step.1.create.bdd.btn.create: __installation.step.1.create.bdd.btn.create

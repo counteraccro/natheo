@@ -31,3 +31,8 @@ installation.step.1.create.bdd.alert.text.4: 'aucun prefix défini'
 installation.step.1.create.bdd.alert.text.5: 'Si vous souhaitez modifier ces options, modifier les valeurs <b>app.default_database_prefix</b> et <b>app.default_database_schema</b> dans <b>config/services.yaml</b>'
 installation.step.1.create.bdd.title: 'Installation de la base de données'
 installation.step.1.create.bdd.input.bdd.name.label: 'Nom de la base de données'
+installation.step.1.create.bdd.input.version.label: Version
+installation.step.1.create.bdd.input.charset.label: Charset
+installation.step.1.create.bdd.input.bdd.name.error: 'Ce champ ne peut pas être vide ou posséder des caractères spéciaux'
+installation.step.1.create.bdd.input.version.error: 'Ce champ ne peut pas être vide'
+installation.step.1.create.bdd.btn.create: 'Créer la base de donnée'
