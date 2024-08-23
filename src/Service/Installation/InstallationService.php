@@ -73,8 +73,8 @@ class InstallationService extends AppAdminService
 
         $return = [
             'type' => '', 'login' => '', 'password' => '',
-            'ip' => '', 'port' => '', 'dbb_name' => '',
-            'version' => '', 'charset' => '',
+            'ip' => '', 'port' => '', 'bdd_name' => '',
+            'version' => '', 'charset' => 'utf8',
         ];
 
         if (empty($matches)) {
@@ -93,7 +93,7 @@ class InstallationService extends AppAdminService
             $return  = array_replace($return, $tmp);
 
             if (isset($matches[0][6])) {
-                $return['dbb_name'] = $matches[0][6];
+                $return['bdd_name'] = $matches[0][6];
                 $return['version'] = $matches[0][7];
                 $return['charset'] = $matches[0][8];
             }

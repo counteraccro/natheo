@@ -40,6 +40,11 @@ class InstallationTranslate extends AppTranslate
             'create_bdd_alert_text_5' => $this->translator->trans('installation.step.1.create.bdd.alert.text.5', domain:'installation'),
             'create_bdd_title' => $this->translator->trans('installation.step.1.create.bdd.title', domain:'installation'),
             'create_bdd_input_bdd_name_label' => $this->translator->trans('installation.step.1.create.bdd.input.bdd.name.label', domain:'installation'),
+            'create_bdd_input_version_label' => $this->translator->trans('installation.step.1.create.bdd.input.version.label', domain:'installation'),
+            'create_bdd_input_charset_label' => $this->translator->trans('installation.step.1.create.bdd.input.charset.label', domain:'installation'),
+            'create_bdd_input_bdd_name_error' => $this->translator->trans('installation.step.1.create.bdd.input.bdd.name.error', domain:'installation'),
+            'create_bdd_input_version_error' => $this->translator->trans('installation.step.1.create.bdd.input.version.error', domain:'installation'),
+            'create_bdd_btn_create' => $this->translator->trans('installation.step.1.create.bdd.btn.create', domain:'installation'),
         ];
     }
 

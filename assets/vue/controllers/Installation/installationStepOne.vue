@@ -11,7 +11,6 @@ export default {
   name: "Installation-step-one",
   components: {
     Toast
-
   },
   props: {
     urls: Object,
@@ -21,12 +20,20 @@ export default {
   },
   data() {
     return {
+      bddConfig: [],
       loading: false,
       testConnexion: {
         isConnected: null,
         loading: false,
         updateFile: 0,
         testConn: 0
+      },
+      createDatabase: {
+        valideName: null,
+        valideVersion: null,
+        updateFile: null,
+        createBdd: null,
+        createTable: null,
       },
       toasts: {
         toastSuccess: {
@@ -41,6 +48,7 @@ export default {
     }
   },
   mounted() {
+    this.bddConfig = this.datas.bdd_config;
     this.checkConnexion();
   },
 
@@ -60,7 +68,7 @@ export default {
 
       axios.post(this.urls.update_env, {
         'config_key': this.datas.config_key.database_url,
-        'config': this.datas.bdd_config,
+        'config': this.bddConfig,
         'type': type
       }).then((response) => {
         this.testConnexion.updateFile = 2;
@@ -139,6 +147,41 @@ export default {
     },
 
     /**
+     * Vérifie et valide le nom de la bdd
+     */
+    sanitizeBddName(event) {
+      this.bddConfig.bdd_name = event.target.value.replace(/[^\w\s]/gi, '');
+    },
+
+    /**
+     * Vérifie si le champ est vide ou non
+     * @param event
+     * @param type
+     */
+    checkValideField(event, type) {
+      let value = event.target.value;
+      this.createDatabase[type] = !(value === "" || value.length === 0);
+    },
+
+    /**
+     * Renvoi une class en fonction du type
+     * @param type
+     * @return {string}
+     */
+    isValideInput(type) {
+
+      if (this.createDatabase[type] === null) {
+        return "";
+      }
+
+      if (!this.createDatabase[type]) {
+        return 'is-invalid';
+      } else {
+        return 'is-valid';
+      }
+    },
+
+    /**
      * Ferme un toast en fonction de son id
      * @param nameToast
      */
@@ -185,19 +228,19 @@ export default {
           <div class="col">
             <div class="mb-3">
               <label for="bdd-config-type" class="form-label">{{ this.translate.config_bdd_input_type_label }}</label>
-              <input type="text" class="form-control" id="bdd-config-type" v-model="this.datas.bdd_config.type" disabled>
+              <input type="text" class="form-control" id="bdd-config-type" v-model="this.bddConfig.type" disabled>
             </div>
           </div>
           <div class="col">
             <div class="mb-3">
               <label for="bdd-config-login" class="form-label">{{ this.translate.config_bdd_input_login_label }}</label>
-              <input type="text" class="form-control" id="bdd-config-login" v-model="this.datas.bdd_config.login">
+              <input type="text" class="form-control" id="bdd-config-login" v-model="this.bddConfig.login">
             </div>
           </div>
           <div class="col">
             <div class="mb-3">
               <label for="bdd-config-password" class="form-label">{{ this.translate.config_bdd_input_password_label }}</label>
-              <input type="text" class="form-control" id="bdd-config-password" v-model="this.datas.bdd_config.password">
+              <input type="text" class="form-control" id="bdd-config-password" v-model="this.bddConfig.password">
             </div>
           </div>
         </div>
@@ -205,13 +248,13 @@ export default {
           <div class="col">
             <div class="mb-3">
               <label for="bdd-config-password" class="form-label">{{ this.translate.config_bdd_input_ip_label }}</label>
-              <input type="text" class="form-control" id="bdd-config-password" v-model="this.datas.bdd_config.ip">
+              <input type="text" class="form-control" id="bdd-config-password" v-model="this.bddConfig.ip">
             </div>
           </div>
           <div class="col">
             <div class="mb-3">
               <label for="bdd-config-password" class="form-label">{{ this.translate.config_bdd_input_port_label }}</label>
-              <input type="text" class="form-control" id="bdd-config-password" v-model="this.datas.bdd_config.port">
+              <input type="text" class="form-control" id="bdd-config-password" v-model="this.bddConfig.port">
             </div>
           </div>
           <div class="col">
@@ -297,11 +340,41 @@ export default {
             <div class="col">
               <div class="mb-3">
                 <label for="bdd-config-bdd-name" class="form-label">{{ this.translate.create_bdd_input_bdd_name_label }}</label>
-                <input type="text" class="form-control" id="bdd-config-bdd-name" v-model="this.datas.bdd_config.dbb_name">
+                <input type="text" class="form-control" :class="this.isValideInput('valideName')" id="bdd-config-bdd-name"
+                    v-model="this.bddConfig.bdd_name" @keyup="this.sanitizeBddName"
+                    @change="(event) => this.checkValideField(event,'valideName')">
+                <div id="bdd-config-bdd-name-error" class="invalid-feedback">
+                  {{ this.translate.create_bdd_input_bdd_name_error }}
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="mb-3">
+                <label for="bdd-config-bdd-name" class="form-label">{{ this.translate.create_bdd_input_version_label }}</label>
+                <input type="text" class="form-control" :class="this.isValideInput('valideVersion')"
+                    id="bdd-config-bdd-name" v-model="this.bddConfig.version" @change="(event) => this.checkValideField(event,'valideVersion')">
+                <div id="bdd-config-bdd-name-error" class="invalid-feedback">
+                  {{ this.translate.create_bdd_input_version_error }}
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="mb-3">
+                <label for="bdd-config-bdd-name" class="form-label">{{ this.translate.create_bdd_input_charset_label }}</label>
+                <select class="form-select" id="bdd-config-bdd-name" v-model="this.bddConfig.charset">
+                  <option value="utf8">utf8</option>
+                  <option value="utf8mb4">utf8mb4</option>
+                </select>
               </div>
             </div>
           </div>
-
+        </div>
+        <div class="card-footer text-body-secondary">
+          <div class="btn btn-secondary float-end">
+            {{ this.translate.create_bdd_btn_create }}
+          </div>
         </div>
       </div>
 
