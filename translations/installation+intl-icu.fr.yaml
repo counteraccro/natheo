@@ -36,3 +36,11 @@ installation.step.1.create.bdd.input.charset.label: Charset
 installation.step.1.create.bdd.input.bdd.name.error: 'Ce champ ne peut pas être vide ou posséder des caractères spéciaux'
 installation.step.1.create.bdd.input.version.error: 'Ce champ ne peut pas être vide'
 installation.step.1.create.bdd.btn.create: 'Créer la base de donnée'
+installation.step.1.create.bdd.msg.update.file: 'Mise à jour de la configuration'
+installation.step.1.create.bdd.msg.create.bdd: 'Création de la base de données...'
+installation.step.1.create.bdd.msg.create.bdd.success: 'Base de données créée avec succès'
+installation.step.1.create.bdd.msg.create.bdd.ko: 'Une erreur est survenue lors de la création de la base de données'
+installation.step.1.create.bdd.msg.create.table: 'Création des tables...'
+installation.step.1.create.bdd.msg.create.table.success: 'Tables créées avec succès'
+installation.step.1.create.bdd.msg.create.table.ko: 'Une erreur est survenue lors de la création des tables'
+installation.step.1.create.bdd.msg.success: "Félicitation l'étape 1 est terminée, redirection vers l'étape 2..."
