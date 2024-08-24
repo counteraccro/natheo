@@ -1,15 +1,22 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Traduction pour l'installation
+ */
 namespace App\Utils\Translate\Installation;
 
 use App\Utils\Translate\AppTranslate;
 
 class InstallationTranslate extends AppTranslate
 {
+    /**
+     * Traduction étape 1
+     * @return array
+     */
     public function getTranslateStepOne(): array
     {
         return [
-            'toast' => $this->getTranslateToast(),
             'loading' => $this->translator->trans('installation.loading', domain: 'installation'),
             'title' => $this->translator->trans('installation.step.1.titre', domain:'installation'),
             'title_h1' => $this->translator->trans('installation.step.1.titre.h1', domain:'installation'),
@@ -45,15 +52,28 @@ class InstallationTranslate extends AppTranslate
             'create_bdd_input_bdd_name_error' => $this->translator->trans('installation.step.1.create.bdd.input.bdd.name.error', domain:'installation'),
             'create_bdd_input_version_error' => $this->translator->trans('installation.step.1.create.bdd.input.version.error', domain:'installation'),
             'create_bdd_btn_create' => $this->translator->trans('installation.step.1.create.bdd.btn.create', domain:'installation'),
+            'create_bdd_loading_msg_update_file' => $this->translator->trans('installation.step.1.create.bdd.msg.update.file', domain:'installation'),
+            'create_bdd_loading_msg_create_bdd' => $this->translator->trans('installation.step.1.create.bdd.msg.create.bdd', domain:'installation'),
+            'create_bdd_loading_msg_create_bdd_success' => $this->translator->trans('installation.step.1.create.bdd.msg.create.bdd.success', domain:'installation'),
+            'create_bdd_loading_msg_create_bdd_ko' => $this->translator->trans('installation.step.1.create.bdd.msg.create.bdd.ko', domain:'installation'),
+            'create_bdd_loading_msg_create_table' => $this->translator->trans('installation.step.1.create.bdd.msg.create.table', domain:'installation'),
+            'create_bdd_loading_msg_create_table_success' => $this->translator->trans('installation.step.1.create.bdd.msg.create.table.success', domain:'installation'),
+            'create_bdd_loading_msg_create_table_ko' => $this->translator->trans('installation.step.1.create.bdd.msg.create.table.ko', domain:'installation'),
+            'create_bdd_loading_msg_success' => $this->translator->trans('installation.step.1.create.bdd.msg.success', domain:'installation'),
+
         ];
     }
 
-    private function getTranslateToast(): array
+    /**
+     * Traduction étape 2
+     * @return array
+     */
+    public function getTranslateStepTwo(): array
     {
         return [
-            'toast_title_success' => $this->translator->trans('installation.toast.title.success', domain: 'installation'),
-            'toast_time' => $this->translator->trans('installation.toast.time', domain: 'installation'),
-            'toast_title_error' => $this->translator->trans('installation.toast.title.error', domain: 'installation'),
+            'loading' => $this->translator->trans('installation.loading', domain: 'installation'),
+            'title' => $this->translator->trans('installation.step.2.titre', domain:'installation'),
+            'title_h1' => $this->translator->trans('installation.step.2.titre.h1', domain:'installation'),
         ];
     }
 }

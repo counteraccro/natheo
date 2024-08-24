@@ -47,15 +47,12 @@ class InstallationService extends AppAdminService
     public function formatDatabaseUrlForEnvFile(array $data, string $option): string
     {
         $return = EnvFile::KEY_DATABASE_URL . '="';
-        $return .= $data['type'] . '://' . $data['login'] . ':' . $data['password']  . '@' . $data['ip'] . ':' . $data['port'];
+        $return .= $data['type'] . '://' . $data['login'] . ':' . $data['password'] . '@' . $data['ip'] . ':' . $data['port'];
 
-        if($option === InstallationConst::OPTION_DATABASE_URL_CREATE_DATABASE)
-        {
-
+        if ($option === InstallationConst::OPTION_DATABASE_URL_CREATE_DATABASE) {
+            $return .= '/' . $data['bdd_name'] . '?serverVersion=' . $data['version'] . '&charset=' . $data['charset'];
         }
-
         $return .= '"';
-
         return $return;
     }
 
@@ -90,7 +87,7 @@ class InstallationService extends AppAdminService
                 'ip' => $matches[0][4],
                 'port' => $matches[0][5],
             ];
-            $return  = array_replace($return, $tmp);
+            $return = array_replace($return, $tmp);
 
             if (isset($matches[0][6])) {
                 $return['bdd_name'] = $matches[0][6];

@@ -7,6 +7,7 @@
 
 namespace App\Controller\Installation;
 
+use App\Service\Admin\CommandService;
 use App\Service\Installation\InstallationService;
 use App\Utils\Global\DataBase;
 use App\Utils\Global\EnvFile;
@@ -45,6 +46,7 @@ class InstallationController extends AbstractController
      * Etape 1 de l'installation
      * @param InstallationTranslate $installationTranslate
      * @param InstallationService $installationService
+     * @param ParameterBagInterface $parameterBag
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws Exception
@@ -67,6 +69,9 @@ class InstallationController extends AbstractController
             'urls' => [
                 'check_database' => $this->generateUrl('installation_check_database'),
                 'update_env' => $this->generateUrl('installation_update_env'),
+                'create_bdd' => $this->generateUrl('installation_create_bdd'),
+                'create_schema' => $this->generateUrl('installation_create_schema'),
+                'step_2' => $this->generateUrl('installation_step_2')
             ],
             'translate' => $installationTranslate->getTranslateStepOne(),
             'locales' => $installationService->getLocales(),
@@ -112,9 +117,76 @@ class InstallationController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
         $newValue = $installationService->formatDatabaseUrlForEnvFile($data['config'], $data['type']);
-        $installationService->updateValueByKeyInEnvFile(EnvFile::KEY_DATABASE_URL, $newValue);
 
-        return $this->json([]);
+        try {
+            $installationService->updateValueByKeyInEnvFile(EnvFile::KEY_DATABASE_URL, $newValue);
+            return $this->json(['success' => true]);
+        } catch (\Exception $e) {
+            return $this->json(['success' => false, 'error' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Création de la base de données
+     * @param CommandService $commandService
+     * @return JsonResponse
+     */
+    #[Route('/create-bdd', name: 'create_bdd', methods: ['GET'])]
+    public function createDatabase(CommandService $commandService): JsonResponse
+    {
+        try {
+            $commandService->createDatabase();
+            return $this->json(['success' => true]);
+        }  catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+            return $this->json(['success' => false, 'error' => $e->getMessage()]);
+        } catch (\Exception $e) {
+            return $this->json(['success' => false, 'error' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Création du schema SQL
+     * @param CommandService $commandService
+     * @return JsonResponse
+     */
+    #[Route('/create-schema', name: 'create_schema', methods: ['GET'])]
+    public function createSchema(CommandService $commandService): JsonResponse
+    {
+        try {
+            $commandService->createSchema();
+            return $this->json(['success' => true]);
+        }  catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+            return $this->json(['success' => false, 'error' => $e->getMessage()]);
+        } catch (\Exception $e) {
+            return $this->json(['success' => false, 'error' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Installation étape 2
+     * @param InstallationTranslate $installationTranslate
+     * @param InstallationService $installationService
+     * @param ParameterBagInterface $parameterBag
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/step-2', name: 'step_2', methods: ['GET'])]
+    public function stepTwo(
+        InstallationTranslate $installationTranslate,
+        InstallationService   $installationService,
+        ParameterBagInterface $parameterBag
+    ): Response
+    {
+        return $this->render('installation/installation/step_two.html.twig', [
+            'urls' => [
+
+            ],
+            'translate' => $installationTranslate->getTranslateStepTwo(),
+            'locales' => $installationService->getLocales(),
+            'datas' => [
+            ]
+        ]);
     }
 
     /**

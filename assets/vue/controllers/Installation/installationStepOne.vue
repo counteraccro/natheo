@@ -5,12 +5,10 @@
  * Formulaire de création / édition d'une FAQ
  */
 import axios from "axios";
-import Toast from "../../Components/Global/Toast.vue";
 
 export default {
   name: "Installation-step-one",
   components: {
-    Toast
   },
   props: {
     urls: Object,
@@ -34,22 +32,20 @@ export default {
         updateFile: null,
         createBdd: null,
         createTable: null,
-      },
-      toasts: {
-        toastSuccess: {
-          show: false,
-          msg: '',
-        },
-        toastError: {
-          show: false,
-          msg: '',
-        }
+        redirect : null,
       },
     }
   },
   mounted() {
     this.bddConfig = this.datas.bdd_config;
     this.checkConnexion();
+
+    if(this.bddConfig.version !== "") {
+      this.createDatabase.valideVersion = true
+    }
+    if(this.bddConfig.bdd_name !== "") {
+      this.createDatabase.valideName = true
+    }
   },
 
   computed: {},
@@ -71,8 +67,15 @@ export default {
         'config': this.bddConfig,
         'type': type
       }).then((response) => {
-        this.testConnexion.updateFile = 2;
-        this.checkConnexion();
+
+        if(response.data.success) {
+          this.testConnexion.updateFile = 2;
+          this.checkConnexion();
+        }
+        else {
+          this.testConnexion.updateFile = 3;
+        }
+
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -182,12 +185,84 @@ export default {
     },
 
     /**
-     * Ferme un toast en fonction de son id
-     * @param nameToast
+     * Active ou désactive le bouton "créer la bdd"
+     * @return {string}
      */
-    closeToast(nameToast) {
-      this.toasts[nameToast].show = false
+    canCreateBdd()
+    {
+      if(this.createDatabase.valideName && this.createDatabase.valideVersion)
+      {
+        return "";
+      }
+      return "disabled";
     },
+
+    /**
+     * Création de l'ensemble des données (table + schema)
+     */
+    createAllDataBdd()
+    {
+      this.createDatabase.updateFile = 1;
+      this.createDatabase.createBdd = null;
+      this.createDatabase.createTable = null;
+      this.createDatabase.redirect = null;
+
+      axios.post(this.urls.update_env, {
+        'config_key': this.datas.config_key.database_url,
+        'config': this.bddConfig,
+        'type': this.datas.option_connexion.create_database
+      }).then((response) => {
+        if(response.data.success) {
+          this.createDatabase.updateFile = 2;
+          this.createDatabaseCom()
+        }
+        else {
+          this.createDatabase.updateFile = 3;
+        }
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+
+      });
+    },
+
+    /** Création de la base de donnée **/
+    createDatabaseCom()
+    {
+      this.createDatabase.createBdd = 1;
+      axios.get(this.urls.create_bdd, {}).then((response) => {
+        if(response.data.success) {
+          this.createDatabase.createBdd = 2;
+          this.createSchema();
+        }
+        else {
+          this.createDatabase.createBdd = 3;
+        }
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+
+      });
+    },
+
+    /** Création de la base de donnée **/
+    createSchema()
+    {
+      this.createDatabase.createTable = 1;
+      axios.get(this.urls.create_schema, {}).then((response) => {
+        if(response.data.success) {
+          this.createDatabase.createTable = 2;
+          this.createDatabase.redirect = true;
+        }
+        else {
+          this.createDatabase.createTable = 3;
+        }
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        document.location.href= this.urls.step_2;
+      });
+    }
   },
 }
 </script>
@@ -372,8 +447,45 @@ export default {
           </div>
         </div>
         <div class="card-footer text-body-secondary">
-          <div class="btn btn-secondary float-end">
-            {{ this.translate.create_bdd_btn_create }}
+          <div v-if="this.createDatabase.updateFile === null" class="btn btn-secondary float-end" :class="this.canCreateBdd()" @click="this.createAllDataBdd()">
+           <i class="bi bi-plus-square"></i> {{ this.translate.create_bdd_btn_create }}
+          </div>
+
+          <div v-if="this.createDatabase.updateFile === 1">
+            <span class="spinner-border spinner-border-sm text-secondary" aria-hidden="true"></span>
+            <i>&nbsp;{{ this.translate.create_bdd_loading_msg_update_file }}</i>
+          </div>
+          <div v-else-if="this.createDatabase.updateFile === 2">
+            <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_update_file }}</span>
+          </div>
+          <div v-else-if="this.createDatabase.updateFile === 3">
+            <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_update_file }}</span>
+          </div>
+
+          <div v-if="this.createDatabase.createBdd === 1">
+            <span class="spinner-border spinner-border-sm text-secondary" aria-hidden="true"></span>
+            <i>&nbsp;{{ this.translate.create_bdd_loading_msg_create_bdd }}</i>
+          </div>
+          <div v-else-if="this.createDatabase.createBdd === 2">
+            <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_create_bdd_success }}</span>
+          </div>
+          <div v-else-if="this.createDatabase.createBdd === 3">
+            <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_create_bdd_ko }}</span>
+          </div>
+
+          <div v-if="this.createDatabase.createTable === 1">
+            <span class="spinner-border spinner-border-sm text-secondary" aria-hidden="true"></span>
+            <i>&nbsp;{{ this.translate.create_bdd_loading_msg_create_table }}</i>
+          </div>
+          <div v-else-if="this.createDatabase.createTable === 2">
+            <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_create_table_success }}</span>
+          </div>
+          <div v-else-if="this.createDatabase.createTable === 3">
+            <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_create_table_ko }}</span>
+          </div>
+
+          <div v-if="this.createDatabase.redirect">
+            <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_success }}</span>
           </div>
         </div>
       </div>
@@ -381,43 +493,4 @@ export default {
     </div>
 
   </div>
-
-
-  <!-- toast -->
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-
-    <toast
-        :id="'toastSuccess'"
-        :option-class-header="'text-success'"
-        :show="this.toasts.toastSuccess.show"
-        @close-toast="this.closeToast"
-    >
-      <template #header>
-        <i class="bi bi-check-circle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.translate.toast.toast_title_success }}</strong>
-        <small class="text-black-50">{{ this.translate.toast.toast_time }}</small>
-      </template>
-      <template #body>
-        <div v-html="this.toasts.toastSuccess.msg"></div>
-      </template>
-    </toast>
-
-    <toast
-        :id="'toastError'"
-        :option-class-header="'text-danger'"
-        :show="this.toasts.toastError.show"
-        @close-toast="this.closeToast"
-    >
-      <template #header>
-        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.translate.toast.toast_title_error }}</strong>
-        <small class="text-black-50">{{ this.translate.toast.toast_time }}</small>
-      </template>
-      <template #body>
-        <div v-html="this.toasts.toastError.msg"></div>
-      </template>
-    </toast>
-
-  </div>
-
 </template>
