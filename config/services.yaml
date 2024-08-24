@@ -6,8 +6,8 @@
 parameters:
   app.supported_locales: 'fr|en|es'
   app.default_locale: 'fr'
-  app.default_database_prefix: '' #  laissez vide si pas de prefix
-  app.default_database_schema: 'natheo.'  # Le point est obligatoire, sinon interprété comme un prefix, laissez vide si pas de schema
+  app.default_database_prefix: '' # un "_" est ajouté par défaut, laissez vide si pas de prefix
+  app.default_database_schema: 'natheo'  # schéma de la base de donnée
   app.version: 'dev-04-2024'
   app.current_branche: 'master'
 
