@@ -221,4 +221,15 @@ class AppAdminHandlerService
     {
         return $this->handlers->get('envFile');
     }
+
+    /**
+     * Retourne Database
+     * @return DataBase
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getDatabase() :DataBase
+    {
+        return $this->handlers->get('database');
+    }
 }

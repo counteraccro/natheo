@@ -33,6 +33,8 @@ export default {
         createBdd: null,
         createTable: null,
         redirect : null,
+        error : null,
+        showBtn: true,
       },
     }
   },
@@ -206,6 +208,7 @@ export default {
       this.createDatabase.createBdd = null;
       this.createDatabase.createTable = null;
       this.createDatabase.redirect = null;
+      this.createDatabase.showBtn = false;
 
       axios.post(this.urls.update_env, {
         'config_key': this.datas.config_key.database_url,
@@ -218,6 +221,8 @@ export default {
         }
         else {
           this.createDatabase.updateFile = 3;
+          this.createDatabase.error = response.data.error;
+          this.createDatabase.showBtn = true;
         }
       }).catch((error) => {
         console.error(error);
@@ -237,6 +242,8 @@ export default {
         }
         else {
           this.createDatabase.createBdd = 3;
+          this.createDatabase.error = response.data.error;
+          this.createDatabase.showBtn = true;
         }
       }).catch((error) => {
         console.error(error);
@@ -256,6 +263,8 @@ export default {
         }
         else {
           this.createDatabase.createTable = 3;
+          this.createDatabase.error = response.data.error;
+          this.createDatabase.showBtn = true;
         }
       }).catch((error) => {
         console.error(error);
@@ -447,7 +456,7 @@ export default {
           </div>
         </div>
         <div class="card-footer text-body-secondary">
-          <div v-if="this.createDatabase.updateFile === null" class="btn btn-secondary float-end" :class="this.canCreateBdd()" @click="this.createAllDataBdd()">
+          <div v-if="this.createDatabase.showBtn" class="btn btn-secondary float-end" :class="this.canCreateBdd()" @click="this.createAllDataBdd()">
            <i class="bi bi-plus-square"></i> {{ this.translate.create_bdd_btn_create }}
           </div>
 
@@ -486,6 +495,10 @@ export default {
 
           <div v-if="this.createDatabase.redirect">
             <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_success }}</span>
+          </div>
+
+          <div v-else-if="this.createDatabase.error !== null">
+            <span class="text-danger">&emsp;<i class="bi bi-arrow-return-right"> </i> {{ this.createDatabase.error }}</span>
           </div>
         </div>
       </div>

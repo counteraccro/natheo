@@ -12,13 +12,11 @@ use App\Service\Admin\System\MailService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
+use App\Service\Installation\InstallationService;
 use App\Service\SecurityService;
-use App\Utils\Global\DataBase;
 use App\Utils\System\Mail\KeyWord;
 use App\Utils\System\Mail\MailKey;
 use App\Utils\System\User\UserdataKey;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Exception;
 use Doctrine\ORM\NonUniqueResultException;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
@@ -40,21 +38,20 @@ class SecurityController extends AbstractController
     /**
      * Authentification
      * @param AuthenticationUtils $authenticationUtils
-     * @param DataBase $dataBase
+     * @param InstallationService $installationService
      * @return Response
-     * @throws Exception
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     #[Route(path: 'login', name: 'user_login')]
-    public function login(AuthenticationUtils $authenticationUtils, DataBase $dataBase): Response
+    public function login(AuthenticationUtils $authenticationUtils, InstallationService $installationService): Response
     {
-        if (!$dataBase->isSchemaExist()) {
+        if (!$installationService->checkSchema()) {
             return $this->redirectToRoute('installation_step_1');
         }
 
-        if (!$dataBase->isTableExiste()) {
-            die('Pas de table');
+        if (!$installationService->checkDataExiste(User::class)) {
+            return $this->redirectToRoute('installation_step_2');
         }
 
         // get the login error if there is one

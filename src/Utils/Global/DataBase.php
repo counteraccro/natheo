@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 class DataBase
 {
     /**
-     * @var EntityManagerInterface|mixed
+     * @var EntityManagerInterface
      */
     protected EntityManagerInterface $entityManager;
 
@@ -55,13 +55,22 @@ class DataBase
 
     /**
      * Vérifie si la table existe
-     * @param string|null $tableName
+     * @param string|null $tableName nom de la table sans préfix
      * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function isTableExiste(string $tableName = null): bool
     {
+        /** @var ParameterBagInterface $parameterBag */
+        $parameterBag = $this->handlers->get('parameterBag');
+        $prefix = $parameterBag->get('app.default_database_prefix');
+
         if ($tableName === null) {
-            $tableName = 'user';
+            if ($prefix !== "") {
+                $prefix .= "_";
+            }
+            $tableName = $prefix . 'user';
         }
 
         $query = RawPostgresQuery::getQueryExistTable('natheo', $tableName);
@@ -72,6 +81,20 @@ class DataBase
         }
         return false;
 
+    }
+
+    /**
+     * Vérifie si des données existent en fonction du modèle
+     * @param string $entity
+     * @return bool
+     */
+    public function isDataInTable(string $entity): bool
+    {
+        $values = $this->entityManager->getRepository($entity)->findAll();
+        if(empty($values)) {
+            return false;
+        }
+        return true;
     }
 
     /**

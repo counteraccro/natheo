@@ -97,4 +97,37 @@ class InstallationService extends AppAdminService
         }
         return $return;
     }
+
+    /**
+     * Si le schema et la table existe, retourne true sinon false
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function checkSchema(): bool
+    {
+        $dataBase = $this->getDatabase();
+        if ($dataBase->isSchemaExist() && $dataBase->isTableExiste()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Si des données existent dans la entity renvoi true sinon renvoi false
+     * @param string $entity
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function checkDataExiste(string $entity): bool
+    {
+        $dataBase = $this->getDatabase();
+        if ($dataBase->isDataInTable($entity)) {
+            return true;
+        }
+        return false;
+    }
+
+
 }

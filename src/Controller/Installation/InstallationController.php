@@ -7,6 +7,7 @@
 
 namespace App\Controller\Installation;
 
+use App\Entity\Admin\System\User;
 use App\Service\Admin\CommandService;
 use App\Service\Installation\InstallationService;
 use App\Utils\Global\DataBase;
@@ -62,6 +63,10 @@ class InstallationController extends AbstractController
         $forceToRedirect = $this->forceRedirect();
         if ($forceToRedirect !== null) {
             return $forceToRedirect;
+        }
+
+        if ($installationService->checkSchema()) {
+            return $this->redirectToRoute('installation_step_2');
         }
 
 
@@ -137,7 +142,7 @@ class InstallationController extends AbstractController
         try {
             $commandService->createDatabase();
             return $this->json(['success' => true]);
-        }  catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
             return $this->json(['success' => false, 'error' => $e->getMessage()]);
         } catch (\Exception $e) {
             return $this->json(['success' => false, 'error' => $e->getMessage()]);
@@ -155,7 +160,7 @@ class InstallationController extends AbstractController
         try {
             $commandService->createSchema();
             return $this->json(['success' => true]);
-        }  catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
             return $this->json(['success' => false, 'error' => $e->getMessage()]);
         } catch (\Exception $e) {
             return $this->json(['success' => false, 'error' => $e->getMessage()]);
@@ -178,6 +183,14 @@ class InstallationController extends AbstractController
         ParameterBagInterface $parameterBag
     ): Response
     {
+
+        if (!$installationService->checkSchema()) {
+            return $this->redirectToRoute('installation_step_1');
+        }
+        if ($installationService->checkDataExiste(User::class)) {
+            return $this->redirectToRoute('auth_user_login');
+        }
+
         return $this->render('installation/installation/step_two.html.twig', [
             'urls' => [
 
