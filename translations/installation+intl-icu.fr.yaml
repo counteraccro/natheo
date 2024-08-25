@@ -44,3 +44,20 @@ installation.step.1.create.bdd.msg.create.table: 'Création des tables...'
 installation.step.1.create.bdd.msg.create.table.success: 'Tables créées avec succès'
 installation.step.1.create.bdd.msg.create.table.ko: 'Une erreur est survenue lors de la création des tables'
 installation.step.1.create.bdd.msg.success: "Félicitation l'étape 1 est terminée, redirection vers l'étape 2..."
+installation.step.2.titre: 'Etape 2 - Configuration de NatheoCMS'
+installation.step.2.titre.h1: 'Création du compte fondateur'
+installation.step.2.fondateur.description: 'Nous allons maintenant créer le compte fondateur, ce compte vous permettra de vous connecter au back-office de Natheo'
+installation.step.2.fondateur.titre.card: 'Nouvel utilisateur'
+installation.step.2.fondateur.login.label: Login
+installation.step.2.fondateur.login.placeholder: Login
+installation.step.2.fondateur.email.label: 'Adresse email'
+installation.step.2.fondateur.email.placeholder: 'Adresse email'
+installation.step.2.fondateur.password.label: 'Mot de passe'
+installation.step.2.fondateur.login.error: 'Le login ne peut pas être vide ou contenir des caractères spéciaux'
+installation.step.2.fondateur.email.error: "L'adresse email n'est pas valide"
+installation.step.2.fondateur.password.error: 'Le mot de passe ne peux pas être vide'
+installation.step.2.fondateur.password.weak: 'Mot de passe faible'
+installation.step.2.fondateur.password.normal: 'Mot de passe normal'
+installation.step.2.fondateur.password.strong: 'Mot de passe fort'
+installation.step.2.fondateur.btn.create: "Créer l'utilisateur"
+installation.step.2.fondateur.password.help: 'Votre mot de passe doit contenir entre 8 et 20 caractères, lettres, chiffres, caractères spéciaux, sans espaces'
