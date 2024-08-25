@@ -74,6 +74,21 @@ class InstallationTranslate extends AppTranslate
             'loading' => $this->translator->trans('installation.loading', domain: 'installation'),
             'title' => $this->translator->trans('installation.step.2.titre', domain:'installation'),
             'title_h1' => $this->translator->trans('installation.step.2.titre.h1', domain:'installation'),
+            'fondateur_description' => $this->translator->trans('installation.step.2.fondateur.description', domain:'installation'),
+            'fondateur_titre_card' => $this->translator->trans('installation.step.2.fondateur.titre.card', domain:'installation'),
+            'fondateur_login_label' => $this->translator->trans('installation.step.2.fondateur.login.label', domain:'installation'),
+            'fondateur_login_placeholder' => $this->translator->trans('installation.step.2.fondateur.login.placeholder', domain:'installation'),
+            'fondateur_login_error' => $this->translator->trans('installation.step.2.fondateur.login.error', domain:'installation'),
+            'fondateur_email_label' => $this->translator->trans('installation.step.2.fondateur.email.label', domain:'installation'),
+            'fondateur_email_placeholder' => $this->translator->trans('installation.step.2.fondateur.email.placeholder', domain:'installation'),
+            'fondateur_email_error' => $this->translator->trans('installation.step.2.fondateur.email.error', domain:'installation'),
+            'fondateur_password_label' => $this->translator->trans('installation.step.2.fondateur.password.label', domain:'installation'),
+            'fondateur_password_error' => $this->translator->trans('installation.step.2.fondateur.password.error', domain:'installation'),
+            'fondateur_password_weak' => $this->translator->trans('installation.step.2.fondateur.password.weak', domain:'installation'),
+            'fondateur_password_normal' => $this->translator->trans('installation.step.2.fondateur.password.normal', domain:'installation'),
+            'fondateur_password_strong' => $this->translator->trans('installation.step.2.fondateur.password.strong', domain:'installation'),
+            'fondateur_password_help' => $this->translator->trans('installation.step.2.fondateur.password.help', domain:'installation'),
+            'fondateur_btn_create' => $this->translator->trans('installation.step.2.fondateur.btn.create', domain:'installation'),
         ];
     }
 }

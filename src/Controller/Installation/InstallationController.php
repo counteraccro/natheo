@@ -60,12 +60,11 @@ class InstallationController extends AbstractController
         ParameterBagInterface $parameterBag
     ): Response
     {
-        $forceToRedirect = $this->forceRedirect();
-        if ($forceToRedirect !== null) {
-            return $forceToRedirect;
-        }
 
         if ($installationService->checkSchema()) {
+            if ($installationService->checkDataExiste(User::class)) {
+                return $this->redirectToRoute('auth_user_login');
+            }
             return $this->redirectToRoute('installation_step_2');
         }
 
