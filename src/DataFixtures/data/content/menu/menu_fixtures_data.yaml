@@ -1,6 +1,6 @@
 menu:
   menu_generic_header:
-    user: Aymeric
+    user: User
     name: Generic header
     type: 3
     position: 1
@@ -306,7 +306,7 @@ menu:
             textLink: 'en-Partenaire-3'
             externalLink: 'https://www.natheo-book.com/'
   menu_generic_footer:
-    user: Aymeric
+    user: User
     name: Generic footer
     type: 17
     position: 3
@@ -372,7 +372,7 @@ menu:
             textLink: 'en-GitHub'
             externalLink: 'https://github.com/counteraccro/natheo'
   menu_generic_left:
-    user: Aymeric
+    user: User
     name: Generic menu
     type: 12
     position: 4
@@ -540,7 +540,7 @@ menu:
             textLink: 'en-page-blog'
             externalLink: '#'
   menu_left_page:
-    user: Aymeric
+    user: User
     name: Menu left pour Page
     type: 12
     position: 4

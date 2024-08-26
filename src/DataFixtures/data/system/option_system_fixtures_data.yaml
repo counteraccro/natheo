@@ -40,7 +40,7 @@ option_system:
     value: 1
   OS_MAIL_FROM:
     key: 'OS_MAIL_FROM'
-    value: 'aymeric.gourdon@hotmail.fr'
+    value: 'support@natheo.fr'
   OS_MAIL_REPLY_TO:
     key: 'OS_MAIL_REPLY_TO'
     value: 'support@natheo.fr'

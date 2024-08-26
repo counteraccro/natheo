@@ -1,71 +1,71 @@
 media:
   media-1:
     folder: Folder_paysage
-    user: Aymeric
+    user: User
     description: "un désert dans le désert"
     image: 'the-desert.png'
   media-2:
     folder: Folder_paysage
-    user: Aymeric
+    user: User
     description: "Soleil levant sur la plage"
     image: 'beach.jpg'
   media-3:
     folder: Folder_paysage
-    user: Aymeric
+    user: User
     description: "Plage ensoleillé"
     image: 'beach-sun.jpg'
   media-4:
     folder: Folder_paysage
-    user: Aymeric
+    user: User
     description: "Chemin dans la foret"
     image: 'forest-road.jpg'
   media-5:
     folder: Folder_paysage
-    user: Aymeric
+    user: User
     description: "Voie de chemin de fer"
     image: 'railroad.jpg'
   media-6:
     folder: Folder_paysage
-    user: Aymeric
+    user: User
     description: "Route"
     image: 'road.jpg'
   media-7:
     folder: Folder_paysage
-    user: Aymeric
+    user: User
     description: "Vagues"
     image: 'wave.jpg'
   media-8:
     folder: Folder_CV
-    user: Aymeric
+    user: User
     description: "Recrutement"
     image: 'interview.png'
   media-9:
     folder: ''
-    user: Aymeric
+    user: User
     description: "Tasse de café"
     image: 'cup-of-coffee.jpg'
   media-10:
     folder: ''
-    user: Aymeric
+    user: User
     description: "Code"
     image: 'technology.jpg'
   media-11:
     folder: ''
-    user: Aymeric
+    user: User
     description: "Bureau"
     image: 'workspace.jpg'
   media-12:
     folder: Folder_documentation
-    user: Aymeric
+    user: User
     description: "Documentation de Natheo CMS"
     image: 'documentation-natheo.docx'
   media-13:
     folder: Folder_documentation
-    user: Aymeric
+    user: User
     description: "Documentation de Natheo CMS en PDF"
     image: 'documentation-natheo.pdf'
   media-14:
     folder: Folder_documentation
-    user: Aymeric
+    user: User
     description: "Historique des versions de Natheo CMS"
     image: 'Versions-natheo.xlsx'
