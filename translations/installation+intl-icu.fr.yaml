@@ -59,5 +59,7 @@ installation.step.2.fondateur.password.error: "Le mot de passe n'est pas valide"
 installation.step.2.fondateur.password.weak: 'Mot de passe faible'
 installation.step.2.fondateur.password.normal: 'Mot de passe normal'
 installation.step.2.fondateur.password.strong: 'Mot de passe fort'
-installation.step.2.fondateur.btn.create: "Créer l'utilisateur"
+installation.step.2.fondateur.btn.create: "Créer votre compte"
 installation.step.2.fondateur.password.help: 'Votre mot de passe doit contenir entre 8 et 20 caractères, au moins 1 majuscule, lettres, chiffres, caractères spéciaux, sans espaces'
+installation.step.2.fondateur.loading.msg: "Création de votre compte en cours..."
+installation.step.2.fondateur.success: "Compte créé avec succès"

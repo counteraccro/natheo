@@ -61,3 +61,5 @@ installation.step.2.fondateur.password.normal: __installation.step.2.fondateur.p
 installation.step.2.fondateur.password.strong: __installation.step.2.fondateur.password.strong
 installation.step.2.fondateur.password.help: __installation.step.2.fondateur.password.help
 installation.step.2.fondateur.btn.create: __installation.step.2.fondateur.btn.create
+installation.step.2.fondateur.loading.msg: __installation.step.2.fondateur.loading.msg
+installation.step.2.fondateur.success: __installation.step.2.fondateur.success
