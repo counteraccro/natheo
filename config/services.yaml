@@ -10,6 +10,9 @@ parameters:
   app.default_database_schema: 'natheo'  # schéma de la base de donnée
   app.version: 'dev-04-2024'
   app.current_branche: 'master'
+  # Permet d'activer le mode débug du CMS
+  # En débug mode, créer un type d'utilisateur par droit dans les fixtures
+  app.debug_mode: false
 
 services:
   # default configuration for services in *this* file
