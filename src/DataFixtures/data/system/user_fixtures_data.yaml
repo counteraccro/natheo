@@ -1,0 +1,11 @@
+User:
+  User:
+    email: aymeric.gourdon@hotmail.fr
+    password: $2y$13$.uNz4hfYen/QhOwUZwfM3eg0JiLxBBFx76W1XTEgIk1bRdnOGX.7S
+    login: azerty
+    firstname: ''
+    lastname: ''
+    roles: ROLE_SUPER_ADMIN
+    disabled: 0
+    anonymous: 0
+    founder: 1

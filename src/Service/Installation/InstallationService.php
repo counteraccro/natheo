@@ -2,11 +2,15 @@
 
 namespace App\Service\Installation;
 
+use App\Entity\Admin\System\User;
 use App\Service\Admin\AppAdminService;
 use App\Utils\Global\EnvFile;
 use App\Utils\Installation\InstallationConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Yaml\Yaml;
 
 class InstallationService extends AppAdminService
 {
@@ -127,6 +131,60 @@ class InstallationService extends AppAdminService
             return true;
         }
         return false;
+    }
+
+    /**
+     * Créer un nouvel utilisateur
+     * @param array $data
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function createUser(array $data): array
+    {
+        $passwordHasher = $this->getUserPasswordHasher();
+        $user = new User();
+
+        $tab = [
+            'User' => [
+                'User' => [
+                    'email' => $data['email'],
+                    'password' => $passwordHasher->hashPassword($user, $data['password']),
+                    'login' => $data['login'],
+                    'firstname' => '',
+                    'lastname' => '',
+                    'roles' => 'ROLE_SUPER_ADMIN',
+                    'disabled' => 0,
+                    'anonymous' => 0,
+                    'founder' => 1
+                ],
+            ]
+        ];
+        $yamlData = Yaml::dump($tab, 3, 2);
+        $filesystem = new Filesystem();
+        $path = $this->getPathFixture() . 'system' . DIRECTORY_SEPARATOR . 'user_fixtures_data.yaml';
+
+        try {
+            $filesystem->dumpFile($path, $yamlData);
+            return ['success' => true];
+        } catch (IOExceptionInterface $exception) {
+            return ['success' => false, 'message' => $exception->getMessage()];
+        }
+    }
+
+    /**
+     * Retourne le path du dossier de fixtures
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getPathFixture(): string
+    {
+        $container = $this->getContainerBag();
+
+        $kernel = $container->get('kernel.project_dir');
+        return $kernel . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR .
+            'DataFixtures' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
     }
 
 

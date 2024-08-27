@@ -89,6 +89,8 @@ class InstallationTranslate extends AppTranslate
             'fondateur_password_strong' => $this->translator->trans('installation.step.2.fondateur.password.strong', domain:'installation'),
             'fondateur_password_help' => $this->translator->trans('installation.step.2.fondateur.password.help', domain:'installation'),
             'fondateur_btn_create' => $this->translator->trans('installation.step.2.fondateur.btn.create', domain:'installation'),
+            'fondateur_loading_msg' => $this->translator->trans('installation.step.2.fondateur.loading.msg', domain:'installation'),
+            'fondateur_success' => $this->translator->trans('installation.step.2.fondateur.success', domain:'installation'),
         ];
     }
 }

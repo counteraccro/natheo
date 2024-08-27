@@ -18,6 +18,8 @@ export default {
   data() {
     return {
       loading: false,
+      userSuccess: false,
+      userLoading: false,
       user: {
         login: null,
         email: null,
@@ -133,23 +135,42 @@ export default {
      * Désactive ou active le bouton submit pour créer le user
      * @return {string}
      */
-    canCreateUser()
-    {
-      if(this.userValidate.password && this.userValidate.login && this.userValidate.email) {
-        console.log('oki');
+    canCreateUser() {
+      if (this.userValidate.password && this.userValidate.login && this.userValidate.email) {
         return "";
       }
-
-      console.log('nop');
       return "disabled";
+    },
+
+    /**
+     * Check si l'input doit etre disabled ou non
+     * @return {boolean}
+     */
+    isDisabled()
+    {
+      if(this.userSuccess)
+      {
+        return true;
+      }
+      else {
+        return false;
+      }
     },
 
     /**
      * Création de l'utilisateur
      */
-    createUser()
-    {
-      console.log('crée');
+    createUser() {
+      this.userLoading = true;
+      axios.post(this.urls.create_user, {
+        user: this.user
+      }).then((response) => {
+        this.userSuccess = response.data.success;
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.userLoading = false;
+      });
     }
   },
 }
@@ -188,7 +209,7 @@ export default {
               <div class="input-group">
                 <span class="input-group-text" id="addon-wrapping"><i class="bi bi-envelope"></i> </span>
                 <input type="email" class="form-control" :class="this.isValidate('email')" v-model="this.user.email"
-                    id="user-email" :placeholder="this.translate.fondateur_email_placeholder" @change="this.validateEmail()">
+                    id="user-email" :placeholder="this.translate.fondateur_email_placeholder" :disabled="this.isDisabled()" @change="this.validateEmail()">
                 <div id="invalide-user-email" class="invalid-feedback">
                   {{ this.translate.fondateur_email_error }}
                 </div>
@@ -202,7 +223,7 @@ export default {
               <div class="input-group">
                 <span class="input-group-text" id="addon-wrapping"><i class="bi bi-person"></i> </span>
                 <input type="text" class="form-control" :class="this.isValidate('login')" v-model="this.user.login"
-                    id="user-login" :placeholder="this.translate.fondateur_login_placeholder" @keyup="this.sanitizeLogin" @change="this.validateLogin()">
+                    id="user-login" :placeholder="this.translate.fondateur_login_placeholder" :disabled="this.isDisabled()" @keyup="this.sanitizeLogin" @change="this.validateLogin()">
                 <div id="invalide-user-login" class="invalid-feedback">
                   {{ this.translate.fondateur_login_error }}
                 </div>
@@ -215,9 +236,9 @@ export default {
               <label for="user-password" class="form-label">{{ this.translate.fondateur_password_label }}</label>
               <div class="input-group">
                 <span class="input-group-text" id="addon-wrapping"><i class="bi" :class="this.userValidate.showPasswordRule.icon"></i> </span>
-                <input :type="this.userValidate.showPasswordRule.type" maxlength="20" class="form-control" :class="this.isValidate('password')" v-model="this.user.password" id="user-password" @keyup="this.validatePassword()">
+                <input :type="this.userValidate.showPasswordRule.type" maxlength="20" :disabled="this.isDisabled()" class="form-control" :class="this.isValidate('password')" v-model="this.user.password" id="user-password" @keyup="this.validatePassword()">
                 <div class="input-group-text">
-                  <input class="form-check-input mt-0" type="checkbox" v-model="this.userValidate.showPasswordRule.showPassword" @change="this.showPassword()">
+                  <input class="form-check-input mt-0" type="checkbox" :disabled="this.isDisabled()" v-model="this.userValidate.showPasswordRule.showPassword" @change="this.showPassword()">
                 </div>
                 <div id="invalide-user-login" class="invalid-feedback">
                   {{ this.translate.fondateur_password_error }}
@@ -234,7 +255,20 @@ export default {
         </div>
       </div>
       <div class="card-footer">
-        <div class="btn btn-secondary float-end" :class="this.canCreateUser()" @click="this.createUser()">{{ this.translate.fondateur_btn_create }}</div>
+        <div v-if="!this.userLoading && !this.userSuccess" class="btn btn-secondary float-end" :class="this.canCreateUser()" @click="this.createUser()">
+          <i class="bi bi-person-add"></i> {{ this.translate.fondateur_btn_create }}
+        </div>
+
+        <div v-if="this.userLoading" class="btn btn-secondary float-end disabled">
+          <div>
+            <span class="spinner-border spinner-border-sm text-primary" aria-hidden="true"></span>
+            <i>&nbsp;{{ this.translate.fondateur_loading_msg }}</i>
+          </div>
+        </div>
+
+        <div v-if="this.userSuccess" class="btn btn-secondary float-end disabled">
+          <i class="bi bi-person-check"></i> {{ this.translate.fondateur_success }}
+        </div>
       </div>
     </div>
 

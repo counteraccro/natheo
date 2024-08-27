@@ -192,7 +192,7 @@ class InstallationController extends AbstractController
 
         return $this->render('installation/installation/step_two.html.twig', [
             'urls' => [
-
+               'create_user' => $this->generateUrl('installation_create_user'),
             ],
             'translate' => $installationTranslate->getTranslateStepTwo(),
             'locales' => $installationService->getLocales(),
@@ -202,18 +202,20 @@ class InstallationController extends AbstractController
     }
 
     /**
-     * @return RedirectResponse|null
+     * Créer le compte fondateur lors de l'installation du CMS
+     * @param Request $request
+     * @param InstallationService $installationService
+     * @return JsonResponse
      * @throws ContainerExceptionInterface
-     * @throws Exception
      * @throws NotFoundExceptionInterface
      */
-    private function forceRedirect(): ?RedirectResponse
+    #[Route('/create-user', name: 'create_user', methods: ['POST'])]
+    public function createUser(Request $request, InstallationService $installationService): JsonResponse
     {
-        /** @var DataBase $dataBase */
-        $dataBase = $this->handlers->get('dataBase');
-        if ($dataBase->isTableExiste()) {
-            //return $this->redirectToRoute('admin_dashboard_index');
-        }
-        return null;
+        $data = json_decode($request->getContent(), true);
+        $return = $installationService->createUser($data['user']);
+
+        return $this->json($return);
+
     }
 }
