@@ -146,7 +146,7 @@ class InstallationService extends AppAdminService
         $user = new User();
 
         $tab = [
-            'User' => [
+            'user' => [
                 'User' => [
                     'email' => $data['email'],
                     'password' => $passwordHasher->hashPassword($user, $data['password']),
