@@ -196,6 +196,20 @@ export default {
       {{ this.translate.fondateur_description }}
     </p>
 
+    <div v-if="this.datas.debug_mode" class="alert alert-danger">
+      <h5 class="alert-heading"><i class="bi bi-bug"></i> {{ this.translate.debug_titre }}</h5>
+      <p>{{ this.translate.debug_texte_1 }}</p>
+      <p>{{ this.translate.debug_texte_2 }}</p>
+      <p>
+        {{ this.translate.debug_texte_3 }}
+      </p>
+      <ul>
+        <li v-html="this.translate.debug_texte_4"></li>
+        <li v-html="this.translate.debug_texte_5"></li>
+        <li v-html="this.translate.debug_texte_6"></li>
+      </ul>
+    </div>
+
     <div class="card">
       <div class="card-header">
         <i class="bi bi-person-add"></i> {{ this.translate.fondateur_titre_card }}
