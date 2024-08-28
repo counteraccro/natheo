@@ -4,6 +4,7 @@
  * @version 1.0
  * Permet de lire et manipuler le fichier .env
  */
+
 namespace App\Utils\Global;
 
 use Psr\Container\ContainerExceptionInterface;
@@ -53,6 +54,12 @@ class EnvFile
      */
     public const KEY_APP_SECRET = 'APP_SECRET';
 
+    /**
+     * Clé KEY_APP_ENV
+     * @var string
+     */
+    public const KEY_APP_ENV = 'APP_ENV';
+
     public function __construct(#[AutowireLocator([
         'kernel' => KernelInterface::class,
         'parameterBag' => ParameterBagInterface::class,
@@ -73,7 +80,7 @@ class EnvFile
 
         $kernel = $this->handlers->get('kernel');
         $envFile = $kernel->getProjectDir() . DIRECTORY_SEPARATOR . self::NAME_FILE_ENV;
-        if($filesystem->exists($kernel->getProjectDir() . DIRECTORY_SEPARATOR . self::NAME_FILE_ENV_LOCAL)) {
+        if ($filesystem->exists($kernel->getProjectDir() . DIRECTORY_SEPARATOR . self::NAME_FILE_ENV_LOCAL)) {
             $envFile = $kernel->getProjectDir() . DIRECTORY_SEPARATOR . self::NAME_FILE_ENV_LOCAL;
         }
         return $envFile;
@@ -117,19 +124,12 @@ class EnvFile
     {
         $parameterBag = $this->handlers->get('parameterBag');
         $env = $parameterBag->get('kernel.environment');
-        $contents = $this->getContentEnvFile();
-
-        if($env === self::ENV_DEV) {
-            $contents = str_replace('APP_ENV=' . self::ENV_DEV,
-                'APP_ENV=' . self::ENV_PROD, $contents);
-            $contents = str_replace('APP_DEBUG=1', 'APP_DEBUG=0', $contents);
+        if ($env === self::ENV_DEV) {
+            $value = self::KEY_APP_ENV . '=' . self::ENV_DEV;
+        } else {
+            $value = self::KEY_APP_ENV . '=' . self::ENV_PROD;
         }
-        else {
-            $contents = str_replace('APP_ENV=' . self::ENV_PROD,
-                'APP_ENV=' . self::ENV_DEV, $contents);
-            $contents = str_replace('APP_DEBUG=0', 'APP_DEBUG=1', $contents);
-        }
-        $this->dumpEnvFile($contents);
+        $this->updateValueByKey(self::KEY_APP_ENV, $value);
     }
 
     /**

@@ -1,8 +1,8 @@
 user:
   User:
-    email: aymeric.gourdon@hotmail.fr
-    password: $2y$13$AVFG0C/HMPbR0N3rCzQy8eOe8TFy6jxrg9VAFNOonzp7EKHTQBLSG
-    login: Aymeric_edit
+    email: user.demo@mail.fr
+    password: $2y$13$nOmUvhlobqzkmB3GycA26eQglrvF5piSpaXNBCAY5A.bBGRpezZsW
+    login: user
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN
