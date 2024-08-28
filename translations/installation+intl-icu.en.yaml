@@ -63,3 +63,13 @@ installation.step.2.fondateur.password.help: __installation.step.2.fondateur.pas
 installation.step.2.fondateur.btn.create: __installation.step.2.fondateur.btn.create
 installation.step.2.fondateur.loading.msg: __installation.step.2.fondateur.loading.msg
 installation.step.2.fondateur.success: __installation.step.2.fondateur.success
+installation.step.1.create.bdd.msg.update.secret: __installation.step.1.create.bdd.msg.update.secret
+installation.step.1.create.bdd.msg.update.secret_success: __installation.step.1.create.bdd.msg.update.secret_success
+installation.step.1.create.bdd.msg.update.secret_ko: __installation.step.1.create.bdd.msg.update.secret_ko
+installation.step.2.debug.titre: __installation.step.2.debug.titre
+installation.step.2.debug.texte.1: __installation.step.2.debug.texte.1
+installation.step.2.debug.texte.2: __installation.step.2.debug.texte.2
+installation.step.2.debug.texte.3: __installation.step.2.debug.texte.3
+installation.step.2.debug.texte.4: __installation.step.2.debug.texte.4
+installation.step.2.debug.texte.5: __installation.step.2.debug.texte.5
+installation.step.2.debug.texte.6: __installation.step.2.debug.texte.6

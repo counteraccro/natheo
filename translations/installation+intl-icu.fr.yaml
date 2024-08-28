@@ -44,6 +44,9 @@ installation.step.1.create.bdd.msg.create.table: 'Création des tables...'
 installation.step.1.create.bdd.msg.create.table.success: 'Tables créées avec succès'
 installation.step.1.create.bdd.msg.create.table.ko: 'Une erreur est survenue lors de la création des tables'
 installation.step.1.create.bdd.msg.success: "Félicitation l'étape 1 est terminée, redirection vers l'étape 2..."
+installation.step.1.create.bdd.msg.update.secret: 'Mise à jour de APP_SECRET'
+installation.step.1.create.bdd.msg.update.secret_success: 'APP_SECRET mit à jour avec succès'
+installation.step.1.create.bdd.msg.update.secret_ko: 'Une erreur est survenue lors de la mise à jour de APP_SECRET'
 installation.step.2.titre: 'Etape 2 - Configuration de NatheoCMS'
 installation.step.2.titre.h1: 'Création du compte fondateur'
 installation.step.2.fondateur.description: 'Nous allons maintenant créer le compte fondateur, ce compte vous permettra de vous connecter au back-office de Natheo'
@@ -59,7 +62,15 @@ installation.step.2.fondateur.password.error: "Le mot de passe n'est pas valide"
 installation.step.2.fondateur.password.weak: 'Mot de passe faible'
 installation.step.2.fondateur.password.normal: 'Mot de passe normal'
 installation.step.2.fondateur.password.strong: 'Mot de passe fort'
-installation.step.2.fondateur.btn.create: "Créer votre compte"
+installation.step.2.fondateur.btn.create: 'Créer votre compte'
 installation.step.2.fondateur.password.help: 'Votre mot de passe doit contenir entre 8 et 20 caractères, au moins 1 majuscule, lettres, chiffres, caractères spéciaux, sans espaces'
-installation.step.2.fondateur.loading.msg: "Création de votre compte en cours..."
-installation.step.2.fondateur.success: "Compte créé avec succès"
+installation.step.2.fondateur.loading.msg: 'Création de votre compte en cours...'
+installation.step.2.fondateur.success: 'Compte créé avec succès'
+installation.step.2.debug.titre: 'Débug mode activé'
+installation.step.2.debug.texte.1: 'Attention, le mode débug du CMS est activé, cela va avoir un impact sur les données installées !'
+installation.step.2.debug.texte.2: 'Les comptes de démonstrations vont être installés à la place du compte que vous allez créer. Vous ne devez pas utiliser ce mode pour une utilisation en production'
+installation.step.2.debug.texte.3: 'Pour modifier cette valeur :'
+installation.step.2.debug.texte.4: 'Ouvrez le fichier <b>config/services.yaml</b>'
+installation.step.2.debug.texte.5: 'Modifier la valeur de <b><i>app.debug_mode</i></b> à <b>false</b>'
+installation.step.2.debug.texte.6: 'Faite F5 pour rafraichir la page'
+
