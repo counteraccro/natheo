@@ -18,11 +18,8 @@ use Doctrine\DBAL\Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
-use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -31,11 +28,6 @@ use Symfony\Component\Routing\Attribute\Route;
     requirements: ['_locale' => '%app.supported_locales%'])]
 class InstallationController extends AbstractController
 {
-    public function __construct(#[AutowireLocator([
-        'dataBase' => DataBase::class,
-    ])] private readonly ContainerInterface $handlers)
-    {
-    }
 
     #[Route('/', name: 'index', methods: ['GET'])]
     public function index(): Response
@@ -68,13 +60,13 @@ class InstallationController extends AbstractController
             return $this->redirectToRoute('installation_step_2');
         }
 
-
         return $this->render('installation/installation/step_one.html.twig', [
             'urls' => [
                 'check_database' => $this->generateUrl('installation_check_database'),
                 'update_env' => $this->generateUrl('installation_update_env'),
                 'create_bdd' => $this->generateUrl('installation_create_bdd'),
                 'create_schema' => $this->generateUrl('installation_create_schema'),
+                'update_app_secret' => $this->generateUrl('installation_update_app_secret'),
                 'step_2' => $this->generateUrl('installation_step_2')
             ],
             'translate' => $installationTranslate->getTranslateStepOne(),
@@ -124,6 +116,24 @@ class InstallationController extends AbstractController
 
         try {
             $installationService->updateValueByKeyInEnvFile(EnvFile::KEY_DATABASE_URL, $newValue);
+            return $this->json(['success' => true]);
+        } catch (\Exception $e) {
+            return $this->json(['success' => false, 'error' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Met à jour APP_SECRET du fichier env
+     * @param InstallationService $installationService
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/update-app-secret', name: 'update_app_secret', methods: ['GET'])]
+    public function updateSecret(InstallationService $installationService): JsonResponse
+    {
+        try {
+            $installationService->updateValueByKeyInEnvFile(EnvFile::KEY_APP_SECRET, $installationService->generateSecret());
             return $this->json(['success' => true]);
         } catch (\Exception $e) {
             return $this->json(['success' => false, 'error' => $e->getMessage()]);
@@ -197,6 +207,7 @@ class InstallationController extends AbstractController
             'translate' => $installationTranslate->getTranslateStepTwo(),
             'locales' => $installationService->getLocales(),
             'datas' => [
+                'debug_mode' => $parameterBag->get('app.debug_mode')
             ]
         ]);
     }

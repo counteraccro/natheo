@@ -47,6 +47,12 @@ class EnvFile
      */
     public const KEY_DATABASE_URL = 'DATABASE_URL';
 
+    /**
+     * Clé APP_SECRET
+     * @var string
+     */
+    public const KEY_APP_SECRET = 'APP_SECRET';
+
     public function __construct(#[AutowireLocator([
         'kernel' => KernelInterface::class,
         'parameterBag' => ParameterBagInterface::class,

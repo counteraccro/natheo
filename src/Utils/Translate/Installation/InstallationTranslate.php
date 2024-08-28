@@ -53,6 +53,9 @@ class InstallationTranslate extends AppTranslate
             'create_bdd_input_version_error' => $this->translator->trans('installation.step.1.create.bdd.input.version.error', domain:'installation'),
             'create_bdd_btn_create' => $this->translator->trans('installation.step.1.create.bdd.btn.create', domain:'installation'),
             'create_bdd_loading_msg_update_file' => $this->translator->trans('installation.step.1.create.bdd.msg.update.file', domain:'installation'),
+            'create_bdd_loading_msg_update_secret' => $this->translator->trans('installation.step.1.create.bdd.msg.update.secret', domain:'installation'),
+            'create_bdd_loading_msg_update_secret_success' => $this->translator->trans('installation.step.1.create.bdd.msg.update.secret_success', domain:'installation'),
+            'create_bdd_loading_msg_update_secret_ko' => $this->translator->trans('installation.step.1.create.bdd.msg.update.secret_ko', domain:'installation'),
             'create_bdd_loading_msg_create_bdd' => $this->translator->trans('installation.step.1.create.bdd.msg.create.bdd', domain:'installation'),
             'create_bdd_loading_msg_create_bdd_success' => $this->translator->trans('installation.step.1.create.bdd.msg.create.bdd.success', domain:'installation'),
             'create_bdd_loading_msg_create_bdd_ko' => $this->translator->trans('installation.step.1.create.bdd.msg.create.bdd.ko', domain:'installation'),
@@ -91,6 +94,13 @@ class InstallationTranslate extends AppTranslate
             'fondateur_btn_create' => $this->translator->trans('installation.step.2.fondateur.btn.create', domain:'installation'),
             'fondateur_loading_msg' => $this->translator->trans('installation.step.2.fondateur.loading.msg', domain:'installation'),
             'fondateur_success' => $this->translator->trans('installation.step.2.fondateur.success', domain:'installation'),
+            'debug_titre' => $this->translator->trans('installation.step.2.debug.titre', domain: 'installation'),
+            'debug_texte_1' => $this->translator->trans('installation.step.2.debug.texte.1', domain: 'installation'),
+            'debug_texte_2' => $this->translator->trans('installation.step.2.debug.texte.2', domain: 'installation'),
+            'debug_texte_3' => $this->translator->trans('installation.step.2.debug.texte.3', domain: 'installation'),
+            'debug_texte_4' => $this->translator->trans('installation.step.2.debug.texte.4', domain: 'installation'),
+            'debug_texte_5' => $this->translator->trans('installation.step.2.debug.texte.5', domain: 'installation'),
+            'debug_texte_6' => $this->translator->trans('installation.step.2.debug.texte.6', domain: 'installation'),
         ];
     }
 }

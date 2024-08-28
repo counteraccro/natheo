@@ -43,6 +43,20 @@ class InstallationService extends AppAdminService
     }
 
     /**
+     * Retourne un nouveau secret généré aléatoirement
+     * @return string
+     */
+    public function generateSecret(): string
+    {
+        $a = '0123456789abcdef';
+        $secret = '';
+        for ($i = 0; $i < 32; $i++) {
+            $secret .= $a[rand(0, strlen($a)-1)];
+        }
+        return EnvFile::KEY_APP_SECRET . '=' . $secret;
+    }
+
+    /**
      * Formate les données database_url pour l'enregistrement dans le fichier .env
      * @param array $data
      * @param string $option

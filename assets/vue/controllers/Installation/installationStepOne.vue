@@ -30,6 +30,7 @@ export default {
         valideName: null,
         valideVersion: null,
         updateFile: null,
+        updateSecret: null,
         createBdd: null,
         createTable: null,
         redirect : null,
@@ -208,6 +209,7 @@ export default {
       this.createDatabase.createBdd = null;
       this.createDatabase.createTable = null;
       this.createDatabase.redirect = null;
+      this.createDatabase.updateSecret = null;
       this.createDatabase.showBtn = false;
 
       axios.post(this.urls.update_env, {
@@ -217,10 +219,33 @@ export default {
       }).then((response) => {
         if(response.data.success) {
           this.createDatabase.updateFile = 2;
-          this.createDatabaseCom()
+          this.updateSecret();
         }
         else {
           this.createDatabase.updateFile = 3;
+          this.createDatabase.error = response.data.error;
+          this.createDatabase.showBtn = true;
+        }
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+
+      });
+    },
+
+    /**
+     * Met à jour APP_SECRET
+     */
+    updateSecret()
+    {
+      this.createDatabase.updateSecret = 1;
+      axios.get(this.urls.update_app_secret, {}).then((response) => {
+        if(response.data.success) {
+          this.createDatabase.updateSecret = 2;
+          this.createDatabaseCom();
+        }
+        else {
+          this.createDatabase.updateSecret = 3;
           this.createDatabase.error = response.data.error;
           this.createDatabase.showBtn = true;
         }
@@ -469,6 +494,17 @@ export default {
           </div>
           <div v-else-if="this.createDatabase.updateFile === 3">
             <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_update_file }}</span>
+          </div>
+
+          <div v-if="this.createDatabase.updateSecret === 1">
+            <span class="spinner-border spinner-border-sm text-secondary" aria-hidden="true"></span>
+            <i>&nbsp;{{ this.translate.create_bdd_loading_msg_update_secret }}</i>
+          </div>
+          <div v-else-if="this.createDatabase.updateSecret === 2">
+            <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_update_secret_success }}</span>
+          </div>
+          <div v-else-if="this.createDatabase.updateSecret === 3">
+            <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_update_secret_ko }}</span>
           </div>
 
           <div v-if="this.createDatabase.createBdd === 1">
