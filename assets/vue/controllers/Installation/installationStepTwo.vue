@@ -39,6 +39,13 @@ export default {
           normal: false,
           strong: false,
         },
+      },
+      finishLoading: {
+        loadConfig : 0,
+        installData: 0,
+        clearCache: 0,
+        redirect: false,
+        error: null,
       }
     }
   },
@@ -171,6 +178,18 @@ export default {
       }).finally(() => {
         this.userLoading = false;
       });
+    },
+
+    /**
+     * Installation finale
+     */
+    finishInstallation()
+    {
+      this.finishLoading.loadConfig = 1;
+      this.finishLoading.installData = 1;
+      this.finishLoading.clearCache = 1;
+      this.finishLoading.error = "Une erreur";
+      this.finishLoading.redirect = true;
     }
   },
 }
@@ -283,6 +302,60 @@ export default {
         <div v-if="this.userSuccess" class="btn btn-secondary float-end disabled">
           <i class="bi bi-person-check"></i> {{ this.translate.fondateur_success }}
         </div>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <div class="card-header"><i class="bi bi-box-arrow-in-down-right"></i> {{ this.translate.finish_installation_title }}</div>
+      <div class="card-body">
+        <p>{{ this.translate.finish_installation_text_1 }}</p>
+        <p>{{ this.translate.finish_installation_text_2 }}</p>
+      </div>
+      <div class="card-footer">
+
+        <div class="btn btn-secondary float-end" @click="this.finishInstallation()"><i class="bi bi-box-seam"></i> {{ this.translate.finish_installation_btn }}</div>
+
+        <div v-if="this.finishLoading.loadConfig === 1">
+          <span class="spinner-border spinner-border-sm text-secondary" aria-hidden="true"></span>
+          <i>&nbsp;{{ this.translate.finish_installation_loading_msg_config }}</i>
+        </div>
+        <div v-else-if="this.finishLoading.loadConfig === 2">
+          <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.finish_installation_loading_msg_config_success }}</span>
+        </div>
+        <div v-else-if="this.finishLoading.loadConfig === 3">
+          <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.finish_installation_loading_msg_config_ko }}</span>
+        </div>
+
+        <div v-if="this.finishLoading.installData === 1">
+          <span class="spinner-border spinner-border-sm text-secondary" aria-hidden="true"></span>
+          <i>&nbsp;{{ this.translate.finish_installation_loading_msg_installation_data }}</i>
+        </div>
+        <div v-else-if="this.finishLoading.installData === 2">
+          <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.finish_installation_loading_msg_installation_data_success }}</span>
+        </div>
+        <div v-else-if="this.finishLoading.installData === 3">
+          <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.finish_installation_loading_msg_installation_data_ko }}</span>
+        </div>
+
+        <div v-if="this.finishLoading.clearCache === 1">
+          <span class="spinner-border spinner-border-sm text-secondary" aria-hidden="true"></span>
+          <i>&nbsp;{{ this.translate.finish_installation_loading_msg_cache }}</i>
+        </div>
+        <div v-else-if="this.finishLoading.clearCache === 2">
+          <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.finish_installation_loading_msg_cache_success }}</span>
+        </div>
+        <div v-else-if="this.finishLoading.clearCache === 3">
+          <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.finish_installation_loading_msg_cache_ko }}</span>
+        </div>
+
+        <div v-if="this.finishLoading.redirect">
+          <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.finish_installation_loading_msg_success }}</span>
+        </div>
+
+        <div v-if="this.finishLoading.error !== null">
+          <span class="text-danger">&emsp;<i class="bi bi-arrow-return-right"> </i> {{ this.finishLoading.error }}</span>
+        </div>
+
       </div>
     </div>
 
