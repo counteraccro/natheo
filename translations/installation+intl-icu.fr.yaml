@@ -1,8 +1,8 @@
 installation.toast.title.success: 'Succès !'
 installation.toast.time: "A l'instant"
 installation.toast.title.error: 'Erreur !'
-installation.step.1.titre: 'Installation de Natheo CMS'
-installation.step.1.titre.h1: 'Etape 1.1 - Connexion de la base de données'
+installation.step.1.titre: 'Etape 1 - Installation de Natheo CMS'
+installation.step.1.titre.h1: 'Connexion de la base de données'
 installation.loading: Chargement
 installation.step.1.description_1: 'Nous allons procéder à la connexion à la base de données.'
 installation.step.1.description_2: "Rassurez vous, cela est très simple, il vous suffi de remplir les champs suivants et Natheo CMS s'occupera du reste"
@@ -20,7 +20,7 @@ installation.step.1.config.bdd.loading.msg.update.file: 'Mise à jour de la conf
 installation.step.1.config.bdd.loading.msg.test.connexion: 'Test de connexion'
 installation.step.1.config.bdd.loading.msg.test.connexion.ko: 'Erreur lors de la tentative de connexion'
 installation.step.1.config.bdd.loading.msg.test.connexion.success: 'Connexion établie avec succès'
-installation.step.1.create.bdd.h1: 'Etape 1.2 - Création de la base de données'
+installation.step.1.create.bdd.h1: 'Création de la base de données'
 installation.step.1.create.bdd.description.1: 'Maintenant que la connexion est établie, nous allons créer la base de données de NatheoCMS '
 installation.step.1.create.bdd.description.2: 'Remplissez les champs suivant pour définir le nom de la table, la version du SGBD et le charset de la base'
 installation.step.1.create.bdd.alert.title: 'Information de configuration'
