@@ -202,7 +202,11 @@ class InstallationController extends AbstractController
 
         return $this->render('installation/installation/step_two.html.twig', [
             'urls' => [
-               'create_user' => $this->generateUrl('installation_create_user'),
+                'create_user' => $this->generateUrl('installation_create_user'),
+                'change_env' => $this->generateUrl('installation_change_env'),
+                'load_fixtures' => $this->generateUrl('installation_load_fixtures'),
+                'clear_cache' => $this->generateUrl('installation_clear_cache'),
+                'auth' => $this->generateUrl('auth_user_login'),
             ],
             'translate' => $installationTranslate->getTranslateStepTwo(),
             'locales' => $installationService->getLocales(),
@@ -228,5 +232,62 @@ class InstallationController extends AbstractController
 
         return $this->json($return);
 
+    }
+
+    /**
+     * Force le mode dev pour pouvoir lancer les fixtures
+     * @param InstallationService $installationService
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/change-env', name: 'change_env', methods: ['GET'])]
+    public function changeEnv(InstallationService $installationService): JsonResponse
+    {
+        try {
+            $value = EnvFile::KEY_APP_ENV . '=' . EnvFile::ENV_DEV;
+            $installationService->updateValueByKeyInEnvFile(EnvFile::KEY_APP_ENV, $value);
+            return $this->json(['success' => true]);
+        } catch (\Exception $e) {
+            return $this->json(['success' => false, 'error' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Charge les fixtures dans la base de données
+     * @param CommandService $commandService
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    #[Route('/load-fixtures', name: 'load_fixtures', methods: ['GET'])]
+    public function loadFixtures(CommandService $commandService): JsonResponse
+    {
+        try {
+            $commandService->loadFixtures();
+            return $this->json(['success' => true]);
+        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+            return $this->json(['success' => false, 'error' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Nettoyage du cache
+     * @param CommandService $commandService
+     * @param InstallationService $installationService
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    #[Route('/clear-cache', name: 'clear_cache', methods: ['GET'])]
+    public function clearCache(CommandService $commandService, InstallationService $installationService): JsonResponse
+    {
+        try {
+
+            $value = EnvFile::KEY_APP_ENV . '=' . EnvFile::ENV_PROD;
+            $installationService->updateValueByKeyInEnvFile(EnvFile::KEY_APP_ENV, $value);
+            $commandService->reloadCache();
+            return $this->json(['success' => true]);
+        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+            return $this->json(['success' => false, 'error' => $e->getMessage()]);
+        }
     }
 }

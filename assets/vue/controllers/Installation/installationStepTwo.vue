@@ -41,6 +41,7 @@ export default {
         },
       },
       finishLoading: {
+        loading: false,
         loadConfig : 0,
         installData: 0,
         clearCache: 0,
@@ -155,13 +156,7 @@ export default {
      */
     isDisabled()
     {
-      if(this.userSuccess)
-      {
-        return true;
-      }
-      else {
-        return false;
-      }
+      return this.userSuccess;
     },
 
     /**
@@ -185,13 +180,79 @@ export default {
      */
     finishInstallation()
     {
+      this.finishLoading.loadConfig = 0;
+      this.finishLoading.installData = 0;
+      this.finishLoading.clearCache = 0;
+      this.finishLoading.error = null;
+      this.finishLoading.redirect = false;
+      this.finishLoading.loading = true;
+
+      this.switchEnv();
+    },
+
+    /**
+     * Change l'environnement
+     */
+    switchEnv() {
       this.finishLoading.loadConfig = 1;
+      axios.get(this.urls.change_env, {}).then((response) => {
+        if (response.data.success) {
+          this.finishLoading.loadConfig = 2;
+          this.loadFixture();
+        } else {
+          this.finishLoading.loadConfig = 3;
+          this.finishLoading.error = response.data.error;
+          this.finishLoading.loading = false;
+        }
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+
+      });
+    },
+
+    /**
+     * Charge les données d'installation
+     */
+    loadFixture() {
       this.finishLoading.installData = 1;
+      axios.get(this.urls.load_fixtures, {}).then((response) => {
+        if (response.data.success) {
+          this.finishLoading.installData = 2;
+          this.clearCache();
+        } else {
+          this.finishLoading.installData = 3;
+          this.finishLoading.error = response.data.error;
+          this.finishLoading.loading = false;
+        }
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+
+      });
+    },
+
+    /**
+     * Nettoyage du cache
+     */
+    clearCache() {
       this.finishLoading.clearCache = 1;
-      this.finishLoading.error = "Une erreur";
-      this.finishLoading.redirect = true;
+      axios.get(this.urls.clear_cache, {}).then((response) => {
+        if (response.data.success) {
+          this.finishLoading.clearCache = 2;
+          this.finishLoading.redirect = true;
+        } else {
+          this.finishLoading.clearCache = 3;
+          this.finishLoading.error = response.data.error;
+          this.finishLoading.loading = false;
+        }
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        document.location.href= this.urls.auth;
+      });
     }
-  },
+  }
 }
 </script>
 
@@ -305,7 +366,7 @@ export default {
       </div>
     </div>
 
-    <div class="card mt-4">
+    <div v-if="this.userSuccess" class="card mt-4">
       <div class="card-header"><i class="bi bi-box-arrow-in-down-right"></i> {{ this.translate.finish_installation_title }}</div>
       <div class="card-body">
         <p>{{ this.translate.finish_installation_text_1 }}</p>
@@ -313,7 +374,7 @@ export default {
       </div>
       <div class="card-footer">
 
-        <div class="btn btn-secondary float-end" @click="this.finishInstallation()"><i class="bi bi-box-seam"></i> {{ this.translate.finish_installation_btn }}</div>
+        <div class="btn btn-secondary float-end" :class="this.finishLoading.loading ? 'disabled' : ''" @click="this.finishInstallation()"><i class="bi bi-box-seam"></i> {{ this.translate.finish_installation_btn }}</div>
 
         <div v-if="this.finishLoading.loadConfig === 1">
           <span class="spinner-border spinner-border-sm text-secondary" aria-hidden="true"></span>

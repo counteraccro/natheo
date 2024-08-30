@@ -12,7 +12,7 @@ parameters:
   app.current_branche: 'master'
   # Permet d'activer le mode débug du CMS
   # En débug mode, créer un type d'utilisateur par droit dans les fixtures
-  app.debug_mode: false
+  app.debug_mode: true
 
 services:
   # default configuration for services in *this* file

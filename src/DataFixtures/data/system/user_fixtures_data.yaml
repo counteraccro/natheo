@@ -1,7 +1,7 @@
 user:
   User:
     email: user.demo@mail.fr
-    password: $2y$13$nOmUvhlobqzkmB3GycA26eQglrvF5piSpaXNBCAY5A.bBGRpezZsW
+    password: $2y$13$wqCwBSyaFtUW0dQrwuXAX.qVsGQekDFflGLTNbthRX5Sgt3GgSXYq
     login: user
     firstname: ''
     lastname: ''
