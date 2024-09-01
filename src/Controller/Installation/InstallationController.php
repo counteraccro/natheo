@@ -256,14 +256,21 @@ class InstallationController extends AbstractController
     /**
      * Charge les fixtures dans la base de données
      * @param CommandService $commandService
+     * @param InstallationService $installationService
+     * @param ParameterBagInterface $parameterBag
      * @return JsonResponse
      * @throws \Exception
      */
     #[Route('/load-fixtures', name: 'load_fixtures', methods: ['GET'])]
-    public function loadFixtures(CommandService $commandService): JsonResponse
+    public function loadFixtures(CommandService        $commandService,
+                                 InstallationService   $installationService,
+                                 ParameterBagInterface $parameterBag): JsonResponse
     {
         try {
             $commandService->loadFixtures();
+            if($parameterBag->get('app.debug_mode') === false) {
+                $installationService->createNotificationFondateur();
+            }
             return $this->json(['success' => true]);
         } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
             return $this->json(['success' => false, 'error' => $e->getMessage()]);

@@ -43,9 +43,8 @@ class NotificationFactory
         return $this->user;
     }
 
-
     /**
-     * Création notification bienvenue
+     * Création notification
      * @param string $key
      * @param array $params
      * @return NotificationFactory

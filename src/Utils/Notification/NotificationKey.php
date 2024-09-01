@@ -140,7 +140,7 @@ class NotificationKey
             ],
             self::KEY_TITLE => 'notification.msg.new_fondateur.title',
             self::KEY_CONTENT => 'notification.msg.new_fondateur.content',
-            self::KEY_LEVEL => self::KEY_CONTENT
+            self::KEY_LEVEL => self::LEVEL_INFO
         ]
     ];
 }

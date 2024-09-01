@@ -3,9 +3,12 @@
 namespace App\Service\Installation;
 
 use App\Entity\Admin\System\User;
+use App\Repository\App\Admin\UserRepository;
 use App\Service\Admin\AppAdminService;
 use App\Utils\Global\EnvFile;
 use App\Utils\Installation\InstallationConst;
+use App\Utils\Notification\NotificationFactory;
+use App\Utils\Notification\NotificationKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
@@ -145,6 +148,29 @@ class InstallationService extends AppAdminService
             return true;
         }
         return false;
+    }
+
+    /**
+     * Créer une notification pour le fondateur
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function createNotificationFondateur(): void
+    {
+        /** @var UserRepository $userRepo */
+        $userRepo = $this->getRepository(User::class);
+        /** @var User $user */
+
+        // A l'installation, il ne doit y avoir qu'un seul compte, on prend donc le premier
+        $user = $userRepo->findAll()[0];
+        $user->getNotifications()->clear();
+        $notificationFactory = new NotificationFactory($user);
+        $notificationFactory->addNotification(NotificationKey::NOTIFICATION_NEW_FONDATEUR,
+            ['login' => $user->getLogin(), 'url_aide' => 'todo-a-changer']);
+        $user = $notificationFactory->getUser();
+        $this->save($user);
+
     }
 
     /**
