@@ -31,6 +31,8 @@ use App\Utils\System\User\Role;
 use App\Utils\System\User\UserdataKey;
 use App\Utils\Translate\System\UserTranslate;
 use League\CommonMark\Exception\CommonMarkException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,6 +49,8 @@ class UserController extends AppAdminController
     /**
      * point d'entrée
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/', name: 'index')]
     #[IsGranted('ROLE_SUPER_ADMIN')]
@@ -90,6 +94,8 @@ class UserController extends AppAdminController
      * Met à jour une option
      * @param Request $request
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/update', name: 'ajax_update_my_option', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
@@ -107,6 +113,8 @@ class UserController extends AppAdminController
      * @param int $page
      * @param int $limit
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]
@@ -128,6 +136,8 @@ class UserController extends AppAdminController
      * @param UserService $userService
      * @param TranslatorInterface $translator
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', methods: ['PUT'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]
@@ -249,10 +259,13 @@ class UserController extends AppAdminController
     /**
      * Mise à jour des données de l'utilisateur par lui-même
      * @param UserService $userService
+     * @param UserTranslate $userTranslate
      * @param Request $request
      * @param OptionSystemService $optionSystemService
      * @param TranslatorInterface $translator
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/my-account', name: 'my_account', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
@@ -304,6 +317,8 @@ class UserController extends AppAdminController
      * @param Request $request
      * @param TranslatorInterface $translator
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/change-my-password', name: 'change_my_password', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
@@ -333,6 +348,8 @@ class UserController extends AppAdminController
      * @param OptionSystemService $optionSystemService
      * @param NotificationService $notificationService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/self-disabled', name: 'self_disabled', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
@@ -409,6 +426,8 @@ class UserController extends AppAdminController
      * @param NotificationService $notificationService
      * @return JsonResponse
      * @throws CommonMarkException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      * @throws TransportExceptionInterface
      */
     #[Route('/ajax/self-delete', name: 'self_delete', methods: ['POST'])]
@@ -504,6 +523,8 @@ class UserController extends AppAdminController
      * @param MailService $mailService
      * @return Response
      * @throws CommonMarkException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      * @throws TransportExceptionInterface
      */
     #[Route('/add', name: 'add', methods: ['GET', 'POST'])]
@@ -604,6 +625,8 @@ class UserController extends AppAdminController
      * @param TranslatorInterface $translator
      * @return RedirectResponse
      * @throws CommonMarkException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      * @throws TransportExceptionInterface
      */
     #[Route('/reset-password/{id}', name: 'reset_password', methods: ['GET'])]
