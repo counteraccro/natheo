@@ -7,7 +7,7 @@
 
 namespace App\Utils\System\User;
 
-class UserdataKey
+class UserDataKey
 {
     /**
      * Clé pour le reset de mot de passe

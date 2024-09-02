@@ -16,7 +16,7 @@ use App\Service\Installation\InstallationService;
 use App\Service\SecurityService;
 use App\Utils\System\Mail\KeyWord;
 use App\Utils\System\Mail\MailKey;
-use App\Utils\System\User\UserdataKey;
+use App\Utils\System\User\UserDataKey;
 use Doctrine\ORM\NonUniqueResultException;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
@@ -163,7 +163,7 @@ class SecurityController extends AbstractController
             if ($user != null) {
 
                 $key = ByteString::fromRandom(48)->toString();
-                $userDataService->update(UserdataKey::KEY_RESET_PASSWORD, $key, $user);
+                $userDataService->update(UserDataKey::KEY_RESET_PASSWORD, $key, $user);
 
 
                 $mail = $mailService->getByKey(MailKey::MAIL_CHANGE_PASSWORD);

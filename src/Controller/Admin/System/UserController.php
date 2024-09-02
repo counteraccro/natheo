@@ -28,7 +28,7 @@ use App\Utils\System\Mail\MailKey;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\Role;
-use App\Utils\System\User\UserdataKey;
+use App\Utils\System\User\UserDataKey;
 use App\Utils\Translate\System\UserTranslate;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
@@ -560,7 +560,7 @@ class UserController extends AppAdminController
             $optionUserService->createOptionsUser($user);
 
             $key = ByteString::fromRandom(48)->toString();
-            $userDataService->update(UserdataKey::KEY_RESET_PASSWORD, $key, $user);
+            $userDataService->update(UserDataKey::KEY_RESET_PASSWORD, $key, $user);
 
 
             $mail = $mailService->getByKey(MailKey::MAIL_CREATE_ACCOUNT_ADM);
@@ -640,7 +640,7 @@ class UserController extends AppAdminController
     ): RedirectResponse
     {
         $key = ByteString::fromRandom(48)->toString();
-        $userDataService->update(UserdataKey::KEY_RESET_PASSWORD, $key, $user);
+        $userDataService->update(UserDataKey::KEY_RESET_PASSWORD, $key, $user);
 
 
         $mail = $mailService->getByKey(MailKey::MAIL_RESET_PASSWORD);

@@ -9,7 +9,7 @@ namespace App\Service\Admin\System\User;
 use App\Entity\Admin\System\User;
 use App\Entity\Admin\System\UserData;
 use App\Service\Admin\AppAdminService;
-use App\Utils\System\User\UserdataKey;
+use App\Utils\System\User\UserDataKey;
 use DateTime;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -74,7 +74,7 @@ class UserDataService extends AppAdminService
      */
     public function getLastConnexion(User $user): ?DateTime
     {
-        $userData = $user->getUserDataByKey(UserdataKey::KEY_LAST_CONNEXION);
+        $userData = $user->getUserDataByKey(UserDataKey::KEY_LAST_CONNEXION);
 
         if ($userData === null) {
             return null;
