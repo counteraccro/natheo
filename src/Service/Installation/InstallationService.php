@@ -9,6 +9,7 @@ use App\Utils\Global\EnvFile;
 use App\Utils\Installation\InstallationConst;
 use App\Utils\Notification\NotificationFactory;
 use App\Utils\Notification\NotificationKey;
+use App\Utils\System\User\UserDataKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
@@ -171,6 +172,21 @@ class InstallationService extends AppAdminService
         $user = $notificationFactory->getUser();
         $this->save($user);
 
+        $this->createDataUser($user);
+
+    }
+
+    /**
+     * Ajoute les UserData nécessaire après l'installation
+     * @param User $user
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function createDataUser(User $user): void
+    {
+        $userDataService = $this->getUserData();
+        $userDataService->update(UserDataKey::KEY_HELP_FIRST_CONNEXION, 1, $user);
     }
 
     /**

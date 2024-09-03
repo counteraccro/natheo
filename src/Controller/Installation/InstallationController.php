@@ -268,7 +268,7 @@ class InstallationController extends AbstractController
     {
         try {
             $commandService->loadFixtures();
-            if($parameterBag->get('app.debug_mode') === false) {
+            if ($parameterBag->get('app.debug_mode') === false) {
                 $installationService->createNotificationFondateur();
             }
             return $this->json(['success' => true]);

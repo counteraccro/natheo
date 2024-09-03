@@ -3,6 +3,7 @@
 namespace App\Service\Admin;
 
 use App\Service\Admin\System\OptionSystemService;
+use App\Service\Admin\System\User\UserDataService;
 use App\Utils\Global\DataBase;
 use App\Utils\Global\EnvFile;
 use App\Utils\Translate\GridTranslate;
@@ -43,7 +44,8 @@ class AppAdminHandlerService
             'kernel' => KernelInterface::class,
             'gridTranslate' => GridTranslate::class,
             'database' => Database::class,
-            'envFile' => EnvFile::class
+            'envFile' => EnvFile::class,
+            'userData' => UserDataService::class
         ])]
         protected ContainerInterface $handlers){}
 
@@ -231,5 +233,16 @@ class AppAdminHandlerService
     protected function getDatabase() :DataBase
     {
         return $this->handlers->get('database');
+    }
+
+    /**
+     * Retourne un userDataService
+     * @return UserDataService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getUserData() :UserDataService
+    {
+        return $this->handlers->get('userData');
     }
 }
