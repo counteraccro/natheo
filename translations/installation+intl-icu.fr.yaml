@@ -84,6 +84,6 @@ installation.step.2.finish.loading.msg.config.ko: 'Une erreur est survenue lors 
 installation.step.2.finish.loading.msg.installation.data: 'Installation des données...'
 installation.step.2.finish.loading.msg.installation.data.success: 'Données installées avec succès'
 installation.step.2.finish.loading.msg.installation.data.ko: "Une erreur est survenue lors de l'installation des données"
-installation.step.2.finish.loading.msg.cache: "Nettoyage du cache en cours"
-installation.step.2.finish.loading.msg.cache.success: "Cache nettoyé avec succès"
-installation.step.2.finish.loading.msg.cache.ko: "Une erreur est survenue lors du nettoyage du cache"
+installation.step.2.finish.loading.msg.cache: 'Nettoyage du cache en cours'
+installation.step.2.finish.loading.msg.cache.success: 'Cache nettoyé avec succès'
+installation.step.2.finish.loading.msg.cache.ko: 'Une erreur est survenue lors du nettoyage du cache'
