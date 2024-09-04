@@ -59,7 +59,7 @@ class DevExtensionRuntime extends AppAdminExtensionRuntime implements RuntimeExt
     public function getVersion(): string
     {
         $version = $this->parameterBag->get('app.version');
-        $debug = $this->parameterBag->get('kernel.debug');
+        $debug = $this->parameterBag->get('app.debug_mode');
 
         if ($debug) {
             $return = $this->getDevInfo();
