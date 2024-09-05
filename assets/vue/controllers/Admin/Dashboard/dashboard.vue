@@ -1,12 +1,13 @@
 <script>/**
  * @author Gourdon Aymeric
  * @version 1.0
- * Composant left ou right pour la création /edition d'un menu
+ * Vue rendu du dashboard
  */
+import BlockHelpFirstConnexion from "../../../Components/Dashboard/BlockHelpFirstConnexion.vue";
 
 export default {
   name: "Dashboard",
-  components: {},
+  components: {BlockHelpFirstConnexion},
   emit: [],
   props: {
     urls: Object,
@@ -24,7 +25,16 @@ export default {
 </script>
 
 <template>
-  <div class="row">
+  <div class="row" data-masonry='{"percentPosition": true }'>
+
+    <div class="col-6 mb-3" v-if="this.datas.dashboard_help_first_connexion.help_first_connexion">
+      <block-help-first-connexion
+          :translate="this.translate.dashboard_help_first_connexion"
+          :datas="this.datas.dashboard_help_first_connexion"
+          :urls="this.urls.dashboard_help_first_connexion"
+      />
+    </div>
+
     <div class="col-6 mb-3">
       <div class="card">
         <h5 class="card-header"><i class="bi bi-activity"></i> {{ this.translate.dashboard_flux_activity }} </h5>

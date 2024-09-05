@@ -4,6 +4,7 @@
  * @version 1.1
  * Service gérant les données de l'utilisateur
  */
+
 namespace App\Service\Admin\System\User;
 
 use App\Entity\Admin\System\User;
@@ -60,7 +61,7 @@ class UserDataService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function findKeyAndValue(string $key, string $value) :?UserData
+    public function findKeyAndValue(string $key, string $value): ?UserData
     {
         $repo = $this->getRepository(UserData::class);
         return $repo->findByKeyValue($key, $value);
@@ -83,5 +84,25 @@ class UserDataService extends AppAdminService
         $lastConnexion = new DateTime();
         $lastConnexion->setTimestamp($userData->getValue());
         return $lastConnexion;
+    }
+
+    /**
+     * Retourne true ou false pour l'aide
+     * (Clé KEY_HELP_FIRST_CONNEXION)
+     * @param User $user
+     * @return bool
+     */
+    public function getHelpFirstConnexion(User $user): bool
+    {
+        $userData = $user->getUserDataByKey(UserDataKey::KEY_HELP_FIRST_CONNEXION);
+
+        if ($userData === null) {
+            return false;
+        }
+
+        if (intval($userData->getValue()) === 1) {
+            return true;
+        }
+        return false;
     }
 }

@@ -8,8 +8,12 @@
 
 namespace App\Controller\Admin;
 
+use App\Service\Admin\System\User\UserDataService;
 use App\Utils\Breadcrumb;
+use App\Utils\System\User\UserDataKey;
 use App\Utils\Translate\Dashboard\DashboardTranslate;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -18,15 +22,32 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_USER')]
 class DashboardController extends AppAdminController
 {
+    /**
+     * Point d'entrée du dashboard
+     * @param DashboardTranslate $dashboardTranslate
+     * @param UserDataService $userDataService
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     #[Route('/dashboard/index', name: 'index')]
     #[Route('/dashboard', 'index_3')]
     #[Route('/', name: 'index_2')]
-    public function index(DashboardTranslate $dashboardTranslate): Response
+    public function index(DashboardTranslate $dashboardTranslate, UserDataService $userDataService): Response
     {
+
         return $this->render('admin/dashboard/index.html.twig', [
             'translate' => $dashboardTranslate->getTranslate(),
-            'urls' => [],
-            'datas' => [],
+            'urls' => [
+                'dashboard_help_first_connexion' => [
+
+                ]
+            ],
+            'datas' => [
+                'dashboard_help_first_connexion' => [
+                    'help_first_connexion' => $userDataService->getHelpFirstConnexion($this->getUser())
+                ]
+            ],
         ]);
     }
 
