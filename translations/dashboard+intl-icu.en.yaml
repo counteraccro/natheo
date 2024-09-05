@@ -1,3 +1,12 @@
 dashboard.index: __dashboard.index
 dashboard.flux.activity: __dashboard.index.flux.activity
 dashboard.last.comment: __dashboard.index.last.comment
+dashboard.block.help.first.connexion.title: __dashboard.block.help.first.connexion.title
+dashboard.block.help.first.connexion.loading: __dashboard.block.help.first.connexion.loading
+dashboard.block.help.first.connexion.sub_title: __dashboard.block.help.first.connexion.sub_title
+dashboard.block.help.first.connexion.text_1: __dashboard.block.help.first.connexion.text_1
+dashboard.block.help.first.connexion.option_1: __dashboard.block.help.first.connexion.option_1
+dashboard.block.help.first.connexion.option_2: __dashboard.block.help.first.connexion.option_2
+dashboard.block.help.first.connexion.option_3: __dashboard.block.help.first.connexion.option_3
+dashboard.block.help.first.connexion.text.end.success: __dashboard.block.help.first.connexion.text.end.success
+dashboard.block.help.first.connexion.btn.hide: __dashboard.block.help.first.connexion.btn.hide
