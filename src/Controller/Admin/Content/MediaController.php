@@ -15,6 +15,8 @@ use App\Service\Admin\Content\Media\MediaService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Breadcrumb;
 use App\Utils\Translate\Content\MediaTranslate;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +32,7 @@ class MediaController extends AppAdminController
 {
     /**
      * Point d'entrée pour la médiathèque
-     * @param MediaService $mediaService
+     * @param MediaTranslate $mediaTranslate
      * @return Response
      */
     #[Route('/', name: 'index')]
@@ -128,6 +130,8 @@ class MediaController extends AppAdminController
      * @param MediaFolderService $mediaFolderService
      * @param TranslatorInterface $translator
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/save-folder', name: 'save_folder', methods: ['POST'])]
     public function updateFolder(
@@ -171,6 +175,8 @@ class MediaController extends AppAdminController
      * @param int $id
      * @param string $type
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-info/{id}/{type}', name: 'load_info', methods: ['GET'])]
     public function loadInfo(
@@ -233,6 +239,8 @@ class MediaController extends AppAdminController
      * @param Request $request
      * @param MediaService $mediaService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/save-media', name: 'save_media_edit', methods: ['POST'])]
     public function saveMedia(Request $request, MediaService $mediaService): JsonResponse
@@ -256,6 +264,8 @@ class MediaController extends AppAdminController
      * @param int $id
      * @param string $type
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/liste-move/{id}/{type}', name: 'liste_move', methods: ['GET'])]
     public function listeFolderToMove(
