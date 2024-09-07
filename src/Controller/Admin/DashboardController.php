@@ -10,10 +10,12 @@ namespace App\Controller\Admin;
 
 use App\Service\Admin\System\User\UserDataService;
 use App\Utils\Breadcrumb;
+use App\Utils\Dashboard\DashboardKey;
 use App\Utils\System\User\UserDataKey;
 use App\Utils\Translate\Dashboard\DashboardTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -27,8 +29,6 @@ class DashboardController extends AppAdminController
      * @param DashboardTranslate $dashboardTranslate
      * @param UserDataService $userDataService
      * @return Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     #[Route('/dashboard/index', name: 'index')]
     #[Route('/dashboard', 'index_3')]
@@ -40,7 +40,7 @@ class DashboardController extends AppAdminController
             'translate' => $dashboardTranslate->getTranslate(),
             'urls' => [
                 'dashboard_help_first_connexion' => [
-
+                    'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', ['id' => DashboardKey::DASHBOARD_HELP_FIRST_CONNEXION_ID]),
                 ]
             ],
             'datas' => [
@@ -49,6 +49,18 @@ class DashboardController extends AppAdminController
                 ]
             ],
         ]);
+    }
+
+    /**
+     * Charge un block du dashboard en fonction de son id
+     * @param string $id
+     * @return JsonResponse
+     */
+    #[Route('/ajax/load-block-dashboard/{id}', name: 'load_block', methods: ['GET'])]
+    public function loadDashboardBlock(string $id): JsonResponse
+    {
+        echo $id;
+        return $this->json([]);
     }
 
     /**

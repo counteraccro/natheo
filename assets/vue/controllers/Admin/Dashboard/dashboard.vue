@@ -4,6 +4,7 @@
  * Vue rendu du dashboard
  */
 import BlockHelpFirstConnexion from "../../../Components/Dashboard/BlockHelpFirstConnexion.vue";
+import Masonry from "masonry-layout";
 
 export default {
   name: "Dashboard",
@@ -15,23 +16,37 @@ export default {
     datas: Object,
   },
   data() {
-    return {}
+    return {
+      masonry : null
+    }
   },
   mounted() {
-
+    this.masonry = new Masonry('#grid-block-dashboard', {"percentPosition": true});
+    //this.masonry.layout();
   },
-  methods: {}
+  methods: {
+
+    reloadGrid()
+    {
+      console.log('reload');
+
+      this.masonry.layout();
+      //console.log(masonry);
+    }
+
+  }
 }
 </script>
 
 <template>
-  <div class="row" data-masonry='{"percentPosition": true }'>
+  <div id="grid-block-dashboard" class="row">
 
     <div class="col-6 mb-3" v-if="this.datas.dashboard_help_first_connexion.help_first_connexion">
       <block-help-first-connexion
           :translate="this.translate.dashboard_help_first_connexion"
           :datas="this.datas.dashboard_help_first_connexion"
           :urls="this.urls.dashboard_help_first_connexion"
+          @reload-grid="this.reloadGrid"
       />
     </div>
 
