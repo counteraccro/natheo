@@ -29,11 +29,12 @@ class DashboardController extends AppAdminController
 
     /**
      * Page Démo pour les elements html
+     * @param int $param
      * @return Response
      */
     #[IsGranted('ROLE_SUPER_ADMIN')]
     #[Route('/page-demo/{param}', name: 'page_demo')]
-    public function pageDemo($param = 5): Response
+    public function pageDemo(int $param = 5): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'message',

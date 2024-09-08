@@ -17,6 +17,8 @@ use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,6 +34,8 @@ class NotificationController extends AppAdminController
      * Notification de l'Utilisateur
      * @param OptionSystemService $optionSystemService
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/', name: 'index')]
     public function index(OptionSystemService $optionSystemService): Response
@@ -78,7 +82,12 @@ class NotificationController extends AppAdminController
      * @param Request $request
      * @param NotificationService $notificationService
      * @param GridService $gridService
+     * @param int $page
+     * @param int $limit
+     * @param int $pOnlyNotRead
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/list/{page}/{limit}/{pOnlyNotRead}', name: 'list', methods: ['GET'])]
     public function list(
@@ -113,6 +122,8 @@ class NotificationController extends AppAdminController
      * @param Request $request
      * @param NotificationService $notificationService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/read-notification', name: 'read', methods: ['POST'])]
     public function read(Request $request, NotificationService $notificationService): JsonResponse
@@ -132,6 +143,8 @@ class NotificationController extends AppAdminController
      * @param OptionSystemService $optionSystemService
      * @param NotificationService $notificationService
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/purge', name: 'purge', methods: ['POST'])]
     public function purge(OptionSystemService $optionSystemService, NotificationService $notificationService): Response

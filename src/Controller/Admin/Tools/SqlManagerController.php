@@ -14,6 +14,9 @@ use App\Utils\Breadcrumb;
 use App\Utils\Global\DataBase;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Tools\SqlManagerTranslate;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,6 +54,8 @@ class SqlManagerController extends AppAdminController
      * @param int $page
      * @param int $limit
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     public function loadGridData(
@@ -71,12 +76,14 @@ class SqlManagerController extends AppAdminController
      * @param SqlManagerService $sqlManagerService
      * @param TranslatorInterface $translator
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/disabled/{id}', name: 'disabled', methods: ['PUT'])]
     public function updateDisabled(
-        SqlManager          $sqlManager,
-        SqlManagerService   $sqlManagerService,
-        TranslatorInterface $translator): JsonResponse
+        #[MapEntity(id: 'id')] SqlManager $sqlManager,
+        SqlManagerService                 $sqlManagerService,
+        TranslatorInterface               $translator): JsonResponse
     {
 
         $sqlManager->setDisabled(!$sqlManager->isDisabled());
@@ -97,10 +104,12 @@ class SqlManagerController extends AppAdminController
      * @param SqlManagerService $sqlManagerService
      * @param TranslatorInterface $translator
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(
-        SqlManager          $sqlManager,
+        #[MapEntity(id: 'id')] SqlManager          $sqlManager,
         SqlManagerService   $sqlManagerService,
         TranslatorInterface $translator): JsonResponse
     {
@@ -113,7 +122,7 @@ class SqlManagerController extends AppAdminController
     /**
      * Création / édition d'une faq
      * @param SqlManagerTranslate $sqlManagerTranslate
-     * @param SqlManager $sqlManager
+     * @param SqlManagerService $sqlManagerService
      * @param int|null $id
      * @param bool $isExecute
      * @return Response
@@ -241,6 +250,8 @@ class SqlManagerController extends AppAdminController
      * @param Request $request
      * @param TranslatorInterface $translator
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/save', name: 'save', methods: ['POST'])]
     public function save(
@@ -290,6 +301,8 @@ class SqlManagerController extends AppAdminController
      * @param Request $request
      * @param TranslatorInterface $translator
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/save-generic-query', name: 'save_generic_query', methods: ['POST'])]
     public function saveGenericQuery(

@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Information system
+ * @author Gourdon Aymeric
+ * @version 2.0
+ */
 namespace App\Controller\Admin\System;
 
 use App\Service\Admin\System\InformationService;
