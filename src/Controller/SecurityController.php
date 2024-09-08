@@ -17,8 +17,12 @@ use App\Service\SecurityService;
 use App\Utils\System\Mail\KeyWord;
 use App\Utils\System\Mail\MailKey;
 use App\Utils\System\User\UserdataKey;
+use App\Utils\Translate\System\UserTranslate;
 use Doctrine\ORM\NonUniqueResultException;
 use League\CommonMark\Exception\CommonMarkException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -82,7 +86,7 @@ class SecurityController extends AbstractController
         string              $key,
         SecurityService     $securityService,
         TranslatorInterface $translator,
-        UserService         $userService,
+        UserTranslate       $userTranslate,
         Request             $request
     ): Response
     {
@@ -98,7 +102,7 @@ class SecurityController extends AbstractController
         }
 
         return $this->render('security/admin/change_password.html.twig', [
-            'changePasswordTranslate' => $userService->getTranslateChangePassword(),
+            'changePasswordTranslate' => $userTranslate->getTranslateChangePassword(),
             'user' => $user,
             'new' => $new
         ]);
