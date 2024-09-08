@@ -133,13 +133,13 @@ class TranslationController extends AppAdminController
 
     /**
      * Permet de régénérer le cache applicatif
-     * @param Request $request
      * @param CommandService $commandService
      * @return JsonResponse
-     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/reload-cache', name: 'reload_cache', methods: ['GET'])]
-    public function reloadCache(Request $request, CommandService $commandService): JsonResponse
+    public function reloadCache(CommandService $commandService): JsonResponse
     {
         $commandService->reloadCache();
         return $this->json(['success' => true]);
