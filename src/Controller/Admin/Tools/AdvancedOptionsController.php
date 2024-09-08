@@ -124,7 +124,7 @@ class AdvancedOptionsController extends AbstractController
     public function resetDatabase(
         TranslatorInterface $translator,
         CommandService $commandService
-    )
+    ): JsonResponse
     {
         set_time_limit(0);
 

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Controller pour la gestion des menus
+ */
 
 namespace App\Controller\Admin\Content;
 
@@ -16,6 +21,7 @@ use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Content\MenuTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -84,9 +90,9 @@ class MenuController extends AppAdminController
      */
     #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', methods: 'PUT')]
     public function updateDisabled(
-        Menu                $menu,
-        MenuService         $menuService,
-        TranslatorInterface $translator,
+        #[MapEntity(id: 'id')] Menu $menu,
+        MenuService                 $menuService,
+        TranslatorInterface         $translator,
     ): JsonResponse
     {
         $menu->setDisabled(!$menu->isDisabled());
@@ -110,9 +116,9 @@ class MenuController extends AppAdminController
      */
     #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(
-        Menu                $menu,
-        MenuService         $menuService,
-        TranslatorInterface $translator,
+        #[MapEntity(id: 'id')] Menu $menu,
+        MenuService                 $menuService,
+        TranslatorInterface         $translator,
     ): JsonResponse
     {
         $titre = $menu->getName();
@@ -226,8 +232,8 @@ class MenuController extends AppAdminController
      */
     #[Route('/ajax/save-menu', name: 'save_menu', methods: ['POST'])]
     public function save(
-        Request     $request,
-        MenuService $menuService,
+        Request             $request,
+        MenuService         $menuService,
         TranslatorInterface $translator
     ): JsonResponse
     {
@@ -312,7 +318,7 @@ class MenuController extends AppAdminController
         MenuService         $menuService,
         TranslatorInterface $translator,
         Request             $request
-    )
+    ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $menuService->updateParent($data['id'], $data['columP'], $data['rowP'], $data['idParent']);
@@ -354,10 +360,10 @@ class MenuController extends AppAdminController
      */
     #[Route('/ajax/reorder-menu-element', name: 'reorder_menu_element', methods: ['PATCH'])]
     public function reorderMenuElement(
-        Request $request,
-        MenuService $menuService,
+        Request             $request,
+        MenuService         $menuService,
         TranslatorInterface $translator,
-    )
+    ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $menuService->reorderMenuElement($data['data']);

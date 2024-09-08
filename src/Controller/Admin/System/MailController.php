@@ -10,7 +10,6 @@ namespace App\Controller\Admin\System;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\System\Mail;
 use App\Entity\Admin\System\User;
-use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\System\MailService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\TranslateService;
@@ -23,6 +22,7 @@ use App\Utils\Translate\System\MailTranslate;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,6 +38,8 @@ class MailController extends AppAdminController
     /**
      * Point d'entrée de la gestion des emails
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/', name: 'index')]
     public function index(): Response
@@ -63,6 +65,8 @@ class MailController extends AppAdminController
      * @param int $page
      * @param int $limit
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     public function loadGridData(
@@ -77,11 +81,12 @@ class MailController extends AppAdminController
 
 
     /**
+     * Edition d'un email
      * @param Mail $mail
      * @return Response
      */
     #[Route('/edit/{id}', name: 'edit')]
-    public function edit(Mail $mail): Response
+    public function edit(#[MapEntity(id: 'id')] Mail $mail): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'mail',
@@ -99,24 +104,26 @@ class MailController extends AppAdminController
 
     /**
      * Charge les données pour les emails en ajax en fonction de la langue
-     * @param MarkdownEditorService $markdownEditorService
+     * @param MarkdownEditorTranslate $markdownEditorTranslate
      * @param TranslateService $translateService
      * @param Request $request
-     * @param TranslatorInterface $translator
      * @param MailService $mailService
+     * @param MailTranslate $mailTranslate
      * @param Mail $mail
      * @param string $locale
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-data/{id}/{locale}', name: 'load_data', methods: ['GET'])]
     public function loadData(
-        MarkdownEditorTranslate $markdownEditorTranslate,
-        TranslateService        $translateService,
-        Request                 $request,
-        MailService             $mailService,
-        MailTranslate           $mailTranslate,
-        Mail                    $mail,
-        string                  $locale = 'fr',
+        MarkdownEditorTranslate     $markdownEditorTranslate,
+        TranslateService            $translateService,
+        Request                     $request,
+        MailService                 $mailService,
+        MailTranslate               $mailTranslate,
+        #[MapEntity(id: 'id')] Mail $mail,
+        string                      $locale = 'fr',
     ): JsonResponse
     {
         if ($locale === null) {
@@ -147,13 +154,15 @@ class MailController extends AppAdminController
      * @param TranslatorInterface $translator
      * @param Mail $mail
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/save/{id}', name: 'save', methods: ['POST'])]
     public function save(
-        Request             $request,
-        MailService         $mailService,
-        TranslatorInterface $translator,
-        Mail                $mail
+        Request                     $request,
+        MailService                 $mailService,
+        TranslatorInterface         $translator,
+        #[MapEntity(id: 'id')] Mail $mail
     ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -177,14 +186,15 @@ class MailController extends AppAdminController
      * @param TranslatorInterface $translator
      * @return JsonResponse
      * @throws CommonMarkException
-     * @throws TransportExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/send-demo-mail/{id}', name: 'send_demo_mail', methods: ['GET'])]
     public function sendDemoMail(
-        Mail                $mail,
-        MailService         $mailService,
-        OptionSystemService $optionSystemService,
-        TranslatorInterface $translator
+        #[MapEntity(id: 'id')] Mail $mail,
+        MailService                 $mailService,
+        OptionSystemService         $optionSystemService,
+        TranslatorInterface         $translator
     ): JsonResponse
     {
         /* @var User $user */

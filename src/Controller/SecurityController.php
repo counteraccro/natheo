@@ -16,11 +16,9 @@ use App\Service\Installation\InstallationService;
 use App\Service\SecurityService;
 use App\Utils\System\Mail\KeyWord;
 use App\Utils\System\Mail\MailKey;
-use App\Utils\System\User\UserDataKey;
+use App\Utils\System\User\UserdataKey;
 use Doctrine\ORM\NonUniqueResultException;
 use League\CommonMark\Exception\CommonMarkException;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -113,13 +111,15 @@ class SecurityController extends AbstractController
      * @param Request $request
      * @param TranslatorInterface $translator
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/change-password/update/{id}', name: 'change_password_update_user', methods: ['POST'])]
     public function updatePassword(
-        User                $user,
-        UserService         $userService,
-        Request             $request,
-        TranslatorInterface $translator
+        #[MapEntity(id: 'id')] User $user,
+        UserService                 $userService,
+        Request                     $request,
+        TranslatorInterface         $translator
     ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -138,12 +138,15 @@ class SecurityController extends AbstractController
      * @param MailService $mailService
      * @param OptionSystemService $optionSystemService
      * @param UserDataService $userDataService
+     * @param TranslatorInterface $translator
      * @return Response
      * @throws CommonMarkException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      * @throws TransportExceptionInterface
      */
     #[Route('reset-password/update', name: 'reset_password_user', methods: ['GET', 'POST'])]
-    public function resetpassword(
+    public function resetPassword(
         Request             $request,
         UserService         $userService,
         MailService         $mailService,

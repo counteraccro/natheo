@@ -22,6 +22,7 @@ use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Content\PageTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -88,10 +89,10 @@ class PageController extends AppAdminController
      */
     #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', methods: 'PUT')]
     public function updateDisabled(
-        Page                $page,
-        PageService         $pageService,
-        TranslatorInterface $translator,
-        Request             $request
+        #[MapEntity(id: 'id')] Page $page,
+        PageService                 $pageService,
+        TranslatorInterface         $translator,
+        Request                     $request
     ): JsonResponse
     {
         $page->setDisabled(!$page->isDisabled());
@@ -119,11 +120,11 @@ class PageController extends AppAdminController
      */
     #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(
-        Page                  $page,
-        PageService           $pageService,
-        TranslatorInterface   $translator,
-        Request               $request,
-        ContainerBagInterface $containerBag
+        #[MapEntity(id: 'id')] Page $page,
+        PageService                 $pageService,
+        TranslatorInterface         $translator,
+        Request                     $request,
+        ContainerBagInterface       $containerBag
     ): JsonResponse
     {
         $titre = $page->getPageTranslationByLocale($request->getLocale())->getTitre();
@@ -205,6 +206,7 @@ class PageController extends AppAdminController
     /**
      * Permet de charger le contenu du tab content
      * @param PageService $pageService
+     * @param MenuService $menuService
      * @param int|null $id
      * @return JsonResponse
      * @throws ContainerExceptionInterface
@@ -406,9 +408,11 @@ class PageController extends AppAdminController
 
     /**
      * Retourne une liste de contenu en fonction d'un id content
-     * @param Request $request
      * @param PageService $pageService
+     * @param int|null $type
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/content-by-id/{type}', name: 'liste_content_by_id', methods: ['GET'])]
     public function listeContentByIdContent(PageService $pageService, int $type = null): JsonResponse
@@ -433,6 +437,15 @@ class PageController extends AppAdminController
         ]);
     }
 
+    /**
+     * Retourne les infos du block
+     * @param PageService $pageService
+     * @param int $type
+     * @param int $typeId
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     #[Route('/ajax/get-info-render-bock/{type}/{typeId}', name: 'info_render_block', methods: ['GET'])]
     public function getInfoRenderBlock(PageService $pageService, int $type = 0, int $typeId = 0): JsonResponse
     {

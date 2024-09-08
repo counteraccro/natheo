@@ -12,6 +12,9 @@ use App\Entity\Admin\System\SidebarElement;
 use App\Service\Admin\System\SidebarElementService;
 use App\Utils\Breadcrumb;
 use App\Utils\System\Options\OptionUserKey;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,6 +28,8 @@ class SidebarController extends AppAdminController
     /**
      * Point d'entrée
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/', name: 'index')]
     public function index(): Response
@@ -49,6 +54,8 @@ class SidebarController extends AppAdminController
      * @param int $page
      * @param int $limit
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     public function loadGridData(
@@ -67,12 +74,14 @@ class SidebarController extends AppAdminController
      * @param SidebarElementService $sidebarElementService
      * @param TranslatorInterface $translator
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', methods: ['PUT'])]
     public function updateDisabled(
-        SidebarElement        $sidebarElement,
-        SidebarElementService $sidebarElementService,
-        TranslatorInterface   $translator
+        #[MapEntity(id: 'id')] SidebarElement $sidebarElement,
+        SidebarElementService                 $sidebarElementService,
+        TranslatorInterface                   $translator
     ): JsonResponse
     {
         $sidebarElement->setDisabled(!$sidebarElement->isDisabled());

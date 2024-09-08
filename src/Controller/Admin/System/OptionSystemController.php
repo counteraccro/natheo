@@ -10,6 +10,8 @@ namespace App\Controller\Admin\System;
 use App\Controller\Admin\AppAdminController;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Breadcrumb;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,6 +47,8 @@ class OptionSystemController extends AppAdminController
      * @param Request $request
      * @param OptionSystemService $optionSystemService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/update', name: 'ajax_update', methods: ['POST'])]
     public function update(Request $request, OptionSystemService $optionSystemService): JsonResponse
