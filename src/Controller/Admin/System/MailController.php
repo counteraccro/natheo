@@ -10,7 +10,6 @@ namespace App\Controller\Admin\System;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\System\Mail;
 use App\Entity\Admin\System\User;
-use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\System\MailService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\TranslateService;
@@ -39,6 +38,8 @@ class MailController extends AppAdminController
     /**
      * Point d'entrée de la gestion des emails
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/', name: 'index')]
     public function index(): Response
