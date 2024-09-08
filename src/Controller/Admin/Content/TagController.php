@@ -15,6 +15,9 @@ use App\Utils\Breadcrumb;
 use App\Utils\Flash\FlashKey;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Content\TagTranslate;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,6 +33,8 @@ class TagController extends AppAdminController
     /**
      * Index listing des tags
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/', name: 'index')]
     public function index(): Response
@@ -75,13 +80,15 @@ class TagController extends AppAdminController
      * @param TranslatorInterface $translator
      * @param Request $request
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', methods: ['PUT'])]
     public function updateDisabled(
-        Tag                 $tag,
-        TagService          $tagService,
-        TranslatorInterface $translator,
-        Request             $request
+        #[MapEntity(id: 'id')] Tag $tag,
+        TagService                 $tagService,
+        TranslatorInterface        $translator,
+        Request                    $request
     ): JsonResponse
     {
         $tag->setDisabled(!$tag->isDisabled());
@@ -104,13 +111,15 @@ class TagController extends AppAdminController
      * @param TranslatorInterface $translator
      * @param Request $request
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(
-        Tag                 $tag,
-        TagService          $tagService,
-        TranslatorInterface $translator,
-        Request             $request
+        #[MapEntity(id: 'id')] Tag $tag,
+        TagService                 $tagService,
+        TranslatorInterface        $translator,
+        Request                    $request
     ): JsonResponse
     {
         $label = $tag->getTagTranslationByLocale($request->getLocale())->getLabel();
@@ -122,18 +131,21 @@ class TagController extends AppAdminController
     /**
      * Permet d'ajouter / éditer un tag
      * @param TagService $tagService
+     * @param TagTranslate $tagTranslate
      * @param Request $request
      * @param Tag|null $tag
      * @return Response
+     * @throws ContainerExceptionInterface
      * @throws ExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
     public function add(
-        TagService   $tagService,
-        TagTranslate $tagTranslate,
-        Request      $request,
-        Tag          $tag = null
+        TagService                 $tagService,
+        TagTranslate               $tagTranslate,
+        Request                    $request,
+        #[MapEntity(id: 'id')] Tag $tag = null
     ): Response
     {
         $breadcrumbTitle = 'tag.update.page_title_h1';
@@ -179,6 +191,8 @@ class TagController extends AppAdminController
      * @param Request $request
      * @param TranslatorInterface $translator
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/save/', name: 'save', methods: ['POST'])]
     public function save(
@@ -221,7 +235,7 @@ class TagController extends AppAdminController
      * @return Response
      */
     #[Route('/ajax/stats/{id}', name: 'stats', methods: ['GET'])]
-    public function statistique(Tag $tag = null): Response
+    public function statistique(#[MapEntity(id: 'id')] Tag $tag = null): Response
     {
         return $this->render('admin/content/tag/date_update.html.twig', [
             'tag' => $tag
@@ -245,7 +259,6 @@ class TagController extends AppAdminController
     /**
      * Retourne un objet tag depuis un label et la locale
      * Si le tag n'existe pas, il est créé. (utilisé pour l'auto-complete)
-     * @param Request $request
      * @param TagService $tagService
      * @param TranslatorInterface $translator
      * @param string $search
@@ -255,7 +268,7 @@ class TagController extends AppAdminController
      */
     #[Route('/ajax/tag-by-name/{search}/{locale}', name: 'tag_by_name', methods: ['GET'])]
     public function getTagByName(
-        TagService          $tagService,
+        TagService $tagService,
         TranslatorInterface $translator,
         string              $search = '',
         string              $locale = ''): Response
