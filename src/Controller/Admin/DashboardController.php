@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}', name: 'admin_dashboard_', requirements: ['_locale' => '%app.supported_locales%'])]
 #[IsGranted('ROLE_USER')]
@@ -41,12 +42,15 @@ class DashboardController extends AppAdminController
             'urls' => [
                 'dashboard_help_first_connexion' => [
                     'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', ['id' => DashboardKey::DASHBOARD_HELP_FIRST_CONNEXION_ID]),
+                ],
+                'dashboard_last_comments' => [
+                    'load_block_dashboard' =>  $this->generateUrl('admin_dashboard_load_block', ['id' => 'todo-a-faire']),
                 ]
             ],
             'datas' => [
                 'dashboard_help_first_connexion' => [
                     'help_first_connexion' => $userDataService->getHelpFirstConnexion($this->getUser())
-                ]
+                ],
             ],
         ]);
     }
@@ -57,10 +61,13 @@ class DashboardController extends AppAdminController
      * @return JsonResponse
      */
     #[Route('/ajax/load-block-dashboard/{id}', name: 'load_block', methods: ['GET'])]
-    public function loadDashboardBlock(string $id): JsonResponse
+    public function loadDashboardBlock(string $id, TranslatorInterface $translator): JsonResponse
     {
-        echo $id;
-        return $this->json([]);
+        $return = match ($id) {
+            DashboardKey::DASHBOARD_HELP_FIRST_CONNEXION_ID => ['success' => true, 'body' => null],
+            default => ['success' => false, 'body' => null, 'error' => $translator->trans('dashboard.error.load.block', domain: 'dashboard')],
+        };
+        return $this->json($return);
     }
 
     /**

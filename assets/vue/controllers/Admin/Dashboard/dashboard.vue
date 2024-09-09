@@ -5,10 +5,11 @@
  */
 import BlockHelpFirstConnexion from "../../../Components/Dashboard/BlockHelpFirstConnexion.vue";
 import Masonry from "masonry-layout";
+import BlockLastComment from "../../../Components/Dashboard/BlockLastComment.vue";
 
 export default {
   name: "Dashboard",
-  components: {BlockHelpFirstConnexion},
+  components: {BlockLastComment, BlockHelpFirstConnexion},
   emit: [],
   props: {
     urls: Object,
@@ -17,21 +18,19 @@ export default {
   },
   data() {
     return {
-      masonry : null
+      masonry: null
     }
   },
   mounted() {
     this.masonry = new Masonry('#grid-block-dashboard', {"percentPosition": true});
-    //this.masonry.layout();
   },
   methods: {
 
-    reloadGrid()
-    {
-      console.log('reload');
-
+    /**
+     * Rechargement du grid
+     */
+    reloadGrid() {
       this.masonry.layout();
-      //console.log(masonry);
     }
 
   }
@@ -51,47 +50,27 @@ export default {
     </div>
 
     <div class="col-6 mb-3">
-      <div class="card">
-        <h5 class="card-header"><i class="bi bi-activity"></i> {{ this.translate.dashboard_flux_activity }} </h5>
-        <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
+      <block-last-comment
+          :translate="this.translate.dashboard_last_comments"
+          :urls="this.urls.dashboard_last_comments"
+          @reload-grid="this.reloadGrid"
+      />
     </div>
 
     <div class="col-6 mb-3">
-      <div class="card">
-        <h5 class="card-header"><i class="bi bi-chat-left-text"></i> {{ this.translate.dashboard_last_comment }} </h5>
-        <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
+      <block-last-comment
+          :translate="this.translate.dashboard_last_comments"
+          :urls="this.urls.dashboard_last_comments"
+          @reload-grid="this.reloadGrid"
+      />
     </div>
 
     <div class="col-6 mb-3">
-      <div class="card">
-        <h5 class="card-header"><i class="bi bi-chat-left-text"></i> {{ this.translate.dashboard_last_comment }} </h5>
-        <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-6 mb-3">
-      <div class="card">
-        <h5 class="card-header"><i class="bi bi-chat-left-text"></i> {{ this.translate.dashboard_last_comment }} </h5>
-        <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
+      <block-last-comment
+          :translate="this.translate.dashboard_last_comments"
+          :urls="this.urls.dashboard_last_comments"
+          @reload-grid="this.reloadGrid"
+      />
     </div>
   </div>
 

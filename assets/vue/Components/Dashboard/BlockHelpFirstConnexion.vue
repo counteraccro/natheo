@@ -37,7 +37,7 @@ export default {
       }).finally(() => {
         console.log('end');
         this.loading = false
-        //this.$emit("reload-grid");
+        this.$emit("reload-grid");
       });
     }
 
@@ -75,7 +75,7 @@ export default {
       <p class="card-text">{{ this.translate.text_end_success }}</p>
 
       <div class="float-end">
-        <div class="btn btn-secondary btn-sm me-2"><i class="bi bi-arrow-clockwise"></i></div>
+        <div class="btn btn-secondary btn-sm me-2" @click="this.load()"><i class="bi bi-arrow-clockwise"></i></div>
         <div class="btn btn-secondary btn-sm">{{ this.translate.btn_def_hide }}</div>
       </div>
     </div>
