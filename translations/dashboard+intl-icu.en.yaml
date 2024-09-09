@@ -10,3 +10,6 @@ dashboard.block.help.first.connexion.option_2: __dashboard.block.help.first.conn
 dashboard.block.help.first.connexion.option_3: __dashboard.block.help.first.connexion.option_3
 dashboard.block.help.first.connexion.text.end.success: __dashboard.block.help.first.connexion.text.end.success
 dashboard.block.help.first.connexion.btn.hide: __dashboard.block.help.first.connexion.btn.hide
+dashboard.error.load.block: __dashboard.error.load.block
+dashboard.block.last.comments.title: __dashboard.block.last.comments.title
+dashboard.block.last.comments.loading: __dashboard.block.last.comments.loading
