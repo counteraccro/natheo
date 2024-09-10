@@ -22,7 +22,6 @@ export default {
     }
   },
   mounted() {
-    this.masonry = new Masonry('#grid-block-dashboard', {"percentPosition": true});
   },
   methods: {
 
@@ -30,6 +29,7 @@ export default {
      * Rechargement du grid
      */
     reloadGrid() {
+      this.masonry = new Masonry('#grid-block-dashboard', {"percentPosition": true});
       this.masonry.layout();
     }
 

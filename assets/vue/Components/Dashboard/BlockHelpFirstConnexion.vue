@@ -37,8 +37,14 @@ export default {
       }).finally(() => {
         console.log('end');
         this.loading = false
-        this.$emit("reload-grid");
+
+        setTimeout(this.reload, 1000);
       });
+    },
+
+    reload()
+    {
+      this.$emit("reload-grid");
     }
 
   }
