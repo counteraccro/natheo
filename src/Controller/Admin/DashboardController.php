@@ -8,6 +8,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Service\Admin\DashboardService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Utils\Breadcrumb;
 use App\Utils\Dashboard\DashboardKey;
@@ -42,14 +43,16 @@ class DashboardController extends AppAdminController
             'urls' => [
                 'dashboard_help_first_connexion' => [
                     'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', ['id' => DashboardKey::DASHBOARD_HELP_FIRST_CONNEXION_ID]),
+                    //'admin_option_system_ajax_update' => $this->generateUrl('admin_option-system_ajax_update'),
                 ],
                 'dashboard_last_comments' => [
-                    'load_block_dashboard' =>  $this->generateUrl('admin_dashboard_load_block', ['id' => 'todo-a-faire']),
+                    'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', ['id' => 'todo-a-faire']),
                 ]
             ],
             'datas' => [
                 'dashboard_help_first_connexion' => [
-                    'help_first_connexion' => $userDataService->getHelpFirstConnexion($this->getUser())
+                    'help_first_connexion' => $userDataService->getHelpFirstConnexion($this->getUser()),
+                    'help_first_connexion_key' => UserDataKey::KEY_HELP_FIRST_CONNEXION
                 ],
             ],
         ]);
@@ -58,13 +61,21 @@ class DashboardController extends AppAdminController
     /**
      * Charge un block du dashboard en fonction de son id
      * @param string $id
+     * @param TranslatorInterface $translator
+     * @param DashboardService $dashboardService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-block-dashboard/{id}', name: 'load_block', methods: ['GET'])]
-    public function loadDashboardBlock(string $id, TranslatorInterface $translator): JsonResponse
+    public function loadDashboardBlock(
+        string              $id,
+        TranslatorInterface $translator,
+        DashboardService    $dashboardService
+    ): JsonResponse
     {
         $return = match ($id) {
-            DashboardKey::DASHBOARD_HELP_FIRST_CONNEXION_ID => ['success' => true, 'body' => null],
+            DashboardKey::DASHBOARD_HELP_FIRST_CONNEXION_ID => $dashboardService->getBlockHelpConfig(),
             default => ['success' => false, 'body' => null, 'error' => $translator->trans('dashboard.error.load.block', domain: 'dashboard')],
         };
         return $this->json($return);
