@@ -4,12 +4,21 @@ dashboard.last.comment: 'Derniers commentaires'
 dashboard.block.help.first.connexion.title: 'Aide pour la configuration'
 dashboard.block.help.first.connexion.loading: "Chargement de l'aide"
 dashboard.block.help.first.connexion.sub_title: 'Configurations manquantes'
-dashboard.block.help.first.connexion.text_1: 'Certaines options sont encore configurée avec des valeurs par défaut, il est recommandé de les modifier'
-dashboard.block.help.first.connexion.option_1: 'Le nom de votre site'
-dashboard.block.help.first.connexion.option_2: "L'url de votre site"
-dashboard.block.help.first.connexion.option_3: 'Le site est fermé'
+dashboard.block.help.first.connexion.text_1: 'Certaines options sont encore configurée avec des valeurs par défaut, il est recommandé de les modifier.'
 dashboard.block.help.first.connexion.text.end.success: 'Félicitation, vous avez terminé la configuration de votre site'
 dashboard.block.help.first.connexion.btn.hide: 'Ne plus afficher'
 dashboard.error.load.block: 'Une erreur est survenue lors du chargement du block'
 dashboard.block.last.comments.title: 'Derniers commentaires'
 dashboard.block.last.comments.loading: 'Chargement des derniers commentaires'
+dashboard.block.help.first.connexion.site.name.success: 'Le nom de votre site à été changé'
+dashboard.block.help.first.connexion.site.adresse.success: "L'url front à été saisie"
+dashboard.block.help.first.connexion.site.open.success: 'Votre site est ouvert au public'
+dashboard.block.help.first.connexion.site.name.warning: "Le nom de votre site est celui défini lors de l'installation"
+dashboard.block.help.first.connexion.site.adresse.warning: 'Aucune url pour le front est actuellement définie '
+dashboard.block.help.first.connexion.site.open.warning: 'Votre site est fermé au public'
+dashboard.block.help.first.connexion.text.end: 'Encore un petit effort et la configuration de votre site sera terminé.'
+dashboard.block.help.first.connexion.modal.confirm.title: 'Confirmez vous cette action ?'
+dashboard.block.help.first.connexion.modal.confirm.body.1: "Vous êtes sur le point de masquer l'aide à l'installation du CMS, confirmez vous cette action ? "
+dashboard.block.help.first.connexion.modal.confirm.body.2: "Il sera possible de faire réapparaitre ce block depuis votre profil"
+dashboard.block.help.first.connexion.modal.confirm.btn_ok: "Oui"
+dashboard.block.help.first.connexion.modal.confirm.btn_ko: "Non"
