@@ -182,3 +182,7 @@ user.reset_password.email.label: __user.reset_password.email.label
 user.reset_password.email.placeholder: __user.reset_password.email.placeholder
 user.reset_password.email.help: __user.reset_password.email.help
 user.reset_password.submit: __user.reset_password.submit
+user.more_options.loading: __user.more_options.loading
+user.more_options.btn.show_help: __user.more_options.btn.show_help
+user.more_options.btn.hide_help: __user.more_options.btn.hide_help
+user.page_my_account.options.divers: __user.page_my_account.options.divers

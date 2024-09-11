@@ -183,3 +183,7 @@ user.reset_password.email.placeholder: 'Adresse email'
 user.reset_password.submit: 'Changer mon mot de passe'
 user.reset_password.email.help: 'Vous recevrez un email contenant les instructions pour pouvoir changer votre mot de passe'
 user.reset_password.success: "Un email à été envoyé à l'adresse email indiquée"
+user.more_options.loading: 'traitement en cours...'
+user.more_options.btn.show_help: "Afficher l'aide de configuration"
+user.more_options.btn.hide_help: "Masquer l'aide de configuration"
+user.page_my_account.options.divers: "Autres options"
