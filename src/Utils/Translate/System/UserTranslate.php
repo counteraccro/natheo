@@ -60,4 +60,17 @@ class UserTranslate extends AppTranslate
             'replace_content_2' => $this->translator->trans('user.danger_zone.content_replace_2', domain: 'user'),
         ];
     }
+
+    /**
+     * Retourne les traductions du block more options
+     * @return array
+     */
+    public function getTranslateMoreOptions()
+    {
+        return [
+            'loading' => $this->translator->trans('user.more_options.loading', domain: 'user'),
+            'btn_show_help' => $this->translator->trans('user.more_options.btn.show_help', domain: 'user'),
+            'btn_hide_help' => $this->translator->trans('user.more_options.btn.hide_help', domain: 'user'),
+        ];
+    }
 }

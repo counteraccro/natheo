@@ -266,6 +266,7 @@ class UserController extends AppAdminController
     /**
      * Mise à jour des données de l'utilisateur par lui-même
      * @param UserService $userService
+     * @param UserDataService $userDataService
      * @param UserTranslate $userTranslate
      * @param Request $request
      * @param OptionSystemService $optionSystemService
@@ -278,6 +279,7 @@ class UserController extends AppAdminController
     #[IsGranted('ROLE_USER')]
     public function updateMyAccount(
         UserService         $userService,
+        UserDataService     $userDataService,
         UserTranslate       $userTranslate,
         Request             $request,
         OptionSystemService $optionSystemService,
@@ -313,6 +315,11 @@ class UserController extends AppAdminController
             'user' => $user,
             'changePasswordTranslate' => $userTranslate->getTranslateChangePassword(),
             'dangerZoneTranslate' => $userTranslate->getTranslateDangerZone(),
+            'moreOptionsTranslate' => $userTranslate->getTranslateMoreOptions(),
+            'moreOptionsDatas' => [
+                'help_first_connexion' => $userDataService->getHelpFirstConnexion($this->getUser()),
+                'user_data_key_first_connexion' => UserDataKey::KEY_HELP_FIRST_CONNEXION
+            ],
             'canDelete' => $canDelete,
             'canReplace' => $canReplace
         ]);
@@ -682,7 +689,7 @@ class UserController extends AppAdminController
     #[Route('/update-user-data', name: 'update_user_data', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
     public function updateUserdata(
-        Request $request,
+        Request         $request,
         UserDataService $userDataService
     ): Response
     {
