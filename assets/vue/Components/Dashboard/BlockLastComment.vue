@@ -43,7 +43,7 @@ export default {
         console.error(error);
       }).finally(() => {
         this.loading = false
-        setTimeout(this.reload, 1000);
+        this.reload();
       });
     },
 

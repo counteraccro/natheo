@@ -44,6 +44,7 @@ class DashboardTranslate extends AppTranslate
             'modal_confirm_body_2' => $this->translator->trans('dashboard.block.help.first.connexion.modal.confirm.body.2', domain: 'dashboard'),
             'modal_confirm_btn_ok' => $this->translator->trans('dashboard.block.help.first.connexion.modal.confirm.btn_ok', domain: 'dashboard'),
             'modal_confirm_btn_ko' => $this->translator->trans('dashboard.block.help.first.connexion.modal.confirm.btn_ko', domain: 'dashboard'),
+            'msg_hide_success' => $this->translator->trans('dashboard.block.help.first.connexion.msg.hide.success', domain: 'dashboard'),
         ];
     }
 

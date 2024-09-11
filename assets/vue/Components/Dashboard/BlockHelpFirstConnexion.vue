@@ -4,8 +4,7 @@
  * Composant card help première connexion
  */
 import axios from "axios";
-import Modal from "../Global/Modal.vue";
-import {emitter} from "../../../utils/useEvent";
+import Modal from "../Global/Modal.vue";;
 
 export default {
   name: "BlockHelpFirstConnexion",
@@ -16,12 +15,14 @@ export default {
     translate: Object,
     datas: Object,
   },
-  emits: ['reload-grid'],
+  emits: ['reload-grid', 'hide-block'],
   data() {
     return {
+      hide: false,
       loading: false,
       result: [],
       errorMessage: null,
+      hideMsgSuccess: null,
       complete: false,
       showModalConfirm: false,
     }
@@ -39,17 +40,15 @@ export default {
       axios.get(this.urls.load_block_dashboard).then((response) => {
         if (response.data.success === false) {
           this.errorMessage = response.data.error;
-        }
-        else {
+        } else {
           this.result = response.data.body;
           this.complete = response.data.configComplete;
         }
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
-        console.log('end');
         this.loading = false
-        setTimeout(this.reload, 1000);
+        this.reload();
       });
     },
 
@@ -63,29 +62,34 @@ export default {
     /**
      * Masque le bloc de façon définitive
      */
-    hideConfig()
-    {
+    hideConfig() {
+      this.loading = true;
       this.hideModal();
-      alert('hide');
 
-      /*axios.post(url a créer, {
-        key: this.datas.help_first_connexion_key,
+      axios.post(this.urls.update_user_data, {
+        key: this.datas.user_data_key_first_connexion,
         value: 0
-      }).then(function (response) {
-
-        if(response.data.success)
-        {
-
-        }
-        else {
+      }).then((response) => {
+        if (response.data.success) {
+          this.hideMsgSuccess = true;
+        } else {
           console.error(response.data.msg);
         }
       }).catch(function (error) {
         console.error(error);
       }).finally(() => {
+        this.loading = false;
+        setTimeout(this.hideBlock, 3000);
 
-      });*/
+      });
+    },
 
+    /**
+     * Masque le block
+     */
+    hideBlock() {
+      this.$emit("hide-block");
+      this.reload();
     },
 
     /**
@@ -120,6 +124,9 @@ export default {
 
       <div v-if="this.errorMessage !== null">
         <i class="bi bi-exclamation-circle"></i> {{ this.errorMessage }}
+      </div>
+      <div v-else-if="this.hideMsgSuccess !== null">
+        <i class="text-success"> <i class="bi bi-check-circle"></i> {{ this.translate.msg_hide_success }}</i>
       </div>
       <div v-else>
 

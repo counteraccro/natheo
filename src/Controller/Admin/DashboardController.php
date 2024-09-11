@@ -43,7 +43,7 @@ class DashboardController extends AppAdminController
             'urls' => [
                 'dashboard_help_first_connexion' => [
                     'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', ['id' => DashboardKey::DASHBOARD_HELP_FIRST_CONNEXION_ID]),
-                    //'admin_option_system_ajax_update' => $this->generateUrl('admin_option-system_ajax_update'),
+                    'update_user_data' => $this->generateUrl('admin_user_update_user_data'),
                 ],
                 'dashboard_last_comments' => [
                     'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', ['id' => 'todo-a-faire']),
@@ -52,7 +52,7 @@ class DashboardController extends AppAdminController
             'datas' => [
                 'dashboard_help_first_connexion' => [
                     'help_first_connexion' => $userDataService->getHelpFirstConnexion($this->getUser()),
-                    'help_first_connexion_key' => UserDataKey::KEY_HELP_FIRST_CONNEXION
+                    'user_data_key_first_connexion' => UserDataKey::KEY_HELP_FIRST_CONNEXION
                 ],
             ],
         ]);

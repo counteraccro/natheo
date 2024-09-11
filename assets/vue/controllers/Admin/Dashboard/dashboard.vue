@@ -18,7 +18,8 @@ export default {
   },
   data() {
     return {
-      masonry: null
+      masonry: null,
+      showBlockHelpFirstConnexion: true,
     }
   },
   mounted() {
@@ -29,8 +30,18 @@ export default {
      * Rechargement du grid
      */
     reloadGrid() {
-      this.masonry = new Masonry('#grid-block-dashboard', {"percentPosition": true});
-      this.masonry.layout();
+      setTimeout(() => {
+        this.masonry = new Masonry('#grid-block-dashboard', {"percentPosition": true});
+        this.masonry.layout();
+      }, 1000);
+    },
+
+    /**
+     * Masque le bloc de première connexion
+     */
+    hideBlockFistConnexion()
+    {
+      this.showBlockHelpFirstConnexion = false;
     }
 
   }
@@ -40,12 +51,13 @@ export default {
 <template>
   <div id="grid-block-dashboard" class="row">
 
-    <div class="col-6 mb-3" v-if="this.datas.dashboard_help_first_connexion.help_first_connexion">
+    <div class="col-6 mb-3" v-if="this.datas.dashboard_help_first_connexion.help_first_connexion && this.showBlockHelpFirstConnexion">
       <block-help-first-connexion
           :translate="this.translate.dashboard_help_first_connexion"
           :datas="this.datas.dashboard_help_first_connexion"
           :urls="this.urls.dashboard_help_first_connexion"
           @reload-grid="this.reloadGrid"
+          @hide-block="this.hideBlockFistConnexion"
       />
     </div>
 

@@ -670,4 +670,24 @@ class UserController extends AppAdminController
 
         return $this->redirectToRoute('admin_user_update', ['id' => $user->getId()]);
     }
+
+    /**
+     * Met à jour une userData en fonction de sa clé et sa valeur
+     * @param Request $request
+     * @param UserDataService $userDataService
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/update-user-data', name: 'update_user_data', methods: ['POST'])]
+    #[IsGranted('ROLE_USER')]
+    public function updateUserdata(
+        Request $request,
+        UserDataService $userDataService
+    ): Response
+    {
+        $data = json_decode($request->getContent(), true);
+        $userDataService->update($data['key'], $data['value'], $this->getUser());
+        return $this->json($userDataService->getResponseAjax());
+    }
 }
