@@ -19,6 +19,7 @@ dashboard.block.help.first.connexion.site.open.warning: 'Votre site est fermé a
 dashboard.block.help.first.connexion.text.end: 'Encore un petit effort et la configuration de votre site sera terminé.'
 dashboard.block.help.first.connexion.modal.confirm.title: 'Confirmez vous cette action ?'
 dashboard.block.help.first.connexion.modal.confirm.body.1: "Vous êtes sur le point de masquer l'aide à l'installation du CMS, confirmez vous cette action ? "
-dashboard.block.help.first.connexion.modal.confirm.body.2: "Il sera possible de faire réapparaitre ce block depuis votre profil"
-dashboard.block.help.first.connexion.modal.confirm.btn_ok: "Oui"
-dashboard.block.help.first.connexion.modal.confirm.btn_ko: "Non"
+dashboard.block.help.first.connexion.modal.confirm.body.2: 'Il sera possible de faire réapparaitre ce block depuis votre profil'
+dashboard.block.help.first.connexion.modal.confirm.btn_ok: Oui
+dashboard.block.help.first.connexion.modal.confirm.btn_ko: Non
+dashboard.block.help.first.connexion.msg.hide.success: 'Block masqué avec succès'
