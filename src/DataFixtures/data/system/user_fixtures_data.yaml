@@ -1,7 +1,7 @@
 user:
   User:
     email: user.demo@mail.fr
-    password: $2y$13$wogmb7k4AwPx/7EM9Sk/fezDAepiluprY2iHFArkt.r0fKU6pXtTq
+    password: $2y$13$yGzo.HHgJ56mACW3YVORw.scl7GWSt17vstG8Em14gp3H2FiyfgSG
     login: user_fondateur
     firstname: ''
     lastname: ''
