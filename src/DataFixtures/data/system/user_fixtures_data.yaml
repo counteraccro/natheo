@@ -1,8 +1,8 @@
 user:
   User:
     email: user.demo@mail.fr
-    password: $2y$13$VHy8kLT.7FMrO8BN7JOKkO26Z.AHKOp6drO5ycwcMB.Uf/uHxq0K.
-    login: user
+    password: $2y$13$wogmb7k4AwPx/7EM9Sk/fezDAepiluprY2iHFArkt.r0fKU6pXtTq
+    login: user_fondateur
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN
