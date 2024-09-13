@@ -28,7 +28,7 @@ use App\Utils\System\Mail\MailKey;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\Role;
-use App\Utils\System\User\UserdataKey;
+use App\Utils\System\User\UserDataKey;
 use App\Utils\Translate\System\UserTranslate;
 use Exception;
 use League\CommonMark\Exception\CommonMarkException;
@@ -266,6 +266,7 @@ class UserController extends AppAdminController
     /**
      * Mise à jour des données de l'utilisateur par lui-même
      * @param UserService $userService
+     * @param UserDataService $userDataService
      * @param UserTranslate $userTranslate
      * @param Request $request
      * @param OptionSystemService $optionSystemService
@@ -278,6 +279,7 @@ class UserController extends AppAdminController
     #[IsGranted('ROLE_USER')]
     public function updateMyAccount(
         UserService         $userService,
+        UserDataService     $userDataService,
         UserTranslate       $userTranslate,
         Request             $request,
         OptionSystemService $optionSystemService,
@@ -313,6 +315,11 @@ class UserController extends AppAdminController
             'user' => $user,
             'changePasswordTranslate' => $userTranslate->getTranslateChangePassword(),
             'dangerZoneTranslate' => $userTranslate->getTranslateDangerZone(),
+            'moreOptionsTranslate' => $userTranslate->getTranslateMoreOptions(),
+            'moreOptionsDatas' => [
+                'help_first_connexion' => $userDataService->getHelpFirstConnexion($this->getUser()),
+                'user_data_key_first_connexion' => UserDataKey::KEY_HELP_FIRST_CONNEXION
+            ],
             'canDelete' => $canDelete,
             'canReplace' => $canReplace
         ]);
@@ -568,7 +575,7 @@ class UserController extends AppAdminController
             $optionUserService->createOptionsUser($user);
 
             $key = ByteString::fromRandom(48)->toString();
-            $userDataService->update(UserdataKey::KEY_RESET_PASSWORD, $key, $user);
+            $userDataService->update(UserDataKey::KEY_RESET_PASSWORD, $key, $user);
 
 
             $mail = $mailService->getByKey(MailKey::MAIL_CREATE_ACCOUNT_ADM);
@@ -648,7 +655,7 @@ class UserController extends AppAdminController
     ): RedirectResponse
     {
         $key = ByteString::fromRandom(48)->toString();
-        $userDataService->update(UserdataKey::KEY_RESET_PASSWORD, $key, $user);
+        $userDataService->update(UserDataKey::KEY_RESET_PASSWORD, $key, $user);
 
 
         $mail = $mailService->getByKey(MailKey::MAIL_RESET_PASSWORD);
@@ -669,5 +676,25 @@ class UserController extends AppAdminController
             $translator->trans('user.page_my_account.reset_password_success', domain: 'user'));
 
         return $this->redirectToRoute('admin_user_update', ['id' => $user->getId()]);
+    }
+
+    /**
+     * Met à jour une userData en fonction de sa clé et sa valeur
+     * @param Request $request
+     * @param UserDataService $userDataService
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/update-user-data', name: 'update_user_data', methods: ['POST'])]
+    #[IsGranted('ROLE_USER')]
+    public function updateUserdata(
+        Request         $request,
+        UserDataService $userDataService
+    ): Response
+    {
+        $data = json_decode($request->getContent(), true);
+        $userDataService->update($data['key'], $data['value'], $this->getUser());
+        return $this->json($userDataService->getResponseAjax());
     }
 }

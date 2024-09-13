@@ -1,0 +1,56 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * Point d'entrée pour le design front
+ */
+
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+
+:root {
+  --primary: #{$purple-700};
+  --secondary: #{$purple-500};
+  --success: #{$green-600};
+  --danger: #{$red-900};
+  --info: #{$blue-600};
+  --light: #{$purple-100};
+  --warning: #{$orange-500};
+  --dark: #{$purple-900};
+}
+
+$primary: $purple-700;
+$secondary: $purple-500;
+$success: $green-600;
+$danger: $red-600;
+$info: $blue-600;
+$light: $purple-100;
+$warning: $orange-500;
+$dark: $purple-800;
+
+$theme-colors: (
+        "primary": $primary,
+        "secondary": $secondary,
+        "success": $success,
+        "danger": $danger,
+        "info": $info,
+        "dark": $dark,
+        "light": $light,
+        "warning": $warning
+);
+
+$theme-colors: map-merge($theme-colors, $theme-colors);
+$theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+$utilities-colors: map-merge($utilities-colors, $theme-colors-rgb);
+$utilities-text: map-merge($utilities-text, $utilities-colors);
+$utilities-text-colors: map-loop($utilities-text, rgba-css-var, "$key", "text");
+$utilities-bg: map-merge($utilities-bg, $utilities-colors);
+$utilities-bg-colors: map-loop($utilities-bg, rgba-css-var, "$key", "bg");
+
+@import "~bootstrap/scss/bootstrap";
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+@import "installation/style";

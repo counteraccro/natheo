@@ -24,9 +24,11 @@ Encore
     .addEntry('admin_red', './assets/styles/app_admin_red.scss')
     .addEntry('admin_purple', './assets/styles/app_admin_purple.scss')
     .addEntry('admin_orange', './assets/styles/app_admin_orange.scss')
+    .addEntry('install_css', './assets/styles/app_install.scss')
     .addEntry('email', './assets/styles/app_email.scss')
     .addEntry('admin', './assets/app_admin.js')
     .addEntry('front', './assets/app_front.js')
+    .addEntry('install', './assets/app_install.js')
     //.addEntry('main', './assets/main.ts')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)

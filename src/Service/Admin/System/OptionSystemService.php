@@ -95,6 +95,8 @@ class OptionSystemService extends AppAdminService
      * @param string $key
      * @param string $value
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function saveValueByKee(string $key, string $value): void
     {

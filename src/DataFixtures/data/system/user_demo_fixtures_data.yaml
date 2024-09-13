@@ -1,0 +1,51 @@
+user:
+  R-User:
+    email: user@natheo.com
+    password: user@natheo.com
+    login: user-1
+    firstname: user-demo
+    lastname: the-demo
+    roles: ROLE_USER
+    disabled: 0
+    anonymous: 0
+    founder: 0
+  R-Contributeur:
+    email: contributeur@natheo.com
+    password: contributeur@natheo.com
+    login: contributeur-1
+    firstname: contributeur-demo
+    lastname: the-demo
+    roles: ROLE_CONTRIBUTEUR
+    disabled: 0
+    anonymous: 0
+    founder: 0
+  R-Admin:
+    email: admin@natheo.com
+    password: admin@natheo.com
+    login: admin-1
+    firstname: admin-demo
+    lastname: the-demo
+    roles: ROLE_ADMIN
+    disabled: 0
+    anonymous: 0
+    founder: 0
+  R-SuperAdmin:
+    email: superadmin@natheo.com
+    password: superadmin@natheo.com
+    login: super-admin-1
+    firstname: super-admin-demo
+    lastname: the-demo
+    roles: ROLE_SUPER_ADMIN
+    disabled: 0
+    anonymous: 0
+    founder: 0
+  User:
+    email: user.demo@mail.fr
+    password: user.demo@mail.fr
+    login: user-demo
+    firstname: User
+    lastname: Demo
+    roles: ROLE_SUPER_ADMIN
+    disabled: 0
+    anonymous: 0
+    founder: 1

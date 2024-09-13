@@ -1,6 +1,6 @@
 pages:
   Page_listing_page:
-    user: Aymeric
+    user: User
     render: 1
     status: 1
     category: 1
@@ -35,7 +35,7 @@ pages:
         value: 30
 
   Page_listing_blog:
-    user: Aymeric
+    user: User
     render: 1
     status: 1
     category: 4
@@ -70,7 +70,7 @@ pages:
         value: 30
 
   Page_faq:
-    user: Aymeric
+    user: User
     render: 4
     status: 1
     category: 9
@@ -118,7 +118,7 @@ pages:
         value: 30
 
   Page_nouveaute:
-    user: Aymeric
+    user: User
     render: 5
     status: 1
     category: 7
@@ -190,7 +190,7 @@ pages:
         value: 30
 
   Page_demo:
-    user: Aymeric
+    user: User
     render: 3
     status: 1
     category: 1
@@ -261,7 +261,7 @@ pages:
         value: 30
 
   Page_presentation:
-    user: Aymeric
+    user: User
     render: 6
     status: 1
     category: 1
@@ -352,7 +352,7 @@ pages:
         value: 30
 
   Page_blog:
-    user: Aymeric
+    user: User
     render: 4
     status: 1
     category: 4

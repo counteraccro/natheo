@@ -1,0 +1,89 @@
+installation.toast.title.success: 'Succès !'
+installation.toast.time: "A l'instant"
+installation.toast.title.error: 'Erreur !'
+installation.step.1.titre: 'Etape 1 - Installation de Natheo CMS'
+installation.step.1.titre.h1: 'Connexion de la base de données'
+installation.loading: Chargement
+installation.step.1.description_1: 'Nous allons procéder à la connexion à la base de données.'
+installation.step.1.description_2: "Rassurez vous, cela est très simple, il vous suffi de remplir les champs suivants et Natheo CMS s'occupera du reste"
+installation.step.1.config.bdd.title: 'Configuration base de données'
+installation.step.1.config.bdd.input.type.label: Type
+installation.step.1.config.bdd.input.login.label: Login
+installation.step.1.config.bdd.input.password.label: 'Mot de passe'
+installation.step.1.config.bdd.input.ip.label: 'IP du serveur'
+installation.step.1.config.bdd.input.port.label: Port
+installation.step.1.config.bdd.btn.test.config: Vérifier
+installation.step.1.config.bdd.btn.test.config.loading: 'Tentative de connexion'
+installation.step.1.titre.thx.h1: 'Bienvenue sur Natheo CMS !'
+installation.step.1.description.thx.1: "Merci d'avoir choisi Natheo CMS, Vous allez maintenant pouvoir installer et configurer, au travers de quelques étapes rapides, le CMS. Cela ne vous prendra que quelques minutes."
+installation.step.1.config.bdd.loading.msg.update.file: 'Mise à jour de la configuration'
+installation.step.1.config.bdd.loading.msg.test.connexion: 'Test de connexion'
+installation.step.1.config.bdd.loading.msg.test.connexion.ko: 'Erreur lors de la tentative de connexion'
+installation.step.1.config.bdd.loading.msg.test.connexion.success: 'Connexion établie avec succès'
+installation.step.1.create.bdd.h1: 'Création de la base de données'
+installation.step.1.create.bdd.description.1: 'Maintenant que la connexion est établie, nous allons créer la base de données de NatheoCMS '
+installation.step.1.create.bdd.description.2: 'Remplissez les champs suivant pour définir le nom de la table, la version du SGBD et le charset de la base'
+installation.step.1.create.bdd.alert.title: 'Information de configuration'
+installation.step.1.create.bdd.alert.text.1: 'La base de données sera créée avec les options suivantes : '
+installation.step.1.create.bdd.alert.text.2: 'Le schema par défaut de la base de données est '
+installation.step.1.create.bdd.alert.text.3: 'Les tables seront préfixé avec la valeur '
+installation.step.1.create.bdd.alert.text.4: 'aucun prefix défini'
+installation.step.1.create.bdd.alert.text.5: 'Si vous souhaitez modifier ces options, modifier les valeurs <b>app.default_database_prefix</b> et <b>app.default_database_schema</b> dans <b>config/services.yaml</b>'
+installation.step.1.create.bdd.title: 'Installation de la base de données'
+installation.step.1.create.bdd.input.bdd.name.label: 'Nom de la base de données'
+installation.step.1.create.bdd.input.version.label: Version
+installation.step.1.create.bdd.input.charset.label: Charset
+installation.step.1.create.bdd.input.bdd.name.error: 'Ce champ ne peut pas être vide ou posséder des caractères spéciaux'
+installation.step.1.create.bdd.input.version.error: 'Ce champ ne peut pas être vide'
+installation.step.1.create.bdd.btn.create: 'Créer la base de donnée'
+installation.step.1.create.bdd.msg.update.file: 'Mise à jour de la configuration'
+installation.step.1.create.bdd.msg.create.bdd: 'Création de la base de données...'
+installation.step.1.create.bdd.msg.create.bdd.success: 'Base de données créée avec succès'
+installation.step.1.create.bdd.msg.create.bdd.ko: 'Une erreur est survenue lors de la création de la base de données'
+installation.step.1.create.bdd.msg.create.table: 'Création des tables...'
+installation.step.1.create.bdd.msg.create.table.success: 'Tables créées avec succès'
+installation.step.1.create.bdd.msg.create.table.ko: 'Une erreur est survenue lors de la création des tables'
+installation.step.1.create.bdd.msg.success: "Félicitation l'étape 1 est terminée, redirection vers l'étape 2..."
+installation.step.1.create.bdd.msg.update.secret: 'Mise à jour de APP_SECRET'
+installation.step.1.create.bdd.msg.update.secret_success: 'APP_SECRET mit à jour avec succès'
+installation.step.1.create.bdd.msg.update.secret_ko: 'Une erreur est survenue lors de la mise à jour de APP_SECRET'
+installation.step.2.titre: 'Etape 2 - Configuration de NatheoCMS'
+installation.step.2.titre.h1: 'Création du compte fondateur'
+installation.step.2.fondateur.description: 'Nous allons maintenant créer le compte fondateur, ce compte vous permettra de vous connecter au back-office de Natheo'
+installation.step.2.fondateur.titre.card: 'Nouvel utilisateur'
+installation.step.2.fondateur.login.label: Login
+installation.step.2.fondateur.login.placeholder: Login
+installation.step.2.fondateur.email.label: 'Adresse email'
+installation.step.2.fondateur.email.placeholder: 'Adresse email'
+installation.step.2.fondateur.password.label: 'Mot de passe'
+installation.step.2.fondateur.login.error: 'Le login ne peut pas être vide ou contenir des caractères spéciaux'
+installation.step.2.fondateur.email.error: "L'adresse email n'est pas valide"
+installation.step.2.fondateur.password.error: "Le mot de passe n'est pas valide"
+installation.step.2.fondateur.password.weak: 'Mot de passe faible'
+installation.step.2.fondateur.password.normal: 'Mot de passe normal'
+installation.step.2.fondateur.password.strong: 'Mot de passe fort'
+installation.step.2.fondateur.btn.create: 'Créer votre compte'
+installation.step.2.fondateur.password.help: 'Votre mot de passe doit contenir entre 8 et 20 caractères, au moins 1 majuscule, lettres, chiffres, caractères spéciaux, sans espaces'
+installation.step.2.fondateur.loading.msg: 'Création de votre compte en cours...'
+installation.step.2.fondateur.success: 'Compte créé avec succès'
+installation.step.2.debug.titre: 'Débug mode activé'
+installation.step.2.debug.texte.1: 'Attention, le mode débug du CMS est activé, cela va avoir un impact sur les données installées !'
+installation.step.2.debug.texte.2: 'Les comptes de démonstrations vont être installés à la place du compte que vous allez créer. Vous ne devez pas utiliser ce mode pour une utilisation en production'
+installation.step.2.debug.texte.3: 'Pour modifier cette valeur :'
+installation.step.2.debug.texte.4: 'Ouvrez le fichier <b>config/services.yaml</b>'
+installation.step.2.debug.texte.5: 'Modifier la valeur de <b><i>app.debug_mode</i></b> à <b>false</b>'
+installation.step.2.debug.texte.6: 'Faite F5 pour rafraichir la page'
+installation.step.2.finish.titre: 'Création du jeu de données'
+installation.step.2.finish.texte.1: "Dernière étape de l'installation de Natheo CMS, nous allons maintenant ajouter un jeu de données pour vous aider dans la prise en main du CMS"
+installation.step.2.finish.btn: "Finaliser l'installation"
+installation.step.2.finish.texte.2: "Une fois l'installation des données terminés, vous serez redirigé vers l'authentification du panel admin. Vous pourrez vous connecter avec votre compte fondateur fraîchement créé"
+installation.step.2.finish.loading.msg.success: "Installation terminée avec succès, redirection vers l'authentification"
+installation.step.2.finish.loading.msg.config: 'Chargement de la configuration...'
+installation.step.2.finish.loading.msg.config.success: 'Configuration chargée avec succès'
+installation.step.2.finish.loading.msg.config.ko: 'Une erreur est survenue lors du chargement de la configuration'
+installation.step.2.finish.loading.msg.installation.data: 'Installation des données...'
+installation.step.2.finish.loading.msg.installation.data.success: 'Données installées avec succès'
+installation.step.2.finish.loading.msg.installation.data.ko: "Une erreur est survenue lors de l'installation des données"
+installation.step.2.finish.loading.msg.cache: 'Nettoyage du cache en cours'
+installation.step.2.finish.loading.msg.cache.success: 'Cache nettoyé avec succès'
+installation.step.2.finish.loading.msg.cache.ko: 'Une erreur est survenue lors du nettoyage du cache'

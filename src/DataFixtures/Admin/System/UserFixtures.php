@@ -28,6 +28,7 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
 
 
     const USER_FIXTURES_DATA_FILE = 'system' . DIRECTORY_SEPARATOR . 'user_fixtures_data.yaml';
+    const USER_FIXTURES_DATA_FILE_DEMO = 'system' . DIRECTORY_SEPARATOR . 'user_demo_fixtures_data.yaml';
 
     /**
      * @var UserPasswordHasherInterface
@@ -39,7 +40,12 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
      */
     private OptionUserService $optionUserService;
 
+    /**
+     * @var NotificationService|mixed
+     */
     private NotificationService $notificationService;
+
+    private ContainerBagInterface $containerBag;
 
     /**
      * @param ContainerInterface $handlers
@@ -56,15 +62,30 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
         ])] private readonly ContainerInterface $handlers
     )
     {
+
         $this->passwordHasher = $this->handlers->get('passwordHasher');
         $this->optionUserService = $this->handlers->get('optionUserService');
         $this->notificationService = $this->handlers->get('notificationService');
+        $this->containerBag = $this->handlers->get('container');
         parent::__construct($this->handlers);
     }
 
+    /**
+     * @param ObjectManager $manager
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function load(ObjectManager $manager): void
     {
-        $data = Yaml::parseFile($this->pathDataFixtures . self::USER_FIXTURES_DATA_FILE);
+        $debugMode = (bool)$this->containerBag->get('app.debug_mode');
+
+        if ($debugMode) {
+            $data = Yaml::parseFile($this->pathDataFixtures . self::USER_FIXTURES_DATA_FILE_DEMO);
+        } else {
+            $data = Yaml::parseFile($this->pathDataFixtures . self::USER_FIXTURES_DATA_FILE);
+        }
+
         foreach ($data['user'] as $ref => $data) {
             $user = new User();
             $exclude = ['roles', 'password'];
@@ -75,7 +96,10 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                             $user->setRoles([$value]);
                             break;
                         case 'password':
-                            $user->setPassword($this->passwordHasher->hashPassword($user, $value));
+                            if ($debugMode) {
+                                $value = $this->passwordHasher->hashPassword($user, $value);
+                            }
+                            $user->setPassword($value);
                             break;
                         default:
                     }

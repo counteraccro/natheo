@@ -8,42 +8,60 @@ namespace App\EventListener;
 
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\Routing\RouterInterface;
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class ExceptionListener
 {
+    public function __construct(#[AutowireLocator([
+        'router' => RouterInterface::class,
+        'twig' => Environment::class,
+    ])] protected ContainerInterface $handlers){}
+
+    /**
+     * @param ExceptionEvent $event
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function __invoke(ExceptionEvent $event): void
     {
-        // TODO A REFAIRE PROPREMENT
 
-        // You get the exception object from the received event
+        // TODO : A virer
+/*
+        $twig = $this->handlers->get('twig');
+        $parseEnv = $this->handlers->get('parseEnv');
+
         $exception = $event->getThrowable();
-        /*$message = sprintf(
-            'My Error says: %s with code: %s',
-            $exception->getMessage(),
-            $exception->getCode()
-        );*/
-
-        // Customize your response object to display the exception details
-        //$response = new Response();
-        //$response->setContent($message);
-
-        // HttpExceptionInterface is a special type of exception that
-        // holds status code and header details
+        $response = new Response();
 
         if ($exception instanceof ConnectionException) {
-            echo 'Pas de base de données';
-            echo __FILE__;
-            die('A modifier');
-        } else if ($exception instanceof TableNotFoundException) {
-            echo 'Pas de tables';
-            echo __FILE__;
-            die('A modifier');
-        } else {
-            //$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
 
-        // sends the modified response object to the event
-        //$event->setResponse($response);
+            $parseResult = $parseEnv->parseEnvFile();
+            $msg = $twig->render('installation/exceptions/ConnectionException.twig',
+                ['file' => $parseResult['file'], 'envPath'=> $parseEnv->getPathEnvFile(), 'errors' => $parseResult['errors']]
+            );
+            $response->setContent($msg);
+            $event->setResponse($response);
+
+        } elseif ($exception instanceof TableNotFoundException) {
+            //echo 'Pas de tables';
+            //echo __FILE__;
+            //die('A modifier');
+        } else {
+            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+        }*/
     }
 }

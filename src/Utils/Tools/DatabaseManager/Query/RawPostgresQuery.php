@@ -2,7 +2,7 @@
 /**
  * Class Qui permet d'obtenir des requêtes SQL venant de postgres
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  */
 
 namespace App\Utils\Tools\DatabaseManager\Query;
@@ -65,7 +65,7 @@ class RawPostgresQuery
     }
 
     /**
-     * Retourne la structure d'un table
+     * Retourne la structure d'une table
      * @param string $table
      * @return string
      */
@@ -81,5 +81,28 @@ class RawPostgresQuery
             information_schema.columns
         WHERE
             table_name = '" . $table . "'";
+    }
+
+    /**
+     * Vérifie si une table existe dans la base de données
+     * @param string $schema
+     * @param string $table
+     * @return string
+     */
+    public static function getQueryExistTable(string $schema, string $table): string
+    {
+        return "SELECT EXISTS (
+            SELECT FROM information_schema.tables WHERE  table_schema = '" . $schema . "'
+            AND table_name   = '" . $table . "'
+            )";
+    }
+
+    /**
+     * Permet d'obtenir la liste des bases de données
+     * @return string
+     */
+    public static function getQueryAllDatabase(): string
+    {
+        return 'SELECT * FROM pg_database';
     }
 }

@@ -47,6 +47,22 @@
                         'translate' : changePasswordTranslate}) }}></div>
                 </div>
             </div>
+
+            <!-- A changer, le role doit être géré depuis le script JS et non ici -->
+            {% if is_granted(constant('App\\Utils\\System\\User\\Role::ROLE_SUPER_ADMIN')) %}
+                <div class="card mt-3 border border-secondary">
+                    <div class="card-header text-bg-secondary">
+                        {{ 'user.page_my_account.options.divers' | trans({}, 'user') }}
+                    </div>
+                    <div class="card-body">
+                        <div {{ vue_component('Admin/System/User/MyAccountMoreOptions', {'url' : path('admin_user_update_user_data'),
+                            'translate' : moreOptionsTranslate,
+                            'datas' : moreOptionsDatas
+                        }) }}></div>
+                    </div>
+                </div>
+            {% endif %}
+
             {% if not is_granted(constant('App\\Utils\\System\\User\\Role::ROLE_SUPER_ADMIN')) %}
                 <div class="card mt-3 border border-danger">
                     <div class="card-header text-bg-danger">

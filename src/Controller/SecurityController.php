@@ -12,6 +12,7 @@ use App\Service\Admin\System\MailService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
+use App\Service\Installation\InstallationService;
 use App\Service\SecurityService;
 use App\Utils\System\Mail\KeyWord;
 use App\Utils\System\Mail\MailKey;
@@ -32,18 +33,29 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\String\ByteString;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route('{_locale}/security/', name: 'auth_', requirements: ['_locale' => '%app.supported_locales%'],
+#[Route('{_locale}/admin/', name: 'auth_', requirements: ['_locale' => '%app.supported_locales%'],
     defaults: ["_locale" => "%app.default_locale%"])]
 class SecurityController extends AbstractController
 {
     /**
      * Authentification
      * @param AuthenticationUtils $authenticationUtils
+     * @param InstallationService $installationService
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    #[Route(path: 'user/login', name: 'user_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    #[Route(path: 'login', name: 'user_login')]
+    public function login(AuthenticationUtils $authenticationUtils, InstallationService $installationService): Response
     {
+        if (!$installationService->checkSchema()) {
+            return $this->redirectToRoute('installation_step_1');
+        }
+
+        if (!$installationService->checkDataExiste(User::class)) {
+            return $this->redirectToRoute('installation_step_2');
+        }
+
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
@@ -158,7 +170,7 @@ class SecurityController extends AbstractController
             if ($user != null) {
 
                 $key = ByteString::fromRandom(48)->toString();
-                $userDataService->update(UserdataKey::KEY_RESET_PASSWORD, $key, $user);
+                $userDataService->update(UserDataKey::KEY_RESET_PASSWORD, $key, $user);
 
 
                 $mail = $mailService->getByKey(MailKey::MAIL_CHANGE_PASSWORD);

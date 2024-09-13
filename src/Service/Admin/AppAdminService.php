@@ -137,6 +137,8 @@ class AppAdminService extends AppAdminHandlerService
      * @param string $entity
      * @param int $id
      * @return object|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function findOneById(string $entity, int $id): ?object
     {

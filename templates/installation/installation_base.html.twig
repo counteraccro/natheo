@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon" type="image/jpg" href="{{ asset('assets/natheo/favico/favicon.ico') }}">
+    
+       {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('install_css') }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('install') }}
+    {% endblock %}
+</head>
+<body>
+{% block body %}{% endblock %}
+</body>
+</html>

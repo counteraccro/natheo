@@ -5,8 +5,10 @@ namespace App\Security;
 use App\Entity\Admin\System\User;
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\LoggerService;
-use App\Utils\System\User\UserdataKey;
+use App\Utils\System\User\UserDataKey;
 use Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,7 +58,12 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
     }
 
     /**
-     * @throws Exception
+     * @param Request $request
+     * @param TokenInterface $token
+     * @param string $firewallName
+     * @return Response|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
@@ -67,16 +74,18 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         $this->loggerService->logAuthAdmin($user->getEmail(), $ip);
 
         $date = new \DateTime();
-        $this->userDataService->update(UserdataKey::KEY_LAST_CONNEXION, $date->getTimestamp(), $user);
+        $this->userDataService->update(UserDataKey::KEY_LAST_CONNEXION, $date->getTimestamp(), $user);
 
 
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
 
+        return new RedirectResponse($this->urlGenerator->generate('admin_dashboard_index'));
+
         // For example:
         // return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        throw new Exception('TODO: provide a valid redirect inside '.__FILE__);
+        //throw new Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
     /**

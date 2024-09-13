@@ -7,7 +7,7 @@
 
 namespace App\Utils\System\User;
 
-class UserdataKey
+class UserDataKey
 {
     /**
      * Clé pour le reset de mot de passe
@@ -20,5 +20,10 @@ class UserdataKey
      * @var string
      */
     const KEY_LAST_CONNEXION = 'KEY_LAST_CONNEXION';
+
+    /**
+     * Clé pour définir si on lance l'aide ou non à la première connexion
+     */
+    const KEY_HELP_FIRST_CONNEXION = 'KEY_HELP_FIRST_CONNEXION';
 
 }

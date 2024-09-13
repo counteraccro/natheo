@@ -24,6 +24,14 @@ class DatabaseTablePrefixListener
     {
         $this->prefix = $prefix;
         $this->schema = $schema;
+
+        if ($this->schema !== '') {
+            $this->schema .= '.';
+        }
+
+        if ($this->prefix !== '') {
+            $this->prefix .= '_';
+        }
     }
 
     /**

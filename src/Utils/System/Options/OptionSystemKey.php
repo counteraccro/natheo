@@ -15,6 +15,12 @@ class OptionSystemKey
     const OS_SITE_NAME = 'OS_SITE_NAME';
 
     /**
+     * Valeur par défaut défini pour OS_SITE_NAME
+     * @var string
+     */
+    const OS_SITE_NAME_DEFAULT_VALUE = 'Nathéo CMS';
+
+    /**
      * Clé option theme du site
      * @var string
      */
@@ -30,6 +36,12 @@ class OptionSystemKey
      * @var string
      */
     const OS_OPEN_SITE = 'OS_OPEN_SITE';
+
+    /**
+     * Valeur par défaut de la clé OS_OPEN_SITE
+     * @var string
+     */
+    const OS_OPEN_SITE_DEFAULT_VALUE = '0';
 
     /**
      * Clé option script header
@@ -102,6 +114,12 @@ class OptionSystemKey
      * @var string
      */
     const OS_ADRESSE_SITE = 'OS_ADRESSE_SITE';
+
+    /**
+     * Valeur par défaut pour la clé OS_ADRESSE_SITE
+     * @var string
+     */
+    const OS_ADRESSE_SITE_DEFAULT_VALUE = 'http://www.value-must-be-change.com';
 
     /**
      * Clé option signature email

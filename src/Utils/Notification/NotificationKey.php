@@ -82,6 +82,11 @@ class NotificationKey
     const NOTIFICATION_DUMP_SQL = 'NOTIFICATION_DUMP_SQL';
 
     /**
+     * Notification lors de la création d'un nouveau fondateur
+     */
+    const NOTIFICATION_NEW_FONDATEUR = 'NOTIFICATION_NEW_FONDATEUR';
+
+    /**
      * Tableau de notification
      */
     const TAB_NOTIFICATIONS = [
@@ -126,6 +131,15 @@ class NotificationKey
             ],
             self::KEY_TITLE => 'notification.msg.dump_sql.title',
             self::KEY_CONTENT => 'notification.msg.dump_sql.content',
+            self::KEY_LEVEL => self::LEVEL_INFO
+        ],
+        self::NOTIFICATION_NEW_FONDATEUR => [
+            self::KEY_PARAMETER => [
+                'login' => '',
+                'url_aide' => '',
+            ],
+            self::KEY_TITLE => 'notification.msg.new_fondateur.title',
+            self::KEY_CONTENT => 'notification.msg.new_fondateur.content',
             self::KEY_LEVEL => self::LEVEL_INFO
         ]
     ];

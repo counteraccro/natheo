@@ -4,7 +4,7 @@ option_system:
     value: 'Nathéo CMS'
   OS_OPEN_SITE:
     key: 'OS_OPEN_SITE'
-    value: 1
+    value: 0
   OS_FRONT_SCRIPT_TOP:
     key: 'OS_FRONT_SCRIPT_TOP'
     value: ''
@@ -40,13 +40,13 @@ option_system:
     value: 1
   OS_MAIL_FROM:
     key: 'OS_MAIL_FROM'
-    value: 'aymeric.gourdon@hotmail.fr'
+    value: 'support@natheo.fr'
   OS_MAIL_REPLY_TO:
     key: 'OS_MAIL_REPLY_TO'
     value: 'support@natheo.fr'
   OS_ADRESSE_SITE:
     key: 'OS_ADRESSE_SITE'
-    value: 'http://dev.natheo'
+    value: 'http://www.value-must-be-change.com'
   OS_MAIL_SIGNATURE:
     key: 'OS_MAIL_SIGNATURE'
     value: "<hr />Cordialement, <br />L'équipe de Natheo CMS"

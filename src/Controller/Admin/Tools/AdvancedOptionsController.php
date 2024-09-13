@@ -8,8 +8,8 @@
 namespace App\Controller\Admin\Tools;
 
 use App\Service\Admin\CommandService;
-use App\Service\Admin\Tools\AdvancedOptionsService;
 use App\Utils\Breadcrumb;
+use App\Utils\Global\EnvFile;
 use App\Utils\Translate\Tools\AdvancedOptionsTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -64,7 +64,7 @@ class AdvancedOptionsController extends AbstractController
     /**
      * Permet de changer la variable d'environnement
      * @param TranslatorInterface $translator
-     * @param AdvancedOptionsService $advancedOptionsService
+     * @param EnvFile $envFile
      * @param CommandService $commandService
      * @return JsonResponse
      * @throws ContainerExceptionInterface
@@ -73,11 +73,11 @@ class AdvancedOptionsController extends AbstractController
     #[Route('/ajax/switch-env', name: 'switch_env', methods: ['GET'])]
     public function switchEnv(
         TranslatorInterface $translator,
-        AdvancedOptionsService $advancedOptionsService,
+        EnvFile $envFile,
         CommandService $commandService
     ): JsonResponse
     {
-        $advancedOptionsService->switchEnv();
+        $envFile->switchAppEnv();
         $commandService->reloadCache();
         $return['msg'] = $translator->trans('advanced_options.success.switch.env', domain: 'advanced_options');
         $return['success'] = true;
