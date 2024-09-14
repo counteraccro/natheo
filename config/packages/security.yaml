@@ -9,10 +9,23 @@ security:
             entity:
                 class: App\Entity\Admin\System\User
                 # property: email
+
+        api_provider:
+            #entity:
+                #class: App\Entity\Api\ApiToken
+                #property: token
+            id: App\Security\Provider\ApiProvider
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        api:
+            pattern: ^/api
+            provider: api_provider
+            custom_authenticator: App\Security\ApiAuthenticator
+            stateless: true
+            lazy: true
         admin:
             lazy: true
             provider: admin_provider
@@ -37,6 +50,7 @@ security:
 
     role_hierarchy:
         ROLE_CONTRIBUTEUR : ROLE_USER
+        ROLE_READ_API: ROLE_USER
         ROLE_ADMIN : ROLE_CONTRIBUTEUR
         ROLE_SUPER_ADMIN : [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
