@@ -4,13 +4,10 @@
  * @version 1.1
  * Class qui charge les class nécessaire en autowrite
  */
+namespace App\Service\Api;
 
-namespace App\Service\Admin;
 
 use App\Service\Admin\System\OptionSystemService;
-use App\Service\Admin\System\User\UserDataService;
-use App\Utils\Global\DataBase;
-use App\Utils\Global\EnvFile;
 use App\Utils\Translate\GridTranslate;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
@@ -23,12 +20,10 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class AppAdminHandlerService
+class AppApiHandlerService
 {
 
     public function __construct(
@@ -42,15 +37,7 @@ class AppAdminHandlerService
             'requestStack' => RequestStack::class,
             'parameterBag' => ParameterBagInterface::class,
             'optionSystemService' => OptionSystemService::class,
-            'gridService' => GridService::class,
-            'markdownEditorService' => MarkdownEditorService::class,
-            'userPasswordHasher' => UserPasswordHasherInterface::class,
-            'mailer' => MailerInterface::class,
             'kernel' => KernelInterface::class,
-            'gridTranslate' => GridTranslate::class,
-            'database' => Database::class,
-            'envFile' => EnvFile::class,
-            'userData' => UserDataService::class
         ])]
         protected ContainerInterface $handlers){}
 
@@ -98,27 +85,6 @@ class AppAdminHandlerService
         return $this->handlers->get('kernel');
     }
 
-    /**
-     * Retourne l'interface MailerInterface
-     * @return MailerInterface
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    protected function getMailer(): MailerInterface
-    {
-        return $this->handlers->get('mailer');
-    }
-
-    /**
-     * Retourne l'interface UserPasswordHasherInterface
-     * @return UserPasswordHasherInterface
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    protected function getUserPasswordHasher(): UserPasswordHasherInterface
-    {
-        return $this->handlers->get('userPasswordHasher');
-    }
 
     /**
      * Retourne l'interface ParameterBagInterface
@@ -131,16 +97,6 @@ class AppAdminHandlerService
         return $this->handlers->get('parameterBag');
     }
 
-    /**
-     * Retourne la class MarkdownEditorService
-     * @return MarkdownEditorService
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    protected function getMarkdownEditorService(): MarkdownEditorService
-    {
-        return $this->handlers->get('markdownEditorService');
-    }
 
     /**
      * Retourne la class Security
@@ -163,16 +119,6 @@ class AppAdminHandlerService
         return $this->handlers->get('router');
     }
 
-    /**
-     * Retourne la class GridService
-     * @return GridService
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    protected function getGridService(): GridService
-    {
-        return $this->handlers->get('gridService');
-    }
 
     /**
      * Retourne la class OptionSystemService
@@ -216,38 +162,5 @@ class AppAdminHandlerService
     protected function getTranslator(): TranslatorInterface
     {
         return $this->handlers->get('translator');
-    }
-
-    /**
-     * Retourne le EnvFile
-     * @return EnvFile
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    protected function getEnvFile(): EnvFile
-    {
-        return $this->handlers->get('envFile');
-    }
-
-    /**
-     * Retourne Database
-     * @return DataBase
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    protected function getDatabase() :DataBase
-    {
-        return $this->handlers->get('database');
-    }
-
-    /**
-     * Retourne un userDataService
-     * @return UserDataService
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    protected function getUserData() :UserDataService
-    {
-        return $this->handlers->get('userData');
     }
 }
