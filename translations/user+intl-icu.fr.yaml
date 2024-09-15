@@ -186,4 +186,4 @@ user.reset_password.success: "Un email à été envoyé à l'adresse email indiq
 user.more_options.loading: 'traitement en cours...'
 user.more_options.btn.show_help: "Afficher l'aide de configuration"
 user.more_options.btn.hide_help: "Masquer l'aide de configuration"
-user.page_my_account.options.divers: "Autres options"
+user.page_my_account.options.divers: 'Autres options'
