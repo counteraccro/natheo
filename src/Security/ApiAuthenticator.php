@@ -6,7 +6,7 @@
  */
 namespace App\Security;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Http\Api\ApiResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -34,10 +34,7 @@ class ApiAuthenticator extends AbstractAuthenticator
      */
     public function authenticate(Request $request): Passport
     {
-        var_dump($request->getClientIp());
-        var_dump($_SERVER['SERVER_ADDR']);
         $identifier = str_replace('Bearer ', '', $request->headers->get('Authorization'));
-
         return new SelfValidatingPassport(
             new UserBadge($identifier)
         );
@@ -50,9 +47,7 @@ class ApiAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        return new JsonResponse([
-            'toto' => 'ici',
-            'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
-        ], Response::HTTP_UNAUTHORIZED);
+        $message = strtr($exception->getMessageKey(), $exception->getMessageData());
+        return new ApiResponse($message, null, [], Response::HTTP_UNAUTHORIZED);
     }
 }
