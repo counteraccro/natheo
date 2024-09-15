@@ -4,6 +4,7 @@
  * @version 1.0
  * authenticate pour API
  */
+
 namespace App\Security;
 
 use App\Http\Api\ApiResponse;
@@ -15,9 +16,14 @@ use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApiAuthenticator extends AbstractAuthenticator
 {
+    public function __construct(private TranslatorInterface $translator)
+    {
+
+    }
 
     /**
      * @param Request $request
@@ -34,7 +40,7 @@ class ApiAuthenticator extends AbstractAuthenticator
      */
     public function authenticate(Request $request): Passport
     {
-        $identifier = str_replace('Bearer ', '', $request->headers->get('Authorization'));
+        $identifier = trim(str_replace('Bearer ', '', $request->headers->get('Authorization')));
         return new SelfValidatingPassport(
             new UserBadge($identifier)
         );
@@ -47,7 +53,7 @@ class ApiAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        $message = strtr($exception->getMessageKey(), $exception->getMessageData());
+        $message =  $this->translator->trans('api_errors.authentication.failure', domain: 'api_errors');
         return new ApiResponse($message, null, [], Response::HTTP_UNAUTHORIZED);
     }
 }

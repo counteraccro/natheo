@@ -27,13 +27,13 @@ class AppApiController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function apiResponse(string $message, mixed $data, array $errors, int $status = 200, array $headers = []): JsonResponse
+    protected function apiResponse(string $message, mixed $data, array $errors = [], int $status = 200, array $headers = []): JsonResponse
     {
         if (empty($headers)) {
             $headers = ['Content-Type' => 'application/json'];
         }
 
-        $body = $this->formatApiResponse($message, $data,$errors, $status);
+        $body = $this->formatApiResponse($message, $data, $errors, $status);
 
         if ($this->container->has('serializer')) {
             $json = $this->container->get('serializer')->serialize($body, 'json', array_merge([
