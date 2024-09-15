@@ -1,1 +1,3 @@
 api_errors.authentication.failure: __api_errors.authentication.failure
+api_errors.access.denied: __api_errors.access.denied
+api_errors.not.found: __api_errors.not.found
