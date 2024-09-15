@@ -44,8 +44,11 @@ class ApiResponse extends JsonResponse
         $response = [
             'code_http' => $status,
             'message' => $message,
-            'data' => $data,
         ];
+
+        if ($data) {
+            $response['data'] = $data;
+        }
 
         if ($errors) {
             $response['errors'] = $errors;

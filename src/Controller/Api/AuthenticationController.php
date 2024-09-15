@@ -18,6 +18,7 @@ class AuthenticationController extends AppApiController
      * @throws NotFoundExceptionInterface
      */
     #[Route('', name: 'auth', methods: ['GET'], format: 'json')]
+    #[IsGranted("ROLE_READ_API2")]
     public function index(): JsonResponse
     {
        return $this->apiResponse('success', [
@@ -26,7 +27,6 @@ class AuthenticationController extends AppApiController
     }
 
     #[Route('/demo', name: 'demo', methods: ['GET'])]
-    #[IsGranted("ROLE_READ_API2")]
     public function demo(): JsonResponse
     {
 
