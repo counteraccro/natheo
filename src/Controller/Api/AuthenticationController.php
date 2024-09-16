@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/api/{_version}/authentication', name: 'api_authentication', requirements: ['_version' => '%app.api_version%'])]
+#[IsGranted("ROLE_READ_API")]
 class AuthenticationController extends AppApiController
 {
     /**
@@ -18,18 +19,10 @@ class AuthenticationController extends AppApiController
      * @throws NotFoundExceptionInterface
      */
     #[Route('', name: 'auth', methods: ['GET'], format: 'json')]
-    #[IsGranted("ROLE_READ_API2")]
     public function index(): JsonResponse
     {
        return $this->apiResponse('success', [
           'roles' => $this->getUser()->getRoles()
        ]);
-    }
-
-    #[Route('/demo', name: 'demo', methods: ['GET'])]
-    public function demo(): JsonResponse
-    {
-
-        return $this->apiResponse('success', ['user' => $this->getUser()], []);
     }
 }
