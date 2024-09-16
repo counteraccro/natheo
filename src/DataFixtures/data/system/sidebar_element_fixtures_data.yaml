@@ -78,15 +78,6 @@ sidebarElement:
           role: 'ROLE_CONTRIBUTEUR'
           description: 'sidebar.faq.description'
           lock: false
-      - se_cv:
-          icon: 'bi-file-person-fill'
-          label: 'global.cv'
-          route: '#'
-          disabled: false
-          parent: se_content
-          role: 'ROLE_CONTRIBUTEUR'
-          description: 'sidebar.cv.description'
-          lock: false
   se_system:
     icon: 'bi-gear-fill'
     label: 'global.system'
@@ -122,6 +113,15 @@ sidebarElement:
           parent: se_system
           role: 'ROLE_SUPER_ADMIN'
           description: 'sidebar.system_options.description'
+          lock: true
+      - se_api_token:
+          icon: 'bi-gear-wide-connected'
+          label: 'global.api_token'
+          route: 'admin_api_token_index'
+          disabled: false
+          parent: se_system
+          role: 'ROLE_SUPER_ADMIN'
+          description: 'sidebar.api_token.description'
           lock: true
       - se_email:
           icon: 'bi-envelope-fill'
