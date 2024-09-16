@@ -1,0 +1,6 @@
+api_token.index.popin.help.title: Aide
+api_token.index.popin.help.delete: Supprimer
+api_token.index.popin.help.edit: Editer
+api_token.page_title: Gestion des tokens
+api_token.page_title_h1: Gestion des tokens
+api_token.description: Gérer les tokens d'accès aux API de votre site web ainsi que les droits associés

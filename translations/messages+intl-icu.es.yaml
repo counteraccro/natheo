@@ -161,8 +161,6 @@ global.mediatheque: __Médiathèque
 sidebar.mediatheque.description: '__Gestion des médias'
 global.faq: __FAQ
 sidebar.faq.description: '__Gestion des FAQs'
-global.cv: __CV
-sidebar.cv.description: '__Gestion des CVs'
 global.menu: __Menus
 sidebar.menu.description: '__Gestion des menus'
 options_system.media: __Médiathèque
@@ -195,6 +193,8 @@ global.info: __Information
 sidebar.info.description: '__Information sur le CMS'
 global.sql: '__Gestionnaire SQL'
 sidebar.sql.description: '__Créer / Executer des requêtes SQL (uniquement SELECT)'
+global.api_token: '__API Token'
+sidebar.api_token.description: "__Gérer les tokens d'accès aux API de natheo CMS"
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: __pagedemo.page_title_h1
 date.diff.start: "__Il y'a"
