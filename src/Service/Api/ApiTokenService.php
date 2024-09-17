@@ -7,8 +7,8 @@
 
 namespace App\Service\Api;
 
+use App\Entity\Admin\System\ApiToken;
 use App\Entity\Admin\System\User;
-use App\Entity\Api\ApiToken;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
