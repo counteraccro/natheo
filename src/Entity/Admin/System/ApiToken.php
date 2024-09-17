@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Api;
+namespace App\Entity\Admin\System;
 
 use App\Repository\Api\ApiTokenRepository;
 use Doctrine\DBAL\Types\Types;
@@ -21,6 +21,9 @@ class ApiToken
 
     #[ORM\Column]
     private array $roles = [];
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $comment = null;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
@@ -78,6 +81,18 @@ class ApiToken
     public function setCreatedAt(\DateTimeInterface $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): static
+    {
+        $this->comment = $comment;
 
         return $this;
     }
