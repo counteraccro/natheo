@@ -2,7 +2,7 @@
 
 namespace App\Repository\Api;
 
-use App\Entity\Api\ApiToken;
+use App\Entity\Admin\System\ApiToken;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
