@@ -44,7 +44,7 @@ class MailFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
 
     public static function getGroups(): array
     {
-        return [self::GROUP_MAIL];
+        return [self::GROUP_MAIL, self::GROUP_SYSTEM];
     }
 
     public function getOrder(): int
