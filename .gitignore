@@ -45,3 +45,4 @@ yarn-error.log
 /.env.dev
 public/assets/thumbnails/*
 .idea/commandlinetools/Symfony_10_01_2024_18_53.xml
+.idea/workspace.xml~
