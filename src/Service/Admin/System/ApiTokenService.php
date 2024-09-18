@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Service lier à l'objet apiToken
+ */
 namespace App\Service\Admin\System;
 
 use App\Entity\Admin\System\ApiToken;
