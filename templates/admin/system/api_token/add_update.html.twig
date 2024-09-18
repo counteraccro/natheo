@@ -1,0 +1,37 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+
+{% if apiToken.id is same as null %}
+    {% set title = 'api_token.add.page_title' | trans({}, 'api_token') %}
+    {% set titleH1 = 'api_token.add.page_title_h1' | trans({}, 'api_token') %}
+    {% set description = 'api_token.add.description' | trans({}, 'api_token') %}
+{% else %}
+    {% set title = 'api_token.update.page_title' | trans({'id' : apiToken.id}, 'api_token') %}
+    {% set titleH1 = 'api_token.update.page_title_h1' | trans({}, 'api_token') %}
+    {% set description = 'api_token.update.description' | trans({}, 'api_token') %}
+{% endif %}
+
+ {% block title %}
+     {{ title }}
+ {% endblock %}
+
+{% block body %}
+
+    <h1>{{ titleH1 }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    <p>
+        {{ description }}
+    </p>
+
+    <!--<div {# {{ vue_component('Admin/Content/TagForm', {
+        'url' : path('admin_tag_save'),
+        'url_update' : url_update,
+        'url_stats' : url_stats,
+        'url_index' : path('admin_tag_index'),
+        'pTag' : tag,
+        'translate' : translate,
+        'locales' : locales}) }} #}>
+    </div > -->
+{% endblock %}

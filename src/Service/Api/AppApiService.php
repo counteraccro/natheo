@@ -54,6 +54,20 @@ class AppApiService extends AppApiHandlerService
     }
 
     /**
+     * Retourne une entité en fonction de son champ et valeur associé
+     * @param string $entity
+     * @param array $criteria
+     * @return object|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function findOneByCriteria(string $entity, array $criteria): ?object
+    {
+        $repo = $this->getRepository($entity);
+        return $repo->findOneBy($criteria);
+    }
+
+    /**
      * Retourne une liste d'entité en fonction de critères
      * @param string $entity
      * @param array $criteria

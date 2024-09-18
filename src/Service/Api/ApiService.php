@@ -52,7 +52,7 @@ class ApiService extends AppApiService
         }
 
         /** @var ApiToken $apiToken */
-        $apiToken = $this->findOneBy(ApiToken::class, 'token', $token);
+        $apiToken = $this->findOneByCriteria(ApiToken::class, ['token' => $token, 'disabled' => 0]);
         if ($apiToken === null) {
             return null;
         }
