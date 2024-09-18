@@ -1,6 +1,25 @@
 api_token.index.popin.help.title: Aide
 api_token.index.popin.help.delete: Supprimer
 api_token.index.popin.help.edit: Editer
-api_token.page_title: Gestion des tokens
-api_token.page_title_h1: Gestion des tokens
-api_token.description: Gérer les tokens d'accès aux API de votre site web ainsi que les droits associés
+api_token.page_title: 'Gestion des tokens'
+api_token.page_title_h1: 'Gestion des tokens'
+api_token.description: "Gérer les tokens d'accès aux API de votre site web ainsi que les droits associés"
+api_token.success.no.disabled: 'Le token <strong>{label}</strong> est maintenant actif'
+api_token.success.disabled: 'Le token <strong>{label}</strong> est maintenant désactivé'
+api_token.remove.success: 'Le token <strong>{label}</strong> à été supprimé avec succès'
+api_token.grid.id: id
+api_token.grid.name: label
+api_token.grid.token: token
+api_token.grid.roles: roles
+api_token.grid.comment: commentaire
+api_token.grid.created_at: création
+api_token.grid.update_at: 'mise à jour'
+api_token.confirm.disabled.msg: "La désactivation du token <strong>{label}</strong> entrainera le refus d'accès de tout client utilisant ce token"
+api_token.confirm.delete.msg: 'La suppression du token <strong>{label}</strong> est définitive et sans possibilité de retour'
+api_token.add.page_title: 'Nouveau token'
+api_token.add.page_title_h1: 'Créer un token'
+api_token.add.description: 'Créer un nouveau token pour gérer les accès aux APIs de votre site'
+api_token.update.page_title: 'Edition du token #{id}'
+api_token.update.page_title_h1: 'Edition du token'
+api_token.update.description: 'Modifier le token pour gérer ses droits'
+api_token.index.btn.new: "Nouveau token"
