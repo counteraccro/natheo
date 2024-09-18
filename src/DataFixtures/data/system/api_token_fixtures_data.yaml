@@ -1,13 +1,19 @@
 api_token:
   token_read:
+    name: 'Test ROLE READ'
     token: 'read.zJ0eXAiOiJJV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTY1niIsImlhdCI6MTUxOTEyMDg2NX0.ZnGgbDC0OI3hlm2UXyl4rxU9JlpMTMBcTJT8RVgJbtQ'
     roles: ROLE_READ_API
     comment: 'TOKEN de test pour le role READ_API. NE PAS UTILISER EN PRODUCTION'
+    disabled: 0
   token_write:
+    name: 'Test ROLE WRITE'
     token: 'write.zJ0eXAiOiJJV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTY1niIsImlhdCI6MTUxOTEyMDg2NX0.ZnGgbDC0OI3hlm2UXyl4rxU9JlpMTMBcTJT8RVgJbtQ'
     roles: ROLE_WRITE_API
     comment: 'TOKEN de test pour le role ROLE_WRITE_API. NE PAS UTILISER EN PRODUCTION'
+    disabled: 0
   token_admin:
+    name: 'Test ROLE ADMIN'
     token: 'admin.zJ0eXAiOiJJV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTY1niIsImlhdCI6MTUxOTEyMDg2NX0.ZnGgbDC0OI3hlm2UXyl4rxU9JlpMTMBcTJT8RVgJbtQ'
     roles: ROLE_ADMIN_API
     comment: 'TOKEN de test pour le role ROLE_ADMIN_API. NE PAS UTILISER EN PRODUCTION'
+    disabled: 0
