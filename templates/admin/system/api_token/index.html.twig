@@ -14,7 +14,7 @@
                 class="bi bi-gear-wide-connected"></i> {{ 'api_token.index.btn.new' | trans({}, 'api_token') }}</a>
 
     <p>{{ 'api_token.description' | trans({}, 'api_token') }}
-    </p>
+    </p><br />
 
 
     <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_api_token_load_grid_data', {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true}) }}></div>
@@ -30,6 +30,16 @@
             </div>
             <div class="col">
                 <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-pencil-fill"></i></button> {{ 'api_token.index.popin.help.edit' | trans({}, 'api_token') }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-eye-fill"></i>
+                </button> {{ 'api_token.index.popin.help.enable' | trans({}, 'api_token') }}
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-eye-slash-fill"></i>
+                </button> {{ 'api_token.index.popin.help.disabled' | trans({}, 'api_token') }}
             </div>
         </div>
     </twig:Admin:ModaleComponent>
