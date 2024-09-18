@@ -23,3 +23,5 @@ api_token.update.page_title: __api_token.update.page_title
 api_token.update.page_title_h1: __api_token.update.page_title_h1
 api_token.update.description: __api_token.update.description
 api_token.index.btn.new: __api_token.index.btn.new
+api_token.index.popin.help.enable: __api_token.index.popin.help.enable
+api_token.index.popin.help.disabled: __api_token.index.popin.help.disabled

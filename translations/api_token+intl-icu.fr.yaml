@@ -22,4 +22,6 @@ api_token.add.description: 'Créer un nouveau token pour gérer les accès aux A
 api_token.update.page_title: 'Edition du token #{id}'
 api_token.update.page_title_h1: 'Edition du token'
 api_token.update.description: 'Modifier le token pour gérer ses droits'
-api_token.index.btn.new: "Nouveau token"
+api_token.index.btn.new: 'Nouveau token'
+api_token.index.popin.help.enable: 'Activer le token'
+api_token.index.popin.help.disabled: 'Désactiver le token'
