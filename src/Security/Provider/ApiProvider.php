@@ -2,7 +2,7 @@
 namespace App\Security\Provider;
 
 use App\Entity\Admin\System\ApiToken;
-use App\Service\Api\ApiTokenService;
+use App\Service\Api\ApiService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ApiProvider implements UserProviderInterface
 {
-    public function __construct(private ApiTokenService $apiTokenService)
+    public function __construct(private ApiService $apiService)
     {
     }
 
@@ -27,7 +27,7 @@ class ApiProvider implements UserProviderInterface
      */
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        $user = $this->apiTokenService->getUserByApiToken($identifier);
+        $user = $this->apiService->getUserByApiToken($identifier);
         if($user === null)
         {
             throw new UserNotFoundException('API Key is not correct');

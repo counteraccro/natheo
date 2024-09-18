@@ -12,7 +12,7 @@ use App\Entity\Admin\System\User;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-class ApiTokenService extends AppApiService
+class ApiService extends AppApiService
 {
 
     /**
