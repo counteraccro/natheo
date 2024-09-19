@@ -25,13 +25,9 @@
         {{ description }}
     </p>
 
-    <!--<div {# {{ vue_component('Admin/Content/TagForm', {
-        'url' : path('admin_tag_save'),
-        'url_update' : url_update,
-        'url_stats' : url_stats,
-        'url_index' : path('admin_tag_index'),
-        'pTag' : tag,
+    <div  {{ vue_component('Admin/System/ApiToken', {
+        'pApiToken' : apiToken,
         'translate' : translate,
-        'locales' : locales}) }} #}>
-    </div > -->
+        'urls' : urls}) }}>
+    </div >
 {% endblock %}

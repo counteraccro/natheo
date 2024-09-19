@@ -156,7 +156,10 @@ class ApiTokenController extends AppAdminController
         return $this->render('admin/system/api_token/add_update.html.twig', [
             'breadcrumb' => $breadcrumb,
             'translate' => $translate,
-            'apiToken' => $apiToken
+            'apiToken' => $apiToken,
+            'urls' => [
+
+            ]
         ]);
     }
 }
