@@ -30,5 +30,6 @@ api_token.toast.title.error: 'Erreur !'
 api_token.toast.time: "A l'instant"
 api_token.card.title.add: 'Nouveau token'
 api_token.card.title.edit: 'Mon token'
-api_token.card.btn.new_token: 'Générer'
-api_token.card.btn.copy_past: 'Copier'
+api_token.card.btn.new_token: Générer
+api_token.card.btn.copy_past: Copier
+api_token.card.input.token.help: 'Attention, la modification du token va impacter toutes les applications qui utilise ce token'
