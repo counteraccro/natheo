@@ -32,4 +32,8 @@ api_token.card.title.add: 'Nouveau token'
 api_token.card.title.edit: 'Mon token'
 api_token.card.btn.new_token: Générer
 api_token.card.btn.copy_past: Copier
-api_token.card.input.token.help: 'Attention, la modification du token va impacter toutes les applications qui utilise ce token'
+api_token.card.input.token.help: "Attention, la modification du token va impacter toutes les applications qui l'utilise"
+api_token.role.read: Lecture
+api_token.role.write: 'Lecture + Écriture'
+api_token.role.admin: Admin
+api_token.card.select.label.role: Role associé au token

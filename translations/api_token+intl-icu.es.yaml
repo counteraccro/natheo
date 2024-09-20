@@ -33,3 +33,7 @@ api_token.card.title.edit: __api_token.card.title.edit
 api_token.card.btn.new_token: __api_token.card.btn.new_token
 api_token.card.btn.copy_past: __api_token.card.btn.copy_past
 api_token.card.input.token.help: __api_token.card.input.token.help
+api_token.role.read: __api_token.role.read
+api_token.role.write: __api_token.role.write
+api_token.role.admin: __api_token.role.admin
+api_token.card.select.label.role: __api_token.card.select.label.role
