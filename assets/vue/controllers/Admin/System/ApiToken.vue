@@ -33,15 +33,14 @@ export default {
     //this.loadData();
   },
   methods: {
-    /*loadData() {
+    generateToken() {
       this.loading = true;
-      axios.get(this.url_select + '/' + this.time).then((response) => {
-        this.select = response.data.files;
-        this.trans = response.data.trans;
+      axios.get(this.urls.generate_token).then((response) => {
+        this.apiToken.token = response.data.token;
       }).catch((error) => {
         console.error(error);
       }).finally(() => this.loading = false);
-    },*/
+    },
 
     /**
      * Ferme le toast défini par nameToast
@@ -75,23 +74,34 @@ export default {
       </div>
       <div class="card-body">
 
-        <div v-if="this.apiToken.id === null">
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" id="token" v-model="this.apiToken.token" disabled/>
-            <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon03"><i class="bi bi-gear"></i> {{ this.translate.btn_new_token }}</button>
-          </div>
-        </div>
-
-          <div v-else>
+        <div class="mb-3">
+          <div v-if="this.apiToken.id === null">
             <div class="input-group mb-3">
               <input type="text" class="form-control" id="token" v-model="this.apiToken.token" disabled/>
-              <button class="btn btn-secondary" type="button" id="inputGroupFileAddon03"><i class="bi bi-gear"></i> {{ this.translate.btn_new_token }}</button>
-              <button class="btn btn-secondary" type="button" id="inputGroupFileAddon03"><i class="bi bi-copy"></i> {{ this.translate.btn_copy_past }}</button>
+              <button class="btn btn-outline-secondary" type="button" @click="this.generateToken()">
+                <i class="bi bi-gear"></i> {{ this.translate.btn_new_token }}
+              </button>
+            </div>
+          </div>
+
+          <div v-else>
+            <div class="input-group">
+              <input type="text" class="form-control" id="token" v-model="this.apiToken.token" disabled/>
+              <button class="btn btn-secondary" type="button" @click="this.generateToken()">
+                <i class="bi bi-gear"></i> {{ this.translate.btn_new_token }}
+              </button>
+              <button class="btn btn-secondary" type="button" id="inputGroupFileAddon03">
+                <i class="bi bi-copy"></i> {{ this.translate.btn_copy_past }}
+              </button>
+            </div>
+            <div class="form-text">
+              {{ this.translate.input_token_help }}
             </div>
           </div>
         </div>
-
       </div>
+
+    </div>
 
   </div>
 

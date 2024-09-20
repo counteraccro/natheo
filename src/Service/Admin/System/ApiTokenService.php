@@ -4,14 +4,17 @@
  * @version 1.0
  * Service lier à l'objet apiToken
  */
+
 namespace App\Service\Admin\System;
 
 use App\Entity\Admin\System\ApiToken;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
+use App\Utils\System\ApiToken\ApiTokenConst;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\String\ByteString;
 
 class ApiTokenService extends AppAdminService
 {
@@ -149,6 +152,20 @@ class ApiTokenService extends AppAdminService
             'ajax' => false];
 
         return $actions;
+    }
+
+    /**
+     * Génère un nouveau token
+     * @return string
+     */
+    public function generateToken(): string
+    {
+        $token = '';
+
+        for ($i = 0; $i < ApiTokenConst::API_TOKEN_SEGMENT; $i++) {
+            $token .= ByteString::fromRandom(ApiTokenConst::API_TOKEN_LENGTH)->toString() . '.';
+        }
+        return substr($token, 0, -1);
 
     }
 }

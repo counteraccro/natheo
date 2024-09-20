@@ -24,6 +24,7 @@ class ApiTokenTranslate extends AppTranslate
             'title_edit' => $this->translator->trans('api_token.card.title.edit', domain: 'api_token'),
             'btn_new_token' => $this->translator->trans('api_token.card.btn.new_token', domain: 'api_token'),
             'btn_copy_past' => $this->translator->trans('api_token.card.btn.copy_past', domain: 'api_token'),
+            "input_token_help" => $this->translator->trans('api_token.card.input.token.help', domain: 'api_token'),
         ];
     }
 }

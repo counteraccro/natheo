@@ -127,8 +127,8 @@ class ApiTokenController extends AppAdminController
      * @return Response
      * @throws ExceptionInterface
      */
-    #[Route('/add/', name: 'add')]
-    #[Route('/update/{id}', name: 'update')]
+    #[Route('/add', name: 'add', methods: ['GET'])]
+    #[Route('/update/{id}', name: 'update', methods: ['GET'])]
     public function add(
         ApiTokenService                 $apiTokenService,
         ApiTokenTranslate               $apiTokenTranslate,
@@ -158,8 +158,19 @@ class ApiTokenController extends AppAdminController
             'translate' => $translate,
             'apiToken' => $apiToken,
             'urls' => [
-
+                'generate_token' => $this->generateUrl('admin_api_token_generate_token'),
             ]
         ]);
+    }
+
+    /**
+     * Génère un nouveau token
+     * @param ApiTokenService $apiTokenService
+     * @return JsonResponse
+     */
+    #[Route('/generate-token', name: 'generate_token', methods: ['GET'])]
+    public function generate_token(ApiTokenService $apiTokenService): JsonResponse
+    {
+        return $this->json(['token' => $apiTokenService->generateToken()]);
     }
 }
