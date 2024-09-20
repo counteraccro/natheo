@@ -61,8 +61,8 @@ class ApiTokenConst
      * @var array
      */
     const API_TOKEN_ROLES = [
-        self::API_TOKEN_ROLE_READ,
-        self::API_TOKEN_ROLE_WRITE,
-        self::API_TOKEN_ROLE_ADMIN
+        self::API_TOKEN_ROLE_READ => self::API_TOKEN_ROLE_READ,
+        self::API_TOKEN_ROLE_WRITE => self::API_TOKEN_ROLE_WRITE,
+        self::API_TOKEN_ROLE_ADMIN => self::API_TOKEN_ROLE_ADMIN,
     ];
 }

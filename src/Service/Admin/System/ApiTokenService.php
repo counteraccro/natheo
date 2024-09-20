@@ -161,11 +161,26 @@ class ApiTokenService extends AppAdminService
     public function generateToken(): string
     {
         $token = '';
-
         for ($i = 0; $i < ApiTokenConst::API_TOKEN_SEGMENT; $i++) {
             $token .= ByteString::fromRandom(ApiTokenConst::API_TOKEN_LENGTH)->toString() . '.';
         }
         return substr($token, 0, -1);
 
+    }
+
+    /**
+     * Retourne l'ensemble des roles lié aux ApiToken
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getRolesApi(): array
+    {
+        $translator = $this->getTranslator();
+        $roles = ApiTokenConst::API_TOKEN_ROLES;
+        $roles[ApiTokenConst::API_TOKEN_ROLE_READ] = $translator->trans('api_token.role.read', domain: 'api_token');
+        $roles[ApiTokenConst::API_TOKEN_ROLE_WRITE] = $translator->trans('api_token.role.write', domain: 'api_token');
+        $roles[ApiTokenConst::API_TOKEN_ROLE_ADMIN] = $translator->trans('api_token.role.admin', domain: 'api_token');
+        return $roles;
     }
 }

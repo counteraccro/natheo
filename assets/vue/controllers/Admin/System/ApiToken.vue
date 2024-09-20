@@ -11,7 +11,8 @@ export default {
   props: {
     translate: Object,
     urls: Object,
-    pApiToken: Object
+    pApiToken: Object,
+    datas: Object,
   },
   data() {
     return {
@@ -99,6 +100,19 @@ export default {
             </div>
           </div>
         </div>
+
+        <div class="row">
+          <div class="col-4">
+            <label for="roles" class="form-label">{{ this.translate.select_label_role }}</label>
+            <select class="form-select" id="roles" v-model="this.apiToken.roles[0]">
+              <option v-for="(role, key) in this.datas.roles" :value="key">{{ role }}</option>
+            </select>
+          </div>
+          <div class="col">
+
+          </div>
+        </div>
+
       </div>
 
     </div>

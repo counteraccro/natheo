@@ -6,6 +6,7 @@ use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\System\ApiToken;
 use App\Service\Admin\System\ApiTokenService;
 use App\Utils\Breadcrumb;
+use App\Utils\System\ApiToken\ApiTokenConst;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\System\ApiTokenTranslate;
 use Psr\Container\ContainerExceptionInterface;
@@ -125,7 +126,9 @@ class ApiTokenController extends AppAdminController
      * @param Request $request
      * @param ApiToken|null $apiToken
      * @return Response
+     * @throws ContainerExceptionInterface
      * @throws ExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/add', name: 'add', methods: ['GET'])]
     #[Route('/update/{id}', name: 'update', methods: ['GET'])]
@@ -159,6 +162,9 @@ class ApiTokenController extends AppAdminController
             'apiToken' => $apiToken,
             'urls' => [
                 'generate_token' => $this->generateUrl('admin_api_token_generate_token'),
+            ],
+            'datas' => [
+                'roles' => $apiTokenService->getRolesApi()
             ]
         ]);
     }
