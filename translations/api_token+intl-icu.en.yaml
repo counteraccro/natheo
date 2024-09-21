@@ -54,3 +54,4 @@ api_token.modale.confirm.edit.title: __api_token.modale.confirm.edit.title
 api_token.modale.confirm.edit.text: __api_token.modale.confirm.edit.text
 api_token.modale.confirm.edit.btn_ok: __api_token.modale.confirm.edit.btn_ok
 api_token.modale.confirm.edit.btn_ko: __api_token.modale.confirm.edit.btn_ko
+api_token.card.btn.save.token.api: __api_token.card.btn.save.token.api

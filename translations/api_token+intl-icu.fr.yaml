@@ -43,7 +43,7 @@ api_token.card.help.role: 'Liste des roles disponible pour le token'
 api_token.card.help.role_read: "Lecture : Ne donne accès qu'aux APIs de lecture"
 api_token.card.help.role_write: 'Lecture + Écriture : Donne accès aux APIs de lecture et écriture'
 api_token.card.help.role_admin: 'Admin : Donne accès à toutes les APIs'
-api_token.card.title.label: "Nom global"
+api_token.card.title.label: 'Nom global'
 api_token.card.title.help: 'Nom de votre Token'
 api_token.card.title.placeholder: Libellé
 api_token.card.btn.edit.token.api: Editer
@@ -51,6 +51,7 @@ api_token.modale.confirm.edit.title: "Confirmez vous l'édition"
 api_token.modale.confirm.edit.text: 'Attention, la modification de ce token ou son rôle, impactera les applications qui utilise ce token. <br /> Confirmez-vous cette action ?'
 api_token.modale.confirm.edit.btn_ok: Oui
 api_token.modale.confirm.edit.btn_ko: Non
-api_token.card.comment.label: "Commentaire"
-api_token.card.comment.help: "Commentaire pour dire qui utilise le token etc..."
-api_token.card.comment.placeholder: "Commentaire"
+api_token.card.comment.label: Commentaire
+api_token.card.comment.help: 'Commentaire pour dire qui utilise le token etc...'
+api_token.card.comment.placeholder: Commentaire
+api_token.card.btn.save.token.api: 'Créer le token'
