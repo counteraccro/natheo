@@ -23,6 +23,16 @@ export default {
       apiToken: this.pApiToken,
       showModalApiTokenConfirm: false,
       canSave: false,
+      validation: {
+        name: {
+          isValide: true,
+          msg: '',
+        },
+        token: {
+          isValide: true,
+          msg: '',
+        }
+      },
       toasts: {
         toastSuccess: {
           show: false,
@@ -39,6 +49,14 @@ export default {
     if (this.apiToken.id !== null) {
       this.canSave = true;
     }
+
+    if (this.apiToken.token === null) {
+      this.validation.token.isValide = false;
+      this.validation.token.msg = this.translate.input_token_error;
+    }
+    if(this.apiToken.name === null) {
+      this.verifField('name', '');
+    }
   },
   methods: {
 
@@ -51,6 +69,9 @@ export default {
         this.apiToken.token = response.data.token;
         this.toasts.toastSuccess.show = true;
         this.toasts.toastSuccess.msg = this.translate.generate_token_success;
+        this.validation.token.isValide = true;
+        this.validation.token.msg = '';
+        this.isAllValidate();
       }).catch((error) => {
         console.error(error);
       }).finally(() => this.loading = false);
@@ -77,6 +98,11 @@ export default {
         return false;
       }
 
+      if(!this.canSave)
+      {
+        return false;
+      }
+
       this.loading = true;
       axios.post(this.urls.save_api_token, {
         apiToken: this.apiToken
@@ -86,6 +112,39 @@ export default {
       }).catch((error) => {
         console.error(error);
       }).finally(() => this.loading = false);
+    },
+
+    /**
+     * Validation des champs
+     * @param name
+     * @param value
+     */
+    verifField(name, value) {
+      let isValide = true;
+      let msg = '';
+      if (value === "") {
+        isValide = false;
+        msg = this.translate[name + '_error'];
+      }
+      this.validation[name].isValide = isValide;
+      this.validation[name].msg = msg;
+
+      this.isAllValidate();
+
+    },
+
+    /**
+     * Vérifie si on peut sauvegarder un token
+     */
+    isAllValidate()
+    {
+      this.canSave = true;
+      for (let key in this.validation) {
+        if(!this.validation[key].isValide)
+        {
+          this.canSave = false;
+        }
+      }
     },
 
     /**
@@ -129,7 +188,8 @@ export default {
 
         <div class="mb-3">
           <label for="api-token-name" class="form-label">{{ this.translate.title_label }}</label>
-          <input type="text" class="form-control" :placeholder="this.translate.title_placeholder" id="api-token-name" v-model="this.apiToken.name">
+          <input type="text" class="form-control" :class="this.validation.name.isValide ? '' : 'is-invalid'" :placeholder="this.translate.title_placeholder" id="api-token-name" v-model="this.apiToken.name" @change="this.verifField('name', this.apiToken.name)">
+          <div class="invalid-feedback">{{ this.validation.name.msg }}</div>
           <div class="form-text">{{ this.translate.title_help }}</div>
         </div>
 
@@ -142,22 +202,25 @@ export default {
         <div class="mb-3">
           <div v-if="this.apiToken.id === null">
             <div class="input-group mb-3">
-              <input type="text" class="form-control" id="token" v-model="this.apiToken.token" disabled/>
+              <input type="text" class="form-control" id="token" :class="this.validation.token.isValide ? '' : 'is-invalid'" v-model="this.apiToken.token" disabled/>
               <button class="btn btn-secondary" type="button" @click="this.generateToken()">
                 <i class="bi bi-gear"></i> {{ this.translate.btn_new_token }}
               </button>
+              <div class="invalid-feedback">{{ this.validation.token.msg }}</div>
             </div>
+
           </div>
 
           <div v-else>
             <div class="input-group">
-              <input type="text" class="form-control" id="token" v-model="this.apiToken.token" disabled/>
+              <input type="text" class="form-control" :class="this.validation.token.isValide ? '' : 'is-invalid'" id="token" v-model="this.apiToken.token" disabled/>
               <button class="btn btn-secondary" type="button" @click="this.generateToken()">
                 <i class="bi bi-gear"></i> {{ this.translate.btn_new_token }}
               </button>
               <button class="btn btn-secondary" type="button" @click="this.copyToken()">
                 <i class="bi bi-copy"></i> {{ this.translate.btn_copy_past }}
               </button>
+              <div class="invalid-feedback">{{ this.validation.token.msg }}</div>
             </div>
             <div class="form-text">
               {{ this.translate.input_token_help }}
@@ -183,7 +246,7 @@ export default {
         </div>
 
         <div class="float-end">
-          <div v-if="this.apiToken.id === null" class="btn btn-primary" :class="!this.canSave ? 'disabled' : ''" @click="this.saveToken(true)">{{ this.translate.btn_save_token_api }}</div>
+          <div v-if="this.apiToken.id === null" class="btn btn-secondary" :class="!this.canSave ? 'disabled' : ''" @click="this.saveToken(true)">{{ this.translate.btn_save_token_api }}</div>
           <div v-else class="btn btn-secondary" :class="!this.canSave ? 'disabled' : ''" @click="this.saveToken(false)">
             <i class="bi bi-pencil-square"></i> {{ this.translate.btn_edit_token_api }}
           </div>
