@@ -36,4 +36,5 @@ api_token.card.input.token.help: "Attention, la modification du token va impacte
 api_token.role.read: Lecture
 api_token.role.write: 'Lecture + Écriture'
 api_token.role.admin: Admin
-api_token.card.select.label.role: Role associé au token
+api_token.card.select.label.role: 'Role associé au token'
+api_token.card.generate.token.success: 'Token généré avec succès'

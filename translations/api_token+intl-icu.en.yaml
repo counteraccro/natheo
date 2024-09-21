@@ -37,3 +37,4 @@ api_token.role.read: __api_token.role.read
 api_token.role.write: __api_token.role.write
 api_token.role.admin: __api_token.role.admin
 api_token.card.select.label.role: __api_token.card.select.label.role
+api_token.card.generate.token.success: __api_token.card.generate.token.success
