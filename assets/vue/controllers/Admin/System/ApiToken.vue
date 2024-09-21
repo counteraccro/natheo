@@ -34,10 +34,16 @@ export default {
     //this.loadData();
   },
   methods: {
+
+    /**
+     * Génère un token
+     */
     generateToken() {
       this.loading = true;
       axios.get(this.urls.generate_token).then((response) => {
         this.apiToken.token = response.data.token;
+        this.toasts.toastSuccess.show = true;
+        this.toasts.toastSuccess.msg = this.translate.generate_token_success;
       }).catch((error) => {
         console.error(error);
       }).finally(() => this.loading = false);
