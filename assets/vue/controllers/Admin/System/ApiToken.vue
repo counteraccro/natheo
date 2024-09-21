@@ -22,6 +22,7 @@ export default {
       loading: false,
       apiToken: this.pApiToken,
       showModalApiTokenConfirm: false,
+      canSave: false,
       toasts: {
         toastSuccess: {
           show: false,
@@ -35,7 +36,9 @@ export default {
     }
   },
   mounted() {
-    //this.loadData();
+    if (this.apiToken.id !== null) {
+      this.canSave = true;
+    }
   },
   methods: {
 
@@ -56,17 +59,20 @@ export default {
     /**
      * Permet de copier coller le token
      */
-    copyToken()
-    {
+    copyToken() {
       copyToClipboard(this.apiToken.token).then(() => {
         this.toasts.toastSuccess.show = true;
         this.toasts.toastSuccess.msg = this.translate.token_copy_success;
       })
     },
 
-    saveToken(isConfirm)
-    {
-      if(!isConfirm) {
+    /**
+     * Sauvegarde du token
+     * @param isConfirm
+     * @return {boolean}
+     */
+    saveToken(isConfirm) {
+      if (!isConfirm) {
         this.showModalApiTokenConfirm = true;
         return false;
       }
@@ -167,18 +173,20 @@ export default {
             </select>
           </div>
           <div class="col">
-              <div>{{ this.translate.help_role }}</div>
-              <ul>
-                <li>{{ this.translate.help_role_read }}</li>
-                <li>{{ this.translate.help_role_write }}</li>
-                <li>{{ this.translate.help_role_admin }}</li>
-              </ul>
+            <div>{{ this.translate.help_role }}</div>
+            <ul>
+              <li>{{ this.translate.help_role_read }}</li>
+              <li>{{ this.translate.help_role_write }}</li>
+              <li>{{ this.translate.help_role_admin }}</li>
+            </ul>
           </div>
         </div>
 
         <div class="float-end">
-          <div v-if="this.apiToken.id === null" class="btn btn-primary">New</div>
-          <div v-else class="btn btn-secondary" @click="this.saveToken(false)"><i class="bi bi-pencil-square"></i> {{ this.translate.btn_edit_token_api }}</div>
+          <div v-if="this.apiToken.id === null" class="btn btn-primary" :class="!this.canSave ? 'disabled' : ''" @click="this.saveToken(true)">{{ this.translate.btn_save_token_api }}</div>
+          <div v-else class="btn btn-secondary" :class="!this.canSave ? 'disabled' : ''" @click="this.saveToken(false)">
+            <i class="bi bi-pencil-square"></i> {{ this.translate.btn_edit_token_api }}
+          </div>
         </div>
 
       </div>
