@@ -162,6 +162,7 @@ class ApiTokenController extends AppAdminController
             'apiToken' => $apiToken,
             'urls' => [
                 'generate_token' => $this->generateUrl('admin_api_token_generate_token'),
+                'save_api_token' => $this->generateUrl('admin_api_token_save')
             ],
             'datas' => [
                 'roles' => $apiTokenService->getRolesApi()
@@ -178,5 +179,16 @@ class ApiTokenController extends AppAdminController
     public function generate_token(ApiTokenService $apiTokenService): JsonResponse
     {
         return $this->json(['token' => $apiTokenService->generateToken()]);
+    }
+
+    /**
+     * Sauvegarde ou créer un ApiToken
+     * @param ApiTokenService $apiTokenService
+     * @return JsonResponse
+     */
+    #[Route('/save', name: 'save', methods: ['POST'])]
+    public function saveApiToken(ApiTokenService $apiTokenService): JsonResponse
+    {
+        return $this->json(['oki']);
     }
 }
