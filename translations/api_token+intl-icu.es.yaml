@@ -57,3 +57,6 @@ api_token.modale.confirm.edit.btn_ko: __api_token.modale.confirm.edit.btn_ko
 api_token.card.btn.save.token.api: __api_token.card.btn.save.token.api
 api_token.card.title.error: __api_token.card.title.error
 api_token.card.input.token.error: __api_token.card.input.token.error
+api_token.save.success: __api_token.save.success
+api_token.new.token.success: __api_token.new.token.success
+api_token.loading: __api_token.loading
