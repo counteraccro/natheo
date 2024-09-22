@@ -183,12 +183,33 @@ class ApiTokenController extends AppAdminController
 
     /**
      * Sauvegarde ou créer un ApiToken
+     * @param Request $request
      * @param ApiTokenService $apiTokenService
+     * @param TranslatorInterface $translator
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/save', name: 'save', methods: ['POST'])]
-    public function saveApiToken(ApiTokenService $apiTokenService): JsonResponse
+    public function saveApiToken(
+        Request $request,
+        ApiTokenService $apiTokenService,
+        TranslatorInterface $translator,
+    ): JsonResponse
     {
-        return $this->json(['oki']);
+        $data = json_decode($request->getContent(), true);
+        $id = $apiTokenService->createUpdateApiToken($data['apiToken']);
+
+        $response = $apiTokenService->getResponseAjax($translator->trans('api_token.save.success', domain: 'api_token'));
+        $response['redirect'] = '';
+        if($data['apiToken']['id'] === null)
+        {
+            $response['redirect'] = $this->generateUrl('admin_api_token_update', ['id' => $id]);
+            if($response['success'] === true)
+            {
+                $response['msg'] = $translator->trans('api_token.new.token.success', domain: 'api_token');
+            }
+        }
+        return $this->json($response);
     }
 }

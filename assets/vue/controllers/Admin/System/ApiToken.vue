@@ -4,6 +4,7 @@ import axios from "axios";
 import Toast from "../../../Components/Global/Toast.vue";
 import {copyToClipboard} from "../../../../utils/copyToClipboard";
 import Modal from "../../../Components/Global/Modal.vue";
+import {emitter} from "../../../../utils/useEvent";
 
 export default {
   name: "ApiToken",
@@ -54,7 +55,7 @@ export default {
       this.validation.token.isValide = false;
       this.validation.token.msg = this.translate.input_token_error;
     }
-    if(this.apiToken.name === null) {
+    if (this.apiToken.name === null) {
       this.verifField('name', '');
     }
   },
@@ -98,8 +99,9 @@ export default {
         return false;
       }
 
-      if(!this.canSave)
-      {
+      this.showModalApiTokenConfirm = false;
+
+      if (!this.canSave) {
         return false;
       }
 
@@ -107,11 +109,24 @@ export default {
       axios.post(this.urls.save_api_token, {
         apiToken: this.apiToken
       }).then((response) => {
-        //this.toasts.toastSuccess.show = true;
-        //this.toasts.toastSuccess.msg = this.translate.generate_token_success;
+        if (response.data.success) {
+          this.toasts.toastSuccess.show = true;
+          this.toasts.toastSuccess.msg = response.data.msg;
+
+          if (response.data.redirect !== "") {
+            window.location.replace(response.data.redirect);
+          }
+
+        } else {
+          this.toasts.toastError.show = true;
+          this.toasts.toastError.msg = response.data.msg;
+        }
       }).catch((error) => {
         console.error(error);
-      }).finally(() => this.loading = false);
+      }).finally(() => {
+        this.loading = false
+        emitter.emit('reset-check-confirm');
+      });
     },
 
     /**
@@ -136,12 +151,10 @@ export default {
     /**
      * Vérifie si on peut sauvegarder un token
      */
-    isAllValidate()
-    {
+    isAllValidate() {
       this.canSave = true;
       for (let key in this.validation) {
-        if(!this.validation[key].isValide)
-        {
+        if (!this.validation[key].isValide) {
           this.canSave = false;
         }
       }

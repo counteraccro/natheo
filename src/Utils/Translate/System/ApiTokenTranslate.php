@@ -17,6 +17,7 @@ class ApiTokenTranslate extends AppTranslate
     public function getTranslate(): array
     {
         return [
+            'loading' => $this->translator->trans('api_token.loading', domain: 'api_token'),
             'toast_title_success' => $this->translator->trans('api_token.toast.title.success', domain: 'api_token'),
             'toast_title_error' => $this->translator->trans('api_token.toast.title.error', domain: 'api_token'),
             'toast_time' => $this->translator->trans('api_token.toast.time', domain: 'api_token'),

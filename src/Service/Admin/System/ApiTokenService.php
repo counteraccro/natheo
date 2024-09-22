@@ -183,4 +183,28 @@ class ApiTokenService extends AppAdminService
         $roles[ApiTokenConst::API_TOKEN_ROLE_ADMIN] = $translator->trans('api_token.role.admin', domain: 'api_token');
         return $roles;
     }
+
+    /**
+     * Edite un APi Token si il existe ou le crée dans le cas contraire en fonction de $data
+     * @param array $data
+     * @return int
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function createUpdateApiToken(array $data)
+    {
+        $apiToken = new ApiToken();
+        if($data['id'] !== null || $data['id'] > 0)
+        {
+            $apiToken = $this->findOneById(ApiToken::class, $data['id']);
+        }
+        $apiToken->setDisabled(false);
+        $apiToken->setName($data['name']);
+        $apiToken->setRoles($data['roles']);
+        $apiToken->setComment($data['comment']);
+        $apiToken->setToken($data['token']);
+
+        $this->save($apiToken);
+        return $apiToken->getId();
+    }
 }
