@@ -4,7 +4,9 @@
  * Composant card help première connexion
  */
 import axios from "axios";
-import Modal from "../Global/Modal.vue";;
+import Modal from "../Global/Modal.vue";
+
+;
 
 export default {
   name: "BlockHelpFirstConnexion",
@@ -138,21 +140,26 @@ export default {
             <span v-if="item.success" class="text-success">
               <i class="bi bi-check-circle"></i> {{ item.msg }}
             </span>
-            <span v-else class="text-warning">
+            <span v-else-if="!Array.isArray(item.msg)" class="text-warning">
               <i class="bi bi-exclamation-circle"></i> {{ item.msg }}
+            </span>
+            <span v-else class="text-warning">
+              <i class="bi bi-exclamation-circle"></i> {{ item.msgTitle }} :
+              <ul style="list-style: none;">
+                <li v-for="(subItem, index) in item.msg" :key="index"> <i class="bi bi-arrow-return-right"></i> {{ subItem }}</li>
+              </ul>
             </span>
           </li>
         </ul>
 
+          <p v-if="this.complete" class="card-text">{{ this.translate.text_end_success }}</p>
+          <p v-else class="card-text">{{ this.translate.text_end }}</p>
 
-        <p v-if="this.complete" class="card-text">{{ this.translate.text_end_success }}</p>
-        <p v-else class="card-text">{{ this.translate.text_end }}</p>
-
-        <div class="float-end">
-          <div class="btn btn-secondary btn-sm me-2" @click="this.load()"><i class="bi bi-arrow-clockwise"></i></div>
-          <div v-if="!this.complete" class="btn btn-secondary btn-sm" @click="this.showModal()">{{ this.translate.btn_def_hide }}</div>
-          <div v-else class="btn btn-secondary btn-sm" @click="this.hideConfig()">{{ this.translate.btn_def_hide }}</div>
-        </div>
+          <div class="float-end">
+            <div class="btn btn-secondary btn-sm me-2" @click="this.load()"><i class="bi bi-arrow-clockwise"></i></div>
+            <div v-if="!this.complete" class="btn btn-secondary btn-sm" @click="this.showModal()">{{ this.translate.btn_def_hide }}</div>
+            <div v-else class="btn btn-secondary btn-sm" @click="this.hideConfig()">{{ this.translate.btn_def_hide }}</div>
+          </div>
       </div>
     </div>
 
