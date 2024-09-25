@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/api/{_version}/authentication', name: 'api_authentication', requirements: ['_version' => '%app.api_version%'])]
+#[Route('/api/{_version}/authentication', name: 'api_authentication_', requirements: ['_version' => '%app.api_version%'])]
 #[IsGranted("ROLE_READ_API")]
 class AuthenticationController extends AppApiController
 {
