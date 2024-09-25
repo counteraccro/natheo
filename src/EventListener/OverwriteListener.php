@@ -7,6 +7,10 @@
 
 namespace App\EventListener;
 
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -26,10 +30,15 @@ class OverwriteListener
     private RouterInterface $router;
 
     /**
+     * @var ContainerBagInterface
+     */
+    private ContainerBagInterface $containerBag;
+
+    /**
      * Path fichier de config
      * @var string
      */
-    private const CONFIG_OVERWRITE_FILE = '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'cms' . DIRECTORY_SEPARATOR . 'overwrite.yaml';
+    private const CONFIG_OVERWRITE_FILE = DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'cms' . DIRECTORY_SEPARATOR . 'overwrite.yaml';
 
     /**
      * Clé du fichier de config
@@ -62,11 +71,13 @@ class OverwriteListener
      */
     public function __construct(
         ServiceLocator  $serviceLocator,
-        RouterInterface $router
+        RouterInterface $router,
+        ContainerBagInterface $containerBag
     )
     {
         $this->serviceLocator = $serviceLocator;
         $this->router = $router;
+        $this->containerBag = $containerBag;
     }
 
     /**
@@ -130,10 +141,13 @@ class OverwriteListener
     /**
      * Retourne le fichier de config Overwrite
      * @return array|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function loadOverwriteConfigFile(): array|null
     {
-        $tabOverwriteConfig = Yaml::parseFile(self::CONFIG_OVERWRITE_FILE);
+        $projetDir =  $this->containerBag->get('kernel.project_dir');
+        $tabOverwriteConfig = Yaml::parseFile($projetDir . self::CONFIG_OVERWRITE_FILE);
 
         if (!isset($tabOverwriteConfig[self::KEY_OVERWRITE]) || empty($tabOverwriteConfig[self::KEY_OVERWRITE])) {
             return null;
