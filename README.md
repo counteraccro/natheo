@@ -13,6 +13,11 @@ Environnement obligatoire pour faire tourner le CMS :
 * Composer 2.7.7 ou +
 
 # Installation
+
+> Attention, la procédure actuelle est prévue pour une installation en mode développement
+> 
+> Si vous souhaitez faire une installation via l'installeur, [consultez cette documentation](https://counteraccro.github.io/natheo.doc/Docs/Installation/install-prod.html)
+
 Étape 1 : cloner le dépôt GIT
 
 ```https://github.com/counteraccro/natheo.git```
@@ -21,19 +26,26 @@ Environnement obligatoire pour faire tourner le CMS :
 
 ```composer update```
 
-Étape 3 : installer la base de données
+Etape 3 : Configuration .env
+
+Créer une copie du fichier ```.env``` en ```.env.local```
+
+* Mettre la valeur ```dev``` à  ```APP_ENV```
+* mettre la vaeur ```1``` à ```APP_DEBUG```
+
+Étape 4 : installer la base de données
 
 ```php bin/console doctrine:database:create```
 
-Étape 4 : récupération des tables de la base de données
+Étape 5 : récupération des tables de la base de données
 
 ```php bin/console doctrine:schema:create```
 
-Étape 5: installation des fixtures
+Étape 6 : installation des fixtures
 
 ```php bin/console doctrine:fixture:load```
 
-Étape 6: Génération des assets
+Étape 7 : Génération des assets
 
 ```yarn encore dev -- watch```
 
@@ -52,3 +64,5 @@ Génération des traductions (fr|en|es) : ```php bin/console translation:extract
 Chargement des fixtures : ```php bin/console doctrine:fixtures:load```
 
 Compilations du JS : ```yarn encore dev -- watch```
+
+Lancement des tests unitaires : ```bin/phpunit ```
