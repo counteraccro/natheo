@@ -31,7 +31,8 @@ Etape 3 : Configuration .env
 Créer une copie du fichier ```.env``` en ```.env.local```
 
 * Mettre la valeur ```dev``` à  ```APP_ENV```
-* mettre la vaeur ```1``` à ```APP_DEBUG```
+* Mettre la valeur ```1``` à ```APP_DEBUG```
+* Mettre la valeur ```[nom-de-votre-bdd]``` à ```NATHEO_SCHEMA```
 
 Étape 4 : installer la base de données
 
@@ -57,7 +58,7 @@ Sur votre environnement de développement
 
 # Commande : 
 
-Lancer les scrypts en async : ```php bin/console messenger:consume async -vv```
+Lancer les scripts en async : ```php bin/console messenger:consume async -vv```
 
 Génération des traductions (fr|en|es) : ```php bin/console translation:extract --force --format=yaml en```
 
