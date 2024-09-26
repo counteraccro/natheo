@@ -60,6 +60,15 @@ class EnvFile
      */
     public const KEY_APP_ENV = 'APP_ENV';
 
+    /**
+     * Clé NATHEO_SCHEMA
+     * @var string
+     */
+    public const KEY_NATHEO_SCHEMA = 'NATHEO_SCHEMA';
+
+    /**
+     * @param ContainerInterface $handlers
+     */
     public function __construct(#[AutowireLocator([
         'kernel' => KernelInterface::class,
         'parameterBag' => ParameterBagInterface::class,

@@ -116,6 +116,11 @@ class InstallationController extends AbstractController
 
         try {
             $installationService->updateValueByKeyInEnvFile(EnvFile::KEY_DATABASE_URL, $newValue);
+
+            if ($data['type'] === InstallationConst::OPTION_DATABASE_URL_CREATE_DATABASE) {
+                $installationService->updateValueByKeyInEnvFile(EnvFile::KEY_NATHEO_SCHEMA, EnvFile::KEY_NATHEO_SCHEMA . '="' . $data['config']['bdd_name'] . '"');
+            }
+
             return $this->json(['success' => true]);
         } catch (\Exception $e) {
             return $this->json(['success' => false, 'error' => $e->getMessage()]);
