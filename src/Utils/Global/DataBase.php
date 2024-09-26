@@ -65,6 +65,7 @@ class DataBase
         /** @var ParameterBagInterface $parameterBag */
         $parameterBag = $this->handlers->get('parameterBag');
         $prefix = $parameterBag->get('app.default_database_prefix');
+        $schema = $parameterBag->get('app.default_database_schema');
 
         if ($tableName === null) {
             if ($prefix !== "") {
@@ -73,7 +74,7 @@ class DataBase
             $tableName = $prefix . 'user';
         }
 
-        $query = RawPostgresQuery::getQueryExistTable('natheo', $tableName);
+        $query = RawPostgresQuery::getQueryExistTable($schema, $tableName);
 
         $result = $this->executeRawQuery($query);
         if (isset($result['result'][0]['exists'])) {
