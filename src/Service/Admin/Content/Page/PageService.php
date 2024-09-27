@@ -168,6 +168,18 @@ class PageService extends AppAdminService
             'url' => $router->generate('admin_page_update', ['id' => $page->getId()]),
             'ajax' => false];
 
+
+        if (!$page->isLandingPage()) {
+
+            $actions[] = ['label' => '<i class="bi bi-pin-angle-fill"></i>',
+                'url' => $router->generate('admin_page_switch_Landing_page', ['id' => $page->getId()]),
+                'type' => 'put',
+                'ajax' => true,
+                'confirm' => true,
+                'msgConfirm' => $translator->trans('page.confirm.landing.page.msg', ['label' => $label], 'page')];
+        }
+
+
         return $actions;
     }
 
@@ -463,5 +475,24 @@ class PageService extends AppAdminService
             }
         }
         return $return;
+    }
+
+    /**
+     * Force toutes les pages sauf $excludeId à false pour le champ landingPgae
+     * @param int $excludeId
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    function switchLandingPage(int $excludeId): void
+    {
+        $repository = $this->getRepository(Page::class);
+        $pages = $repository->getAllWithoutExclude('id', $excludeId);
+
+        foreach ($pages as $page) {
+            /** @var Page $page */
+            $page->setLandingPage(false);
+            $this->save($page, true);
+        }
     }
 }
