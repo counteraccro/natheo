@@ -255,6 +255,7 @@ class PageController extends AppAdminController
             $page->setRender(PageConst::RENDER_1_BLOCK);
             $page->setStatus(PageConst::STATUS_DRAFT);
             $page->setCategory(PageConst::PAGE_CATEGORY_PAGE);
+            $page->setLandingPage(PageConst::DEFAULT_LANDING_PAGE);
             $page->getPageContents()->clear();
         } else {
             $page = $pageService->findOneById(Page::class, $id);
@@ -397,6 +398,11 @@ class PageController extends AppAdminController
         $pagePopulate = new PagePopulate($page, $data['page'], $pageService);
         $page = $pagePopulate->populate()->getPage();
         $pageService->save($page);
+
+        // Si la page est de type landing page, on change les autres
+        if ($page->isLandingPage()) {
+            $pageService->switchLandingPage($page->getId());
+        }
 
         /** @var User $user */
         $user = $this->getUser();

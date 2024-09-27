@@ -141,6 +141,12 @@ class PageConst
      */
     const PAGE_CATEGORY_FAQ = 9;
 
+    /**
+     * Valeur par défaut pour la landing page
+     * @var boolean
+     */
+    const DEFAULT_LANDING_PAGE = false;
+
 
 
 
