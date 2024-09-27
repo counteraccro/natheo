@@ -136,3 +136,7 @@ page.page_save.list_menu_empty: __page.page_save.list_menu_empty
 page.page_save.list_menu_disabled: __page.page_save.list_menu_disabled
 page.switch.landing.page.success: __page.switch.landing.page.success
 page.confirm.landing.page.msg: __page.confirm.landing.page.msg
+page.page_save.list_landing_page_label: __page.page_save.list_landing_page_label
+page.page_save.select_page_landing_page: __page.page_save.select_page_landing_page
+page.page_save.select_page_normal_page: __page.page_save.select_page_normal_page
+page.page_save.list_landing_page_help: __page.page_save.list_landing_page_help

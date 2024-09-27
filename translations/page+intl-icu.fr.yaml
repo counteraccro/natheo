@@ -136,3 +136,7 @@ page.page_save.list_menu_empty: 'Aucun menu'
 page.page_save.list_menu_disabled: Désactivé
 page.confirm.landing.page.msg: 'Vous êtes sur le point de mettre la page <b>{label}</b> en affichage par défaut sur le front de votre site. <br />Confirmez vous cette action ?'
 page.switch.landing.page.success: 'La page <b>{label}</b> est maintenant la landing-page de votre site'
+page.page_save.list_landing_page_label: "Définir si cette page s'affichera en tant que landing page ou non"
+page.page_save.select_page_landing_page: "Landing Page"
+page.page_save.select_page_normal_page: "Page normal"
+page.page_save.list_landing_page_help: "Si la page est défini comme landing page, elle apparaitra comme page par défaut à l'accueil de votre site. Il ne peux y avoir qu'une seule landing-page"
