@@ -40,6 +40,9 @@ class Page
     #[ORM\Column]
     private ?int $category = null;
 
+    #[ORM\Column]
+    private ?bool $landingPage = null;
+
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
@@ -72,6 +75,7 @@ class Page
     #[ORM\ManyToMany(targetEntity: Menu::class, inversedBy: 'pages', cascade: ['persist', 'remove'])]
     #[JoinTable(name: 'page_menu')]
     private Collection $menus;
+
 
     public function __construct()
     {
@@ -376,6 +380,18 @@ class Page
     public function setCategory(int $category): static
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function isLandingPage(): ?bool
+    {
+        return $this->landingPage;
+    }
+
+    public function setLandingPage(bool $landingPage): static
+    {
+        $this->landingPage = $landingPage;
 
         return $this;
     }
