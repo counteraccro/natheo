@@ -2,7 +2,7 @@
 /**
  * Permet de merger les données venant d'un tableau à un objet page
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  */
 
 namespace App\Utils\Content\Page;
@@ -89,6 +89,7 @@ class PagePopulate
         $this->page->setRender($this->populate['render']);
         $this->page->setStatus($this->populate['status']);
         $this->page->setCategory($this->populate['category']);
+        $this->page->setLandingPage(boolval($this->populate['landingPage']));
     }
 
     /**

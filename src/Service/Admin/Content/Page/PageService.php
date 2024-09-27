@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.3
+ * @version 1.4
  * Service gérant la création de page
  */
 
@@ -79,15 +79,20 @@ class PageService extends AppAdminService
 
 
             $isDisabled = '';
+            $isLandingPage = '';
             if ($element->isDisabled()) {
                 $isDisabled = '<i class="bi bi-eye-slash"></i>';
+            }
+
+            if ($element->isLandingPage()) {
+                $isLandingPage = '<i class="bi bi-pin-angle-fill"></i>';
             }
 
             $locale = $requestStack->getCurrentRequest()->getLocale();
             $titre = $element->getPageTranslationByLocale($locale)->getTitre();
 
             $data[] = [
-                $translator->trans('page.grid.id', domain: 'page') => $element->getId() . ' ' . $isDisabled,
+                $translator->trans('page.grid.id', domain: 'page') => $element->getId() . ' ' . $isDisabled . ' ' . $isLandingPage,
                 $translator->trans('page.grid.title', domain: 'page') => $titre,
                 $translator->trans('page.grid.status', domain: 'page') =>
                     $this->getStatusStr($element->getStatus()),
@@ -167,6 +172,18 @@ class PageService extends AppAdminService
             'id' => $page->getId(),
             'url' => $router->generate('admin_page_update', ['id' => $page->getId()]),
             'ajax' => false];
+
+
+        if (!$page->isLandingPage()) {
+
+            $actions[] = ['label' => '<i class="bi bi-pin-angle-fill"></i>',
+                'url' => $router->generate('admin_page_switch_Landing_page', ['id' => $page->getId()]),
+                'type' => 'put',
+                'ajax' => true,
+                'confirm' => true,
+                'msgConfirm' => $translator->trans('page.confirm.landing.page.msg', ['label' => $label], 'page')];
+        }
+
 
         return $actions;
     }
@@ -463,5 +480,24 @@ class PageService extends AppAdminService
             }
         }
         return $return;
+    }
+
+    /**
+     * Force toutes les pages sauf $excludeId à false pour le champ landingPgae
+     * @param int $excludeId
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    function switchLandingPage(int $excludeId): void
+    {
+        $repository = $this->getRepository(Page::class);
+        $pages = $repository->getAllWithoutExclude('id', $excludeId);
+
+        foreach ($pages as $page) {
+            /** @var Page $page */
+            $page->setLandingPage(false);
+            $this->save($page, true);
+        }
     }
 }

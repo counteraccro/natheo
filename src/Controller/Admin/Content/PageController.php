@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Controller pour la gestion des pages
  */
 
@@ -141,6 +141,34 @@ class PageController extends AppAdminController
         return $this->json($pageService->getResponseAjax($msg));
     }
 
+    /**
+     * Met à true le landing page et force toutes les autres pages à false
+     * @param Page $page
+     * @param PageService $pageService
+     * @param TranslatorInterface $translator
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/ajax/switch-landing-page/{id}', name: 'switch_Landing_page', methods: ['PUT'])]
+    public function switchLandingPage(
+        #[MapEntity(id: 'id')] Page $page,
+        PageService                 $pageService,
+        TranslatorInterface         $translator,
+        Request                     $request,
+    ): jsonResponse
+    {
+        $titre = $page->getPageTranslationByLocale($request->getLocale())->getTitre();
+
+        $page->setLandingPage(true);
+        $pageService->save($page);
+        $pageService->switchLandingPage($page->getId());
+
+        $msg = $translator->trans('page.switch.landing.page.success', ['label' => $titre], domain: 'page');
+        return $this->json($pageService->getResponseAjax($msg));
+    }
+
 
     /**
      * Création / édition d'une page
@@ -227,6 +255,7 @@ class PageController extends AppAdminController
             $page->setRender(PageConst::RENDER_1_BLOCK);
             $page->setStatus(PageConst::STATUS_DRAFT);
             $page->setCategory(PageConst::PAGE_CATEGORY_PAGE);
+            $page->setLandingPage(PageConst::DEFAULT_LANDING_PAGE);
             $page->getPageContents()->clear();
         } else {
             $page = $pageService->findOneById(Page::class, $id);
@@ -369,6 +398,11 @@ class PageController extends AppAdminController
         $pagePopulate = new PagePopulate($page, $data['page'], $pageService);
         $page = $pagePopulate->populate()->getPage();
         $pageService->save($page);
+
+        // Si la page est de type landing page, on change les autres
+        if ($page->isLandingPage()) {
+            $pageService->switchLandingPage($page->getId());
+        }
 
         /** @var User $user */
         $user = $this->getUser();
