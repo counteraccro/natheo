@@ -134,3 +134,5 @@ page.page_save.list_menu_label: 'Menu disponible'
 page.page_save.list_menu_help: "Vous pouvez associer plusieurs menu à une page (header / footer etc...), si le menu est désactivé, celui ci n'apparaitra pas dans le rendu final. Si vous selectionnez 'Aucun menu', tous les menus associés à la page serons supprimés"
 page.page_save.list_menu_empty: 'Aucun menu'
 page.page_save.list_menu_disabled: Désactivé
+page.confirm.landing.page.msg: 'Vous êtes sur le point de mettre la page <b>{label}</b> en affichage par défaut sur le front de votre site. <br />Confirmez vous cette action ?'
+page.switch.landing.page.success: 'La page <b>{label}</b> est maintenant la landing-page de votre site'
