@@ -4,6 +4,7 @@ pages:
     render: 1
     status: 1
     category: 1
+    landingPage: false
     tags:
       - Tag_listing
       - Tag_page
@@ -39,6 +40,7 @@ pages:
     render: 1
     status: 1
     category: 4
+    landingPage: false
     tags:
       - Tag_listing
       - Tag_blog
@@ -74,6 +76,7 @@ pages:
     render: 4
     status: 1
     category: 9
+    landingPage: false
     tags:
       - Tag_faq
     pageTranslation:
@@ -122,6 +125,7 @@ pages:
     render: 5
     status: 1
     category: 7
+    landingPage: false
     tags:
       - Tag_page
       - Tag_evolution
@@ -194,6 +198,7 @@ pages:
     render: 3
     status: 1
     category: 1
+    landingPage: false
     tags:
       - Tag_page
     pageTranslation:
@@ -265,6 +270,7 @@ pages:
     render: 6
     status: 1
     category: 1
+    landingPage: true
     tags:
       - Tag_natheo
       - Tag_evolution
@@ -356,6 +362,7 @@ pages:
     render: 4
     status: 1
     category: 4
+    landingPage: false
     tags:
       - Tag_blog
     pageTranslation:
