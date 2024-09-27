@@ -1,7 +1,7 @@
 <script>/**
  * Permet d'ajouter ou éditer une page
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  */
 import axios from "axios";
 import PageContentForm from "../../../../Components/Page/PageContentForm.vue";
@@ -678,6 +678,15 @@ export default {
             {{ this.translate.page_save.list_menu_help }}
           </div>
 
+        </div>
+
+        <div class="mb-3">
+          <label for="list-status-page" class="form-label">{{ this.translate.page_save.list_landing_page_label }}</label>
+          <select id="list-status-page" class="form-select" aria-label="Default select example" v-model="this.page.landingPage">
+            <option  :value="true">{{ this.translate.page_save.select_page_landing_page }}</option>
+            <option  :value="false">{{ this.translate.page_save.select_page_normal_page }}</option>
+          </select>
+          <div id="list-status-help" class="form-text">{{ this.translate.page_save.list_landing_page_help }}</div>
         </div>
 
         <div class="mb-3">

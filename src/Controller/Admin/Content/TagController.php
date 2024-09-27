@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Controller pour la gestion des tags
  */
 
@@ -281,7 +281,7 @@ class TagController extends AppAdminController
         if ($tag === null) {
             $msg = $translator->trans('tag.page.error.tag.disabled', domain: 'tag');
         } else {
-            $tag = $tagService->convertEntityToArray($tag, ['createdAt', 'updateAt']);
+            $tag = $tagService->convertEntityToArray($tag, ['createdAt', 'updateAt', 'pages']);
             $success = true;
         }
         return $this->json(['tag' => $tag, 'msg' => $msg, 'success' => $success]);

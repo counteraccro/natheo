@@ -44,6 +44,7 @@ class PageRepository extends ServiceEntityRepository
      * Retourne une liste de page Paginé
      * @param int $page
      * @param int $limit
+     * @param string|null $search
      * @return Paginator
      */
     public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
@@ -65,6 +66,24 @@ class PageRepository extends ServiceEntityRepository
             ->setMaxResults($limit);
         return $paginator;
 
+    }
+
+    /**
+     * Retourne toutes les pages sauf le champ $field avec $value
+     * @param string $field
+     * @param mixed $value
+     * @return float|int|mixed|string
+     */
+    public function getAllWithoutExclude(string $field, mixed $value): mixed
+    {
+        $query = $this->createQueryBuilder('p');
+        $query->where(
+            $query->expr()->neq('p.' . $field, ':value')
+        )
+            ->setParameters([
+                'value' => $value,
+            ]);
+        return $query->getQuery()->getResult();
     }
 
 //    /**
