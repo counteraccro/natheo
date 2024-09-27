@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.3
+ * @version 1.4
  * Service gérant la création de page
  */
 
@@ -79,15 +79,20 @@ class PageService extends AppAdminService
 
 
             $isDisabled = '';
+            $isLandingPage = '';
             if ($element->isDisabled()) {
                 $isDisabled = '<i class="bi bi-eye-slash"></i>';
+            }
+
+            if ($element->isLandingPage()) {
+                $isLandingPage = '<i class="bi bi-pin-angle-fill"></i>';
             }
 
             $locale = $requestStack->getCurrentRequest()->getLocale();
             $titre = $element->getPageTranslationByLocale($locale)->getTitre();
 
             $data[] = [
-                $translator->trans('page.grid.id', domain: 'page') => $element->getId() . ' ' . $isDisabled,
+                $translator->trans('page.grid.id', domain: 'page') => $element->getId() . ' ' . $isDisabled . ' ' . $isLandingPage,
                 $translator->trans('page.grid.title', domain: 'page') => $titre,
                 $translator->trans('page.grid.status', domain: 'page') =>
                     $this->getStatusStr($element->getStatus()),

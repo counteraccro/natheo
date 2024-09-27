@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Controller pour la gestion des pages
  */
 

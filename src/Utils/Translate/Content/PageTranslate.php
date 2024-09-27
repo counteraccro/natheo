@@ -2,7 +2,7 @@
 /**
  * Class pour la génération des traductions pour les scripts vue pour Page
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.2
  */
 
 namespace App\Utils\Translate\Content;
@@ -164,7 +164,6 @@ class PageTranslate extends AppTranslate
             'select_page_landing_page' => $this->translator->trans('page.page_save.select_page_landing_page', domain: 'page'),
             'select_page_normal_page' => $this->translator->trans('page.page_save.select_page_normal_page', domain: 'page'),
             'list_landing_page_help' => $this->translator->trans('page.page_save.list_landing_page_help', domain: 'page'),
-            'list_status_help' => $this->translator->trans('page.page_save.list_status_help', domain: 'page'),
             'btn_save' => $this->translator->trans('page.page_save.btn.save', domain: 'page'),
             'btn_see_ext' => $this->translator->trans('page.page_save.btn.see_ext', domain: 'page'),
         ];

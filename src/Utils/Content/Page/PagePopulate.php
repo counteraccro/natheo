@@ -2,7 +2,7 @@
 /**
  * Permet de merger les données venant d'un tableau à un objet page
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  */
 
 namespace App\Utils\Content\Page;

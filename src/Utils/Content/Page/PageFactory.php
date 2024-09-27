@@ -2,7 +2,7 @@
 /**
  * Permet de créer une page ainsi que l'ensemble de ses données associées
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  */
 
 namespace App\Utils\Content\Page;
