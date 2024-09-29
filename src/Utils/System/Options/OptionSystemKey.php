@@ -2,7 +2,7 @@
 /**
  * Liste des clés pour les options Systèmes
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.2
  */
 namespace App\Utils\System\Options;
 
@@ -165,6 +165,13 @@ class OptionSystemKey
 
     /**
      * URL public d'accès au média
+     * @var string
      */
     const OS_MEDIA_URL = 'OS_MEDIA_URL';
+
+    /**
+     * Temps de validité du token user
+     * @var string
+     */
+    const OS_API_TIME_VALIDATE_USER_TOKEN = 'OS_API_TIME_VALIDATE_USER_TOKEN';
 }

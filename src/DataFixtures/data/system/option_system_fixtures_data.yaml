@@ -71,3 +71,6 @@ option_system:
   OS_MEDIA_URL:
     key: 'OS_MEDIA_URL'
     value: 'http://dev.natheo'
+  OS_API_TIME_VALIDATE_USER_TOKEN:
+    key: 'OS_API_TIME_VALIDATE_USER_TOKEN'
+    value: 60

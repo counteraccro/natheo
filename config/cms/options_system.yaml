@@ -1,8 +1,8 @@
 options_system:
   options_system.categorie_web_site:
-    title :  'options_system.categorie_web_site.title'
-    description : 'options_system.categorie_web_site.description'
-    options :
+    title: 'options_system.categorie_web_site.title'
+    description: 'options_system.categorie_web_site.description'
+    options:
       OS_SITE_NAME:
         default: 'Natheo'
         label: 'options_system.site_name'
@@ -179,3 +179,13 @@ options_system:
         label: 'options_system.media_folder'
         help: 'options_system.media_folder_help'
         default: 1
+  options_system.api:
+    title: 'options_system.api.title'
+    description: 'options_system.api.description'
+    options:
+      OS_API_TIME_VALIDATE_USER_TOKEN:
+        type: 'select'
+        label: 'options_system.time.validation.user.token'
+        list_value: '30:options_system.time.validation.user.half.hour|60:options_system.time.validation.user.one.hour|120:options_system.time.validation.user.two.hour|180:options_system.time.validation.user.three.hour|-1:options_system.time.validation.user.no.limit'
+        help: 'options_system.time.validation.user.token.help'
+        default: '60'
