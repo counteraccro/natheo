@@ -195,6 +195,16 @@ global.sql: 'Gestionnaire SQL'
 sidebar.sql.description: 'Créer / Executer des requêtes SQL (uniquement SELECT)'
 global.api_token: 'API Token'
 sidebar.api_token.description: "Gérer les tokens d'accès aux API de natheo CMS"
+options_system.api: API
+options_system.api.title: 'Gestion des APIs'
+options_system.api.description: 'Options concernant les API de votre site'
+options_system.time.validation.user.token : 'Temps de validation du token de connexion en tant que administrateur sur le front'
+options_system.time.validation.user.half.hour: 'Une demi heure'
+options_system.time.validation.user.one.hour: '1 heure'
+options_system.time.validation.user.two.hour: '2 heures'
+options_system.time.validation.user.three.hour: '3 heures'
+options_system.time.validation.user.no.limit: 'Sans limite'
+options_system.time.validation.user.token.help: 'Passé ce délais, le token devient obsolète et la connexion ne sera plus autorisé avec celui-ci'
 key_separator: 'séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: 'Elements HML disponibles (trad)'
 date.diff.start: "Il y'a"
