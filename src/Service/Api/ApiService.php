@@ -2,7 +2,7 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.1
- * Service pour ApiToken
+ * Service pour les API
  */
 
 namespace App\Service\Api;

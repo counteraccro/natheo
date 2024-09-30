@@ -123,7 +123,6 @@ class ApiTokenController extends AppAdminController
      * Permet d'ajouter / éditer un ApiToken
      * @param ApiTokenService $apiTokenService
      * @param ApiTokenTranslate $apiTokenTranslate
-     * @param Request $request
      * @param ApiToken|null $apiToken
      * @return Response
      * @throws ContainerExceptionInterface
@@ -135,7 +134,6 @@ class ApiTokenController extends AppAdminController
     public function add(
         ApiTokenService                 $apiTokenService,
         ApiTokenTranslate               $apiTokenTranslate,
-        Request                         $request,
         #[MapEntity(id: 'id')] ApiToken $apiToken = null
     ): Response
     {
