@@ -198,7 +198,7 @@ sidebar.api_token.description: "__Gérer les tokens d'accès aux API de natheo C
 options_system.api: __API
 options_system.api.title: '__Gestion des APIs'
 options_system.api.description: '__Options concernant les API de votre site'
-options_system.time.validation.user.token : '__Temps de validation du token de connexion en tant que administrateur sur le front'
+options_system.time.validation.user.token: '__Temps de validation du token de connexion en tant que administrateur sur le front'
 options_system.time.validation.user.half.hour: '__Une demi heure'
 options_system.time.validation.user.one.hour: '__1 heure'
 options_system.time.validation.user.two.hour: '__2 heures'

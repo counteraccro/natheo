@@ -1,3 +1,6 @@
 api_errors.authentication.failure: __api_errors.authentication.failure
 api_errors.access.denied: __api_errors.access.denied
 api_errors.not.found: __api_errors.not.found
+api_errors.params.name.not.found: __api_errors.params.name.not.found
+api_errors.params.type.not.found: __api_errors.params.type.not.found
+api_errors.params.not.string: __api_errors.params.not.string
