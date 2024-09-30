@@ -17,6 +17,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
 use Symfony\Component\String\ByteString;
 
 class UserService extends AppAdminService
@@ -28,6 +29,8 @@ class UserService extends AppAdminService
      * @param int $limit
      * @param string|null $search
      * @return Paginator
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
     {
@@ -223,7 +226,8 @@ class UserService extends AppAdminService
      * Permet d'anonymiser un user
      * @param User $user
      * @return void
-     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function anonymizer(User $user): void
     {
@@ -236,6 +240,8 @@ class UserService extends AppAdminService
      * Retourne une liste d'utilisateur en fonction de son role
      * @param string $role
      * @return mixed
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getByRole(string $role): mixed
     {
@@ -275,5 +281,34 @@ class UserService extends AppAdminService
         $this->updatePassword($user, $password);
         $this->save($user);
         return $user;
+    }
+
+    /**
+     * Retourne un user en fonction de son login et mot de passe
+     * @param string $email
+     * @param string $password
+     * @return User|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getUserByEmailAndPassword(string $email, string $password): ?User
+    {
+        $repo = $this->getRepository(User::class);
+        /** @var User $user */
+        $user = $repo->loadUserByIdentifier($email);
+        if ($user === null) {
+            return null;
+        }
+
+        $factory = new PasswordHasherFactory([
+            'common' => ['algorithm' => 'auto']
+        ]);
+        $hasher = $factory->getPasswordHasher('common');
+        if ($hasher->verify($user->getPassword(), $password)) {
+            return $user;
+        }
+        return null;
+
+
     }
 }

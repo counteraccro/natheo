@@ -8,6 +8,7 @@
 namespace App\Controller\Api;
 
 use App\Security\Provider\ApiProvider;
+use App\Service\Admin\System\User\UserService;
 use App\Service\Api\ApiService;
 use App\Utils\Api\ApiParametersParser;
 use App\Utils\Api\ApiParametersRef;
@@ -46,13 +47,24 @@ class AuthenticationController extends AppApiController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/user', name: 'auth_user', methods: ['POST'], format: 'json')]
-    public function authUser(Request $request, ApiParametersParser $apiParametersParser): JsonResponse
+    public function authUser(
+        Request $request,
+        ApiParametersParser $apiParametersParser,
+        UserService $userService,
+    ): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $return = $apiParametersParser->parse(ApiParametersRef::PARAMS_REF_AUTH_USER, $data);
 
         if (!empty($return)) {
             return $this->apiResponse('error', [], $return, Response::HTTP_FORBIDDEN);
+        }
+
+        $user = $userService->getUserByEmailAndPassword($data['username'], $data['password']);
+
+        if($user !== null)
+        {
+            echo $user->getEmail();
         }
 
         return $this->apiResponse('success', [
