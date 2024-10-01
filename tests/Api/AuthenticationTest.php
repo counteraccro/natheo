@@ -6,6 +6,9 @@ use Api\AppApiTest;
 
 class AuthenticationTest extends AppApiTest
 {
+
+    private const URL_AUTHENTICATION = self::URL_REF . '/authentication/';
+
     /**
      * Test un token invalide
      * @return void
@@ -13,7 +16,7 @@ class AuthenticationTest extends AppApiTest
     public function testWrongToken(): void
     {
         $client = static::createClient();
-        $client->request('GET', self::URL_REF . '/authentication',
+        $client->request('GET', self::URL_AUTHENTICATION,
             server: $this->getCustomHeaders(self::HEADER_WRONG)
         );
         $response = $client->getResponse();
@@ -30,7 +33,7 @@ class AuthenticationTest extends AppApiTest
     public function testReadToken(): void
     {
         $client = static::createClient();
-        $client->request('GET', self::URL_REF . '/authentication',
+        $client->request('GET', self::URL_AUTHENTICATION,
             server: $this->getCustomHeaders(self::HEADER_READ)
         );
         $response = $client->getResponse();
@@ -46,7 +49,7 @@ class AuthenticationTest extends AppApiTest
     public function testWriteToken(): void
     {
         $client = static::createClient();
-        $client->request('GET', self::URL_REF . '/authentication',
+        $client->request('GET', self::URL_AUTHENTICATION,
             server: $this->getCustomHeaders(self::HEADER_WRITE)
         );
         $response = $client->getResponse();
@@ -62,7 +65,7 @@ class AuthenticationTest extends AppApiTest
     public function testAdminToken(): void
     {
         $client = static::createClient();
-        $client->request('GET', self::URL_REF . '/authentication',
+        $client->request('GET', self::URL_AUTHENTICATION,
             server: $this->getCustomHeaders(self::HEADER_ADMIN)
         );
         $response = $client->getResponse();

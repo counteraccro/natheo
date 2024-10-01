@@ -31,6 +31,7 @@ class AuthenticationController extends AppApiController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
+    #[Route('', name: 'auth', methods: ['GET'], format: 'json')]
     #[Route('/', name: 'auth', methods: ['GET'], format: 'json')]
     public function auth(): JsonResponse
     {
