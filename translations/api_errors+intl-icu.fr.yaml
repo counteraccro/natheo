@@ -4,3 +4,4 @@ api_errors.not.found: 'Ressource non disponible'
 api_errors.params.name.not.found: "Le paramètre attendu {param} n'est pas présent"
 api_errors.params.not.string: 'Le paramètre {param} doit être de type string'
 api_errors.params.type.not.found: 'Le type du paramètre {param} est inconnu'
+api_errors.user.not.found: 'Utilisateur non trouvé'

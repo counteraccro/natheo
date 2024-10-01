@@ -4,3 +4,4 @@ api_errors.not.found: __api_errors.not.found
 api_errors.params.name.not.found: __api_errors.params.name.not.found
 api_errors.params.type.not.found: __api_errors.params.type.not.found
 api_errors.params.not.string: __api_errors.params.not.string
+api_errors.user.not.found: __api_errors.user.not.found
