@@ -58,7 +58,7 @@ class ApiParametersParser
             }
 
             switch ($parameterType) {
-                case 'string':
+                case ApiParametersRef::TYPE_STRING:
                     $this->checkTypeString($parameterName, $apiParameters[$parameterName]);
                     break;
                 default:
