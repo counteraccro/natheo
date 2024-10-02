@@ -5,7 +5,7 @@
  * Controller pour les authentifications via API
  */
 
-namespace App\Controller\Api;
+namespace App\Controller\Api\v1;
 
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route('/api/{_version}/authentication', name: 'api_authentication_', requirements: ['_version' => '%app.api_version%'])]
+#[Route('/api/{api_version}/authentication', name: 'api_authentication_', requirements: ['_version' => '%app.api_version%'])]
 #[IsGranted("ROLE_READ_API")]
 class AuthenticationController extends AppApiController
 {

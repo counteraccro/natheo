@@ -5,7 +5,7 @@
  * @version 1.0
  */
 
-namespace App\Controller\Api;
+namespace App\Controller\Api\v1;
 
 use App\Http\Api\ApiResponse;
 use Psr\Container\ContainerExceptionInterface;
