@@ -16,7 +16,7 @@ class AppApiTest extends WebTestCase
      * Version API
      * @var int
      */
-    protected const API_VERSION = 1;
+    protected const API_VERSION = 'v1';
 
     /**
      * URL API pour les tests
