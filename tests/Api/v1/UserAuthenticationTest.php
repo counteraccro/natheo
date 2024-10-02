@@ -35,12 +35,13 @@ class UserAuthenticationTest extends AppApiTest
     {
         $client = static::createClient();
         $client->request('POST', self::URL_AUTHENTICATION_USER,
-            ['json' => $this->getUserAuthParams([], 'bad_parameter')],
-            server: $this->getCustomHeaders(self::HEADER_READ)
+            server: $this->getCustomHeaders(self::HEADER_READ),
+            content:  json_encode($this->getUserAuthParams([], 'bad_parameter'))
         );
         $response = $client->getResponse();
-        var_dump($response->getContent());
-        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertEquals(403, $response->getStatusCode());
         $this->assertJson($response->getContent());
+        $this->assertStringContainsString('username', json_decode($response->getContent(), true)['errors'][0], 'username non présent');
+        $this->assertStringContainsString('password', json_decode($response->getContent(), true)['errors'][1], 'password non présent');
     }
 }
