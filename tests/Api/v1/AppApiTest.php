@@ -4,7 +4,7 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
-namespace Api;
+namespace Api\v1;
 
 use App\Utils\System\ApiToken\ApiTokenConst;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

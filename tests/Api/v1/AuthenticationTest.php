@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Tests\Api;
-
-use Api\AppApiTest;
+namespace Api\v1;
 
 class AuthenticationTest extends AppApiTest
 {
