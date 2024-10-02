@@ -71,7 +71,7 @@ class AuthenticationController extends AppApiController
         $user = $userService->getUserByEmailAndPassword($data['username'], $data['password']);
 
         if ($user === null || (count($user->getRoles()) === 1 && $user->getRoles()[0] === 'ROLE_USER')) {
-            return $this->apiResponse(ApiConst::API_MSG_ERROR, [], [$translator->trans('api_errors.user.not.found', domain: 'api_errors')], Response::HTTP_FORBIDDEN);
+            return $this->apiResponse(ApiConst::API_MSG_ERROR, [], [$translator->trans('api_errors.user.not.found', domain: 'api_errors')], Response::HTTP_UNAUTHORIZED);
         }
 
         $token = $userDataService->generateUserToken($user);
