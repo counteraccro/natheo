@@ -12,6 +12,7 @@ use App\Utils\Api\Tests\ApiUserAuthenticationTestConst;
 use App\Utils\System\ApiToken\ApiTokenConst;
 use App\Utils\System\User\Role;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DependencyInjection\Container;
 
 class AppApiTest extends WebTestCase
 {
@@ -107,5 +108,17 @@ class AppApiTest extends WebTestCase
         }
 
         return array_merge($params, $userAuth);
+    }
+
+    /**
+     * Retourne un service en fonction de sa class name
+     * @param string $className
+     * @return mixed|object|Container|null
+     */
+    protected function getServiceByClassName(string $className): mixed
+    {
+        self::bootKernel();
+        $container = static::getContainer();
+        return $container->get($className);
     }
 }
