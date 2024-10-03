@@ -23,7 +23,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/api/{api_version}/authentication', name: 'api_authentication_', requirements: ['_version' => '%app.api_version%'])]
 #[IsGranted("ROLE_READ_API")]
-class AuthenticationController extends AppApiController
+class ApiAuthenticationController extends AppApiController
 {
     /**
      * Retourne le role si l'authentification est un succès
