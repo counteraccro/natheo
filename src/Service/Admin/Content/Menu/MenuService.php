@@ -67,8 +67,13 @@ class MenuService extends AppAdminService
             $action = $this->generateTabAction($element);
 
             $isDisabled = '';
+            $isDefault = '';
             if ($element->isDisabled()) {
                 $isDisabled = '<i class="bi bi-eye-slash"></i>';
+            }
+            if($element->isDefaultMenu())
+            {
+                $isDefault = '<i class="bi bi-menu-button-fill"></i>';
             }
 
             $name = $element->getName();
@@ -82,7 +87,7 @@ class MenuService extends AppAdminService
             }
 
             $data[] = [
-                $translator->trans('menu.grid.id', domain: 'menu') => $element->getId() . ' ' . $isDisabled,
+                $translator->trans('menu.grid.id', domain: 'menu') => $element->getId() . ' ' . $isDisabled . ' ' . $isDefault,
                 $translator->trans('menu.grid.name', domain: 'menu') => $name,
                 $translator->trans('menu.grid.type', domain: 'menu') => $strType,
                 $translator->trans('menu.grid.default', domain: 'menu') => $strDefault,
@@ -161,7 +166,7 @@ class MenuService extends AppAdminService
 
         if (!$menu->isDefaultMenu()) {
 
-            $actions[] = ['label' => '<i class="bi bi-pin-angle-fill"></i>',
+            $actions[] = ['label' => '<i class="bi bi-menu-button-fill"></i>',
                 'url' => $router->generate('admin_menu_switch_default', ['id' => $menu->getId()]),
                 'type' => 'put',
                 'ajax' => true,
