@@ -128,6 +128,26 @@ class MenuController extends AppAdminController
         return $this->json($menuService->getResponseAjax($msg));
     }
 
+    /**
+     * Permet de switcher un menu en mode défaut
+     * @param Menu $menu
+     * @param MenuService $menuService
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/ajax/switch-default/{id}', name: 'switch_default', methods: ['PUT'])]
+    public function switchDefaultMenu(
+        #[MapEntity(id: 'id')] Menu $menu,
+        MenuService $menuService,
+        TranslatorInterface         $translator,
+    ): JsonResponse
+    {
+        $msg = $translator->trans('menu.success.switch.default', ['label' => $menu->getName()], 'menu');
+        return $this->json($menuService->getResponseAjax($msg));
+    }
+
 
     /**
      * Création / édition d'un menu

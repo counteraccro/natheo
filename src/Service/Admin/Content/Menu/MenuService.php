@@ -159,6 +159,16 @@ class MenuService extends AppAdminService
             'url' => $router->generate('admin_menu_update', ['id' => $menu->getId()]),
             'ajax' => false];
 
+        if (!$menu->isDefaultMenu()) {
+
+            $actions[] = ['label' => '<i class="bi bi-pin-angle-fill"></i>',
+                'url' => $router->generate('admin_menu_switch_default', ['id' => $menu->getId()]),
+                'type' => 'put',
+                'ajax' => true,
+                'confirm' => true,
+                'msgConfirm' => $translator->trans('menu.confirm.switch.default.msg', ['label' => $menu->getName()], 'menu')];
+        }
+
         return $actions;
     }
 
