@@ -115,9 +115,10 @@ menu.grid.default.yes: Oui
 menu.checkbox.default.menu.true.label: 'Menu par défaut'
 menu.checkbox.default.menu.false.label: 'Menu classique'
 menu.checkbox.default.menu.false.label.msg: 'Ce menu doit être rattaché à une page pour apparaitre'
-menu.checkbox.default.menu.true.label.msg: "Ce menu apparaitra par défaut si la page affichée n'a pas de menu défini"
+menu.checkbox.default.menu.true.label.msg: "Ce menu apparaitra par défaut si la page affichée n'a pas de menu défini, il ne peut y avoir qu'un seul menu par défaut par position"
 menu.select.page.label: 'Associer une ou plusieurs page au menu'
 menu.select.page.no.page: 'Aucune page'
 menu.select.page.info: 'Si "Aucune page" est sélectionné, toute page associée à ce menu sera supprimée'
-menu.success.switch.default: "Le menu {label} est maintenant défini par défaut"
-menu.confirm.switch.default.msg: "Vous êtes sur le point de définir le menu <b>{label}</b> comme celui par défaut. Tout les autres menus de même position <br />Confirmez vous cette action ?"
+menu.success.switch.default: 'Le menu {label} est maintenant défini par défaut'
+menu.confirm.switch.default.msg: 'Vous êtes sur le point de définir le menu <b>{label}</b> comme celui par défaut. Tout les autres menus de même position <br />Confirmez vous cette action ?'
+menu.index.popin.help.default: 'Menu par défaut'
