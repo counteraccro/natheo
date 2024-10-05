@@ -128,6 +128,29 @@ class MenuController extends AppAdminController
         return $this->json($menuService->getResponseAjax($msg));
     }
 
+    /**
+     * Permet de switcher un menu en mode défaut
+     * @param Menu $menu
+     * @param MenuService $menuService
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/ajax/switch-default/{id}', name: 'switch_default', methods: ['PUT'])]
+    public function switchDefaultMenu(
+        #[MapEntity(id: 'id')] Menu $menu,
+        MenuService $menuService,
+        TranslatorInterface         $translator,
+    ): JsonResponse
+    {
+        $menu->setDefaultMenu(true);
+        $menuService->save($menu);
+        $menuService->switchDefaultMenuToFalse($menu->getId(), $menu->getPosition());
+        $msg = $translator->trans('menu.success.switch.default', ['label' => $menu->getName()], 'menu');
+        return $this->json($menuService->getResponseAjax($msg));
+    }
+
 
     /**
      * Création / édition d'un menu
@@ -250,6 +273,8 @@ class MenuController extends AppAdminController
         $menuPopulate = new MenuPopulate($menu, $data['menu'], $menuService);
         $menu = $menuPopulate->populate()->getMenu();
         $menuService->save($menu);
+        $menuService->switchDefaultMenuToFalse($menu->getId(), $menu->getPosition());
+
         $response = $menuService->getResponseAjax($msgSuccess);
         $response['redirect'] = $redirect;
         $response['url'] = $this->generateUrl('admin_menu_update', ['id' => $menu->getId()]);

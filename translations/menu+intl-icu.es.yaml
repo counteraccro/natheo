@@ -119,3 +119,6 @@ menu.checkbox.default.menu.true.label.msg: __menu.checkbox.default.menu.true.lab
 menu.select.page.label: __menu.select.page.label
 menu.select.page.no.page: __menu.select.page.no.page
 menu.select.page.info: __menu.select.page.info
+menu.success.switch.default: __menu.success.switch.default
+menu.confirm.switch.default.msg: __menu.confirm.switch.default.msg
+menu.index.popin.help.default: __menu.index.popin.help.default
