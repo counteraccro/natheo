@@ -159,6 +159,16 @@ class MenuService extends AppAdminService
             'url' => $router->generate('admin_menu_update', ['id' => $menu->getId()]),
             'ajax' => false];
 
+        if (!$menu->isDefaultMenu()) {
+
+            $actions[] = ['label' => '<i class="bi bi-pin-angle-fill"></i>',
+                'url' => $router->generate('admin_menu_switch_default', ['id' => $menu->getId()]),
+                'type' => 'put',
+                'ajax' => true,
+                'confirm' => true,
+                'msgConfirm' => $translator->trans('menu.confirm.switch.default.msg', ['label' => $menu->getName()], 'menu')];
+        }
+
         return $actions;
     }
 
@@ -527,6 +537,26 @@ class MenuService extends AppAdminService
             $return[$menu->getId()] = ['name' => $menu->getName(), 'disabled' => $menu->isDisabled(), 'id' => $menu->getId()];
         }
         return $return;
+    }
+
+    /**
+     * Force tous les menus sauf $excludeId à false pour le champ default pour la position défini
+     * @param int $excludeId
+     * @param int $position
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function switchDefaultMenuToFalse(int $excludeId, int $position): void
+    {
+        $repository = $this->getRepository(Menu::class);
+        $menus = $repository->getAllWithoutExcludeByPosition('id', $excludeId, $position);
+
+        foreach ($menus as $menu) {
+            /** @var Menu $menu */
+            $menu->setDefaultMenu(false);
+            $this->save($menu, true);
+        }
     }
 
 }

@@ -57,8 +57,7 @@ class MenuRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('m')
             ->orderBy('m.id', 'ASC');
 
-        if($search !== null)
-        {
+        if ($search !== null) {
             $query->where('m.name like :search');
             $query->setParameter('search', '%' . $search . '%');
         }
@@ -68,5 +67,24 @@ class MenuRepository extends ServiceEntityRepository
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;
+    }
+
+    /**
+     * Retourne tous les menus sauf le champ $field avec $value en fonction de $position
+     * @param string $field
+     * @param mixed $value
+     * @param int $position
+     * @return mixed
+     */
+    public function getAllWithoutExcludeByPosition(string $field, mixed $value, int $position): mixed
+    {
+        $query = $this->createQueryBuilder('m');
+        $query->where(
+            $query->expr()->neq('m.' . $field, ':value')
+        )
+            ->setParameters(['value' => $value])
+            ->andWhere('m.position = :position')
+            ->setParameter('position', $position);
+        return $query->getQuery()->getResult();
     }
 }
