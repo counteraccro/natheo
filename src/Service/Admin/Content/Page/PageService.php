@@ -483,13 +483,13 @@ class PageService extends AppAdminService
     }
 
     /**
-     * Force toutes les pages sauf $excludeId à false pour le champ landingPgae
+     * Force toutes les pages sauf $excludeId à false pour le champ landingPage
      * @param int $excludeId
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    function switchLandingPage(int $excludeId): void
+    public function switchLandingPage(int $excludeId): void
     {
         $repository = $this->getRepository(Page::class);
         $pages = $repository->getAllWithoutExclude('id', $excludeId);
