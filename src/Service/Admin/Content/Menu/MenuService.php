@@ -539,4 +539,24 @@ class MenuService extends AppAdminService
         return $return;
     }
 
+    /**
+     * Force tous les menus sauf $excludeId à false pour le champ default pour la position défini
+     * @param int $excludeId
+     * @param int $position
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function switchDefaultMenuToFalse(int $excludeId, int $position): void
+    {
+        $repository = $this->getRepository(Menu::class);
+        $menus = $repository->getAllWithoutExcludeByPosition('id', $excludeId, $position);
+
+        foreach ($menus as $menu) {
+            /** @var Menu $menu */
+            $menu->setDefaultMenu(false);
+            $this->save($menu, true);
+        }
+    }
+
 }

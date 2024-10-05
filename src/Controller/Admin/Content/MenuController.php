@@ -144,6 +144,9 @@ class MenuController extends AppAdminController
         TranslatorInterface         $translator,
     ): JsonResponse
     {
+        $menu->setDefaultMenu(true);
+        $menuService->save($menu);
+        $menuService->switchDefaultMenuToFalse($menu->getId(), $menu->getPosition());
         $msg = $translator->trans('menu.success.switch.default', ['label' => $menu->getName()], 'menu');
         return $this->json($menuService->getResponseAjax($msg));
     }
@@ -270,6 +273,8 @@ class MenuController extends AppAdminController
         $menuPopulate = new MenuPopulate($menu, $data['menu'], $menuService);
         $menu = $menuPopulate->populate()->getMenu();
         $menuService->save($menu);
+        $menuService->switchDefaultMenuToFalse($menu->getId(), $menu->getPosition());
+
         $response = $menuService->getResponseAjax($msgSuccess);
         $response['redirect'] = $redirect;
         $response['url'] = $this->generateUrl('admin_menu_update', ['id' => $menu->getId()]);
