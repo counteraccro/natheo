@@ -36,7 +36,7 @@ readonly class ApiAuthUserResolver implements ValueResolverInterface
         $return = $this->apiParametersParser->parse(ApiParametersRef::PARAMS_REF_AUTH_USER, $data);
 
         if (!empty($return)) {
-            throw new HttpException(Response::HTTP_FORBIDDEN,implode(', ', $return));
+            throw new HttpException(Response::HTTP_FORBIDDEN,implode(',', $return));
         }
 
         $dto = new ApiAuthUserDto(
@@ -51,7 +51,7 @@ readonly class ApiAuthUserResolver implements ValueResolverInterface
             for ($i = 0; $i < $nb; $i++) {
                 $msg[] = $errors->get($i)->getMessage() . ' ';
             }
-            throw new HttpException(Response::HTTP_FORBIDDEN,implode(', ', $msg));
+            throw new HttpException(Response::HTTP_FORBIDDEN,implode(',', $msg));
         }
         return [$dto];
     }
