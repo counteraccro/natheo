@@ -7,6 +7,7 @@
 
 namespace App\Controller\Api\v1;
 
+use App\Dto\Api\Authentication\ApiAuthUserDto;
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
 use App\Utils\Api\ApiConst;
@@ -17,6 +18,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -54,6 +56,7 @@ class ApiAuthenticationController extends AppApiController
      */
     #[Route('/user', name: 'auth_user', methods: ['POST'], format: 'json')]
     public function authUser(
+        #[MapRequestPayload] ApiAuthUserDto $apiAuthUserDto,
         Request             $request,
         ApiParametersParser $apiParametersParser,
         UserService         $userService,
@@ -61,7 +64,7 @@ class ApiAuthenticationController extends AppApiController
         UserDataService     $userDataService
     ): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
+        /*$data = json_decode($request->getContent(), true);
         $return = $apiParametersParser->parse(ApiParametersRef::PARAMS_REF_AUTH_USER, $data);
 
         if (!empty($return)) {
@@ -74,7 +77,9 @@ class ApiAuthenticationController extends AppApiController
             return $this->apiResponse(ApiConst::API_MSG_ERROR, [], [$translator->trans('api_errors.user.not.found', domain: 'api_errors')], Response::HTTP_UNAUTHORIZED);
         }
 
-        $token = $userDataService->generateUserToken($user);
+        $token = $userDataService->generateUserToken($user);*/
+
+        $token = $apiAuthUserDto->username;
 
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['token' => $token]);
     }
