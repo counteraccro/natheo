@@ -16,6 +16,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -56,6 +57,7 @@ class ExceptionListener
         /** @var TranslatorInterface $translator */
         $translator = $this->handlers->get('translator');
         $statusCode = $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : Response::HTTP_INTERNAL_SERVER_ERROR;
+        $errors = [];
 
         $message = $exception->getMessage();
         if ($exception instanceof AccessDeniedHttpException) {
@@ -68,7 +70,13 @@ class ExceptionListener
             $message = $translator->trans('api_errors.not.found', domain: 'api_errors');
         }
 
-        $errors = [];
+        if ($exception instanceof HttpException) {
+            $message = match ($exception->getStatusCode()) {
+                Response::HTTP_FORBIDDEN => $translator->trans('api_errors.access.denied', domain: 'api_errors'),
+                default => 'Code HTTP non pris en compte '. __FILE__ . __LINE__,
+            };
+            $errors = explode(',', $exception->getMessage());
+        }
         return new ApiResponse($message, null, $errors, $statusCode);
     }
 }
