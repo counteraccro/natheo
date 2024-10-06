@@ -54,32 +54,8 @@ class ApiParametersParser
 
             if (!isset($apiParameters[$parameterName])) {
                 $this->tabError[] = $this->translator->trans('api_errors.params.name.not.found', ['param' => $parameterName], domain: 'api_errors');
-                continue;
-            }
-
-            switch ($parameterType) {
-                case ApiParametersRef::TYPE_STRING:
-                    $this->checkTypeString($parameterName, $apiParameters[$parameterName]);
-                    break;
-                default:
-                    $this->tabError[] = $this->translator->trans('api_errors.params.type.not.found', ['param' => $parameterName], domain: 'api_errors');
-
             }
         }
-
         return $this->tabError;
-    }
-
-    /**
-     * Vérifie si la valeur est de type string
-     * @param $name
-     * @param $value
-     * @return void
-     */
-    private function checkTypeString($name, $value): void
-    {
-        if (!is_string($value)) {
-            $this->tabError[] = $this->translator->trans('api_errors.params.not.string', ['param' => $name], domain: 'api_errors');
-        }
     }
 }

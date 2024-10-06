@@ -8,19 +8,23 @@ namespace App\Dto\Api\Authentication;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ApiAuthUserDto
+readonly class ApiAuthUserDto
 {
     public function __construct(
 
         #[Assert\Type(
-            type: 'integer',
-            message: 'The value {{ value }} is not a valid {{ type }}.',
+            type : 'string',
+            message: 'Le champ username doit être du type string'
         )]
         #[Assert\NotBlank(message: 'Le champ username ne peut pas être vide')]
-        public readonly string $username,
+        public string $username,
 
+        #[Assert\Type(
+            type : 'string',
+            message: 'Le champ password doit être du type string'
+        )]
         #[Assert\NotBlank(message: 'Le champ password ne peut pas être vide')]
-        public readonly string $password,
+        public string $password,
     )
     {
     }

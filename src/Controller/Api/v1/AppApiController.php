@@ -13,7 +13,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class AppApiController extends AbstractController
+class AppApiController extends AppApiHandlerController
 {
 
     /**

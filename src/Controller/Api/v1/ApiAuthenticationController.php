@@ -44,11 +44,7 @@ class ApiAuthenticationController extends AppApiController
 
     /**
      * Permet d'authentifier un utilisateur et retourne un token si l'authentification est bonne
-     * @param Request $request
-     * @param ApiParametersParser $apiParametersParser
-     * @param UserService $userService
-     * @param TranslatorInterface $translator
-     * @param UserDataService $userDataService
+     * @param ApiAuthUserDto $apiAuthUserDto
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -56,31 +52,21 @@ class ApiAuthenticationController extends AppApiController
      */
     #[Route('/user', name: 'auth_user', methods: ['POST'], format: 'json')]
     public function authUser(
-        #[MapRequestPayload] ApiAuthUserDto $apiAuthUserDto,
-        Request             $request,
-        ApiParametersParser $apiParametersParser,
-        UserService         $userService,
-        TranslatorInterface $translator,
-        UserDataService     $userDataService
+        #[MapRequestPayload(
+            resolver: 'App\Resolver\Api\ApiAuthUserResolver'
+        )] ApiAuthUserDto $apiAuthUserDto,
     ): JsonResponse
     {
-        /*$data = json_decode($request->getContent(), true);
-        $return = $apiParametersParser->parse(ApiParametersRef::PARAMS_REF_AUTH_USER, $data);
 
-        if (!empty($return)) {
-            return $this->apiResponse(ApiConst::API_MSG_ERROR, [], $return, Response::HTTP_FORBIDDEN);
-        }
+        $translator = $this->getTranslator();
+        $userService = $this->getUserService();
+        $userDataService = $this->getUserDataService();
 
-        $user = $userService->getUserByEmailAndPassword($data['username'], $data['password']);
-
+        $user = $userService->getUserByEmailAndPassword($apiAuthUserDto->username, $apiAuthUserDto->password);
         if ($user === null || (count($user->getRoles()) === 1 && $user->getRoles()[0] === 'ROLE_USER')) {
             return $this->apiResponse(ApiConst::API_MSG_ERROR, [], [$translator->trans('api_errors.user.not.found', domain: 'api_errors')], Response::HTTP_UNAUTHORIZED);
         }
-
-        $token = $userDataService->generateUserToken($user);*/
-
-        $token = $apiAuthUserDto->username;
-
+        $token = $userDataService->generateUserToken($user);
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['token' => $token]);
     }
 
