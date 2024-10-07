@@ -8,20 +8,15 @@
 namespace App\Controller\Api\v1;
 
 use App\Dto\Api\Authentication\ApiAuthUserDto;
-use App\Service\Admin\System\User\UserDataService;
-use App\Service\Admin\System\User\UserService;
+use App\Resolver\Api\ApiAuthUserResolver;
 use App\Utils\Api\ApiConst;
-use App\Utils\Api\ApiParametersParser;
-use App\Utils\Api\ApiParametersRef;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/api/{api_version}/authentication', name: 'api_authentication_', requirements: ['_version' => '%app.api_version%'])]
 #[IsGranted("ROLE_READ_API")]
@@ -53,7 +48,7 @@ class ApiAuthenticationController extends AppApiController
     #[Route('/user', name: 'auth_user', methods: ['POST'], format: 'json')]
     public function authUser(
         #[MapRequestPayload(
-            resolver: 'App\Resolver\Api\ApiAuthUserResolver'
+            resolver: ApiAuthUserResolver::class
         )] ApiAuthUserDto $apiAuthUserDto,
     ): JsonResponse
     {
