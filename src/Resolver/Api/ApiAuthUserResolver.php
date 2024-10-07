@@ -4,6 +4,7 @@
  * @version 1.0
  * Permet de résoudre la validation de l'objet ApiAuthUserDto
  */
+
 namespace App\Resolver\Api;
 
 use App\Dto\Api\Authentication\ApiAuthUserDto;
@@ -21,7 +22,8 @@ readonly class ApiAuthUserResolver implements ValueResolverInterface
     public function __construct(
         private ApiParametersParser $apiParametersParser,
         private ValidatorInterface  $validator
-    ) {
+    )
+    {
     }
 
     /**
@@ -32,11 +34,17 @@ readonly class ApiAuthUserResolver implements ValueResolverInterface
      */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
+
+        $argumentType = $argument->getType();
+        if (!is_a($argumentType, ApiAuthUserDto::class, true)) {
+            return [];
+        }
+
         $data = json_decode($request->getContent(), true);
         $return = $this->apiParametersParser->parse(ApiParametersRef::PARAMS_REF_AUTH_USER, $data);
 
         if (!empty($return)) {
-            throw new HttpException(Response::HTTP_FORBIDDEN,implode(',', $return));
+            throw new HttpException(Response::HTTP_FORBIDDEN, implode(',', $return));
         }
 
         $dto = new ApiAuthUserDto(
@@ -51,7 +59,7 @@ readonly class ApiAuthUserResolver implements ValueResolverInterface
             for ($i = 0; $i < $nb; $i++) {
                 $msg[] = $errors->get($i)->getMessage() . ' ';
             }
-            throw new HttpException(Response::HTTP_FORBIDDEN,implode(',', $msg));
+            throw new HttpException(Response::HTTP_FORBIDDEN, implode(',', $msg));
         }
         return [$dto];
     }
