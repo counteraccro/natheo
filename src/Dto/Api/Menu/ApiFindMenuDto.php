@@ -12,8 +12,11 @@ class ApiFindMenuDto
 {
     public function __construct(
 
-        #[Assert\NotBlank]
-        public readonly string $pageSlug
+        /*#[Assert\NotBlank(
+            message: 'Le paramètre pageSlug ne peux pas être vide'
+        )]*/
+        #[Assert\Type('string')]
+        public readonly string $pageSlug = 'default'
     )
     {
 
