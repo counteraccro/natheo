@@ -35,6 +35,7 @@ readonly class ApiAuthUserResolver implements ValueResolverInterface
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
 
+        // Test pour éviter que ce résolver soit appeler pour autre chose que ApiAuthUserDto
         $argumentType = $argument->getType();
         if (!is_a($argumentType, ApiAuthUserDto::class, true)) {
             return [];
