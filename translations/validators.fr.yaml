@@ -147,3 +147,8 @@ Error: Erreur
 'Please select a valid option.': 'Veuillez sélectionner une option valide.'
 'Please select a valid range.': 'Veuillez sélectionner une plage valide.'
 'Please enter a valid week.': 'Veuillez entrer une semaine valide.'
+'The username field must be of type string': 'Le champ username doit être du type string'
+'Username field cannot be empty': 'Le champ username ne peut pas être vide'
+'The password field must be of type string': 'Le champ password doit être du type string'
+'Password field cannot be empty': 'Le champ password ne peut pas être vide'
+'Choose a position between 1 (top), 2 (right), 3 (bottom), 4 (left)': 'Choisi une position entre 1 (haut) - 2 (droite) - 3 (bas) - 4 (gauche)'

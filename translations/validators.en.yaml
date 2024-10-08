@@ -147,3 +147,8 @@ Error: Error
 'Please select a valid option.': 'Please select a valid option.'
 'Please select a valid range.': 'Please select a valid range.'
 'Please enter a valid week.': 'Please enter a valid week.'
+'The username field must be of type string': '__The username field must be of type string'
+'Username field cannot be empty': '__Username field cannot be empty'
+'The password field must be of type string': '__The password field must be of type string'
+'Password field cannot be empty': '__Password field cannot be empty'
+'Choose a position between 1 (top), 2 (right), 3 (bottom), 4 (left)': '__Choose a position between 1 (top), 2 (right), 3 (bottom), 4 (left)'
