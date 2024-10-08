@@ -21,16 +21,29 @@ class ApiFindMenuDto
         MenuConst::POSITION_LEFT
     ];
 
+    /**
+     * Locale prise en charge
+     */
+    private const MENU_LOCALES = [
+        'fr', 'es', 'en'
+    ];
+
     public function __construct(
 
-        /*#[Assert\NotBlank(
-            message: 'Le paramètre pageSlug ne peux pas être vide'
-        )]*/
-        #[Assert\Type('string')]
+        #[Assert\Type(type: 'integer', message: 'The id parameter must be a integer')]
+        public readonly int $id,
+
+        #[Assert\Type(type: 'string', message: 'The pageSlug parameter must be a string')]
+        #[Assert\NotNull(message: 'The pageSlug parameter cannot be empty')]
         public readonly string $pageSlug,
 
+        #[Assert\Type(type: 'integer', message: 'The position parameter must be a integer')]
         #[Assert\Choice(choices: self::MENU_POSITIONS, message: 'Choose a position between 1 (top), 2 (right), 3 (bottom), 4 (left)')]
-        public readonly int $position
+        public readonly int $position,
+
+        #[Assert\Type(type: 'string', message: 'The locale parameter must be a string')]
+        #[Assert\Choice(choices: self::MENU_LOCALES, message: 'Choose a locale between en or es or fr')]
+        public readonly string $locale,
     )
     {
 
