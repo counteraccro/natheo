@@ -14,16 +14,16 @@ readonly class ApiAuthUserDto
 
         #[Assert\Type(
             type : 'string',
-            message: 'Le champ username doit être du type string'
+            message: 'The username field must be of type string'
         )]
-        #[Assert\NotBlank(message: 'Le champ username ne peut pas être vide')]
+        #[Assert\NotBlank(message: 'Username field cannot be empty')]
         public string $username,
 
         #[Assert\Type(
             type : 'string',
-            message: 'Le champ password doit être du type string'
+            message: 'The password field must be of type string'
         )]
-        #[Assert\NotBlank(message: 'Le champ password ne peut pas être vide')]
+        #[Assert\NotBlank(message: 'Password field cannot be empty')]
         public string $password,
     )
     {
