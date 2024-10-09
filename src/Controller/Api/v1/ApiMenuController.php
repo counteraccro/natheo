@@ -7,6 +7,7 @@
 namespace App\Controller\Api\v1;
 
 use App\Dto\Api\Menu\ApiFindMenuDto;
+use App\Resolver\Api\ApiFindMenuResolver;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
@@ -23,7 +24,7 @@ class ApiMenuController extends AppApiController
      */
     #[Route('/find', name: 'find', methods: ['GET'], format: 'json')]
     public function find( #[MapQueryString(
-        //resolver: ApiF
+        resolver: ApiFindMenuResolver::class
     )] ApiFindMenuDto $apiFindMenuDto): JsonResponse
     {
         return $this->json([
