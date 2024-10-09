@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Psr\Container\ContainerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppApiResolver
 {
@@ -20,6 +21,7 @@ class AppApiResolver
         #[AutowireLocator([
             'apiParametersParser' => ApiParametersParser::class,
             'validator' => ValidatorInterface::class,
+            'translator' => TranslatorInterface::class
         ])]
         protected ContainerInterface $handlers
     )
@@ -32,7 +34,7 @@ class AppApiResolver
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function validateDto(mixed $dto)
+    protected function validateDto(mixed $dto): void
     {
         $validator = $this->handlers->get('validator');
         $errors = $validator->validate($dto);

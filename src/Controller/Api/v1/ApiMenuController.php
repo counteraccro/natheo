@@ -28,7 +28,7 @@ class ApiMenuController extends AppApiController
     )] ApiFindMenuDto $apiFindMenuDto): JsonResponse
     {
         return $this->json([
-            'return' => $apiFindMenuDto->pageSlug,
+            'return' => $apiFindMenuDto,
         ]);
     }
 }

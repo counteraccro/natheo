@@ -2,7 +2,7 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.1
- * Référence pour les paramètres attendus
+ * Référence pour les paramètres attendus pour l'API UserAuth
  */
 namespace App\Utils\Api\Parameters;
 
