@@ -5,3 +5,5 @@ api_errors.params.name.not.found: "Le paramètre attendu {param} n'est pas prés
 api_errors.params.not.string: 'Le paramètre {param} doit être de type string'
 api_errors.params.type.not.found: 'Le type du paramètre {param} est inconnu'
 api_errors.user.not.found: 'Utilisateur non trouvé'
+api_errors.find.menu.id.slug.together: 'Le paramètre id et page_slug ne peuvent pas être mis ensemble'
+api_errors.find.menu.not.id.slug.together: 'Le paramètre id ou page_slug doit être présent'
