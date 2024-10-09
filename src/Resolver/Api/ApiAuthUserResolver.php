@@ -8,29 +8,25 @@
 namespace App\Resolver\Api;
 
 use App\Dto\Api\Authentication\ApiAuthUserDto;
-use App\Utils\Api\ApiParametersParser;
-use App\Utils\Api\ApiParametersRef;
+use App\Utils\Api\Parameters\ApiParametersUserAuthRef;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
-readonly class ApiAuthUserResolver implements ValueResolverInterface
+class ApiAuthUserResolver extends AppApiResolver implements ValueResolverInterface
 {
-    public function __construct(
-        private ApiParametersParser $apiParametersParser,
-        private ValidatorInterface  $validator
-    )
-    {
-    }
 
     /**
      * Permet de mapper ApiAuthUserDto avec Request
      * @param Request $request
      * @param ArgumentMetadata $argument
      * @return iterable
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
@@ -42,7 +38,8 @@ readonly class ApiAuthUserResolver implements ValueResolverInterface
         }
 
         $data = json_decode($request->getContent(), true);
-        $return = $this->apiParametersParser->parse(ApiParametersRef::PARAMS_REF_AUTH_USER, $data);
+        $apiParametersParser = $this->handlers->get('apiParametersParser');
+        $return = $apiParametersParser->parse(ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER, $data);
 
         if (!empty($return)) {
             throw new HttpException(Response::HTTP_FORBIDDEN, implode(',', $return));
@@ -53,15 +50,7 @@ readonly class ApiAuthUserResolver implements ValueResolverInterface
             $data['password']
         );
 
-        $errors = $this->validator->validate($dto);
-        if (count($errors) > 0) {
-            $nb = $errors->count();
-            $msg = [];
-            for ($i = 0; $i < $nb; $i++) {
-                $msg[] = $errors->get($i)->getMessage() . ' ';
-            }
-            throw new HttpException(Response::HTTP_FORBIDDEN, implode(',', $msg));
-        }
+        $this->validateDto($dto);
         return [$dto];
     }
 }
