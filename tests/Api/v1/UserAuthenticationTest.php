@@ -5,7 +5,7 @@ namespace App\Tests\Api\v1;
 use Api\v1\AppApiTest;
 use App\Entity\Admin\System\UserData;
 use App\Service\Admin\System\User\UserService;
-use App\Utils\Api\ApiParametersRef;
+use App\Utils\Api\Parameters\ApiParametersUserAuthRef;
 use App\Utils\Api\Tests\ApiUserAuthenticationTestConst;
 use App\Utils\System\User\Role;
 use App\Utils\System\User\UserDataKey;
@@ -170,7 +170,7 @@ class UserAuthenticationTest extends AppApiTest
         $userService = $this->getServiceByClassName(UserService::class);
 
         $contributeur = ApiUserAuthenticationTestConst::AUTHENTICATION_USER_TAB[$role];
-        $user = $userService->getUserByEmailAndPassword($contributeur[ApiParametersRef::PARAMS_REF_AUTH_USER_USERNAME], $contributeur[ApiParametersRef::PARAMS_REF_AUTH_USER_PASSWORD]);
+        $user = $userService->getUserByEmailAndPassword($contributeur[ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_USERNAME], $contributeur[ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_PASSWORD]);
         $liste = $user->getUserData()->filter(function(UserData $userData) {
             return $userData->getKey() === UserDataKey::KEY_TOKEN_CONNEXION;
         });

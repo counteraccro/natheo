@@ -4,9 +4,9 @@
  * @version 1.1
  * Référence pour les paramètres attendus
  */
-namespace App\Utils\Api;
+namespace App\Utils\Api\Parameters;
 
-class ApiParametersRef
+class ApiParametersUserAuthRef
 {
 
     /**

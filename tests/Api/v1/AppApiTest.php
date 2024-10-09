@@ -7,7 +7,7 @@
 
 namespace Api\v1;
 
-use App\Utils\Api\ApiParametersRef;
+use App\Utils\Api\Parameters\ApiParametersUserAuthRef;
 use App\Utils\Api\Tests\ApiUserAuthenticationTestConst;
 use App\Utils\System\ApiToken\ApiTokenConst;
 use App\Utils\System\User\Role;
@@ -100,8 +100,8 @@ class AppApiTest extends WebTestCase
             ];
         } else if ($role === 'bad_type') {
             $userAuth = [
-                ApiParametersRef::PARAMS_REF_AUTH_USER_USERNAME => 22,
-                ApiParametersRef::PARAMS_REF_AUTH_USER_PASSWORD => true
+                ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_USERNAME => 22,
+                ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_PASSWORD => true
             ];
         } else {
             $userAuth = ApiUserAuthenticationTestConst::AUTHENTICATION_USER_TAB[$role];

@@ -20,7 +20,7 @@ class ApiParametersParser
      * Tableau d'erreur
      * @var array
      */
-    private $tabError = [];
+    private array $tabError = [];
 
     /**
      * @var TranslatorInterface

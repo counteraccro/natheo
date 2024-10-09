@@ -6,7 +6,7 @@
  */
 namespace App\Utils\Api\Tests;
 
-use App\Utils\Api\ApiParametersRef;
+use App\Utils\Api\Parameters\ApiParametersUserAuthRef;
 use App\Utils\System\User\Role;
 
 class ApiUserAuthenticationTestConst
@@ -77,20 +77,20 @@ class ApiUserAuthenticationTestConst
      */
     public const AUTHENTICATION_USER_TAB = [
         Role::ROLE_USER => [
-            ApiParametersRef::PARAMS_REF_AUTH_USER_USERNAME => self::USERNAME_USER,
-            ApiParametersRef::PARAMS_REF_AUTH_USER_PASSWORD => self::PASSWORD_USER,
+            ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_USERNAME => self::USERNAME_USER,
+            ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_PASSWORD => self::PASSWORD_USER,
         ],
         Role::ROLE_CONTRIBUTEUR => [
-            ApiParametersRef::PARAMS_REF_AUTH_USER_USERNAME => self::USERNAME_CONTRIBUTEUR,
-            ApiParametersRef::PARAMS_REF_AUTH_USER_PASSWORD => self::PASSWORD_CONTRIBUTEUR,
+            ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_USERNAME => self::USERNAME_CONTRIBUTEUR,
+            ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_PASSWORD => self::PASSWORD_CONTRIBUTEUR,
         ],
         Role::ROLE_ADMIN => [
-            ApiParametersRef::PARAMS_REF_AUTH_USER_USERNAME => self::USERNAME_ADMIN,
-            ApiParametersRef::PARAMS_REF_AUTH_USER_PASSWORD => self::PASSWORD_ADMIN,
+            ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_USERNAME => self::USERNAME_ADMIN,
+            ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_PASSWORD => self::PASSWORD_ADMIN,
         ],
         Role::ROLE_SUPER_ADMIN => [
-            ApiParametersRef::PARAMS_REF_AUTH_USER_USERNAME => self::USERNAME_SUPER_ADMIN,
-            ApiParametersRef::PARAMS_REF_AUTH_USER_PASSWORD => self::PASSWORD_SUPER_ADMIN,
+            ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_USERNAME => self::USERNAME_SUPER_ADMIN,
+            ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_PASSWORD => self::PASSWORD_SUPER_ADMIN,
         ],
     ];
 
