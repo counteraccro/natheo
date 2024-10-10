@@ -33,6 +33,12 @@ class ApiParametersFindMenuRef
     public const PARAM_REF_FIND_MENU_LOCALE = 'locale';
 
     /**
+     * Paramètre user_token
+     * @var string
+     */
+    public const PARAM_REF_FIND_MENU_USER_TOKEN = 'user_token';
+
+    /**
      * Tableau des paramètres
      * @var array
      */

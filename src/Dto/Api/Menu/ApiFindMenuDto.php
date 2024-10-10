@@ -66,6 +66,9 @@ class ApiFindMenuDto
         #[Assert\Type(type: 'string', message: 'The locale parameter must be a string')]
         #[Assert\Choice(choices: self::MENU_LOCALES, message: 'Choose a locale between en or es or fr')]
         public readonly string $locale,
+
+        #[Assert\Type(type: 'string', message: 'The user_token parameter must be a string')]
+        public readonly string $userToken,
     )
     {
 
