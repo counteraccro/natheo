@@ -51,12 +51,14 @@ class ApiFindMenuResolver extends AppApiResolver implements ValueResolverInterfa
 
         $this->checkParameters($tabParameters);
 
+        $tabParameters[ApiParametersFindMenuRef::PARAM_REF_FIND_MENU_USER_TOKEN] = $this->getUserToken($request);
+
         $dto = new ApiFindMenuDto(
             intval($tabParameters[ApiParametersFindMenuRef::PARAM_REF_FIND_MENU_ID]),
             $tabParameters[ApiParametersFindMenuRef::PARAM_REF_FIND_MENU_SLUG],
             $tabParameters[ApiParametersFindMenuRef::PARAM_REF_FIND_MENU_POSITION],
             $tabParameters[ApiParametersFindMenuRef::PARAM_REF_FIND_MENU_LOCALE],
-            'A faire'
+            $tabParameters[ApiParametersFindMenuRef::PARAM_REF_FIND_MENU_USER_TOKEN]
         );
 
        $this->validateDto($dto);

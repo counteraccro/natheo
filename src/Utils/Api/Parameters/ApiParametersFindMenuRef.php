@@ -47,6 +47,7 @@ class ApiParametersFindMenuRef
         self::PARAM_REF_FIND_MENU_SLUG => '',
         self::PARAM_REF_FIND_MENU_POSITION => '',
         self::PARAM_REF_FIND_MENU_LOCALE => '',
+        self::PARAM_REF_FIND_MENU_USER_TOKEN => '',
     ];
 
     /**

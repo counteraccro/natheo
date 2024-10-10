@@ -33,6 +33,7 @@ class ApiFindMenuDto
      * @param string $pageSlug
      * @param int $position
      * @param string $locale
+     * @param string $userToken
      */
     public function __construct(
 
