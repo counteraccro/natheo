@@ -158,3 +158,4 @@ Error: Error
 'The position parameter must be a integer': '__The position parameter must be a integer'
 'The locale parameter must be a string': '__The locale parameter must be a string'
 'Choose a locale between en or es or fr': '__Choose a locale between en or es or fr'
+'The user_token parameter must be a string': '__The user_token parameter must be a string'

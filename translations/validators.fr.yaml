@@ -158,3 +158,4 @@ Error: Erreur
 'The id parameter must be a integer': 'Le paramètre id doit être du type integer'
 'The locale parameter must be a string': 'Le paramètre locale doit être du type string'
 'Choose a locale between en or es or fr': 'Choisir une locale entre fr (français) ou es (espagnol) ou en (anglais)'
+'The user_token parameter must be a string': 'Le paramètre user_token doit être du type string'
