@@ -122,9 +122,15 @@ class UserDataService extends AppAdminService
         $token = ByteString::fromRandom(ApiConst::API_SIZE_USER_TOKEN)->toString();
         $this->update(UserDataKey::KEY_TOKEN_CONNEXION, $token, $user);
 
-        $optionSystem  = $this->getOptionSystemService();
+        $optionSystem = $this->getOptionSystemService();
         $timeToAdd = $optionSystem->getValueByKey(OptionSystemKey::OS_API_TIME_VALIDATE_USER_TOKEN);
-        $dt = new \DateTime('now +'. $timeToAdd .' minutes');
+        if ($timeToAdd === -1) {
+            $dateTimeStr = 'now +10 years';
+        } else {
+            $dateTimeStr = 'now +' . $timeToAdd . ' minutes';
+        }
+
+        $dt = new \DateTime($dateTimeStr);
         $this->update(UserDataKey::TIME_VALIDATE_TOKEN, $dt->getTimestamp(), $user);
 
         return $token;
