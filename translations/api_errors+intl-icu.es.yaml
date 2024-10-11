@@ -7,3 +7,4 @@ api_errors.params.not.string: __api_errors.params.not.string
 api_errors.user.not.found: __api_errors.user.not.found
 api_errors.find.menu.not.id.slug.together: __api_errors.find.menu.not.id.slug.together
 api_errors.find.menu.id.slug.together: __api_errors.find.menu.id.slug.together
+api_errors.user.token.not.found: __api_errors.user.token.not.found
