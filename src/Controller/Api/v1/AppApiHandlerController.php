@@ -8,6 +8,7 @@ namespace App\Controller\Api\v1;
 
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
+use App\Service\Api\System\User\ApiUserService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -21,6 +22,7 @@ class AppApiHandlerController extends AbstractController
         #[AutowireLocator([
             'translator' => TranslatorInterface::class,
             'userService' => UserService::class,
+            'apiUserService' => ApiUserService::class,
             'userDataService' => UserDataService::class,
         ])]
         protected ContainerInterface $handlers
@@ -57,5 +59,16 @@ class AppApiHandlerController extends AbstractController
     protected function getUserDataService(): UserDataService
     {
         return $this->handlers->get('userDataService');
+    }
+
+    /**
+     * Retourne un apiUserService
+     * @return ApiUserService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getApiUserService(): ApiUserService
+    {
+        return $this->handlers->get('apiUserService');
     }
 }

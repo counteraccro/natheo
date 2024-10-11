@@ -7,11 +7,14 @@
 
 namespace App\Controller\Api\v1;
 
+use App\Entity\Admin\System\User;
 use App\Http\Api\ApiResponse;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class AppApiController extends AppApiHandlerController
 {
@@ -69,5 +72,23 @@ class AppApiController extends AppApiHandlerController
         }
 
         return $response;
+    }
+
+    /**
+     * Retourne un utilisateur en fonction de son token, si token invalide génère une HttpException
+     * @param string $userToken
+     * @return User
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getUserByUserToken(string $userToken): User
+    {
+        $apiUserService = $this->getApiUserService();
+        $translator = $this->getTranslator();
+        $user = $apiUserService->getUserByUserToken($userToken);
+        if($user === null) {
+            throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans($translator->trans('api_errors.user.token.not.found', domain: 'api_errors')));
+        }
+        return $user;
     }
 }
