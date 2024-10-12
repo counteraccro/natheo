@@ -39,7 +39,7 @@ class ExceptionListener
     {
         $exception = $event->getThrowable();
         $request = $event->getRequest();
-        if (in_array('application/json', $request->getAcceptableContentTypes())) {
+        if (in_array('application/json', $request->getAcceptableContentTypes()) || 'json' === $request->getContentTypeFormat()) {
             $response = $this->createApiResponse($exception);
             $event->setResponse($response);
         }
