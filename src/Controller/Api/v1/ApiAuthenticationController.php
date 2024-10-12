@@ -15,6 +15,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -59,7 +60,7 @@ class ApiAuthenticationController extends AppApiController
 
         $user = $userService->getUserByEmailAndPassword($apiAuthUserDto->getUsername(), $apiAuthUserDto->getPassword());
         if ($user === null || (count($user->getRoles()) === 1 && $user->getRoles()[0] === 'ROLE_USER')) {
-            return $this->apiResponse(ApiConst::API_MSG_ERROR, [], [$translator->trans('api_errors.user.not.found', domain: 'api_errors')], Response::HTTP_UNAUTHORIZED);
+            throw new HttpException(Response::HTTP_UNAUTHORIZED, $translator->trans('api_errors.user.not.found', domain: 'api_errors'));
         }
         $token = $userDataService->generateUserToken($user);
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['token' => $token]);

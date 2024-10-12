@@ -72,6 +72,7 @@ class ExceptionListener
 
         if ($exception instanceof HttpException) {
             $message = match ($exception->getStatusCode()) {
+                Response::HTTP_UNAUTHORIZED => $translator->trans('api_errors.access.unauthorized', domain: 'api_errors'),
                 Response::HTTP_FORBIDDEN => $translator->trans('api_errors.access.denied', domain: 'api_errors'),
                 Response::HTTP_NOT_FOUND => $translator->trans('api_errors.not.found', domain: 'api_errors'),
                 default => 'Code HTTP non pris en compte '. __FILE__ . __LINE__,
