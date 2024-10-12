@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route('/admin/{_locale}', name: 'admin_dashboard_', requirements: ['_locale' => '%app.supported_locales%'])]
+#[Route('/admin/{_locale}/dashboard', name: 'admin_dashboard_', requirements: ['_locale' => '%app.supported_locales%'])]
 #[IsGranted('ROLE_USER')]
 class DashboardController extends AppAdminController
 {
@@ -32,9 +32,9 @@ class DashboardController extends AppAdminController
      * @param UserDataService $userDataService
      * @return Response
      */
-    #[Route('/dashboard/index', name: 'index')]
-    #[Route('/dashboard', 'index_3')]
-    #[Route('/', name: 'index_2')]
+    #[Route('/index', name: 'index')]
+    #[Route('/', 'index_3')]
+    #[Route('', name: 'index_2')]
     public function index(DashboardTranslate $dashboardTranslate, UserDataService $userDataService): Response
     {
 
