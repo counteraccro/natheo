@@ -42,7 +42,7 @@ class ApiFindMenuDto
          * @var int
          */
         #[Assert\Type(type: 'integer', message: 'The id parameter must be a integer')]
-        public readonly int $id,
+        private readonly int $id,
 
         /**
          * Url de la page ou le menu est associé
@@ -50,7 +50,7 @@ class ApiFindMenuDto
          */
         #[Assert\Type(type: 'string', message: 'The pageSlug parameter must be a string')]
         #[Assert\NotNull(message: 'The pageSlug parameter cannot be empty')]
-        public readonly string $pageSlug,
+        private readonly string $pageSlug,
 
         /**
          * Position du menu
@@ -58,7 +58,7 @@ class ApiFindMenuDto
          */
         #[Assert\Type(type: 'integer', message: 'The position parameter must be a integer')]
         #[Assert\Choice(choices: self::MENU_POSITIONS, message: 'Choose a position between 1 (top), 2 (right), 3 (bottom), 4 (left)')]
-        public readonly int $position,
+        private readonly int $position,
 
         /**
          * Locale du menu
@@ -66,12 +66,59 @@ class ApiFindMenuDto
          */
         #[Assert\Type(type: 'string', message: 'The locale parameter must be a string')]
         #[Assert\Choice(choices: self::MENU_LOCALES, message: 'Choose a locale between en or es or fr')]
-        public readonly string $locale,
+        private readonly string $locale,
 
         #[Assert\Type(type: 'string', message: 'The user_token parameter must be a string')]
-        public readonly string $userToken,
+        private readonly string $userToken,
     )
     {
 
     }
+
+    /**
+     * Id
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * PageSlug
+     * @return string
+     */
+    public function getPageSlug(): string
+    {
+        return $this->pageSlug;
+    }
+
+    /**
+     * Position
+     * @return int
+     */
+    public function getPosition(): int
+    {
+        return $this->position;
+    }
+
+    /**
+     * Locale
+     * @return string
+     */
+    public function getLocale(): string
+    {
+        return $this->locale;
+    }
+
+    /**
+     * UserToken
+     * @return string
+     */
+    public function getUserToken(): string
+    {
+        return $this->userToken;
+    }
+
+
 }
