@@ -9,3 +9,4 @@ api_errors.find.menu.not.id.slug.together: __api_errors.find.menu.not.id.slug.to
 api_errors.find.menu.id.slug.together: __api_errors.find.menu.id.slug.together
 api_errors.user.token.not.found: __api_errors.user.token.not.found
 api_errors.find.menu.not.found: __api_errors.find.menu.not.found
+api_errors.access.unauthorized: __api_errors.access.unauthorized
