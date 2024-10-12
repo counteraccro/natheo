@@ -79,6 +79,7 @@ class AppApiTest extends WebTestCase
         };
 
         return [
+            'HTTP_Accept' => 'application/json',
             'HTTP_Content-Type' => 'application/json',
             'HTTP_Authorization' => 'Bearer ' . $token
         ];
