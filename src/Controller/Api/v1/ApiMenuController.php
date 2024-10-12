@@ -4,6 +4,7 @@
  * @version 1.0
  * Controller pour les menus via API
  */
+
 namespace App\Controller\Api\v1;
 
 use App\Dto\Api\Menu\ApiFindMenuDto;
@@ -11,7 +12,9 @@ use App\Resolver\Api\ApiFindMenuResolver;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -27,21 +30,27 @@ class ApiMenuController extends AppApiController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/find', name: 'find', methods: ['GET'], format: 'json')]
-    public function find( #[MapQueryString(
+    public function find(#[MapQueryString(
         resolver: ApiFindMenuResolver::class
     )] ApiFindMenuDto $apiFindMenuDto): JsonResponse
     {
-        $userEmail = 'pas user';
-        if($apiFindMenuDto->userToken !== "")
-        {
-            $user = $this->getUserByUserToken($apiFindMenuDto->userToken);
-            $userEmail = $user->getEmail();
+        $user = null;
+        if ($apiFindMenuDto->getUserToken() !== "") {
+            $user = $this->getUserByUserToken($apiFindMenuDto->getUserToken());
         }
 
+        $apiMenuService = $this->getApiMenuService();
+        $menu = $apiMenuService->getMenuForApi($apiFindMenuDto, $user);
+
+        $translator = $this->getTranslator();
+        if(empty($menu))
+        {
+            throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.find.menu.not.found', domain: 'api_errors'));
+        }
 
         return $this->json([
-            'return' => $apiFindMenuDto,
-            'user' => $userEmail,
+            'menu' => $menu,
+            'dto' => $apiFindMenuDto->getId()
         ]);
     }
 }
