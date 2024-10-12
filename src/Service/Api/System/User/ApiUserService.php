@@ -35,7 +35,7 @@ class ApiUserService extends AppApiService
         $time = intval($user->getUserDataByKey(UserDataKey::TIME_VALIDATE_TOKEN)->getValue());
 
         // Si le token n'est pas périmé
-        if($time > time() + 10000) {
+        if($time > time()) {
             return $user;
         }
         return null;

@@ -124,7 +124,8 @@ class UserDataService extends AppAdminService
 
         $optionSystem = $this->getOptionSystemService();
         $timeToAdd = $optionSystem->getValueByKey(OptionSystemKey::OS_API_TIME_VALIDATE_USER_TOKEN);
-        if ($timeToAdd === -1) {
+
+        if (intval($timeToAdd) === -1) {
             $dateTimeStr = 'now +10 years';
         } else {
             $dateTimeStr = 'now +' . $timeToAdd . ' minutes';
