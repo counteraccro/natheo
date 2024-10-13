@@ -4,6 +4,7 @@
  * @version 1.0
  * Service pour les menus via API
  */
+
 namespace App\Service\Api\Content;
 
 use App\Dto\Api\Menu\ApiFindMenuDto;
@@ -27,13 +28,15 @@ class ApiMenuService extends AppApiService
     public function getMenuForApi(ApiFindMenuDto $dto, User $user = null): array
     {
         $menu = $this->getMenuByIdOrPageUrl($dto);
-        if($menu === null) {
+        if ($menu === null) {
             return [];
         }
+        return $this->formatMenuForApi($menu);
+    }
 
-
-
-        return [];
+    public function formatMenuForApi(Menu $menu): array
+    {
+        return [$menu->getName()];
     }
 
     /**
@@ -45,12 +48,11 @@ class ApiMenuService extends AppApiService
      */
     private function getMenuByIdOrPageUrl(ApiFindMenuDto $dto): ?Menu
     {
-        if($dto->getId() !== 0)
-        {
+        if ($dto->getId() !== 0) {
             return $this->findOneById(Menu::class, $dto->getId());
         }
 
-        echo "recherche par page url";
-        return [];
+        $repository = $this->getRepository(Menu::class);
+        return $repository->getByPageUrlAndPosition($dto->getPageSlug(), $dto->getPosition());
     }
 }

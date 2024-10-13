@@ -4,6 +4,7 @@ namespace App\Repository\Admin\Content\Menu;
 
 use App\Entity\Admin\Content\Menu\Menu;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -86,5 +87,24 @@ class MenuRepository extends ServiceEntityRepository
             ->andWhere('m.position = :position')
             ->setParameter('position', $position);
         return $query->getQuery()->getResult();
+    }
+
+    /**
+     * Retourne un menu en fonction de l'url de la page auquel il est rattaché
+     * @param string $url
+     * @param int $position
+     * @return Menu|null
+     * @throws NonUniqueResultException
+     */
+    public function getByPageUrlAndPosition(string $url, int $position): ?Menu
+    {
+        $query = $this->createQueryBuilder('m')
+            ->join('m.pages', 'p')
+            ->join('p.pageTranslations', 'pt')
+            ->where('pt.url = :url')
+            ->setParameter('url', $url)
+            ->andWhere('m.position = :position')
+            ->setParameter('position', $position);
+        return $query->getQuery()->getOneOrNullResult();
     }
 }
