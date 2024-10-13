@@ -5,8 +5,9 @@
  * Controller pour les authentifications via API
  */
 
-namespace App\Controller\Api\v1;
+namespace App\Controller\Api\v1\System;
 
+use App\Controller\Api\v1\AppApiController;
 use App\Dto\Api\Authentication\ApiAuthUserDto;
 use App\Resolver\Api\ApiAuthUserResolver;
 use App\Utils\Api\ApiConst;

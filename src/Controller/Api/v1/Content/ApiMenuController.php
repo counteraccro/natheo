@@ -5,8 +5,9 @@
  * Controller pour les menus via API
  */
 
-namespace App\Controller\Api\v1;
+namespace App\Controller\Api\v1\Content;
 
+use App\Controller\Api\v1\AppApiController;
 use App\Dto\Api\Menu\ApiFindMenuDto;
 use App\Resolver\Api\ApiFindMenuResolver;
 use Psr\Container\ContainerExceptionInterface;
