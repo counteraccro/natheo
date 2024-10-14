@@ -11,6 +11,7 @@ use App\Dto\Api\Menu\ApiFindMenuDto;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\System\User;
 use App\Service\Api\AppApiService;
+use App\Utils\Api\Content\ApiMenuFormater;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -31,12 +32,9 @@ class ApiMenuService extends AppApiService
         if ($menu === null) {
             return [];
         }
-        return $this->formatMenuForApi($menu);
-    }
 
-    public function formatMenuForApi(Menu $menu): array
-    {
-        return [$menu->getName()];
+        $apiMenuFormater = new ApiMenuFormater($menu, $dto->getLocale());
+        return $apiMenuFormater->convertMenu()->getMenuFortApi();
     }
 
     /**
