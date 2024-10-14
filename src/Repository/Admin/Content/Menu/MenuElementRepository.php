@@ -47,11 +47,13 @@ class MenuElementRepository extends ServiceEntityRepository
     /**
      * Retourne une liste de menuElements d'un menu et de son parent.
      * Si parent = null, retourne la liste de premier niveau de menuElement
+     * Si showDisabled est à true, affiche aussi les elements masqués
      * @param int $idMenu
      * @param int|null $parent
+     * @param bool $showDisabled
      * @return mixed
      */
-    public function getMenuElementByMenuAndParent(int $idMenu, int $parent = null): mixed
+    public function getMenuElementByMenuAndParent(int $idMenu, int $parent = null, bool $showDisabled = true): mixed
     {
         $queryB = $this->createQueryBuilder('me')
             ->where('me.menu =  :idMenu')
@@ -61,6 +63,11 @@ class MenuElementRepository extends ServiceEntityRepository
         } else {
             $queryB->andWhere('me.parent =  :parent')
                 ->setParameter('parent', $parent);
+        }
+
+        if(!$showDisabled) {
+            $queryB->andWhere('me.disabled = :disabled')
+                ->setParameter('disabled', false);
         }
 
         $queryB->addOrderBy('me.columnPosition', 'ASC')

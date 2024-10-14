@@ -9,6 +9,7 @@ namespace App\Service\Api\Content;
 
 use App\Dto\Api\Menu\ApiFindMenuDto;
 use App\Entity\Admin\Content\Menu\Menu;
+use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\System\User;
 use App\Service\Api\AppApiService;
 use App\Utils\Api\Content\ApiMenuFormater;
@@ -29,9 +30,10 @@ class ApiMenuService extends AppApiService
     public function getMenuForApi(ApiFindMenuDto $dto, User $user = null): array
     {
         $menu = $this->getMenuByIdOrPageUrl($dto);
-        if ($menu === null) {
+        if (empty($menu)) {
             return [];
         }
+
 
         $apiMenuFormater = new ApiMenuFormater($menu, $dto->getLocale());
         return $apiMenuFormater->convertMenu()->getMenuFortApi();
@@ -40,17 +42,25 @@ class ApiMenuService extends AppApiService
     /**
      * Retourne un menu en fonction de son id ou de pageUrl
      * @param ApiFindMenuDto $dto
-     * @return Menu|null
+     * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function getMenuByIdOrPageUrl(ApiFindMenuDto $dto): ?Menu
+    private function getMenuByIdOrPageUrl(ApiFindMenuDto $dto): array
     {
+        $repository = $this->getRepository(Menu::class);
         if ($dto->getId() !== 0) {
-            return $this->findOneById(Menu::class, $dto->getId());
+            $menu = $repository->getByForApi($dto->getId());
+        } else {
+            $menu = $repository->getByPageUrlAndPositionForApi($dto->getPageSlug(), $dto->getPosition());
         }
 
-        $repository = $this->getRepository(Menu::class);
-        return $repository->getByPageUrlAndPosition($dto->getPageSlug(), $dto->getPosition());
+        if (!empty($menu)) {
+            $menu = $menu[0];
+            $repository = $this->getRepository(MenuElement::class);
+            $menu['menuElements'] = $repository->getMenuElementByMenuAndParent($menu['id'], null, false);
+        }
+
+        return $menu;
     }
 }

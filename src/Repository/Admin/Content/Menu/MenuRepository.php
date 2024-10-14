@@ -93,18 +93,36 @@ class MenuRepository extends ServiceEntityRepository
      * Retourne un menu en fonction de l'url de la page auquel il est rattaché
      * @param string $url
      * @param int $position
-     * @return Menu|null
-     * @throws NonUniqueResultException
+     * @return array
      */
-    public function getByPageUrlAndPosition(string $url, int $position): ?Menu
+    public function getByPageUrlAndPositionForApi(string $url, int $position): array
     {
         $query = $this->createQueryBuilder('m')
+            ->select(['m.position', 'm.id'])
             ->join('m.pages', 'p')
             ->join('p.pageTranslations', 'pt')
             ->where('pt.url = :url')
             ->setParameter('url', $url)
             ->andWhere('m.position = :position')
-            ->setParameter('position', $position);
-        return $query->getQuery()->getOneOrNullResult();
+            ->setParameter('position', $position)
+            ->andWhere('m.disabled = :disabled')
+            ->setParameter('disabled', false);
+        return $query->getQuery()->getResult();
+    }
+
+    /**
+     * Retourne un menu avec uniquement les menuElements sans parent
+     * @param int $id
+     * @return array
+     */
+    public function getByForApi(int $id): array
+    {
+        $query = $this->createQueryBuilder('m')
+            ->select(['m.position', 'm.id'])
+            ->where('m.id = :id')
+            ->setParameter('id', $id)
+            ->andWhere('m.disabled = :disabled')
+            ->setParameter('disabled', false);
+        return $query->getQuery()->getResult();
     }
 }
