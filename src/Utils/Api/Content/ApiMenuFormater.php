@@ -8,6 +8,7 @@
 namespace App\Utils\Api\Content;
 
 use App\Entity\Admin\Content\Menu\MenuElement;
+use App\Entity\Admin\Content\Menu\MenuElementTranslation;
 use App\Utils\Content\Menu\MenuConst;
 
 class ApiMenuFormater
@@ -52,10 +53,21 @@ class ApiMenuFormater
         $i = 0;
         foreach ($elements as $element) {
             /** @var MenuElement $element */
+
+            $elementTranslation = $element->getMenuElementTranslationByLocale($this->locale);
+
+            if($element->getPage() !== null) {
+                $url = $element->getPage()->getPageTranslationByLocale($this->locale)->getUrl();
+            }
+            else {
+                $url = $elementTranslation->getExternalLink();
+            }
+
             $return[$i] = [
                 'col_position' => $element->getColumnPosition(),
                 'row_position' => $element->getRowPosition(),
-                'label' => $element->getMenuElementTranslationByLocale($this->locale)->getTextLink(),
+                'label' => $elementTranslation->getTextLink(),
+                'url' => $url,
             ];
 
             if (!$element->getChildren()->isEmpty()) {
