@@ -10,6 +10,7 @@ namespace App\Utils\Api\Content;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Menu\MenuElementTranslation;
+use App\Utils\Content\Menu\MenuConst;
 use Doctrine\Common\Collections\Collection;
 
 class ApiMenuFormater
@@ -46,13 +47,19 @@ class ApiMenuFormater
     private function getElements(array $elements): array
     {
         $return = [];
+        $i = 0;
         foreach ($elements as $element) {
             /** @var MenuElement $element */
-            $return[] = [
+            $return[$i] = [
                 'col_position' => $element->getColumnPosition(),
                 'row_position' => $element->getRowPosition(),
-                'label' => $element->getMenuElementTranslationByLocale($this->locale)->getTextLink()
+                'label' => $element->getMenuElementTranslationByLocale($this->locale)->getTextLink(),
             ];
+
+            if (!$element->getChildren()->isEmpty()) {
+                $return[$i]['elements'] = $this->getElements($element->getChildren()->toArray());
+            }
+            $i++;
         }
 
         return $return;
@@ -66,13 +73,20 @@ class ApiMenuFormater
     private function getStringPosition(int $position): string
     {
         return match ($position) {
-            1 => "HEADER",
+            MenuConst::POSITION_HEADER => "HEADER",
             2 => "RIGHT",
             3 => "FOOTER",
             4 => "LEFT",
             default => "NONE",
         };
     }
+
+    /*private function getStringType(int $type)
+    {
+        return match ($type) {
+
+        }
+    }*/
 
     /**
      * Retourne un menu formaté pour les API
