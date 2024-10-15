@@ -201,7 +201,7 @@ class MenuService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getListType()
+    public function getListType(): array
     {
         $translator = $this->getTranslator();
         return [

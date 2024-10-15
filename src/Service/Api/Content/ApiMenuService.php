@@ -35,7 +35,7 @@ class ApiMenuService extends AppApiService
         }
 
 
-        $apiMenuFormater = new ApiMenuFormater($menu, $dto->getLocale());
+        $apiMenuFormater = new ApiMenuFormater($menu, $dto->getLocale(), $this->getOptionSystemApi());
         return $apiMenuFormater->convertMenu()->getMenuFortApi();
     }
 

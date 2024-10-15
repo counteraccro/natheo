@@ -98,7 +98,7 @@ class MenuRepository extends ServiceEntityRepository
     public function getByPageUrlAndPositionForApi(string $url, int $position): array
     {
         $query = $this->createQueryBuilder('m')
-            ->select(['m.position', 'm.id'])
+            ->select(['m.position', 'm.id', 'm.type'])
             ->join('m.pages', 'p')
             ->join('p.pageTranslations', 'pt')
             ->where('pt.url = :url')
@@ -118,7 +118,7 @@ class MenuRepository extends ServiceEntityRepository
     public function getByForApi(int $id): array
     {
         $query = $this->createQueryBuilder('m')
-            ->select(['m.position', 'm.id'])
+            ->select(['m.position', 'm.id', 'm.type'])
             ->where('m.id = :id')
             ->setParameter('id', $id)
             ->andWhere('m.disabled = :disabled')

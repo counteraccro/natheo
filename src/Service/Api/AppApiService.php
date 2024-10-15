@@ -6,6 +6,7 @@
  */
 namespace App\Service\Api;
 
+use App\Utils\System\Options\OptionSystemKey;
 use Doctrine\ORM\EntityRepository;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -88,5 +89,21 @@ class AppApiService extends AppApiHandlerService
     {
         $repo = $this->getRepository($entity);
         return $repo->findBy($criteria, $orderBy, $limit, $offset);
+    }
+
+    /**
+     * Retourne les options systems importantes pour les APIs
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getOptionSystemApi(): array
+    {
+        $optionSystemService = $this->getOptionSystemService();
+        $optionAdresse = $optionSystemService->getByKey(OptionSystemKey::OS_ADRESSE_SITE);
+
+        return [
+            OptionSystemKey::OS_ADRESSE_SITE => $optionAdresse->getValue(),
+        ];
     }
 }

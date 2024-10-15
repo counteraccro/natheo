@@ -7,24 +7,25 @@
 
 namespace App\Utils\Api\Content;
 
-use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
-use App\Entity\Admin\Content\Menu\MenuElementTranslation;
 use App\Utils\Content\Menu\MenuConst;
-use Doctrine\Common\Collections\Collection;
 
 class ApiMenuFormater
 {
 
     private array $return = [];
 
+
     /**
      * @param array $menu
      * @param string $locale
+     * @param array $apiDatas
      */
     public function __construct(
         private readonly array  $menu,
-        private readonly string $locale)
+        private readonly string $locale,
+        private readonly array $apiDatas
+    )
     {
     }
 
@@ -35,6 +36,7 @@ class ApiMenuFormater
     public function convertMenu(): static
     {
         $this->return['position'] = $this->getStringPosition($this->menu['position']);
+        $this->return['type'] = $this->menu['type'];
         $this->return['elements'] = $this->getElements($this->menu['menuElements']);
         return $this;
     }
@@ -74,25 +76,18 @@ class ApiMenuFormater
     {
         return match ($position) {
             MenuConst::POSITION_HEADER => "HEADER",
-            2 => "RIGHT",
-            3 => "FOOTER",
-            4 => "LEFT",
+            MenuConst::POSITION_RIGHT => "RIGHT",
+            MenuConst::POSITION_FOOTER => "FOOTER",
+            MenuConst::POSITION_LEFT => "LEFT",
             default => "NONE",
         };
     }
-
-    /*private function getStringType(int $type)
-    {
-        return match ($type) {
-
-        }
-    }*/
 
     /**
      * Retourne un menu formaté pour les API
      * @return array
      */
-    public function getMenuFortApi()
+    public function getMenuFortApi(): array
     {
         return $this->return;
     }
