@@ -10,6 +10,7 @@ namespace App\Controller\Api\v1\Content;
 use App\Controller\Api\v1\AppApiController;
 use App\Dto\Api\Menu\ApiFindMenuDto;
 use App\Resolver\Api\ApiFindMenuResolver;
+use App\Utils\Api\ApiConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -44,14 +45,9 @@ class ApiMenuController extends AppApiController
         $menu = $apiMenuService->getMenuForApi($apiFindMenuDto, $user);
 
         $translator = $this->getTranslator();
-        if(empty($menu))
-        {
+        if (empty($menu)) {
             throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.find.menu.not.found', domain: 'api_errors'));
         }
-
-        return $this->json([
-            'menu' => $menu,
-            'dto' => $apiFindMenuDto->getId()
-        ]);
+        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $menu);
     }
 }

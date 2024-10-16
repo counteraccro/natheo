@@ -8,24 +8,28 @@
 namespace App\Utils\Api\Content;
 
 use App\Entity\Admin\Content\Menu\MenuElement;
-use App\Entity\Admin\Content\Menu\MenuElementTranslation;
 use App\Utils\Content\Menu\MenuConst;
+use App\Utils\System\Options\OptionSystemKey;
 
 class ApiMenuFormater
 {
 
+    /**
+     * @var array
+     */
     private array $return = [];
-
 
     /**
      * @param array $menu
      * @param string $locale
-     * @param array $apiDatas
+     * @param array $apiOptionSystem
+     * @param array $apiData
      */
     public function __construct(
         private readonly array  $menu,
         private readonly string $locale,
-        private readonly array $apiDatas
+        private readonly array  $apiOptionSystem,
+        private readonly array  $apiData,
     )
     {
     }
@@ -54,18 +58,22 @@ class ApiMenuFormater
         foreach ($elements as $element) {
             /** @var MenuElement $element */
 
+            if ($element->isDisabled() === true) {
+                continue;
+            }
+
             $elementTranslation = $element->getMenuElementTranslationByLocale($this->locale);
 
-            if($element->getPage() !== null) {
+            if ($element->getPage() !== null) {
                 $url = $element->getPage()->getPageTranslationByLocale($this->locale)->getUrl();
-            }
-            else {
+                $category = strtolower($this->apiData['pageCategories'][$element->getPage()->getCategory()]);
+                $url = $this->apiOptionSystem[OptionSystemKey::OS_ADRESSE_SITE] . '/' . $category . '/' . $url;
+            } else {
                 $url = $elementTranslation->getExternalLink();
             }
 
             $return[$i] = [
-                'col_position' => $element->getColumnPosition(),
-                'row_position' => $element->getRowPosition(),
+                'target' => $element->getLinkTarget(),
                 'label' => $elementTranslation->getTextLink(),
                 'url' => $url,
             ];

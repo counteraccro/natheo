@@ -34,8 +34,10 @@ class ApiMenuService extends AppApiService
             return [];
         }
 
+        $pageService = $this->getPageService();
+        $datas['pageCategories'] = $pageService->getAllCategories();
 
-        $apiMenuFormater = new ApiMenuFormater($menu, $dto->getLocale(), $this->getOptionSystemApi());
+        $apiMenuFormater = new ApiMenuFormater($menu, $dto->getLocale(), $this->getOptionSystemApi(), $datas);
         return $apiMenuFormater->convertMenu()->getMenuFortApi();
     }
 

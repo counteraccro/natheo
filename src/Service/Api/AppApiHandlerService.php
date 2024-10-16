@@ -7,6 +7,7 @@
 namespace App\Service\Api;
 
 
+use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Translate\GridTranslate;
 use Doctrine\ORM\EntityManagerInterface;
@@ -37,6 +38,7 @@ class AppApiHandlerService
             'requestStack' => RequestStack::class,
             'parameterBag' => ParameterBagInterface::class,
             'optionSystemService' => OptionSystemService::class,
+            'pageService' => PageService::class,
             'kernel' => KernelInterface::class,
         ])]
         protected ContainerInterface $handlers){}
@@ -162,5 +164,16 @@ class AppApiHandlerService
     protected function getTranslator(): TranslatorInterface
     {
         return $this->handlers->get('translator');
+    }
+
+    /**
+     * Retourne PageService
+     * @return PageService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getPageService() : PageService
+    {
+        return $this->handlers->get('pageService');
     }
 }
