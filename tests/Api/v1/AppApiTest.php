@@ -122,4 +122,19 @@ class AppApiTest extends WebTestCase
         $container = static::getContainer();
         return $container->get($className);
     }
+
+    /**
+     * Retourne le dernier id de l'entité en paramètre
+     * @param string $entity
+     * @return int
+     */
+    protected function getLastIdByEntity(string $entity): int
+    {
+        self::bootKernel();
+        $manager = static::getContainer()
+            ->get('doctrine')
+            ->getManager();
+        $row = $manager->getRepository($entity)->findOneBy([], ['id' => 'DESC']);
+        return $row ? $row->getId() : 0;
+    }
 }
