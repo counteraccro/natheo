@@ -10,6 +10,7 @@ namespace App\Security;
 use App\Http\Api\ApiResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
@@ -46,14 +47,24 @@ class ApiAuthenticator extends AbstractAuthenticator
         );
     }
 
+    /**
+     * @param Request $request
+     * @param TokenInterface $token
+     * @param string $firewallName
+     * @return Response|null
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         return null;
     }
 
+    /**
+     * @param Request $request
+     * @param AuthenticationException $exception
+     * @return Response|null
+     */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        $message =  $this->translator->trans('api_errors.authentication.failure', domain: 'api_errors');
-        return new ApiResponse($message, null, [], Response::HTTP_UNAUTHORIZED);
+        throw new HttpException(Response::HTTP_UNAUTHORIZED, $this->translator->trans('api_errors.authentication.failure', domain: 'api_errors'));
     }
 }
