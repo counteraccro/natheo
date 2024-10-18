@@ -5,10 +5,10 @@
  * Permet de résoudre la validation de l'objet ApiAuthUserDto
  */
 
-namespace App\Resolver\Api;
+namespace App\Resolver\Api\Content\Menu;
 
-use App\Dto\Api\Menu\ApiFindMenuDto;
-use App\Utils\Api\ApiParametersParser;
+use App\Dto\Api\Content\Menu\ApiFindMenuDto;
+use App\Resolver\Api\AppApiResolver;
 use App\Utils\Api\Parameters\ApiParametersFindMenuRef;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApiFindMenuResolver extends AppApiResolver implements ValueResolverInterface

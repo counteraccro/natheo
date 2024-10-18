@@ -4,7 +4,7 @@
  * @version 1.0
  * Object de Transfère de Données pour la recherche de menu via API
  */
-namespace App\Dto\Api\Menu;
+namespace App\Dto\Api\Content\Menu;
 
 use App\Utils\Content\Menu\MenuConst;
 use Symfony\Component\Validator\Constraints as Assert;

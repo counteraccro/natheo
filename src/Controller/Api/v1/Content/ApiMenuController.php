@@ -8,8 +8,8 @@
 namespace App\Controller\Api\v1\Content;
 
 use App\Controller\Api\v1\AppApiController;
-use App\Dto\Api\Menu\ApiFindMenuDto;
-use App\Resolver\Api\ApiFindMenuResolver;
+use App\Dto\Api\Content\Menu\ApiFindMenuDto;
+use App\Resolver\Api\Content\Menu\ApiFindMenuResolver;
 use App\Utils\Api\ApiConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

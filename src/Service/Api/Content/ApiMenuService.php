@@ -7,7 +7,7 @@
 
 namespace App\Service\Api\Content;
 
-use App\Dto\Api\Menu\ApiFindMenuDto;
+use App\Dto\Api\Content\Menu\ApiFindMenuDto;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\System\User;
