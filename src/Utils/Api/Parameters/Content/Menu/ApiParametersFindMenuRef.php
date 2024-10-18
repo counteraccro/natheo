@@ -4,7 +4,7 @@
  * @version 1.1
  * Référence pour les paramètres attendus pour l'API find menu
  */
-namespace App\Utils\Api\Parameters;
+namespace App\Utils\Api\Parameters\Content\Menu;
 
 class ApiParametersFindMenuRef
 {

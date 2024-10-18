@@ -9,7 +9,7 @@ namespace App\Resolver\Api\Content\Menu;
 
 use App\Dto\Api\Content\Menu\ApiFindMenuDto;
 use App\Resolver\Api\AppApiResolver;
-use App\Utils\Api\Parameters\ApiParametersFindMenuRef;
+use App\Utils\Api\Parameters\Content\Menu\ApiParametersFindMenuRef;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
