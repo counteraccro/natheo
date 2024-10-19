@@ -6,10 +6,11 @@
  */
 namespace App\Dto\Api\Content\Menu;
 
+use App\Dto\Api\AppApiDto;
 use App\Utils\Content\Menu\MenuConst;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ApiFindMenuDto
+class ApiFindMenuDto extends AppApiDto
 {
     /**
      * Tableau de positions
@@ -19,13 +20,6 @@ class ApiFindMenuDto
         MenuConst::POSITION_RIGHT,
         MenuConst::POSITION_FOOTER,
         MenuConst::POSITION_LEFT
-    ];
-
-    /**
-     * Locale prise en charge
-     */
-    private const MENU_LOCALES = [
-        'fr', 'es', 'en'
     ];
 
     /**
@@ -65,9 +59,13 @@ class ApiFindMenuDto
          * @var string
          */
         #[Assert\Type(type: 'string', message: 'The locale parameter must be a string')]
-        #[Assert\Choice(choices: self::MENU_LOCALES, message: 'Choose a locale between en or es or fr')]
+        #[Assert\Choice(choices: self::LOCALES, message: 'Choose a locale between en or es or fr')]
         private readonly string $locale,
 
+        /**
+         * Token
+         * @var string
+         */
         #[Assert\Type(type: 'string', message: 'The user_token parameter must be a string')]
         private readonly string $userToken,
     )
