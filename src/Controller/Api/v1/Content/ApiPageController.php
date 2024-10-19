@@ -33,6 +33,6 @@ class ApiPageController extends AppApiController
         resolver: ApiFindPageResolver::class
     )] ApiFindPageDto $apiFindPageDto): JsonResponse
     {
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['menu' => '', 'dto' => $apiFindPageDto->getSlug()]);
+        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['menu' => '', 'dto' => $apiFindPageDto->getUserToken()]);
     }
 }

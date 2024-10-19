@@ -4,6 +4,7 @@
  * @version 1.1
  * Référence pour les paramètres attendus pour l'API find page
  */
+
 namespace App\Utils\Api\Parameters\Content\Page;
 
 class ApiParametersFindPageRef
@@ -12,13 +13,34 @@ class ApiParametersFindPageRef
      * Paramètre slug
      * @var string
      */
-    public const PARAM_REF_FIND_PAGE_SLUG = 'slug';
+    public const PARAM_SLUG = 'slug';
+
+    /**
+     * Paramètre locale
+     * @var string
+     */
+    public const PARAM_LOCALE = 'locale';
+
+    /**
+     * Paramètre user_token
+     * @var string
+     */
+    public const PARAM_USER_TOKEN = 'user_token';
 
     /**
      * Tableau des paramètres
      * @var array
      */
-    public const PARAMS_REF_FIND_PAGE = [
-       self::PARAM_REF_FIND_PAGE_SLUG => ''
+    public const PARAMS_REF = [
+        self::PARAM_SLUG => '',
+        self::PARAM_LOCALE => '',
+        self::PARAM_USER_TOKEN => '',
+    ];
+
+    /**
+     * Tableau valeur par défaut
+     */
+    public const PARAMS_DEFAULT_VALUE = [
+        self::PARAM_LOCALE => 'fr',
     ];
 }

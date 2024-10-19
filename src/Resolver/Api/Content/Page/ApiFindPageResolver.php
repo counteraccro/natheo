@@ -36,18 +36,22 @@ class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterfa
             return [];
         }
 
-        $tabParameters = ApiParametersFindPageRef::PARAMS_REF_FIND_PAGE;
+        $tabParameters = ApiParametersFindPageRef::PARAMS_REF;
 
         foreach ($tabParameters as $parameter => $value) {
             $value = $request->get($parameter, '');
-            /*if (empty($value) && isset(ApiParametersFindMenuRef::PARAMS_REF_FIND_MENU_DEFAULT_VALUE[$parameter])) {
-                $value = ApiParametersFindMenuRef::PARAMS_REF_FIND_MENU_DEFAULT_VALUE[$parameter];
-            }*/
+            if (empty($value) && isset(ApiParametersFindPageRef::PARAMS_DEFAULT_VALUE[$parameter])) {
+                $value = ApiParametersFindPageRef::PARAMS_DEFAULT_VALUE[$parameter];
+            }
             $tabParameters[$parameter] = $value;
         }
-        
+
+        $tabParameters[ApiParametersFindPageRef::PARAM_USER_TOKEN] = $this->getUserToken($request);
+
         $dto = new ApiFindPageDto(
-            $tabParameters[ApiParametersFindPageRef::PARAM_REF_FIND_PAGE_SLUG]
+            $tabParameters[ApiParametersFindPageRef::PARAM_SLUG],
+            $tabParameters[ApiParametersFindPageRef::PARAM_LOCALE],
+            $tabParameters[ApiParametersFindPageRef::PARAM_USER_TOKEN]
         );
 
         $this->validateDto($dto);
