@@ -33,6 +33,11 @@ class ApiPageController extends AppApiController
         resolver: ApiFindPageResolver::class
     )] ApiFindPageDto $apiFindPageDto): JsonResponse
     {
+        $user = null;
+        if ($apiFindPageDto->getUserToken() !== "") {
+            $user = $this->getUserByUserToken($apiFindPageDto->getUserToken());
+        }
+
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['menu' => '', 'dto' => $apiFindPageDto]);
     }
 }

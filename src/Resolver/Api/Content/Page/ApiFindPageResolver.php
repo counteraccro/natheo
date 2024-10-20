@@ -51,7 +51,6 @@ class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterfa
                 $value = ApiParametersFindPageRef::PARAMS_DEFAULT_VALUE[$parameter];
             }
             $tabParameters[$parameter] = $value;
-            var_dump($value);
         }
 
         $tabParameters[ApiParametersFindPageRef::PARAM_USER_TOKEN] = $this->getUserToken($request);
