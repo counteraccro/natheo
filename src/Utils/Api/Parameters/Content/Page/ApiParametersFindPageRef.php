@@ -22,6 +22,30 @@ class ApiParametersFindPageRef
     public const PARAM_LOCALE = 'locale';
 
     /**
+     * Paramètre page
+     * @var string
+     */
+    public const PARAM_PAGE = 'page';
+
+    /**
+     * Paramètre limite
+     * @var string
+     */
+    public const PARAM_LIMIT = 'limit';
+
+    /**
+     * Paramètre show_menu
+     * @var string
+     */
+    public const PARAM_SHOW_MENU = 'show_menu';
+
+    /**
+     * Paramètre menu_position
+     * @var string
+     */
+    public const PARAM_MENU_POSITION = 'menu_positions';
+
+    /**
      * Paramètre user_token
      * @var string
      */
@@ -34,6 +58,10 @@ class ApiParametersFindPageRef
     public const PARAMS_REF = [
         self::PARAM_SLUG => '',
         self::PARAM_LOCALE => '',
+        self::PARAM_PAGE => '',
+        self::PARAM_LIMIT => '',
+        self::PARAM_SHOW_MENU => '',
+        self::PARAM_MENU_POSITION => '',
         self::PARAM_USER_TOKEN => '',
     ];
 
@@ -42,5 +70,9 @@ class ApiParametersFindPageRef
      */
     public const PARAMS_DEFAULT_VALUE = [
         self::PARAM_LOCALE => 'fr',
+        self::PARAM_PAGE => 1,
+        self::PARAM_LIMIT => 25,
+        self::PARAM_SHOW_MENU => true,
+        self::PARAM_MENU_POSITION => [0 => 0],
     ];
 }
