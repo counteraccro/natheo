@@ -159,3 +159,7 @@ Error: Error
 'The locale parameter must be a string': '__The locale parameter must be a string'
 'Choose a locale between en or es or fr': '__Choose a locale between en or es or fr'
 'The user_token parameter must be a string': '__The user_token parameter must be a string'
+'The page parameter must be a integer': '__The page parameter must be a integer'
+'The limit parameter must be a integer': '__The limit parameter must be a integer'
+'The show_menus parameter must be a boolean': '__The show_menus parameter must be a boolean'
+'Choose a position between 0, (all), 1 (top), 2 (right), 3 (bottom), 4 (left)': '__Choose a position between 0, (all), 1 (top), 2 (right), 3 (bottom), 4 (left)'

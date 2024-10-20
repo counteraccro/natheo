@@ -159,3 +159,7 @@ Error: Erreur
 'The locale parameter must be a string': 'Le paramètre locale doit être du type string'
 'Choose a locale between en or es or fr': 'Choisir une locale entre fr (français) ou es (espagnol) ou en (anglais)'
 'The user_token parameter must be a string': 'Le paramètre user_token doit être du type string'
+'The limit parameter must be a integer': 'Le paramètre limit doit être du type Integer'
+'The page parameter must be a integer': 'Le paramètre page doit être du type Integer'
+'The show_menus parameter must be a boolean': 'Le paramètre show_menu doit être du type boolean'
+'Choose a position between 0, (all), 1 (top), 2 (right), 3 (bottom), 4 (left)': 'Choisi une position entre 0 (tout) - 1 (haut) - 2 (droite) - 3 (bas) - 4 (gauche). Plusieurs choix possible'
