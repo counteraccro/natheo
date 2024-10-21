@@ -86,6 +86,22 @@ class PageRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
+    /**
+     * Retourne une page en fonction de son slug
+     * @param string $slug
+     * @return array
+     */
+    public function getBySlug(string $slug) : array
+    {
+        $query = $this->createQueryBuilder('p');
+        $query->join('p.pageTranslations', 'pt')
+            ->where('pt.url = :slug')
+            ->setParameter('slug', $slug)
+            ->setMaxResults(1);
+        return $query->getQuery()->getResult();
+
+    }
+
 //    /**
 //     * @return Page[] Returns an array of Page objects
 //     */

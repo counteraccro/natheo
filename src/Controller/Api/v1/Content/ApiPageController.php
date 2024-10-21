@@ -13,7 +13,9 @@ use App\Utils\Api\ApiConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -38,6 +40,15 @@ class ApiPageController extends AppApiController
             $user = $this->getUserByUserToken($apiFindPageDto->getUserToken());
         }
 
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['menu' => '', 'dto' => $apiFindPageDto]);
+        $apiPageService = $this->getApiPageService();
+        $page = $apiPageService->getPageForApi($apiFindPageDto, $user);
+        if(empty($page))
+        {
+            $translator = $this->getTranslator();
+            throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.find.page.not.found', domain: 'api_errors'));
+        }
+
+
+        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['menu' => '', 'dto' => $apiFindPageDto, $page]);
     }
 }

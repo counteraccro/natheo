@@ -9,6 +9,7 @@ namespace App\Controller\Api\v1;
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
 use App\Service\Api\Content\ApiMenuService;
+use App\Service\Api\Content\ApiPageService;
 use App\Service\Api\System\User\ApiUserService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -26,6 +27,7 @@ class AppApiHandlerController extends AbstractController
             'apiUserService' => ApiUserService::class,
             'userDataService' => UserDataService::class,
             'apiMenuService' => ApiMenuService::class,
+            'apiPageService' => ApiPageService::class,
         ])]
         protected ContainerInterface $handlers
     ){}
@@ -83,5 +85,15 @@ class AppApiHandlerController extends AbstractController
     protected function getApiMenuService(): ApiMenuService
     {
         return $this->handlers->get('apiMenuService');
+    }
+
+    /**
+     * @return ApiPageService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getApiPageService(): ApiPageService
+    {
+        return $this->handlers->get('apiPageService');
     }
 }
