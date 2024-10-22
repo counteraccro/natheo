@@ -4,6 +4,7 @@ namespace App\Repository\Admin\Content\Page;
 
 use App\Entity\Admin\Content\Page\Page;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -89,16 +90,17 @@ class PageRepository extends ServiceEntityRepository
     /**
      * Retourne une page en fonction de son slug
      * @param string $slug
-     * @return array
+     * @return Page|null
+     * @throws NonUniqueResultException
      */
-    public function getBySlug(string $slug) : array
+    public function getBySlug(string $slug) : ?Page
     {
         $query = $this->createQueryBuilder('p');
         $query->join('p.pageTranslations', 'pt')
             ->where('pt.url = :slug')
             ->setParameter('slug', $slug)
             ->setMaxResults(1);
-        return $query->getQuery()->getResult();
+        return $query->getQuery()->getOneOrNullResult();
 
     }
 

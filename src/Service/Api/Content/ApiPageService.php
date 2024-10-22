@@ -7,6 +7,8 @@ use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
 use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
+use App\Utils\Api\Content\ApiPageFormater;
+use Doctrine\ORM\NonUniqueResultException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -28,17 +30,19 @@ class ApiPageService extends AppApiService
             return [];
         }
 
-        return ['page' => ['id' => $page[0]->getId()]];
+        $apiPageFormater = new ApiPageFormater($page, $dto);
+        return $apiPageFormater->convertPage()->getPageForApi();
     }
 
     /**
      * Retourne une page en fonction du slug
      * @param string $slug
-     * @return array
+     * @return Page|null
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws NonUniqueResultException
      */
-    private function getPageBySlug(string $slug) :array
+    private function getPageBySlug(string $slug): ?Page
     {
         /** @var PageRepository $repository */
         $repository = $this->getRepository(Page::class);
