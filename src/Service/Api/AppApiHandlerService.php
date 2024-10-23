@@ -9,6 +9,7 @@ namespace App\Service\Api;
 
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
+use App\Service\Api\Content\ApiMenuService;
 use App\Utils\Translate\GridTranslate;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
@@ -39,6 +40,7 @@ class AppApiHandlerService
             'parameterBag' => ParameterBagInterface::class,
             'optionSystemService' => OptionSystemService::class,
             'pageService' => PageService::class,
+            'apiMenuService' => ApiMenuService::class,
             'kernel' => KernelInterface::class,
         ])]
         protected ContainerInterface $handlers){}
@@ -175,5 +177,16 @@ class AppApiHandlerService
     protected function getPageService() : PageService
     {
         return $this->handlers->get('pageService');
+    }
+
+    /**
+     * Retourne ApiMenuService
+     * @return ApiMenuService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getApiMenuService(): ApiMenuService
+    {
+        return $this->handlers->get('apiMenuService');
     }
 }

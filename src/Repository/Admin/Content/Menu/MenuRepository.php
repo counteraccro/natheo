@@ -115,7 +115,7 @@ class MenuRepository extends ServiceEntityRepository
      * @param int $id
      * @return array
      */
-    public function getByForApi(int $id): array
+    public function getByIdForApi(int $id): array
     {
         $query = $this->createQueryBuilder('m')
             ->select(['m.position', 'm.id', 'm.type'])

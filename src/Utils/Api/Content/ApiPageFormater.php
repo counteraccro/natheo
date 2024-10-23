@@ -20,11 +20,12 @@ class ApiPageFormater
      * Convertie une page au format API
      * @return $this
      */
-    public function convertPage()
+    public function convertPage(): ApiPageFormater
     {
         $pageTranslation = $this->page->getPageTranslationByLocale($this->dto->getLocale());
 
         $this->return['title'] = $pageTranslation->getTitre();
+
         return $this;
     }
 
