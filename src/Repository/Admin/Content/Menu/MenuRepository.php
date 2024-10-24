@@ -125,4 +125,19 @@ class MenuRepository extends ServiceEntityRepository
             ->setParameter('disabled', false);
         return $query->getQuery()->getResult();
     }
+
+    /**
+     * Retourne les menus définis par défauts
+     * @return array
+     */
+    public function getDefaultForApi(): array
+    {
+        $query = $this->createQueryBuilder('m')
+            ->select(['m.position', 'm.id', 'm.type'])
+            ->where('m.defaultMenu = :default_menu')
+            ->setParameter('default_menu', true)
+            ->andWhere('m.disabled = :disabled')
+            ->setParameter('disabled', false);
+        return $query->getQuery()->getResult();
+    }
 }

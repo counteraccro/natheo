@@ -27,11 +27,10 @@ class ApiPageService extends AppApiService
      * @throws NonUniqueResultException
      * @throws NotFoundExceptionInterface
      */
-    public function getPageForApi(ApiFindPageDto $dto, User $user) :array
+    public function getPageForApi(ApiFindPageDto $dto, User $user): array
     {
         $page = $this->getPageBySlug($dto->getSlug());
-        if(empty($page))
-        {
+        if (empty($page)) {
             return [];
         }
 
@@ -41,15 +40,51 @@ class ApiPageService extends AppApiService
         $apiMenuService = $this->getApiMenuService();
         /** @var MenuRepository $menuRepo */
         $menuRepo = $apiMenuService->getRepository(Menu::class);
-        foreach($page->getMenus() as $menu)
-        {
-            $m = $menuRepo->getByIdForApi($menu->getId())[0];
-            $repository = $this->getRepository(MenuElement::class);
-            $m['menuElements'] = $repository->getMenuElementByMenuAndParent($m['id'], null, false);
-            $menuApi = $apiMenuService->formatMenu($m, $dto->getLocale(), $this->getOptionSystemApi());
-            $pageApi['menus'][$menuApi['position']] = $menuApi;
+
+        $tmp = $menuRepo->getDefaultForApi();
+        $tabDefault = [];
+        foreach ($tmp as $default) {
+            $tabDefault[$default['position']] = $default['id'];
         }
+
+        foreach ($page->getMenus() as $menu) {
+            unset($tabDefault[$menu->getPosition()]);
+            $pageApi = $this->getFormatedMenu($menu->getId(), $dto->getLocale(), $pageApi, $apiMenuService, $menuRepo);
+        }
+
+        if (!empty($tabDefault)) {
+            foreach ($tabDefault as $id) {
+                $pageApi = $this->getFormatedMenu($id, $dto->getLocale(), $pageApi, $apiMenuService, $menuRepo);
+            }
+        }
+
         return $pageApi;
+    }
+
+    /**
+     * Ajoute au tableau $return un menu en fonction de sa position
+     * @param int $id
+     * @param string $locale
+     * @param array $return
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getFormatedMenu(
+        int            $id,
+        string         $locale,
+        array          $return,
+        ApiMenuService $apiMenuService,
+        MenuRepository $menuRepo): array
+    {
+
+        $m = $menuRepo->getByIdForApi($id)[0];
+        $repository = $this->getRepository(MenuElement::class);
+        $m['menuElements'] = $repository->getMenuElementByMenuAndParent($m['id'], null, false);
+        $menuApi = $apiMenuService->formatMenu($m, $locale, $this->getOptionSystemApi());
+        $return['menus'][$menuApi['position']] = $menuApi;
+
+        return $return;
     }
 
     /**
