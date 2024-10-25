@@ -10,6 +10,8 @@ use App\Controller\Api\v1\AppApiController;
 use App\Dto\Api\Content\Page\ApiFindPageDto;
 use App\Resolver\Api\Content\Page\ApiFindPageResolver;
 use App\Utils\Api\ApiConst;
+use Doctrine\ORM\NonUniqueResultException;
+use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,6 +31,8 @@ class ApiPageController extends AppApiController
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws NonUniqueResultException
+     * @throws CommonMarkException
      */
     #[Route('/find', name: 'find')]
     public function index(#[MapQueryString(
