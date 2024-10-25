@@ -5,8 +5,12 @@ namespace App\Utils\Api\Content;
 use App\Dto\Api\Content\Page\ApiFindPageDto;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageContent;
+use App\Entity\Admin\Content\Tag\Tag;
+use App\Entity\Admin\System\User;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\Markdown;
+use App\Utils\System\Options\OptionUserKey;
+use App\Utils\System\User\PersonalData;
 use Doctrine\Common\Collections\Collection;
 
 class ApiPageFormater
@@ -30,6 +34,11 @@ class ApiPageFormater
 
         $this->return['title'] = $pageTranslation->getTitre();
         $this->return['render'] = $this->page->getRender();
+        $this->return['author'] = $this->getAuthor($this->page->getUser());
+        $this->return['created'] = $this->page->getCreatedAt()->getTimestamp();
+        $this->return['update'] = $this->page->getUpdateAt()->getTimestamp();
+        $this->return['tags'] = $this->getTags($this->page->getTags());
+        $this->return['statistiques'] = [];
         $this->return['contents'] = $this->getPageContent($this->page->getPageContents());
 
         return $this;
@@ -60,6 +69,39 @@ class ApiPageFormater
                 'type' => $type
             ];
         }
+        return $return;
+    }
+
+    /**
+     * Retourne l'auteur correctement formaté en fonction de ses options
+     * @param User $user
+     * @return string
+     */
+    private function getAuthor(User $user): string
+    {
+        $render = $user->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue();
+
+        $personalData = new PersonalData($user, $render);
+        return $personalData->getPersonalData();
+    }
+
+    /**
+     * Retourne un tableau de tag
+     * @param Collection $tags
+     * @return array
+     */
+    private function getTags(Collection $tags): array
+    {
+        $return = [];
+        foreach ($tags as $tag) {
+            /** @var Tag $tag */
+            $return[] = [
+                'label' => $tag->getTagTranslationByLocale($this->dto->getLocale())->getLabel(),
+                'color' => $tag->getColor(),
+                'url' => 'TODO A FAIRE'
+            ];
+        }
+
         return $return;
     }
 
