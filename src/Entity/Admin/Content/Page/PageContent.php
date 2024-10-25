@@ -135,4 +135,16 @@ class PageContent
 
         return $this;
     }
+
+    /**
+     * Retourne la traduction en fonction de la locale
+     * @param string $locale
+     * @return PageContentTranslation
+     */
+    public function getPageContentTranslationByLocale(string $locale): PageContentTranslation
+    {
+        return $this->getPageContentTranslations()->filter(function (PageContentTranslation $pageContentTranslation) use ($locale) {
+            return $pageContentTranslation->getLocale() === $locale;
+        })->first();
+    }
 }
