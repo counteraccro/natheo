@@ -46,6 +46,9 @@ class ApiPageService extends AppApiService
         $apiPageContentService = $this->getApiPageContentService();
         $pageApi['contents'] = $apiPageContentService->getFormatContent($pageApi['contents']);
 
+        if(!$dto->isShowMenu()) {
+            return $pageApi;
+        }
         $apiMenuService = $this->getApiMenuService();
         /** @var MenuRepository $menuRepo */
         $menuRepo = $apiMenuService->getRepository(Menu::class);
@@ -66,7 +69,6 @@ class ApiPageService extends AppApiService
                 $pageApi = $this->getFormatedMenu($id, $dto->getLocale(), $pageApi, $apiMenuService, $menuRepo);
             }
         }
-
         return $pageApi;
     }
 
@@ -75,6 +77,8 @@ class ApiPageService extends AppApiService
      * @param int $id
      * @param string $locale
      * @param array $return
+     * @param ApiMenuService $apiMenuService
+     * @param MenuRepository $menuRepo
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
