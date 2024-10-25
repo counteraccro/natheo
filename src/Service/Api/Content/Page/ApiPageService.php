@@ -1,6 +1,10 @@
 <?php
-
-namespace App\Service\Api\Content;
+/**
+ * @author Gourdon Aymeric
+ * @version 1.1
+ * Service pour l'API Page
+ */
+namespace App\Service\Api\Content\Page;
 
 use App\Dto\Api\Content\Page\ApiFindPageDto;
 use App\Entity\Admin\Content\Menu\Menu;
@@ -10,9 +14,10 @@ use App\Entity\Admin\System\User;
 use App\Repository\Admin\Content\Menu\MenuRepository;
 use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
-use App\Utils\Api\Content\ApiMenuFormater;
+use App\Service\Api\Content\ApiMenuService;
 use App\Utils\Api\Content\ApiPageFormater;
 use Doctrine\ORM\NonUniqueResultException;
+use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -26,6 +31,7 @@ class ApiPageService extends AppApiService
      * @throws ContainerExceptionInterface
      * @throws NonUniqueResultException
      * @throws NotFoundExceptionInterface
+     * @throws CommonMarkException
      */
     public function getPageForApi(ApiFindPageDto $dto, User $user): array
     {
@@ -36,6 +42,9 @@ class ApiPageService extends AppApiService
 
         $apiPageFormater = new ApiPageFormater($page, $dto);
         $pageApi = $apiPageFormater->convertPage()->getPageForApi();
+
+        $apiPageContentService = $this->getApiPageContentService();
+        $pageApi['contents'] = $apiPageContentService->getFormatContent($pageApi['contents']);
 
         $apiMenuService = $this->getApiMenuService();
         /** @var MenuRepository $menuRepo */
@@ -86,6 +95,8 @@ class ApiPageService extends AppApiService
 
         return $return;
     }
+
+
 
     /**
      * Retourne une page en fonction du slug
