@@ -9,7 +9,7 @@ namespace App\Controller\Api\v1;
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
 use App\Service\Api\Content\ApiMenuService;
-use App\Service\Api\Content\ApiPageService;
+use App\Service\Api\Content\Page\ApiPageService;
 use App\Service\Api\System\User\ApiUserService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;

@@ -2,7 +2,7 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.1
- * Class qui charge les class nécessaire en autowrite
+ * Class qui charge les class nécessaire en autowrite pour l'API front
  */
 namespace App\Service\Api;
 
@@ -10,6 +10,7 @@ namespace App\Service\Api;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Api\Content\ApiMenuService;
+use App\Service\Api\Content\Page\ApiPageContentService;
 use App\Utils\Translate\GridTranslate;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
@@ -41,6 +42,7 @@ class AppApiHandlerService
             'optionSystemService' => OptionSystemService::class,
             'pageService' => PageService::class,
             'apiMenuService' => ApiMenuService::class,
+            'apiPageContentService' => ApiPageContentService::class,
             'kernel' => KernelInterface::class,
         ])]
         protected ContainerInterface $handlers){}
@@ -188,5 +190,16 @@ class AppApiHandlerService
     protected function getApiMenuService(): ApiMenuService
     {
         return $this->handlers->get('apiMenuService');
+    }
+
+    /**
+     * Retourne ApiPageContentService
+     * @return ApiPageContentService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getApiPageContentService(): ApiPageContentService
+    {
+        return $this->handlers->get('apiPageContentService');
     }
 }

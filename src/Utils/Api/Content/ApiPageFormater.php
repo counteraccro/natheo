@@ -46,17 +46,18 @@ class ApiPageFormater
         foreach ($pageContents as $pageContent) {
             /** @var PageContent $pageContent */
 
-            $content = $pageContent->getType();
+            $type = $pageContent->getType();
+            $content = '';
             if($pageContent->getType() === PageConst::CONTENT_TYPE_TEXT)
             {
                 $pageContentTranslation = $pageContent->getPageContentTranslationByLocale($this->dto->getLocale());
-                $markdownConverter = new Markdown();
-                $content = $markdownConverter->convertMarkdownToHtml($pageContentTranslation->getText());
+                $content = $pageContentTranslation->getText();
             }
 
             $return[] = [
                 'order' => $pageContent->getRenderBlock(),
-                'content' => $content
+                'content' => $content,
+                'type' => $type
             ];
         }
         return $return;
