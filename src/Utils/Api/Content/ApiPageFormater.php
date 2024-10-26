@@ -8,6 +8,7 @@ use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
 use App\Utils\Content\Page\PageConst;
+use App\Utils\Content\Page\PageStatistiqueKey;
 use App\Utils\Markdown;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\PersonalData;
@@ -38,7 +39,7 @@ class ApiPageFormater
         $this->return['created'] = $this->page->getCreatedAt()->getTimestamp();
         $this->return['update'] = $this->page->getUpdateAt()->getTimestamp();
         $this->return['tags'] = $this->getTags($this->page->getTags());
-        $this->return['statistiques'] = [];
+        $this->return['statistiques'] = $this->getStatistiques();
         $this->return['contents'] = $this->getPageContent($this->page->getPageContents());
 
         return $this;
@@ -103,6 +104,18 @@ class ApiPageFormater
         }
 
         return $return;
+    }
+
+    /**
+     * Retourne les statistiques de la page
+     * @return array
+     */
+    private function getStatistiques(): array
+    {
+        return  [
+            PageStatistiqueKey::KEY_PAGE_NB_READ => $this->page->getPageStatistiqueByKey(PageStatistiqueKey::KEY_PAGE_NB_READ)->getValue()
+            ];
+
     }
 
     /**

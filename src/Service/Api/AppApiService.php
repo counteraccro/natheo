@@ -7,6 +7,7 @@
 namespace App\Service\Api;
 
 use App\Utils\System\Options\OptionSystemKey;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityRepository;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -105,5 +106,23 @@ class AppApiService extends AppApiHandlerService
         return [
             OptionSystemKey::OS_ADRESSE_SITE => $optionAdresse->getValue(),
         ];
+    }
+
+    /**
+     * Permet de sauvegarder une entité
+     * @param mixed $entity
+     * @param bool $flush
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function save(mixed $entity, bool $flush = true): void
+    {
+        try {
+            $repo = $this->getRepository($entity::class);
+            $repo->save($entity, $flush);
+        } catch (Exception $exception) {
+            $this->getLogger()->error($exception->getMessage());
+        }
     }
 }

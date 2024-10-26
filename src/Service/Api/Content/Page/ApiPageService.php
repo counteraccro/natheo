@@ -16,6 +16,7 @@ use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
 use App\Service\Api\Content\ApiMenuService;
 use App\Utils\Api\Content\ApiPageFormater;
+use App\Utils\Content\Page\PageStatistiqueKey;
 use Doctrine\ORM\NonUniqueResultException;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
@@ -39,6 +40,10 @@ class ApiPageService extends AppApiService
         if (empty($page)) {
             return [];
         }
+
+        $pageStatistiqueNbPageRead = $page->getPageStatistiqueByKey(PageStatistiqueKey::KEY_PAGE_NB_READ);
+        $pageStatistiqueNbPageRead->setValue($pageStatistiqueNbPageRead->getValue() + 1);
+        $this->save($pageStatistiqueNbPageRead);
 
         $apiPageFormater = new ApiPageFormater($page, $dto);
         $pageApi = $apiPageFormater->convertPage()->getPageForApi();
