@@ -37,7 +37,19 @@ class ApiParametersFindPageRef
      * Paramètre show_menu
      * @var string
      */
-    public const PARAM_SHOW_MENU = 'show_menu';
+    public const PARAM_SHOW_MENUS = 'show_menus';
+
+    /**
+     * Paramètre show_menu
+     * @var string
+     */
+    public const PARAM_SHOW_TAGS = 'show_tags';
+
+    /**
+     * Paramètre show_menu
+     * @var string
+     */
+    public const PARAM_SHOW_STATISTIQUES = 'show_statistiques';
 
     /**
      * Paramètre menu_position
@@ -60,7 +72,9 @@ class ApiParametersFindPageRef
         self::PARAM_LOCALE => '',
         self::PARAM_PAGE => '',
         self::PARAM_LIMIT => '',
-        self::PARAM_SHOW_MENU => '',
+        self::PARAM_SHOW_MENUS => '',
+        self::PARAM_SHOW_TAGS => '',
+        self::PARAM_SHOW_STATISTIQUES => '',
         self::PARAM_MENU_POSITION => '',
         self::PARAM_USER_TOKEN => '',
     ];
@@ -72,7 +86,9 @@ class ApiParametersFindPageRef
         self::PARAM_LOCALE => 'fr',
         self::PARAM_PAGE => 1,
         self::PARAM_LIMIT => 25,
-        self::PARAM_SHOW_MENU => true,
+        self::PARAM_SHOW_MENUS => true,
+        self::PARAM_SHOW_TAGS => true,
+        self::PARAM_SHOW_STATISTIQUES => true,
         self::PARAM_MENU_POSITION => [0 => 0],
     ];
 }

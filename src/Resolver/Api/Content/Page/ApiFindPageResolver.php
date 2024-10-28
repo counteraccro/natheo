@@ -60,7 +60,9 @@ class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterfa
             $tabParameters[ApiParametersFindPageRef::PARAM_LOCALE],
             $tabParameters[ApiParametersFindPageRef::PARAM_PAGE],
             $tabParameters[ApiParametersFindPageRef::PARAM_LIMIT],
-            filter_var($tabParameters[ApiParametersFindPageRef::PARAM_SHOW_MENU], FILTER_VALIDATE_BOOLEAN),
+            filter_var($tabParameters[ApiParametersFindPageRef::PARAM_SHOW_MENUS], FILTER_VALIDATE_BOOLEAN),
+            filter_var($tabParameters[ApiParametersFindPageRef::PARAM_SHOW_TAGS], FILTER_VALIDATE_BOOLEAN),
+            filter_var($tabParameters[ApiParametersFindPageRef::PARAM_SHOW_STATISTIQUES], FILTER_VALIDATE_BOOLEAN),
             $tabParameters[ApiParametersFindPageRef::PARAM_MENU_POSITION],
             $tabParameters[ApiParametersFindPageRef::PARAM_USER_TOKEN]
         );

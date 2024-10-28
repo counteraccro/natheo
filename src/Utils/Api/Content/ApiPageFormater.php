@@ -38,8 +38,13 @@ class ApiPageFormater
         $this->return['author'] = $this->getAuthor($this->page->getUser());
         $this->return['created'] = $this->page->getCreatedAt()->getTimestamp();
         $this->return['update'] = $this->page->getUpdateAt()->getTimestamp();
-        $this->return['tags'] = $this->getTags($this->page->getTags());
-        $this->return['statistiques'] = $this->getStatistiques();
+        if ($this->dto->isShowTags()) {
+            $this->return['tags'] = $this->getTags($this->page->getTags());
+        }
+
+        if ($this->dto->isShowStatistiques()) {
+            $this->return['statistiques'] = $this->getStatistiques();
+        }
         $this->return['contents'] = $this->getPageContent($this->page->getPageContents());
 
         return $this;
@@ -58,8 +63,7 @@ class ApiPageFormater
 
             $type = $pageContent->getType();
             $content = '';
-            if($pageContent->getType() === PageConst::CONTENT_TYPE_TEXT)
-            {
+            if ($pageContent->getType() === PageConst::CONTENT_TYPE_TEXT) {
                 $pageContentTranslation = $pageContent->getPageContentTranslationByLocale($this->dto->getLocale());
                 $content = $pageContentTranslation->getText();
             }
@@ -94,6 +98,7 @@ class ApiPageFormater
     private function getTags(Collection $tags): array
     {
         $return = [];
+
         foreach ($tags as $tag) {
             /** @var Tag $tag */
             $return[] = [
@@ -112,9 +117,9 @@ class ApiPageFormater
      */
     private function getStatistiques(): array
     {
-        return  [
+        return [
             PageStatistiqueKey::KEY_PAGE_NB_READ => $this->page->getPageStatistiqueByKey(PageStatistiqueKey::KEY_PAGE_NB_READ)->getValue()
-            ];
+        ];
 
     }
 

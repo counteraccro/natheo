@@ -51,7 +51,7 @@ class ApiPageService extends AppApiService
         $apiPageContentService = $this->getApiPageContentService();
         $pageApi['contents'] = $apiPageContentService->getFormatContent($pageApi['contents']);
 
-        if(!$dto->isShowMenu()) {
+        if(!$dto->isShowMenus()) {
             return $pageApi;
         }
         $apiMenuService = $this->getApiMenuService();

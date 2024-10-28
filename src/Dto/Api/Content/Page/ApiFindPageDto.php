@@ -60,7 +60,21 @@ class ApiFindPageDto extends AppApiDto
          * @var bool
          */
         #[Assert\Type(type: 'boolean', message: 'The show_menus parameter must be a boolean')]
-        private readonly bool $showMenu,
+        private readonly bool $showMenus,
+
+        /**
+         * Show menu
+         * @var bool
+         */
+        #[Assert\Type(type: 'boolean', message: 'The show_tags parameter must be a boolean')]
+        private readonly bool $showTags,
+
+        /**
+         * Show menu
+         * @var bool
+         */
+        #[Assert\Type(type: 'boolean', message: 'The show_statistiques parameter must be a boolean')]
+        private readonly bool $showStatistiques,
 
         /**
          * Position des menus
@@ -114,13 +128,33 @@ class ApiFindPageDto extends AppApiDto
     }
 
     /**
-     * show menu
+     * show menus
      * @return bool
      */
-    public function isShowMenu(): bool
+    public function isShowMenus(): bool
     {
-        return $this->showMenu;
+        return $this->showMenus;
     }
+
+    /**
+     * show tags
+     * @return bool
+     */
+    public function isShowTags(): bool
+    {
+        return $this->showTags;
+    }
+
+    /**
+     * show statistiques
+     * @return bool
+     */
+    public function isShowStatistiques(): bool
+    {
+        return $this->showStatistiques;
+    }
+
+
 
     /**
      * Menu position
