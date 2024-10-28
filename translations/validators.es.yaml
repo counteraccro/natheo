@@ -163,3 +163,5 @@ Error: Error
 'The limit parameter must be a integer': '__The limit parameter must be a integer'
 'The show_menus parameter must be a boolean': '__The show_menus parameter must be a boolean'
 'Choose a position between 0, (all), 1 (top), 2 (right), 3 (bottom), 4 (left)': '__Choose a position between 0, (all), 1 (top), 2 (right), 3 (bottom), 4 (left)'
+'The show_tags parameter must be a boolean': '__The show_tags parameter must be a boolean'
+'The show_statistiques parameter must be a boolean': '__The show_statistiques parameter must be a boolean'
