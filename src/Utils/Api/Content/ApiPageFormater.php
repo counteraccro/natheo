@@ -61,17 +61,9 @@ class ApiPageFormater
         foreach ($pageContents as $pageContent) {
             /** @var PageContent $pageContent */
 
-            $type = $pageContent->getType();
-            $content = '';
-            if ($pageContent->getType() === PageConst::CONTENT_TYPE_TEXT) {
-                $pageContentTranslation = $pageContent->getPageContentTranslationByLocale($this->dto->getLocale());
-                $content = $pageContentTranslation->getText();
-            }
 
             $return[] = [
-                'order' => $pageContent->getRenderBlock(),
-                'content' => $content,
-                'type' => $type
+               'id' => $pageContent->getId()
             ];
         }
         return $return;
@@ -104,7 +96,6 @@ class ApiPageFormater
             $return[] = [
                 'label' => $tag->getTagTranslationByLocale($this->dto->getLocale())->getLabel(),
                 'color' => $tag->getColor(),
-                'url' => 'TODO A FAIRE'
             ];
         }
 

@@ -42,20 +42,6 @@ class ApiFindPageDto extends AppApiDto
         private readonly string $locale,
 
         /**
-         * Numéro de la page (pagination des elements de la page)
-         * @var int
-         */
-        #[Assert\Type(type: 'integer', message: 'The page parameter must be a integer')]
-        private readonly int $page,
-
-        /**
-         * Nombre maximum de lignes dans un élement de page
-         * @var int
-         */
-        #[Assert\Type(type: 'integer', message: 'The limit parameter must be a integer')]
-        private readonly int $limit,
-
-        /**
          * Show menu
          * @var bool
          */
@@ -107,24 +93,6 @@ class ApiFindPageDto extends AppApiDto
     public function getLocale(): string
     {
         return $this->locale;
-    }
-
-    /**
-     * page
-     * @return int
-     */
-    public function getPage(): int
-    {
-        return $this->page;
-    }
-
-    /**
-     * limit
-     * @return int
-     */
-    public function getLimit(): int
-    {
-        return $this->limit;
     }
 
     /**

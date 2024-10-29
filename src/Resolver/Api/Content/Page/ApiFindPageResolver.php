@@ -58,8 +58,6 @@ class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterfa
         $dto = new ApiFindPageDto(
             $tabParameters[ApiParametersFindPageRef::PARAM_SLUG],
             $tabParameters[ApiParametersFindPageRef::PARAM_LOCALE],
-            $tabParameters[ApiParametersFindPageRef::PARAM_PAGE],
-            $tabParameters[ApiParametersFindPageRef::PARAM_LIMIT],
             filter_var($tabParameters[ApiParametersFindPageRef::PARAM_SHOW_MENUS], FILTER_VALIDATE_BOOLEAN),
             filter_var($tabParameters[ApiParametersFindPageRef::PARAM_SHOW_TAGS], FILTER_VALIDATE_BOOLEAN),
             filter_var($tabParameters[ApiParametersFindPageRef::PARAM_SHOW_STATISTIQUES], FILTER_VALIDATE_BOOLEAN),

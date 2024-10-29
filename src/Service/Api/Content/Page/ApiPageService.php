@@ -48,8 +48,8 @@ class ApiPageService extends AppApiService
         $apiPageFormater = new ApiPageFormater($page, $dto);
         $pageApi = $apiPageFormater->convertPage()->getPageForApi();
 
-        $apiPageContentService = $this->getApiPageContentService();
-        $pageApi['contents'] = $apiPageContentService->getFormatContent($pageApi['contents']);
+        //$apiPageContentService = $this->getApiPageContentService();
+        //$pageApi['contents'] = $apiPageContentService->getFormatContent($pageApi['contents']);
 
         if(!$dto->isShowMenus()) {
             return $pageApi;
