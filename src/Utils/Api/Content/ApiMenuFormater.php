@@ -65,17 +65,18 @@ class ApiMenuFormater
             $elementTranslation = $element->getMenuElementTranslationByLocale($this->locale);
 
             if ($element->getPage() !== null) {
-                $url = $element->getPage()->getPageTranslationByLocale($this->locale)->getUrl();
-                $category = strtolower($this->apiData['pageCategories'][$element->getPage()->getCategory()]);
-                $url = $this->apiOptionSystem[OptionSystemKey::OS_ADRESSE_SITE] . '/' . $category . '/' . $url;
+                $url = '';
+                $slug = $element->getPage()->getPageTranslationByLocale($this->locale)->getUrl();
             } else {
                 $url = $elementTranslation->getExternalLink();
+                $slug = '';
             }
 
             $return[$i] = [
                 'target' => $element->getLinkTarget(),
                 'label' => $elementTranslation->getTextLink(),
                 'url' => $url,
+                'slug' => $slug,
             ];
 
             if (!$element->getChildren()->isEmpty()) {
