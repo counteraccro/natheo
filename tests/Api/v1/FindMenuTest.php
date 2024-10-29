@@ -4,7 +4,6 @@ namespace App\Tests\Api\v1;
 
 use Api\v1\AppApiTest;
 use App\Entity\Admin\Content\Menu\Menu;
-use App\Utils\System\User\Role;
 
 class FindMenuTest extends AppApiTest
 {
