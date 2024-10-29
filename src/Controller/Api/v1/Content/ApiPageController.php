@@ -34,7 +34,7 @@ class ApiPageController extends AppApiController
      * @throws NonUniqueResultException
      * @throws CommonMarkException
      */
-    #[Route('/find', name: 'find')]
+    #[Route('/find', name: 'find', methods: ['GET'])]
     public function index(#[MapQueryString(
         resolver: ApiFindPageResolver::class
     )] ApiFindPageDto $apiFindPageDto): JsonResponse
@@ -53,6 +53,14 @@ class ApiPageController extends AppApiController
         }
 
 
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['menu' => '', 'dto' => $apiFindPageDto, $page]);
+        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['page' => $page]);
+    }
+
+    #[Route('/content', name: 'content', methods: ['GET'])]
+    public function getContentInPage(/*#[MapQueryString(
+        resolver: ApiFindPageResolver::class
+    )] ApiFindPageDto $apiFindPageDto*/): JsonResponse
+    {
+        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['msg' => 'yesy']);
     }
 }
