@@ -3,6 +3,7 @@
 namespace App\Repository\Admin\Content\Page;
 
 use App\Entity\Admin\Content\Page\Page;
+use App\Utils\Content\Page\PageConst;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -89,6 +90,7 @@ class PageRepository extends ServiceEntityRepository
 
     /**
      * Retourne une page en fonction de son slug
+     * Si le slug est vide, renvoi la landingPage
      * @param string $slug
      * @return Page|null
      * @throws NonUniqueResultException
@@ -96,9 +98,21 @@ class PageRepository extends ServiceEntityRepository
     public function getBySlug(string $slug) : ?Page
     {
         $query = $this->createQueryBuilder('p');
-        $query->join('p.pageTranslations', 'pt')
-            ->where('pt.url = :slug')
-            ->setParameter('slug', $slug)
+
+        if($slug !== "") {
+            $query->join('p.pageTranslations', 'pt')
+                ->where('pt.url = :slug')
+                ->setParameter('slug', $slug);
+        }
+        else {
+            $query->where('p.landingPage = :landingPage')
+                ->setParameter('landingPage', true);
+        }
+
+            $query->andWhere('p.disabled = :disabled')
+            ->setParameter('disabled', false)
+            ->andWhere('p.status = :status')
+            ->setParameter('status', PageConst::STATUS_PUBLISH)
             ->setMaxResults(1);
         return $query->getQuery()->getOneOrNullResult();
 

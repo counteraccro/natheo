@@ -27,14 +27,13 @@ class ApiPageService extends AppApiService
     /**
      * Retourne une page au format API
      * @param ApiFindPageDto $dto
-     * @param User $user
+     * @param User|null $user
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NonUniqueResultException
      * @throws NotFoundExceptionInterface
-     * @throws CommonMarkException
      */
-    public function getPageForApi(ApiFindPageDto $dto, User $user): array
+    public function getPageForApi(ApiFindPageDto $dto, User $user = null): array
     {
         $page = $this->getPageBySlug($dto->getSlug());
         if (empty($page)) {
