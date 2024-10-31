@@ -2,7 +2,7 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Permet de résoudre la validation de l'objet ApiAuthUserDto
+ * Permet de résoudre la validation de l'objet ApiFindPageDto
  */
 
 namespace App\Resolver\Api\Content\Page;

@@ -3,7 +3,6 @@
 namespace App\Tests\Api\v1;
 
 use Api\v1\AppApiTest;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class FindPageTest extends AppApiTest
 {
