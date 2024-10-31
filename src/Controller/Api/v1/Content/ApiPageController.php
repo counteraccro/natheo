@@ -7,7 +7,9 @@
 namespace App\Controller\Api\v1\Content;
 
 use App\Controller\Api\v1\AppApiController;
+use App\Dto\Api\Content\Page\ApiFindPageContentDto;
 use App\Dto\Api\Content\Page\ApiFindPageDto;
+use App\Resolver\Api\Content\Page\ApiFindPageContentResolver;
 use App\Resolver\Api\Content\Page\ApiFindPageResolver;
 use App\Utils\Api\ApiConst;
 use Doctrine\ORM\NonUniqueResultException;
@@ -30,9 +32,8 @@ class ApiPageController extends AppApiController
      * @param ApiFindPageDto $apiFindPageDto
      * @return JsonResponse
      * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      * @throws NonUniqueResultException
-     * @throws CommonMarkException
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/find', name: 'find', methods: ['GET'])]
     public function index(#[MapQueryString(
@@ -56,11 +57,16 @@ class ApiPageController extends AppApiController
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['page' => $page]);
     }
 
+    /**
+     * Retourne un pageContent en fonction de son id
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     #[Route('/content', name: 'content', methods: ['GET'])]
-    public function getContentInPage(/*#[MapQueryString(
-        resolver: ApiFindPageResolver::class
-    )] ApiFindPageDto $apiFindPageDto*/): JsonResponse
+    public function getContentInPage(#[MapQueryString(
+        resolver: ApiFindPageContentResolver::class
+    )] ApiFindPageContentDto $apiFindPageContentDto): JsonResponse
     {
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['msg' => 'yesy']);
+        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['dto' => $apiFindPageContentDto]);
     }
 }
