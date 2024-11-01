@@ -47,11 +47,14 @@ class ApiFindPageContentResolver extends AppApiResolver implements ValueResolver
             $tabParameters[$parameter] = $value;
         }
 
+        $tabParameters[ApiParametersFindPageContentRef::PARAM_USER_TOKEN] = $this->getUserToken($request);
+
         $dto = new ApiFindPageContentDto(
             intval($tabParameters[ApiParametersFindPageContentRef::PARAM_ID]),
             $tabParameters[ApiParametersFindPageContentRef::PARAM_LOCALE],
             intval($tabParameters[ApiParametersFindPageContentRef::PARAM_PAGE]),
             intval($tabParameters[ApiParametersFindPageContentRef::PARAM_LIMIT]),
+            $tabParameters[ApiParametersFindPageContentRef::PARAM_USER_TOKEN]
         );
 
         $this->validateDto($dto);

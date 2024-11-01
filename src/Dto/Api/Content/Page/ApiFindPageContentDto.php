@@ -40,6 +40,13 @@ class ApiFindPageContentDto extends AppApiDto
          */
         #[Assert\Type(type: 'integer', message: 'The limit parameter must be a integer')]
         private readonly int $limit,
+
+        /**
+         * Token
+         * @var string
+         */
+        #[Assert\Type(type: 'string', message: 'The user_token parameter must be a string')]
+        private readonly string $userToken,
     )
     {
     }
@@ -79,6 +86,17 @@ class ApiFindPageContentDto extends AppApiDto
     {
         return $this->locale;
     }
+
+    /**
+     * User token
+     * @return string
+     */
+    public function getUserToken(): string
+    {
+        return $this->userToken;
+    }
+
+
 
 
 }

@@ -29,6 +29,12 @@ class ApiParametersFindPageContentRef
     public const PARAM_LIMIT = 'limit';
 
     /**
+     * Paramètre user_token
+     * @var string
+     */
+    public const PARAM_USER_TOKEN = 'user_token';
+
+    /**
      * Tableau des paramètres
      * @var array
      */
@@ -37,6 +43,7 @@ class ApiParametersFindPageContentRef
         self::PARAM_LOCALE => '',
         self::PARAM_PAGE => '',
         self::PARAM_LIMIT => '',
+        self::PARAM_USER_TOKEN => '',
     ];
 
     /**

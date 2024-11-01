@@ -67,6 +67,11 @@ class ApiPageController extends AppApiController
         resolver: ApiFindPageContentResolver::class
     )] ApiFindPageContentDto $apiFindPageContentDto): JsonResponse
     {
+        $user = null;
+        if ($apiFindPageContentDto->getUserToken() !== "") {
+            $user = $this->getUserByUserToken($apiFindPageContentDto->getUserToken());
+        }
+
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['dto' => $apiFindPageContentDto]);
     }
 }
