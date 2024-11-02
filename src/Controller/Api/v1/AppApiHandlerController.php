@@ -9,6 +9,7 @@ namespace App\Controller\Api\v1;
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
 use App\Service\Api\Content\ApiMenuService;
+use App\Service\Api\Content\Page\ApiPageContentService;
 use App\Service\Api\Content\Page\ApiPageService;
 use App\Service\Api\System\User\ApiUserService;
 use Psr\Container\ContainerExceptionInterface;
@@ -28,6 +29,7 @@ class AppApiHandlerController extends AbstractController
             'userDataService' => UserDataService::class,
             'apiMenuService' => ApiMenuService::class,
             'apiPageService' => ApiPageService::class,
+            'apiPageContentService' => ApiPageContentService::class,
         ])]
         protected ContainerInterface $handlers
     ){}
@@ -88,6 +90,7 @@ class AppApiHandlerController extends AbstractController
     }
 
     /**
+     * Retourne un ApiPageService
      * @return ApiPageService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -95,5 +98,16 @@ class AppApiHandlerController extends AbstractController
     protected function getApiPageService(): ApiPageService
     {
         return $this->handlers->get('apiPageService');
+    }
+
+    /**
+     * Retourne un ApiPageContentService
+     * @return ApiPageContentService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getApiPageContentService() : ApiPageContentService
+    {
+        return $this->handlers->get('apiPageContentService');
     }
 }

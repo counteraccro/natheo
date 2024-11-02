@@ -6,10 +6,12 @@
  */
 namespace App\Service\Api\Content\Page;
 
+use App\Dto\Api\Content\Page\ApiFindPageContentDto;
 use App\Dto\Api\Content\Page\ApiFindPageDto;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Page\Page;
+use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\System\User;
 use App\Repository\Admin\Content\Menu\MenuRepository;
 use App\Repository\Admin\Content\Page\PageRepository;
@@ -46,9 +48,6 @@ class ApiPageService extends AppApiService
 
         $apiPageFormater = new ApiPageFormater($page, $dto);
         $pageApi = $apiPageFormater->convertPage()->getPageForApi();
-
-        //$apiPageContentService = $this->getApiPageContentService();
-        //$pageApi['contents'] = $apiPageContentService->getFormatContent($pageApi['contents']);
 
         if(!$dto->isShowMenus()) {
             return $pageApi;
@@ -103,8 +102,6 @@ class ApiPageService extends AppApiService
 
         return $return;
     }
-
-
 
     /**
      * Retourne une page en fonction du slug

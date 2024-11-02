@@ -72,6 +72,15 @@ class ApiPageController extends AppApiController
             $user = $this->getUserByUserToken($apiFindPageContentDto->getUserToken());
         }
 
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['dto' => $apiFindPageContentDto]);
+        $apiPageContentService = $this->getApiPageContentService();
+        $pageContent = $apiPageContentService->getPageContentForApi($apiFindPageContentDto, $user);
+        if(empty($pageContent))
+        {
+            $translator = $this->getTranslator();
+            throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.find.page.content.not.found', domain: 'api_errors'));
+        }
+
+
+        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['dto' => $apiFindPageContentDto, 'content' => $pageContent]);
     }
 }
