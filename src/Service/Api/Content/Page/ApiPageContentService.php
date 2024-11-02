@@ -34,24 +34,28 @@ class ApiPageContentService extends AppApiService
             return [];
         }
 
-        return [$pageContent->getId()];
+        $pageContent = $this->getFormatContent($pageContent, $dto);
+
+        return $pageContent;
     }
 
     /**
      * Formate au format API les pageContents
-     * @param array $pageContents
+     * @param PageContent $pageContent
+     * @param ApiFindPageContentDto $dto
      * @return array
      * @throws CommonMarkException
      */
-    public function getFormatContent(array $pageContents): array
+    public function getFormatContent(PageContent $pageContent, ApiFindPageContentDto $dto): array
     {
-        foreach ($pageContents as &$content) {
-            switch ($content['type']) {
+        $return = [];
+
+            switch ($pageContent->getType()) {
                 case PageConst::CONTENT_TYPE_TEXT:
-                    $content['content'] = $this->formatContentText($content['content']);
+                    $return['content'] = $this->formatContentText($pageContent->getPageContentTranslationByLocale($dto->getLocale())->getText());
             }
-        }
-        return $pageContents;
+
+        return $return;
     }
 
     /**
