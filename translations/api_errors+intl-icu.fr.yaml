@@ -11,3 +11,4 @@ api_errors.find.menu.not.id.slug.together: 'Le paramètre id ou page_slug doit �
 api_errors.user.token.not.found: 'Utilisateur non trouvé'
 api_errors.find.menu.not.found: 'Menu non disponible'
 api_errors.find.page.not.found: 'Page non disponible'
+api_errors.find.page.content.not.found: 'Contenu de page non disponible'

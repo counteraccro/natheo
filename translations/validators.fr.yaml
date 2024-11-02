@@ -163,5 +163,5 @@ Error: Erreur
 'The page parameter must be a integer': 'Le paramètre page doit être du type Integer'
 'The show_menus parameter must be a boolean': 'Le paramètre show_menus doit être du type boolean'
 'Choose a position between 0, (all), 1 (top), 2 (right), 3 (bottom), 4 (left)': 'Choisi une position entre 0 (tout) - 1 (haut) - 2 (droite) - 3 (bas) - 4 (gauche). Plusieurs choix possible'
-'The show_tags parameter must be a boolean' : 'Le paramètre show_tags doit être du type boolean'
-'The show_statistiques parameter must be a boolean' : 'Le paramètre show_statistiques doit être du type boolean'
+'The show_tags parameter must be a boolean': 'Le paramètre show_tags doit être du type boolean'
+'The show_statistiques parameter must be a boolean': 'Le paramètre show_statistiques doit être du type boolean'
