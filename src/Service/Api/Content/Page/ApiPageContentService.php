@@ -8,6 +8,8 @@
 namespace App\Service\Api\Content\Page;
 
 use App\Dto\Api\Content\Page\ApiFindPageContentDto;
+use App\Entity\Admin\Content\Faq\Faq;
+use App\Entity\Admin\Content\Faq\FaqCategory;
 use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\System\User;
 use App\Service\Api\AppApiService;
@@ -25,16 +27,19 @@ class ApiPageContentService extends AppApiService
      * @param User|null $user
      * @return array|void
      * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws NotFoundExceptionInterface|CommonMarkException
      */
-    public function getPageContentForApi(ApiFindPageContentDto $dto, User $user = null)
+    public function getPageContentForApi(ApiFindPageContentDto $dto, User $user = null): ?array
     {
         $pageContent = $this->findOneById(PageContent::class, $dto->getId());
-        if(empty($pageContent)) {
+        if (empty($pageContent)) {
             return [];
         }
 
         $pageContent = $this->getFormatContent($pageContent, $dto);
+        if (empty($pageContent['content'])) {
+            return [];
+        }
 
         return $pageContent;
     }
@@ -50,15 +55,20 @@ class ApiPageContentService extends AppApiService
     {
         $return = [];
 
-            switch ($pageContent->getType()) {
-                case PageConst::CONTENT_TYPE_TEXT:
-                    $return['content'] = $this->formatContentText($pageContent->getPageContentTranslationByLocale($dto->getLocale())->getText());
-            }
+        switch ($pageContent->getType()) {
+            case PageConst::CONTENT_TYPE_TEXT:
+                $return['content'] = $this->formatContentText($pageContent->getPageContentTranslationByLocale($dto->getLocale())->getText());
+                break;
+            case PageConst::CONTENT_TYPE_FAQ:
+                $return['content'] = $this->formatContentFAq($pageContent->getTypeId(), $dto->getLocale());
+                break;
+        }
 
         return $return;
     }
 
     /**
+     * Formate un texte
      * @param string $text
      * @return string
      * @throws CommonMarkException
@@ -67,5 +77,52 @@ class ApiPageContentService extends AppApiService
     {
         $markdown = new Markdown();
         return $markdown->convertMarkdownToHtml($text);
+    }
+
+
+    /**
+     * Format une FAQ pour les API
+     * @param int $idFaq
+     * @param string $locale
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function formatContentFAq(int $idFaq, string $locale): array
+    {
+        /** @var Faq $faq */
+        $faq = $this->findOneById(Faq::class, $idFaq);
+
+        $return = [
+            'title' => $faq->getFaqTranslationByLocale($locale)->getTitle(),
+            'categories' => []
+        ];
+
+        foreach ($faq->getFaqCategories() as $faqCategory) {
+
+            /** @var FaqCategory $category */
+            if ($faqCategory->isDisabled()) {
+                continue;
+            }
+
+            $category = [
+                'title' => $faqCategory->getFaqCategoryTranslationByLocale($locale)->getTitle(),
+                'questions' => []
+            ];
+
+            foreach ($faqCategory->getFaqQuestions() as $faqQuestion) {
+
+                if ($faqQuestion->isDisabled()) {
+                    continue;
+                }
+
+                $category['questions'][] = [
+                    'title' => $faqQuestion->getFaqQuestionTranslationByLocale($locale)->getTitle(),
+                    'answer' => $faqQuestion->getFaqQuestionTranslationByLocale($locale)->getAnswer()
+                ];
+            }
+            $return['categories'][] = $category;
+        }
+        return $return;
     }
 }
