@@ -59,6 +59,9 @@ class ApiPageController extends AppApiController
 
     /**
      * Retourne un pageContent en fonction de son id
+     * @param ApiFindPageContentDto $apiFindPageContentDto
+     * @return JsonResponse
+     * @throws CommonMarkException
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -79,8 +82,6 @@ class ApiPageController extends AppApiController
             $translator = $this->getTranslator();
             throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.find.page.content.not.found', domain: 'api_errors'));
         }
-
-
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['dto' => $apiFindPageContentDto, 'content' => $pageContent]);
+        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $pageContent);
     }
 }

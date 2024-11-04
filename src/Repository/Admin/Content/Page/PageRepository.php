@@ -71,6 +71,36 @@ class PageRepository extends ServiceEntityRepository
     }
 
     /**
+     * Retourne une liste de page en fonction de la catégorie
+     * Si la catégorie vaux zero, renvoi toutes les pages
+     * @param int $page
+     * @param int $limit
+     * @param int $categoryId
+     * @return Paginator
+     */
+    public function getPagesByCategoryPaginate(int $page, int $limit, int $categoryId = 0): Paginator
+    {
+        $query = $this->createQueryBuilder('p')
+            ->where('p.disabled = :disabled')
+            ->setParameter('disabled', false)
+            ->andWhere('p.status = :status')
+            ->setParameter('status', PageConst::STATUS_PUBLISH)
+            //->orderBy('p.updatedAt', 'DESC');
+        ;
+
+        if($categoryId !== 0) {
+            $query->andWhere('p.category = :categoryId')
+                ->setParameter('categoryId', $categoryId);
+        }
+
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
+    }
+
+    /**
      * Retourne toutes les pages sauf le champ $field avec $value
      * @param string $field
      * @param mixed $value

@@ -10,8 +10,10 @@ namespace App\Service\Api\Content\Page;
 use App\Dto\Api\Content\Page\ApiFindPageContentDto;
 use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Faq\FaqCategory;
+use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\System\User;
+use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\Markdown;
@@ -50,6 +52,8 @@ class ApiPageContentService extends AppApiService
      * @param ApiFindPageContentDto $dto
      * @return array
      * @throws CommonMarkException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getFormatContent(PageContent $pageContent, ApiFindPageContentDto $dto): array
     {
@@ -61,6 +65,11 @@ class ApiPageContentService extends AppApiService
                 break;
             case PageConst::CONTENT_TYPE_FAQ:
                 $return['content'] = $this->formatContentFAq($pageContent->getTypeId(), $dto->getLocale());
+                break;
+            case PageConst::CONTENT_TYPE_LISTING:
+                $return['content'] = $this->formatContentListing($pageContent->getTypeId(), $dto->getLocale(), $dto->getPage(), $dto->getLimit());
+                break;
+            default:
                 break;
         }
 
@@ -77,6 +86,44 @@ class ApiPageContentService extends AppApiService
     {
         $markdown = new Markdown();
         return $markdown->convertMarkdownToHtml($text);
+    }
+
+    /**
+     * Format un listing au format API
+     * @param int $typeListing
+     * @param string $locale
+     * @param int $currentPage
+     * @param int $limit
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function formatContentListing(int $typeListing, string $locale, int $currentPage, int $limit): array
+    {
+        $return = [
+            'pages' => [],
+            'limit' => $limit,
+            'current_page' => $currentPage,
+        ];
+
+        /** @var PageRepository $pageRepository */
+        $pageRepository = $this->getRepository(Page::class);
+        $listePages = $pageRepository->getPagesByCategoryPaginate($currentPage, $limit, $typeListing);
+
+        foreach($listePages as $page)
+        {
+            /** @var Page $page */
+
+            $pageTranslation = $page->getPageTranslationByLocale($locale);
+            $return['pages'][] = [
+                'title' => $pageTranslation->getTitre(),
+                'slug' => $pageTranslation->getUrl(),
+             ];
+        }
+        $nb = $listePages->count();
+        $return['rows'] = $nb;
+
+        return $return;
     }
 
 
