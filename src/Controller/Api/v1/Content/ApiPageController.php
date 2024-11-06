@@ -7,8 +7,10 @@
 namespace App\Controller\Api\v1\Content;
 
 use App\Controller\Api\v1\AppApiController;
+use App\Dto\Api\Content\Page\ApiFindPageCategoryDto;
 use App\Dto\Api\Content\Page\ApiFindPageContentDto;
 use App\Dto\Api\Content\Page\ApiFindPageDto;
+use App\Resolver\Api\Content\Page\ApiFindPageCategoryResolver;
 use App\Resolver\Api\Content\Page\ApiFindPageContentResolver;
 use App\Resolver\Api\Content\Page\ApiFindPageResolver;
 use App\Utils\Api\ApiConst;
@@ -83,5 +85,19 @@ class ApiPageController extends AppApiController
             throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.find.page.content.not.found', domain: 'api_errors'));
         }
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $pageContent);
+    }
+
+    /**
+     * Retourne une liste de page en fonction de la catégorie
+     * @param ApiFindPageCategoryDto $apiFindPageCategoryDto
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/category', name: 'category', methods: ['GET'])]
+    public function getPageByCategory(#[MapQueryString(
+        resolver: ApiFindPageCategoryResolver::class
+    )] ApiFindPageCategoryDto $apiFindPageCategoryDto) :JsonResponse{
+        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $apiFindPageCategoryDto);
     }
 }
