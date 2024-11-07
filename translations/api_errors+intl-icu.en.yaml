@@ -12,3 +12,4 @@ api_errors.find.menu.not.found: __api_errors.find.menu.not.found
 api_errors.access.unauthorized: __api_errors.access.unauthorized
 api_errors.find.page.not.found: __api_errors.find.page.not.found
 api_errors.find.page.content.not.found: __api_errors.find.page.content.not.found
+api_errors.find.listing.category.not.found: __api_errors.find.listing.category.not.found

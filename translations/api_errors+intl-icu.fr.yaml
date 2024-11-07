@@ -12,3 +12,4 @@ api_errors.user.token.not.found: 'Utilisateur non trouvé'
 api_errors.find.menu.not.found: 'Menu non disponible'
 api_errors.find.page.not.found: 'Page non disponible'
 api_errors.find.page.content.not.found: 'Contenu de page non disponible'
+api_errors.find.listing.category.not.found: "La catégorie recherchée n'existe pas"
