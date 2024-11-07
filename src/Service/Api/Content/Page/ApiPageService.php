@@ -4,14 +4,14 @@
  * @version 1.1
  * Service pour l'API Page
  */
+
 namespace App\Service\Api\Content\Page;
 
-use App\Dto\Api\Content\Page\ApiFindPageContentDto;
+use App\Dto\Api\Content\Page\ApiFindPageCategoryDto;
 use App\Dto\Api\Content\Page\ApiFindPageDto;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Page\Page;
-use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\System\User;
 use App\Repository\Admin\Content\Menu\MenuRepository;
 use App\Repository\Admin\Content\Page\PageRepository;
@@ -20,7 +20,6 @@ use App\Service\Api\Content\ApiMenuService;
 use App\Utils\Api\Content\ApiPageFormater;
 use App\Utils\Content\Page\PageStatistiqueKey;
 use Doctrine\ORM\NonUniqueResultException;
-use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -49,7 +48,7 @@ class ApiPageService extends AppApiService
         $apiPageFormater = new ApiPageFormater($page, $dto);
         $pageApi = $apiPageFormater->convertPage()->getPageForApi();
 
-        if(!$dto->isShowMenus()) {
+        if (!$dto->isShowMenus()) {
             return $pageApi;
         }
         $apiMenuService = $this->getApiMenuService();
@@ -73,6 +72,54 @@ class ApiPageService extends AppApiService
             }
         }
         return $pageApi;
+    }
+
+    /**
+     * Retourne une liste de page en fonction de la catégorie
+     * @param ApiFindPageCategoryDto $dto
+     * @param User|null $user
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getListingPageByCategoryForApi(ApiFindPageCategoryDto $dto, User $user = null): array
+    {
+        $return = [
+            'pages' => [],
+            'limit' => $dto->getLimit(),
+            'current_page' => $dto->getPage(),
+        ];
+
+        $pageService = $this->getPageService();
+        $listeCategories = $pageService->getAllCategories();
+        $idCategory = 0;
+        foreach ($listeCategories as $id => $label) {
+            if (strtolower(trim($label)) == strtolower(trim($dto->getCategory()))) {
+                $idCategory = $id;
+            }
+        }
+
+        if ($idCategory === 0) {
+            return [];
+        }
+
+        /** @var PageRepository $pageRepository */
+        $pageRepository = $this->getRepository(Page::class);
+        $listePages = $pageRepository->getPagesByCategoryPaginate($dto->getPage(), $dto->getLimit(), $idCategory);
+
+        foreach ($listePages as $page) {
+            /** @var Page $page */
+
+            $pageTranslation = $page->getPageTranslationByLocale($dto->getLocale());
+            $return['pages'][] = [
+                'title' => $pageTranslation->getTitre(),
+                'slug' => $pageTranslation->getUrl(),
+            ];
+        }
+        $nb = $listePages->count();
+        $return['rows'] = $nb;
+
+        return $return;
     }
 
     /**

@@ -4,6 +4,7 @@
  * @version 1.0
  * Controller pour les pages via API
  */
+
 namespace App\Controller\Api\v1\Content;
 
 use App\Controller\Api\v1\AppApiController;
@@ -49,8 +50,7 @@ class ApiPageController extends AppApiController
 
         $apiPageService = $this->getApiPageService();
         $page = $apiPageService->getPageForApi($apiFindPageDto, $user);
-        if(empty($page))
-        {
+        if (empty($page)) {
             $translator = $this->getTranslator();
             throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.find.page.not.found', domain: 'api_errors'));
         }
@@ -79,8 +79,7 @@ class ApiPageController extends AppApiController
 
         $apiPageContentService = $this->getApiPageContentService();
         $pageContent = $apiPageContentService->getPageContentForApi($apiFindPageContentDto, $user);
-        if(empty($pageContent))
-        {
+        if (empty($pageContent)) {
             $translator = $this->getTranslator();
             throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.find.page.content.not.found', domain: 'api_errors'));
         }
@@ -97,7 +96,20 @@ class ApiPageController extends AppApiController
     #[Route('/category', name: 'category', methods: ['GET'])]
     public function getPageByCategory(#[MapQueryString(
         resolver: ApiFindPageCategoryResolver::class
-    )] ApiFindPageCategoryDto $apiFindPageCategoryDto) :JsonResponse{
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $apiFindPageCategoryDto);
+    )] ApiFindPageCategoryDto $apiFindPageCategoryDto): JsonResponse
+    {
+        $user = null;
+        if ($apiFindPageCategoryDto->getUserToken() !== "") {
+            $user = $this->getUserByUserToken($apiFindPageCategoryDto->getUserToken());
+        }
+
+        $apiPageService = $this->getApiPageService();
+        $listing = $apiPageService->getListingPageByCategoryForApi($apiFindPageCategoryDto, $user);
+        if (empty($listing)) {
+            $translator = $this->getTranslator();
+            throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.find.listing.category.not.found', domain: 'api_errors'));
+        }
+
+        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $listing);
     }
 }
