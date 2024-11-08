@@ -19,6 +19,8 @@ use App\Service\Api\AppApiService;
 use App\Service\Api\Content\ApiMenuService;
 use App\Utils\Api\Content\ApiPageFormater;
 use App\Utils\Content\Page\PageStatistiqueKey;
+use App\Utils\System\Options\OptionUserKey;
+use App\Utils\System\User\PersonalData;
 use Doctrine\ORM\NonUniqueResultException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -107,13 +109,21 @@ class ApiPageService extends AppApiService
         $pageRepository = $this->getRepository(Page::class);
         $listePages = $pageRepository->getPagesByCategoryPaginate($dto->getPage(), $dto->getLimit(), $idCategory);
 
+
+
         foreach ($listePages as $page) {
             /** @var Page $page */
+
+            $render = $page->getUser()->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue();
+            $personalData = new PersonalData($user, $render);
 
             $pageTranslation = $page->getPageTranslationByLocale($dto->getLocale());
             $return['pages'][] = [
                 'title' => $pageTranslation->getTitre(),
                 'slug' => $pageTranslation->getUrl(),
+                'author' => $personalData->getPersonalData(),
+                'created' => $page->getCreatedAt()->getTimestamp(),
+                'update' => $page->getUpdateAt()->getTimestamp()
             ];
         }
         $nb = $listePages->count();

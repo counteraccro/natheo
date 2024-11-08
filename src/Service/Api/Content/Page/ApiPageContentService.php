@@ -17,6 +17,8 @@ use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\Markdown;
+use App\Utils\System\Options\OptionUserKey;
+use App\Utils\System\User\PersonalData;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -113,12 +115,17 @@ class ApiPageContentService extends AppApiService
         foreach($listePages as $page)
         {
             /** @var Page $page */
+            $render = $page->getUser()->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue();
+            $personalData = new PersonalData($page->getUser(), $render);
 
             $pageTranslation = $page->getPageTranslationByLocale($locale);
             $return['pages'][] = [
                 'title' => $pageTranslation->getTitre(),
                 'slug' => $pageTranslation->getUrl(),
-             ];
+                'author' => $personalData->getPersonalData(),
+                'created' => $page->getCreatedAt()->getTimestamp(),
+                'update' => $page->getUpdateAt()->getTimestamp()
+            ];
         }
         $nb = $listePages->count();
         $return['rows'] = $nb;
