@@ -166,3 +166,4 @@ Error: Error
 'The show_tags parameter must be a boolean': '__The show_tags parameter must be a boolean'
 'The show_statistiques parameter must be a boolean': '__The show_statistiques parameter must be a boolean'
 'The category parameter must be a string': '__The category parameter must be a string'
+'The tag parameter must be a string': '__The tag parameter must be a string'
