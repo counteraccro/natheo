@@ -11,9 +11,11 @@ use App\Controller\Api\v1\AppApiController;
 use App\Dto\Api\Content\Page\ApiFindPageCategoryDto;
 use App\Dto\Api\Content\Page\ApiFindPageContentDto;
 use App\Dto\Api\Content\Page\ApiFindPageDto;
+use App\Dto\Api\Content\Page\ApiFindPageTagDto;
 use App\Resolver\Api\Content\Page\ApiFindPageCategoryResolver;
 use App\Resolver\Api\Content\Page\ApiFindPageContentResolver;
 use App\Resolver\Api\Content\Page\ApiFindPageResolver;
+use App\Resolver\Api\Content\Page\ApiFindPageTagResolver;
 use App\Utils\Api\ApiConst;
 use Doctrine\ORM\NonUniqueResultException;
 use League\CommonMark\Exception\CommonMarkException;
@@ -111,5 +113,18 @@ class ApiPageController extends AppApiController
         }
 
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $listing);
+    }
+
+    /**
+     * @param ApiFindPageTagDto $apiFindPageTagDto
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/tag', name: 'category', methods: ['GET'])]
+    public function getPageByTag(#[MapQueryString(
+        resolver: ApiFindPageTagResolver::class
+    )] ApiFindPageTagDto $apiFindPageTagDto) {
+        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $apiFindPageTagDto);
     }
 }
