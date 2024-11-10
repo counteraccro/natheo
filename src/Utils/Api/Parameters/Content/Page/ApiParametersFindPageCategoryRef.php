@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Paramètre de référence pour la recherche d'une liste de pages via une catégorie
+ */
 namespace App\Utils\Api\Parameters\Content\Page;
 
 class ApiParametersFindPageCategoryRef

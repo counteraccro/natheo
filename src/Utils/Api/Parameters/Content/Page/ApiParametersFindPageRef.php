@@ -4,7 +4,11 @@
  * @version 1.1
  * Référence pour les paramètres attendus pour l'API find page
  */
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Paramètre de référence pour la recherche d'une page
+ */
 namespace App\Utils\Api\Parameters\Content\Page;
 
 class ApiParametersFindPageRef

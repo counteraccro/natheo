@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Paramètre de référence remonté un PageContent
+ */
 namespace App\Utils\Api\Parameters\Content\Page;
 
 class ApiParametersFindPageContentRef
