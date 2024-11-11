@@ -3,7 +3,9 @@
 namespace App\Repository\Admin\Content\Page;
 
 use App\Entity\Admin\Content\Page\Page;
+use App\Utils\Content\Page\PageConst;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -69,6 +71,63 @@ class PageRepository extends ServiceEntityRepository
     }
 
     /**
+     * Retourne une liste de page en fonction de la catégorie
+     * Si la catégorie vaux zero, renvoi toutes les pages
+     * @param int $page
+     * @param int $limit
+     * @param int $categoryId
+     * @return Paginator
+     */
+    public function getPagesByCategoryPaginate(int $page, int $limit, int $categoryId = 0): Paginator
+    {
+        $query = $this->createQueryBuilder('p')
+            ->where('p.disabled = :disabled')
+            ->setParameter('disabled', false)
+            ->andWhere('p.status = :status')
+            ->setParameter('status', PageConst::STATUS_PUBLISH)
+            ->orderBy('p.updateAt', 'DESC');
+
+        if($categoryId !== 0) {
+            $query->andWhere('p.category = :categoryId')
+                ->setParameter('categoryId', $categoryId);
+        }
+
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
+    }
+
+    /**
+     * Retourne une liste de page en fonction du tag
+     * @param int $page
+     * @param int $limit
+     * @param string $tag
+     * @return Paginator
+     */
+    public function getPagesByTagPaginate(int $page, int $limit, string $tag): Paginator
+    {
+        $query = $this->createQueryBuilder('p')
+            ->join('p.tags', 't')
+            ->join('t.tagTranslations', 'tt')
+            ->where('LOWER(tt.label) like :tag')
+            ->setParameter('tag', '%' . strtolower($tag) . '%')
+            ->andWhere('p.disabled = :disabled')
+            ->setParameter('disabled', false)
+            ->andWhere('p.status = :status')
+            ->setParameter('status', PageConst::STATUS_PUBLISH)
+            ->orderBy('p.updateAt', 'DESC');
+
+
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
+    }
+
+    /**
      * Retourne toutes les pages sauf le champ $field avec $value
      * @param string $field
      * @param mixed $value
@@ -84,6 +143,36 @@ class PageRepository extends ServiceEntityRepository
                 'value' => $value,
             ]);
         return $query->getQuery()->getResult();
+    }
+
+    /**
+     * Retourne une page en fonction de son slug
+     * Si le slug est vide, renvoi la landingPage
+     * @param string $slug
+     * @return Page|null
+     * @throws NonUniqueResultException
+     */
+    public function getBySlug(string $slug) : ?Page
+    {
+        $query = $this->createQueryBuilder('p');
+
+        if($slug !== "") {
+            $query->join('p.pageTranslations', 'pt')
+                ->where('pt.url = :slug')
+                ->setParameter('slug', $slug);
+        }
+        else {
+            $query->where('p.landingPage = :landingPage')
+                ->setParameter('landingPage', true);
+        }
+
+            $query->andWhere('p.disabled = :disabled')
+            ->setParameter('disabled', false)
+            ->andWhere('p.status = :status')
+            ->setParameter('status', PageConst::STATUS_PUBLISH)
+            ->setMaxResults(1);
+        return $query->getQuery()->getOneOrNullResult();
+
     }
 
 //    /**

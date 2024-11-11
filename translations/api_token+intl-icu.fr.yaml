@@ -1,0 +1,62 @@
+api_token.index.popin.help.title: Aide
+api_token.index.popin.help.delete: Supprimer
+api_token.index.popin.help.edit: Editer
+api_token.page_title: 'Gestion des tokens'
+api_token.page_title_h1: 'Gestion des tokens'
+api_token.description: "Gérer les tokens d'accès aux API de votre site web ainsi que les droits associés"
+api_token.success.no.disabled: 'Le token <strong>{label}</strong> est maintenant actif'
+api_token.success.disabled: 'Le token <strong>{label}</strong> est maintenant désactivé'
+api_token.remove.success: 'Le token <strong>{label}</strong> à été supprimé avec succès'
+api_token.grid.id: id
+api_token.grid.name: label
+api_token.grid.token: token
+api_token.grid.roles: roles
+api_token.grid.comment: commentaire
+api_token.grid.created_at: création
+api_token.grid.update_at: 'mise à jour'
+api_token.confirm.disabled.msg: "La désactivation du token <strong>{label}</strong> entrainera le refus d'accès de tout client utilisant ce token"
+api_token.confirm.delete.msg: 'La suppression du token <strong>{label}</strong> est définitive et sans possibilité de retour'
+api_token.add.page_title: 'Nouveau token'
+api_token.add.page_title_h1: 'Créer un token'
+api_token.add.description: 'Créer un nouveau token pour gérer les accès aux APIs de votre site'
+api_token.update.page_title: 'Edition du token #{id}'
+api_token.update.page_title_h1: 'Edition du token'
+api_token.update.description: 'Editer les données de mon token'
+api_token.index.btn.new: 'Nouveau token'
+api_token.index.popin.help.enable: 'Activer le token'
+api_token.index.popin.help.disabled: 'Désactiver le token'
+api_token.toast.title.success: 'Succès !'
+api_token.toast.title.error: 'Erreur !'
+api_token.toast.time: "A l'instant"
+api_token.card.title.add: 'Nouveau token'
+api_token.card.title.edit: 'Mon token'
+api_token.card.btn.new_token: Générer
+api_token.card.btn.copy_past: Copier
+api_token.card.input.token.help: "Attention, la modification du token va impacter toutes les applications qui l'utilise"
+api_token.role.read: Lecture
+api_token.role.write: 'Lecture + Écriture'
+api_token.role.admin: Admin
+api_token.card.select.label.role: 'Role associé au token'
+api_token.card.generate.token.success: 'Token généré avec succès'
+api_token.card.copy.success: 'Token copié avec succès'
+api_token.card.help.role: 'Liste des roles disponible pour le token'
+api_token.card.help.role_read: "Lecture : Ne donne accès qu'aux APIs de lecture"
+api_token.card.help.role_write: 'Lecture + Écriture : Donne accès aux APIs de lecture et écriture'
+api_token.card.help.role_admin: 'Admin : Donne accès à toutes les APIs'
+api_token.card.title.label: 'Nom global'
+api_token.card.title.help: 'Nom de votre Token'
+api_token.card.title.placeholder: Libellé
+api_token.card.btn.edit.token.api: Editer
+api_token.modale.confirm.edit.title: "Confirmez vous l'édition"
+api_token.modale.confirm.edit.text: 'Attention, la modification de ce token ou son rôle, impactera les applications qui utilise ce token. <br /> Confirmez-vous cette action ?'
+api_token.modale.confirm.edit.btn_ok: Oui
+api_token.modale.confirm.edit.btn_ko: Non
+api_token.card.comment.label: Commentaire
+api_token.card.comment.help: 'Commentaire pour dire qui utilise le token etc...'
+api_token.card.comment.placeholder: Commentaire
+api_token.card.btn.save.token.api: 'Créer le token'
+api_token.card.title.error: 'Vous devez saisir un nom pour votre token'
+api_token.card.input.token.error: "Vous devez générer un token via le bouton 'Générer'"
+api_token.save.success: 'Token sauvegardé avec succès'
+api_token.new.token.success: 'Token créé avec succès, redirection en cours...'
+api_token.loading: 'Chargement en cours...'

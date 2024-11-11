@@ -4,6 +4,7 @@ namespace App\Repository\Admin\Content\Menu;
 
 use App\Entity\Admin\Content\Menu\Menu;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -85,6 +86,58 @@ class MenuRepository extends ServiceEntityRepository
             ->setParameters(['value' => $value])
             ->andWhere('m.position = :position')
             ->setParameter('position', $position);
+        return $query->getQuery()->getResult();
+    }
+
+    /**
+     * Retourne un menu en fonction de l'url de la page auquel il est rattaché
+     * @param string $url
+     * @param int $position
+     * @return array
+     */
+    public function getByPageUrlAndPositionForApi(string $url, int $position): array
+    {
+        $query = $this->createQueryBuilder('m')
+            ->select(['m.position', 'm.id', 'm.type'])
+            ->join('m.pages', 'p')
+            ->join('p.pageTranslations', 'pt')
+            ->where('pt.url = :url')
+            ->setParameter('url', $url)
+            ->andWhere('m.position = :position')
+            ->setParameter('position', $position)
+            ->andWhere('m.disabled = :disabled')
+            ->setParameter('disabled', false);
+        return $query->getQuery()->getResult();
+    }
+
+    /**
+     * Retourne un menu avec uniquement les menuElements sans parent
+     * @param int $id
+     * @return array
+     */
+    public function getByIdForApi(int $id): array
+    {
+        $query = $this->createQueryBuilder('m')
+            ->select(['m.position', 'm.id', 'm.type'])
+            ->where('m.id = :id')
+            ->setParameter('id', $id)
+            ->andWhere('m.disabled = :disabled')
+            ->setParameter('disabled', false);
+        return $query->getQuery()->getResult();
+    }
+
+    /**
+     * Retourne les menus définis par défauts
+     * @return array
+     */
+    public function getDefaultForApi(): array
+    {
+        $query = $this->createQueryBuilder('m')
+            ->select(['m.position', 'm.id', 'm.type'])
+            ->where('m.defaultMenu = :default_menu')
+            ->setParameter('default_menu', true)
+            ->andWhere('m.disabled = :disabled')
+            ->setParameter('disabled', false);
         return $query->getQuery()->getResult();
     }
 }

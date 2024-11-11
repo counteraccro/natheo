@@ -114,6 +114,12 @@ class AppFixtures extends Fixture
     protected const GROUP_MENU = 'menu';
 
     /**
+     * Lié à tous les éléments api_token
+     * @var string
+     */
+    protected const GROUP_API_TOKEN = 'api_token';
+
+    /**
      * @var ContainerInterface
      */
     protected ContainerInterface $container;

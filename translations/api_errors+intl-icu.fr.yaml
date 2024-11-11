@@ -1,0 +1,16 @@
+api_errors.authentication.failure: 'Token Invalide'
+api_errors.access.denied: 'Ressource non accessible'
+api_errors.not.found: 'Ressource non disponible'
+api_errors.access.unauthorized: 'Accès non autorisé'
+api_errors.params.name.not.found: "Le paramètre attendu {param} n'est pas présent"
+api_errors.params.not.string: 'Le paramètre {param} doit être de type string'
+api_errors.params.type.not.found: 'Le type du paramètre {param} est inconnu'
+api_errors.user.not.found: 'Utilisateur non trouvé'
+api_errors.find.menu.id.slug.together: 'Le paramètre id et page_slug ne peuvent pas être mis ensemble'
+api_errors.find.menu.not.id.slug.together: 'Le paramètre id ou page_slug doit être présent'
+api_errors.user.token.not.found: 'Utilisateur non trouvé'
+api_errors.find.menu.not.found: 'Menu non disponible'
+api_errors.find.page.not.found: 'Page non disponible'
+api_errors.find.page.content.not.found: 'Contenu de page non disponible'
+api_errors.find.listing.category.not.found: "La catégorie recherchée n'existe pas"
+api_errors.find.listing.tag.not.found: "Le tag recherché n'existe pas"

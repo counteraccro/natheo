@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author Gourdon Aymeric
+ * @version 1.1
+ * Class qui charge les class nécessaire en autowrite
+ */
 
 namespace App\Service\Admin;
 

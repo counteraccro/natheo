@@ -118,6 +118,18 @@ class MenuElement
         return $this;
     }
 
+    /**
+     * Retourne la traduction en fonction de la locale
+     * @param string $locale
+     * @return MenuElementTranslation
+     */
+    public function getMenuElementTranslationByLocale(string $locale): MenuElementTranslation
+    {
+        return $this->getMenuElementTranslations()->filter(function (MenuElementTranslation $menuElementTranslation) use ($locale) {
+            return $menuElementTranslation->getLocale() === $locale;
+        })->first();
+    }
+
     public function getPage(): ?Page
     {
         return $this->page;

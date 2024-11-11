@@ -23,3 +23,7 @@ dashboard.block.help.first.connexion.modal.confirm.body.2: 'Il sera possible de 
 dashboard.block.help.first.connexion.modal.confirm.btn_ok: Oui
 dashboard.block.help.first.connexion.modal.confirm.btn_ko: Non
 dashboard.block.help.first.connexion.msg.hide.success: 'Block masqué avec succès'
+dashboard.block.help.first.connexion.api_token.status.success: 'Token présent et correctement configuré'
+dashboard.block.help.first.connexion.api_token.default.warning: 'Token(s) de test détecté(s) :'
+dashboard.block.help.first.connexion.api_token.default.warning.submsg: 'Le token {name} est présent, supprimer le !'
+dashboard.block.help.first.connexion.api_token.empty.warning: "Aucun token n'est configuré"

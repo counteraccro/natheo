@@ -73,9 +73,9 @@ class PersonalData
 
     /**
      * Retourne les données personnelles de l'utilisateur en fonction de ses préférences
-     * @return string|null
+     * @return string
      */
-    public function getPersonalData(): ?string
+    public function getPersonalData(): string
     {
         $this->checkOptionRender();
         return match ($this->optionRender) {

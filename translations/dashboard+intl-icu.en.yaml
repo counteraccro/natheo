@@ -23,3 +23,7 @@ dashboard.block.help.first.connexion.modal.confirm.body.2: __dashboard.block.hel
 dashboard.block.help.first.connexion.modal.confirm.btn_ok: __dashboard.block.help.first.connexion.modal.confirm.btn_ok
 dashboard.block.help.first.connexion.modal.confirm.btn_ko: __dashboard.block.help.first.connexion.modal.confirm.btn_ko
 dashboard.block.help.first.connexion.msg.hide.success: __dashboard.block.help.first.connexion.msg.hide.success
+dashboard.block.help.first.connexion.api_token.status.success: __dashboard.block.help.first.connexion.api_token.status.success
+dashboard.block.help.first.connexion.api_token.default.warning: __dashboard.block.help.first.connexion.api_token.default.warning
+dashboard.block.help.first.connexion.api_token.default.warning.submsg: __dashboard.block.help.first.connexion.api_token.default.warning.submsg
+dashboard.block.help.first.connexion.api_token.empty.warning: __dashboard.block.help.first.connexion.api_token.empty.warning

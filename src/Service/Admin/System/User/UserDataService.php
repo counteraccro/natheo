@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Service gérant les données de l'utilisateur
  */
 
@@ -10,10 +10,13 @@ namespace App\Service\Admin\System\User;
 use App\Entity\Admin\System\User;
 use App\Entity\Admin\System\UserData;
 use App\Service\Admin\AppAdminService;
+use App\Utils\Api\ApiConst;
+use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\User\UserDataKey;
 use DateTime;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\String\ByteString;
 
 class UserDataService extends AppAdminService
 {
@@ -104,5 +107,33 @@ class UserDataService extends AppAdminService
             return true;
         }
         return false;
+    }
+
+    /**
+     * Génère un token avec une date de validation pour le user
+     * @param User $user
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws \DateMalformedStringException
+     */
+    public function generateUserToken(User $user): string
+    {
+        $token = ByteString::fromRandom(ApiConst::API_SIZE_USER_TOKEN)->toString();
+        $this->update(UserDataKey::KEY_TOKEN_CONNEXION, $token, $user);
+
+        $optionSystem = $this->getOptionSystemService();
+        $timeToAdd = $optionSystem->getValueByKey(OptionSystemKey::OS_API_TIME_VALIDATE_USER_TOKEN);
+
+        if (intval($timeToAdd) === -1) {
+            $dateTimeStr = 'now +10 years';
+        } else {
+            $dateTimeStr = 'now +' . $timeToAdd . ' minutes';
+        }
+
+        $dt = new \DateTime($dateTimeStr);
+        $this->update(UserDataKey::TIME_VALIDATE_TOKEN, $dt->getTimestamp(), $user);
+
+        return $token;
     }
 }

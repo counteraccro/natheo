@@ -1,0 +1,48 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block title %}{{ 'api_token.page_title' | trans({}, 'api_token') }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'api_token.page_title_h1' | trans({}, 'api_token') }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    <button type="button" class="btn btn-secondary float-end ms-2" data-bs-toggle="modal" data-bs-target="#help-grid-mail">
+        <i class="bi bi-question-circle"></i>
+    </button>
+    <a href="{{ path('admin_api_token_add') }}" class="float-end btn btn-secondary"><i
+                class="bi bi-gear-wide-connected"></i> {{ 'api_token.index.btn.new' | trans({}, 'api_token') }}</a>
+
+    <p>{{ 'api_token.description' | trans({}, 'api_token') }}
+    </p><br />
+
+
+    <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_api_token_load_grid_data', {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true}) }}></div>
+
+    <twig:Admin:ModaleComponent id="help-grid-mail" bgColor="bg-secondary">
+        <twig:block name="header">
+            <i class="bi bi-question-circle"></i> {{ 'api_token.index.popin.help.title' | trans({}, 'api_token') }}
+        </twig:block>
+
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-trash"></i></button> {{ 'api_token.index.popin.help.delete' | trans({}, 'api_token') }}
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-pencil-fill"></i></button> {{ 'api_token.index.popin.help.edit' | trans({}, 'api_token') }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-eye-fill"></i>
+                </button> {{ 'api_token.index.popin.help.enable' | trans({}, 'api_token') }}
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-eye-slash-fill"></i>
+                </button> {{ 'api_token.index.popin.help.disabled' | trans({}, 'api_token') }}
+            </div>
+        </div>
+    </twig:Admin:ModaleComponent>
+
+{% endblock %}
+
