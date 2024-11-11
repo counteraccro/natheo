@@ -121,10 +121,22 @@ class ApiPageController extends AppApiController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/tag', name: 'category', methods: ['GET'])]
+    #[Route('/tag', name: 'tag', methods: ['GET'])]
     public function getPageByTag(#[MapQueryString(
         resolver: ApiFindPageTagResolver::class
     )] ApiFindPageTagDto $apiFindPageTagDto) {
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $apiFindPageTagDto);
+
+        $user = null;
+        if ($apiFindPageTagDto->getUserToken() !== "") {
+            $user = $this->getUserByUserToken($apiFindPageTagDto->getUserToken());
+        }
+
+        $apiPageService = $this->getApiPageService();
+        $listing = $apiPageService->getListingPagesByTag($apiFindPageTagDto, $user);
+        if (empty($listing['pages'])) {
+            $translator = $this->getTranslator();
+            throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.find.listing.tag.not.found', domain: 'api_errors'));
+        }
+        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $listing);
     }
 }

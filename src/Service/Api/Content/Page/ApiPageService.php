@@ -9,6 +9,7 @@ namespace App\Service\Api\Content\Page;
 
 use App\Dto\Api\Content\Page\ApiFindPageCategoryDto;
 use App\Dto\Api\Content\Page\ApiFindPageDto;
+use App\Dto\Api\Content\Page\ApiFindPageTagDto;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Page\Page;
@@ -21,7 +22,9 @@ use App\Utils\Api\Content\ApiPageFormater;
 use App\Utils\Content\Page\PageStatistiqueKey;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\PersonalData;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -90,6 +93,7 @@ class ApiPageService extends AppApiService
             'pages' => [],
             'limit' => $dto->getLimit(),
             'current_page' => $dto->getPage(),
+            'rows' => 0,
         ];
 
         $pageService = $this->getPageService();
@@ -108,17 +112,53 @@ class ApiPageService extends AppApiService
         /** @var PageRepository $pageRepository */
         $pageRepository = $this->getRepository(Page::class);
         $listePages = $pageRepository->getPagesByCategoryPaginate($dto->getPage(), $dto->getLimit(), $idCategory);
+        $return['pages'] = $this->getFormatedListingPages($listePages, $dto->getLocale());
+        $nb = $listePages->count();
+        $return['rows'] = $nb;
+        return $return;
+    }
 
+    /**
+     * Retourne une liste de pages en fonction d'un tag
+     * @param ApiFindPageTagDto $dto
+     * @param User|null $user
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getListingPagesByTag(ApiFindPageTagDto $dto, User $user = null): array
+    {
+        $return = [
+            'limit' => $dto->getLimit(),
+            'current_page' => $dto->getPage(),
+        ];
 
+        /** @var PageRepository $pageRepository */
+        $pageRepository = $this->getRepository(Page::class);
+        $listePages = $pageRepository->getPagesByTagPaginate($dto->getPage(), $dto->getLimit(), $dto->getTag());
+        $return['pages'] = $this->getFormatedListingPages($listePages, $dto->getLocale());
+        $nb = $listePages->count();
+        $return['rows'] = $nb;
+        return $return;
+    }
 
-        foreach ($listePages as $page) {
+    /**
+     * Formate au format API un listing de pages
+     * @param Paginator $pages
+     * @param string $locale
+     * @return array
+     */
+    private function getFormatedListingPages(Paginator $pages, string $locale): array
+    {
+        $return = [];
+        foreach ($pages as $page) {
             /** @var Page $page */
 
             $render = $page->getUser()->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue();
-            $personalData = new PersonalData($user, $render);
+            $personalData = new PersonalData($page->getUser(), $render);
 
-            $pageTranslation = $page->getPageTranslationByLocale($dto->getLocale());
-            $return['pages'][] = [
+            $pageTranslation = $page->getPageTranslationByLocale($locale);
+            $return[] = [
                 'title' => $pageTranslation->getTitre(),
                 'slug' => $pageTranslation->getUrl(),
                 'author' => $personalData->getPersonalData(),
@@ -126,9 +166,6 @@ class ApiPageService extends AppApiService
                 'update' => $page->getUpdateAt()->getTimestamp()
             ];
         }
-        $nb = $listePages->count();
-        $return['rows'] = $nb;
-
         return $return;
     }
 
