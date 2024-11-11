@@ -85,13 +85,40 @@ class PageRepository extends ServiceEntityRepository
             ->setParameter('disabled', false)
             ->andWhere('p.status = :status')
             ->setParameter('status', PageConst::STATUS_PUBLISH)
-            //->orderBy('p.updatedAt', 'DESC');
-        ;
+            ->orderBy('p.updateAt', 'DESC');
 
         if($categoryId !== 0) {
             $query->andWhere('p.category = :categoryId')
                 ->setParameter('categoryId', $categoryId);
         }
+
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
+    }
+
+    /**
+     * Retourne une liste de page en fonction du tag
+     * @param int $page
+     * @param int $limit
+     * @param string $tag
+     * @return Paginator
+     */
+    public function getPagesByTagPaginate(int $page, int $limit, string $tag): Paginator
+    {
+        $query = $this->createQueryBuilder('p')
+            ->join('p.tags', 't')
+            ->join('t.tagTranslations', 'tt')
+            ->where('LOWER(tt.label) like :tag')
+            ->setParameter('tag', '%' . strtolower($tag) . '%')
+            ->andWhere('p.disabled = :disabled')
+            ->setParameter('disabled', false)
+            ->andWhere('p.status = :status')
+            ->setParameter('status', PageConst::STATUS_PUBLISH)
+            ->orderBy('p.updateAt', 'DESC');
+
 
         $paginator = new Paginator($query->getQuery(), true);
         $paginator->getQuery()
