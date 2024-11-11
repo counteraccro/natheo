@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Tests\Api\v1;
+namespace Api\v1;
 
 use Api\v1\AppApiTest;
 
-class FindPageContentTest extends AppApiTest
+class FindPageTagTest extends AppApiTest
 {
-    private const URL_FIND_PAGE_CONTENT = self::URL_REF . '/page/content';
+    private const URL_FIND_PAGE_TAG = self::URL_REF . '/page/tag';
 
     /**
      * Test une mauvaise locale
@@ -14,10 +14,10 @@ class FindPageContentTest extends AppApiTest
      */
     public function testWrongParameter(): void
     {
-        $parameters = "?id=123&locale=er";
+        $parameters = "?tag=Page&locale=er";
 
         $client = static::createClient();
-        $client->request('GET', self::URL_FIND_PAGE_CONTENT . $parameters,
+        $client->request('GET', self::URL_FIND_PAGE_TAG . $parameters,
             server: $this->getCustomHeaders(self::HEADER_READ)
         );
         $response = $client->getResponse();
@@ -27,14 +27,14 @@ class FindPageContentTest extends AppApiTest
     }
 
     /**
-     * Test avec id qui n'existe pas
+     * Test avec une tag qui n'existe pas qui n'existe pas
      * @return void
      */
-    public function testBadId(): void
+    public function testBadTag(): void
     {
-        $parameters = "?id=0&locale=fr";
+        $parameters = "?tag=no-tag&locale=fr";
         $client = static::createClient();
-        $client->request('GET', self::URL_FIND_PAGE_CONTENT . $parameters,
+        $client->request('GET', self::URL_FIND_PAGE_TAG . $parameters,
             server: $this->getCustomHeaders(self::HEADER_READ)
         );
         $response = $client->getResponse();
@@ -43,17 +43,15 @@ class FindPageContentTest extends AppApiTest
         $this->assertJson($response->getContent());
     }
 
-
-
     /**
-     * Test good id
+     * Test good tag
      * @return void
      */
-    public function testIdContent()
+    public function testTag()
     {
-        $parameters = "?id=118";
+        $parameters = "?tag=Page";
         $client = static::createClient();
-        $client->request('GET', self::URL_FIND_PAGE_CONTENT . $parameters,
+        $client->request('GET', self::URL_FIND_PAGE_TAG . $parameters,
             server: $this->getCustomHeaders(self::HEADER_READ)
         );
         $response = $client->getResponse();
