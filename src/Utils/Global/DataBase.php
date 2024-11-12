@@ -77,6 +77,9 @@ class DataBase
         $query = RawPostgresQuery::getQueryExistTable($schema, $tableName);
 
         $result = $this->executeRawQuery($query);
+
+        var_dump($result);
+
         if (isset($result['result'][0]['exists'])) {
             return $result['result'][0]['exists'];
         }
@@ -109,6 +112,11 @@ class DataBase
         /** @var ParameterBagInterface $parameterBag */
         $parameterBag = $this->handlers->get('parameterBag');
         $schema = $parameterBag->get('app.default_database_schema');
+
+        if(empty($schema)) {
+            return true;
+        }
+
         if (str_contains($schema, '.')) {
             $schema = str_replace('.', '', $schema);
         }
