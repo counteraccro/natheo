@@ -4,6 +4,7 @@ namespace App\Entity\Admin\Content\Menu;
 
 use App\Entity\Admin\Content\Page\Page;
 use App\Repository\Admin\Content\Menu\MenuElementTranslationRepository;
+use App\Utils\Installation\InstallationConst;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class MenuElementTranslation
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]
     private ?int $id = null;
 

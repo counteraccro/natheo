@@ -4,6 +4,7 @@ namespace App\Entity\Admin\Content\Faq;
 
 use App\Entity\Admin\System\User;
 use App\Repository\Admin\Content\Faq\FaqRepository;
+use App\Utils\Installation\InstallationConst;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Faq
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]
     private ?int $id = null;
 

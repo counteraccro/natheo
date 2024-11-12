@@ -3,6 +3,7 @@
 namespace App\Entity\Admin\Content\Tag;
 
 use App\Repository\Admin\Content\Tag\TagTranslationRepository;
+use App\Utils\Installation\InstallationConst;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TagTranslationRepository::class)]
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class TagTranslation
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]
     private ?int $id = null;
 
