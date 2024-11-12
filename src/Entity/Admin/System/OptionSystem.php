@@ -7,6 +7,7 @@
 namespace App\Entity\Admin\System;
 
 use App\Repository\Admin\System\OptionSystemRepository;
+use App\Utils\Installation\InstallationConst;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,11 +17,11 @@ use Doctrine\ORM\Mapping as ORM;
 class OptionSystem
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name:'`key`', length: 255)]
     private ?string $key = null;
 
     #[ORM\Column(length: 65535)]

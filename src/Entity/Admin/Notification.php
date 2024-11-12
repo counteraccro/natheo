@@ -4,6 +4,7 @@ namespace App\Entity\Admin;
 
 use App\Entity\Admin\System\User;
 use App\Repository\Admin\NotificationRepository;
+use App\Utils\Installation\InstallationConst;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Ignore;
@@ -14,7 +15,7 @@ use Symfony\Component\Serializer\Annotation\Ignore;
 class Notification
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]
     private ?int $id = null;
 
@@ -28,10 +29,10 @@ class Notification
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name: '`level`')]
     private ?int $level = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name: '`read`')]
     private ?bool $read = null;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]

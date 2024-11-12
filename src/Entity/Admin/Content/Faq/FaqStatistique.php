@@ -3,6 +3,7 @@
 namespace App\Entity\Admin\Content\Faq;
 
 use App\Repository\Admin\Content\Faq\FaqStatistiqueRepository;
+use App\Utils\Installation\InstallationConst;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class FaqStatistique
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]
     private ?int $id = null;
 
@@ -20,7 +21,7 @@ class FaqStatistique
     #[ORM\JoinColumn(nullable: false)]
     private ?Faq $faq = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name:'`key`', length: 255)]
     private ?string $key = null;
 
     #[ORM\Column(length: 255)]
