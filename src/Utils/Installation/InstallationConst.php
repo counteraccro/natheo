@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Constantes pour l'installation
+ */
 namespace App\Utils\Installation;
 
 class InstallationConst
@@ -22,4 +26,11 @@ class InstallationConst
      * @var string
      */
     const OPTION_DATABASE_URL_CREATE_DATABASE = 'create_database';
+
+    /**
+     * Stratégie pour la création de la base de données
+     * SEQUENCE pour ORACLE et PostgreSQL
+     * IDENTITY pour MySQL, SQLite, MsSQL et SQL
+     */
+    const STRATEGY = 'SEQUENCE';
 }
