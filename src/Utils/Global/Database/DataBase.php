@@ -5,7 +5,7 @@
  * @version 1.0
  */
 
-namespace App\Utils\Global;
+namespace App\Utils\Global\Database;
 
 use App\Utils\Tools\DatabaseManager\Query\RawPostgresQuery;
 use App\Utils\Utils;
@@ -26,6 +26,9 @@ class DataBase
      */
     protected EntityManagerInterface $entityManager;
 
+    /**
+     * @var Connection|mixed
+     */
     protected Connection $connection;
 
     /**
@@ -36,6 +39,8 @@ class DataBase
         'entityManager' => EntityManagerInterface::class,
         'connexion' => Connection::class,
         'parameterBag' => ParameterBagInterface::class,
+        'rawQueryManager' => RawQueryManager::class,
+        'rawResultQueryManager' => RawResultQueryManager::class,
     ])] private readonly ContainerInterface $handlers)
     {
         $this->entityManager = $this->handlers->get('entityManager');
@@ -74,17 +79,16 @@ class DataBase
             $tableName = $prefix . 'user';
         }
 
-        $query = RawPostgresQuery::getQueryExistTable($schema, $tableName);
+        /** @var RawQueryManager $rawQueryManager */
+        $rawQueryManager = $this->handlers->get('rawQueryManager');
+        $query = $rawQueryManager->getQueryExistTable($schema, $tableName);
 
         $result = $this->executeRawQuery($query);
 
-        var_dump($result);
+        /** @var RawResultQueryManager $rawResultQueryManager */
+        $rawResultQueryManager = $this->handlers->get('rawResultQueryManager');
 
-        if (isset($result['result'][0]['exists'])) {
-            return $result['result'][0]['exists'];
-        }
-        return false;
-
+        return $rawResultQueryManager->getResultExistTable($result);
     }
 
     /**
