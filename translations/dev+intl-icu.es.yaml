@@ -4,3 +4,4 @@ dev.info.version: __dev.info.version
 dev.info.last.commit: __dev.info.last.commit
 dev.info.date.last.commit: __dev.info.date.last.commit
 dev.info.env: __dev.info.env
+dev.info.database: __dev.info.database
