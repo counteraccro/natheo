@@ -7,7 +7,7 @@
 
 namespace App\Utils\Tools\DatabaseManager\Query;
 
-class RawPostgresQuery
+class RawPostgresQuery implements RawQueryInterface
 {
     /**
      * Requête SQL pour obtenir l'ensemble des tables de la base de données

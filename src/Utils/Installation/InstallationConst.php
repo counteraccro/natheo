@@ -28,9 +28,21 @@ class InstallationConst
     const OPTION_DATABASE_URL_CREATE_DATABASE = 'create_database';
 
     /**
+     * Stratégie Doctrine pour postgreSql
+     * @var string
+     */
+    const STRATEGY_POSTGRESQL = 'SEQUENCE';
+
+    /**
+     * Stratégie Doctrine pour Mysql
+     * @var string
+     */
+    const STRATEGY_MYSQL = 'IDENTITY';
+
+    /**
      * Stratégie pour la création de la base de données
      * SEQUENCE pour ORACLE et PostgreSQL
      * IDENTITY pour MySQL, SQLite, MsSQL et SQL
      */
-    const STRATEGY = 'SEQUENCE';
+    const STRATEGY = self::STRATEGY_MYSQL;
 }
