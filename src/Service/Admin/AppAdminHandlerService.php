@@ -9,7 +9,7 @@ namespace App\Service\Admin;
 
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;
-use App\Utils\Global\DataBase;
+use App\Utils\Global\Database\DataBase;
 use App\Utils\Global\EnvFile;
 use App\Utils\Translate\GridTranslate;
 use Doctrine\ORM\EntityManagerInterface;
