@@ -7,6 +7,7 @@
 namespace App\Utils\Tools\DatabaseManager\QueryResult;
 
 use App\Utils\Tools\DatabaseManager\QueryResult\RawResultQueryInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RawResultMysqlQuery implements RawResultQueryInterface
 {
@@ -14,7 +15,7 @@ class RawResultMysqlQuery implements RawResultQueryInterface
     /**
      * @inheritDoc
      */
-    public static function getResultAllInformationSchema(array $result): array
+    public static function getResultAllInformationSchema(array $result, TranslatorInterface $translator): array
     {
        return [];
     }
@@ -22,7 +23,7 @@ class RawResultMysqlQuery implements RawResultQueryInterface
     /**
      * @inheritDoc
      */
-    public static function getResultStructureTable(array $result): array
+    public static function getResultStructureTable(array $result, TranslatorInterface $translator): array
     {
         return [];
     }
@@ -36,13 +37,5 @@ class RawResultMysqlQuery implements RawResultQueryInterface
             return true;
         }
         return false;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function getResultAllDatabase(array $result): array
-    {
-        return [];
     }
 }

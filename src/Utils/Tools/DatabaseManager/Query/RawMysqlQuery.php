@@ -44,6 +44,6 @@ class RawMysqlQuery implements RawQueryInterface
      */
     public static function getQueryAllDatabase(): string
     {
-        return "";
+        return "SHOW DATABASES;";
     }
 }

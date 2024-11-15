@@ -50,10 +50,14 @@ class DataBase
     /**
      * Détecte si la base de données est connecté ou non
      * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function isConnected(): bool
     {
-        $query = RawPostgresQuery::getQueryAllDatabase();
+        /** @var RawQueryManager $rawQueryManager */
+        $rawQueryManager = $this->handlers->get('rawQueryManager');
+        $query = $rawQueryManager->getQueryAllDatabase();
         $this->executeRawQuery($query);
         return $this->entityManager->getConnection()->isConnected();
     }

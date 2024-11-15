@@ -10,6 +10,7 @@ namespace App\Utils\Global\Database;
 use App\Utils\Installation\InstallationConst;
 use App\Utils\Tools\DatabaseManager\QueryResult\RawResultMysqlQuery;
 use App\Utils\Tools\DatabaseManager\QueryResult\RawResultPostgresQuery;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RawResultQueryManager
 {
@@ -30,11 +31,12 @@ class RawResultQueryManager
     /**
      * Retourne de façon formaté l'ensemble des informations de la bdd
      * @param array $result
+     * @param TranslatorInterface $translator
      * @return array
      */
-    public function getResultAllInformationSchema(array $result): array
+    public function getResultAllInformationSchema(array $result, TranslatorInterface $translator): array
     {
-        return $this->rawClass::getResultAllInformationSchema($result);
+        return $this->rawClass::getResultAllInformationSchema($result, $translator);
     }
 
     /**
@@ -42,9 +44,9 @@ class RawResultQueryManager
      * @param array $result
      * @return array
      */
-    public function getResultStructureTable(array $result): array
+    public function getResultStructureTable(array $result, TranslatorInterface $translator): array
     {
-        return $this->rawClass::getResultStructureTable($result);
+        return $this->rawClass::getResultStructureTable($result, $translator);
     }
 
     /**
@@ -55,15 +57,5 @@ class RawResultQueryManager
     public function getResultExistTable(array $result): bool
     {
         return $this->rawClass::getResultExistTable($result);
-    }
-
-    /**
-     * Permet d'obtenir la liste des bases de données
-     * @param array $result
-     * @return array
-     */
-    public function getResultAllDatabase(array $result): array
-    {
-        return $this->rawClass::getResultAllDatabase($result);
     }
 }
