@@ -3,7 +3,7 @@
 namespace App\Service\Installation;
 
 use App\Entity\Admin\System\User;
-use App\Repository\App\Admin\UserRepository;
+use App\Repository\Admin\System\UserRepository;
 use App\Service\Admin\AppAdminService;
 use App\Utils\Global\EnvFile;
 use App\Utils\Installation\InstallationConst;
