@@ -16,7 +16,12 @@ class RawMysqlQuery implements RawQueryInterface
      */
     public static function getQueryAllInformationSchema(string $schema): string
     {
-        return "";
+        return "SELECT table_schema as 'schema', table_name AS 'table_name',
+                table_rows as 'row',
+                (data_length + index_length) AS 'size'
+                FROM information_schema.TABLES
+                WHERE table_schema = '" . $schema . "'
+                ORDER BY table_name ASC;";
     }
 
     /**
@@ -24,7 +29,7 @@ class RawMysqlQuery implements RawQueryInterface
      */
     public static function getQueryStructureTable(string $table): string
     {
-        return "";
+        return "DESCRIBE " . $table . ";";
     }
 
     /**
