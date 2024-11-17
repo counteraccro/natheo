@@ -56,7 +56,38 @@ class RawResultMysqlQuery implements RawResultQueryInterface
      */
     public static function getResultStructureTable(array $result, TranslatorInterface $translator): array
     {
-        return [];
+        //var_dump($result);
+
+        $newHeader = [
+            'column_name' => $translator->trans('database_manager.schema.table.row.column_name', domain: 'database_manager'),
+            'data_type' => $translator->trans('database_manager.schema.table.row.data_type', domain: 'database_manager'),
+            'character_maximum_length' => $translator->trans('database_manager.schema.table.row.character_maximum_length', domain: 'database_manager'),
+            'is_nullable' => $translator->trans('database_manager.schema.table.row.is_nullable', domain: 'database_manager'),
+            'column_default' => $translator->trans('database_manager.schema.table.row.column_default', domain: 'database_manager'),
+        ];
+
+        $return = [];
+
+        foreach($result['result'] as $row) {
+
+            $dataType = $row['Type'];
+            $length = '';
+            preg_match('#\((.*?)\)#', $row['Type'], $match);
+            if(!empty($match)) {
+                $dataType = explode('(', $row['Type'])[0];
+                $length = $match[1];
+            }
+
+            $return['result'][] = [
+                'column_name' => $row['Field'],
+                'data_type' => $dataType,
+                'character_maximum_length' => $length,
+                'is_nullable' => $row['Null'],
+                'column_default' => $row['Default'],
+            ];
+        }
+        $return['header'] = $newHeader;
+        return $return;
     }
 
     /**
