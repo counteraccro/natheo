@@ -56,8 +56,6 @@ class RawResultMysqlQuery implements RawResultQueryInterface
      */
     public static function getResultStructureTable(array $result, TranslatorInterface $translator): array
     {
-        //var_dump($result);
-
         $newHeader = [
             'column_name' => $translator->trans('database_manager.schema.table.row.column_name', domain: 'database_manager'),
             'data_type' => $translator->trans('database_manager.schema.table.row.data_type', domain: 'database_manager'),
@@ -68,12 +66,12 @@ class RawResultMysqlQuery implements RawResultQueryInterface
 
         $return = [];
 
-        foreach($result['result'] as $row) {
+        foreach ($result['result'] as $row) {
 
             $dataType = $row['Type'];
             $length = '';
             preg_match('#\((.*?)\)#', $row['Type'], $match);
-            if(!empty($match)) {
+            if (!empty($match)) {
                 $dataType = explode('(', $row['Type'])[0];
                 $length = $match[1];
             }
