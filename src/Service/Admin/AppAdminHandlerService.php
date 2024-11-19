@@ -9,7 +9,9 @@ namespace App\Service\Admin;
 
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;
-use App\Utils\Global\DataBase;
+use App\Utils\Global\Database\DataBase;
+use App\Utils\Global\Database\RawQueryManager;
+use App\Utils\Global\Database\RawResultQueryManager;
 use App\Utils\Global\EnvFile;
 use App\Utils\Translate\GridTranslate;
 use Doctrine\ORM\EntityManagerInterface;
@@ -50,7 +52,9 @@ class AppAdminHandlerService
             'gridTranslate' => GridTranslate::class,
             'database' => Database::class,
             'envFile' => EnvFile::class,
-            'userData' => UserDataService::class
+            'userData' => UserDataService::class,
+            'rawQueryManager' => RawQueryManager::class,
+            'rawResultQueryManager' => RawResultQueryManager::class,
         ])]
         protected ContainerInterface $handlers){}
 
@@ -249,5 +253,27 @@ class AppAdminHandlerService
     protected function getUserData() :UserDataService
     {
         return $this->handlers->get('userData');
+    }
+
+    /**
+     * Retourne un rawQueryManager
+     * @return RawQueryManager
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getRawQueryManager() : RawQueryManager
+    {
+        return $this->handlers->get('rawQueryManager');
+    }
+
+    /**
+     * Retourne un RawResultQueryManager
+     * @return RawResultQueryManager
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getRawResultQueryManager() : RawResultQueryManager
+    {
+        return $this->handlers->get('rawResultQueryManager');
     }
 }

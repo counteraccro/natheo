@@ -10,7 +10,7 @@ namespace App\Controller\Admin\Tools;
 use App\Message\Tools\DumpSql;
 use App\Service\Admin\Tools\DatabaseManagerService;
 use App\Utils\Breadcrumb;
-use App\Utils\Global\DataBase;
+use App\Utils\Global\Database\DataBase;
 use App\Utils\Translate\Tools\DatabaseManagerTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

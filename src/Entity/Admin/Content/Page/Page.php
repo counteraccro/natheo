@@ -7,6 +7,7 @@ use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
 use App\Repository\Admin\Content\Page\PageRepository;
+use App\Utils\Installation\InstallationConst;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -20,7 +21,7 @@ use Doctrine\ORM\Mapping\JoinTable;
 class Page
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]
     private ?int $id = null;
 

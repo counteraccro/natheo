@@ -3,6 +3,7 @@
 namespace App\Entity\Admin\Content\Page;
 
 use App\Repository\Admin\Content\Page\PageStatistiqueRepository;
+use App\Utils\Installation\InstallationConst;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PageStatistiqueRepository::class)]
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class PageStatistique
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]
     private ?int $id = null;
 
@@ -18,7 +19,7 @@ class PageStatistique
     #[ORM\JoinColumn(nullable: false)]
     private ?Page $page = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name:'`key`', length: 255)]
     private ?string $key = null;
 
     #[ORM\Column(length: 255)]

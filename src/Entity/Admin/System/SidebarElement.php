@@ -8,6 +8,7 @@
 namespace App\Entity\Admin\System;
 
 use App\Repository\Admin\System\SidebarElementRepository;
+use App\Utils\Installation\InstallationConst;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -20,7 +21,7 @@ class SidebarElement
 {
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]
     private ?int $id = null;
 
@@ -49,7 +50,7 @@ class SidebarElement
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name:'`lock`')]
     private ?bool $lock = null;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]

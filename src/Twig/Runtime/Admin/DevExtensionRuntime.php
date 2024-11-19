@@ -10,6 +10,7 @@ namespace App\Twig\Runtime\Admin;
 use App\Service\Admin\Dev\GitService;
 use App\Service\Admin\System\SidebarElementService;
 use App\Twig\Runtime\AppExtensionRuntime;
+use App\Utils\Installation\InstallationConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -74,19 +75,25 @@ class DevExtensionRuntime extends AppAdminExtensionRuntime implements RuntimeExt
     /**
      * Retourne les informations pour les dev
      * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function getDevInfo(): string
     {
         $version = $this->parameterBag->get('app.version');
         $env = $this->parameterBag->get('kernel.environment');
         $infoGit = $this->gitService->getInfoGit();
+        $database = match(InstallationConst::STRATEGY) {
+            InstallationConst::STRATEGY_MYSQL => 'Mysql',
+            InstallationConst::STRATEGY_POSTGRESQL => 'PostgreSQL',
+        };
         
         return '<fieldset>
         <legend class="text-white">' . $this->translator->trans('dev.info', domain: 'dev') . '</legend>
-            <i class="bi bi-github"></i> <i>
+            <i class="bi bi-git"></i> <i>
             ' . $this->translator->trans('dev.info.branche', domain: 'dev') .
             ' <b>' . $infoGit[GitService::KEY_BRANCHE] . '</b></i> <br />
-            <i class="bi bi-git"></i> <i>
+            <i class="bi bi-github"></i> <i>
             ' . $this->translator->trans('dev.info.last.commit', domain: 'dev') .
             ' <b><abbr title="' . $infoGit[GitService::KEY_HASH] . '">'
             . substr($infoGit[GitService::KEY_HASH], 0, 7) . '</abbr></b></i>
@@ -101,6 +108,10 @@ class DevExtensionRuntime extends AppAdminExtensionRuntime implements RuntimeExt
              <br />
             <i class="bi bi-hdd-fill"></i> <i>
             ' . $this->translator->trans('dev.info.env', domain: 'dev') . ' <b>' . $env . '</b></i>
+            <br />
+            <i class="bi bi-database-fill"></i> <i>
+            ' . $this->translator->trans('dev.info.database', domain: 'dev') .' <b> ' . $database . '</b>
+            </i>
         </fieldset>';
     }
 
@@ -108,7 +119,7 @@ class DevExtensionRuntime extends AppAdminExtensionRuntime implements RuntimeExt
      * Retourne les informations PHP
      * @return void
      */
-    public function getPhpInfo()
+    public function getPhpInfo(): void
     {
         phpinfo();
     }

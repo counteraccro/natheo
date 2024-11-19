@@ -4,3 +4,4 @@ dev.info.version: Version
 dev.info.last.commit: Commit
 dev.info.date.last.commit: Date
 dev.info.env: Environnement
+dev.info.database: BDD

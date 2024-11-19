@@ -7,6 +7,7 @@
 namespace App\Entity\Admin\System;
 
 use App\Repository\Admin\System\UserDataRepository;
+use App\Utils\Installation\InstallationConst;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 class UserData
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]
     private ?int $id = null;
 
@@ -24,7 +25,7 @@ class UserData
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name:'`key`', length: 255)]
     private ?string $key = null;
 
     #[ORM\Column(type: Types::TEXT)]

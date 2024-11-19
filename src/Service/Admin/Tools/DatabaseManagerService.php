@@ -8,21 +8,13 @@
 namespace App\Service\Admin\Tools;
 
 use App\Service\Admin\AppAdminService;
-use App\Service\AppService;
-use App\Utils\Global\DataBase;
+use App\Utils\Global\Database\DataBase;
 use App\Utils\Tools\DatabaseManager\DatabaseManagerConst;
 use App\Utils\Tools\DatabaseManager\Query\RawPostgresQuery;
 use App\Utils\Utils;
-use Doctrine\ORM\EntityManagerInterface;
 use Nette\Utils\Finder;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DatabaseManagerService extends AppAdminService
 {
@@ -37,45 +29,16 @@ class DatabaseManagerService extends AppAdminService
     {
         /** @var DataBase $database */
         $database = $this->handlers->get('database');
+        $rawQuery = $this->getRawQueryManager();
+        $rawResultQuery = $this->getRawResultQueryManager();
+
         $translator = $this->getTranslator();
         $parameterBag = $this->getParameterBag();
-        $query = RawPostgresQuery::getQueryAllInformationSchema(
-            str_replace('.', '',$parameterBag->get('app.default_database_schema'))
-        );
+
+        $query = $rawQuery->getQueryAllInformationSchema(str_replace('.', '',$parameterBag->get('app.default_database_schema')));
         $result = $database->executeRawQuery($query);
 
-        $newHeader = [];
-        foreach ($result['header'] as $header) {
-            if ($header === 'total_bytes') {
-                continue;
-            }
-            $newHeader[$header] = $translator->trans('database_manager.schema.all.bdd.row.' . $header,
-                domain: 'database_manager');
-        }
-
-        $nbElement = 0;
-        $sizeBite = 0;
-        $nbTable = 0;
-        foreach ($result['result'] as &$row) {
-            if (intval($row['row']) !== -1) {
-                $nbElement += intval($row['row']);
-            } else {
-                $row['row'] = $translator->trans('database_manager.schema.all.bdd.error_row.',
-                    domain: 'database_manager');
-            }
-            $sizeBite += intval($row['total_bytes']);
-            unset($row['total_bytes']);
-            $nbTable++;
-        }
-
-        $result['header'] = $newHeader;
-        $result['stat'] = [
-            'nbElement' => $nbElement,
-            'sizeBite' => Utils::getSizeName($sizeBite),
-            'nbTable' => $nbTable,
-        ];
-
-        return $result;
+        return $rawResultQuery->getResultAllInformationSchema($result, $translator);
     }
 
     /**
@@ -88,21 +51,17 @@ class DatabaseManagerService extends AppAdminService
     public function getSchemaTableByTable(string $tableName): array
     {
         $database = $this->handlers->get('database');
+        $rawQuery = $this->getRawQueryManager();
+        $rawResultQuery = $this->getRawResultQueryManager();
         $translator = $this->getTranslator();
-        $query = RawPostgresQuery::getQueryStructureTable($tableName);
+
+        $query = $rawQuery->getQueryStructureTable($tableName);
 
         $result = $database->executeRawQuery($query);
-
-        $newHeader = [];
-        foreach ($result['header'] as $header) {
-
-            $newHeader[$header] = $translator->trans('database_manager.schema.table.row.' . $header,
-                domain: 'database_manager');
-        }
-
-        $result['header'] = $newHeader;
+        $result = $rawResultQuery->getResultStructureTable($result, $translator);
         $result['table'] = $tableName;
         return $result;
+
     }
 
     /**

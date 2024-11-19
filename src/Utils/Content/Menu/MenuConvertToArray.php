@@ -13,7 +13,7 @@ use App\Entity\Admin\Content\Menu\MenuElementTranslation;
 use App\Entity\Admin\Content\Page\Page;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
-use App\Utils\Global\DataBase;
+use App\Utils\Global\Database\DataBase;
 use Doctrine\Common\Collections\Collection;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

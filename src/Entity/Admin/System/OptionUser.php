@@ -3,6 +3,7 @@
 namespace App\Entity\Admin\System;
 
 use App\Repository\Admin\System\OptionUserRepository;
+use App\Utils\Installation\InstallationConst;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class OptionUser
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]
     private ?int $id = null;
 
@@ -20,7 +21,7 @@ class OptionUser
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(name:'`key`', type: Types::TEXT)]
     private ?string $key = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

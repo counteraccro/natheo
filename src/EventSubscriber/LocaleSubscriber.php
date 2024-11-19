@@ -8,7 +8,7 @@ namespace App\EventSubscriber;
 
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\OptionUserService;
-use App\Utils\Global\DataBase;
+use App\Utils\Global\Database\DataBase;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
 use Doctrine\DBAL\Exception;

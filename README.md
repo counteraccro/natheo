@@ -8,9 +8,15 @@ Consulter la [documentation](https://counteraccro.github.io/natheo.doc/) pour pl
 
 Environnement obligatoire pour faire tourner le CMS :
 * PHP 8.3 ou +
-* Base de données : PostgresSql 15.2
+* Base de données prise en charge : 
+  * PostgresSql 15.2 ou + 
+  * Mysql 8.2 ou +
 * Yarn 1.22.19 ou +
 * Composer 2.7.7 ou +
+
+# Information
+Par défaut la base de données utilisé est Mysql.
+Pour utiliser une autre base de données, utiliser [la procédure suivante](https://counteraccro.github.io/natheo.doc/Docs/Installation/bdd.html)
 
 # Installation
 

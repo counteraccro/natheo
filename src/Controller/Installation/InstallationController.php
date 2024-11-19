@@ -10,7 +10,7 @@ namespace App\Controller\Installation;
 use App\Entity\Admin\System\User;
 use App\Service\Admin\CommandService;
 use App\Service\Installation\InstallationService;
-use App\Utils\Global\DataBase;
+use App\Utils\Global\Database\DataBase;
 use App\Utils\Global\EnvFile;
 use App\Utils\Installation\InstallationConst;
 use App\Utils\Translate\Installation\InstallationTranslate;
