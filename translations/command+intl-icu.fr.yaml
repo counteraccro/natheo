@@ -1,0 +1,6 @@
+install.title: 'Installation de Natheo CMS'
+install.description: 'Cette commande est un raccourci des commandes suivantes :'
+install.description.create.database: 'doctrine:database:create'
+install.description.create.schema: 'doctrine:schema:create'
+install.description.fixtures.load: 'doctrine:fixtures:load '
+install.description.clear.cache: 'cache:clear'

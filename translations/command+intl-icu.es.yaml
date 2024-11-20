@@ -1,0 +1,6 @@
+install.title: __install.title
+install.description: __install.description
+install.description.create.database: __install.description.create.database
+install.description.create.schema: __install.description.create.schema
+install.description.fixtures.load: __install.description.fixtures.load
+install.description.clear.cache: __install.description.clear.cache
