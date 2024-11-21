@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Service pour gérer l'installation du site
+ * @author Gourdon Aymeric
+ * @version 1.0
+ */
 namespace App\Service\Installation;
 
 use App\Entity\Admin\System\User;
