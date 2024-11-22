@@ -24,15 +24,15 @@ Pour utiliser une autre base de données, utiliser [la procédure suivante](http
 > 
 > Si vous souhaitez faire une installation via l'installeur, [consultez cette documentation](https://counteraccro.github.io/natheo.doc/Docs/Installation/install-prod.html)
 
-Étape 1 : cloner le dépôt GIT
+#### Étape 1 : cloner le dépôt GIT
 
 ```https://github.com/counteraccro/natheo.git```
 
-Étape 2 : Installer Symfony
+#### Étape 2 : Installer Symfony
 
 ```composer update```
 
-Etape 3 : Configuration .env
+#### Étape 3 : Configuration .env
 
 Créer une copie du fichier ```.env``` en ```.env.local```
 
@@ -40,19 +40,31 @@ Créer une copie du fichier ```.env``` en ```.env.local```
 * Mettre la valeur ```1``` à ```APP_DEBUG```
 * Mettre la valeur ```[nom-de-votre-bdd]``` à ```NATHEO_SCHEMA```
 
-Étape 4 : installer la base de données
+#### Étape 4 : Installation de natheo CMS
+
+Cette commande permet de passer les étapes 5,6,7
+
+```php bin/console natheo:install```
+
+#### Étape 5 : installer la base de données
+
+*A faire si vous souhaitez faire une installation point par point*
 
 ```php bin/console doctrine:database:create```
 
-Étape 5 : récupération des tables de la base de données
+#### Étape 6 : récupération des tables de la base de données
+
+*A faire si vous souhaitez faire une installation point par point*
 
 ```php bin/console doctrine:schema:create```
 
-Étape 6 : installation des fixtures
+#### Étape 7 : installation des fixtures
+
+*A faire si vous souhaitez faire une installation point par point*
 
 ```php bin/console doctrine:fixture:load```
 
-Étape 7 : Génération des assets
+#### Étape 8 : Génération des assets
 
 ```yarn encore dev -- watch```
 
@@ -63,6 +75,8 @@ Sur votre environnement de développement
 * Authentifier vous avec le login/mot de passe suivant : ```superadmin@natheo.com/superadmin@natheo.com```
 
 # Commande : 
+
+Installation générale du CMS : ```php bin/console natheo:install```
 
 Lancer les scripts en async : ```php bin/console messenger:consume async -vv```
 
