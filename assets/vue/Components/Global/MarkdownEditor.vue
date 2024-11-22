@@ -70,8 +70,7 @@ export default {
      * @param name
      * @returns {string}
      */
-    getNameModale(name)
-    {
+    getNameModale(name) {
       return name + '-' + this.id;
     },
 
@@ -360,6 +359,8 @@ export default {
         <i class="bi bi-table"></i></div>
       <div class="btn btn-secondary btn-sm me-1" @click="this.addLink(true, false)" :title="this.meTranslate.btnLink">
         <i class="bi bi-link"></i></div>
+      <div class="btn btn-secondary btn-sm me-1" @click="alert('link interne')" :title="this.meTranslate.btnLinkInterne">
+        <i class="bi bi-link-45deg"></i></div>
       <div class="btn btn-secondary btn-sm me-1" @click="this.addLink(true, true)" :title="this.meTranslate.btnImage">
         <i class="bi bi-image"></i></div>
       <div class="btn btn-secondary btn-sm me-1" @click="this.addCode" :title="this.meTranslate.btnCode">
@@ -382,10 +383,12 @@ export default {
             {{ this.meTranslate.titreH3 }}</a></li>
           <li><a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('#### ', '0', false)">
             {{ this.meTranslate.titreH4 }}</a></li>
-          <li><a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('##### ', '0', false)">
-            {{ this.meTranslate.titreH5 }}</a></li>
-          <li><a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('###### ', '0', false)">
-            {{ this.meTranslate.titreH6 }}</a></li>
+          <li>
+            <a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('##### ', '0', false)">
+              {{ this.meTranslate.titreH5 }}</a></li>
+          <li>
+            <a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('###### ', '0', false)">
+              {{ this.meTranslate.titreH6 }}</a></li>
         </ul>
       </div>
       <div class="dropdown float-start me-1" v-if="this.meKeyWords.length !== 0">
@@ -400,9 +403,14 @@ export default {
           </li>
         </ul>
       </div>
-      <div v-if="this.meSave" class="btn btn-secondary btn-sm me-1 float-end" @click="this.eventBtnSave"
-          :title="this.meTranslate.btnSave">
-        <i class="bi bi-save"></i></div>
+      <div class="float-end">
+        <div class="btn btn-secondary btn-sm me-1" :title="this.meTranslate.preview">
+          <i class="bi bi-box-arrow-in-up-right"></i>
+        </div>
+        <div v-if="this.meSave" class="btn btn-secondary btn-sm me-1" @click="this.eventBtnSave"
+            :title="this.meTranslate.btnSave">
+          <i class="bi bi-save"></i></div>
+      </div>
     </div>
 
     <textarea :id="'editor-'+ this.id" class="form-control" :class="this.classInputTextArea()" :value="this.value"
