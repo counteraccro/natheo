@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Commande pour simplifier l'installation du CMS
+ * @author Gourdon Aymeric
+ * @version 1.0
+ */
 namespace App\Command;
 
 use App\Service\Installation\InstallationService;
@@ -8,11 +12,8 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -23,8 +24,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class InstallCommand extends Command
 {
     public function __construct(
-        private TranslatorInterface $translator,
-        private InstallationService $installationService
+        private readonly TranslatorInterface $translator,
+        private readonly InstallationService $installationService
     )
     {
         parent::__construct();
@@ -32,10 +33,6 @@ class InstallCommand extends Command
 
     protected function configure(): void
     {
-        /*$this
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('remove', null, InputOption::VALUE_NONE, 'Option description')
-        ;*/
     }
 
     /**
