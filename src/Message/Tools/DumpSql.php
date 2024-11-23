@@ -14,8 +14,8 @@ class DumpSql
      * @param int $userId
      */
     public function __construct(
-        private array $options,
-        private int   $userId
+        private readonly array $options,
+        private readonly int $userId
     )
     {
     }

@@ -87,8 +87,9 @@ class DumpSqlHandler
         if (!$options['all']) {
             foreach ($tablesTmp as $table) {
 
+                echo $table->getName();
                 foreach ($options['tables'] as $tDump) {
-                    if ($schemaParam . $tDump === $table->getName()) {
+                    if ($schemaParam . $tDump === $table->getName() || $tDump === $table->getName()) {
                         $tables[] = $table;
                     }
                 }
