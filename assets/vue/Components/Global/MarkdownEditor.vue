@@ -41,7 +41,9 @@ export default {
       isImage: false,
       isValide: "",
       dataMedia: [],
-      urlMedia: "/admin/fr/media/ajax/load-medias",
+      urlMedia: "",
+      urlPreview: "",
+      urlLoadData: "/admin/fr/markdown/ajax/load-datas",
       currentFolder: [],
       loadingMedia: false
     }
@@ -50,6 +52,7 @@ export default {
     //this.id = this.randomIntFromInterval(1, 9) + '' + this.randomIntFromInterval(1, 9);
     this.modal = new Modal(document.getElementById(this.getNameModale("modal-markdown-editor")), {});
     this.modaleMedia = new Modal(document.getElementById(this.getNameModale("modal-markdown-mediatheque")), {});
+    this.loadData();
   },
   computed: {
     output() {
@@ -60,6 +63,18 @@ export default {
     update: debounce(function (e) {
       this.value = e.target.value
     }, 50),
+
+    /** Charge les données nécessaires au fonctionnement de l'éditer **/
+    loadData() {
+      axios.get(this.urlLoadData).then((response) => {
+        this.urlMedia = response.data.media;
+        this.urlPreview = response.data.preview;
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.loading = false
+      });
+    },
 
     randomIntFromInterval(min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min)
@@ -252,6 +267,13 @@ export default {
     },
 
     /**
+     * Affiche la préview
+     */
+    openPreview() {
+      window.open(this.urlPreview, '_blank');
+    },
+
+    /**
      * Check si on est dans le cas de données éditées non sauvegardées ou non
      * @returns {boolean}
      */
@@ -404,7 +426,7 @@ export default {
         </ul>
       </div>
       <div class="float-end">
-        <div class="btn btn-secondary btn-sm me-1" :title="this.meTranslate.preview">
+        <div class="btn btn-secondary btn-sm me-1" :title="this.meTranslate.preview" @click="this.openPreview()">
           <i class="bi bi-box-arrow-in-up-right"></i>
         </div>
         <div v-if="this.meSave" class="btn btn-secondary btn-sm me-1" @click="this.eventBtnSave"
