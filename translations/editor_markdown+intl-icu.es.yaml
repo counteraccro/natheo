@@ -43,3 +43,5 @@ editor.mediatheque.size_500: __editor.mediatheque.size_500
 editor.warning.edit: __editor.warning.edit
 editor.button.link.interne: __editor.button.link.interne
 editor.button.preview: __editor.button.preview
+editor.loading: __editor.loading
+preview.title: __preview.title
