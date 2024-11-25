@@ -15,6 +15,7 @@ class MarkdownEditorTranslate extends AppTranslate
     public function getTranslate():array
     {
         return [
+            'loading' => $this->translator->trans('editor.loading', domain: 'editor_markdown'),
             'btnBold' => $this->translator->trans('editor.button.bold', domain: 'editor_markdown'),
             'btnItalic' => $this->translator->trans('editor.button.italic', domain: 'editor_markdown'),
             'btnStrike' => $this->translator->trans('editor.button.strike', domain: 'editor_markdown'),

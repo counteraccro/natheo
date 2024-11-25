@@ -29,6 +29,7 @@ export default {
   emits: ['editor-value', 'editor-value-change'],
   data() {
     return {
+      loading: false,
       value: this.meValue,
       valueRef: this.meValue,
       id: this.meId,
@@ -41,11 +42,15 @@ export default {
       isImage: false,
       isValide: "",
       dataMedia: [],
-      urlMedia: "",
-      urlPreview: "",
-      urlLoadData: "/admin/fr/markdown/ajax/load-datas",
+      urls: {
+        urlMedia: "",
+        urlPreview: "",
+        urlSetPreview: "",
+        urlLoadData: "/admin/fr/markdown/ajax/load-datas",
+      },
       currentFolder: [],
-      loadingMedia: false
+      loadingMedia: false,
+      cookieNamePreview: 'natheo-preview'
     }
   },
   mounted() {
@@ -66,9 +71,10 @@ export default {
 
     /** Charge les données nécessaires au fonctionnement de l'éditer **/
     loadData() {
-      axios.get(this.urlLoadData).then((response) => {
-        this.urlMedia = response.data.media;
-        this.urlPreview = response.data.preview;
+      axios.get(this.urls.urlLoadData).then((response) => {
+        this.urls.urlMedia = response.data.media;
+        this.urls.urlPreview = response.data.preview;
+        this.urls.urlSetPreview = response.data.initPreview;
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -157,7 +163,7 @@ export default {
     loadMedia(folderId, order, filter) {
 
       this.loadingMedia = true;
-      axios.get(this.urlMedia + '/' + folderId + '/' + order + '/' + filter, {}).then((response) => {
+      axios.get(this.urls.urlMedia + '/' + folderId + '/' + order + '/' + filter, {}).then((response) => {
         this.dataMedia = response.data.medias;
         this.currentFolder = response.data.currentFolder;
       }).catch((error) => {
@@ -270,7 +276,18 @@ export default {
      * Affiche la préview
      */
     openPreview() {
-      window.open(this.urlPreview, '_blank');
+
+      this.loading = true;
+      axios.post(this.urls.urlSetPreview, {
+        value: this.value
+      }).then((response) => {
+
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        window.open(this.urls.urlPreview, '_blank');
+        this.loading = false
+      });
     },
 
     /**
@@ -279,7 +296,8 @@ export default {
      */
     checkNoSaveData() {
       return (this.meSave && (this.valueRef !== this.value));
-    },
+    }
+    ,
 
     /**
      * Condition pour les class du textarea
@@ -293,7 +311,8 @@ export default {
       if (this.checkNoSaveData()) {
         return "border-3 border-warning"
       }
-    },
+    }
+    ,
 
     /**
      * Event sur le bouton save
@@ -308,150 +327,162 @@ export default {
 
 <template>
 
-  <div class="modal fade" :id="this.getNameModale('modal-markdown-editor')" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header bg-secondary">
-          <h1 class="modal-title fs-5 text-white"><i class="bi bi-plus-circle-fill"></i> {{ this.titleModal }}</h1>
-          <button type="button" class="btn-close" @click="closeModal"></button>
-        </div>
-        <div class="modal-body">
-          <div>
-            <div class="mb-3">
-              <label :for="'link-modal-' + this.id" class="form-label">{{ this.linkLabelModal }}</label>
-              <input type="text" class="form-control" :id="'link-modal-' + this.id" placeholder="" v-model="linkModal">
-            </div>
-            <div class="mb-3">
-              <label :for="'text-modal-' + this.id" class="form-label">Texte</label>
-              <input type="text" class="form-control" :id="'text-modal-' + this.id" placeholder="" v-model="textModal">
+  <div id="block-faq" :class="this.loading === true ? 'block-grid' : ''">
+
+    <div v-if="this.loading" class="overlay">
+      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
+        <div class="spinner-border text-primary" role="status"></div>
+        <span class="txt-overlay">{{ this.meTranslate.loading }}</span>
+      </div>
+    </div>
+
+    <div class="modal fade" :id="this.getNameModale('modal-markdown-editor')" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-secondary">
+            <h1 class="modal-title fs-5 text-white"><i class="bi bi-plus-circle-fill"></i> {{ this.titleModal }}</h1>
+            <button type="button" class="btn-close" @click="closeModal"></button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div class="mb-3">
+                <label :for="'link-modal-' + this.id" class="form-label">{{ this.linkLabelModal }}</label>
+                <input type="text" class="form-control" :id="'link-modal-' + this.id" placeholder="" v-model="linkModal">
+              </div>
+              <div class="mb-3">
+                <label :for="'text-modal-' + this.id" class="form-label">Texte</label>
+                <input type="text" class="form-control" :id="'text-modal-' + this.id" placeholder="" v-model="textModal">
+              </div>
             </div>
           </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" @click="addLink(false, this.isImage)"><i
+                class="bi bi-check2-circle"></i> {{ this.meTranslate.modalBtnValide }}
+            </button>
+            <button type="button" class="btn btn-secondary" @click="closeModal"><i class="bi bi-x-circle"></i>
+              {{ this.meTranslate.modalBtnClose }}
+            </button>
+          </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" @click="addLink(false, this.isImage)"><i
-              class="bi bi-check2-circle"></i> {{ this.meTranslate.modalBtnValide }}
+      </div>
+    </div>
+
+    <div class="modal fade" :id="this.getNameModale('modal-markdown-mediatheque')" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <MediaModalMarkdown
+              :medias="this.dataMedia"
+              :translate="this.meTranslate.mediathequeMarkdown"
+              :current-folder="this.currentFolder"
+              :loading="this.loadingMedia"
+              @close-modale="this.closeModalMediatheque"
+              @select-media="this.selectMedia"
+              @load-media="this.loadMedia"
+          >
+          </MediaModalMarkdown>
+        </div>
+      </div>
+    </div>
+
+    <div class="editor">
+      <div class="header mb-2">
+        <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('****', '2', true)"
+            :title="this.meTranslate.btnBold">
+          <i class="bi bi-type-bold"></i></div>
+        <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('**', '1', true)"
+            :title="this.meTranslate.btnItalic">
+          <i class="bi bi-type-italic"></i></div>
+        <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('~~~~', '2', true)"
+            :title="this.meTranslate.btnStrike">
+          <i class="bi bi-type-strikethrough"></i></div>
+        <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('> ', '0', false)"
+            :title="this.meTranslate.btnQuote">
+          <i class="bi bi-quote"></i></div>
+        <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('- ', '0', false)"
+            :title="this.meTranslate.btnList">
+          <i class="bi bi-list-ul"></i></div>
+        <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('1. ', '0', false)"
+            :title="this.meTranslate.btnListNumber">
+          <i class="bi bi-list-ol"></i></div>
+        <div class="btn btn-secondary btn-sm me-1" @click="this.addTable" :title="this.meTranslate.btnTable">
+          <i class="bi bi-table"></i></div>
+        <div class="btn btn-secondary btn-sm me-1" @click="this.addLink(true, false)" :title="this.meTranslate.btnLink">
+          <i class="bi bi-link"></i></div>
+        <div class="btn btn-secondary btn-sm me-1" @click="alert('link interne')" :title="this.meTranslate.btnLinkInterne">
+          <i class="bi bi-link-45deg"></i></div>
+        <div class="btn btn-secondary btn-sm me-1" @click="this.addLink(true, true)" :title="this.meTranslate.btnImage">
+          <i class="bi bi-image"></i></div>
+        <div class="btn btn-secondary btn-sm me-1" @click="this.addCode" :title="this.meTranslate.btnCode">
+          <i class="bi bi-code"></i></div>
+        <div class="btn btn-secondary btn-sm me-1" @click="this.openModalMediatheque"
+            :title="this.meTranslate.btnMediatheque">
+          <i class="bi bi-images"></i></div>
+
+        <div class="dropdown float-start me-1">
+          <button class="btn btn-secondary btn-sm dropdown-toggle" :title="this.meTranslate.titreLabel" type="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-type-h1"></i>
           </button>
-          <button type="button" class="btn btn-secondary" @click="closeModal"><i class="bi bi-x-circle"></i>
-            {{ this.meTranslate.modalBtnClose }}
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('# ', '0', false)">
+              {{ this.meTranslate.titreH1 }}</a></li>
+            <li><a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('## ', '0', false)">
+              {{ this.meTranslate.titreH2 }}</a></li>
+            <li>
+              <a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('### ', '0', false)">
+                {{ this.meTranslate.titreH3 }}</a></li>
+            <li>
+              <a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('#### ', '0', false)">
+                {{ this.meTranslate.titreH4 }}</a></li>
+            <li>
+              <a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('##### ', '0', false)">
+                {{ this.meTranslate.titreH5 }}</a></li>
+            <li>
+              <a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('###### ', '0', false)">
+                {{ this.meTranslate.titreH6 }}</a></li>
+          </ul>
+        </div>
+        <div class="dropdown float-start me-1" v-if="this.meKeyWords.length !== 0">
+          <button class="btn btn-secondary btn-sm dropdown-toggle" :title="this.meTranslate.btnKeyWord" type="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+            {{ this.meTranslate.btnKeyWord }} <i class="bi bi-key-fill"></i>
           </button>
+          <ul class="dropdown-menu">
+            <li v-for="(label, key) in this.meKeyWords">
+              <a class="dropdown-item" style="cursor: pointer" @click="this.addElement('[[' + key + ']]', '0', false)">
+                {{ label }}</a>
+            </li>
+          </ul>
+        </div>
+        <div class="float-end">
+          <div class="btn btn-secondary btn-sm me-1" :title="this.meTranslate.preview" @click="this.openPreview()">
+            <i class="bi bi-box-arrow-in-up-right"></i>
+          </div>
+          <div v-if="this.meSave" class="btn btn-secondary btn-sm me-1" @click="this.eventBtnSave"
+              :title="this.meTranslate.btnSave">
+            <i class="bi bi-save"></i></div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="modal fade" :id="this.getNameModale('modal-markdown-mediatheque')" data-bs-backdrop="static" data-bs-keyboard="false"
-      tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content">
-        <MediaModalMarkdown
-            :medias="this.dataMedia"
-            :translate="this.meTranslate.mediathequeMarkdown"
-            :current-folder="this.currentFolder"
-            :loading="this.loadingMedia"
-            @close-modale="this.closeModalMediatheque"
-            @select-media="this.selectMedia"
-            @load-media="this.loadMedia"
-        >
-        </MediaModalMarkdown>
+      <textarea :id="'editor-'+ this.id" class="form-control" :class="this.classInputTextArea()" :value="this.value"
+          @input="update" :rows="this.meRows" @change="this.isValideInput" @keyup="this.isValideInput"></textarea>
+      <div class="invalid-feedback">
+        {{ this.meTranslate.msgEmptyContent }}
       </div>
-    </div>
-  </div>
-
-  <div class="editor">
-    <div class="header mb-2">
-      <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('****', '2', true)"
-          :title="this.meTranslate.btnBold">
-        <i class="bi bi-type-bold"></i></div>
-      <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('**', '1', true)"
-          :title="this.meTranslate.btnItalic">
-        <i class="bi bi-type-italic"></i></div>
-      <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('~~~~', '2', true)"
-          :title="this.meTranslate.btnStrike">
-        <i class="bi bi-type-strikethrough"></i></div>
-      <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('> ', '0', false)"
-          :title="this.meTranslate.btnQuote">
-        <i class="bi bi-quote"></i></div>
-      <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('- ', '0', false)"
-          :title="this.meTranslate.btnList">
-        <i class="bi bi-list-ul"></i></div>
-      <div class="btn btn-secondary btn-sm me-1" @click="this.addElement('1. ', '0', false)"
-          :title="this.meTranslate.btnListNumber">
-        <i class="bi bi-list-ol"></i></div>
-      <div class="btn btn-secondary btn-sm me-1" @click="this.addTable" :title="this.meTranslate.btnTable">
-        <i class="bi bi-table"></i></div>
-      <div class="btn btn-secondary btn-sm me-1" @click="this.addLink(true, false)" :title="this.meTranslate.btnLink">
-        <i class="bi bi-link"></i></div>
-      <div class="btn btn-secondary btn-sm me-1" @click="alert('link interne')" :title="this.meTranslate.btnLinkInterne">
-        <i class="bi bi-link-45deg"></i></div>
-      <div class="btn btn-secondary btn-sm me-1" @click="this.addLink(true, true)" :title="this.meTranslate.btnImage">
-        <i class="bi bi-image"></i></div>
-      <div class="btn btn-secondary btn-sm me-1" @click="this.addCode" :title="this.meTranslate.btnCode">
-        <i class="bi bi-code"></i></div>
-      <div class="btn btn-secondary btn-sm me-1" @click="this.openModalMediatheque"
-          :title="this.meTranslate.btnMediatheque">
-        <i class="bi bi-images"></i></div>
-
-      <div class="dropdown float-start me-1">
-        <button class="btn btn-secondary btn-sm dropdown-toggle" :title="this.meTranslate.titreLabel" type="button"
-            data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="bi bi-type-h1"></i>
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('# ', '0', false)">
-            {{ this.meTranslate.titreH1 }}</a></li>
-          <li><a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('## ', '0', false)">
-            {{ this.meTranslate.titreH2 }}</a></li>
-          <li><a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('### ', '0', false)">
-            {{ this.meTranslate.titreH3 }}</a></li>
-          <li><a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('#### ', '0', false)">
-            {{ this.meTranslate.titreH4 }}</a></li>
-          <li>
-            <a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('##### ', '0', false)">
-              {{ this.meTranslate.titreH5 }}</a></li>
-          <li>
-            <a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('###### ', '0', false)">
-              {{ this.meTranslate.titreH6 }}</a></li>
-        </ul>
-      </div>
-      <div class="dropdown float-start me-1" v-if="this.meKeyWords.length !== 0">
-        <button class="btn btn-secondary btn-sm dropdown-toggle" :title="this.meTranslate.btnKeyWord" type="button"
-            data-bs-toggle="dropdown" aria-expanded="false">
-          {{ this.meTranslate.btnKeyWord }} <i class="bi bi-key-fill"></i>
-        </button>
-        <ul class="dropdown-menu">
-          <li v-for="(label, key) in this.meKeyWords">
-            <a class="dropdown-item" style="cursor: pointer" @click="this.addElement('[[' + key + ']]', '0', false)">
-              {{ label }}</a>
-          </li>
-        </ul>
-      </div>
-      <div class="float-end">
-        <div class="btn btn-secondary btn-sm me-1" :title="this.meTranslate.preview" @click="this.openPreview()">
-          <i class="bi bi-box-arrow-in-up-right"></i>
-        </div>
-        <div v-if="this.meSave" class="btn btn-secondary btn-sm me-1" @click="this.eventBtnSave"
-            :title="this.meTranslate.btnSave">
-          <i class="bi bi-save"></i></div>
-      </div>
-    </div>
-
-    <textarea :id="'editor-'+ this.id" class="form-control" :class="this.classInputTextArea()" :value="this.value"
-        @input="update" :rows="this.meRows" @change="this.isValideInput" @keyup="this.isValideInput"></textarea>
-    <div class="invalid-feedback">
-      {{ this.meTranslate.msgEmptyContent }}
-    </div>
-    <div :id="'emailHelp-' + this.id" class="form-text">
-      <div v-html="this.meTranslate.help"></div>
-      <div v-if="this.checkNoSaveData()">
-        <b><i><span class="text-warning"><i class="bi bi-exclamation-triangle-fill"></i>
+      <div :id="'emailHelp-' + this.id" class="form-text">
+        <div v-html="this.meTranslate.help"></div>
+        <div v-if="this.checkNoSaveData()">
+          <b><i><span class="text-warning"><i class="bi bi-exclamation-triangle-fill"></i>
           <span v-html="this.meTranslate.warning_edit"></span></span></i></b>
+        </div>
       </div>
-    </div>
 
-    <fieldset class="mt-3" v-if="this.mePreview">
-      <legend>{{ this.meTranslate.render }}</legend>
-      <div class="markdown-editor-output" v-html="output"></div>
-    </fieldset>
+      <fieldset class="mt-3" v-if="this.mePreview">
+        <legend>{{ this.meTranslate.render }}</legend>
+        <div class="markdown-editor-output" v-html="output"></div>
+      </fieldset>
+    </div>
   </div>
 </template>
 
