@@ -43,5 +43,7 @@ editor.mediatheque.size_500: 500x500
 editor.warning.edit: "Vos modifications n'ont pas encore été enregistrées !, cliquez sur le bouton <i class='bi bi-save'></i> pour les sauvegarder."
 editor.button.link.interne: 'Lien interne'
 editor.button.preview: Preview
-editor.loading: 'Chargement...'
+editor.loading: Chargement...
 preview.title: 'Preview de votre contenu'
+preview.preview: 'Prévisualisation de mon texte'
+preview.preview.info: 'Ceci est une prévisualisation et peut ne pas correspondre au design de votre site web'

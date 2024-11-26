@@ -45,3 +45,5 @@ editor.button.link.interne: __editor.button.link.interne
 editor.button.preview: __editor.button.preview
 editor.loading: __editor.loading
 preview.title: __preview.title
+preview.preview: __preview.preview
+preview.preview.info: __preview.preview.info
