@@ -8,13 +8,15 @@
 
 import {marked} from 'marked'
 import {debounce} from 'lodash-es'
-import {Modal} from 'bootstrap'
+//import {Modal} from 'bootstrap'
 import MediaModalMarkdown from "../Mediatheque/MediaModalMarkdown.vue";
 import axios from "axios";
+import Modal from "./Modal.vue";
 
 export default {
   name: "MarkdownEditor",
   components: {
+    Modal,
     MediaModalMarkdown
   },
   props: {
@@ -42,6 +44,9 @@ export default {
       isImage: false,
       isValide: "",
       dataMedia: [],
+      tabModal: {
+        modalMarkdownEditor: false
+      },
       urls: {
         urlMedia: "",
         urlPreview: "",
@@ -55,8 +60,8 @@ export default {
   },
   mounted() {
     //this.id = this.randomIntFromInterval(1, 9) + '' + this.randomIntFromInterval(1, 9);
-    this.modal = new Modal(document.getElementById(this.getNameModale("modal-markdown-editor")), {});
-    this.modaleMedia = new Modal(document.getElementById(this.getNameModale("modal-markdown-mediatheque")), {});
+    //this.modal = new Modal(document.getElementById(this.getNameModale("modal-markdown-editor")), {});
+    //this.modaleMedia = new Modal(document.getElementById(this.getNameModale("modal-markdown-mediatheque")), {});
     this.loadData();
   },
   computed: {
@@ -132,7 +137,7 @@ export default {
         }
 
         this.isImage = image;
-        this.modal.show();
+        this.updateModale('modalMarkdownEditor', true);
       } else {
         let balise = '';
         if (image) {
@@ -142,15 +147,15 @@ export default {
         }
         this.addElement(balise, 0, false);
         this.textModal = this.linkModal = '';
-        this.modal.hide();
+        this.closeModal('modalMarkdownEditor');
       }
 
       return false;
     },
 
-    closeModal() {
+    /*closeModal() {
       this.modal.hide();
-    },
+    },*/
 
     /**
      * Ouvre la modale de la médiathèque
@@ -179,6 +184,23 @@ export default {
     closeModalMediatheque() {
       this.modaleMedia.hide();
       this.dataMedia = [];
+    },
+
+    /**
+     * Met à jour le status d'une modale défini par son id et son état
+     * @param nameModale
+     * @param state true|false
+     */
+    updateModale(nameModale, state) {
+      this.tabModal[nameModale] = state;
+    },
+
+    /**
+     * Ferme une modale
+     * @param nameModale
+     */
+    closeModal(nameModale) {
+      this.updateModale(nameModale, false);
     },
 
     /**
@@ -336,36 +358,33 @@ export default {
       </div>
     </div>
 
-    <div class="modal fade" :id="this.getNameModale('modal-markdown-editor')" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header bg-secondary">
-            <h1 class="modal-title fs-5 text-white"><i class="bi bi-plus-circle-fill"></i> {{ this.titleModal }}</h1>
-            <button type="button" class="btn-close" @click="closeModal"></button>
+    <modal
+        :id="'modalMarkdownEditor'"
+        :show="this.tabModal.modalMarkdownEditor"
+        @close-modal="this.closeModal"
+        :optionModalSize="'modal-lg'"
+        :option-show-close-btn="false">
+      <template #title>
+        <i class="bi bi-plus-circle-fill"></i> {{ this.titleModal }}
+      </template>
+      <template #body>
+        <div>
+          <div class="mb-3">
+            <label :for="'link-modal-' + this.id" class="form-label">{{ this.linkLabelModal }}</label>
+            <input type="text" class="form-control" :id="'link-modal-' + this.id" placeholder="" v-model="linkModal">
           </div>
-          <div class="modal-body">
-            <div>
-              <div class="mb-3">
-                <label :for="'link-modal-' + this.id" class="form-label">{{ this.linkLabelModal }}</label>
-                <input type="text" class="form-control" :id="'link-modal-' + this.id" placeholder="" v-model="linkModal">
-              </div>
-              <div class="mb-3">
-                <label :for="'text-modal-' + this.id" class="form-label">Texte</label>
-                <input type="text" class="form-control" :id="'text-modal-' + this.id" placeholder="" v-model="textModal">
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" @click="addLink(false, this.isImage)"><i
-                class="bi bi-check2-circle"></i> {{ this.meTranslate.modalBtnValide }}
-            </button>
-            <button type="button" class="btn btn-secondary" @click="closeModal"><i class="bi bi-x-circle"></i>
-              {{ this.meTranslate.modalBtnClose }}
-            </button>
+          <div class="mb-3">
+            <label :for="'text-modal-' + this.id" class="form-label">Texte</label>
+            <input type="text" class="form-control" :id="'text-modal-' + this.id" placeholder="" v-model="textModal">
           </div>
         </div>
-      </div>
-    </div>
+      </template>
+      <template #footer>
+        <button type="button" class="btn btn-primary" @click="addLink(false, this.isImage)"><i
+            class="bi bi-check2-circle"></i> {{ this.meTranslate.modalBtnValide }}
+        </button>
+      </template>
+    </modal>
 
     <div class="modal fade" :id="this.getNameModale('modal-markdown-mediatheque')" data-bs-backdrop="static" data-bs-keyboard="false"
         tabindex="-1">
