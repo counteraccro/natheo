@@ -47,3 +47,4 @@ editor.loading: Chargement...
 preview.title: 'Preview de votre contenu'
 preview.preview: 'Prévisualisation de mon texte'
 preview.preview.info: 'Ceci est une prévisualisation et peut ne pas correspondre au design de votre site web'
+editor.modale.external.link.title: 'Ajouter un lien interne'
