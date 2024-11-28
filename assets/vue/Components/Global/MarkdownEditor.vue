@@ -8,15 +8,15 @@
 
 import {marked} from 'marked'
 import {debounce} from 'lodash-es'
-//import {Modal} from 'bootstrap'
+import {Modal} from 'bootstrap'
 import MediaModalMarkdown from "../Mediatheque/MediaModalMarkdown.vue";
 import axios from "axios";
-import Modal from "./Modal.vue";
+import ModalNat from "./Modal.vue";
 
 export default {
   name: "MarkdownEditor",
   components: {
-    Modal,
+    ModalNat,
     MediaModalMarkdown
   },
   props: {
@@ -35,7 +35,6 @@ export default {
       value: this.meValue,
       valueRef: this.meValue,
       id: this.meId,
-      modal: "",
       modaleMedia: "",
       titleModal: "",
       linkModal: "",
@@ -45,7 +44,8 @@ export default {
       isValide: "",
       dataMedia: [],
       tabModal: {
-        modalMarkdownEditor: false
+        modalMarkdownEditor: false,
+        modalInternalLink: false
       },
       urls: {
         urlMedia: "",
@@ -59,9 +59,7 @@ export default {
     }
   },
   mounted() {
-    //this.id = this.randomIntFromInterval(1, 9) + '' + this.randomIntFromInterval(1, 9);
-    //this.modal = new Modal(document.getElementById(this.getNameModale("modal-markdown-editor")), {});
-    //this.modaleMedia = new Modal(document.getElementById(this.getNameModale("modal-markdown-mediatheque")), {});
+    this.modaleMedia = new Modal(document.getElementById(this.getNameModale("modal-markdown-mediatheque")), {});
     this.loadData();
   },
   computed: {
@@ -313,6 +311,16 @@ export default {
     },
 
     /**
+     * Ouvre la modale pour les liens internes et charge les données
+     */
+    openModalExternalLink()
+    {
+      this.loading = true;
+      this.updateModale('modalInternalLink', true)
+      this.loading = false;
+    },
+
+    /**
      * Check si on est dans le cas de données éditées non sauvegardées ou non
      * @returns {boolean}
      */
@@ -358,7 +366,7 @@ export default {
       </div>
     </div>
 
-    <modal
+    <ModalNat
         :id="'modalMarkdownEditor'"
         :show="this.tabModal.modalMarkdownEditor"
         @close-modal="this.closeModal"
@@ -384,7 +392,26 @@ export default {
             class="bi bi-check2-circle"></i> {{ this.meTranslate.modalBtnValide }}
         </button>
       </template>
-    </modal>
+    </ModalNat>
+
+    <ModalNat
+        :id="'modalInternalLink'"
+        :show="this.tabModal.modalInternalLink"
+        @close-modal="this.closeModal"
+        :optionModalSize="'modal-lg'"
+        :option-show-close-btn="false">
+      <template #title>
+        <i class="bi bi-link-45deg"></i> {{ this.meTranslate.modaleExternalLink.title }}
+      </template>
+      <template #body>
+        body
+      </template>
+      <template #footer>
+        <button type="button" class="btn btn-primary"><i
+            class="bi bi-check2-circle"></i> {{ this.meTranslate.modalBtnValide }}
+        </button>
+      </template>
+    </ModalNat>
 
     <div class="modal fade" :id="this.getNameModale('modal-markdown-mediatheque')" data-bs-backdrop="static" data-bs-keyboard="false"
         tabindex="-1">
@@ -428,7 +455,7 @@ export default {
           <i class="bi bi-table"></i></div>
         <div class="btn btn-secondary btn-sm me-1" @click="this.addLink(true, false)" :title="this.meTranslate.btnLink">
           <i class="bi bi-link"></i></div>
-        <div class="btn btn-secondary btn-sm me-1" @click="alert('link interne')" :title="this.meTranslate.btnLinkInterne">
+        <div class="btn btn-secondary btn-sm me-1" @click="this.openModalExternalLink" :title="this.meTranslate.btnLinkInterne">
           <i class="bi bi-link-45deg"></i></div>
         <div class="btn btn-secondary btn-sm me-1" @click="this.addLink(true, true)" :title="this.meTranslate.btnImage">
           <i class="bi bi-image"></i></div>

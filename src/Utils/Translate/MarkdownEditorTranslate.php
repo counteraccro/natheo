@@ -49,7 +49,19 @@ class MarkdownEditorTranslate extends AppTranslate
             'msgEmptyContent' => $this->translator->trans('editor.input.empty', domain: 'editor_markdown'),
             'btnMediatheque' => $this->translator->trans('editor.btn.mediatheque', domain: 'editor_markdown'),
             'warning_edit'  => $this->translator->trans('editor.warning.edit', domain: 'editor_markdown'),
-            'mediathequeMarkdown' => $this->getTranslateMediateque()
+            'mediathequeMarkdown' => $this->getTranslateMediateque(),
+            'modaleExternalLink' => $this->getTranslateModaleExternalLink()
+        ];
+    }
+
+    /**
+     * Traduction de la modale external link
+     * @return array
+     */
+    private function getTranslateModaleExternalLink(): array
+    {
+        return [
+            'title'  => $this->translator->trans('editor.modale.external.link.title', domain: 'editor_markdown'),
         ];
     }
 
