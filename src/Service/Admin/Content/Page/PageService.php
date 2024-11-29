@@ -367,6 +367,8 @@ class PageService extends AppAdminService
      * @param string $url
      * @param int|null $id
      * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function isUniqueUrl(string $url, int $id = null): bool
     {
@@ -499,5 +501,28 @@ class PageService extends AppAdminService
             $page->setLandingPage(false);
             $this->save($page, true);
         }
+    }
+
+    /**
+     * Retourne une liste formatée de page pour les liens externes
+     * @param string $locale
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getFormatedListePageForExternalLink(string $locale): array
+    {
+        $listePages = $this->findBy(Page::class, ['disabled' => false, 'status' => PageConst::STATUS_PUBLISH]);
+
+        $return = [];
+        foreach ($listePages as $page) {
+            /** @var Page $page */
+            $pageTranslations = $page->getPageTranslationByLocale($locale);
+            $return[$page->getId()] = [
+                'id' => $page->getId(),
+                'title' => $pageTranslations->getTitre(),
+            ];
+        }
+        return $return;
     }
 }

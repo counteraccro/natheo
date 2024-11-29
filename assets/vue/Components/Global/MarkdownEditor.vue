@@ -51,6 +51,7 @@ export default {
         urlMedia: "",
         urlPreview: "",
         urlSetPreview: "",
+        urlExternalLink: "",
         urlLoadData: "/admin/fr/markdown/ajax/load-datas",
       },
       currentFolder: [],
@@ -78,6 +79,7 @@ export default {
         this.urls.urlMedia = response.data.media;
         this.urls.urlPreview = response.data.preview;
         this.urls.urlSetPreview = response.data.initPreview;
+        this.urls.urlExternalLink = response.data.externalLinks;
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -316,8 +318,14 @@ export default {
     openModalExternalLink()
     {
       this.loading = true;
-      this.updateModale('modalInternalLink', true)
-      this.loading = false;
+      axios.get(this.urls.urlExternalLink, {}).then((response) => {
+
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.updateModale('modalInternalLink', true)
+        this.loading = false
+      });
     },
 
     /**
