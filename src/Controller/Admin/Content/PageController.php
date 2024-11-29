@@ -492,10 +492,10 @@ class PageController extends AppAdminController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/get-pages-external-link/', name: 'liste_pages_external_link', methods: ['GET'])]
-    public function getListePageForExternalLinks(PageService $pageService): JsonResponse
+    #[Route('/ajax/get-pages-internal-link/', name: 'liste_pages_internal_link', methods: ['GET'])]
+    public function getListePageForInternalLinks(PageService $pageService): JsonResponse
     {
-        $liste = $pageService->getFormatedListePageForExternalLink($pageService->getLocales()['current']);
+        $liste = $pageService->getFormatedListePageForInternalLink($pageService->getLocales()['current']);
         return $this->json(['pages' => $liste]);
     }
 }

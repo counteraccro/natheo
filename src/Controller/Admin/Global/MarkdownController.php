@@ -29,7 +29,7 @@ class MarkdownController extends AbstractController
         return $this->json(
             [
                 'media' => $this->generateUrl('admin_media_load_medias'),
-                'externalLinks' => $this->generateUrl('admin_page_liste_pages_external_link'),
+                'internalLinks' => $this->generateUrl('admin_page_liste_pages_internal_link'),
                 'preview' => $this->generateUrl('admin_markdown_preview'),
                 'initPreview' => $this->generateUrl('admin_markdown_init_preview'),
             ]

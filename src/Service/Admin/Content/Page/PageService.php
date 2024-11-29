@@ -510,7 +510,7 @@ class PageService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getFormatedListePageForExternalLink(string $locale): array
+    public function getFormatedListePageForInternalLink(string $locale): array
     {
         $listePages = $this->findBy(Page::class, ['disabled' => false, 'status' => PageConst::STATUS_PUBLISH]);
 
