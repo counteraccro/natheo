@@ -2,7 +2,7 @@
 /**
  * Service pour la génération de l'éditeur Markdown du site
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  */
 
 namespace App\Service\Admin;
@@ -12,6 +12,17 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class MarkdownEditorService extends AppAdminService
 {
+
+    /**
+     * Transforme certaines balises markdown custom en balise markdown officielle
+     * @param string $markdown
+     * @return string
+     */
+    public function parseMarkdown(string $markdown): string
+    {
+        return $markdown . 'pki';
+    }
+
     /**
      *  Retourne les traductions de l'éditeur Markdown
      * @return array

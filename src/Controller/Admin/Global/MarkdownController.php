@@ -6,6 +6,7 @@
  */
 namespace App\Controller\Admin\Global;
 
+use App\Service\Admin\MarkdownEditorService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,10 +57,11 @@ class MarkdownController extends AbstractController
      * @return Response
      */
     #[Route('/preview', name: 'preview', methods: ['GET'])]
-    public function preview(Request $request): Response
+    public function preview(Request $request, MarkdownEditorService $markdownEditorService): Response
     {
         $session = $request->getSession();
         $preview = $session->get(self::SESSION_NAME_PREVIEW);
+        $preview = $markdownEditorService->parseMarkdown($preview);
 
         return $this->render('admin/global/markdown/index.html.twig', [
             'preview' => $preview,

@@ -2,7 +2,7 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.5
+ * @version 1.6
  * Editeur Markdown
  */
 
@@ -47,6 +47,7 @@ export default {
       searchPageInternalLink: '',
       selectInternalLink: '',
       textInternalLink: '',
+      changeTextInternalLink: false,
       tabModal: {
         modalMarkdownEditor: false,
         modalInternalLink: false
@@ -95,7 +96,7 @@ export default {
       this.value = e.target.value
     }, 50),
 
-    /** Charge les données nécessaires au fonctionnement de l'éditer **/
+    /** Charge les données nécessaires au fonctionnement de l'éditeur **/
     loadData() {
       axios.get(this.urls.urlLoadData).then((response) => {
         this.urls.urlMedia = response.data.media;
@@ -148,7 +149,9 @@ export default {
      * @param image
      */
     addLink(modal, image) {
+
       if (modal) {
+        this.textModal = window.getSelection().toString();
         this.linkModal = 'https://';
         if (image) {
           this.titleModal = this.meTranslate.modalTitreImage;
@@ -337,12 +340,20 @@ export default {
     /**
      * Ouvre la modale pour les liens internes et charge les données
      */
-    openModalExternalLink()
+    openModalInternalLink()
     {
       this.loading = true;
+      this.changeTextInternalLink = false;
+      this.textInternalLink = '';
+      this.listePageInternalLink = [];
       axios.get(this.urls.urlInternalLink, {}).then((response) => {
         for (const page in response.data.pages) {
           this.listePageInternalLink.push({title: response.data.pages[page].title, id: response.data.pages[page].id});
+        }
+        this.textInternalLink = window.getSelection().toString();
+        if(this.textInternalLink === '' || this.textInternalLink === null)
+        {
+          this.changeTextInternalLink = true;
         }
       }).catch((error) => {
         console.error(error);
@@ -362,6 +373,18 @@ export default {
       let balise = '[' + textInternalLink + '](P#' + IdInternalLink + ')';
       this.addElement(balise, 0, false);
       this.closeModal('modalInternalLink');
+    },
+
+    /**
+     * Met à jour le texte du lien interne si vide
+     */
+    updateTextInternalLink(event)
+    {
+      if(this.changeTextInternalLink || (this.textInternalLink === '' || this.textInternalLink === null))
+      {
+        let page = this.listePageInternalLink.find((element) => element.id === this.selectInternalLink);
+        this.textInternalLink = page.title;
+      }
     },
 
     /**
@@ -451,8 +474,8 @@ export default {
         <label for="liste-column-row" class="form-label">{{ this.meTranslate.modaleInternalLink.labelSearch }}</label>
         <div class="input-group mb-3">
           <input type="text" class="form-control" id="search-page" v-model="this.searchPageInternalLink" :placeholder="this.meTranslate.modaleInternalLink.placeHolderSearch">
-          <select class="form-select" id="id-list-page" size="1" style="width: 40%" v-model="selectInternalLink">
-            <option v-for="page in this.filteredPage" :value="page.id">
+          <select class="form-select" id="id-list-page" size="1" style="width: 40%" v-model="selectInternalLink" @change="this.updateTextInternalLink">
+            <option v-for="page in this.filteredPage" :value="page.id" :data-title="page.title">
               {{ page.title }}
             </option>
           </select>
@@ -509,7 +532,7 @@ export default {
           <i class="bi bi-table"></i></div>
         <div class="btn btn-secondary btn-sm me-1" @click="this.addLink(true, false)" :title="this.meTranslate.btnLink">
           <i class="bi bi-link"></i></div>
-        <div class="btn btn-secondary btn-sm me-1" @click="this.openModalExternalLink" :title="this.meTranslate.btnLinkInterne">
+        <div class="btn btn-secondary btn-sm me-1" @click="this.openModalInternalLink" :title="this.meTranslate.btnLinkInterne">
           <i class="bi bi-link-45deg"></i></div>
         <div class="btn btn-secondary btn-sm me-1" @click="this.addLink(true, true)" :title="this.meTranslate.btnImage">
           <i class="bi bi-image"></i></div>
