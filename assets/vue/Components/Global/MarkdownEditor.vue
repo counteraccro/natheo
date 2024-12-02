@@ -43,6 +43,10 @@ export default {
       isImage: false,
       isValide: "",
       dataMedia: [],
+      listePageInternalLink: [],
+      searchPageInternalLink: '',
+      selectInternalLink: '',
+      textInternalLink: '',
       tabModal: {
         modalMarkdownEditor: false,
         modalInternalLink: false
@@ -66,6 +70,24 @@ export default {
   computed: {
     output() {
       return marked(this.value)
+    },
+
+    /**
+     * Filtre sur les pages
+     * @returns {ObjectConstructor}
+     */
+    filteredPage() {
+
+      const searchPage = this.searchPageInternalLink && this.searchPageInternalLink.toLowerCase()
+      let data = this.listePageInternalLink;
+      if (searchPage) {
+        data = data.filter((row) => {
+          return Object.keys(row).some((key) => {
+            return String(row.title).toLowerCase().indexOf(searchPage) > -1
+          })
+        })
+      }
+      return data;
     }
   },
   methods: {
@@ -319,13 +341,27 @@ export default {
     {
       this.loading = true;
       axios.get(this.urls.urlInternalLink, {}).then((response) => {
-
+        for (const page in response.data.pages) {
+          this.listePageInternalLink.push({title: response.data.pages[page].title, id: response.data.pages[page].id});
+        }
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
         this.updateModale('modalInternalLink', true)
         this.loading = false
       });
+    },
+
+    /**
+     * Ajoute un lien interne
+     * @param IdInternalLink
+     * @param textInternalLink
+     */
+    addInternalLink(IdInternalLink, textInternalLink)
+    {
+      let balise = '[' + textInternalLink + '](P#' + IdInternalLink + ')';
+      this.addElement(balise, 0, false);
+      this.closeModal('modalInternalLink');
     },
 
     /**
@@ -409,13 +445,23 @@ export default {
         :optionModalSize="'modal-lg'"
         :option-show-close-btn="false">
       <template #title>
-        <i class="bi bi-link-45deg"></i> {{ this.meTranslate.modaleExternalLink.title }}
+        <i class="bi bi-link-45deg"></i> {{ this.meTranslate.modaleInternalLink.title }}
       </template>
       <template #body>
-        body
+        <label for="liste-column-row" class="form-label">{{ this.meTranslate.modaleInternalLink.labelSearch }}</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="search-page" v-model="this.searchPageInternalLink" :placeholder="this.meTranslate.modaleInternalLink.placeHolderSearch">
+          <select class="form-select" id="id-list-page" size="1" style="width: 40%" v-model="selectInternalLink">
+            <option v-for="page in this.filteredPage" :value="page.id">
+              {{ page.title }}
+            </option>
+          </select>
+        </div>
+        <label for="liste-column-row" class="form-label">{{ this.meTranslate.modaleInternalLink.labelText }}</label>
+        <input type="text" class="form-control" id="text-external-link" v-model="this.textInternalLink" :placeholder="this.meTranslate.modaleInternalLink.placeHolderTxt">
       </template>
       <template #footer>
-        <button type="button" class="btn btn-primary"><i
+        <button type="button" class="btn btn-primary" @click="this.addInternalLink(this.selectInternalLink, this.textInternalLink)"><i
             class="bi bi-check2-circle"></i> {{ this.meTranslate.modalBtnValide }}
         </button>
       </template>
