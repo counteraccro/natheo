@@ -48,3 +48,9 @@ preview.title: __preview.title
 preview.preview: __preview.preview
 preview.preview.info: __preview.preview.info
 editor.modale.external.link.title: __editor.modale.external.link.title
+editor.modale.internal.link.title: __editor.modale.internal.link.title
+editor.modale.internal.link.label.search: __editor.modale.internal.link.label.search
+editor.modale.internal.link.label.text: __editor.modale.internal.link.label.text
+editor.modale.internal.link.place.holder.search: __editor.modale.internal.link.place.holder.search
+editor.modale.internal.link.text: __editor.modale.internal.link.text
+editor.modale.internal.link.place.holder.text: __editor.modale.internal.link.place.holder.text
