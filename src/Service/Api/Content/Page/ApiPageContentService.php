@@ -83,10 +83,13 @@ class ApiPageContentService extends AppApiService
      * @param string $text
      * @return string
      * @throws CommonMarkException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function formatContentText(string $text): string
     {
         $markdown = new Markdown();
+        $text = $this->getMarkdownEditorService()->parseMarkdown($text);
         return $markdown->convertMarkdownToHtml($text);
     }
 
