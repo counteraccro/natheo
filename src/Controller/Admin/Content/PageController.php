@@ -486,4 +486,16 @@ class PageController extends AppAdminController
         $return = $pageService->getInfoContentByTypeAndTypeId($type, $typeId);
         return $this->json($return);
     }
+
+    /**
+     * Retourne une liste de page formaté pour MarkdownEditor lien externe
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/ajax/get-pages-internal-link/', name: 'liste_pages_internal_link', methods: ['GET'])]
+    public function getListePageForInternalLinks(PageService $pageService): JsonResponse
+    {
+        $liste = $pageService->getFormatedListePageForInternalLink($pageService->getLocales()['current']);
+        return $this->json(['pages' => $liste]);
+    }
 }

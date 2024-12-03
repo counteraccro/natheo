@@ -109,6 +109,8 @@ class MailService extends AppAdminService
      * Format la string keyWord en tableau avec traduction
      * @param string $keyWord
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function formatKeyWord(string $keyWord): array
     {
@@ -128,6 +130,8 @@ class MailService extends AppAdminService
      * @param int $page
      * @param int $limit
      * @return Paginator
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getAllPaginate(int $page, int $limit): Paginator
     {
@@ -307,6 +311,8 @@ class MailService extends AppAdminService
      * Retourne une entité Mail en fonction de sa clé
      * @param String $key
      * @return Mail
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getByKey(string $key): Mail
     {
@@ -325,6 +331,8 @@ class MailService extends AppAdminService
      * MailService::TO => '', <br />
      * MailService::TEMPLATE => MailTemplate::EMAIL_SIMPLE_TEMPLATE <br />
      * ]
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getDefaultParams(Mail $mail, array $tabKeyWord): array
     {

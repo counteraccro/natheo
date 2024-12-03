@@ -8,6 +8,7 @@ namespace App\Service\Api;
 
 
 use App\Service\Admin\Content\Page\PageService;
+use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Api\Content\ApiMenuService;
 use App\Service\Api\Content\Page\ApiPageContentService;
@@ -44,6 +45,7 @@ class AppApiHandlerService
             'apiMenuService' => ApiMenuService::class,
             'apiPageContentService' => ApiPageContentService::class,
             'kernel' => KernelInterface::class,
+            'markdownEditorService' => MarkdownEditorService::class,
         ])]
         protected ContainerInterface $handlers){}
 
@@ -201,5 +203,16 @@ class AppApiHandlerService
     protected function getApiPageContentService(): ApiPageContentService
     {
         return $this->handlers->get('apiPageContentService');
+    }
+
+    /**
+     * Retourne un MarkdownEditorService
+     * @return MarkdownEditorService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getMarkdownEditorService(): MarkdownEditorService
+    {
+        return $this->handlers->get('markdownEditorService');
     }
 }

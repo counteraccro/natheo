@@ -41,3 +41,16 @@ editor.mediatheque.size_300: __editor.mediatheque.size_300
 editor.mediatheque.size_400: __editor.mediatheque.size_400
 editor.mediatheque.size_500: __editor.mediatheque.size_500
 editor.warning.edit: __editor.warning.edit
+editor.button.link.interne: __editor.button.link.interne
+editor.button.preview: __editor.button.preview
+editor.loading: __editor.loading
+preview.title: __preview.title
+preview.preview: __preview.preview
+preview.preview.info: __preview.preview.info
+editor.modale.external.link.title: __editor.modale.external.link.title
+editor.modale.internal.link.title: __editor.modale.internal.link.title
+editor.modale.internal.link.label.search: __editor.modale.internal.link.label.search
+editor.modale.internal.link.label.text: __editor.modale.internal.link.label.text
+editor.modale.internal.link.place.holder.search: __editor.modale.internal.link.place.holder.search
+editor.modale.internal.link.text: __editor.modale.internal.link.text
+editor.modale.internal.link.place.holder.text: __editor.modale.internal.link.place.holder.text

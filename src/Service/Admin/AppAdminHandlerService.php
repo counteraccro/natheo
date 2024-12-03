@@ -7,6 +7,7 @@
 
 namespace App\Service\Admin;
 
+use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Utils\Global\Database\DataBase;
@@ -55,6 +56,7 @@ class AppAdminHandlerService
             'userData' => UserDataService::class,
             'rawQueryManager' => RawQueryManager::class,
             'rawResultQueryManager' => RawResultQueryManager::class,
+            'pageService' => PageService::class,
         ])]
         protected ContainerInterface $handlers){}
 
@@ -275,5 +277,16 @@ class AppAdminHandlerService
     protected function getRawResultQueryManager() : RawResultQueryManager
     {
         return $this->handlers->get('rawResultQueryManager');
+    }
+
+    /**
+     * Retourne un PageService
+     * @return PageService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getPageService() : PageService
+    {
+        return $this->handlers->get('pageService');
     }
 }
