@@ -118,25 +118,25 @@ export default {
           </button>
           <ul class="dropdown-menu">
             <li>
-              <a class="dropdown-item" style="cursor: pointer" @click="this.setSize('fluid')"><i class="bi bi-aspect-ratio"></i> {{ this.translate.size_fluide }}</a>
+              <a class="dropdown-item no-control" style="cursor: pointer" @click="this.setSize('fluid')"><i class="bi bi-aspect-ratio"></i> {{ this.translate.size_fluide }}</a>
             </li>
             <li>
-              <a class="dropdown-item" style="cursor: pointer" @click="this.setSize('max')"><i class="bi bi-card-image"></i> {{ this.translate.size_max }}</a>
+              <a class="dropdown-item no-control" style="cursor: pointer" @click="this.setSize('max')"><i class="bi bi-card-image"></i> {{ this.translate.size_max }}</a>
             </li>
             <li>
-              <a class="dropdown-item" style="cursor: pointer" @click="this.setSize('100')"><i class="bi bi-textarea-resize"></i> {{ this.translate.size_100 }}</a>
+              <a class="dropdown-item no-control" style="cursor: pointer" @click="this.setSize('100')"><i class="bi bi-textarea-resize"></i> {{ this.translate.size_100 }}</a>
             </li>
             <li>
-              <a class="dropdown-item" style="cursor: pointer" @click="this.setSize('200')"><i class="bi bi-textarea-resize"></i> {{ this.translate.size_200 }}</a>
+              <a class="dropdown-item no-control" style="cursor: pointer" @click="this.setSize('200')"><i class="bi bi-textarea-resize"></i> {{ this.translate.size_200 }}</a>
             </li>
             <li>
-              <a class="dropdown-item" style="cursor: pointer" @click="this.setSize('300')"><i class="bi bi-textarea-resize"></i> {{ this.translate.size_300 }}</a>
+              <a class="dropdown-item no-control" style="cursor: pointer" @click="this.setSize('300')"><i class="bi bi-textarea-resize"></i> {{ this.translate.size_300 }}</a>
             </li>
             <li>
-              <a class="dropdown-item" style="cursor: pointer" @click="this.setSize('400')"><i class="bi bi-textarea-resize"></i> {{ this.translate.size_400 }}</a>
+              <a class="dropdown-item no-control" style="cursor: pointer" @click="this.setSize('400')"><i class="bi bi-textarea-resize"></i> {{ this.translate.size_400 }}</a>
             </li>
             <li>
-              <a class="dropdown-item" style="cursor: pointer" @click="this.setSize('500')"><i class="bi bi-textarea-resize"></i> {{ this.translate.size_500 }}</a>
+              <a class="dropdown-item no-control" style="cursor: pointer" @click="this.setSize('500')"><i class="bi bi-textarea-resize"></i> {{ this.translate.size_500 }}</a>
             </li>
           </ul>
         </div>
