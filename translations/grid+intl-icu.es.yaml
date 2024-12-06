@@ -16,3 +16,5 @@ grid.btn.search: __grid.btn.search
 grid.copy.success: __grid.copy.success
 grid.copy.error: __grid.copy.error
 grid.query.title: __grid.query.title
+grid.filter.only.me: __grid.filter.only.me
+grid.filter.all: __grid.filter.all
