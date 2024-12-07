@@ -2,7 +2,7 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.4
+ * @version 1.5
  * Permet de générer le tableau GRID
  */
 
@@ -27,6 +27,10 @@ export default {
     page: Number,
     limit: String,
     activeSearchData: {
+      type: Boolean,
+      default: false,
+    },
+    showFilter : {
       type: Boolean,
       default: false
     }
@@ -55,6 +59,8 @@ export default {
       cQuery: '',
       showQuery: false,
       urlSaveQuery: '',
+      filter: 'all',
+      filterIcon: 'bi-people-fill',
       toasts: {
         toastSuccessGenericGrid: {
           show: false,
@@ -80,7 +86,8 @@ export default {
       this.loading = true;
 
       let strSearch = this.getSearchParams();
-      axios.get(this.url + '/' + page + '/' + limit + strSearch).then((response) => {
+      let filter = this.getFilterParams();
+      axios.get(this.url + '/' + page + '/' + limit + filter  + strSearch ).then((response) => {
         this.gridColumns = response.data.column;
         this.gridData = response.data.data;
         this.nbElements = response.data.nb;
@@ -105,9 +112,22 @@ export default {
       }).finally(() => this.loading = false);
     },
 
+    /**
+     * Génération du paramètre filtre
+     * @return {string}
+     */
+    getFilterParams()
+    {
+      return "?filter=" + this.filter;
+    },
+
+    /**
+     * Génération du paramètre de recherche
+     * @return {string}
+     */
     getSearchParams() {
       if (this.searchMode !== 'table') {
-        return "?search=" + this.searchQuery;
+        return "&search=" + this.searchQuery;
       }
       return "";
     },
@@ -229,8 +249,7 @@ export default {
       }
     },
 
-    saveQueryRun()
-    {
+    saveQueryRun() {
       this.loading = true;
       axios.post(this.urlSaveQuery, {
         'query': this.cQuery
@@ -248,8 +267,34 @@ export default {
         this.loading = false
         this.loadData(this.page, this.limit);
       });
+    },
+
+    /**
+     * Changement du filtre
+     * @param filterChange
+     */
+    changeFilter(filterChange) {
+      let filter = '';
+      let icon = '';
+      switch (filterChange) {
+        case 'me' :
+          filter = 'me';
+          icon = 'bi-person-fill';
+          break;
+        case 'all' :
+          filter = 'all';
+          icon = 'bi-people-fill';
+          break;
+        default:
+          filter = 'all';
+          icon = 'bi-people-fill';
+      }
+      this.filter = filter;
+      this.filterIcon = icon;
+      this.loadData(1, this.limit);
     }
   }
+
 }
 
 </script>
@@ -260,7 +305,8 @@ export default {
       <div class="card-header">
         <div class="float-end">
           <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.saveQueryRun"><i class="bi bi-save"></i></div>
-          <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.copyQueryRun"><i class="bi bi-clipboard"></i></div>
+          <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.copyQueryRun"><i class="bi bi-clipboard"></i>
+          </div>
           <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.showQueryRun(false)"><i class="bi bi-x"></i></div>
         </div>
         {{ this.translate.queryTitle }}
@@ -271,7 +317,7 @@ export default {
     </div>
 
     <div class="row">
-      <div class="col-11">
+      <div class="col-10">
         <div class="input-group mb-3">
           <span class="input-group-text"><i class="bi bi-search"></i></span>
           <input type="text" class="form-control no-control" :placeholder="this.searchPlaceholder" v-model="searchQuery">
@@ -289,7 +335,20 @@ export default {
           </ul>
         </div>
       </div>
-      <div class="col-1">
+      <div class="col-2">
+
+        <div v-if="this.showFilter" class="btn btn-secondary dropdown-toggle m-1 mt-0" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-filter-circle"></i> <i class="bi" :class="this.filterIcon"></i>
+        </div>
+        <ul class="dropdown-menu">
+          <li>
+            <a class="dropdown-item no-control" href="#" @click="this.changeFilter('me')"><i class="bi bi-person-fill"></i> {{ this.translate.filterOnlyMe }}</a>
+          </li>
+          <li>
+            <a class="dropdown-item no-control" href="#" @click="this.changeFilter('all')"><i class="bi bi-people-fill"></i> {{ this.translate.filterAll }}</a>
+          </li>
+        </ul>
+
         <div class="btn btn-secondary m-1 mt-0" @click="this.reloadData"><i class="bi bi-arrow-clockwise"></i></div>
         <div v-if="this.cQuery !== ''" class="btn btn-secondary m-1 mt-0" @click="this.showQueryRun(true)">
           <i class="bi bi-database"></i></div>

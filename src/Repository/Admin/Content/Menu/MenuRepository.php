@@ -51,9 +51,10 @@ class MenuRepository extends ServiceEntityRepository
      * @param int $page
      * @param int $limit
      * @param string|null $search
+     * @param int|null $userId
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
+    public function getAllPaginate(int $page, int $limit, string $search = null, int $userId = null): Paginator
     {
         $query = $this->createQueryBuilder('m')
             ->orderBy('m.id', 'ASC');
@@ -61,6 +62,11 @@ class MenuRepository extends ServiceEntityRepository
         if ($search !== null) {
             $query->where('m.name like :search');
             $query->setParameter('search', '%' . $search . '%');
+        }
+
+        if($userId !== null){
+            $query->andWhere('m.user = :userId');
+            $query->setParameter('userId', $userId);
         }
 
         $paginator = new Paginator($query->getQuery(), true);

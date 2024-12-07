@@ -18,7 +18,7 @@
     </p>
 
 
-    <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_page_load_grid_data', {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true}) }}></div>
+    <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_page_load_grid_data', {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true, 'showFilter' : true}) }}></div>
 
     <twig:Admin:ModaleComponent id="help-grid-page" bgColor="bg-secondary">
         <twig:block name="header">

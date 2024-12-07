@@ -75,7 +75,14 @@ class MenuController extends AppAdminController
     ): JsonResponse
     {
         $search = $request->query->get('search');
-        $grid = $menuService->getAllFormatToGrid($page, $limit, $search);
+        $filter = $request->query->get('filter');
+
+        $userId = null;
+        if ($filter === self::FILTER_ME) {
+            $userId = $this->getUser()->getId();
+        }
+
+        $grid = $menuService->getAllFormatToGrid($page, $limit, $search, $userId);
         return $this->json($grid);
     }
 
@@ -140,7 +147,7 @@ class MenuController extends AppAdminController
     #[Route('/ajax/switch-default/{id}', name: 'switch_default', methods: ['PUT'])]
     public function switchDefaultMenu(
         #[MapEntity(id: 'id')] Menu $menu,
-        MenuService $menuService,
+        MenuService                 $menuService,
         TranslatorInterface         $translator,
     ): JsonResponse
     {

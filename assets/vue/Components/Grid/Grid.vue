@@ -13,7 +13,7 @@ export default {
     filterKey: String,
     sortOrders: Object,
     translate: Object,
-    searchMode: String
+    searchMode: String,
   },
   emits: ['redirect-action'],
   data() {

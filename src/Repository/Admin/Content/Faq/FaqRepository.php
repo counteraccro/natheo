@@ -60,9 +60,10 @@ class FaqRepository extends ServiceEntityRepository
      * @param int $page
      * @param int $limit
      * @param string|null $search
+     * @param int|null $userId
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
+    public function getAllPaginate(int $page, int $limit, string $search = null, int $userId = null): Paginator
     {
         $query = $this->createQueryBuilder('f')
             ->orderBy('f.id', 'ASC');
@@ -71,6 +72,11 @@ class FaqRepository extends ServiceEntityRepository
             $query->join('f.faqTranslations', 'ft')
                 ->where('ft.title like :search')
                 ->setParameter('search', '%' . $search . '%');
+        }
+
+        if($userId !== null){
+            $query->andWhere('f.user = :userId');
+            $query->setParameter('userId', $userId);
         }
 
         $paginator = new Paginator($query->getQuery(), true);

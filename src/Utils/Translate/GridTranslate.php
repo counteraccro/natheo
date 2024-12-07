@@ -43,6 +43,8 @@ class GridTranslate extends AppTranslate
             'copySuccess' => $this->translator->trans('grid.copy.success', domain: 'grid'),
             'copyError' => $this->translator->trans('grid.copy.error', domain: 'grid'),
             'queryTitle' => $this->translator->trans('grid.query.title', domain: 'grid'),
+            'filterOnlyMe' => $this->translator->trans('grid.filter.only.me', domain: 'grid'),
+            'filterAll' => $this->translator->trans('grid.filter.all', domain: 'grid'),
         ];
     }
 

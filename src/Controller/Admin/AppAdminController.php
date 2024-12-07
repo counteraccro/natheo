@@ -13,6 +13,12 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 class AppAdminController extends AbstractController
 {
     /**
+     * Filtre pour n'afficher que mes données
+     * @var string
+     */
+    const FILTER_ME = 'me';
+
+    /**
      * @var OptionUserService
      */
     protected OptionUserService $optionUserService;

@@ -47,9 +47,10 @@ class PageRepository extends ServiceEntityRepository
      * @param int $page
      * @param int $limit
      * @param string|null $search
+     * @param int|null $userId
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
+    public function getAllPaginate(int $page, int $limit, string $search = null, int $userId = null): Paginator
     {
         $query = $this->createQueryBuilder('p')
             ->orderBy('p.id', 'ASC');
@@ -60,6 +61,11 @@ class PageRepository extends ServiceEntityRepository
                 ->where('tt.label like :search')
                 ->orWhere('ppt.titre like :search')
                 ->setParameter('search', '%' . $search . '%');
+        }
+
+        if($userId !== null){
+            $query->andWhere('p.user = :userId');
+            $query->setParameter('userId', $userId);
         }
 
         $paginator = new Paginator($query->getQuery(), true);
