@@ -74,7 +74,13 @@ class FaqController extends AppAdminController
     ): JsonResponse
     {
         $search = $request->query->get('search');
-        $grid = $faqService->getAllFormatToGrid($page, $limit, $search);
+        $filter = $request->query->get('filter');
+
+        $userId = null;
+        if ($filter === self::FILTER_ME) {
+            $userId = $this->getUser()->getId();
+        }
+        $grid = $faqService->getAllFormatToGrid($page, $limit, $search, $userId);
         return $this->json($grid);
     }
 

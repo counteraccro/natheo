@@ -28,11 +28,12 @@ class FaqService extends AppAdminService
      * @param int $page
      * @param int $limit
      * @param string|null $search
+     * @param int|null $userId
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllFormatToGrid(int $page, int $limit, string $search = null): array
+    public function getAllFormatToGrid(int $page, int $limit, string $search = null, int $userId = null): array
     {
         $translator = $this->getTranslator();
         $requestStack = $this->getRequestStack();
@@ -47,7 +48,7 @@ class FaqService extends AppAdminService
             GridService::KEY_ACTION,
         ];
 
-        $dataPaginate = $this->getAllPaginate($page, $limit, $search);
+        $dataPaginate = $this->getAllPaginate($page, $limit, $search, $userId);
 
         $nb = $dataPaginate->count();
         $data = [];
@@ -93,12 +94,15 @@ class FaqService extends AppAdminService
      * @param int $page
      * @param int $limit
      * @param string|null $search
+     * @param int|null $userId
      * @return Paginator
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
+    public function getAllPaginate(int $page, int $limit, string $search = null, int $userId = null): Paginator
     {
         $repo = $this->getRepository(Faq::class);
-        return $repo->getAllPaginate($page, $limit, $search);
+        return $repo->getAllPaginate($page, $limit, $search, $userId);
     }
 
     /**
