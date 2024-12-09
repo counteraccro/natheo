@@ -231,7 +231,8 @@ class PageController extends AppAdminController
                 'new_content' => $this->generateUrl('admin_page_new_content'),
                 'liste_content_by_id' => $this->generateUrl('admin_page_liste_content_by_id'),
                 'is_unique_url_page' => $this->generateUrl('admin_page_is_unique_url_page'),
-                'info_render_block' => $this->generateUrl('admin_page_info_render_block')
+                'info_render_block' => $this->generateUrl('admin_page_info_render_block'),
+                'page_preview' => $this->generateUrl('admin_page_preview')
             ]
         ]);
     }
@@ -503,5 +504,20 @@ class PageController extends AppAdminController
     {
         $liste = $pageService->getFormatedListePageForInternalLink($pageService->getLocales()['current']);
         return $this->json(['pages' => $liste]);
+    }
+
+    /**
+     * Affichage de la preview d'une page
+     * @param int|null $id
+     * @return Response
+     */
+    #[Route('/preview/{id}', name: 'preview', methods: ['GET'])]
+    public function preview(
+        int $id = null,
+    ): Response
+    {
+        return $this->render('admin/content/page/preview.html.twig', [
+            'preview' => 'toto ' . $id,
+        ]);
     }
 }

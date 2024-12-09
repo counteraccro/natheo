@@ -520,6 +520,14 @@ export default {
     closeToast(nameToast) {
       this.toasts[nameToast].show = false
     },
+
+    /**
+     * Ouvre la préview dans un nouvel onglet
+     */
+    openPreview()
+    {
+      window.open(this.urls.page_preview + '/' + this.page.id, '_blank');
+    }
   }
 }
 
@@ -548,6 +556,9 @@ export default {
             :selected="key===this.currentLocale">{{ language }}
         </option>
       </select>
+      <div v-if="this.page.id !== null" class="btn btn-secondary float-end me-2" @click="this.openPreview()">
+        <i class="bi bi-box-arrow-up-right"></i> {{ this.translate.page_save.btn_see_ext }}
+      </div>
       <div class="nav nav-pills mb-3" id="nav-tab-page" role="tablist">
         <button class="nav-link active" @click="this.switchTab('content')" id="content-tab" data-bs-toggle="tab"
             data-bs-target="#nav-content" type="button" role="tab" aria-selected="true">
@@ -701,7 +712,7 @@ export default {
           <button class="btn btn-secondary me-1" :disabled="this.tabError.globale.content" @click="this.save">
             <i class="bi bi-floppy"></i> {{ this.translate.page_save.btn_save }}
           </button>
-          <div class="btn btn-secondary">
+          <div v-if="this.page.id !== null" class="btn btn-secondary" @click="this.openPreview()">
             <i class="bi bi-box-arrow-up-right"></i> {{ this.translate.page_save.btn_see_ext }}
           </div>
         </div>

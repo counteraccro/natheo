@@ -1,0 +1,20 @@
+{% extends 'admin/admin_base_preview.html.twig' %}
+
+{% block title %}{{ "preview.title" | trans({}, 'editor_markdown') }}{% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col"></div>
+    <div class="col-10">
+        <fieldset class="mt-3 mb-3">
+            <legend>{{ "preview.preview" | trans({}, 'editor_markdown') }}</legend>
+            <div {{ vue_component('Admin/Global/Preview', {
+                'pValue' : preview,
+            }) }}>
+        </fieldset>
+        <i class="bi bi-info-circle"></i> <i>{{ "preview.preview.info" | trans({}, 'editor_markdown') }}</i>
+    </div>
+    <div class="col"></div>
+</div>
+{% endblock %}
