@@ -1,20 +1,22 @@
 {% extends 'admin/admin_base_preview.html.twig' %}
 
-{% block title %}{{ "preview.title" | trans({}, 'editor_markdown') }}{% endblock %}
+{% block title %}{{ "page.preview.title" | trans({}, 'page') }}{% endblock %}
 
 {% block body %}
 
-<div class="row">
-    <div class="col"></div>
-    <div class="col-10">
-        <fieldset class="mt-3 mb-3">
-            <legend>{{ "preview.preview" | trans({}, 'editor_markdown') }}</legend>
-            <div {{ vue_component('Admin/Global/Preview', {
-                'pValue' : preview,
-            }) }}>
-        </fieldset>
-        <i class="bi bi-info-circle"></i> <i>{{ "preview.preview.info" | trans({}, 'editor_markdown') }}</i>
+    <div class="container-fluid">
+
+    {% if datas.token is same as(null) %}
+        <div class="alert alert-warning mt-4">
+            <h3 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> {{ "page.preview.no.possible.title" | trans({}, 'page') }}</h3>
+            {{ "page.preview.no.possible" | trans({}, 'page') }}
+        </div>
+    {% else %}
+    <div {{ vue_component('Admin/Content/Page/PagePreview', {
+        'urls' : urls, 'datas' : datas, 'translate' : translate
+    }) }}></div>
+        {% endif %}
+
+
     </div>
-    <div class="col"></div>
-</div>
 {% endblock %}

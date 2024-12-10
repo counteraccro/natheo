@@ -12,6 +12,7 @@ use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
+use App\Service\Admin\System\ApiTokenService;
 use App\Service\Global\DateService;
 use App\Utils\Breadcrumb;
 use App\Utils\Content\Page\PageConst;
@@ -508,16 +509,46 @@ class PageController extends AppAdminController
 
     /**
      * Affichage de la preview d'une page
+     * @param PageService $pageService
      * @param int|null $id
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    #[Route('/preview/{id}', name: 'preview', methods: ['GET'])]
+    #[Route('/preview/{id}/{locale}', name: 'preview', methods: ['GET'])]
     public function preview(
+        PageService $pageService,
+        ApiTokenService $apiTokenService,
+        string $locale = null,
         int $id = null,
     ): Response
     {
+
+        if($locale === null) {
+            $locale =  $pageService->getLocales()['current'];
+        }
+        $slug = '';
+        $token = null;
+
+
+        if($id != null) {
+            /** @var Page $page */
+            $page = $pageService->findOneById(Page::class, $id);
+            if($page !== null) {
+                $slug = $page->getPageTranslationByLocale($locale)->getUrl();
+                $token = $apiTokenService->getTokenForPreview();
+            }
+        }
+
+
         return $this->render('admin/content/page/preview.html.twig', [
-            'preview' => 'toto ' . $id,
+            'datas' => [
+                'token' => $token,
+            ],
+            'urls' => [
+                'apiFindPage' => $this->generateUrl('api_page_find', ['slug' => $slug, 'locale' => $locale, 'api_version' => $this->getParameter('app.api_version')]),
+            ],
+            'translate' => []
         ]);
     }
 }
