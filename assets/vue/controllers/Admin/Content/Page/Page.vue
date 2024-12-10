@@ -526,7 +526,7 @@ export default {
      */
     openPreview()
     {
-      window.open(this.urls.page_preview + '/' + this.page.id, '_blank');
+      window.open(this.urls.page_preview + '/' + this.page.id + '/' + this.currentLocale, '_blank');
     }
   }
 }
