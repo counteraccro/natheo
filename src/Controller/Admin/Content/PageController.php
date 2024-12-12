@@ -547,6 +547,7 @@ class PageController extends AppAdminController
             ],
             'urls' => [
                 'apiFindPage' => $this->generateUrl('api_page_find', ['slug' => $slug, 'locale' => $locale, 'api_version' => $this->getParameter('app.api_version')]),
+                'apiGetContent' => $this->generateUrl('api_page_content', ['api_version' => $this->getParameter('app.api_version')]),
             ],
             'translate' => []
         ]);
