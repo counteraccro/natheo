@@ -510,6 +510,8 @@ class PageController extends AppAdminController
     /**
      * Affichage de la preview d'une page
      * @param PageService $pageService
+     * @param ApiTokenService $apiTokenService
+     * @param string|null $locale
      * @param int|null $id
      * @return Response
      * @throws ContainerExceptionInterface

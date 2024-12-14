@@ -6,10 +6,15 @@
  */
 import {emitter} from "../../../../../utils/useEvent";
 import axios from "axios";
+import MenuHeader from "../../../../Components/Menu/MenuHeader.vue";
+import {marked} from "marked";
 
 
 export default {
   name: 'PagePreview',
+  components: {
+    MenuHeader
+  },
   props: {
     urls: Object,
     datas: Object,
@@ -27,6 +32,7 @@ export default {
   },
   computed: {},
   methods: {
+    marked,
 
     /**
      * Charge le contenu globale de la page
@@ -79,13 +85,34 @@ export default {
       </div>
     </div>
     <header>
-      Header du site
+      Header
     </header>
     <nav>
       Navigation
     </nav>
     <main>
-      Block
+      <div class="row" v-if="this.page.render <= 3">
+        <div v-for="content in this.page.contents" class="col" v-html="marked(content.content.content)"></div>
+      </div>
+      <div v-else-if="this.page.render <= 5" class="row">
+        <div v-for="content in this.page.contents" class="col-12" v-html="marked(content.content.content)"></div>
+      </div>
+      <div v-else-if="this.page.render === 6" class="row">
+        <div class="col-12" v-html="this.page.contents[0].content.content"></div>
+        <div class="col-6" v-html="this.page.contents[1].content.content"></div>
+        <div class="col-6" v-html="this.page.contents[2].content.content"></div>
+      </div>
+      <div v-else-if="this.page.render === 7" class="row">
+        <div class="col-6" v-html="this.page.contents[0].content.content"></div>
+        <div class="col-6" v-html="this.page.contents[1].content.content"></div>
+        <div class="col-12" v-html="this.page.contents[2].content.content"></div>
+      </div>
+      <div v-else-if="this.page.render === 8" class="row">
+        <div class="col-6" v-html="this.page.contents[0].content.content"></div>
+        <div class="col-6" v-html="this.page.contents[1].content.content"></div>
+        <div class="col-6" v-html="this.page.contents[2].content.content"></div>
+        <div class="col-6" v-html="this.page.contents[3].content.content"></div>
+      </div>
     </main>
 
     <footer>
