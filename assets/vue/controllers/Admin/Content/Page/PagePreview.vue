@@ -8,11 +8,13 @@ import {emitter} from "../../../../../utils/useEvent";
 import axios from "axios";
 import MenuHeader from "../../../../Components/Menu/MenuHeader.vue";
 import {marked} from "marked";
+import PreviewContent from "../../../../Components/Page/Preview/PreviewContent.vue";
 
 
 export default {
   name: 'PagePreview',
   components: {
+    PreviewContent,
     MenuHeader
   },
   props: {
@@ -92,10 +94,20 @@ export default {
     </nav>
     <main>
       <div class="row" v-if="this.page.render <= 3">
-        <div v-for="content in this.page.contents" class="col" v-html="marked(content.content.content)"></div>
+        <div v-for="content in this.page.contents" class="col">
+          <PreviewContent v-if="content.type === 1"
+            :p-value="content.content.content"
+          >
+          </PreviewContent>
+        </div>
       </div>
       <div v-else-if="this.page.render <= 5" class="row">
-        <div v-for="content in this.page.contents" class="col-12" v-html="marked(content.content.content)"></div>
+        <div v-for="content in this.page.contents" class="col-12">
+          <PreviewContent v-if="content.type === 1"
+              :p-value="content.content.content"
+          >
+          </PreviewContent>
+        </div>
       </div>
       <div v-else-if="this.page.render === 6" class="row">
         <div class="col-12" v-html="this.page.contents[0].content.content"></div>
@@ -108,10 +120,12 @@ export default {
         <div class="col-12" v-html="this.page.contents[2].content.content"></div>
       </div>
       <div v-else-if="this.page.render === 8" class="row">
-        <div class="col-6" v-html="this.page.contents[0].content.content"></div>
-        <div class="col-6" v-html="this.page.contents[1].content.content"></div>
-        <div class="col-6" v-html="this.page.contents[2].content.content"></div>
-        <div class="col-6" v-html="this.page.contents[3].content.content"></div>
+        <div v-for="content in this.page.contents" class="col-6">
+          <PreviewContent v-if="content.type === 1"
+              :p-value="content.content.content"
+          >
+          </PreviewContent>
+        </div>
       </div>
     </main>
 

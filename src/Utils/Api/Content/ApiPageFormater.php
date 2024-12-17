@@ -63,7 +63,9 @@ class ApiPageFormater
 
 
             $return[] = [
-               'id' => $pageContent->getId()
+                'id' => $pageContent->getId(),
+                'type' => $pageContent->getType(),
+                'position' => $pageContent->getRenderBlock(),
             ];
         }
         return $return;
