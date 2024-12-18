@@ -141,6 +141,9 @@ page.page_save.select_page_landing_page: 'Landing Page'
 page.page_save.select_page_normal_page: 'Page normal'
 page.page_save.list_landing_page_help: "Si la page est défini comme landing page, elle apparaitra comme page par défaut à l'accueil de votre site. Il ne peux y avoir qu'une seule landing-page"
 page.index.popin.help.pin: 'Epingler (landing page)'
-page.preview.title: 'Preview'
+page.preview.title: Preview
 page.preview.no.possible.title: 'Preview non disponible'
 page.preview.no.possible: "La preview n'est pas disponible pour le moment, assurez vous d'avoir correctement sauvegardée votre page avant de réessayer"
+page.preview.content.loading_text: 'Chargement du texte...'
+page.preview.content.loading_faq: 'Chargement de la FAQ...'
+page.preview.content.loading_listing: 'Chargement du listing...'
