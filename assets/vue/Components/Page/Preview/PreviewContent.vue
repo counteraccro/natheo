@@ -5,18 +5,19 @@
  * @version 1.0
  */
 import {marked} from "marked";
+import PreviewListing from "./PreviewListing.vue";
 
 
 export default {
   name: 'PreviewContent',
-  components: {},
+  components: {PreviewListing},
   props: {
     pContent: Object,
+    translate: Object
   },
   emits: [],
   data() {
-    return {
-    }
+    return {}
   },
   methods: {
     getMarked(value) {
@@ -27,13 +28,31 @@ export default {
 </script>
 
 <template>
-  <div  v-if="this.pContent.type === 1">
-    <div v-html="this.getMarked(this.pContent.content)"></div>
+  <div v-if="this.pContent.type === 1">
+    <div class="border-light border-1 border p-2 rounded" style="min-height: 50px;"
+        v-html="this.getMarked(this.pContent.content)"
+        v-if="this.pContent.content !== undefined"></div>
+    <div v-else>
+      {{ this.translate.loading_text }}
+    </div>
   </div>
   <div v-if="this.pContent.type === 2">
-    FAQ
+    <div class="border-light border-1 border p-2 rounded" style="min-height: 50px;">
+      <div v-if="this.pContent.content !== undefined">
+        FAQ
+      </div>
+      <div v-else>
+        {{ this.translate.loading_faq }}
+      </div>
+    </div>
   </div>
   <div v-if="this.pContent.type === 3">
-    Listing
+    <div class="border-light border-1 border p-2 rounded" style="min-height: 50px;">
+      <PreviewListing :p-content="this.pContent" v-if="this.pContent.content !== undefined"></PreviewListing>
+      <div v-else>
+        {{ this.translate.loading_listing }}
+      </div>
+    </div>
+
   </div>
 </template>

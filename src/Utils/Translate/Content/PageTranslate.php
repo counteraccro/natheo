@@ -187,4 +187,27 @@ class PageTranslate extends AppTranslate
                 $this->translator->trans('page.tag.auto_complete.empty.result', domain: 'page')
         ];
     }
+
+    /**
+     * Retourne les traductions pour le preview
+     * @return array[]
+     */
+    public function getTranslatePreview(): array
+    {
+        return [
+            'preview_content' => $this->getTranslatePreviewContent()
+        ];
+    }
+
+    /**
+     * Traduction du bloc content
+     * @return array
+     */
+    private function getTranslatePreviewContent(): array {
+        return [
+            'loading_text' => $this->translator->trans('page.preview.content.loading_text', domain: 'page'),
+            'loading_faq' => $this->translator->trans('page.preview.content.loading_faq', domain: 'page'),
+            'loading_listing' => $this->translator->trans('page.preview.content.loading_listing', domain: 'page'),
+        ];
+    }
 }
