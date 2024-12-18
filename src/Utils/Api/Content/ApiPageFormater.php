@@ -66,6 +66,7 @@ class ApiPageFormater
                 'id' => $pageContent->getId(),
                 'type' => $pageContent->getType(),
                 'position' => $pageContent->getRenderBlock(),
+                'content' => ''
             ];
         }
         return $return;

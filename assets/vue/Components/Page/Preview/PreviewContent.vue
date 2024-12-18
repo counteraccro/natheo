@@ -9,22 +9,31 @@ import {marked} from "marked";
 
 export default {
   name: 'PreviewContent',
+  components: {},
   props: {
-    pValue: String,
+    pContent: Object,
   },
   emits: [],
   data() {
     return {
-      value: '',
     }
   },
-  mounted() {
-    this.value = marked(this.pValue);
-  },
+  methods: {
+    getMarked(value) {
+      return marked(value)
+    }
+  }
 }
 </script>
 
 <template>
-  aaa
-  <div v-html="this.value"></div>
+  <div  v-if="this.pContent.type === 1">
+    <div v-html="this.getMarked(this.pContent.content)"></div>
+  </div>
+  <div v-if="this.pContent.type === 2">
+    FAQ
+  </div>
+  <div v-if="this.pContent.type === 3">
+    Listing
+  </div>
 </template>

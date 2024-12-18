@@ -4,7 +4,6 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
-import {emitter} from "../../../../../utils/useEvent";
 import axios from "axios";
 import MenuHeader from "../../../../Components/Menu/MenuHeader.vue";
 import {marked} from "marked";
@@ -47,10 +46,10 @@ export default {
         }
       }).then((response) => {
         this.page = response.data.data.page
+        this.loadBlockContent();
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
-        this.loadBlockContent();
       });
     },
 
@@ -64,15 +63,50 @@ export default {
             'Authorization': 'Bearer ' + this.datas.token
           }
         }).then((response) => {
-          this.page.contents[index]['content'] = response.data.data;
+          this.page.contents[index].content = response.data.data.content;
         }).catch((error) => {
           console.error(error);
         }).finally(() => {
-          //this.loadBlockContent();
           this.loading = false;
         });
       });
-    }
+    },
+
+    /**
+     * Renvoi un render en fonction de sa position
+     * @param position
+     * @return {*}
+     */
+    renderContent(position) {
+      return this.page.contents.filter(
+          (content) => content.position === position
+      )
+    },
+
+    /**
+     * Retourne le nombre d'itérations en fonction du render
+     * @returns {number}
+     */
+    getNbIteration() {
+      switch (this.page.render) {
+        case 1:
+          return 1;
+        case 2:
+          return 2;
+        case 3:
+          return 3;
+        case 4:
+          return 2;
+        case 5:
+          return 3;
+        case 6:
+          return 2;
+        case 7:
+          return 2;
+        case 8:
+          return 4;
+      }
+    },
   }
 }
 </script>
@@ -94,37 +128,62 @@ export default {
     </nav>
     <main>
       <div class="row" v-if="this.page.render <= 3">
-        <div v-for="content in this.page.contents" class="col">
-          <PreviewContent v-if="content.type === 1"
-            :p-value="content.content.content"
-          >
-          </PreviewContent>
+        <div v-for="n in this.getNbIteration()" :class="'mb-4 col-' + (12/this.getNbIteration())">
+          <div v-for="content in this.renderContent(n)">
+            <PreviewContent :p-content="content"></PreviewContent>
+          </div>
         </div>
       </div>
+
       <div v-else-if="this.page.render <= 5" class="row">
-        <div v-for="content in this.page.contents" class="col-12">
-          <PreviewContent v-if="content.type === 1"
-              :p-value="content.content.content"
-          >
-          </PreviewContent>
+        <div v-for="n in this.getNbIteration()" class="mb-4 col-12">
+            <div v-for="content in this.renderContent(n)">
+              <PreviewContent :p-content="content"></PreviewContent>
+            </div>
         </div>
       </div>
+
       <div v-else-if="this.page.render === 6" class="row">
-        <div class="col-12" v-html="this.page.contents[0].content.content"></div>
-        <div class="col-6" v-html="this.page.contents[1].content.content"></div>
-        <div class="col-6" v-html="this.page.contents[2].content.content"></div>
+        <div class="col-12">
+          <div v-for="content in this.renderContent(1)">
+            <PreviewContent :p-content="content"></PreviewContent>
+          </div>
+        </div>
+        <div class="col-6">
+          <div v-for="content in this.renderContent(2)">
+            <PreviewContent :p-content="content"></PreviewContent>
+          </div>
+        </div>
+        <div class="col-6">
+          <div v-for="content in this.renderContent(3)">
+            <PreviewContent :p-content="content"></PreviewContent>
+          </div>
+        </div>
       </div>
+
       <div v-else-if="this.page.render === 7" class="row">
-        <div class="col-6" v-html="this.page.contents[0].content.content"></div>
-        <div class="col-6" v-html="this.page.contents[1].content.content"></div>
-        <div class="col-12" v-html="this.page.contents[2].content.content"></div>
+        <div class="col-6">
+          <div v-for="content in this.renderContent(1)">
+            <PreviewContent :p-content="content"></PreviewContent>
+          </div>
+        </div>
+        <div class="col-6">
+          <div v-for="content in this.renderContent(2)">
+            <PreviewContent :p-content="content"></PreviewContent>
+          </div>
+        </div>
+        <div class="col-12">
+          <div v-for="content in this.renderContent(3)">
+            <PreviewContent :p-content="content"></PreviewContent>
+          </div>
+        </div>
       </div>
+
       <div v-else-if="this.page.render === 8" class="row">
-        <div v-for="content in this.page.contents" class="col-6">
-          <PreviewContent v-if="content.type === 1"
-              :p-value="content.content.content"
-          >
-          </PreviewContent>
+        <div v-for="n in this.getNbIteration()" class="mb-4 col-6">
+          <div v-for="content in this.renderContent(n)">
+            <PreviewContent :p-content="content"></PreviewContent>
+          </div>
         </div>
       </div>
     </main>
