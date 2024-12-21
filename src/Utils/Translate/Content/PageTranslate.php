@@ -205,9 +205,7 @@ class PageTranslate extends AppTranslate
      */
     private function getTranslatePreviewContent(): array {
         return [
-            'loading_text' => $this->translator->trans('page.preview.content.loading_text', domain: 'page'),
-            'loading_faq' => $this->translator->trans('page.preview.content.loading_faq', domain: 'page'),
-            'loading_listing' => $this->translator->trans('page.preview.content.loading_listing', domain: 'page'),
+
         ];
     }
 }
