@@ -6,11 +6,12 @@
  */
 import {marked} from "marked";
 import PreviewListing from "./PreviewListing.vue";
+import PreviewFaq from "./PreviewFaq.vue";
 
 
 export default {
   name: 'PreviewContent',
-  components: {PreviewListing},
+  components: {PreviewFaq, PreviewListing},
   props: {
     pContent: Object,
     translate: Object
@@ -44,11 +45,18 @@ export default {
   </div>
   <div v-if="this.pContent.type === 2">
     <div class="border-light border-1 border p-2 rounded" style="min-height: 50px;">
-      <div v-if="this.pContent.content !== undefined">
-        FAQ
-      </div>
-      <div v-else>
+      <PreviewFaq :p-content="this.pContent" v-if="this.pContent.content !== undefined"></PreviewFaq>
+      <div v-else class="placeholder-glow">
+        <h4 class="placeholder col-12"></h4>
+        <div class="card">
+          <div class="card-header placeholder">
 
+          </div>
+          <div class="card-body">
+            <h5 class="card-title placeholder col-12"></h5>
+            <p class="card-text placeholder col-12"></p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
