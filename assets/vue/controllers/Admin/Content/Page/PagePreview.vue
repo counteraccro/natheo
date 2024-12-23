@@ -9,11 +9,15 @@ import MenuHeader from "../../../../Components/Menu/MenuHeader.vue";
 import {marked} from "marked";
 import PreviewContent from "../../../../Components/Page/Preview/PreviewContent.vue";
 import Masonry from "masonry-layout";
+import Mail from "../../System/Mail.vue";
+import PreviewFooter from "../../../../Components/Page/Preview/Menu/PreviewFooter.vue";
 
 
 export default {
   name: 'PagePreview',
   components: {
+    PreviewFooter,
+    Mail,
     PreviewContent,
     MenuHeader
   },
@@ -27,6 +31,7 @@ export default {
     return {
       loading: false,
       page: [],
+      footer: [],
     }
   },
   mounted() {
@@ -45,6 +50,7 @@ export default {
         }
       }).then((response) => {
         this.page = response.data.data.page
+        this.footer = this.page.menus.FOOTER;
         this.loadBlockContent();
       }).catch((error) => {
         console.error(error);
@@ -124,10 +130,11 @@ export default {
     <header>
       Header
     </header>
-    <nav>
+    <div class="row">
+    <nav class="col-2">
       Navigation
     </nav>
-    <main id="bock-content-preview">
+    <main class="col" id="bock-content-preview">
       <div class="row" v-if="this.page.render <= 3">
         <div v-for="n in this.getNbIteration()" :class="'mb-2 col-' + (12/this.getNbIteration())">
           <div v-for="content in this.renderContent(n)">
@@ -188,10 +195,15 @@ export default {
         </div>
       </div>
     </main>
+    </div>
+      <PreviewFooter
+          v-if="this.footer"
+          :p-menu="this.footer"
+          :data="this.datas.site"
+      ></PreviewFooter>
+      <div v-else>
 
-    <footer>
-      Footer
-    </footer>
+      </div>
   </div>
 
 </template>
