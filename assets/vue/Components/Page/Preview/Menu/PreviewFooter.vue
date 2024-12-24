@@ -23,6 +23,15 @@ export default {
     getCurrentYear() {
       return new Date().getFullYear();
     },
+
+    getUrl(element)
+    {
+      if(element.slug === "")
+      {
+        return element.url;
+      }
+      return this.data.url + '/' + element.slug;
+    }
   }
 
 }
@@ -30,7 +39,7 @@ export default {
 
 <template>
   <!-- Menu footer 1 ligne à droite TYPE_FOOTER_1_ROW_RIGHT !-->
-  <div class="container" v-if="this.pMenu.type===17">
+  <div v-if="this.pMenu.type===17">
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
       <p class="col-md-4 mb-0 text-body-secondary">© <span v-html="this.getCurrentYear()"></span> {{ this.data.name }}
       </p>
@@ -39,19 +48,24 @@ export default {
         <i class="bi" :class="this.data.logo"></i>&nbsp;{{ this.data.name }}
       </a>
 
-      <!--<ul class="nav col-md-4 justify-content-end">
-        <li v-for="(element) in this.menu.menuElements" class="nav-item" :set="elementTranslate = this.getTranslationByLocale(element.menuElementTranslations)">
-          <a v-if="!element.disabled" class="nav-link px-2 text-body-secondary"
-              :target="element.linkTarget" :href="elementTranslate.link">{{ elementTranslate.text }}
-          </a>
+      <ul class="nav col-md-4 justify-content-end">
+        <li v-for="element in this.pMenu.elements" class="nav-item" :set="url = this.getUrl(element)">
+          <a class="nav-link px-2 text-body-secondary" :href="url" :target="element.target"> {{ element.label }}</a>
         </li>
-      </ul>-->
+      </ul>
     </footer>
   </div>
 
   <!-- Menu footer 1 ligne centrée TYPE_FOOTER_1_ROW_CENTER !-->
-  <div class="container" v-if="this.pMenu.type===18">
-    TYPE_FOOTER_1_ROW_CENTER
+  <div v-if="this.pMenu.type===18">
+    <footer class="py-3 my-4">
+      <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+        <li v-for="element in this.pMenu.elements" class="nav-item" :set="url = this.getUrl(element)">
+          <a class="nav-link px-2 text-body-secondary" :href="url" :target="element.target"> {{ element.label }}</a>
+        </li>
+      </ul>
+      <p class="text-center text-body-secondary">© <span v-html="this.getCurrentYear()"></span> {{ this.data.name }}</p>
+    </footer>
   </div>
 
   <!-- Menu Footer TYPE_FOOTER_COLONNES !-->
