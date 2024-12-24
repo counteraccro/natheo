@@ -173,7 +173,7 @@ export default {
         }
       }
 
-      if (!isFirstLoad) {
+      if (!isFirstLoad && !(this.menu.type in this.listTypeByPosition)) {
         let first = Object.entries(this.listTypeByPosition)[0];
         this.menu.type = first[0];
       }
