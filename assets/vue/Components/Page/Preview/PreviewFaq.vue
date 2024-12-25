@@ -1,5 +1,5 @@
 <script>/**
- * Permet d'afficher le listing des pages en preview
+ * Permet d'afficher une FAQ en preview
  * @author Gourdon Aymeric
  * @version 1.0
  */
