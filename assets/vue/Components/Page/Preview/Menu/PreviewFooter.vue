@@ -24,14 +24,44 @@ export default {
       return new Date().getFullYear();
     },
 
-    getUrl(element)
-    {
-      if(element.slug === "")
-      {
+    /**
+     *
+     * @param element
+     * @return {*|string}
+     */
+    getUrl(element) {
+      if (element.slug === "") {
         return element.url;
       }
       return this.data.url + '/' + element.slug;
-    }
+    },
+
+    /**
+     *  Détermine si l'élément possède des enfants ou non
+     * @param element
+     */
+    isHaveChildren(element) {
+      return element.hasOwnProperty('elements');
+    },
+
+    /**
+     * Génère le footer de type Col avec profondeur
+     * @param elem
+     * @param html
+     */
+    renderColDeep(elem, html) {
+      elem.forEach((element) => {
+
+          html += ' <li class="nav-item mb-2"><a class="nav-link p-0 text-body-secondary"  target="' + element.target + '" href="' + this.getUrl(element) + '">' + element.label + '</a>'
+          if (this.isHaveChildren(element)) {
+            html += '<ul>'
+            html = this.renderColDeep(element.elements, html);
+            html += '</ul>';
+          }
+          html += '</li>';
+      });
+      return html;
+    },
   }
 
 }
@@ -69,7 +99,39 @@ export default {
   </div>
 
   <!-- Menu Footer TYPE_FOOTER_COLONNES !-->
-  <div class="container" v-if="this.pMenu.type===16">
-    TYPE_FOOTER_COLONNES
+  <div v-if="this.pMenu.type===16">
+    <footer class="row pt-5 mt-5 border-top">
+      <div class="col">
+        <a :href="this.data.url" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none">
+          <i class="bi" :class="this.data.logo"></i>&nbsp;{{ this.data.name }}
+        </a>
+        <p class="text-body-secondary">© <span v-html="this.getCurrentYear()"></span></p>
+      </div>
+
+      <div class="col"></div>
+
+      <!--<div v-for="(element) in this.menu.menuElements" class="col mb-2" :set="elementTranslate = this.getTranslationByLocale(element.menuElementTranslations)">
+        <div v-if="this.isHaveChildren(element) && !element.disabled">
+          <h5>{{ elementTranslate.text }}</h5>
+          <ul class="nav flex-column" v-html="this.renderColDeep(element, '')"></ul>
+        </div>
+        <div v-else-if="!element.disabled">
+          <h5>
+            <a :target="element.linkTarget" :href="elementTranslate.link" class="text-decoration-none">{{ elementTranslate.text }}</a>
+          </h5>
+        </div>
+      </div>-->
+
+      <div v-for="element in this.pMenu.elements" class="col-1">
+        <div v-if="this.isHaveChildren(element)">
+          <span>{{ element.label }}</span>
+          <ul class="nav flex-column" v-html="this.renderColDeep(element.elements, '')"></ul>
+        </div>
+
+        <a v-else :href="url" :target="element.target" class="text-decoration-none"> {{ element.label }}</a>
+
+      </div>
+
+    </footer>
   </div>
 </template>

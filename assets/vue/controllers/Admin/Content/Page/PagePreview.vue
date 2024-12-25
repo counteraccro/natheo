@@ -6,16 +6,16 @@
  */
 import axios from "axios";
 import MenuHeader from "../../../../Components/Menu/MenuHeader.vue";
-import {marked} from "marked";
 import PreviewContent from "../../../../Components/Page/Preview/PreviewContent.vue";
-import Masonry from "masonry-layout";
 import Mail from "../../System/Mail.vue";
 import PreviewFooter from "../../../../Components/Page/Preview/Menu/PreviewFooter.vue";
+import PreviewMenuLeftRight from "../../../../Components/Page/Preview/Menu/PreviewMenuLeftRight.vue";
 
 
 export default {
   name: 'PagePreview',
   components: {
+    PreviewMenuLeftRight,
     PreviewFooter,
     Mail,
     PreviewContent,
@@ -31,13 +31,16 @@ export default {
     return {
       loading: false,
       page: [],
-      footer: [],
+      footer: null,
+      menuLeft: null,
+      menuRight: null,
     }
   },
   mounted() {
     this.load();
   },
-  computed: {},
+  computed: {
+  },
   methods: {
     /**
      * Charge le contenu globale de la page
@@ -50,7 +53,15 @@ export default {
         }
       }).then((response) => {
         this.page = response.data.data.page
-        this.footer = this.page.menus.FOOTER;
+        if (this.page.menus.hasOwnProperty('FOOTER')) {
+          this.footer = this.page.menus.FOOTER;
+        }
+        if (this.page.menus.hasOwnProperty('RIGHT')) {
+          this.menuRight = this.page.menus.RIGHT;
+        }
+        if (this.page.menus.hasOwnProperty('LEFT')) {
+          this.menuLeft = this.page.menus.LEFT;
+        }
         this.loadBlockContent();
       }).catch((error) => {
         console.error(error);
@@ -131,79 +142,88 @@ export default {
       Header
     </header>
     <div class="row">
-    <nav class="col-2">
-      Navigation
-    </nav>
-    <main class="col" id="bock-content-preview">
-      <div class="row" v-if="this.page.render <= 3">
-        <div v-for="n in this.getNbIteration()" :class="'mb-2 col-' + (12/this.getNbIteration())">
-          <div v-for="content in this.renderContent(n)">
-            <PreviewContent :p-content="content" :translate="this.translate.preview_content"></PreviewContent>
+      <nav v-if="this.menuLeft" class="col-2">
+        <PreviewMenuLeftRight
+            :p-menu="this.menuLeft"
+            :data="this.datas.site"
+        ></PreviewMenuLeftRight>
+      </nav>
+      <main class="col" id="bock-content-preview">
+        <div class="row" v-if="this.page.render <= 3">
+          <div v-for="n in this.getNbIteration()" :class="'mb-2 col-' + (12/this.getNbIteration())">
+            <div v-for="content in this.renderContent(n)">
+              <PreviewContent :p-content="content" :translate="this.translate.preview_content"></PreviewContent>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div v-else-if="this.page.render <= 5" class="row">
-        <div v-for="n in this.getNbIteration()" class="mb-2 col-12">
-          <div v-for="content in this.renderContent(n)">
-            <PreviewContent :p-content="content" :translate="this.translate.preview_content"></PreviewContent>
+        <div v-else-if="this.page.render <= 5" class="row">
+          <div v-for="n in this.getNbIteration()" class="mb-2 col-12">
+            <div v-for="content in this.renderContent(n)">
+              <PreviewContent :p-content="content" :translate="this.translate.preview_content"></PreviewContent>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div v-else-if="this.page.render === 6" class="row">
-        <div class="col-12">
-          <div v-for="content in this.renderContent(1)">
-            <PreviewContent :p-content="content" :translate="this.translate.preview_content"></PreviewContent>
+        <div v-else-if="this.page.render === 6" class="row">
+          <div class="col-12">
+            <div v-for="content in this.renderContent(1)">
+              <PreviewContent :p-content="content" :translate="this.translate.preview_content"></PreviewContent>
+            </div>
+          </div>
+          <div class="col-6">
+            <div v-for="content in this.renderContent(2)">
+              <PreviewContent :p-content="content" :translate="this.translate.preview_content"></PreviewContent>
+            </div>
+          </div>
+          <div class="col-6">
+            <div v-for="content in this.renderContent(3)">
+              <PreviewContent :p-content="content" :translate="this.translate.preview_content"></PreviewContent>
+            </div>
           </div>
         </div>
-        <div class="col-6">
-          <div v-for="content in this.renderContent(2)">
-            <PreviewContent :p-content="content" :translate="this.translate.preview_content"></PreviewContent>
-          </div>
-        </div>
-        <div class="col-6">
-          <div v-for="content in this.renderContent(3)">
-            <PreviewContent :p-content="content" :translate="this.translate.preview_content"></PreviewContent>
-          </div>
-        </div>
-      </div>
 
-      <div v-else-if="this.page.render === 7" class="row">
-        <div class="col-6">
-          <div v-for="content in this.renderContent(1)">
-            <PreviewContent :p-content="content" :translate="this.translate.preview_content"></PreviewContent>
+        <div v-else-if="this.page.render === 7" class="row">
+          <div class="col-6">
+            <div v-for="content in this.renderContent(1)">
+              <PreviewContent :p-content="content" :translate="this.translate.preview_content"></PreviewContent>
+            </div>
+          </div>
+          <div class="col-6">
+            <div v-for="content in this.renderContent(2)">
+              <PreviewContent :p-content="content" :translate="this.translate.preview_content"></PreviewContent>
+            </div>
+          </div>
+          <div class="col-12">
+            <div v-for="content in this.renderContent(3)">
+              <PreviewContent :p-content="content" :translate="this.translate.preview_content"></PreviewContent>
+            </div>
           </div>
         </div>
-        <div class="col-6">
-          <div v-for="content in this.renderContent(2)">
-            <PreviewContent :p-content="content" :translate="this.translate.preview_content"></PreviewContent>
-          </div>
-        </div>
-        <div class="col-12">
-          <div v-for="content in this.renderContent(3)">
-            <PreviewContent :p-content="content" :translate="this.translate.preview_content"></PreviewContent>
-          </div>
-        </div>
-      </div>
 
-      <div v-else-if="this.page.render === 8" class="row">
-        <div v-for="n in this.getNbIteration()" class="mb-2 col-6">
-          <div v-for="content in this.renderContent(n)">
-            <PreviewContent :p-content="content" :translate="this.translate.preview_content"></PreviewContent>
+        <div v-else-if="this.page.render === 8" class="row">
+          <div v-for="n in this.getNbIteration()" class="mb-2 col-6">
+            <div v-for="content in this.renderContent(n)">
+              <PreviewContent :p-content="content" :translate="this.translate.preview_content"></PreviewContent>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+      <nav v-if="this.menuRight" class="col-2">
+        <PreviewMenuLeftRight
+            :p-menu="this.menuRight"
+            :data="this.datas.site"
+        ></PreviewMenuLeftRight>
+      </nav>
     </div>
-      <PreviewFooter
-          v-if="this.footer"
-          :p-menu="this.footer"
-          :data="this.datas.site"
-      ></PreviewFooter>
-      <div v-else>
+    <PreviewFooter
+        v-if="this.footer"
+        :p-menu="this.footer"
+        :data="this.datas.site"
+    ></PreviewFooter>
+    <div v-else>
 
-      </div>
+    </div>
   </div>
 
 </template>
