@@ -10,11 +10,13 @@ import PreviewContent from "../../../../Components/Page/Preview/PreviewContent.v
 import Mail from "../../System/Mail.vue";
 import PreviewFooter from "../../../../Components/Page/Preview/Menu/PreviewFooter.vue";
 import PreviewMenuLeftRight from "../../../../Components/Page/Preview/Menu/PreviewMenuLeftRight.vue";
+import PreviewHeader from "../../../../Components/Page/Preview/Menu/PreviewHeader.vue";
 
 
 export default {
   name: 'PagePreview',
   components: {
+    PreviewHeader,
     PreviewMenuLeftRight,
     PreviewFooter,
     Mail,
@@ -34,6 +36,7 @@ export default {
       footer: null,
       menuLeft: null,
       menuRight: null,
+      header: null,
     }
   },
   mounted() {
@@ -53,6 +56,9 @@ export default {
         }
       }).then((response) => {
         this.page = response.data.data.page
+        if (this.page.menus.hasOwnProperty('HEADER')) {
+          this.header = this.page.menus.HEADER;
+        }
         if (this.page.menus.hasOwnProperty('FOOTER')) {
           this.footer = this.page.menus.FOOTER;
         }
@@ -139,7 +145,11 @@ export default {
       </div>
     </div>
     <header>
-      Header
+      <preview-header v-if="this.header"
+          :p-menu="this.header"
+          :data="this.datas.site"
+        >
+      </preview-header>
     </header>
     <div class="row">
       <nav v-if="this.menuLeft" class="col-2">
