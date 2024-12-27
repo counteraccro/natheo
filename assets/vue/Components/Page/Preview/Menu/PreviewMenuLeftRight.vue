@@ -79,7 +79,7 @@ export default {
 </script>
 
 <template>
-  <div id="global-menu" class="flex-shrink-0 p-3 bg-body-tertiary border border-1 border-light">
+  <div class="flex-shrink-0 p-3 bg-body-tertiary border border-1 border-light">
     <a :href="this.data.url" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
       <i class="bi pe-none me-2 h4 mt-2" :class="this.data.logo"></i>
       <span class="fs-5 fw-semibold">{{ this.data.name }}</span>

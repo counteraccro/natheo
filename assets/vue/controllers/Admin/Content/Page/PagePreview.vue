@@ -56,6 +56,7 @@ export default {
         }
       }).then((response) => {
         this.page = response.data.data.page
+        document.getElementById('preview-title-page').innerHTML = '&nbsp;<b>' + this.page.title + '</b>';
         if (this.page.menus.hasOwnProperty('HEADER')) {
           this.header = this.page.menus.HEADER;
         }
@@ -136,7 +137,7 @@ export default {
 </script>
 
 <template>
-  <div id="block-preview" :class="this.loading === true ? 'block-grid' : ''">
+  <div id="global-menu" :class="this.loading === true ? 'block-grid' : ''">
 
     <div v-if="this.loading" class="overlay">
       <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
