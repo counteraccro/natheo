@@ -77,6 +77,8 @@ class ApiMenuFormater
                 'label' => $elementTranslation->getTextLink(),
                 'url' => $url,
                 'slug' => $slug,
+                'columnPosition' => $element->getColumnPosition(),
+                'rowPosition' => $element->getRowPosition(),
             ];
 
             if (!$element->getChildren()->isEmpty()) {
