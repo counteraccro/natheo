@@ -1,0 +1,48 @@
+{% extends 'admin/admin_base_preview.html.twig' %}
+
+{% block title %}{{ "page.preview.title" | trans({}, 'page') }}{% endblock %}
+
+{% block body %}
+
+    <nav id="adm-navbar" class="navbar navbar-expand-lg bg-secondary">
+        <div class="container-fluid text-white">
+            <span class="navbar-brand mb-0 h1 text-white"><i class="bi {{ datas.site.logo }}"></i> {{ datas.site.name }}</span>
+            <span class="ps-5">{{ "page.preview.title.head" | trans({}, 'page') }}</span><span id="preview-title-page">...</span>
+            <div class="collapse navbar-collapse text-left" id="navbarToggleExternalContent">
+                    <ul class="navbar-nav mb-2 ms-auto text-left">
+                    <li class="nav-item dropdown" style="padding-right: 90px;">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-arrow-repeat"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% for key, url in redirects %}
+                                <li><a class="dropdown-item text-black" style="font-size: 1em" href="{{ url }}">{{ ("page.preview.switch.locale."~key) | trans({}, 'page') }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="">
+
+        {% if datas.token is same as(null) %}
+            <div class="alert alert-warning mt-4">
+                <h3 class="alert-heading">
+                    <i class="bi bi-exclamation-triangle-fill"></i> {{ "page.preview.no.possible.title" | trans({}, 'page') }}
+                </h3>
+                {{ "page.preview.no.possible" | trans({}, 'page') }}
+            </div>
+        {% else %}
+            <div class="border-bottom border-secondary p-2" style="background-color: #F8F9FA" {{ vue_component('Admin/Content/Page/PagePreview', {
+                'urls' : urls, 'datas' : datas, 'translate' : translate
+            }) }}></div>
+            <div class="text-bg-secondary p-2">
+                <i>{{ "page.preview.warning" | trans({}, 'page') }}</i>
+            </div>
+        {% endif %}
+
+
+    </div>
+{% endblock %}

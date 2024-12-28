@@ -191,7 +191,7 @@ class ApiTokenService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function createUpdateApiToken(array $data)
+    public function createUpdateApiToken(array $data): int
     {
         $apiToken = new ApiToken();
         if($data['id'] !== null || $data['id'] > 0)
@@ -206,5 +206,22 @@ class ApiTokenService extends AppAdminService
 
         $this->save($apiToken);
         return $apiToken->getId();
+    }
+
+    /**
+     * Retourne un token valide pour la préview
+     * @return string|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getTokenForPreview(): ?string
+    {
+        /** @var ApiToken $apiToken */
+        $apiToken = $this->findBy(ApiToken::class, ['disabled' => false], ['id' => 'DESC'], 1);
+        if(!empty($apiToken))
+        {
+            return $apiToken[0]->getToken();
+        }
+        return null;
     }
 }

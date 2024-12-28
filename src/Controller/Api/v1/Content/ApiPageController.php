@@ -28,7 +28,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/api/{api_version}/page', name: 'api_page_', requirements: ['_version' => '%app.api_version%'])]
+#[Route('/api/{api_version}/page', name: 'api_page_', requirements: ['api_version' => '%app.api_version%'])]
 #[IsGranted("ROLE_READ_API")]
 class ApiPageController extends AppApiController
 {
@@ -124,7 +124,8 @@ class ApiPageController extends AppApiController
     #[Route('/tag', name: 'tag', methods: ['GET'])]
     public function getPageByTag(#[MapQueryString(
         resolver: ApiFindPageTagResolver::class
-    )] ApiFindPageTagDto $apiFindPageTagDto) {
+    )] ApiFindPageTagDto $apiFindPageTagDto): JsonResponse
+    {
 
         $user = null;
         if ($apiFindPageTagDto->getUserToken() !== "") {

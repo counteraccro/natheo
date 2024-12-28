@@ -141,3 +141,11 @@ page.page_save.select_page_landing_page: __page.page_save.select_page_landing_pa
 page.page_save.select_page_normal_page: __page.page_save.select_page_normal_page
 page.page_save.list_landing_page_help: __page.page_save.list_landing_page_help
 page.index.popin.help.pin: __page.index.popin.help.pin
+page.preview.title: __page.preview.title
+page.preview.no.possible.title: __page.preview.no.possible.title
+page.preview.no.possible: __page.preview.no.possible
+page.preview.title.head: __page.preview.title.head
+page.preview.warning: __page.preview.warning
+page.preview.switch.locale.fr: '__En français'
+page.preview.switch.locale.en: '__En anglais'
+page.preview.switch.locale.es: '__En espagnol'

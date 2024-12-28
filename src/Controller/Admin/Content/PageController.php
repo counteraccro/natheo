@@ -12,12 +12,15 @@ use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
+use App\Service\Admin\System\ApiTokenService;
+use App\Service\Admin\System\OptionSystemService;
 use App\Service\Global\DateService;
 use App\Utils\Breadcrumb;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageFactory;
 use App\Utils\Content\Page\PageHistory;
 use App\Utils\Content\Page\PagePopulate;
+use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Content\PageTranslate;
 use Psr\Container\ContainerExceptionInterface;
@@ -231,7 +234,8 @@ class PageController extends AppAdminController
                 'new_content' => $this->generateUrl('admin_page_new_content'),
                 'liste_content_by_id' => $this->generateUrl('admin_page_liste_content_by_id'),
                 'is_unique_url_page' => $this->generateUrl('admin_page_is_unique_url_page'),
-                'info_render_block' => $this->generateUrl('admin_page_info_render_block')
+                'info_render_block' => $this->generateUrl('admin_page_info_render_block'),
+                'page_preview' => $this->generateUrl('admin_page_preview')
             ]
         ]);
     }
@@ -503,5 +507,73 @@ class PageController extends AppAdminController
     {
         $liste = $pageService->getFormatedListePageForInternalLink($pageService->getLocales()['current']);
         return $this->json(['pages' => $liste]);
+    }
+
+    /**
+     * Affichage de la preview d'une page
+     * @param PageService $pageService
+     * @param ApiTokenService $apiTokenService
+     * @param PageTranslate $pageTranslate
+     * @param OptionSystemService $optionSystemService
+     * @param string|null $locale
+     * @param int|null $id
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/preview/{id}/{locale}', name: 'preview', methods: ['GET'])]
+    public function preview(
+        PageService $pageService,
+        ApiTokenService $apiTokenService,
+        PageTranslate $pageTranslate,
+        OptionSystemService $optionSystemService,
+        string $locale = null,
+        int $id = null,
+    ): Response
+    {
+
+        if($locale === null) {
+            $locale =  $pageService->getLocales()['current'];
+        }
+        $slug = '';
+        $token = null;
+
+        $tabUrl = [];
+        foreach ($pageService->getLocales()['locales'] as $loc) {
+            $tabUrl[$loc] = $this->generateUrl('admin_page_preview', ['id' => $id, 'locale' => $loc]);
+        }
+
+
+        if($id != null) {
+            /** @var Page $page */
+            $page = $pageService->findOneById(Page::class, $id);
+            if($page !== null) {
+                $slug = $page->getPageTranslationByLocale($locale)->getUrl();
+                $token = $apiTokenService->getTokenForPreview();
+            }
+        }
+
+        $siteName = $optionSystemService->getValueByKey(OptionSystemKey::OS_SITE_NAME);
+        $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
+        $logo = $optionSystemService->getValueByKey(OptionSystemKey::OS_LOGO_SITE);
+
+
+        return $this->render('admin/content/page/preview.html.twig', [
+            'datas' => [
+                'token' => $token,
+                'locale' => $locale,
+                'site' => [
+                    'name' => $siteName,
+                    'url' => $url,
+                    'logo' => $logo
+                ],
+            ],
+            'redirects' => $tabUrl,
+            'urls' => [
+                'apiFindPage' => $this->generateUrl('api_page_find', ['slug' => $slug, 'locale' => $locale, 'api_version' => $this->getParameter('app.api_version')]),
+                'apiGetContent' => $this->generateUrl('api_page_content', ['api_version' => $this->getParameter('app.api_version')]),
+            ],
+            'translate' => $pageTranslate->getTranslatePreview()
+        ]);
     }
 }

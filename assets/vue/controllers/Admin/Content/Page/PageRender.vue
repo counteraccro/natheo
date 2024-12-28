@@ -1,6 +1,7 @@
 <script>
 /**
  * Permet de générer un rendu pour les pages
+ * TODO Abandonné pour le moment
  * @author Gourdon Aymeric
  * @version 1.0
  */

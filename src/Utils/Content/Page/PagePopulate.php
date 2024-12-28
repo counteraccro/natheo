@@ -13,6 +13,8 @@ use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\Content\Page\PageContentTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Service\Admin\Content\Page\PageService;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class PagePopulate
 {
@@ -131,6 +133,8 @@ class PagePopulate
      * Reset les menus présents dans $page et ajoute à la place les menus associés à la page avec $populate si
      * la clé "menu" est présente
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function populateMenus():void
     {
@@ -227,10 +231,9 @@ class PagePopulate
     {
         return match ($render) {
             PageConst::RENDER_1_BLOCK => 1,
-            PageConst::RENDER_2_BLOCK => 2,
-            PageConst::RENDER_3_BLOCK_BOTTOM, PageConst::RENDER_1_2_BLOCK,
-            PageConst::RENDER_2_1_BLOCK, PageConst::RENDER_3_BLOCK => 3,
-            PageConst::RENDER_2_2_BLOCK, PageConst::RENDER_2_BLOCK_BOTTOM => 4,
+            PageConst::RENDER_2_BLOCK, PageConst::RENDER_2_BLOCK_BOTTOM => 2,
+            PageConst::RENDER_3_BLOCK_BOTTOM, PageConst::RENDER_1_2_BLOCK, PageConst::RENDER_2_1_BLOCK, PageConst::RENDER_3_BLOCK => 3,
+            PageConst::RENDER_2_2_BLOCK => 4,
             default => 0,
         };
     }
