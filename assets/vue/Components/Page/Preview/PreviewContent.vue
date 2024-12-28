@@ -30,7 +30,7 @@ export default {
 
 <template>
   <div v-if="this.pContent.type === 1">
-    <div class="border-light border-1 border p-2 rounded" style="min-height: 50px;">
+    <div class="border-light border-1 border p-2 rounded" style="min-height: 50px;background-color: #FFFFFF">
       <div
           v-html="this.getMarked(this.pContent.content)"
           v-if="this.pContent.content !== undefined"></div>
@@ -44,7 +44,7 @@ export default {
     </div>
   </div>
   <div v-if="this.pContent.type === 2">
-    <div class="border-light border-1 border p-2 rounded" style="min-height: 50px;">
+    <div class="border-light border-1 border p-2 rounded" style="min-height: 50px;background-color: #FFFFFF">
       <PreviewFaq :p-content="this.pContent" v-if="this.pContent.content !== undefined"></PreviewFaq>
       <div v-else class="placeholder-glow">
         <h4 class="placeholder col-12"></h4>
@@ -61,7 +61,7 @@ export default {
     </div>
   </div>
   <div v-if="this.pContent.type === 3">
-    <div class="border-light border-1 border p-2 rounded" style="min-height: 50px;">
+    <div class="border-light border-1 border p-2 rounded" style="min-height: 50px;background-color: #FFFFFF">
       <PreviewListing :p-content="this.pContent" v-if="this.pContent.content !== undefined"></PreviewListing>
       <div v-else>
         <ul>

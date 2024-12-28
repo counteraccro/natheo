@@ -513,6 +513,8 @@ class PageController extends AppAdminController
      * Affichage de la preview d'une page
      * @param PageService $pageService
      * @param ApiTokenService $apiTokenService
+     * @param PageTranslate $pageTranslate
+     * @param OptionSystemService $optionSystemService
      * @param string|null $locale
      * @param int|null $id
      * @return Response
@@ -536,6 +538,11 @@ class PageController extends AppAdminController
         $slug = '';
         $token = null;
 
+        $tabUrl = [];
+        foreach ($pageService->getLocales()['locales'] as $loc) {
+            $tabUrl[$loc] = $this->generateUrl('admin_page_preview', ['id' => $id, 'locale' => $loc]);
+        }
+
 
         if($id != null) {
             /** @var Page $page */
@@ -554,12 +561,14 @@ class PageController extends AppAdminController
         return $this->render('admin/content/page/preview.html.twig', [
             'datas' => [
                 'token' => $token,
+                'locale' => $locale,
                 'site' => [
                     'name' => $siteName,
                     'url' => $url,
                     'logo' => $logo
                 ],
             ],
+            'redirects' => $tabUrl,
             'urls' => [
                 'apiFindPage' => $this->generateUrl('api_page_find', ['slug' => $slug, 'locale' => $locale, 'api_version' => $this->getParameter('app.api_version')]),
                 'apiGetContent' => $this->generateUrl('api_page_content', ['api_version' => $this->getParameter('app.api_version')]),

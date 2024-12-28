@@ -83,7 +83,7 @@ export default {
     async loadBlockContent() {
       for (const element of this.page.contents) {
         const index = this.page.contents.indexOf(element);
-        await axios.get(this.urls.apiGetContent + '?id=' + element.id, {
+        await axios.get(this.urls.apiGetContent + '?id=' + element.id + '&locale=' + this.datas.locale, {
           headers: {
             'Authorization': 'Bearer ' + this.datas.token
           }
