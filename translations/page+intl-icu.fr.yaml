@@ -144,3 +144,8 @@ page.index.popin.help.pin: 'Epingler (landing page)'
 page.preview.title: Preview
 page.preview.no.possible.title: 'Preview non disponible'
 page.preview.no.possible: "La preview n'est pas disponible pour le moment, assurez vous d'avoir correctement sauvegardée votre page avant de réessayer"
+page.preview.title.head: 'Préview de la page : '
+page.preview.warning: 'Ceci est une préview et ne prend pas en compte le design de votre site'
+page.preview.switch.locale.fr: 'En français'
+page.preview.switch.locale.en: 'En anglais'
+page.preview.switch.locale.es: 'En espagnol'
