@@ -11,3 +11,5 @@ global.notification: 'Mes notifications'
 global.user.impersonation: 'Reprendre mon profil'
 global.citation: 'À vaincre sans péril, on triomphe sans gloire.'
 global.citation.auteur: 'Pierre corneille <cite title="Le Cid, p.207">Le cid</cite>'
+global.search.placeholder: 'Rechercher une page, un tag....'
+global.search.btn: Rechercher
