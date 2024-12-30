@@ -1,0 +1,21 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block title %}{{ 'global_search.index.page_title_h1' | trans({}, 'global_search') }}{% endblock %}
+
+{% block body %}
+
+    <h1 class="mb-3">{{ 'global_search.index.page_title_h1' | trans({}, 'global_search') }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    <p>blabla</p>
+
+    {{ search }}
+
+    <div {#  { vue_component('Admin/Dashboard/dashboard', {
+        'urls' : urls,
+        'translate' : translate,
+        'datas' : datas,
+    }) }#}>
+    </div>
+{% endblock %}
