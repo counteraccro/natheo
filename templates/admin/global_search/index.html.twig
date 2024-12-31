@@ -12,10 +12,10 @@
 
     {{ search }}
 
-    <div {#  { vue_component('Admin/Dashboard/dashboard', {
+    <div {{ vue_component('Admin/Global/GlobalSearch', {
         'urls' : urls,
         'translate' : translate,
-        'datas' : datas,
-    }) }#}>
+        'search' : search,
+    }) }}>
     </div>
 {% endblock %}
