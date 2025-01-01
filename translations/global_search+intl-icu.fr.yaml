@@ -1,3 +1,4 @@
 global_search.index.page_title_h1: 'Recherche globale'
-global_search.sub.title.page: __global_search.sub.title.page
-global_search.page.loading: __global_search.page.loading
+global_search.sub.title.page: 'Résultat dans les pages'
+global_search.page.loading: 'Recherche dans les pages...'
+global_search.error.notFound: 'Aucun résultat'
