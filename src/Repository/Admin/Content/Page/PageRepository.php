@@ -181,28 +181,14 @@ class PageRepository extends ServiceEntityRepository
 
     }
 
-//    /**
-//     * @return Page[] Returns an array of Page objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function search(string $search, int $page, int $limit): Paginator
+    {
+        $query = $this->createQueryBuilder('p');
 
-//    public function findOneBySomeField($value): ?Page
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
+    }
 }

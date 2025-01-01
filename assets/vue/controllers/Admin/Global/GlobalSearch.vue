@@ -16,25 +16,24 @@ export default {
   emits: [],
   data() {
     return {
-      loading : {
-        page : false
+      loading: {
+        page: false
       }
     }
   },
   mounted() {
-    this.searchPage();
+    this.globalSearch('page', this.search, 1, 25);
   },
   methods: {
-    searchPage()
-    {
-      this.loading.page = true;
-      axios.get(this.urls.searchPage + '/' + this.search, {})
+    globalSearch(entity, search, page, limit) {
+      this.loading[entity] = true;
+      axios.get(this.urls.searchPage + '/' + entity + '/' + search + '/' + page + '/' +  limit, {})
           .then((response) => {
 
           }).catch((error) => {
         console.error(error);
       }).finally(() => {
-        this.loading.page = false;
+        this.loading[entity] = false;
       });
     }
   }
@@ -53,5 +52,5 @@ export default {
     </div>
 
   </div>
- La recherche {{ this.search }}
+  La recherche {{ this.search }}
 </template>

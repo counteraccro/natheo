@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin\Global;
 
+use App\Service\Admin\GlobalSearchService;
 use App\Utils\Breadcrumb;
 use App\Utils\Translate\GlobalSearchTranslate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,14 +31,30 @@ class GlobalSearchController extends AbstractController
             'breadcrumb' => $breadcrumb,
             'translate' => $globalSearchTranslate->getTranslate(),
             'urls' => [
-                'searchPage' => $this->generateUrl('admin_search_page')
+                'searchPage' => $this->generateUrl('admin_search_global')
             ]
         ]);
     }
 
-    #[Route('/page/{search}', name: 'page', methods: ['GET'])]
-    public function searchPage(Request $request, string $search = null): Response
+    /**
+     * Effectue une recherche en fonction de l'entité et de search
+     * @param Request $request
+     * @param GlobalSearchService $globalSearchService
+     * @param string|null $entity
+     * @param string|null $search
+     * @return Response
+     */
+    #[Route('/{entity}/{search}/{page}/{limit}', name: 'global', methods: ['GET'])]
+    public function search(
+        Request $request,
+        GlobalSearchService $globalSearchService,
+        string $entity = null,
+        string $search = null,
+        int $page = 1,
+        int $limit = 20
+    ): Response
     {
-        return $this->json(['recherche page' => $search]);
+        $result = $globalSearchService->globalSearch($entity, $search, $page, $limit);
+        return $this->json(['recherche page' => $search, 'result' => $result]);
     }
 }
