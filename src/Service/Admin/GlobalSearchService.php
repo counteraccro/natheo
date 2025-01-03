@@ -8,6 +8,7 @@
 namespace App\Service\Admin;
 
 use App\Entity\Admin\Content\Page\Page;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -35,7 +36,7 @@ class GlobalSearchService extends AppAdminService
         $repository = $this->getRepository(ucfirst($entity));
         $result = $repository->search($search, $page, $limit);
 
-        return [$result->count()];
+        return $this->formatResult($result);
     }
 
     /**
@@ -49,5 +50,26 @@ class GlobalSearchService extends AppAdminService
             'page' => Page::class,
             default => '',
         };
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function formatResult(Paginator $paginator): array
+    {
+        $locales = $this->getLocales();
+
+        $return = ['elements' => [], 'total' => $paginator->count()];
+        foreach ($paginator as $item) {
+
+            /** @var Page $item */
+            $return['elements'][] = [
+                'id' => $item->getId(),
+                'label' => $item->getPageTranslationByLocale($locales['current'])->getTitre(),
+            ];
+        }
+
+        return $return;
     }
 }
