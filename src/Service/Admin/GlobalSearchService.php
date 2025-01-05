@@ -35,7 +35,7 @@ class GlobalSearchService extends AppAdminService
         }
 
         $repository = $this->getRepository(ucfirst($entity));
-        $result = $repository->search($search, $page, $limit);
+        $result = $repository->search($search, $this->getLocales()['current'], $page, $limit);
 
         return $this->formatResult($result, $entity, $search);
     }
@@ -93,20 +93,15 @@ class GlobalSearchService extends AppAdminService
         foreach ($page->getPageContents() as $pageContent) {
             if ($pageContent->getType() === PageConst::CONTENT_TYPE_TEXT) {
                 $text = $pageContent->getPageContentTranslationByLocale($locale)->getText();
-                $re = '/\b((?:\w+[^\w\n]+){0,2}' . $search . '\b(?:[^\w\n]+\w+){0,2})/mu';
+                $re = '/(\B||\b)((?-i:\w+[^\w\n]+){0,10}' . $search . '(\B||\b)(?-i:[^\w\n]+\w+){0,10})/mu';
                 preg_match_all($re, $text, $matches, PREG_SET_ORDER, 0);
+
+                echo $re;
 
                 foreach($matches as $matche)
                 {
                     $content[] = $this->highlightText($search, $matche[0]);
                 }
-
-                /*if (str_contains($text, $search)) {
-                    $start = strpos($text, $search) - 25;
-                    $end = strlen($search) + 25;
-                    $text = substr($text, $start, $end);
-                    $content[] = $this->highlightText($search, $text);
-                }*/
             }
         }
 

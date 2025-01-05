@@ -187,17 +187,19 @@ class PageRepository extends ServiceEntityRepository
      * @param int $limit
      * @return Paginator
      */
-    public function search(string $search, int $page, int $limit): Paginator
+    public function search(string $search, string $locale, int $page, int $limit): Paginator
     {
         $query = $this->createQueryBuilder('p');
 
         $query->join('p.pageTranslations', 'pt')
             ->leftJoin('p.pageContents', 'pc')
             ->leftJoin('pc.pageContentTranslations', 'pct')
+            ->andWhere('pt.locale = :locale')
             ->andWhere('pt.titre like :search')
-            ->orWhere('pc.type = :type AND pct.text like :search')
+            ->orWhere('pc.type = :type AND pct.text like :search AND pct.locale = :locale')
             ->setParameter('search', '%' . $search . '%')
-            ->setParameter('type', PageConst::CONTENT_TYPE_TEXT);
+            ->setParameter('type', PageConst::CONTENT_TYPE_TEXT)
+            ->setParameter('locale', $locale);
 
         $paginator = new Paginator($query->getQuery(), true);
         $paginator->getQuery()

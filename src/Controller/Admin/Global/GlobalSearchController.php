@@ -31,6 +31,7 @@ class GlobalSearchController extends AbstractController
             'breadcrumb' => $breadcrumb,
             'translate' => $globalSearchTranslate->getTranslate(),
             'urls' => [
+                'listingPage' => $this->generateUrl('admin_page_index'),
                 'searchPage' => $this->generateUrl('admin_search_global')
             ]
         ]);
