@@ -2,3 +2,6 @@ global_search.index.page_title_h1: 'Recherche globale'
 global_search.sub.title.page: 'Résultat dans les pages'
 global_search.page.loading: 'Recherche dans les pages...'
 global_search.error.notFound: 'Aucun résultat'
+global_search.paginate.page: Page
+global_search.paginate.on: sur
+global_search.paginate.row: résultat(s)

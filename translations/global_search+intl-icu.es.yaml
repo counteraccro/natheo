@@ -2,3 +2,6 @@ global_search.index.page_title_h1: __global_search.index.page_title_h1
 global_search.sub.title.page: __global_search.sub.title.page
 global_search.page.loading: __global_search.page.loading
 global_search.error.notFound: __global_search.error.notFound
+global_search.paginate.page: __global_search.paginate.page
+global_search.paginate.on: __global_search.paginate.on
+global_search.paginate.row: __global_search.paginate.row
