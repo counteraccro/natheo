@@ -83,6 +83,8 @@ class GlobalSearchService extends AppAdminService
      * @param string $locale
      * @param string $search
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function formatResulPage(Page $page, string $locale, string $search): array
     {
@@ -96,8 +98,6 @@ class GlobalSearchService extends AppAdminService
                 $re = '/(\B||\b)((?-i:\w+[^\w\n]+){0,10}' . $search . '(\B||\b)(?-i:[^\w\n]+\w+){0,10})/mu';
                 preg_match_all($re, $text, $matches, PREG_SET_ORDER, 0);
 
-                echo $re;
-
                 foreach($matches as $matche)
                 {
                     $content[] = $this->highlightText($search, $matche[0]);
@@ -105,12 +105,17 @@ class GlobalSearchService extends AppAdminService
             }
         }
 
-        $return = [
+        $router = $this->getRouter();
+
+        return [
             'id' => $page->getId(),
             'label' => $label,
             'contents' => $content,
+            'urls' => [
+                'edit' => $router->generate('admin_page_update', ['id' => $page->getId()]),
+                'preview' => $router->generate('admin_page_preview', ['id' => $page->getId(), 'locale' => $locale]),
+            ]
         ];
-        return $return;
     }
 
     /**
@@ -121,6 +126,6 @@ class GlobalSearchService extends AppAdminService
      */
     private function highlightText(string $search, string $text): string
     {
-        return str_replace($search, '<mark>' . $search . '</mark>', $text);
+        return str_ireplace($search, '<mark>' . $search . '</mark>', $text);
     }
 }

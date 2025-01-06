@@ -5,6 +5,8 @@ namespace App\Controller\Admin\Global;
 use App\Service\Admin\GlobalSearchService;
 use App\Utils\Breadcrumb;
 use App\Utils\Translate\GlobalSearchTranslate;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,7 +45,11 @@ class GlobalSearchController extends AbstractController
      * @param GlobalSearchService $globalSearchService
      * @param string|null $entity
      * @param string|null $search
+     * @param int $page
+     * @param int $limit
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/{entity}/{search}/{page}/{limit}', name: 'global', methods: ['GET'])]
     public function search(
@@ -56,6 +62,6 @@ class GlobalSearchController extends AbstractController
     ): Response
     {
         $result = $globalSearchService->globalSearch($entity, $search, $page, $limit);
-        return $this->json(['recherche page' => $search, 'result' => $result]);
+        return $this->json(['recherche page' => $search, 'result' => $result, 'paginate' => ['current' => $page, 'limit' => $limit]]);
     }
 }

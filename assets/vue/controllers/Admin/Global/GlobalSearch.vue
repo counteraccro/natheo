@@ -23,18 +23,28 @@ export default {
       },
       results: {
         page: null
+      },
+      paginate: {
+        page: null
       }
     }
   },
   mounted() {
-    this.globalSearch('page', this.search, 1, 25);
+    this.globalSearch('page', this.search, 1, 1);
   },
   methods: {
+
+    changePage(entity, page, limit)
+    {
+      this.globalSearch(entity, this.search, page, limit)
+    },
+
     globalSearch(entity, search, page, limit) {
       this.loading[entity] = true;
       axios.get(this.urls.searchPage + '/' + entity + '/' + search + '/' + page + '/' + limit, {})
           .then((response) => {
             this.results[entity] = response.data.result;
+            this.paginate[entity] = response.data.paginate;
           }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -64,6 +74,9 @@ export default {
       <tab-result-search
           :result="this.results.page"
           :translate="this.translate"
+          :paginate="this.paginate.page"
+          :entity="'page'"
+          @change-page-event="this.changePage"
       >
       </tab-result-search>
     </div>
