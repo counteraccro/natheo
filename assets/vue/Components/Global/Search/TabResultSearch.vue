@@ -3,20 +3,27 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
+import SearchPaginate from "./SearchPaginate.vue";
 
 
 export default {
   name: 'TabResultSearch',
+  components: {SearchPaginate},
   props: {
     result: Object,
-    translate: Object
+    paginate: Object,
+    translate: Object,
+    entity: String
   },
-  emits: [],
+  emits: ['change-page-event'],
   data() {
     return {}
   },
   methods: {
-
+    changePageEvent(page, limit)
+    {
+      this.$emit('change-page-event', this.entity, page, limit)
+    }
   }
 
 }
@@ -39,12 +46,24 @@ export default {
           <p v-else class="card-text mt-0">Aucun résultat n'a été trouvé dans le contenu de la page...</p>
 
           <div class="float-end">
-            <button class="btn btn-secondary btn-sm"><i class="bi bi-pencil-fill"></i></button>
+            <a v-for="(url, key) in row.urls" :href="url" target="_blank" class="btn btn-secondary btn-sm ms-1">
+              <i v-if="key==='edit'" class="bi bi-pencil-fill"></i>
+              <i v-if="key==='preview'" class="bi bi-box-arrow-up-right"></i>
+            </a>
           </div>
-
           <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
         </div>
       </div>
     </div>
   </div>
+
+  <search-paginate
+      :nb-elements="this.paginate.limit"
+      :current-page="this.paginate.current"
+      :nb-elements-total="this.result.total"
+      :translate="this.translate.paginate"
+      @change-page-event="changePageEvent"
+  >
+
+  </search-paginate>
 </template>
