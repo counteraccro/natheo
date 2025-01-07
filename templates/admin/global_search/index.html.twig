@@ -8,9 +8,7 @@
 
     {{ breadcrumb(breadcrumb) }}
 
-    <p>blabla</p>
-
-    {{ search }}
+    <p>{{ 'global_search.index.page.description' | trans({}, 'global_search') }}</p>
 
     <div {{ vue_component('Admin/Global/GlobalSearch', {
         'urls' : urls,

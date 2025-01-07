@@ -19,6 +19,9 @@ export default {
   data() {
     return {}
   },
+  mounted() {
+    console.log(this.result)
+  },
   methods: {
     changePageEvent(page, limit)
     {
