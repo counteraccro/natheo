@@ -5,3 +5,8 @@ global_search.error.notFound: __global_search.error.notFound
 global_search.paginate.page: __global_search.paginate.page
 global_search.paginate.on: __global_search.paginate.on
 global_search.paginate.row: __global_search.paginate.row
+global_search.onglet.page.onglet: __global_search.onglet.page.onglet
+global_search.onglet.page.title: __global_search.onglet.page.title
+global_search.onglet.page.description: __global_search.onglet.page.description
+global_search.onglet.page.no.result: __global_search.onglet.page.no.result
+global_search.index.page.description: __global_search.index.page.description

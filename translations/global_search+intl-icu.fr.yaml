@@ -5,3 +5,8 @@ global_search.error.notFound: 'Aucun résultat'
 global_search.paginate.page: Page
 global_search.paginate.on: sur
 global_search.paginate.row: résultat(s)
+global_search.onglet.page.onglet: Pages
+global_search.onglet.page.title: 'Résultat pour les pages'
+global_search.onglet.page.description: 'Listes des pages trouvées'
+global_search.onglet.page.no.result: 'Aucune page trouvé avec le critère de votre recherche'
+global_search.index.page.description: 'Retrouvez le résultat de votre recherche classé par type de données'
