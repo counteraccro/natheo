@@ -4,16 +4,18 @@
  * @version 1.0
  */
 import axios from "axios";
-import TabResultSearch from "../../../Components/Global/Search/TabResultSearch.vue";
+import TabPageSearchResult from "../../../Components/Global/Search/TabPageSearchResult.vue";
 
 
 export default {
   name: 'GlobalSearch',
-  components: {TabResultSearch},
+  components: {TabPageSearchResult},
   props: {
     search: String,
     translate: Object,
-    urls: Object
+    urls: Object,
+    limit: Number,
+    page: Number
   },
   emits: [],
   data() {
@@ -30,7 +32,7 @@ export default {
     }
   },
   mounted() {
-    this.globalSearch('page', this.search, 1, 1);
+    this.globalSearch('page', this.search, this.page, this.limit);
   },
   methods: {
 
@@ -99,14 +101,14 @@ export default {
 
       </div>
       <div v-if="this.results.page !== null">
-        <tab-result-search
+        <tab-page-search-result
             :result="this.results.page"
             :translate="this.translate"
             :paginate="this.paginate.page"
             :entity="'page'"
             @change-page-event="this.changePage"
         >
-        </tab-result-search>
+        </tab-page-search-result>
       </div>
     </div>
     <div class="tab-pane fade" id="search-menu" role="tabpanel">menu</div>

@@ -25,6 +25,10 @@ class GlobalSearchTranslate extends AppTranslate
             'title' => $this->translator->trans('global_search.onglet.page.title', domain: 'global_search'),
             'description' => $this->translator->trans('global_search.onglet.page.description', domain: 'global_search'),
             'noResult' => $this->translator->trans('global_search.onglet.page.no.result', domain: 'global_search'),
+            'create' => $this->translator->trans('global_search.onglet.page.create', domain: 'global_search'),
+            'update' => $this->translator->trans('global_search.onglet.page.update', domain: 'global_search'),
+            'author' => $this->translator->trans('global_search.onglet.page.author', domain: 'global_search'),
+            'noResultContent' => $this->translator->trans('global_search.onglet.page.no.result.content', domain: 'global_search'),
         ];
     }
 

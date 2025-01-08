@@ -9,6 +9,8 @@ namespace App\Service\Admin;
 
 use App\Entity\Admin\Content\Page\Page;
 use App\Utils\Content\Page\PageConst;
+use App\Utils\System\Options\OptionUserKey;
+use App\Utils\System\User\PersonalData;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -106,11 +108,18 @@ class GlobalSearchService extends AppAdminService
         }
 
         $router = $this->getRouter();
+        $personalData = new PersonalData($page->getUser(),
+            $page->getUser()->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue());
 
         return [
             'id' => $page->getId(),
             'label' => $label,
             'contents' => $content,
+            'date' => [
+                'create' =>  $page->getCreatedAt()->format('d/m/y H:i'),
+                'update' =>  $page->getUpdateAt()->format('d/m/y H:i')
+            ],
+            'author' => $personalData->getPersonalData(),
             'urls' => [
                 'edit' => $router->generate('admin_page_update', ['id' => $page->getId()]),
                 'preview' => $router->generate('admin_page_preview', ['id' => $page->getId(), 'locale' => $locale]),

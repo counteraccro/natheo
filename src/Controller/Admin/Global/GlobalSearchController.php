@@ -2,8 +2,10 @@
 
 namespace App\Controller\Admin\Global;
 
+use App\Controller\Admin\AppAdminController;
 use App\Service\Admin\GlobalSearchService;
 use App\Utils\Breadcrumb;
+use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\GlobalSearchTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -15,8 +17,16 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[\Symfony\Component\Routing\Annotation\Route('/admin/{_locale}/search', name: 'admin_search_', requirements: ['_locale' => '%app.supported_locales%'])]
 #[IsGranted('ROLE_USER')]
-class GlobalSearchController extends AbstractController
+class GlobalSearchController extends AppAdminController
 {
+    /**
+     * Point d'entrée pour la recherche
+     * @param Request $request
+     * @param GlobalSearchTranslate $globalSearchTranslate
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     #[Route('/', name: 'index', methods: ['POST'])]
     public function index(Request $request, GlobalSearchTranslate $globalSearchTranslate): Response
     {
@@ -35,7 +45,9 @@ class GlobalSearchController extends AbstractController
             'urls' => [
                 'listingPage' => $this->generateUrl('admin_page_index'),
                 'searchPage' => $this->generateUrl('admin_search_global')
-            ]
+            ],
+            'limit' => intval($this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT)),
+            'page' => 1,
         ]);
     }
 

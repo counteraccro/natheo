@@ -7,7 +7,7 @@ import SearchPaginate from "./SearchPaginate.vue";
 
 
 export default {
-  name: 'TabResultSearch',
+  name: 'TabPageSearchResult',
   components: {SearchPaginate},
   props: {
     result: Object,
@@ -46,7 +46,7 @@ export default {
           <p v-if="row.contents[0]" class="card-text m-0" v-for="content in row.contents">
             <i class="bi bi-arrow-return-right"></i> <span v-html="content"></span>
           </p>
-          <p v-else class="card-text mt-0">Aucun résultat n'a été trouvé dans le contenu de la page...</p>
+          <p v-else class="card-text mt-0">{{ this.translate.ongletPage.noResultContent }}</p>
 
           <div class="float-end">
             <a v-for="(url, key) in row.urls" :href="url" target="_blank" class="btn btn-secondary btn-sm ms-1">
@@ -54,14 +54,18 @@ export default {
               <i v-if="key==='preview'" class="bi bi-box-arrow-up-right"></i>
             </a>
           </div>
-          <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+          <p class="card-text mt-2"><small class="text-body-secondary">
+            {{ this.translate.ongletPage.create }} {{ row.date.create }},
+            {{ this.translate.ongletPage.update }} {{ row.date.update }}
+            {{ this.translate.ongletPage.author }} {{ row.author }}
+          </small></p>
         </div>
       </div>
     </div>
   </div>
 
   <search-paginate
-      :nb-elements="this.paginate.limit"
+      :nb-elements="parseInt(this.paginate.limit)"
       :current-page="this.paginate.current"
       :nb-elements-total="this.result.total"
       :translate="this.translate.paginate"

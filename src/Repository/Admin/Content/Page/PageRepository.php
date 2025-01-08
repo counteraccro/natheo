@@ -194,9 +194,11 @@ class PageRepository extends ServiceEntityRepository
         $query->join('p.pageTranslations', 'pt')
             ->leftJoin('p.pageContents', 'pc')
             ->leftJoin('pc.pageContentTranslations', 'pct')
+            ->join('p.user', 'u')
             ->andWhere('pt.locale = :locale')
             ->andWhere('pt.titre like :search')
             ->orWhere('pc.type = :type AND pct.text like :search AND pct.locale = :locale')
+            ->orWhere('u.login like :search')
             ->setParameter('search', '%' . $search . '%')
             ->setParameter('type', PageConst::CONTENT_TYPE_TEXT)
             ->setParameter('locale', $locale);
