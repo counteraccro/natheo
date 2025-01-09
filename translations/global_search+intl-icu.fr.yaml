@@ -1,12 +1,11 @@
 global_search.index.page_title_h1: 'Recherche globale'
 global_search.sub.title.page: 'Résultat dans les pages'
-global_search.page.loading: 'Recherche dans les pages...'
 global_search.error.notFound: 'Aucun résultat'
 global_search.paginate.page: Page
 global_search.paginate.on: sur
 global_search.paginate.row: résultat(s)
 global_search.onglet.page.onglet: Pages
-global_search.onglet.page.title: 'Résultat pour les pages'
+global_search.onglet.page.title: 'résultat(s) pour les pages'
 global_search.onglet.page.description: 'Listes des pages trouvées'
 global_search.onglet.page.no.result: 'Aucune page trouvé avec le critère de votre recherche'
 global_search.index.page.description: 'Retrouvez le résultat de votre recherche classé par type de données'
@@ -14,3 +13,11 @@ global_search.onglet.page.create: 'Créé le'
 global_search.onglet.page.update: 'editer le'
 global_search.onglet.page.author: par
 global_search.onglet.page.no.result.content: 'Aucun résultat trouvé dans les contenus de la page'
+global_search.onglet.page.loading: 'Recherche dans les pages...'
+global_search.total.results: 'résultat(s) pour'
+global_search.total.no.results: 'Aucun résultat pour'
+global_search.onglet.menu.onglet: 'Menu'
+global_search.onglet.menu.title: 'résultat(s) pour les menus'
+global_search.onglet.menu.description: 'Liste des menus trouvées'
+global_search.onglet.menu.no.result: 'Aucun menu trouvé avec le critère de votre recherche'
+global_search.onglet.menu.loading: 'Recherche dans les menus'
