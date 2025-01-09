@@ -63,17 +63,21 @@ class GlobalSearchController extends AppAdminController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/{entity}/{search}/{page}/{limit}', name: 'global', methods: ['GET'])]
+    #[Route('/{entity}/{page}/{limit}/{search}', name: 'global', methods: ['GET'])]
     public function search(
         Request $request,
         GlobalSearchService $globalSearchService,
         string $entity = null,
-        string $search = null,
         int $page = 1,
-        int $limit = 20
+        int $limit = 20,
+        string $search = null
     ): Response
     {
-        $result = $globalSearchService->globalSearch($entity, $search, $page, $limit);
+        $result = ['elements' => [], 'total' => 0];
+        if($search !== null){
+            $result = $globalSearchService->globalSearch($entity, $search, $page, $limit);
+        }
+
         return $this->json(['recherche page' => $search, 'result' => $result, 'paginate' => ['current' => $page, 'limit' => $limit]]);
     }
 }

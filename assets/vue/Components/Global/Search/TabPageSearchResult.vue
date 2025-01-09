@@ -57,7 +57,7 @@ export default {
           <p class="card-text mt-2"><small class="text-body-secondary">
             {{ this.translate.ongletPage.create }} {{ row.date.create }},
             {{ this.translate.ongletPage.update }} {{ row.date.update }}
-            {{ this.translate.ongletPage.author }} {{ row.author }}
+           {{ this.translate.ongletPage.author }}  <span v-html="row.author"></span>
           </small></p>
         </div>
       </div>

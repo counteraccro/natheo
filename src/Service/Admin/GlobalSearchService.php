@@ -119,7 +119,7 @@ class GlobalSearchService extends AppAdminService
                 'create' =>  $page->getCreatedAt()->format('d/m/y H:i'),
                 'update' =>  $page->getUpdateAt()->format('d/m/y H:i')
             ],
-            'author' => $personalData->getPersonalData(),
+            'author' => $this->highlightText($search, $personalData->getPersonalData()),
             'urls' => [
                 'edit' => $router->generate('admin_page_update', ['id' => $page->getId()]),
                 'preview' => $router->generate('admin_page_preview', ['id' => $page->getId(), 'locale' => $locale]),
