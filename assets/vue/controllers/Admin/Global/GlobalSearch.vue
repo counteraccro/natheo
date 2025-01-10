@@ -37,6 +37,7 @@ export default {
   },
   mounted() {
     this.globalSearch('page', this.search, this.page, this.limit);
+    this.globalSearch('menu', this.search, this.page, this.limit);
   },
   methods: {
 
@@ -72,15 +73,14 @@ export default {
   <div class="float-end mt-2" v-else> {{ this.translate.totalNoResult }} <b>{{ this.search }}</b></div>
   <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
     <li class="nav-item">
-      <button class="nav-link active position-relative" id="search-page-tab" data-bs-toggle="pill" data-bs-target="#search-page" type="button" role="tab" aria-controls="search-page" aria-selected="true">
+      <button class="nav-link active" id="search-page-tab" data-bs-toggle="pill" data-bs-target="#search-page" type="button" role="tab" aria-controls="search-page" aria-selected="true">
         <i class="bi bi-file-earmark-text-fill"></i> {{ this.translate.ongletPage.onglet }}
         <div v-if="this.loading.page" class="spinner-border spinner-border-sm" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
 
-        <span v-if="!this.loading.page && this.results.page !== null" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        <span v-if="!this.loading.page && this.results.page !== null" class="ml-5 badge rounded-pill bg-danger">
           {{ this.results.page.total }}
-          <span class="visually-hidden">unread messages</span>
         </span>
       </button>
     </li>
@@ -91,9 +91,8 @@ export default {
           <span class="visually-hidden">Loading...</span>
         </div>
 
-        <span v-if="!this.loading.menu && this.results.menu !== null" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        <span v-if="!this.loading.menu && this.results.menu !== null" class="ml-5 badge rounded-pill bg-danger">
           {{ this.results.menu.total }}
-          <span class="visually-hidden">unread messages</span>
         </span>
       </button>
     </li>

@@ -7,6 +7,7 @@
 
 namespace App\Service\Admin;
 
+use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Page\Page;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\System\Options\OptionUserKey;
@@ -51,6 +52,7 @@ class GlobalSearchService extends AppAdminService
     {
         return match ($entity) {
             'page' => Page::class,
+            'menu' => Menu::class,
             default => '',
         };
     }
@@ -59,6 +61,7 @@ class GlobalSearchService extends AppAdminService
     /**
      * @param Paginator $paginator
      * @param string $entity
+     * @param string $search
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -73,11 +76,62 @@ class GlobalSearchService extends AppAdminService
                     /** @var Page $item */
                     $return['elements'][] = $this->formatResulPage($item, $locales['current'], $search);
                     break;
+                case Menu::class:
+                    $return['elements'][] = $this->formatResulMenu($item, $locales['current'], $search);
+                    break;
                 default:
+
             }
         }
 
         return $return;
+    }
+
+    /**
+     * @param Menu $menu
+     * @param string $locale
+     * @param string $search
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function formatResulMenu(Menu $menu, string $locale, string $search): array
+    {
+        $router = $this->getRouter();
+        $label = $menu->getName();
+        $label = $this->highlightText($search, $label);
+
+        $content = [];
+        foreach($menu->getMenuElements() as $element) {
+            $elementTranslate = $element->getMenuElementTranslationByLocale($locale);
+
+            $re = '/(\B||\b)((?-i:\w+[^\w\n]+){0,1}' . $search . '(\B||\b)(?-i:[^\w\n]+\w+){0,1})/mu';
+            preg_match_all($re, $elementTranslate->getTextLink(), $matches, PREG_SET_ORDER, 0);
+
+            foreach ($matches as $matche) {
+                $content[] = $this->highlightText($search, $matche[0]);
+            }
+
+        }
+
+
+        $personalData = new PersonalData($menu->getUser(),
+            $menu->getUser()->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue());
+
+        return [
+            'id' => $menu->getId(),
+            'label' => $label,
+            'contents' => $content,
+            'date' => [
+                'create' => $menu->getCreatedAt()->format('d/m/y H:i'),
+                'update' => $menu->getUpdateAt()->format('d/m/y H:i')
+            ],
+            'author' => $this->highlightText($search, $personalData->getPersonalData()),
+            'urls' => [
+                'edit' => $router->generate('admin_menu_update', ['id' => $menu->getId()]),
+                'preview' => '',
+            ]
+        ];
     }
 
     /**
@@ -100,8 +154,7 @@ class GlobalSearchService extends AppAdminService
                 $re = '/(\B||\b)((?-i:\w+[^\w\n]+){0,10}' . $search . '(\B||\b)(?-i:[^\w\n]+\w+){0,10})/mu';
                 preg_match_all($re, $text, $matches, PREG_SET_ORDER, 0);
 
-                foreach($matches as $matche)
-                {
+                foreach ($matches as $matche) {
                     $content[] = $this->highlightText($search, $matche[0]);
                 }
             }
@@ -116,8 +169,8 @@ class GlobalSearchService extends AppAdminService
             'label' => $label,
             'contents' => $content,
             'date' => [
-                'create' =>  $page->getCreatedAt()->format('d/m/y H:i'),
-                'update' =>  $page->getUpdateAt()->format('d/m/y H:i')
+                'create' => $page->getCreatedAt()->format('d/m/y H:i'),
+                'update' => $page->getUpdateAt()->format('d/m/y H:i')
             ],
             'author' => $this->highlightText($search, $personalData->getPersonalData()),
             'urls' => [

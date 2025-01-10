@@ -183,6 +183,7 @@ class PageRepository extends ServiceEntityRepository
     /**
      * Recherche dans les pages
      * @param string $search
+     * @param string $locale
      * @param int $page
      * @param int $limit
      * @return Paginator

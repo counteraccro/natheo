@@ -64,7 +64,7 @@ class MenuRepository extends ServiceEntityRepository
             $query->setParameter('search', '%' . $search . '%');
         }
 
-        if($userId !== null){
+        if ($userId !== null) {
             $query->andWhere('m.user = :userId');
             $query->setParameter('userId', $userId);
         }
@@ -145,5 +145,36 @@ class MenuRepository extends ServiceEntityRepository
             ->andWhere('m.disabled = :disabled')
             ->setParameter('disabled', false);
         return $query->getQuery()->getResult();
+    }
+
+    /**
+     * Recherche pour les menus
+     * @param string $search
+     * @param string $locale
+     * @param int $page
+     * @param int $limit
+     * @return Paginator
+     */
+    public function search(string $search, string $locale, int $page, int $limit): Paginator
+    {
+        $query = $this->createQueryBuilder('m');
+
+        $query
+            ->join('m.user', 'u')
+            ->leftJoin('m.menuElements', 'me')
+            ->leftJoin('me.menuElementTranslations', 'met')
+            ->andWhere('m.name like :search')
+            ->orWhere('u.login like :search')
+            ->orWhere('met.textLink like :search and met.locale = :locale')
+            ->setParameter('search', '%' . $search . '%')
+            ->setParameter('locale', $locale)
+        ;
+
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
+
     }
 }
