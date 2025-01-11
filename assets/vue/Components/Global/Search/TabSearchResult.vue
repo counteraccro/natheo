@@ -7,11 +7,10 @@ import SearchPaginate from "./SearchPaginate.vue";
 
 
 export default {
-  name: 'TabPageSearchResult',
+  name: 'TabSearchResult',
   components: {SearchPaginate},
   props: {
     result: Object,
-    defaultImg: String,
     paginate: Object,
     translate: Object,
     translatePaginate: Object,
@@ -22,7 +21,6 @@ export default {
     return {}
   },
   mounted() {
-    console.log(this.result)
   },
   methods: {
     changePageEvent(page, limit)
@@ -38,13 +36,13 @@ export default {
   <div class="card mb-3" v-for="row in result.elements">
     <div class="row">
       <div class="col-1">
-        <img :src="this.defaultImg" class="img-fluid rounded-3">
+        <div class="bg-opacity-75 bg-light h-100 w-100"></div>
       </div>
       <div class="col">
         <div class="card-body">
           <h5 class="card-title" v-html="row.label">
           </h5>
-          <p class="m-0"><b>Dans le contenu :</b></p>
+          <p class="m-0"><b>{{ this.translate.content }}</b></p>
           <p v-if="row.contents[0]" class="card-text m-0" v-for="content in row.contents">
             <i class="bi bi-arrow-return-right"></i> <span v-html="content"></span>
           </p>
@@ -67,7 +65,7 @@ export default {
   </div>
 
   <search-paginate
-      :nb-elements="parseInt(this.paginate.limit)"
+      :nb-elements="this.paginate.limit"
       :current-page="this.paginate.current"
       :nb-elements-total="this.result.total"
       :translate="this.translatePaginate"
