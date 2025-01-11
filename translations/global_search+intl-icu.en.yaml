@@ -22,3 +22,9 @@ global_search.onglet.menu.title: __global_search.onglet.menu.title
 global_search.onglet.menu.description: __global_search.onglet.menu.description
 global_search.onglet.menu.no.result: __global_search.onglet.menu.no.result
 global_search.onglet.menu.loading: __global_search.onglet.menu.loading
+global_search.onglet.page.content: __global_search.onglet.page.content
+global_search.onglet.menu.content: __global_search.onglet.menu.content
+global_search.onglet.menu.create: __global_search.onglet.menu.create
+global_search.onglet.menu.update: __global_search.onglet.menu.update
+global_search.onglet.menu.author: __global_search.onglet.menu.author
+global_search.onglet.menu.no.result.content: __global_search.onglet.menu.no.result.content
