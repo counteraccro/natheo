@@ -122,3 +122,4 @@ menu.select.page.info: 'Si "Aucune page" est sélectionné, toute page associée
 menu.success.switch.default: 'Le menu {label} est maintenant défini par défaut'
 menu.confirm.switch.default.msg: 'Vous êtes sur le point de définir le menu <b>{label}</b> comme celui par défaut. Tout les autres menus de même position <br />Confirmez vous cette action ?'
 menu.index.popin.help.default: 'Menu par défaut'
+menu.grid.author: 'Auteur'

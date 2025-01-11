@@ -16,7 +16,7 @@ global_search.onglet.page.no.result.content: 'Aucun résultat trouvé dans les c
 global_search.onglet.page.loading: 'Recherche dans les pages...'
 global_search.total.results: 'résultat(s) pour'
 global_search.total.no.results: 'Aucun résultat pour'
-global_search.onglet.menu.onglet: 'Menu'
+global_search.onglet.menu.onglet: Menu
 global_search.onglet.menu.title: 'résultat(s) pour les menus'
 global_search.onglet.menu.description: 'Liste des menus trouvées'
 global_search.onglet.menu.no.result: 'Aucun menu trouvé avec le critère de votre recherche'
