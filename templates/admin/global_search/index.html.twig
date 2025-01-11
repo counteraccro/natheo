@@ -10,8 +10,13 @@
 
     <p>{{ 'global_search.index.page.description' | trans({}, 'global_search') }}</p>
 
+    {% set defaultsImg = [] %}
+    {% set defaultsImg = defaultsImg|merge([ { page : absolute_url(asset('assets/natheo/search/default-page-search.png'))}]) %}
+    {% set defaultsImg = defaultsImg|merge([ { menu : absolute_url(asset('assets/natheo/search/default-menu-search.png'))}]) %}
+
     <div {{ vue_component('Admin/Global/GlobalSearch', {
         'urls' : urls,
+        'defaultsImg' : defaultsImg,
         'translate' : translate,
         'search' : search,
         'limit' : limit ,

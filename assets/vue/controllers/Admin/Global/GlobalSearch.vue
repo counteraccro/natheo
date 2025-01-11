@@ -12,6 +12,7 @@ export default {
   components: {TabPageSearchResult},
   props: {
     search: String,
+    defaultsImg: Object,
     translate: Object,
     urls: Object,
     limit: Number,
@@ -124,9 +125,11 @@ export default {
       <div v-if="this.results.page !== null">
         <tab-page-search-result
             :result="this.results.page"
-            :translate="this.translate"
+            :translate="this.translate.ongletPage"
+            :translate-paginate="this.translate.paginate"
             :paginate="this.paginate.page"
             :entity="'page'"
+            :default-img="this.defaultsImg[0].page"
             @change-page-event="this.changePage"
         >
         </tab-page-search-result>

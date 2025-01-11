@@ -11,8 +11,10 @@ export default {
   components: {SearchPaginate},
   props: {
     result: Object,
+    defaultImg: String,
     paginate: Object,
     translate: Object,
+    translatePaginate: Object,
     entity: String
   },
   emits: ['change-page-event'],
@@ -35,8 +37,8 @@ export default {
 <template>
   <div class="card mb-3" v-for="row in result.elements">
     <div class="row">
-      <div class="col-2">
-        <svg class="bd-placeholder-img rounded-start" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image</text></svg>
+      <div class="col-1">
+        <img :src="this.defaultImg" class="img-fluid rounded-3">
       </div>
       <div class="col">
         <div class="card-body">
@@ -46,7 +48,7 @@ export default {
           <p v-if="row.contents[0]" class="card-text m-0" v-for="content in row.contents">
             <i class="bi bi-arrow-return-right"></i> <span v-html="content"></span>
           </p>
-          <p v-else class="card-text mt-0">{{ this.translate.ongletPage.noResultContent }}</p>
+          <p v-else class="card-text mt-0">{{ this.translate.noResultContent }}</p>
 
           <div class="float-end">
             <a v-for="(url, key) in row.urls" :href="url" target="_blank" class="btn btn-secondary btn-sm ms-1">
@@ -55,9 +57,9 @@ export default {
             </a>
           </div>
           <p class="card-text mt-2"><small class="text-body-secondary">
-            {{ this.translate.ongletPage.create }} {{ row.date.create }},
-            {{ this.translate.ongletPage.update }} {{ row.date.update }}
-           {{ this.translate.ongletPage.author }}  <span v-html="row.author"></span>
+            {{ this.translate.create }} {{ row.date.create }},
+            {{ this.translate.update }} {{ row.date.update }}
+           {{ this.translate.author }}  <span v-html="row.author"></span>
           </small></p>
         </div>
       </div>
@@ -68,7 +70,7 @@ export default {
       :nb-elements="parseInt(this.paginate.limit)"
       :current-page="this.paginate.current"
       :nb-elements-total="this.result.total"
-      :translate="this.translate.paginate"
+      :translate="this.translatePaginate"
       @change-page-event="changePageEvent"
   >
 
