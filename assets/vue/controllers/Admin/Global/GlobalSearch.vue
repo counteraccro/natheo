@@ -4,15 +4,14 @@
  * @version 1.0
  */
 import axios from "axios";
-import TabPageSearchResult from "../../../Components/Global/Search/TabPageSearchResult.vue";
+import TabSearchResult from "../../../Components/Global/Search/TabSearchResult.vue";
 
 
 export default {
   name: 'GlobalSearch',
-  components: {TabPageSearchResult},
+  components: {TabSearchResult},
   props: {
     search: String,
-    defaultsImg: Object,
     translate: Object,
     urls: Object,
     limit: Number,
@@ -37,23 +36,27 @@ export default {
     }
   },
   mounted() {
-    this.globalSearch('page', this.search, this.page, this.limit);
-    this.globalSearch('menu', this.search, this.page, this.limit);
+    this.globalSearch('page', this.search, this.page, this.limit, false);
+    this.globalSearch('menu', this.search, this.page, this.limit, false);
   },
   methods: {
 
     changePage(entity, page, limit) {
-      this.globalSearch(entity, this.search, page, limit)
+      this.globalSearch(entity, this.search, page, limit, true)
     },
 
-    globalSearch(entity, search, page, limit) {
+    globalSearch(entity, search, page, limit, reload) {
       this.loading[entity] = true;
+      //this.results[entity] = null;
       axios.get(this.urls.searchPage + '/' + entity + '/' + page + '/' + limit + '/' + search, {})
           .then((response) => {
             if (response.data.result.total > 0) {
               this.results[entity] = response.data.result;
               this.paginate[entity] = response.data.paginate;
-              this.total += response.data.result.total;
+              if(!reload)
+              {
+                this.total += response.data.result.total;
+              }
             }
 
           }).catch((error) => {
@@ -109,44 +112,59 @@ export default {
   </ul>
 
   <div class="tab-content" id="pills-tabContent">
-    <div class="tab-pane fade show active" id="search-page" role="tabpanel" :class="this.loading.page === true ? 'block-grid' : ''">
-        <div v-if="this.loading.page" class="position-absolute top-50 start-50 translate-middle">
-          <div class="spinner-border text-primary" role="status"></div>
-          <span class="txt-overlay">{{ translate.ongletPage.loading }}</span>
+    <div class="tab-pane fade show active" id="search-page" role="tabpanel">
+      <div :class="this.loading.page === true ? 'block-grid' : ''">
+        <div v-if="this.loading.page" class="mt-3 float-end">
+          <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+          <span class="txt-overlay p-2">{{ translate.ongletPage.loading }}</span>
         </div>
 
-      <h5 v-if="this.results.page !== null">{{ this.results.page.total }} {{ this.translate.ongletPage.title }}</h5>
-      <p>{{ this.translate.ongletPage.description }}</p>
+        <h5 v-if="this.results.page !== null">{{ this.results.page.total }} {{ this.translate.ongletPage.title }}</h5>
+        <h5 v-else> 0 {{ this.translate.ongletPage.title }}</h5>
+        <p>{{ this.translate.ongletPage.description }}</p>
 
-      <div v-if="this.results.page === null && !this.loading.page">
-        {{ this.translate.ongletPage.noResult }}
+        <div v-if="this.results.page === null && !this.loading.page">
+          {{ this.translate.ongletPage.noResult }}
 
-      </div>
-      <div v-if="this.results.page !== null">
-        <tab-page-search-result
-            :result="this.results.page"
-            :translate="this.translate.ongletPage"
-            :translate-paginate="this.translate.paginate"
-            :paginate="this.paginate.page"
-            :entity="'page'"
-            :default-img="this.defaultsImg[0].page"
-            @change-page-event="this.changePage"
-        >
-        </tab-page-search-result>
+        </div>
+        <div v-if="this.results.page !== null">
+          <tab-search-result key="1"
+              :result="this.results.page"
+              :translate="this.translate.ongletPage"
+              :translate-paginate="this.translate.paginate"
+              :paginate="this.paginate.page"
+              :entity="'page'"
+              @change-page-event="this.changePage"
+          >
+          </tab-search-result>
+        </div>
       </div>
     </div>
-    <div class="tab-pane fade" id="search-menu" role="tabpanel" :class="this.loading.menu === true ? 'block-grid' : ''">
-      <div v-if="this.loading.menu" class="position-absolute top-50 start-50 translate-middle">
-        <div class="spinner-border text-primary" role="status"></div>
-        <span class="txt-overlay">{{ translate.ongletMenu.loading }}</span>
-      </div>
+    <div class="tab-pane fade" id="search-menu" role="tabpanel">
+      <div :class="this.loading.page === true ? 'block-grid' : ''">
+        <div v-if="this.loading.menu" class="mt-3 float-end">
+          <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+          <span class="txt-overlay p-2"> {{ translate.ongletMenu.loading }}</span>
+        </div>
 
-      <h5 v-if="this.results.menu !== null">{{ this.results.menu.total }} {{ this.translate.ongletMenu.title }}</h5>
-      <p>{{ this.translate.ongletMenu.description }}</p>
+        <h5 v-if="this.results.menu !== null">{{ this.results.menu.total }} {{ this.translate.ongletMenu.title }}</h5>
+        <h5 v-else> 0 {{ this.translate.ongletMenu.title }}</h5>
+        <p>{{ this.translate.ongletMenu.description }}</p>
 
-      <div v-if="this.results.menu === null && !this.loading.menu">
-        {{ this.translate.ongletMenu.noResult }}
-
+        <div v-if="this.results.menu === null && !this.loading.menu">
+          {{ this.translate.ongletMenu.noResult }}
+        </div>
+        <div v-if="this.results.menu !== null">
+          <tab-search-result key="2"
+              :result="this.results.menu"
+              :translate="this.translate.ongletMenu"
+              :translate-paginate="this.translate.paginate"
+              :paginate="this.paginate.menu"
+              :entity="'menu'"
+              @change-page-event="this.changePage"
+          >
+          </tab-search-result>
+        </div>
       </div>
 
     </div>

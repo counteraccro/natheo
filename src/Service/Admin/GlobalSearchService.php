@@ -129,7 +129,6 @@ class GlobalSearchService extends AppAdminService
             'author' => $this->highlightText($search, $personalData->getPersonalData()),
             'urls' => [
                 'edit' => $router->generate('admin_menu_update', ['id' => $menu->getId()]),
-                'preview' => '',
             ]
         ];
     }
