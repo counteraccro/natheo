@@ -23,21 +23,25 @@ export default {
       total: 0,
       loading: {
         page: false,
-        menu: false
+        menu: false,
+        faq: false,
       },
       results: {
         page: null,
         menu: null,
+        faq: null,
       },
       paginate: {
         page: null,
-        menu: null
+        menu: null,
+        faq: null,
       }
     }
   },
   mounted() {
     this.globalSearch('page', this.search, this.page, this.limit, false);
     this.globalSearch('menu', this.search, this.page, this.limit, false);
+    this.globalSearch('faq', this.search, this.page, this.limit, false);
   },
   methods: {
 
@@ -47,7 +51,6 @@ export default {
 
     globalSearch(entity, search, page, limit, reload) {
       this.loading[entity] = true;
-      //this.results[entity] = null;
       axios.get(this.urls.searchPage + '/' + entity + '/' + page + '/' + limit + '/' + search, {})
           .then((response) => {
             if (response.data.result.total > 0) {
@@ -101,7 +104,16 @@ export default {
       </button>
     </li>
     <li class="nav-item">
-      <button class="nav-link" id="search-tag-tab" data-bs-toggle="pill" data-bs-target="#search-tag" type="button" role="tab" aria-controls="search-tag" aria-selected="false">Contact</button>
+      <button class="nav-link" id="search-tag-tab" data-bs-toggle="pill" data-bs-target="#search-tag" type="button" role="tab" aria-controls="search-tag" aria-selected="false">
+        <i class="bi bi-question-circle-fill"></i> {{ this.translate.ongletFaq.onglet }}
+        <div v-if="this.loading.faq" class="spinner-border spinner-border-sm" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+
+        <span v-if="!this.loading.faq && this.results.faq !== null" class="ml-5 badge rounded-pill bg-danger">
+          {{ this.results.faq.total }}
+        </span>
+      </button>
     </li>
     <li class="nav-item">
       <button class="nav-link" id="search-faq-tab" data-bs-toggle="pill" data-bs-target="#search-faq" type="button" role="tab" aria-controls="search-faq" aria-selected="false">aaa</button>
@@ -141,7 +153,7 @@ export default {
       </div>
     </div>
     <div class="tab-pane fade" id="search-menu" role="tabpanel">
-      <div :class="this.loading.page === true ? 'block-grid' : ''">
+      <div :class="this.loading.menu === true ? 'block-grid' : ''">
         <div v-if="this.loading.menu" class="mt-3 float-end">
           <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
           <span class="txt-overlay p-2"> {{ translate.ongletMenu.loading }}</span>
@@ -170,7 +182,35 @@ export default {
     </div>
 
 
-    <div class="tab-pane fade" id="search-tag" role="tabpanel">tag</div>
+    <div class="tab-pane fade" id="search-tag" role="tabpanel">
+
+      <div :class="this.loading.faq === true ? 'block-grid' : ''">
+        <div v-if="this.loading.faq" class="mt-3 float-end">
+          <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+          <span class="txt-overlay p-2"> {{ translate.ongletFaq.loading }}</span>
+        </div>
+
+        <h5 v-if="this.results.faq !== null">{{ this.results.faq.total }} {{ this.translate.ongletFaq.title }}</h5>
+        <h5 v-else> 0 {{ this.translate.ongletFaq.title }}</h5>
+        <p>{{ this.translate.ongletFaq.description }}</p>
+
+        <div v-if="this.results.faq === null && !this.loading.faq">
+          {{ this.translate.ongletFaq.noResult }}
+        </div>
+        <div v-if="this.results.faq !== null">
+          <tab-search-result key="2"
+              :result="this.results.faq"
+              :translate="this.translate.ongletFaq"
+              :translate-paginate="this.translate.paginate"
+              :paginate="this.paginate.faq"
+              :entity="'faq'"
+              @change-page-event="this.changePage"
+          >
+          </tab-search-result>
+        </div>
+      </div>
+
+    </div>
     <div class="tab-pane fade" id="search-faq" role="tabpanel">faq</div>
     <div class="tab-pane fade" id="search-user" role="tabpanel">user</div>
   </div>

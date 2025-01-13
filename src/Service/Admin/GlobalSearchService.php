@@ -7,6 +7,8 @@
 
 namespace App\Service\Admin;
 
+use App\Entity\Admin\Content\Faq\Faq;
+use App\Entity\Admin\Content\Faq\FaqCategory;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Page\Page;
 use App\Utils\Content\Page\PageConst;
@@ -53,6 +55,7 @@ class GlobalSearchService extends AppAdminService
         return match ($entity) {
             'page' => Page::class,
             'menu' => Menu::class,
+            'faq' => Faq::class,
             default => '',
         };
     }
@@ -73,11 +76,13 @@ class GlobalSearchService extends AppAdminService
         foreach ($paginator as $item) {
             switch ($entity) {
                 case Page::class:
-                    /** @var Page $item */
                     $return['elements'][] = $this->formatResulPage($item, $locales['current'], $search);
                     break;
                 case Menu::class:
                     $return['elements'][] = $this->formatResulMenu($item, $locales['current'], $search);
+                    break;
+                case Faq::class:
+                    $return['elements'][] = $this->formatResultFaq($item, $locales['current'], $search);
                     break;
                 default:
 
@@ -85,6 +90,65 @@ class GlobalSearchService extends AppAdminService
         }
 
         return $return;
+    }
+
+    /**
+     * Formatage des résultats pour la recherche FAQ
+     * @param Faq $faq
+     * @param string $locale
+     * @param string $search
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function formatResultFaq(Faq $faq, string $locale, string $search): array
+    {
+        $router = $this->getRouter();
+
+        $label = $faq->getFaqTranslationByLocale($locale)->getTitle();
+        $label = $this->highlightText($search, $label);
+
+        $personalData = new PersonalData($faq->getUser(),
+            $faq->getUser()->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue());
+
+        $re = '/(\B||\b)((?-i:\w+[^\w\n]+){0,10}' . $search . '(\B||\b)(?-i:[^\w\n]+\w+){0,10})/mu';
+        $content = [];
+        foreach($faq->getFaqCategories() as $faqCategory) {
+            /** @var FaqCategory $faqCategory */
+            $faqCategoryTranslation = $faqCategory->getFaqCategoryTranslationByLocale($locale);
+            preg_match_all($re, $faqCategoryTranslation->getTitle(), $matches, PREG_SET_ORDER, 0);
+
+            foreach ($matches as $matche) {
+                $content[] = $this->highlightText($search, $matche[0]);
+            }
+
+            foreach ($faqCategory->getFaqQuestions() as $faqQuestion) {
+                $faqQuestionTranslation = $faqQuestion->getFaqQuestionTranslationByLocale($locale);
+                preg_match_all($re, $faqQuestionTranslation->getTitle(), $matches, PREG_SET_ORDER, 0);
+                foreach ($matches as $matche) {
+                    $content[] = $this->highlightText($search, $matche[0]);
+                }
+
+                preg_match_all($re, $faqQuestionTranslation->getAnswer(), $matches, PREG_SET_ORDER, 0);
+                foreach ($matches as $matche) {
+                    $content[] = $this->highlightText($search, $matche[0]);
+                }
+            }
+        }
+
+        return [
+            'id' => $faq->getId(),
+            'label' => $label,
+            'contents' => $content,
+            'date' => [
+                'create' => $faq->getCreatedAt()->format('d/m/y H:i'),
+                'update' => $faq->getUpdateAt()->format('d/m/y H:i')
+            ],
+            'author' => $this->highlightText($search, $personalData->getPersonalData()),
+            'urls' => [
+                'edit' => $router->generate('admin_faq_update', ['id' => $faq->getId()]),
+            ]
+        ];
     }
 
     /**
@@ -102,7 +166,7 @@ class GlobalSearchService extends AppAdminService
         $label = $this->highlightText($search, $label);
 
         $content = [];
-        foreach($menu->getMenuElements() as $element) {
+        foreach ($menu->getMenuElements() as $element) {
             $elementTranslate = $element->getMenuElementTranslationByLocale($locale);
 
             $re = '/(\B||\b)((?-i:\w+[^\w\n]+){0,1}' . $search . '(\B||\b)(?-i:[^\w\n]+\w+){0,1})/mu';
