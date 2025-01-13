@@ -28,3 +28,13 @@ global_search.onglet.menu.create: __global_search.onglet.menu.create
 global_search.onglet.menu.update: __global_search.onglet.menu.update
 global_search.onglet.menu.author: __global_search.onglet.menu.author
 global_search.onglet.menu.no.result.content: __global_search.onglet.menu.no.result.content
+global_search.onglet.faq.onglet: __global_search.onglet.faq.onglet
+global_search.onglet.faq.title: __global_search.onglet.faq.title
+global_search.onglet.faq.description: __global_search.onglet.faq.description
+global_search.onglet.faq.content: __global_search.onglet.faq.content
+global_search.onglet.faq.no.result: __global_search.onglet.faq.no.result
+global_search.onglet.faq.create: __global_search.onglet.faq.create
+global_search.onglet.faq.update: __global_search.onglet.faq.update
+global_search.onglet.faq.author: __global_search.onglet.faq.author
+global_search.onglet.faq.no.result.content: __global_search.onglet.faq.no.result.content
+global_search.onglet.faq.loading: __global_search.onglet.faq.loading
