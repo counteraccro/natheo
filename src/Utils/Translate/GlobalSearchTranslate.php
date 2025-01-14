@@ -17,7 +17,45 @@ class GlobalSearchTranslate extends AppTranslate
             'paginate' => $this->getTranslatePaginate(),
             'ongletPage' => $this->getTranslateOngletPage(),
             'ongletMenu' => $this->getTranslateOngletMenu(),
-            'ongletFaq' => $this->getTranslateOngletFaq()
+            'ongletFaq' => $this->getTranslateOngletFaq(),
+            'ongletTag' => $this->getTranslateOngletTag(),
+            'ongletUser' => $this->getTranslateOngletUser(),
+        ];
+    }
+
+    /**
+     * Traduction de l'onglet user
+     * @return array
+     */
+    private function getTranslateOngletUser(): array
+    {
+        return [
+            'onglet' => $this->translator->trans('global_search.onglet.user.onglet', domain: 'global_search'),
+            'title' => $this->translator->trans('global_search.onglet.user.title', domain: 'global_search'),
+            'description' => $this->translator->trans('global_search.onglet.user.description', domain: 'global_search'),
+            'noResult' => $this->translator->trans('global_search.onglet.user.no.result', domain: 'global_search'),
+            'create' => $this->translator->trans('global_search.onglet.user.create', domain: 'global_search'),
+            'update' => $this->translator->trans('global_search.onglet.user.update', domain: 'global_search'),
+            'author' => $this->translator->trans('global_search.onglet.user.author', domain: 'global_search'),
+            'loading' => $this->translator->trans('global_search.onglet.user.loading', domain: 'global_search'),
+        ];
+    }
+
+    /**
+     * Traduction de l'onglet tag
+     * @return array
+     */
+    private function getTranslateOngletTag(): array
+    {
+        return [
+            'onglet' => $this->translator->trans('global_search.onglet.tag.onglet', domain: 'global_search'),
+            'title' => $this->translator->trans('global_search.onglet.tag.title', domain: 'global_search'),
+            'description' => $this->translator->trans('global_search.onglet.tag.description', domain: 'global_search'),
+            'noResult' => $this->translator->trans('global_search.onglet.tag.no.result', domain: 'global_search'),
+            'create' => $this->translator->trans('global_search.onglet.tag.create', domain: 'global_search'),
+            'update' => $this->translator->trans('global_search.onglet.tag.update', domain: 'global_search'),
+            'author' => $this->translator->trans('global_search.onglet.tag.author', domain: 'global_search'),
+            'loading' => $this->translator->trans('global_search.onglet.tag.loading', domain: 'global_search'),
         ];
     }
 

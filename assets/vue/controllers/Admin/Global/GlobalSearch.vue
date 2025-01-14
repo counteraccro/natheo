@@ -25,16 +25,22 @@ export default {
         page: false,
         menu: false,
         faq: false,
+        tag: false,
+        user: false,
       },
       results: {
         page: null,
         menu: null,
         faq: null,
+        tag: null,
+        user: null
       },
       paginate: {
         page: null,
         menu: null,
         faq: null,
+        tag: null,
+        user: null,
       }
     }
   },
@@ -56,8 +62,7 @@ export default {
             if (response.data.result.total > 0) {
               this.results[entity] = response.data.result;
               this.paginate[entity] = response.data.paginate;
-              if(!reload)
-              {
+              if (!reload) {
                 this.total += response.data.result.total;
               }
             }
@@ -104,7 +109,7 @@ export default {
       </button>
     </li>
     <li class="nav-item">
-      <button class="nav-link" id="search-tag-tab" data-bs-toggle="pill" data-bs-target="#search-tag" type="button" role="tab" aria-controls="search-tag" aria-selected="false">
+      <button class="nav-link" id="search-faq-tab" data-bs-toggle="pill" data-bs-target="#search-faq" type="button" role="tab" aria-controls="search-faq" aria-selected="false">
         <i class="bi bi-question-circle-fill"></i> {{ this.translate.ongletFaq.onglet }}
         <div v-if="this.loading.faq" class="spinner-border spinner-border-sm" role="status">
           <span class="visually-hidden">Loading...</span>
@@ -116,10 +121,29 @@ export default {
       </button>
     </li>
     <li class="nav-item">
-      <button class="nav-link" id="search-faq-tab" data-bs-toggle="pill" data-bs-target="#search-faq" type="button" role="tab" aria-controls="search-faq" aria-selected="false">aaa</button>
+      <button class="nav-link" id="search-tag-tab" data-bs-toggle="pill" data-bs-target="#search-tag" type="button" role="tab" aria-controls="search-tag" aria-selected="false">
+        <i class="bi bi-tags-fill"></i> {{ this.translate.ongletTag.onglet }}
+        <div v-if="this.loading.tag" class="spinner-border spinner-border-sm" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+
+        <span v-if="!this.loading.tag && this.results.tag !== null" class="ml-5 badge rounded-pill bg-danger">
+          {{ this.results.tag.total }}
+        </span>
+      </button>
     </li>
     <li class="nav-item">
-      <button class="nav-link" id="search-user-tab" data-bs-toggle="pill" data-bs-target="#search-user" type="button" role="tab" aria-controls="search-user" aria-selected="false">bbb</button>
+      <button class="nav-link" id="search-user-tab" data-bs-toggle="pill" data-bs-target="#search-user" type="button" role="tab" aria-controls="search-user" aria-selected="false">
+        <i class="bi bi-person-fill"></i> {{ this.translate.ongletUser.onglet }}
+        <div v-if="this.loading.user" class="spinner-border spinner-border-sm" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+
+        <span v-if="!this.loading.user && this.results.user !== null" class="ml-5 badge rounded-pill bg-danger">
+          {{ this.results.user.total }}
+        </span>
+
+      </button>
     </li>
   </ul>
 
@@ -182,7 +206,7 @@ export default {
     </div>
 
 
-    <div class="tab-pane fade" id="search-tag" role="tabpanel">
+    <div class="tab-pane fade" id="search-faq" role="tabpanel">
 
       <div :class="this.loading.faq === true ? 'block-grid' : ''">
         <div v-if="this.loading.faq" class="mt-3 float-end">
@@ -211,7 +235,37 @@ export default {
       </div>
 
     </div>
-    <div class="tab-pane fade" id="search-faq" role="tabpanel">faq</div>
-    <div class="tab-pane fade" id="search-user" role="tabpanel">user</div>
+    <div class="tab-pane fade" id="search-tag" role="tabpanel">
+      <div :class="this.loading.tag === true ? 'block-grid' : ''">
+        <div v-if="this.loading.tag" class="mt-3 float-end">
+          <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+          <span class="txt-overlay p-2"> {{ translate.ongletTag.loading }}</span>
+        </div>
+
+        <h5 v-if="this.results.tag !== null">{{ this.results.tag.total }} {{ this.translate.ongletTag.title }}</h5>
+        <h5 v-else> 0 {{ this.translate.ongletTag.title }}</h5>
+        <p>{{ this.translate.ongletTag.description }}</p>
+
+        <div v-if="this.results.tag === null && !this.loading.tag">
+          {{ this.translate.ongletTag.noResult }}
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="search-user" role="tabpanel">
+      <div :class="this.loading.user === true ? 'block-grid' : ''">
+        <div v-if="this.loading.user" class="mt-3 float-end">
+          <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+          <span class="txt-overlay p-2"> {{ translate.ongletUser.loading }}</span>
+        </div>
+
+        <h5 v-if="this.results.tag !== null">{{ this.results.tag.total }} {{ this.translate.ongletUser.title }}</h5>
+        <h5 v-else> 0 {{ this.translate.ongletUser.title }}</h5>
+        <p>{{ this.translate.ongletUser.description }}</p>
+
+        <div v-if="this.results.tag === null && !this.loading.tag">
+          {{ this.translate.ongletTag.noResult }}
+        </div>
+      </div>
+    </div>
   </div>
 </template>
