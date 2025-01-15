@@ -118,4 +118,29 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         $user->setPassword($newHashedPassword);
         $this->save($user, true);
     }
+
+    /**
+     * Recherche dans les users
+     * @param string $search
+     * @param string $locale
+     * @param int $page
+     * @param int $limit
+     * @return Paginator
+     */
+    public function search(string $search, string $locale, int $page, int $limit): Paginator
+    {
+        $query = $this->createQueryBuilder('u');
+
+        $query->orWhere('u.login like :search')
+            ->orWhere('u.email like :search')
+            ->orWhere('u.firstname like :search')
+            ->orWhere('u.lastname like :search')
+            ->setParameter('search', '%' . $search . '%');
+
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
+    }
 }

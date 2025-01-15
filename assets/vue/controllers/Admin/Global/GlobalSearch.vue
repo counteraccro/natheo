@@ -48,6 +48,8 @@ export default {
     this.globalSearch('page', this.search, this.page, this.limit, false);
     this.globalSearch('menu', this.search, this.page, this.limit, false);
     this.globalSearch('faq', this.search, this.page, this.limit, false);
+    this.globalSearch('tag', this.search, this.page, this.limit, false);
+    this.globalSearch('user', this.search, this.page, this.limit, false);
   },
   methods: {
 
@@ -249,6 +251,18 @@ export default {
         <div v-if="this.results.tag === null && !this.loading.tag">
           {{ this.translate.ongletTag.noResult }}
         </div>
+
+        <div v-if="this.results.tag !== null">
+          <tab-search-result key="2"
+              :result="this.results.tag"
+              :translate="this.translate.ongletTag"
+              :translate-paginate="this.translate.paginate"
+              :paginate="this.paginate.tag"
+              :entity="'tag'"
+              @change-page-event="this.changePage"
+          >
+          </tab-search-result>
+      </div>
       </div>
     </div>
     <div class="tab-pane fade" id="search-user" role="tabpanel">
@@ -258,11 +272,11 @@ export default {
           <span class="txt-overlay p-2"> {{ translate.ongletUser.loading }}</span>
         </div>
 
-        <h5 v-if="this.results.tag !== null">{{ this.results.tag.total }} {{ this.translate.ongletUser.title }}</h5>
+        <h5 v-if="this.results.user !== null">{{ this.results.user.total }} {{ this.translate.ongletUser.title }}</h5>
         <h5 v-else> 0 {{ this.translate.ongletUser.title }}</h5>
         <p>{{ this.translate.ongletUser.description }}</p>
 
-        <div v-if="this.results.tag === null && !this.loading.tag">
+        <div v-if="this.results.user === null && !this.loading.tag">
           {{ this.translate.ongletTag.noResult }}
         </div>
       </div>

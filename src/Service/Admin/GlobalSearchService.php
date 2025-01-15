@@ -11,6 +11,8 @@ use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Faq\FaqCategory;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Page\Page;
+use App\Entity\Admin\Content\Tag\Tag;
+use App\Entity\Admin\System\User;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\PersonalData;
@@ -56,6 +58,8 @@ class GlobalSearchService extends AppAdminService
             'page' => Page::class,
             'menu' => Menu::class,
             'faq' => Faq::class,
+            'tag' => Tag::class,
+            'user' => User::class,
             default => '',
         };
     }
@@ -84,12 +88,80 @@ class GlobalSearchService extends AppAdminService
                 case Faq::class:
                     $return['elements'][] = $this->formatResultFaq($item, $locales['current'], $search);
                     break;
+                case Tag::class:
+                    $return['elements'][] = $this->formatResultTag($item, $locales['current'], $search);
+                    break;
+                case User::class:
+                    $return['elements'][] = $this->formatResultUser($item, $search);
+                    break;
                 default:
 
             }
         }
 
         return $return;
+    }
+
+    /**
+     * Formatage des résultats pour les users
+     * @param User $user
+     * @param string $locale
+     * @param string $search
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function formatResultUser(User $user, string $search): array
+    {
+        $router = $this->getRouter();
+
+        $personalData = new PersonalData($user,
+            $user->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue());
+
+        $label = $this->highlightText($search, $personalData->getPersonalData());
+
+        return [
+            'id' => $user->getId(),
+            'label' => $label,
+            
+            'date' => [
+                'create' => $user->getCreatedAt()->format('d/m/y H:i'),
+                'update' => $user->getUpdateAt()->format('d/m/y H:i')
+            ],
+            'urls' => [
+                'edit' => $router->generate('admin_user_update', ['id' => $user->getId()]),
+            ]
+        ];
+    }
+
+    /**
+     * Formatage des résultats pour les tags
+     * @param Tag $tag
+     * @param string $locale
+     * @param string $search
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function formatResultTag(Tag $tag, string $locale, string $search): array
+    {
+        $router = $this->getRouter();
+
+        $label = $tag->getTagTranslationByLocale($locale)->getLabel();
+        $label = $this->highlightText($search, $label);
+
+        return [
+            'id' => $tag->getId(),
+            'label' => $label,
+            'contents' => [],
+            'date' => [
+                'create' => $tag->getCreatedAt()->format('d/m/y H:i'),
+                'update' => $tag->getUpdateAt()->format('d/m/y H:i')
+            ],
+            'urls' => [
+                'edit' => $router->generate('admin_tag_update', ['id' => $tag->getId()]),
+            ]
+        ];
     }
 
     /**
@@ -113,7 +185,7 @@ class GlobalSearchService extends AppAdminService
 
         $re = '/(\B||\b)((?-i:\w+[^\w\n]+){0,10}' . $search . '(\B||\b)(?-i:[^\w\n]+\w+){0,10})/mu';
         $content = [];
-        foreach($faq->getFaqCategories() as $faqCategory) {
+        foreach ($faq->getFaqCategories() as $faqCategory) {
             /** @var FaqCategory $faqCategory */
             $faqCategoryTranslation = $faqCategory->getFaqCategoryTranslationByLocale($locale);
             preg_match_all($re, $faqCategoryTranslation->getTitle(), $matches, PREG_SET_ORDER, 0);

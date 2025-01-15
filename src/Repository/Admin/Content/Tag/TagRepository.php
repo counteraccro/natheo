@@ -95,28 +95,27 @@ class TagRepository extends ServiceEntityRepository
             ->getArrayResult();
     }
 
-//    /**
-//     * @return Tag[] Returns an array of Tag objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * Recherche dans les tags
+     * @param string $search
+     * @param string $locale
+     * @param int $page
+     * @param int $limit
+     * @return Paginator
+     */
+    public function search(string $search, string $locale, int $page, int $limit): Paginator
+    {
+        $query = $this->createQueryBuilder('t');
 
-//    public function findOneBySomeField($value): ?Tag
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $query->join('t.tagTranslations', 'tt')
+            ->orWhere('tt.label like :search AND tt.locale = :locale')
+            ->setParameter('search', '%' . $search . '%')
+            ->setParameter('locale', $locale);
+
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
+    }
 }
