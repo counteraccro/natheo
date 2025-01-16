@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Class pour la génération des traductions pour la recherche globale
+ * @author Gourdon Aymeric
+ * @version 1.0
+ */
 namespace App\Utils\Translate;
 
 class GlobalSearchTranslate extends AppTranslate
