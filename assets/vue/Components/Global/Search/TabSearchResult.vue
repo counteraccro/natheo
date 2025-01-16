@@ -42,7 +42,8 @@ export default {
         <div class="card-body">
           <h5 class="card-title" v-html="row.label">
           </h5>
-          <p class="m-0"><b>{{ this.translate.content }}</b></p>
+
+          <p v-if="row.contents[0]" class="m-0"><b>{{ this.translate.content }}</b></p>
           <p v-if="row.contents[0]" class="card-text m-0" v-for="content in row.contents">
             <i class="bi bi-arrow-return-right"></i> <span v-html="content"></span>
           </p>
@@ -57,7 +58,7 @@ export default {
           <p class="card-text mt-2"><small class="text-body-secondary">
             {{ this.translate.create }} {{ row.date.create }},
             {{ this.translate.update }} {{ row.date.update }}
-           {{ this.translate.author }}  <span v-html="row.author"></span>
+           <span v-if="row.author"> {{ this.translate.author }}  <span v-html="row.author"></span></span>
           </small></p>
         </div>
       </div>

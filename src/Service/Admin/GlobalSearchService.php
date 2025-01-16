@@ -123,7 +123,7 @@ class GlobalSearchService extends AppAdminService
         return [
             'id' => $user->getId(),
             'label' => $label,
-            
+            'contents' => [],
             'date' => [
                 'create' => $user->getCreatedAt()->format('d/m/y H:i'),
                 'update' => $user->getUpdateAt()->format('d/m/y H:i')

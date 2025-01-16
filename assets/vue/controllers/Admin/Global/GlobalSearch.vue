@@ -193,7 +193,7 @@ export default {
           {{ this.translate.ongletMenu.noResult }}
         </div>
         <div v-if="this.results.menu !== null">
-          <tab-search-result key="2"
+          <tab-search-result key="3"
               :result="this.results.menu"
               :translate="this.translate.ongletMenu"
               :translate-paginate="this.translate.paginate"
@@ -224,7 +224,7 @@ export default {
           {{ this.translate.ongletFaq.noResult }}
         </div>
         <div v-if="this.results.faq !== null">
-          <tab-search-result key="2"
+          <tab-search-result key="4"
               :result="this.results.faq"
               :translate="this.translate.ongletFaq"
               :translate-paginate="this.translate.paginate"
@@ -253,7 +253,7 @@ export default {
         </div>
 
         <div v-if="this.results.tag !== null">
-          <tab-search-result key="2"
+          <tab-search-result key="5"
               :result="this.results.tag"
               :translate="this.translate.ongletTag"
               :translate-paginate="this.translate.paginate"
@@ -278,6 +278,18 @@ export default {
 
         <div v-if="this.results.user === null && !this.loading.tag">
           {{ this.translate.ongletTag.noResult }}
+        </div>
+
+        <div v-if="this.results.user !== null">
+          <tab-search-result key="6"
+              :result="this.results.user"
+              :translate="this.translate.ongletUser"
+              :translate-paginate="this.translate.paginate"
+              :paginate="this.paginate.user"
+              :entity="'user'"
+              @change-page-event="this.changePage"
+          >
+          </tab-search-result>
         </div>
       </div>
     </div>
