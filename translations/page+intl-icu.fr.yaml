@@ -149,3 +149,4 @@ page.preview.warning: 'Ceci est une préview et ne prend pas en compte le design
 page.preview.switch.locale.fr: 'En français'
 page.preview.switch.locale.en: 'En anglais'
 page.preview.switch.locale.es: 'En espagnol'
+page.grid.author: Auteur

@@ -66,6 +66,7 @@ class PageService extends AppAdminService
             $translator->trans('page.grid.comment', domain: 'page'),
             $translator->trans('page.grid.nb_see', domain: 'page'),
             $translator->trans('page.grid.update_at', domain: 'page'),
+            $translator->trans('page.grid.author', domain: 'page'),
             GridService::KEY_ACTION,
         ];
 
@@ -103,6 +104,7 @@ class PageService extends AppAdminService
                     $element->getPageStatistiqueByKey(PageStatistiqueKey::KEY_PAGE_NB_READ)->getValue(),
                 $translator->trans('page.grid.update_at', domain: 'page') => $element
                     ->getUpdateAt()->format('d/m/y H:i'),
+                $translator->trans('page.grid.author', domain: 'page') => $element->getUser()->getLogin(),
                 GridService::KEY_ACTION => $action,
             ];
         }

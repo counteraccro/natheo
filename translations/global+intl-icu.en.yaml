@@ -11,3 +11,5 @@ global.notification: __global.notification
 global.user.impersonation: __global.user.impersonation
 global.citation: __global.citation
 global.citation.auteur: __global.citation.auteur
+global.search.placeholder: __global.search.placeholder
+global.search.btn: __global.search.btn

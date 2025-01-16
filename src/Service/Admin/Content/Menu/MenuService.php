@@ -56,6 +56,7 @@ class MenuService extends AppAdminService
             $translator->trans('menu.grid.default', domain: 'menu'),
             $translator->trans('menu.grid.create_at', domain: 'menu'),
             $translator->trans('menu.grid.update_at', domain: 'menu'),
+            $translator->trans('menu.grid.author', domain: 'menu'),
             GridService::KEY_ACTION,
         ];
 
@@ -97,6 +98,7 @@ class MenuService extends AppAdminService
                     ->getCreatedAt()->format('d/m/y H:i'),
                 $translator->trans('menu.grid.update_at', domain: 'menu') => $element
                     ->getUpdateAt()->format('d/m/y H:i'),
+                $translator->trans('menu.grid.author', domain: 'menu') => $element->getUser()->getLogin(),
                 GridService::KEY_ACTION => $action,
             ];
         }

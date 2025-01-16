@@ -110,26 +110,13 @@ export default {
 
       <div class="col"></div>
 
-      <!--<div v-for="(element) in this.menu.menuElements" class="col mb-2" :set="elementTranslate = this.getTranslationByLocale(element.menuElementTranslations)">
-        <div v-if="this.isHaveChildren(element) && !element.disabled">
-          <h5>{{ elementTranslate.text }}</h5>
-          <ul class="nav flex-column" v-html="this.renderColDeep(element, '')"></ul>
-        </div>
-        <div v-else-if="!element.disabled">
-          <h5>
-            <a :target="element.linkTarget" :href="elementTranslate.link" class="text-decoration-none">{{ elementTranslate.text }}</a>
-          </h5>
-        </div>
-      </div>-->
 
       <div v-for="element in this.pMenu.elements" class="col-1">
         <div v-if="this.isHaveChildren(element)">
           <span>{{ element.label }}</span>
           <ul class="nav flex-column" v-html="this.renderColDeep(element.elements, '')"></ul>
         </div>
-
         <a v-else :href="url" :target="element.target" class="text-decoration-none"> {{ element.label }}</a>
-
       </div>
 
     </footer>

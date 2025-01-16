@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Service pour le dashboard
+ * @author Gourdon Aymeric
+ * @version 1.0
+ */
 namespace App\Service\Admin;
 
 use App\Entity\Admin\System\ApiToken;

@@ -111,4 +111,37 @@ class FaqRepository extends ServiceEntityRepository
         }
         return $return;
     }
+
+    /**
+     * Recherche dans les faqs
+     * @param string $search
+     * @param string $locale
+     * @param int $page
+     * @param int $limit
+     * @return Paginator
+     */
+    public function search(string $search, string $locale, int $page, int $limit): Paginator
+    {
+        $query = $this->createQueryBuilder('f');
+
+        $query->join('f.faqTranslations', 'ft')
+            ->leftJoin('f.faqCategories', 'fc')
+            ->leftJoin('fc.faqCategoryTranslations', 'fct')
+            ->leftJoin('fc.faqQuestions', 'fq')
+            ->leftJoin('fq.faqQuestionTranslations', 'fqt')
+            ->join('f.user', 'u')
+            ->orWhere('ft.title like :search AND ft.locale = :locale')
+            ->orWhere('fct.title like :search AND fct.locale = :locale')
+            ->orWhere('fqt.title like :search AND fct.locale = :locale')
+            ->orWhere('fqt.answer like :search AND fct.locale = :locale')
+            ->orWhere('u.login like :search')
+            ->setParameter('search', '%' . $search . '%')
+            ->setParameter('locale', $locale);
+
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
+    }
 }

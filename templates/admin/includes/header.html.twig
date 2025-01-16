@@ -7,6 +7,14 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarToggleExternalContent">
+            <div class="navbar-nav navbar-collapse justify-content-center">
+                <form class="d-flex" role="search" action="{{ path('admin_search_index') }}" method="post">
+                    <div class="input-group">
+                        <input type="text" name="global-search-input" class="form-control" size="45" placeholder=" {{ 'global.search.placeholder' | trans({}, 'global') }}">
+                        <button class="btn btn-primary" type="submit" id="button-addon2"><i class="bi bi-search"></i>  {{ 'global.search.btn' | trans({}, 'global') }}</button>
+                    </div>
+                </form>
+            </div>
             <!-- ml-auto still works just fine-->
             <div class="navbar-nav ms-auto">
                 <a class="nav-link active" href="#">

@@ -63,7 +63,7 @@ class PageRepository extends ServiceEntityRepository
                 ->setParameter('search', '%' . $search . '%');
         }
 
-        if($userId !== null){
+        if ($userId !== null) {
             $query->andWhere('p.user = :userId');
             $query->setParameter('userId', $userId);
         }
@@ -93,7 +93,7 @@ class PageRepository extends ServiceEntityRepository
             ->setParameter('status', PageConst::STATUS_PUBLISH)
             ->orderBy('p.updateAt', 'DESC');
 
-        if($categoryId !== 0) {
+        if ($categoryId !== 0) {
             $query->andWhere('p.category = :categoryId')
                 ->setParameter('categoryId', $categoryId);
         }
@@ -158,21 +158,20 @@ class PageRepository extends ServiceEntityRepository
      * @return Page|null
      * @throws NonUniqueResultException
      */
-    public function getBySlug(string $slug) : ?Page
+    public function getBySlug(string $slug): ?Page
     {
         $query = $this->createQueryBuilder('p');
 
-        if($slug !== "") {
+        if ($slug !== "") {
             $query->join('p.pageTranslations', 'pt')
                 ->where('pt.url = :slug')
                 ->setParameter('slug', $slug);
-        }
-        else {
+        } else {
             $query->where('p.landingPage = :landingPage')
                 ->setParameter('landingPage', true);
         }
 
-            $query->andWhere('p.disabled = :disabled')
+        $query->andWhere('p.disabled = :disabled')
             ->setParameter('disabled', false)
             ->andWhere('p.status = :status')
             ->setParameter('status', PageConst::STATUS_PUBLISH)
@@ -181,28 +180,34 @@ class PageRepository extends ServiceEntityRepository
 
     }
 
-//    /**
-//     * @return Page[] Returns an array of Page objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * Recherche dans les pages
+     * @param string $search
+     * @param string $locale
+     * @param int $page
+     * @param int $limit
+     * @return Paginator
+     */
+    public function search(string $search, string $locale, int $page, int $limit): Paginator
+    {
+        $query = $this->createQueryBuilder('p');
 
-//    public function findOneBySomeField($value): ?Page
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $query->join('p.pageTranslations', 'pt')
+            ->leftJoin('p.pageContents', 'pc')
+            ->leftJoin('pc.pageContentTranslations', 'pct')
+            ->join('p.user', 'u')
+            ->andWhere('pt.locale = :locale')
+            ->andWhere('pt.titre like :search')
+            ->orWhere('pc.type = :type AND pct.text like :search AND pct.locale = :locale')
+            ->orWhere('u.login like :search')
+            ->setParameter('search', '%' . $search . '%')
+            ->setParameter('type', PageConst::CONTENT_TYPE_TEXT)
+            ->setParameter('locale', $locale);
+
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
+    }
 }
