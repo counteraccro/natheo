@@ -1,0 +1,9 @@
+comments:
+  comment_1:
+    pageId: Page_presentation
+    author: 'John Doe'
+    email: john-doe@monemail.com
+    comment: 'Je suis un commentaire'
+    status: 1
+    ip: 1.1.1
+    userAgent: 'windows'
