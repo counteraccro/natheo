@@ -11,6 +11,8 @@ use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Menu\MenuElementTranslation;
+use App\Entity\Admin\Content\Page\Page;
+use App\Entity\Admin\System\User;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -35,7 +37,7 @@ class MenuFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                         }
                         break;
                     case 'user':
-                        $menu->setUser($this->getReference($value));
+                        $menu->setUser($this->getReference($value, User::class));
                         break;
                     default:
                         $this->setData($key, $value, $menu);
@@ -66,11 +68,11 @@ class MenuFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                 }
             } elseif ($key === 'page') {
                 if (!empty($value)) {
-                    $menuElement->setPage($this->getReference($value));
+                    $menuElement->setPage($this->getReference($value, Page::class));
                 }
             } elseif ($key === 'parent') {
                 if (!empty($value)) {
-                    $menuElement->setParent($this->getReference($value));
+                    $menuElement->setParent($this->getReference($value, MenuElement::class));
                 }
             } else {
                 $this->setData($key, $value, $menuElement);

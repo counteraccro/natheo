@@ -7,6 +7,7 @@
 namespace App\DataFixtures\Admin\Content\Page;
 
 use App\DataFixtures\AppFixtures;
+use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\Content\Page\PageContentTranslation;
@@ -94,9 +95,9 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                 }
             } elseif ($key === 'typeId') {
                 // Possible que la référence soit un id en dur
-                if ($this->hasReference($value)) {
-                    $pageContent->setTypeId($this->getReference($value)->getId());
-                } else {
+                if ($this->hasReference($value, Faq::class)) {
+                    $pageContent->setTypeId($this->getReference($value, Faq::class)->getId());
+                }else {
                     $pageContent->setTypeId($value);
                 }
 
