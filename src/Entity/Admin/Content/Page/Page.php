@@ -2,6 +2,7 @@
 
 namespace App\Entity\Admin\Content\Page;
 
+use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Tag\Tag;
@@ -77,6 +78,12 @@ class Page
     #[JoinTable(name: 'page_menu')]
     private Collection $menus;
 
+    /**
+     * @var Collection<int, Comment>
+     */
+    #[ORM\OneToMany(mappedBy: 'page', targetEntity: Comment::class, orphanRemoval: true)]
+    private Collection $comments;
+
 
     public function __construct()
     {
@@ -86,6 +93,7 @@ class Page
         $this->pageStatistiques = new ArrayCollection();
         $this->menuElements = new ArrayCollection();
         $this->menus = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -393,6 +401,36 @@ class Page
     public function setLandingPage(bool $landingPage): static
     {
         $this->landingPage = $landingPage;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setPage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getPage() === $this) {
+                $comment->setPage(null);
+            }
+        }
 
         return $this;
     }
