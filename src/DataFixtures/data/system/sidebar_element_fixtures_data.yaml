@@ -45,7 +45,7 @@ sidebarElement:
       - se_comment:
           icon: 'bi-chat-text-fill'
           label: 'global.comment'
-          route: '#'
+          route: 'admin_comment_index'
           disabled: false
           parent: se_content
           role: 'ROLE_CONTRIBUTEUR'
