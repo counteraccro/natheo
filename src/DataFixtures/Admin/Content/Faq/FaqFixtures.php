@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Fixtures pour les faq
+ */
 namespace App\DataFixtures\Admin\Content\Faq;
 
 use App\DataFixtures\AppFixtures;
