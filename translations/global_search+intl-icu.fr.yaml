@@ -43,13 +43,13 @@ global_search.onglet.user.description: 'Liste des utilisateurs trouvées'
 global_search.onglet.user.no.result: 'Aucun utilisateur trouvé pour le critère de votre recherche'
 global_search.onglet.user.create: 'Créer le'
 global_search.onglet.user.update: 'éditer le'
-global_search.onglet.user.author: 'par'
+global_search.onglet.user.author: par
 global_search.onglet.user.loading: 'Recherche dans les utilisateurs'
-global_search.onglet.tag.onglet: 'Tag'
+global_search.onglet.tag.onglet: Tag
 global_search.onglet.tag.title: 'résultat(s) pour les tags'
 global_search.onglet.tag.description: 'Liste des tags trouvés'
 global_search.onglet.tag.no.result: 'Aucun tag trouvé avec le critère de votre recherche'
 global_search.onglet.tag.create: 'Créer le'
 global_search.onglet.tag.update: 'éditer le'
-global_search.onglet.tag.author: 'par'
+global_search.onglet.tag.author: par
 global_search.onglet.tag.loading: 'Recherche dans les tags'
