@@ -1,6 +1,6 @@
 comments:
   comment_1:
-    pageId: Page_presentation
+    page: Page_presentation
     author: 'John Doe'
     email: john-doe@monemail.com
     comment: 'Je suis un commentaire'
