@@ -17,7 +17,7 @@
     </p>
 
 
-    <div {#{{ vue_component('Admin/GenericGrid', {'url' : path('admin_faq_load_grid_data',  {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true, 'showFilter' : true}) }}#}></div>
+    <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_comment_load_grid_data',  {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true, 'showFilter' : true}) }}></div>
 
     <twig:Admin:ModaleComponent id="help-grid-comment" bgColor="bg-secondary">
         <twig:block name="header">

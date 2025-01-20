@@ -4,6 +4,7 @@ namespace App\Repository\Admin\Content\Comment;
 
 use App\Entity\Admin\Content\Comment\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,28 +17,34 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
-    //    /**
-    //     * @return Comment[] Returns an array of Comment objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * Retourne une liste de commentaires Paginé
+     * @param int $page
+     * @param int $limit
+     * @param string|null $search
+     * @param null $userId
+     * @return Paginator
+     */
+    public function getAllPaginate(int $page, int $limit, string $search = null, $userId = null): Paginator
+    {
+        $query = $this->createQueryBuilder('c')
+            ->orderBy('c.id', 'ASC');
 
-    //    public function findOneBySomeField($value): ?Comment
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        if($userId !== null){
+            $query->andWhere('c.userModeration = :userId');
+            $query->setParameter('userId', $userId);
+        }
+
+        if ($search !== null) {
+            $query->where('c.comment like :search OR c.author like :search OR c.email like :search')
+                ->setParameter('search', '%' . $search . '%');
+        }
+
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
+
+    }
 }
