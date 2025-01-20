@@ -270,7 +270,7 @@ class PageController extends AppAdminController
         } else {
             $page = $pageService->findOneById(Page::class, $id);
         }
-        $pageArray = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt', 'user', 'menuElements', 'menus']);
+        $pageArray = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt', 'user', 'menuElements', 'menus', 'comments']);
 
         // On lie les menus à la page
         if (!$page->getMenus()->isEmpty()) {
