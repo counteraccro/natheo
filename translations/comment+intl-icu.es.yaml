@@ -5,3 +5,9 @@ comment.index.popin.help.edit: __comment.index.popin.help.edit
 comment.index.page_title: __comment.index.page_title
 comment.index.page_title_h1: __comment.index.page_title_h1
 comment.index.description: __comment.index.description
+comment.grid.id: __comment.grid.id
+comment.grid.comment: __comment.grid.comment
+comment.grid.author: __comment.grid.author
+comment.grid.status: __comment.grid.status
+comment.grid.created_at: __comment.grid.created_at
+comment.confirm.disabled.msg: __comment.confirm.disabled.msg

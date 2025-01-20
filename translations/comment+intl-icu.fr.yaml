@@ -1,7 +1,13 @@
 comment.index.page_title: 'Gestion des commentaires'
 comment.index.page_title_h1: 'Gestion des commentaires'
 comment.index.description: 'Gérer les commentaires de votre site web'
-comment.index.popin.help.title: 'Aide'
-comment.index.popin.help.disabled: 'Désactiver'
-comment.index.popin.help.enable: 'Activer'
-comment.index.popin.help.edit: 'Modérer'
+comment.index.popin.help.title: Aide
+comment.index.popin.help.disabled: Désactiver
+comment.index.popin.help.enable: Activer
+comment.index.popin.help.edit: Modérer
+comment.grid.id: #
+comment.grid.comment: Commentaire
+comment.grid.author: Auteur
+comment.grid.status: Etat
+comment.grid.created_at: 'Créer le'
+comment.confirm.disabled.msg: 'A écrire'
