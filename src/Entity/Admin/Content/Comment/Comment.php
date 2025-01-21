@@ -37,6 +37,12 @@ class Comment
     #[ORM\Column]
     private ?int $status = null;
 
+    #[ORM\Column]
+    private ?bool $disabled = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $moderationComment = null;
+
     #[ORM\Column(length: 255)]
     private ?string $ip = null;
 
@@ -183,6 +189,30 @@ class Comment
     public function setUpdateAt(?\DateTimeInterface $updateAt): static
     {
         $this->updateAt = $updateAt;
+
+        return $this;
+    }
+
+    public function isDisabled(): ?bool
+    {
+        return $this->disabled;
+    }
+
+    public function setDisabled(bool $disabled): static
+    {
+        $this->disabled = $disabled;
+
+        return $this;
+    }
+
+    public function getModerationComment(): ?string
+    {
+        return $this->moderationComment;
+    }
+
+    public function setModerationComment(?string $moderationComment): static
+    {
+        $this->moderationComment = $moderationComment;
 
         return $this;
     }
