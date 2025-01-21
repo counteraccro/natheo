@@ -11,3 +11,8 @@ comment.grid.author: __comment.grid.author
 comment.grid.status: __comment.grid.status
 comment.grid.created_at: __comment.grid.created_at
 comment.confirm.disabled.msg: __comment.confirm.disabled.msg
+comment.grid.page: __comment.grid.page
+comment.status.wait.validation: __comment.status.wait.validation
+comment.status.validate: __comment.status.validate
+comment.status.wait.moderation: __comment.status.wait.moderation
+comment.status.moderate: __comment.status.moderate

@@ -5,9 +5,14 @@ comment.index.popin.help.title: Aide
 comment.index.popin.help.disabled: Désactiver
 comment.index.popin.help.enable: Activer
 comment.index.popin.help.edit: Modérer
-comment.grid.id: #
+comment.grid.id: '#'
 comment.grid.comment: Commentaire
 comment.grid.author: Auteur
 comment.grid.status: Etat
 comment.grid.created_at: 'Créer le'
 comment.confirm.disabled.msg: 'A écrire'
+comment.grid.page: Page
+comment.status.wait.validation: 'En attente de validation'
+comment.status.validate: 'Validé'
+comment.status.wait.moderation: 'En attente de modération'
+comment.status.moderate: 'Modéré'
