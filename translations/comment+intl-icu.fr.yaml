@@ -13,6 +13,11 @@ comment.grid.created_at: 'Créer le'
 comment.confirm.disabled.msg: 'A écrire'
 comment.grid.page: Page
 comment.status.wait.validation: 'En attente de validation'
-comment.status.validate: 'Validé'
+comment.status.validate: Validé
 comment.status.wait.moderation: 'En attente de modération'
-comment.status.moderate: 'Modéré'
+comment.status.moderate: Modéré
+comment.moderate.comments.page_title: 'Modération des commentaires'
+comment.moderate.comments.page_title_h1: 'Modération des commentaires'
+comment.see.page_title: Commentaire
+comment.see.page_title_h1: 'Commentaire #{id}'
+comment.index.btn.moderate: 'Modération globale'

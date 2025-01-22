@@ -16,3 +16,8 @@ comment.status.wait.validation: __comment.status.wait.validation
 comment.status.validate: __comment.status.validate
 comment.status.wait.moderation: __comment.status.wait.moderation
 comment.status.moderate: __comment.status.moderate
+comment.moderate.comments.page_title: __comment.moderate.comments.page_title
+comment.moderate.comments.page_title_h1: __comment.moderate.comments.page_title_h1
+comment.see.page_title: __comment.see.page_title
+comment.see.page_title_h1: __comment.see.page_title_h1
+comment.index.btn.moderate: __comment.index.btn.moderate
