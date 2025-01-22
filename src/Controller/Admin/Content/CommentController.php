@@ -10,6 +10,7 @@ use App\Controller\Admin\AppAdminController;
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Utils\Breadcrumb;
 use App\Utils\System\Options\OptionUserKey;
+use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -54,6 +55,7 @@ class CommentController extends AppAdminController
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws CommonMarkException
      */
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     public function loadGridData(
@@ -72,5 +74,54 @@ class CommentController extends AppAdminController
         }
         $grid = $commentService->getAllFormatToGrid($page, $limit, $search, $userId);
         return $this->json($grid);
+    }
+
+    /**
+     * Permet de modérer les commentaires
+     * @param Request $request
+     * @param CommentService $commentService
+     * @return Response
+     */
+    #[Route('/moderate', name: 'moderate_comments', methods: ['GET'])]
+    public function moderateComments(Request $request, CommentService $commentService): Response
+    {
+        $breadcrumb = [
+            Breadcrumb::DOMAIN => 'comment',
+            Breadcrumb::BREADCRUMB => [
+                'comment.index.page_title_h1' => 'admin_comment_index',
+                'comment.moderate.comments.page_title' => '#'
+            ]
+        ];
+
+        return $this->render('admin/content/comment/moderate_comments.html.twig', [
+            'breadcrumb' => $breadcrumb,
+        ]);
+    }
+
+    /**
+     * Permet de voir un commentaire
+     * @param int $id
+     * @param Request $request
+     * @param CommentService $commentService
+     * @return Response
+     */
+    #[Route('/see/{id}', name: 'see', methods: ['GET'])]
+    public function see(
+        int $id,
+        Request $request,
+        CommentService $commentService): Response
+    {
+        $breadcrumb = [
+            Breadcrumb::DOMAIN => 'comment',
+            Breadcrumb::BREADCRUMB => [
+                'comment.index.page_title_h1' => 'admin_comment_index',
+                'comment.see.page_title' => '#'
+            ]
+        ];
+
+        return $this->render('admin/content/comment/see.html.twig', [
+            'breadcrumb' => $breadcrumb,
+            'id' => $id,
+        ]);
     }
 }

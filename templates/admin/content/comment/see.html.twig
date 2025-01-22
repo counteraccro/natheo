@@ -1,0 +1,14 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block title %}{{ 'comment.see.page_title' | trans({'%id%' : id}, 'comment') }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'comment.see.page_title_h1' | trans({'%id%' : id}, 'comment') }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+
+    <div {# {{ vue_component('Admin/GenericGrid', {'url' : path('admin_comment_load_grid_data',  {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true, 'showFilter' : true}) }} #}></div>
+
+
+{% endblock %}

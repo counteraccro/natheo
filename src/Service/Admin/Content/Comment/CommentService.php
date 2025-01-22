@@ -11,6 +11,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use function Symfony\Component\String\u;
 
 class CommentService extends AppAdminService
 {
@@ -57,7 +58,7 @@ class CommentService extends AppAdminService
 
             $data[] = [
                 $translator->trans('comment.grid.id', domain: 'comment') => $element->getId(),
-                $translator->trans('comment.grid.comment', domain: 'comment') => $comment,
+                $translator->trans('comment.grid.comment', domain: 'comment') =>  u($comment)->truncate(100, '…'),
                 $translator->trans('comment.grid.author', domain: 'comment') => $element->getAuthor(),
                 $translator->trans('comment.grid.page', domain: 'comment') => '<a href=' . $router->generate('admin_page_update', ['id' => $element->getPage()->getId()]) . '>' . $titre . '</a>',
                 $translator->trans('comment.grid.status', domain: 'comment') => $this->getStatusStringByCode($element->getStatus()),
@@ -102,31 +103,13 @@ class CommentService extends AppAdminService
     private function generateTabAction(Comment $comment): array
     {
         $router = $this->getRouter();
-        $translator = $this->getTranslator();
-
-        $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
-            'type' => 'put',
-            'url' => $router->generate('admin_faq_disabled', ['id' => $comment->getId()]),
-            'ajax' => true,
-            'confirm' => true,
-            'msgConfirm' => $translator->trans('comment.confirm.disabled.msg', ['label' => $comment->getId()], 'comment')];
-        if ($comment->getStatus() === 22) {
-            $actionDisabled = [
-                'label' => '<i class="bi bi-eye-fill"></i>',
-                'type' => 'put',
-                'url' => $router->generate('admin_faq_disabled', ['id' => $comment->getId()]),
-                'ajax' => true
-            ];
-        }
-
 
         $actions = [];
-        $actions[] = $actionDisabled;
 
         // Bouton edit
-        $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
+        $actions[] = ['label' => '<i class="bi bi-chat-dots-fill"></i>',
             'id' => $comment->getId(),
-            'url' => $router->generate('admin_faq_update', ['id' => $comment->getId()]),
+            'url' => $router->generate('admin_comment_see', ['id' => $comment->getId()]),
             'ajax' => false];
 
         return $actions;
