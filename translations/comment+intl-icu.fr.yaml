@@ -21,3 +21,4 @@ comment.moderate.comments.page_title_h1: 'Modération des commentaires'
 comment.see.page_title: Commentaire
 comment.see.page_title_h1: 'Commentaire #{id}'
 comment.index.btn.moderate: 'Modération globale'
+comment.see.loading: __comment.see.loading
