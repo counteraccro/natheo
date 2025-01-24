@@ -17,3 +17,4 @@ comments:
     userAgent: 'windows'
     moderationComment: 'Raison de test'
     disabled: 0
+    userModeration: 'User'
