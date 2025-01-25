@@ -4,9 +4,11 @@
  * @version 1.0
  */
 import axios from "axios";
+import MarkdownEditor from "../../../../Components/Global/MarkdownEditor.vue";
 
 export default {
   name: 'CommentEdit',
+  components: {MarkdownEditor},
   props: {
     urls: Object,
     translate: Object,
@@ -14,24 +16,37 @@ export default {
   },
   emits: [],
   mounted() {
+    console.log(this.translate.markdown)
     this.load();
   },
   data() {
     return {
       loading: false,
-      comment: [],
+      comment: null,
     }
   },
   methods: {
+
+    /**
+     * Charge les données du commentaire
+     */
     load() {
       this.loading = true;
       axios.get(this.urls.load_comment + '/' + this.id).then((response) => {
-
+          this.comment = response.data.comment;
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
         this.loading = false;
       });
+    },
+
+    /**
+     * Met à jour le commentaire
+     */
+    updateValue(id, value)
+    {
+        console.log(value);
     }
 
   }
@@ -49,7 +64,21 @@ export default {
       </div>
     </div>
 
-    <div class="comment">
+    <div v-if="this.comment" class="comment">
+
+      <MarkdownEditor
+          :me-id="this.comment.id"
+          :me-value="this.comment.comment"
+          :me-translate="this.translate.markdown"
+          :me-key-words="[]"
+          :me-rows="16"
+          :me-save="true"
+          :me-preview="false"
+          @editor-value="this.updateValue"
+      >
+
+      </MarkdownEditor>
+
       {{ this.translate.loading }}
     </div>
   </div>

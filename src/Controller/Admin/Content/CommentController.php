@@ -8,20 +8,21 @@ namespace App\Controller\Admin\Content;
 
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Comment\Comment;
-use App\Entity\Admin\Content\Tag\Tag;
+use App\Entity\Admin\Content\Page\Page;
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Utils\Breadcrumb;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Content\CommentTranslate;
+use App\Utils\Translate\MarkdownEditorTranslate;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
 #[Route('/admin/{_locale}/comment', name: 'admin_comment_', requirements: ['_locale' => '%app.supported_locales%'])]
 #[IsGranted('ROLE_CONTRIBUTEUR')]
@@ -107,6 +108,7 @@ class CommentController extends AppAdminController
      * @param int $id
      * @param Request $request
      * @param CommentService $commentService
+     * @param MarkdownEditorTranslate $markdownEditorTranslate
      * @param CommentTranslate $commentTranslate
      * @return Response
      */
@@ -115,6 +117,7 @@ class CommentController extends AppAdminController
         int $id,
         Request $request,
         CommentService $commentService,
+        MarkdownEditorTranslate $markdownEditorTranslate,
         CommentTranslate $commentTranslate): Response
     {
         $breadcrumb = [
@@ -125,9 +128,12 @@ class CommentController extends AppAdminController
             ]
         ];
 
+        $translate = $commentTranslate->getTranslateCommentSee();
+        $translate['markdown'] = $markdownEditorTranslate->getTranslate();
+
         return $this->render('admin/content/comment/see.html.twig', [
             'breadcrumb' => $breadcrumb,
-            'translate' => $commentTranslate->getTranslateCommentSee(),
+            'translate' => $translate,
             'urls' => [
                 'load_comment' => $this->generateUrl('admin_comment_load'),
             ],
@@ -141,15 +147,34 @@ class CommentController extends AppAdminController
      * @param CommentService $commentService
      * @param int|null $id
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ExceptionInterface
      */
     #[Route('/load/{id}', name: 'load', methods: ['GET'])]
     public function getComment(
         Request $request,
         CommentService $commentService,
         int $id = null
-        //#[MapEntity(id: 'id')] Comment $comment = null
     ): Response
     {
-        return $this->json($id);
+        /** @var Comment $comment */
+        $comment = $commentService->findOneById(Comment::class, $id);
+
+        /** @var Page $page */
+        $page = $commentService->findOneById(Page::class, $comment->getPage()->getId());
+        $title = $page->getPageTranslationByLocale($commentService->getLocales()['current'])->getTitre();
+
+        $commentArray = $commentService->convertEntityToArray($comment, ['page', 'userModeration']);
+
+        if($comment->getUserModeration() !== null)
+        {
+            $user = $comment->getUserModeration();
+            $commentArray['userModeration'] = ['login' => $user->getLogin(), 'email' => $user->getEmail()];
+        }
+
+        $commentArray['page'] = ['title' => $title, 'url' => $this->generateUrl('admin_page_update', ['id' => $page->getId()])];
+
+        return $this->json(['comment' => $commentArray]);
     }
 }
