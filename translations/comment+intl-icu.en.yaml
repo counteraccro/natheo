@@ -22,3 +22,5 @@ comment.see.page_title: __comment.see.page_title
 comment.see.page_title_h1: __comment.see.page_title_h1
 comment.index.btn.moderate: __comment.index.btn.moderate
 comment.see.loading: __comment.see.loading
+comment.see.author: __comment.see.author
+comment.see.created: __comment.see.created
