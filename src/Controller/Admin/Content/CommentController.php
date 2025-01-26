@@ -174,6 +174,9 @@ class CommentController extends AppAdminController
         }
 
         $commentArray['page'] = ['title' => $title, 'url' => $this->generateUrl('admin_page_update', ['id' => $page->getId()])];
+        $commentArray['createdAt'] = $comment->getCreatedAt()->format('d/m/y H:i');
+        $commentArray['updateAt'] = $comment->getUpdateAt()->format('d/m/y H:i');
+        $commentArray['status'] = $commentService->getStatusFormatedByCode($comment->getStatus());
 
         return $this->json(['comment' => $commentArray]);
     }

@@ -56,12 +56,17 @@ class CommentService extends AppAdminService
             $markdown = new Markdown();
             $comment = $markdown->convertMarkdownToHtml($element->getComment());
 
+            $isDisabled = '';
+            if ($element->isDisabled()) {
+                $isDisabled = '<i class="bi bi-eye-slash"></i>';
+            }
+
             $data[] = [
-                $translator->trans('comment.grid.id', domain: 'comment') => $element->getId(),
-                $translator->trans('comment.grid.comment', domain: 'comment') =>  u($comment)->truncate(100, '…'),
+                $translator->trans('comment.grid.id', domain: 'comment') => $element->getId() . $isDisabled,
+                $translator->trans('comment.grid.comment', domain: 'comment') => u($comment)->truncate(100, '…'),
                 $translator->trans('comment.grid.author', domain: 'comment') => $element->getAuthor(),
                 $translator->trans('comment.grid.page', domain: 'comment') => '<a href=' . $router->generate('admin_page_update', ['id' => $element->getPage()->getId()]) . '>' . $titre . '</a>',
-                $translator->trans('comment.grid.status', domain: 'comment') => $this->getStatusStringByCode($element->getStatus()),
+                $translator->trans('comment.grid.status', domain: 'comment') => $this->getStatusFormatedByCode($element->getStatus()),
                 $translator->trans('comment.grid.created_at', domain: 'comment') => $element->getCreatedAt()->format('d/m/y H:i'),
                 GridService::KEY_ACTION => $action,
             ];
@@ -116,13 +121,32 @@ class CommentService extends AppAdminService
     }
 
     /**
+     * Retourne un status formaté HTML en fonction de son code
+     * @param int $status
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getStatusFormatedByCode(int $status): string
+    {
+        $string = $this->getStatusStringByCode($status);
+
+        return match ($status) {
+            CommentConst::WAIT_VALIDATION => '<span class="badge text-bg-primary">' . $string . '</span>',
+            CommentConst::VALIDATE => '<span class="badge text-bg-success">' . $string . '</span>',
+            CommentConst::WAIT_MODERATION => '<span class="badge text-bg-warning">' . $string . '</span>',
+            CommentConst::MODERATE => '<span class="badge text-bg-danger">' . $string . '</span>',
+        };
+    }
+
+    /**
      * Retourne le texte du status en fonction d'un code
      * @param int $status
      * @return string
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function getStatusStringByCode(int $status) : string
+    public function getStatusStringByCode(int $status): string
     {
         $translator = $this->getTranslator();
         return match ($status) {

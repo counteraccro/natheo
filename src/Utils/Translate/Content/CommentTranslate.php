@@ -10,6 +10,8 @@ class CommentTranslate extends AppTranslate
     {
         return [
             'loading' => $this->translator->trans('comment.see.loading', domain: 'comment'),
+            'author' => $this->translator->trans('comment.see.author', domain: 'comment'),
+            'created' => $this->translator->trans('comment.see.created', domain: 'comment'),
         ];
     }
 }

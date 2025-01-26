@@ -16,7 +16,6 @@ export default {
   },
   emits: [],
   mounted() {
-    console.log(this.translate.markdown)
     this.load();
   },
   data() {
@@ -55,7 +54,7 @@ export default {
 
 <template>
 
-  <div id="block-faq" :class="this.loading === true ? 'block-grid' : ''">
+  <div id="block-faq" class="h-50" :class="this.loading === true ? 'block-grid' : ''">
 
     <div v-if="this.loading" class="overlay">
       <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
@@ -65,6 +64,16 @@ export default {
     </div>
 
     <div v-if="this.comment" class="comment">
+
+      <div class="row">
+        <div class="col-6">
+          <div> <span v-html="this.comment.status"></span> </div>
+        </div>
+        <div class="col-6">
+          <div class="float-end">{{ this.translate.author }} : {{ this.comment.author }} ({{ this.comment.email }})</div>
+          <div class="float-end">{{ this.translate.created }} {{ this.comment.createdAt }}</div>
+        </div>
+      </div>
 
       <MarkdownEditor
           :me-id="this.comment.id"
