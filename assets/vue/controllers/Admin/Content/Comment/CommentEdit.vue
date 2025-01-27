@@ -12,7 +12,7 @@ export default {
   props: {
     urls: Object,
     translate: Object,
-    id: Number
+    datas: Object
   },
   emits: [],
   mounted() {
@@ -31,8 +31,8 @@ export default {
      */
     load() {
       this.loading = true;
-      axios.get(this.urls.load_comment + '/' + this.id).then((response) => {
-          this.comment = response.data.comment;
+      axios.get(this.urls.load_comment + '/' + this.datas.id).then((response) => {
+        this.comment = response.data.comment;
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -43,9 +43,8 @@ export default {
     /**
      * Met à jour le commentaire
      */
-    updateValue(id, value)
-    {
-        console.log(value);
+    updateValue(id, value) {
+      console.log(value);
     }
 
   }
@@ -65,18 +64,42 @@ export default {
 
     <div v-if="this.comment" class="comment">
 
-      <div class="row">
-        <div class="col-6">
-          <div> <span v-html="this.comment.status"></span> </div>
+      <fieldset class="mb-4">
+        <legend>{{ this.translate.titleInfo }}</legend>
+        <div class="row">
+          <div class="col-6">
+            <div>
+              <span v-html="this.comment.statusStr"></span>
+            </div>
+            <div v-if="comment.moderationComment" class="mt-2">
+              <b>{{ this.translate.moderationComment }}</b> : <br />
+              {{ comment.moderationComment }}
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="float-end">
+              {{ this.translate.author }} : {{ this.comment.author }} ({{ this.comment.email }})<br/>
+              {{ this.translate.created }} {{ this.comment.createdAt }}<br/>
+              {{ this.translate.ip }} : {{ this.comment.ip }}<br/>
+              {{ this.translate.userAgent }} : {{ this.comment.userAgent }}<br/>
+            </div>
+          </div>
         </div>
-        <div class="col-6">
-          <div class="float-end">{{ this.translate.author }} : {{ this.comment.author }} ({{ this.comment.email }})</div>
-          <div class="float-end">{{ this.translate.created }} {{ this.comment.createdAt }}</div>
+      </fieldset>
+
+      <div class="row mb-4">
+        <div class="col-8">
+        </div>
+        <div class="col-4">
+          <select class="form-select" v-model="this.comment.status">
+            <option v-for="(key, status) in this.datas.status" :value="status" :selected="status === this.comment.status">{{ key }}</option>
+          </select>
         </div>
       </div>
 
+
       <MarkdownEditor
-          :me-id="this.comment.id"
+          :me-id="'' + this.comment.id + ''"
           :me-value="this.comment.comment"
           :me-translate="this.translate.markdown"
           :me-key-words="[]"
@@ -88,7 +111,6 @@ export default {
 
       </MarkdownEditor>
 
-      {{ this.translate.loading }}
     </div>
   </div>
 </template>

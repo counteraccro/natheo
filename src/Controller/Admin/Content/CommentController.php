@@ -111,6 +111,8 @@ class CommentController extends AppAdminController
      * @param MarkdownEditorTranslate $markdownEditorTranslate
      * @param CommentTranslate $commentTranslate
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/see/{id}', name: 'see', methods: ['GET'])]
     public function see(
@@ -137,7 +139,10 @@ class CommentController extends AppAdminController
             'urls' => [
                 'load_comment' => $this->generateUrl('admin_comment_load'),
             ],
-            'id' => $id,
+            'datas' => [
+                'id' => $id,
+                'status' => $commentService->getAllStatus()
+            ]
         ]);
     }
 
@@ -176,7 +181,7 @@ class CommentController extends AppAdminController
         $commentArray['page'] = ['title' => $title, 'url' => $this->generateUrl('admin_page_update', ['id' => $page->getId()])];
         $commentArray['createdAt'] = $comment->getCreatedAt()->format('d/m/y H:i');
         $commentArray['updateAt'] = $comment->getUpdateAt()->format('d/m/y H:i');
-        $commentArray['status'] = $commentService->getStatusFormatedByCode($comment->getStatus());
+        $commentArray['statusStr'] = $commentService->getStatusFormatedByCode($comment->getStatus());
 
         return $this->json(['comment' => $commentArray]);
     }

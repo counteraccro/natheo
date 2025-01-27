@@ -156,4 +156,21 @@ class CommentService extends AppAdminService
             CommentConst::MODERATE => $translator->trans('comment.status.moderate', domain: 'comment'),
         };
     }
+
+    /**
+     * Retourne l'ensemble des status d'un commentaire
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getAllStatus(): array
+    {
+        $translator = $this->getTranslator();
+        return [
+            CommentConst::WAIT_VALIDATION => $translator->trans('comment.status.wait.validation', domain: 'comment'),
+            CommentConst::VALIDATE => $translator->trans('comment.status.validate', domain: 'comment'),
+            CommentConst::WAIT_MODERATION => $translator->trans('comment.status.wait.moderation', domain: 'comment'),
+            CommentConst::MODERATE => $translator->trans('comment.status.moderate', domain: 'comment'),
+        ];
+    }
 }

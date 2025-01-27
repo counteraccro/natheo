@@ -1,12 +1,12 @@
 {% extends 'admin/admin_base.html.twig' %}
 
-{% block title %}{{ 'comment.see.page_title' | trans({'%id%' : id}, 'comment') }}{% endblock %}
+{% block title %}{{ 'comment.see.page_title' | trans({'%id%' : datas.id}, 'comment') }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'comment.see.page_title_h1' | trans({'%id%' : id}, 'comment') }}</h1>
+    <h1>{{ 'comment.see.page_title_h1' | trans({'%id%' : datas.id}, 'comment') }}</h1>
 
     {{ breadcrumb(breadcrumb) }}
 
 
-    <div {{ vue_component('Admin/Content/Comment/CommentEdit', {'urls' : urls, 'translate' : translate, 'id' : id}) }}></div>
+    <div {{ vue_component('Admin/Content/Comment/CommentEdit', {'urls' : urls, 'translate' : translate, 'datas' : datas}) }}></div>
 {% endblock %}
