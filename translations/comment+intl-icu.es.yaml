@@ -24,3 +24,7 @@ comment.index.btn.moderate: __comment.index.btn.moderate
 comment.see.loading: __comment.see.loading
 comment.see.author: __comment.see.author
 comment.see.created: __comment.see.created
+comment.see.title.info: __comment.see.title.info
+comment.see.ip: __comment.see.ip
+comment.see.userAgent: __comment.see.userAgent
+comment.see.moderation.comment: __comment.see.moderation.comment

@@ -22,5 +22,9 @@ comment.see.page_title: Commentaire
 comment.see.page_title_h1: 'Commentaire #{id}'
 comment.index.btn.moderate: 'Modération globale'
 comment.see.loading: 'Chargement du commentaire'
-comment.see.author: 'Auteur'
+comment.see.author: Auteur
 comment.see.created: 'Créer le '
+comment.see.ip: IP
+comment.see.userAgent: 'Autres infos'
+comment.see.title.info: 'Information du commentaire'
+comment.see.moderation.comment: 'Commentaire de modération'
