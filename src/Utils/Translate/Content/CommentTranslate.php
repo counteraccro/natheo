@@ -6,7 +6,11 @@ use App\Utils\Translate\AppTranslate;
 
 class CommentTranslate extends AppTranslate
 {
-    public function getTranslateCommentSee()
+    /**
+     * Traduction de la page de modération d'un commentaire
+     * @return array
+     */
+    public function getTranslateCommentSee(): array
     {
         return [
             'loading' => $this->translator->trans('comment.see.loading', domain: 'comment'),
@@ -16,6 +20,8 @@ class CommentTranslate extends AppTranslate
             'ip' => $this->translator->trans('comment.see.ip', domain: 'comment'),
             'userAgent' => $this->translator->trans('comment.see.userAgent', domain: 'comment'),
             'moderationComment' => $this->translator->trans('comment.see.moderation.comment', domain: 'comment'),
+            'moderationAuthor' => $this->translator->trans('comment.see.moderation.author', domain: 'comment'),
+            'btnEdit' => $this->translator->trans('comment.see.btn.edit', domain: 'comment'),
         ];
     }
 }

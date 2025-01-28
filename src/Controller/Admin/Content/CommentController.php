@@ -11,6 +11,7 @@ use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Utils\Breadcrumb;
+use App\Utils\Content\Comment\CommentConst;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Content\CommentTranslate;
 use App\Utils\Translate\MarkdownEditorTranslate;
@@ -138,10 +139,12 @@ class CommentController extends AppAdminController
             'translate' => $translate,
             'urls' => [
                 'load_comment' => $this->generateUrl('admin_comment_load'),
+                'save' => $this->generateUrl('admin_comment_save'),
             ],
             'datas' => [
                 'id' => $id,
-                'status' => $commentService->getAllStatus()
+                'status' => $commentService->getAllStatus(),
+                'statusModerate' => CommentConst::MODERATE
             ]
         ]);
     }
@@ -156,9 +159,8 @@ class CommentController extends AppAdminController
      * @throws NotFoundExceptionInterface
      * @throws ExceptionInterface
      */
-    #[Route('/load/{id}', name: 'load', methods: ['GET'])]
+    #[Route('/ajax/load/{id}', name: 'load', methods: ['GET'])]
     public function getComment(
-        Request $request,
         CommentService $commentService,
         int $id = null
     ): Response
@@ -184,5 +186,13 @@ class CommentController extends AppAdminController
         $commentArray['statusStr'] = $commentService->getStatusFormatedByCode($comment->getStatus());
 
         return $this->json(['comment' => $commentArray]);
+    }
+
+    #[Route('/ajax/save', name: 'save', methods: ['PUT'])]
+    public function updateComment(Request $request, CommentService $commentService): Response
+    {
+        $data = json_decode($request->getContent(), true);
+
+        return $this->json([$commentService->getResponseAjax('Un message'), $data]);
     }
 }

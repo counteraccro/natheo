@@ -44,9 +44,25 @@ export default {
      * Met à jour le commentaire
      */
     updateValue(id, value) {
-      console.log(value);
-    }
+      this.comment.comment = value;
+    },
 
+    /**
+     * Mise à jour du commentaire
+     */
+    save()
+    {
+      this.loading = true;
+      axios.put(this.urls.save, {
+        'comment' : this.comment
+      }).then((response) => {
+
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {
+        this.loading = false;
+      });
+    }
   }
 }
 </script>
@@ -71,9 +87,10 @@ export default {
             <div>
               <span v-html="this.comment.statusStr"></span>
             </div>
-            <div v-if="comment.moderationComment" class="mt-2">
+            <div v-if="this.comment.status === '' + this.datas.statusModerate+ ''" class="mt-2">
               <b>{{ this.translate.moderationComment }}</b> : <br />
-              {{ comment.moderationComment }}
+              <textarea class="form-control" id="moderation-content" rows="3" v-model="this.comment.moderationComment"></textarea>
+              {{ this.translate.moderationAuthor }} : {{ this.comment.userModeration.login }}
             </div>
           </div>
           <div class="col-6">
@@ -110,6 +127,8 @@ export default {
       >
 
       </MarkdownEditor>
+
+      <div class="btn btn-secondary float-end" @click="this.save">{{ this.translate.btnEdit }}</div>
 
     </div>
   </div>
