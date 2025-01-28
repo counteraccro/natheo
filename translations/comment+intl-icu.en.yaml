@@ -28,3 +28,5 @@ comment.see.title.info: __comment.see.title.info
 comment.see.ip: __comment.see.ip
 comment.see.userAgent: __comment.see.userAgent
 comment.see.moderation.comment: __comment.see.moderation.comment
+comment.see.moderation.author: __comment.see.moderation.author
+comment.see.btn.edit: __comment.see.btn.edit
