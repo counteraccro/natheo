@@ -5,10 +5,12 @@
  */
 import axios from "axios";
 import MarkdownEditor from "../../../../Components/Global/MarkdownEditor.vue";
+import Toast from "../../../../Components/Global/Toast.vue";
+import {emitter} from "../../../../../utils/useEvent";
 
 export default {
   name: 'CommentEdit',
-  components: {MarkdownEditor},
+  components: {Toast, MarkdownEditor},
   props: {
     urls: Object,
     translate: Object,
@@ -22,6 +24,16 @@ export default {
     return {
       loading: false,
       comment: null,
+      toasts: {
+        toastSuccessComment: {
+          show: false,
+          msg: '',
+        },
+        toastErrorComment: {
+          show: false,
+          msg: '',
+        }
+      },
     }
   },
   methods: {
@@ -56,13 +68,29 @@ export default {
       axios.put(this.urls.save, {
         'comment' : this.comment
       }).then((response) => {
-
+        if (response.data.success === true) {
+          this.toasts.toastSuccessComment.msg = response.data.msg;
+          this.toasts.toastSuccessComment.show = true;
+          emitter.emit('reset-check-confirm');
+        } else {
+          this.toasts.toastErrorComment.msg = response.data.msg;
+          this.toasts.toastErrorComment.show = true;
+        }
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
         this.loading = false;
+        this.load();
       });
-    }
+    },
+
+    /**
+     * Ferme un toast en fonction de son id
+     * @param nameToast
+     */
+    closeToast(nameToast) {
+      this.toasts[nameToast].show = false
+    },
   }
 }
 </script>
@@ -87,10 +115,12 @@ export default {
             <div>
               <span v-html="this.comment.statusStr"></span>
             </div>
-            <div v-if="this.comment.status === '' + this.datas.statusModerate+ ''" class="mt-2">
+            <div v-if="this.comment.status == this.datas.statusModerate" class="mt-2">
               <b>{{ this.translate.moderationComment }}</b> : <br />
               <textarea class="form-control" id="moderation-content" rows="3" v-model="this.comment.moderationComment"></textarea>
+              <div v-if="this.comment.userModeration">
               {{ this.translate.moderationAuthor }} : {{ this.comment.userModeration.login }}
+              </div>
             </div>
           </div>
           <div class="col-6">
@@ -128,8 +158,44 @@ export default {
 
       </MarkdownEditor>
 
-      <div class="btn btn-secondary float-end" @click="this.save">{{ this.translate.btnEdit }}</div>
+      <div class="btn btn-secondary float-end" :class="this.loading ? 'disabled' : ''" @click="this.save">{{ this.translate.btnEdit }}</div>
 
     </div>
+  </div>
+
+  <div class="toast-container position-fixed top-0 end-0 p-2">
+
+    <toast
+        :id="'toastSuccessComment'"
+        :option-class-header="'text-success'"
+        :show="this.toasts.toastSuccessComment.show"
+        @close-toast="this.closeToast"
+    >
+      <template #header>
+        <i class="bi bi-check-circle-fill"></i> &nbsp;
+        <strong class="me-auto"> {{ this.translate.toast_title_success }}</strong>
+        <small class="text-black-50">{{ this.translate.toast_time }}</small>
+      </template>
+      <template #body>
+        <div v-html="this.toasts.toastSuccessComment.msg"></div>
+      </template>
+    </toast>
+
+    <toast
+        :id="'toastErrorComment'"
+        :option-class-header="'text-danger'"
+        :show="this.toasts.toastErrorComment.show"
+        @close-toast="this.closeToast"
+    >
+      <template #header>
+        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
+        <strong class="me-auto"> {{ this.translate.toast_title_error }}</strong>
+        <small class="text-black-50">{{ this.translate.toast_time }}</small>
+      </template>
+      <template #body>
+        <div v-html="this.toasts.toastErrorComment.msg"></div>
+      </template>
+    </toast>
+
   </div>
 </template>

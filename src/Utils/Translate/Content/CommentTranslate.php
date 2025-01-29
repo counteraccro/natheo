@@ -22,6 +22,9 @@ class CommentTranslate extends AppTranslate
             'moderationComment' => $this->translator->trans('comment.see.moderation.comment', domain: 'comment'),
             'moderationAuthor' => $this->translator->trans('comment.see.moderation.author', domain: 'comment'),
             'btnEdit' => $this->translator->trans('comment.see.btn.edit', domain: 'comment'),
+            'toast_title_success' => $this->translator->trans('comment.see.toast.title.success', domain: 'comment'),
+            'toast_title_error' => $this->translator->trans('comment.see.toast.title.error', domain: 'comment'),
+            'toast_time' => $this->translator->trans('comment.see.toast.time', domain: 'comment'),
         ];
     }
 }

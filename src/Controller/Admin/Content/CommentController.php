@@ -12,6 +12,7 @@ use App\Entity\Admin\Content\Page\Page;
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Utils\Breadcrumb;
 use App\Utils\Content\Comment\CommentConst;
+use App\Utils\Content\Comment\CommentPopulate;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Content\CommentTranslate;
 use App\Utils\Translate\MarkdownEditorTranslate;
@@ -24,6 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/comment', name: 'admin_comment_', requirements: ['_locale' => '%app.supported_locales%'])]
 #[IsGranted('ROLE_CONTRIBUTEUR')]
@@ -188,11 +190,35 @@ class CommentController extends AppAdminController
         return $this->json(['comment' => $commentArray]);
     }
 
+    /**
+     * Met à jour un commentaire
+     * @param Request $request
+     * @param CommentService $commentService
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     #[Route('/ajax/save', name: 'save', methods: ['PUT'])]
-    public function updateComment(Request $request, CommentService $commentService): Response
+    public function updateComment(Request $request, CommentService $commentService, TranslatorInterface $translator): Response
     {
         $data = json_decode($request->getContent(), true);
+        unset($data['comment']['statusStr']);
 
-        return $this->json([$commentService->getResponseAjax('Un message'), $data]);
+        $comment = $commentService->findOneById(Comment::class, $data['comment']['id']);
+
+        $commentPopulate = new CommentPopulate($comment, $data['comment']);
+        $comment = $commentPopulate->populate()->getComment();
+
+        if($comment->getStatus() === CommentConst::MODERATE) {
+            $comment->setUserModeration($this->getUser());
+        }
+        else {
+            $comment->setUserModeration(null);
+            $comment->setModerationComment(null);
+        }
+
+        $commentService->save($comment);
+
+        return $this->json($commentService->getResponseAjax($translator->trans('comment.see.save.success', domain: 'comment')));
     }
 }

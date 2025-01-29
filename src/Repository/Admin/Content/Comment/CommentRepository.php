@@ -18,6 +18,21 @@ class CommentRepository extends ServiceEntityRepository
     }
 
     /**
+     * Sauvegarde
+     * @param Comment $entity
+     * @param bool $flush
+     * @return void
+     */
+    public function save(Comment $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    /**
      * Retourne une liste de commentaires Paginé
      * @param int $page
      * @param int $limit
