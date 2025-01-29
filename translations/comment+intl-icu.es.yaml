@@ -30,3 +30,7 @@ comment.see.userAgent: __comment.see.userAgent
 comment.see.moderation.comment: __comment.see.moderation.comment
 comment.see.moderation.author: __comment.see.moderation.author
 comment.see.btn.edit: __comment.see.btn.edit
+comment.see.save.success: __comment.see.save.success
+comment.see.toast.title.success: __comment.see.toast.title.success
+comment.see.toast.title.error: __comment.see.toast.title.error
+comment.see.toast.time: __comment.see.toast.time

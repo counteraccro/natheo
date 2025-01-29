@@ -28,5 +28,9 @@ comment.see.ip: IP
 comment.see.userAgent: 'Autres infos'
 comment.see.title.info: 'Information du commentaire'
 comment.see.moderation.comment: 'Commentaire de modération'
-comment.see.moderation.author: 'Modérateur'
+comment.see.moderation.author: Modérateur
 comment.see.btn.edit: 'Editer le commentaire'
+comment.see.save.success: 'Commentaire mise à jour avec succès'
+comment.see.toast.title.success: 'Succès !'
+comment.see.toast.title.error: 'Erreur !'
+comment.see.toast.time: "A l'instant"
