@@ -74,3 +74,9 @@ option_system:
   OS_API_TIME_VALIDATE_USER_TOKEN:
     key: 'OS_API_TIME_VALIDATE_USER_TOKEN'
     value: 60
+  OS_OPEN_COMMENT:
+    key: 'OS_OPEN_COMMENT'
+    value: 1
+  OS_NEW_COMMENT_WAIT_VALIDATION:
+    key: 'OS_NEW_COMMENT_WAIT_VALIDATION'
+    value: 1

@@ -174,4 +174,16 @@ class OptionSystemKey
      * @var string
      */
     const OS_API_TIME_VALIDATE_USER_TOKEN = 'OS_API_TIME_VALIDATE_USER_TOKEN';
+
+    /**
+     * Ouverture des commentaires
+     * @var string
+     */
+    const OS_OPEN_COMMENT = 'OS_OPEN_COMMENT';
+
+    /**
+     * Mettre le status des nouveaux commentaires en attente de validation
+     * @var string
+     */
+    const OS_NEW_COMMENT_WAIT_VALIDATION = 'OS_NEW_COMMENT_WAIT_VALIDATION';
 }
