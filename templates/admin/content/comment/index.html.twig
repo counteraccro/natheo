@@ -7,6 +7,20 @@
 
     {{ breadcrumb(breadcrumb) }}
 
+    <fieldset class="mb-3">
+        <legend><i class="bi bi-info-circle"></i> {{ 'comment.index.info' | trans({}, 'comment') }}</legend>
+    {% if isOpenComment is same as("1") %}
+        {{ 'comment.index.info.comment.open' | trans({}, 'comment') }}
+        {% if isModerate is same as('1') %}
+            {{ 'comment.index.info.comment.moderate' | trans({}, 'comment') }}
+        {% endif %}
+    {% else %}
+        {{ 'comment.index.info.comment.close' | trans({}, 'comment') }}
+    {% endif %}
+
+        <a href="{{ path('admin_option-system_change') }}" class="btn btn-secondary btn-sm float-end">{{ 'comment.index.info.change.option' | trans({}, 'comment') }}</a>
+    </fieldset>
+
     <button type="button" class="btn btn-secondary float-end ms-2" data-bs-toggle="modal" data-bs-target="#help-grid-comment">
         <i class="bi bi-question-circle"></i>
     </button>

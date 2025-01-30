@@ -9,10 +9,13 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
+use App\Entity\Admin\System\OptionSystem;
 use App\Service\Admin\Content\Comment\CommentService;
+use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Breadcrumb;
 use App\Utils\Content\Comment\CommentConst;
 use App\Utils\Content\Comment\CommentPopulate;
+use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Content\CommentTranslate;
 use App\Utils\Translate\MarkdownEditorTranslate;
@@ -38,7 +41,7 @@ class CommentController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/', name: 'index')]
-    public function index(): Response
+    public function index(OptionSystemService $optionSystemService): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'comment',
@@ -50,7 +53,9 @@ class CommentController extends AppAdminController
         return $this->render('admin/content/comment/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT)
+            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
+            'isOpenComment' => $optionSystemService->getValueByKey(OptionSystemKey::OS_OPEN_COMMENT),
+            'isModerate' => $optionSystemService->getValueByKey(OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION)
         ]);
     }
 
