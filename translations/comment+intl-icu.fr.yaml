@@ -34,3 +34,8 @@ comment.see.save.success: 'Commentaire mise à jour avec succès'
 comment.see.toast.title.success: 'Succès !'
 comment.see.toast.title.error: 'Erreur !'
 comment.see.toast.time: "A l'instant"
+comment.index.info: 'Information'
+comment.index.info.comment.open: 'Les commentaires sont ouverts sur le site'
+comment.index.info.comment.moderate: 'et sont en attente de modération par défaut.'
+comment.index.info.comment.close: 'Les commentaires sont désactivés sur le site'
+comment.index.info.change.option: 'Modifier les options'
