@@ -205,6 +205,13 @@ options_system.time.validation.user.two.hour: '__2 heures'
 options_system.time.validation.user.three.hour: '__3 heures'
 options_system.time.validation.user.no.limit: '__Sans limite'
 options_system.time.validation.user.token.help: '__Passé ce délais, le token devient obsolète et la connexion ne sera plus autorisé avec celui-ci'
+options_system.comment: __Commentaire
+options_system.comment.title: '__Gestion des commentaires'
+options_system.comment.description: '__Options concernant les commentaires de votre site'
+options_system.open_comment: '__Ouvrir les commentaires ?'
+options_system.open_comment_help: '__Si oui, les commentaires seront ouvert sous les pages qui autorisent les commentaires'
+options_system.new_comment_wait_validation: '__Forcer la validation des nouveaux commentaires'
+options_system.new_comment_wait_validation_help: '__Si oui, tout nouveau commentaire devra être validé manuellement pour être visible sur le site'
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: __pagedemo.page_title_h1
 date.diff.start: "__Il y'a"
