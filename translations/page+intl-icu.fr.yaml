@@ -150,3 +150,8 @@ page.preview.switch.locale.fr: 'En français'
 page.preview.switch.locale.en: 'En anglais'
 page.preview.switch.locale.es: 'En espagnol'
 page.grid.author: Auteur
+page.onglet.comments: Commentaires
+page.page_comment.title: Commentaires
+page.page_comment.input_open: 'Autoriser les commentaires sur cette page'
+page.page_comment.input_status_label: 'Status par défaut du commentaire à sa soumission'
+page.page_comment.input_status_help: 'Attention, la configuration globale est prioritaire sur la config pour une page. Exemple si la config global est "En attente de modération", alors les commentaires de la page seront en attente de validation même si la configuration de la page est sur validé'
