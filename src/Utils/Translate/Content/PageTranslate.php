@@ -37,6 +37,7 @@ class PageTranslate extends AppTranslate
             'onglet_content' => $this->translator->trans('page.onglet.content', domain: 'page'),
             'onglet_seo' => $this->translator->trans('page.onglet.seo', domain: 'page'),
             'onglet_tags' => $this->translator->trans('page.onglet.tag', domain: 'page'),
+            'onglet_comments' => $this->translator->trans('page.onglet.comments', domain: 'page'),
             'onglet_history' => $this->translator->trans('page.onglet.history', domain: 'page'),
             'onglet_save' => $this->translator->trans('page.onglet.save', domain: 'page'),
             'loading' => $this->translator->trans('page.loading', domain: 'page'),
@@ -61,6 +62,21 @@ class PageTranslate extends AppTranslate
             'page_history' => $this->getTranslatePageHistory(),
             'page_save' => $this->getTranslatePageSave(),
             'auto_complete' => $this->getTranslateAutoComplete(),
+            'page_comment' => $this->getTranslatePageComment()
+        ];
+    }
+
+    /**
+     * Traduction de l'onglet Comment
+     * @return array
+     */
+    private function getTranslatePageComment(): array
+    {
+        return [
+            'title' => $this->translator->trans('page.page_comment.title', domain: 'page'),
+            'input_open_comment' => $this->translator->trans('page.page_comment.input_open', domain: 'page'),
+            'input_status_comment_label' => $this->translator->trans('page.page_comment.input_status_label', domain: 'page'),
+            'input_status_comment_help' => $this->translator->trans('page.page_comment.input_status_help', domain: 'page'),
         ];
     }
 

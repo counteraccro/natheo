@@ -45,6 +45,15 @@ class Page
     #[ORM\Column]
     private ?bool $landingPage = null;
 
+    #[ORM\Column]
+    private ?bool $isOpenComment = null;
+
+    #[ORM\Column]
+    private ?int $nbComment = null;
+
+    #[ORM\Column]
+    private ?int $ruleComment = null;
+
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
@@ -431,6 +440,42 @@ class Page
                 $comment->setPage(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isOpenComment(): ?bool
+    {
+        return $this->isOpenComment;
+    }
+
+    public function setIsOpenComment(bool $isOpenComment): static
+    {
+        $this->isOpenComment = $isOpenComment;
+
+        return $this;
+    }
+
+    public function getNbComment(): ?int
+    {
+        return $this->nbComment;
+    }
+
+    public function setNbComment(int $nbComment): static
+    {
+        $this->nbComment = $nbComment;
+
+        return $this;
+    }
+
+    public function getRuleComment(): ?int
+    {
+        return $this->ruleComment;
+    }
+
+    public function setRuleComment(int $ruleComment): static
+    {
+        $this->ruleComment = $ruleComment;
 
         return $this;
     }
