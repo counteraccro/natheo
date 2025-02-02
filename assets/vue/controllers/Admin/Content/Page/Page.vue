@@ -659,6 +659,14 @@ export default {
 
         <h5>{{ this.translate.page_comment.title }}</h5>
 
+        <fieldset class="mb-3">
+          <legend>{{ this.translate.page_comment.info }}</legend>
+          <div v-if="this.page_datas.options_commentaire.open === '1'"> {{ this.translate.page_comment.comment_open }}
+            <span v-if="this.page_datas.options_commentaire.new_comment === '1'">{{ this.translate.page_comment.comment_moderate }}</span>
+          </div>
+          <div v-else>{{ this.translate.page_comment.comment_close }}</div>
+        </fieldset>
+
         <div class="form-check form-switch mb-3">
           <input class="form-check-input" type="checkbox" role="switch" id="openComment" v-model="this.page.openComment" @change="this.autoSave(this.page)">
           <label class="form-check-label" for="openComment">{{ this.translate.page_comment.input_open_comment }}</label>

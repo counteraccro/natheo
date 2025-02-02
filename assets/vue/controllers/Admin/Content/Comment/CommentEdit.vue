@@ -1,4 +1,5 @@
-<script>/**
+<script>
+/**
  * Permet de modérer 1 commentaire
  * @author Gourdon Aymeric
  * @version 1.0

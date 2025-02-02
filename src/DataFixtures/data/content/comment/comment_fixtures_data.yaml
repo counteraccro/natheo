@@ -3,18 +3,30 @@ comments:
     page: Page_presentation
     author: 'John Doe'
     email: john-doe@monemail.com
-    comment: '**Lorem ipsum dolor sit amet**, consectetur adipiscing elit. Maecenas ex augue, posuere vel facilisis a, fermentum in quam. Cras ac lorem feugiat, aliquet urna eget, mattis diam. Etiam a nibh non lorem consectetur mollis sit amet in nisl. Integer molestie felis quis augue ultricies elementum. Morbi velit nulla, aliquet sit amet mauris id, aliquam egestas sapien. Suspendisse potenti. Pellentesque nisi neque, faucibus eget egestas vel, malesuada nec tortor. Nam est arcu, pellentesque vitae neque eu, auctor dignissim est. Morbi quis dictum mauris, vitae sodales lacus. Vestibulum molestie mollis sem ut porta.\n\n
-              \n\n
-              ***Mauris tempor semper*** diam, quis consectetur diam commodo ac. Quisque ullamcorper orci et sem lacinia bibendum. Maecenas justo est, mollis a nisl vitae, dictum rutrum est. Cras suscipit tempor pretium. In mollis aliquam purus consequat iaculis. Phasellus hendrerit neque vitae scelerisque lobortis. Fusce lacinia porttitor sem, at interdum urna aliquet sit amet. Praesent rutrum eget sem id semper.\n\n
-              \n\n
-              Nulla sodales mi augue, eu rutrum lorem bibendum at. Quisque malesuada, metus dapibus consequat vehicula, urna diam placerat lacus, vitae scelerisque nisi ante non ante. Proin tempor rhoncus efficitur. Sed posuere pellentesque lectus non gravida. Quisque placerat ante eget tristique varius. Interdum et malesuada fames ac ante ipsum primis in faucibus. In interdum, orci sed pharetra venenatis, quam arcu euismod lacus, eget tincidunt odio eros luctus justo.\n\n
-              \n\n
-              Morbi in dui in velit interdum tristique nec sit amet mi. Nullam condimentum fringilla tortor, a rutrum mi laoreet luctus. Nunc vehicula felis dui, eu auctor sapien dignissim ut. Duis pulvinar ullamcorper sodales. Nam sed rhoncus quam. Ut mollis consequat nisl, vel venenatis justo pulvinar sed. Sed blandit, augue eget molestie suscipit, nisi turpis blandit sapien, a posuere dui neque id enim. Pellentesque gravida at turpis eget ornare. Mauris sed ipsum sed sapien congue ultricies eu rhoncus odio. Proin eu leo bibendum, mollis risus quis, mattis eros.\n\n
-              \n\n
-              Aenean sed scelerisque nisl, eu pretium lectus. Morbi imperdiet felis eu ante gravida viverra. Morbi imperdiet dolor tincidunt libero egestas, at elementum tellus pharetra. In congue tempor congue. Duis ipsum felis, tempor at sapien et, porttitor varius lorem. Morbi nunc leo, pellentesque quis justo vel, tristique iaculis lorem. Fusce enim massa, sollicitudin ac commodo id, rutrum quis purus. Cras vestibulum, nisl ut laoreet condimentum, sem sapien vehicula neque, vitae pharetra nisi quam fringilla mauris. Pellentesque nec mauris ac augue varius aliquam. Nam velit nisl, rhoncus ut justo nec, varius convallis felis. Nullam consectetur purus eget est tempor molestie. Proin rhoncus nec libero eu congue.\n\n'
+    comment: 'Je suis un commentaire **en attente de validation**'
     status: 1
     ip: 1.1.1
     userAgent: 'windows'
+    disabled: 0
+  comment_2:
+    page: Page_presentation
+    author: 'John Doe'
+    email: john-doe@monemail.com
+    comment: 'Je suis un commentaire **validé**'
+    status: 2
+    ip: 1.1.1
+    userAgent: 'windows'
     moderationComment: 'Raison de test'
+    disabled: 0
+    userModeration: 'User'
+  comment_3:
+    page: Page_presentation
+    author: 'John Doe'
+    email: john-doe@monemail.com
+    comment: 'Je suis un commentaire **modéré**'
+    status: 3
+    ip: 1.1.1
+    userAgent: 'windows'
+    moderationComment: 'Raison de la modération'
     disabled: 0
     userModeration: 'User'

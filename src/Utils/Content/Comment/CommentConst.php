@@ -17,12 +17,7 @@ class CommentConst
     const VALIDATE = 2;
 
     /**
-     * En attente de modération
-     */
-    const WAIT_MODERATION = 3;
-
-    /**
      * Modéré
      */
-    const MODERATE = 4;
+    const MODERATE = 3;
 }

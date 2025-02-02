@@ -134,7 +134,6 @@ class CommentService extends AppAdminService
         return match ($status) {
             CommentConst::WAIT_VALIDATION => '<span class="badge text-bg-primary">' . $string . '</span>',
             CommentConst::VALIDATE => '<span class="badge text-bg-success">' . $string . '</span>',
-            CommentConst::WAIT_MODERATION => '<span class="badge text-bg-warning">' . $string . '</span>',
             CommentConst::MODERATE => '<span class="badge text-bg-danger">' . $string . '</span>',
         };
     }
@@ -152,7 +151,6 @@ class CommentService extends AppAdminService
         return match ($status) {
             CommentConst::WAIT_VALIDATION => $translator->trans('comment.status.wait.validation', domain: 'comment'),
             CommentConst::VALIDATE => $translator->trans('comment.status.validate', domain: 'comment'),
-            CommentConst::WAIT_MODERATION => $translator->trans('comment.status.wait.moderation', domain: 'comment'),
             CommentConst::MODERATE => $translator->trans('comment.status.moderate', domain: 'comment'),
         };
     }
@@ -169,7 +167,6 @@ class CommentService extends AppAdminService
         return [
             CommentConst::WAIT_VALIDATION => $translator->trans('comment.status.wait.validation', domain: 'comment'),
             CommentConst::VALIDATE => $translator->trans('comment.status.validate', domain: 'comment'),
-            CommentConst::WAIT_MODERATION => $translator->trans('comment.status.wait.moderation', domain: 'comment'),
             CommentConst::MODERATE => $translator->trans('comment.status.moderate', domain: 'comment'),
         ];
     }

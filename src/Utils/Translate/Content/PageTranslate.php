@@ -77,6 +77,10 @@ class PageTranslate extends AppTranslate
             'input_open_comment' => $this->translator->trans('page.page_comment.input_open', domain: 'page'),
             'input_status_comment_label' => $this->translator->trans('page.page_comment.input_status_label', domain: 'page'),
             'input_status_comment_help' => $this->translator->trans('page.page_comment.input_status_help', domain: 'page'),
+            'info' => $this->translator->trans('page.page_comment.info', domain: 'page'),
+            'comment_open' => $this->translator->trans('page.page_comment.comment.open', domain: 'page'),
+            'comment_close' => $this->translator->trans('page.page_comment.comment.close', domain: 'page'),
+            'comment_moderate' => $this->translator->trans('page.page_comment.comment.moderate', domain: 'page'),
         ];
     }
 

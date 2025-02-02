@@ -287,7 +287,7 @@ pages:
     category: 1
     landingPage: true
     isOpenComment: 1
-    nbComment: 1
+    nbComment: 3
     ruleComment: 2
     tags:
       - Tag_natheo

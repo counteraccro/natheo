@@ -195,6 +195,7 @@ class PageController extends AppAdminController
         PageService   $pageService,
         PageTranslate $pageTranslate,
         CommentService $commentService,
+        OptionSystemService $optionSystemService,
         int           $id = null
     ): Response
     {
@@ -225,6 +226,10 @@ class PageController extends AppAdminController
                 'list_content' => $pageService->getAllContent(),
                 'list_categories' => $pageService->getAllCategories(),
                 'list_comments_status' => $commentService->getAllStatus(),
+                'options_commentaire' => [
+                    'open' => $optionSystemService->getValueByKey(OptionSystemKey::OS_OPEN_COMMENT),
+                    'new_comment' => $optionSystemService->getValueByKey(OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION)
+                ]
             ],
             'urls' => [
                 'load_tab_content' => $this->generateUrl('admin_page_load_tab_content'),
