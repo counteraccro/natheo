@@ -39,3 +39,8 @@ comment.index.info.comment.open: 'Les commentaires sont ouverts sur le site'
 comment.index.info.comment.moderate: 'et sont en attente de validation par défaut.'
 comment.index.info.comment.close: 'Les commentaires sont désactivés sur le site'
 comment.index.info.change.option: 'Modifier les options'
+comment.moderation.loading: 'Chargement de la liste de commentaire'
+comment.moderation.toast.title.success: 'Succès !'
+comment.moderation.toast.title.error: 'Erreur !'
+comment.moderation.toast.time: "A l'instant"
+comment.moderate.comments.description: 'Validé ou modéré de façon globale une liste de commentaires'

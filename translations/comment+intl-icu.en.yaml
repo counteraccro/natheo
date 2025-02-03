@@ -39,3 +39,8 @@ comment.index.info.comment.open: __comment.index.info.comment.open
 comment.index.info.comment.moderate: __comment.index.info.comment.moderate
 comment.index.info.comment.close: __comment.index.info.comment.close
 comment.index.info.change.option: __comment.index.info.change.option
+comment.moderation.loading: __comment.moderation.loading
+comment.moderation.toast.title.success: __comment.moderation.toast.title.success
+comment.moderation.toast.title.error: __comment.moderation.toast.title.error
+comment.moderation.toast.time: __comment.moderation.toast.time
+comment.moderate.comments.description: __comment.moderate.comments.description
