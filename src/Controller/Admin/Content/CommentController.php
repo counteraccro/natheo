@@ -96,7 +96,7 @@ class CommentController extends AppAdminController
      * @return Response
      */
     #[Route('/moderate', name: 'moderate_comments', methods: ['GET'])]
-    public function moderateComments(Request $request, CommentService $commentService): Response
+    public function moderateComments(Request $request, CommentService $commentService, CommentTranslate $commentTranslate): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'comment',
@@ -108,6 +108,9 @@ class CommentController extends AppAdminController
 
         return $this->render('admin/content/comment/moderate_comments.html.twig', [
             'breadcrumb' => $breadcrumb,
+            'translate' => $commentTranslate->getTranslateCommentModeration(),
+            'urls' => [],
+            'datas' => []
         ]);
     }
 

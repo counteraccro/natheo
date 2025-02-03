@@ -7,16 +7,10 @@
 
     {{ breadcrumb(breadcrumb) }}
 
-    A faire avant :
-    <ul>
-        <li>Page : 2 nouveaux champs -> nbComment et isOpenComment</li>
-        <li>Mettre à jour listing page</li>
-        <li>Mettre à jour fixture page</li>
-        <li>Mettre à jour fixture commentaire</li>
-    </ul>
+    <p>
+        {{ 'comment.moderate.comments.description' | trans({}, 'comment') }}
+    </p>
 
-
-    <div {# {{ vue_component('Admin/GenericGrid', {'url' : path('admin_comment_load_grid_data',  {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true, 'showFilter' : true}) }} #}></div>
-
+    <div {{ vue_component('Admin/Content/Comment/CommentModeration', {'urls' : urls, 'translate' : translate, 'datas' : datas}) }}></div>
 
 {% endblock %}

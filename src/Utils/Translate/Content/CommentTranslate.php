@@ -27,4 +27,18 @@ class CommentTranslate extends AppTranslate
             'toast_time' => $this->translator->trans('comment.see.toast.time', domain: 'comment'),
         ];
     }
+
+    /**
+     * Traduction de la page de modération des commentaires
+     * @return array
+     */
+    public function getTranslateCommentModeration(): array
+    {
+        return [
+            'loading' => $this->translator->trans('comment.moderation.loading', domain: 'comment'),
+            'toast_title_success' => $this->translator->trans('comment.moderation.toast.title.success', domain: 'comment'),
+            'toast_title_error' => $this->translator->trans('comment.moderation.toast.title.error', domain: 'comment'),
+            'toast_time' => $this->translator->trans('comment.moderation.toast.time', domain: 'comment'),
+        ];
+    }
 }
