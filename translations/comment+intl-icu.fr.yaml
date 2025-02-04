@@ -44,3 +44,7 @@ comment.moderation.toast.title.success: 'Succès !'
 comment.moderation.toast.title.error: 'Erreur !'
 comment.moderation.toast.time: "A l'instant"
 comment.moderate.comments.description: 'Validé ou modéré de façon globale une liste de commentaires'
+comment.moderation.legend.search: 'Filtre de trie'
+comment.moderation.status.label: 'Trier par status'
+comment.moderation.pages.label: 'Trier par pages'
+comment.moderation.pages.default: 'Toutes les pages'

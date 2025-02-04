@@ -44,3 +44,7 @@ comment.moderation.toast.title.success: __comment.moderation.toast.title.success
 comment.moderation.toast.title.error: __comment.moderation.toast.title.error
 comment.moderation.toast.time: __comment.moderation.toast.time
 comment.moderate.comments.description: __comment.moderate.comments.description
+comment.moderation.legend.search: __comment.moderation.legend.search
+comment.moderation.status.label: __comment.moderation.status.label
+comment.moderation.pages.label: __comment.moderation.pages.label
+comment.moderation.pages.default: __comment.moderation.pages.default
