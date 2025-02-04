@@ -23,6 +23,10 @@ export default {
   data() {
     return {
       loading: false,
+      filters: {
+        status : this.datas.defaultStatus,
+        pages : 0
+      },
       toasts: {
         toastSuccess: {
           show: false,
@@ -66,7 +70,25 @@ export default {
 <template>
 
   <div id="block-moderation">
-    Modération vue
+    <fieldset>
+      <legend>{{ this.translate.legend_search }}</legend>
+      <div class="row">
+        <div class="col-4">
+          <label for="list-status" class="form-label">{{ this.translate.status_label }}</label>
+          <select class="form-select" v-model="this.filters.status" id="list-status">
+            <option v-for="(key, status) in this.datas.status" :value="status" :selected="status === this.filters.status">{{ key }}</option>
+          </select>
+        </div>
+        <div class="col-4">
+          <label for="list-pages" class="form-label">{{ this.translate.pages_label }}</label>
+          <select class="form-select" v-model="this.filters.pages" id="list-pages">
+            <option value="0">{{ this.translate.pages_default }}</option>
+            <option v-for="(key, status) in this.datas.pages" :value="status" :selected="status === this.filters.pages">{{ key }}</option>
+          </select>
+        </div>
+        <div class="col"></div>
+      </div>
+    </fieldset>
   </div>
 
   <div class="toast-container position-fixed top-0 end-0 p-2">

@@ -4,6 +4,7 @@
  * @version 1.0
  * Controller pour la gestion des commentaires
  */
+
 namespace App\Controller\Admin\Content;
 
 use App\Controller\Admin\AppAdminController;
@@ -11,6 +12,7 @@ use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\OptionSystem;
 use App\Service\Admin\Content\Comment\CommentService;
+use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Breadcrumb;
 use App\Utils\Content\Comment\CommentConst;
@@ -73,9 +75,9 @@ class CommentController extends AppAdminController
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     public function loadGridData(
         CommentService $commentService,
-        Request    $request,
-        int        $page = 1,
-        int        $limit = 20
+        Request        $request,
+        int            $page = 1,
+        int            $limit = 20
     ): JsonResponse
     {
         $search = $request->query->get('search');
@@ -93,10 +95,18 @@ class CommentController extends AppAdminController
      * Permet de modérer les commentaires
      * @param Request $request
      * @param CommentService $commentService
+     * @param CommentTranslate $commentTranslate
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/moderate', name: 'moderate_comments', methods: ['GET'])]
-    public function moderateComments(Request $request, CommentService $commentService, CommentTranslate $commentTranslate): Response
+    public function moderateComments(
+        Request          $request,
+        CommentService   $commentService,
+        PageService      $pageService,
+        CommentTranslate $commentTranslate
+    ): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'comment',
@@ -107,11 +117,15 @@ class CommentController extends AppAdminController
         ];
 
         return $this->render('admin/content/comment/moderate_comments.html.twig', [
-            'breadcrumb' => $breadcrumb,
-            'translate' => $commentTranslate->getTranslateCommentModeration(),
-            'urls' => [],
-            'datas' => []
-        ]);
+        'breadcrumb' => $breadcrumb,
+        'translate' => $commentTranslate->getTranslateCommentModeration(),
+        'urls' => [],
+        'datas' => [
+            'status' => $commentService->getAllStatus(),
+            'pages' => $pageService->getListeTitlePageByLocale($commentService->getLocales()['current']),
+            'defaultStatus' => CommentConst::WAIT_VALIDATION
+        ]
+    ]);
     }
 
     /**
@@ -127,11 +141,11 @@ class CommentController extends AppAdminController
      */
     #[Route('/see/{id}', name: 'see', methods: ['GET'])]
     public function see(
-        int $id,
-        Request $request,
-        CommentService $commentService,
+        int                     $id,
+        Request                 $request,
+        CommentService          $commentService,
         MarkdownEditorTranslate $markdownEditorTranslate,
-        CommentTranslate $commentTranslate): Response
+        CommentTranslate        $commentTranslate): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'comment',
@@ -172,7 +186,7 @@ class CommentController extends AppAdminController
     #[Route('/ajax/load/{id}', name: 'load', methods: ['GET'])]
     public function getComment(
         CommentService $commentService,
-        int $id = null
+        int            $id = null
     ): Response
     {
         /** @var Comment $comment */
@@ -184,8 +198,7 @@ class CommentController extends AppAdminController
 
         $commentArray = $commentService->convertEntityToArray($comment, ['page', 'userModeration']);
 
-        if($comment->getUserModeration() !== null)
-        {
+        if ($comment->getUserModeration() !== null) {
             $user = $comment->getUserModeration();
             $commentArray['userModeration'] = ['login' => $user->getLogin(), 'email' => $user->getEmail()];
         }
@@ -217,10 +230,9 @@ class CommentController extends AppAdminController
         $commentPopulate = new CommentPopulate($comment, $data['comment']);
         $comment = $commentPopulate->populate()->getComment();
 
-        if($comment->getStatus() === CommentConst::MODERATE) {
+        if ($comment->getStatus() === CommentConst::MODERATE) {
             $comment->setUserModeration($this->getUser());
-        }
-        else {
+        } else {
             $comment->setUserModeration(null);
             $comment->setModerationComment(null);
         }

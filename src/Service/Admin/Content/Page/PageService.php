@@ -528,4 +528,23 @@ class PageService extends AppAdminService
         }
         return $return;
     }
+
+    /**
+     * Retourne la liste des titres des pages en fonction de la locale
+     * @param string $locale
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getListeTitlePageByLocale(string $locale): array
+    {
+        $repository = $this->getRepository(Page::class);
+        $result = $repository->getTitleAllPageByLocale($locale);
+        $return = [];
+
+        foreach($result as $page) {
+            $return[$page['id']] = $page['titre'];
+        }
+        return $return;
+    }
 }
