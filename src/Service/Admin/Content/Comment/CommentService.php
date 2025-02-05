@@ -170,4 +170,22 @@ class CommentService extends AppAdminService
             CommentConst::MODERATE => $translator->trans('comment.status.moderate', domain: 'comment'),
         ];
     }
+
+    /**
+     * Retourne une liste de commentaires filtrés
+     * @param int $status
+     * @param int $idPage
+     * @param int $page
+     * @param int $limit
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getCommentFilter(int $status, int $idPage, int $page, int $limit): array
+    {
+        $repository = $this->getRepository(Comment::class);
+        $repository->getListCommentsByFilter($status, $idPage, $page, $limit);
+
+        return [];
+    }
 }

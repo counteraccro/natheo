@@ -43,6 +43,7 @@ class CommentTranslate extends AppTranslate
             'status_label' => $this->translator->trans('comment.moderation.status.label', domain: 'comment'),
             'pages_label' => $this->translator->trans('comment.moderation.pages.label', domain: 'comment'),
             'pages_default' => $this->translator->trans('comment.moderation.pages.default', domain: 'comment'),
+            'selection_title' => $this->translator->trans('comment.moderation.selection.title', domain: 'comment'),
         ];
     }
 }

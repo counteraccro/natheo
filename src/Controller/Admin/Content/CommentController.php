@@ -95,6 +95,7 @@ class CommentController extends AppAdminController
      * Permet de modérer les commentaires
      * @param Request $request
      * @param CommentService $commentService
+     * @param PageService $pageService
      * @param CommentTranslate $commentTranslate
      * @return Response
      * @throws ContainerExceptionInterface
@@ -117,15 +118,43 @@ class CommentController extends AppAdminController
         ];
 
         return $this->render('admin/content/comment/moderate_comments.html.twig', [
-        'breadcrumb' => $breadcrumb,
-        'translate' => $commentTranslate->getTranslateCommentModeration(),
-        'urls' => [],
-        'datas' => [
-            'status' => $commentService->getAllStatus(),
-            'pages' => $pageService->getListeTitlePageByLocale($commentService->getLocales()['current']),
-            'defaultStatus' => CommentConst::WAIT_VALIDATION
-        ]
-    ]);
+            'breadcrumb' => $breadcrumb,
+            'translate' => $commentTranslate->getTranslateCommentModeration(),
+            'urls' => [
+                'filter' => $this->generateUrl('admin_comment_moderate_comments_filter'),
+            ],
+            'datas' => [
+                'status' => $commentService->getAllStatus(),
+                'pages' => $pageService->getListeTitlePageByLocale($commentService->getLocales()['current']),
+                'defaultStatus' => CommentConst::WAIT_VALIDATION,
+                'page' => 1,
+                'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
+            ]
+        ]);
+    }
+
+    /**
+     * Retourne la liste des commentaires à modérer
+     * @param CommentService $commentService
+     * @param int $status
+     * @param int $idPage
+     * @param int $page
+     * @param int $limit
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/moderate/ajax/filter/{status}/{idPage}/{page}/{limit}', name: 'moderate_comments_filter', methods: ['GET'])]
+    public function filterCommentsModeration(
+        CommentService $commentService,
+        int            $status = CommentConst::WAIT_VALIDATION,
+        int            $idPage = 0,
+        int            $page = 1,
+        int            $limit = 20
+    )
+    {
+        $return = $commentService->getCommentFilter($status, $idPage, $page, $limit);
+        return $this->json($return);
     }
 
     /**
@@ -215,6 +244,7 @@ class CommentController extends AppAdminController
      * Met à jour un commentaire
      * @param Request $request
      * @param CommentService $commentService
+     * @param TranslatorInterface $translator
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface

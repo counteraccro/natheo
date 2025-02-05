@@ -42,17 +42,17 @@ export default {
   methods: {
 
     /**
-     * Charge les données du commentaire
+     * Charge la liste des commentaires
      */
     load() {
       this.loading = true;
-      /*axios.get(this.urls.load_comment + '/' + this.datas.id).then((response) => {
-        this.comment = response.data.comment;
+      axios.get(this.urls.filter + '/' + this.filters.status + '/' + this.filters.pages + '/' + this.datas.page + '/' + this.datas.limit).then((response) => {
+        console.log('ici');
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
         this.loading = false;
-      });*/
+      });
     },
 
 
@@ -75,19 +75,23 @@ export default {
       <div class="row">
         <div class="col-4">
           <label for="list-status" class="form-label">{{ this.translate.status_label }}</label>
-          <select class="form-select" v-model="this.filters.status" id="list-status">
+          <select class="form-select" v-model="this.filters.status" id="list-status" @change="this.load()">
             <option v-for="(key, status) in this.datas.status" :value="status" :selected="status === this.filters.status">{{ key }}</option>
           </select>
         </div>
         <div class="col-4">
           <label for="list-pages" class="form-label">{{ this.translate.pages_label }}</label>
-          <select class="form-select" v-model="this.filters.pages" id="list-pages">
+          <select class="form-select" v-model="this.filters.pages" id="list-pages" @change="this.load()">
             <option value="0">{{ this.translate.pages_default }}</option>
             <option v-for="(key, status) in this.datas.pages" :value="status" :selected="status === this.filters.pages">{{ key }}</option>
           </select>
         </div>
         <div class="col"></div>
       </div>
+    </fieldset>
+
+    <fieldset class="mt-3 mb-3">
+      <legend>{{ this.translate.selection_title }}</legend>
     </fieldset>
   </div>
 

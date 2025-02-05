@@ -62,4 +62,24 @@ class CommentRepository extends ServiceEntityRepository
         return $paginator;
 
     }
+
+    /**
+     * Retourne une liste de commentaire en fonction de ses filtres
+     * @param int $status
+     * @param int $idPage
+     * @param int $limit
+     * @param int $page
+     * @return Paginator
+     */
+    public function getListCommentsByFilter(int $status, int $idPage, int $page,  int $limit): Paginator
+    {
+        $query = $this->createQueryBuilder('c');
+
+
+        $paginator = new Paginator($query->getQuery(), true);
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+        return $paginator;
+    }
 }
