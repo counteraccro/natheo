@@ -48,3 +48,4 @@ comment.moderation.legend.search: 'Filtre de trie'
 comment.moderation.status.label: 'Trier par status'
 comment.moderation.pages.label: 'Trier par pages'
 comment.moderation.pages.default: 'Toutes les pages'
+comment.moderation.selection.title: __comment.moderation.selection.title

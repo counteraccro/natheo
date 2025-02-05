@@ -48,3 +48,4 @@ comment.moderation.legend.search: __comment.moderation.legend.search
 comment.moderation.status.label: __comment.moderation.status.label
 comment.moderation.pages.label: __comment.moderation.pages.label
 comment.moderation.pages.default: __comment.moderation.pages.default
+comment.moderation.selection.title: __comment.moderation.selection.title
