@@ -184,8 +184,35 @@ class CommentService extends AppAdminService
     public function getCommentFilter(int $status, int $idPage, int $page, int $limit): array
     {
         $repository = $this->getRepository(Comment::class);
-        $repository->getListCommentsByFilter($status, $idPage, $page, $limit);
+        $result = $repository->getListCommentsByFilter($status, $idPage, $page, $limit);
+        $locale = $this->getLocales()['current'];
 
-        return [];
+        $data = [];
+        foreach($result as $comment) {
+
+            /** @var Comment $comment */
+
+            $pageTitle = $comment->getPage()->getPageTranslationByLocale($locale)->getTitre();
+            $moderator = null;
+            if($comment->getUserModeration() !== null) {
+                $moderator = $comment->getUserModeration()->getEmail();
+            }
+
+            $data[] = [
+                'id' => $comment->getId(),
+                'comment' => $comment->getComment(),
+                'author' => $comment->getAuthor() . ' (' . $comment->getEmail() . ')',
+                'page' => $pageTitle,
+                'ip' => $comment->getIp(),
+                'userAgent' => $comment->getUserAgent(),
+                'moderator' => $moderator,
+                'commentModeration' => $comment->getModerationComment()
+            ];
+        }
+
+        return [
+            'nb' => $result->count(),
+            'data' => $data,
+        ];
     }
 }

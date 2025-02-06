@@ -76,6 +76,7 @@ export default {
         <div class="col-4">
           <label for="list-status" class="form-label">{{ this.translate.status_label }}</label>
           <select class="form-select" v-model="this.filters.status" id="list-status" @change="this.load()">
+            <option value="0">{{ this.translate.status_default }}</option>
             <option v-for="(key, status) in this.datas.status" :value="status" :selected="status === this.filters.status">{{ key }}</option>
           </select>
         </div>

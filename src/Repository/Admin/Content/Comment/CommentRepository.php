@@ -75,6 +75,15 @@ class CommentRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('c');
 
+        if($status !== 0){
+            $query->andWhere('c.status = :status')
+                ->setParameter('status', $status);
+        }
+
+        if($idPage !== 0){
+            $query->andWhere('c.page = :page')
+                ->setParameter("page", $idPage);
+        }
 
         $paginator = new Paginator($query->getQuery(), true);
         $paginator->getQuery()

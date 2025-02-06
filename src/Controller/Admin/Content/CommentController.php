@@ -38,6 +38,7 @@ class CommentController extends AppAdminController
 {
     /**
      * Point d'entrée de la gestion des commentaires
+     * @param OptionSystemService $optionSystemService
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
