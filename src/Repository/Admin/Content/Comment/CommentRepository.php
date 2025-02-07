@@ -91,4 +91,20 @@ class CommentRepository extends ServiceEntityRepository
             ->setMaxResults($limit);
         return $paginator;
     }
+
+    /**
+     * Retourne le nombre de commentaire en fonction du type
+     * @param int $type
+     * @return int
+     */
+    public function getNbByType(int $status): int
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select("COUNT(c.id) as nb")
+            ->where('c.status = :status')
+            ->setParameter('status', $status);
+
+        $result = $query->getQuery()->getArrayResult();
+        return $result[0]['nb'];
+    }
 }

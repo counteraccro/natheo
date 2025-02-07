@@ -215,4 +215,18 @@ class CommentService extends AppAdminService
             'data' => $data,
         ];
     }
+
+    /**
+     * Retourne le nombre de commentaire en fonction tu type
+     * @param int $status
+     * @return int
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getNbCommentByStatus(int $status): int
+    {
+        $repository = $this->getRepository(Comment::class);
+        return $repository->getNbByType($status);
+
+    }
 }

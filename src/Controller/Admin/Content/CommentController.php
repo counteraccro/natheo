@@ -44,7 +44,7 @@ class CommentController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/', name: 'index')]
-    public function index(OptionSystemService $optionSystemService): Response
+    public function index(OptionSystemService $optionSystemService, CommentService $commentService): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'comment',
@@ -58,7 +58,8 @@ class CommentController extends AppAdminController
             'page' => 1,
             'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
             'isOpenComment' => $optionSystemService->getValueByKey(OptionSystemKey::OS_OPEN_COMMENT),
-            'isModerate' => $optionSystemService->getValueByKey(OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION)
+            'isModerate' => $optionSystemService->getValueByKey(OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION),
+            'nbCommentWaitValidation' => $commentService->getNbCommentByStatus(CommentConst::WAIT_VALIDATION)
         ]);
     }
 
