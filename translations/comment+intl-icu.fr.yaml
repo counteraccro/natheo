@@ -50,4 +50,5 @@ comment.moderation.pages.label: 'Trier par pages'
 comment.moderation.pages.default: 'Toutes les pages'
 comment.moderation.selection.title: 'Action de modération'
 comment.moderation.status.default: 'Tous les status'
-comment.index.btn.moderate.nb.wait.validation: ' en attente(s)'
+comment.index.btn.moderate.nb.wait.validation.1: "Il y'a"
+comment.index.btn.moderate.nb.wait.validation.2: 'Commentaire(s) en attente de validation'

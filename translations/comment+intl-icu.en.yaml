@@ -50,4 +50,5 @@ comment.moderation.pages.label: __comment.moderation.pages.label
 comment.moderation.pages.default: __comment.moderation.pages.default
 comment.moderation.selection.title: __comment.moderation.selection.title
 comment.moderation.status.default: __comment.moderation.status.default
-comment.index.btn.moderate.nb.wait.validation: __comment.index.btn.moderate.nb.wait.validation
+comment.index.btn.moderate.nb.wait.validation.1: __comment.index.btn.moderate.nb.wait.validation
+comment.index.btn.moderate.nb.wait.validation.2: __comment.index.btn.moderate.nb.wait.validation.2
