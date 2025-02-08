@@ -26,14 +26,14 @@
     </button>
     <a href="{{ path('admin_comment_moderate_comments') }}" class="float-end btn btn-secondary">
         <i class="bi bi-chat-dots-fill"></i> {{ 'comment.index.btn.moderate' | trans({}, 'comment') }}
-        {% if nbCommentWaitValidation > 0  %}
-        <span class="badge rounded-pill text-bg-danger">{{ nbCommentWaitValidation }} {{ 'comment.index.btn.moderate.nb.wait.validation' | trans({}, 'comment') }} </span>
-        {% endif %}
+
     </a>
 
     <p>
         {{ 'comment.index.description' | trans({}, 'comment') }} <br/>
-        {#  {{ 'tag.index.description2' | trans({'icon' : '<i class="bi-eye-slash-fill"></i>'}, 'tag') | raw }} #}<br/>
+        {% if nbCommentWaitValidation > 0  %}
+            {{ 'comment.index.btn.moderate.nb.wait.validation.1' | trans({}, 'comment') }} <span class="badge rounded-pill text-bg-danger">{{ nbCommentWaitValidation }}</span> {{ 'comment.index.btn.moderate.nb.wait.validation.2' | trans({}, 'comment') }} <br/>
+        {% endif %}
     </p>
 
 
