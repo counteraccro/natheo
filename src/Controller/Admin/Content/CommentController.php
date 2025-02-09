@@ -39,6 +39,7 @@ class CommentController extends AppAdminController
     /**
      * Point d'entrée de la gestion des commentaires
      * @param OptionSystemService $optionSystemService
+     * @param CommentService $commentService
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -153,7 +154,7 @@ class CommentController extends AppAdminController
         int            $idPage = 0,
         int            $page = 1,
         int            $limit = 20
-    )
+    ): JsonResponse
     {
         $return = $commentService->getCommentFilter($status, $idPage, $page, $limit);
         return $this->json($return);
