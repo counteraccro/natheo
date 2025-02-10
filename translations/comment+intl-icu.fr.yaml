@@ -52,3 +52,16 @@ comment.moderation.selection.title: 'Action de modération'
 comment.moderation.status.default: 'Tous les status'
 comment.index.btn.moderate.nb.wait.validation.1: "Il y'a"
 comment.index.btn.moderate.nb.wait.validation.2: 'Commentaire(s) en attente de validation'
+comment.moderation.paginate.page: page
+comment.moderation.paginate.on: sur
+comment.moderation.paginate.row: commentaire(s)
+comment.moderation.comment.id: Commentaire
+comment.moderation.comment.comment: Contenu
+comment.moderation.comment.page: 'Posté sur la page'
+comment.moderation.comment.info: Information
+comment.moderation.comment.ip: IP
+comment.moderation.comment.userAgent: 'User Agent'
+comment.moderation.comment.date: 'écrit le'
+comment.moderation.comment.moderator: 'Modéré par'
+comment.moderation.comment.update: 'Modéré le'
+comment.moderation.comment.author: 'par'

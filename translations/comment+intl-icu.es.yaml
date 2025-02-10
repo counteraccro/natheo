@@ -52,3 +52,16 @@ comment.moderation.selection.title: __comment.moderation.selection.title
 comment.moderation.status.default: __comment.moderation.status.default
 comment.index.btn.moderate.nb.wait.validation.1: __comment.index.btn.moderate.nb.wait.validation
 comment.index.btn.moderate.nb.wait.validation.2: __comment.index.btn.moderate.nb.wait.validation.2
+comment.moderation.paginate.page: __comment.moderation.paginate.page
+comment.moderation.paginate.on: __comment.moderation.paginate.on
+comment.moderation.paginate.row: __comment.moderation.paginate.row
+comment.moderation.comment.id: __comment.moderation.comment.id
+comment.moderation.comment.date: __comment.moderation.comment.date
+comment.moderation.comment.update: __comment.moderation.comment.update
+comment.moderation.comment.author: __comment.moderation.comment.author
+comment.moderation.comment.comment: __comment.moderation.comment.comment
+comment.moderation.comment.page: __comment.moderation.comment.page
+comment.moderation.comment.info: __comment.moderation.comment.info
+comment.moderation.comment.ip: __comment.moderation.comment.ip
+comment.moderation.comment.userAgent: __comment.moderation.comment.userAgent
+comment.moderation.comment.moderator: __comment.moderation.comment.moderator
