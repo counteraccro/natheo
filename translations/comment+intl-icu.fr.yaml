@@ -64,4 +64,5 @@ comment.moderation.comment.userAgent: 'User Agent'
 comment.moderation.comment.date: 'écrit le'
 comment.moderation.comment.moderator: 'Modéré par'
 comment.moderation.comment.update: 'Modéré le'
-comment.moderation.comment.author: 'par'
+comment.moderation.comment.author: par
+comment.moderation.selection.comment: 'Commentaire(s) sélectionné(s)'
