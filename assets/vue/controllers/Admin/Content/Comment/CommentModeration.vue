@@ -25,6 +25,7 @@ export default {
     return {
       loading: false,
       result: null,
+      selected: [],
       filters: {
         status : this.datas.defaultStatus,
         pages : 0
@@ -66,6 +67,19 @@ export default {
       this.load();
     },
 
+    updateSelected(id)
+    {
+      if(this.selected.find((element) => element === id))
+      {
+        this.selected = this.selected.filter(function(item) {
+          return item !== id
+        })
+      }
+      else {
+        this.selected.push(id);
+      }
+    },
+
     /**
      * Converti du markdown en html
      * @param value
@@ -98,7 +112,7 @@ export default {
         <span class="txt-overlay">{{ this.translate.loading }}</span>
       </div>
     </div>
-    <fieldset>
+    <fieldset class="mb-3">
       <legend>{{ this.translate.legend_search }}</legend>
       <div class="row">
         <div class="col-4">
@@ -119,8 +133,10 @@ export default {
       </div>
     </fieldset>
 
-    <fieldset class="mt-3 mb-3">
+    <fieldset class="mb-3" v-if="this.selected.length > 0">
       <legend>{{ this.translate.selection_title }}</legend>
+      {{ this.translate.selection_comment }} :<span v-for="id in this.selected"> #{{ id }},</span>
+
     </fieldset>
 
     <div v-if="this.result !== null">
@@ -128,8 +144,10 @@ export default {
       <div v-for="comment in this.result.data">
         <div class="card mb-3">
           <div class="card-header">
+            <input type="checkbox" class="form-check-input" :id="'comment-' + comment.id" @change="updateSelected(comment.id)" />
+            <label class="form-check-label" :for="'comment-' + comment.id">&nbsp;
             {{ this.translate.comment_id }} #{{ comment.id }} {{ this.translate.comment_date }}
-            {{ comment.date }} {{ this.translate.comment_author }} {{ comment.author }}
+            {{ comment.date }} {{ this.translate.comment_author }} {{ comment.author }}</label>
             <div class="float-end" v-html="comment.status">
 
             </div>

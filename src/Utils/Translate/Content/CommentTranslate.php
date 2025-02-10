@@ -45,6 +45,7 @@ class CommentTranslate extends AppTranslate
             'pages_default' => $this->translator->trans('comment.moderation.pages.default', domain: 'comment'),
             'status_default' => $this->translator->trans('comment.moderation.status.default', domain: 'comment'),
             'selection_title' => $this->translator->trans('comment.moderation.selection.title', domain: 'comment'),
+            'selection_comment' => $this->translator->trans('comment.moderation.selection.comment', domain: 'comment'),
             'comment_id' => $this->translator->trans('comment.moderation.comment.id', domain: 'comment'),
             'comment_date' => $this->translator->trans('comment.moderation.comment.date', domain: 'comment'),
             'comment_update' => $this->translator->trans('comment.moderation.comment.update', domain: 'comment'),
@@ -55,7 +56,6 @@ class CommentTranslate extends AppTranslate
             'comment_ip' => $this->translator->trans('comment.moderation.comment.ip', domain: 'comment'),
             'comment_user_agent' => $this->translator->trans('comment.moderation.comment.userAgent', domain: 'comment'),
             'comment_moderator' => $this->translator->trans('comment.moderation.comment.moderator', domain: 'comment'),
-
             'paginate' => $this->getTranslatePaginate()
 
         ];
