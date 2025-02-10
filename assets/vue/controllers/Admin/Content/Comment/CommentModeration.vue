@@ -6,11 +6,12 @@
  */
 import axios from "axios";
 import Toast from "../../../../Components/Global/Toast.vue";
-import {emitter} from "../../../../../utils/useEvent";
+import SearchPaginate from "../../../../Components/Global/Search/SearchPaginate.vue";
+import {marked} from "marked";
 
 export default {
   name: 'CommentModeration',
-  components: {Toast},
+  components: {SearchPaginate, Toast},
   props: {
     urls: Object,
     translate: Object,
@@ -23,6 +24,7 @@ export default {
   data() {
     return {
       loading: false,
+      result: null,
       filters: {
         status : this.datas.defaultStatus,
         pages : 0
@@ -47,12 +49,31 @@ export default {
     load() {
       this.loading = true;
       axios.get(this.urls.filter + '/' + this.filters.status + '/' + this.filters.pages + '/' + this.datas.page + '/' + this.datas.limit).then((response) => {
-        console.log('ici');
+        this.result = response.data;
+        console.log(this.result);
+        console.log(this.result.data.length)
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
         this.loading = false;
       });
+    },
+
+    changePageEvent(page, limit)
+    {
+      this.datas.page = page;
+      this.datas.limit = limit;
+      this.load();
+    },
+
+    /**
+     * Converti du markdown en html
+     * @param value
+     * @return {*}
+     */
+    renderHtml(value)
+    {
+      return marked(value);
     },
 
 
@@ -69,7 +90,14 @@ export default {
 
 <template>
 
-  <div id="block-moderation">
+  <div id="block-moderation" :class="this.loading === true ? 'block-grid' : ''">
+
+    <div v-if="this.loading" class="overlay">
+      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
+        <div class="spinner-border text-primary" role="status"></div>
+        <span class="txt-overlay">{{ this.translate.loading }}</span>
+      </div>
+    </div>
     <fieldset>
       <legend>{{ this.translate.legend_search }}</legend>
       <div class="row">
@@ -94,6 +122,51 @@ export default {
     <fieldset class="mt-3 mb-3">
       <legend>{{ this.translate.selection_title }}</legend>
     </fieldset>
+
+    <div v-if="this.result !== null">
+
+      <div v-for="comment in this.result.data">
+        <div class="card mb-3">
+          <div class="card-header">
+            {{ this.translate.comment_id }} #{{ comment.id }} {{ this.translate.comment_date }}
+            {{ comment.date }} {{ this.translate.comment_author }} {{ comment.author }}
+            <div class="float-end" v-html="comment.status">
+
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-7">
+                <h5 class="card-title">{{ this.translate.comment_comment }}</h5>
+                <i>{{ this.translate.comment_page }} {{ comment.page }}</i>
+                <p class="card-text" v-html="this.renderHtml(comment.comment)"></p>
+              </div>
+              <div class="col">
+                <h5 class="card-title">{{ this.translate.comment_info }}</h5>
+                {{ this.translate.comment_ip }} : {{ comment.ip }}<br />
+                {{ this.translate.comment_user_agent }} : {{ comment.userAgent }}<br />
+
+                <div v-if="comment.moderator !== null">
+                  <fieldset>
+                    <legend>{{ this.translate.comment_moderator }} : {{ comment.moderator }}</legend>
+                    <i>{{ this.translate.comment_update }} {{ comment.update }}</i>
+                    {{ comment.commentModeration }}
+                  </fieldset>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <search-paginate
+          :nb-elements="this.datas.limit"
+          :current-page="this.datas.page"
+          :nb-elements-total="this.result.nb"
+          :translate="this.translate.paginate"
+          @change-page-event="changePageEvent"
+      ></search-paginate>
+    </div>
   </div>
 
   <div class="toast-container position-fixed top-0 end-0 p-2">

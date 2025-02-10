@@ -206,7 +206,10 @@ class CommentService extends AppAdminService
                 'ip' => $comment->getIp(),
                 'userAgent' => $comment->getUserAgent(),
                 'moderator' => $moderator,
-                'commentModeration' => $comment->getModerationComment()
+                'commentModeration' => $comment->getModerationComment(),
+                'status' => $this->getStatusFormatedByCode($comment->getStatus()),
+                'date' => $comment->getCreatedAt()->format('d/m/y H:i'),
+                'update' => $comment->getUpdateAt()->format('d/m/y H:i'),
             ];
         }
 

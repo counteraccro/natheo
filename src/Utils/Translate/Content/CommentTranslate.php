@@ -45,6 +45,32 @@ class CommentTranslate extends AppTranslate
             'pages_default' => $this->translator->trans('comment.moderation.pages.default', domain: 'comment'),
             'status_default' => $this->translator->trans('comment.moderation.status.default', domain: 'comment'),
             'selection_title' => $this->translator->trans('comment.moderation.selection.title', domain: 'comment'),
+            'comment_id' => $this->translator->trans('comment.moderation.comment.id', domain: 'comment'),
+            'comment_date' => $this->translator->trans('comment.moderation.comment.date', domain: 'comment'),
+            'comment_update' => $this->translator->trans('comment.moderation.comment.update', domain: 'comment'),
+            'comment_author' => $this->translator->trans('comment.moderation.comment.author', domain: 'comment'),
+            'comment_comment' => $this->translator->trans('comment.moderation.comment.comment', domain: 'comment'),
+            'comment_page' => $this->translator->trans('comment.moderation.comment.page', domain: 'comment'),
+            'comment_info' => $this->translator->trans('comment.moderation.comment.info', domain: 'comment'),
+            'comment_ip' => $this->translator->trans('comment.moderation.comment.ip', domain: 'comment'),
+            'comment_user_agent' => $this->translator->trans('comment.moderation.comment.userAgent', domain: 'comment'),
+            'comment_moderator' => $this->translator->trans('comment.moderation.comment.moderator', domain: 'comment'),
+
+            'paginate' => $this->getTranslatePaginate()
+
+        ];
+    }
+
+    /**
+     * Retourne les traductions pour le grid paginate
+     * @return array
+     */
+    private function getTranslatePaginate(): array
+    {
+        return [
+            'page' => $this->translator->trans('comment.moderation.paginate.page', domain: 'comment'),
+            'on' => $this->translator->trans('comment.moderation.paginate.on', domain: 'comment'),
+            'row' => $this->translator->trans('comment.moderation.paginate.row', domain: 'comment')
         ];
     }
 }
