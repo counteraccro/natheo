@@ -66,3 +66,6 @@ comment.moderation.comment.ip: __comment.moderation.comment.ip
 comment.moderation.comment.userAgent: __comment.moderation.comment.userAgent
 comment.moderation.comment.moderator: __comment.moderation.comment.moderator
 comment.moderation.selection.comment: __comment.moderation.selection.comment
+comment.moderation.selection.status: __comment.moderation.selection.status
+comment.moderation.selection.comment.moderation: __comment.moderation.selection.comment.moderation
+comment.moderation.selection.submit: __comment.moderation.selection.submit

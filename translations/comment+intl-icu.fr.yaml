@@ -66,3 +66,6 @@ comment.moderation.comment.moderator: 'Modéré par'
 comment.moderation.comment.update: 'Modéré le'
 comment.moderation.comment.author: par
 comment.moderation.selection.comment: 'Commentaire(s) sélectionné(s)'
+comment.moderation.selection.status: 'Nouveau status'
+comment.moderation.selection.comment.moderation: 'Commentaire de modération'
+comment.moderation.selection.submit: 'Mettre à jour'
