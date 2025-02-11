@@ -51,7 +51,7 @@ class CommentFixtures extends AppFixtures implements FixtureGroupInterface, Orde
 
     public static function getGroups(): array
     {
-        return [self::GROUP_PAGE, self::GROUP_CONTENT, self::GROUP_CONTENT];
+        return [self::GROUP_PAGE, self::GROUP_CONTENT, self::GROUP_COMMENT];
     }
 
     public function getOrder(): int

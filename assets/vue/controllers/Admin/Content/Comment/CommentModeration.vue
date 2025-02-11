@@ -25,7 +25,11 @@ export default {
     return {
       loading: false,
       result: null,
-      selected: [],
+      moderation: {
+        selected: [],
+        status: this.datas.defaultStatus,
+        moderateComment: '',
+      },
       filters: {
         status : this.datas.defaultStatus,
         pages : 0
@@ -60,6 +64,18 @@ export default {
       });
     },
 
+    /**
+     * Met à jour les commentaires sélectionnés
+     */
+    moderateComment() {
+      console.log(this.moderation)
+    },
+
+    /**
+     * Changement de page
+     * @param page
+     * @param limit
+     */
     changePageEvent(page, limit)
     {
       this.datas.page = page;
@@ -67,17 +83,30 @@ export default {
       this.load();
     },
 
+    /**
+     * Met à jour la liste des commentaires selectionnés
+     * @param id
+     */
     updateSelected(id)
     {
-      if(this.selected.find((element) => element === id))
+      if(this.moderation.selected.find((element) => element === id))
       {
-        this.selected = this.selected.filter(function(item) {
+        this.moderation.selected = this.moderation.selected.filter(function(item) {
           return item !== id
         })
       }
       else {
-        this.selected.push(id);
+        this.moderation.selected.push(id);
       }
+    },
+
+    /**
+     * Vérifie si la checkbox doit être check ou non
+     * @return {boolean}
+     */
+    isChecked(id)
+    {
+      return !!(this.moderation.selected.find((element) => element === id));
     },
 
     /**
@@ -133,9 +162,23 @@ export default {
       </div>
     </fieldset>
 
-    <fieldset class="mb-3" v-if="this.selected.length > 0">
+    <fieldset class="mb-3" v-if="this.moderation.selected.length > 0">
       <legend>{{ this.translate.selection_title }}</legend>
-      {{ this.translate.selection_comment }} :<span v-for="id in this.selected"> #{{ id }},</span>
+      {{ this.moderation.selected.length }} {{ this.translate.selection_comment }} :<span v-for="id in this.moderation.selected"> #{{ id }},</span>
+
+      <div class="row mt-3 mb-3">
+        <div class="col">
+          <label for="list-status" class="form-label">{{ this.translate.selection_status }}</label>
+          <select class="form-select" v-model="this.moderation.status" id="list-status">
+            <option v-for="(key, status) in this.datas.status" :value="status" :selected="status === this.filters.status">{{ key }}</option>
+          </select>
+        </div>
+        <div class="col" v-if="this.moderation.status === '3'">
+          <label for="moderation-comment" class="form-label">{{ this.translate.selection_comment_moderation }}</label>
+          <textarea class="form-control" id="moderation-comment" rows="2" v-model="this.moderation.moderateComment"></textarea>
+        </div>
+      </div>
+      <div class="btn btn-secondary float-end" @click="this.moderateComment()">{{ this.translate.selection_submit }}</div>
 
     </fieldset>
 
@@ -144,7 +187,7 @@ export default {
       <div v-for="comment in this.result.data">
         <div class="card mb-3">
           <div class="card-header">
-            <input type="checkbox" class="form-check-input" :id="'comment-' + comment.id" @change="updateSelected(comment.id)" />
+            <input type="checkbox" class="form-check-input" :id="'comment-' + comment.id" @change="updateSelected(comment.id)" :checked="this.isChecked(comment.id)" />
             <label class="form-check-label" :for="'comment-' + comment.id">&nbsp;
             {{ this.translate.comment_id }} #{{ comment.id }} {{ this.translate.comment_date }}
             {{ comment.date }} {{ this.translate.comment_author }} {{ comment.author }}</label>
