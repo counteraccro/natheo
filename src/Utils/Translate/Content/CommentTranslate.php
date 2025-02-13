@@ -59,6 +59,8 @@ class CommentTranslate extends AppTranslate
             'comment_ip' => $this->translator->trans('comment.moderation.comment.ip', domain: 'comment'),
             'comment_user_agent' => $this->translator->trans('comment.moderation.comment.userAgent', domain: 'comment'),
             'comment_moderator' => $this->translator->trans('comment.moderation.comment.moderator', domain: 'comment'),
+            'btn_reset' => $this->translator->trans('comment.moderation.btn.reset', domain: 'comment'),
+            'no_result' => $this->translator->trans('comment.moderation.noResult', domain: 'comment'),
             'paginate' => $this->getTranslatePaginate()
 
         ];

@@ -3,6 +3,7 @@
 namespace App\Service\Admin\Content\Comment;
 
 use App\Entity\Admin\Content\Comment\Comment;
+use App\Entity\Admin\System\User;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Utils\Content\Comment\CommentConst;
@@ -231,5 +232,32 @@ class CommentService extends AppAdminService
         $repository = $this->getRepository(Comment::class);
         return $repository->getNbByType($status);
 
+    }
+
+    /**
+     * Metà jour une liste de commentaire défini dans $data
+     * @param array $data
+     * @param User $user
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function updateMultipleComment(array $data, User $user): void
+    {
+        $repository = $this->getRepository(Comment::class);
+        $comments = $repository->findBy(['id' => $data['selected']]);
+
+        foreach($comments as $comment) {
+            /** @var Comment $comment */
+            $comment->setStatus($data['status']);
+            if($comment->getStatus() !== CommentConst::MODERATE) {
+                $comment->setModerationComment(null);
+                $comment->setUserModeration(null);
+            } else {
+                $comment->setModerationComment($data['moderateComment']);
+                $comment->setUserModeration($user);
+            }
+            $this->save($comment);
+        }
     }
 }

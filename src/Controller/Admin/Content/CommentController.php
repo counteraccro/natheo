@@ -125,6 +125,7 @@ class CommentController extends AppAdminController
             'translate' => $commentTranslate->getTranslateCommentModeration(),
             'urls' => [
                 'filter' => $this->generateUrl('admin_comment_moderate_comments_filter'),
+                'update' => $this->generateUrl('admin_comment_update_moderate_comment'),
             ],
             'datas' => [
                 'status' => $commentService->getAllStatus(),
@@ -273,5 +274,25 @@ class CommentController extends AppAdminController
         $commentService->save($comment);
 
         return $this->json($commentService->getResponseAjax($translator->trans('comment.see.save.success', domain: 'comment')));
+    }
+
+    /**
+     * Mise à jour des commentaires pour modération
+     * @param CommentService $commentService
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/ajax/update-moderate-comments', name: 'update_moderate_comment', methods: ['POST'])]
+    public function updateCommentModerate(CommentService $commentService, Request $request, TranslatorInterface $translator): Response
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $commentService->updateMultipleComment($data, $this->getUser());
+
+        $msg = $translator->trans('comment.moderation.update.success', domain: 'comment');
+        return $this->json($commentService->getResponseAjax($msg));
     }
 }

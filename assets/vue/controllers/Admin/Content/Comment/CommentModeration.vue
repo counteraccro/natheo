@@ -8,6 +8,7 @@ import axios from "axios";
 import Toast from "../../../../Components/Global/Toast.vue";
 import SearchPaginate from "../../../../Components/Global/Search/SearchPaginate.vue";
 import {marked} from "marked";
+import {emitter} from "../../../../../utils/useEvent";
 
 export default {
   name: 'CommentModeration',
@@ -31,8 +32,8 @@ export default {
         moderateComment: '',
       },
       filters: {
-        status : this.datas.defaultStatus,
-        pages : 0
+        status: this.datas.defaultStatus,
+        pages: 0
       },
       toasts: {
         toastSuccess: {
@@ -55,8 +56,6 @@ export default {
       this.loading = true;
       axios.get(this.urls.filter + '/' + this.filters.status + '/' + this.filters.pages + '/' + this.datas.page + '/' + this.datas.limit).then((response) => {
         this.result = response.data;
-        console.log(this.result);
-        console.log(this.result.data.length)
       }).catch((error) => {
         console.error(error);
       }).finally(() => {
@@ -68,7 +67,26 @@ export default {
      * Met à jour les commentaires sélectionnés
      */
     moderateComment() {
-      console.log(this.moderation)
+      this.loading = true;
+      axios.post(this.urls.update,
+        this.moderation
+      ).then((response) => {
+
+        if (response.data.success === true) {
+          this.toasts.toastSuccess.msg = response.data.msg;
+          this.toasts.toastSuccess.show = true;
+          emitter.emit('reset-check-confirm');
+          this.load()
+        } else {
+          this.toasts.toastError.msg = response.data.msg;
+          this.toasts.toastError.show = true;
+          this.loading = false;
+        }
+
+      }).catch((error) => {
+        console.error(error);
+      }).finally(() => {});
+
     },
 
     /**
@@ -76,8 +94,7 @@ export default {
      * @param page
      * @param limit
      */
-    changePageEvent(page, limit)
-    {
+    changePageEvent(page, limit) {
       this.datas.page = page;
       this.datas.limit = limit;
       this.load();
@@ -87,25 +104,29 @@ export default {
      * Met à jour la liste des commentaires selectionnés
      * @param id
      */
-    updateSelected(id)
-    {
-      if(this.moderation.selected.find((element) => element === id))
-      {
-        this.moderation.selected = this.moderation.selected.filter(function(item) {
+    updateSelected(id) {
+      if (this.moderation.selected.find((element) => element === id)) {
+        this.moderation.selected = this.moderation.selected.filter(function (item) {
           return item !== id
         })
-      }
-      else {
+      } else {
         this.moderation.selected.push(id);
       }
+    },
+
+    /**
+     * Reset les commentaires sélectionnés
+     */
+    resetSelected()
+    {
+      this.moderation.selected = [];
     },
 
     /**
      * Vérifie si la checkbox doit être check ou non
      * @return {boolean}
      */
-    isChecked(id)
-    {
+    isChecked(id) {
       return !!(this.moderation.selected.find((element) => element === id));
     },
 
@@ -114,8 +135,7 @@ export default {
      * @param value
      * @return {*}
      */
-    renderHtml(value)
-    {
+    renderHtml(value) {
       return marked(value);
     },
 
@@ -158,7 +178,9 @@ export default {
             <option v-for="(key, status) in this.datas.pages" :value="status" :selected="status === this.filters.pages">{{ key }}</option>
           </select>
         </div>
-        <div class="col"></div>
+        <div class="col">
+          <div class="btn btn-secondary float-end mt-3 me-3" @click="this.resetSelected()">{{ this.translate.btn_reset }}</div>
+        </div>
       </div>
     </fieldset>
 
@@ -173,9 +195,11 @@ export default {
             <option v-for="(key, status) in this.datas.status" :value="status" :selected="status === this.filters.status">{{ key }}</option>
           </select>
         </div>
-        <div class="col" v-if="this.moderation.status === '3'">
-          <label for="moderation-comment" class="form-label">{{ this.translate.selection_comment_moderation }}</label>
-          <textarea class="form-control" id="moderation-comment" rows="2" v-model="this.moderation.moderateComment"></textarea>
+        <div class="col">
+          <div v-if="this.moderation.status === '3'">
+            <label for="moderation-comment" class="form-label">{{ this.translate.selection_comment_moderation }}</label>
+            <textarea class="form-control" id="moderation-comment" rows="2" v-model="this.moderation.moderateComment"></textarea>
+          </div>
         </div>
       </div>
       <div class="btn btn-secondary float-end" @click="this.moderateComment()">{{ this.translate.selection_submit }}</div>
@@ -185,12 +209,12 @@ export default {
     <div v-if="this.result !== null">
 
       <div v-for="comment in this.result.data">
-        <div class="card mb-3">
+        <div class="card mb-3" :class="this.isChecked(comment.id) ? 'border-2 border-secondary' : ''">
           <div class="card-header">
-            <input type="checkbox" class="form-check-input" :id="'comment-' + comment.id" @change="updateSelected(comment.id)" :checked="this.isChecked(comment.id)" />
+            <input type="checkbox" class="form-check-input" :id="'comment-' + comment.id" @change="updateSelected(comment.id)" :checked="this.isChecked(comment.id)"/>
             <label class="form-check-label" :for="'comment-' + comment.id">&nbsp;
-            {{ this.translate.comment_id }} #{{ comment.id }} {{ this.translate.comment_date }}
-            {{ comment.date }} {{ this.translate.comment_author }} {{ comment.author }}</label>
+                                                                           {{ this.translate.comment_id }} #{{ comment.id }} {{ this.translate.comment_date }}
+                                                                           {{ comment.date }} {{ this.translate.comment_author }} {{ comment.author }}</label>
             <div class="float-end" v-html="comment.status">
 
             </div>
@@ -204,8 +228,8 @@ export default {
               </div>
               <div class="col">
                 <h5 class="card-title">{{ this.translate.comment_info }}</h5>
-                {{ this.translate.comment_ip }} : {{ comment.ip }}<br />
-                {{ this.translate.comment_user_agent }} : {{ comment.userAgent }}<br />
+                {{ this.translate.comment_ip }} : {{ comment.ip }}<br/>
+                {{ this.translate.comment_user_agent }} : {{ comment.userAgent }}<br/>
 
                 <div v-if="comment.moderator !== null">
                   <fieldset>
@@ -218,6 +242,10 @@ export default {
             </div>
           </div>
         </div>
+      </div>
+
+      <div v-if="this.result.nb === 0" class="mb-3">
+        <i class="text-center">{{ this.translate.no_result }}</i>
       </div>
 
       <search-paginate
