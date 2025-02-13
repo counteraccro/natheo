@@ -69,3 +69,6 @@ comment.moderation.selection.comment: __comment.moderation.selection.comment
 comment.moderation.selection.status: __comment.moderation.selection.status
 comment.moderation.selection.comment.moderation: __comment.moderation.selection.comment.moderation
 comment.moderation.selection.submit: __comment.moderation.selection.submit
+comment.moderation.update.success: __comment.moderation.update.success
+comment.moderation.btn.reset: __comment.moderation.btn.reset
+comment.moderation.noResult: __comment.moderation.noResult
