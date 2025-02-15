@@ -5,6 +5,9 @@ pages:
     status: 1
     category: 1
     landingPage: false
+    isOpenComment: 1
+    nbComment: 0
+    ruleComment: 2
     tags:
       - Tag_listing
       - Tag_page
@@ -41,6 +44,9 @@ pages:
     status: 1
     category: 4
     landingPage: false
+    isOpenComment: 1
+    nbComment: 0
+    ruleComment: 2
     tags:
       - Tag_listing
       - Tag_blog
@@ -77,6 +83,9 @@ pages:
     status: 1
     category: 9
     landingPage: false
+    isOpenComment: 1
+    nbComment: 0
+    ruleComment: 2
     tags:
       - Tag_faq
     pageTranslation:
@@ -126,6 +135,9 @@ pages:
     status: 1
     category: 7
     landingPage: false
+    isOpenComment: 1
+    nbComment: 0
+    ruleComment: 2
     tags:
       - Tag_page
       - Tag_evolution
@@ -199,6 +211,9 @@ pages:
     status: 1
     category: 1
     landingPage: false
+    isOpenComment: 1
+    nbComment: 0
+    ruleComment: 2
     tags:
       - Tag_page
     pageTranslation:
@@ -271,6 +286,9 @@ pages:
     status: 1
     category: 1
     landingPage: true
+    isOpenComment: 1
+    nbComment: 3
+    ruleComment: 2
     tags:
       - Tag_natheo
       - Tag_evolution
@@ -363,6 +381,9 @@ pages:
     status: 1
     category: 4
     landingPage: false
+    isOpenComment: 1
+    nbComment: 0
+    ruleComment: 2
     tags:
       - Tag_blog
     pageTranslation:

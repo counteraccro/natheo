@@ -210,4 +210,21 @@ class PageRepository extends ServiceEntityRepository
             ->setMaxResults($limit);
         return $paginator;
     }
+
+    /**
+     * Retourne une liste d'id et de titre de page en fonction de la locale
+     * @param string $locale
+     * @return array
+     */
+    public function getTitleAllPageByLocale(string $locale): array
+    {
+        $query = $this->createQueryBuilder('p');
+        $query
+            ->select('p.id', 'pt.titre')
+            ->join('p.pageTranslations', 'pt')
+            ->where('pt.locale = :locale')
+            ->setParameter('locale', $locale);
+
+        return $query->getQuery()->getArrayResult();
+    }
 }

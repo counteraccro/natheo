@@ -1,0 +1,16 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block title %}{{ 'comment.moderate.comments.page_title' | trans({}, 'comment') }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'comment.moderate.comments.page_title_h1' | trans({}, 'comment') }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    <p>
+        {{ 'comment.moderate.comments.description' | trans({}, 'comment') }}
+    </p>
+
+    <div {{ vue_component('Admin/Content/Comment/CommentModeration', {'urls' : urls, 'translate' : translate, 'datas' : datas}) }}></div>
+
+{% endblock %}

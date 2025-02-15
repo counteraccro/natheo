@@ -6,7 +6,9 @@
  */
 namespace App\Service\Admin;
 
+use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\System\ApiToken;
+use App\Repository\Admin\Content\Comment\CommentRepository;
 use App\Utils\System\ApiToken\ApiTokenConst;
 use App\Utils\System\Options\OptionSystemKey;
 use Psr\Container\ContainerExceptionInterface;
@@ -83,5 +85,33 @@ class DashboardService extends AppAdminService
         }
 
         return ['success' => true, 'body' => $body, 'all', 'configComplete' => $configComplete];
+    }
+
+    /**
+     * Génère le bloc pour les 10 derniers commentaires
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getBlockLastComment()
+    {
+        /** @var CommentRepository $repository */
+        $repository = $this->getRepository(Comment::class);
+        $commentService = $this->getCommentService();
+
+        $result = $repository->findBy([], ['id' => 'DESC'], 10);
+
+        $body = [];
+        foreach($result as $comment) {
+            /** @var Comment $comment */
+            $body[] = [
+                'id' => $comment->getId(),
+                'author' => $comment->getAuthor(),
+                'status' => $commentService->getStatusFormatedByCode($comment->getStatus()),
+                'date' => $comment->getCreatedAt()->format('Y-m-d H:i:s'),
+            ];
+        }
+
+        return ['success' => true, 'body' => $body];
     }
 }

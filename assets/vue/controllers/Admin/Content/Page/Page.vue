@@ -573,6 +573,10 @@ export default {
             data-bs-target="#nav-tags" type="button" role="tab" aria-selected="false" tabindex="-1">
           <i class="bi bi-tags"></i> {{ this.translate.onglet_tags }}
         </button>
+        <button class="nav-link" @click="this.switchTab('comments')" id="comments-tab" data-bs-toggle="tab"
+            data-bs-target="#nav-comments" type="button" role="tab" aria-selected="false" tabindex="-1">
+          <i class="bi bi-chat-text"></i> {{ this.translate.onglet_comments }}
+        </button>
         <button class="nav-link" @click="this.switchTab('history')" id="history-tab" data-bs-toggle="tab"
             data-bs-target="#nav-history" type="button" role="tab" aria-selected="false" tabindex="-1">
           <i class="bi bi-clock-history"></i> {{ this.translate.onglet_history }}
@@ -649,6 +653,35 @@ export default {
 
       </div>
       <!-- fin bloc tag -->
+
+      <!-- Bloc comment -->
+      <div class="tab-pane fade" id="nav-comments" role="tabpanel" aria-labelledby="seo-tab" tabindex="0">
+
+        <h5>{{ this.translate.page_comment.title }}</h5>
+
+        <fieldset class="mb-3">
+          <legend>{{ this.translate.page_comment.info }}</legend>
+          <div v-if="this.page_datas.options_commentaire.open === '1'"> {{ this.translate.page_comment.comment_open }}
+            <span v-if="this.page_datas.options_commentaire.new_comment === '1'">{{ this.translate.page_comment.comment_moderate }}</span>
+          </div>
+          <div v-else>{{ this.translate.page_comment.comment_close }}</div>
+        </fieldset>
+
+        <div class="form-check form-switch mb-3">
+          <input class="form-check-input" type="checkbox" role="switch" id="openComment" v-model="this.page.openComment" @change="this.autoSave(this.page)">
+          <label class="form-check-label" for="openComment">{{ this.translate.page_comment.input_open_comment }}</label>
+        </div>
+
+        <div class="mb-3">
+          <label for="list-status-page" class="form-label">{{ this.translate.page_comment.input_status_comment_label }}</label>
+          <select id="list-status-page" class="form-select" aria-label="Default select example" v-model="this.page.ruleComment" @change="this.autoSave(this.page)">
+            <option v-for="(value, key) in this.page_datas.list_comments_status" :value="parseInt(key)">{{ value }}</option>
+          </select>
+          <div id="list-status-help" class="form-text">{{ this.translate.page_comment.input_status_comment_help }}</div>
+        </div>
+      </div>
+      <!-- Fin bloc comment -->
+
       <!-- Bloc history -->
       <div class="tab-pane fade" id="nav-history" role="tabpanel" aria-labelledby="history-tab" tabindex="0">
         <div v-if="this.loading" class="overlay">

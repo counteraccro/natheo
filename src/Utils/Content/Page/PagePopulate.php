@@ -92,6 +92,8 @@ class PagePopulate
         $this->page->setStatus($this->populate['status']);
         $this->page->setCategory($this->populate['category']);
         $this->page->setLandingPage(boolval($this->populate['landingPage']));
+        $this->page->setIsOpenComment(boolval($this->populate['openComment']));
+        $this->page->setRuleComment($this->populate['ruleComment']);
     }
 
     /**

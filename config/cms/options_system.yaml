@@ -189,3 +189,17 @@ options_system:
         list_value: '30:options_system.time.validation.user.half.hour|60:options_system.time.validation.user.one.hour|120:options_system.time.validation.user.two.hour|180:options_system.time.validation.user.three.hour|-1:options_system.time.validation.user.no.limit'
         help: 'options_system.time.validation.user.token.help'
         default: '60'
+  options_system.comment:
+    title: 'options_system.comment.title'
+    description: 'options_system.comment.description'
+    options:
+      OS_OPEN_COMMENT:
+        type: 'boolean'
+        label: 'options_system.open_comment'
+        help: 'options_system.open_comment_help'
+        default: 1
+      OS_NEW_COMMENT_WAIT_VALIDATION:
+        type: 'boolean'
+        label: 'options_system.new_comment_wait_validation'
+        help: 'options_system.new_comment_wait_validation_help'
+        default: 1

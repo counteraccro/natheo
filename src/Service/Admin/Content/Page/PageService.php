@@ -99,7 +99,7 @@ class PageService extends AppAdminService
                 $translator->trans('page.grid.status', domain: 'page') =>
                     $this->getStatusStr($element->getStatus()),
                 $translator->trans('page.grid.tag', domain: 'page') => $this->getTags($element->getTags()),
-                $translator->trans('page.grid.comment', domain: 'page') => 0,
+                $translator->trans('page.grid.comment', domain: 'page') => $element->getNbComment(),
                 $translator->trans('page.grid.nb_see', domain: 'page') =>
                     $element->getPageStatistiqueByKey(PageStatistiqueKey::KEY_PAGE_NB_READ)->getValue(),
                 $translator->trans('page.grid.update_at', domain: 'page') => $element
@@ -525,6 +525,25 @@ class PageService extends AppAdminService
                 'id' => $page->getId(),
                 'title' => $pageTranslations->getTitre(),
             ];
+        }
+        return $return;
+    }
+
+    /**
+     * Retourne la liste des titres des pages en fonction de la locale
+     * @param string $locale
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getListeTitlePageByLocale(string $locale): array
+    {
+        $repository = $this->getRepository(Page::class);
+        $result = $repository->getTitleAllPageByLocale($locale);
+        $return = [];
+
+        foreach($result as $page) {
+            $return[$page['id']] = $page['titre'];
         }
         return $return;
     }

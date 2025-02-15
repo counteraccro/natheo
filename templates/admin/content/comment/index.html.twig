@@ -1,0 +1,62 @@
+{% extends 'admin/admin_base.html.twig' %}
+
+{% block title %}{{ 'comment.index.page_title' | trans({}, 'comment') }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'comment.index.page_title_h1' | trans({}, 'comment') }}</h1>
+
+    {{ breadcrumb(breadcrumb) }}
+
+    <fieldset class="mb-3">
+        <legend><i class="bi bi-info-circle"></i> {{ 'comment.index.info' | trans({}, 'comment') }}</legend>
+    {% if isOpenComment is same as("1") %}
+        {{ 'comment.index.info.comment.open' | trans({}, 'comment') }}
+        {% if isModerate is same as('1') %}
+            {{ 'comment.index.info.comment.moderate' | trans({}, 'comment') }}
+        {% endif %}
+    {% else %}
+        {{ 'comment.index.info.comment.close' | trans({}, 'comment') }}
+    {% endif %}
+
+        <a href="{{ path('admin_option-system_change') }}" class="btn btn-secondary btn-sm float-end">{{ 'comment.index.info.change.option' | trans({}, 'comment') }}</a>
+    </fieldset>
+
+    <button type="button" class="btn btn-secondary float-end ms-2" data-bs-toggle="modal" data-bs-target="#help-grid-comment">
+        <i class="bi bi-question-circle"></i>
+    </button>
+    <a href="{{ path('admin_comment_moderate_comments') }}" class="float-end btn btn-secondary">
+        <i class="bi bi-chat-dots-fill"></i> {{ 'comment.index.btn.moderate' | trans({}, 'comment') }}
+
+    </a>
+
+    <p>
+        {{ 'comment.index.description' | trans({}, 'comment') }} <br/>
+        {% if nbCommentWaitValidation > 0  %}
+            {{ 'comment.index.btn.moderate.nb.wait.validation.1' | trans({}, 'comment') }} <span class="badge rounded-pill text-bg-danger">{{ nbCommentWaitValidation }}</span> {{ 'comment.index.btn.moderate.nb.wait.validation.2' | trans({}, 'comment') }} <br/>
+        {% endif %}
+    </p>
+
+
+    <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_comment_load_grid_data',  {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true, 'showFilter' : true}) }}></div>
+
+    <twig:Admin:ModaleComponent id="help-grid-comment" bgColor="bg-secondary">
+        <twig:block name="header">
+            <i class="bi bi-question-circle"></i> {{ 'comment.index.popin.help.title' | trans({}, 'comment') }}
+        </twig:block>
+
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-eye-slash-fill"></i></button> {{ 'comment.index.popin.help.disabled' | trans({}, 'comment') }}
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-eye-fill"></i></button> {{ 'comment.index.popin.help.enable' | trans({}, 'comment') }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-pencil-fill"></i></button> {{ 'comment.index.popin.help.edit' | trans({}, 'comment') }}
+            </div>
+        </div>
+    </twig:Admin:ModaleComponent>
+
+{% endblock %}

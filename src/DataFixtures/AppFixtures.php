@@ -120,6 +120,12 @@ class AppFixtures extends Fixture
     protected const GROUP_API_TOKEN = 'api_token';
 
     /**
+     * Lié à tous les élements comment
+     * @var string
+     */
+    protected const GROUP_COMMENT = 'comment';
+
+    /**
      * @var ContainerInterface
      */
     protected ContainerInterface $container;

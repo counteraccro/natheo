@@ -20,8 +20,10 @@ class DashboardTranslate extends AppTranslate
         return [
             'dashboard_flux_activity' => $this->translator->trans('dashboard.flux.activity', domain: 'dashboard'),
             'dashboard_last_comment' => $this->translator->trans('dashboard.last.comment', domain: 'dashboard'),
+            'dashboard_last_page' => $this->translator->trans('dashboard.last.page', domain: 'dashboard'),
             'dashboard_help_first_connexion' => $this->getBlockHelpFirstConnexionTranslate(),
-            'dashboard_last_comments' => $this->getBlockLastCommentsTranslate()
+            'dashboard_last_comments' => $this->getBlockLastCommentsTranslate(),
+            'dashboard_last_pages' => $this->getBlockLastPagesTranslate()
         ];
     }
 
@@ -57,6 +59,23 @@ class DashboardTranslate extends AppTranslate
         return [
             'title' => $this->translator->trans('dashboard.block.last.comments.title', domain: 'dashboard'),
             'loading' => $this->translator->trans('dashboard.block.last.comments.loading', domain: 'dashboard'),
+            'table_id' => $this->translator->trans('dashboard.block.last.comments.table.id', domain: 'dashboard'),
+            'table_author' => $this->translator->trans('dashboard.block.last.comments.table.author', domain: 'dashboard'),
+            'table_status' => $this->translator->trans('dashboard.block.last.comments.table.status', domain: 'dashboard'),
+            'table_date' => $this->translator->trans('dashboard.block.last.comments.table.date', domain: 'dashboard'),
+            'link_comment' => $this->translator->trans('dashboard.block.last.comments.link.comment', domain: 'dashboard'),
+        ];
+    }
+
+    /**
+     * Retourne les traductions du block derniers commentaires
+     * @return array
+     */
+    public function getBlockLastPagesTranslate(): array
+    {
+        return [
+            'title' => $this->translator->trans('dashboard.block.last.pages.title', domain: 'dashboard'),
+            'loading' => $this->translator->trans('dashboard.block.last.pages.loading', domain: 'dashboard'),
         ];
     }
 }

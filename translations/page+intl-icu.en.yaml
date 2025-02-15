@@ -150,3 +150,12 @@ page.preview.switch.locale.fr: '__En français'
 page.preview.switch.locale.en: '__En anglais'
 page.preview.switch.locale.es: '__En espagnol'
 page.grid.author: __page.grid.author
+page.onglet.comments: __page.onglet.comments
+page.page_comment.title: __page.page_comment.title
+page.page_comment.input_open: __page.page_comment.input_open
+page.page_comment.input_status_label: __page.page_comment.input_status_label
+page.page_comment.input_status_help: __page.page_comment.input_status_help
+page.page_comment.info: __page.page_comment.info
+page.page_comment.comment.open: __page.page_comment.comment.open
+page.page_comment.comment.close: __page.page_comment.comment.close
+page.page_comment.comment.moderate: __page.page_comment.comment.moderate

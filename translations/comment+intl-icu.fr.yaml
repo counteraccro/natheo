@@ -1,0 +1,74 @@
+comment.index.page_title: 'Gestion des commentaires'
+comment.index.page_title_h1: 'Gestion des commentaires'
+comment.index.description: 'Gérer les commentaires de votre site web'
+comment.index.popin.help.title: Aide
+comment.index.popin.help.disabled: Désactiver
+comment.index.popin.help.enable: Activer
+comment.index.popin.help.edit: Modérer
+comment.grid.id: '#'
+comment.grid.comment: Commentaire
+comment.grid.author: Auteur
+comment.grid.status: Etat
+comment.grid.created_at: 'Créer le'
+comment.confirm.disabled.msg: 'A écrire'
+comment.grid.page: Page
+comment.status.wait.validation: 'En attente de validation'
+comment.status.validate: Validé
+comment.status.wait.moderation: 'En attente de modération'
+comment.status.moderate: Modéré
+comment.moderate.comments.page_title: 'Modération des commentaires'
+comment.moderate.comments.page_title_h1: 'Modération des commentaires'
+comment.see.page_title: Commentaire
+comment.see.page_title_h1: 'Commentaire #{id}'
+comment.index.btn.moderate: 'Modération globale'
+comment.see.loading: 'Chargement du commentaire'
+comment.see.author: Auteur
+comment.see.created: 'Créer le '
+comment.see.ip: IP
+comment.see.userAgent: 'Autres infos'
+comment.see.title.info: 'Information du commentaire'
+comment.see.moderation.comment: 'Commentaire de modération'
+comment.see.moderation.author: Modérateur
+comment.see.btn.edit: 'Editer le commentaire'
+comment.see.save.success: 'Commentaire mise à jour avec succès'
+comment.see.toast.title.success: 'Succès !'
+comment.see.toast.title.error: 'Erreur !'
+comment.see.toast.time: "A l'instant"
+comment.index.info: Information
+comment.index.info.comment.open: 'Les commentaires sont ouverts sur le site'
+comment.index.info.comment.moderate: 'et sont en attente de validation par défaut.'
+comment.index.info.comment.close: 'Les commentaires sont désactivés sur le site'
+comment.index.info.change.option: 'Modifier les options'
+comment.moderation.loading: 'Chargement de la liste de commentaire'
+comment.moderation.toast.title.success: 'Succès !'
+comment.moderation.toast.title.error: 'Erreur !'
+comment.moderation.toast.time: "A l'instant"
+comment.moderate.comments.description: 'Validé ou modéré de façon globale une liste de commentaires'
+comment.moderation.legend.search: 'Filtre de trie'
+comment.moderation.status.label: 'Trier par status'
+comment.moderation.pages.label: 'Trier par pages'
+comment.moderation.pages.default: 'Toutes les pages'
+comment.moderation.selection.title: 'Action de modération'
+comment.moderation.status.default: 'Tous les status'
+comment.index.btn.moderate.nb.wait.validation.1: "Il y'a"
+comment.index.btn.moderate.nb.wait.validation.2: 'Commentaire(s) en attente de validation'
+comment.moderation.paginate.page: page
+comment.moderation.paginate.on: sur
+comment.moderation.paginate.row: commentaire(s)
+comment.moderation.comment.id: Commentaire
+comment.moderation.comment.comment: Contenu
+comment.moderation.comment.page: 'Posté sur la page'
+comment.moderation.comment.info: Information
+comment.moderation.comment.ip: IP
+comment.moderation.comment.userAgent: 'User Agent'
+comment.moderation.comment.date: 'écrit le'
+comment.moderation.comment.moderator: 'Modéré par'
+comment.moderation.comment.update: 'Modéré le'
+comment.moderation.comment.author: par
+comment.moderation.selection.comment: 'Commentaire(s) sélectionné(s)'
+comment.moderation.selection.status: 'Nouveau status'
+comment.moderation.selection.comment.moderation: 'Commentaire de modération'
+comment.moderation.selection.submit: 'Mettre à jour'
+comment.moderation.update.success: 'commentaire(s) édité(s) avec succès'
+comment.moderation.btn.reset: 'Tout désélectionner'
+comment.moderation.noResult: 'Aucun commentaire trouvé pour le status sélectionné'

@@ -10,6 +10,7 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
+use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\ApiTokenService;
@@ -193,6 +194,8 @@ class PageController extends AppAdminController
     public function add(
         PageService   $pageService,
         PageTranslate $pageTranslate,
+        CommentService $commentService,
+        OptionSystemService $optionSystemService,
         int           $id = null
     ): Response
     {
@@ -221,7 +224,12 @@ class PageController extends AppAdminController
                 'list_status' => $pageService->getAllStatus(),
                 'list_render' => $pageService->getAllRender(),
                 'list_content' => $pageService->getAllContent(),
-                'list_categories' => $pageService->getAllCategories()
+                'list_categories' => $pageService->getAllCategories(),
+                'list_comments_status' => $commentService->getAllStatus(),
+                'options_commentaire' => [
+                    'open' => $optionSystemService->getValueByKey(OptionSystemKey::OS_OPEN_COMMENT),
+                    'new_comment' => $optionSystemService->getValueByKey(OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION)
+                ]
             ],
             'urls' => [
                 'load_tab_content' => $this->generateUrl('admin_page_load_tab_content'),
@@ -270,7 +278,7 @@ class PageController extends AppAdminController
         } else {
             $page = $pageService->findOneById(Page::class, $id);
         }
-        $pageArray = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt', 'user', 'menuElements', 'menus']);
+        $pageArray = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt', 'user', 'menuElements', 'menus', 'comments']);
 
         // On lie les menus à la page
         if (!$page->getMenus()->isEmpty()) {

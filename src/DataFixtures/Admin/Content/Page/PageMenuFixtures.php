@@ -7,6 +7,8 @@
 namespace App\DataFixtures\Admin\Content\Page;
 
 use App\DataFixtures\AppFixtures;
+use App\Entity\Admin\Content\Menu\Menu;
+use App\Entity\Admin\Content\Page\Page;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -22,8 +24,8 @@ class PageMenuFixtures extends AppFixtures implements FixtureGroupInterface, Ord
         $data = Yaml::parseFile($this->pathDataFixtures . self::PAGE_MENU_FIXTURES_DATA_FILE);
 
         foreach ($data['pageMenu'] as $ref => $dataMenu) {
-            $page = $this->getReference($dataMenu['page']);
-            $menu = $this->getReference($dataMenu['menu']);
+            $page = $this->getReference($dataMenu['page'], Page::class);
+            $menu = $this->getReference($dataMenu['menu'], Menu::class);
 
             $page->addMenu($menu);
             $manager->persist($page);

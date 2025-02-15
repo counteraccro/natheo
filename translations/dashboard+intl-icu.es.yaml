@@ -27,3 +27,11 @@ dashboard.block.help.first.connexion.api_token.status.success: __dashboard.block
 dashboard.block.help.first.connexion.api_token.default.warning: __dashboard.block.help.first.connexion.api_token.default.warning
 dashboard.block.help.first.connexion.api_token.default.warning.submsg: __dashboard.block.help.first.connexion.api_token.default.warning.submsg
 dashboard.block.help.first.connexion.api_token.empty.warning: __dashboard.block.help.first.connexion.api_token.empty.warning
+dashboard.block.last.comments.table.id: __dashboard.block.last.comments.table.id
+dashboard.block.last.comments.table.author: __dashboard.block.last.comments.table.author
+dashboard.block.last.comments.table.status: __dashboard.block.last.comments.table.status
+dashboard.block.last.comments.table.date: __dashboard.block.last.comments.table.date
+dashboard.last.page: __dashboard.last.page
+dashboard.block.last.comments.link.comment: __dashboard.block.last.comments.link.comment
+dashboard.block.last.pages.title: __dashboard.block.last.pages.title
+dashboard.block.last.pages.loading: __dashboard.block.last.pages.loading
