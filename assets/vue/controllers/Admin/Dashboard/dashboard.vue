@@ -6,10 +6,11 @@
 import BlockHelpFirstConnexion from "../../../Components/Dashboard/BlockHelpFirstConnexion.vue";
 import Masonry from "masonry-layout";
 import BlockLastComment from "../../../Components/Dashboard/BlockLastComment.vue";
+import BlockLastPage from "../../../Components/Dashboard/BlockLastPage.vue";
 
 export default {
   name: "Dashboard",
-  components: {BlockLastComment, BlockHelpFirstConnexion},
+  components: {BlockLastPage, BlockLastComment, BlockHelpFirstConnexion},
   emit: [],
   props: {
     urls: Object,
@@ -70,9 +71,9 @@ export default {
     </div>
 
     <div class="col-6 mb-3">
-      <block-last-comment
-          :translate="this.translate.dashboard_last_comments"
-          :urls="this.urls.dashboard_last_comments"
+      <block-last-page
+          :translate="this.translate.dashboard_last_pages"
+          :urls="this.urls.dashboard_last_pages"
           @reload-grid="this.reloadGrid"
       />
     </div>

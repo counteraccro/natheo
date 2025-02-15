@@ -7,6 +7,7 @@
 
 namespace App\Service\Admin;
 
+use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\User\UserDataService;
@@ -57,6 +58,7 @@ class AppAdminHandlerService
             'rawQueryManager' => RawQueryManager::class,
             'rawResultQueryManager' => RawResultQueryManager::class,
             'pageService' => PageService::class,
+            'commentService' => CommentService::class,
         ])]
         protected ContainerInterface $handlers){}
 
@@ -288,5 +290,16 @@ class AppAdminHandlerService
     protected function getPageService() : PageService
     {
         return $this->handlers->get('pageService');
+    }
+
+    /**
+     * Retourne un CommentService
+     * @return CommentService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getCommentService() : CommentService
+    {
+        return $this->handlers->get('commentService');
     }
 }

@@ -46,8 +46,12 @@ class DashboardController extends AppAdminController
                     'update_user_data' => $this->generateUrl('admin_user_update_user_data'),
                 ],
                 'dashboard_last_comments' => [
+                    'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', ['id' => DashboardKey::DASHBOARD_LAST_COMMENT]),
+                    'url_comments' => $this->generateUrl('admin_comment_index')
+                ],
+                'dashboard_last_pages' => [
                     'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', ['id' => 'todo-a-faire']),
-                ]
+                ],
             ],
             'datas' => [
                 'dashboard_help_first_connexion' => [
@@ -76,6 +80,7 @@ class DashboardController extends AppAdminController
     {
         $return = match ($id) {
             DashboardKey::DASHBOARD_HELP_FIRST_CONNEXION_ID => $dashboardService->getBlockHelpConfig(),
+            DashboardKey::DASHBOARD_LAST_COMMENT => $dashboardService->getBlockLastComment(),
             default => ['success' => false, 'body' => null, 'error' => $translator->trans('dashboard.error.load.block', domain: 'dashboard')],
         };
         return $this->json($return);

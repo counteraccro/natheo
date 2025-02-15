@@ -6,7 +6,7 @@
 import axios from "axios";
 
 export default {
-  name: "BlockLastComment",
+  name: "BlockLastPage",
   components: {},
   emit: [],
   props: {
@@ -17,8 +17,7 @@ export default {
   data() {
     return {
       loading: false,
-      errorMessage: null,
-      result: null
+      errorMessage: null
     }
   },
   mounted() {
@@ -37,7 +36,7 @@ export default {
           this.errorMessage = response.data.error;
         }
         else {
-          this.result = response.data.body;
+
         }
 
       }).catch((error) => {
@@ -58,7 +57,7 @@ export default {
 
 <template>
   <div class="card">
-    <h5 class="card-header"><i class="bi bi-chat-left-text"></i> {{ this.translate.title }} </h5>
+    <h5 class="card-header"><i class="bi bi-file-earmark-text-fill"></i> {{ this.translate.title }} </h5>
 
     <div class="card-body" v-if="this.loading">
       <div class="spinner-border spinner-border-sm text-secondary" role="status">
@@ -71,32 +70,6 @@ export default {
       <div v-if="this.errorMessage !== null">
         <i class="bi bi-exclamation-circle"></i> {{ this.errorMessage }}
       </div>
-
-      <div v-if="this.result !== null">
-
-        <table class="table table-striped">
-          <thead>
-          <tr>
-          <th>{{ this.translate.table_id }}</th>
-          <th>{{ this.translate.table_author }}</th>
-            <th>{{ this.translate.table_status }}</th>
-            <th>{{ this.translate.table_date }}</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="comment in this.result">
-            <td>{{ comment.id }}</td>
-            <td>{{ comment.author }}</td>
-            <td><span v-html="comment.status"></span></td>
-            <td>{{ comment.date }}</td>
-          </tr>
-          </tbody>
-        </table>
-
-        <a :href="this.urls.url_comments" class="float-end"><i>{{ this.translate.link_comment }}</i></a>
-
-      </div>
-
     </div>
 
   </div>
