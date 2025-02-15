@@ -11,7 +11,7 @@ parameters:
   app.default_locale: 'fr'
   app.default_database_prefix: '' # un "_" est ajouté par défaut, laissez vide si pas de prefix
   app.default_database_schema: '%env(NATHEO_SCHEMA)%'  # schéma de la base de donnée
-  app.version: 'dev-11-2024'
+  app.version: 'dev-02-2025'
   app.current_branche: 'master'
   # Permet d'activer le mode débug du CMS
   # En débug mode, créer un type d'utilisateur par droit dans les fixtures
