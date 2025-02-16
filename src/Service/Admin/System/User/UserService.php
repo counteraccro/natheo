@@ -194,8 +194,14 @@ class UserService extends AppAdminService
 
         }
 
+        $isCurrentFounder = false;
+        if($security->getUser() !== null && $security->getUser()->isFounder())
+        {
+            $isCurrentFounder = true;
+        }
+
         // Bouton édition affiché sauf pour le fondateur ou si l'utilisateur courant est le fondateur
-        if (($user->isFounder() && $security->getUser()->isFounder()) || !$user->isFounder()) {
+        if (($user->isFounder() && $isCurrentFounder) || !$user->isFounder()) {
             // Bouton edit
             $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
                 'id' => $user->getId(),
