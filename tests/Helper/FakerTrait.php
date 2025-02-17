@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Initialisation Faker
+ */
 namespace App\Tests\Helper;
 
 use Faker\Factory;

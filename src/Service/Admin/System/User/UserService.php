@@ -234,6 +234,7 @@ class UserService extends AppAdminService
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws Exception
      */
     public function anonymizer(User $user): void
     {

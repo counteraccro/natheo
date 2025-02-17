@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Trait principal Fixture
+ */
 namespace App\Tests\Helper\Fixtures;
 
 use Doctrine\ORM\EntityManagerInterface;
