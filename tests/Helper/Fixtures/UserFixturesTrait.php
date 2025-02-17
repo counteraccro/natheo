@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Fixture text user
+ */
 namespace App\Tests\Helper\Fixtures;
 
 use App\Entity\Admin\System\User;
@@ -31,6 +35,25 @@ trait UserFixturesTrait
 
         $user = $this->initEntity(User::class, array_merge($data, $customData));
 
+        if ($persist) {
+            $this->persistAndFlush($user);
+        }
+        return $user;
+    }
+
+    /**
+     * Créer un utilisateur de role Contributeur
+     * @param array $customData
+     * @param bool $persist
+     * @return User
+     */
+    public function createUserContributeur(array $customData = [], bool $persist = true) :User
+    {
+        $data = [
+            'roles' => ['ROLE_CONTRIBUTEUR'],
+        ];
+
+        $user = $this->createUser(array_merge($data, $customData), false);
         if ($persist) {
             $this->persistAndFlush($user);
         }
