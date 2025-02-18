@@ -54,8 +54,9 @@ class OptionSystemService extends AppAdminService
      */
     public function getValueByKey(string $key): ?string
     {
-        if ($this->getByKey($key) != null) {
-            return $this->getByKey($key)->getValue();
+        $result = $this->getByKey($key);
+        if ($result != null) {
+            return $result->getValue();
         }
         return null;
     }
