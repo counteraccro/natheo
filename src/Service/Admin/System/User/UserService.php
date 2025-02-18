@@ -302,6 +302,7 @@ class UserService extends AppAdminService
     {
         $repo = $this->getRepository(User::class);
         /** @var User $user */
+
         $user = $repo->loadUserByIdentifier($email);
         if ($user === null) {
             return null;
@@ -310,6 +311,7 @@ class UserService extends AppAdminService
         $factory = new PasswordHasherFactory([
             'common' => ['algorithm' => 'auto']
         ]);
+
         $hasher = $factory->getPasswordHasher('common');
         if ($hasher->verify($user->getPassword(), $password)) {
             return $user;

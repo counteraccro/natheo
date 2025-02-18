@@ -4,13 +4,17 @@
  * @version 1.0
  * Test du UserService
  */
+
 namespace App\Tests\Service\Admin\System;
 
 use App\Entity\Admin\System\User;
 use App\Service\Admin\System\User\UserService;
 use App\Tests\AppWebTestCase;
+use App\Utils\System\User\Anonymous;
+use App\Utils\System\User\Role;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
 
 class UserServiceTest extends AppWebTestCase
 {
@@ -82,5 +86,116 @@ class UserServiceTest extends AppWebTestCase
         $userUpdate = $this->userService->findOneById(User::class, $user->getId());
         $this->assertNotNull($userUpdate);
         $this->assertNotEquals($password, $userUpdate->getPassword());
+    }
+
+    /**
+     * Test anonymisation
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testAnonymizer(): void
+    {
+        $user = $this->createUser();
+
+        $email = $user->getEmail();
+        $password = $user->getPassword();
+
+        $this->userService->anonymizer($user);
+        /** @var User $user */
+        $user = $this->userService->findOneById(User::class, $user->getId());
+
+        $this->assertEquals(Anonymous::FIRST_NAME, $user->getFirstName());
+        $this->assertEquals(Anonymous::LAST_NAME, $user->getLastName());
+        $this->assertEquals(Anonymous::LOGIN, $user->getLogin());
+        $this->assertNotEquals($password, $user->getPassword());
+        $this->assertNotEquals($email, $user->getPassword());
+        $this->assertTrue($user->isDisabled());
+        $this->assertTrue($user->isAnonymous());
+        $this->assertFalse($user->isFounder());
+        $this->assertCount(0, $user->getOptionsUser()->toArray());
+
+    }
+
+    /**
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetByRole(): void
+    {
+        $user = $this->createUserFounder();
+        $result = $this->userService->getByRole(Role::ROLE_CONTRIBUTEUR);
+        $this->assertCount(1, $result);
+    }
+
+    /**
+     * Retourne une liste d'email en fonction d'un user
+     * @return void
+     */
+    public function testGetTabMailByListeUser(): void
+    {
+        $array = [
+            $user = $this->createUser(),
+            $user2 = $this->createUserFounder(),
+            $user3 = $this->createUserContributeur(),
+        ];
+
+        $result = $this->userService->getTabMailByListeUser($array);
+        $this->assertCount(3, $result);
+        $this->assertEquals($user->getEmail(), $result[0]);
+        $this->assertEquals($user2->getEmail(), $result[1]);
+        $this->assertEquals($user3->getEmail(), $result[2]);
+    }
+
+    /**
+     * Créer un nouvel user
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testAddUser(): void
+    {
+        $user = $this->createUser([], false);
+
+        $user->setLogin(null);
+        $user = $this->userService->addUser($user);
+
+        $this->assertNotNull($user->getLogin());
+
+        $result = $this->userService->findOneById(User::class, $user->getId());
+        $this->assertNotNull($result);
+    }
+
+    /**
+     * Récupération d'un utilisateur en fonction de son login/password
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetUserByEmailAndPassword(): void
+    {
+        $factory = new PasswordHasherFactory([
+            'common' => ['algorithm' => 'auto']
+        ]);
+        $hasher = $factory->getPasswordHasher('common');
+
+        $password = self::getFaker()->password();
+        $user = $this->createUser(['disabled' => false, 'anonymous' => false, 'password' => $hasher->hash($password)]);
+
+        $result = $this->userService->getUserByEmailAndPassword($user->getEmail(), $password);
+        $this->assertNotNull($result);
+
+        $result = $this->userService->getUserByEmailAndPassword(self::getFaker()->email(), $password);
+        $this->assertNull($result);
+
+        $result = $this->userService->getUserByEmailAndPassword($user->getEmail(), self::getFaker()->password());
+        $this->assertNull($result);
+
+        $password = self::getFaker()->password();
+        $user = $this->createUser(['disabled' => true, 'anonymous' => true, 'password' => $hasher->hash($password)]);
+        $result = $this->userService->getUserByEmailAndPassword($user->getEmail(), $password);
+        $this->assertNull($result);
+
     }
 }
