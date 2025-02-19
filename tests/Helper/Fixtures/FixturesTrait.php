@@ -6,11 +6,14 @@
  */
 namespace App\Tests\Helper\Fixtures;
 
+use App\Tests\Helper\Fixtures\System\OptionSystemFixturesTrait;
+use App\Tests\Helper\Fixtures\System\OptionUserFixturesTrait;
+use App\Tests\Helper\Fixtures\System\UserFixturesTrait;
 use Doctrine\ORM\EntityManagerInterface;
 
 trait FixturesTrait
 {
-    use UserFixturesTrait;
+    use UserFixturesTrait, OptionUserFixturesTrait, OptionSystemFixturesTrait;
 
     /**
      * @var EntityManagerInterface
@@ -39,7 +42,6 @@ trait FixturesTrait
 
             $setterAddName = 'add' . ucfirst(rtrim($property, 's'));
             $setterName = 'set' . ucfirst($property);
-            $setterIsName = 'is' . ucfirst($property);
 
             // add
             if(method_exists($object, $setterAddName) && !method_exists($object, $setterName)) {
@@ -47,12 +49,6 @@ trait FixturesTrait
                 foreach ($value as $item) {
                     $object->$setterAddName($item);
                 }
-                continue;
-            }
-
-            // is
-            if (method_exists($object, $setterIsName)) {
-                $object->$setterIsName($value);
                 continue;
             }
 
