@@ -44,6 +44,30 @@ class AppWebTestCase extends WebTestCase
         $this->client->request('GET', '/');
         $session = $this->client->getRequest()->getSession();
         $session->set('_locale', 'fr');
+
+        $this->generateDefaultOptionSystem();
+    }
+
+    /**
+     * Vérifie si le user n'a pas accès à la route définie. Si le user est null, utilise le user avec le role ROLE_USER
+     * @param string $route
+     * @param array $params
+     * @param string $methode
+     * @param null $user
+     * @param string $firewall
+     * @return void
+     */
+    public function checkNoAccess(string $route, array $params = [], string $methode = 'GET', $user = null, string $firewall = 'admin'): void
+    {
+        if($user === null) {
+            $user = $this->createUser();
+        }
+        $this->generateDefaultOptionUser($user);
+
+        $this->client->loginUser($user, $firewall);
+        $this->client->request($methode, $this->router->generate($route, $params));
+
+        $this->assertResponseStatusCodeSame(403);
     }
 
 }

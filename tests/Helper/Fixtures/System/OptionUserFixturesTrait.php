@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Fixture option user
+ */
 namespace App\Tests\Helper\Fixtures\System;
 
 use App\Entity\Admin\System\OptionUser;
@@ -18,10 +22,10 @@ trait OptionUserFixturesTrait
      * @param bool $persist
      * @return OptionUser
      */
-    public function createOptionUser(User $user, array $customData = [], bool $persist = true): OptionUser
+    public function createOptionUser(User $user = null, array $customData = [], bool $persist = true): OptionUser
     {
         $data = [
-            'user' => $user,
+            'user' => $user ?: $this->createUser(),
             'key' => self::getFaker()->text(),
             'value' => self::getFaker()->text(),
         ];
