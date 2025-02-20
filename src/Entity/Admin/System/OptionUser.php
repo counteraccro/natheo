@@ -17,7 +17,7 @@ class OptionUser
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'optionsUser')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'optionsUser')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 

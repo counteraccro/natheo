@@ -35,6 +35,7 @@ trait UserFixturesTrait
         ];
 
         $user = $this->initEntity(User::class, array_merge($data, $customData));
+        $this->generateDefaultOptionUser($user);
 
         if ($persist) {
             $this->persistAndFlush($user);
