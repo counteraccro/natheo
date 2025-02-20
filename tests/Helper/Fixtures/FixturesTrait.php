@@ -6,6 +6,7 @@
  */
 namespace App\Tests\Helper\Fixtures;
 
+use App\Tests\Helper\Fixtures\System\MailFixturesTrait;
 use App\Tests\Helper\Fixtures\System\OptionSystemFixturesTrait;
 use App\Tests\Helper\Fixtures\System\OptionUserFixturesTrait;
 use App\Tests\Helper\Fixtures\System\UserFixturesTrait;
@@ -13,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 trait FixturesTrait
 {
-    use UserFixturesTrait, OptionUserFixturesTrait, OptionSystemFixturesTrait;
+    use UserFixturesTrait, OptionUserFixturesTrait, OptionSystemFixturesTrait, MailFixturesTrait;
 
     /**
      * @var EntityManagerInterface
