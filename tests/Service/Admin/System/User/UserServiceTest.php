@@ -5,7 +5,7 @@
  * Test du UserService
  */
 
-namespace App\Tests\Service\Admin\System;
+namespace App\Tests\Service\Admin\System\User;
 
 use App\Entity\Admin\System\User;
 use App\Service\Admin\System\User\UserService;

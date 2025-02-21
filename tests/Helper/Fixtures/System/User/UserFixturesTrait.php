@@ -5,7 +5,7 @@
  * Fixture text user
  */
 
-namespace App\Tests\Helper\Fixtures\System;
+namespace App\Tests\Helper\Fixtures\System\User;
 
 use App\Entity\Admin\System\User;
 use App\Tests\Helper\FakerTrait;
