@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Fixture mail
+ */
 namespace App\Tests\Helper\Fixtures\System;
 
 use App\Entity\Admin\System\Mail;
@@ -51,6 +55,7 @@ trait MailFixturesTrait
         ];
 
         $mailTranslation = $this->initEntity(MailTranslation::class, array_merge($data, $customData));
+        $mail->addMailTranslation($mailTranslation);
         if ($persist) {
             $this->persistAndFlush($mailTranslation);
         }
@@ -94,6 +99,5 @@ trait MailFixturesTrait
                 $this->createMailTranslation($mail, $translate);
             }
         }
-
     }
 }
