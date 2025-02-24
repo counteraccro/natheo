@@ -10,6 +10,8 @@ namespace App\Utils\System\Mail;
 use App\Entity\Admin\System\User;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\System\Options\OptionSystemKey;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class KeyWord
@@ -204,9 +206,11 @@ class KeyWord
      * Renvoi le tableau de keyWord avec les valeurs correspondantes pour l'email
      * change password
      * @param User $user
-     * @param string $url_change_password
+     * @param string $urlChangePassword
      * @param OptionSystemService $optionSystemService
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getMailChangePassword(
         User                $user,

@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Fixture user data
+ */
 namespace App\Tests\Helper\Fixtures\System\User;
 
 use App\Entity\Admin\System\User;
