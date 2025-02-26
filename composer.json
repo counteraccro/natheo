@@ -10,7 +10,7 @@
         "amphp/http-client": "4.4.0",
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/doctrine-migrations-bundle": "^3.2",
-        "doctrine/orm": "^2.14",
+        "doctrine/orm": "^3.3.2",
         "fakerphp/faker": "^1.24",
         "league/commonmark": "^2.4",
         "martin-georgiev/postgresql-for-doctrine": "^2.1",
