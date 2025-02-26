@@ -6,7 +6,7 @@
          backupGlobals="false"
          colors="true"
          bootstrap="tests/bootstrap.php"
-         convertDeprecationsToExceptions="false"
+         stopOnDeprecation ="false"
 >
     <php>
         <ini name="display_errors" value="1" />
@@ -24,20 +24,20 @@
         </testsuite>
     </testsuites>
 
-    <coverage processUncoveredFiles="true">
-        <include>
+    <coverage includeUncoveredFiles ="true">
+        <!--<include>
             <directory suffix=".php">src</directory>
-        </include>
+        </include>-->
     </coverage>
 
-    <listeners>
+   <!-- <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
-    </listeners>
+    </listeners> -->
 
     <!-- Run `composer require symfony/panther` before enabling this extension -->
 
     <extensions>
-        <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
+        <bootstrap  class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
     <!--<extension class="Symfony\Component\Panther\ServerExtension" />-->
 </extensions>
 
