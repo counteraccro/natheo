@@ -158,6 +158,7 @@ class NotificationControllerTest extends AppWebTestCase
 
         $this->client->loginUser($user, 'admin');
         $this->client->request('POST', $this->router->generate('admin_notification_purge'));
+        $this->em->clear();
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -169,7 +170,7 @@ class NotificationControllerTest extends AppWebTestCase
         $result = $notificationRepository->findBy(['user' => $user]);
 
         // TODO résultat à revoir, requête en rawQuery semble ne pas s'exécuter en test
-        //$this->assertCount(15, $result);
+        //$this->assertCount(10, $result);
     }
 
     public function testReadAll(): void
