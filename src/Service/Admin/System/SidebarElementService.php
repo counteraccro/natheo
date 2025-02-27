@@ -22,6 +22,8 @@ class SidebarElementService extends AppAdminService
      * Récupère l'ensemble des sidebarElement parent
      * @param bool $disabled
      * @return mixed
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getAllParent(bool $disabled = false): mixed
     {
@@ -34,6 +36,8 @@ class SidebarElementService extends AppAdminService
      * @param int $page
      * @param int $limit
      * @return Paginator
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getAllPaginate(int $page, int $limit): Paginator
     {
