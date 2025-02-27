@@ -13,13 +13,14 @@ use App\Utils\System\Options\OptionSystemKey;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\String\ByteString;
 
 class MailServiceTest extends AppWebTestCase
 {
     /**
-     * @var MailService|mixed|object|\Symfony\Component\DependencyInjection\Container|null
+     * @var MailService|mixed|object|Container|null
      */
     private MailService $mailService;
 
