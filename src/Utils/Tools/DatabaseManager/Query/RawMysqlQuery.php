@@ -51,4 +51,16 @@ class RawMysqlQuery implements RawQueryInterface
     {
         return "SHOW DATABASES;";
     }
+
+    /**
+     * @return string
+     */
+    public static function getQueryPurgeNotification(): string
+    {
+        return "DELETE
+                FROM natheo.notification n
+                WHERE n.user_id = :user_id
+                    AND n.read = 1
+                    AND DATEDIFF(CURRENT_DATE(), n.created_at) > :nb_day";
+    }
 }

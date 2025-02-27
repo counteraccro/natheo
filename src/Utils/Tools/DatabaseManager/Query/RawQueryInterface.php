@@ -36,4 +36,10 @@ interface RawQueryInterface
      * @return string
      */
     public static function getQueryAllDatabase(): string;
+
+    /**
+     * Permet de purger les notifications
+     * @return string
+     */
+    public static function getQueryPurgeNotification(): string;
 }

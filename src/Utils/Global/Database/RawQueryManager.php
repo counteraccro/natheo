@@ -66,4 +66,13 @@ class RawQueryManager
     {
         return $this->rawClass::getQueryAllDatabase();
     }
+
+    /**
+     * Permet pour purger les notifications
+     * @return string
+     */
+    public function getQueryPurgeNotification(): string
+    {
+        return $this->rawClass::getQueryPurgeNotification();
+    }
 }

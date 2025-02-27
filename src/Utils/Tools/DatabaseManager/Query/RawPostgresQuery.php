@@ -105,4 +105,17 @@ class RawPostgresQuery implements RawQueryInterface
     {
         return 'SELECT * FROM pg_database';
     }
+
+    /**
+     * Permet de purger les notifications
+     * @return string
+     */
+    public static function getQueryPurgeNotification(): string
+    {
+        return 'DELETE
+            FROM natheo.notification n
+            WHERE n.user_id = :user_id
+            AND n.read = true
+            AND EXTRACT(day from ((CURRENT_DATE - n.created_at))) > :nb_day';
+    }
 }

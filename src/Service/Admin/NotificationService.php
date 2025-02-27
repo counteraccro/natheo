@@ -147,8 +147,10 @@ class NotificationService extends AppAdminService
      */
     public function purge(int $nbDay, int $userId): void
     {
+        $rawQuery = $this->getRawQueryManager();
+
         $repo = $this->getRepository(Notification::class);
-        $repo->removeAfterDay($nbDay, $userId);
+        $repo->removeAfterDay($nbDay, $userId, $rawQuery);
     }
 
     /**
