@@ -248,6 +248,8 @@ class TagController extends AppAdminController
      * @param string $search
      * @param string $locale
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/search/{search}/{locale}', name: 'search', methods: ['GET'])]
     public function search(TagService $tagService, string $search = '', string $locale = ''): Response

@@ -26,6 +26,8 @@ class TagService extends AppAdminService
      * @param int $limit
      * @param string|null $search
      * @return Paginator
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
     {
@@ -39,6 +41,8 @@ class TagService extends AppAdminService
      * @param int $limit
      * @param string|null $search
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getAllFormatToGrid(int $page, int $limit, string $search = null): array
     {
@@ -161,6 +165,8 @@ class TagService extends AppAdminService
      * @param string $locale
      * @param string $search
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function searchByLocale(string $locale, string $search): array
     {
@@ -186,6 +192,8 @@ class TagService extends AppAdminService
      * @param string $locale
      * @param string $label
      * @return ?Tag
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function searchByNameByLocale(string $locale, string $label): ?Tag
     {
@@ -201,6 +209,8 @@ class TagService extends AppAdminService
      * @param string $locale
      * @param string $label
      * @return Tag|null
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function newTagByNameAndLocale(string $locale, string $label): ?Tag
     {
