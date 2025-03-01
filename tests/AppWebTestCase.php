@@ -32,6 +32,8 @@ class AppWebTestCase extends WebTestCase
      */
     protected TranslatorInterface $translator;
 
+    protected array $locales =  ['fr', 'es', 'en'];
+
     public function setUp(): void
     {
         $this->client = static::createClient();
@@ -41,7 +43,7 @@ class AppWebTestCase extends WebTestCase
 
         $this->em = $this->container->get('doctrine')->getManager();
 
-        $this->client->request('GET', '/');
+        $this->client->request('GET', '/', parameters: ['_locale' => 'fr']);
         $session = $this->client->getRequest()->getSession();
         $session->set('_locale', 'fr');
 
