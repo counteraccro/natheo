@@ -7,6 +7,7 @@
 namespace App\Tests\Helper\Fixtures;
 
 use App\Tests\Helper\Fixtures\Content\TagFixturesTrait;
+use App\Tests\Helper\Fixtures\System\ApiTokenFixturesTrait;
 use App\Tests\Helper\Fixtures\System\MailFixturesTrait;
 use App\Tests\Helper\Fixtures\System\NotificationFixturesTrait;
 use App\Tests\Helper\Fixtures\System\OptionSystemFixturesTrait;
@@ -19,7 +20,7 @@ use Doctrine\ORM\EntityManagerInterface;
 trait FixturesTrait
 {
     use UserFixturesTrait, OptionUserFixturesTrait, OptionSystemFixturesTrait, MailFixturesTrait, UserDataFixturesTrait,
-        NotificationFixturesTrait, SidebarElementFixturesTrait, TagFixturesTrait;
+        NotificationFixturesTrait, SidebarElementFixturesTrait, TagFixturesTrait, ApiTokenFixturesTrait;
 
     /**
      * @var EntityManagerInterface
