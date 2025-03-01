@@ -41,7 +41,7 @@ class UserServiceTest extends AppWebTestCase
      */
     public function testGetAllFormatToGrid(): void
     {
-        $this->createUser();
+        $user = $this->createUser();
         $this->createUserContributeur();
         $result = $this->userService->getAllFormatToGrid(1, 10);
 
@@ -52,6 +52,9 @@ class UserServiceTest extends AppWebTestCase
         $this->assertArrayHasKey('translate', $result);
         $this->assertEquals(2, $result['nb']);
         $this->assertCount(2, $result['data']);
+
+        $result = $this->userService->getAllFormatToGrid(1, 10, $user->getLogin());
+        $this->assertCount(1, $result['data']);
     }
 
     /**
