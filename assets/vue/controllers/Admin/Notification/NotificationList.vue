@@ -49,8 +49,11 @@ export default {
         this.urlRead = response.data.urlRead;
         this.urlReadAll = response.data.urlReadAll;
         this.locale = response.data.locale;
-        this.listLimit = JSON.parse(response.data.listLimit);
+        this.listLimit = response.data.listLimit;
       }).catch((error) => {
+
+
+
         console.error(error);
       }).finally(() => {
         this.loading = false
