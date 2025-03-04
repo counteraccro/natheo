@@ -62,7 +62,7 @@ class TagServiceTest extends AppWebTestCase
      */
     public function testSearchByLocale(): void
     {
-        $tag = $this->createTag();
+        $tag = $this->createTag(['disabled' => false]);
         foreach ($this->locales as $locale) {
             $this->createTagTranslation($tag, ['locale' => $locale, 'label' => $locale . ' Un label']);
         }
