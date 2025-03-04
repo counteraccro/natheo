@@ -174,7 +174,7 @@ class ApiTokenController extends AppAdminController
      * @return JsonResponse
      */
     #[Route('/generate-token', name: 'generate_token', methods: ['GET'])]
-    public function generate_token(ApiTokenService $apiTokenService): JsonResponse
+    public function generateToken(ApiTokenService $apiTokenService): JsonResponse
     {
         return $this->json(['token' => $apiTokenService->generateToken()]);
     }
