@@ -157,7 +157,6 @@ class DataBase
                 ];
             }, $allMetadata);
 
-
         $array = $this->mergeAssociationColumnsInColumns($array);
         $array = $this->convertFieldCamelCaseToSnakeCase($array);
 
@@ -182,6 +181,7 @@ class DataBase
                         $i++;
                     }
                 }
+                unset($table['assocationMapping']);
             }
         }
         return $tables;
