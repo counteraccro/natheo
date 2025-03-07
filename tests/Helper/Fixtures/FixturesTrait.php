@@ -16,12 +16,14 @@ use App\Tests\Helper\Fixtures\System\TranslateFixturesTrait;
 use App\Tests\Helper\Fixtures\System\User\OptionUserFixturesTrait;
 use App\Tests\Helper\Fixtures\System\User\UserDataFixturesTrait;
 use App\Tests\Helper\Fixtures\System\User\UserFixturesTrait;
+use App\Tests\Helper\Fixtures\Tools\SqlManagerFixturesTrait;
 use Doctrine\ORM\EntityManagerInterface;
 
 trait FixturesTrait
 {
     use UserFixturesTrait, OptionUserFixturesTrait, OptionSystemFixturesTrait, MailFixturesTrait, UserDataFixturesTrait,
-        NotificationFixturesTrait, SidebarElementFixturesTrait, TagFixturesTrait, ApiTokenFixturesTrait, TranslateFixturesTrait;
+        NotificationFixturesTrait, SidebarElementFixturesTrait, TagFixturesTrait, ApiTokenFixturesTrait, TranslateFixturesTrait,
+        SqlManagerFixturesTrait;
 
     /**
      * @var EntityManagerInterface
