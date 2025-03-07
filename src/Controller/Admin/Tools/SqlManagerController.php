@@ -126,6 +126,8 @@ class SqlManagerController extends AppAdminController
      * @param int|null $id
      * @param bool $isExecute
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
