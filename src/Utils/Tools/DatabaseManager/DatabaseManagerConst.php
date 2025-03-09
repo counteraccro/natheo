@@ -13,7 +13,7 @@ class DatabaseManagerConst
     /**
      * Nom du dossier root des dumps
      */
-    public const ROOT_FOLDER_NAME = 'public' . DIRECTORY_SEPARATOR . self::FOLDER_NAME . DIRECTORY_SEPARATOR;
+    public const ROOT_FOLDER_NAME = DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . self::FOLDER_NAME . DIRECTORY_SEPARATOR;
 
     /**
      * Nom du fichier

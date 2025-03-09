@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Service pour DatabaseManager
  */
 
@@ -10,11 +10,9 @@ namespace App\Service\Admin\Tools;
 use App\Service\Admin\AppAdminService;
 use App\Utils\Global\Database\DataBase;
 use App\Utils\Tools\DatabaseManager\DatabaseManagerConst;
-use App\Utils\Tools\DatabaseManager\Query\RawPostgresQuery;
-use App\Utils\Utils;
-use Nette\Utils\Finder;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\Finder\Finder;
 
 class DatabaseManagerService extends AppAdminService
 {
@@ -67,11 +65,15 @@ class DatabaseManagerService extends AppAdminService
     /**
      * Retourne la liste des dumps SQL
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getAllDump(): array
     {
+        $kernel = $this->getKernel();
+
         $finder = new Finder();
-        $finder->files()->in('../' . DatabaseManagerConst::ROOT_FOLDER_NAME);
+        $finder->files()->in($kernel->getProjectDir() . DatabaseManagerConst::ROOT_FOLDER_NAME);
 
         $return = [];
         foreach ($finder as $file) {
