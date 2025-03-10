@@ -19,6 +19,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -29,6 +30,7 @@ class DumpSqlHandler
         private NotificationService    $notificationService,
         private EntityManagerInterface $entityManager,
         private ParameterBagInterface  $parameterBag,
+        private KernelInterface $kernel
     )
     {
     }
@@ -45,7 +47,7 @@ class DumpSqlHandler
         $filesystem = new Filesystem();
         $options = $dumpSql->getOptions();
         $fileName = DatabaseManagerConst::FILE_NAME_DUMP . date('d-m-Y-H-i-s') . DatabaseManagerConst::FILE_DUMP_EXTENSION;
-        $path = DatabaseManagerConst::ROOT_FOLDER_NAME . $fileName;
+        $path = $this->kernel->getProjectDir() . DatabaseManagerConst::ROOT_FOLDER_NAME . $fileName;
         $url = '/' . DatabaseManagerConst::FOLDER_NAME . '/' . $fileName;
 
         $tables = $this->getListeTable($options);
@@ -86,8 +88,6 @@ class DumpSqlHandler
         $tables = [];
         if (!$options['all']) {
             foreach ($tablesTmp as $table) {
-
-                echo $table->getName();
                 foreach ($options['tables'] as $tDump) {
                     if ($schemaParam . $tDump === $table->getName() || $tDump === $table->getName()) {
                         $tables[] = $table;
