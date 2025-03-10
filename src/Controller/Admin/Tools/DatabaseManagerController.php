@@ -118,6 +118,13 @@ class DatabaseManagerController extends AbstractController
         return $this->json($return);
     }
 
+    /**
+     * Retourne la liste des dumpSQL
+     * @param DatabaseManagerService $databaseManagerService
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     #[Route('/ajax/all-dump-file', name: 'all_dump_file', methods: ['GET'])]
     public function getAllFileDump(
         DatabaseManagerService $databaseManagerService
