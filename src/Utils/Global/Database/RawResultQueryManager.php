@@ -42,6 +42,7 @@ class RawResultQueryManager
     /**
      * Retourne la structure d'une table
      * @param array $result
+     * @param TranslatorInterface $translator
      * @return array
      */
     public function getResultStructureTable(array $result, TranslatorInterface $translator): array

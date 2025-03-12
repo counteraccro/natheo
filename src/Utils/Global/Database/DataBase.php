@@ -103,7 +103,7 @@ class DataBase
     public function isDataInTable(string $entity): bool
     {
         $values = $this->entityManager->getRepository($entity)->findAll();
-        if(empty($values)) {
+        if (empty($values)) {
             return false;
         }
         return true;
@@ -121,7 +121,7 @@ class DataBase
         $parameterBag = $this->handlers->get('parameterBag');
         $schema = $parameterBag->get('app.default_database_schema');
 
-        if(empty($schema)) {
+        if (empty($schema)) {
             return true;
         }
 
@@ -221,7 +221,10 @@ class DataBase
                 return null;
             }, $allMetadata);
 
-        return array_values(array_filter($array))[0];
+        if (isset(array_values(array_filter($array))[0])) {
+            return array_values(array_filter($array))[0];
+        }
+        return [];
     }
 
     /**
