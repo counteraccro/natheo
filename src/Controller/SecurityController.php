@@ -75,10 +75,10 @@ class SecurityController extends AbstractController
      * @param string $key
      * @param SecurityService $securityService
      * @param TranslatorInterface $translator
-     * @param UserService $userService
+     * @param UserTranslate $userTranslate
      * @param Request $request
      * @return Response
-     * @throws NonUniqueResultException
+     * @throws \Exception
      */
     #[Route(path: 'change-password/{key}', name: 'change_password_user', methods: ['GET'])]
     #[Route(path: 'new-password/{key}', name: 'change_new_password_user', methods: ['GET'])]
