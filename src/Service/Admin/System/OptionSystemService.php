@@ -110,6 +110,8 @@ class OptionSystemService extends AppAdminService
     /**
      * Renvoi true ou false en fonction de l'option OS_MAIL_NOTIFICATION
      * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function canSendMailNotification(): bool
     {
@@ -122,6 +124,8 @@ class OptionSystemService extends AppAdminService
     /**
      * Renvoi true ou false en fonction de l'option OS_ALLOW_DELETE_DATA
      * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function canDelete(): bool
     {
@@ -134,6 +138,8 @@ class OptionSystemService extends AppAdminService
     /**
      * Renvoi true ou false en fonction de l'option OS_REPLACE_DELETE_USER
      * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function canReplace(): bool
     {
@@ -146,6 +152,8 @@ class OptionSystemService extends AppAdminService
     /**
      * Renvoi true ou false en fonction de l'option OS_NOTIFICATION
      * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function canNotification(): bool
     {
