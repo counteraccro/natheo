@@ -55,9 +55,13 @@ class LogControllerTest extends AppWebTestCase
      */
     public function testLoadLogFile() :void
     {
-        $logFile = 'doctrine-' . date('Y-m-d') . '.log';
-        $this->checkNoAccess('admin_log_ajax_load_log_file', ['file' => $logFile]);
+        $logFile = 'auth-' . date('Y-m-d') . '.log';
+        $loggerService = $this->container->get(LoggerService::class);
+
         $userSuperAdm = $this->createUserSuperAdmin();
+        $loggerService->logAuthAdmin($userSuperAdm->getLogin(), 'ip-test', true);
+
+        $this->checkNoAccess('admin_log_ajax_load_log_file', ['file' => $logFile]);
 
         $this->client->loginUser($userSuperAdm, 'admin');
         $this->client->request('GET', $this->router->generate('admin_log_ajax_load_log_file', ['file' => $logFile, 'page' => 1, 'limit' => 1]));

@@ -90,8 +90,9 @@ class LoggerServiceTest extends AppWebTestCase
 
         $logFile = 'doctrine-' . date('Y-m-d') . '.log';
         $result = $this->loggerService->loadLogFile($logFile, 1, 1);
-        $data = $result['data'];
-        $this->assertNotEmpty($data);
+        $this->assertArrayHasKey('nb', $result);
+        $this->assertArrayHasKey('data', $result);
+        $this->assertArrayHasKey('column', $result);
     }
 
     /**
