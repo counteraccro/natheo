@@ -17,7 +17,9 @@ use App\Utils\System\User\UserDataKey;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
@@ -45,14 +47,16 @@ class SecurityService extends AppService
      * Détermine si l'utilisateur peut changer ou non son mot de passe
      * @param string $key
      * @return User|null
-     * @throws NonUniqueResultException
-     * @throws Exception
+     * @throws \DateMalformedIntervalStringException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function canChangePassword(string $key): ?User
     {
         /** @var UserDataRepository $repo */
         $repo = $this->getRepository(UserData::class);
         $userData = $repo->findByKeyValue(UserDataKey::KEY_RESET_PASSWORD, $key);
+
         if ($userData === null) {
             return null;
         }
