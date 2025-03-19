@@ -92,6 +92,8 @@ class InstallationController extends AbstractController
      * Test la connexion de la base de données
      * @param DataBase $dataBase
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/check-database', name: 'check_database', methods: ['GET'])]
     public function testConnexionDatabase(
