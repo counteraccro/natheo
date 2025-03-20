@@ -6,6 +6,7 @@
  */
 namespace App\Tests\Helper\Fixtures;
 
+use App\Tests\Helper\Fixtures\Content\FaqFixturesTrait;
 use App\Tests\Helper\Fixtures\Content\TagFixturesTrait;
 use App\Tests\Helper\Fixtures\System\ApiTokenFixturesTrait;
 use App\Tests\Helper\Fixtures\System\MailFixturesTrait;
@@ -23,7 +24,7 @@ trait FixturesTrait
 {
     use UserFixturesTrait, OptionUserFixturesTrait, OptionSystemFixturesTrait, MailFixturesTrait, UserDataFixturesTrait,
         NotificationFixturesTrait, SidebarElementFixturesTrait, TagFixturesTrait, ApiTokenFixturesTrait, TranslateFixturesTrait,
-        SqlManagerFixturesTrait;
+        SqlManagerFixturesTrait, FaqFixturesTrait;
 
     /**
      * @var EntityManagerInterface
@@ -46,7 +47,7 @@ trait FixturesTrait
 
         foreach ($data as $property => $value) {
             if (!property_exists($object, $property)) {
-                echo "error " . $property . "\n";
+                echo "error " . $property . " not existe for " . $object::class . "\n";
                 continue;
             }
 
