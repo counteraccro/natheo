@@ -8,6 +8,7 @@
 
 namespace App\Service\Admin;
 
+use App\Utils\System\Options\OptionSystemKey;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityRepository;
 use Psr\Container\ContainerExceptionInterface;
@@ -261,7 +262,11 @@ class AppAdminService extends AppAdminHandlerService
      */
     public function getLocales(): array
     {
-        $current = $this->getRequestStack()->getCurrentRequest()->getLocale();
+        $optionSystemService = $this->getOptionSystemService();
+        $current = $optionSystemService->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE);
+        if ($this->getRequestStack()->getCurrentRequest() !== null) {
+            $current =  $this->getRequestStack()->getCurrentRequest()->getLocale();
+        }
 
         $locales = explode('|', $this->getParameterBag()->get('app.supported_locales'));
         array_unshift($locales, $current);
