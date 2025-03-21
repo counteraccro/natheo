@@ -7,6 +7,8 @@ use App\Repository\Admin\Content\Faq\FaqRepository;
 use App\Utils\Installation\InstallationConst;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Order;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -33,14 +35,14 @@ class Faq
     #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updateAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'faq', targetEntity: FaqTranslation::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: FaqTranslation::class, mappedBy: 'faq', cascade: ['persist'], orphanRemoval: true)]
     private Collection $faqTranslations;
 
-    #[ORM\OneToMany(mappedBy: 'faq', targetEntity: FaqCategory::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: FaqCategory::class, mappedBy: 'faq', cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['renderOrder' => 'asc'])]
     private Collection $faqCategories;
 
-    #[ORM\OneToMany(mappedBy: 'faq', targetEntity: FaqStatistique::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: FaqStatistique::class, mappedBy: 'faq', cascade: ['persist'], orphanRemoval: true)]
     private Collection $faqStatistiques;
 
     public function __construct()
@@ -152,6 +154,18 @@ class Faq
     public function getFaqCategories(): Collection
     {
         return $this->faqCategories;
+    }
+
+    /**
+     * @param Order $sort
+     * @return Collection
+     */
+    public function getSortedFaqCategories(Order $sort = Order::Ascending): Collection
+    {
+        $criteria = Criteria::create()
+            ->orderBy(array("renderOrder" => $sort));
+
+        return $this->faqCategories->matching($criteria);
     }
 
     public function addFaqCategory(FaqCategory $faqCategory): static
