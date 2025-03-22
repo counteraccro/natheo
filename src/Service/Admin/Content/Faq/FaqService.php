@@ -330,7 +330,8 @@ class FaqService extends AppAdminService
      * @param int $idQuestionOrder
      * @param string $orderPosition
      * @return void
-     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function addNewQuestion(int $idCategory, int $idQuestionOrder, string $orderPosition): void
     {
@@ -354,7 +355,8 @@ class FaqService extends AppAdminService
      * @param int $idCategory
      * @param string $orderPosition
      * @return void
-     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function updateOrderCategory(int $idFaq, int $idCategory, string $orderPosition): void
     {
@@ -371,7 +373,8 @@ class FaqService extends AppAdminService
      * @param int $idQuestion
      * @param string $orderPosition
      * @return void
-     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function updateOrderQuestion(int $idFaqCategory, int $idQuestion, string $orderPosition): void
     {
@@ -391,6 +394,8 @@ class FaqService extends AppAdminService
      * @param string $action
      * @param int $value
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function updateFaqStatistique(
         Faq    $faq,
@@ -401,7 +406,6 @@ class FaqService extends AppAdminService
     {
         $faqStat = $faq->getFaqStatistiqueByKey($key);
         $val = $faqStat->getValue();
-
         switch ($action) {
             case FaqConst::STATISTIQUE_ACTION_ADD:
                 $val = $val + $value;
@@ -423,7 +427,9 @@ class FaqService extends AppAdminService
 
     /**
      * Supprime une catégorie et la réordonne
-     * @throws Exception
+     * @param int $id
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function deleteCategory(int $id): void
     {
@@ -446,7 +452,8 @@ class FaqService extends AppAdminService
      * Supprime une question
      * @param int $id
      * @return void
-     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function deleteQuestion(int $id): void
     {
