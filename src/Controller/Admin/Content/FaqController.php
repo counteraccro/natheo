@@ -216,7 +216,7 @@ class FaqController extends AppAdminController
             $faq = $faqService->findOneById(Faq::class, $id);
         }
         $faqArray = $faqService->convertEntityToArray($faq, [
-            'createdAt', 'updateAt', 'user', 'maxRenderOrderQuestion', 'maxRenderOrderCategory', 'allMaxRender']);
+            'createdAt', 'updateAt', 'user', 'maxRenderOrderQuestion', 'maxRenderOrderCategory', 'allMaxRender', 'sortedFaqQuestion', 'sortedFaqCategories']);
 
         return $this->json([
             'faq' => $faqArray,
@@ -238,6 +238,7 @@ class FaqController extends AppAdminController
     {
         $data = json_decode($request->getContent(), true);
         /** @var Faq $faq */
+
         $faq = $faqService->findOneById(Faq::class, $data['faq']['id']);
 
         $faqPopulate = new FaqPopulate($faq, $data['faq']);
