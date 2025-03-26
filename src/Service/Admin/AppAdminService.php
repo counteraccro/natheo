@@ -263,9 +263,11 @@ class AppAdminService extends AppAdminHandlerService
     public function getLocales(): array
     {
         $optionSystemService = $this->getOptionSystemService();
-        $current = $optionSystemService->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE);
         if ($this->getRequestStack()->getCurrentRequest() !== null) {
             $current =  $this->getRequestStack()->getCurrentRequest()->getLocale();
+        }
+        else {
+            $current = $optionSystemService->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE);
         }
 
         $locales = explode('|', $this->getParameterBag()->get('app.supported_locales'));
