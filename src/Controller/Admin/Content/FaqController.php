@@ -347,7 +347,8 @@ class FaqController extends AppAdminController
         return $this->json(['list' => $data, 'success' => $success, 'msg' => $msg]);
     }
 
-    /**Créer une nouvelle question ou catégorie
+    /**
+     * Créer une nouvelle question ou catégorie
      * @param FaqService $faqService
      * @param Request $request
      * @param TranslatorInterface $translator
@@ -409,7 +410,8 @@ class FaqController extends AppAdminController
         return $this->json($faqService->getResponseAjax($msg));
     }
 
-    /**Supprime une question ou une réponse
+    /**
+     * Supprime une question ou une réponse
      * @param FaqService $faqService
      * @param TranslatorInterface $translator
      * @param int $id
