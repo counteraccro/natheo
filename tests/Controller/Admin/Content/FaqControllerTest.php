@@ -10,6 +10,8 @@ namespace App\Tests\Controller\Admin\Content;
 use App\Entity\Admin\Content\Faq\Faq;
 use App\Repository\Admin\Content\Faq\FaqRepository;
 use App\Tests\AppWebTestCase;
+use App\Utils\Content\Faq\FaqConst;
+use App\Utils\Content\Faq\FaqStatistiqueKey;
 
 class FaqControllerTest extends AppWebTestCase
 {
@@ -112,7 +114,8 @@ class FaqControllerTest extends AppWebTestCase
      * Test méthode delete()
      * @return void
      */
-    public function testDelete() :void {
+    public function testDelete(): void
+    {
         $faq = $this->createFaqAllDataDefault();
 
         $this->checkNoAccess('admin_faq_delete', ['id' => $faq->getId()], methode: 'DELETE');
@@ -138,7 +141,8 @@ class FaqControllerTest extends AppWebTestCase
      * Test méthode loadFaq()
      * @return void
      */
-    public function testLoadFaq() :void {
+    public function testLoadFaq(): void
+    {
 
         $faq = $this->createFaqAllDataDefault();
 
@@ -163,7 +167,8 @@ class FaqControllerTest extends AppWebTestCase
      * test méthode save()
      * @return void
      */
-    public function testSave() :void {
+    public function testSave(): void
+    {
         $faq = $this->createFaqAllDataDefault();
 
         $dataPopulate = [
@@ -283,7 +288,316 @@ class FaqControllerTest extends AppWebTestCase
      * Test méthode newFaq()
      * @return void
      */
-    public function newFaq() :void {
+    public function testNewFaq(): void
+    {
+        $this->checkNoAccess('admin_faq_new_faq', methode: 'POST');
 
+        $user = $this->createUserContributeur();
+
+        $data = ['title' => self::getFaker()->text(50)];
+
+        $this->client->loginUser($user, 'admin');
+        $this->client->request('POST', $this->router->generate('admin_faq_new_faq'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('success', $content);
+        $this->assertTrue($content['success']);
+        $this->assertArrayHasKey('msg', $content);
+        $this->assertArrayHasKey('url_redirect', $content);
+
+        $tmp = explode('/', $content['url_redirect']);
+        $id = $tmp[count($tmp) - 1];
+
+        /** @var FaqRepository $faqRepo */
+        $faqRepo = $this->em->getRepository(Faq::class);
+        $verif = $faqRepo->find($id);
+        $this->assertEquals($data['title'], $verif->getFaqTranslationByLocale('fr')->getTitle());
+    }
+
+    /**
+     * Test méthode updateDisabledCatQuestion()
+     * @return void
+     */
+    public function testUpdateDisabledCatQuestion(): void
+    {
+        $faq = $this->createFaqAllDataDefault();
+        $category = $faq->getFaqCategories()->first();
+        $question = $category->getFaqQuestions()->first();
+
+        $data = [
+            'allQuestion' => true,
+            'id' => $question->getId(),
+            'type' => FaqConst::TYPE_QUESTION,
+            'value' => true
+        ];
+
+        $this->checkNoAccess('admin_faq_update_disabled', methode: 'PUT');
+
+        $user = $this->createUserContributeur();
+
+        $this->client->loginUser($user, 'admin');
+        $this->client->request('PUT', $this->router->generate('admin_faq_update_disabled'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('success', $content);
+        $this->assertTrue($content['success']);
+
+        $data = [
+            'allQuestion' => true,
+            'id' => $category->getId(),
+            'type' => FaqConst::TYPE_CATEGORY,
+            'value' => false
+        ];
+
+        $this->checkNoAccess('admin_faq_update_disabled', methode: 'PUT');
+
+        $user = $this->createUserContributeur();
+
+        $this->client->loginUser($user, 'admin');
+        $this->client->request('PUT', $this->router->generate('admin_faq_update_disabled'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('success', $content);
+        $this->assertTrue($content['success']);
+    }
+
+    /**
+     * Test méthode orderListeByEntity()
+     * @return void
+     */
+    public function testOrderListeByEntity(): void
+    {
+        $this->checkNoAccess('admin_faq_order_by_type');
+
+        $faq = $this->createFaq();
+        $faqCat1 = $this->createFaqCategory($faq, ['renderOrder' => 2]);
+        $this->createFaqCategoryTranslation($faqCat1, ['locale' => 'fr', 'title' => 'faqCat 2']);
+
+        $question1 = $this->createFaqQuestion($faqCat1, ['renderOrder' => 2]);
+        $this->createFaqQuestionTranslation($question1, ['locale' => 'fr', 'title' => 'question 2']);
+
+        $question2 = $this->createFaqQuestion($faqCat1, ['renderOrder' => 1]);
+        $this->createFaqQuestionTranslation($question2, ['locale' => 'fr', 'title' => 'question 1']);
+
+        $question3 = $this->createFaqQuestion($faqCat1, ['renderOrder' => 3]);
+        $this->createFaqQuestionTranslation($question3, ['locale' => 'fr', 'title' => 'question 3']);
+
+        $faqCat2 = $this->createFaqCategory($faq, ['renderOrder' => 1]);
+        $this->createFaqCategoryTranslation($faqCat2, ['locale' => 'fr', 'title' => 'faqCat 1']);
+
+        $faqCat3 = $this->createFaqCategory($faq, ['renderOrder' => 3]);
+        $this->createFaqCategoryTranslation($faqCat3, ['locale' => 'fr', 'title' => 'faqCat 3']);
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+        $this->client->request('GET', $this->router->generate('admin_faq_order_by_type', ['id' => $faqCat1->getId(), 'type' => FaqConst::TYPE_QUESTION]));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('success', $content);
+        $this->assertTrue($content['success']);
+
+        $this->assertArrayHasKey('list', $content);
+        $this->assertArrayHasKey('msg', $content);
+        $this->assertEquals($question2->getId(), $content['list'][0]['id']);
+        $this->assertEquals($question1->getId(), $content['list'][1]['id']);
+        $this->assertEquals($question3->getId(), $content['list'][2]['id']);
+
+        $this->client->request('GET', $this->router->generate('admin_faq_order_by_type', ['id' => $faq->getId(), 'type' => FaqConst::TYPE_CATEGORY]));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('success', $content);
+        $this->assertTrue($content['success']);
+
+        $this->assertArrayHasKey('list', $content);
+        $this->assertArrayHasKey('msg', $content);
+
+        $this->assertEquals($faqCat2->getId(), $content['list'][0]['id']);
+        $this->assertEquals($faqCat1->getId(), $content['list'][1]['id']);
+        $this->assertEquals($faqCat3->getId(), $content['list'][2]['id']);
+    }
+
+    /**
+     * Test méthode newCatQuestion()
+     * @return void
+     */
+    public function testNewCatQuestion(): void
+    {
+        $this->checkNoAccess('admin_faq_new_cat_question', methode: 'POST');
+
+        $faq = $this->createFaq();
+        $this->createFaqStatistique($faq, ['key' => FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES, 'value' => self::getFaker()->numberBetween(1, 1000)]);
+        $this->createFaqStatistique($faq, ['key' => FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS, 'value' => self::getFaker()->numberBetween(1, 5)]);
+        $faqCat1 = $this->createFaqCategory($faq, ['renderOrder' => 1]);
+        $question = $this->createFaqQuestion($faqCat1, ['renderOrder' => 1]);
+
+        $data = [
+            'id' => $faq->getId(),
+            'idOrder' => $faqCat1->getId(),
+            'orderType' => "before",
+            'type' => FaqConst::TYPE_CATEGORY
+        ];
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+        $this->client->request('POST', $this->router->generate('admin_faq_new_cat_question'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('success', $content);
+        $this->assertTrue($content['success']);
+
+        $data = [
+            'id' => $faqCat1->getId(),
+            'idOrder' => $question->getId(),
+            'orderType' => "before",
+            'type' => FaqConst::TYPE_QUESTION
+        ];
+
+        $this->client->loginUser($user, 'admin');
+        $this->client->request('POST', $this->router->generate('admin_faq_new_cat_question'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('success', $content);
+        $this->assertTrue($content['success']);
+    }
+
+    /**
+     * test méthode changeOrderRender()
+     * @return void
+     */
+    public function testChangeOrderRender(): void {
+
+        $faq = $this->createFaq();
+
+        $faqCat1 = $this->createFaqCategory($faq, ['renderOrder' => 1]);
+        $this->createFaqCategoryTranslation($faqCat1, ['locale' => 'fr', 'title' => 'faqCat 1']);
+
+        $question1 = $this->createFaqQuestion($faqCat1, ['renderOrder' => 1]);
+        $this->createFaqQuestionTranslation($question1, ['locale' => 'fr', 'title' => 'question 1']);
+
+        $question2 = $this->createFaqQuestion($faqCat1, ['renderOrder' => 2]);
+        $this->createFaqQuestionTranslation($question2, ['locale' => 'fr', 'title' => 'question 2']);
+
+        $question3 = $this->createFaqQuestion($faqCat1, ['renderOrder' => 3]);
+        $this->createFaqQuestionTranslation($question3, ['locale' => 'fr', 'title' => 'question 3']);
+
+        $faqCat2 = $this->createFaqCategory($faq, ['renderOrder' => 2]);
+        $this->createFaqCategoryTranslation($faqCat2, ['locale' => 'fr', 'title' => 'faqCat 2']);
+
+        $faqCat3 = $this->createFaqCategory($faq, ['renderOrder' => 3]);
+        $this->createFaqCategoryTranslation($faqCat3, ['locale' => 'fr', 'title' => 'faqCat 3']);
+
+        $this->checkNoAccess('admin_faq_update_order', methode: 'PUT');
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+
+        $data = [
+            'id' => $faq->getId(),
+            'idOrder' => $faqCat3->getId(),
+            'orderType' => "before",
+            'type' => FaqConst::TYPE_CATEGORY
+        ];
+
+        $this->client->request('PUT', $this->router->generate('admin_faq_update_order'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('success', $content);
+        $this->assertTrue($content['success']);
+
+        $data = [
+            'id' => $faqCat1->getId(),
+            'idOrder' => $question2->getId(),
+            'orderType' => "before",
+            'type' => FaqConst::TYPE_QUESTION
+        ];
+
+        $this->client->request('PUT', $this->router->generate('admin_faq_update_order'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('success', $content);
+        $this->assertTrue($content['success']);
+    }
+
+    /**
+     * Test méthode deleteCategoryQuestion()
+     * @return void
+     */
+    public function testDeleteCategoryQuestion() :void {
+        $faq = $this->createFaq();
+        $this->createFaqStatistique($faq, ['key' => FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES, 'value' => 3]);
+        $this->createFaqStatistique($faq, ['key' => FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS, 'value' => 3]);
+        $faqCat1 = $this->createFaqCategory($faq);
+        $this->createFaqCategoryTranslation($faqCat1, ['locale' => 'fr', 'title' => 'faqCat 1']);
+        $question1 = $this->createFaqQuestion($faqCat1, ['renderOrder' => 1]);
+        $this->createFaqQuestionTranslation($question1, ['locale' => 'fr', 'title' => 'question 1']);
+
+        $question2 = $this->createFaqQuestion($faqCat1, ['renderOrder' => 2]);
+        $this->createFaqQuestionTranslation($question2, ['locale' => 'fr', 'title' => 'question 2']);
+
+        $question3 = $this->createFaqQuestion($faqCat1, ['renderOrder' => 3]);
+        $this->createFaqQuestionTranslation($question3, ['locale' => 'fr', 'title' => 'question 3']);
+
+        $faqCat2 = $this->createFaqCategory($faq, ['renderOrder' => 2]);
+        $this->createFaqCategoryTranslation($faqCat2, ['locale' => 'fr', 'title' => 'faqCat 2']);
+
+        $this->checkNoAccess('admin_faq_delete_category_question', methode: 'DELETE');
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+
+        $this->client->request('DELETE', $this->router->generate('admin_faq_delete_category_question', ['id' => $question1->getId(), 'type' => FaqConst::TYPE_QUESTION]));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('success', $content);
+        $this->assertTrue($content['success']);
+
+        $this->client->request('DELETE', $this->router->generate('admin_faq_delete_category_question', ['id' => $faqCat1->getId(), 'type' => FaqConst::TYPE_CATEGORY]));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('success', $content);
+        $this->assertTrue($content['success']);
     }
 }
