@@ -18,13 +18,14 @@ use App\Tests\Helper\Fixtures\System\User\OptionUserFixturesTrait;
 use App\Tests\Helper\Fixtures\System\User\UserDataFixturesTrait;
 use App\Tests\Helper\Fixtures\System\User\UserFixturesTrait;
 use App\Tests\Helper\Fixtures\Tools\SqlManagerFixturesTrait;
+use App\Tests\Helper\Fixtures\Content\Media\MediaFolderFixturesTrait;
 use Doctrine\ORM\EntityManagerInterface;
 
 trait FixturesTrait
 {
     use UserFixturesTrait, OptionUserFixturesTrait, OptionSystemFixturesTrait, MailFixturesTrait, UserDataFixturesTrait,
         NotificationFixturesTrait, SidebarElementFixturesTrait, TagFixturesTrait, ApiTokenFixturesTrait, TranslateFixturesTrait,
-        SqlManagerFixturesTrait, FaqFixturesTrait;
+        SqlManagerFixturesTrait, FaqFixturesTrait, MediaFolderFixturesTrait;
 
     /**
      * @var EntityManagerInterface
