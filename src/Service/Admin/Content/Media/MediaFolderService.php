@@ -114,12 +114,19 @@ class MediaFolderService extends AppAdminService
             $mediaFolder = MediaFolderConst::NAME_DEFAULT_FOLDER_MEDIATHEQUE;
         }
 
+        $env = $containerBag->get('kernel.environment');
+        $this->rootPathThumbnail = $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_THUMBNAILS;
+        if($env === 'test') {
+            $mediaFolder = MediaFolderConst::NAME_DEFAULT_FOLDER_MEDIATHEQUE_TEST;
+            $this->rootPathThumbnail = $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_THUMBNAILS . '-test';
+        }
+
         //TODO gérer cas url externe
         $this->rootPathMedia = $this->rootPath . DIRECTORY_SEPARATOR .
             MediaFolderConst::ROOT_FOLDER_NAME . $mediaFolder;
 
         $this->webPathMedia = $rootWebPath . MediaFolderConst::PATH_WEB_PATH . $mediaFolder;
-        $this->rootPathThumbnail = $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_THUMBNAILS;
+
         $this->webPathThumbnail = $rootWebPath . MediaFolderConst::PATH_WEB_THUMBNAILS;
 
         $optCanCreatePhysicalFolder = $optionSystemService->getValueByKey(
@@ -589,5 +596,23 @@ class MediaFolderService extends AppAdminService
             $target = $this->getPathFolder($mediaFolder);
             $fileSystem->rename($origin, $target);
         }
+    }
+
+    /**
+     * Retourne le path média
+     * @return string
+     */
+    public function getRootPathMedia(): string
+    {
+        return $this->rootPathMedia;
+    }
+
+    /**
+     * Retourne le path thumbnail
+     * @return string
+     */
+    public function getRootPathThumbnail(): string
+    {
+        return $this->rootPathThumbnail;
     }
 }
