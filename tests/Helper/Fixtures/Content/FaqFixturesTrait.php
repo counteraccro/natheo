@@ -17,7 +17,6 @@ use App\Entity\Admin\Content\Faq\FaqTranslation;
 use App\Entity\Admin\System\User;
 use App\Tests\Helper\FakerTrait;
 use App\Utils\Content\Faq\FaqStatistiqueKey;
-use App\Utils\Translate\Content\FaqTranslate;
 
 trait FaqFixturesTrait
 {
