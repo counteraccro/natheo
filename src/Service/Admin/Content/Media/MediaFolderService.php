@@ -204,6 +204,8 @@ class MediaFolderService extends AppAdminService
      * @param bool $trash
      * @param bool $disabled
      * @return float|int|mixed|string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getMediaFolderByMediaFolder
     (
@@ -292,12 +294,19 @@ class MediaFolderService extends AppAdminService
      * @param string $name
      * @param MediaFolder|null $parent
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function createMediaFolder(string $name, MediaFolder $parent = null): void
     {
         $mediaFolder = new MediaFolder();
         $mediaFolder->setName($name);
         $mediaFolder->setParent($parent);
+
+        if($parent !== null) {
+            $parent->addChild($mediaFolder);
+        }
+
 
         $path = DIRECTORY_SEPARATOR;
         if ($parent !== null) {
@@ -319,6 +328,8 @@ class MediaFolderService extends AppAdminService
      * @param string $name
      * @param MediaFolder $mediaFolder
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function updateMediaFolder(string $name, MediaFolder $mediaFolder): void
     {
