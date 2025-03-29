@@ -503,6 +503,8 @@ class MediaFolderService extends AppAdminService
      * en fonction du dossier courant
      * @param MediaFolder|null $folder
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getListeFolderToMove(MediaFolder $folder = null): array
     {
@@ -565,6 +567,8 @@ class MediaFolderService extends AppAdminService
      * @param MediaFolder $mediaFolder
      * @param MediaFolder|null $newParent
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function moveFolder(MediaFolder $mediaFolder, MediaFolder $newParent = null): void
     {
@@ -597,6 +601,7 @@ class MediaFolderService extends AppAdminService
 
         $mediaFolder->setPath($path);
         $mediaFolder->setParent($newParent);
+        $newParent->addChild($mediaFolder);
         $this->save($mediaFolder);
 
         $this->updateAllPathChildren($old, $new);
