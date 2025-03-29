@@ -235,7 +235,7 @@ class MediaFolderServiceTest extends AppWebTestCase
         $verif = $this->mediaFolderService->findOneBy(MediaFolder::class, 'name', 'edit-unit-test');
         $this->assertNotNull($verif);
 
-        foreach($result->getChildren() as $child) {
+        foreach ($result->getChildren() as $child) {
             $this->assertStringContainsString('edit-unit-test', $child->getPath());
         }
 
@@ -246,9 +246,152 @@ class MediaFolderServiceTest extends AppWebTestCase
     /**
      * test méthode getInfoFolder()
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function testGetInfoFolder(): void
     {
+        $this->mediaFolderService->resetAllMedia();
+        $mediaFolder = $this->createMediaFolder();
+        $this->mediaFolderService->createFolder($mediaFolder);
+        $subMediaFolder = $this->createMediaFolder($mediaFolder);
+        $this->mediaFolderService->createFolder($subMediaFolder);
+
+        $result = $this->mediaFolderService->getInfoFolder($mediaFolder->getId());
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('Nom', $result);
+        $this->assertEquals($mediaFolder->getName(), $result['Nom']);
+        $this->assertArrayHasKey('Emplacement', $result);
+        $this->assertEquals($mediaFolder->getPath(), $result['Emplacement']);
+        $this->assertArrayHasKey('Taille (disque)', $result);
+        $this->assertEquals(Utils::getSizeName(0), $result['Taille (disque)']);
+        $this->assertArrayHasKey('Contenu', $result);
+        $this->assertEquals('0 Fichiers, 1 Dossiers', $result['Contenu']);
+        $this->assertArrayHasKey('Créer le', $result);
+        $this->assertArrayHasKey('Dernière modification le', $result);
+
+        $result = $this->mediaFolderService->getInfoFolder($subMediaFolder->getId());
+        $this->assertIsArray($result);
+        $this->assertEquals($subMediaFolder->getName(), $result['Nom']);
+        $this->assertEquals($subMediaFolder->getPath(), $result['Emplacement']);
+    }
+
+    /**
+     * Test méthode getContentFolder()
+     * @return void
+     */
+    public function testGetContentFolder(): void
+    {
+        $this->mediaFolderService->resetAllMedia();
+        $mediaFolder = $this->createMediaFolder();
+        $this->mediaFolderService->createFolder($mediaFolder);
+        $subMediaFolder = $this->createMediaFolder($mediaFolder);
+        $this->mediaFolderService->createFolder($subMediaFolder);
+
+        $result = $this->mediaFolderService->getContentFolder($mediaFolder);
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('files', $result);
+        $this->assertArrayHasKey('directory', $result);
+        $this->assertEquals('0', $result['files']);
+        $this->assertEquals('1', $result['directory']);
+    }
+
+    /**
+     * Test méthode getAllDataForModalMove()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetAllDataForModalMove(): void
+    {
+        $this->mediaFolderService->resetAllMedia();
+        $mediaFolder = $this->createMediaFolder();
+        $this->mediaFolderService->createFolder($mediaFolder);
+        $subMediaFolder = $this->createMediaFolder($mediaFolder);
+        $this->mediaFolderService->createFolder($subMediaFolder);
+        $subSubMediaFolder = $this->createMediaFolder($subMediaFolder);
+        $this->mediaFolderService->createFolder($subSubMediaFolder);
+
+        $result = $this->mediaFolderService->getAllDataForModalMove($mediaFolder->getId(), 'folder');
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('parentId', $result);
+        $this->assertEquals(0, $result['parentId']);
+        $this->assertArrayHasKey('label', $result);
+        $this->assertStringContainsString($mediaFolder->getName(), $result['label']);
+        $this->assertArrayHasKey('liste', $result);
+        $this->assertIsArray($result['liste']);
+        $this->assertCount(1, $result['liste']);
+
+        $result = $this->mediaFolderService->getAllDataForModalMove($subMediaFolder->getId(), 'folder');
+        $this->assertEquals($mediaFolder->getId(), $result['parentId']);
+        $this->assertStringContainsString($subMediaFolder->getName(), $result['label']);
+        $this->assertCount(2, $result['liste']);
+
+        trigger_error("Testé avec le type media pour la méthode getAllDataForModalMove()", E_USER_WARNING);
+    }
+
+    /**
+     * Test méthode getListeFolderToMove()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetListeFolderToMove(): void
+    {
+        $this->mediaFolderService->resetAllMedia();
+        $mediaFolder = $this->createMediaFolder();
+        $this->mediaFolderService->createFolder($mediaFolder);
+        $subMediaFolder = $this->createMediaFolder($mediaFolder);
+        $this->mediaFolderService->createFolder($subMediaFolder);
+        $subSubMediaFolder = $this->createMediaFolder($subMediaFolder);
+        $this->mediaFolderService->createFolder($subSubMediaFolder);
+
+        $result = $this->mediaFolderService->getListeFolderToMove($subMediaFolder);
+        $this->assertIsArray($result);
+        $this->assertEquals('-1', $result[0]['id']);
+        $this->assertEquals('root', $result[0]['name']);
+        $this->assertEquals($mediaFolder->getId(), $result[1]['id']);
+        $this->assertEquals($mediaFolder->getName(), $result[1]['name']);
+    }
+
+    /**
+     * Test méthode moveFolder()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testMoveFolder(): void
+    {
+        $this->mediaFolderService->resetAllMedia();
+        $mediaFolder = $this->createMediaFolder();
+        $this->mediaFolderService->createFolder($mediaFolder);
+        $subMediaFolder = $this->createMediaFolder($mediaFolder);
+        $this->mediaFolderService->createFolder($subMediaFolder);
+        $subSubMediaFolder = $this->createMediaFolder($subMediaFolder);
+        $this->mediaFolderService->createFolder($subSubMediaFolder);
+
+        $mediaFolderToMove = $this->createMediaFolder();
+        $this->mediaFolderService->createFolder($mediaFolderToMove);
+
+        $this->mediaFolderService->moveFolder($mediaFolderToMove, $subSubMediaFolder);
+
+        /** @var MediaFolder $verif */
+        $verif = $this->mediaFolderService->findOneById(MediaFolder::class, $mediaFolderToMove->getId());
+        $this->assertNotNull($verif);
+        $this->assertEquals($subSubMediaFolder->getId(), $verif->getParent()->getId());
+        $this->assertEquals($subSubMediaFolder->getPath() . DIRECTORY_SEPARATOR . $subSubMediaFolder->getName(), $verif->getPath());
+
+        $this->mediaFolderService->moveFolder($mediaFolderToMove, $mediaFolder);
+        $verif = $this->mediaFolderService->findOneById(MediaFolder::class, $mediaFolderToMove->getId());
+        $this->assertNotNull($verif);
+        $this->assertEquals($mediaFolder->getId(), $verif->getParent()->getId());
+        $this->assertEquals($mediaFolder->getPath() . $mediaFolder->getName(), $verif->getPath());
+
+        $this->mediaFolderService->moveFolder($subMediaFolder, $mediaFolderToMove);
+        $verif = $this->mediaFolderService->findOneById(MediaFolder::class, $mediaFolderToMove->getId());
+        $this->assertNotNull($verif);
+        $this->assertEquals(1, $mediaFolderToMove->getChildren()->count());
+
 
     }
 }
