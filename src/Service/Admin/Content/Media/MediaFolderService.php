@@ -109,14 +109,13 @@ class MediaFolderService extends AppAdminService
         $mediaFolder = $optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_PATH);
         $rootWebPath = $optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_URL);
 
-        if($mediaFolder === null || $mediaFolder === '')
-        {
+        if ($mediaFolder === null || $mediaFolder === '') {
             $mediaFolder = MediaFolderConst::NAME_DEFAULT_FOLDER_MEDIATHEQUE;
         }
 
         $env = $containerBag->get('kernel.environment');
         $this->rootPathThumbnail = $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_THUMBNAILS;
-        if($env === 'test') {
+        if ($env === 'test') {
             $mediaFolder = MediaFolderConst::NAME_DEFAULT_FOLDER_MEDIATHEQUE_TEST;
             $this->rootPathThumbnail = $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_THUMBNAILS . '-test';
         }
@@ -133,8 +132,7 @@ class MediaFolderService extends AppAdminService
             OptionSystemKey::OS_MEDIA_CREATE_PHYSICAL_FOLDER
         );
 
-        if($optCanCreatePhysicalFolder !== null && $optCanCreatePhysicalFolder !== '')
-        {
+        if ($optCanCreatePhysicalFolder !== null && $optCanCreatePhysicalFolder !== '') {
             $this->canCreatePhysicalFolder = filter_var($optCanCreatePhysicalFolder, FILTER_VALIDATE_BOOLEAN);
         }
     }
@@ -303,7 +301,7 @@ class MediaFolderService extends AppAdminService
         $mediaFolder->setName($name);
         $mediaFolder->setParent($parent);
 
-        if($parent !== null) {
+        if ($parent !== null) {
             $parent->addChild($mediaFolder);
         }
 
@@ -630,5 +628,14 @@ class MediaFolderService extends AppAdminService
     public function getRootPathThumbnail(): string
     {
         return $this->rootPathThumbnail;
+    }
+
+    /**
+     * Retourne le path web media
+     * @return string
+     */
+    public function getWebPathMedia(): string
+    {
+        return $this->webPathMedia;
     }
 }
