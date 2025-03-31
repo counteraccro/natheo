@@ -55,6 +55,8 @@ class MediaService extends MediaFolderService
      * @param Media $media
      * @param string $file
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function UpdateMediaFile(Media $media, string $file): void
     {
@@ -94,6 +96,7 @@ class MediaService extends MediaFolderService
                 $media->setType($type);
             }
         }
+        $this->save($media);
     }
 
     /**
@@ -148,6 +151,8 @@ class MediaService extends MediaFolderService
      * @param string $filter
      * @param string $order
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getALlMediaAndMediaFolderByMediaFolder
     (
@@ -203,6 +208,8 @@ class MediaService extends MediaFolderService
      * Retourne une liste de média en fonction d'un mediaFolder
      * @param MediaFolder|null $mediaFolder
      * @return float|int|mixed|string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getMediaByMediaFolder(MediaFolder $mediaFolder = null): mixed
     {
@@ -256,6 +263,8 @@ class MediaService extends MediaFolderService
      * @param int $idFolder
      * @param array $file
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function uploadMediaFile(int $idFolder, array $file): void
     {
