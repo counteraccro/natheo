@@ -48,4 +48,5 @@ public/assets/thumbnails/*
 .idea/workspace.xml~
 .idea/copyright/profiles_settings.xml
 
-/public/assets/natheotheque-test/*
+/public/assets/natheotheque-test/
+/public/assets/thumbnails-test/
