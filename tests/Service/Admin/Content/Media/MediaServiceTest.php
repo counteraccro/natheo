@@ -10,10 +10,14 @@ namespace Service\Admin\Content\Media;
 use App\Entity\Admin\Content\Media\Media;
 use App\Service\Admin\Content\Media\MediaService;
 use App\Tests\AppWebTestCase;
+use App\Utils\Content\Media\MediaConst;
+use App\Utils\Content\Media\MediaFolderConst;
+use App\Utils\Utils;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBag;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class MediaServiceTest extends AppWebTestCase
 {
@@ -114,8 +118,136 @@ class MediaServiceTest extends AppWebTestCase
     /**
      * Test méthode getALlMediaAndMediaFolderByMediaFolder()
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function testGetALlMediaAndMediaFolderByMediaFolder() :void
+    {
+        $mediaFolder = $this->createMediaFolder(customData: ['disabled' => false, 'trash' => false]);
+        $this->createMedia($mediaFolder, customData: ['disabled' => false, 'trash' => false]);
+        $media = $this->createMedia($mediaFolder, customData: ['disabled' => false, 'trash' => false]);
+        $folder = $this->createMediaFolder($mediaFolder, customData: ['disabled' => false, 'trash' => false]);
+
+        $result = $this->mediaService->getALlMediaAndMediaFolderByMediaFolder($mediaFolder);
+        $this->assertCount(3, $result);
+
+        $isVerif = false;
+        foreach($result as $row) {
+            if($row['type'] === 'folder')
+            {
+                $this->assertArrayHasKey('type', $row);
+                $this->assertArrayHasKey('id', $row);
+                $this->assertEquals($folder->getId(), $row['id']);
+                $this->assertArrayHasKey('name', $row);
+                $this->assertEquals($folder->getName(), $row['name']);
+                $this->assertArrayHasKey('created_at', $row);
+                $this->assertArrayHasKey('date', $row);
+            }
+
+            if($row['type'] === 'media' && $row['id'] === $media->getId())
+            {
+                $isVerif = true;
+                $this->assertArrayHasKey('type', $row);
+                $this->assertArrayHasKey('id', $row);
+                $this->assertArrayHasKey('name', $row);
+                $this->assertEquals($media->getName(), $row['name']);
+                $this->assertArrayHasKey('description', $row);
+                $this->assertEquals($media->getDescription(), $row['description']);
+                $this->assertArrayHasKey('size', $row);
+                $this->assertEquals(Utils::getSizeName($media->getSize()), $row['size']);
+                $this->assertArrayHasKey('webPath', $row);
+                $this->assertEquals($media->getWebPath(), $row['webPath']);
+                $this->assertArrayHasKey('thumbnail', $row);
+                $this->assertEquals($this->mediaService->getThumbnail($media), $row['thumbnail']);
+                $this->assertArrayHasKey('created_at', $row);
+                $this->assertArrayHasKey('date', $row);
+            }
+        }
+        $this->assertTrue($isVerif);
+    }
+
+    /**
+     * Test méthode getMediaByMediaFolder()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetMediaByMediaFolder() :void
+    {
+        $mediaFolder = $this->createMediaFolder(customData: ['disabled' => false, 'trash' => false]);
+        $this->createMedia($mediaFolder, customData: ['disabled' => false, 'trash' => false]);
+        $this->createMedia($mediaFolder, customData: ['disabled' => false, 'trash' => false]);
+
+        $result = $this->mediaService->getMediaByMediaFolder($mediaFolder);
+        $this->assertNotNull($result);
+        $this->assertCount(2, $result);
+    }
+
+    /**
+     * Test méthode getInfoMedia()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetInfoMedia() :void
+    {
+        $user = $this->createUserContributeur();
+        $media = $this->createMedia(customData: ['disabled' => false, 'trash' => false]);
+
+        $result = $this->mediaService->getInfoMedia($media->getId());
+        $this->assertNotNull($result);
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('data', $result);
+        $this->assertArrayHasKey($this->translator->trans('media.mediatheque.info.media.name', domain: 'media'), $result['data']);
+        $this->assertArrayHasKey($this->translator->trans('media.mediatheque.info.media.titre', domain: 'media'), $result['data']);
+        $this->assertArrayHasKey($this->translator->trans('media.mediatheque.info.media.description', domain: 'media'), $result['data']);
+        $this->assertArrayHasKey($this->translator->trans('media.mediatheque.info.media.extension', domain: 'media'), $result['data']);
+        $this->assertArrayHasKey($this->translator->trans('media.mediatheque.info.media.user', domain: 'media'), $result['data']);
+        $this->assertArrayHasKey($this->translator->trans('media.mediatheque.info.media.emplacement', domain: 'media'), $result['data']);
+        $this->assertArrayHasKey($this->translator->trans('media.mediatheque.info.media.size', domain: 'media'), $result['data']);
+        $this->assertArrayHasKey($this->translator->trans('media.mediatheque.info.media.date_created', domain: 'media'), $result['data']);
+        $this->assertArrayHasKey($this->translator->trans('media.mediatheque.info.media.date_update', domain: 'media'), $result['data']);
+        $this->assertArrayHasKey('thumbnail', $result);
+        $this->assertArrayHasKey('web_path', $result);
+        $this->assertArrayHasKey('media_type', $result);
+    }
+
+    /**
+     * Test méthode getThumbnail()
+     * @return void
+     */
+    public function testGetThumbnail() : void
+    {
+        $media = $this->createMedia(customData: ['type' => MediaConst::MEDIA_TYPE_IMG, 'trash' => false]);
+        $result = $this->mediaService->getThumbnail($media);
+        $this->assertNotNull($result);
+        $this->assertEquals($this->mediaService->getWebPathThumbnail($media->getThumbnail()), $result);
+
+        $media = $this->createMedia(customData: ['type' => MediaConst::MEDIA_TYPE_FILE, 'extension' => 'pdf']);
+        $result = $this->mediaService->getThumbnail($media);
+        $this->assertEquals(MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_pdf.png', $result);
+
+        $media = $this->createMedia(customData: ['type' => MediaConst::MEDIA_TYPE_FILE, 'extension' => 'xls']);
+        $result = $this->mediaService->getThumbnail($media);
+        $this->assertEquals(MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_xls.png', $result);
+
+        $media = $this->createMedia(customData: ['type' => MediaConst::MEDIA_TYPE_FILE, 'extension' => 'csv']);
+        $result = $this->mediaService->getThumbnail($media);
+        $this->assertEquals(MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_csv.png', $result);
+
+        $media = $this->createMedia(customData: ['type' => MediaConst::MEDIA_TYPE_FILE, 'extension' => 'docx']);
+        $result = $this->mediaService->getThumbnail($media);
+        $this->assertEquals(MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_doc.png', $result);
+
+        $media = $this->createMedia(customData: ['type' => MediaConst::MEDIA_TYPE_FILE, 'extension' => 'ext']);
+        $result = $this->mediaService->getThumbnail($media);
+        $this->assertEquals(MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file.png', $result);
+    }
+
+    /**
+     * @return void
+     */
+    public function testMove() : void
     {
 
     }
