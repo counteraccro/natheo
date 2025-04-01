@@ -168,7 +168,6 @@ class MediaService extends MediaFolderService
 
         /** @var Media $media */
         foreach ($medias as $media) {
-
             $return[] = [
                 'type' => 'media',
                 'id' => $media->getId(),
@@ -320,6 +319,8 @@ class MediaService extends MediaFolderService
      * @param string $type
      * @param int $idToMove
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function move(int $id, string $type, int $idToMove): void
     {
@@ -336,7 +337,7 @@ class MediaService extends MediaFolderService
     }
 
     /**
-     * Déplace un média vers le médiaFolder en paramètre
+     * Déplace un média vers le médiaFolder en paramètre (physiquement)
      * @param Media $media
      * @param MediaFolder|null $mediaFolderInMove
      * @return void
