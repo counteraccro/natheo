@@ -11,6 +11,7 @@ use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Media\MediaFolder;
 use App\Entity\Admin\System\User;
 use App\Tests\Helper\FakerTrait;
+use App\Utils\Content\Media\MediaConst;
 
 trait MediaFixturesTrait
 {
@@ -41,12 +42,15 @@ trait MediaFixturesTrait
             $user = $this->createUserContributeur();
         }
 
+        $types = [MediaConst::MEDIA_TYPE_IMG, MediaConst::MEDIA_TYPE_FILE];
+
+
 
         $data = [
             'name' => $name,
             'title' => self::getFaker()->text(100),
             'description' => self::getFaker()->text(),
-            'type' => 'img',
+            'type' => $types[array_rand($types)],
             'extension' => $extension,
             'size' => self::getFaker()->randomNumber(6, false),
             'thumbnail' => self::getFaker()->bothify('#??#?##??'),
