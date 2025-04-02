@@ -8,6 +8,7 @@
 namespace Service\Admin\Content\Media;
 
 use App\Entity\Admin\Content\Media\Media;
+use App\Entity\Admin\Content\Media\MediaFolder;
 use App\Service\Admin\Content\Media\MediaService;
 use App\Tests\AppWebTestCase;
 use App\Utils\Content\Media\MediaConst;
@@ -71,7 +72,7 @@ class MediaServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testUpdateMediaFile() :void
+    public function testUpdateMediaFile(): void
     {
         $this->mediaService->resetAllMedia();
         $mediaFolder = $this->createMediaFolder();
@@ -92,7 +93,7 @@ class MediaServiceTest extends AppWebTestCase
      * Test méthode getWebPath()
      * @return void
      */
-    public function testGetWebPath() :void
+    public function testGetWebPath(): void
     {
         $mediaFolder = $this->createMediaFolder();
         $media = $this->createMedia($mediaFolder);
@@ -106,7 +107,7 @@ class MediaServiceTest extends AppWebTestCase
      * Test méthode getWebPathThumbnail()
      * @return void
      */
-    public function testGetWebPathThumbnail() :void
+    public function testGetWebPathThumbnail(): void
     {
         $mediaFolder = $this->createMediaFolder();
         $media = $this->createMedia($mediaFolder);
@@ -121,7 +122,7 @@ class MediaServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetALlMediaAndMediaFolderByMediaFolder() :void
+    public function testGetALlMediaAndMediaFolderByMediaFolder(): void
     {
         $mediaFolder = $this->createMediaFolder(customData: ['disabled' => false, 'trash' => false]);
         $this->createMedia($mediaFolder, customData: ['disabled' => false, 'trash' => false]);
@@ -132,9 +133,8 @@ class MediaServiceTest extends AppWebTestCase
         $this->assertCount(3, $result);
 
         $isVerif = false;
-        foreach($result as $row) {
-            if($row['type'] === 'folder')
-            {
+        foreach ($result as $row) {
+            if ($row['type'] === 'folder') {
                 $this->assertArrayHasKey('type', $row);
                 $this->assertArrayHasKey('id', $row);
                 $this->assertEquals($folder->getId(), $row['id']);
@@ -144,8 +144,7 @@ class MediaServiceTest extends AppWebTestCase
                 $this->assertArrayHasKey('date', $row);
             }
 
-            if($row['type'] === 'media' && $row['id'] === $media->getId())
-            {
+            if ($row['type'] === 'media' && $row['id'] === $media->getId()) {
                 $isVerif = true;
                 $this->assertArrayHasKey('type', $row);
                 $this->assertArrayHasKey('id', $row);
@@ -172,7 +171,7 @@ class MediaServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetMediaByMediaFolder() :void
+    public function testGetMediaByMediaFolder(): void
     {
         $mediaFolder = $this->createMediaFolder(customData: ['disabled' => false, 'trash' => false]);
         $this->createMedia($mediaFolder, customData: ['disabled' => false, 'trash' => false]);
@@ -189,11 +188,9 @@ class MediaServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetInfoMedia() :void
+    public function testGetInfoMedia(): void
     {
-        $user = $this->createUserContributeur();
         $media = $this->createMedia(customData: ['disabled' => false, 'trash' => false]);
-
         $result = $this->mediaService->getInfoMedia($media->getId());
         $this->assertNotNull($result);
         $this->assertIsArray($result);
@@ -216,7 +213,7 @@ class MediaServiceTest extends AppWebTestCase
      * Test méthode getThumbnail()
      * @return void
      */
-    public function testGetThumbnail() : void
+    public function testGetThumbnail(): void
     {
         $media = $this->createMedia(customData: ['type' => MediaConst::MEDIA_TYPE_IMG, 'trash' => false]);
         $result = $this->mediaService->getThumbnail($media);
@@ -245,10 +242,167 @@ class MediaServiceTest extends AppWebTestCase
     }
 
     /**
+     * Test méthode move() ainsi que moveMedia() et moveFolder()
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function testMove() : void
+    public function testMove(): void
     {
+        $this->mediaService->resetAllMedia();
+        $mediaFolder = $this->createMediaFolder(customData: ['name' => 'start-folder']);
+        $media = $this->createMedia($mediaFolder, customData: ['name' => self::IMG_UNIT_TEST]);
+        $this->mediaService->moveMediaFixture(self::IMG_UNIT_TEST, $media);
 
+        $mediaFolderEnd = $this->createMediaFolder(customData: ['name' => 'end-folder']);
+        $this->mediaService->createFolder($mediaFolderEnd);
+
+        $this->mediaService->move($media->getId(), 'media', $mediaFolderEnd->getId());
+        $result = $this->fileSystem->exists($this->mediaService->getRootPathMedia() . DIRECTORY_SEPARATOR . 'end-folder' . DIRECTORY_SEPARATOR . self::IMG_UNIT_TEST);
+        $this->assertTrue($result);
+
+        /** @var MediaFolder $folderVerif */
+        $folderVerif = $this->mediaService->findOneById(MediaFolder::class, $mediaFolderEnd->getId());
+        $this->assertCount(1, $folderVerif->getMedias());
+        $media = $folderVerif->getMedias()->first();
+        $this->assertEquals($folderVerif->getPath() . $folderVerif->getName() . DIRECTORY_SEPARATOR . $media->getName(), $media->getPath());
+
+        $this->mediaService->move($mediaFolder->getId(), 'folder', $mediaFolderEnd->getId());
+        $result = $this->fileSystem->exists($this->mediaService->getRootPathMedia() . DIRECTORY_SEPARATOR . 'end-folder' . DIRECTORY_SEPARATOR . $mediaFolder->getName());
+        $this->assertTrue($result);
+
+        /** @var MediaFolder $folderVerif */
+        $folderVerif = $this->mediaService->findOneById(MediaFolder::class, $mediaFolderEnd->getId());
+        $this->assertCount(1, $folderVerif->getChildren());
+        $children = $folderVerif->getChildren()->first();
+        $this->assertEquals($folderVerif->getPath() . $folderVerif->getName(), $children->getPath());
+    }
+
+    /**
+     * Test méthode getNbInTrash()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetNbInTrash(): void
+    {
+        $folder = $this->createMediaFolder(customData: ['disabled' => false, 'trash' => true]);
+        $folder2 = $this->createMediaFolder(customData: ['disabled' => false, 'trash' => false]);
+        $this->createMedia($folder, customData: ['disabled' => false, 'trash' => true]);
+        $this->createMedia($folder2, customData: ['disabled' => false, 'trash' => true]);
+
+        $result = $this->mediaService->getNbInTrash();
+        $this->assertIsArray($result);
+        $this->assertNotEmpty($result);
+        $this->assertCount(2, $result);
+        $this->assertArrayHasKey('medias', $result);
+        $this->assertEquals(2, $result['medias']);
+        $this->assertArrayHasKey('folders', $result);
+        $this->assertEquals(1, $result['folders']);
+    }
+
+    /**
+     * Test méthode getAllMediaAndMediaFolderInTrash()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetAllMediaAndMediaFolderInTrash(): void
+    {
+        $folder = $this->createMediaFolder(customData: ['disabled' => false, 'trash' => true]);
+        $folder2 = $this->createMediaFolder(customData: ['disabled' => false, 'trash' => false]);
+        $this->createMedia($folder, customData: ['disabled' => false, 'trash' => true]);
+        $this->createMedia($folder2, customData: ['disabled' => false, 'trash' => true]);
+        $this->createMedia($folder2, customData: ['disabled' => false, 'trash' => false]);
+
+        $result = $this->mediaService->getAllMediaAndMediaFolderInTrash();
+        $this->assertIsArray($result);
+        $this->assertNotEmpty($result);
+        $this->assertCount(3, $result);
+
+        $nbFolder = 0;
+        $nbMedia = 0;
+        foreach ($result as $data) {
+            if($data['type'] == 'media') {
+                $this->assertArrayHasKey('type', $data);
+                $this->assertArrayHasKey('id', $data);
+                $this->assertArrayHasKey('name', $data);
+                $this->assertArrayHasKey('description', $data);
+                $this->assertArrayHasKey('size', $data);
+                $this->assertArrayHasKey('webPath', $data);
+                $this->assertArrayHasKey('thumbnail', $data);
+                $this->assertArrayHasKey('created_at', $data);
+                $nbMedia++;
+            }
+
+            if($data['type'] == 'folder') {
+                $this->assertArrayHasKey('type', $data);
+                $this->assertArrayHasKey('id', $data);
+                $this->assertArrayHasKey('name', $data);
+                $this->assertArrayHasKey('created_at', $data);
+                $nbFolder++;
+            }
+        }
+        $this->assertEquals(2, $nbMedia);
+        $this->assertEquals(1, $nbFolder);
+    }
+
+    /**
+     * Test méthode updateTrash()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUpdateTrash() :void
+    {
+        $mediaFolder = $this->createMediaFolder(customData: ['trash' => false]);
+        $media = $this->createMedia($mediaFolder, customData: ['name' => self::IMG_UNIT_TEST, 'trash' => true]);
+        $this->em->clear();
+
+        $this->mediaService->updateTrash('media', $media->getId(), false);
+        /** @var Media $verif */
+        $verif = $this->mediaService->findOneById(Media::class, $media->getId());
+        $this->assertEquals(!$media->isTrash(), $verif->isTrash());
+
+        $this->mediaService->updateTrash('folder', $mediaFolder->getId(), true);
+        /** @var MediaFolder $folderVerif */
+        $verif = $this->mediaService->findOneById(MediaFolder::class, $mediaFolder->getId());
+        $this->assertEquals(!$mediaFolder->isTrash(), $verif->isTrash());
+    }
+
+    /**
+     * Test méthode confirmTrash()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testConfirmTrash() :void
+    {
+        $this->mediaService->resetAllMedia();
+        $mediaFolder = $this->createMediaFolder(customData: ['trash' => false]);
+        $media = $this->createMedia($mediaFolder, customData: ['name' => self::IMG_UNIT_TEST, 'trash' => true]);
+        $this->mediaService->moveMediaFixture(self::IMG_UNIT_TEST, $media);
+
+        $idMedia = $media->getId();
+        $idFolder = $mediaFolder->getId();
+
+        $this->mediaService->confirmTrash('folder', $mediaFolder->getId());
+        $verif = $this->mediaService->findOneById(MediaFolder::class,  $idFolder);
+        $this->assertNull($verif);
+
+        $verif = $this->mediaService->findOneById(Media::class, $idMedia);
+        $this->assertNull($verif);
+
+        $this->assertFalse($this->fileSystem->exists($this->mediaService->getRootPathMedia() . $mediaFolder->getPath() . $mediaFolder->getName()));
+
+        $mediaFolder = $this->createMediaFolder(customData: ['trash' => false]);
+        $media = $this->createMedia($mediaFolder, customData: ['name' => self::IMG_UNIT_TEST, 'trash' => true]);
+        $this->mediaService->moveMediaFixture(self::IMG_UNIT_TEST, $media);
+
+        $idMedia = $media->getId();
+        $this->mediaService->confirmTrash('media', $media->getId());
+        $verif = $this->mediaService->findOneById(Media::class, $idMedia);
+        $this->assertNull($verif);
+        $this->assertFalse($this->fileSystem->exists($this->mediaService->getRootPathMedia() . $media->getPath()));
     }
 }
