@@ -9,6 +9,7 @@ namespace Service\Admin\Content\Media;
 
 use App\Entity\Admin\Content\Media\MediaFolder;
 use App\Service\Admin\Content\Media\MediaFolderService;
+use App\Service\Admin\Content\Media\MediaService;
 use App\Tests\AppWebTestCase;
 use App\Utils\Utils;
 use Psr\Container\ContainerExceptionInterface;
@@ -327,7 +328,24 @@ class MediaFolderServiceTest extends AppWebTestCase
         $this->assertStringContainsString($subMediaFolder->getName(), $result['label']);
         $this->assertCount(2, $result['liste']);
 
-        trigger_error("Testé avec le type media pour la méthode getAllDataForModalMove()", E_USER_WARNING);
+        $media = $this->createMedia($mediaFolder, customData: ['name' => 'road.jpg', 'trash' => false]);
+        $result = $this->mediaFolderService->getAllDataForModalMove($media->getId(), 'media');
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('parentId', $result);
+        $this->assertEquals(0, $result['parentId']);
+        $this->assertArrayHasKey('label', $result);
+        $this->assertStringContainsString($media->getName(), $result['label']);
+        $this->assertArrayHasKey('liste', $result);
+        $this->assertIsArray($result['liste']);
+        $this->assertCount(1, $result['liste']);
+
+        $media2 = $this->createMedia($subMediaFolder, customData: ['trash' => false]);
+        $result = $this->mediaFolderService->getAllDataForModalMove($media2->getId(), 'media');
+        $this->assertIsArray($result);
+        $this->assertEquals($mediaFolder->getId(), $result['parentId']);
+        $this->assertStringContainsString($media2->getName(), $result['label']);
+        $this->assertCount(2, $result['liste']);
+
     }
 
     /**
