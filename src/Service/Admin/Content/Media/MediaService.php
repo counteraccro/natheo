@@ -341,6 +341,8 @@ class MediaService extends MediaFolderService
      * @param Media $media
      * @param MediaFolder|null $mediaFolderInMove
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function moveMedia(Media $media, MediaFolder $mediaFolderInMove = null): void
     {
@@ -350,6 +352,11 @@ class MediaService extends MediaFolderService
         }
 
         $media->setMediaFolder($mediaFolderInMove);
+
+        if($mediaFolderInMove !== null) {
+            $mediaFolderInMove->addMedia($media);
+        }
+
         $media->setWebPath($this->getWebPath($media));
         $media->setPath($this->getPath($media));
         $this->save($media);
@@ -369,6 +376,8 @@ class MediaService extends MediaFolderService
      * Retourne un tableau contenant le nombre de médias et le nombre de dossiers
      * dans la corbeille
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getNbInTrash(): array
     {
@@ -381,7 +390,13 @@ class MediaService extends MediaFolderService
         return $return;
     }
 
-    public function getAllMediaAndMediaFolderInTrash()
+    /**
+     * Retourne l'ensemble des éléments dans la corbeilles
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getAllMediaAndMediaFolderInTrash(): array
     {
         $repoMedia = $this->getRepository(Media::class);
         $medias = $repoMedia->findBy(['trash' => true]);
@@ -427,6 +442,8 @@ class MediaService extends MediaFolderService
      * @param int $id
      * @param bool $trash
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function updateTrash(string $type, int $id, bool $trash): void
     {
@@ -449,6 +466,8 @@ class MediaService extends MediaFolderService
      * @param string $type
      * @param int $id
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function confirmTrash(string $type, int $id): void
     {
