@@ -60,6 +60,8 @@ class MediaController extends AppAdminController
      * @param string $order
      * @param string $filter
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-medias/{folder}/{order}/{filter}', name: 'load_medias', methods: ['GET'])]
     public function loadMedias(
@@ -103,7 +105,9 @@ class MediaController extends AppAdminController
      * @param int $id
      * @param string $action
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
      * @throws ExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-folder/{id}/{action}', name: 'load_folder', methods: ['GET'])]
     public function loadFolder(
