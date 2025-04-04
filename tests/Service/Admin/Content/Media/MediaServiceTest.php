@@ -16,9 +16,7 @@ use App\Utils\Content\Media\MediaFolderConst;
 use App\Utils\Utils;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBag;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class MediaServiceTest extends AppWebTestCase
 {
