@@ -204,6 +204,8 @@ class MediaController extends AppAdminController
      * @param Request $request
      * @param MediaService $mediaService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/upload-media', name: 'upload', methods: ['POST'])]
     public function upload(Request $request, MediaService $mediaService): JsonResponse
@@ -219,6 +221,8 @@ class MediaController extends AppAdminController
      * @param MediaService $mediaService
      * @param int $id
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-media/{id}', name: 'load_media_edit', methods: ['GET'])]
     public function loadMedia(
