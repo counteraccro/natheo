@@ -297,6 +297,8 @@ class MediaController extends AppAdminController
      * @param Request $request
      * @param MediaService $mediaService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/move', name: 'move', methods: ['POST'])]
     public function move(Request $request, MediaService $mediaService): JsonResponse
@@ -311,6 +313,8 @@ class MediaController extends AppAdminController
      * @param Request $request
      * @param MediaService $mediaService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/update-trash', name: 'update_trash', methods: ['POST'])]
     public function updateTrash(Request $request, MediaService $mediaService): JsonResponse
@@ -324,6 +328,8 @@ class MediaController extends AppAdminController
      * Retourne le nombre d'éléments dans la corbeille
      * @param MediaService $mediaService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/nb-trash', name: 'nb_trash', methods: ['GET'])]
     public function nbTrash(MediaService $mediaService): JsonResponse
@@ -336,6 +342,8 @@ class MediaController extends AppAdminController
      * Retourne l'ensemble des éléments dans la corbeille
      * @param MediaService $mediaService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/list-trash', name: 'list_trash', methods: ['GET'])]
     public function listTrash(MediaService $mediaService): JsonResponse
@@ -348,6 +356,8 @@ class MediaController extends AppAdminController
      * @param Request $request
      * @param MediaService $mediaService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/remove', name: 'remove', methods: ['POST'])]
     public function removeTrash(Request $request, MediaService $mediaService): JsonResponse
