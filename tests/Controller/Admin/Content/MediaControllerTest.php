@@ -345,6 +345,208 @@ class MediaControllerTest extends AppWebTestCase
      */
     public function testListeFolderToMove(): void
     {
-       
+        $folder1 = $this->createMediaFolder(customData: ['name' => 'folder1']);
+        $subFolder1 = $this->createMediaFolder($folder1, customData: ['name' => 'subfolder1']);
+        $media = $this->createMedia($subFolder1);
+        $this->createMediaFolder($subFolder1, customData: ['name' => 'subsubfolder1']);
+        $folder2 = $this->createMediaFolder(customData: ['name' => 'folder2']);
+        $this->createMediaFolder($folder2, customData: ['name' => 'subfolder2']);
+        $this->createMediaFolder(customData: ['name' => 'folder3']);
+
+        $this->checkNoAccess('admin_media_liste_move');
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+
+        $this->client->request('GET', $this->router->generate('admin_media_liste_move', ['id' => $media->getId(), 'type' => 'media']));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertIsArray($content);
+
+        $this->assertArrayHasKey('dataMove', $content);
+        $this->assertArrayHasKey('id', $content['dataMove']);
+        $this->assertEquals($media->getId(), $content['dataMove']['id']);
+        $this->assertArrayHasKey('parentIid', $content['dataMove']);
+        $this->assertEquals($media->getMediaFolder()->getParent()->getId(), $content['dataMove']['parentIid']);
+        $this->assertArrayHasKey('label', $content['dataMove']);
+        $this->assertArrayHasKey('type', $content['dataMove']);
+        $this->assertEquals('media', $content['dataMove']['type']);
+        $this->assertArrayHasKey('listeFolder', $content['dataMove']);
+
+        $check = true;
+        foreach ($content['dataMove']['listeFolder'] as $folder) {
+            if ($folder['name'] === $media->getMediaFolder()->getName()) {
+                $check = false;
+            }
+        }
+        $this->assertTrue($check);
+
+        $this->client->request('GET', $this->router->generate('admin_media_liste_move', ['id' => $folder2->getId(), 'type' => 'folder']));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertIsArray($content);
+
+        $check = true;
+        foreach ($content['dataMove']['listeFolder'] as $folder) {
+            if ($folder['name'] === $folder2->getName()) {
+                $check = false;
+            }
+
+            foreach ($folder2->getChildren() as $child) {
+                if ($child->getName() === $folder['name']) {
+                    $check = false;
+                }
+            }
+        }
+        $this->assertTrue($check);
+    }
+
+    /**
+     * Test méthode move()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testMove(): void
+    {
+        $this->checkNoAccess('admin_media_move', methode: 'POST');
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+
+        $this->mediaService->resetAllMedia();
+        $mediaFolder = $this->createMediaFolder(customData: ['name' => 'start-folder']);
+        $media = $this->createMedia($mediaFolder, customData: ['name' => 'road.jpg']);
+        $this->mediaService->moveMediaFixture('road.jpg', $media);
+
+        $mediaFolderEnd = $this->createMediaFolder(customData: ['name' => 'end-folder']);
+        $this->mediaService->createFolder($mediaFolderEnd);
+
+        $data = ['id' => $media->getId(), 'type' => 'media', 'idToMove' => $mediaFolderEnd->getId()];
+        $this->client->request('POST', $this->router->generate('admin_media_move'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('success', $content);
+        $this->assertIsBool($content['success']);
+
+        $result = $this->fileSystem->exists($this->mediaService->getRootPathMedia() . DIRECTORY_SEPARATOR . 'end-folder' . DIRECTORY_SEPARATOR . 'road.jpg');
+        $this->assertTrue($result);
+    }
+
+    /**
+     * Test méthode updateTrash()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUpdateTrash(): void
+    {
+        $this->checkNoAccess('admin_media_update_trash', methode: 'POST');
+
+        $mediaFolder = $this->createMediaFolder(customData: ['trash' => false]);
+        $media = $this->createMedia($mediaFolder, customData: ['name' => 'road.jpg', 'trash' => true]);
+
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+
+        $data = ['type' => 'media', 'id' => $media->getId(), 'trash' => !$media->isTrash()];
+        $this->client->request('POST', $this->router->generate('admin_media_update_trash'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('success', $content);
+        $this->assertIsBool($content['success']);
+
+        $this->em->clear();
+        $verif = $this->mediaService->findOneById(Media::class, $media->getId());
+        $this->assertEquals(!$media->isTrash(), $verif->isTrash());
+
+    }
+
+    /**
+     * Test méthode nbTrash()
+     * @return void
+     */
+    public function testNbTrash(): void
+    {
+        $folder = $this->createMediaFolder(customData: ['disabled' => false, 'trash' => true]);
+        $folder2 = $this->createMediaFolder(customData: ['disabled' => false, 'trash' => false]);
+        $this->createMedia($folder, customData: ['disabled' => false, 'trash' => true]);
+        $this->createMedia($folder2, customData: ['disabled' => false, 'trash' => true]);
+
+        $this->checkNoAccess('admin_media_nb_trash');
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+
+        $this->client->request('GET', $this->router->generate('admin_media_nb_trash'));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('nb', $content);
+        $this->assertEquals(3, $content['nb']);
+    }
+
+    /**
+     * Test méthode listTrash()
+     * @return void
+     */
+    public function testListTrash(): void {
+        $folder = $this->createMediaFolder(customData: ['disabled' => false, 'trash' => true]);
+        $folder2 = $this->createMediaFolder(customData: ['disabled' => false, 'trash' => false]);
+        $this->createMedia($folder, customData: ['disabled' => false, 'trash' => true]);
+        $this->createMedia($folder2, customData: ['disabled' => false, 'trash' => true]);
+
+        $this->checkNoAccess('admin_media_list_trash');
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+
+        $this->client->request('GET', $this->router->generate('admin_media_list_trash'));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('mediasTrash', $content);
+        $this->assertCount(3, $content['mediasTrash']);
+    }
+
+    /**
+     * Test méthode removeTrash()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testRemoveTrash() :void {
+
+        $this->mediaService->resetAllMedia();
+
+        $this->checkNoAccess('admin_media_remove', methode: 'POST');
+        $user = $this->createUserContributeur();
+        $this->client->loginUser($user, 'admin');
+
+        $mediaFolder = $this->createMediaFolder(customData: ['trash' => true]);
+        $media = $this->createMedia($mediaFolder, customData: ['name' => 'road.jpg', 'trash' => true]);
+        $this->mediaService->moveMediaFixture('road.jpg', $media);
+
+        $data = ['type' => 'folder', 'id' => $mediaFolder->getId()];
+        $this->client->request('POST', $this->router->generate('admin_media_remove'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('success', $content);
+        $this->assertEquals('remove', $content['success']);
+
+        $this->assertFalse($this->fileSystem->exists($this->mediaService->getRootPathMedia() . $mediaFolder->getPath() . $mediaFolder->getName()));
     }
 }
