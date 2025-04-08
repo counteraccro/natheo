@@ -5,7 +5,9 @@ namespace App\Repository\Admin\Content\Page;
 use App\Entity\Admin\Content\Page\Page;
 use App\Utils\Content\Page\PageConst;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -145,9 +147,9 @@ class PageRepository extends ServiceEntityRepository
         $query->where(
             $query->expr()->neq('p.' . $field, ':value')
         )
-            ->setParameters([
-                'value' => $value,
-            ]);
+            ->setParameters(new ArrayCollection([
+                new Parameter('value', $value),
+            ]));
         return $query->getQuery()->getResult();
     }
 
