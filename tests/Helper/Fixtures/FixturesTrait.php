@@ -8,6 +8,7 @@ namespace App\Tests\Helper\Fixtures;
 
 use App\Tests\Helper\Fixtures\Content\FaqFixturesTrait;
 use App\Tests\Helper\Fixtures\Content\Media\MediaFixturesTrait;
+use App\Tests\Helper\Fixtures\Content\MenuFixturesTrait;
 use App\Tests\Helper\Fixtures\Content\TagFixturesTrait;
 use App\Tests\Helper\Fixtures\System\ApiTokenFixturesTrait;
 use App\Tests\Helper\Fixtures\System\MailFixturesTrait;
@@ -26,7 +27,7 @@ trait FixturesTrait
 {
     use UserFixturesTrait, OptionUserFixturesTrait, OptionSystemFixturesTrait, MailFixturesTrait, UserDataFixturesTrait,
         NotificationFixturesTrait, SidebarElementFixturesTrait, TagFixturesTrait, ApiTokenFixturesTrait, TranslateFixturesTrait,
-        SqlManagerFixturesTrait, FaqFixturesTrait, MediaFolderFixturesTrait, MediaFixturesTrait;
+        SqlManagerFixturesTrait, FaqFixturesTrait, MediaFolderFixturesTrait, MediaFixturesTrait, MenuFixturesTrait;
 
     /**
      * @var EntityManagerInterface
