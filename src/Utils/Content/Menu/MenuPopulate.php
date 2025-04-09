@@ -12,6 +12,8 @@ use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Menu\MenuElementTranslation;
 use App\Entity\Admin\Content\Page\Page;
 use App\Service\Admin\Content\Menu\MenuService;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class MenuPopulate
 {
@@ -81,6 +83,8 @@ class MenuPopulate
     /**
      * Met à jour les liaisons entre page et menu
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function populatePageMenu(): void
     {
@@ -184,6 +188,8 @@ class MenuPopulate
      * @param MenuElement $menuElement
      * @param int|null $pageId
      * @return MenuElement
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function setPageToMenuElement(MenuElement $menuElement, mixed $pageId = ""): MenuElement
     {
