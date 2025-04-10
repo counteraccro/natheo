@@ -93,6 +93,7 @@ class MenuConvertToArray
     private function mergeMenuElements(array $menuElements): array
     {
         $structureMenuElement = $this->createStructure(MenuElement::class);
+        $structure = [];
 
         $key = 0;
         foreach ($menuElements as $menuElement) {
