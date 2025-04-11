@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Service sur le menu
+ */
 
 namespace App\Service\Admin\Content\Menu;
 
@@ -23,7 +28,7 @@ class MenuService extends AppAdminService
      * @param int $page
      * @param int $limit
      * @param string|null $search
-     * @param null $userId
+     * @param int|null $userId
      * @return Paginator
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
