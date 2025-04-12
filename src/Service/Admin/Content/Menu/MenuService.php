@@ -303,18 +303,25 @@ class MenuService extends AppAdminService
     /**
      * Reconstruit les positions de column et row en fonction du menu
      * @param array $menuElements
+     * @param bool $isSub true si 2ème appel
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function regenerateColumnAndRowPosition(array $menuElements): void
+    public function regenerateColumnAndRowPosition(array $menuElements, $isSub = false): void
     {
         $columnRef = null;
+        $beforeColumnRef = null;
         $rowRef = 0;
         foreach ($menuElements as $menuElement) {
-            /** @var MenuElement $menuElement */
 
-            if ($columnRef === null || $columnRef != $menuElement->getColumnPosition()) {
+            /** @var MenuElement $menuElement */
+            if($menuElement->getParent() !== null && !$isSub) {
+                continue;
+            }
+
+            if (($columnRef === null || $columnRef != $menuElement->getColumnPosition()) && ($beforeColumnRef === null || $beforeColumnRef != $menuElement->getColumnPosition())) {
+                $beforeColumnRef = $menuElement->getColumnPosition();
                 $columnRef++;
                 $rowRef = 1;
             }
@@ -322,7 +329,7 @@ class MenuService extends AppAdminService
             $menuElement->setColumnPosition($columnRef);
             $menuElement->setRowPosition($rowRef++);
             if (!$menuElement->getChildren()->isEmpty()) {
-                $this->regenerateColumnAndRowPosition($menuElement->getChildren()->toArray());
+                $this->regenerateColumnAndRowPosition($menuElement->getChildren()->toArray(), true);
             }
             $this->save($menuElement);
         }
