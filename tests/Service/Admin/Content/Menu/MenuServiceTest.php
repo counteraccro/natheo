@@ -265,6 +265,118 @@ class MenuServiceTest extends AppWebTestCase
             }
         }
 
+    }
+
+    /**
+     * Test méthode getMenuElementByMenuAndParent()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetMenuElementByMenuAndParent(): void
+    {
+        $menu = $this->createMenu();
+        $this->createMenuElement($menu);
+        $menuElement = $this->createMenuElement($menu);
+        $this->createMenuElement($menu, $menuElement);
+
+        $result = $this->menuService->getMenuElementByMenuAndParent($menu->getId());
+        $this->assertIsArray($result);
+        $this->assertCount(2, $result);
+
+        $result = $this->menuService->getMenuElementByMenuAndParent($menu->getId(), $menuElement->getId());
+        $this->assertIsArray($result);
+        $this->assertCount(1, $result);
+
+    }
+
+    /**
+     * Test méthode getListeParentByMenuElement()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetListeParentByMenuElement(): void
+    {
+        $menu = $this->createMenu();
+        $menuElement1 = $this->createMenuElement($menu);
+        $menuElement = $this->createMenuElement($menu);
+        $subMenuElement = $this->createMenuElement($menu, $menuElement);
+
+        $result = $this->menuService->getListeParentByMenuElement($menu->getId(), $menuElement->getId());
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey($menuElement1->getId(), $result);
+        $this->assertEquals(0, $result[$menuElement1->getId()]['deep']);
+
+        $result = $this->menuService->getListeParentByMenuElement($menu->getId(), $menuElement1->getId());
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey($menuElement->getId(), $result);
+        $this->assertEquals(0, $result[$menuElement->getId()]['deep']);
+        $this->assertArrayHasKey($subMenuElement->getId(), $result);
+        $this->assertEquals(1, $result[$subMenuElement->getId()]['deep']);
+    }
+
+    /**
+     * Test méthode reorderMenuElement()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testReorderMenuElement(): void
+    {
+        $menu = $this->createMenu();
+
+        $menuElementPos1Row1 = $this->createMenuElement($menu, customData: ['columnPosition' => 1, 'rowPosition' => 1]);
+        $this->createMenuElement($menu, customData: ['columnPosition' => 1, 'rowPosition' => 2]);
+        $menuElementPos1Row3 = $this->createMenuElement($menu, customData: ['columnPosition' => 1, 'rowPosition' => 3]);
+        $this->createMenuElement($menu, $menuElementPos1Row3, customData: ['columnPosition' => 1, 'rowPosition' => 1]);
+        $this->createMenuElement($menu, $menuElementPos1Row3, customData: ['columnPosition' => 1, 'rowPosition' => 2]);
+        $subMenuElement3 = $this->createMenuElement($menu, $menuElementPos1Row3, customData: ['columnPosition' => 1, 'rowPosition' => 3]);
+
+
+        $data = [
+            "reorderType" => "row",
+            "newColumn" => 1,
+            "oldColumn" => 1,
+            "newRow" => 1,
+            "oldRow" => 3,
+            "id" => $menuElementPos1Row3->getId(),
+            "parent" => "",
+            "menu" => $menu->getId()
+        ];
+
+        $this->menuService->reorderMenuElement($data);
+        /** @var MenuElement $verif */
+        $verif = $this->menuService->findOneById(MenuElement::class, $menuElementPos1Row3->getId());
+        $this->assertEquals(1, $verif->getRowPosition());
+
+        $verif2 = $this->menuService->findOneById(MenuElement::class, $menuElementPos1Row1->getId());
+        $this->assertEquals(2, $verif2->getRowPosition());
+
+        $data = [
+            "reorderType" => "column",
+            "newColumn" => 2,
+            "oldColumn" => 1,
+            "newRow" => 1,
+            "oldRow" => 3,
+            "id" => $subMenuElement3->getId(),
+            "parent" => $menuElementPos1Row3->getId(),
+            "menu" => $menu->getId()
+        ];
+
+        $this->menuService->reorderMenuElement($data);
+        /** @var MenuElement $verif */
+        $verif = $this->menuService->findOneById(MenuElement::class, $subMenuElement3->getId());
+        $this->assertEquals(1, $verif->getRowPosition());
+        $this->assertEquals(2, $verif->getColumnPosition());
+    }
+
+    /**
+     * Test méthode getListMenus()
+     * @return void
+     */
+    public function testGetListMenus() :void
+    {
 
     }
 }
