@@ -9,6 +9,7 @@ namespace App\Tests\Service\Admin\Content\Menu;
 
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
+use App\Repository\Admin\Content\Menu\MenuRepository;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Tests\AppWebTestCase;
 use App\Utils\Content\Menu\MenuConst;
@@ -374,9 +375,67 @@ class MenuServiceTest extends AppWebTestCase
     /**
      * Test méthode getListMenus()
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function testGetListMenus() :void
-    {
+    public function testGetListMenus() :void {
+        for ($i = 0; $i < 10; $i++) {
+            $this->createMenu();
+        }
+        $menu = $this->createMenu(customData : ['disabled' => false]);
 
+        $result = $this->menuService->getListMenus();
+        $this->assertIsArray($result);
+        $this->assertCount(11, $result);
+
+        $first = $result[array_key_first($result)];
+        $this->assertIsArray($first);
+        $this->assertArrayHasKey('name', $first);
+        $this->assertArrayHasKey('disabled', $first);
+        $this->assertArrayHasKey('id', $first);
+
+        $check = $result[$menu->getId()];
+        $this->assertEquals($check['name'], $menu->getName());
+        $this->assertEquals($check['disabled'], $menu->isDisabled());
+        $this->assertEquals($check['id'], $menu->getId());
+    }
+
+    /**
+     * Test méthode switchDefaultMenuToFalse()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testSwitchDefaultMenuToFalse() :void
+    {
+        for ($i = 0; $i < 3; $i++) {
+            $this->createMenu(customData : ['position' => MenuConst::POSITION_HEADER, 'defaultMenu' => 0]);
+        }
+        $menuH = $this->createMenu(customData: ['position' => MenuConst::POSITION_HEADER, 'defaultMenu' => 1]);
+
+        for ($i = 0; $i < 3; $i++) {
+            $rMenuF = $this->createMenu(customData : ['position' => MenuConst::POSITION_FOOTER, 'defaultMenu' => 0]);
+        }
+        $menuF = $this->createMenu(customData: ['position' => MenuConst::POSITION_FOOTER, 'defaultMenu' => 1]);
+
+        $this->menuService->switchDefaultMenuToFalse($rMenuF->getId(), MenuConst::POSITION_FOOTER);
+
+        /** @var MenuRepository $menuRepo */
+        $menuRepo = $this->em->getRepository(Menu::class);
+        $result = $menuRepo->findAll();
+        foreach($result as $menu) {
+            /** @var Menu $menu */
+            if($menu->getPosition() === MenuConst::POSITION_FOOTER) {
+                $this->assertFalse($menu->isDefaultMenu());
+            }
+            else {
+                if($menu->getId() === $menuH->getId()) {
+                    $this->assertTrue($menu->isDefaultMenu());
+                }
+                else {
+                    $this->assertFalse($menu->isDefaultMenu());
+                }
+            }
+        }
     }
 }
