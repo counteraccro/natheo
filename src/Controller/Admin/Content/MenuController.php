@@ -43,9 +43,9 @@ class MenuController extends AppAdminController
     public function index(): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'tag',
+            Breadcrumb::DOMAIN => 'menu',
             Breadcrumb::BREADCRUMB => [
-                'tag.index.page_title_h1' => '#'
+                'menu.index.page_title_h1' => '#'
             ]
         ];
 
