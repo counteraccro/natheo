@@ -24,7 +24,7 @@ class OptionSystem
     #[ORM\Column(name:'`key`', length: 255)]
     private ?string $key = null;
 
-    #[ORM\Column(length: 65535)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $value = null;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
