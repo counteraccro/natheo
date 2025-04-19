@@ -17,6 +17,7 @@ use App\Entity\Admin\Content\Tag\Tag;
 use App\Tests\Helper\FakerTrait;
 use App\Utils\Content\Comment\CommentConst;
 use App\Utils\Content\Page\PageConst;
+use App\Utils\Content\Page\PageStatistiqueKey;
 
 trait PageFixturesTrait
 {
@@ -43,7 +44,7 @@ trait PageFixturesTrait
             'category' => self::getFaker()->randomDigit(),
             'landingPage' => false,
             'isOpenComment' => self::getFaker()->boolean(),
-            'nbComment' => self::getFaker()->randomNumber(50),
+            'nbComment' => self::getFaker()->randomNumber(2),
             'ruleComment' => CommentConst::WAIT_VALIDATION
         ];
 
@@ -77,7 +78,7 @@ trait PageFixturesTrait
 
         $pageTranslation = $this->initEntity(PageTranslation::class, array_merge($data, $customData));
         $pageTranslation->setPage($page);
-        $page->addTranslation($pageTranslation);
+        $page->addPageTranslation($pageTranslation);
 
         if ($persist) {
             $this->persistAndFlush($pageTranslation);
@@ -176,11 +177,10 @@ trait PageFixturesTrait
      * Création d'un pageMenu
      * @param Page|null $page
      * @param Menu|null $menu
-     * @param array $customData
      * @param bool $persist
      * @return Page
      */
-    public function createPageMenu(Page $page = null, Menu $menu = null, array $customData = [], bool $persist = true): Page
+    public function createPageMenu(Page $page = null, Menu $menu = null, bool $persist = true): Page
     {
         if ($page === null) {
             $page = $this->createPage();
@@ -203,11 +203,10 @@ trait PageFixturesTrait
      * Création d'un pageTag
      * @param Page|null $page
      * @param Tag|null $tag
-     * @param array $customData
      * @param bool $persist
      * @return Page
      */
-    public function createPageTag(Page $page = null, Tag $tag = null, array $customData = [], bool $persist = true): Page
+    public function createPageTag(Page $page = null, Tag $tag = null, bool $persist = true): Page
     {
         if ($page === null) {
             $page = $this->createPage();
@@ -232,8 +231,24 @@ trait PageFixturesTrait
      */
     public function createPageAllDataDefault() :Page
     {
-        $page = $this->createPage();
+        $page = $this->createPage(customData: ['render' => PageConst::RENDER_2_BLOCK_BOTTOM]);
 
+        foreach($this->locales as $locale) {
+            $this->createPageTranslation($page, ['locale' => $locale]);
+        }
+
+        $faq = $this->createFaqAllDataDefault();
+        $this->createPageContent($page, ['renderBlock' => 1, 'renderOrder' => 1, 'type' => PageConst::CONTENT_TYPE_FAQ, 'typeId' => $faq->getId()]);
+        $pageContent = $this->createPageContent($page, ['renderBlock' => 2, 'renderOrder' => 1]);
+        foreach($this->locales as $locale) {
+            $this->createPageContentTranslation($pageContent, ['locale' => $locale]);
+        }
+
+        $this->createPageTag($page);
+        $this->createPageTag($page);
+
+        $this->createPageStatistique($page, ['key' => PageStatistiqueKey::KEY_PAGE_NB_READ, 'value' => self::getFaker()->randomNumber(3)]);
+        $this->createPageStatistique($page, ['key' => PageStatistiqueKey::KEY_PAGE_NB_VISITEUR, 'value' => self::getFaker()->randomNumber(3)]);
         return $page;
     }
 }
