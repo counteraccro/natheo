@@ -137,7 +137,7 @@ class PageHistory
 
     /**
      * Retourne l'ensemble de l'historique d'une page en fonction de son id
-     * @param int $id
+     * @param int|null $id
      * @return array
      */
     public function getHistory(int $id = null): array
@@ -153,8 +153,8 @@ class PageHistory
 
     /**
      * Retourne l'historique d'une page en fonction de son id et de la key id (ligne dans le fichier)
-     * @param int $pageId
      * @param int $rowId
+     * @param int|null $pageId
      * @return array
      */
     public function getPageHistoryById(int $rowId, int $pageId = null) : array

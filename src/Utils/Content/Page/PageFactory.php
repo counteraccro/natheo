@@ -79,6 +79,8 @@ class PageFactory
     /**
      * Création des pageContent
      * @param int $type
+     * @param int|null $type_id
+     * @param int $renderBlock
      * @return PageContent
      */
     private function createPageContent(
