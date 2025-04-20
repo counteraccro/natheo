@@ -278,7 +278,7 @@ class PageController extends AppAdminController
         } else {
             $page = $pageService->findOneById(Page::class, $id);
         }
-        $pageArray = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt', 'user', 'menuElements', 'menus', 'comments']);
+        $pageArray = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt', 'user', 'menuElements', 'menus', 'comments', 'tags']);
 
         // On lie les menus à la page
         if (!$page->getMenus()->isEmpty()) {
@@ -287,6 +287,30 @@ class PageController extends AppAdminController
             }
         } else {
             $pageArray['menus'][] = "-1";
+        }
+
+        if(!$page->getTags()->isEmpty()) {
+            $i = 0;
+            foreach($page->getTags() as $tag) {
+                $pageArray['tags'][$i] = [
+                    'id' => $tag->getId(),
+                    'color' => $tag->getColor(),
+                    'disabled' => $tag->isDisabled(),
+                ];
+
+                foreach($tag->getTagTranslations() as $translation) {
+                    $pageArray['tags'][$i]['tagTranslations'][] = [
+                        'id' => $translation->getId(),
+                        'tag' => $translation->getTag()->getId(),
+                        'locale' => $translation->getLocale(),
+                        'label' => $translation->getLabel(),
+                    ];
+                }
+                $i++;
+            }
+        }
+        else {
+            $pageArray['tags'][] = "-1";
         }
 
         return $this->json([
