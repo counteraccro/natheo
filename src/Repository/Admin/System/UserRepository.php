@@ -69,7 +69,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
      * @param string|null $search
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
+    public function getAllPaginate(int $page, int $limit, ?string $search = null): Paginator
     {
         $query = $this->createQueryBuilder('u')
             ->orderBy('u.id', 'ASC');

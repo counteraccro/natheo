@@ -219,7 +219,7 @@ class CommentController extends AppAdminController
     #[Route('/ajax/load/{id}', name: 'load', methods: ['GET'])]
     public function getComment(
         CommentService $commentService,
-        int            $id = null
+        ?int $id = null
     ): Response
     {
         /** @var Comment $comment */
