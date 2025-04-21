@@ -63,7 +63,7 @@ class FaqRepository extends ServiceEntityRepository
      * @param int|null $userId
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, string $search = null, int $userId = null): Paginator
+    public function getAllPaginate(int $page, int $limit, ?string $search = null, ?int $userId = null): Paginator
     {
         $query = $this->createQueryBuilder('f')
             ->orderBy('f.id', 'ASC');

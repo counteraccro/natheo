@@ -45,7 +45,7 @@ class MediaRepository extends ServiceEntityRepository
      * @param MediaFolder|null $mediaFolder
      * @return float|int|mixed|string
      */
-    public function findByMediaFolder(MediaFolder $mediaFolder = null): mixed
+    public function findByMediaFolder(?MediaFolder $mediaFolder = null): mixed
     {
         $query = $this->createQueryBuilder('m');
         $query->where('m.trash = false');
