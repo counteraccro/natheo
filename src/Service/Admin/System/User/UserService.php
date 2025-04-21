@@ -32,7 +32,7 @@ class UserService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
+    public function getAllPaginate(int $page, int $limit, ?string $search = null): Paginator
     {
         $repo = $this->getRepository(User::class);
         return $repo->getAllPaginate($page, $limit, $search);

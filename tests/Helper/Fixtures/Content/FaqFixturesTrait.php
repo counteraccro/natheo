@@ -143,7 +143,7 @@ trait FaqFixturesTrait
      * @param bool $persist
      * @return FaqQuestion
      */
-    public function createFaqQuestion(FaqCategory $faqCategory = null, array $customData = [], bool $persist = true): FaqQuestion
+    public function createFaqQuestion(?FaqCategory $faqCategory = null, array $customData = [], bool $persist = true): FaqQuestion
     {
         $renderOrder = 1;
         if ($faqCategory === null) {

@@ -84,8 +84,8 @@ class AppApiService extends AppApiHandlerService
         string $entity,
         array  $criteria = [],
         array  $orderBy = [],
-        int    $limit = null,
-        int    $offset = null
+        ?int   $limit = null,
+        ?int $offset = null
     ): array
     {
         $repo = $this->getRepository($entity);

@@ -131,7 +131,7 @@ class MenuConvertToArray
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function mergeMenuElementTranslation(Collection $menuElementTranslations, Page $page = null): array
+    private function mergeMenuElementTranslation(Collection $menuElementTranslations, ?Page $page = null): array
     {
         $return = [];
         $structureMenuElementTranslation = $this->createStructure(MenuElementTranslation::class);

@@ -39,7 +39,7 @@ class ApiPageService extends AppApiService
      * @throws NonUniqueResultException
      * @throws NotFoundExceptionInterface
      */
-    public function getPageForApi(ApiFindPageDto $dto, User $user = null): array
+    public function getPageForApi(ApiFindPageDto $dto, ?User $user = null): array
     {
         $page = $this->getPageBySlug($dto->getSlug());
         if (empty($page)) {
@@ -87,7 +87,7 @@ class ApiPageService extends AppApiService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getListingPageByCategoryForApi(ApiFindPageCategoryDto $dto, User $user = null): array
+    public function getListingPageByCategoryForApi(ApiFindPageCategoryDto $dto, ?User $user = null): array
     {
         $return = [
             'pages' => [],
@@ -126,7 +126,7 @@ class ApiPageService extends AppApiService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getListingPagesByTag(ApiFindPageTagDto $dto, User $user = null): array
+    public function getListingPagesByTag(ApiFindPageTagDto $dto, ?User $user = null): array
     {
         $return = [
             'limit' => $dto->getLimit(),
