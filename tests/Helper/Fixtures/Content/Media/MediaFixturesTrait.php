@@ -25,7 +25,7 @@ trait MediaFixturesTrait
      * @param bool $persist
      * @return Media
      */
-    public function createMedia(MediaFolder $mediaFolder = null, User $user = null, array $customData = [], bool $persist = true): Media
+    public function createMedia(?MediaFolder $mediaFolder = null, ?User $user = null, array $customData = [], bool $persist = true): Media
     {
         $name = self::getFaker()->slug(2);
         $extension = 'jpg';

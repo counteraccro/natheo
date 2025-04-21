@@ -26,7 +26,7 @@ trait MenuFixturesTrait
      * @param bool $persist
      * @return Menu
      */
-    public function createMenu(User $user = null, array $customData = [], bool $persist = true): Menu
+    public function createMenu(?User $user = null, array $customData = [], bool $persist = true): Menu
     {
         if ($user === null) {
             $user = $this->createUserContributeur();
@@ -60,7 +60,7 @@ trait MenuFixturesTrait
      * @param bool $persist
      * @return MenuElement
      */
-    public function createMenuElement(Menu $menu = null, MenuElement $parent = null, Page $page = null, array $customData = [], bool $persist = true): MenuElement
+    public function createMenuElement(?Menu $menu = null, ?MenuElement $parent = null, ?Page $page = null, array $customData = [], bool $persist = true): MenuElement
     {
         if ($menu === null) {
             $menu = $this->createMenu();
@@ -99,7 +99,7 @@ trait MenuFixturesTrait
      * @param bool $persist
      * @return MenuElementTranslation
      */
-    public function createMenuElementTranslation(MenuElement $menuElement = null, array $customData = [], bool $persist = true): MenuElementTranslation
+    public function createMenuElementTranslation(?MenuElement $menuElement = null, array $customData = [], bool $persist = true): MenuElementTranslation
     {
         if ($menuElement === null) {
             $menuElement = $this->createMenuElement();

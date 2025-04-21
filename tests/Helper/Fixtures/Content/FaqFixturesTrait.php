@@ -29,7 +29,7 @@ trait FaqFixturesTrait
      * @param bool $persist
      * @return Faq
      */
-    public function createFaq(User $user = null, array $customData = [], bool $persist = true): Faq
+    public function createFaq(?User $user = null, array $customData = [], bool $persist = true): Faq
     {
         if ($user === null) {
             $user = $this->createUserContributeur();
@@ -55,7 +55,7 @@ trait FaqFixturesTrait
      * @param bool $persist
      * @return FaqTranslation
      */
-    public function createFaqTranslation(Faq $faq = null, array $customData = [], bool $persist = true): FaqTranslation
+    public function createFaqTranslation(?Faq $faq = null, array $customData = [], bool $persist = true): FaqTranslation
     {
         if ($faq === null) {
             $faq = $this->createFaq();
@@ -83,7 +83,7 @@ trait FaqFixturesTrait
      * @param bool $persist
      * @return FaqCategory
      */
-    public function createFaqCategory(Faq $faq = null, array $customData = [], bool $persist = true): FaqCategory
+    public function createFaqCategory(?Faq $faq = null, array $customData = [], bool $persist = true): FaqCategory
     {
         $renderOrder = 1;
         if ($faq === null) {
@@ -116,7 +116,7 @@ trait FaqFixturesTrait
      * @param bool $persist
      * @return FaqCategoryTranslation
      */
-    public function createFaqCategoryTranslation(FaqCategory $faqCategory = null, array $customData = [], bool $persist = true): FaqCategoryTranslation
+    public function createFaqCategoryTranslation(?FaqCategory $faqCategory = null, array $customData = [], bool $persist = true): FaqCategoryTranslation
     {
         if ($faqCategory === null) {
             $faqCategory = $this->createFaqCategory();
@@ -175,7 +175,7 @@ trait FaqFixturesTrait
      * @param bool $persist
      * @return FaqQuestionTranslation
      */
-    public function createFaqQuestionTranslation(FaqQuestion $faqQuestion = null, array $customData = [], bool $persist = true): FaqQuestionTranslation
+    public function createFaqQuestionTranslation(?FaqQuestion $faqQuestion = null, array $customData = [], bool $persist = true): FaqQuestionTranslation
     {
         if ($faqQuestion === null) {
             $faqQuestion = $this->createFaqQuestion();
@@ -203,7 +203,7 @@ trait FaqFixturesTrait
      * @param bool $persist
      * @return FaqStatistique
      */
-    public function createFaqStatistique(Faq $faq = null, array $customData = [], bool $persist = true): FaqStatistique
+    public function createFaqStatistique(?Faq $faq = null, array $customData = [], bool $persist = true): FaqStatistique
     {
         if ($faq === null) {
             $faq = $this->createFaq();

@@ -14,6 +14,7 @@ use App\Entity\Admin\Content\Page\PageContentTranslation;
 use App\Entity\Admin\Content\Page\PageStatistique;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
+use App\Entity\Admin\System\User;
 use App\Tests\Helper\FakerTrait;
 use App\Utils\Content\Comment\CommentConst;
 use App\Utils\Content\Page\PageConst;
@@ -25,12 +26,12 @@ trait PageFixturesTrait
 
     /**
      * Créer une page
-     * @param $user
+     * @param User|null $user
      * @param array $customData
      * @param bool $persist
      * @return Page
      */
-    public function createPage($user = null, array $customData = [], bool $persist = true): Page
+    public function createPage(?User $user = null, array $customData = [], bool $persist = true): Page
     {
         if ($user === null) {
             $user = $this->createUserContributeur();
@@ -58,12 +59,12 @@ trait PageFixturesTrait
 
     /**
      * Création d'une pageTranslation
-     * @param $page
+     * @param Page|null $page
      * @param array $customData
      * @param bool $persist
      * @return PageTranslation
      */
-    public function createPageTranslation($page = null, array $customData = [], bool $persist = true): PageTranslation
+    public function createPageTranslation(?Page $page = null, array $customData = [], bool $persist = true): PageTranslation
     {
         if ($page === null) {
             $page = $this->createPage();
@@ -88,12 +89,12 @@ trait PageFixturesTrait
 
     /**
      * Création d'un pageContent
-     * @param $page
+     * @param Page|null $page
      * @param array $customData
      * @param bool $persist
      * @return PageContent
      */
-    public function createPageContent($page = null, array $customData = [], bool $persist = true): PageContent
+    public function createPageContent(?Page $page = null, array $customData = [], bool $persist = true): PageContent
     {
         if ($page === null) {
             $page = $this->createPage();
@@ -124,7 +125,7 @@ trait PageFixturesTrait
      * @param bool $persist
      * @return PageContentTranslation
      */
-    public function createPageContentTranslation(PageContent $pageContent = null, array $customData = [], bool $persist = true): PageContentTranslation
+    public function createPageContentTranslation(?PageContent $pageContent = null, array $customData = [], bool $persist = true): PageContentTranslation
     {
         if ($pageContent === null) {
             $pageContent = $this->createPageContent();
@@ -152,7 +153,7 @@ trait PageFixturesTrait
      * @param bool $persist
      * @return PageStatistique
      */
-    public function createPageStatistique(Page $page = null, array $customData = [], bool $persist = true): PageStatistique
+    public function createPageStatistique(?Page $page = null, array $customData = [], bool $persist = true): PageStatistique
     {
         if($page === null) {
             $page = $this->createPage();
@@ -180,7 +181,7 @@ trait PageFixturesTrait
      * @param bool $persist
      * @return Page
      */
-    public function createPageMenu(Page $page = null, Menu $menu = null, bool $persist = true): Page
+    public function createPageMenu(?Page $page = null, ?Menu $menu = null, bool $persist = true): Page
     {
         if ($page === null) {
             $page = $this->createPage();
@@ -206,7 +207,7 @@ trait PageFixturesTrait
      * @param bool $persist
      * @return Page
      */
-    public function createPageTag(Page $page = null, Tag $tag = null, bool $persist = true): Page
+    public function createPageTag(?Page $page = null, ?Tag $tag = null, bool $persist = true): Page
     {
         if ($page === null) {
             $page = $this->createPage();
