@@ -156,9 +156,9 @@ class MediaService extends MediaFolderService
      */
     public function getALlMediaAndMediaFolderByMediaFolder
     (
-        MediaFolder $mediaFolder = null,
-        string      $filter = 'created_at',
-        string      $order = 'asc'
+        ?MediaFolder $mediaFolder = null,
+        string       $filter = 'created_at',
+        string       $order = 'asc'
     ): array
     {
         $medias = $this->getMediaByMediaFolder($mediaFolder);
@@ -210,7 +210,7 @@ class MediaService extends MediaFolderService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getMediaByMediaFolder(MediaFolder $mediaFolder = null): mixed
+    public function getMediaByMediaFolder(?MediaFolder $mediaFolder = null): mixed
     {
         /** @var MediaRepository $repo */
         $repo = $this->getRepository(Media::class);
@@ -344,7 +344,7 @@ class MediaService extends MediaFolderService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function moveMedia(Media $media, MediaFolder $mediaFolderInMove = null): void
+    public function moveMedia(Media $media, ?MediaFolder $mediaFolderInMove = null): void
     {
         $oldPath = $this->rootPathMedia . DIRECTORY_SEPARATOR . $media->getName();
         if ($media->getMediaFolder() !== null) {
