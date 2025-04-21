@@ -101,7 +101,6 @@ class NotificationRepository extends ServiceEntityRepository
         $statment = $this->getEntityManager()->getConnection()->prepare($sql);
         $statment->bindValue('nb_day', $nbDay);
         $statment->bindValue('user_id', $userId);
-        //$statment->executeQuery();
         $statment->executeStatement();
     }
 
