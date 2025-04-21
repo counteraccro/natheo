@@ -59,11 +59,100 @@ class PageHistoryTest extends AppWebTestCase
         $this->assertTrue($exist);
         $this->pageHistory->removePageHistory();
 
-        $id =1;
+        $id = 1;
         $this->pageHistory->save($this->getDataTest($id));
         $exist = $this->filesystem->exists($this->pageHistory->getPathPageHistory() . DIRECTORY_SEPARATOR . 'page-' . $id . '.txt');
         $this->assertTrue($exist);
         $this->pageHistory->removePageHistory($id);
+    }
+
+    /**
+     * Test méthode removePageHistory()
+     * @return void
+     */
+    public function testRemovePageHistory(): void
+    {
+        $this->pageHistory->save($this->getDataTest());
+        $this->pageHistory->removePageHistory();
+        $exist = $this->filesystem->exists($this->pageHistory->getPathPageHistory() . DIRECTORY_SEPARATOR . 'page-user-' . $this->currentUser->getId() . '.txt');
+        $this->assertFalse($exist);
+
+        $id = 1;
+        $this->pageHistory->save($this->getDataTest($id));
+        $this->pageHistory->removePageHistory($id);
+        $exist = $this->filesystem->exists($this->pageHistory->getPathPageHistory() . DIRECTORY_SEPARATOR . 'page-' . $id . '.txt');
+        $this->assertFalse($exist);
+    }
+
+    /**
+     * Test méthode getHistory()
+     * @return void
+     */
+    public function testGetHistory(): void
+    {
+        $id = 1;
+        $this->pageHistory->save($this->getDataTest($id));
+        $this->pageHistory->save($this->getDataTest($id));
+        $this->pageHistory->save($this->getDataTest($id));
+
+        $result = $this->pageHistory->getHistory($id);
+        $this->assertIsArray($result);
+        $this->assertCount(3, $result);
+        $row = $result[0];
+        $this->assertArrayHasKey('time', $row);
+        $this->assertArrayHasKey('id', $row);
+        $this->assertArrayHasKey('user', $row);
+
+        $this->pageHistory->removePageHistory($id);
+    }
+
+    /**
+     * Test méthode
+     * @return void getPageHistoryById()
+     */
+    public function testGetPageHistoryById(): void
+    {
+        $id = 1;
+        $this->pageHistory->save($this->getDataTest($id));
+        $this->pageHistory->save($this->getDataTest($id));
+        $this->pageHistory->save($this->getDataTest($id));
+
+        $result = $this->pageHistory->getPageHistoryById(2, $id);
+        $this->assertEquals($this->getDataTest($id), $result);
+
+        $result = $this->pageHistory->getPageHistoryById(12, $id);
+        $this->assertEmpty($result);
+        $this->pageHistory->removePageHistory($id);
+
+
+        $id = null;
+        $this->pageHistory->save($this->getDataTest($id));
+        $this->pageHistory->save($this->getDataTest($id));
+        $this->pageHistory->save($this->getDataTest($id));
+        $result = $this->pageHistory->getPageHistoryById(1, $id);
+        $this->assertEquals($this->getDataTest($id), $result);
+        $this->pageHistory->removePageHistory($id);
+    }
+
+    /**
+     * Test méthode renamePageHistorySave()
+     * @return void
+     */
+    public function testRenamePageHistorySave(): void
+    {
+        $this->pageHistory->save($this->getDataTest());
+        $path = $this->pageHistory->getPathPageHistory() . DIRECTORY_SEPARATOR . 'page-user-' . $this->currentUser->getId() . '.txt';
+        $exist = $this->filesystem->exists($path);
+        $this->assertTrue($exist);
+
+        $idPage = 99;
+        $this->pageHistory->renamePageHistorySave($idPage);
+        $exist = $this->filesystem->exists($path);
+        $this->assertFalse($exist);
+
+        $exist = $this->filesystem->exists($this->pageHistory->getPathPageHistory() . DIRECTORY_SEPARATOR . 'page-' . $idPage . '.txt');
+        $this->assertTrue($exist);
+        $this->pageHistory->removePageHistory($idPage);
     }
 
     /**
