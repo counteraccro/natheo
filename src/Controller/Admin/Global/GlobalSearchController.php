@@ -64,16 +64,16 @@ class GlobalSearchController extends AppAdminController
      */
     #[Route('/{entity}/{page}/{limit}/{search}', name: 'global', methods: ['GET'])]
     public function search(
-        Request $request,
+        Request             $request,
         GlobalSearchService $globalSearchService,
-        string $entity = null,
-        int $page = 1,
-        int $limit = 20,
-        string $search = null
+        ?string             $entity = null,
+        int                 $page = 1,
+        int                 $limit = 20,
+        ?string             $search = null
     ): Response
     {
         $result = ['elements' => [], 'total' => 0];
-        if($search !== null){
+        if ($search !== null) {
             $result = $globalSearchService->globalSearch($entity, $search, $page, $limit);
         }
 
