@@ -84,9 +84,9 @@ class PageFactory
      * @return PageContent
      */
     private function createPageContent(
-        int $type = PageConst::CONTENT_TYPE_TEXT,
-        int $type_id = null,
-        int $renderBlock = 1
+        int  $type = PageConst::CONTENT_TYPE_TEXT,
+        ?int $type_id = null,
+        int  $renderBlock = 1
     ): PageContent
     {
         if($type === PageConst::CONTENT_TYPE_TEXT)

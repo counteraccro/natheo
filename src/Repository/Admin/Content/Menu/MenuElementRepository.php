@@ -53,7 +53,7 @@ class MenuElementRepository extends ServiceEntityRepository
      * @param bool $showDisabled
      * @return mixed
      */
-    public function getMenuElementByMenuAndParent(int $idMenu, int $parent = null, bool $showDisabled = true): mixed
+    public function getMenuElementByMenuAndParent(int $idMenu, ?int $parent = null, bool $showDisabled = true): mixed
     {
         $queryB = $this->createQueryBuilder('me')
             ->where('me.menu =  :idMenu')
@@ -75,29 +75,4 @@ class MenuElementRepository extends ServiceEntityRepository
 
         return $queryB->getQuery()->getResult();
     }
-
-//    /**
-//     * @return MenuElement[] Returns an array of MenuElement objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?MenuElement
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

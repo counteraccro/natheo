@@ -69,7 +69,7 @@ class DataBase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function isTableExiste(string $tableName = null): bool
+    public function isTableExiste(?string $tableName = null): bool
     {
         /** @var ParameterBagInterface $parameterBag */
         $parameterBag = $this->handlers->get('parameterBag');

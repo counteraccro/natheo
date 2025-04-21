@@ -40,7 +40,7 @@ class CommentRepository extends ServiceEntityRepository
      * @param null $userId
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, string $search = null, $userId = null): Paginator
+    public function getAllPaginate(int $page, int $limit, ?string $search = null, $userId = null): Paginator
     {
         $query = $this->createQueryBuilder('c')
             ->orderBy('c.id', 'ASC');

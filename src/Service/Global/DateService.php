@@ -38,9 +38,9 @@ class DateService extends AppService
      * @return string
      */
     public function getStringDiffDate(
-        DateTimeInterface $dateRef = null,
-        DateTimeInterface $dateDiff = null,
-        bool              $short = false): string
+        ?DateTimeInterface $dateRef = null,
+        ?DateTimeInterface $dateDiff = null,
+        bool               $short = false): string
     {
         if ($dateRef === null) {
             return '<i>' . $this->translator->trans('date.diff.no_data') . '</i>';

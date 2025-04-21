@@ -192,11 +192,11 @@ class PageController extends AppAdminController
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
     public function add(
-        PageService   $pageService,
-        PageTranslate $pageTranslate,
-        CommentService $commentService,
+        PageService         $pageService,
+        PageTranslate       $pageTranslate,
+        CommentService      $commentService,
         OptionSystemService $optionSystemService,
-        int           $id = null
+        ?int                $id = null
     ): Response
     {
         $breadcrumbTitle = 'page.update.page_title_h1';
@@ -263,7 +263,7 @@ class PageController extends AppAdminController
     public function loadTabContent(
         PageService $pageService,
         MenuService $menuService,
-        int         $id = null,
+        ?int        $id = null,
     ): JsonResponse
     {
         $locales = $pageService->getLocales();
@@ -289,16 +289,16 @@ class PageController extends AppAdminController
             $pageArray['menus'][] = "-1";
         }
 
-        if(!$page->getTags()->isEmpty()) {
+        if (!$page->getTags()->isEmpty()) {
             $i = 0;
-            foreach($page->getTags() as $tag) {
+            foreach ($page->getTags() as $tag) {
                 $pageArray['tags'][$i] = [
                     'id' => $tag->getId(),
                     'color' => $tag->getColor(),
                     'disabled' => $tag->isDisabled(),
                 ];
 
-                foreach($tag->getTagTranslations() as $translation) {
+                foreach ($tag->getTagTranslations() as $translation) {
                     $pageArray['tags'][$i]['tagTranslations'][] = [
                         'id' => $translation->getId(),
                         'tag' => $translation->getTag()->getId(),
@@ -308,8 +308,7 @@ class PageController extends AppAdminController
                 }
                 $i++;
             }
-        }
-        else {
+        } else {
             $pageArray['tags'][] = "-1";
         }
 
@@ -355,7 +354,7 @@ class PageController extends AppAdminController
     public function loadTabHistory(
         ContainerBagInterface $containerBag,
         DateService           $dateService,
-        int                   $id = null
+        ?int                  $id = null
     ): JsonResponse
     {
         /** @var User $user */
@@ -491,7 +490,7 @@ class PageController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/content-by-id/{type}', name: 'liste_content_by_id', methods: ['GET'])]
-    public function listeContentByIdContent(PageService $pageService, int $type = null): JsonResponse
+    public function listeContentByIdContent(PageService $pageService, ?int $type = null): JsonResponse
     {
         $return = $pageService->getListeContentByType($type);
         return $this->json($return);
@@ -555,17 +554,17 @@ class PageController extends AppAdminController
      */
     #[Route('/preview/{id}/{locale}', name: 'preview', methods: ['GET'])]
     public function preview(
-        PageService $pageService,
-        ApiTokenService $apiTokenService,
-        PageTranslate $pageTranslate,
+        PageService         $pageService,
+        ApiTokenService     $apiTokenService,
+        PageTranslate       $pageTranslate,
         OptionSystemService $optionSystemService,
-        string $locale = null,
-        int $id = null,
+        ?string             $locale = null,
+        ?int                $id = null,
     ): Response
     {
 
-        if($locale === null) {
-            $locale =  $pageService->getLocales()['current'];
+        if ($locale === null) {
+            $locale = $pageService->getLocales()['current'];
         }
         $slug = '';
         $token = null;
@@ -576,10 +575,10 @@ class PageController extends AppAdminController
         }
 
 
-        if($id != null) {
+        if ($id != null) {
             /** @var Page $page */
             $page = $pageService->findOneById(Page::class, $id);
-            if($page !== null) {
+            if ($page !== null) {
                 $slug = $page->getPageTranslationByLocale($locale)->getUrl();
                 $token = $apiTokenService->getTokenForPreview();
             }

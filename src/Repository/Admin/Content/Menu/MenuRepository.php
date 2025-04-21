@@ -56,7 +56,7 @@ class MenuRepository extends ServiceEntityRepository
      * @param int|null $userId
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, string $search = null, int $userId = null): Paginator
+    public function getAllPaginate(int $page, int $limit, ?string $search = null, ?int $userId = null): Paginator
     {
         $query = $this->createQueryBuilder('m')
             ->orderBy('m.id', 'ASC');

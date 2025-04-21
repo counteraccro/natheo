@@ -21,7 +21,7 @@ trait UserDataFixturesTrait
      * @param bool $persist
      * @return UserData
      */
-    public function createUserData(User $user = null,  array $customData = [], bool $persist = true): UserData
+    public function createUserData(?User $user = null, array $customData = [], bool $persist = true): UserData
     {
         if($user === null) {
             $user = $this->createUser();

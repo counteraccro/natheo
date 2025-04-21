@@ -99,7 +99,7 @@ class PageHistory
      * @param int|null $id
      * @return string
      */
-    private function getPath(int $id = null): string
+    private function getPath(?int $id = null): string
     {
         if ($id === null) {
             $id = 'user-' . $this->user->getId();
@@ -129,10 +129,10 @@ class PageHistory
     /**
      * Retourne le contenu d'un fichier en fonction de son id
      * Si le fichier n'existe pas, retourne un tableau vide
-     * @param int $id
+     * @param int|null $id
      * @return array
      */
-    private function getContentFile(int $id = null): array
+    private function getContentFile(?int $id = null): array
     {
         $path = $this->getPath($id);
         if (file_exists($path)) {
@@ -146,7 +146,7 @@ class PageHistory
      * @param int|null $id
      * @return array
      */
-    public function getHistory(int $id = null): array
+    public function getHistory(?int $id = null): array
     {
         $datas = $this->getContentFile($id);
         $return = [];
@@ -163,7 +163,7 @@ class PageHistory
      * @param int|null $pageId
      * @return array
      */
-    public function getPageHistoryById(int $rowId, int $pageId = null): array
+    public function getPageHistoryById(int $rowId, ?int $pageId = null): array
     {
         $datas = $this->getContentFile($pageId);
         foreach ($datas as $key => $row) {

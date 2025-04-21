@@ -100,7 +100,7 @@ class FaqController extends AppAdminController
         FaqService              $faqService,
         FaqTranslate            $faqTranslate,
         MarkdownEditorTranslate $markdownEditorTranslate,
-        int                     $id = null,
+        ?int                    $id = null,
     ): Response
     {
         $breadcrumbTitle = 'faq.update.page_title_h1';
@@ -205,7 +205,7 @@ class FaqController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-faq/{id}', name: 'load_faq', methods: 'GET')]
-    public function loadFaq(FaqService $faqService, int $id = null): JsonResponse
+    public function loadFaq(FaqService $faqService, ?int $id = null): JsonResponse
     {
         $locales = $faqService->getLocales();
 

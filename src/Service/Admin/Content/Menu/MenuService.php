@@ -33,7 +33,7 @@ class MenuService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllPaginate(int $page, int $limit, string $search = null, int $userId = null): Paginator
+    public function getAllPaginate(int $page, int $limit, ?string $search = null, ?int $userId = null): Paginator
     {
         $repo = $this->getRepository(Menu::class);
         return $repo->getAllPaginate($page, $limit, $search, $userId);
@@ -49,7 +49,7 @@ class MenuService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllFormatToGrid(int $page, int $limit, string $search = null, int $userId = null): array
+    public function getAllFormatToGrid(int $page, int $limit, ?string $search = null, ?int $userId = null): array
     {
         $translator = $this->getTranslator();
         $gridService = $this->getGridService();
@@ -248,7 +248,7 @@ class MenuService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function addMenuElement(int $idMenu, int $columnP, int $rowP, int $idParent = null): int
+    public function addMenuElement(int $idMenu, int $columnP, int $rowP, ?int $idParent = null): int
     {
         $menuFactory = new MenuFactory($this->getLocales()['locales']);
         $menuElement = $menuFactory->createMenuElement();
@@ -344,7 +344,7 @@ class MenuService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getMenuElementByMenuAndParent(int $idMenu, int $parent = null): mixed
+    public function getMenuElementByMenuAndParent(int $idMenu, ?int $parent = null): mixed
     {
         $repo = $this->getRepository(MenuElement::class);
         return $repo->getMenuElementByMenuAndParent($idMenu, $parent);

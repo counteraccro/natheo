@@ -22,7 +22,7 @@ trait OptionUserFixturesTrait
      * @param bool $persist
      * @return OptionUser
      */
-    public function createOptionUser(User $user = null, array $customData = [], bool $persist = true): OptionUser
+    public function createOptionUser(?User $user = null, array $customData = [], bool $persist = true): OptionUser
     {
         if($user === null) {
             $user = $this->createUser();

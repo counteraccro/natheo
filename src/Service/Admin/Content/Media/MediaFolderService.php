@@ -207,9 +207,9 @@ class MediaFolderService extends AppAdminService
      */
     public function getMediaFolderByMediaFolder
     (
-        MediaFolder $mediaFolder = null,
-        bool        $trash = false,
-        bool        $disabled = false
+        ?MediaFolder $mediaFolder = null,
+        bool         $trash = false,
+        bool         $disabled = false
     ): mixed
     {
         $repo = $this->getRepository(MediaFolder::class);
@@ -223,7 +223,7 @@ class MediaFolderService extends AppAdminService
      * @param MediaFolder|null $mediaFolder
      * @return array
      */
-    public function getMediaFolderInfo(MediaFolder $mediaFolder = null): array
+    public function getMediaFolderInfo(?MediaFolder $mediaFolder = null): array
     {
         $size = $this->getFolderSize($mediaFolder);
         $path = DIRECTORY_SEPARATOR;
@@ -263,7 +263,7 @@ class MediaFolderService extends AppAdminService
      * @param MediaFolder|null $mediaFolder
      * @return int
      */
-    public function getFolderSize(MediaFolder $mediaFolder = null): int
+    public function getFolderSize(?MediaFolder $mediaFolder = null): int
     {
         $path = $this->rootPathMedia;
         if ($mediaFolder != null) {
@@ -295,7 +295,7 @@ class MediaFolderService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function createMediaFolder(string $name, MediaFolder $parent = null): void
+    public function createMediaFolder(string $name, ?MediaFolder $parent = null): void
     {
         $mediaFolder = new MediaFolder();
         $mediaFolder->setName($name);
@@ -504,7 +504,7 @@ class MediaFolderService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getListeFolderToMove(MediaFolder $folder = null): array
+    public function getListeFolderToMove(?MediaFolder $folder = null): array
     {
 
         /** @var MediaFolderRepository $repo */
@@ -568,7 +568,7 @@ class MediaFolderService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function moveFolder(MediaFolder $mediaFolder, MediaFolder $newParent = null): void
+    public function moveFolder(MediaFolder $mediaFolder, ?MediaFolder $newParent = null): void
     {
         $oldPath = $mediaFolder->getPath();
         $old = DIRECTORY_SEPARATOR . $mediaFolder->getName();

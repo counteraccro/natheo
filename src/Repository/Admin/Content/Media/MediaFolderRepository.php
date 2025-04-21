@@ -48,9 +48,9 @@ class MediaFolderRepository extends ServiceEntityRepository
      */
     public function getByMediaFolder
     (
-        MediaFolder $mediaFolder = null,
-        bool        $trash = false,
-        bool        $disabled = false
+        ?MediaFolder $mediaFolder = null,
+        bool         $trash = false,
+        bool         $disabled = false
     ): mixed
     {
         $query = $this->createQueryBuilder('mf')
@@ -89,7 +89,7 @@ class MediaFolderRepository extends ServiceEntityRepository
      * @param MediaFolder|null $mediaFolder
      * @return mixed
      */
-    public function getAllFolderNoChild(MediaFolder $mediaFolder = null): mixed
+    public function getAllFolderNoChild(?MediaFolder $mediaFolder = null): mixed
     {
         $queryBuilder = $this->createQueryBuilder('m');
 

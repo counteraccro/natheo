@@ -42,7 +42,7 @@ trait FixturesTrait
      * @param object|null $entityToUpdate
      * @return object
      */
-    public function initEntity(string $entityName, array $data, object $entityToUpdate = null): object
+    public function initEntity(string $entityName, array $data, ?object $entityToUpdate = null): object
     {
         $object = new $entityName();
         if ($entityToUpdate !== null) {

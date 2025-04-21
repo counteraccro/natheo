@@ -21,7 +21,7 @@ trait MediaFolderFixturesTrait
      * @param bool $persist
      * @return MediaFolder
      */
-    public function createMediaFolder(MediaFolder $parent = null, array $customData = [], bool $persist = true): MediaFolder
+    public function createMediaFolder(?MediaFolder $parent = null, array $customData = [], bool $persist = true): MediaFolder
     {
         $path = DIRECTORY_SEPARATOR;
         if ($parent !== null) {

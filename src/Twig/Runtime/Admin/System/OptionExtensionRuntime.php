@@ -76,7 +76,8 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
     /**
      * Point d'entrée pour la génération du formulaire des options systèmes
      * @return string
-     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getOptionSystem(): string
     {
