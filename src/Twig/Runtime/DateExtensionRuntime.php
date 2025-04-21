@@ -43,7 +43,7 @@ class DateExtensionRuntime extends AppExtensionRuntime implements RuntimeExtensi
      * @param DateTimeInterface|null $dateDiff
      * @return string
      */
-    public function getDiffNow(DateTimeInterface $dateRef = null, DateTimeInterface $dateDiff = null): string
+    public function getDiffNow(?DateTimeInterface $dateRef = null, ?DateTimeInterface $dateDiff = null): string
     {
         return $this->dateService->getStringDiffDate($dateRef, $dateDiff);
     }

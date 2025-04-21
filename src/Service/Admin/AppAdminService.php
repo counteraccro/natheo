@@ -78,7 +78,7 @@ class AppAdminService extends AppAdminHandlerService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getResponseAjax(string $successMessage = null, string $errorMessage = null): array
+    public function getResponseAjax(?string $successMessage = null, ?string $errorMessage = null): array
     {
         $translator = $this->getTranslator();
 
@@ -176,8 +176,8 @@ class AppAdminService extends AppAdminHandlerService
         string $entity,
         array  $criteria = [],
         array  $orderBy = [],
-        int    $limit = null,
-        int    $offset = null
+        ?int   $limit = null,
+        ?int $offset = null
     ): array
     {
         $repo = $this->getRepository($entity);
