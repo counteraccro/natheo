@@ -59,6 +59,12 @@ class PageHistory
         $this->filesystem = new Filesystem();
 
         $kernel = $containerBag->get('kernel.project_dir');
+        $env = $containerBag->get('kernel.environment');
+
+        if ($env === 'test') {
+            $this->directoryHistory = $this->directoryHistory . '-test';
+        }
+
         $this->pathPageHistory = $kernel . DIRECTORY_SEPARATOR . 'var'
             . DIRECTORY_SEPARATOR . $this->directoryHistory;
 
@@ -157,12 +163,11 @@ class PageHistory
      * @param int|null $pageId
      * @return array
      */
-    public function getPageHistoryById(int $rowId, int $pageId = null) : array
+    public function getPageHistoryById(int $rowId, int $pageId = null): array
     {
         $datas = $this->getContentFile($pageId);
         foreach ($datas as $key => $row) {
-            if($key === $rowId)
-            {
+            if ($key === $rowId) {
                 $array = json_decode($row, true);
                 return $array['pageH'];
             }
@@ -186,8 +191,7 @@ class PageHistory
         }
 
         // Si le brouillon n'existe pas, on ne fait rien
-        if(!file_exists($path))
-        {
+        if (!file_exists($path)) {
             return;
         }
 
@@ -204,11 +208,19 @@ class PageHistory
     public function removePageHistory($id = null): void
     {
         $path = $this->getPath($id);
-        if(!file_exists($path))
-        {
+        if (!file_exists($path)) {
             return;
         }
         $fileSystem = new Filesystem();
         $fileSystem->remove($path);
+    }
+
+    /**
+     * Retourne le path du dossier history
+     * @return string
+     */
+    public function getPathPageHistory() :string
+    {
+        return $this->pathPageHistory;
     }
 }
