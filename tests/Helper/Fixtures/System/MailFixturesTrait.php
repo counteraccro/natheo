@@ -45,7 +45,7 @@ trait MailFixturesTrait
      * @param bool $persist
      * @return MailTranslation
      */
-    public function createMailTranslation(Mail $mail = null, array $customData = [], bool $persist = true): MailTranslation
+    public function createMailTranslation(?Mail $mail = null, array $customData = [], bool $persist = true): MailTranslation
     {
         $data = [
             'mail' => $mail ?: $this->createMail(),

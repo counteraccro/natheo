@@ -21,7 +21,7 @@ trait SqlManagerFixturesTrait
      * @param bool $persist
      * @return SqlManager
      */
-    public function createSqlManager(User $user = null, array $customData = [], bool $persist = true) : SqlManager
+    public function createSqlManager(?User $user = null, array $customData = [], bool $persist = true) : SqlManager
     {
         $data = [
             'user' => $user ?? $this->createUserSuperAdmin(),
