@@ -22,7 +22,7 @@ class MenuServiceTest extends AppWebTestCase
     /**
      * @var MenuService $menuService
      */
-    private $menuService;
+    private MenuService $menuService;
 
     public function setUp(): void
     {
