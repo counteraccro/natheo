@@ -229,7 +229,7 @@ trait FaqFixturesTrait
      */
     public function createFaqAllDataDefault(): Faq
     {
-        $faq = $this->createFaq();
+        $faq = $this->createFaq(customData: ['disabled' => false]);
 
         $this->createFaqStatistique($faq, ['key' => FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES, 'value' => self::getFaker()->numberBetween(1, 1000)]);
         $this->createFaqStatistique($faq, ['key' => FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS, 'value' => self::getFaker()->numberBetween(1, 5)]);
