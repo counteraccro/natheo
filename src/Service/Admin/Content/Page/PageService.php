@@ -229,6 +229,8 @@ class PageService extends AppAdminService
     /**
      * Retourne la liste de rendu que peut avoir une page
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getAllRender(): array
     {
