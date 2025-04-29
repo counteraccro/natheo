@@ -40,6 +40,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[IsGranted('ROLE_CONTRIBUTEUR')]
 class PageController extends AppAdminController
 {
+
+    /**
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     #[Route('/', name: 'index')]
     public function index(): Response
     {
@@ -184,6 +190,8 @@ class PageController extends AppAdminController
      * Création / édition d'une page
      * @param PageService $pageService
      * @param PageTranslate $pageTranslate
+     * @param CommentService $commentService
+     * @param OptionSystemService $optionSystemService
      * @param int|null $id
      * @return Response
      * @throws ContainerExceptionInterface
