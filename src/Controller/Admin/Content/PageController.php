@@ -425,7 +425,7 @@ class PageController extends AppAdminController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/save', name: 'save')]
+    #[Route('/ajax/save', name: 'save', methods: ['POST'])]
     public function save(
         Request               $request,
         PageService           $pageService,
@@ -474,7 +474,7 @@ class PageController extends AppAdminController
      * @throws ExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/new-content', name: 'new_content')]
+    #[Route('/ajax/new-content', name: 'new_content', methods: ['POST'])]
     public function newContent(Request $request, PageService $pageService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -509,6 +509,8 @@ class PageController extends AppAdminController
      * @param Request $request
      * @param PageService $pageService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/is-unique-url-page', name: 'is_unique_url_page', methods: ['POST'])]
     public function isUniqueUrlPage(Request $request, PageService $pageService): JsonResponse
