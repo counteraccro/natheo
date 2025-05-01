@@ -46,12 +46,12 @@ class CommentRepository extends ServiceEntityRepository
             ->orderBy('c.id', 'ASC');
 
         if($userId !== null){
-            $query->andWhere('c.userModeration = :userId');
-            $query->setParameter('userId', $userId);
+            $query->andwhere('c.userModeration = :userId')
+            ->setParameter('userId', $userId);
         }
 
         if ($search !== null) {
-            $query->where('c.comment like :search OR c.author like :search OR c.email like :search')
+            $query->andWhere('c.comment like :search OR c.author like :search OR c.email like :search')
                 ->setParameter('search', '%' . $search . '%');
         }
 
