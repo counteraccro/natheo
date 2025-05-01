@@ -9,6 +9,7 @@ namespace App\Tests\Controller\Admin\Content;
 
 use App\Entity\Admin\Content\Page\Page;
 use App\Tests\AppWebTestCase;
+use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageHistory;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -330,8 +331,212 @@ class PageControllerTest extends AppWebTestCase
      * Test méthode save()
      * @return void
      */
-    public function testSave() :void {
+    public function testSave(): void
+    {
+        $this->checkNoAccess('admin_page_save', methode: 'POST');
 
+        $page = $this->createPageAllDataDefault();
+        $data = ['page' => $this->getDataTest($page->getId())];
+        $user = $this->createUserContributeur();
+
+        $this->client->loginUser($user, 'admin');
+        $this->client->request('POST', $this->router->generate('admin_page_save'), content: json_encode($data));
+
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('success', $content);
+        $this->assertArrayHasKey('url_redirect', $content);
+        $this->assertArrayHasKey('msg', $content);
+        $this->assertArrayHasKey('redirect', $content);
+        $this->assertTrue($content['success']);
+        $this->assertFalse($content['redirect']);
+
+        // Nouvelle page
+        $data = ['page' => $this->getDataTest()];
+        $user = $this->createUserContributeur();
+
+        $this->client->loginUser($user, 'admin');
+        $this->client->request('POST', $this->router->generate('admin_page_save'), content: json_encode($data));
+
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('success', $content);
+        $this->assertArrayHasKey('url_redirect', $content);
+        $this->assertArrayHasKey('msg', $content);
+        $this->assertArrayHasKey('redirect', $content);
+        $this->assertTrue($content['success']);
+        $this->assertTrue($content['redirect']);
+    }
+
+    /**
+     * Test méthode newContent()
+     * @return void
+     */
+    public function testNewContent(): void
+    {
+        $this->checkNoAccess('admin_page_new_content', methode: 'POST');
+
+        $data = [
+            "type" => PageConst::CONTENT_TYPE_TEXT,
+            "type_id" => 0,
+            "renderBlock" => 1
+        ];
+
+        $user = $this->createUserContributeur();
+
+        $this->client->loginUser($user, 'admin');
+        $this->client->request('POST', $this->router->generate('admin_page_new_content'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('pageContent', $content);
+
+    }
+
+    /**
+     * Test méthode listeContentByIdContent()
+     * @return void
+     */
+    public function testListeContentByIdContent(): void
+    {
+        $this->checkNoAccess('admin_page_liste_content_by_id', ['type' => PageConst::CONTENT_TYPE_TEXT]);
+        $user = $this->createUserContributeur();
+
+        $this->client->loginUser($user, 'admin');
+        $this->client->request('GET', $this->router->generate('admin_page_liste_content_by_id', ['type' => PageConst::CONTENT_TYPE_TEXT]));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('list', $content);
+        $this->assertArrayHasKey('selected', $content);
+        $this->assertArrayHasKey('label', $content);
+        $this->assertArrayHasKey('help', $content);
+
+        $faq = $this->createFaqAllDataDefault();
+        $this->client->request('GET', $this->router->generate('admin_page_liste_content_by_id', ['type' => PageConst::CONTENT_TYPE_FAQ]));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertIsArray($content);
+        $this->assertCount(1, $content['list']);
+        $this->assertArrayHasKey($faq->getId(), $content['list']);
+    }
+
+    /**
+     * Test méthode isUniqueUrlPage()
+     * @return void
+     */
+    public function testIsUniqueUrlPage(): void
+    {
+
+        $page = $this->createPageAllDataDefault();
+
+        $this->checkNoAccess('admin_page_is_unique_url_page', methode: 'POST');
+        $user = $this->createUserContributeur();
+
+        $this->client->loginUser($user, 'admin');
+
+        $data = [
+            'url' => $page->getPageTranslationByLocale('fr')->getUrl(),
+            'id' => $page->getId()
+        ];
+
+        $this->client->request('POST', $this->router->generate('admin_page_is_unique_url_page'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('is_unique', $content);
+        $this->assertTrue($content['is_unique']);
+
+        $data = [
+            'url' => 'toto-url',
+            'id' => $page->getId()
+        ];
+
+        $this->client->request('POST', $this->router->generate('admin_page_is_unique_url_page'), content: json_encode($data));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('is_unique', $content);
+        $this->assertFalse($content['is_unique']);
+    }
+
+    /**
+     * Test méthode getInfoRenderBlock()
+     * @return void
+     */
+    public function testGetInfoRenderBlock() :void
+    {
+        $faq = $this->createFaqAllDataDefault();
+        $this->checkNoAccess('admin_page_info_render_block');
+        $user = $this->createUserContributeur();
+
+        $this->client->loginUser($user, 'admin');
+
+        $this->client->request('GET', $this->router->generate('admin_page_info_render_block', ['type' => PageConst::CONTENT_TYPE_FAQ, 'typeId' => $faq->getId()]));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('type', $content);
+        $this->assertArrayHasKey('info', $content);
+        $this->assertStringContainsString($faq->getFaqTranslationByLocale('fr')->getTitle(), $content['info']);
+
+    }
+
+    /**
+     * Test méthode getListePageForInternalLinks()
+     * @return void
+     */
+    public function testGetListePageForInternalLinks() :void
+    {
+        $page = $this->createPageAllDataDefault();
+        $this->checkNoAccess('admin_page_liste_pages_internal_link');
+        $user = $this->createUserContributeur();
+
+        $this->client->loginUser($user, 'admin');
+
+        $this->client->request('GET', $this->router->generate('admin_page_liste_pages_internal_link'));
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('pages', $content);
+        $this->assertCount(1, $content['pages']);
+        $this->assertArrayHasKey($page->getId(), $content['pages']);
+    }
+
+    /**
+     * Test méthode preview()
+     * @return void
+     */
+    public function testPreview() : void
+    {
+        $page = $this->createPageAllDataDefault();
+        $this->checkNoAccess('admin_page_preview');
+
+        $user = $this->createUserContributeur();
+
+        $this->client->loginUser($user, 'admin');
+        $this->client->request('GET', $this->router->generate('admin_page_preview', ['id' => $page->getId(), 'locale' => 'fr']));
+        $this->assertResponseIsSuccessful();
     }
 
     /**
@@ -341,6 +546,11 @@ class PageControllerTest extends AppWebTestCase
      */
     private function getDataTest($idPage = null): array
     {
+
+        $tag1 = $this->createTag();
+        $tag2 = $this->createTag();
+        $tag3 = $this->createTag();
+        $menu = $this->createMenuAllDataDefault();
 
         return [
             "id" => $idPage,
@@ -417,14 +627,14 @@ class PageControllerTest extends AppWebTestCase
             "category" => 1,
             "landingPage" => false,
             "openComment" => true,
-            "nbComment" => 0,
+            "nbComment" => 10,
             "ruleComment" => 2,
             "menus" => [
-                4
+                $menu->getId()
             ],
             "tags" => [
                 [
-                    "id" => 1,
+                    "id" => $tag1->getId(),
                     "color" => "#6F42C1",
                     "disabled" => false,
                     "tagTranslations" => [
@@ -449,7 +659,7 @@ class PageControllerTest extends AppWebTestCase
                     ]
                 ],
                 [
-                    "id" => 8,
+                    "id" => $tag2->getId(),
                     "color" => "#23e515",
                     "disabled" => false,
                     "tagTranslations" => [
@@ -474,7 +684,7 @@ class PageControllerTest extends AppWebTestCase
                     ]
                 ],
                 [
-                    "id" => 10,
+                    "id" => $tag3->getId(),
                     "color" => "#00478c",
                     "disabled" => false,
                     "tagTranslations" => [
