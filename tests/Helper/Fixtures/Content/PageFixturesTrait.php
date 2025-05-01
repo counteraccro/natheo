@@ -232,7 +232,7 @@ trait PageFixturesTrait
      */
     public function createPageAllDataDefault() :Page
     {
-        $page = $this->createPage(customData: ['render' => PageConst::RENDER_2_BLOCK_BOTTOM]);
+        $page = $this->createPage(customData: ['render' => PageConst::RENDER_2_BLOCK_BOTTOM, 'disabled' => false]);
 
         foreach($this->locales as $locale) {
             $this->createPageTranslation($page, ['locale' => $locale]);
