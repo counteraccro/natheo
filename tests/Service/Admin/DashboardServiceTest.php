@@ -10,6 +10,7 @@ use App\Entity\Admin\System\ApiToken;
 use App\Service\Admin\DashboardService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
+use App\Utils\Content\Comment\CommentConst;
 use App\Utils\System\ApiToken\ApiTokenConst;
 use App\Utils\System\Options\OptionSystemKey;
 use Psr\Container\ContainerExceptionInterface;
@@ -88,23 +89,30 @@ class DashboardServiceTest extends AppWebTestCase
     /**
      * test méthode getBlockLastComment()
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function testGetBlockLastComment() :void
     {
-        trigger_error( 'DashboardServiceTest::testGetBlockLastComment() pas correctement testé pour le moment - A faire : testé avec commentaires', E_USER_WARNING);
+        $page = $this->createPage();
+        foreach ($this->locales as $locale) {
+            $this->createPageTranslation($page, ['locale' => $locale]);
+        }
+        for ($i = 0; $i < 3; $i++) {
+            $this->createComment($page);
+        }
 
         $result = $this->dashboardService->getBlockLastComment();
         $this->assertIsArray($result);
         $this->assertArrayHasKey('success', $result);
         $this->assertTrue($result['success']);
         $this->assertArrayHasKey('body', $result);
-        $this->assertEmpty($result['body']);
-
-
-        /*for ($i = 0; $i < 15; $i++)
-        {
-
-        }*/
+        $this->assertCount(3, $result['body']);
+        $comment = $result['body'][0];
+        $this->assertArrayHasKey('id', $comment);
+        $this->assertArrayHasKey('author', $comment);
+        $this->assertArrayHasKey('status', $comment);
+        $this->assertArrayHasKey('date', $comment);
     }
 
     /**
