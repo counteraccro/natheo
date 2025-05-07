@@ -9,6 +9,7 @@ namespace App\Tests\Helper\Fixtures\System\User;
 
 use App\Entity\Admin\System\User;
 use App\Tests\Helper\FakerTrait;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 trait UserFixturesTrait
 {
@@ -22,6 +23,9 @@ trait UserFixturesTrait
      */
     public function createUser(array $customData = [], bool $persist = true): User
     {
+        /** @var UserPasswordHasherInterface $userPasswordHasher */
+        $userPasswordHasher = $this->container->get(UserPasswordHasherInterface::class);
+
         $data = [
             'email' => self::getFaker()->email(),
             'roles' => ['ROLE_USER'],
@@ -35,6 +39,7 @@ trait UserFixturesTrait
         ];
 
         $user = $this->initEntity(User::class, array_merge($data, $customData));
+        $user->setPassword($userPasswordHasher->hashPassword($user, $user->getPassword()));
         $this->generateDefaultOptionUser($user);
 
         if ($persist) {
