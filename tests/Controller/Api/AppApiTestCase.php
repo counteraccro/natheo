@@ -13,7 +13,7 @@ use App\Tests\AppWebTestCase;
 use App\Utils\Api\Parameters\ApiParametersUserAuthRef;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class AppApiTest extends AppWebTestCase
+class AppApiTestCase  extends AppWebTestCase
 {
 
     protected const API_VERSION = 'v1';
