@@ -13,7 +13,7 @@ use App\Tests\AppWebTestCase;
 use App\Utils\Api\Parameters\ApiParametersUserAuthRef;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class AppApiTestCase  extends AppWebTestCase
+class AppApiTestCase extends AppWebTestCase
 {
 
     protected const API_VERSION = 'v1';
@@ -95,20 +95,24 @@ class AppApiTestCase  extends AppWebTestCase
         $this->assertArrayHasKey('code_http', $content);
         $this->assertArrayHasKey('message', $content);
         $this->assertArrayHasKey('errors', $content);
-        $this->assertStringContainsString($translator->trans('api_errors.authentication.failure',  domain: 'api_errors'), $content['errors'][0]);
+        $this->assertStringContainsString($translator->trans('api_errors.authentication.failure', domain: 'api_errors'), $content['errors'][0]);
     }
 
     /**
      * Retourne les informations d'authentification en fonction du role demandé
      * @param array $params
      * @param User|null $user
+     * @param null $password
      * @param string|null $role
      * @return array|string[]
      */
-    protected function getUserAuthParams(array $params, ?User $user = null, ?string $role = null): array
+    protected function getUserAuthParams(array $params, ?User $user = null, $password = null, ?string $role = null): array
     {
-        $password = self::getFaker()->password();
-        if($user === null) {
+        if ($password === null) {
+            $password = self::getFaker()->password();
+        }
+
+        if ($user === null) {
             $user = $this->createUserContributeur(['disabled' => false, 'anonymous' => false, 'password' => $password]);
         }
 
