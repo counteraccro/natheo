@@ -178,13 +178,8 @@ class UserServiceTest extends AppWebTestCase
      */
     public function testGetUserByEmailAndPassword(): void
     {
-        $factory = new PasswordHasherFactory([
-            'common' => ['algorithm' => 'auto']
-        ]);
-        $hasher = $factory->getPasswordHasher('common');
-
         $password = self::getFaker()->password();
-        $user = $this->createUser(['disabled' => false, 'anonymous' => false, 'password' => $hasher->hash($password)]);
+        $user = $this->createUser(['disabled' => false, 'anonymous' => false, 'password' => $password]);
 
         $result = $this->userService->getUserByEmailAndPassword($user->getEmail(), $password);
         $this->assertNotNull($result);
@@ -196,7 +191,7 @@ class UserServiceTest extends AppWebTestCase
         $this->assertNull($result);
 
         $password = self::getFaker()->password();
-        $user = $this->createUser(['disabled' => true, 'anonymous' => true, 'password' => $hasher->hash($password)]);
+        $user = $this->createUser(['disabled' => true, 'anonymous' => true, 'password' => $password]);
         $result = $this->userService->getUserByEmailAndPassword($user->getEmail(), $password);
         $this->assertNull($result);
 
