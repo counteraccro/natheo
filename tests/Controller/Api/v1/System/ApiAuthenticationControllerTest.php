@@ -2,16 +2,17 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- *
+ * Test authentification API
  */
 
 namespace App\Tests\Controller\Api\v1\System;
 
 use App\Tests\Controller\Api\AppApiTestCase;
-use App\Utils\System\User\Role;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApiAuthenticationControllerTest extends AppApiTestCase
 {
+
     /**
      * Test méthode auth()
      * @return void
@@ -37,9 +38,36 @@ class ApiAuthenticationControllerTest extends AppApiTestCase
      */
     public function testAuthUser() :void
     {
+        // User classique
         $this->client->request('POST', $this->router->generate('api_authentication_auth_user', ['api_version' => self::API_VERSION]),
             server:  $this->getCustomHeaders(),
             content:  json_encode($this->getUserAuthParams([]))
+        );
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+
+        $content = json_decode($response->getContent(), true);
+        $this->checkStructureApiRetour($content);
+
+        // Admin
+        $password = self::getFaker()->password();
+        $this->client->request('POST', $this->router->generate('api_authentication_auth_user', ['api_version' => self::API_VERSION]),
+            server:  $this->getCustomHeaders(),
+            content:  json_encode($this->getUserAuthParams([], $this->createUserAdmin(['password' => $password, 'disabled' => false, 'anonymous' => false]), $password))
+        );
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+
+        $content = json_decode($response->getContent(), true);
+        $this->checkStructureApiRetour($content);
+
+        // superAdmin
+        $password = self::getFaker()->password();
+        $this->client->request('POST', $this->router->generate('api_authentication_auth_user', ['api_version' => self::API_VERSION]),
+            server:  $this->getCustomHeaders(),
+            content:  json_encode($this->getUserAuthParams([], $this->createUserSuperAdmin(['password' => $password, 'disabled' => false, 'anonymous' => false]), $password))
         );
         $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -55,16 +83,39 @@ class ApiAuthenticationControllerTest extends AppApiTestCase
      */
     public function testAuthUserBadParameter() :void
     {
+        $translator = $this->container->get(TranslatorInterface::class);
+
         $this->client->request('POST', $this->router->generate('api_authentication_auth_user', ['api_version' => self::API_VERSION]),
             server:  $this->getCustomHeaders(),
             content:  json_encode($this->getUserAuthParams([], role: 'bad_parameter'))
         );
         $response = $this->client->getResponse();
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(403, $response->getStatusCode());
         $this->assertJson($response->getContent());
 
         $content = json_decode($response->getContent(), true);
-        $this->checkStructureApiRetour($content);
-        dd($content);
+        $this->assertArrayHasKey('detail', $content);
+        $this->assertStringContainsString($translator->trans('api_errors.params.name.not.found', ['param' => 'username'], domain: 'api_errors'), $content['detail']);
+    }
+
+    /**
+     * Test méthode authUser()
+     * @return void
+     */
+    public function testAuthUserBadValue() :void
+    {
+        $translator = $this->container->get(TranslatorInterface::class);
+
+        $this->client->request('POST', $this->router->generate('api_authentication_auth_user', ['api_version' => self::API_VERSION]),
+            server:  $this->getCustomHeaders(),
+            content:  json_encode($this->getUserAuthParams([], role: 'bad_type'))
+        );
+        $response = $this->client->getResponse();
+        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('detail', $content);
+        $this->assertStringContainsString($translator->trans('api_errors.user.token.not.found', domain: 'api_errors'), $content['detail']);
     }
 }
