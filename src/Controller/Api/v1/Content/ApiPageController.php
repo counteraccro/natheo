@@ -41,7 +41,7 @@ class ApiPageController extends AppApiController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/find', name: 'find', methods: ['GET'])]
-    public function index(#[MapQueryString(
+    public function find(#[MapQueryString(
         resolver: ApiFindPageResolver::class
     )] ApiFindPageDto $apiFindPageDto): JsonResponse
     {
