@@ -128,7 +128,7 @@ trait MenuFixturesTrait
      */
     public function createMenuAllDataDefault() : Menu
     {
-        $menu = $this->createMenu();
+        $menu = $this->createMenu(customData: ['disabled' => false]);
         $menuElement = $this->createMenuElement($menu, customData: ['columnPosition' => 1, 'rowPosition' => 1, 'disabled' => false]);
         foreach($this->locales as $locale) {
             $this->createMenuElementTranslation($menuElement, ['locale' => $locale]);

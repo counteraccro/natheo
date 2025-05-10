@@ -74,7 +74,7 @@ trait PageFixturesTrait
             'page' => $page,
             'locale' => self::getFaker()->locale(),
             'titre' => self::getFaker()->text(),
-            'url' => self::getFaker()->url(),
+            'url' => self::getFaker()->slug(),
         ];
 
         $pageTranslation = $this->initEntity(PageTranslation::class, array_merge($data, $customData));
