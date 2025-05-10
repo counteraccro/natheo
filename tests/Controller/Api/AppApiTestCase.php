@@ -146,4 +146,17 @@ class AppApiTestCase extends AppWebTestCase
         $this->assertArrayHasKey('message', $apiReturn);
         $this->assertArrayHasKey('data', $apiReturn);
     }
+
+    /**
+     * Test la structure de retour de l'API en erreur
+     * @param array $apiReturn
+     * @return void
+     */
+    protected function checkStructureApiRetourError(array $apiReturn): void
+    {
+        $this->assertArrayHasKey('code_http', $apiReturn);
+        $this->assertArrayHasKey('message', $apiReturn);
+        $this->assertArrayHasKey('errors', $apiReturn);
+        $this->assertIsArray($apiReturn['errors']);
+    }
 }
