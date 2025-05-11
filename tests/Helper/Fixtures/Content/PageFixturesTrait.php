@@ -215,6 +215,9 @@ trait PageFixturesTrait
 
         if ($tag === null) {
             $tag = $this->createTag();
+            foreach ($this->locales as $locale) {
+                $this->createTagTranslation($tag, ['locale' => $locale]);
+            }
         }
 
         $page->addTag($tag);
@@ -232,7 +235,7 @@ trait PageFixturesTrait
      */
     public function createPageAllDataDefault() :Page
     {
-        $page = $this->createPage(customData: ['render' => PageConst::RENDER_2_BLOCK_BOTTOM, 'disabled' => false]);
+        $page = $this->createPage(customData: ['render' => PageConst::RENDER_2_BLOCK_BOTTOM, 'disabled' => false, 'category' => PageConst::PAGE_CATEGORY_PAGE]);
 
         foreach($this->locales as $locale) {
             $this->createPageTranslation($page, ['locale' => $locale]);
@@ -246,6 +249,7 @@ trait PageFixturesTrait
         }
 
         $this->createPageTag($page);
+
         $this->createPageTag($page);
 
         $this->createPageStatistique($page, ['key' => PageStatistiqueKey::KEY_PAGE_NB_READ, 'value' => self::getFaker()->randomNumber(3)]);
