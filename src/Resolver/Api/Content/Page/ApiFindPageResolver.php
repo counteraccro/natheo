@@ -39,7 +39,15 @@ class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterfa
         $tabParameters = ApiParametersFindPageRef::PARAMS_REF;
 
         foreach ($tabParameters as $parameter => $value) {
-            $value = $request->get($parameter, '');
+
+            if (in_array($parameter, ['show_menus', 'show_tags', 'show_statistiques'])) {
+                $value = $request->get($parameter, true);
+            }
+            else {
+                $value = $request->get($parameter, '');
+            }
+
+
             if ($parameter === ApiParametersFindPageRef::PARAM_MENU_POSITION && !empty($value)) {
                 $tab = explode(',', $value);
                 $value = [];
@@ -47,9 +55,19 @@ class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterfa
                     $value[intval($tmp)] = intval($tmp);
                 }
             }
-            if (empty($value) && isset(ApiParametersFindPageRef::PARAMS_DEFAULT_VALUE[$parameter])) {
+
+            if (in_array($parameter, ['show_menus', 'show_tags', 'show_statistiques'])) {
+                if (intval($value) === 0) {
+                    $value = false;
+                } else {
+                    $value = true;
+                }
+            }
+
+            if ( !is_bool($value) && empty($value) && isset(ApiParametersFindPageRef::PARAMS_DEFAULT_VALUE[$parameter])) {
                 $value = ApiParametersFindPageRef::PARAMS_DEFAULT_VALUE[$parameter];
             }
+
             $tabParameters[$parameter] = $value;
         }
 
