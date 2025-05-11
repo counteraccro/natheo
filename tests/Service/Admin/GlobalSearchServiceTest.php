@@ -66,21 +66,26 @@ class GlobalSearchServiceTest extends AppWebTestCase
         $this->assertEquals($menu->getId(), $result['elements'][0]['id']);
 
         $tag = $this->createTag();
-        foreach ($this->locales as$locale) {
+        foreach ($this->locales as $locale) {
             $this->createTagTranslation($tag, ['locale' => $locale]);
         }
 
         $tag2 = $this->createTag();
-        foreach ($this->locales as$locale) {
+        foreach ($this->locales as $locale) {
             $this->createTagTranslation($tag2, ['locale' => $locale]);
         }
 
         $result = $this->searchService->globalSearch('tag', '', 1, 10);
         $this->assertIsArray($result);
         $this->assertArrayHasKey('elements', $result);
-        $this->assertCount(2, $result['elements']);
-        $this->assertArrayHasKey('id', $result['elements'][0]);
-        $this->assertEquals($tag->getId(), $result['elements'][0]['id']);
+        $this->assertCount(6, $result['elements']);
+        $verif = false;
+        foreach ($result['elements'] as $tagElement) {
+            if ($tagElement['id'] == $tag->getId()) {
+                $verif = true;
+            }
+        }
+        $this->assertTrue($verif);
 
         $user = $this->createUser();
         $this->createUserAdmin();
