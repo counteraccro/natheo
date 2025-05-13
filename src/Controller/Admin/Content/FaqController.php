@@ -100,7 +100,7 @@ class FaqController extends AppAdminController
         FaqService              $faqService,
         FaqTranslate            $faqTranslate,
         MarkdownEditorTranslate $markdownEditorTranslate,
-        int                     $id = null,
+        ?int                    $id = null,
     ): Response
     {
         $breadcrumbTitle = 'faq.update.page_title_h1';
@@ -205,7 +205,7 @@ class FaqController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-faq/{id}', name: 'load_faq', methods: 'GET')]
-    public function loadFaq(FaqService $faqService, int $id = null): JsonResponse
+    public function loadFaq(FaqService $faqService, ?int $id = null): JsonResponse
     {
         $locales = $faqService->getLocales();
 
@@ -216,7 +216,7 @@ class FaqController extends AppAdminController
             $faq = $faqService->findOneById(Faq::class, $id);
         }
         $faqArray = $faqService->convertEntityToArray($faq, [
-            'createdAt', 'updateAt', 'user', 'maxRenderOrderQuestion', 'maxRenderOrderCategory', 'allMaxRender']);
+            'createdAt', 'updateAt', 'user', 'maxRenderOrderQuestion', 'maxRenderOrderCategory', 'allMaxRender', 'sortedFaqQuestion', 'sortedFaqCategories']);
 
         return $this->json([
             'faq' => $faqArray,
@@ -238,6 +238,7 @@ class FaqController extends AppAdminController
     {
         $data = json_decode($request->getContent(), true);
         /** @var Faq $faq */
+
         $faq = $faqService->findOneById(Faq::class, $data['faq']['id']);
 
         $faqPopulate = new FaqPopulate($faq, $data['faq']);
@@ -346,7 +347,8 @@ class FaqController extends AppAdminController
         return $this->json(['list' => $data, 'success' => $success, 'msg' => $msg]);
     }
 
-    /**Créer une nouvelle question ou catégorie
+    /**
+     * Créer une nouvelle question ou catégorie
      * @param FaqService $faqService
      * @param Request $request
      * @param TranslatorInterface $translator
@@ -408,7 +410,8 @@ class FaqController extends AppAdminController
         return $this->json($faqService->getResponseAjax($msg));
     }
 
-    /**Supprime une question ou une réponse
+    /**
+     * Supprime une question ou une réponse
      * @param FaqService $faqService
      * @param TranslatorInterface $translator
      * @param int $id

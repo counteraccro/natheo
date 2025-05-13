@@ -79,12 +79,14 @@ class PageFactory
     /**
      * Création des pageContent
      * @param int $type
+     * @param int|null $type_id
+     * @param int $renderBlock
      * @return PageContent
      */
     private function createPageContent(
-        int $type = PageConst::CONTENT_TYPE_TEXT,
-        int $type_id = null,
-        int $renderBlock = 1
+        int  $type = PageConst::CONTENT_TYPE_TEXT,
+        ?int $type_id = null,
+        int  $renderBlock = 1
     ): PageContent
     {
         if($type === PageConst::CONTENT_TYPE_TEXT)

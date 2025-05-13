@@ -52,8 +52,6 @@ export default {
         this.listLimit = response.data.listLimit;
       }).catch((error) => {
 
-
-
         console.error(error);
       }).finally(() => {
         this.loading = false

@@ -71,6 +71,8 @@ class PagePopulate
     /**
      * Merge les données de populate dans l'objet $page
      * @return $this
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function populate(): static
     {
@@ -119,6 +121,8 @@ class PagePopulate
      * Reset les tags présents dans $page et ajoute à la place les tags
      * associés à la page avec $populate si la clé 'tags' est présente
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function populateTags(): void
     {

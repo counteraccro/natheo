@@ -50,7 +50,10 @@ class DatabaseTablePrefixListener
         }
 
         foreach ($classMetadata->getAssociationMappings() as $fieldName => $mapping) {
-            if ($mapping['type'] === ClassMetadataInfo::MANY_TO_MANY && $mapping['isOwningSide']) {
+
+            $mapping = $mapping->toArray();
+
+            if ($mapping['type'] === 8 && $mapping['isOwningSide']) {
                 $mappedTableName = $mapping['joinTable']['name'];
                 $classMetadata->associationMappings[$fieldName]['joinTable']['name'] = $this->schema . $this->prefix . $mappedTableName;
             }

@@ -27,7 +27,7 @@ class ApiTokenService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
+    public function getAllPaginate(int $page, int $limit, ?string $search = null): Paginator
     {
         $repo = $this->getRepository(ApiToken::class);
         return $repo->getAllPaginate($page, $limit, $search);
@@ -42,7 +42,7 @@ class ApiTokenService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllFormatToGrid(int $page, int $limit, string $search = null): array
+    public function getAllFormatToGrid(int $page, int $limit, ?string $search = null): array
     {
         $translator = $this->getTranslator();
         $gridService = $this->getGridService();

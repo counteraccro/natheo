@@ -132,9 +132,9 @@ class ApiTokenController extends AppAdminController
     #[Route('/add', name: 'add', methods: ['GET'])]
     #[Route('/update/{id}', name: 'update', methods: ['GET'])]
     public function add(
-        ApiTokenService                 $apiTokenService,
-        ApiTokenTranslate               $apiTokenTranslate,
-        #[MapEntity(id: 'id')] ApiToken $apiToken = null
+        ApiTokenService                  $apiTokenService,
+        ApiTokenTranslate                $apiTokenTranslate,
+        #[MapEntity(id: 'id')] ?ApiToken $apiToken = null
     ): Response
     {
         $breadcrumbTitle = 'api_token.update.page_title_h1';
@@ -174,7 +174,7 @@ class ApiTokenController extends AppAdminController
      * @return JsonResponse
      */
     #[Route('/generate-token', name: 'generate_token', methods: ['GET'])]
-    public function generate_token(ApiTokenService $apiTokenService): JsonResponse
+    public function generateToken(ApiTokenService $apiTokenService): JsonResponse
     {
         return $this->json(['token' => $apiTokenService->generateToken()]);
     }
@@ -190,8 +190,8 @@ class ApiTokenController extends AppAdminController
      */
     #[Route('/save', name: 'save', methods: ['POST'])]
     public function saveApiToken(
-        Request $request,
-        ApiTokenService $apiTokenService,
+        Request             $request,
+        ApiTokenService     $apiTokenService,
         TranslatorInterface $translator,
     ): JsonResponse
     {
@@ -200,11 +200,9 @@ class ApiTokenController extends AppAdminController
 
         $response = $apiTokenService->getResponseAjax($translator->trans('api_token.save.success', domain: 'api_token'));
         $response['redirect'] = '';
-        if($data['apiToken']['id'] === null)
-        {
+        if ($data['apiToken']['id'] === null) {
             $response['redirect'] = $this->generateUrl('admin_api_token_update', ['id' => $id]);
-            if($response['success'] === true)
-            {
+            if ($response['success'] === true) {
                 $response['msg'] = $translator->trans('api_token.new.token.success', domain: 'api_token');
             }
         }

@@ -208,18 +208,17 @@ class CommentController extends AppAdminController
 
     /**
      * Retourne un commentaire en fonction de son id
-     * @param Request $request
      * @param CommentService $commentService
      * @param int|null $id
      * @return Response
      * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      * @throws ExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load/{id}', name: 'load', methods: ['GET'])]
     public function getComment(
         CommentService $commentService,
-        int            $id = null
+        ?int $id = null
     ): Response
     {
         /** @var Comment $comment */

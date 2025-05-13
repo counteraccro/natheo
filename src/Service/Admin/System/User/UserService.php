@@ -32,7 +32,7 @@ class UserService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
+    public function getAllPaginate(int $page, int $limit, ?string $search = null): Paginator
     {
         $repo = $this->getRepository(User::class);
         return $repo->getAllPaginate($page, $limit, $search);
@@ -47,7 +47,7 @@ class UserService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllFormatToGrid(int $page, int $limit, string $search = null): array
+    public function getAllFormatToGrid(int $page, int $limit, ?string $search = null): array
     {
         $translator = $this->getTranslator();
         $gridService = $this->getGridService();
@@ -194,8 +194,14 @@ class UserService extends AppAdminService
 
         }
 
+        $isCurrentFounder = false;
+        if($security->getUser() !== null && $security->getUser()->isFounder())
+        {
+            $isCurrentFounder = true;
+        }
+
         // Bouton édition affiché sauf pour le fondateur ou si l'utilisateur courant est le fondateur
-        if (($user->isFounder() && $security->getUser()->isFounder()) || !$user->isFounder()) {
+        if (($user->isFounder() && $isCurrentFounder) || !$user->isFounder()) {
             // Bouton edit
             $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
                 'id' => $user->getId(),
@@ -228,6 +234,7 @@ class UserService extends AppAdminService
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws Exception
      */
     public function anonymizer(User $user): void
     {
@@ -295,6 +302,7 @@ class UserService extends AppAdminService
     {
         $repo = $this->getRepository(User::class);
         /** @var User $user */
+
         $user = $repo->loadUserByIdentifier($email);
         if ($user === null) {
             return null;
@@ -303,6 +311,7 @@ class UserService extends AppAdminService
         $factory = new PasswordHasherFactory([
             'common' => ['algorithm' => 'auto']
         ]);
+
         $hasher = $factory->getPasswordHasher('common');
         if ($hasher->verify($user->getPassword(), $password)) {
             return $user;

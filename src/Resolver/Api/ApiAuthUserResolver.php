@@ -8,6 +8,7 @@
 namespace App\Resolver\Api;
 
 use App\Dto\Api\Authentication\ApiAuthUserDto;
+use App\Utils\Api\ApiParametersParser;
 use App\Utils\Api\Parameters\ApiParametersUserAuthRef;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -38,6 +39,8 @@ class ApiAuthUserResolver extends AppApiResolver implements ValueResolverInterfa
         }
 
         $data = json_decode($request->getContent(), true);
+
+        /** @var ApiParametersParser $apiParametersParser */
         $apiParametersParser = $this->handlers->get('apiParametersParser');
         $return = $apiParametersParser->parse(ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER, $data);
 

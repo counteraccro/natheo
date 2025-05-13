@@ -126,6 +126,8 @@ class SqlManagerController extends AppAdminController
      * @param int|null $id
      * @param bool $isExecute
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
@@ -133,7 +135,7 @@ class SqlManagerController extends AppAdminController
     public function add(
         SqlManagerTranslate $sqlManagerTranslate,
         SqlManagerService   $sqlManagerService,
-        int                 $id = null,
+        ?int                $id = null,
         bool                $isExecute = false,
     ): Response
     {
@@ -188,7 +190,7 @@ class SqlManagerController extends AppAdminController
     #[Route('/ajax/load-data/{id}', name: 'load_data', methods: ['GET'])]
     public function loadData(
         SqlManagerService $sqlManagerService,
-        int               $id = null
+        ?int $id = null
     ): JsonResponse
     {
         if ($id === null) {

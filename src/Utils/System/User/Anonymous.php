@@ -56,6 +56,7 @@ class Anonymous
         $this->user->setPassword($this->randomStr(40));
         $this->user->setDisabled(true);
         $this->user->setAnonymous(true);
+        $this->user->setFounder(false);
         $this->user->removeAllOptionsUser($this->user->getOptionsUser());
         return $this->user;
     }

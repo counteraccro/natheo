@@ -60,6 +60,8 @@ class MediaController extends AppAdminController
      * @param string $order
      * @param string $filter
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-medias/{folder}/{order}/{filter}', name: 'load_medias', methods: ['GET'])]
     public function loadMedias(
@@ -103,7 +105,9 @@ class MediaController extends AppAdminController
      * @param int $id
      * @param string $action
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
      * @throws ExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-folder/{id}/{action}', name: 'load_folder', methods: ['GET'])]
     public function loadFolder(
@@ -200,6 +204,8 @@ class MediaController extends AppAdminController
      * @param Request $request
      * @param MediaService $mediaService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/upload-media', name: 'upload', methods: ['POST'])]
     public function upload(Request $request, MediaService $mediaService): JsonResponse
@@ -215,6 +221,8 @@ class MediaController extends AppAdminController
      * @param MediaService $mediaService
      * @param int $id
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-media/{id}', name: 'load_media_edit', methods: ['GET'])]
     public function loadMedia(
@@ -289,6 +297,8 @@ class MediaController extends AppAdminController
      * @param Request $request
      * @param MediaService $mediaService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/move', name: 'move', methods: ['POST'])]
     public function move(Request $request, MediaService $mediaService): JsonResponse
@@ -303,6 +313,8 @@ class MediaController extends AppAdminController
      * @param Request $request
      * @param MediaService $mediaService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/update-trash', name: 'update_trash', methods: ['POST'])]
     public function updateTrash(Request $request, MediaService $mediaService): JsonResponse
@@ -316,6 +328,8 @@ class MediaController extends AppAdminController
      * Retourne le nombre d'éléments dans la corbeille
      * @param MediaService $mediaService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/nb-trash', name: 'nb_trash', methods: ['GET'])]
     public function nbTrash(MediaService $mediaService): JsonResponse
@@ -328,6 +342,8 @@ class MediaController extends AppAdminController
      * Retourne l'ensemble des éléments dans la corbeille
      * @param MediaService $mediaService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/list-trash', name: 'list_trash', methods: ['GET'])]
     public function listTrash(MediaService $mediaService): JsonResponse
@@ -340,6 +356,8 @@ class MediaController extends AppAdminController
      * @param Request $request
      * @param MediaService $mediaService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/remove', name: 'remove', methods: ['POST'])]
     public function removeTrash(Request $request, MediaService $mediaService): JsonResponse

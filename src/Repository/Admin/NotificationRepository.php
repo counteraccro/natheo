@@ -4,6 +4,7 @@ namespace App\Repository\Admin;
 
 use App\Entity\Admin\Notification;
 use App\Entity\Admin\System\User;
+use App\Utils\Global\Database\RawQueryManager;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\NonUniqueResultException;
@@ -94,20 +95,13 @@ class NotificationRepository extends ServiceEntityRepository
      * @return void
      * @throws Exception
      */
-    public function removeAfterDay(int $nbDay, int $userId): void
+    public function removeAfterDay(int $nbDay, int $userId, RawQueryManager $rawQueryManager): void
     {
-        $sql = '
-            DELETE
-            FROM natheo.notification n
-            WHERE n.user_id = :user_id
-            AND n.read = true
-            AND EXTRACT(day from ((CURRENT_DATE - n.created_at))) > :nb_day
-        ';
-        $params = [
-            'user_id' => $userId,
-            'nb_day' => $nbDay
-        ];
-        $this->getEntityManager()->getConnection()->prepare($sql)->executeQuery($params);
+        $sql = $rawQueryManager->getQueryPurgeNotification();
+        $statment = $this->getEntityManager()->getConnection()->prepare($sql);
+        $statment->bindValue('nb_day', $nbDay);
+        $statment->bindValue('user_id', $userId);
+        $statment->executeStatement();
     }
 
     /**

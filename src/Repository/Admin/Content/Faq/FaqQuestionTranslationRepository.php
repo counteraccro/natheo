@@ -21,28 +21,4 @@ class FaqQuestionTranslationRepository extends ServiceEntityRepository
         parent::__construct($registry, FaqQuestionTranslation::class);
     }
 
-//    /**
-//     * @return FaqQuestionTranslation[] Returns an array of FaqQuestionTranslation objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?FaqQuestionTranslation
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

@@ -12,10 +12,12 @@ use App\Entity\Admin\Content\Faq\FaqCategory;
 use App\Entity\Admin\Content\Faq\FaqQuestion;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
+use App\Service\Admin\System\OptionSystemService;
 use App\Utils\Content\Faq\FaqConst;
 use App\Utils\Content\Faq\FaqFactory;
 use App\Utils\Content\Faq\FaqStatistiqueKey;
 use App\Utils\Global\OrderEntity;
+use App\Utils\System\Options\OptionSystemKey;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
@@ -33,11 +35,11 @@ class FaqService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllFormatToGrid(int $page, int $limit, string $search = null, int $userId = null): array
+    public function getAllFormatToGrid(int $page, int $limit, ?string $search = null, ?int $userId = null): array
     {
         $translator = $this->getTranslator();
         $requestStack = $this->getRequestStack();
-        $gridService =  $this->getGridService();
+        $gridService = $this->getGridService();
 
         $column = [
             $translator->trans('faq.grid.id', domain: 'faq'),
@@ -63,7 +65,12 @@ class FaqService extends AppAdminService
                 $isDisabled = '<i class="bi bi-eye-slash"></i>';
             }
 
-            $locale = $requestStack->getCurrentRequest()->getLocale();
+            $optionSystemService = $this->getOptionSystemService();
+
+            $locale = $optionSystemService->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE);
+            if ($requestStack->getCurrentRequest() !== null) {
+                $locale = $requestStack->getCurrentRequest()->getLocale();
+            }
             $titre = $element->getFaqTranslationByLocale($locale)->getTitle();
 
             $data[] = [
@@ -99,7 +106,7 @@ class FaqService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllPaginate(int $page, int $limit, string $search = null, int $userId = null): Paginator
+    public function getAllPaginate(int $page, int $limit, ?string $search = null, ?int $userId = null): Paginator
     {
         $repo = $this->getRepository(Faq::class);
         return $repo->getAllPaginate($page, $limit, $search, $userId);
@@ -119,7 +126,11 @@ class FaqService extends AppAdminService
         $translator = $this->getTranslator();
         $optionSystemService = $this->getOptionSystemService();
 
-        $label = $faq->getFaqTranslationByLocale($requestStack->getCurrentRequest()->getLocale())->getTitle();
+        $locale = $optionSystemService->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE);
+        if ($requestStack->getCurrentRequest() !== null) {
+            $locale = $requestStack->getCurrentRequest()->getLocale();
+        }
+        $label = $faq->getFaqTranslationByLocale($locale)->getTitle();
 
         $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
             'type' => 'put',
@@ -247,7 +258,7 @@ class FaqService extends AppAdminService
         $faq = $this->findOneById(Faq::class, $id);
 
         $return = [];
-        foreach ($faq->getFaqCategories() as $faqCategory) {
+        foreach ($faq->getSortedFaqCategories() as $faqCategory) {
             /** @var FaqCategory $faqCategory */
             $return[] = [
                 'id' => $faqCategory->getId(),
@@ -273,7 +284,7 @@ class FaqService extends AppAdminService
         $category = $this->findOneById(FaqCategory::class, $id);
 
         $return = [];
-        foreach ($category->getFaqQuestions() as $faqQuestion) {
+        foreach ($category->getSortedFaqQuestion() as $faqQuestion) {
             /** @var FaqQuestion $faqQuestion */
             $return[] = [
                 'id' => $faqQuestion->getId(),
@@ -290,7 +301,8 @@ class FaqService extends AppAdminService
      * @param int $idCatOrder
      * @param string $orderPosition
      * @return void
-     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function addNewCategory(int $idFaq, int $idCatOrder, string $orderPosition): void
     {
@@ -299,8 +311,8 @@ class FaqService extends AppAdminService
         $faqFactory = new FaqFactory($this->getLocales()['locales']);
         $faq = $faqFactory->createFaqCategory($faq);
 
-        $this->updateFaqStatistique($faq,FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES);
-        $this->updateFaqStatistique($faq,FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS);
+        $this->updateFaqStatistique($faq, FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES);
+        $this->updateFaqStatistique($faq, FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS);
 
         $this->save($faq);
 
@@ -318,7 +330,8 @@ class FaqService extends AppAdminService
      * @param int $idQuestionOrder
      * @param string $orderPosition
      * @return void
-     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function addNewQuestion(int $idCategory, int $idQuestionOrder, string $orderPosition): void
     {
@@ -326,7 +339,7 @@ class FaqService extends AppAdminService
         $faqFactory = new FaqFactory($this->getLocales()['locales']);
         $faqCategory = $faqFactory->createFaqQuestion($faqCategory);
 
-        $this->updateFaqStatistique($faqCategory->getFaq(),FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS);
+        $this->updateFaqStatistique($faqCategory->getFaq(), FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS);
 
         $this->save($faqCategory);
 
@@ -342,7 +355,8 @@ class FaqService extends AppAdminService
      * @param int $idCategory
      * @param string $orderPosition
      * @return void
-     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function updateOrderCategory(int $idFaq, int $idCategory, string $orderPosition): void
     {
@@ -359,7 +373,8 @@ class FaqService extends AppAdminService
      * @param int $idQuestion
      * @param string $orderPosition
      * @return void
-     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function updateOrderQuestion(int $idFaqCategory, int $idQuestion, string $orderPosition): void
     {
@@ -379,6 +394,8 @@ class FaqService extends AppAdminService
      * @param string $action
      * @param int $value
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function updateFaqStatistique(
         Faq    $faq,
@@ -389,7 +406,6 @@ class FaqService extends AppAdminService
     {
         $faqStat = $faq->getFaqStatistiqueByKey($key);
         $val = $faqStat->getValue();
-
         switch ($action) {
             case FaqConst::STATISTIQUE_ACTION_ADD:
                 $val = $val + $value;
@@ -411,7 +427,9 @@ class FaqService extends AppAdminService
 
     /**
      * Supprime une catégorie et la réordonne
-     * @throws Exception
+     * @param int $id
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function deleteCategory(int $id): void
     {
@@ -421,8 +439,8 @@ class FaqService extends AppAdminService
         $faq = $faqCategory->getFaq();
 
         $faq->removeFaqCategory($faqCategory);
-        $this->updateFaqStatistique($faq,FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES, FaqConst::STATISTIQUE_ACTION_SUB);
-        $this->updateFaqStatistique($faq,FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
+        $this->updateFaqStatistique($faq, FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES, FaqConst::STATISTIQUE_ACTION_SUB);
+        $this->updateFaqStatistique($faq, FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
             FaqConst::STATISTIQUE_ACTION_SUB, $nbQuestion);
 
         $orderEntity = new OrderEntity($faq->getFaqCategories());
@@ -434,7 +452,8 @@ class FaqService extends AppAdminService
      * Supprime une question
      * @param int $id
      * @return void
-     * @throws Exception
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function deleteQuestion(int $id): void
     {
@@ -443,7 +462,7 @@ class FaqService extends AppAdminService
         $faqCategory = $faqQuestion->getFaqCategory();
 
         $faqCategory->removeFaqQuestion($faqQuestion);
-        $this->updateFaqStatistique($faqCategory->getFaq(),FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
+        $this->updateFaqStatistique($faqCategory->getFaq(), FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
             FaqConst::STATISTIQUE_ACTION_SUB);
 
         $orderEntity = new OrderEntity($faqCategory->getFaqQuestions());

@@ -49,7 +49,7 @@ class Page
     private ?bool $isOpenComment = null;
 
     #[ORM\Column]
-    private ?int $nbComment = null;
+    private ?int $nbComment = 0;
 
     #[ORM\Column]
     private ?int $ruleComment = null;
@@ -60,10 +60,10 @@ class Page
     #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updateAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'page', targetEntity: PageTranslation::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: PageTranslation::class, mappedBy: 'page', cascade: ['persist'], orphanRemoval: true)]
     private Collection $pageTranslations;
 
-    #[ORM\OneToMany(mappedBy: 'page', targetEntity: PageContent::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: PageContent::class, mappedBy: 'page', cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(["renderBlock" => "ASC"])]
     private Collection $pageContents;
 

@@ -38,4 +38,9 @@ class MediaFolderConst
      * Nom du dossier par défaut de la médiatheque
      */
     public const NAME_DEFAULT_FOLDER_MEDIATHEQUE = 'natheotheque';
+
+    /**
+     * Nom du dossier pour les tests unitaires
+     */
+    public const NAME_DEFAULT_FOLDER_MEDIATHEQUE_TEST = 'natheotheque-test';
 }

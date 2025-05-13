@@ -389,7 +389,7 @@ class UserController extends AppAdminController
         }
 
 
-        if ($optionSystemService->canSendMailNotification()) {
+        if ($optionSystemService->canSendMailNotification() && !$role->isSuperAdmin()) {
             $mail = $mailService->getByKey(MailKey::MAIL_SELF_DISABLED_ACCOUNT);
             $keyWord = new KeyWord($mail->getKey());
             $tabKeyWord = $keyWord->getTabMailSelfDisabled($user, $optionSystemService);
@@ -410,7 +410,7 @@ class UserController extends AppAdminController
         }
 
         // Notifications
-        if ($optionSystemService->canNotification()) {
+        if ($optionSystemService->canNotification() && !$role->isSuperAdmin()) {
 
             $users = $userService->getByRole(Role::ROLE_SUPER_ADMIN);
 
@@ -484,7 +484,7 @@ class UserController extends AppAdminController
         }
 
         // Envoi emails
-        if ($optionSystemService->canSendMailNotification()) {
+        if ($optionSystemService->canSendMailNotification() && !$role->isSuperAdmin() && $optionSystemService->canDelete()) {
             if ($status === 1) { // anonymisation
                 $mail = $mailService->getByKey(MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT);
                 $keyWord = new KeyWord($mail->getKey());
@@ -506,7 +506,7 @@ class UserController extends AppAdminController
         }
 
         // Notifications
-        if ($optionSystemService->canNotification()) {
+        if ($optionSystemService->canNotification() && !$role->isSuperAdmin() && $optionSystemService->canDelete()) {
             $users = $userService->getByRole(Role::ROLE_SUPER_ADMIN);
             if ($status === 1) {
                 $key = NotificationKey::NOTIFICATION_SELF_ANONYMOUS;

@@ -4,7 +4,9 @@ namespace App\Repository\Admin\Content\Menu;
 
 use App\Entity\Admin\Content\Menu\Menu;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -54,7 +56,7 @@ class MenuRepository extends ServiceEntityRepository
      * @param int|null $userId
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, string $search = null, int $userId = null): Paginator
+    public function getAllPaginate(int $page, int $limit, ?string $search = null, ?int $userId = null): Paginator
     {
         $query = $this->createQueryBuilder('m')
             ->orderBy('m.id', 'ASC');
@@ -89,7 +91,7 @@ class MenuRepository extends ServiceEntityRepository
         $query->where(
             $query->expr()->neq('m.' . $field, ':value')
         )
-            ->setParameters(['value' => $value])
+            ->setParameters(new ArrayCollection([new Parameter('value', $value)]))
             ->andWhere('m.position = :position')
             ->setParameter('position', $position);
         return $query->getQuery()->getResult();

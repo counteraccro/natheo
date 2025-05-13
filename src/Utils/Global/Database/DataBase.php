@@ -69,7 +69,7 @@ class DataBase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function isTableExiste(string $tableName = null): bool
+    public function isTableExiste(?string $tableName = null): bool
     {
         /** @var ParameterBagInterface $parameterBag */
         $parameterBag = $this->handlers->get('parameterBag');
@@ -103,7 +103,7 @@ class DataBase
     public function isDataInTable(string $entity): bool
     {
         $values = $this->entityManager->getRepository($entity)->findAll();
-        if(empty($values)) {
+        if (empty($values)) {
             return false;
         }
         return true;
@@ -121,7 +121,7 @@ class DataBase
         $parameterBag = $this->handlers->get('parameterBag');
         $schema = $parameterBag->get('app.default_database_schema');
 
-        if(empty($schema)) {
+        if (empty($schema)) {
             return true;
         }
 
@@ -157,7 +157,6 @@ class DataBase
                 ];
             }, $allMetadata);
 
-
         $array = $this->mergeAssociationColumnsInColumns($array);
         $array = $this->convertFieldCamelCaseToSnakeCase($array);
 
@@ -182,6 +181,7 @@ class DataBase
                         $i++;
                     }
                 }
+                unset($table['assocationMapping']);
             }
         }
         return $tables;
@@ -221,7 +221,10 @@ class DataBase
                 return null;
             }, $allMetadata);
 
-        return array_values(array_filter($array))[0];
+        if (isset(array_values(array_filter($array))[0])) {
+            return array_values(array_filter($array))[0];
+        }
+        return [];
     }
 
     /**

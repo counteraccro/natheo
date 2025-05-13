@@ -69,7 +69,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
      * @param string|null $search
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
+    public function getAllPaginate(int $page, int $limit, ?string $search = null): Paginator
     {
         $query = $this->createQueryBuilder('u')
             ->orderBy('u.id', 'ASC');
@@ -95,15 +95,23 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
      * Retourne une liste d'utilisateur en fonction de son role
      * @param string $role
      * @return float|int|mixed|string
+     * @deprecated RETOURNE UNIQUEMENT LE FOUNDER POUR LE MOMENT, A refaire car roles est un champ JSON
      */
     public function findByRole(string $role): mixed
     {
+        // TODO à réécrire attention différent entre Mysql et PostGreSql
+
         return $this->createQueryBuilder('u')
-        ->andWhere('CONTAINS(TO_JSONB(u.roles), :role) = TRUE')
-        ->setParameter('role', '["'.$role.'"]')
+            /**
+             * Foncione que sous postgres
+             * ->andWhere('CONTAINS(TO_JSONB(u.roles), :role) = TRUE')
+             * ->setParameter('role', '["'.$role.'"]')
+             */
+            ->where('u.founder = 1')
         ->orderBy('u.id', 'ASC')
         ->getQuery()
         ->getResult();
+
     }
 
     /**

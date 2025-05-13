@@ -109,9 +109,15 @@ class MediaFolderService extends AppAdminService
         $mediaFolder = $optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_PATH);
         $rootWebPath = $optionSystemService->getValueByKey(OptionSystemKey::OS_MEDIA_URL);
 
-        if($mediaFolder === null || $mediaFolder === '')
-        {
+        if ($mediaFolder === null || $mediaFolder === '') {
             $mediaFolder = MediaFolderConst::NAME_DEFAULT_FOLDER_MEDIATHEQUE;
+        }
+
+        $env = $containerBag->get('kernel.environment');
+        $this->rootPathThumbnail = $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_THUMBNAILS;
+        if ($env === 'test') {
+            $mediaFolder = MediaFolderConst::NAME_DEFAULT_FOLDER_MEDIATHEQUE_TEST;
+            $this->rootPathThumbnail = $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_THUMBNAILS . '-test';
         }
 
         //TODO gérer cas url externe
@@ -119,15 +125,14 @@ class MediaFolderService extends AppAdminService
             MediaFolderConst::ROOT_FOLDER_NAME . $mediaFolder;
 
         $this->webPathMedia = $rootWebPath . MediaFolderConst::PATH_WEB_PATH . $mediaFolder;
-        $this->rootPathThumbnail = $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_THUMBNAILS;
+
         $this->webPathThumbnail = $rootWebPath . MediaFolderConst::PATH_WEB_THUMBNAILS;
 
         $optCanCreatePhysicalFolder = $optionSystemService->getValueByKey(
             OptionSystemKey::OS_MEDIA_CREATE_PHYSICAL_FOLDER
         );
 
-        if($optCanCreatePhysicalFolder !== null && $optCanCreatePhysicalFolder !== '')
-        {
+        if ($optCanCreatePhysicalFolder !== null && $optCanCreatePhysicalFolder !== '') {
             $this->canCreatePhysicalFolder = filter_var($optCanCreatePhysicalFolder, FILTER_VALIDATE_BOOLEAN);
         }
     }
@@ -197,12 +202,14 @@ class MediaFolderService extends AppAdminService
      * @param bool $trash
      * @param bool $disabled
      * @return float|int|mixed|string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getMediaFolderByMediaFolder
     (
-        MediaFolder $mediaFolder = null,
-        bool        $trash = false,
-        bool        $disabled = false
+        ?MediaFolder $mediaFolder = null,
+        bool         $trash = false,
+        bool         $disabled = false
     ): mixed
     {
         $repo = $this->getRepository(MediaFolder::class);
@@ -216,7 +223,7 @@ class MediaFolderService extends AppAdminService
      * @param MediaFolder|null $mediaFolder
      * @return array
      */
-    public function getMediaFolderInfo(MediaFolder $mediaFolder = null): array
+    public function getMediaFolderInfo(?MediaFolder $mediaFolder = null): array
     {
         $size = $this->getFolderSize($mediaFolder);
         $path = DIRECTORY_SEPARATOR;
@@ -256,7 +263,7 @@ class MediaFolderService extends AppAdminService
      * @param MediaFolder|null $mediaFolder
      * @return int
      */
-    public function getFolderSize(MediaFolder $mediaFolder = null): int
+    public function getFolderSize(?MediaFolder $mediaFolder = null): int
     {
         $path = $this->rootPathMedia;
         if ($mediaFolder != null) {
@@ -285,12 +292,19 @@ class MediaFolderService extends AppAdminService
      * @param string $name
      * @param MediaFolder|null $parent
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function createMediaFolder(string $name, MediaFolder $parent = null): void
+    public function createMediaFolder(string $name, ?MediaFolder $parent = null): void
     {
         $mediaFolder = new MediaFolder();
         $mediaFolder->setName($name);
         $mediaFolder->setParent($parent);
+
+        if ($parent !== null) {
+            $parent->addChild($mediaFolder);
+        }
+
 
         $path = DIRECTORY_SEPARATOR;
         if ($parent !== null) {
@@ -312,6 +326,8 @@ class MediaFolderService extends AppAdminService
      * @param string $name
      * @param MediaFolder $mediaFolder
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function updateMediaFolder(string $name, MediaFolder $mediaFolder): void
     {
@@ -485,8 +501,10 @@ class MediaFolderService extends AppAdminService
      * en fonction du dossier courant
      * @param MediaFolder|null $folder
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function getListeFolderToMove(MediaFolder $folder = null): array
+    public function getListeFolderToMove(?MediaFolder $folder = null): array
     {
 
         /** @var MediaFolderRepository $repo */
@@ -547,8 +565,10 @@ class MediaFolderService extends AppAdminService
      * @param MediaFolder $mediaFolder
      * @param MediaFolder|null $newParent
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function moveFolder(MediaFolder $mediaFolder, MediaFolder $newParent = null): void
+    public function moveFolder(MediaFolder $mediaFolder, ?MediaFolder $newParent = null): void
     {
         $oldPath = $mediaFolder->getPath();
         $old = DIRECTORY_SEPARATOR . $mediaFolder->getName();
@@ -579,6 +599,7 @@ class MediaFolderService extends AppAdminService
 
         $mediaFolder->setPath($path);
         $mediaFolder->setParent($newParent);
+        $newParent->addChild($mediaFolder);
         $this->save($mediaFolder);
 
         $this->updateAllPathChildren($old, $new);
@@ -589,5 +610,32 @@ class MediaFolderService extends AppAdminService
             $target = $this->getPathFolder($mediaFolder);
             $fileSystem->rename($origin, $target);
         }
+    }
+
+    /**
+     * Retourne le path média
+     * @return string
+     */
+    public function getRootPathMedia(): string
+    {
+        return $this->rootPathMedia;
+    }
+
+    /**
+     * Retourne le path thumbnail
+     * @return string
+     */
+    public function getRootPathThumbnail(): string
+    {
+        return $this->rootPathThumbnail;
+    }
+
+    /**
+     * Retourne le path web media
+     * @return string
+     */
+    public function getWebPathMedia(): string
+    {
+        return $this->webPathMedia;
     }
 }

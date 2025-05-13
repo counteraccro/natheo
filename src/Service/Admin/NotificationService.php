@@ -63,8 +63,12 @@ class NotificationService extends AppAdminService
 
     /**
      * Retourne le nombre de notifications en fonction du User
-     * @throws NonUniqueResultException
+     * @param User $user
+     * @return int
+     * @throws ContainerExceptionInterface
      * @throws NoResultException
+     * @throws NonUniqueResultException
+     * @throws NotFoundExceptionInterface
      */
     public function getNbByUser(User $user): int
     {
@@ -138,17 +142,23 @@ class NotificationService extends AppAdminService
      * @param int $nbDay
      * @param int $userId
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function purge(int $nbDay, int $userId): void
     {
+        $rawQuery = $this->getRawQueryManager();
+
         $repo = $this->getRepository(Notification::class);
-        $repo->removeAfterDay($nbDay, $userId);
+        $repo->removeAfterDay($nbDay, $userId, $rawQuery);
     }
 
     /**
      * Met en status lu toutes les notifications non lus du user
      * @param User $user
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function readAll(User $user): void
     {

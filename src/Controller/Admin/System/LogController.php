@@ -84,7 +84,6 @@ class LogController extends AppAdminController
         int                 $limit = 20
     ): JsonResponse
     {
-
         try {
             $grid = $loggerService->loadLogFile($file, $page, $limit);
             $success = true;

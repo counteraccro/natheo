@@ -40,6 +40,7 @@ class ApiMenuFormater
      */
     public function convertMenu(): static
     {
+        $this->return['id'] = $this->menu['id'];
         $this->return['position'] = $this->getStringPosition($this->menu['position']);
         $this->return['type'] = $this->menu['type'];
         $this->return['elements'] = $this->getElements($this->menu['menuElements']);
@@ -73,6 +74,7 @@ class ApiMenuFormater
             }
 
             $return[$i] = [
+                'id' => $element->getId(),
                 'target' => $element->getLinkTarget(),
                 'label' => $elementTranslation->getTextLink(),
                 'url' => $url,

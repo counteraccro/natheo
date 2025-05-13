@@ -27,7 +27,7 @@ class ApiMenuService extends AppApiService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getMenuForApi(ApiFindMenuDto $dto, User $user = null): array
+    public function getMenuForApi(ApiFindMenuDto $dto, ?User $user = null): array
     {
         $menu = $this->getMenuByIdOrPageUrl($dto);
         if (empty($menu)) {

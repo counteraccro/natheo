@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Service sur le menu
+ */
 
 namespace App\Service\Admin\Content\Menu;
 
@@ -23,12 +28,12 @@ class MenuService extends AppAdminService
      * @param int $page
      * @param int $limit
      * @param string|null $search
-     * @param null $userId
+     * @param int|null $userId
      * @return Paginator
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllPaginate(int $page, int $limit, string $search = null, int $userId = null): Paginator
+    public function getAllPaginate(int $page, int $limit, ?string $search = null, ?int $userId = null): Paginator
     {
         $repo = $this->getRepository(Menu::class);
         return $repo->getAllPaginate($page, $limit, $search, $userId);
@@ -44,7 +49,7 @@ class MenuService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllFormatToGrid(int $page, int $limit, string $search = null, int $userId = null): array
+    public function getAllFormatToGrid(int $page, int $limit, ?string $search = null, ?int $userId = null): array
     {
         $translator = $this->getTranslator();
         $gridService = $this->getGridService();
@@ -243,7 +248,7 @@ class MenuService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function addMenuElement(int $idMenu, int $columnP, int $rowP, int $idParent = null): int
+    public function addMenuElement(int $idMenu, int $columnP, int $rowP, ?int $idParent = null): int
     {
         $menuFactory = new MenuFactory($this->getLocales()['locales']);
         $menuElement = $menuFactory->createMenuElement();
@@ -298,18 +303,25 @@ class MenuService extends AppAdminService
     /**
      * Reconstruit les positions de column et row en fonction du menu
      * @param array $menuElements
+     * @param bool $isSub true si 2ème appel
      * @return void
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function regenerateColumnAndRowPosition(array $menuElements): void
+    public function regenerateColumnAndRowPosition(array $menuElements, $isSub = false): void
     {
         $columnRef = null;
+        $beforeColumnRef = null;
         $rowRef = 0;
         foreach ($menuElements as $menuElement) {
-            /** @var MenuElement $menuElement */
 
-            if ($columnRef === null || $columnRef != $menuElement->getColumnPosition()) {
+            /** @var MenuElement $menuElement */
+            if($menuElement->getParent() !== null && !$isSub) {
+                continue;
+            }
+
+            if (($columnRef === null || $columnRef != $menuElement->getColumnPosition()) && ($beforeColumnRef === null || $beforeColumnRef != $menuElement->getColumnPosition())) {
+                $beforeColumnRef = $menuElement->getColumnPosition();
                 $columnRef++;
                 $rowRef = 1;
             }
@@ -317,7 +329,7 @@ class MenuService extends AppAdminService
             $menuElement->setColumnPosition($columnRef);
             $menuElement->setRowPosition($rowRef++);
             if (!$menuElement->getChildren()->isEmpty()) {
-                $this->regenerateColumnAndRowPosition($menuElement->getChildren()->toArray());
+                $this->regenerateColumnAndRowPosition($menuElement->getChildren()->toArray(), true);
             }
             $this->save($menuElement);
         }
@@ -332,7 +344,7 @@ class MenuService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getMenuElementByMenuAndParent(int $idMenu, int $parent = null): mixed
+    public function getMenuElementByMenuAndParent(int $idMenu, ?int $parent = null): mixed
     {
         $repo = $this->getRepository(MenuElement::class);
         return $repo->getMenuElementByMenuAndParent($idMenu, $parent);

@@ -43,9 +43,9 @@ class MenuController extends AppAdminController
     public function index(): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'tag',
+            Breadcrumb::DOMAIN => 'menu',
             Breadcrumb::BREADCRUMB => [
-                'tag.index.page_title_h1' => '#'
+                'menu.index.page_title_h1' => '#'
             ]
         ];
 
@@ -173,7 +173,7 @@ class MenuController extends AppAdminController
     public function add(
         MenuService   $menuService,
         MenuTranslate $menuTranslate,
-        int           $id = null
+        ?int          $id = null
     ): Response
     {
         $breadcrumbTitle = 'menu.update.menu_title_h1';
@@ -229,7 +229,7 @@ class MenuController extends AppAdminController
         MenuConvertToArray  $menuJson,
         OptionSystemService $optionSystemService,
         PageService         $pageService,
-        int                 $id = null
+        ?int                $id = null
     ): JsonResponse
     {
         $menu = $menuJson->convertToArray($id);
@@ -301,7 +301,7 @@ class MenuController extends AppAdminController
     public function deleteMenuElement(
         MenuService         $menuService,
         TranslatorInterface $translator,
-        int                 $id = null,
+        ?int                $id = null,
     ): JsonResponse
     {
         if ($id === null) {
@@ -372,8 +372,8 @@ class MenuController extends AppAdminController
     #[Route('/ajax/get-list-parent/{menuId}/{elementId}', name: 'list_parent_menu_element', methods: ['GET'])]
     public function getListParent(
         MenuService $menuService,
-        int         $menuId = null,
-        int         $elementId = null
+        ?int        $menuId = null,
+        ?int        $elementId = null
     ): JsonResponse
     {
         $listeParent = $menuService->getListeParentByMenuElement($menuId, $elementId);

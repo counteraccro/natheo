@@ -40,6 +40,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[IsGranted('ROLE_CONTRIBUTEUR')]
 class PageController extends AppAdminController
 {
+
+    /**
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     #[Route('/', name: 'index')]
     public function index(): Response
     {
@@ -184,6 +190,8 @@ class PageController extends AppAdminController
      * Création / édition d'une page
      * @param PageService $pageService
      * @param PageTranslate $pageTranslate
+     * @param CommentService $commentService
+     * @param OptionSystemService $optionSystemService
      * @param int|null $id
      * @return Response
      * @throws ContainerExceptionInterface
@@ -192,11 +200,11 @@ class PageController extends AppAdminController
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
     public function add(
-        PageService   $pageService,
-        PageTranslate $pageTranslate,
-        CommentService $commentService,
+        PageService         $pageService,
+        PageTranslate       $pageTranslate,
+        CommentService      $commentService,
         OptionSystemService $optionSystemService,
-        int           $id = null
+        ?int                $id = null
     ): Response
     {
         $breadcrumbTitle = 'page.update.page_title_h1';
@@ -263,7 +271,7 @@ class PageController extends AppAdminController
     public function loadTabContent(
         PageService $pageService,
         MenuService $menuService,
-        int         $id = null,
+        ?int        $id = null,
     ): JsonResponse
     {
         $locales = $pageService->getLocales();
@@ -278,7 +286,7 @@ class PageController extends AppAdminController
         } else {
             $page = $pageService->findOneById(Page::class, $id);
         }
-        $pageArray = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt', 'user', 'menuElements', 'menus', 'comments']);
+        $pageArray = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt', 'user', 'menuElements', 'menus', 'comments', 'tags']);
 
         // On lie les menus à la page
         if (!$page->getMenus()->isEmpty()) {
@@ -287,6 +295,29 @@ class PageController extends AppAdminController
             }
         } else {
             $pageArray['menus'][] = "-1";
+        }
+
+        if (!$page->getTags()->isEmpty()) {
+            $i = 0;
+            foreach ($page->getTags() as $tag) {
+                $pageArray['tags'][$i] = [
+                    'id' => $tag->getId(),
+                    'color' => $tag->getColor(),
+                    'disabled' => $tag->isDisabled(),
+                ];
+
+                foreach ($tag->getTagTranslations() as $translation) {
+                    $pageArray['tags'][$i]['tagTranslations'][] = [
+                        'id' => $translation->getId(),
+                        'tag' => $translation->getTag()->getId(),
+                        'locale' => $translation->getLocale(),
+                        'label' => $translation->getLabel(),
+                    ];
+                }
+                $i++;
+            }
+        } else {
+            $pageArray['tags'][] = "-1";
         }
 
         return $this->json([
@@ -331,7 +362,7 @@ class PageController extends AppAdminController
     public function loadTabHistory(
         ContainerBagInterface $containerBag,
         DateService           $dateService,
-        int                   $id = null
+        ?int                  $id = null
     ): JsonResponse
     {
         /** @var User $user */
@@ -394,7 +425,7 @@ class PageController extends AppAdminController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/save', name: 'save')]
+    #[Route('/ajax/save', name: 'save', methods: ['POST'])]
     public function save(
         Request               $request,
         PageService           $pageService,
@@ -443,7 +474,7 @@ class PageController extends AppAdminController
      * @throws ExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/new-content', name: 'new_content')]
+    #[Route('/ajax/new-content', name: 'new_content', methods: ['POST'])]
     public function newContent(Request $request, PageService $pageService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -467,7 +498,7 @@ class PageController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/content-by-id/{type}', name: 'liste_content_by_id', methods: ['GET'])]
-    public function listeContentByIdContent(PageService $pageService, int $type = null): JsonResponse
+    public function listeContentByIdContent(PageService $pageService, ?int $type = null): JsonResponse
     {
         $return = $pageService->getListeContentByType($type);
         return $this->json($return);
@@ -478,6 +509,8 @@ class PageController extends AppAdminController
      * @param Request $request
      * @param PageService $pageService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/is-unique-url-page', name: 'is_unique_url_page', methods: ['POST'])]
     public function isUniqueUrlPage(Request $request, PageService $pageService): JsonResponse
@@ -531,17 +564,17 @@ class PageController extends AppAdminController
      */
     #[Route('/preview/{id}/{locale}', name: 'preview', methods: ['GET'])]
     public function preview(
-        PageService $pageService,
-        ApiTokenService $apiTokenService,
-        PageTranslate $pageTranslate,
+        PageService         $pageService,
+        ApiTokenService     $apiTokenService,
+        PageTranslate       $pageTranslate,
         OptionSystemService $optionSystemService,
-        string $locale = null,
-        int $id = null,
+        ?string             $locale = null,
+        ?int                $id = null,
     ): Response
     {
 
-        if($locale === null) {
-            $locale =  $pageService->getLocales()['current'];
+        if ($locale === null) {
+            $locale = $pageService->getLocales()['current'];
         }
         $slug = '';
         $token = null;
@@ -552,10 +585,10 @@ class PageController extends AppAdminController
         }
 
 
-        if($id != null) {
+        if ($id != null) {
             /** @var Page $page */
             $page = $pageService->findOneById(Page::class, $id);
-            if($page !== null) {
+            if ($page !== null) {
                 $slug = $page->getPageTranslationByLocale($locale)->getUrl();
                 $token = $apiTokenService->getTokenForPreview();
             }

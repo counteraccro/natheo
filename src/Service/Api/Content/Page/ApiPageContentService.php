@@ -33,7 +33,7 @@ class ApiPageContentService extends AppApiService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface|CommonMarkException
      */
-    public function getPageContentForApi(ApiFindPageContentDto $dto, User $user = null): ?array
+    public function getPageContentForApi(ApiFindPageContentDto $dto, ?User $user = null): ?array
     {
         $pageContent = $this->findOneById(PageContent::class, $dto->getId());
         if (empty($pageContent)) {

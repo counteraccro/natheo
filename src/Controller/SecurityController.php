@@ -75,10 +75,12 @@ class SecurityController extends AbstractController
      * @param string $key
      * @param SecurityService $securityService
      * @param TranslatorInterface $translator
-     * @param UserService $userService
+     * @param UserTranslate $userTranslate
      * @param Request $request
      * @return Response
-     * @throws NonUniqueResultException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws \DateMalformedIntervalStringException
      */
     #[Route(path: 'change-password/{key}', name: 'change_password_user', methods: ['GET'])]
     #[Route(path: 'new-password/{key}', name: 'change_new_password_user', methods: ['GET'])]
@@ -161,6 +163,7 @@ class SecurityController extends AbstractController
     {
         $msg = '';
         $email = $request->get('email');
+
         if (!empty($email)) {
 
             $msg = $translator->trans('user.reset_password.success', domain: 'user');

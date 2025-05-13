@@ -25,7 +25,7 @@ class SqlManagerService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllFormatToGrid(int $page, int $limit, string $search = null): array
+    public function getAllFormatToGrid(int $page, int $limit, ?string $search = null): array
     {
         $translator = $this->getTranslator();
         $gridService = $this->getGridService();
@@ -75,7 +75,7 @@ class SqlManagerService extends AppAdminService
     }
 
     /**
-     * Retourne une liste de tag paginé
+     * Retourne une liste de SqlManager paginé
      * @param int $page
      * @param int $limit
      * @param string|null $search
@@ -83,7 +83,7 @@ class SqlManagerService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllPaginate(int $page, int $limit, string $search = null): Paginator
+    public function getAllPaginate(int $page, int $limit, ?string $search = null): Paginator
     {
         $repo = $this->getRepository(SqlManager::class);
         return $repo->getAllPaginate($page, $limit, $search);
@@ -165,11 +165,11 @@ class SqlManagerService extends AppAdminService
     {
         $arrayWords = [
             'UPDATE', 'DELETE', 'INSERT',
-            'CREATE', 'ALTER', 'DROP',
+            'CREATE', 'ALTER', 'DROP', 'TRUNCATE'
         ];
 
-        $pattern = '/(' . implode('|', $arrayWords) . ')\b/i';
-        if (preg_match($pattern, $query) !== 0) {
+        $pattern = '/(' . strtolower(implode('|', $arrayWords)) . ')\b/i';
+        if (preg_match($pattern, strtolower($query)) !== 0) {
             return false;
         }
 

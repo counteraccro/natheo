@@ -59,6 +59,12 @@ class PageHistory
         $this->filesystem = new Filesystem();
 
         $kernel = $containerBag->get('kernel.project_dir');
+        $env = $containerBag->get('kernel.environment');
+
+        if ($env === 'test') {
+            $this->directoryHistory = $this->directoryHistory . '-test';
+        }
+
         $this->pathPageHistory = $kernel . DIRECTORY_SEPARATOR . 'var'
             . DIRECTORY_SEPARATOR . $this->directoryHistory;
 
@@ -93,7 +99,7 @@ class PageHistory
      * @param int|null $id
      * @return string
      */
-    private function getPath(int $id = null): string
+    private function getPath(?int $id = null): string
     {
         if ($id === null) {
             $id = 'user-' . $this->user->getId();
@@ -123,10 +129,10 @@ class PageHistory
     /**
      * Retourne le contenu d'un fichier en fonction de son id
      * Si le fichier n'existe pas, retourne un tableau vide
-     * @param int $id
+     * @param int|null $id
      * @return array
      */
-    private function getContentFile(int $id = null): array
+    private function getContentFile(?int $id = null): array
     {
         $path = $this->getPath($id);
         if (file_exists($path)) {
@@ -137,10 +143,10 @@ class PageHistory
 
     /**
      * Retourne l'ensemble de l'historique d'une page en fonction de son id
-     * @param int $id
+     * @param int|null $id
      * @return array
      */
-    public function getHistory(int $id = null): array
+    public function getHistory(?int $id = null): array
     {
         $datas = $this->getContentFile($id);
         $return = [];
@@ -153,16 +159,15 @@ class PageHistory
 
     /**
      * Retourne l'historique d'une page en fonction de son id et de la key id (ligne dans le fichier)
-     * @param int $pageId
      * @param int $rowId
+     * @param int|null $pageId
      * @return array
      */
-    public function getPageHistoryById(int $rowId, int $pageId = null) : array
+    public function getPageHistoryById(int $rowId, ?int $pageId = null): array
     {
         $datas = $this->getContentFile($pageId);
         foreach ($datas as $key => $row) {
-            if($key === $rowId)
-            {
+            if ($key === $rowId) {
                 $array = json_decode($row, true);
                 return $array['pageH'];
             }
@@ -186,8 +191,7 @@ class PageHistory
         }
 
         // Si le brouillon n'existe pas, on ne fait rien
-        if(!file_exists($path))
-        {
+        if (!file_exists($path)) {
             return;
         }
 
@@ -204,11 +208,19 @@ class PageHistory
     public function removePageHistory($id = null): void
     {
         $path = $this->getPath($id);
-        if(!file_exists($path))
-        {
+        if (!file_exists($path)) {
             return;
         }
         $fileSystem = new Filesystem();
         $fileSystem->remove($path);
+    }
+
+    /**
+     * Retourne le path du dossier history
+     * @return string
+     */
+    public function getPathPageHistory() :string
+    {
+        return $this->pathPageHistory;
     }
 }

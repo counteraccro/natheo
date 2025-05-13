@@ -145,7 +145,7 @@ class TagController extends AppAdminController
         TagService                 $tagService,
         TagTranslate               $tagTranslate,
         Request                    $request,
-        #[MapEntity(id: 'id')] Tag $tag = null
+        #[MapEntity(id: 'id')] ?Tag $tag = null
     ): Response
     {
         $breadcrumbTitle = 'tag.update.page_title_h1';
@@ -235,7 +235,7 @@ class TagController extends AppAdminController
      * @return Response
      */
     #[Route('/ajax/stats/{id}', name: 'stats', methods: ['GET'])]
-    public function statistique(#[MapEntity(id: 'id')] Tag $tag = null): Response
+    public function statistique(#[MapEntity(id: 'id')] ?Tag $tag = null): Response
     {
         return $this->render('admin/content/tag/date_update.html.twig', [
             'tag' => $tag
@@ -248,6 +248,8 @@ class TagController extends AppAdminController
      * @param string $search
      * @param string $locale
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/search/{search}/{locale}', name: 'search', methods: ['GET'])]
     public function search(TagService $tagService, string $search = '', string $locale = ''): Response

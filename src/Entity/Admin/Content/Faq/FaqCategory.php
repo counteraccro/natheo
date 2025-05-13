@@ -6,6 +6,8 @@ use App\Repository\Admin\Content\Faq\FaqCategoryRepository;
 use App\Utils\Installation\InstallationConst;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Order;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FaqCategoryRepository::class)]
@@ -27,11 +29,11 @@ class FaqCategory
     #[ORM\Column(name: 'render_order')]
     private ?int $renderOrder = null;
 
-    #[ORM\OneToMany(mappedBy: 'faqCategory', targetEntity: FaqCategoryTranslation::class,
+    #[ORM\OneToMany(targetEntity: FaqCategoryTranslation::class, mappedBy: 'faqCategory',
         cascade: ['persist'], orphanRemoval: true)]
     private Collection $faqCategoryTranslations;
 
-    #[ORM\OneToMany(mappedBy: 'faqCategory', targetEntity: FaqQuestion::class,
+    #[ORM\OneToMany(targetEntity: FaqQuestion::class, mappedBy: 'faqCategory',
         cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['renderOrder' => 'asc'])]
     private Collection $faqQuestions;
@@ -119,6 +121,18 @@ class FaqCategory
     public function getFaqQuestions(): Collection
     {
         return $this->faqQuestions;
+    }
+
+    /**
+     * @param Order $sort
+     * @return Collection
+     */
+    public function getSortedFaqQuestion(Order $sort = Order::Ascending): Collection
+    {
+        $criteria = Criteria::create()
+            ->orderBy(array("renderOrder" => $sort));
+
+        return $this->faqQuestions->matching($criteria);
     }
 
     public function addFaqQuestion(FaqQuestion $faqQuestion): static

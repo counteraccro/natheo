@@ -139,7 +139,7 @@ class NotificationController extends AppAdminController
     }
 
     /**
-     * Permet de purger les commentaires
+     * Permet de purger les notifications
      * @param OptionSystemService $optionSystemService
      * @param NotificationService $notificationService
      * @return Response
@@ -158,6 +158,8 @@ class NotificationController extends AppAdminController
      * Permet de marquer toutes les notifications non lu, en lu en fonction de l'utilisateur
      * @param NotificationService $notificationService
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/readAll', name: 'read_all')]
     public function readAll(NotificationService $notificationService): JsonResponse

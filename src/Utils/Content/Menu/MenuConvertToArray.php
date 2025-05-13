@@ -43,7 +43,7 @@ class MenuConvertToArray
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function convertToArray(int $id = null): array
+    public function convertToArray(?int $id = null): array
     {
         $return = $this->createStructure(Menu::class, ['createdAt', 'updateAt', 'userId']);
         $return['position'] = MenuConst::POSITION_HEADER;
@@ -93,6 +93,7 @@ class MenuConvertToArray
     private function mergeMenuElements(array $menuElements): array
     {
         $structureMenuElement = $this->createStructure(MenuElement::class);
+        $structure = [];
 
         $key = 0;
         foreach ($menuElements as $menuElement) {
@@ -130,7 +131,7 @@ class MenuConvertToArray
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function mergeMenuElementTranslation(Collection $menuElementTranslations, Page $page = null): array
+    private function mergeMenuElementTranslation(Collection $menuElementTranslations, ?Page $page = null): array
     {
         $return = [];
         $structureMenuElementTranslation = $this->createStructure(MenuElementTranslation::class);

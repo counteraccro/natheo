@@ -55,6 +55,8 @@ class MediaService extends MediaFolderService
      * @param Media $media
      * @param string $file
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function UpdateMediaFile(Media $media, string $file): void
     {
@@ -94,6 +96,7 @@ class MediaService extends MediaFolderService
                 $media->setType($type);
             }
         }
+        $this->save($media);
     }
 
     /**
@@ -148,12 +151,14 @@ class MediaService extends MediaFolderService
      * @param string $filter
      * @param string $order
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getALlMediaAndMediaFolderByMediaFolder
     (
-        MediaFolder $mediaFolder = null,
-        string      $filter = 'created_at',
-        string      $order = 'asc'
+        ?MediaFolder $mediaFolder = null,
+        string       $filter = 'created_at',
+        string       $order = 'asc'
     ): array
     {
         $medias = $this->getMediaByMediaFolder($mediaFolder);
@@ -163,7 +168,6 @@ class MediaService extends MediaFolderService
 
         /** @var Media $media */
         foreach ($medias as $media) {
-
             $return[] = [
                 'type' => 'media',
                 'id' => $media->getId(),
@@ -203,8 +207,10 @@ class MediaService extends MediaFolderService
      * Retourne une liste de média en fonction d'un mediaFolder
      * @param MediaFolder|null $mediaFolder
      * @return float|int|mixed|string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function getMediaByMediaFolder(MediaFolder $mediaFolder = null): mixed
+    public function getMediaByMediaFolder(?MediaFolder $mediaFolder = null): mixed
     {
         /** @var MediaRepository $repo */
         $repo = $this->getRepository(Media::class);
@@ -256,6 +262,8 @@ class MediaService extends MediaFolderService
      * @param int $idFolder
      * @param array $file
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function uploadMediaFile(int $idFolder, array $file): void
     {
@@ -311,6 +319,8 @@ class MediaService extends MediaFolderService
      * @param string $type
      * @param int $idToMove
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function move(int $id, string $type, int $idToMove): void
     {
@@ -327,12 +337,14 @@ class MediaService extends MediaFolderService
     }
 
     /**
-     * Déplace un média vers le médiaFolder en paramètre
+     * Déplace un média vers le médiaFolder en paramètre (physiquement)
      * @param Media $media
      * @param MediaFolder|null $mediaFolderInMove
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function moveMedia(Media $media, MediaFolder $mediaFolderInMove = null): void
+    public function moveMedia(Media $media, ?MediaFolder $mediaFolderInMove = null): void
     {
         $oldPath = $this->rootPathMedia . DIRECTORY_SEPARATOR . $media->getName();
         if ($media->getMediaFolder() !== null) {
@@ -340,6 +352,11 @@ class MediaService extends MediaFolderService
         }
 
         $media->setMediaFolder($mediaFolderInMove);
+
+        if($mediaFolderInMove !== null) {
+            $mediaFolderInMove->addMedia($media);
+        }
+
         $media->setWebPath($this->getWebPath($media));
         $media->setPath($this->getPath($media));
         $this->save($media);
@@ -359,6 +376,8 @@ class MediaService extends MediaFolderService
      * Retourne un tableau contenant le nombre de médias et le nombre de dossiers
      * dans la corbeille
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getNbInTrash(): array
     {
@@ -371,7 +390,13 @@ class MediaService extends MediaFolderService
         return $return;
     }
 
-    public function getAllMediaAndMediaFolderInTrash()
+    /**
+     * Retourne l'ensemble des éléments dans la corbeilles
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getAllMediaAndMediaFolderInTrash(): array
     {
         $repoMedia = $this->getRepository(Media::class);
         $medias = $repoMedia->findBy(['trash' => true]);
@@ -417,6 +442,8 @@ class MediaService extends MediaFolderService
      * @param int $id
      * @param bool $trash
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function updateTrash(string $type, int $id, bool $trash): void
     {
@@ -439,6 +466,8 @@ class MediaService extends MediaFolderService
      * @param string $type
      * @param int $id
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function confirmTrash(string $type, int $id): void
     {

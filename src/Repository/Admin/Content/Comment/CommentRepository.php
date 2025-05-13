@@ -40,18 +40,18 @@ class CommentRepository extends ServiceEntityRepository
      * @param null $userId
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, string $search = null, $userId = null): Paginator
+    public function getAllPaginate(int $page, int $limit, ?string $search = null, $userId = null): Paginator
     {
         $query = $this->createQueryBuilder('c')
             ->orderBy('c.id', 'ASC');
 
         if($userId !== null){
-            $query->andWhere('c.userModeration = :userId');
-            $query->setParameter('userId', $userId);
+            $query->andwhere('c.userModeration = :userId')
+            ->setParameter('userId', $userId);
         }
 
         if ($search !== null) {
-            $query->where('c.comment like :search OR c.author like :search OR c.email like :search')
+            $query->andWhere('c.comment like :search OR c.author like :search OR c.email like :search')
                 ->setParameter('search', '%' . $search . '%');
         }
 

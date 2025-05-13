@@ -14,6 +14,8 @@ use App\Utils\System\Options\OptionSystemKey;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 #[AsDoctrineListener('postPersist')]
 #[AsDoctrineListener('postRemove')]
@@ -47,6 +49,8 @@ class DatabaseActivityListener
      * Callback persist
      * @param LifecycleEventArgs $args
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function postPersist(LifecycleEventArgs $args): void
     {
@@ -57,6 +61,8 @@ class DatabaseActivityListener
      * Callback remove
      * @param LifecycleEventArgs $args
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function postRemove(LifecycleEventArgs $args): void
     {
@@ -67,6 +73,8 @@ class DatabaseActivityListener
      * Callback update
      * @param LifecycleEventArgs $args
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function postUpdate(LifecycleEventArgs $args): void
     {
@@ -78,6 +86,8 @@ class DatabaseActivityListener
      * @param string $action
      * @param LifecycleEventArgs $args
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function logActivity(string $action, LifecycleEventArgs $args): void
     {

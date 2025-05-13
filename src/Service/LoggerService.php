@@ -130,6 +130,8 @@ class LoggerService extends AppService
      * @param string $ip
      * @param bool $success true log info, false log warning
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function logAuthAdmin(string $user, string $ip, bool $success = true): void
     {
@@ -149,7 +151,11 @@ class LoggerService extends AppService
 
     /**
      * Permet de loger le switch d'utilisateur
+     * @param string $user
+     * @param string $userToSwitch
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function logSwitchUser(string $user, string $userToSwitch): void
     {
@@ -169,6 +175,8 @@ class LoggerService extends AppService
      * @param string $entity
      * @param int $id
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function logDoctrine(string $action, string $entity, mixed $id = -1): void
     {
@@ -279,7 +287,7 @@ class LoggerService extends AppService
             $nb = 0;
             while (!$content->eof()) {
 
-                if ($i > $limit * $page || $nb === $total) {
+                if ($i >= $limit * $page || $nb === $total) {
                     break;
                 }
 
@@ -384,6 +392,8 @@ class LoggerService extends AppService
      * non la langue du user courant
      * @param string $typeOption user ou system
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function switchDefaultLocale(string $typeOption = 'user'): void
     {
