@@ -234,7 +234,7 @@ export default {
               </button>
               <ul class="dropdown-menu">
                 <li v-for="color in this.tabColor">
-                  <a class="dropdown-item" :style="'cursor:pointer;color:' + color"
+                  <a class="dropdown-item no-control" :style="'cursor:pointer;color:' + color"
                      @click="this.switchColor(color)">{{ color }}</a>
                 </li>
               </ul>
