@@ -11,6 +11,7 @@ namespace App\Service\Admin;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use function Symfony\Component\String\u;
 
 class GridService extends AppAdminService
 {
@@ -80,8 +81,20 @@ class GridService extends AppAdminService
     {
         $sql = $paginator->getQuery()->getSQL();
         $parameters = $paginator->getQuery()->getParameters();
-        foreach ($parameters as $parameter) {
-            $sql = str_replace('?', "'" . $parameter->getValue() . "'", $sql);
+
+        $tmp = '';
+        foreach($parameters as $parameter) {
+
+            if($parameter->getName() == 'userId') {
+                $search = u($parameter->getName())->snake() . " = '" . $tmp . "'";
+                $replace = u($parameter->getName())->snake() . ' = ' . $parameter->getValue();
+                $sql = str_replace($search, $replace, $sql, $count);
+            }
+            else {
+                $sql = str_replace('?', "'" . $parameter->getValue() . "'", $sql, $count);
+            }
+
+            $tmp = $parameter->getValue();
         }
         return $sql;
 
