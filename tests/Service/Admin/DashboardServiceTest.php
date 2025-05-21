@@ -48,6 +48,8 @@ class DashboardServiceTest extends AppWebTestCase
     {
         $apiToken = $this->createApiToken(['token' => ApiTokenConst::API_TOKEN_READ]);
 
+        $this->optionSystemService->saveValueByKee(OptionSystemKey::OS_OPEN_SITE, 0);
+
         $result = $this->dashboardService->getBlockHelpConfig();
         $this->assertIsArray($result);
         $this->assertArrayHasKey('success', $result);

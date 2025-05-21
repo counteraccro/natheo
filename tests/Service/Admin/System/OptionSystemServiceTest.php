@@ -56,7 +56,7 @@ class OptionSystemServiceTest extends AppWebTestCase
         $result = $this->optionSystemService->getByKey(OptionSystemKey::OS_OPEN_SITE);
         $this->assertInstanceOf(OptionSystem::class, $result);
         $this->assertEquals(OptionSystemKey::OS_OPEN_SITE, $result->getKey());
-        $this->assertEquals('0', $result->getValue());
+        $this->assertEquals('1', $result->getValue());
 
         $result = $this->optionSystemService->getByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE);
         $this->assertInstanceOf(OptionSystem::class, $result);
@@ -78,7 +78,7 @@ class OptionSystemServiceTest extends AppWebTestCase
 
         $result = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_OPEN_SITE);
         $this->assertNotNull($result);
-        $this->assertEquals('0', $result);
+        $this->assertEquals('1', $result);
 
         $result = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE);
         $this->assertNotNull($result);
