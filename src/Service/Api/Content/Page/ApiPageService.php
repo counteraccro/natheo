@@ -191,7 +191,7 @@ class ApiPageService extends AppApiService
         $m = $menuRepo->getByIdForApi($id)[0];
         $repository = $this->getRepository(MenuElement::class);
         $m['menuElements'] = $repository->getMenuElementByMenuAndParent($m['id'], null, false);
-        $menuApi = $apiMenuService->formatMenu($m, $locale, $this->getOptionSystemApi());
+        $menuApi = $apiMenuService->formatMenu($m, $locale);
         $return['menus'][$menuApi['position']] = $menuApi;
 
         return $return;
