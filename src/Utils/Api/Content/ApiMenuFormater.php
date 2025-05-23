@@ -22,14 +22,10 @@ class ApiMenuFormater
     /**
      * @param array $menu
      * @param string $locale
-     * @param array $apiOptionSystem
-     * @param array $apiData
      */
     public function __construct(
         private readonly array  $menu,
         private readonly string $locale,
-        private readonly array  $apiOptionSystem,
-        private readonly array  $apiData,
     )
     {
     }

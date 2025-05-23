@@ -33,25 +33,18 @@ class ApiMenuService extends AppApiService
         if (empty($menu)) {
             return [];
         }
-        return $this->formatMenu($menu, $dto->getLocale(), $this->getOptionSystemApi(), []);
+        return $this->formatMenu($menu, $dto->getLocale());
     }
 
     /**
      * Format un menu
      * @param array $menu
      * @param string $locale
-     * @param array $optionsSystemApi
-     * @param array $datas
      * @return array
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
-    public function formatMenu(array $menu, string $locale, array $optionsSystemApi, array $datas = []): array
+    public function formatMenu(array $menu, string $locale): array
     {
-        $pageService = $this->getPageService();
-        $datas['pageCategories'] = $pageService->getAllCategories();
-
-        $apiMenuFormater = new ApiMenuFormater($menu, $locale, $optionsSystemApi, $datas);
+        $apiMenuFormater = new ApiMenuFormater($menu, $locale);
         return $apiMenuFormater->convertMenu()->getMenuFortApi();
     }
 
