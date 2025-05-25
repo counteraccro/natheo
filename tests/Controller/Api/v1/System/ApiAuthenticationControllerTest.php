@@ -7,7 +7,9 @@
 
 namespace App\Tests\Controller\Api\v1\System;
 
+use App\Service\Admin\System\OptionSystemService;
 use App\Tests\Controller\Api\AppApiTestCase;
+use App\Utils\System\Options\OptionSystemKey;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApiAuthenticationControllerTest extends AppApiTestCase
@@ -117,5 +119,27 @@ class ApiAuthenticationControllerTest extends AppApiTestCase
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('detail', $content);
         $this->assertStringContainsString($translator->trans('api_errors.user.token.not.found', domain: 'api_errors'), $content['detail']);
+    }
+
+    /**
+     * Test retour API fermé
+     * @return void
+     */
+    public function testCloseApi(): void
+    {
+        $translator = $this->container->get(TranslatorInterface::class);
+        $optionSystemService = $this->container->get(OptionSystemService::class);
+        $optionSystemService->saveValueByKee(OptionSystemKey::OS_OPEN_SITE, 0);
+
+        $this->client->request('GET', $this->router->generate('api_authentication_auth', ['api_version' => self::API_VERSION]),
+            server: $this->getCustomHeaders(self::HEADER_WRITE)
+        );
+        $response = $this->client->getResponse();
+        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('errors', $content);
+        $this->assertStringContainsString($translator->trans('api_errors.api.not.open', domain: 'api_errors'), $content['errors'][0]);
     }
 }

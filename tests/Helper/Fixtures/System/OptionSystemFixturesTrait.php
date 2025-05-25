@@ -47,7 +47,7 @@ trait OptionSystemFixturesTrait
 
         $data = [
             'key' => OptionSystemKey::OS_OPEN_SITE,
-            'value' => '0',
+            'value' => '1',
         ];
         $this->createOptionSystem($data);
 
