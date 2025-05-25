@@ -15,3 +15,4 @@ api_errors.find.page.content.not.found: 'Contenu de page non disponible'
 api_errors.find.listing.category.not.found: "La catégorie recherchée n'existe pas"
 api_errors.find.listing.tag.not.found: "Le tag recherché n'existe pas"
 api_errors.api.not.open: 'Ressource non accessible - API fermée'
+api_errors.find.option.system.not.found: 'Option system non disponible'
