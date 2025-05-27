@@ -16,3 +16,5 @@ api_errors.find.listing.category.not.found: "La catégorie recherchée n'existe 
 api_errors.find.listing.tag.not.found: "Le tag recherché n'existe pas"
 api_errors.api.not.open: 'Ressource non accessible - API fermée'
 api_errors.find.option.system.not.found: 'Option system non disponible'
+api_errors.comment.by.page.not.id.slug.together: 'Le paramètre id ou page_slug doit être présent'
+api_errors.comment.by.page.id.slug.together: 'Le paramètre id et page_slug ne peuvent pas être mis ensemble'
