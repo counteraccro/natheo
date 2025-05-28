@@ -30,9 +30,15 @@ class ApiCommentController extends AppApiController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/page', name: 'by_page', methods: ['GET'])]
-    public function getCommentByPage(#[MapQueryString(
+    public function getCommentsByPage(#[MapQueryString(
         resolver: ApiCommentByPageResolver::class
     )] ApiCommentByPageDto $apiCommentByPageDto): JsonResponse {
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['dto' => $apiCommentByPageDto]);
+
+        $user = null;
+        if ($apiCommentByPageDto->getUserToken() !== "") {
+            $user = $this->getUserByUserToken($apiCommentByPageDto->getUserToken());
+        }
+
+        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['dto' => $apiCommentByPageDto, 'user' => $user?->getEmail()]);
     }
 }
