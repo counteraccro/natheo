@@ -39,6 +39,9 @@ class ApiCommentController extends AppApiController
             $user = $this->getUserByUserToken($apiCommentByPageDto->getUserToken());
         }
 
+        $apiCommentService = $this->getApiCommentService();
+        $result = $apiCommentService->getCommentByPageIdOrSlug($apiCommentByPageDto, $user);
+
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['dto' => $apiCommentByPageDto, 'user' => $user?->getEmail()]);
     }
 }
