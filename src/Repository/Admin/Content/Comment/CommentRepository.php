@@ -130,7 +130,7 @@ class CommentRepository extends ServiceEntityRepository
                 ->setParameter('locale', $dto->getLocale());
         }
 
-        $query->orderBy('c.createdAt', 'ASC');
+        $query->orderBy('c.' . $dto->getOrderBy(), $dto->getOrder());
 
         $paginator = new Paginator($query->getQuery(), true);
         $paginator->getQuery()

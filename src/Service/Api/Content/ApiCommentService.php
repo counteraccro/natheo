@@ -12,6 +12,7 @@ use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\System\User;
 use App\Repository\Admin\Content\Comment\CommentRepository;
 use App\Service\Api\AppApiService;
+use App\Utils\Content\Comment\CommentConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -25,23 +26,37 @@ class ApiCommentService extends AppApiService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getCommentByPageIdOrSlug(ApiCommentByPageDto $dto, ?User $user = null) : array {
+    public function getCommentByPageIdOrSlug(ApiCommentByPageDto $dto, ?User $user = null): array
+    {
+
+        $translator = $this->getTranslator();
 
         /** @var CommentRepository $repository */
         $repository = $this->getRepository(Comment::class);
         $results = $repository->getCommentsByPageForApi($dto);
 
         $return = [];
-        foreach($results as $comment) {
-             /** @var Comment $comment */
+        foreach ($results as $key => $comment) {
+            /** @var Comment $comment */
 
+            $com = $comment->getComment();
+            if ($comment->getStatus() === CommentConst::WAIT_VALIDATION && !$this->isGranted($user, ['ROLE_CONTRIBUTEUR'])) {
+                $com = $translator->trans('api_errors.comment.wait.validation', domain: 'api_errors');
+            } elseif ($comment->getStatus() === CommentConst::MODERATE && !$this->isGranted($user, ['ROLE_CONTRIBUTEUR'])) {
+                $com = $translator->trans('api_errors.comment.moderate', domain: 'api_errors');
+            }
 
-            $return[] = [
+            $return[$key] = [
                 'id' => $comment->getId(),
-
+                'status' => $comment->getStatus(),
+                'createdAt' => $comment->getCreatedAt(),
+                'updateAt' => $comment->getUpdateAt(),
+                'comment' => $com,
             ];
+            if ($comment->getStatus() === CommentConst::MODERATE && $this->isGranted($user, ['ROLE_CONTRIBUTEUR'])) {
+               $return[$key]['moderate'] = $comment->getModerationComment();
+            }
         }
-
         return $return;
     }
 }
