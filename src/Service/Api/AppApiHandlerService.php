@@ -25,6 +25,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppApiHandlerService
@@ -46,6 +47,7 @@ class AppApiHandlerService
             'apiPageContentService' => ApiPageContentService::class,
             'kernel' => KernelInterface::class,
             'markdownEditorService' => MarkdownEditorService::class,
+            'accessDecisionManager' => AccessDecisionManagerInterface::class,
         ])]
         protected ContainerInterface $handlers){}
 
@@ -214,5 +216,16 @@ class AppApiHandlerService
     protected function getMarkdownEditorService(): MarkdownEditorService
     {
         return $this->handlers->get('markdownEditorService');
+    }
+
+    /**
+     * Retourne un AccessDecisionManagerInterface
+     * @return AccessDecisionManagerInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getAccessDecisionManager() :AccessDecisionManagerInterface
+    {
+        return $this->handlers->get('accessDecisionManager');
     }
 }

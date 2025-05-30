@@ -6,11 +6,13 @@
  */
 namespace App\Service\Api;
 
+use App\Entity\Admin\System\User;
 use App\Utils\System\Options\OptionSystemKey;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityRepository;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class AppApiService extends AppApiHandlerService
 {
@@ -124,5 +126,22 @@ class AppApiService extends AppApiHandlerService
         } catch (Exception $exception) {
             $this->getLogger()->error($exception->getMessage());
         }
+    }
+
+    /**
+     * Permet de vérifier les droits
+     * @param User $user
+     * @param array $attributes
+     * @param mixed|null $object
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function isGranted(User $user, array $attributes, mixed $object = null): bool
+    {
+        $accessDecisionManager = $this->getAccessDecisionManager();
+
+        $token = new UsernamePasswordToken($user, 'none', $user->getRoles());
+        return $accessDecisionManager->decide($token, $attributes, $object);
     }
 }
