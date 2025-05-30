@@ -9,6 +9,7 @@ namespace Controller\Api\v1\Content;
 
 use App\Tests\Controller\Api\AppApiTestCase;
 use App\Utils\Content\Comment\CommentConst;
+use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApiCommentControllerTest extends AppApiTestCase
@@ -23,9 +24,12 @@ class ApiCommentControllerTest extends AppApiTestCase
         $translator = $this->container->get(TranslatorInterface::class);
 
         $page = $this->createPageAllDataDefault();
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 3; $i++) {
             $this->createComment($page, customData: ['status' => CommentConst::VALIDATE]);
         }
+
+        $this->createComment($page, customData: ['status' => CommentConst::WAIT_VALIDATION]);
+        $comment = $this->createComment($page, customData: ['status' => CommentConst::MODERATE, 'moderationComment' => self::getFaker()->text(40)]);
 
         // Erreur id et slug non présent
         $this->client->request('GET', $this->router->generate('api_comment_by_page', ['api_version' => self::API_VERSION]),
@@ -50,14 +54,39 @@ class ApiCommentControllerTest extends AppApiTestCase
         $this->assertEquals($translator->trans('api_errors.comment.by.page.id.slug.together', domain: 'api_errors'), $content['errors'][0]);
 
 
-        $this->client->request('GET', $this->router->generate('api_comment_by_page', ['api_version' => self::API_VERSION, 'page_slug' => $page->getPageTranslationByLocale('fr')->getUrl(), 'limit' => 5]),
+        $this->client->request('GET', $this->router->generate('api_comment_by_page', ['api_version' => self::API_VERSION, 'page_slug' => $page->getPageTranslationByLocale('fr')->getUrl(), 'limit' => 5, 'order_by' => 'toto']),
+            server: array_merge($this->getCustomHeaders(self::HEADER_READ), ['HTTP_User-token' => $this->authUser()])
+        );
+        $response = $this->client->getResponse();;
+        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->checkStructureApiRetourError($content);
+        $this->assertEquals('Choose a orderBy between id or createdAt ', $content['errors'][0]);
+
+        $this->client->request('GET', $this->router->generate('api_comment_by_page', ['api_version' => self::API_VERSION, 'page_slug' => $page->getPageTranslationByLocale('fr')->getUrl(), 'limit' => 5, 'order_by' => 'id', 'order' => 'desc']),
             server: array_merge($this->getCustomHeaders(self::HEADER_READ), ['HTTP_User-token' => $this->authUser()])
         );
         $response = $this->client->getResponse();;
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
-        dd($content);
+        $this->checkStructureApiRetour($content);
+
+        $verif = $content['data'][0];
+        $this->assertIsArray($verif);
+        $this->assertArrayHasKey('id', $verif);
+        $this->assertEquals($comment->getId(), $verif['id']);
+        $this->assertArrayHasKey('status', $verif);
+        $this->assertEquals($comment->getStatus(), $verif['status']);
+        $this->assertArrayHasKey('createdAt', $verif);
+        $this->assertEquals($comment->getCreatedAt()->format(DATE_ATOM), $verif['createdAt']);
+        $this->assertArrayHasKey('updateAt', $verif);
+        $this->assertEquals($comment->getUpdateAt()->format(DATE_ATOM), $verif['updateAt']);
+        $this->assertArrayHasKey('comment', $verif);
+        $this->assertEquals($comment->getComment(), $verif['comment']);
+        $this->assertArrayHasKey('moderate', $verif);
+        $this->assertEquals($comment->getModerationComment(), $verif['moderate']);
     }
 
     /**
