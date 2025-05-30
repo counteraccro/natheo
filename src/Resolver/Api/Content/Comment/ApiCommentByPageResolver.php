@@ -58,6 +58,8 @@ class ApiCommentByPageResolver extends AppApiResolver implements ValueResolverIn
             $tabParameters[ApiParametersCommentByPageRef::PARAM_LOCALE],
             intval($tabParameters[ApiParametersCommentByPageRef::PARAM_PAGE]),
             intval($tabParameters[ApiParametersCommentByPageRef::PARAM_LIMIT]),
+            $tabParameters[ApiParametersCommentByPageRef::PARAM_ORDER_BY],
+            $tabParameters[ApiParametersCommentByPageRef::PARAM_ORDER],
             $tabParameters[ApiParametersCommentByPageRef::PARAM_USER_TOKEN]
         );
 

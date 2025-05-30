@@ -51,12 +51,29 @@ class ApiCommentByPageDto extends AppApiDto
         private readonly int $limit,
 
         /**
+         * Champ qui défini l'ordre du tri
+         * @var string
+         */
+        #[Assert\Type(type: 'string', message: 'The orderBy parameter must be a string')]
+        #[Assert\Choice(choices: ['id', 'createdAt'], message: 'Choose a orderBy between id or createdAt')]
+        private readonly string $orderBy,
+
+        /**
+         * Ordre du tri
+         * @var string
+         */
+        #[Assert\Type(type: 'string', message: 'The order parameter must be a string')]
+        #[Assert\Choice(choices: ['desc', 'asc'], message: 'Choose a order between desc or asc')]
+        private readonly string $order,
+
+        /**
          * Token
          * @var string
          */
         #[Assert\Type(type: 'string', message: 'The user_token parameter must be a string')]
         private readonly string $userToken,
     ){}
+
 
     /**
      * Id
@@ -101,6 +118,24 @@ class ApiCommentByPageDto extends AppApiDto
     public function getLocale(): string
     {
         return $this->locale;
+    }
+
+    /**
+     * Order
+     * @return string
+     */
+    public function getOrder(): string
+    {
+        return $this->order;
+    }
+
+    /**
+     * OrderBy
+     * @return string
+     */
+    public function getOrderBy(): string
+    {
+        return $this->orderBy;
     }
 
     /**
