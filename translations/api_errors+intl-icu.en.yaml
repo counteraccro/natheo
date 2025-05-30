@@ -18,3 +18,5 @@ api_errors.api.not.open: __api_errors.api.not.open
 api_errors.find.option.system.not.found: __api_errors.find.option.system.not.found
 api_errors.comment.by.page.not.id.slug.together: __api_errors.comment.by.page.not.id.slug.together
 api_errors.comment.by.page.id.slug.together: __api_errors.comment.by.page.id.slug.together
+api_errors.comment.wait.validation: __api_errors.comment.wait.validation
+api_errors.comment.moderate: __api_errors.comment.moderate
