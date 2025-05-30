@@ -30,6 +30,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppAdminHandlerService
@@ -59,6 +60,7 @@ class AppAdminHandlerService
             'rawResultQueryManager' => RawResultQueryManager::class,
             'pageService' => PageService::class,
             'commentService' => CommentService::class,
+            'accessDecisionManager' => AccessDecisionManagerInterface::class,
         ])]
         protected ContainerInterface $handlers){}
 
@@ -301,5 +303,16 @@ class AppAdminHandlerService
     protected function getCommentService() : CommentService
     {
         return $this->handlers->get('commentService');
+    }
+
+    /**
+     * Retourne un AccessDecisionManagerInterface
+     * @return AccessDecisionManagerInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getAccessDecisionManager() :AccessDecisionManagerInterface
+    {
+        return $this->handlers->get('accessDecisionManager');
     }
 }
