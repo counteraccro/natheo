@@ -19,9 +19,11 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Attribute\AsTwigFilter;
+use Twig\Attribute\AsTwigFunction;
 use Twig\Extension\RuntimeExtensionInterface;
 
-class DevExtensionRuntime extends AppAdminExtensionRuntime implements RuntimeExtensionInterface
+class DevExtensionRuntime extends AppAdminExtensionRuntime
 {
     /**
      * @var ParameterBagInterface
@@ -56,7 +58,10 @@ class DevExtensionRuntime extends AppAdminExtensionRuntime implements RuntimeExt
     /**
      * Retourne la version en fonction de l'environnement
      * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
+    #[AsTwigFunction('getVersion', isSafe: ['html'])]
     public function getVersion(): string
     {
         $version = $this->parameterBag->get('app.version');
@@ -119,6 +124,7 @@ class DevExtensionRuntime extends AppAdminExtensionRuntime implements RuntimeExt
      * Retourne les informations PHP
      * @return void
      */
+    #[AsTwigFunction('getPhpInfo', isSafe: ['html'])]
     public function getPhpInfo(): void
     {
         phpinfo();
