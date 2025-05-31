@@ -20,9 +20,10 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Attribute\AsTwigFunction;
 use Twig\Extension\RuntimeExtensionInterface;
 
-class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements RuntimeExtensionInterface
+class SidebarExtensionRuntime extends AppAdminExtensionRuntime
 {
 
     /**
@@ -63,7 +64,10 @@ class SidebarExtensionRuntime extends AppAdminExtensionRuntime implements Runtim
      * Point d'entrée pour générer le menu sidebar
      * @param string $currentRoute
      * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
+    #[AsTwigFunction('getSidebar', isSafe: ['html'])]
     public function getSidebar(string $currentRoute): string
     {
         $this->currentRoute = $currentRoute;
