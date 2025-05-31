@@ -15,9 +15,9 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Extension\RuntimeExtensionInterface;
+use Twig\Attribute\AsTwigFunction;
 
-class DateExtensionRuntime extends AppExtensionRuntime implements RuntimeExtensionInterface
+class DateExtensionRuntime extends AppExtensionRuntime
 {
 
     private DateService $dateService;
@@ -43,6 +43,7 @@ class DateExtensionRuntime extends AppExtensionRuntime implements RuntimeExtensi
      * @param DateTimeInterface|null $dateDiff
      * @return string
      */
+    #[AsTwigFunction('diff_now', isSafe: ['html'])]
     public function getDiffNow(?DateTimeInterface $dateRef = null, ?DateTimeInterface $dateDiff = null): string
     {
         return $this->dateService->getStringDiffDate($dateRef, $dateDiff);

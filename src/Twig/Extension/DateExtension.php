@@ -22,7 +22,7 @@ class DateExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('diff_now', [DateExtensionRuntime::class, 'getDiffNow'], ['is_safe' => ['html']]),
+            //new TwigFunction('diff_now', [DateExtensionRuntime::class, 'getDiffNow'], ['is_safe' => ['html']]),
         ];
     }
 }
