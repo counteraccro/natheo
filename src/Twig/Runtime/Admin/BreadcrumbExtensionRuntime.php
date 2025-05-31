@@ -10,9 +10,10 @@ namespace App\Twig\Runtime\Admin;
 
 use App\Utils\Breadcrumb;
 use Doctrine\ORM\Query\AST\BetweenExpression;
+use Twig\Attribute\AsTwigFunction;
 use Twig\Extension\RuntimeExtensionInterface;
 
-class BreadcrumbExtensionRuntime extends AppAdminExtensionRuntime implements RuntimeExtensionInterface
+class BreadcrumbExtensionRuntime extends AppAdminExtensionRuntime
 {
 
     /**
@@ -23,6 +24,7 @@ class BreadcrumbExtensionRuntime extends AppAdminExtensionRuntime implements Run
      * Le premier élément est généré automatiquement (dashboard)
      * @return string
      */
+    #[AsTwigFunction('breadcrumb', isSafe: ['html'])]
     public function getBreadcrumb(array $elements): string
     {
         $domain = $elements[Breadcrumb::DOMAIN];

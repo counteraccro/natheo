@@ -22,9 +22,9 @@ class BreadcrumbExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('breadcrumb', [BreadcrumbExtensionRuntime::class, 'getBreadcrumb'],
+            /*new TwigFunction('breadcrumb', [BreadcrumbExtensionRuntime::class, 'getBreadcrumb'],
                 ['is_safe' =>['html']]
-            ),
+            ),*/
         ];
     }
 }
