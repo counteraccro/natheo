@@ -20,9 +20,10 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Attribute\AsTwigFunction;
 use Twig\Extension\RuntimeExtensionInterface;
 
-class OptionExtensionRuntime extends AppAdminExtensionRuntime implements RuntimeExtensionInterface
+class OptionExtensionRuntime extends AppAdminExtensionRuntime
 {
 
     /**
@@ -79,6 +80,7 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
+    #[AsTwigFunction('option_system_form', isSafe: ['html'])]
     public function getOptionSystem(): string
     {
         $optionsSystemConfig = $this->optionSystemService->getOptionsSystemConfig();
@@ -99,6 +101,7 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
      * @return string
      * @throws Exception
      */
+    #[AsTwigFunction('option_user_form', isSafe: ['html'])]
     public function getOptionUser(): string
     {
         $optionUserConfig = $this->optionUserService->getOptionsUserConfig();
@@ -393,6 +396,7 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
 
     /**
      * Retourne un spinner
+     * @param string $key
      * @return string
      */
     private function getSpinner(string $key): string
@@ -432,7 +436,10 @@ class OptionExtensionRuntime extends AppAdminExtensionRuntime implements Runtime
      * Retourne la valeur de l'option en fonction de sa clé
      * @param string $key
      * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
+    #[AsTwigFunction('get_option_system_value_by_key')]
     public function getOptionValueByKey(string $key): string
     {
         return $this->optionSystemService->getValueByKey($key);
