@@ -17,9 +17,10 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Attribute\AsTwigFunction;
 use Twig\Extension\RuntimeExtensionInterface;
 
-class OptionUserExtensionRuntime extends AppAdminExtensionRuntime implements RuntimeExtensionInterface
+class OptionUserExtensionRuntime extends AppAdminExtensionRuntime
 {
     /**
      * @var OptionUserService
@@ -48,7 +49,10 @@ class OptionUserExtensionRuntime extends AppAdminExtensionRuntime implements Run
      * Retourne la valeur de l'option en fonction de sa clé
      * @param string $key
      * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
+    #[AsTwigFunction('get_option_user_value_by_key')]
     public function getOptionValueByKey(string $key): string
     {
         return $this->optionUserService->getValueByKey($key);
