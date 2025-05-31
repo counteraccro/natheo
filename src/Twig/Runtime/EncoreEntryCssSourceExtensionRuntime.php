@@ -11,12 +11,10 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\WebpackEncoreBundle\Asset\EntrypointLookupInterface;
-use Twig\Extension\RuntimeExtensionInterface;
+use Twig\Attribute\AsTwigFunction;
 
-class EncoreEntryCssSourceExtensionRuntime implements RuntimeExtensionInterface
+class EncoreEntryCssSourceExtensionRuntime
 {
     /**
      * @var ContainerBagInterface
@@ -56,6 +54,7 @@ class EncoreEntryCssSourceExtensionRuntime implements RuntimeExtensionInterface
      * @param $entryName
      * @return string
      */
+    #[AsTwigFunction('encore_entry_css_source')]
     public function getEncoreEntryCssSource($entryName): string
     {
         $files = $this->entrypointLookup->getCssFiles($entryName);
