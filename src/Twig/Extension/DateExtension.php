@@ -1,28 +1,51 @@
 <?php
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Manipulation des dates
+ */
 
 namespace App\Twig\Extension;
 
-use App\Twig\Runtime\DateExtensionRuntime;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
-use Twig\TwigFunction;
+use App\Service\Global\DateService;
+use DateTimeInterface;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Attribute\AsTwigFunction;
 
-class DateExtension extends AbstractExtension
+class DateExtension extends AppExtension
 {
-    public function getFilters(): array
+
+    private DateService $dateService;
+
+    /**
+     * @param ContainerInterface $handlers
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function __construct(#[AutowireLocator([
+        'translator' => TranslatorInterface::class,
+        'router' => RouterInterface::class,
+        'dateService' => DateService::class
+    ])] private readonly ContainerInterface $handlers)
     {
-        return [
-            // If your filter generates SAFE HTML, you should add a third
-            // parameter: ['is_safe' => ['html']]
-            // Reference: https://twig.symfony.com/doc/3.x/advanced.html#automatic-escaping
-            new TwigFilter('filter_name', [DateExtensionRuntime::class, 'doSomething']),
-        ];
+        $this->dateService = $this->handlers->get('dateService');
+        parent::__construct($this->handlers);
     }
 
-    public function getFunctions(): array
+    /**
+     * Affiche le temps entre 2 date sous la forme de
+     * @param DateTimeInterface|null $dateRef
+     * @param DateTimeInterface|null $dateDiff
+     * @return string
+     */
+    #[AsTwigFunction('diff_now', isSafe: ['html'])]
+    public function getDiffNow(?DateTimeInterface $dateRef = null, ?DateTimeInterface $dateDiff = null): string
     {
-        return [
-            //new TwigFunction('diff_now', [DateExtensionRuntime::class, 'getDiffNow'], ['is_safe' => ['html']]),
-        ];
+        return $this->dateService->getStringDiffDate($dateRef, $dateDiff);
     }
 }

@@ -1,30 +1,59 @@
 <?php
 
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Permet de générer le formulaire de saisie des options users
+ * Permet de récupérer la valeur d'une option
+ */
+
 namespace App\Twig\Extension\Admin\System;
 
-use App\Twig\Runtime\Admin\System\OptionUserExtensionRuntime;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
-use Twig\TwigFunction;
+use App\Service\Admin\System\OptionUserService;
+use App\Twig\Extension\Admin\AppAdminExtension;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Attribute\AsTwigFunction;
 
-class OptionUserExtension extends AbstractExtension
+class OptionUserExtension extends AppAdminExtension
 {
-    public function getFilters(): array
+    /**
+     * @var OptionUserService
+     */
+    private OptionUserService $optionUserService;
+
+    /**
+     * @param ContainerInterface $handlers
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function __construct(
+        #[AutowireLocator([
+            'translator' => TranslatorInterface::class,
+            'router' => RouterInterface::class,
+            'optionUserService' => OptionUserService::class
+        ])]
+        private readonly ContainerInterface $handlers
+    )
     {
-        return [
-            // If your filter generates SAFE HTML, you should add a third
-            // parameter: ['is_safe' => ['html']]
-            // Reference: https://twig.symfony.com/doc/3.x/advanced.html#automatic-escaping
-            //new TwigFilter('filter_name', [OptionUserExtensionRuntime::class, 'doSomething']),
-        ];
+        $this->optionUserService = $this->handlers->get('optionUserService');
+        parent::__construct($this->handlers);
     }
 
-    public function getFunctions(): array
+    /**
+     * Retourne la valeur de l'option en fonction de sa clé
+     * @param string $key
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[AsTwigFunction('get_option_user_value_by_key')]
+    public function getOptionValueByKey(string $key): string
     {
-        return [
-           /* new TwigFunction('get_option_user_value_by_key',
-                [OptionUserExtensionRuntime::class, 'getOptionValueByKey']
-            ),*/
-        ];
+        return $this->optionUserService->getValueByKey($key);
     }
 }
