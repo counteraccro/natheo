@@ -5,7 +5,7 @@
  * @version 1.0
  * Class globale pour les extensions Twig
  */
-namespace App\Twig\Runtime;
+namespace App\Twig\Extension;
 
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class AppExtensionRuntime
+class AppExtension
 {
     /**
      * @var RouterInterface

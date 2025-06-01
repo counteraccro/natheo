@@ -1,8 +1,8 @@
 user:
   User:
-    email: laure.levy@andre.fr
-    password: $2y$04$jdsdBSmvP3ZYlEcf8YZpIOLtElD.UDM6dBiXGM90jwYcDMODR2QA.
-    login: tcamus
+    email: luc22@weiss.net
+    password: $2y$04$/YtxH6IUzxXLSzwjp/65g.dnKWzp3wdgNpwzVIGwGNwFdS.tJ2fE2
+    login: arthur.hebert
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN
