@@ -91,13 +91,13 @@ class ApiAuthenticationControllerTest extends AppApiTestCase
             server:  $this->getCustomHeaders(),
             content:  json_encode($this->getUserAuthParams([], role: 'bad_parameter'))
         );
-        $response = $this->client->getResponse();
+
+        $response = $this->client->getResponse();;
         $this->assertEquals(403, $response->getStatusCode());
         $this->assertJson($response->getContent());
-
         $content = json_decode($response->getContent(), true);
-        $this->assertArrayHasKey('detail', $content);
-        $this->assertStringContainsString($translator->trans('api_errors.params.name.not.found', ['param' => 'username'], domain: 'api_errors'), $content['detail']);
+        $this->checkStructureApiRetourError($content);
+        $this->assertEquals($translator->trans('api_errors.params.name.not.found', ['param' => 'username'], domain: 'api_errors'), $content['errors'][0]);
     }
 
     /**
@@ -112,13 +112,13 @@ class ApiAuthenticationControllerTest extends AppApiTestCase
             server:  $this->getCustomHeaders(),
             content:  json_encode($this->getUserAuthParams([], role: 'bad_type'))
         );
-        $response = $this->client->getResponse();
+
+        $response = $this->client->getResponse();;
         $this->assertEquals(401, $response->getStatusCode());
         $this->assertJson($response->getContent());
-
         $content = json_decode($response->getContent(), true);
-        $this->assertArrayHasKey('detail', $content);
-        $this->assertStringContainsString($translator->trans('api_errors.user.token.not.found', domain: 'api_errors'), $content['detail']);
+        $this->checkStructureApiRetourError($content);
+        $this->assertEquals($translator->trans('api_errors.user.token.not.found', domain: 'api_errors'), $content['errors'][0]);
     }
 
     /**
