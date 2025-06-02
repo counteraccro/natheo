@@ -8,8 +8,11 @@
 namespace App\Controller\Api\v1\Content;
 
 use App\Controller\Api\v1\AppApiController;
+use App\Dto\Api\Content\Comment\ApiAddCommentDto;
 use App\Dto\Api\Content\Comment\ApiCommentByPageDto;
 use App\Dto\Api\Content\Page\ApiFindPageDto;
+use App\Http\Api\ApiResponse;
+use App\Resolver\Api\Content\Comment\ApiAddCommentResolver;
 use App\Resolver\Api\Content\Comment\ApiCommentByPageResolver;
 use App\Utils\Api\ApiConst;
 use Psr\Container\ContainerExceptionInterface;
@@ -32,7 +35,8 @@ class ApiCommentController extends AppApiController
     #[Route('/page', name: 'by_page', methods: ['GET'])]
     public function getCommentsByPage(#[MapQueryString(
         resolver: ApiCommentByPageResolver::class
-    )] ApiCommentByPageDto $apiCommentByPageDto): JsonResponse {
+    )] ApiCommentByPageDto $apiCommentByPageDto): JsonResponse
+    {
 
         $user = null;
         if ($apiCommentByPageDto->getUserToken() !== "") {
@@ -43,5 +47,20 @@ class ApiCommentController extends AppApiController
         $result = $apiCommentService->getCommentByPageIdOrSlug($apiCommentByPageDto, $user);
 
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $result);
+    }
+
+    /**
+     * Ajout un nouveau commentaire
+     * @param ApiAddCommentDto $apiAddCommentDto
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/', name: 'add_comment', methods: ['POST'])]
+    public function add(#[MapQueryString(
+        resolver: ApiAddCommentResolver::class
+    )] ApiAddCommentDto $apiAddCommentDto): JsonResponse
+    {
+        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, [$apiAddCommentDto]);
     }
 }
