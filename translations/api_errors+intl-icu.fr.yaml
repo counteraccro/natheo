@@ -20,3 +20,5 @@ api_errors.comment.by.page.not.id.slug.together: 'Le paramètre id ou page_slug 
 api_errors.comment.by.page.id.slug.together: 'Le paramètre id et page_slug ne peuvent pas être mis ensemble'
 api_errors.comment.wait.validation: 'En attente de validation'
 api_errors.comment.moderate: 'Commentaire modéré'
+api_errors.comment.add.not.id.slug.together: 'Le paramètre id_page ou page_slug doit être présent'
+api_errors.comment.add.id.slug.together: 'Le paramètre id_page et page_slug ne peuvent pas être mis ensemble'

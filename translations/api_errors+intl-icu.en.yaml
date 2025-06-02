@@ -20,3 +20,5 @@ api_errors.comment.by.page.not.id.slug.together: __api_errors.comment.by.page.no
 api_errors.comment.by.page.id.slug.together: __api_errors.comment.by.page.id.slug.together
 api_errors.comment.wait.validation: __api_errors.comment.wait.validation
 api_errors.comment.moderate: __api_errors.comment.moderate
+api_errors.comment.add.not.id.slug.together: __api_errors.comment.add.not.id.slug.together
+api_errors.comment.add.id.slug.together: __api_errors.comment.add.id.slug.together
