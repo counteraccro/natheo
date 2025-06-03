@@ -62,7 +62,7 @@ class ApiCommentControllerTest extends AppApiTestCase
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetourError($content);
-        $this->assertEquals('Choose a orderBy between id or createdAt ', $content['errors'][0]);
+        $this->assertEquals('__Choose a orderBy between id or createdAt ', $content['errors'][0]);
 
         $this->client->request('GET', $this->router->generate('api_comment_by_page', ['api_version' => self::API_VERSION, 'page_slug' => $page->getPageTranslationByLocale('fr')->getUrl(), 'limit' => 5, 'order_by' => 'id', 'order' => 'desc']),
             server: array_merge($this->getCustomHeaders(self::HEADER_READ), ['HTTP_User-token' => $this->authUser()])
@@ -90,16 +90,168 @@ class ApiCommentControllerTest extends AppApiTestCase
     }
 
     /**
+     * Test méthode add()
+     * @return void
+     */
+    public function testAddComment()
+    {
+        $translator = $this->container->get(TranslatorInterface::class);
+
+        // page id et slug together
+        $this->client->request('POST', $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
+            server: $this->getCustomHeaders(),
+            content: json_encode([
+                'page_id' => '1',
+                'page_slug' => 'toto',
+                'author' => '',
+                'email' => 'azerty@gmail.com',
+                'comment' => 'test comment',
+                'ip' => '127.0.0.1',
+                'user_agent' => self::getFaker()->userAgent()
+            ])
+        );
+
+        $response = $this->client->getResponse();;
+        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->checkStructureApiRetourError($content);
+        $this->assertEquals($translator->trans('api_errors.comment.add.id.slug.together', domain: 'api_errors'), $content['errors'][0]);
+
+        // page id et slug n'existe pas
+        $this->client->request('POST', $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
+            server: $this->getCustomHeaders(),
+            content: json_encode([
+                'author' => '',
+                'email' => 'azerty@gmail.com',
+                'comment' => 'test comment',
+                'ip' => '127.0.0.1',
+                'user_agent' => self::getFaker()->userAgent()
+            ])
+        );
+
+        $response = $this->client->getResponse();;
+        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->checkStructureApiRetourError($content);
+        $this->assertEquals($translator->trans('api_errors.comment.add.not.id.slug.together', domain: 'api_errors'), $content['errors'][0]);
+
+        // Auteur vide
+        $this->client->request('POST', $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
+            server: $this->getCustomHeaders(),
+            content: json_encode([
+                'page_id' => '1',
+                'author' => '',
+                'email' => 'azerty@gmail.com',
+                'comment' => 'test comment',
+                'ip' => '127.0.0.1',
+                'user_agent' => self::getFaker()->userAgent()
+            ])
+        );
+
+        $response = $this->client->getResponse();;
+        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->checkStructureApiRetourError($content);
+        $this->assertEquals('__The author parameter cannot be empty ', $content['errors'][0]);
+
+        // Page id wrong
+        $this->client->request('POST', $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
+            server: $this->getCustomHeaders(),
+            content: json_encode([
+                'page_id' => '1',
+                'page_slug' => '',
+                'author' => 'azerty',
+                'email' => 'azerty@gmail.com',
+                'comment' => 'test comment',
+                'ip' => '127.0.0.1',
+                'user_agent' => self::getFaker()->userAgent()
+            ])
+        );
+        $response = $this->client->getResponse();;
+        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->checkStructureApiRetourError($content);
+        $this->assertEquals($translator->trans('api_errors.find.page.not.found', domain: 'api_errors'), $content['errors'][0]);
+
+        // Page slug wrong
+        $this->client->request('POST', $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
+            server: $this->getCustomHeaders(),
+            content: json_encode([
+                'page_id' => '',
+                'page_slug' => 'azerty-slug',
+                'author' => 'azerty',
+                'email' => 'azerty@gmail.com',
+                'comment' => 'test comment',
+                'ip' => '127.0.0.1',
+                'user_agent' => self::getFaker()->userAgent()
+            ])
+        );
+        $response = $this->client->getResponse();;
+        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->checkStructureApiRetourError($content);
+        $this->assertEquals($translator->trans('api_errors.find.page.not.found', domain: 'api_errors'), $content['errors'][0]);
+
+        // Comment close
+        $page = $this->createPage( customData: ['isOpenComment' => false, 'disabled' => false]);
+        $this->client->request('POST', $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
+            server: $this->getCustomHeaders(),
+            content: json_encode([
+                'page_id' => $page->getId(),
+                'page_slug' => '',
+                'author' => 'azerty',
+                'email' => 'azerty@gmail.com',
+                'comment' => 'test comment',
+                'ip' => '127.0.0.1',
+                'user_agent' => self::getFaker()->userAgent()
+            ])
+        );
+        $response = $this->client->getResponse();;
+        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->checkStructureApiRetourError($content);
+        $this->assertEquals($translator->trans('api_errors.comment.not.open', domain: 'api_errors'), $content['errors'][0]);
+
+        // page id
+        $page = $this->createPage( customData: ['isOpenComment' => true, 'disabled' => false]);
+        $this->client->request('POST', $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
+            server: $this->getCustomHeaders(),
+            content: json_encode([
+                'page_id' => $page->getId(),
+                'page_slug' => '',
+                'author' => 'azerty',
+                'email' => 'azerty@gmail.com',
+                'comment' => 'test comment',
+                'ip' => '127.0.0.1',
+                'user_agent' => self::getFaker()->userAgent()
+            ])
+        );
+        $response = $this->client->getResponse();;
+        //$this->assertEquals(200, $response->getStatusCode());
+        //$this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        //dd($content);
+        $this->checkStructureApiRetour($content);
+
+    }
+
+    /**
      * Authentifie un compte Admin et retourne le token
      * @return string
      */
-    private function authUser() :string
+    private function authUser(): string
     {
         // Admin
         $password = self::getFaker()->password();
         $this->client->request('POST', $this->router->generate('api_authentication_auth_user', ['api_version' => self::API_VERSION]),
-            server:  $this->getCustomHeaders(),
-            content:  json_encode($this->getUserAuthParams([], $this->createUserAdmin(['password' => $password, 'disabled' => false, 'anonymous' => false]), $password))
+            server: $this->getCustomHeaders(),
+            content: json_encode($this->getUserAuthParams([], $this->createUserAdmin(['password' => $password, 'disabled' => false, 'anonymous' => false]), $password))
         );
         $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
