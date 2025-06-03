@@ -61,6 +61,9 @@ class ApiCommentController extends AppApiController
         resolver: ApiAddCommentResolver::class
     )] ApiAddCommentDto $apiAddCommentDto): JsonResponse
     {
+        $apiCommentService = $this->getApiCommentService();
+        $apiCommentService->addNewComment($apiAddCommentDto);
+
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, [$apiAddCommentDto]);
     }
 }
