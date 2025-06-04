@@ -42,26 +42,31 @@ class ApiCommentService extends AppApiService
         $repository = $this->getRepository(Comment::class);
         $results = $repository->getCommentsByPageForApi($dto);
 
-        $return = [];
+        $return = [
+            'comments' => [],
+            'current_page' => $dto->getPage(),
+            'rows' => $results->count(),
+            'limit' => $dto->getLimit(),
+        ];
         foreach ($results as $key => $comment) {
             /** @var Comment $comment */
 
             $com = $comment->getComment();
-            if ($comment->getStatus() === CommentConst::WAIT_VALIDATION && !$this->isGranted($user, ['ROLE_CONTRIBUTEUR'])) {
+            if ($comment->getStatus() === CommentConst::WAIT_VALIDATION && !$this->isGranted(['ROLE_CONTRIBUTEUR'], $user)) {
                 $com = $translator->trans('api_errors.comment.wait.validation', domain: 'api_errors');
-            } elseif ($comment->getStatus() === CommentConst::MODERATE && !$this->isGranted($user, ['ROLE_CONTRIBUTEUR'])) {
+            } elseif ($comment->getStatus() === CommentConst::MODERATE && !$this->isGranted(['ROLE_CONTRIBUTEUR'], $user)) {
                 $com = $translator->trans('api_errors.comment.moderate', domain: 'api_errors');
             }
 
-            $return[$key] = [
+            $return['comments'][$key] = [
                 'id' => $comment->getId(),
                 'status' => $comment->getStatus(),
                 'createdAt' => $comment->getCreatedAt(),
                 'updateAt' => $comment->getUpdateAt(),
                 'comment' => $com,
             ];
-            if ($comment->getStatus() === CommentConst::MODERATE && $this->isGranted($user, ['ROLE_CONTRIBUTEUR'])) {
-               $return[$key]['moderate'] = $comment->getModerationComment();
+            if ($comment->getStatus() === CommentConst::MODERATE && $this->isGranted(['ROLE_CONTRIBUTEUR'], $user)) {
+               $return['comments'][$key]['moderate'] = $comment->getModerationComment();
             }
         }
         return $return;
@@ -70,11 +75,11 @@ class ApiCommentService extends AppApiService
     /**
      * Ajoute un nouveau commentaire
      * @param ApiAddCommentDto $dto
-     * @return bool
+     * @return Comment
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function addNewComment(ApiAddCommentDto $dto) :bool {
+    public function addNewComment(ApiAddCommentDto $dto) :Comment {
 
         $translator = $this->getTranslator();
 
@@ -97,6 +102,12 @@ class ApiCommentService extends AppApiService
             throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans($translator->trans('api_errors.comment.not.open', domain: 'api_errors')));
         }
 
+        $isMustValidate = boolval($this->getOptionSystemService()->getValueByKey(OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION));
+        $status = CommentConst::VALIDATE;
+        if($isMustValidate) {
+            $status = CommentConst::WAIT_VALIDATION;
+        }
+
         $comment = new Comment();
         $comment->setPage($page);
         $comment->setComment(strip_tags($dto->getComment()));
@@ -104,7 +115,11 @@ class ApiCommentService extends AppApiService
         $comment->setEmail($dto->getEmail());
         $comment->setIp($dto->getIp());
         $comment->setUserAgent($dto->getUserAgent());
+        $comment->setStatus($status);
+        $comment->setDisabled(false);
 
-        return true;
+        $this->save($comment);
+
+        return $comment;
     }
 }

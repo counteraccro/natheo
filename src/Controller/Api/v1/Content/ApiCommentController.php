@@ -18,7 +18,9 @@ use App\Utils\Api\ApiConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -61,9 +63,14 @@ class ApiCommentController extends AppApiController
         resolver: ApiAddCommentResolver::class
     )] ApiAddCommentDto $apiAddCommentDto): JsonResponse
     {
+        $translator = $this->getTranslator();
         $apiCommentService = $this->getApiCommentService();
-        $apiCommentService->addNewComment($apiAddCommentDto);
+        $comment = $apiCommentService->addNewComment($apiAddCommentDto);
 
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, [$apiAddCommentDto]);
+        if($comment->getId() === null) {
+            throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR, $translator->trans($translator->trans('api_errors.comment.not.save', domain: 'api_errors')));
+        }
+
+        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['id' => $comment->getId()], status: Response::HTTP_CREATED);
     }
 }
