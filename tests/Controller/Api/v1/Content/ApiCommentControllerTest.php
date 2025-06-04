@@ -7,6 +7,7 @@
 
 namespace Controller\Api\v1\Content;
 
+use App\Entity\Admin\Content\Comment\Comment;
 use App\Tests\Controller\Api\AppApiTestCase;
 use App\Utils\Content\Comment\CommentConst;
 use Symfony\Component\Validator\Constraints\Date;
@@ -73,7 +74,7 @@ class ApiCommentControllerTest extends AppApiTestCase
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetour($content);
 
-        $verif = $content['data'][0];
+        $verif = $content['data']['comments'][0];
         $this->assertIsArray($verif);
         $this->assertArrayHasKey('id', $verif);
         $this->assertEquals($comment->getId(), $verif['id']);
@@ -233,12 +234,40 @@ class ApiCommentControllerTest extends AppApiTestCase
             ])
         );
         $response = $this->client->getResponse();;
-        //$this->assertEquals(200, $response->getStatusCode());
-        //$this->assertJson($response->getContent());
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
-        //dd($content);
         $this->checkStructureApiRetour($content);
 
+        $commentRepo = $this->em->getRepository(Comment::class);
+        $verif = $commentRepo->findOneBy(['id' => $content['data']['id']]);
+        $this->assertInstanceOf(Comment::class, $verif);
+        $this->assertEquals('azerty', $verif->getAuthor());
+
+        // page slug
+        $page = $this->createPageAllDataDefault();
+        $this->client->request('POST', $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
+            server: $this->getCustomHeaders(),
+            content: json_encode([
+                'page_id' => '',
+                'page_slug' => $page->getPageTranslationByLocale('fr')->getUrl(),
+                'author' => 'azerty2',
+                'email' => 'azerty@gmail.com',
+                'comment' => 'test comment',
+                'ip' => '127.0.0.1',
+                'user_agent' => self::getFaker()->userAgent()
+            ])
+        );
+        $response = $this->client->getResponse();;
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->checkStructureApiRetour($content);
+
+        $commentRepo = $this->em->getRepository(Comment::class);
+        $verif = $commentRepo->findOneBy(['id' => $content['data']['id']]);
+        $this->assertInstanceOf(Comment::class, $verif);
+        $this->assertEquals('azerty2', $verif->getAuthor());
     }
 
     /**

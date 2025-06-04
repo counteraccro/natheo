@@ -235,7 +235,8 @@ trait PageFixturesTrait
      */
     public function createPageAllDataDefault() :Page
     {
-        $page = $this->createPage(customData: ['render' => PageConst::RENDER_2_BLOCK_BOTTOM, 'disabled' => false, 'category' => PageConst::PAGE_CATEGORY_PAGE]);
+        $page = $this->createPage(customData: ['render' => PageConst::RENDER_2_BLOCK_BOTTOM,
+            'disabled' => false, 'category' => PageConst::PAGE_CATEGORY_PAGE, 'isOpenComment' => true]);
 
         foreach($this->locales as $locale) {
             $this->createPageTranslation($page, ['locale' => $locale]);

@@ -7,6 +7,7 @@
 
 namespace Service\Api\Content;
 
+use App\Dto\Api\Content\Comment\ApiAddCommentDto;
 use App\Dto\Api\Content\Comment\ApiCommentByPageDto;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Service\Api\Content\ApiCommentService;
@@ -57,14 +58,22 @@ class ApiCommentServiceTest extends AppWebTestCase
         $result = $this->apiCommentService->getCommentByPageIdOrSlug($dto, $user);
 
         $this->assertIsArray($result);
-        $this->assertArrayHasKey('id', $result[0]);
-        $this->assertArrayHasKey('status', $result[0]);
-        $this->assertArrayHasKey('createdAt', $result[0]);
-        $this->assertArrayHasKey('updateAt', $result[0]);
-        $this->assertArrayHasKey('comment', $result[0]);
+        $this->assertArrayHasKey('comments', $result);
+        $this->assertArrayHasKey('id', $result['comments'][0]);
+        $this->assertArrayHasKey('status', $result['comments'][0]);
+        $this->assertArrayHasKey('createdAt', $result['comments'][0]);
+        $this->assertArrayHasKey('updateAt', $result['comments'][0]);
+        $this->assertArrayHasKey('comment', $result['comments'][0]);
+        $this->assertArrayHasKey('current_page', $result);
+        $this->assertArrayHasKey('rows', $result);
+        $this->assertArrayHasKey('limit', $result);
+        $this->assertEquals(1, $result['current_page']);
+        $this->assertEquals(12, $result['rows']);
+        $this->assertEquals(10, $result['limit']);
+
 
         $status1 = $status2 = $status3 = 0;
-        foreach ($result as $comment) {
+        foreach ($result['comments'] as $comment) {
             switch ($comment['status']) {
                 case CommentConst::WAIT_VALIDATION:
                     $status1++;
@@ -92,7 +101,7 @@ class ApiCommentServiceTest extends AppWebTestCase
         $dto = new ApiCommentByPageDto(0, $page->getPageTranslationByLocale('fr')->getUrl(), 'fr', 1, 10, 'id', 'asc', '');
         $result = $this->apiCommentService->getCommentByPageIdOrSlug($dto, $user);
         $status1 = $status2 = $status3 = 0;
-        foreach ($result as $comment) {
+        foreach ($result['comments'] as $comment) {
             switch ($comment['status']) {
                 case CommentConst::WAIT_VALIDATION:
                     $status1++;
@@ -114,5 +123,34 @@ class ApiCommentServiceTest extends AppWebTestCase
         $this->assertEquals(2, $status1);
         $this->assertEquals(4, $status2);
         $this->assertEquals(4, $status3);
+    }
+
+    /**
+     * Test méthode addNewComment()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testAddNewComment() {
+        $page = $this->createPageAllDataDefault();
+
+        $slug = $page->getPageTranslationByLocale('fr')->getUrl();
+        $author = self::getFaker()->name();
+        $email = self::getFaker()->email();
+        $comment = self::getFaker()->text();
+        $ip = self::getFaker()->ipv4();
+        $userAgent = self::getFaker()->userAgent();
+        $dto = new ApiAddCommentDto(0, $slug, 'fr',$author, $email, $comment, $ip, $userAgent );
+
+        /** @var Comment $result */
+        $result = $this->apiCommentService->addNewComment($dto);
+        $this->assertInstanceOf(Comment::class, $result);
+        $this->assertIsInt($result->getId());
+        $this->assertEquals($author, $result->getAuthor());
+        $this->assertEquals($email, $result->getEmail());
+        $this->assertEquals($comment, $result->getComment());
+        $this->assertEquals($ip, $result->getIp());
+        $this->assertEquals($userAgent, $result->getUserAgent());
+        $this->assertEquals($page->getId(), $result->getPage()->getId());
     }
 }
