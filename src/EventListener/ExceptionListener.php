@@ -76,7 +76,8 @@ class ExceptionListener
                 Response::HTTP_UNAUTHORIZED => $translator->trans('api_errors.access.unauthorized', domain: 'api_errors'),
                 Response::HTTP_FORBIDDEN => $translator->trans('api_errors.access.denied', domain: 'api_errors'),
                 Response::HTTP_NOT_FOUND => $translator->trans('api_errors.not.found', domain: 'api_errors'),
-                default => 'Code HTTP non pris en compte '. __FILE__ . __LINE__,
+                Response::HTTP_INTERNAL_SERVER_ERROR => $translator->trans('api_errors.internal.server.error', domain: 'api_errors'),
+                default => 'Code HTTP non pris en compte '. __FILE__ . ':' .  __LINE__,
             };
             $errors = explode(',', $exception->getMessage());
         }
