@@ -130,15 +130,19 @@ class AppApiService extends AppApiHandlerService
 
     /**
      * Permet de vérifier les droits
-     * @param User $user
      * @param array $attributes
+     * @param User|null $user
      * @param mixed|null $object
      * @return bool
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function isGranted(User $user, array $attributes, mixed $object = null): bool
+    protected function isGranted(array $attributes, ?User $user = null, mixed $object = null): bool
     {
+        if($user === null) {
+            return false;
+        }
+
         $accessDecisionManager = $this->getAccessDecisionManager();
 
         $token = new UsernamePasswordToken($user, 'none', $user->getRoles());
