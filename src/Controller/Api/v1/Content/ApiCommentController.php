@@ -10,13 +10,15 @@ namespace App\Controller\Api\v1\Content;
 use App\Controller\Api\v1\AppApiController;
 use App\Dto\Api\Content\Comment\ApiAddCommentDto;
 use App\Dto\Api\Content\Comment\ApiCommentByPageDto;
-use App\Dto\Api\Content\Page\ApiFindPageDto;
-use App\Http\Api\ApiResponse;
+use App\Dto\Api\Content\Comment\ApiModerateCommentDto;
+use App\Entity\Admin\Content\Comment\Comment;
 use App\Resolver\Api\Content\Comment\ApiAddCommentResolver;
 use App\Resolver\Api\Content\Comment\ApiCommentByPageResolver;
+use App\Resolver\Api\Content\Comment\ApiModerateCommentResolver;
 use App\Utils\Api\ApiConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
@@ -67,10 +69,27 @@ class ApiCommentController extends AppApiController
         $apiCommentService = $this->getApiCommentService();
         $comment = $apiCommentService->addNewComment($apiAddCommentDto);
 
-        if($comment->getId() === null) {
+        if ($comment->getId() === null) {
             throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR, $translator->trans($translator->trans('api_errors.comment.not.save', domain: 'api_errors')));
         }
 
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['id' => $comment->getId()], status: Response::HTTP_CREATED);
+    }
+
+    /**
+     * Edition d'un commentaire / modération
+     * @param ApiModerateCommentDto $apiModerateCommentDto
+     * @param Comment $comment
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/moderate/{id}', name: 'moderate_comment', methods: ['PUT'])]
+    public function moderateComment(#[MapQueryString(
+        resolver: ApiModerateCommentResolver::class
+    )] ApiModerateCommentDto $apiModerateCommentDto, #[MapEntity(id: 'id')] Comment $comment): JsonResponse
+    {
+        $user = $this->getUserByUserToken($apiModerateCommentDto->getUserToken());
+        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, [$apiModerateCommentDto, $user->getEmail(), 'comment' => [$comment->getId()]], status: Response::HTTP_OK);
     }
 }
