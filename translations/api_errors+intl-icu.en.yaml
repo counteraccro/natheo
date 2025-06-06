@@ -25,3 +25,4 @@ api_errors.comment.add.id.slug.together: __api_errors.comment.add.id.slug.togeth
 api_errors.comment.not.open: __api_errors.comment.not.open
 api_errors.comment.not.save: __api_errors.comment.not.save
 api_errors.internal.server.error: __api_errors.internal.server.error
+api_errors.comment.status.no.valid: __api_errors.comment.status.no.valid

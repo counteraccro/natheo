@@ -25,3 +25,4 @@ api_errors.comment.add.id.slug.together: 'Le paramètre id_page et page_slug ne 
 api_errors.comment.not.open: 'Les commentaires ne sont pas ouverts'
 api_errors.comment.not.save: 'Une erreur est survenue lors de la création du commentaire'
 api_errors.internal.server.error: 'Erreur serveur interne'
+api_errors.comment.status.no.valid: 'Le status du commentaire est invalide'

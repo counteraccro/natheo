@@ -181,3 +181,6 @@ Error: Erreur
 'Choose a orderBy between id or createdAt': '__Choose a orderBy between id or createdAt'
 'The order parameter must be a string': '__The order parameter must be a string'
 'Choose a order between desc or asc': '__Choose a order between desc or asc'
+'The status parameter must be a string': '__The status parameter must be a string'
+'The status parameter cannot be empty': '__The status parameter cannot be empty'
+'The moderation_comment parameter must be a string': '__The moderation_comment parameter must be a string'
