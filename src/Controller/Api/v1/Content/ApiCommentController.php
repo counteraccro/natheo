@@ -87,7 +87,7 @@ class ApiCommentController extends AppApiController
     #[Route('/moderate/{id}', name: 'moderate_comment', methods: ['PUT'])]
     public function moderateComment(#[MapQueryString(
         resolver: ApiModerateCommentResolver::class
-    )] ApiModerateCommentDto $apiModerateCommentDto, #[MapEntity(id: 'id')] Comment $comment): JsonResponse
+    )] ApiModerateCommentDto $apiModerateCommentDto, #[MapEntity(id: 'id', message: 'Commentaire non disponible')] Comment $comment): JsonResponse
     {
         $user = $this->getUserByUserToken($apiModerateCommentDto->getUserToken());
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, [$apiModerateCommentDto, $user->getEmail(), 'comment' => [$comment->getId()]], status: Response::HTTP_OK);

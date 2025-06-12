@@ -58,6 +58,10 @@ class ApiModerateCommentResolver extends AppApiResolver implements ValueResolver
             $tabParameters[$parameter] = $value;
         }
 
+        if(!is_null($request->headers->get('User-token'))) {
+            $tabParameters[ApiParametersModerateCommentRef::PARAM_USER_TOKEN] = $request->headers->get('User-token');
+        }
+
         $this->checkParameters($tabParameters);
 
         $dto = new ApiModerateCommentDto(
