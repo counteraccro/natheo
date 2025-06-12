@@ -309,13 +309,28 @@ class ApiCommentControllerTest extends AppApiTestCase
         $this->checkStructureApiRetourError($content);
         $this->assertEquals($translator->trans('api_errors.user.token.not.found', domain: 'api_errors'), $content['errors'][0]);
 
+        /* Ba comment invalide */
+        $this->client->request('PUT', $this->router->generate('api_comment_moderate_comment', ['api_version' => self::API_VERSION, 'id' => 1]),
+            server: array_merge($this->getCustomHeaders(self::HEADER_READ), ['HTTP_User-token' => self::getFaker()->randomKey()]),
+            content: json_encode([
+                'status' => CommentConst::MODERATE,
+                'moderation_comment' => self::getFaker()->text(),
+            ])
+        );
+        $response = $this->client->getResponse();;
+        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->checkStructureApiRetourError($content);
+        $this->assertEquals('Commentaire non disponible', $content['errors'][0]);
+
+        // All is good
         $token = $this->authUser();
         $this->client->request('PUT', $this->router->generate('api_comment_moderate_comment', ['api_version' => self::API_VERSION, 'id' => $comment->getId()]),
             server: array_merge($this->getCustomHeaders(self::HEADER_READ), ['HTTP_User-token' => $token]),
             content: json_encode([
                 'status' => CommentConst::MODERATE,
                 'moderation_comment' => self::getFaker()->text(),
-                'user_token' => $token,
             ])
         );
         $response = $this->client->getResponse();;
@@ -323,6 +338,8 @@ class ApiCommentControllerTest extends AppApiTestCase
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetour($content);
+
+        dd($content);
     }
 
     /**
