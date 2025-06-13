@@ -153,4 +153,12 @@ class ApiCommentServiceTest extends AppWebTestCase
         $this->assertEquals($userAgent, $result->getUserAgent());
         $this->assertEquals($page->getId(), $result->getPage()->getId());
     }
+
+    /**
+     * Test méthode moderateComment
+     * @return void
+     */
+    public function testModerateCommentService() {
+        $user = $this->createUserContributeur();
+    }
 }
