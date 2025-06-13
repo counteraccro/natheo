@@ -7,10 +7,8 @@
 
 namespace App\Resolver\Api\Content\Comment;
 
-use App\Dto\Api\Content\Comment\ApiAddCommentDto;
 use App\Dto\Api\Content\Comment\ApiModerateCommentDto;
 use App\Resolver\Api\AppApiResolver;
-use App\Utils\Api\Parameters\Content\Comment\ApiParametersAddCommentRef;
 use App\Utils\Api\Parameters\Content\Comment\ApiParametersModerateCommentRef;
 use App\Utils\Content\Comment\CommentConst;
 use Psr\Container\ContainerExceptionInterface;
