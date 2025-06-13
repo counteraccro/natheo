@@ -9,6 +9,7 @@ namespace App\Service\Api\Content;
 
 use App\Dto\Api\Content\Comment\ApiAddCommentDto;
 use App\Dto\Api\Content\Comment\ApiCommentByPageDto;
+use App\Dto\Api\Content\Comment\ApiModerateCommentDto;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
@@ -121,5 +122,17 @@ class ApiCommentService extends AppApiService
         $this->save($comment);
 
         return $comment;
+    }
+
+    /**
+     * Permet de modérer un commentaire
+     * @param ApiModerateCommentDto $dto
+     * @param Comment $comment
+     * @param User|null $user
+     * @return void
+     */
+    public function moderateComment(ApiModerateCommentDto $dto, Comment $comment, ?User $user) :void
+    {
+
     }
 }
