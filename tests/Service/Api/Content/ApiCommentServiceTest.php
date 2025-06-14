@@ -9,6 +9,7 @@ namespace Service\Api\Content;
 
 use App\Dto\Api\Content\Comment\ApiAddCommentDto;
 use App\Dto\Api\Content\Comment\ApiCommentByPageDto;
+use App\Dto\Api\Content\Comment\ApiModerateCommentDto;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Service\Api\Content\ApiCommentService;
 use App\Tests\AppWebTestCase;
@@ -157,8 +158,28 @@ class ApiCommentServiceTest extends AppWebTestCase
     /**
      * Test méthode moderateComment
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function testModerateCommentService() {
         $user = $this->createUserContributeur();
+        $comment = $this->createComment();
+
+        $moderate = self::getFaker()->text();
+        $status = strval(CommentConst::MODERATE);
+
+        $dto = new ApiModerateCommentDto(
+            $status,
+            $moderate,
+            self::getFaker()->iosMobileToken()
+        );
+
+        $this->apiCommentService->moderateComment($dto, $comment, $user);
+
+        /** @var Comment $commentVerif */
+        $commentVerif = $this->apiCommentService->findOneById(Comment::class, $comment->getId());
+        $this->assertEquals(CommentConst::MODERATE, $commentVerif->getStatus());
+        $this->assertEquals($moderate, $commentVerif->getModerationComment());
+        $this->assertEquals($user->getId(), $commentVerif->getUserModeration()->getId());
     }
 }
