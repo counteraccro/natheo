@@ -128,11 +128,16 @@ class ApiCommentService extends AppApiService
      * Permet de modérer un commentaire
      * @param ApiModerateCommentDto $dto
      * @param Comment $comment
-     * @param User|null $user
+     * @param User $user
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
-    public function moderateComment(ApiModerateCommentDto $dto, Comment $comment, ?User $user) :void
+    public function moderateComment(ApiModerateCommentDto $dto, Comment $comment, User $user) :void
     {
-
+        $comment->setModerationComment($dto->getModerationComment());
+        $comment->setStatus($dto->getStatus());
+        $comment->setUserModeration($user);
+        $this->save($comment);
     }
 }
