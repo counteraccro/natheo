@@ -114,7 +114,7 @@ Error: Erreur
 'This value is not a valid week.': "Cette valeur n'est pas une semaine valide."
 'This value should not be before week "{{ min }}".': 'Cette valeur ne doit pas être antérieure à la semaine "{{ min }}".'
 'This value should not be after week "{{ max }}".': 'Cette valeur ne doit pas être postérieure à la semaine "{{ max }}".'
-'This value is not a valid slug.': "Cette valeur n'est pas un slug valide."
+'This value is not a valid Twig template.': "Cette valeur n'est pas un modèle Twig valide."
 'This form should not contain extra fields.': 'Ce formulaire ne doit pas contenir de champs supplémentaires.'
 'The uploaded file was too large. Please try to upload a smaller file.': "Le fichier téléchargé est trop volumineux. Merci d'essayer d'envoyer un fichier plus petit."
 'The CSRF token is invalid. Please try to resubmit the form.': 'Le jeton CSRF est invalide. Veuillez renvoyer le formulaire.'
@@ -148,6 +148,7 @@ Error: Erreur
 'Please select a valid option.': 'Veuillez sélectionner une option valide.'
 'Please select a valid range.': 'Veuillez sélectionner une plage valide.'
 'Please enter a valid week.': 'Veuillez entrer une semaine valide.'
+'This value is not a valid slug.': "Cette valeur n'est pas un slug valide."
 'The username field must be of type string': 'Le champ username doit être du type string'
 'Username field cannot be empty': 'Le champ username ne peut pas être vide'
 'The password field must be of type string': 'Le champ password doit être du type string'
@@ -168,3 +169,18 @@ Error: Erreur
 'The show_statistiques parameter must be a boolean': 'Le paramètre show_statistiques doit être du type boolean'
 'The category parameter must be a string': 'Le paramètre catégorie doit être du type string'
 'The tag parameter must be a string': 'Le paramètre tag doit être du type string'
+'The idPage parameter must be a integer': '__The idPage parameter must be a integer'
+'The author parameter must be a string': '__The author parameter must be a string'
+'The author parameter cannot be empty': '__The author parameter cannot be empty'
+'The email parameter must be a valid email': '__The email parameter must be a valid email'
+'The comment parameter must be a string': '__The comment parameter must be a string'
+'The comment parameter cannot be empty': '__The comment parameter cannot be empty'
+'The ip parameter must be a valid ip': '__The ip parameter must be a valid ip'
+'The userAgent parameter must be a valid ip': '__The userAgent parameter must be a valid ip'
+'The orderBy parameter must be a string': '__The orderBy parameter must be a string'
+'Choose a orderBy between id or createdAt': '__Choose a orderBy between id or createdAt'
+'The order parameter must be a string': '__The order parameter must be a string'
+'Choose a order between desc or asc': '__Choose a order between desc or asc'
+'The status parameter must be a string': '__The status parameter must be a string'
+'The status parameter cannot be empty': '__The status parameter cannot be empty'
+'The moderation_comment parameter must be a string': '__The moderation_comment parameter must be a string'

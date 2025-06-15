@@ -16,3 +16,13 @@ api_errors.find.listing.category.not.found: __api_errors.find.listing.category.n
 api_errors.find.listing.tag.not.found: __api_errors.find.listing.tag.not.found
 api_errors.api.not.open: __api_errors.api.not.open
 api_errors.find.option.system.not.found: __api_errors.find.option.system.not.found
+api_errors.comment.by.page.not.id.slug.together: __api_errors.comment.by.page.not.id.slug.together
+api_errors.comment.by.page.id.slug.together: __api_errors.comment.by.page.id.slug.together
+api_errors.comment.wait.validation: __api_errors.comment.wait.validation
+api_errors.comment.moderate: __api_errors.comment.moderate
+api_errors.comment.add.not.id.slug.together: __api_errors.comment.add.not.id.slug.together
+api_errors.comment.add.id.slug.together: __api_errors.comment.add.id.slug.together
+api_errors.comment.not.open: __api_errors.comment.not.open
+api_errors.comment.not.save: __api_errors.comment.not.save
+api_errors.internal.server.error: __api_errors.internal.server.error
+api_errors.comment.status.no.valid: __api_errors.comment.status.no.valid

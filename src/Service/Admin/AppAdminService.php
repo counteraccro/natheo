@@ -8,6 +8,7 @@
 
 namespace App\Service\Admin;
 
+use App\Entity\Admin\System\User;
 use App\Utils\System\Options\OptionSystemKey;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityRepository;
@@ -16,6 +17,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -121,15 +123,19 @@ class AppAdminService extends AppAdminHandlerService
 
     /**
      * Permet de vérifier les droits
-     * @param mixed $attribute
-     * @param mixed|null $subject
+     * @param User $user
+     * @param array $attributes
+     * @param mixed|null $object
      * @return bool
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function isGranted(mixed $attribute, mixed $subject = null): bool
+    protected function isGranted(User $user, array $attributes, mixed $object = null): bool
     {
-        return $this->getContainerBag()->get('security.authorization_checker')->isGranted($attribute, $subject);
+        $accessDecisionManager = $this->getAccessDecisionManager();
+        
+        $token = new UsernamePasswordToken($user, 'none', $user->getRoles());
+        return $accessDecisionManager->decide($token, $attributes, $object);
     }
 
 

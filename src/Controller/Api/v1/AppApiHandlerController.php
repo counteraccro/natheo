@@ -8,6 +8,7 @@ namespace App\Controller\Api\v1;
 
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
+use App\Service\Api\Content\ApiCommentService;
 use App\Service\Api\Content\ApiMenuService;
 use App\Service\Api\Content\Page\ApiPageContentService;
 use App\Service\Api\Content\Page\ApiPageService;
@@ -30,6 +31,7 @@ class AppApiHandlerController extends AbstractController
             'apiMenuService' => ApiMenuService::class,
             'apiPageService' => ApiPageService::class,
             'apiPageContentService' => ApiPageContentService::class,
+            'apiCommentService' => ApiCommentService::class,
         ])]
         protected ContainerInterface $handlers
     ){}
@@ -109,5 +111,16 @@ class AppApiHandlerController extends AbstractController
     protected function getApiPageContentService() : ApiPageContentService
     {
         return $this->handlers->get('apiPageContentService');
+    }
+
+    /**
+     * Retourne un ApiCommentService
+     * @return ApiCommentService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getApiCommentService(): ApiCommentService
+    {
+        return $this->handlers->get('apiCommentService');
     }
 }
