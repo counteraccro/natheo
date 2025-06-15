@@ -10,7 +10,6 @@ namespace Controller\Api\v1\Content;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Tests\Controller\Api\AppApiTestCase;
 use App\Utils\Content\Comment\CommentConst;
-use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApiCommentControllerTest extends AppApiTestCase
@@ -350,12 +349,11 @@ class ApiCommentControllerTest extends AppApiTestCase
             ])
         );
         $response = $this->client->getResponse();;
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(202, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetour($content);
-
-        dd($content);
+        $this->assertEquals($translator->trans('api_errors.comment.moderate', domain: 'api_errors'), $content['data'][0]);
     }
 
     /**

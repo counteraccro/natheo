@@ -89,10 +89,11 @@ class ApiCommentController extends AppApiController
         resolver: ApiModerateCommentResolver::class
     )] ApiModerateCommentDto $apiModerateCommentDto, #[MapEntity(id: 'id', message: 'Commentaire non disponible')] Comment $comment): JsonResponse
     {
+        $translator = $this->getTranslator();
         $apiCommentService = $this->getApiCommentService();
         $user = $this->getUserByUserToken($apiModerateCommentDto->getUserToken());
         $apiCommentService->moderateComment($apiModerateCommentDto, $comment, $user);
 
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, [], status: Response::HTTP_ACCEPTED);
+        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, [$translator->trans('api_errors.comment.moderate', domain: 'api_errors')], status: Response::HTTP_ACCEPTED);
     }
 }
