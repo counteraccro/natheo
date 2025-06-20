@@ -23,7 +23,7 @@ class ApiOptionSystemService extends AppApiService
         return [
             OptionSystemKey::OS_SITE_NAME, OptionSystemKey::OS_FRONT_SCRIPT_TOP,
             OptionSystemKey::OS_FRONT_SCRIPT_START_BODY, OptionSystemKey::OS_FRONT_SCRIPT_END_BODY,
-            OptionSystemKey::OS_OPEN_COMMENT, OptionSystemKey::OS_ADRESSE_SITE
+            OptionSystemKey::OS_OPEN_COMMENT, OptionSystemKey::OS_ADRESSE_SITE, OptionSystemKey::OS_THEME_FRONT_SITE
         ];
     }
 
