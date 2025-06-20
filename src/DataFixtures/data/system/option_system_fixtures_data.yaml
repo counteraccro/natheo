@@ -80,3 +80,6 @@ option_system:
   OS_NEW_COMMENT_WAIT_VALIDATION:
     key: 'OS_NEW_COMMENT_WAIT_VALIDATION'
     value: 1
+  OS_THEME_FRONT_SITE:
+    key: 'OS_THEME_FRONT_SITE'
+    value: 'Natheo-Horizon'
