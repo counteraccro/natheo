@@ -212,6 +212,8 @@ options_system.open_comment: '__Ouvrir les commentaires ?'
 options_system.open_comment_help: '__Si oui, les commentaires seront ouvert sous les pages qui autorisent les commentaires'
 options_system.new_comment_wait_validation: '__Forcer la validation des nouveaux commentaires'
 options_system.new_comment_wait_validation_help: '__Si oui, tout nouveau commentaire devra être validé manuellement pour être visible sur le site'
+options_system.theme.front.site: "__Thème de votre site"
+options_system.theme.front.site_help: "__Défini le thème que vera vos visiteurs sur le cms"
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: __pagedemo.page_title_h1
 date.diff.start: "__Il y'a"
