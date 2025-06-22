@@ -39,6 +39,10 @@ class IndexController extends AppFrontController
     #[Route('/{_locale}/{slug}', name: 'index')]
     public function index(?string $slug = null): Response
     {
-        return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig', []);
+        $urls = [
+            'urlApi' => 'aaa'
+        ];
+
+        return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig', ['urls' => $urls, 'slug' => $slug]);
     }
 }
