@@ -1,0 +1,11 @@
+{% extends 'front/front_base.html.twig' %}
+
+{% block body %}
+
+<div {{ vue_component('Front/Structure', {
+    'urls' : urls,
+    'slug' : slug,
+}) }}>
+
+
+{% endblock %}

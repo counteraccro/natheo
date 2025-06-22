@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+.demo {
+    @apply text-3xl font-bold underline text-green-100
+}
