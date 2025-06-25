@@ -1,4 +1,11 @@
 <script>
+import Header from "./Header.vue";
+import Nav from "./Nav.vue";
+import Main from "./Main.vue";
+import Footer from "./Footer.vue";
+import {AjaxRequest} from "../../../utils/Front/AjaxRequest.js";
+import axios from "axios";
+
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -6,18 +13,23 @@
  */
 export default {
   name: 'Structure',
+  components: {Footer, Main, Nav, Header},
   props: {
     slug: String,
-    urls: Array,
+    urls: Object,
   },
   emits: [],
   data() {
     return {
-      value: 'Value',
+      AjaxRequest: '',
+
     }
   },
+  created() {
+    this.AjaxRequest = new AjaxRequest(this.urls)
+    this.AjaxRequest.getPageBySlug();
+  },
   mounted() {
-
   },
 
   methods: {
@@ -28,32 +40,17 @@ export default {
 
 <template>
 
-  <header>
-    Header
+  <header class="rounded bg-gray-300">
+    <Header />
   </header>
-  <nav class="h-10 rounded bg-gray-300">
-    Nav
+  <nav class="h-10 rounded bg-gray-300 mt-2">
+    <Nav />
   </nav>
   <main>
-    <div class="grid grid-cols-12 gap-2 mt-2">
-      <div class="col-span-12 md:col-span-2 md:order-1 rounded bg-gray-300">Menu</div>
-      <div class="col-span-12 md:col-span-8 md:order-2 order-3 rounded bg-gray-300">Content</div>
-      <div class="col-span-12 md:col-span-2 md:order-3 order-2 rounded bg-gray-300">Menu 2</div>
-    </div>
-
-    <div class="grid grid-cols-12 gap-2 mt-2">
-      <div class="col-span-12 md:col-span-2 rounded bg-gray-300">Menu</div>
-      <div class="col-span-12 md:col-span-10 rounded bg-gray-300">Content</div>
-    </div>
-
-    <div class="grid grid-cols-12 gap-2 mt-2">
-      <div class="col-span-12 md:col-span-10 md:order-1 order-2 rounded bg-gray-300">Content</div>
-      <div class="col-span-12 md:col-span-2 md:order-2 order-1 rounded bg-gray-300">Menu</div>
-    </div>
-
+    <Main :ajax-request="this.AjaxRequest" />
   </main>
 
   <footer class="h-10 rounded bg-gray-300 mt-2">
-    Footer
+    <Footer />
   </footer>
 </template>
