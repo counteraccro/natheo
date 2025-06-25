@@ -6,7 +6,7 @@
 parameters:
   app.supported_locales: 'fr|en|es'
   app.api_version: 'v1'
-  app.ip_api_active_filter: true  #Si true alors filtre l'accès à l'API par les API défini dans app.ip_api_authorize
+  app.ip_api_active_filter: true  #Si true alors filtre l'accès à l'API par les IP défini dans app.ip_api_authorize
   app.ip_api_authorize: [127.0.0.1, ::1]
   app.default_locale: 'fr'
   app.default_database_prefix: '' # un "_" est ajouté par défaut, laissez vide si pas de prefix
