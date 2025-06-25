@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class IndexController extends AppFrontController
 {
     /**
-     * Route qui sert uniquement à redirigé vers la connexion avec la bonne local
+     * Route qui sert uniquement à redirigé vers la connexion avec la bonne locale
      * @return RedirectResponse
      */
     #[Route('/', name: 'no_local')]
@@ -39,8 +39,11 @@ class IndexController extends AppFrontController
     #[Route('/{_locale}/{slug}', name: 'index')]
     public function index(?string $slug = null): Response
     {
+
+        $version = $this->getParameter('app.api_version');
+
         $urls = [
-            'urlApi' => 'aaa'
+            'apiPageFind' => $this->generateUrl('api_page_find', ['api_version' => $version]),
         ];
 
         return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig', ['urls' => $urls, 'slug' => $slug]);
