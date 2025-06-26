@@ -44,6 +44,7 @@ class IndexController extends AppFrontController
 
         $urls = [
             'apiPageFind' => $this->generateUrl('api_page_find', ['api_version' => $version]),
+            'apiOptionsSystems' => $this->generateUrl('api_options_systems_listing', ['api_version' => $version]),
         ];
 
         return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig', ['urls' => $urls, 'slug' => $slug]);

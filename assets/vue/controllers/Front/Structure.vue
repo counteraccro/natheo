@@ -3,8 +3,7 @@ import Header from "./Header.vue";
 import Nav from "./Nav.vue";
 import Main from "./Main.vue";
 import Footer from "./Footer.vue";
-import {AjaxRequest} from "../../../utils/Front/AjaxRequest.js";
-import axios from "axios";
+import {AjaxApiRequest} from "../../../utils/Front/AjaxApiRequest.js";
 
 /**
  * @author Gourdon Aymeric
@@ -21,19 +20,35 @@ export default {
   emits: [],
   data() {
     return {
-      AjaxRequest: '',
+      ajaxRequest: '',
 
     }
   },
   created() {
-    this.AjaxRequest = new AjaxRequest(this.urls)
-    this.AjaxRequest.getPageBySlug();
+    this.ajaxRequest = new AjaxApiRequest(this.urls)
+    this.ajaxRequest.getPageBySlug(this.apiSuccess, this.apiFailure, this.apiLoader);
   },
   mounted() {
   },
 
   methods: {
+    apiFailure(msg) {
+      alert(msg);
+    },
 
+    apiLoader(close) {
+      if(close) {
+        //alert('stop loading');
+      }
+      else {
+        //alert('run loading');
+      }
+    },
+
+    apiSuccess(data) {
+      console.log('apiSuccess');
+      console.log(data);
+    }
   }
 }
 </script>
@@ -41,16 +56,20 @@ export default {
 <template>
 
   <header class="rounded bg-gray-300">
-    <Header />
+    <Header/>
   </header>
   <nav class="h-10 rounded bg-gray-300 mt-2">
-    <Nav />
+    <Nav/>
   </nav>
   <main>
-    <Main :ajax-request="this.AjaxRequest" />
+    <Main
+        :ajax-request="this.AjaxRequest"
+        @api-failure="this.apiFailure"
+        @api-loader="this.apiLoader"
+    />
   </main>
 
   <footer class="h-10 rounded bg-gray-300 mt-2">
-    <Footer />
+    <Footer/>
   </footer>
 </template>
