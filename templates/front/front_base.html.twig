@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}Welcome!{% endblock %}</title>
     <link rel="icon" type="image/jpg" href="{{ asset('assets/natheo/favico/favicon.ico') }}">
     
@@ -14,7 +15,7 @@
         {{ encore_entry_script_tags('front') }}
     {% endblock %}
 </head>
-<body>
+<body class="bg-theme-1-100">
 {% block body %}{% endblock %}
 </body>
 </html>

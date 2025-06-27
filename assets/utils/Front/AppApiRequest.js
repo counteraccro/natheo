@@ -1,0 +1,63 @@
+/**
+ * App des request pour l'API
+ * @author Gourdon Aymeric
+ * @version 1.0
+ */
+import axios from "axios";
+
+class AppApiRequest {
+
+    token = 'Bearer read.CZjfAZu6FatHfrCU8MaCudqc.GfmytciCqV8P236QSu3jJizG.EfgV96RRTSTxeqVBDHTxX2yh.9xicEZXkXzx7hL85eUZ8YrEJ';
+
+    /**
+     * Header Authentification
+     * @return {{Authorization: string}}
+     */
+    getHeader() {
+        return {
+            'Authorization': this.token,
+        }
+    }
+
+    /**
+     * Requête get
+     * @param url
+     * @param successCallBack
+     * @param failureCallBack
+     * @param loaderCallBack
+     */
+    getRequest(url, successCallBack, failureCallBack, loaderCallBack = null) {
+        axios.get(url, {
+            headers: this.getHeader()
+        }).then((response) => {
+            successCallBack(response.data.data);
+        }).catch((error) => {
+            failureCallBack(error.response.data.errors[0]);
+        }).finally(() => {
+            if (loaderCallBack !== null) {
+                loaderCallBack(true);
+            }
+        });
+    }
+
+    /**
+     * Ajoute les paramètres à l'url en paramètre
+     * @param url
+     * @param params
+     * @returns {*}
+     */
+    addParameters(url, params) {
+        let i = 0;
+        Object.keys(params).forEach(key => {
+            let caract = '&';
+            if (i === 0) {
+                caract = '?';
+            }
+            url += caract + key + '=' + params[key];
+            i++;
+        });
+        return url;
+    }
+}
+
+export {AppApiRequest};

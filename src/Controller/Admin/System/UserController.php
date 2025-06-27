@@ -476,7 +476,7 @@ class UserController extends AppAdminController
                     $status = 2;
                     $userService->remove($user);
                     $msg = $translator->trans('user.danger_zone.success_remove', domain: 'user');
-                    $url = $this->generateUrl('index_index');
+                    $url = $this->generateUrl('front_index');
                 }
             } else {
                 $msg = $translator->trans('user.error_not_allowed', domain: 'user');
