@@ -24,7 +24,7 @@ options_system:
       OS_THEME_FRONT_SITE:
         type: 'select'
         label: 'options_system.theme.front.site'
-        list_value: 'Natheo-Horizon:Natheo-Horizon|FrontStorm:FrontStorm'
+        list_value: 'natheo_horizon:Natheo-Horizon|front_storm:FrontStorm'
         help: 'options_system.theme.front.site_help'
         default: 'fr'
       OS_LOGO_SITE:

@@ -82,4 +82,4 @@ option_system:
     value: 1
   OS_THEME_FRONT_SITE:
     key: 'OS_THEME_FRONT_SITE'
-    value: 'Natheo-Horizon'
+    value: 'natheo_horizon'

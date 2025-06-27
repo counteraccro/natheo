@@ -1,0 +1,8 @@
+/*!
+ * Author : Gourdon Aymeric
+ * Version : 1.0
+ * Point d'entrée pour le design front
+ */
+
+@import url(front/global.css);
+@import url(front/btn.css);
