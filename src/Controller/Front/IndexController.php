@@ -40,6 +40,10 @@ class IndexController extends AppFrontController
     public function index(?string $slug = null): Response
     {
 
+        if(!$this->isOpenSite()) {
+            return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'close.html.twig');
+        }
+
         $version = $this->getParameter('app.api_version');
 
         $urls = [

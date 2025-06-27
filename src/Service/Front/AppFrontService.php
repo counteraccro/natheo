@@ -33,6 +33,5 @@ class AppFrontService extends AppFrontHandlerService
         }
 
         return 'front/' . $template;
-
     }
 }

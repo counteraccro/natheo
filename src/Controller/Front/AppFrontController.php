@@ -41,4 +41,15 @@ class AppFrontController extends AbstractController
     {
         return $this->optionSystemFrontService->getPathTemplate();
     }
+
+    /**
+     * Return true si le site est ouvert, false sinon
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function isOpenSite(): bool
+    {
+        return $this->optionSystemFrontService->isOpenSite();
+    }
 }
