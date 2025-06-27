@@ -34,10 +34,29 @@ class AppApiRequest {
         }).catch((error) => {
             failureCallBack(error.response.data.errors[0]);
         }).finally(() => {
-            if(loaderCallBack !== null) {
+            if (loaderCallBack !== null) {
                 loaderCallBack(true);
             }
         });
+    }
+
+    /**
+     * Ajoute les paramètres à l'url en paramètre
+     * @param url
+     * @param params
+     * @returns {*}
+     */
+    addParameters(url, params) {
+        let i = 0;
+        Object.keys(params).forEach(key => {
+            let caract = '&';
+            if (i === 0) {
+                caract = '?';
+            }
+            url += caract + key + '=' + params[key];
+            i++;
+        });
+        return url;
     }
 }
 

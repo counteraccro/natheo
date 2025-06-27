@@ -14,24 +14,41 @@ export default {
   name: 'Structure',
   components: {Footer, Main, Nav, Header},
   props: {
-    slug: String,
+    datas: Object,
     urls: Object,
   },
   emits: [],
   data() {
     return {
       ajaxRequest: '',
+      locale: '',
+      slug: '',
 
     }
   },
   created() {
     this.ajaxRequest = new AjaxApiRequest(this.urls)
-    this.ajaxRequest.getPageBySlug(this.apiSuccess, this.apiFailure, this.apiLoader);
+    this.locale = this.datas.locale;
+    this.slug =this.datas.slug;
+    this.loadPage();
+
   },
   mounted() {
   },
 
   methods: {
+
+    /**
+     * Charge le contenu de la page
+     */
+    loadPage() {
+      let params = {
+        'slug' : this.slug,
+        'locale' : this.locale
+      };
+      this.ajaxRequest.getPageBySlug(params, this.apiSuccess, this.apiFailure, this.apiLoader);
+    },
+
     apiFailure(msg) {
       alert(msg);
     },

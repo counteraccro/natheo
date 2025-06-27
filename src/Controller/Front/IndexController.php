@@ -11,6 +11,7 @@ use App\Service\Front\OptionSystemFrontService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -37,7 +38,7 @@ class IndexController extends AppFrontController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/{_locale}/{slug}', name: 'index')]
-    public function index(?string $slug = null): Response
+    public function index(Request $request, ?string $slug = null): Response
     {
 
         if(!$this->isOpenSite()) {
@@ -51,6 +52,11 @@ class IndexController extends AppFrontController
             'apiOptionsSystems' => $this->generateUrl('api_options_systems_listing', ['api_version' => $version]),
         ];
 
-        return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig', ['urls' => $urls, 'slug' => $slug]);
+        $datas = [
+            'slug' => $slug,
+            'locale' => $request->getLocale()
+        ];
+
+        return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig', ['urls' => $urls, 'datas' => $datas]);
     }
 }

@@ -20,12 +20,14 @@ class AjaxApiRequest extends AppApiRequest {
 
     /**
      * Retourne une page en fonction du slug
+     * @param params
      * @param successCallBack
      * @param failureCallBack
      * @param loaderCallBack
      */
-    getPageBySlug(successCallBack, failureCallBack, loaderCallBack) {
-        this.getRequest(this.tabUrls.apiPageFind, successCallBack, failureCallBack, loaderCallBack);
+    getPageBySlug(params, successCallBack, failureCallBack, loaderCallBack) {
+        let url = this.addParameters(this.tabUrls.apiPageFind, params);
+        this.getRequest(url, successCallBack, failureCallBack, loaderCallBack);
     }
 }
 
