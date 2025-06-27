@@ -1,6 +1,1 @@
 @import "tailwindcss";
-
-
-.btn {
-    @apply text-red-100
-}
