@@ -1,1 +1,4 @@
 front.error.not.template: "Le template {template} n'existe pas"
+front.error.close.site.title: 'Maintenance !'
+front.error.close.site.block.title: 'Site en maintenance'
+front.error.close.site.block.text: "Rassurez vous, rien de grave, l'administrateur du site à décidé de mettre en maintenance le site pour une durée indéterminé, mais je suis sur que cela ne devrais pas durer bien longtemps."

@@ -1,1 +1,4 @@
 front.error.not.template: __front.error.not.template
+front.error.close.site.title: __front.error.close.site.title
+front.error.close.site.block.title: __front.error.close.site.block.title
+front.error.close.site.block.text: __front.error.close.site.block.text
