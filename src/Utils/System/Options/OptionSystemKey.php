@@ -191,7 +191,7 @@ class OptionSystemKey
      * Clé option theme du front site
      * @var string
      */
-    const string OS_THEME_FRONT_SITE  = 'OS_THEME_FRONT_SITE ';
+    const string OS_THEME_FRONT_SITE  = 'OS_THEME_FRONT_SITE';
 
     /**
      * Valeur par défaut du theme front du site
