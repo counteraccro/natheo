@@ -1,9 +1,10 @@
 <script>
-import Header from "./Header.vue";
-import Nav from "./Nav.vue";
-import Main from "./Main.vue";
-import Footer from "./Footer.vue";
+import Header from "../../Components/Front/Header.vue";
+import Nav from "../../Components/Front/Nav.vue";
+import Main from "../../Components/Front/Main.vue";
+import Footer from "../../Components/Front/Footer.vue";
 import {AjaxApiRequest} from "../../../utils/Front/AjaxApiRequest.js";
+import Skeleton from "../../Components/Front/Skeleton.vue";
 
 /**
  * @author Gourdon Aymeric
@@ -12,7 +13,7 @@ import {AjaxApiRequest} from "../../../utils/Front/AjaxApiRequest.js";
  */
 export default {
   name: 'Structure',
-  components: {Footer, Main, Nav, Header},
+  components: {Skeleton, Footer, Main, Nav, Header},
   props: {
     datas: Object,
     urls: Object,
@@ -20,9 +21,11 @@ export default {
   emits: [],
   data() {
     return {
+      isLoad: false,
       ajaxRequest: '',
       locale: '',
       slug: '',
+      optionsSystem: null,
 
     }
   },
@@ -30,13 +33,22 @@ export default {
     this.ajaxRequest = new AjaxApiRequest(this.urls)
     this.locale = this.datas.locale;
     this.slug =this.datas.slug;
-    this.loadPage();
+    this.loadOptionSystem();
 
   },
   mounted() {
   },
 
   methods: {
+
+
+    loadOptionSystem() {
+      let next = (data) => {
+        this.optionsSystem = data;
+        this.loadPage();
+      }
+      this.ajaxRequest.getOptionSystems(next, this.apiFailure)
+    },
 
     /**
      * Charge le contenu de la page
@@ -46,7 +58,11 @@ export default {
         'slug' : this.slug,
         'locale' : this.locale
       };
-      this.ajaxRequest.getPageBySlug(params, this.apiSuccess, this.apiFailure, this.apiLoader);
+
+      let isLoadOk = () => {
+        this.isLoad = true;
+      }
+      this.ajaxRequest.getPageBySlug(params, this.apiSuccess, this.apiFailure, isLoadOk);
     },
 
     apiFailure(msg) {
@@ -71,7 +87,7 @@ export default {
 </script>
 
 <template>
-
+  <div v-if="this.isLoad">
   <header class="rounded bg-gray-300">
     <Header/>
   </header>
@@ -80,13 +96,21 @@ export default {
   </nav>
   <main>
     <Main
-        :ajax-request="this.AjaxRequest"
+        :ajax-request="this.ajaxRequest"
         @api-failure="this.apiFailure"
         @api-loader="this.apiLoader"
     />
   </main>
 
-  <footer class="h-10 rounded bg-gray-300 mt-2">
-    <Footer/>
+  <footer class="tracking-wide bg-theme-1-100 px-10 pt-12 pb-6">
+    <Footer
+      :options-system="this.optionsSystem"
+    />
   </footer>
+  </div>
+  <div v-else>
+
+  <Skeleton />
+
+  </div>
 </template>
