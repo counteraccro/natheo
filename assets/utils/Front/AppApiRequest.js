@@ -53,8 +53,10 @@ class AppApiRequest {
             if (i === 0) {
                 caract = '?';
             }
-            url += caract + key + '=' + params[key];
-            i++;
+            if(params[key] !== null && params[key] !== '') {
+                url += caract + key + '=' + params[key];
+                i++;
+            }
         });
         return url;
     }
