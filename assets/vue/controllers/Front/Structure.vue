@@ -21,7 +21,10 @@ export default {
   emits: [],
   data() {
     return {
-      isLoad: false,
+      isLoad: {
+        page : false,
+        optionsSystem: false
+      },
       ajaxRequest: '',
       locale: '',
       slug: '',
@@ -34,6 +37,7 @@ export default {
     this.locale = this.datas.locale;
     this.slug =this.datas.slug;
     this.loadOptionSystem();
+    this.loadPage();
 
   },
   mounted() {
@@ -41,13 +45,17 @@ export default {
 
   methods: {
 
-
+    /**
+     * Chargement des options Systems
+     */
     loadOptionSystem() {
-      let next = (data) => {
+      let success = (data) => {
         this.optionsSystem = data;
-        this.loadPage();
       }
-      this.ajaxRequest.getOptionSystems(next, this.apiFailure)
+      let isLoadOk = () => {
+        this.isLoad.optionsSystem = true;
+      }
+      this.ajaxRequest.getOptionSystems(success, this.apiFailure, isLoadOk)
     },
 
     /**
@@ -60,9 +68,13 @@ export default {
       };
 
       let isLoadOk = () => {
-        this.isLoad = true;
+        this.isLoad.page = true;
       }
-      this.ajaxRequest.getPageBySlug(params, this.apiSuccess, this.apiFailure, isLoadOk);
+
+      let success = (data) => {
+        console.log(data)
+      }
+      this.ajaxRequest.getPageBySlug(params, success, this.apiFailure, isLoadOk);
     },
 
     apiFailure(msg) {
@@ -87,7 +99,7 @@ export default {
 </script>
 
 <template>
-  <div v-if="this.isLoad">
+  <div v-if="this.isLoad.optionsSystem && this.isLoad.page">
   <header class="rounded bg-gray-300">
     <Header/>
   </header>

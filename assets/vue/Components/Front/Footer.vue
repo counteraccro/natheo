@@ -33,7 +33,9 @@ export default {
           {{ this.optionsSystem.OS_SITE_NAME }}
         </a>
         <div class="mt-6">
-          <p class="text-slate-600 leading-relaxed text-sm">ReadymadeUI is a library of pre-designed UI components built for Tailwind CSS. It offers a collection of versatile, ready-to-use components that streamline the development process by providing a wide range of UI elements.</p>
+          <p class="text-slate-600 leading-relaxed text-sm">
+            {{ this.optionsSystem.OS_FRONT_FOOTER_TEXTE }}
+          </p>
         </div>
         <ul class="mt-10 flex space-x-5">
           <li>
