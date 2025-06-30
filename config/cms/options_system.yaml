@@ -44,6 +44,12 @@ options_system:
         list_value: 'fr:global.fr|en:global.en|es:global.es'
         help: 'options_system.default_language_help'
         default: 'fr'
+      OS_FRONT_FOOTER_TEXTE:
+        type: 'textarea'
+        label: 'options_system.front_footer_texte'
+        help: 'options_system.front_footer_texte_help'
+        placeholder: 'options_system.front_footer_texte_placeholder'
+        default: ""
       OS_FRONT_SCRIPT_TOP:
         type: 'textarea'
         label: 'options_system.front_script_top'

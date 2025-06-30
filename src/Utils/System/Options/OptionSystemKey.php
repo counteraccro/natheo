@@ -194,8 +194,8 @@ class OptionSystemKey
     const string OS_THEME_FRONT_SITE  = 'OS_THEME_FRONT_SITE';
 
     /**
-     * Valeur par défaut du theme front du site
+     * Clé option front, texte en bas du footer
      * @var string
      */
-    const string OS_THEME_FRONT_SITE_DEFAULT_VALUE  = 'Natheo-Horizon';
+    const string OS_FRONT_FOOTER_TEXTE  = 'OS_FRONT_FOOTER_TEXTE';
 }
