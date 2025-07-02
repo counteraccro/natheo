@@ -17,6 +17,7 @@ export default {
   props: {
     datas: Object,
     urls: Object,
+    translate: Object
   },
   emits: [],
   data() {
@@ -117,6 +118,8 @@ export default {
   <footer class="tracking-wide bg-theme-1-100 px-10 pt-12 pb-6">
     <Footer
       :options-system="this.optionsSystem"
+      :translate="this.translate.footer"
+      :urls="this.urls"
     />
   </footer>
   </div>

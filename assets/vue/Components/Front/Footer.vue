@@ -7,7 +7,9 @@
 export default {
   name: 'Footer',
   props: {
-    optionsSystem : Object
+    optionsSystem : Object,
+    translate: Object,
+    urls: Object
   },
   emits: [],
   data() {
@@ -29,7 +31,7 @@ export default {
 
     <div class="flex flex-wrap justify-between gap-10">
       <div class="max-w-md">
-        <a href='#'>
+        <a :href="this.optionsSystem.OS_ADRESSE_SITE">
           {{ this.optionsSystem.OS_SITE_NAME }}
         </a>
         <div class="mt-6">
@@ -38,26 +40,40 @@ export default {
           </p>
         </div>
         <ul class="mt-10 flex space-x-5">
-          <li>
-            <img src="/assets/natheo/front/reseaux-sociaux/x_logo_icon.png" class="w-14 h-auto" />
+          <li v-if="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_X_URL !== ''">
+            <a :href="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_X_URL">
+              <img src="/assets/natheo/front/reseaux-sociaux/x_logo_icon.png" class="w-10 h-auto" />
+            </a>
           </li>
-          <li>
-            <img src="/assets/natheo/front/reseaux-sociaux/facebook_logo_icon.png" class="w-14 h-auto" />
+          <li v-if="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL !== ''">
+            <a :href="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL">
+              <img src="/assets/natheo/front/reseaux-sociaux/facebook_logo_icon.png" class="w-10 h-auto" />
+            </a>
           </li>
-          <li>
-            <img src="/assets/natheo/front/reseaux-sociaux/github_logo_icon.png" class="w-14 h-auto" />
+          <li v-if="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_GITHUB_URL !== ''">
+            <a :href="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_GITHUB_URL">
+            <img src="/assets/natheo/front/reseaux-sociaux/github_logo_icon.png" class="w-10 h-auto" />
+            </a>
           </li>
-          <li>
-            <img src="/assets/natheo/front/reseaux-sociaux/instagram_logo_icon.png" class="w-14 h-auto" />
+          <li v-if="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL !== ''">
+            <a :href="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL">
+            <img src="/assets/natheo/front/reseaux-sociaux/instagram_logo_icon.png" class="w-10 h-auto" />
+            </a>
           </li>
-          <li>
-            <img src="/assets/natheo/front/reseaux-sociaux/linkedin_logo_icon.png" class="w-14 h-auto" />
+          <li v-if="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL !== ''">
+            <a :href="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL">
+            <img src="/assets/natheo/front/reseaux-sociaux/linkedin_logo_icon.png" class="w-10 h-auto" />
+            </a>
           </li>
-          <li>
-            <img src="/assets/natheo/front/reseaux-sociaux/tiktok_icon.png" class="w-14 h-auto" />
+          <li v-if="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL !== ''">
+            <a :href="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL">
+            <img src="/assets/natheo/front/reseaux-sociaux/tiktok_icon.png" class="w-10 h-auto" />
+            </a>
           </li>
-          <li>
-            <img src="/assets/natheo/front/reseaux-sociaux/youtube_logo_icon.png" class="w-14 h-auto" />
+          <li v-if="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL !== ''">
+            <a :href="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL">
+            <img src="/assets/natheo/front/reseaux-sociaux/youtube_logo_icon.png" class="w-10 h-auto" />
+            </a>
           </li>
         </ul>
       </div>
@@ -152,16 +168,16 @@ export default {
     <div class="flex flex-wrap max-md:flex-col gap-4">
       <ul class="md:flex md:space-x-6 max-md:space-y-2">
         <li>
-          <a href='javascript:void(0)' class="hover:text-slate-900 text-slate-600 text-sm font-normal">Terms of Service</a>
+          <a href='https://github.com/counteraccro/natheo' class="hover:text-slate-900 text-slate-600 text-sm font-normal">{{ this.translate.githubLink }}</a>
         </li>
         <li>
-          <a href='javascript:void(0)' class="hover:text-slate-900 text-slate-600 text-sm font-normal">Privacy Policy</a>
+          <a :href="this.urls.adminAuth" class="hover:text-slate-900 text-slate-600 text-sm font-normal">{{ this.translate.adminLink }}</a>
         </li>
         <li>
-          <a href='javascript:void(0)' class="hover:text-slate-900 text-slate-600 text-sm font-normal">Security</a>
+          <a href='#' class="hover:text-slate-900 text-slate-600 text-sm font-normal">{{ translate.templateVersion }}</a>
         </li>
       </ul>
 
-      <p class="text-slate-600 text-sm md:ml-auto">© ReadymadeUI. All rights reserved.</p>
+      <p class="text-slate-600 text-sm md:ml-auto">{{ this.translate.credit }}</p>
     </div>
 </template>

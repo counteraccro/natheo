@@ -7,7 +7,7 @@
 
 namespace App\Controller\Front;
 
-use App\Service\Front\OptionSystemFrontService;
+use App\Utils\Translate\Front\FrontTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,18 +27,20 @@ class IndexController extends AppFrontController
     public function indexNoLocale(): RedirectResponse
     {
         $defaultLocal = $this->getParameter('app.default_locale');
-        return $this->redirectToRoute('front_index', ['_locale' => $defaultLocal]);
+        return $this->redirectToRoute('front_index', ['locale' => $defaultLocal, 'slug' => null]);
     }
 
     /**
      * Redirige vers la connexion
+     * @param Request $request
+     * @param FrontTranslate $frontTranslate
      * @param string|null $slug
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/{_locale}/{slug}', name: 'index')]
-    public function index(Request $request, ?string $slug = null): Response
+    #[Route('/{locale}/{slug}', name: 'index')]
+    public function index(Request $request, FrontTranslate $frontTranslate, ?string $slug = null): Response
     {
 
         if(!$this->isOpenSite()) {
@@ -50,6 +52,7 @@ class IndexController extends AppFrontController
         $urls = [
             'apiPageFind' => $this->generateUrl('api_page_find', ['api_version' => $version]),
             'apiOptionsSystems' => $this->generateUrl('api_options_systems_listing', ['api_version' => $version]),
+            'adminAuth' => $this->generateUrl('admin_dashboard_index')
         ];
 
         $datas = [
@@ -57,6 +60,6 @@ class IndexController extends AppFrontController
             'locale' => $request->getLocale()
         ];
 
-        return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig', ['urls' => $urls, 'datas' => $datas]);
+        return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig', ['urls' => $urls, 'datas' => $datas, "translate" => $frontTranslate->getTranslate()]);
     }
 }
