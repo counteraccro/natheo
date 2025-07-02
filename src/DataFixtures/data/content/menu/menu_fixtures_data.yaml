@@ -314,8 +314,28 @@ menu:
     disabled: 0
     defaultMenu: true
     menuElement:
-      siteOfficiel:
+      Natheo:
         page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Natheo'
+            externalLink: ''
+          es:
+            locale: es
+            textLink: 'es-Natheo'
+            externalLink: ''
+          en:
+            locale: en
+            textLink: 'en-Natheo'
+            externalLink: ''
+      SiteOfficiel:
+        page: ''
+        parent: Natheo
         disabled: 0
         columnPosition: 1
         rowPosition: 1
