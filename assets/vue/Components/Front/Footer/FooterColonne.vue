@@ -1,4 +1,5 @@
 <script>
+
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -7,7 +8,9 @@
 export default {
   name: 'FooterColonne',
   props: {
-    elements: Object
+    elements: Object,
+    deep: Number,
+    utilsFront: Object
   },
   emits: [],
   data() {
@@ -21,26 +24,30 @@ export default {
 
   methods: {
 
+    /**
+     * Génère une url
+     * @param element
+     * @returns {*}
+     */
+    generateUrl(element) {
+      return this.utilsFront.getUrl(element);
+    }
   }
 }
 </script>
 
 <template>
-  <ul class="mt-6 space-y-4">
-    <li>
-      <a href='javascript:void(0)' class="hover:text-slate-900 text-slate-600 text-sm font-normal">Web Development</a>
-    </li>
-    <li>
-      <a href='javascript:void(0)' class="hover:text-slate-900 text-slate-600 text-sm font-normal">Pricing</a>
-    </li>
-    <li>
-      <a href='javascript:void(0)' class="hover:text-slate-900 text-slate-600 text-sm font-normal">Support</a>
-    </li>
-    <li>
-      <a href='javascript:void(0)' class="hover:text-slate-900 text-slate-600 text-sm font-normal">Client Portal</a>
-    </li>
-    <li>
-      <a href='javascript:void(0)' class="hover:text-slate-900 text-slate-600 text-sm font-normal">Resources</a>
+  <ul class="space-y-2" :class="this.deep > 0 ? 'list-inside pl-3' : 'mt-6'">
+    <li v-for="element in this.elements">
+
+      <a :href="this.generateUrl(element)" :target="element.target" class="hover:text-slate-900 text-slate-600 text-sm font-normal">
+        {{element.label}}
+      </a>
+      <FooterColonne v-if="element.hasOwnProperty('elements')"
+                     :elements="element.elements"
+                     :deep="this.deep + 1"
+                     :utils-front="this.utilsFront"
+      />
     </li>
   </ul>
 </template>

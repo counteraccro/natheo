@@ -5,6 +5,7 @@ import Main from "../../Components/Front/Main.vue";
 import Footer from "../../Components/Front/Footer/Footer.vue";
 import {AjaxApiRequest} from "../../../utils/Front/AjaxApiRequest.js";
 import Skeleton from "../../Components/Front/Skeleton.vue";
+import {UtilsFront} from "../../../utils/Front/UtilsFront";
 
 /**
  * @author Gourdon Aymeric
@@ -27,6 +28,7 @@ export default {
         optionsSystem: false
       },
       ajaxRequest: '',
+      utilsFront: '',
       locale: '',
       slug: '',
       optionsSystem: null,
@@ -53,6 +55,7 @@ export default {
     loadOptionSystem() {
       let success = (data) => {
         this.optionsSystem = data;
+        this.utilsFront = new UtilsFront(this.datas, this.optionsSystem)
       }
       let isLoadOk = () => {
         this.isLoad.optionsSystem = true;
@@ -116,12 +119,13 @@ export default {
     />
   </main>
 
-  <footer class="tracking-wide bg-theme-1-100 px-10 pt-12 pb-6">
+  <footer class="tracking-wide bg-theme-1-100 px-2 pt-6 pb-6">
     <Footer
       :options-system="this.optionsSystem"
       :translate="this.translate.footer"
       :urls="this.urls"
       :data="this.page.menus.FOOTER"
+      :utils-front="this.utilsFront"
     />
   </footer>
   </div>

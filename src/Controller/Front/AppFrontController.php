@@ -7,6 +7,7 @@
 
 namespace App\Controller\Front;
 
+use App\Service\Admin\Content\Page\PageService;
 use App\Service\Front\OptionSystemFrontService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -21,14 +22,18 @@ class AppFrontController extends AbstractController
      */
     protected OptionSystemFrontService $optionSystemFrontService;
 
+    protected PageService $pageService;
+
     public function __construct(
         #[AutowireLocator([
             'optionSystemFront' => OptionSystemFrontService::class,
+            'pageService' => PageService::class,
         ])]
         private readonly ContainerInterface $handlers
     )
     {
         $this->optionSystemFrontService = $this->handlers->get('optionSystemFront');
+        $this->pageService = $this->handlers->get('pageService');
     }
 
     /**

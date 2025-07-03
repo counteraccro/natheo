@@ -34,17 +34,22 @@ class IndexController extends AppFrontController
      * Redirige vers la connexion
      * @param Request $request
      * @param FrontTranslate $frontTranslate
+     * @param string|null $locale
      * @param string|null $slug
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     #[Route('/{locale}/{slug}', name: 'index')]
-    public function index(Request $request, FrontTranslate $frontTranslate, ?string $slug = null): Response
+    #[Route('/{locale}/{category}/{slug}', name: 'index_2')]
+    public function index(Request $request, FrontTranslate $frontTranslate, ?string $locale = '', ?string $slug = null): Response
     {
-
         if(!$this->isOpenSite()) {
             return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'close.html.twig');
+        }
+
+        if($locale === '') {
+            $locale = $this->getParameter('app.default_locale');
         }
 
         $version = $this->getParameter('app.api_version');
@@ -57,7 +62,8 @@ class IndexController extends AppFrontController
 
         $datas = [
             'slug' => $slug,
-            'locale' => $request->getLocale()
+            'locale' => $locale,
+            'pageCategories' => $this->pageService->getAllCategories(),
         ];
 
         return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig', ['urls' => $urls, 'datas' => $datas, "translate" => $frontTranslate->getTranslate()]);
