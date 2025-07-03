@@ -2,7 +2,7 @@
 import Header from "../../Components/Front/Header.vue";
 import Nav from "../../Components/Front/Nav.vue";
 import Main from "../../Components/Front/Main.vue";
-import Footer from "../../Components/Front/Footer.vue";
+import Footer from "../../Components/Front/Footer/Footer.vue";
 import {AjaxApiRequest} from "../../../utils/Front/AjaxApiRequest.js";
 import Skeleton from "../../Components/Front/Skeleton.vue";
 
@@ -30,6 +30,7 @@ export default {
       locale: '',
       slug: '',
       optionsSystem: null,
+      page: '',
 
     }
   },
@@ -73,7 +74,7 @@ export default {
       }
 
       let success = (data) => {
-        console.log(data)
+        this.page = data.page;
       }
       this.ajaxRequest.getPageBySlug(params, success, this.apiFailure, isLoadOk);
     },
@@ -120,6 +121,7 @@ export default {
       :options-system="this.optionsSystem"
       :translate="this.translate.footer"
       :urls="this.urls"
+      :data="this.page.menus.FOOTER"
     />
   </footer>
   </div>
