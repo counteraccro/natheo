@@ -1,8 +1,8 @@
 user:
   User:
-    email: lelievre.martin@wanadoo.fr
-    password: $2y$04$hI86didMtWExbyhs/s2s6ui4R4BnUr9HLRCYDx.8A30Dcvdkllft2
-    login: samson.theophile
+    email: dribeiro@hotmail.fr
+    password: $2y$04$r5bSHlMP2Xy7u/DF/ezLAe./oPL5tMDyiL.yY.pcmkjwnX.WcopeG
+    login: celina98
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN

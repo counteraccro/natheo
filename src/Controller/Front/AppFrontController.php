@@ -9,6 +9,7 @@ namespace App\Controller\Front;
 
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Front\OptionSystemFrontService;
+use App\Service\Installation\InstallationService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -22,18 +23,28 @@ class AppFrontController extends AbstractController
      */
     protected OptionSystemFrontService $optionSystemFrontService;
 
+    /**
+     * @var PageService
+     */
     protected PageService $pageService;
+
+    /**
+     * @var InstallationService
+     */
+    protected InstallationService $installationService;
 
     public function __construct(
         #[AutowireLocator([
             'optionSystemFront' => OptionSystemFrontService::class,
             'pageService' => PageService::class,
+            'installationService' => InstallationService::class,
         ])]
         private readonly ContainerInterface $handlers
     )
     {
         $this->optionSystemFrontService = $this->handlers->get('optionSystemFront');
         $this->pageService = $this->handlers->get('pageService');
+        $this->installationService = $this->handlers->get('installationService');
     }
 
     /**

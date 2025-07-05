@@ -7,6 +7,7 @@
 
 namespace App\Controller\Front;
 
+use App\Entity\Admin\System\User;
 use App\Utils\Translate\Front\FrontTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -41,9 +42,17 @@ class IndexController extends AppFrontController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/{locale}/{slug}', name: 'index')]
-    #[Route('/{locale}/{category}/{slug}', name: 'index_2')]
+    #[Route('/{locale}/{category}/{slug}', name: 'index_2', requirements: ['category' => 'faq|page|article|projet|blog|evenement|documentation'])]
     public function index(Request $request, FrontTranslate $frontTranslate, ?string $locale = '', ?string $slug = null): Response
     {
+        if (!$this->installationService->checkSchema()) {
+            return $this->redirectToRoute('installation_step_1');
+        }
+
+        if (!$this->installationService->checkDataExiste(User::class)) {
+            return $this->redirectToRoute('installation_step_2');
+        }
+
         if(!$this->isOpenSite()) {
             return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'close.html.twig');
         }
