@@ -308,14 +308,34 @@ menu:
   menu_generic_footer:
     user: User
     name: Generic footer
-    type: 17
+    type: 16
     position: 3
     renderOrder: 1
     disabled: 0
     defaultMenu: true
     menuElement:
-      siteOfficiel:
+      Natheo:
         page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Natheo'
+            externalLink: ''
+          es:
+            locale: es
+            textLink: 'es-Natheo'
+            externalLink: ''
+          en:
+            locale: en
+            textLink: 'en-Natheo'
+            externalLink: ''
+      SiteOfficiel:
+        page: ''
+        parent: Natheo
         disabled: 0
         columnPosition: 1
         rowPosition: 1
@@ -334,6 +354,7 @@ menu:
             textLink: 'en-site-officiel'
             externalLink: 'https://www.google.com'
       documentation:
+        parent: Natheo
         page: ''
         disabled: 0
         columnPosition: 1
@@ -353,6 +374,7 @@ menu:
             textLink: 'en-documentation'
             externalLink: 'https://github.com/counteraccro/natheo'
       gitHub:
+        parent: Natheo
         page: ''
         disabled: 0
         columnPosition: 1
@@ -371,6 +393,323 @@ menu:
             locale: en
             textLink: 'en-GitHub'
             externalLink: 'https://github.com/counteraccro/natheo'
+      support:
+        parent: Natheo
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 3
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Support'
+            externalLink: 'https://natheo-support.com'
+          es:
+            locale: es
+            textLink: 'es-Support'
+            externalLink: 'https://natheo-support.com'
+          en:
+            locale: en
+            textLink: 'en-Support'
+            externalLink: 'https://natheo-support.com'
+      Partenaire:
+        page: ''
+        disabled: 0
+        columnPosition: 2
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Partenaire'
+            externalLink: ''
+          es:
+            locale: es
+            textLink: 'es-Partenaire'
+            externalLink: ''
+          en:
+            locale: en
+            textLink: 'en-Partenaire'
+            externalLink: ''
+      partenaire_1:
+        parent: Partenaire
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Partenaire 1'
+            externalLink: 'https://partenaire-1.com'
+          es:
+            locale: es
+            textLink: 'es-Partenaire 1'
+            externalLink: 'https://partenaire-1.com'
+          en:
+            locale: en
+            textLink: 'en-Partenaire 1'
+            externalLink: 'https://partenaire-1.com'
+      partenaire_2:
+        parent: Partenaire
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 2
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Partenaire 2'
+            externalLink: 'https://partenaire-1.com'
+          es:
+            locale: es
+            textLink: 'es-Partenaire 2'
+            externalLink: 'https://partenaire-1.com'
+          en:
+            locale: en
+            textLink: 'en-Partenaire 2'
+            externalLink: 'https://partenaire-1.com'
+      partenaire_3:
+        parent: Partenaire
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 3
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Partenaire 3'
+            externalLink: 'https://partenaire-1.com'
+          es:
+            locale: es
+            textLink: 'es-Partenaire 3'
+            externalLink: 'https://partenaire-1.com'
+          en:
+            locale: en
+            textLink: 'en-Partenaire 3'
+            externalLink: 'https://partenaire-1.com'
+      partenaire_4:
+        parent: Partenaire
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 4
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Partenaire 4'
+            externalLink: 'https://partenaire-1.com'
+          es:
+            locale: es
+            textLink: 'es-Partenaire 4'
+            externalLink: 'https://partenaire-1.com'
+          en:
+            locale: en
+            textLink: 'en-Partenaire 4'
+            externalLink: 'https://partenaire-1.com'
+      partenaire_5:
+        parent: Partenaire
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 5
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Partenaire 5'
+            externalLink: 'https://partenaire-1.com'
+          es:
+            locale: es
+            textLink: 'es-Partenaire 5'
+            externalLink: 'https://partenaire-1.com'
+          en:
+            locale: en
+            textLink: 'en-Partenaire 5'
+            externalLink: 'https://partenaire-1.com'
+      Societe:
+        page: ''
+        disabled: 0
+        columnPosition: 3
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Société'
+            externalLink: ''
+          es:
+            locale: es
+            textLink: 'es-Société'
+            externalLink: ''
+          en:
+            locale: en
+            textLink: 'en-Société'
+            externalLink: ''
+      a_propos:
+        parent: Societe
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'A propos de nous'
+            externalLink: 'https://natheo-cms.com/fr/about-us'
+          es:
+            locale: es
+            textLink: 'es-A propos de nous'
+            externalLink: 'https://natheo-cms.com/es/about-us'
+          en:
+            locale: en
+            textLink: 'en-A propos de nous'
+            externalLink: 'https://natheo-cms.com/en/about-us'
+      blog:
+        parent: Societe
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 2
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Blog'
+            externalLink: 'https://natheo-cms.com/fr/blog'
+          es:
+            locale: es
+            textLink: 'es-Blog'
+            externalLink: 'https://natheo-cms.com/es/blog'
+          en:
+            locale: en
+            textLink: 'en-Blog'
+            externalLink: 'https://natheo-cms.com/en/blog'
+      event:
+        parent: Societe
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 3
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Évènement'
+            externalLink: 'https://natheo-cms.com/fr/event'
+          es:
+            locale: es
+            textLink: 'es-Évènement'
+            externalLink: 'https://natheo-cms.com/es/event'
+          en:
+            locale: en
+            textLink: 'en-Évènement'
+            externalLink: 'https://natheo-cms.com/en/event'
+      Autre:
+        page: ''
+        disabled: 0
+        columnPosition: 4
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Autre'
+            externalLink: ''
+          es:
+            locale: es
+            textLink: 'es-Autre'
+            externalLink: ''
+          en:
+            locale: en
+            textLink: 'en-Autre'
+            externalLink: ''
+      Faq:
+        parent: Autre
+        page: Page_faq
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Faq'
+            externalLink: ''
+          es:
+            locale: es
+            textLink: 'es-Faq'
+            externalLink: ''
+          en:
+            locale: en
+            textLink: 'en-Faq'
+            externalLink: ''
+      Contact:
+        parent: Autre
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Contact'
+            externalLink: 'https://natheo-cms.com/fr/contact'
+          es:
+            locale: es
+            textLink: 'es-Contact'
+            externalLink: 'https://natheo-cms.com/es/contact'
+          en:
+            locale: en
+            textLink: 'en-Contact'
+            externalLink: 'https://natheo-cms.com/en/contact'
+      SubSub:
+        parent: Autre
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'SubSub'
+            externalLink: ''
+          es:
+            locale: es
+            textLink: 'es-Subsub'
+            externalLink: ''
+          en:
+            locale: en
+            textLink: 'en-Subsub'
+            externalLink: ''
+      SubSub-1:
+        parent: SubSub
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'SubSub1'
+            externalLink: 'https://natheo-cms.com/fr/sub-sub'
+          es:
+            locale: es
+            textLink: 'es-SubSub1'
+            externalLink: 'https://natheo-cms.com/es/sub-sub'
+          en:
+            locale: en
+            textLink: 'en-SubSub1'
+            externalLink: 'https://natheo-cms.com/en/sub-sub'
   menu_generic_left:
     user: User
     name: Generic menu
