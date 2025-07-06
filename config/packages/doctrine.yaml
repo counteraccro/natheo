@@ -6,7 +6,9 @@ doctrine:
         # either here or in the DATABASE_URL env var (see .env file)
         #server_version: '15'
     orm:
-        auto_generate_proxy_classes: false
+        auto_generate_proxy_classes: '%kernel.debug%'
+        proxy_dir: '%kernel.cache_dir%/doctrine/orm/Proxies'
+        proxy_namespace: 'Proxies'
         enable_native_lazy_objects: true
         report_fields_where_declared: true
         controller_resolver:
