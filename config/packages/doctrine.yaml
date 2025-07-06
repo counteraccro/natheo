@@ -6,8 +6,8 @@ doctrine:
         # either here or in the DATABASE_URL env var (see .env file)
         #server_version: '15'
     orm:
-        auto_generate_proxy_classes: true
-        enable_lazy_ghost_objects: true
+        auto_generate_proxy_classes: false
+        enable_native_lazy_objects: true
         report_fields_where_declared: true
         controller_resolver:
                     auto_mapping: false

@@ -1,8 +1,8 @@
 user:
   User:
-    email: luc22@weiss.net
-    password: $2y$04$/YtxH6IUzxXLSzwjp/65g.dnKWzp3wdgNpwzVIGwGNwFdS.tJ2fE2
-    login: arthur.hebert
+    email: xavier.pages@sfr.fr
+    password: $2y$04$JMDCZPZgERg6ZTVKLGB9f.lXeqnyM8TgFo530om1x6jTiOXm87k16
+    login: stexier
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN
