@@ -121,6 +121,10 @@ class ApiPageContentService extends AppApiService
             $render = $page->getUser()->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue();
             $personalData = new PersonalData($page->getUser(), $render);
 
+            if($page->getPageTranslations()->count() === 0) {
+                continue;
+            }
+
             $pageTranslation = $page->getPageTranslationByLocale($locale);
             $return['pages'][] = [
                 'title' => $pageTranslation->getTitre(),
