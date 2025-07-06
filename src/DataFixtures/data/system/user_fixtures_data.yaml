@@ -1,8 +1,8 @@
 user:
   User:
-    email: dribeiro@hotmail.fr
-    password: $2y$04$r5bSHlMP2Xy7u/DF/ezLAe./oPL5tMDyiL.yY.pcmkjwnX.WcopeG
-    login: celina98
+    email: xavier.pages@sfr.fr
+    password: $2y$04$JMDCZPZgERg6ZTVKLGB9f.lXeqnyM8TgFo530om1x6jTiOXm87k16
+    login: stexier
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN
