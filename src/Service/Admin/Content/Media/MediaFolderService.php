@@ -357,7 +357,7 @@ class MediaFolderService extends AppAdminService
     {
         $patternPath = '/\b' . preg_quote($old) . '\b/';
         if (stristr($old, "\/") === false) {
-            $patternPath = '/' . preg_quote($old) . '/';
+            $patternPath = '/' . preg_quote($old, '/') . '/';
         }
 
         $newWebPath = $new;
