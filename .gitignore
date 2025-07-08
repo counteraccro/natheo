@@ -51,3 +51,4 @@ public/assets/thumbnails/*
 /public/assets/natheotheque-test/
 /public/assets/thumbnails-test/
 .idea/sqlDataSources.xml
+/.idea
