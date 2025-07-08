@@ -107,3 +107,9 @@ option_system:
   OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL:
     key: 'OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL'
     value: ''
+  OS_FRONT_ROBOT_NO_INDEX:
+    key: 'OS_FRONT_ROBOT_NO_INDEX'
+    value: 0
+  OS_FRONT_ROBOT_NO_FOLLOW:
+    key: 'OS_FRONT_ROBOT_NO_FOLLOW'
+    value: 0

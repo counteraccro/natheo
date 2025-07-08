@@ -117,6 +117,20 @@ options_system:
         help: 'options_system.front_script_end_body_help'
         placeholder: 'options_system.front_script_end_body_placeholder'
         default: ""
+  options_system.categorie_seo:
+    title: 'options_system.categorie_seo.title'
+    description: 'options_system.categorie_seo.description'
+    options:
+      OS_FRONT_ROBOT_NO_INDEX:
+        type: 'boolean'
+        label: 'options_system.front_robot_no_index'
+        help: 'options_system.front_robot_no_index_help'
+        default: '0'
+      OS_FRONT_ROBOT_NO_FOLLOW:
+        type: 'boolean'
+        label: 'options_system.front_robot_no_follow'
+        help: 'options_system.front_robot_no_follow_help'
+        default: '0'
   options_system.categorie_admin:
     title: 'options_system.categorie_admin.title'
     description: 'options_system.categorie_admin.description'

@@ -240,4 +240,16 @@ class OptionSystemKey
      * @var string
      */
     const string OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL = 'OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL';
+
+    /**
+     * Clé option front, pas d'indexation pour les robots
+     */
+    const string OS_FRONT_ROBOT_NO_INDEX = 'OS_FRONT_ROBOT_NO_INDEX';
+
+    /**
+     * Clé option front, pas de suivi des liens
+     */
+    const string OS_FRONT_ROBOT_NO_FOLLOW = 'OS_FRONT_ROBOT_NO_FOLLOW';
+
+
 }
