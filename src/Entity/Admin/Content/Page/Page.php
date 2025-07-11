@@ -96,7 +96,7 @@ class Page
     /**
      * @var Collection<int, PageMeta>
      */
-    #[ORM\OneToMany(targetEntity: PageMeta::class, mappedBy: 'page', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: PageMeta::class, mappedBy: 'page', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $pageMetas;
 
 

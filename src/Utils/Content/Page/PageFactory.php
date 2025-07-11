@@ -10,8 +10,12 @@ namespace App\Utils\Content\Page;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\Content\Page\PageContentTranslation;
+use App\Entity\Admin\Content\Page\PageMeta;
+use App\Entity\Admin\Content\Page\PageMetaTranslation;
 use App\Entity\Admin\Content\Page\PageStatistique;
 use App\Entity\Admin\Content\Page\PageTranslation;
+use App\Enum\Content\Page\PageMeta as PageMetaEnum;
+use App\Utils\Content\Comment\CommentConst;
 
 class PageFactory
 {
@@ -41,9 +45,14 @@ class PageFactory
     public function create(): PageFactory
     {
         $this->page = new Page();
+
+        $this->page->setIsOpenComment(true);
+        $this->page->setRuleComment(CommentConst::WAIT_VALIDATION);
+
         $this->createPageTranslation();
         $this->createPageStatistique();
         $this->createPageContent();
+        $this->createPageMeta();
 
         return $this;
     }
@@ -131,6 +140,27 @@ class PageFactory
             $pageStatistique->setValue(0);
             $pageStatistique->setPage($this->page);
             $this->page->addPageStatistique($pageStatistique);
+        }
+    }
+
+    /**
+     * Création des metas pour le SEO
+     * @return void
+     */
+    private function createPageMeta(): void
+    {
+        foreach (PageMetaEnum::cases() as $meta) {
+            $pageMeta = new PageMeta();
+            $pageMeta->setName($meta->value);
+            $pageMeta->setPage($this->page);
+            foreach($this->locales as $locale) {
+                $pageMetaTranslation = new PageMetaTranslation();
+                $pageMetaTranslation->setLocale($locale);
+                $pageMetaTranslation->setPageMeta($pageMeta);
+                $pageMetaTranslation->setValue('');
+                $pageMeta->addPageMetaTranslation($pageMetaTranslation);
+            }
+            $this->page->addPageMeta($pageMeta);
         }
     }
 
