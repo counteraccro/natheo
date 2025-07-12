@@ -10,6 +10,7 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
+use App\Enum\Content\Page\PageMeta;
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
@@ -23,6 +24,7 @@ use App\Utils\Content\Page\PageHistory;
 use App\Utils\Content\Page\PagePopulate;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
+use App\Utils\System\User\PersonalData;
 use App\Utils\Translate\Content\PageTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -261,6 +263,7 @@ class PageController extends AppAdminController
      * Permet de charger le contenu du tab content
      * @param PageService $pageService
      * @param MenuService $menuService
+     * @param OptionSystemService $optionSystemService
      * @param int|null $id
      * @return JsonResponse
      * @throws ContainerExceptionInterface
@@ -271,6 +274,7 @@ class PageController extends AppAdminController
     public function loadTabContent(
         PageService $pageService,
         MenuService $menuService,
+        OptionSystemService $optionSystemService,
         ?int        $id = null,
     ): JsonResponse
     {
@@ -283,6 +287,25 @@ class PageController extends AppAdminController
             $page->setCategory(PageConst::PAGE_CATEGORY_PAGE);
             $page->setLandingPage(PageConst::DEFAULT_LANDING_PAGE);
             $page->getPageContents()->clear();
+
+
+            foreach($page->getPageMetas() as $meta) {
+                $value = null;
+                if($meta->getName() === PageMeta::AUTHOR->value) {
+                    $personalData = new PersonalData($this->getUser(), $this->optionUserService->getValueByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER));
+                    $value = $personalData->getPersonalData();
+                }
+                if($meta->getName() === PageMeta::COPYRIGHT->value) {
+                    $value = $optionSystemService->getValueByKey(OptionSystemKey::OS_SITE_NAME) . ' ' . date('Y');
+                }
+
+                if($value !== null) {
+                    foreach($meta->getPageMetaTranslations() as $translation) {
+                        $translation->setValue($value);
+                    }
+                }
+            }
+
         } else {
             $page = $pageService->findOneById(Page::class, $id);
         }

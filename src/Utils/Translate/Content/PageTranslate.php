@@ -62,7 +62,25 @@ class PageTranslate extends AppTranslate
             'page_history' => $this->getTranslatePageHistory(),
             'page_save' => $this->getTranslatePageSave(),
             'auto_complete' => $this->getTranslateAutoComplete(),
-            'page_comment' => $this->getTranslatePageComment()
+            'page_comment' => $this->getTranslatePageComment(),
+            'page_seo' => $this->getTranslatePageSeo(),
+        ];
+    }
+
+    private function getTranslatePageSEO(): array
+    {
+        return [
+            'title' => $this->translator->trans('page.page_seo.title', domain: 'page'),
+            'help_legend' => $this->translator->trans('page.page_seo.help.legend', domain: 'page'),
+            'help_description' => $this->translator->trans('page.page_seo.help.description', domain: 'page'),
+            'input_meta_description_label' => $this->translator->trans('page.page_seo.input.meta_description.label', domain: 'page'),
+            'input_meta_description_help' => $this->translator->trans('page.page_seo.input.meta_description.help', domain: 'page'),
+            'input_meta_keywords_label' => $this->translator->trans('page.page_seo.input.meta_keywords.label', domain: 'page'),
+            'input_meta_keywords_help' => $this->translator->trans('page.page_seo.input.meta_keywords.help', domain: 'page'),
+            'input_meta_author_label' => $this->translator->trans('page.page_seo.input.meta_author.label', domain: 'page'),
+            'input_meta_author_help' => $this->translator->trans('page.page_seo.input.meta_author.help', domain: 'page'),
+            'input_meta_copyright_label' => $this->translator->trans('page.page_seo.input.meta_copyright.label', domain: 'page'),
+            'input_meta_copyright_help' => $this->translator->trans('page.page_seo.input.meta_copyright.help', domain: 'page'),
         ];
     }
 

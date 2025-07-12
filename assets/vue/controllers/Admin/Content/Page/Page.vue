@@ -630,15 +630,25 @@ export default {
       <!-- Fin Formulaire page -->
       <!-- Bloc SEO -->
       <div class="tab-pane fade" id="nav-seo" role="tabpanel" aria-labelledby="seo-tab" tabindex="0">
-        <h5>A faire</h5>
+        <h5>{{ this.translate.page_seo.title }}</h5>
 
-        <div class="mb-3">
-          <div v-for="meta in this.page.pageMetas">
+        <fieldset class="mb-3">
+          <legend>
+            {{ this.translate.page_seo.help_legend }}
+          </legend>
+          {{ this.translate.page_seo.help_description }}
+        </fieldset>
+
+        <div v-for="meta in this.page.pageMetas">
+          <div class="mb-3">
             <div v-for="pageMetaTranslation in meta.pageMetaTranslations">
               <div v-if="pageMetaTranslation.locale === this.currentLocale">
-                <label for="page-sdsd" class="form-label">{{ meta.name }}</label>
-                <input type="text" class="form-control" id="page-sdsd" v-model="pageMetaTranslation.value">
-                <div id="page-sdsdHelp" class="form-text">{{ meta.name }}</div>
+                <label for="page-sdsd"
+                       class="form-label">{{ this.translate.page_seo['input_meta_' + meta.name + '_label'] }}</label>
+                <input type="text" class="form-control" id="page-sdsd" v-model="pageMetaTranslation.value" @change="this.autoSave(this.page)">
+                <div id="page-sdsdHelp" class="form-text">
+                  {{ this.translate.page_seo['input_meta_' + meta.name + '_help'] }}
+                </div>
               </div>
             </div>
           </div>
