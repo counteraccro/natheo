@@ -245,13 +245,13 @@ options_system.front_footer_social_tiktok_url: '__Url de votre compte Tiktok'
 options_system.front_footer_social_tiktok_url_help: '__Laisser vide pour ne rien afficher sinon apparaitra dans le footer'
 options_system.front_footer_social_tiktok_url_placeholder: '__Url de votre compte Tiktok'
 options_system.front_footer_social_tiktok_url_msg_success: '__Url de votre compte Tiktok mis à jour'
-options_system.categorie_seo: '__SEO'
+options_system.categorie_seo: __SEO
 options_system.categorie_seo.title: '__SEO globale de votre site'
 options_system.categorie_seo.description: '__Gérer de façon globale le SEO de votre site'
 options_system.front_robot_no_index: "__Bloquer l'indexation de votre site pour les moteurs de recherches"
 options_system.front_robot_no_index_help: "__Si cette option est activé, les moteurs de recherches n'indexerons pas les pages de votre site"
-options_system.front_robot_no_follow: "__Bloquer le suivi des liens de votre site pour les moteurs de recherches"
-options_system.front_robot_no_follow_help: "__Si cette option est activé, les moteurs de recherches ne suivrons pas les liens dans les pages de votre site"
+options_system.front_robot_no_follow: '__Bloquer le suivi des liens de votre site pour les moteurs de recherches'
+options_system.front_robot_no_follow_help: '__Si cette option est activé, les moteurs de recherches ne suivrons pas les liens dans les pages de votre site'
 key_separator: '__séparateur artificiel pour séparer translate generate auto (sous cette ligne) et autre-------------------------------------------------------------------------------'
 pagedemo.page_title_h1: __pagedemo.page_title_h1
 date.diff.start: "__Il y'a"

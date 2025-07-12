@@ -159,3 +159,14 @@ page.page_comment.info: __page.page_comment.info
 page.page_comment.comment.open: __page.page_comment.comment.open
 page.page_comment.comment.close: __page.page_comment.comment.close
 page.page_comment.comment.moderate: __page.page_comment.comment.moderate
+page.page_seo.title: __page.page_seo.title
+page.page_seo.help.legend: __page.page_seo.help.legend
+page.page_seo.help.description: __page.page_seo.help.description
+page.page_seo.input.meta_description.label: __page.page_seo.input.meta_description.label
+page.page_seo.input.meta_description.help: __page.page_seo.input.meta_description.help
+page.page_seo.input.meta_keywords.label: __page.page_seo.input.meta_keywords.label
+page.page_seo.input.meta_keywords.help: __page.page_seo.input.meta_keywords.help
+page.page_seo.input.meta_author.label: __page.page_seo.input.meta_author.label
+page.page_seo.input.meta_author.help: __page.page_seo.input.meta_author.help
+page.page_seo.input.meta_copyright.label: __page.page_seo.input.meta_copyright.label
+page.page_seo.input.meta_copyright.help: __page.page_seo.input.meta_copyright.help

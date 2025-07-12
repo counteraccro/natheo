@@ -1,4 +1,4 @@
 front.footer.credit: '2023-{year} — Propulsé par Nathéo CMS {version}'
 front.footer.template.version: '{version}'
-front.footer.admin.link: 'Administration'
-front.footer.github.link: 'GitHub'
+front.footer.admin.link: Administration
+front.footer.github.link: GitHub
