@@ -120,6 +120,11 @@ class PageTranslate extends AppTranslate
             'list_render_help' => $this->translator->trans('page.page_save.list_render_help', domain: 'page'),
             'list_categories_label' => $this->translator->trans('page.page_content.list_categories_label', domain: 'page'),
             'list_categories_help' => $this->translator->trans('page.page_content.list_categories_help', domain: 'page'),
+            'header_img_title' => $this->translator->trans('page.page_content.header_img.title', domain: 'page'),
+            'header_img_help' => $this->translator->trans('page.page_content.header_img.help', domain: 'page'),
+            'header_img_no_img' => $this->translator->trans('page.page_content.header_img.no.img', domain: 'page'),
+            'header_img_remove' => $this->translator->trans('page.page_content.header_img.remove', domain: 'page'),
+            'header_img_change' => $this->translator->trans('page.page_content.header_img.change', domain: 'page'),
         ];
     }
 

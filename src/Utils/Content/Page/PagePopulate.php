@@ -105,6 +105,7 @@ class PagePopulate
         $this->page->setLandingPage(boolval($this->populate['landingPage']));
         $this->page->setIsOpenComment(boolval($this->populate['openComment']));
         $this->page->setRuleComment($this->populate['ruleComment']);
+        $this->page->setHeaderImg($this->populate['headerImg']);
     }
 
     /**

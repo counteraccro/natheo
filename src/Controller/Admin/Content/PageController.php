@@ -26,6 +26,7 @@ use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\PersonalData;
 use App\Utils\Translate\Content\PageTranslate;
+use App\Utils\Translate\MarkdownEditorTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -204,6 +205,7 @@ class PageController extends AppAdminController
     public function add(
         PageService         $pageService,
         PageTranslate       $pageTranslate,
+        MarkdownEditorTranslate $markdownEditorTranslate,
         CommentService      $commentService,
         OptionSystemService $optionSystemService,
         ?int                $id = null
@@ -223,6 +225,7 @@ class PageController extends AppAdminController
         ];
 
         $translate = $pageTranslate->getTranslate();
+        $translate['page_content_form']['mediatheque'] = $markdownEditorTranslate->getTranslateMediateque();
         $locales = $pageService->getLocales();
 
         return $this->render('admin/content/page/add_update.html.twig', [
@@ -253,7 +256,8 @@ class PageController extends AppAdminController
                 'liste_content_by_id' => $this->generateUrl('admin_page_liste_content_by_id'),
                 'is_unique_url_page' => $this->generateUrl('admin_page_is_unique_url_page'),
                 'info_render_block' => $this->generateUrl('admin_page_info_render_block'),
-                'page_preview' => $this->generateUrl('admin_page_preview')
+                'page_preview' => $this->generateUrl('admin_page_preview'),
+                'load_media' => $this->generateUrl('admin_media_load_medias'),
             ]
         ]);
     }

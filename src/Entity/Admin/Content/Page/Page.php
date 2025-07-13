@@ -99,6 +99,9 @@ class Page
     #[ORM\OneToMany(targetEntity: PageMeta::class, mappedBy: 'page', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $pageMetas;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $headerImg = null;
+
 
     public function __construct()
     {
@@ -513,6 +516,18 @@ class Page
                 $pageMeta->setPage(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getHeaderImg(): ?string
+    {
+        return $this->headerImg;
+    }
+
+    public function setHeaderImg(?string $headerImg): static
+    {
+        $this->headerImg = $headerImg;
 
         return $this;
     }

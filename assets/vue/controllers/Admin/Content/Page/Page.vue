@@ -602,6 +602,7 @@ export default {
         </div>
         <page-content-form :key="12 + '-' + this.componentKey"
                            :locale="this.currentLocale"
+                           :urls="this.urls"
                            :page="this.page"
                            :translate="this.translate.page_content_form"
                            :list-render="this.page_datas.list_render"
