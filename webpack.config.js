@@ -25,7 +25,7 @@ Encore
     .addEntry('admin_purple', './assets/styles/app_admin_purple.scss')
     .addEntry('admin_orange', './assets/styles/app_admin_orange.scss')
     .addEntry('install_css', './assets/styles/app_install.scss')
-    .addEntry('front_css', './assets/styles/app_front.css')
+    //.addEntry('front_css', './assets/styles/app_front.css')
     .addEntry('email', './assets/styles/app_email.scss')
     .addEntry('admin', './assets/app_admin.js')
     .addEntry('front', './assets/app_front.js')
