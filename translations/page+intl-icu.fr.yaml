@@ -169,4 +169,9 @@ page.page_seo.input.meta_author.help: "L'auteur de la page"
 page.page_seo.input.meta_copyright.label: 'Balise méta "copyright"'
 page.page_seo.input.meta_copyright.help: 'Le copyright de votre page'
 page.page_seo.help.legend: Information
-page.page_seo.help.description: Le SEO vous permet de facilité le référencement de votre page, il est important de prendre le temps de remplir correctement les données
+page.page_seo.help.description: 'Le SEO vous permet de facilité le référencement de votre page, il est important de prendre le temps de remplir correctement les données'
+page.page_content.header_img.title: 'Image en entête de la page'
+page.page_content.header_img.help: "Cette image apparaîtra en entête de page, elle doit être suffisament grande pour avoir un rendu correcte. Laissez vide pour ne pas mettre d'image sur votre page"
+page.page_content.header_img.no.img: 'Aucune image sélectionnée'
+page.page_content.header_img.remove: Supprimer
+page.page_content.header_img.change: Changer
