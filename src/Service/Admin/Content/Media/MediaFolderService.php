@@ -171,13 +171,18 @@ class MediaFolderService extends AppAdminService
 
         $filesystem = new Filesystem();
 
+
+
         if ($mediaFolder->getParent() != null &&
             !$filesystem->exists($this->rootPathMedia . $mediaFolder->getPath())) {
             return $this->createFolder($mediaFolder->getParent());
         }
 
-        $filesystem->mkdir($this->rootPathMedia . $mediaFolder->getPath() .
-            DIRECTORY_SEPARATOR . $mediaFolder->getName());
+        $path = $this->rootPathMedia . $mediaFolder->getPath() .
+            DIRECTORY_SEPARATOR . $mediaFolder->getName();
+        $path = str_replace(['\/', '\\'], DIRECTORY_SEPARATOR, $path);
+
+        $filesystem->mkdir($path);
         return true;
     }
 
@@ -194,7 +199,8 @@ class MediaFolderService extends AppAdminService
         if ($endDirectorySeparator) {
             $ds = DIRECTORY_SEPARATOR;
         }
-        return $this->rootPathMedia . $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $mediaFolder->getName() . $ds;
+        $path = $this->rootPathMedia . $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $mediaFolder->getName() . $ds;
+        return str_replace(['\/', '\\'], DIRECTORY_SEPARATOR, $path);
     }
 
     /** Retourne une liste de médiaFolder en fonction d'un médiaFolder
