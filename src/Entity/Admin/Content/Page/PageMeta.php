@@ -70,6 +70,18 @@ class PageMeta
         return $this->pageMetaTranslations;
     }
 
+    /**
+     * Retourne la traduction en fonction de la locale
+     * @param string $locale
+     * @return PageMetaTranslation
+     */
+    public function getPageMetaTranslationByLocale(string $locale): PageMetaTranslation
+    {
+        return $this->getPageMetaTranslations()->filter(function (PageMetaTranslation $pageMetaTranslation) use ($locale) {
+            return $pageMetaTranslation->getLocale() === $locale;
+        })->first();
+    }
+
     public function addPageMetaTranslation(PageMetaTranslation $pageMetaTranslation): static
     {
         if (!$this->pageMetaTranslations->contains($pageMetaTranslation)) {
