@@ -46,6 +46,7 @@ class ApiPageControllerTest extends AppApiTestCase
         $this->assertEquals($statistique->getValue()+1, $content['data']['page']['statistiques'][PageStatistiqueKey::KEY_PAGE_NB_READ]);
         $this->assertArrayHasKey('contents', $content['data']['page']);
         $this->assertArrayHasKey('menus', $content['data']['page']);
+        $this->assertArrayHasKey('seo', $content['data']['page']);
         $this->assertEquals($menu->getId(), $content['data']['page']['menus']['HEADER']['id']);
 
 
@@ -61,6 +62,7 @@ class ApiPageControllerTest extends AppApiTestCase
         $this->assertArrayNotHasKey('statistiques', $content['data']['page']);
         $this->assertArrayNotHasKey('menus', $content['data']['page']);
         $this->assertArrayNotHasKey('tags', $content['data']['page']);
+        $this->assertArrayHasKey('seo', $content['data']['page']);
 
         $this->client->request('GET', $this->router->generate('api_page_find', ['api_version' => self::API_VERSION, 'slug' => $slug, 'locale' => 'fr', 'show_menus' => true, 'show_tags' => false, 'show_statistiques' => true]),
             server: $this->getCustomHeaders()
@@ -74,6 +76,7 @@ class ApiPageControllerTest extends AppApiTestCase
         $this->assertArrayHasKey('statistiques', $content['data']['page']);
         $this->assertArrayHasKey('menus', $content['data']['page']);
         $this->assertArrayNotHasKey('tags', $content['data']['page']);
+        $this->assertArrayHasKey('seo', $content['data']['page']);
     }
 
 
