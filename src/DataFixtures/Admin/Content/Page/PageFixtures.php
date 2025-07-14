@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 1.2
  * Fixtures pour générer des pages
  */
 namespace App\DataFixtures\Admin\Content\Page;
@@ -11,6 +11,8 @@ use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\Content\Page\PageContentTranslation;
+use App\Entity\Admin\Content\Page\PageMeta;
+use App\Entity\Admin\Content\Page\PageMetaTranslation;
 use App\Entity\Admin\Content\Page\PageStatistique;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
@@ -53,6 +55,11 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                     case "pageStatistique":
                         foreach ($value as $pageStat) {
                             $page->addPageStatistique($this->populateEntity($pageStat, new PageStatistique()));
+                        }
+                        break;
+                    case "pageMeta":
+                        foreach ($value as $pageMet) {
+                            $page->addPageMeta($this->createPageMeta($pageMet));
                         }
                         break;
                     default:
@@ -107,6 +114,26 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
         }
 
         return $pageContent;
+    }
+
+    /**
+     * Permet de créer un nouveau pageMeta
+     * @param array $data
+     * @return PageMeta
+     */
+    private function createPageMeta(array $data): PageMeta {
+        $pageMeta = new PageMeta();
+        foreach ($data as $key => $value) {
+            if ($key === 'pageMetaTranslation') {
+                foreach ($value as $pageMetaTrans) {
+                    $pageMeta->addPageMetaTranslation($this->populateEntity($pageMetaTrans, new PageMetaTranslation()));
+                }
+            }
+            else {
+                $this->setData($key, $value, $pageMeta);
+            }
+        }
+        return $pageMeta;
     }
 
     public static function getGroups(): array

@@ -11,6 +11,8 @@ use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\Content\Page\PageContentTranslation;
+use App\Entity\Admin\Content\Page\PageMeta;
+use App\Entity\Admin\Content\Page\PageMetaTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Service\Admin\Content\Page\PageService;
 use Psr\Container\ContainerExceptionInterface;
@@ -22,24 +24,30 @@ class PagePopulate
      * Clé pageTranslations
      * @var string
      */
-    const KEY_PAGE_TRANSLATION = 'pageTranslations';
+    const string KEY_PAGE_TRANSLATION = 'pageTranslations';
 
     /**
      * Clé tags
      * @var string
      */
-    const KEY_TAGS = 'tags';
+    const string KEY_TAGS = 'tags';
 
     /**
      * Clé menus
      */
-    const KEY_MENUS = 'menus';
+    const string KEY_MENUS = 'menus';
 
     /**
      * Clé pageContents
      * @var string
      */
-    const KEY_PAGE_CONTENT = 'pageContents';
+    const string KEY_PAGE_CONTENT = 'pageContents';
+
+    /**
+     * Clé pageMeta
+     * @var string
+     */
+    const string KEY_PAGE_META = 'pageMetas';
 
     /**
      * @var Page
@@ -81,6 +89,7 @@ class PagePopulate
         $this->populatePageContent();
         $this->populateTags();
         $this->populateMenus();
+        $this->populatePageMeta();
         return $this;
     }
 
@@ -96,6 +105,7 @@ class PagePopulate
         $this->page->setLandingPage(boolval($this->populate['landingPage']));
         $this->page->setIsOpenComment(boolval($this->populate['openComment']));
         $this->page->setRuleComment($this->populate['ruleComment']);
+        $this->page->setHeaderImg($this->populate['headerImg']);
     }
 
     /**
@@ -195,6 +205,25 @@ class PagePopulate
                         $this->page->addPageContent($pageContent);
                     }
                 }
+            }
+        }
+    }
+
+    private function populatePageMeta(): void
+    {
+        if (isset($this->populate[self::KEY_PAGE_META])) {
+            $this->page->getPageMetas()->clear();
+            foreach ($this->populate[self::KEY_PAGE_META] as $dataMeta) {
+                $pageMeta = new PageMeta();
+                $pageMeta = $this->mergeData($pageMeta, $dataMeta,
+                    ['id', 'page', 'pageMetaTranslations']);
+
+                foreach($dataMeta['pageMetaTranslations'] as $dataPageMetaTranslation) {
+                    $pageMetaTranslation = new PageMetaTranslation();
+                    $pageMetaTranslation = $this->mergeData($pageMetaTranslation, $dataPageMetaTranslation, ['id', 'pageMeta']);
+                    $pageMeta->addPageMetaTranslation($pageMetaTranslation);
+                }
+                $this->page->addPageMeta($pageMeta);
             }
         }
     }
