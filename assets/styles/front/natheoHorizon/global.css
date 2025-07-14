@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import "../../../../node_modules/tailwindcss/dist/lib.d.mts";
 
 @theme {
     --color-platinum: oklch(0.8804 0.0162 201.68);
