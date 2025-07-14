@@ -1,11 +1,11 @@
 <script>
-import Header from "../../Components/Front/Header.vue";
-import Nav from "../../Components/Front/Nav.vue";
-import Main from "../../Components/Front/Main.vue";
-import Footer from "../../Components/Front/Footer/Footer.vue";
-import {AjaxApiRequest} from "../../../utils/Front/AjaxApiRequest.js";
-import Skeleton from "../../Components/Front/Skeleton.vue";
-import {UtilsFront} from "../../../utils/Front/UtilsFront";
+import Header from "../../../Components/Front/NatheoHorizon/Header.vue";
+import Nav from "../../../Components/Front/NatheoHorizon/Nav.vue";
+import Main from "../../../Components/Front/NatheoHorizon/Main.vue";
+import Footer from "../../../Components/Front/NatheoHorizon/Footer/Footer.vue";
+import {AjaxApiRequest} from "../../../../utils/Front/AjaxApiRequest.js";
+import Skeleton from "../../../Components/Front/NatheoHorizon/Skeleton.vue";
+import {UtilsFront} from "../../../../utils/Front/UtilsFront";
 
 /**
  * @author Gourdon Aymeric
