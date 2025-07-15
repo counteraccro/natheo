@@ -7,6 +7,7 @@
 
 namespace App\Service\Front;
 
+use App\Enum\Front\Template;
 use App\Utils\System\Options\OptionSystemKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -27,11 +28,27 @@ class AppFrontService extends AppFrontHandlerService
         $optionSystemService = $this->getOptionSystemService();
         $template = $optionSystemService->getValueByKey(OptionSystemKey::OS_THEME_FRONT_SITE);
 
-        $check = ['natheo_horizon', 'front_storm'];
-        if (!in_array($template, $check)) {
+        if (!in_array($template, Template::toArray())) {
             throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR,$translator->trans('front.error.not.template', ['template' => $template], domain: 'front_error') );
         }
-
         return 'front/' . $template;
+    }
+
+    /**
+     * Retourne la clé de génération des fichiers CSS et JS en fonction du template
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getScriptTags(): string
+    {
+        $translator = $this->getTranslator();
+        $optionSystemService = $this->getOptionSystemService();
+        $template = $optionSystemService->getValueByKey(OptionSystemKey::OS_THEME_FRONT_SITE);
+
+        if (!in_array($template, Template::toArray())) {
+            throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR,$translator->trans('front.error.not.scriptTag', ['template' => $template], domain: 'front_error') );
+        }
+        return 'front_' . $template;
     }
 }

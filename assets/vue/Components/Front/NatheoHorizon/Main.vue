@@ -1,6 +1,6 @@
 <script>
-import {AjaxApiRequest} from "../../../utils/Front/AjaxApiRequest";
-import {emitter} from "../../../utils/useEvent";
+import {AjaxApiRequest} from "../../../../utils/Front/AjaxApiRequest";
+import {emitter} from "../../../../utils/useEvent";
 
 /**
  * @author Gourdon Aymeric

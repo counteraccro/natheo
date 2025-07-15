@@ -28,7 +28,7 @@ Encore
     //.addEntry('front_css', './assets/styles/app_front.css')
     .addEntry('email', './assets/styles/app_email.scss')
     .addEntry('admin', './assets/app_admin.js')
-    .addEntry('front', './assets/app_front.js')
+    .addEntry('front_natheo_horizon', './assets/app_front.js')
     .addEntry('install', './assets/app_install.js')
     //.addEntry('main', './assets/main.ts')
 

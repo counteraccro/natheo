@@ -53,11 +53,11 @@ class IndexController extends AppFrontController
             return $this->redirectToRoute('installation_step_2');
         }
 
-        if(!$this->isOpenSite()) {
+        if (!$this->isOpenSite()) {
             return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'close.html.twig');
         }
 
-        if($locale === '') {
+        if ($locale === '') {
             $locale = $this->getParameter('app.default_locale');
         }
 
@@ -75,6 +75,12 @@ class IndexController extends AppFrontController
             'pageCategories' => $this->pageService->getAllCategories(),
         ];
 
-        return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig', ['urls' => $urls, 'datas' => $datas, "translate" => $frontTranslate->getTranslate()]);
+        return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig',
+            [
+                'urls' => $urls,
+                'datas' => $datas,
+                'translate' => $frontTranslate->getTranslate(),
+                'scriptsTag' => $this->getScriptTags(),
+            ]);
     }
 }

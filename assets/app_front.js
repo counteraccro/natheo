@@ -4,7 +4,7 @@
  * Point d'entrée pour le JS et CSS Front
  */
 
-import './styles/app_front.css';
+import './styles/app_front_natheo_horizon.css';
 
 // start the Stimulus application
 import './bootstrap';

@@ -59,6 +59,18 @@ class AppFrontController extends AbstractController
     }
 
     /**
+     * Retourne la cle scriptTag pour les scripts et css côté front, si template null, retourne le template courant
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getScriptTags(): string
+    {
+        return $this->optionSystemFrontService->getScriptTags();
+
+    }
+
+    /**
      * Return true si le site est ouvert, false sinon
      * @return bool
      * @throws ContainerExceptionInterface
