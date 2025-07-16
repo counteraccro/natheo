@@ -28,4 +28,32 @@ class OptionSystemFrontService extends AppFrontService
         }
         return false;
     }
+
+    /**
+     * Retourne les options lié aux robots
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getMetaRobots($format = false): array
+    {
+        $optionSystemService = $this->getOptionSystemService();
+        $robotNoFollow = $optionSystemService->getValueByKey(OptionSystemKey::OS_FRONT_ROBOT_NO_FOLLOW);
+        $robotNoIndex = $optionSystemService->getValueByKey(OptionSystemKey::OS_FRONT_ROBOT_NO_INDEX);
+
+        if($format) {
+
+            $return = [];
+            if(intval($robotNoFollow) === 1) {
+               $return[] = ['name' => 'robots', 'value' => 'nofollow'];
+            }
+            if(intval($robotNoIndex) === 1) {
+                $return[] = ['name' => 'robots', 'value' => 'noindex'];
+            }
+            return $return;
+        }
+
+        return [OptionSystemKey::OS_FRONT_ROBOT_NO_FOLLOW => $robotNoFollow,
+            OptionSystemKey::OS_FRONT_ROBOT_NO_INDEX => $robotNoIndex];
+    }
 }

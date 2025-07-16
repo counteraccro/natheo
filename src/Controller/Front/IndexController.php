@@ -7,6 +7,7 @@
 
 namespace App\Controller\Front;
 
+use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\System\User;
 use App\Utils\Translate\Front\FrontTranslate;
 use Psr\Container\ContainerExceptionInterface;
@@ -75,12 +76,20 @@ class IndexController extends AppFrontController
             'pageCategories' => $this->pageService->getAllCategories(),
         ];
 
+        $seoRobots = $this->optionSystemFrontService->getMetaRobots(true);
+        $pageMetaRepo = $this->getRepository(PageMeta::class);
+        $seoPage = $pageMetaRepo->getMetasByPageAndLocale($locale, $slug);
+
+        $seo = array_merge($seoPage, $seoRobots);
+
+
         return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig',
             [
                 'urls' => $urls,
                 'datas' => $datas,
                 'translate' => $frontTranslate->getTranslate(),
                 'scriptsTag' => $this->getScriptTags(),
+                'metaSeo' => $seo,
             ]);
     }
 }

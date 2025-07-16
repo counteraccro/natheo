@@ -10,6 +10,8 @@ namespace App\Controller\Front;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Front\OptionSystemFrontService;
 use App\Service\Installation\InstallationService;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -33,11 +35,14 @@ class AppFrontController extends AbstractController
      */
     protected InstallationService $installationService;
 
+    protected EntityManagerInterface $entityManager;
+
     public function __construct(
         #[AutowireLocator([
             'optionSystemFront' => OptionSystemFrontService::class,
             'pageService' => PageService::class,
             'installationService' => InstallationService::class,
+            'entityManager' => EntityManagerInterface::class
         ])]
         private readonly ContainerInterface $handlers
     )
@@ -45,6 +50,7 @@ class AppFrontController extends AbstractController
         $this->optionSystemFrontService = $this->handlers->get('optionSystemFront');
         $this->pageService = $this->handlers->get('pageService');
         $this->installationService = $this->handlers->get('installationService');
+        $this->entityManager = $this->handlers->get('entityManager');
     }
 
     /**
@@ -79,5 +85,15 @@ class AppFrontController extends AbstractController
     public function isOpenSite(): bool
     {
         return $this->optionSystemFrontService->isOpenSite();
+    }
+
+    /**
+     * Retourne un entityManager en fonction de son entité
+     * @param string $entity
+     * @return EntityRepository
+     */
+    public function getRepository(string $entity): EntityRepository
+    {
+        return $this->entityManager->getRepository($entity);
     }
 }
