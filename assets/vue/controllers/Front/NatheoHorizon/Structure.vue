@@ -78,6 +78,7 @@ export default {
 
       let success = (data) => {
         this.page = data.page;
+        document.title = this.page.title;
       }
       this.ajaxRequest.getPageBySlug(params, success, this.apiFailure, isLoadOk);
     },
