@@ -55,7 +55,7 @@ class IndexController extends AppFrontController
         }
 
         if (!$this->isOpenSite()) {
-            return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'close.html.twig');
+            return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'close.html.twig', ['scriptsTag' => $this->getScriptTags()]);
         }
 
         if ($locale === '') {
