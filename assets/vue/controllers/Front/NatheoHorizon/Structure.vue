@@ -1,7 +1,7 @@
 <script>
 import Header from "../../../Components/Front/NatheoHorizon/Header.vue";
 import Nav from "../../../Components/Front/NatheoHorizon/Nav.vue";
-import Main from "../../../Components/Front/NatheoHorizon/Main.vue";
+import Main from "../../../Components/Front/NatheoHorizon/Main/Main.vue";
 import Footer from "../../../Components/Front/NatheoHorizon/Footer/Footer.vue";
 import {AjaxApiRequest} from "../../../../utils/Front/AjaxApiRequest.js";
 import Skeleton from "../../../Components/Front/NatheoHorizon/Skeleton.vue";
@@ -114,6 +114,7 @@ export default {
   </nav>
   <main>
     <Main
+        :page="this.page"
         :ajax-request="this.ajaxRequest"
         @api-failure="this.apiFailure"
         @api-loader="this.apiLoader"
