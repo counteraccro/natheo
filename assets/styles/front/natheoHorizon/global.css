@@ -8,6 +8,7 @@
     --color-blue-two: oklch(0.8042 0.0779 205.11);
     --color-blue-two-150: oklch(0.9267 0.0297 204.5);
     --color-cerulean: oklch(0.5554 0.1106 229.95);
+    --color-cerulean-750: oklch(0.6405 0.129199 231.0549);
     --color-prussian-blue: oklch(0.2996 0.0639 235.39);
 
     --color-theme-1 : var(--color-platinum);
@@ -17,7 +18,21 @@
     --color-theme-3 : var(--color-blue-two);
     --color-theme-3-150 : var(--color-blue-two-150);
     --color-theme-4 : var(--color-cerulean);
+    --color-theme-4-750: var(--color-cerulean-750);
     --color-theme-5 : var(--color-prussian-blue);
+}
+
+/*** ELEMENT HTML ***/
+a {
+    @apply text-theme-4 hover:text-theme-5 active:text-theme-4
+}
+/*** FIN ELEMENT HTML ***/
+
+/*** CSS MENU VERTICAL ***/
+.vertical-menu {
+    .select {
+        @apply bg-theme-4-750 text-slate-700 hover:text-slate-700;
+    }
 }
 
 /*** CSS BOUTON **/
@@ -32,9 +47,4 @@
 
 /*** FIN CSS BOUTON **/
 
-/*** ELEMENT HTML ***/
-a {
-    @apply text-theme-4 hover:text-theme-5 active:text-theme-4
-}
 
-/*** FIN ELEMENT HTML ***/

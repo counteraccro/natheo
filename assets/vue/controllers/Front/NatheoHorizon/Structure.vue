@@ -114,6 +114,7 @@ export default {
   </nav>
   <main>
     <Main
+        :utils-front="this.utilsFront"
         :page="this.page"
         :ajax-request="this.ajaxRequest"
         @api-failure="this.apiFailure"

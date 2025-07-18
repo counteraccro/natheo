@@ -12,6 +12,7 @@ export default {
   name: 'Main',
   components: {VerticalMenu},
   props: {
+    utilsFront: Object,
     page: Object,
     ajaxRequest: Object
   },
@@ -52,8 +53,10 @@ export default {
   </div>
 
   <div v-else-if="this.page.menus.LEFT" class="grid grid-cols-12 gap-2 mt-2">
-    <div class="col-span-12 md:col-span-2 rounded bg-gray-300">
+    <div class="col-span-12 md:col-span-2">
       <VerticalMenu
+          :utils-front="this.utilsFront"
+          :slug="this.page.slug"
           :menu="this.page.menus.LEFT"
       />
     </div>

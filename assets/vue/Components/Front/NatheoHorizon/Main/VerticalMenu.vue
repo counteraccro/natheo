@@ -1,6 +1,8 @@
 <script>
 
 
+import structure from "../../../../controllers/Front/NatheoHorizon/Structure.vue";
+
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -9,6 +11,8 @@
 export default {
   name: 'VerticalMenu',
   props: {
+    utilsFront: Object,
+    slug: String,
     menu: Object,
     ajaxRequest: Object
   },
@@ -23,14 +27,30 @@ export default {
   },
 
   methods: {
+    /**
+     * Génère une url
+     * @param element
+     * @returns {*}
+     */
+    generateUrl(element) {
+      return this.utilsFront.getUrl(element);
+    }
   }
 }
 </script>
 
 <template>
+
+  <ul class="space-y-1 vertical-menu">
+    <li v-for="element in this.menu.elements">
+      <a v-if="!element.elements" class="block rounded-lg px-4 py-2 text-sm font-medium" :class="this.slug === element.slug ? 'select' : ''" :href="generateUrl(element)" :target="element.target">{{ element.label }}</a>
+      <a v-else :href="aa" target="{{ element.target }}">{{ element.label }}</a>
+    </li>
+  </ul>
+
   <ul class="space-y-1">
     <li>
-      <a href="#" class="block rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700">
+      <a href="#" class="block rounded-lg bg-theme-4 px-4 py-2 text-sm font-medium text-theme-5">
         General
       </a>
     </li>
@@ -38,41 +58,31 @@ export default {
     <li>
       <details class="group [&_summary::-webkit-details-marker]:hidden">
         <summary
-            class="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-        >
+            class="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-theme-4 hover:text-gray-700">
           <span class="text-sm font-medium"> Teams </span>
-
           <span class="shrink-0 transition duration-300 group-open:-rotate-180">
-          <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="size-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-          >
-            <path
-                fill-rule="evenodd"
-                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                clip-rule="evenodd"
-            />
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="size-5"
+               viewBox="0 0 20 20"
+               fill="currentColor">
+            <path fill-rule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clip-rule="evenodd"/>
           </svg>
         </span>
         </summary>
 
         <ul class="mt-2 space-y-1 px-4">
           <li>
-            <a
-                href="#"
-                class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-            >
+            <a href="#"
+               class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
               Banned Users
             </a>
           </li>
 
           <li>
-            <a
-                href="#"
-                class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-            >
+            <a href="#"
+               class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
               Calendar
             </a>
           </li>
@@ -81,18 +91,15 @@ export default {
     </li>
 
     <li>
-      <a
-          href="#"
-          class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-      >
+      <a href="#"
+         class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
         Billing
       </a>
     </li>
 
     <li>
-      <a
-          href="#"
-          class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+      <a href="#"
+         class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
       >
         Invoices
       </a>
