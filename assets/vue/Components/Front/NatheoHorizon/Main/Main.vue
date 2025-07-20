@@ -58,6 +58,7 @@ export default {
           :utils-front="this.utilsFront"
           :slug="this.page.slug"
           :menu="this.page.menus.LEFT"
+          :deep="0"
       />
     </div>
     <div class="col-span-12 md:col-span-10 rounded bg-gray-300">Content</div>
