@@ -52,7 +52,7 @@ export default {
     },
 
     getClassA(element) {
-      let cssClass = 'block rounded-lg pr-4 py-2 text-sm font-medium pl-4';
+      let cssClass = 'block rounded-lg pr-4 py-2 text-sm font-medium pl-4 hover:bg-theme-4-750 hover:text-gray-700';
       let select = '';
 
       if (this.slug === element.slug) {
