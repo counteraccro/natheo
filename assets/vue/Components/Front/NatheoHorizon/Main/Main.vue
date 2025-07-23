@@ -56,6 +56,7 @@ export default {
     <div class="col-span-12 md:col-span-2">
       <VerticalMenu
           :utils-front="this.utilsFront"
+          :type="this.page.menus.LEFT.type"
           :slug="this.page.slug"
           :menu="this.page.menus.LEFT"
           :deep="0"

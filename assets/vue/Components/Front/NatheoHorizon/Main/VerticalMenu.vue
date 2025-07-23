@@ -1,7 +1,8 @@
 <script>
 
 
-import structure from "../../../../controllers/Front/NatheoHorizon/Structure.vue";
+
+import {MenuType} from "../../../../../utils/Front/Const/Menu";
 
 /**
  * @author Gourdon Aymeric
@@ -10,8 +11,14 @@ import structure from "../../../../controllers/Front/NatheoHorizon/Structure.vue
  */
 export default {
   name: 'VerticalMenu',
+  computed: {
+    MenuType() {
+      return MenuType
+    }
+  },
   props: {
     utilsFront: Object,
+    type: Number,
     slug: String,
     menu: Object,
     deep: Number
@@ -63,7 +70,7 @@ export default {
         return cssClass + ' ' + select;
       }
       return cssClass + ' text-gray-500 hover:bg-theme-4-750 hover:text-gray-700 ' + select;
-    }
+    },
   }
 }
 </script>
@@ -72,14 +79,14 @@ export default {
 
   <ul :class="this.getClassUl()" :style="'margin-left: ' + this.deep + ' em'">
     <li v-for="element in this.menuElement">
-      <a v-if="!element.elements" :class="this.getClassA(element)" :href="generateUrl(element)"
+      <a v-if="!element.elements || this.type === MenuType.leftRightSideBar" :class="this.getClassA(element)" :href="generateUrl(element)"
          :target="element.target">{{ element.label }}</a>
 
-      <details v-else :tabindex="this.deep" class="[&_summary::-webkit-details-marker]:hidden">
+      <details v-else :tabindex="this.deep" class="group [&_summary::-webkit-details-marker]:hidden">
         <summary
             class="flex cursor-pointer items-center justify-between rounded-lg p-4 py-2 text-gray-500 hover:bg-theme-4-750 hover:text-gray-700">
           <span class="text-sm font-medium"> {{ element.label }} </span>
-          <span class="shrink-0 transition duration-300 in-open:-rotate-180">
+          <span class="shrink-0 transition duration-300 group-open:-rotate-180">
           <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
                   d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -88,12 +95,15 @@ export default {
         </span>
         </summary>
 
+        <div>
         <VerticalMenu
             :utils-front="this.utilsFront"
+            :type="this.type"
             :slug="this.slug"
             :menu="element.elements"
             :deep="this.deep + 1"
         />
+        </div>
       </details>
     </li>
   </ul>

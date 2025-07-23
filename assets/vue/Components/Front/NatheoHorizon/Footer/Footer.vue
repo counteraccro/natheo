@@ -1,5 +1,6 @@
 <script>
 import FooterColonne from "./FooterColonne.vue";
+import {MenuType} from "../../../../../utils/Front/Const/Menu";
 
 /**
  * @author Gourdon Aymeric
@@ -20,9 +21,9 @@ export default {
   data() {
     return {
       menuType: {
-        colonne: 16,
-        left: 17,
-        center: 18
+        colonne: MenuType.footer4Column,
+        left: MenuType.footer1LigneRight,
+        center: MenuType.footer1LigneCenter
       },
       css: {
         16: {
