@@ -719,12 +719,31 @@ menu:
     disabled: 0
     defaultMenu: true
     menuElement:
+      menu_left_landing_page:
+        page: Page_presentation
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Index'
+            externalLink: ''
+          es:
+            locale: es
+            textLink: 'es-index'
+            externalLink: ''
+          en:
+            locale: en
+            textLink: 'en-index'
+            externalLink: ''
       listing_menu_left:
         page: ''
         disabled: 0
         columnPosition: 1
-        rowPosition: 1
-        linkTarget: '_blank'
+        rowPosition: 2
+        linkTarget: '_self'
         menuElementTranslation:
           fr:
             locale: fr
@@ -744,7 +763,7 @@ menu:
         disabled: 0
         columnPosition: 1
         rowPosition: 1
-        linkTarget: '_blank'
+        linkTarget: '_self'
         menuElementTranslation:
           fr:
             locale: fr
@@ -764,7 +783,7 @@ menu:
         disabled: 0
         columnPosition: 1
         rowPosition: 1
-        linkTarget: '_blank'
+        linkTarget: '_self'
         menuElementTranslation:
           fr:
             locale: fr
@@ -784,7 +803,7 @@ menu:
         disabled: 0
         columnPosition: 1
         rowPosition: 2
-        linkTarget: '_blank'
+        linkTarget: '_self'
         menuElementTranslation:
           fr:
             locale: fr
@@ -804,7 +823,7 @@ menu:
         disabled: 0
         columnPosition: 1
         rowPosition: 3
-        linkTarget: '_blank'
+        linkTarget: '_self'
         menuElementTranslation:
           fr:
             locale: fr
@@ -824,7 +843,7 @@ menu:
         disabled: 0
         columnPosition: 2
         rowPosition: 1
-        linkTarget: '_blank'
+        linkTarget: '_self'
         menuElementTranslation:
           fr:
             locale: fr
@@ -844,7 +863,7 @@ menu:
         disabled: 0
         columnPosition: 1
         rowPosition: 1
-        linkTarget: '_blank'
+        linkTarget: '_self'
         menuElementTranslation:
           fr:
             locale: fr
@@ -864,7 +883,7 @@ menu:
         disabled: 0
         columnPosition: 1
         rowPosition: 2
-        linkTarget: '_blank'
+        linkTarget: '_self'
         menuElementTranslation:
           fr:
             locale: fr
@@ -878,6 +897,164 @@ menu:
             locale: en
             textLink: 'en-page-blog'
             externalLink: '#'
+      divers:
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 3
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Divers'
+            externalLink: ''
+          es:
+            locale: es
+            textLink: 'es-divers'
+            externalLink: ''
+          en:
+            locale: en
+            textLink: 'en-divers'
+            externalLink: ''
+      divers_git:
+        page: ''
+        parent: divers
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Git officiel'
+            externalLink: 'https://github.com/counteraccro/natheo'
+          es:
+            locale: es
+            textLink: 'es-Git officiel'
+            externalLink: 'https://github.com/counteraccro/natheo'
+          en:
+            locale: en
+            textLink: 'en-Git officiel'
+            externalLink: 'https://github.com/counteraccro/natheo'
+      divers_partenaires:
+        page: ''
+        parent: divers
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 2
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Partenaires'
+            externalLink: ''
+          es:
+            locale: es
+            textLink: 'es-partenaires'
+            externalLink: ''
+          en:
+            locale: en
+            textLink: 'en-partenaires'
+            externalLink: ''
+      divers_partenaire_1:
+        parent: divers_partenaires
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'partenaire 1'
+            externalLink: 'https://partenaire-1.com'
+          es:
+            locale: es
+            textLink: 'es-Partenaire 1'
+            externalLink: 'https://partenaire-1.com'
+          en:
+            locale: en
+            textLink: 'en-Partenaire 1'
+            externalLink: 'https://partenaire-1.com'
+      divers_partenaire_2:
+        parent: divers_partenaires
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 2
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Partenaire 2'
+            externalLink: 'https://partenaire-2.com'
+          es:
+            locale: es
+            textLink: 'es-Partenaire 2'
+            externalLink: 'https://partenaire-2.com'
+          en:
+            locale: en
+            textLink: 'en-Partenaire 2'
+            externalLink: 'https://partenaire-2.com'
+      divers_partenaire_3:
+        parent: divers_partenaires
+        page: ''
+        disabled: 0
+        columnPosition: 2
+        rowPosition: 3
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Partenaire 3'
+            externalLink: 'https://partenaire-3.com'
+          es:
+            locale: es
+            textLink: 'es-Partenaire 5'
+            externalLink: 'https://partenaire-3.com'
+          en:
+            locale: en
+            textLink: 'en-Partenaire 5'
+            externalLink: 'https://partenaire-3.com'
+      generic_societe:
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 4
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Société'
+            externalLink: ''
+          es:
+            locale: es
+            textLink: 'es-Société'
+            externalLink: ''
+          en:
+            locale: en
+            textLink: 'en-Société'
+            externalLink: ''
+      generic_a_propos:
+        parent: generic_societe
+        page: ''
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'A propos de nous'
+            externalLink: 'https://natheo-cms.com/fr/about-us'
+          es:
+            locale: es
+            textLink: 'es-A propos de nous'
+            externalLink: 'https://natheo-cms.com/es/about-us'
+          en:
+            locale: en
+            textLink: 'en-A propos de nous'
+            externalLink: 'https://natheo-cms.com/en/about-us'
   menu_left_page:
     user: User
     name: Menu left pour Page

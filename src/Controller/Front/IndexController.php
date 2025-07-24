@@ -43,7 +43,7 @@ class IndexController extends AppFrontController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/{locale}/{slug}', name: 'index')]
-    #[Route('/{locale}/{category}/{slug}', name: 'index_2', requirements: ['category' => 'faq|page|article|projet|blog|evenement|documentation'])]
+    #[Route('/{locale}/{category}/{slug}', name: 'index_2', requirements: ['category' => 'faq|page|article|projet|blog|evenement|documentation|evolution'])]
     public function index(Request $request, FrontTranslate $frontTranslate, ?string $locale = '', ?string $slug = null): Response
     {
         if (!$this->installationService->checkSchema()) {
@@ -55,7 +55,7 @@ class IndexController extends AppFrontController
         }
 
         if (!$this->isOpenSite()) {
-            return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'close.html.twig');
+            return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'close.html.twig', ['scriptsTag' => $this->getScriptTags()]);
         }
 
         if ($locale === '') {

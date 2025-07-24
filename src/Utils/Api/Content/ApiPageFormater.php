@@ -35,6 +35,7 @@ class ApiPageFormater
         $pageTranslation = $this->page->getPageTranslationByLocale($this->dto->getLocale());
 
         $this->return['title'] = $pageTranslation->getTitre();
+        $this->return['slug'] = $pageTranslation->getUrl();
         $this->return['render'] = $this->page->getRender();
         $this->return['author'] = $this->getAuthor($this->page->getUser());
         $this->return['created'] = $this->page->getCreatedAt()->getTimestamp();
