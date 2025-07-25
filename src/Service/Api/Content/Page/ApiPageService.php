@@ -19,6 +19,7 @@ use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
 use App\Service\Api\Content\ApiMenuService;
 use App\Utils\Api\Content\ApiPageFormater;
+use App\Utils\Content\Menu\MenuConst;
 use App\Utils\Content\Page\PageStatistiqueKey;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\PersonalData;
@@ -66,13 +67,30 @@ class ApiPageService extends AppApiService
             $tabDefault[$default['position']] = $default['id'];
         }
 
+        $isRightMenu = $isLeftMenu = false;
         foreach ($page->getMenus() as $menu) {
             unset($tabDefault[$menu->getPosition()]);
+            if ($menu->getPosition() === MenuConst::POSITION_RIGHT) {
+                $isRightMenu = true;
+            }
+
+            if ($menu->getPosition() === MenuConst::POSITION_LEFT) {
+                $isLeftMenu = true;
+            }
+
             $pageApi = $this->getFormatedMenu($menu->getId(), $dto->getLocale(), $pageApi, $apiMenuService, $menuRepo);
         }
 
+
         if (!empty($tabDefault)) {
-            foreach ($tabDefault as $id) {
+            foreach ($tabDefault as $position => $id) {
+                if ($position === MenuConst::POSITION_LEFT && $isRightMenu) {
+                    continue;
+                }
+
+                if ($position === MenuConst::POSITION_RIGHT && $isLeftMenu) {
+                    continue;
+                }
                 $pageApi = $this->getFormatedMenu($id, $dto->getLocale(), $pageApi, $apiMenuService, $menuRepo);
             }
         }
