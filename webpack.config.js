@@ -25,9 +25,10 @@ Encore
     .addEntry('admin_purple', './assets/styles/app_admin_purple.scss')
     .addEntry('admin_orange', './assets/styles/app_admin_orange.scss')
     .addEntry('install_css', './assets/styles/app_install.scss')
+    //.addEntry('front_css', './assets/styles/app_front.css')
     .addEntry('email', './assets/styles/app_email.scss')
     .addEntry('admin', './assets/app_admin.js')
-    .addEntry('front', './assets/app_front.js')
+    .addEntry('front_natheo_horizon', './assets/app_front.js')
     .addEntry('install', './assets/app_install.js')
     //.addEntry('main', './assets/main.ts')
 
@@ -49,10 +50,11 @@ Encore
      * https://symfony.com/doc/current/frontend.html#adding-more-features
      */
     .cleanupOutputBeforeBuild()
-    .enableBuildNotifications()
-    .enableSourceMaps(!Encore.isProduction())
+    //.enableBuildNotifications()
+    //.enableSourceMaps(!Encore.isProduction())
     // enables hashed filenames (e.g. app.abc123.css)
     //.enableVersioning(Encore.isProduction())
+    .enableVersioning()
 
     // configure Babel
     // .configureBabel((config) => {
@@ -70,6 +72,8 @@ Encore
 
     // uncomment if you use TypeScript
     .enableTypeScriptLoader()
+
+    .enablePostCssLoader()
 
     // uncomment if you use React
     //.enableReactPreset()

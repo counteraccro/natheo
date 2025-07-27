@@ -64,9 +64,11 @@ class ApiMenuFormater
             if ($element->getPage() !== null) {
                 $url = '';
                 $slug = $element->getPage()->getPageTranslationByLocale($this->locale)->getUrl();
+                $category =  $element->getPage()->getCategory();
             } else {
                 $url = $elementTranslation->getExternalLink();
                 $slug = '';
+                $category = '';
             }
 
             $return[$i] = [
@@ -75,6 +77,7 @@ class ApiMenuFormater
                 'label' => $elementTranslation->getTextLink(),
                 'url' => $url,
                 'slug' => $slug,
+                'category' => $category,
                 'columnPosition' => $element->getColumnPosition(),
                 'rowPosition' => $element->getRowPosition(),
             ];

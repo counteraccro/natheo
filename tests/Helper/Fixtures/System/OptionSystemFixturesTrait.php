@@ -199,5 +199,11 @@ trait OptionSystemFixturesTrait
             'value' => 1,
         ];
         $this->createOptionSystem($data);
+
+        $data = [
+            'key' => OptionSystemKey::OS_THEME_FRONT_SITE,
+            'value' => 'natheo_horizon',
+        ];
+        $this->createOptionSystem($data);
     }
 }

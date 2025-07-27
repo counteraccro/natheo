@@ -191,11 +191,65 @@ class OptionSystemKey
      * Clé option theme du front site
      * @var string
      */
-    const string OS_THEME_FRONT_SITE  = 'OS_THEME_FRONT_SITE ';
+    const string OS_THEME_FRONT_SITE  = 'OS_THEME_FRONT_SITE';
 
     /**
-     * Valeur par défaut du theme front du site
+     * Clé option front, texte en bas du footer
      * @var string
      */
-    const string OS_THEME_FRONT_SITE_DEFAULT_VALUE  = 'Natheo-Horizon';
+    const string OS_FRONT_FOOTER_TEXTE  = 'OS_FRONT_FOOTER_TEXTE';
+
+    /**
+     * Clé option front, url réseau social GITHUB
+     * @var string
+     */
+    const string OS_FRONT_FOOTER_SOCIAL_GITHUB_URL = 'OS_FRONT_FOOTER_SOCIAL_GITHUB_URL';
+
+    /**
+     * Clé option front, url réseau social Linkedin
+     * @var string
+     */
+    const string OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL = 'OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL';
+
+    /**
+     * Clé option front, url réseau social Youtube
+     * @var string
+     */
+    const string OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL = 'OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL';
+
+    /**
+     * Clé option front, url réseau social X
+     * @var string
+     */
+    const string OS_FRONT_FOOTER_SOCIAL_X_URL = 'OS_FRONT_FOOTER_SOCIAL_X_URL';
+
+    /**
+     * Clé option front, url réseau social facebook
+     * @var string
+     */
+    const string OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL = 'OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL';
+
+    /**
+     * Clé option front, url réseau social instagram
+     * @var string
+     */
+    const string OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL = 'OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL';
+
+    /**
+     * Clé option front, url réseau social tiktok
+     * @var string
+     */
+    const string OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL = 'OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL';
+
+    /**
+     * Clé option front, pas d'indexation pour les robots
+     */
+    const string OS_FRONT_ROBOT_NO_INDEX = 'OS_FRONT_ROBOT_NO_INDEX';
+
+    /**
+     * Clé option front, pas de suivi des liens
+     */
+    const string OS_FRONT_ROBOT_NO_FOLLOW = 'OS_FRONT_ROBOT_NO_FOLLOW';
+
+
 }
