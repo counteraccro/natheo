@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * Service pour générer la sitemap API
  * @author Gourdon Aymeric
  * @version 1.0
  */
@@ -8,7 +8,10 @@
 namespace App\Service\Api\Global;
 
 use App\Entity\Admin\Content\Page\Page;
+use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
+use App\Utils\Content\Page\PageConst;
+use App\Utils\System\Options\OptionSystemKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -22,27 +25,22 @@ class ApiSitemapService extends AppApiService
      */
     public function getSitemap(): array
     {
-
+        /** @var PageRepository $pageRepo */
         $pageRepo = $this->getRepository(Page::class);
+        $pages = $pageRepo->findBy(['status' => PageConst::STATUS_PUBLISH], ['updateAt' => 'DESC']);
+        $pageService = $this->getPageService();
 
         $return = [];
-
-        /*
-         * $urls[] = [
-                'loc' => $this->generateUrl('post_show', [
-                    'slug' => $post->getSlug(),
-                ]),
-                'priority' => '1.00',
-                'lastmod' => $post->getUpdatedAt()->format('Y-m-d')
-            ];
-         */
-
-        $return[] = [
-            'loc' => 'aaaa',
-            'priority' => '1.0',
-            'lastmod' => (new \DateTime())->format('Y-m-d')
-        ];
-
+        foreach ($pages as $page) {
+            foreach($page->getPageTranslations() as $pageTranslation) {
+                $url = '/' . $pageTranslation->getLocale() . '/' . strtolower($pageService->getCategoryById($page->getCategory()))  . '/' . $pageTranslation->getUrl();
+                $return[] = [
+                    'loc' => $url,
+                    'priority' => '1.00',
+                    'lastmod' => $page->getUpdateAt()->format(DATE_ATOM),
+                ];
+            }
+        }
         return $return;
     }
 }
