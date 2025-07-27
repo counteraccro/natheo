@@ -54,6 +54,7 @@ class FrontTranslate extends AppTranslate
             'templateVersion' => $this->translator->trans('front.footer.template.version', ['version' => $parameterBag->get('app.natheo_horizon.version')], 'front'),
             'adminLink' => $this->translator->trans('front.footer.admin.link', domain: 'front'),
             'githubLink' => $this->translator->trans('front.footer.github.link', domain: 'front'),
+            'sitemapLink' => $this->translator->trans('front.footer.sitemap.link', domain: 'front'),
         ];
     }
 }

@@ -144,6 +144,10 @@ export default {
            class="hover:text-slate-900 text-slate-600 text-sm font-normal">{{ this.translate.adminLink }}</a>
       </li>
       <li>
+        <a :href="this.urls.sitemap"
+           class="hover:text-slate-900 text-slate-600 text-sm font-normal">{{ this.translate.sitemapLink }}</a>
+      </li>
+      <li>
         <a href='#' class="hover:text-slate-900 text-slate-600 text-sm font-normal">{{ translate.templateVersion }}</a>
       </li>
     </ul>

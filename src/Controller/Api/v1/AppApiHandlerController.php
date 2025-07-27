@@ -12,6 +12,7 @@ use App\Service\Api\Content\ApiCommentService;
 use App\Service\Api\Content\ApiMenuService;
 use App\Service\Api\Content\Page\ApiPageContentService;
 use App\Service\Api\Content\Page\ApiPageService;
+use App\Service\Api\Global\ApiSitemapService;
 use App\Service\Api\System\User\ApiUserService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -32,6 +33,7 @@ class AppApiHandlerController extends AbstractController
             'apiPageService' => ApiPageService::class,
             'apiPageContentService' => ApiPageContentService::class,
             'apiCommentService' => ApiCommentService::class,
+            'apiSitemapService' => ApiSitemapService::class,
         ])]
         protected ContainerInterface $handlers
     ){}
@@ -122,5 +124,16 @@ class AppApiHandlerController extends AbstractController
     protected function getApiCommentService(): ApiCommentService
     {
         return $this->handlers->get('apiCommentService');
+    }
+
+    /**
+     * Retourne un ApiSitemapService
+     * @return ApiSitemapService
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function getApiSitemapService(): ApiSitemapService
+    {
+        return $this->handlers->get('apiSitemapService');
     }
 }

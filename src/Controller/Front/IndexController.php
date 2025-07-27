@@ -9,6 +9,7 @@ namespace App\Controller\Front;
 
 use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\System\User;
+use App\Service\Api\Global\ApiSitemapService;
 use App\Utils\Translate\Front\FrontTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -21,6 +22,26 @@ use Symfony\Component\Routing\Annotation\Route;
     defaults: ["_locale" => "%app.default_locale%"])]
 class IndexController extends AppFrontController
 {
+
+    /**
+     * Génération du sitemap du site
+     * @param Request $request
+     * @param ApiSitemapService $apiSitemapService
+     * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/sitemap.xml', name: 'sitemap', format: 'xml')]
+    public function sitemap(Request $request, ApiSitemapService $apiSitemapService) :Response{
+        $hostname = $request->getSchemeAndHttpHost();
+
+        $xml = $this->renderView($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'sitemap.xml.twig', [
+            'urls' => $apiSitemapService->getSitemap(),
+            'hostname' => $hostname
+        ]);
+        return new Response($xml, 200, ['Content-Type' => 'text/xml']);
+    }
+
     /**
      * Route qui sert uniquement à redirigé vers la connexion avec la bonne locale
      * @return RedirectResponse
@@ -67,7 +88,8 @@ class IndexController extends AppFrontController
         $urls = [
             'apiPageFind' => $this->generateUrl('api_page_find', ['api_version' => $version]),
             'apiOptionsSystems' => $this->generateUrl('api_options_systems_listing', ['api_version' => $version]),
-            'adminAuth' => $this->generateUrl('admin_dashboard_index')
+            'adminAuth' => $this->generateUrl('admin_dashboard_index'),
+            'sitemap' => $this->generateUrl('front_sitemap'),
         ];
 
         $datas = [
