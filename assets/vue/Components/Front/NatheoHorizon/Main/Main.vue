@@ -44,7 +44,7 @@ export default {
 
 <template>
   <div v-if="this.page.menus.LEFT && this.page.menus.RIGHT" class="grid grid-cols-12 gap-2 mt-2">
-    <div class="col-span-12 md:col-span-2 md:order-1">
+    <div class="col-span-12 lg:col-span-2 lg:order-1">
       <VerticalMenu
           :utils-front="this.utilsFront"
           :type="this.page.menus.LEFT.type"
@@ -53,8 +53,8 @@ export default {
           :deep="0"
       />
     </div>
-    <div class="col-span-12 md:col-span-8 md:order-2 order-3 rounded bg-gray-300">Content</div>
-    <div class="col-span-12 md:col-span-2 md:order-3 order-2">
+    <div class="col-span-12 lg:col-span-8 lg:order-2 order-3 rounded bg-gray-300">Content</div>
+    <div class="col-span-12 lg:col-span-2 lg:order-3 order-2">
       <VerticalMenu
           :utils-front="this.utilsFront"
           :type="this.page.menus.RIGHT.type"
@@ -66,7 +66,7 @@ export default {
   </div>
 
   <div v-else-if="this.page.menus.LEFT" class="grid grid-cols-12 gap-2 mt-2">
-    <div class="col-span-12 md:col-span-2">
+    <div class="col-span-12 lg:col-span-2">
       <VerticalMenu
           :utils-front="this.utilsFront"
           :type="this.page.menus.LEFT.type"
@@ -75,12 +75,12 @@ export default {
           :deep="0"
       />
     </div>
-    <div class="col-span-12 md:col-span-10 rounded bg-gray-300">Content</div>
+    <div class="col-span-12 lg:col-span-10 rounded bg-gray-300">Content</div>
   </div>
 
   <div v-else class="grid grid-cols-12 gap-2 mt-2">
-    <div class="col-span-12 md:col-span-10 md:order-1 order-2 rounded bg-gray-300">Content</div>
-    <div class="col-span-12 md:col-span-2 md:order-2 order-1">
+    <div class="col-span-12 lg:col-span-10 lg:order-1 order-2 rounded bg-gray-300">Content</div>
+    <div class="col-span-12 lg:col-span-2 lg:order-2 order-1">
       <VerticalMenu
           :utils-front="this.utilsFront"
           :type="this.page.menus.RIGHT.type"

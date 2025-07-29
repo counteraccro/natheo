@@ -1,6 +1,6 @@
 <script>
 import Header from "../../../Components/Front/NatheoHorizon/Header.vue";
-import Nav from "../../../Components/Front/NatheoHorizon/Nav.vue";
+import Nav from "../../../Components/Front/NatheoHorizon/Nav/Nav.vue";
 import Main from "../../../Components/Front/NatheoHorizon/Main/Main.vue";
 import Footer from "../../../Components/Front/NatheoHorizon/Footer/Footer.vue";
 import {AjaxApiRequest} from "../../../../utils/Front/AjaxApiRequest.js";
@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       isLoad: {
-        page : false,
+        page: false,
         optionsSystem: false
       },
       ajaxRequest: '',
@@ -39,7 +39,7 @@ export default {
   created() {
     this.ajaxRequest = new AjaxApiRequest(this.urls)
     this.locale = this.datas.locale;
-    this.slug =this.datas.slug;
+    this.slug = this.datas.slug;
     this.loadOptionSystem();
     this.loadPage();
 
@@ -68,8 +68,8 @@ export default {
      */
     loadPage() {
       let params = {
-        'slug' : this.slug,
-        'locale' : this.locale
+        'slug': this.slug,
+        'locale': this.locale
       };
 
       let isLoadOk = () => {
@@ -88,10 +88,9 @@ export default {
     },
 
     apiLoader(close) {
-      if(close) {
+      if (close) {
         //alert('stop loading');
-      }
-      else {
+      } else {
         //alert('run loading');
       }
     },
@@ -106,35 +105,36 @@ export default {
 
 <template>
   <div v-if="this.isLoad.optionsSystem && this.isLoad.page">
-  <header class="rounded bg-gray-300">
-    <Header/>
-  </header>
-  <nav class="h-10 rounded bg-gray-300 mt-2">
-    <Nav/>
-  </nav>
-  <main>
-    <Main
-        :utils-front="this.utilsFront"
-        :page="this.page"
-        :ajax-request="this.ajaxRequest"
-        @api-failure="this.apiFailure"
-        @api-loader="this.apiLoader"
-    />
-  </main>
+    <header>
+      <Nav
+          :options-system="this.optionsSystem"
+          :utils-front="this.utilsFront"
+          :data="this.page.menus.HEADER"
+      />
+    </header>
+    <main>
+      <Main
+          :utils-front="this.utilsFront"
+          :page="this.page"
+          :ajax-request="this.ajaxRequest"
+          @api-failure="this.apiFailure"
+          @api-loader="this.apiLoader"
+      />
+    </main>
 
-  <footer class="tracking-wide bg-theme-1-100 px-2 pt-6 pb-6">
-    <Footer
-      :options-system="this.optionsSystem"
-      :translate="this.translate.footer"
-      :urls="this.urls"
-      :data="this.page.menus.FOOTER"
-      :utils-front="this.utilsFront"
-    />
-  </footer>
+    <footer class="tracking-wide bg-theme-1-100 px-2 pt-6 pb-6">
+      <Footer
+          :options-system="this.optionsSystem"
+          :translate="this.translate.footer"
+          :urls="this.urls"
+          :data="this.page.menus.FOOTER"
+          :utils-front="this.utilsFront"
+      />
+    </footer>
   </div>
   <div v-else>
 
-  <Skeleton />
+    <Skeleton/>
 
   </div>
 </template>
