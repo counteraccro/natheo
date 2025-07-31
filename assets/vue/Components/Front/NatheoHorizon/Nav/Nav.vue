@@ -1,6 +1,7 @@
 <script>
 import NavMegaMenu from "./NavMegaMenu.vue";
 import {MenuType} from "../../../../../utils/Front/Const/Menu";
+import NavMenuDropdown from "./NavMenuDropdown.vue";
 
 /**
  * @author Gourdon Aymeric
@@ -14,7 +15,7 @@ export default {
       return MenuType
     }
   },
-  components: {NavMegaMenu},
+  components: {NavMenuDropdown, NavMegaMenu},
   props: {
     optionsSystem: Object,
     data: Object,
@@ -44,61 +45,22 @@ export default {
             <span class="ml-2 text-xl font-bold text-gray-800">{{ this.optionsSystem.OS_SITE_NAME }}</span>
           </div>
           <div class="hidden lg:block sm:ml-6">
-            <div class="flex space-x-4 items-center h-16">
+            <div class="flex space-x-4 items-center h-16" >
 
-              <a v-for="element in this.data.elements" v-if="this.data.type === this.MenuType.headerSideBar" :href="this.utilsFront.getUrl(element)" class="text-slate-600 hover:bg-theme-4-750 px-3 py-2 rounded-md text-sm font-medium" :target="element.target">{{ element.label }}</a>
+              <!-- menu type sidebar -->
+              <a v-for="element in this.data.elements" v-if="this.data.type === this.MenuType.headerSideBar" :href="this.utilsFront.getUrl(element)"
+                 class="text-slate-600 hover:bg-theme-4-750 px-3 py-2 rounded-md text-sm font-medium" :target="element.target">
+                {{ element.label }}
+              </a>
 
-              <div class="relative group inline-block">
-                <!-- Bouton principal -->
-                <a href="#" class="text-lg hover:text-blue-400 cursor-pointer py-2 px-4 inline-block">
-                  Dropdown ▼
-                </a>
-
-                <!-- Menu principal -->
-                <div class="absolute bg-gray-200 shadow-lg z-10 hidden group-hover:block group-focus-within:block min-w-max
-              opacity-0 translate-y-2 transition-all duration-200 ease-out group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0">
-                  <ul class="py-2 px-4">
-                    <li><a href="/first" class="block px-4 py-2 hover:bg-gray-300">First</a></li>
-                    <li><a href="/second" class="block px-4 py-2 hover:bg-gray-300">Second</a></li>
-                    <li><a href="/third" class="block px-4 py-2 hover:bg-gray-300">Third</a></li>
-
-                    <!-- Fourth avec sous-menu -->
-                    <li class="relative group/fourth focus-within:bg-gray-300">
-                      <a href="#" class="flex items-center justify-between px-4 py-2 hover:bg-gray-300">
-                        Fourth <span class="ml-2">▶</span>
-                      </a>
-
-                      <!-- Sous-menu de Fourth -->
-                      <div class="absolute left-full top-0 bg-gray-200 shadow-lg z-20 min-w-max hidden group-hover/fourth:block group-focus-within/fourth:block
-                    opacity-0 translate-x-2 transition-all duration-200 ease-out group-hover/fourth:opacity-100 group-hover/fourth:translate-x-0 group-focus-within/fourth:opacity-100 group-focus-within/fourth:translate-x-0">
-                        <ul class="py-2 px-4">
-
-                          <!-- Sub1 avec sous-menu -->
-                          <li class="relative group/sub1 focus-within:bg-gray-300">
-                            <a href="#" class="flex items-center justify-between px-4 py-2 hover:bg-gray-300">
-                              Sub 1 <span class="ml-2">▶</span>
-                            </a>
-
-                            <!-- Sous-menu de Sub1 -->
-                            <div class="absolute left-full top-0 bg-gray-100 shadow-lg z-30 min-w-max hidden group-hover/sub1:block group-focus-within/sub1:block
-                          opacity-0 translate-x-2 transition-all duration-200 ease-out group-hover/sub1:opacity-100 group-hover/sub1:translate-x-0 group-focus-within/sub1:opacity-100 group-focus-within/sub1:translate-x-0">
-                              <ul class="py-2 px-4">
-                                <li><a href="/subsub1" class="block px-4 py-2 hover:bg-gray-300">Sub-sub 1</a></li>
-                                <li><a href="/subsub2" class="block px-4 py-2 hover:bg-gray-300">Sub-sub 2</a></li>
-                                <li><a href="/subsub3" class="block px-4 py-2 hover:bg-gray-300">Sub-sub 3</a></li>
-                              </ul>
-                            </div>
-                          </li>
-
-                          <li><a href="/sub2" class="block px-4 py-2 hover:bg-gray-300">Sub 2</a></li>
-                          <li><a href="/sub3" class="block px-4 py-2 hover:bg-gray-300">Sub 3</a></li>
-                        </ul>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
+              <!-- menu type dropdown -->
+              <span v-for="element in this.data.elements" v-if="this.data.type === this.MenuType.headerDropDown">
+                <a v-if="!element.hasOwnProperty('elements')" :href="this.utilsFront.getUrl(element)" class="text-slate-600 hover:bg-theme-4-750 px-3 py-2 rounded-md text-sm font-medium" :target="element.target">{{ element.label }}</a>
+                <NavMenuDropdown  v-else
+                    :utils-front="this.utilsFront"
+                    :data="element"
+                  />
+              </span>
 
               <!--<a href="#" class="text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-md text-sm font-medium">Home</a>  -->
 

@@ -1,0 +1,67 @@
+<script>
+import NavMenuDropdownSub from "./NavMenuDropdownSub.vue";
+
+/**
+ * @author Gourdon Aymeric
+ * @version 1.0
+ * Dropdown
+ */
+export default {
+  name: 'NavMenuDropdown',
+  components: {NavMenuDropdownSub},
+  props: {
+    data: Object,
+    utilsFront: Object
+  },
+  emits: [],
+  data() {
+    return {
+      value: 'Value',
+    }
+  },
+  mounted() {
+
+  },
+
+  methods: {
+    liClass(element) {
+      if(element.hasOwnProperty('elements')) {
+        let group = 'fourth';
+        let css = 'relative group/' + group + ' focus-within:bg-gray-300';
+        console.log(css);
+        return css;
+      }
+    },
+  }
+}
+</script>
+
+<template>
+  <div class="relative group inline-block">
+    <!-- lien principal -->
+    <a href="#" class="text-slate-600 hover:bg-theme-4-750 px-4 py-2 rounded-md text-sm font-medium">
+      {{ this.data.label }}
+      <span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="size-5 inline-block" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clip-rule="evenodd"/>
+          </svg>
+        </span>
+    </a>
+
+    <!-- Menu principal -->
+    <div class="absolute bg-gray-200 shadow-lg z-10 hidden group-hover:block group-focus-within:block min-w-max
+              opacity-0 translate-y-2 transition-all duration-200 ease-out group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0">
+      <ul class="py-2 px-4">
+
+        <li v-for="element in this.data.elements" class="relative group/level-1 focus-within:bg-gray-300">
+            <a :href="this.utilsFront.getUrl(element)" v-if="!element.hasOwnProperty('elements')" class="block px-4 py-2 hover:bg-gray-300">{{ element.label }}</a>
+            <nav-menu-dropdown-sub v-else
+                                   :data="element"
+                                   :utils-front="this.utilsFront"/>
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
