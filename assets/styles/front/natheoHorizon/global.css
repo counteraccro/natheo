@@ -28,13 +28,6 @@ a {
 }
 /*** FIN ELEMENT HTML ***/
 
-/*** CSS MENU VERTICAL ***/
-.vertical-menu {
-    .select {
-        @apply bg-theme-4-750 text-slate-700 hover:text-slate-700;
-    }
-}
-
 /*** CSS BOUTON **/
 
 .btn {

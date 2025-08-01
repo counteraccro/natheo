@@ -55,7 +55,7 @@ export default {
 
               <!-- menu type dropdown -->
               <span v-for="element in this.data.elements" v-if="this.data.type === this.MenuType.headerDropDown">
-                <a v-if="!element.hasOwnProperty('elements')" :href="this.utilsFront.getUrl(element)" class="text-slate-600 hover:bg-theme-4-750 px-3 py-2 rounded-md text-sm font-medium" :target="element.target">{{ element.label }}</a>
+                <a v-if="!element.hasOwnProperty('elements')" :href="this.utilsFront.getUrl(element)" class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md text-sm font-medium" :target="element.target">{{ element.label }}</a>
                 <NavMenuDropdown  v-else
                     :utils-front="this.utilsFront"
                     :data="element"

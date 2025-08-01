@@ -24,14 +24,6 @@ export default {
   },
 
   methods: {
-    liClass(element) {
-      if(element.hasOwnProperty('elements')) {
-        let group = 'fourth';
-        let css = 'relative group/' + group + ' focus-within:bg-gray-300';
-        console.log(css);
-        return css;
-      }
-    },
   }
 }
 </script>
@@ -39,7 +31,7 @@ export default {
 <template>
   <div class="relative group inline-block">
     <!-- lien principal -->
-    <a href="#" class="text-slate-600 hover:bg-theme-4-750 px-4 py-2 rounded-md text-sm font-medium">
+    <a href="#" class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-4 py-2 rounded-md text-sm font-medium">
       {{ this.data.label }}
       <span>
           <svg xmlns="http://www.w3.org/2000/svg" class="size-5 inline-block" viewBox="0 0 20 20">
@@ -51,7 +43,7 @@ export default {
     </a>
 
     <!-- Menu principal -->
-    <div class="absolute bg-gray-200 shadow-lg z-10 hidden group-hover:block group-focus-within:block min-w-max
+    <div class="absolute z-10 hidden group-hover:block group-focus-within:block min-w-max bg-white border border-gray-200 rounded-lg shadow-lg mt-1
               opacity-0 translate-y-2 transition-all duration-200 ease-out group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:translate-y-0">
       <ul class="py-2 px-4">
 
