@@ -30,13 +30,9 @@ export default {
       <a :href="this.utilsFront.getUrl(element)" v-if="!element.hasOwnProperty('elements')"
          class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 p block px-3 py-2 rounded-md text-base font-medium"
          :target="element.target">
+        {{ element.label }}
+      </a>
 
-        <svg class="w-5 h-5 inline-block text-center" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/>
-        </svg>
-
-
-        {{ element.label }}</a>
       <a v-else href="#" onclick="return false"
          class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 p px-3 py-2 rounded-md text-base font-medium w-full flex items-center justify-between mobile-dropdown-trigger">
         {{ element.label }}

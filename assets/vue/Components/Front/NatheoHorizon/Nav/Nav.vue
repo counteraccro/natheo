@@ -48,16 +48,19 @@ export default {
           <div class="hidden lg:block sm:ml-6">
             <div class="flex space-x-4 items-center h-16">
 
-              <!-- menu type sidebar -->
-              <a v-for="element in this.data.elements" v-if="this.data.type === this.MenuType.headerSideBar"
-                 :href="this.utilsFront.getUrl(element)"
-                 class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md text-sm font-medium"
-                 :target="element.target">
-                {{ element.label }}
-              </a>
 
-              <!-- menu type dropdown -->
-              <span v-for="element in this.data.elements" v-if="this.data.type === this.MenuType.headerDropDown">
+                <!-- menu type sidebar -->
+                <div v-for="element in this.data.elements" v-if="this.data.type === this.MenuType.headerSideBar">
+                  <a
+                      :href="this.utilsFront.getUrl(element)"
+                      class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md text-sm font-medium"
+                      :target="element.target">
+                    {{ element.label }}
+                  </a>
+                </div>
+
+                <!-- menu type dropdown -->
+                <div v-for="element in this.data.elements" v-if="this.data.type === this.MenuType.headerDropDown">
                 <a v-if="!element.hasOwnProperty('elements')" :href="this.utilsFront.getUrl(element)"
                    class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md text-sm font-medium"
                    :target="element.target">{{ element.label }}</a>
@@ -65,71 +68,26 @@ export default {
                                  :utils-front="this.utilsFront"
                                  :data="element"
                 />
-              </span>
-
-              <!--<a href="#" class="text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-md text-sm font-medium">Home</a>  -->
-
-              <!-- Products Dropdown Trigger -->
-              <!--<div class="relative group">
-                <button
-                    class="text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-md text-sm font-medium flex items-center">
-                  Products
-                  <svg class="ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
-                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                          clip-rule="evenodd"/>
-                  </svg>
-                </button> -->
-
-              <!-- Mega Menu -->
-              <!-- <div
-                  class="absolute left-0 mt-2 w-screen max-w-6xl bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 transform -translate-x-1/4">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 p-6">
-                  <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Software</h3>
-                    <ul class="space-y-3">
-                      <li><a href="#" class="text-gray-600 hover:text-indigo-600">Web Development</a></li>
-                      <li><a href="#" class="text-gray-600 hover:text-indigo-600">Mobile Apps</a></li>
-                      <li><a href="#" class="text-gray-600 hover:text-indigo-600">Desktop Software</a></li>
-                      <li><a href="#" class="text-gray-600 hover:text-indigo-600">Enterprise Solutions</a></li>
-                      <li><a href="#" class="text-gray-600 hover:text-indigo-600">API Services</a></li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Hardware</h3>
-                    <ul class="space-y-3">
-                      <li><a href="#" class="text-gray-600 hover:text-indigo-600">Laptops</a></li>
-                      <li><a href="#" class="text-gray-600 hover:text-indigo-600">Desktops</a></li>
-                      <li><a href="#" class="text-gray-600 hover:text-indigo-600">Tablets</a></li>
-                      <li><a href="#" class="text-gray-600 hover:text-indigo-600">Accessories</a></li>
-                      <li><a href="#" class="text-gray-600 hover:text-indigo-600">Networking</a></li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Featured</h3>
-                    <div class="bg-gray-100 p-4 rounded-lg">
-                      <img
-                          src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=2065&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                          alt="Featured Product" class="rounded-lg mb-3">
-                      <h4 class="font-medium text-gray-900">New Release</h4>
-                      <p class="text-sm text-gray-600 mb-2">Check out our latest product offering with advanced
-                        features.</p>
-                      <a href="#" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Learn more →</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
               </div>
 
-              <a href="#" class="text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-md text-sm font-medium">Services</a>
-              <a href="#" class="text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-md text-sm font-medium">About</a>
-              <a href="#" class="text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-md text-sm font-medium">Contact</a> -->
+                <div v-for="element in this.data.elements" v-if="this.data.type === this.MenuType.headerBigMenu
+              || this.data.type === this.MenuType.headerBigMenu2column || this.data.type === this.MenuType.headerBigMenu3column ||
+              this.data.type === this.MenuType.headerBigMenu4column">
+                <a v-if="!element.hasOwnProperty('elements')" :href="this.utilsFront.getUrl(element)"
+                   class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md text-sm font-medium"
+                   :target="element.target">{{ element.label }}</a>
+
+                <NavMegaMenu v-else
+                             :utilsFront="this.utilsFront"
+                             :data="element"/>
+              </div>
             </div>
           </div>
         </div>
         <div class="absolute inset-y-0 right-0 flex items-center pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0">
           <div class="hidden lg:flex lg:items-center">
-            <a href="#" class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md text-sm font-medium">Login</a>
+            <a href="#"
+               class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md text-sm font-medium">Login</a>
           </div>
 
           <!-- Mobile menu button -->
@@ -159,10 +117,10 @@ export default {
            :target="element.target">{{ element.label }}</a>
 
         <ul v-if="this.data.type === this.MenuType.headerDropDown">
-        <nav-menu-dropdown-mobile
-            :data="this.data"
-            :utilsFront="this.utilsFront"
-        />
+          <nav-menu-dropdown-mobile
+              :data="this.data"
+              :utilsFront="this.utilsFront"
+          />
         </ul>
         <!--<a href="#" class="bg-gray-100 text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Home</a>-->
 
