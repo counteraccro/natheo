@@ -1,7 +1,8 @@
 <script>
 import NavMegaMenu from "./NavMegaMenu.vue";
 import {MenuType} from "../../../../../utils/Front/Const/Menu";
-import NavMenuDropdown from "./NavMenuDropdown.vue";
+import NavMenuDropdown from "./Dropdown/NavMenuDropdown.vue";
+import NavMenuDropdownMobile from "./Dropdown/NavMenuDropdownMobile.vue";
 
 /**
  * @author Gourdon Aymeric
@@ -15,7 +16,7 @@ export default {
       return MenuType
     }
   },
-  components: {NavMenuDropdown, NavMegaMenu},
+  components: {NavMenuDropdownMobile, NavMenuDropdown, NavMegaMenu},
   props: {
     optionsSystem: Object,
     data: Object,
@@ -45,21 +46,25 @@ export default {
             <span class="ml-2 text-xl font-bold text-gray-800">{{ this.optionsSystem.OS_SITE_NAME }}</span>
           </div>
           <div class="hidden lg:block sm:ml-6">
-            <div class="flex space-x-4 items-center h-16" >
+            <div class="flex space-x-4 items-center h-16">
 
               <!-- menu type sidebar -->
-              <a v-for="element in this.data.elements" v-if="this.data.type === this.MenuType.headerSideBar" :href="this.utilsFront.getUrl(element)"
-                 class="text-slate-600 hover:bg-theme-4-750 px-3 py-2 rounded-md text-sm font-medium" :target="element.target">
+              <a v-for="element in this.data.elements" v-if="this.data.type === this.MenuType.headerSideBar"
+                 :href="this.utilsFront.getUrl(element)"
+                 class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md text-sm font-medium"
+                 :target="element.target">
                 {{ element.label }}
               </a>
 
               <!-- menu type dropdown -->
               <span v-for="element in this.data.elements" v-if="this.data.type === this.MenuType.headerDropDown">
-                <a v-if="!element.hasOwnProperty('elements')" :href="this.utilsFront.getUrl(element)" class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md text-sm font-medium" :target="element.target">{{ element.label }}</a>
-                <NavMenuDropdown  v-else
-                    :utils-front="this.utilsFront"
-                    :data="element"
-                  />
+                <a v-if="!element.hasOwnProperty('elements')" :href="this.utilsFront.getUrl(element)"
+                   class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md text-sm font-medium"
+                   :target="element.target">{{ element.label }}</a>
+                <NavMenuDropdown v-else
+                                 :utils-front="this.utilsFront"
+                                 :data="element"
+                />
               </span>
 
               <!--<a href="#" class="text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-md text-sm font-medium">Home</a>  -->
@@ -76,7 +81,7 @@ export default {
                   </svg>
                 </button> -->
 
-                <!-- Mega Menu -->
+              <!-- Mega Menu -->
               <!-- <div
                   class="absolute left-0 mt-2 w-screen max-w-6xl bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 transform -translate-x-1/4">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 p-6">
@@ -124,13 +129,13 @@ export default {
         </div>
         <div class="absolute inset-y-0 right-0 flex items-center pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0">
           <div class="hidden lg:flex lg:items-center">
-            <a href="#" class="text-slate-600 hover:bg-theme-4-750 px-3 py-2 rounded-md text-sm font-medium">Login</a>
+            <a href="#" class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md text-sm font-medium">Login</a>
           </div>
 
           <!-- Mobile menu button -->
           <div class="lg:hidden">
             <button type="button"
-                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-theme-4-750"
                     aria-expanded="false" id="mobile-menu-button">
               <span class="sr-only">Open main menu</span>
               <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -143,12 +148,22 @@ export default {
       </div>
     </div>
 
+
     <!-- Mobile menu, show/hide based on menu state -->
     <div class="lg:hidden hidden" id="mobile-menu">
       <div class="px-2 pt-2 pb-3 space-y-1">
 
-        <a v-for="element in this.data.elements" v-if="this.data.type === this.MenuType.headerSideBar" :href="this.utilsFront.getUrl(element)" class="text-slate-600 hover:bg-theme-4-750 p block px-3 py-2 rounded-md text-base font-medium" :target="element.target">{{ element.label }}</a>
+        <a v-for="element in this.data.elements" v-if="this.data.type === this.MenuType.headerSideBar"
+           :href="this.utilsFront.getUrl(element)"
+           class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 p block px-3 py-2 rounded-md text-base font-medium"
+           :target="element.target">{{ element.label }}</a>
 
+        <ul v-if="this.data.type === this.MenuType.headerDropDown">
+        <nav-menu-dropdown-mobile
+            :data="this.data"
+            :utilsFront="this.utilsFront"
+        />
+        </ul>
         <!--<a href="#" class="bg-gray-100 text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Home</a>-->
 
         <!-- Mobile Products Dropdown -->
@@ -189,7 +204,8 @@ export default {
 
         <div class="pt-4 pb-3 border-t border-gray-200">
           <div class="flex items-center px-3 space-y-2 flex-col">
-            <a href="#" class="block w-full text-center text-slate-600 hover:bg-theme-4-750 px-3 py-2 rounded-md text-base font-medium">
+            <a href="#"
+               class="block w-full text-center !text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md text-base font-medium">
               Login
             </a>
           </div>
