@@ -86,7 +86,7 @@ export default {
         <summary
             class="flex cursor-pointer items-center justify-between rounded-lg p-4 py-2 !text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100">
           <span class="text-sm font-medium"> {{ element.label }} </span>
-          <span class="shrink-0 transition duration-300 group-open:-rotate-180">
+          <span class="shrink-0 transition duration-300">
           <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
                   d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
