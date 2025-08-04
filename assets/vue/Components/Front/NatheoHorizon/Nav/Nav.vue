@@ -1,5 +1,5 @@
 <script>
-import NavMegaMenu from "./NavMegaMenu.vue";
+import NavMegaMenu from "./MegaMenu/NavMegaMenu.vue";
 import {MenuType} from "../../../../../utils/Front/Const/Menu";
 import NavMenuDropdown from "./Dropdown/NavMenuDropdown.vue";
 import NavMenuDropdownMobile from "./Dropdown/NavMenuDropdownMobile.vue";
@@ -79,7 +79,9 @@ export default {
 
                 <NavMegaMenu v-else
                              :utilsFront="this.utilsFront"
-                             :data="element"/>
+                             :data="element"
+                             :type="this.data.type"
+                />
               </div>
             </div>
           </div>
