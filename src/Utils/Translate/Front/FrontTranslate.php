@@ -34,7 +34,8 @@ class FrontTranslate extends AppTranslate
     public function getTranslate(): array
     {
         return [
-            'footer' => $this->getTranslateFooter()
+            'footer' => $this->getTranslateFooter(),
+            'header' => $this->getTranslateHeader()
         ];
     }
 
@@ -56,5 +57,17 @@ class FrontTranslate extends AppTranslate
             'githubLink' => $this->translator->trans('front.footer.github.link', domain: 'front'),
             'sitemapLink' => $this->translator->trans('front.footer.sitemap.link', domain: 'front'),
         ];
+    }
+
+    /**
+     * Traduction header
+     * @return array
+     */
+    private function getTranslateHeader(): array
+    {
+        return [
+            'login' => $this->translator->trans('front.header.login', domain: 'front'),
+        ];
+
     }
 }
