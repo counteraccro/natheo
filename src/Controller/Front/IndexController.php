@@ -9,6 +9,8 @@ namespace App\Controller\Front;
 
 use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\System\User;
+use App\Service\Admin\System\User\UserDataService;
+use App\Service\Admin\System\User\UserService;
 use App\Service\Api\Global\ApiSitemapService;
 use App\Utils\Translate\Front\FrontTranslate;
 use Psr\Container\ContainerExceptionInterface;
@@ -32,7 +34,8 @@ class IndexController extends AppFrontController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/sitemap.xml', name: 'sitemap', format: 'xml')]
-    public function sitemap(Request $request, ApiSitemapService $apiSitemapService) :Response{
+    public function sitemap(Request $request, ApiSitemapService $apiSitemapService): Response
+    {
         $hostname = $request->getSchemeAndHttpHost();
 
         $xml = $this->renderView($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'sitemap.xml.twig', [
@@ -55,18 +58,24 @@ class IndexController extends AppFrontController
 
     /**
      * Redirige vers la connexion
-     * @param Request $request
+     * @param UserDataService $userDataService
      * @param FrontTranslate $frontTranslate
      * @param string|null $locale
      * @param string|null $slug
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws \DateMalformedStringException
      */
     #[Route('/{locale}/{slug}', name: 'index')]
     #[Route('/{locale}/{category}/{slug}', name: 'index_2', requirements: ['category' => 'faq|page|article|projet|blog|evenement|documentation|evolution'])]
-    public function index(Request $request, FrontTranslate $frontTranslate, ?string $locale = '', ?string $slug = null): Response
+    public function index(
+        UserDataService $userDataService,
+        FrontTranslate  $frontTranslate,
+        ?string         $locale = '',
+        ?string         $slug = null): Response
     {
+
         if (!$this->installationService->checkSchema()) {
             return $this->redirectToRoute('installation_step_1');
         }
@@ -92,18 +101,24 @@ class IndexController extends AppFrontController
             'sitemap' => $this->generateUrl('front_sitemap'),
         ];
 
+        /** @var User $user */
+        $user = $this->getUser();
+        $token = '';
+        if ($user != null) {
+            $token = $userDataService->generateUserToken($user, true);
+        }
+
         $datas = [
             'slug' => $slug,
             'locale' => $locale,
             'pageCategories' => $this->pageService->getAllCategories(),
+            'userToken' => $token,
         ];
 
         $seoRobots = $this->optionSystemFrontService->getMetaRobots(true);
         $pageMetaRepo = $this->getRepository(PageMeta::class);
         $seoPage = $pageMetaRepo->getMetasByPageAndLocale($locale, $slug);
-
         $seo = array_merge($seoPage, $seoRobots);
-
 
         return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig',
             [
