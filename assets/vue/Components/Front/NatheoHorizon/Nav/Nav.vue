@@ -20,7 +20,9 @@ export default {
   props: {
     optionsSystem: Object,
     data: Object,
-    utilsFront: Object
+    utilsFront: Object,
+    translate: Object,
+    urls: Object
   },
   emits: [],
   data() {
@@ -88,8 +90,10 @@ export default {
         </div>
         <div class="absolute inset-y-0 right-0 flex items-center pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0">
           <div class="hidden lg:flex lg:items-center">
-            <a href="#"
-               class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md text-sm font-medium">Login</a>
+            <a :href="this.urls.adminAuth"
+               class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md text-sm font-medium">
+              {{ this.translate.login }}
+            </a>
           </div>
 
           <!-- Mobile menu button -->
@@ -118,50 +122,12 @@ export default {
            class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 p block px-3 py-2 rounded-md text-base font-medium"
            :target="element.target">{{ element.label }}</a>
 
-        <ul v-if="this.data.type === this.MenuType.headerDropDown">
+        <ul v-if="this.data.type !== this.MenuType.headerSideBar">
           <nav-menu-dropdown-mobile
               :data="this.data"
               :utilsFront="this.utilsFront"
           />
         </ul>
-        <!--<a href="#" class="bg-gray-100 text-gray-900 block px-3 py-2 rounded-md text-base font-medium">Home</a>-->
-
-        <!-- Mobile Products Dropdown -->
-        <!--<div class="relative">
-          <button
-              class="w-full text-left text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-md text-base font-medium flex items-center justify-between mobile-dropdown-trigger">
-            Products
-            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd"
-                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    clip-rule="evenodd"/>
-            </svg>
-          </button>
-          <div class="hidden px-4 py-2 mobile-dropdown-content">
-            <div class="border-l-2 border-indigo-500 pl-2 mb-4">
-              <h4 class="font-medium text-gray-900 mb-2">Software</h4>
-              <ul class="space-y-2">
-                <li><a href="#" class="text-gray-600 hover:text-indigo-600 block">Web Development</a></li>
-                <li><a href="#" class="text-gray-600 hover:text-indigo-600 block">Mobile Apps</a></li>
-                <li><a href="#" class="text-gray-600 hover:text-indigo-600 block">Desktop Software</a></li>
-              </ul>
-            </div>
-            <div class="border-l-2 border-indigo-500 pl-2">
-              <h4 class="font-medium text-gray-900 mb-2">Hardware</h4>
-              <ul class="space-y-2">
-                <li><a href="#" class="text-gray-600 hover:text-indigo-600 block">Laptops</a></li>
-                <li><a href="#" class="text-gray-600 hover:text-indigo-600 block">Desktops</a></li>
-                <li><a href="#" class="text-gray-600 hover:text-indigo-600 block">Accessories</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <a href="#"
-           class="text-gray-900 hover:bg-gray-100 block px-3 py-2 rounded-md text-base font-medium">Services</a>
-        <a href="#" class="text-gray-900 hover:bg-gray-100 block px-3 py-2 rounded-md text-base font-medium">About</a>
-        <a href="#" class="text-gray-900 hover:bg-gray-100 block px-3 py-2 rounded-md text-base font-medium">Contact</a> -->
-
         <div class="pt-4 pb-3 border-t border-gray-200">
           <div class="flex items-center px-3 space-y-2 flex-col">
             <a href="#"

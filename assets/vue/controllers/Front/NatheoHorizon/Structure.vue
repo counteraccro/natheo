@@ -37,7 +37,7 @@ export default {
     }
   },
   created() {
-    this.ajaxRequest = new AjaxApiRequest(this.urls)
+    this.ajaxRequest = new AjaxApiRequest(this.urls, this.datas.userToken)
     this.locale = this.datas.locale;
     this.slug = this.datas.slug;
     this.loadOptionSystem();
@@ -110,6 +110,8 @@ export default {
           :options-system="this.optionsSystem"
           :utils-front="this.utilsFront"
           :data="this.page.menus.HEADER"
+          :translate="this.translate.header"
+          :urls="this.urls"
       />
     </header>
     <main>
