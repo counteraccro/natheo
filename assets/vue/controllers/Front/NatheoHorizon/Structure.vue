@@ -112,6 +112,7 @@ export default {
           :data="this.page.menus.HEADER"
           :translate="this.translate.header"
           :urls="this.urls"
+          :user-info="this.datas.userInfo"
       />
     </header>
     <main>

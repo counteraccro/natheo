@@ -20,6 +20,7 @@ export default {
   props: {
     optionsSystem: Object,
     data: Object,
+    userInfo: Object,
     utilsFront: Object,
     translate: Object,
     urls: Object
@@ -45,7 +46,7 @@ export default {
         <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
           <div class="flex-shrink-0 flex items-center">
             <img class="block h-16 w-auto" src="/assets/natheo/front/logo_transparent.png" alt="Logo">
-            <span class="ml-2 text-xl font-bold text-gray-800">{{ this.optionsSystem.OS_SITE_NAME }}</span>
+            <span class="ml-2 text-xl font-bold text-gray-800 dark:text-gray-200">{{ this.optionsSystem.OS_SITE_NAME }}</span>
           </div>
           <div class="hidden lg:block sm:ml-6">
             <div class="flex space-x-4 items-center h-16">
@@ -90,10 +91,36 @@ export default {
         </div>
         <div class="absolute inset-y-0 right-0 flex items-center pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0">
           <div class="hidden lg:flex lg:items-center">
-            <a :href="this.urls.adminAuth"
+
+            <button onclick="(() => document.body.classList.toggle('dark'))()"
+                    class="h-10 w-10 rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-700 me-2">
+              <svg class="fill-violet-700 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+              </svg>
+              <svg class="fill-yellow-500 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                    d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                    fill-rule="evenodd" clip-rule="evenodd"></path>
+              </svg>
+            </button>
+
+            <a :href="this.urls.adminAuth" v-if="this.userInfo === ''"
                class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md text-sm font-medium">
               {{ this.translate.login }}
             </a>
+
+            <button v-else class="flex items-center space-x-2 focus:outline-none">
+              <div class="relative">
+                  <div class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+                    <span class="font-medium text-gray-600 dark:text-gray-300">{{ this.userInfo.avatar }}</span>
+                  </div>
+              </div>
+              <div class="hidden lg:flex flex-col items-start">
+                <span class="text-sm font-medium text-gray-500">{{ this.userInfo.login }}</span>
+                <a :href="this.urls.logout" class="text-xs text-gray-500">{{ this.translate.logout }}</a>
+              </div>
+              <i class="fas fa-chevron-down text-xs text-gray-500 hidden lg:inline transition-transform duration-200 group-hover:text-blue-600"></i>
+            </button>
           </div>
 
           <!-- Mobile menu button -->
