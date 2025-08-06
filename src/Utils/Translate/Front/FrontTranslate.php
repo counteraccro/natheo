@@ -67,6 +67,7 @@ class FrontTranslate extends AppTranslate
     {
         return [
             'login' => $this->translator->trans('front.header.login', domain: 'front'),
+            'logout' => $this->translator->trans('front.header.logout', domain: 'front'),
         ];
 
     }

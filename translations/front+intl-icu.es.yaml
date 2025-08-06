@@ -5,3 +5,4 @@ front.footer.github.link: __front.footer.github.link
 front.page.title: __front.page.title
 front.footer.sitemap.link: __front.footer.sitemap.link
 front.header.login: __front.header.login
+front.header.logout: __front.header.logout
