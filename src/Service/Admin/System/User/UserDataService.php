@@ -117,13 +117,9 @@ class UserDataService extends AppAdminService
      * @throws NotFoundExceptionInterface
      * @throws \DateMalformedStringException
      */
-    public function generateUserToken(User $user, $isController = false): string
+    public function generateUserToken(User $user): string
     {
         $token = ByteString::fromRandom(ApiConst::API_SIZE_USER_TOKEN)->toString();
-        /** TODO Bug double persist si on passe par indexController, fonctionne parfaitement par l'API a corriger */
-        if($isController) {
-            $token = 'QzLRrjns9DJNc4pdgetgen6XBwM1mQHT';
-        }
         $this->update(UserDataKey::KEY_TOKEN_CONNEXION, $token, $user);
 
         $optionSystem = $this->getOptionSystemService();

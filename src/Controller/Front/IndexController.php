@@ -53,7 +53,7 @@ class IndexController extends AppFrontController
     public function indexNoLocale(): RedirectResponse
     {
         $defaultLocal = $this->getParameter('app.default_locale');
-        return $this->redirectToRoute('front_index', ['locale' => $defaultLocal, 'slug' => null]);
+        return $this->redirectToRoute('front_index_2', ['locale' => $defaultLocal, 'category' => null, 'slug' => null]);
     }
 
     /**
@@ -66,9 +66,9 @@ class IndexController extends AppFrontController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws \DateMalformedStringException
+     *
      */
-    #[Route('/{locale}/{slug}', name: 'index')]
-    #[Route('/{locale}/{category}/{slug}', name: 'index_2', requirements: ['category' => 'faq|page|article|projet|blog|evenement|documentation|evolution'])]
+    #[Route('/{locale}/{category}/{slug}', name: 'index_2', requirements: ['category' => '|faq|page|article|projet|blog|evenement|documentation|evolution'])]
     public function index(
         UserDataService $userDataService,
         FrontTranslate  $frontTranslate,
@@ -99,13 +99,18 @@ class IndexController extends AppFrontController
             'apiOptionsSystems' => $this->generateUrl('api_options_systems_listing', ['api_version' => $version]),
             'adminAuth' => $this->generateUrl('admin_dashboard_index'),
             'sitemap' => $this->generateUrl('front_sitemap'),
+            'logout' => $this->generateUrl('auth_logout'),
         ];
 
         /** @var User $user */
         $user = $this->getUser();
-        $token = '';
+        $token = $userInfo = '';
         if ($user != null) {
-            $token = $userDataService->generateUserToken($user, true);
+            $token = $userDataService->generateUserToken($user);
+            $userInfo = [
+                'login' => $user->getLogin(),
+                'avatar' => substr(ucfirst($user->getLogin()), 0, 1)
+            ];
         }
 
         $datas = [
@@ -113,6 +118,7 @@ class IndexController extends AppFrontController
             'locale' => $locale,
             'pageCategories' => $this->pageService->getAllCategories(),
             'userToken' => $token,
+            'userInfo' => $userInfo
         ];
 
         $seoRobots = $this->optionSystemFrontService->getMetaRobots(true);
