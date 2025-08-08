@@ -100,6 +100,9 @@ class IndexController extends AppFrontController
             'adminAuth' => $this->generateUrl('admin_dashboard_index'),
             'sitemap' => $this->generateUrl('front_sitemap'),
             'logout' => $this->generateUrl('auth_logout'),
+            'indexFr' => $this->generateUrl('front_index_2', ['locale' => 'fr', 'category' => null, 'slug' => null]),
+            'indexEs' => $this->generateUrl('front_index_2', ['locale' => 'es', 'category' => null, 'slug' => null]),
+            'indexEn' => $this->generateUrl('front_index_2', ['locale' => 'en', 'category' => null, 'slug' => null]),
         ];
 
         /** @var User $user */
