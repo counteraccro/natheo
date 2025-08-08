@@ -1,0 +1,11 @@
+front.footer.credit: '2023-{year} — Propulsé par Nathéo CMS {version}'
+front.footer.template.version: '{version}'
+front.footer.admin.link: Administration
+front.footer.github.link: GitHub
+front.page.title: Chargement...
+front.footer.sitemap.link: Sitemap
+front.header.login: Connexion
+front.header.logout: Déconnexion
+front.footer.fr.link: Français
+front.footer.es.link: Español
+front.footer.en.link: English

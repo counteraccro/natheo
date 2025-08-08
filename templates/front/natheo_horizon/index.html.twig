@@ -1,0 +1,20 @@
+{% extends 'front/front_base.html.twig' %}
+
+{% block meta %}
+
+    {% for meta in metaSeo %}
+        <meta name="{{ meta.name }}" content="{{ meta.value }}">
+    {% endfor %}
+
+{% endblock %}
+
+{% block body %}
+
+<div class="mx-2" {{ vue_component('Front/NatheoHorizon/Structure', {
+    'datas' : datas,
+    'urls' : urls,
+    'translate' : translate
+}) }}></div>
+
+
+{% endblock %}

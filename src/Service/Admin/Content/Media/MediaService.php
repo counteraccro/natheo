@@ -47,6 +47,8 @@ class MediaService extends MediaFolderService
         if ($this->canCreatePhysicalFolder && $media->getMediaFolder() != null) {
             $urlCopy = $this->getPathFolder($media->getMediaFolder()) . $file;
         }
+        $urlCopy = str_replace(['\/', '\\'], DIRECTORY_SEPARATOR, $urlCopy);
+
         $fileSystem->copy($urlOrigin, $urlCopy);
     }
 
@@ -64,6 +66,7 @@ class MediaService extends MediaFolderService
         if ($this->canCreatePhysicalFolder && $media->getMediaFolder() != null) {
             $urlFile = $this->getPathFolder($media->getMediaFolder());
         }
+
         $finder = new Finder();
         $finder->files()->in($urlFile)->name($file);
 
@@ -275,6 +278,8 @@ class MediaService extends MediaFolderService
         if ($folder != null && $this->canCreatePhysicalFolder) {
             $path = $this->getPathFolder($folder);
         }
+
+        $path = str_replace(['\/', '\\'], DIRECTORY_SEPARATOR, $path);
 
         list(, $data) = explode(';', $file['url']);
         list(, $data) = explode(',', $data);

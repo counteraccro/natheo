@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme {
+    --color-platinum: oklch(0.8804 0.0162 201.68);
+    --color-platinum-100: oklch(0.9731 0.0043 197.09);
+    --color-platinum-dark: oklch(0.25 0.0154 196.21);
+    --color-blue-one: oklch(0.8238 0.0568 200.34);
+    --color-blue-one-100: oklch(0.9496 0.017 201.39);
+    --color-blue-two: oklch(0.8042 0.0779 205.11);
+    --color-blue-two-150: oklch(0.9267 0.0297 204.5);
+    --color-cerulean: oklch(0.5554 0.1106 229.95);
+    --color-cerulean-750: oklch(0.6405 0.129199 231.0549);
+    --color-prussian-blue: oklch(0.2996 0.0639 235.39);
+
+    --color-theme-1 : var(--color-platinum);
+    --color-theme-1-100 : var(--color-platinum-100);
+    --color-theme-1-dark : var(--color-platinum-dark);
+    --color-theme-2 : var(--color-blue-one);
+    --color-theme-2-100 : var(--color-blue-one-100);
+    --color-theme-3 : var(--color-blue-two);
+    --color-theme-3-150 : var(--color-blue-two-150);
+    --color-theme-4 : var(--color-cerulean);
+    --color-theme-4-750: var(--color-cerulean-750);
+    --color-theme-5 : var(--color-prussian-blue);
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+.dark
+{
+    @apply dark:invert dark:-hue-rotate-180 dark:saturate-100 dark:brightness-90
+}
+
+/*** FIN ELEMENT HTML ***/
+
+/*** CSS BOUTON **/
+
+.btn {
+    @apply px-5 py-2.5 rounded-lg cursor-pointer text-sm tracking-wider font-medium outline-none block w-min
+}
+
+.btn-primary {
+    @apply bg-theme-4 hover:bg-theme-5 active:bg-theme-4 text-white
+}
+
+/*** FIN CSS BOUTON **/
+
+

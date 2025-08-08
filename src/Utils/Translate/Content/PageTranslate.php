@@ -62,7 +62,25 @@ class PageTranslate extends AppTranslate
             'page_history' => $this->getTranslatePageHistory(),
             'page_save' => $this->getTranslatePageSave(),
             'auto_complete' => $this->getTranslateAutoComplete(),
-            'page_comment' => $this->getTranslatePageComment()
+            'page_comment' => $this->getTranslatePageComment(),
+            'page_seo' => $this->getTranslatePageSeo(),
+        ];
+    }
+
+    private function getTranslatePageSEO(): array
+    {
+        return [
+            'title' => $this->translator->trans('page.page_seo.title', domain: 'page'),
+            'help_legend' => $this->translator->trans('page.page_seo.help.legend', domain: 'page'),
+            'help_description' => $this->translator->trans('page.page_seo.help.description', domain: 'page'),
+            'input_meta_description_label' => $this->translator->trans('page.page_seo.input.meta_description.label', domain: 'page'),
+            'input_meta_description_help' => $this->translator->trans('page.page_seo.input.meta_description.help', domain: 'page'),
+            'input_meta_keywords_label' => $this->translator->trans('page.page_seo.input.meta_keywords.label', domain: 'page'),
+            'input_meta_keywords_help' => $this->translator->trans('page.page_seo.input.meta_keywords.help', domain: 'page'),
+            'input_meta_author_label' => $this->translator->trans('page.page_seo.input.meta_author.label', domain: 'page'),
+            'input_meta_author_help' => $this->translator->trans('page.page_seo.input.meta_author.help', domain: 'page'),
+            'input_meta_copyright_label' => $this->translator->trans('page.page_seo.input.meta_copyright.label', domain: 'page'),
+            'input_meta_copyright_help' => $this->translator->trans('page.page_seo.input.meta_copyright.help', domain: 'page'),
         ];
     }
 
@@ -102,6 +120,11 @@ class PageTranslate extends AppTranslate
             'list_render_help' => $this->translator->trans('page.page_save.list_render_help', domain: 'page'),
             'list_categories_label' => $this->translator->trans('page.page_content.list_categories_label', domain: 'page'),
             'list_categories_help' => $this->translator->trans('page.page_content.list_categories_help', domain: 'page'),
+            'header_img_title' => $this->translator->trans('page.page_content.header_img.title', domain: 'page'),
+            'header_img_help' => $this->translator->trans('page.page_content.header_img.help', domain: 'page'),
+            'header_img_no_img' => $this->translator->trans('page.page_content.header_img.no.img', domain: 'page'),
+            'header_img_remove' => $this->translator->trans('page.page_content.header_img.remove', domain: 'page'),
+            'header_img_change' => $this->translator->trans('page.page_content.header_img.change', domain: 'page'),
         ];
     }
 

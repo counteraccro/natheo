@@ -1,0 +1,23 @@
+{% extends 'front/front_base.html.twig' %}
+
+{% block title %}
+    {{ 'front.error.close.site.title'|trans({}, 'front_error') }}
+{% endblock %}
+
+{% block body %}
+    <div class="bg-theme-2-100 w-full rounded-lg overflow-hidden max-w-5xl mx-auto mt-[7%] border-theme-3-150 border-1">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 items-center">
+            <div class="lg:col-span-2 p-10">
+                <h1 class="text-3xl font-semibold text-black"> {{ 'front.error.close.site.block.title'|trans({}, 'front_error') }}</h1>
+                <p class="mt-4 text-slate-900 font-normal leading-relaxed"> {{ 'front.error.close.site.block.text'|trans({}, 'front_error') }}</p>
+            </div>
+            <div class="aspect-[341/312]">
+                <img src="{{ asset('assets/natheo/front/maintenance.png') }}"
+                     class="w-full h-full object-cover shrink-0"/>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <a href="{{ path('admin_dashboard_index') }}" class="text-sm italic">Administration</a>
+    </div>
+{% endblock %}

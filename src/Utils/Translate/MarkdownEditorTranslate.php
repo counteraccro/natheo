@@ -74,7 +74,7 @@ class MarkdownEditorTranslate extends AppTranslate
      * Génère le boc médiatheque
      * @return array
      */
-    private function getTranslateMediateque(): array
+    public function getTranslateMediateque(): array
     {
         return [
             'title' => $this->translator->trans('editor.mediatheque.title', domain: 'editor_markdown'),

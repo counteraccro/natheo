@@ -43,6 +43,12 @@ class MediaFixtures extends AppFixtures implements FixtureGroupInterface, Ordere
         parent::__construct($this->handlers);
     }
 
+    /**
+     * @param ObjectManager $manager
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function load(ObjectManager $manager): void
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::MEDIA_FIXTURES_DATA_FILE);

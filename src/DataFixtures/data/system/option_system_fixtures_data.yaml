@@ -70,7 +70,7 @@ option_system:
     value: natheotheque
   OS_MEDIA_URL:
     key: 'OS_MEDIA_URL'
-    value: 'http://dev.natheo'
+    value: 'http://dev.natheo:8888'
   OS_API_TIME_VALIDATE_USER_TOKEN:
     key: 'OS_API_TIME_VALIDATE_USER_TOKEN'
     value: 60
@@ -82,4 +82,34 @@ option_system:
     value: 1
   OS_THEME_FRONT_SITE:
     key: 'OS_THEME_FRONT_SITE'
-    value: 'Natheo-Horizon'
+    value: 'natheo_horizon'
+  OS_FRONT_FOOTER_TEXTE:
+    key: 'OS_FRONT_FOOTER_TEXTE'
+    value: 'NatheoCMS est un CMS headless développé avec Symfony pour vous offrir le meilleur compromis entre un site clé en main et la possibilité de le façonner à votre envie'
+  OS_FRONT_FOOTER_SOCIAL_GITHUB_URL:
+    key: 'OS_FRONT_FOOTER_SOCIAL_GITHUB_URL'
+    value: https://github.com/counteraccro/natheo
+  OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL:
+    key: 'OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL'
+    value: https://www.linkedin.com/in/aymeric-gourdon-7b1a6264/
+  OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL:
+    key: 'OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL'
+    value: ''
+  OS_FRONT_FOOTER_SOCIAL_X_URL:
+    key: 'OS_FRONT_FOOTER_SOCIAL_X_URL'
+    value: 'https://x.com/NatheoCms'
+  OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL:
+    key: 'OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL'
+    value: ''
+  OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL:
+    key: 'OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL'
+    value: ''
+  OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL:
+    key: 'OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL'
+    value: ''
+  OS_FRONT_ROBOT_NO_INDEX:
+    key: 'OS_FRONT_ROBOT_NO_INDEX'
+    value: 0
+  OS_FRONT_ROBOT_NO_FOLLOW:
+    key: 'OS_FRONT_ROBOT_NO_FOLLOW'
+    value: 0
