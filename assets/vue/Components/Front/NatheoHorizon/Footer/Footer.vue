@@ -62,7 +62,7 @@ export default {
 
   <div class="flex flex-wrap gap-10" :class="this.css[this.data.type].flexDirection">
     <div :class="this.css[this.data.type].w">
-      <a :href="this.optionsSystem.OS_ADRESSE_SITE">
+      <a :href="this.optionsSystem.OS_ADRESSE_SITE" class="text-slate-600 text-sm font-normal hover:bg-theme-4-750 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1.5">
         {{ this.optionsSystem.OS_SITE_NAME }}
       </a>
       <div v-if="this.data.type === this.menuType.colonne" class="mt-6" >
@@ -131,24 +131,41 @@ export default {
     </div>
   </div>
 
+  <div>
+    <ul class="md:flex md:space-x-6 max-md:space-y-2">
+      <li>
+        <a :href="this.urls.indexFr"
+           class="text-slate-600 text-sm font-normal hover:bg-theme-4-750 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1.5">{{ this.translate.frLink }}</a>
+      </li>
+      <li>
+        <a :href="this.urls.indexEn"
+           class="text-slate-600 text-sm font-normal hover:bg-theme-4-750 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1.5">{{ this.translate.enLink }}</a>
+      </li>
+      <li>
+        <a :href="this.urls.indexEs"
+           class="text-slate-600 text-sm font-normal hover:bg-theme-4-750 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1.5">{{ this.translate.esLink }}</a>
+      </li>
+    </ul>
+  </div>
+
   <hr class="mt-5 mb-5 border-gray-300"/>
 
   <div class="flex flex-wrap max-md:flex-col gap-4">
     <ul class="md:flex md:space-x-6 max-md:space-y-2">
       <li>
         <a href='https://github.com/counteraccro/natheo'
-           class="hover:text-slate-900 text-slate-600 text-sm font-normal">{{ this.translate.githubLink }}</a>
+           class="text-slate-600 text-sm font-normal hover:bg-theme-4-750 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1.5">{{ this.translate.githubLink }}</a>
       </li>
       <li>
         <a :href="this.urls.adminAuth"
-           class="hover:text-slate-900 text-slate-600 text-sm font-normal">{{ this.translate.adminLink }}</a>
+           class="text-slate-600 text-sm font-normal hover:bg-theme-4-750 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1.5">{{ this.translate.adminLink }}</a>
       </li>
       <li>
         <a :href="this.urls.sitemap"
-           class="hover:text-slate-900 text-slate-600 text-sm font-normal">{{ this.translate.sitemapLink }}</a>
+           class="text-slate-600 text-sm font-normal hover:bg-theme-4-750 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1.5">{{ this.translate.sitemapLink }}</a>
       </li>
       <li>
-        <a href='#' class="hover:text-slate-900 text-slate-600 text-sm font-normal">{{ translate.templateVersion }}</a>
+        <a href='#' class="text-slate-600 text-sm font-normal hover:bg-theme-4-750 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1.5">{{ translate.templateVersion }}</a>
       </li>
     </ul>
 

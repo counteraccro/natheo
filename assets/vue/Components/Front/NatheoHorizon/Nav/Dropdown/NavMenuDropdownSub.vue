@@ -24,7 +24,7 @@ export default {
 
 <template>
 
-  <a href="#" class="flex items-center justify-between px-4 py-2 !text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 rounded-md">
+  <a href="#" class="flex items-center justify-between px-4 py-2 !text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600">
     {{ this.data.label }}
     <svg xmlns="http://www.w3.org/2000/svg" class="size-5 inline-block -rotate-90 ml-2" viewBox="0 0 20 20">
       <path fill-rule="evenodd"
@@ -39,9 +39,9 @@ export default {
 
       <li v-for="element in this.data.elements" class="relative group/level-2 focus-within:bg-theme-4-750 focus-within:rounded-md focus-within:text-shadow-theme-1-100">
         <a :href="this.utilsFront.getUrl(element)" v-if="!element.hasOwnProperty('elements')"
-           class="block px-4 py-2 hover:bg-theme-4-750 !text-gray-500 hover:!text-theme-1-100 rounded-md">{{ element.label }}</a>
+           class="block px-4 py-2 hover:bg-theme-4-750 !text-gray-500 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600">{{ element.label }}</a>
 
-        <a href="#" class="flex items-center justify-between px-4 py-2 hover:bg-theme-4-750 !text-gray-500 hover:!text-theme-1-100 rounded-md"
+        <a href="#" class="flex items-center justify-between px-4 py-2 hover:bg-theme-4-750 !text-gray-500 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600"
            v-if="element.hasOwnProperty('elements')">
           {{ element.label }}
           <svg xmlns="http://www.w3.org/2000/svg" class="size-5 inline-block -rotate-90 ml-2" viewBox="0 0 20 20">
@@ -54,10 +54,10 @@ export default {
                           opacity-0 translate-x-2 transition-all duration-200 ease-out group-hover/level-2:opacity-100 group-hover/level-2:translate-x-0 group-focus-within/level-2:opacity-100 group-focus-within/level-2:translate-x-0">
           <ul class="py-2 px-4">
 
-            <li v-for="element3 in element.elements" class="relative group/level-3 focus-within:bg-theme-4-750 focus-within:rounded-md focus-within:text-shadow-theme-1-100">
+            <li v-for="element3 in element.elements" class="relative group/level-3 focus-within:bg-theme-4-750 focus-within:rounded-md focus-within:text-shadow-theme-1-100 hover:dark:bg-gray-600">
               <a :href="this.utilsFront.getUrl(element3)" v-if="!element3.hasOwnProperty('elements')"
                  class="block px-4 py-2 hover:bg-theme-4-750 !text-gray-500 hover:!text-theme-1-100 rounded-md">{{ element3.label }}</a>
-              <a href="#" class="flex items-center justify-between px-4 py-2 hover:bg-theme-4-750 !text-gray-500 hover:!text-theme-1-100 rounded-md"
+              <a href="#" class="flex items-center justify-between px-4 py-2 hover:bg-theme-4-750 !text-gray-500 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600"
                  v-if="element3.hasOwnProperty('elements')">
                 {{ element3.label }}
                 <svg xmlns="http://www.w3.org/2000/svg" class="size-5 inline-block -rotate-90 ml-2" viewBox="0 0 20 20">
@@ -69,9 +69,9 @@ export default {
               <div v-if="element3.hasOwnProperty('elements')" class="absolute left-full top-0 bg-white border border-gray-200 rounded-lg shadow-lg z-40 min-w-max hidden group-hover/level-3:block group-focus-within/level-3:block
                           opacity-0 translate-x-2 transition-all duration-200 ease-out group-hover/level-3:opacity-100 group-hover/level-3:translate-x-0 group-focus-within/level-3:opacity-100 group-focus-within/level-3:translate-x-0">
                 <ul class="py-2 px-4">
-                  <li v-for="element4 in element3.elements" class="relative group/level-4 focus-within:bg-theme-4-750 focus-within:rounded-md focus-within:text-shadow-theme-1-100">
+                  <li v-for="element4 in element3.elements" class="relative group/level-4 focus-within:bg-theme-4-750 focus-within:rounded-md focus-within:text-shadow-theme-1-100 hover:dark:bg-gray-600">
                     <a :href="this.utilsFront.getUrl(element4)" v-if="!element4.hasOwnProperty('elements')"
-                       class="block px-4 py-2 hover:bg-theme-4-750 !text-gray-500 hover:!text-theme-1-100 rounded-md">{{ element4.label }}</a>
+                       class="block px-4 py-2 hover:bg-theme-4-750 !text-gray-500 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600">{{ element4.label }}</a>
                   </li>
                 </ul>
               </div>

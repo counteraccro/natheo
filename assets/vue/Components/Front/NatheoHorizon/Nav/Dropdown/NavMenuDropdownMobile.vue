@@ -28,13 +28,13 @@ export default {
 <template>
     <li v-for="element in this.data.elements">
       <a :href="this.utilsFront.getUrl(element)" v-if="!element.hasOwnProperty('elements')"
-         class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 p block px-3 py-2 rounded-md text-base font-medium"
+         class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 p block px-3 py-2 rounded-md text-base font-medium hover:dark:bg-gray-600"
          :target="element.target">
         {{ element.label }}
       </a>
 
       <a v-else href="#" onclick="return false"
-         class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 p px-3 py-2 rounded-md text-base font-medium w-full flex items-center justify-between mobile-dropdown-trigger">
+         class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 p px-3 py-2 rounded-md text-base font-medium w-full flex items-center justify-between mobile-dropdown-trigger hover:dark:bg-gray-600">
         {{ element.label }}
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20">
           <path fill-rule="evenodd"

@@ -31,10 +31,6 @@
     @apply dark:invert dark:-hue-rotate-180 dark:saturate-100 dark:brightness-90
 }
 
-/*** ELEMENT HTML ***/
-a {
-    @apply text-theme-4 hover:text-theme-5 active:text-theme-4
-}
 /*** FIN ELEMENT HTML ***/
 
 /*** CSS BOUTON **/

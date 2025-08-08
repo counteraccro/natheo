@@ -78,7 +78,7 @@ export default {
   <div class="relative group inline-block">
     <!-- Bouton principal -->
     <a href="#"
-       class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-4 py-2 rounded-md text-sm font-medium inline-flex items-center gap-1">
+       class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-4 py-2 rounded-md text-sm font-medium inline-flex items-center gap-1 hover:dark:bg-gray-600">
       {{ this.data.label }}
       <svg xmlns="http://www.w3.org/2000/svg" class="size-5 inline-block" viewBox="0 0 20 20">
         <path fill-rule="evenodd"
@@ -108,7 +108,7 @@ export default {
             <li v-for="element in this.elements">
               <a
                   :href="this.utilsFront.getUrl(element)"
-                  class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md text-sm font-medium"
+                  class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md text-sm font-medium hover:dark:bg-gray-600"
                   :target="element.target">
                 {{ element.label }}
               </a>
