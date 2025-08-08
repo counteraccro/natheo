@@ -4,3 +4,8 @@ front.footer.admin.link: __front.footer.admin.link
 front.footer.github.link: __front.footer.github.link
 front.page.title: __front.page.title
 front.footer.sitemap.link: __front.footer.sitemap.link
+front.header.login: __front.header.login
+front.header.logout: __front.header.logout
+front.footer.fr.link: __front.footer.fr.link
+front.footer.es.link: __front.footer.es.link
+front.footer.en.link: __front.footer.en.link

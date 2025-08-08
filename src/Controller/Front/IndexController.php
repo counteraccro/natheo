@@ -9,6 +9,8 @@ namespace App\Controller\Front;
 
 use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\System\User;
+use App\Service\Admin\System\User\UserDataService;
+use App\Service\Admin\System\User\UserService;
 use App\Service\Api\Global\ApiSitemapService;
 use App\Utils\Translate\Front\FrontTranslate;
 use Psr\Container\ContainerExceptionInterface;
@@ -32,7 +34,8 @@ class IndexController extends AppFrontController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/sitemap.xml', name: 'sitemap', format: 'xml')]
-    public function sitemap(Request $request, ApiSitemapService $apiSitemapService) :Response{
+    public function sitemap(Request $request, ApiSitemapService $apiSitemapService): Response
+    {
         $hostname = $request->getSchemeAndHttpHost();
 
         $xml = $this->renderView($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'sitemap.xml.twig', [
@@ -50,23 +53,29 @@ class IndexController extends AppFrontController
     public function indexNoLocale(): RedirectResponse
     {
         $defaultLocal = $this->getParameter('app.default_locale');
-        return $this->redirectToRoute('front_index', ['locale' => $defaultLocal, 'slug' => null]);
+        return $this->redirectToRoute('front_index_2', ['locale' => $defaultLocal, 'category' => null, 'slug' => null]);
     }
 
     /**
      * Redirige vers la connexion
-     * @param Request $request
+     * @param UserDataService $userDataService
      * @param FrontTranslate $frontTranslate
      * @param string|null $locale
      * @param string|null $slug
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws \DateMalformedStringException
+     *
      */
-    #[Route('/{locale}/{slug}', name: 'index')]
-    #[Route('/{locale}/{category}/{slug}', name: 'index_2', requirements: ['category' => 'faq|page|article|projet|blog|evenement|documentation|evolution'])]
-    public function index(Request $request, FrontTranslate $frontTranslate, ?string $locale = '', ?string $slug = null): Response
+    #[Route('/{locale}/{category}/{slug}', name: 'index_2', requirements: ['category' => '|faq|page|article|projet|blog|evenement|documentation|evolution'])]
+    public function index(
+        UserDataService $userDataService,
+        FrontTranslate  $frontTranslate,
+        ?string         $locale = '',
+        ?string         $slug = null): Response
     {
+
         if (!$this->installationService->checkSchema()) {
             return $this->redirectToRoute('installation_step_1');
         }
@@ -90,20 +99,35 @@ class IndexController extends AppFrontController
             'apiOptionsSystems' => $this->generateUrl('api_options_systems_listing', ['api_version' => $version]),
             'adminAuth' => $this->generateUrl('admin_dashboard_index'),
             'sitemap' => $this->generateUrl('front_sitemap'),
+            'logout' => $this->generateUrl('auth_logout'),
+            'indexFr' => $this->generateUrl('front_index_2', ['locale' => 'fr', 'category' => null, 'slug' => null]),
+            'indexEs' => $this->generateUrl('front_index_2', ['locale' => 'es', 'category' => null, 'slug' => null]),
+            'indexEn' => $this->generateUrl('front_index_2', ['locale' => 'en', 'category' => null, 'slug' => null]),
         ];
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $token = $userInfo = '';
+        if ($user != null) {
+            $token = $userDataService->generateUserToken($user);
+            $userInfo = [
+                'login' => $user->getLogin(),
+                'avatar' => substr(ucfirst($user->getLogin()), 0, 1)
+            ];
+        }
 
         $datas = [
             'slug' => $slug,
             'locale' => $locale,
             'pageCategories' => $this->pageService->getAllCategories(),
+            'userToken' => $token,
+            'userInfo' => $userInfo
         ];
 
         $seoRobots = $this->optionSystemFrontService->getMetaRobots(true);
         $pageMetaRepo = $this->getRepository(PageMeta::class);
         $seoPage = $pageMetaRepo->getMetasByPageAndLocale($locale, $slug);
-
         $seo = array_merge($seoPage, $seoRobots);
-
 
         return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig',
             [

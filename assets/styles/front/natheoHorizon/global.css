@@ -3,6 +3,7 @@
 @theme {
     --color-platinum: oklch(0.8804 0.0162 201.68);
     --color-platinum-100: oklch(0.9731 0.0043 197.09);
+    --color-platinum-dark: oklch(0.25 0.0154 196.21);
     --color-blue-one: oklch(0.8238 0.0568 200.34);
     --color-blue-one-100: oklch(0.9496 0.017 201.39);
     --color-blue-two: oklch(0.8042 0.0779 205.11);
@@ -13,6 +14,7 @@
 
     --color-theme-1 : var(--color-platinum);
     --color-theme-1-100 : var(--color-platinum-100);
+    --color-theme-1-dark : var(--color-platinum-dark);
     --color-theme-2 : var(--color-blue-one);
     --color-theme-2-100 : var(--color-blue-one-100);
     --color-theme-3 : var(--color-blue-two);
@@ -22,18 +24,14 @@
     --color-theme-5 : var(--color-prussian-blue);
 }
 
-/*** ELEMENT HTML ***/
-a {
-    @apply text-theme-4 hover:text-theme-5 active:text-theme-4
-}
-/*** FIN ELEMENT HTML ***/
+@custom-variant dark (&:where(.dark, .dark *));
 
-/*** CSS MENU VERTICAL ***/
-.vertical-menu {
-    .select {
-        @apply bg-theme-4-750 text-slate-700 hover:text-slate-700;
-    }
+.dark
+{
+    @apply dark:invert dark:-hue-rotate-180 dark:saturate-100 dark:brightness-90
 }
+
+/*** FIN ELEMENT HTML ***/
 
 /*** CSS BOUTON **/
 

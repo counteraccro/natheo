@@ -44,6 +44,26 @@ class UtilsFront {
 
         return 'https://' + this.optionsSystem.OS_ADRESSE_SITE + '/' + this.data.locale + '/' + category + element.slug
     }
+
+    /**
+     * Evènement pour afficher le menu mobile
+     */
+    eventDropDownMobileToggle() {
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', !isExpanded);
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Mobile dropdown toggles
+        document.querySelectorAll('.mobile-dropdown-trigger').forEach(trigger => {
+            trigger.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                content.classList.toggle('hidden');
+            });
+        });
+    }
 }
 
 export {UtilsFront}

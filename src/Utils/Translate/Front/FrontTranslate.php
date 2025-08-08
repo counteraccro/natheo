@@ -34,7 +34,8 @@ class FrontTranslate extends AppTranslate
     public function getTranslate(): array
     {
         return [
-            'footer' => $this->getTranslateFooter()
+            'footer' => $this->getTranslateFooter(),
+            'header' => $this->getTranslateHeader()
         ];
     }
 
@@ -55,6 +56,22 @@ class FrontTranslate extends AppTranslate
             'adminLink' => $this->translator->trans('front.footer.admin.link', domain: 'front'),
             'githubLink' => $this->translator->trans('front.footer.github.link', domain: 'front'),
             'sitemapLink' => $this->translator->trans('front.footer.sitemap.link', domain: 'front'),
+            'frLink' => $this->translator->trans('front.footer.fr.link', domain: 'front'),
+            'esLink' => $this->translator->trans('front.footer.es.link', domain: 'front'),
+            'enLink' => $this->translator->trans('front.footer.en.link', domain: 'front'),
         ];
+    }
+
+    /**
+     * Traduction header
+     * @return array
+     */
+    private function getTranslateHeader(): array
+    {
+        return [
+            'login' => $this->translator->trans('front.header.login', domain: 'front'),
+            'logout' => $this->translator->trans('front.header.logout', domain: 'front'),
+        ];
+
     }
 }

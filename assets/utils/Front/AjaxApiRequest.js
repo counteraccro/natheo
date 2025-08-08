@@ -12,10 +12,12 @@ class AjaxApiRequest extends AppApiRequest {
 
     /**
      * @param tabUrls
+     * @param userToken
      */
-    constructor(tabUrls) {
+    constructor(tabUrls, userToken) {
         super();
         this.tabUrls = tabUrls;
+        this.userToken = userToken;
     }
 
     /**
