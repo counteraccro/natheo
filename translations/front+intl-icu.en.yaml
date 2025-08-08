@@ -6,3 +6,6 @@ front.page.title: __front.page.title
 front.footer.sitemap.link: __front.footer.sitemap.link
 front.header.login: __front.header.login
 front.header.logout: __front.header.logout
+front.footer.fr.link: __front.footer.fr.link
+front.footer.es.link: __front.footer.es.link
+front.footer.en.link: __front.footer.en.link
