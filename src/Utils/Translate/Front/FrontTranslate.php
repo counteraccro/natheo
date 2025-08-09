@@ -34,8 +34,17 @@ class FrontTranslate extends AppTranslate
     public function getTranslate(): array
     {
         return [
+            'errorApi' => $this->getTranslateErrorApi(),
             'footer' => $this->getTranslateFooter(),
             'header' => $this->getTranslateHeader()
+        ];
+    }
+
+    public function getTranslateErrorApi(): array
+    {
+        return [
+            '401' => $this->translator->trans('front.error.api.modal.error.401', domain: 'front'),
+            '403' => $this->translator->trans('front.error.api.modal.error.403', domain: 'front'),
         ];
     }
 
