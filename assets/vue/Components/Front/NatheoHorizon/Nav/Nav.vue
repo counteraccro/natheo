@@ -119,8 +119,8 @@ export default {
                 </div>
               </div>
               <div class="hidden lg:flex flex-col items-start">
-                <span class="text-sm font-medium text-gray-500">{{ this.userInfo.login }}</span>
-                <a :href="this.urls.logout" class="text-xs text-gray-500">{{ this.translate.logout }}</a>
+                <span class="text-sm font-medium text-slate-600">{{ this.userInfo.login }}</span>
+                <a :href="this.urls.logout" class="text-xs text-slate-600">{{ this.translate.logout }}</a>
               </div>
               <i class="fas fa-chevron-down text-xs text-gray-500 hidden lg:inline transition-transform duration-200 group-hover:text-blue-600"></i>
             </button>

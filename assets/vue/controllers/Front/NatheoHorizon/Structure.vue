@@ -27,6 +27,11 @@ export default {
         page: false,
         optionsSystem: false
       },
+      error: {
+        isError: false,
+        msg: '',
+        code: 0,
+      },
       ajaxRequest: '',
       utilsFront: '',
       locale: '',
@@ -41,7 +46,6 @@ export default {
     this.locale = this.datas.locale;
     this.slug = this.datas.slug;
     this.loadOptionSystem();
-    this.loadPage();
 
   },
   mounted() {
@@ -55,7 +59,8 @@ export default {
     loadOptionSystem() {
       let success = (data) => {
         this.optionsSystem = data;
-        this.utilsFront = new UtilsFront(this.datas, this.optionsSystem)
+        this.utilsFront = new UtilsFront(this.datas, this.optionsSystem);
+        this.loadPage();
       }
       let isLoadOk = () => {
         this.isLoad.optionsSystem = true;
@@ -73,18 +78,21 @@ export default {
       };
 
       let isLoadOk = () => {
-        this.isLoad.page = true;
       }
 
       let success = (data) => {
         this.page = data.page;
         document.title = this.page.title;
+        this.isLoad.page = true;
       }
       this.ajaxRequest.getPageBySlug(params, success, this.apiFailure, isLoadOk);
     },
 
-    apiFailure(msg) {
-      alert(msg);
+    apiFailure(code, msg) {
+      this.error.isError = true;
+      this.error.msg = msg;
+      this.error.code = code;
+      //alert(msg);
     },
 
     apiLoader(close) {
@@ -139,5 +147,26 @@ export default {
 
     <Skeleton/>
 
+  </div>
+
+  <div v-if="this.error.isError"
+       class="fixed inset-0 z-50 grid place-content-center bg-black/50 p-4"
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="modalTitle"
+  >
+    <div class="w-full max-w-lg rounded-lg bg-white p-12 shadow-lg">
+      <h1 class="block font-black text-center text-gray-800 text-7xl sm:text-9xl">{{ this.error.code }}</h1>
+      <p class="text-center">
+        {{ this.translate.errorApi[this.error.code] }}
+      </p>
+      <p class="text-center mt-2">
+        <span class="bg-red-200 p-1.5 rounded-md">{{ this.error.msg }}</span>
+      </p>
+
+      <p class="text-center mt-4">
+        <a :href="this.urls.indexFr" class="text-slate-600 hover:bg-theme-4-750 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1.5">Retour index</a>
+      </p>
+    </div>
   </div>
 </template>

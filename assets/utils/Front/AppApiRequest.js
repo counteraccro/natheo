@@ -23,7 +23,7 @@ class AppApiRequest {
     getHeader() {
 
         let header = {
-            'Authorization': this.token,
+            'Authorization': this.token
         }
 
         if(this.userToken !== ''){
@@ -36,7 +36,6 @@ class AppApiRequest {
     /**
      * Requête get
      * @param url
-     * @param token
      * @param successCallBack
      * @param failureCallBack
      * @param loaderCallBack
@@ -47,7 +46,7 @@ class AppApiRequest {
         }).then((response) => {
             successCallBack(response.data.data);
         }).catch((error) => {
-            failureCallBack(error.response.data.errors[0]);
+            failureCallBack(error.response.data.code_http, error.response.data.errors[0]);
         }).finally(() => {
             if (loaderCallBack !== null) {
                 loaderCallBack(true);
