@@ -1,3 +1,7 @@
+/**
+ * Constante type de menu
+ * @type {{headerSideBar: number, headerDropDown: number, headerBigMenu: number, headerBigMenu2column: number, headerBigMenu3column: number, headerBigMenu4column: number, leftRightSideBar: number, leftRightSideBarAccordion: number, footer4Column: number, footer1LigneRight: number, footer1LigneCenter: number}}
+ */
 const MenuType = {
     headerSideBar: 1,
     headerDropDown: 2,

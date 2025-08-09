@@ -2,6 +2,7 @@
 
 
 import VerticalMenu from "./VerticalMenu.vue";
+import ContentStructure from "./Content/ContentStructure.vue";
 
 /**
  * @author Gourdon Aymeric
@@ -10,7 +11,7 @@ import VerticalMenu from "./VerticalMenu.vue";
  */
 export default {
   name: 'Main',
-  components: {VerticalMenu},
+  components: {ContentStructure, VerticalMenu},
   props: {
     utilsFront: Object,
     page: Object,
@@ -53,7 +54,11 @@ export default {
           :deep="0"
       />
     </div>
-    <div class="col-span-12 lg:col-span-8 lg:order-2 order-3 rounded bg-gray-300">Content</div>
+    <div class="col-span-12 lg:col-span-8 lg:order-2 order-3">
+      <content-structure
+          :page="this.page"
+      />
+    </div>
     <div class="col-span-12 lg:col-span-2 lg:order-3 order-2">
       <VerticalMenu
           :utils-front="this.utilsFront"
@@ -75,11 +80,19 @@ export default {
           :deep="0"
       />
     </div>
-    <div class="col-span-12 lg:col-span-10 rounded bg-gray-300">Content</div>
+    <div class="col-span-12 lg:col-span-10">
+      <content-structure
+          :page="this.page"
+      />
+    </div>
   </div>
 
   <div v-else class="grid grid-cols-12 gap-2 mt-2">
-    <div class="col-span-12 lg:col-span-10 lg:order-1 order-2 rounded bg-gray-300">Content</div>
+    <div class="col-span-12 lg:col-span-10 lg:order-1 order-2">
+      <content-structure
+          :page="this.page"
+      />
+    </div>
     <div class="col-span-12 lg:col-span-2 lg:order-2 order-1">
       <VerticalMenu
           :utils-front="this.utilsFront"
