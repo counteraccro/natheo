@@ -11,6 +11,8 @@ use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\Content\Page\PageContentTranslation;
+use App\Entity\Admin\Content\Page\PageMeta;
+use App\Entity\Admin\Content\Page\PageMetaTranslation;
 use App\Entity\Admin\Content\Page\PageStatistique;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
@@ -46,7 +48,8 @@ trait PageFixturesTrait
             'landingPage' => false,
             'isOpenComment' => self::getFaker()->boolean(),
             'nbComment' => self::getFaker()->randomNumber(2),
-            'ruleComment' => CommentConst::WAIT_VALIDATION
+            'ruleComment' => CommentConst::WAIT_VALIDATION,
+            'headerImg' => self::getFaker()->filePath(),
         ];
 
         $page = $this->initEntity(Page::class, array_merge($data, $customData));
@@ -155,7 +158,7 @@ trait PageFixturesTrait
      */
     public function createPageStatistique(?Page $page = null, array $customData = [], bool $persist = true): PageStatistique
     {
-        if($page === null) {
+        if ($page === null) {
             $page = $this->createPage();
         }
 
@@ -172,6 +175,62 @@ trait PageFixturesTrait
             $this->persistAndFlush($pageStatistique);
         }
         return $pageStatistique;
+    }
+
+    /**
+     * Création d'une page Meta
+     * @param Page|null $page
+     * @param array $customData
+     * @param bool $persist
+     * @return PageMeta
+     */
+    public function createPageMeta(?Page $page = null, array $customData = [], bool $persist = true): PageMeta
+    {
+        if ($page === null) {
+            $page = $this->createPage();
+        }
+
+        $data = [
+            'page' => $page,
+            'name' => self::getFaker()->text(30),
+        ];
+
+        $pageMeta = $this->initEntity(PageMeta::class, array_merge($data, $customData));
+        $pageMeta->setPage($page);
+        $page->addPageMeta($pageMeta);
+
+        if ($persist) {
+            $this->persistAndFlush($pageMeta);
+        }
+        return $pageMeta;
+    }
+
+    /**
+     * Création page meta translation
+     * @param PageMeta|null $pageMeta
+     * @param array $customData
+     * @param bool $persist
+     * @return PageMetaTranslation
+     */
+    public function createPageMetaTranslation(?PageMeta $pageMeta = null, array $customData = [], bool $persist = true): PageMetaTranslation
+    {
+        if ($pageMeta === null) {
+            $pageMeta = $this->createPageMeta();
+        }
+
+        $data = [
+            'pageMeta' => $pageMeta,
+            'locale' => self::getFaker()->locale(),
+            'value' => self::getFaker()->text(),
+        ];
+        $pageMetaTranslation = $this->initEntity(PageMetaTranslation::class, array_merge($data, $customData));
+        $pageMetaTranslation->setPageMeta($pageMeta);
+        $pageMeta->addPageMetaTranslation($pageMetaTranslation);
+
+        if ($persist) {
+            $this->persistAndFlush($pageMetaTranslation);
+        }
+        return $pageMetaTranslation;
     }
 
     /**
@@ -233,20 +292,25 @@ trait PageFixturesTrait
      * Création d'un jeu de donnée de page complet
      * @return Page
      */
-    public function createPageAllDataDefault() :Page
+    public function createPageAllDataDefault(): Page
     {
         $page = $this->createPage(customData: ['render' => PageConst::RENDER_2_BLOCK_BOTTOM,
             'disabled' => false, 'category' => PageConst::PAGE_CATEGORY_PAGE, 'isOpenComment' => true]);
 
-        foreach($this->locales as $locale) {
+        foreach ($this->locales as $locale) {
             $this->createPageTranslation($page, ['locale' => $locale]);
         }
 
         $faq = $this->createFaqAllDataDefault();
         $this->createPageContent($page, ['renderBlock' => 1, 'renderOrder' => 1, 'type' => PageConst::CONTENT_TYPE_FAQ, 'typeId' => $faq->getId()]);
         $pageContent = $this->createPageContent($page, ['renderBlock' => 2, 'renderOrder' => 1]);
-        foreach($this->locales as $locale) {
+        foreach ($this->locales as $locale) {
             $this->createPageContentTranslation($pageContent, ['locale' => $locale]);
+        }
+
+        $pageMeta = $this->createPageMeta($page);
+        foreach ($this->locales as $locale) {
+            $this->createPageMetaTranslation($pageMeta, ['locale' => $locale]);
         }
 
         $this->createPageTag($page);

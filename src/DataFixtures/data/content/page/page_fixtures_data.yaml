@@ -37,6 +37,55 @@ pages:
       PAGE_NB_READ:
         key: PAGE_NB_READ
         value: 30
+    pageMeta:
+      meta1:
+        name: 'description'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Listing des pages'
+          es:
+            locale: es
+            value: 'es-Listing des pages'
+          en:
+            locale: en
+            value: 'en-Listing des pages'
+      meta2:
+        name: 'keywords'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS, listing'
+          es:
+            locale: es
+            value: 'es-Natheo-CMS, listing'
+          en:
+            locale: en
+            value: 'en-Natheo-CMS, listing'
+      meta3:
+        name: 'author'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS'
+          es:
+            locale: es
+            value: 'es-Natheo-CMS'
+          en:
+            locale: en
+            value: 'en-Natheo-CMS'
+      meta4:
+        name: 'copyright'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Propulsé par Nathéo CMS'
+          es:
+            locale: es
+            value: 'es-Propulsé par Nathéo CMS'
+          en:
+            locale: en
+            value: 'en-Propulsé par Nathéo CMS'
 
   Page_listing_blog:
     user: User
@@ -76,6 +125,55 @@ pages:
       PAGE_NB_READ:
         key: PAGE_NB_READ
         value: 30
+    pageMeta:
+      meta1:
+        name: 'description'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Listing des articles de blogs'
+          es:
+            locale: es
+            value: 'es-Listing des articles de blogs'
+          en:
+            locale: en
+            value: 'en-Listing des articles de blogs'
+      meta2:
+        name: 'keywords'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS, listing, blog'
+          es:
+            locale: es
+            value: 'es-Natheo-CMS, listing, blog'
+          en:
+            locale: en
+            value: 'en-Natheo-CMS, listing, blog'
+      meta3:
+        name: 'author'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS'
+          es:
+            locale: es
+            value: 'es-Natheo-CMS'
+          en:
+            locale: en
+            value: 'en-Natheo-CMS'
+      meta4:
+        name: 'copyright'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Propulsé par Nathéo CMS'
+          es:
+            locale: es
+            value: 'es-Propulsé par Nathéo CMS'
+          en:
+            locale: en
+            value: 'en-Propulsé par Nathéo CMS'
 
   Page_faq:
     user: User
@@ -128,6 +226,55 @@ pages:
       PAGE_NB_READ:
         key: PAGE_NB_READ
         value: 30
+    pageMeta:
+      meta1:
+        name: 'description'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Faq Natheo-CMS'
+          es:
+            locale: es
+            value: 'es-Faq Natheo-CMS'
+          en:
+            locale: en
+            value: 'en-Faq Natheo-CMS'
+      meta2:
+        name: 'keywords'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS, faq'
+          es:
+            locale: es
+            value: 'es-Natheo-CMS, faq'
+          en:
+            locale: en
+            value: 'en-Natheo-CMS, faq'
+      meta3:
+        name: 'author'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS'
+          es:
+            locale: es
+            value: 'es-Natheo-CMS'
+          en:
+            locale: en
+            value: 'en-Natheo-CMS'
+      meta4:
+        name: 'copyright'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Propulsé par Nathéo CMS'
+          es:
+            locale: es
+            value: 'es-Propulsé par Nathéo CMS'
+          en:
+            locale: en
+            value: 'en-Propulsé par Nathéo CMS'
 
   Page_nouveaute:
     user: User
@@ -148,11 +295,11 @@ pages:
         url: new-in-natheo-cms
       es:
         locale: es
-        titre: '[ES] Faq de Natheo CMS'
+        titre: '[ES] Les nouveautés de Natheo CMS'
         url: es-new-in-natheo-cms
       en:
         locale: en
-        titre: '[EN] Faq de Natheo CMS'
+        titre: '[EN] Les nouveautés de Natheo CMS'
         url: en-new-in-natheo-cms
     pageContent:
       presentation_content_1:
@@ -204,6 +351,55 @@ pages:
       PAGE_NB_READ:
         key: PAGE_NB_READ
         value: 30
+    pageMeta:
+      meta1:
+        name: 'description'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Nouveautés de natheo CMS'
+          es:
+            locale: es
+            value: 'es-Nouveautés de natheo CMS'
+          en:
+            locale: en
+            value: 'en-Nouveautés de natheo CMS'
+      meta2:
+        name: 'keywords'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS, Nouveautés'
+          es:
+            locale: es
+            value: 'es-Natheo-CMS, Nouveautés'
+          en:
+            locale: en
+            value: 'en-Natheo-CMS, Nouveautés'
+      meta3:
+        name: 'author'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS'
+          es:
+            locale: es
+            value: 'es-Natheo-CMS'
+          en:
+            locale: en
+            value: 'en-Natheo-CMS'
+      meta4:
+        name: 'copyright'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Propulsé par Nathéo CMS'
+          es:
+            locale: es
+            value: 'es-Propulsé par Nathéo CMS'
+          en:
+            locale: en
+            value: 'en-Propulsé par Nathéo CMS'
 
   Page_demo:
     user: User
@@ -223,11 +419,11 @@ pages:
         url: demo-page
       es:
         locale: es
-        titre: 'Page de démonstration'
+        titre: 'es-Page de démonstration'
         url: demo-page
       en:
         locale: en
-        titre: 'Page de démonstration'
+        titre: 'en-Page de démonstration'
         url: demo-page
     pageContent:
       presentation_content_1:
@@ -279,6 +475,55 @@ pages:
       PAGE_NB_READ:
         key: PAGE_NB_READ
         value: 30
+    pageMeta:
+      meta1:
+        name: 'description'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Page démo'
+          es:
+            locale: es
+            value: 'es-Page démo'
+          en:
+            locale: en
+            value: 'en-Page démo'
+      meta2:
+        name: 'keywords'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS, Page, Démo'
+          es:
+            locale: es
+            value: 'es-Natheo-CMS, Page, Démo'
+          en:
+            locale: en
+            value: 'en-Natheo-CMS, Page, Démo'
+      meta3:
+        name: 'author'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS'
+          es:
+            locale: es
+            value: 'es-Natheo-CMS'
+          en:
+            locale: en
+            value: 'en-Natheo-CMS'
+      meta4:
+        name: 'copyright'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Propulsé par Nathéo CMS'
+          es:
+            locale: es
+            value: 'es-Propulsé par Nathéo CMS'
+          en:
+            locale: en
+            value: 'en-Propulsé par Nathéo CMS'
 
   Page_presentation:
     user: User
@@ -374,6 +619,55 @@ pages:
       PAGE_NB_READ:
         key: PAGE_NB_READ
         value: 30
+    pageMeta:
+      meta1:
+        name: 'description'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Page présentation'
+          es:
+            locale: es
+            value: 'es-Page présentation'
+          en:
+            locale: en
+            value: 'en-Page présentation'
+      meta2:
+        name: 'keywords'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS, page, présentation'
+          es:
+            locale: es
+            value: 'es-Natheo-CMS, page, présentation'
+          en:
+            locale: en
+            value: 'en-Natheo-CMS, page, présentation'
+      meta3:
+        name: 'author'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS'
+          es:
+            locale: es
+            value: 'es-Natheo-CMS'
+          en:
+            locale: en
+            value: 'en-Natheo-CMS'
+      meta4:
+        name: 'copyright'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Propulsé par Nathéo CMS'
+          es:
+            locale: es
+            value: 'es-Propulsé par Nathéo CMS'
+          en:
+            locale: en
+            value: 'en-Propulsé par Nathéo CMS'
 
   Page_blog:
     user: User
@@ -435,3 +729,52 @@ pages:
       PAGE_NB_READ:
         key: PAGE_NB_READ
         value: 30
+    pageMeta:
+      meta1:
+        name: 'description'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Page blog'
+          es:
+            locale: es
+            value: 'es-Page blog'
+          en:
+            locale: en
+            value: 'en-Page blog'
+      meta2:
+        name: 'keywords'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS, page, blog'
+          es:
+            locale: es
+            value: 'es-Natheo-CMS, page, blog'
+          en:
+            locale: en
+            value: 'en-Natheo-CMS, page, blog'
+      meta3:
+        name: 'author'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS'
+          es:
+            locale: es
+            value: 'es-Natheo-CMS'
+          en:
+            locale: en
+            value: 'en-Natheo-CMS'
+      meta4:
+        name: 'copyright'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Propulsé par Nathéo CMS'
+          es:
+            locale: es
+            value: 'es-Propulsé par Nathéo CMS'
+          en:
+            locale: en
+            value: 'en-Propulsé par Nathéo CMS'

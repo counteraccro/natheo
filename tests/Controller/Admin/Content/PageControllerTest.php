@@ -480,7 +480,7 @@ class PageControllerTest extends AppWebTestCase
      * Test méthode getInfoRenderBlock()
      * @return void
      */
-    public function testGetInfoRenderBlock() :void
+    public function testGetInfoRenderBlock(): void
     {
         $faq = $this->createFaqAllDataDefault();
         $this->checkNoAccess('admin_page_info_render_block');
@@ -504,7 +504,7 @@ class PageControllerTest extends AppWebTestCase
      * Test méthode getListePageForInternalLinks()
      * @return void
      */
-    public function testGetListePageForInternalLinks() :void
+    public function testGetListePageForInternalLinks(): void
     {
         $page = $this->createPageAllDataDefault();
         $this->checkNoAccess('admin_page_liste_pages_internal_link');
@@ -527,7 +527,7 @@ class PageControllerTest extends AppWebTestCase
      * Test méthode preview()
      * @return void
      */
-    public function testPreview() : void
+    public function testPreview(): void
     {
         $page = $this->createPageAllDataDefault();
         $this->checkNoAccess('admin_page_preview');
@@ -556,6 +556,31 @@ class PageControllerTest extends AppWebTestCase
             "id" => $idPage,
             "render" => 1,
             "status" => 1,
+            "pageMeta" => [
+                "id" => 1,
+                "page" => 1,
+                "name" => "description",
+                "pageMetaTranslations" => [
+                    [
+                        "id" => 1,
+                        "pageMeta" => 1,
+                        "locale" => "fr",
+                        "value" => "Page présentation"
+                    ],
+                    [
+                        "id" => 1,
+                        "pageMeta" => 1,
+                        "locale" => "es",
+                        "value" => "es-Page présentation"
+                    ],
+                    [
+                        "id" => 1,
+                        "pageMeta" => 1,
+                        "locale" => "en",
+                        "value" => "en-Page présentation"
+                    ],
+                ],
+            ],
             "pageTranslations" => [
                 [
                     "id" => 1,
@@ -629,6 +654,7 @@ class PageControllerTest extends AppWebTestCase
             "openComment" => true,
             "nbComment" => 10,
             "ruleComment" => 2,
+            'headerImg' => null,
             "menus" => [
                 $menu->getId()
             ],

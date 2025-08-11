@@ -16,7 +16,7 @@ class AppAdminController extends AbstractController
      * Filtre pour n'afficher que mes données
      * @var string
      */
-    const FILTER_ME = 'me';
+    const string FILTER_ME = 'me';
 
     /**
      * @var OptionUserService
