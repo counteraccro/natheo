@@ -41,6 +41,11 @@ class AjaxApiRequest extends AppApiRequest {
     getOptionSystems(successCallBack, failureCallBack, loaderCallBack) {
         this.getRequest(this.tabUrls.apiOptionsSystems, successCallBack, failureCallBack, loaderCallBack);
     }
+
+    getContentPage(params, successCallBack, failureCallBack, loaderCallBack) {
+        let url = this.addParameters(this.tabUrls.apiPageContent, params)
+        this.getRequest(url, successCallBack, failureCallBack, loaderCallBack);
+    }
 }
 
 export {AjaxApiRequest};

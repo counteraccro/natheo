@@ -2,6 +2,7 @@
 
 
 import VerticalMenu from "./VerticalMenu.vue";
+import ContentStructure from "./Content/ContentStructure.vue";
 
 /**
  * @author Gourdon Aymeric
@@ -10,11 +11,12 @@ import VerticalMenu from "./VerticalMenu.vue";
  */
 export default {
   name: 'Main',
-  components: {VerticalMenu},
+  components: {ContentStructure, VerticalMenu},
   props: {
     utilsFront: Object,
     page: Object,
-    ajaxRequest: Object
+    ajaxRequest: Object,
+    locale: String
   },
   emits: ['api-failure', 'api-loader'],
   data() {
@@ -26,8 +28,8 @@ export default {
 
   methods: {
 
-    apiFailure(msg) {
-      this.$emit('api-failure', msg);
+    apiFailure(code, msg) {
+      this.$emit('api-failure', code, msg);
     },
 
     apiSuccess(data) {
@@ -53,7 +55,14 @@ export default {
           :deep="0"
       />
     </div>
-    <div class="col-span-12 lg:col-span-8 lg:order-2 order-3 rounded bg-gray-300">Content</div>
+    <div class="col-span-12 lg:col-span-8 lg:order-2 order-3">
+      <content-structure
+          :page="this.page"
+          :ajax-request="this.ajaxRequest"
+          :locale="this.locale"
+          @api-failure="this.apiFailure"
+      />
+    </div>
     <div class="col-span-12 lg:col-span-2 lg:order-3 order-2">
       <VerticalMenu
           :utils-front="this.utilsFront"
@@ -75,11 +84,25 @@ export default {
           :deep="0"
       />
     </div>
-    <div class="col-span-12 lg:col-span-10 rounded bg-gray-300">Content</div>
+    <div class="col-span-12 lg:col-span-10">
+      <content-structure
+          :page="this.page"
+          :ajax-request="this.ajaxRequest"
+          :locale="this.locale"
+          @api-failure="this.apiFailure"
+      />
+    </div>
   </div>
 
   <div v-else class="grid grid-cols-12 gap-2 mt-2">
-    <div class="col-span-12 lg:col-span-10 lg:order-1 order-2 rounded bg-gray-300">Content</div>
+    <div class="col-span-12 lg:col-span-10 lg:order-1 order-2">
+      <content-structure
+          :page="this.page"
+          :ajax-request="this.ajaxRequest"
+          :locale="this.locale"
+          @api-failure="this.apiFailure"
+      />
+    </div>
     <div class="col-span-12 lg:col-span-2 lg:order-2 order-1">
       <VerticalMenu
           :utils-front="this.utilsFront"
