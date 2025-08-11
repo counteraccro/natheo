@@ -97,6 +97,7 @@ class IndexController extends AppFrontController
         $urls = [
             'apiPageFind' => $this->generateUrl('api_page_find', ['api_version' => $version]),
             'apiOptionsSystems' => $this->generateUrl('api_options_systems_listing', ['api_version' => $version]),
+            'apiPageContent' => $this->generateUrl('api_page_content', ['api_version' => $version]),
             'adminAuth' => $this->generateUrl('admin_dashboard_index'),
             'sitemap' => $this->generateUrl('front_sitemap'),
             'logout' => $this->generateUrl('auth_logout'),

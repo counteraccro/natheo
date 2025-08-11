@@ -92,7 +92,7 @@ export default {
       this.error.isError = true;
       this.error.msg = msg;
       this.error.code = code;
-      //alert(msg);
+      this.isLoad.page = false;
     },
 
     apiLoader(close) {
@@ -128,6 +128,7 @@ export default {
           :utils-front="this.utilsFront"
           :page="this.page"
           :ajax-request="this.ajaxRequest"
+          :locale="this.locale"
           @api-failure="this.apiFailure"
           @api-loader="this.apiLoader"
       />

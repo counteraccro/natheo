@@ -15,7 +15,8 @@ export default {
   props: {
     utilsFront: Object,
     page: Object,
-    ajaxRequest: Object
+    ajaxRequest: Object,
+    locale: String
   },
   emits: ['api-failure', 'api-loader'],
   data() {
@@ -27,8 +28,8 @@ export default {
 
   methods: {
 
-    apiFailure(msg) {
-      this.$emit('api-failure', msg);
+    apiFailure(code, msg) {
+      this.$emit('api-failure', code, msg);
     },
 
     apiSuccess(data) {
@@ -57,6 +58,9 @@ export default {
     <div class="col-span-12 lg:col-span-8 lg:order-2 order-3">
       <content-structure
           :page="this.page"
+          :ajax-request="this.ajaxRequest"
+          :locale="this.locale"
+          @api-failure="this.apiFailure"
       />
     </div>
     <div class="col-span-12 lg:col-span-2 lg:order-3 order-2">
@@ -83,6 +87,9 @@ export default {
     <div class="col-span-12 lg:col-span-10">
       <content-structure
           :page="this.page"
+          :ajax-request="this.ajaxRequest"
+          :locale="this.locale"
+          @api-failure="this.apiFailure"
       />
     </div>
   </div>
@@ -91,6 +98,9 @@ export default {
     <div class="col-span-12 lg:col-span-10 lg:order-1 order-2">
       <content-structure
           :page="this.page"
+          :ajax-request="this.ajaxRequest"
+          :locale="this.locale"
+          @api-failure="this.apiFailure"
       />
     </div>
     <div class="col-span-12 lg:col-span-2 lg:order-2 order-1">

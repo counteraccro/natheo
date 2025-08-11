@@ -1,5 +1,6 @@
 <script>
 import {PageRender} from "../../../../../../utils/Front/Const/PageRender";
+import {UtilsFront} from "../../../../../../utils/Front/UtilsFront";
 
 /**
  * @author Gourdon Aymeric
@@ -14,19 +15,47 @@ export default {
     }
   },
   props: {
-    page: Object
+    page: Object,
+    ajaxRequest: Object,
+    locale:String,
+
   },
-  emits: [],
+  emits: ['api-failure'],
   data() {
     return {
       value: 'Value',
     }
   },
+  created() {
+    this.loadContent();
+  },
+
   mounted() {
 
   },
 
-  methods: {}
+  methods: {
+
+    loadContent() {
+      let success = (data) => {
+        console.log(data)
+      }
+
+      let loader = () => {
+
+      }
+
+      let params = {
+        'id': 100,
+        'locale': this.locale
+      };
+      this.ajaxRequest.getContentPage(params, success, this.apiFailure, loader)
+    },
+
+    apiFailure(code, msg) {
+      this.$emit('api-failure', code, msg);
+    },
+  }
 }
 </script>
 
