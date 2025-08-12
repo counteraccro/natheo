@@ -15,7 +15,7 @@ export default {
     }
   },
   props: {
-    page: Object,
+    data: Object,
     ajaxRequest: Object,
     locale:String,
 
@@ -23,10 +23,13 @@ export default {
   emits: ['api-failure'],
   data() {
     return {
-      value: 'Value',
+      page : this.data,
+      tmp: [],
+      nbElement: 0
     }
   },
   created() {
+    this.nbElement = this.page.contents.length;
     this.loadContent();
   },
 
@@ -37,19 +40,26 @@ export default {
   methods: {
 
     loadContent() {
-      let success = (data) => {
-        console.log(data)
+      let success = (datas) => {
+        console.log(datas);
+        this.tmp.push(datas)
+        if(this.tmp.length === this.nbElement) {
+          this.tmp.forEach((element, key) => {
+            this.page.contents[key]['content'] = element;
+          });
+        }
       }
 
       let loader = () => {
 
       }
-
-      let params = {
-        'id': 100,
-        'locale': this.locale
-      };
-      this.ajaxRequest.getContentPage(params, success, this.apiFailure, loader)
+      this.page.contents.forEach((element) => {
+        let params = {
+          'id': element.id,
+          'locale': this.locale
+        };
+        this.ajaxRequest.getContentPage(params, success, this.apiFailure, loader)
+      });
     },
 
     apiFailure(code, msg) {
