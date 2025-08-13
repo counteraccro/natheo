@@ -60,6 +60,7 @@ export default {
           :data="this.page"
           :ajax-request="this.ajaxRequest"
           :locale="this.locale"
+          :utils-front="this.utilsFront"
           @api-failure="this.apiFailure"
       />
     </div>
