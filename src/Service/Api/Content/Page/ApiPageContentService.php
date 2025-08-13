@@ -59,7 +59,7 @@ class ApiPageContentService extends AppApiService
      */
     public function getFormatContent(PageContent $pageContent, ApiFindPageContentDto $dto): array
     {
-        $return = [];
+        $return = ['id' => $pageContent->getId()];
 
         switch ($pageContent->getType()) {
             case PageConst::CONTENT_TYPE_TEXT:
