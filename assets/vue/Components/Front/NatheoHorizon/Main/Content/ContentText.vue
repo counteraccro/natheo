@@ -1,4 +1,6 @@
 <script>
+import {marked} from 'marked'
+
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -19,7 +21,11 @@ export default {
   mounted() {
 
   },
-
+  computed: {
+    output() {
+      return marked(this.data);
+    },
+  },
   methods: {
 
   }
@@ -27,5 +33,5 @@ export default {
 </script>
 
 <template>
-  Content texte
+  <div class="natheo-content-text" v-html="this.output"></div>
 </template>

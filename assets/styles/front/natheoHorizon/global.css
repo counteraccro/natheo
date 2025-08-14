@@ -33,16 +33,56 @@
 
 /*** FIN ELEMENT HTML ***/
 
-/*** CSS BOUTON **/
+/*** CSS Content text **/
 
-.btn {
-    @apply px-5 py-2.5 rounded-lg cursor-pointer text-sm tracking-wider font-medium outline-none block w-min
+.natheo-content-text {
+    @apply text-slate-600 text-sm
 }
 
-.btn-primary {
-    @apply bg-theme-4 hover:bg-theme-5 active:bg-theme-4 text-white
+.natheo-content-text h1 {
+    @apply text-slate-900 text-3xl font-semibold mb-3
 }
 
-/*** FIN CSS BOUTON **/
+.natheo-content-text h2 {
+    @apply text-slate-900 text-2xl font-semibold mb-3
+}
+
+.natheo-content-text h3 {
+    @apply text-slate-900 text-xl font-semibold mb-3
+}
+
+.natheo-content-text h4 {
+    @apply text-slate-900 text-lg mb-3 font-bold
+}
+
+.natheo-content-text h4 {
+    @apply text-slate-900 text-base mb-3 font-bold
+}
+
+.natheo-content-text h5 {
+    @apply text-slate-900 text-base mb-3 italic
+}
+
+.natheo-content-text h6 {
+    @apply text-slate-900 text-sm mb-3 font-bold
+}
+
+.natheo-content-text p {
+    @apply mt-2 mb-2 text-justify
+}
+
+.natheo-content-text a {
+    @apply hover:bg-theme-4-750 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1 text-theme-4-750
+}
+
+.natheo-content-text blockquote {
+    @apply p-4 my-4 bg-gray-50 border-l-4 border-gray-300 dark:border-gray-500 dark:bg-gray-800
+}
+
+.natheo-content-text blockquote p {
+    @apply text-base italic font-medium leading-relaxed text-gray-900 dark:text-white
+}
+
+/*** FIN CSS content text **/
 
 
