@@ -28,7 +28,7 @@ export default {
     <li v-for="element in this.data">
       <a
           :href="this.utilsFront.getUrl(element)"
-          class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-2 py-1 rounded-md text-sm font-medium hover:dark:bg-gray-600"
+          class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-2 py-1 rounded-md font-medium hover:dark:bg-gray-600"
           :target="element.target">
         {{ element.label }}
       </a>
