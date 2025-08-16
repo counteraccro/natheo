@@ -95,6 +95,61 @@
     @apply ml-10
 }
 
+.natheo-content-text table {
+    @apply w-full text-left rtl:text-right
+}
+
+.natheo-content-text table thead {
+    @apply text-xs text-slate-900 uppercase
+}
+
+.natheo-content-text table tr {
+    @apply border-b border-b-gray-300 even:bg-theme-4-750/15;
+}
+
+.natheo-content-text table tr th {
+    @apply px-6 py-3
+}
+
+.natheo-content-text table tr td {
+    @apply px-6 py-2
+}
+
+.natheo-content-text pre {
+    @apply bg-white text-gray-900 font-mono text-sm rounded-lg p-3 overflow-auto border border-gray-200 mt-2 mb-2;
+    line-height: 1.5;
+    counter-reset: line;
+}
+.natheo-content-text code {
+    @apply font-mono;
+}
+.natheo-content-text pre code {
+    @apply block whitespace-pre;
+}
+
+
+.natheo-content-text pre code .code-line {
+    display: block;
+    position: relative;
+    padding-left: 3rem; /* marge pour les numéros */
+    padding-right: 1rem;
+    white-space: pre;   /* conserve les espaces */
+}
+
+.natheo-content-text pre code .code-line::before {
+    counter-increment: line;
+    content: counter(line);
+    position: absolute;
+    left: 0.75rem;
+    text-align: right;
+    opacity: 0.5;
+    color: currentColor;
+}
+
+.natheo-content-text .img-fluid {
+    @apply block mx-auto max-w-[50%] max-h-[50%] object-contain;
+}
+
 /*** FIN CSS content text **/
 
 
