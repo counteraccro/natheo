@@ -1,31 +1,55 @@
 <script>
+
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Contenu de type faq
+ * Contenu de type listing
  */
 export default {
   name: 'ContentFaq',
   props: {
     data: Object,
-    utilsFront: Object
+    utilsFront: Object,
+    locale: String,
+    ajaxRequest: Object,
   },
-  emits: [],
+  emits: ['api-failure'],
   data() {
     return {
-      value: 'Value',
+      content: '',
     }
+  },
+  created() {
+    this.loadContent();
   },
   mounted() {
 
   },
-
+  computed: {
+  },
   methods: {
+    loadContent() {
+      let success = (datas) => {
+        console.log(datas)
+      }
 
+      let loader = () => {
+
+      }
+      let params = {
+        'id': this.data.id,
+        'locale': this.locale
+      };
+      this.ajaxRequest.getContentPage(params, success, this.apiFailure, loader)
+    },
+
+    apiFailure(code, msg) {
+      this.$emit('api-failure', code, msg);
+    },
   }
 }
 </script>
 
 <template>
-  Content Faq
+  content faq
 </template>
