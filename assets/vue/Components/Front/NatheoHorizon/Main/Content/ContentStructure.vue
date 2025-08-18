@@ -119,7 +119,7 @@ export default {
   </div>
   <div v-if="this.page.render === PageRender.twoTwoBlock">
 
-    <div class="grid grid-cols-12">
+    <div class="grid grid-cols-12 gap-4">
       <div class="col-span-12 lg:col-span-6 order-1">
         <component :is="this.getComponentByType(this.page.contents[0].type)"
                    :data="this.page.contents[0]"
