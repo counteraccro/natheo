@@ -65,6 +65,7 @@ export default {
 </script>
 
 <template>
+  <h1 class="text-slate-900 text-3xl font-semibold after:content-[''] after:block after:h-1 after:w-full after:mt-2 after:rounded-full after:bg-theme-4-750 mb-4">{{ this.page.title }}</h1>
   <div v-if="this.page.render === PageRender.oneBlock">
     One block
   </div>
@@ -75,7 +76,28 @@ export default {
     3 block
   </div>
   <div v-if="this.page.render === PageRender.twoBlockBottom">
-    two block bottom
+    <div class="grid grid-cols-12">
+      <div class="col-span-12 lg:order-1 mb-3">
+        <component :is="this.getComponentByType(this.page.contents[0].type)"
+                   :data="this.page.contents[0]"
+                   :utils-front="utilsFront"
+                   :locale="this.locale"
+                   :ajax-request="this.ajaxRequest"
+                   @api-failure="this.apiFailure"
+        >
+        </component>
+      </div>
+      <div class="col-span-12 lg:order-1 mb-3">
+        <component :is="this.getComponentByType(this.page.contents[1].type)"
+                   :data="this.page.contents[1]"
+                   :utils-front="utilsFront"
+                   :locale="this.locale"
+                   :ajax-request="this.ajaxRequest"
+                   @api-failure="this.apiFailure"
+        >
+        </component>
+      </div>
+    </div>
   </div>
   <div v-if="this.page.render === PageRender.threeBlockBottom">
     3 block bottom
