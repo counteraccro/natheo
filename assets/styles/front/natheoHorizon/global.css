@@ -2,6 +2,7 @@
 
 @theme {
     --color-platinum: oklch(0.8804 0.0162 201.68);
+    --color-platinum-50: oklch(0.9712 0.0035 219.53);
     --color-platinum-100: oklch(0.9731 0.0043 197.09);
     --color-platinum-dark: oklch(0.25 0.0154 196.21);
     --color-blue-one: oklch(0.8238 0.0568 200.34);
@@ -13,6 +14,7 @@
     --color-prussian-blue: oklch(0.2996 0.0639 235.39);
 
     --color-theme-1 : var(--color-platinum);
+    --color-theme-1-50 : var(--color-platinum-50);
     --color-theme-1-100 : var(--color-platinum-100);
     --color-theme-1-dark : var(--color-platinum-dark);
     --color-theme-2 : var(--color-blue-one);
