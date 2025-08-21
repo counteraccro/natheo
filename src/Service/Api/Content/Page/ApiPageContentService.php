@@ -127,6 +127,7 @@ class ApiPageContentService extends AppApiService
 
             $pageTranslation = $page->getPageTranslationByLocale($locale);
             $return['pages'][] = [
+                'img' => $page->getHeaderImg(),
                 'title' => $pageTranslation->getTitre(),
                 'slug' => $pageTranslation->getUrl(),
                 'author' => $personalData->getPersonalData(),
