@@ -130,6 +130,7 @@ class ApiPageContentService extends AppApiService
                 'img' => $page->getHeaderImg(),
                 'title' => $pageTranslation->getTitre(),
                 'slug' => $pageTranslation->getUrl(),
+                'category' => $page->getCategory(),
                 'author' => $personalData->getPersonalData(),
                 'created' => $page->getCreatedAt()->getTimestamp(),
                 'update' => $page->getUpdateAt()->getTimestamp()
