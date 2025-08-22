@@ -48,6 +48,30 @@ export default {
       this.ajaxRequest.getContentPage(params, success, this.apiFailure, loader)
     },
 
+    /**
+     * Génère le lien
+     * @param element
+     * @returns {*}
+     */
+    generateUrl(element) {
+      return this.utilsFront.getUrl(element);
+    },
+
+    /**
+     * Change de page
+     * @param page
+     */
+    changePage(page) {
+      this.page = page;
+      this.isLoad = false;
+      this.loadContent();
+    },
+
+    getStylePagePagination() {
+      return "px-3 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-theme-4-750 hover:!text-theme-1-100 hover:dark:bg-gray-600 transition"
+    },
+
+
     apiFailure(code, msg) {
       this.$emit('api-failure', code, msg);
     },
@@ -58,10 +82,10 @@ export default {
 <template>
   <div v-if="this.isLoad">
     <!-- Liste d’articles -->
-    <ul class="mx-auto max-w-4xl divide-y divide-gray-200">
+    <ul class="mx-auto divide-y divide-gray-200">
 
-      <li v-for="page in this.pages" class="py-6">
-        <a href="#" class="flex gap-4 hover:bg-theme-4-750/15  hover:dark:bg-gray-600 rounded-xl p-2 transition">
+      <li v-for="page in this.pages" class="py-2">
+        <a :href="this.generateUrl(page)" class="flex gap-4 hover:bg-theme-4-750/15  hover:dark:bg-gray-600 rounded-xl p-2 transition">
           <img v-if="page.img !== null" :src="page.img" :alt="page.title" class="h-28 w-40 flex-none rounded-xl object-cover" loading="lazy"/>
           <div v-else class="h-28 w-40 flex-none rounded-xl bg-gray-200 flex flex-col items-center justify-center text-gray-400 text-sm font-medium">
             <div class="h-10 w-16 bg-gray-300 rounded-md mb-2"></div>
@@ -72,18 +96,23 @@ export default {
               {{ page.title }}
             </h3>
             <p class="mt-1 text-sm text-gray-500">
-              Par <span class="font-medium text-gray-700">{{ page.author }}</span> • 12 juin 2025
+              Par <span class="font-medium text-gray-700">{{ page.author }}</span> • {{ this.utilsFront.formatDate(page.created * 1000) }}
             </p>
           </div>
         </a>
       </li>
+    </ul>
 
       <!-- Pagination -->
       <nav class="flex items-center justify-center mt-8 space-x-2" aria-label="Pagination">
         <!-- Bouton précédent -->
-        <a href="#"
-           class="px-3 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
-          Précédent
+        <a href="#" @click="this.changePage(1)"
+           :class="this.getStylePagePagination()">
+          <<
+        </a>
+        <a href="#" @click="this.changePage(this.page - 1)" :style=" this.page === 1 ? 'pointer-events: none' : ''"
+           class=" px-3 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition disabled:bg-amber-400 ">
+          <
         </a>
 
         <!-- Numéros de page -->
@@ -111,54 +140,9 @@ export default {
         <!-- Bouton suivant -->
         <a href="#"
            class="px-3 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
-          Suivant
+          >>
         </a>
       </nav>
-
-
-      <!-- Article -->
-      <li class="py-6">
-        <a href="#" class="flex gap-4 hover:bg-gray-50 rounded-xl p-2 transition">
-          <!-- Image à gauche -->
-          <img
-              src="https://picsum.photos/seed/1/200/140"
-              alt="Visuel de l’article"
-              class="h-28 w-40 flex-none rounded-xl object-cover"
-              loading="lazy"
-          />
-          <!-- Contenu à droite -->
-          <div class="min-w-0">
-            <h3 class="text-lg font-semibold text-gray-900 line-clamp-2">
-              Titre de l’article très intéressant qui peut éventuellement faire deux lignes
-            </h3>
-            <p class="mt-1 text-sm text-gray-500">
-              Par <span class="font-medium text-gray-700">Jane Doe</span> • 12 juin 2025
-            </p>
-          </div>
-        </a>
-      </li>
-
-      <!-- Duplique <li> pour d’autres articles -->
-      <li class="py-6">
-        <a href="#" class="flex gap-4 hover:bg-gray-50 rounded-xl p-2 transition">
-          <img
-              src="https://picsum.photos/seed/2/200/140"
-              alt="Visuel de l’article"
-              class="h-28 w-40 flex-none rounded-xl object-cover"
-              loading="lazy"
-          />
-          <div class="min-w-0">
-            <h3 class="text-lg font-semibold text-gray-900 line-clamp-2">
-              Un autre titre d’article
-            </h3>
-            <p class="mt-1 text-sm text-gray-500">
-              Par <span class="font-medium text-gray-700">John Smith</span> • 3 août 2025
-            </p>
-          </div>
-        </a>
-      </li>
-    </ul>
-
   </div>
 
   <div v-else class="mx-auto w-full rounded-md p-4">

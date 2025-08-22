@@ -66,7 +66,7 @@ export default {
 
 <template>
 
-  <div v-if="this.page.headerImg !== ''" class="relative w-full h-48 sm:h-56 md:h-72 lg:h-80">
+  <div v-if="this.page.headerImg !== null" class="relative w-full h-48 sm:h-56 md:h-72 lg:h-80">
     <img :src="this.page.headerImg" alt="Image d'article" class="w-full h-full object-cover rounded-2xl">
     <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent rounded-2xl"></div>
     <h1 class="absolute inset-0 flex items-center justify-center text-white
@@ -81,7 +81,21 @@ export default {
   </h1>
   <div class="p-2 rounded-b-2xl bg-white">
     <div v-if="this.page.render === PageRender.oneBlock">
-      One block
+
+      <div class="grid grid-cols-12">
+        <div class="col-span-12 lg:order-1 mb-3">
+          <component :is="this.getComponentByType(this.page.contents[0].type)"
+                     :data="this.page.contents[0]"
+                     :utils-front="this.utilsFront"
+                     :locale="this.locale"
+                     :ajax-request="this.ajaxRequest"
+                     @api-failure="this.apiFailure"
+          >
+          </component>
+        </div>
+      </div>
+
+
     </div>
     <div v-if="this.page.render === PageRender.twoBlock">
       Two block
@@ -94,7 +108,7 @@ export default {
         <div class="col-span-12 lg:order-1 mb-3">
           <component :is="this.getComponentByType(this.page.contents[0].type)"
                      :data="this.page.contents[0]"
-                     :utils-front="utilsFront"
+                     :utils-front="this.utilsFront"
                      :locale="this.locale"
                      :ajax-request="this.ajaxRequest"
                      @api-failure="this.apiFailure"
@@ -104,7 +118,7 @@ export default {
         <div class="col-span-12 lg:order-1 mb-3">
           <component :is="this.getComponentByType(this.page.contents[1].type)"
                      :data="this.page.contents[1]"
-                     :utils-front="utilsFront"
+                     :utils-front="this.utilsFront"
                      :locale="this.locale"
                      :ajax-request="this.ajaxRequest"
                      @api-failure="this.apiFailure"
@@ -121,7 +135,7 @@ export default {
         <div class="col-span-12 lg:order-1 mb-3">
           <component :is="this.getComponentByType(this.page.contents[0].type)"
                      :data="this.page.contents[0]"
-                     :utils-front="utilsFront"
+                     :utils-front="this.utilsFront"
                      :locale="this.locale"
                      :ajax-request="this.ajaxRequest"
                      @api-failure="this.apiFailure"
@@ -131,7 +145,7 @@ export default {
         <div class="col-span-12 lg:col-span-6 order-2">
           <component :is="this.getComponentByType(this.page.contents[1].type)"
                      :data="this.page.contents[1]"
-                     :utils-front="utilsFront"
+                     :utils-front="this.utilsFront"
                      :locale="this.locale"
                      :ajax-request="this.ajaxRequest"
                      @api-failure="this.apiFailure"
@@ -141,7 +155,7 @@ export default {
         <div class="col-span-12 lg:col-span-6 order-3">
           <component :is="this.getComponentByType(this.page.contents[2].type)"
                      :data="this.page.contents[2]"
-                     :utils-front="utilsFront"
+                     :utils-front="this.utilsFront"
                      :locale="this.locale"
                      :ajax-request="this.ajaxRequest"
                      @api-failure="this.apiFailure"
@@ -159,7 +173,7 @@ export default {
         <div class="col-span-12 lg:col-span-6 order-1">
           <component :is="this.getComponentByType(this.page.contents[0].type)"
                      :data="this.page.contents[0]"
-                     :utils-front="utilsFront"
+                     :utils-front="this.utilsFront"
                      :locale="this.locale"
                      :ajax-request="this.ajaxRequest"
                      @api-failure="this.apiFailure"
@@ -169,7 +183,7 @@ export default {
         <div class="col-span-12 lg:col-span-6 order-2">
           <component :is="this.getComponentByType(this.page.contents[1].type)"
                      :data="this.page.contents[1]"
-                     :utils-front="utilsFront"
+                     :utils-front="this.utilsFront"
                      :locale="this.locale"
                      :ajax-request="this.ajaxRequest"
                      @api-failure="this.apiFailure"
@@ -179,7 +193,7 @@ export default {
         <div class="col-span-12 lg:col-span-6 order-3">
           <component :is="this.getComponentByType(this.page.contents[2].type)"
                      :data="this.page.contents[2]"
-                     :utils-front="utilsFront"
+                     :utils-front="this.utilsFront"
                      :locale="this.locale"
                      :ajax-request="this.ajaxRequest"
                      @api-failure="this.apiFailure"
@@ -189,7 +203,7 @@ export default {
         <div class="col-span-12 lg:col-span-6 order-4">
           <component :is="this.getComponentByType(this.page.contents[3].type)"
                      :data="this.page.contents[3]"
-                     :utils-front="utilsFront"
+                     :utils-front="this.utilsFront"
                      :locale="this.locale"
                      :ajax-request="this.ajaxRequest"
                      @api-failure="this.apiFailure"
