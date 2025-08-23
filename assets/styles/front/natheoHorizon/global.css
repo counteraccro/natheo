@@ -37,6 +37,10 @@
 
 /*** CSS Content text **/
 
+.content-paginate .disabled{
+    pointer-events: none;
+}
+
 .natheo-content-text {
     @apply text-slate-600 text-base
 }

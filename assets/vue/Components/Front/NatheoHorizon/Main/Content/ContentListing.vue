@@ -17,9 +17,10 @@ export default {
   data() {
     return {
       isLoad: false,
-      limit: 2,
+      limit: 10,
       page: 1,
       pages: '',
+      nbElements: 0,
     }
   },
   created() {
@@ -34,6 +35,7 @@ export default {
     loadContent() {
       let success = (datas) => {
         this.pages = datas.content.pages;
+        this.nbElements = datas.content.rows;
       }
 
       let loader = () => {
@@ -67,10 +69,39 @@ export default {
       this.loadContent();
     },
 
-    getStylePagePagination() {
+    /**
+     * Génère le style des liens de la pagination
+     * @param numberPage
+     * @param isCentral
+     * @param isEnd
+     * @returns {string}
+     */
+    getStylePagePagination(numberPage, isCentral, isEnd) {
+
+      console.log(numberPage, this.getNbPage());
+
+      if(numberPage === this.page && isCentral) {
+        return "px-3 py-1 rounded-lg border border-gray-300 bg-theme-4-750 !text-theme-1-100 hover:dark:bg-gray-600 transition"
+      }
+
+      if(numberPage === this.getNbPage() && isEnd) {
+        return "px-3 py-1 rounded-lg border border-gray-100 text-gray-300 transition disabled"
+      }
+
+      if(numberPage <= 1 && !isEnd && !isCentral) {
+        return "px-3 py-1 rounded-lg border border-gray-100 text-gray-300 transition disabled"
+      }
+
       return "px-3 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-theme-4-750 hover:!text-theme-1-100 hover:dark:bg-gray-600 transition"
     },
 
+    /**
+     * Retourne le nombre de page
+     * @returns {number}
+     */
+    getNbPage() {
+      return Math.ceil(this.nbElements / this.limit);
+    },
 
     apiFailure(code, msg) {
       this.$emit('api-failure', code, msg);
@@ -103,45 +134,19 @@ export default {
       </li>
     </ul>
 
-      <!-- Pagination -->
-      <nav class="flex items-center justify-center mt-8 space-x-2" aria-label="Pagination">
-        <!-- Bouton précédent -->
-        <a href="#" @click="this.changePage(1)"
-           :class="this.getStylePagePagination()">
-          <<
-        </a>
-        <a href="#" @click="this.changePage(this.page - 1)" :style=" this.page === 1 ? 'pointer-events: none' : ''"
-           class=" px-3 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition disabled:bg-amber-400 ">
-          <
+
+      <nav class="content-paginate flex items-center justify-center mt-8 space-x-2" aria-label="Pagination">
+        <a href="#" @click="this.changePage(1)" :class="this.getStylePagePagination(this.page, false, false)"><<</a>
+        <a href="#" @click="this.changePage(this.page - 1)" :class="this.getStylePagePagination(this.page, false,false)"><</a>
+
+        <a href="#" v-for="(n, i) in this.getNbPage()"
+           :class="this.getStylePagePagination(n, true,false)" @click="this.changePage(n)">
+          <span v-if="n === this.page-1 || n === this.page+1 || n === this.page || n <= 2 || n >= this.getNbPage()-1">{{ n }}</span>
+          <span v-else-if="n === this.page-2 || n === this.page+2">...</span>
         </a>
 
-        <!-- Numéros de page -->
-        <a href="#"
-           class="px-3 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
-          1
-        </a>
-        <a href="#"
-           class="px-3 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
-          2
-        </a>
-        <a href="#"
-           class="px-3 py-1 rounded-lg border border-indigo-500 bg-indigo-50 text-indigo-600 font-semibold transition">
-          3
-        </a>
-        <a href="#"
-           class="px-3 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
-          4
-        </a>
-        <a href="#"
-           class="px-3 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
-          5
-        </a>
-
-        <!-- Bouton suivant -->
-        <a href="#"
-           class="px-3 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
-          >>
-        </a>
+        <a href="#" @click="this.changePage(this.page + 1)" :class="this.getStylePagePagination(this.page, false,true)">></a>
+        <a href="#" @click="this.changePage(this.getNbPage())" :class="this.getStylePagePagination(this.page, false,true)">>></a>
       </nav>
   </div>
 
