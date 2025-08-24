@@ -11,3 +11,6 @@ front.footer.es.link: Español
 front.footer.en.link: English
 front.error.api.modal.error.403: "La ressource demandé n'est pas accessible"
 front.error.api.modal.error.401: "Le token d'accès à l'API est faux ou expiré"
+front.article.footer.published: "Publié le"
+front.article.footer.edit: "Edité le"
+front.article.footer.statPublication: "publications"
