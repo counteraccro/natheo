@@ -16,6 +16,7 @@ export default {
     utilsFront: Object,
     page: Object,
     ajaxRequest: Object,
+    translate: Object,
     locale: String
   },
   emits: ['api-failure', 'api-loader'],
@@ -59,6 +60,7 @@ export default {
       <content-structure
           :data="this.page"
           :ajax-request="this.ajaxRequest"
+          :translate="this.translate.articleFooter"
           :locale="this.locale"
           :utils-front="this.utilsFront"
           @api-failure="this.apiFailure"
@@ -90,6 +92,7 @@ export default {
       <content-structure
           :data="this.page"
           :ajax-request="this.ajaxRequest"
+          :translate="this.translate.articleFooter"
           :locale="this.locale"
           :utils-front="this.utilsFront"
           @api-failure="this.apiFailure"
@@ -102,6 +105,7 @@ export default {
       <content-structure
           :data="this.page"
           :ajax-request="this.ajaxRequest"
+          :translate="this.translate.articleFooter"
           :locale="this.locale"
           :utils-front="this.utilsFront"
           @api-failure="this.apiFailure"
