@@ -1,0 +1,16 @@
+front.footer.credit: __front.footer.credit
+front.footer.template.version: __front.footer.template.version
+front.footer.admin.link: __front.footer.admin.link
+front.footer.github.link: __front.footer.github.link
+front.page.title: __front.page.title
+front.footer.sitemap.link: __front.footer.sitemap.link
+front.header.login: __front.header.login
+front.header.logout: __front.header.logout
+front.footer.fr.link: __front.footer.fr.link
+front.footer.es.link: __front.footer.es.link
+front.footer.en.link: __front.footer.en.link
+front.error.api.modal.error.401: __front.error.api.modal.error.401
+front.error.api.modal.error.403: __front.error.api.modal.error.403
+front.article.footer.published: __front.article.footer.published
+front.article.footer.edit: __front.article.footer.edit
+front.article.footer.statPublication: __front.article.footer.statPublication
