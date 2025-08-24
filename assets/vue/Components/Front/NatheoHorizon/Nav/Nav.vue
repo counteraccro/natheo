@@ -106,7 +106,8 @@ export default {
               </svg>
             </button>
 
-            <a :href="this.urls.adminAuth" v-if="this.userInfo === ''"
+
+            <a :href="this.urls.adminAuth" v-if="Object.keys(this.userInfo).length === 0"
                class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md  font-medium">
               {{ this.translate.login }}
             </a>
