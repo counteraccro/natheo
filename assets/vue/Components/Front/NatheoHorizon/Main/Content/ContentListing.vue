@@ -78,8 +78,6 @@ export default {
      */
     getStylePagePagination(numberPage, isCentral, isEnd) {
 
-      console.log(numberPage, this.getNbPage());
-
       if(numberPage === this.page && isCentral) {
         return "px-3 py-1 rounded-lg border border-gray-300 bg-theme-4-750 !text-theme-1-100 hover:dark:bg-gray-600 transition"
       }

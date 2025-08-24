@@ -55,7 +55,6 @@ export default {
   methods: {
     loadContent() {
       let success = (datas) => {
-        console.log(datas);
         this.content = datas.content;
       }
 
