@@ -40,7 +40,7 @@ export default {
   <ul class="space-y-2" :class="this.deep > 0 ? 'list-inside pl-3' : 'mt-6'">
     <li v-for="element in this.elements">
 
-      <a :href="this.generateUrl(element)" :target="element.target" class="text-slate-600 text-sm font-normal hover:bg-theme-4-750 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1.5">
+      <a :href="this.generateUrl(element)" :target="element.target" class="text-slate-600 font-normal hover:bg-theme-4-750 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1.5">
         {{element.label}}
       </a>
       <FooterColonne v-if="element.hasOwnProperty('elements')"

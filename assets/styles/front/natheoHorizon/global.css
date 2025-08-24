@@ -2,6 +2,7 @@
 
 @theme {
     --color-platinum: oklch(0.8804 0.0162 201.68);
+    --color-platinum-50: oklch(0.9712 0.0035 219.53);
     --color-platinum-100: oklch(0.9731 0.0043 197.09);
     --color-platinum-dark: oklch(0.25 0.0154 196.21);
     --color-blue-one: oklch(0.8238 0.0568 200.34);
@@ -13,6 +14,7 @@
     --color-prussian-blue: oklch(0.2996 0.0639 235.39);
 
     --color-theme-1 : var(--color-platinum);
+    --color-theme-1-50 : var(--color-platinum-50);
     --color-theme-1-100 : var(--color-platinum-100);
     --color-theme-1-dark : var(--color-platinum-dark);
     --color-theme-2 : var(--color-blue-one);
@@ -33,16 +35,127 @@
 
 /*** FIN ELEMENT HTML ***/
 
-/*** CSS BOUTON **/
+/*** CSS Content text **/
 
-.btn {
-    @apply px-5 py-2.5 rounded-lg cursor-pointer text-sm tracking-wider font-medium outline-none block w-min
+.content-paginate .disabled{
+    pointer-events: none;
 }
 
-.btn-primary {
-    @apply bg-theme-4 hover:bg-theme-5 active:bg-theme-4 text-white
+.natheo-content-text {
+    @apply text-slate-600 text-base
 }
 
-/*** FIN CSS BOUTON **/
+.natheo-content-text h1 {
+    @apply text-slate-900 text-3xl font-semibold mb-3
+}
+
+.natheo-content-text h2 {
+    @apply text-slate-900 text-2xl font-semibold mb-3
+}
+
+.natheo-content-text h3 {
+    @apply text-slate-900 text-xl font-semibold mb-3
+}
+
+.natheo-content-text h4 {
+    @apply text-slate-900 text-lg mb-3 font-bold
+}
+
+.natheo-content-text h4 {
+    @apply text-slate-900 text-base mb-3 font-bold
+}
+
+.natheo-content-text h5 {
+    @apply text-slate-900 text-base mb-3 italic
+}
+
+.natheo-content-text h6 {
+    @apply text-slate-900 text-sm mb-3 font-bold
+}
+
+.natheo-content-text p {
+    @apply mt-2 mb-2 text-justify
+}
+
+.natheo-content-text a {
+    @apply hover:bg-theme-4-750 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1 text-theme-4-750
+}
+
+.natheo-content-text blockquote {
+    @apply p-4 my-4 bg-gray-50 border-1 rounded-sm border-l-4 border-theme-4-750 dark:border-gray-500 dark:bg-gray-800
+}
+
+.natheo-content-text blockquote p {
+    @apply  italic leading-relaxed text-shadow-slate-600 dark:text-white
+}
+
+.natheo-content-text ul {
+    @apply list-disc mt-2 mb-2
+}
+
+.natheo-content-text ol {
+    @apply list-decimal mt-2 mb-2
+}
+
+.natheo-content-text li {
+    @apply ml-10
+}
+
+.natheo-content-text table {
+    @apply w-full text-left rtl:text-right
+}
+
+.natheo-content-text table thead {
+    @apply text-xs text-slate-900 uppercase
+}
+
+.natheo-content-text table tr {
+    @apply border-b border-b-gray-300 even:bg-theme-4-750/15;
+}
+
+.natheo-content-text table tr th {
+    @apply px-6 py-3
+}
+
+.natheo-content-text table tr td {
+    @apply px-6 py-2
+}
+
+.natheo-content-text pre {
+    @apply bg-white text-gray-900 font-mono text-sm rounded-lg p-3 overflow-auto border border-gray-200 mt-2 mb-2;
+    line-height: 1.5;
+    counter-reset: line;
+}
+.natheo-content-text code {
+    @apply font-mono;
+}
+.natheo-content-text pre code {
+    @apply block whitespace-pre;
+}
+
+
+.natheo-content-text pre code .code-line {
+    display: block;
+    position: relative;
+    padding-left: 3rem; /* marge pour les numéros */
+    padding-right: 1rem;
+    white-space: pre;   /* conserve les espaces */
+}
+
+.natheo-content-text pre code .code-line::before {
+    counter-increment: line;
+    content: counter(line);
+    position: absolute;
+    left: 0.75rem;
+    text-align: right;
+    opacity: 0.5;
+    color: currentColor;
+}
+
+.natheo-content-text .img-fluid {
+    @apply block mx-auto max-w-[50%] max-h-[50%] object-contain;
+}
+
+/*** FIN CSS content text **/
 
 

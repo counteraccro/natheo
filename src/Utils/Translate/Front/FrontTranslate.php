@@ -4,6 +4,7 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
+
 namespace App\Utils\Translate\Front;
 
 use App\Utils\Translate\AppTranslate;
@@ -36,7 +37,10 @@ class FrontTranslate extends AppTranslate
         return [
             'errorApi' => $this->getTranslateErrorApi(),
             'footer' => $this->getTranslateFooter(),
-            'header' => $this->getTranslateHeader()
+            'header' => $this->getTranslateHeader(),
+            'main' => [
+                'articleFooter' => $this->getTranslateArticleFooter(),
+            ]
         ];
     }
 
@@ -82,5 +86,14 @@ class FrontTranslate extends AppTranslate
             'logout' => $this->translator->trans('front.header.logout', domain: 'front'),
         ];
 
+    }
+
+    private function getTranslateArticleFooter(): array
+    {
+        return [
+            'published' => $this->translator->trans('front.article.footer.published', domain: 'front'),
+            'edit' => $this->translator->trans('front.article.footer.edit', domain: 'front'),
+            'statPublication' => $this->translator->trans('front.article.footer.statPublication', domain: 'front'),
+        ];
     }
 }

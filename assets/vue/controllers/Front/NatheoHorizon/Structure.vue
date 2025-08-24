@@ -129,6 +129,7 @@ export default {
           :page="this.page"
           :ajax-request="this.ajaxRequest"
           :locale="this.locale"
+          :translate="this.translate.main"
           @api-failure="this.apiFailure"
           @api-loader="this.apiLoader"
       />

@@ -29,12 +29,12 @@ class UtilsFront {
      */
     getUrl(element) {
 
-        if(element.url !== "") {
+        if(Object.hasOwn(element, 'url') && element.url !== "") {
             return element.url;
         }
 
         let category = '';
-        if(element.category !== '') {
+        if(Object.hasOwn(element, 'category') && element.category !== '') {
             category = this.getStringPageCategoryById(element.category).toLowerCase() + '/';
         }
 
@@ -43,6 +43,26 @@ class UtilsFront {
         }
 
         return 'https://' + this.optionsSystem.OS_ADRESSE_SITE + '/' + this.data.locale + '/' + category + element.slug
+    }
+
+    /**
+     * Format un timestamp en date
+     * @param timestamp
+     * @returns {string}
+     */
+    formatDate(timestamp) {
+
+        let locale = this.data.locale + '-' + this.data.locale.toUpperCase()
+
+        let date = new Date(timestamp);
+        return new Intl.DateTimeFormat(locale, {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).format(date);
     }
 
     /**

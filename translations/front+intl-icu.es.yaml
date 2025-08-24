@@ -11,3 +11,6 @@ front.footer.es.link: __front.footer.es.link
 front.footer.en.link: __front.footer.en.link
 front.error.api.modal.error.401: __front.error.api.modal.error.401
 front.error.api.modal.error.403: __front.error.api.modal.error.403
+front.article.footer.published: __front.article.footer.published
+front.article.footer.edit: __front.article.footer.edit
+front.article.footer.statPublication: __front.article.footer.statPublication

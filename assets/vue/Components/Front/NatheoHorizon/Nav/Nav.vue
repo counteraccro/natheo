@@ -79,7 +79,7 @@ export default {
               || this.data.type === this.MenuType.headerBigMenu2column || this.data.type === this.MenuType.headerBigMenu3column ||
               this.data.type === this.MenuType.headerBigMenu4column">
                 <a v-if="!element.hasOwnProperty('elements')" :href="this.utilsFront.getUrl(element)"
-                   class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md text-sm font-medium hover:dark:bg-gray-600"
+                   class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md  font-medium hover:dark:bg-gray-600"
                    :target="element.target">{{ element.label }}</a>
 
                 <NavMegaMenu v-else
@@ -106,8 +106,9 @@ export default {
               </svg>
             </button>
 
-            <a :href="this.urls.adminAuth" v-if="this.userInfo === ''"
-               class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md text-sm font-medium">
+
+            <a :href="this.urls.adminAuth" v-if="Object.keys(this.userInfo).length === 0"
+               class="!text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md  font-medium">
               {{ this.translate.login }}
             </a>
 
@@ -119,7 +120,7 @@ export default {
                 </div>
               </div>
               <div class="hidden lg:flex flex-col items-start">
-                <span class="text-sm font-medium text-slate-600">{{ this.userInfo.login }}</span>
+                <span class=" font-medium text-slate-600">{{ this.userInfo.login }}</span>
                 <a :href="this.urls.logout" class="text-xs text-slate-600">{{ this.translate.logout }}</a>
               </div>
               <i class="fas fa-chevron-down text-xs text-gray-500 hidden lg:inline transition-transform duration-200 group-hover:text-blue-600"></i>

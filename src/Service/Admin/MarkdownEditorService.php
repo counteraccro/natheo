@@ -49,7 +49,7 @@ class MarkdownEditorService extends AppAdminService
             /** @var Page $page */
             $page = $this->findOneById(Page::class, $match[2]);
             $pageTrans = $page->getPageTranslationByLocale($locale);
-            $urlGenerate = $url . '/' . strtolower($tabCategories[$page->getCategory()]) . '/' . $pageTrans->getUrl();
+            $urlGenerate = $url . '/' . $locale . '/' . strtolower($tabCategories[$page->getCategory()]) . '/' . $pageTrans->getUrl();
             $text = str_replace($match[0], $urlGenerate, $text);
         }
         return $text;

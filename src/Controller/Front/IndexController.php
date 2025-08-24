@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\LocaleSwitcher;
 
 #[Route('/', name: 'front_', requirements: ['_locale' => '%app.supported_locales%'],
     defaults: ["_locale" => "%app.default_locale%"])]
@@ -72,9 +73,12 @@ class IndexController extends AppFrontController
     public function index(
         UserDataService $userDataService,
         FrontTranslate  $frontTranslate,
+        LocaleSwitcher $localeSwitcher,
         ?string         $locale = '',
         ?string         $slug = null): Response
     {
+
+        $localeSwitcher->setLocale($locale);
 
         if (!$this->installationService->checkSchema()) {
             return $this->redirectToRoute('installation_step_1');
@@ -108,7 +112,8 @@ class IndexController extends AppFrontController
 
         /** @var User $user */
         $user = $this->getUser();
-        $token = $userInfo = '';
+        $token = '';
+        $userInfo = [];
         if ($user != null) {
             $token = $userDataService->generateUserToken($user);
             $userInfo = [
