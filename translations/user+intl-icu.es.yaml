@@ -186,3 +186,12 @@ user.more_options.loading: __user.more_options.loading
 user.more_options.btn.show_help: __user.more_options.btn.show_help
 user.more_options.btn.hide_help: __user.more_options.btn.hide_help
 user.page_my_account.options.divers: __user.page_my_account.options.divers
+user.form.avatar.label: __user.form.avatar.label
+user.form.avatar.help: __user.form.avatar.help
+user.form.avatar.placeholder: __user.form.avatar.placeholder
+user.form.avatar.error.upload: __user.form.avatar.error.upload
+user.form.description.label: __user.form.description.label
+user.form.description.help: __user.form.description.help
+user.form.description.placeholder: __user.form.description.placeholder
+user.page_my_account.upload.avatar.error: __user.page_my_account.upload.avatar.error
+user.page_my_account.other_data: __user.page_my_account.other_data
