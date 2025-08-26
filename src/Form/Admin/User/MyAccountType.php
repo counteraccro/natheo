@@ -9,10 +9,13 @@ namespace App\Form\Admin\User;
 use App\Entity\Admin\System\User;
 use App\Form\AppFormType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class MyAccountType extends AppFormType
 {
@@ -49,6 +52,33 @@ class MyAccountType extends AppFormType
                 ],
                 'required' => false
             ])
+
+            ->add('avatar', FileType::class, [
+                'label' => $this->translator->trans('user.form.avatar.label', domain: 'user'),
+                'help' => $this->translator->trans('user.form.avatar.help', domain: 'user'),
+                'attr' => [
+                    'placeholder' => $this->translator->trans('user.form.avatar.placeholder', domain: 'user')
+                ],
+                'required' => false,
+                'mapped' => false,
+                'constraints' => [
+                    new File(
+                        maxSize: '1024k',
+                        extensions: ['gif', 'jpg', 'jpeg', 'png'],
+                        extensionsMessage: $this->translator->trans('user.form.avatar.error.upload', domain: 'user'),
+                    )
+    ],
+            ])
+
+            ->add('description', TextareaType::class, [
+                'label' => $this->translator->trans('user.form.description.label', domain: 'user'),
+                'help' => $this->translator->trans('user.form.description.help', domain: 'user'),
+                'attr' => [
+                    'placeholder' => $this->translator->trans('user.form.description.placeholder', domain: 'user')
+                ],
+                'required' => false
+            ])
+
             ->add('save', SubmitType::class, [
                 'label' => $this->translator->trans('user.form.submit', domain: 'user'),
                 'attr' => [

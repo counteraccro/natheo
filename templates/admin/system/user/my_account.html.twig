@@ -18,22 +18,43 @@
                     {{ 'user.page_my_account.profil' | trans({}, 'user') }}
                 </div>
                 <div class="card-body">
-
+                    {{ form_start(form) }}
                     {{ form_row(form.email) }}
 
-                    <fieldset>
+                    <fieldset class="mb-3">
                         <legend> {{ 'user.page_my_account.personal_data' | trans({}, 'user') }}</legend>
 
                         <p>
                             <i class="bi bi-info-circle-fill"></i> {{ 'user.page_my_account.personal_data.description' | trans({}, 'user') }}
                         </p>
 
-                        {{ form(form) }}
+                        {{ form_row(form.login) }}
 
-                            <i class="float-end">{{ 'user.page_my_account.last_update' | trans({}, 'user') }} {{ diff_now(user.updateAt) }}</i>
+                        {{ form_row(form.firstname)}}
 
+                        {{ form_row(form.lastname)}}
 
                     </fieldset>
+
+                    <fieldset class="mb-3">
+                        <legend> {{ 'user.page_my_account.other_data' | trans({}, 'user') }}</legend>
+
+                        {% if user.avatar is not null %}
+                            <img src="{{ asset(avatarDirectory ~ user.avatar) }}" class="float-end border mb-2" style="vertical-align: middle; width: 50px; height: 50px; border-radius: 50%;" />
+                        {% endif %}
+
+                        {{ form_row(form.avatar) }}
+                        {{ form_row(form.description) }}
+
+                    </fieldset>
+
+                    {{ form_row(form.save) }}
+
+                    {{ form_rest(form) }}
+
+                    {{ form_end(form) }}
+
+                    <i class="float-end">{{ 'user.page_my_account.last_update' | trans({}, 'user') }} {{ diff_now(user.updateAt) }}</i>
                 </div>
             </div>
         </div>
