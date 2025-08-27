@@ -157,10 +157,10 @@ class PageRepository extends ServiceEntityRepository
      * Retourne une page en fonction de son slug
      * Si le slug est vide, renvoi la landingPage
      * @param string $slug
+     * @param array $status
      * @return Page|null
-     * @throws NonUniqueResultException
      */
-    public function getBySlug(string $slug): ?Page
+    public function getBySlug(string $slug, array $status = [PageConst::STATUS_PUBLISH]): ?Page
     {
         $query = $this->createQueryBuilder('p');
 
@@ -175,8 +175,8 @@ class PageRepository extends ServiceEntityRepository
 
         $query->andWhere('p.disabled = :disabled')
             ->setParameter('disabled', false)
-            ->andWhere('p.status = :status')
-            ->setParameter('status', PageConst::STATUS_PUBLISH)
+            ->andWhere('p.status IN (:status)')
+            ->setParameter('status', $status)
             ->setMaxResults(1);
         return $query->getQuery()->getOneOrNullResult();
 
