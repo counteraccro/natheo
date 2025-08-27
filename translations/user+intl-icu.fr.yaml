@@ -195,4 +195,4 @@ user.form.avatar.label: 'Votre avatar'
 user.form.avatar.help: 'Image qui sera placé en bas de vos articles'
 user.form.avatar.placeholder: 'Sélectionné un avatar'
 user.form.avatar.error.upload: 'Merci de télécharger une image au format jpg, gif ou png valide'
-user.page_my_account.upload.avatar.error: "Une erreur est survenue lors du téléchargement de votre avatar"
+user.page_my_account.upload.avatar.error: 'Une erreur est survenue lors du téléchargement de votre avatar'
