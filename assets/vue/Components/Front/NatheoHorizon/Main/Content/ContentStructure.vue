@@ -339,26 +339,24 @@ export default {
         <div>
           <div class="flex flex-col sm:flex-row sm:items-center sm:gap-4">
             <div class="shrink-0">
-              <!--
-              <img
-                src="{{ AVATAR_URL }}"
-                alt="Avatar de {{ NOM_AUTEUR }}"
-                class="size-14 rounded-full object-cover ring-1 ring-neutral-200/70 dark:ring-neutral-800/70"
+              <img v-if="this.page.author.avatar !== null || this.page.author.avatar !== ''"
+                :src="'/uploads/avatars/' + this.page.author.avatar"
+                :alt="'Avatar de ' + this.page.author.author"
+                class="size-14 rounded-full object-cover"
               />
-              -->
 
-              <div class="flex size-14 items-center justify-center rounded-full bg-theme-4-750 dark:bg-gray-600
-                   text-white font-semibold ring-1 ring-neutral-200/70dark:ring-neutral-800/70"> {{ this.page.author.substring(0, 1).toUpperCase() }}
+              <div v-else class="flex size-14 items-center justify-center rounded-full bg-theme-4-750 dark:bg-gray-600
+                   text-white font-semibold ring-1 ring-neutral-200/70dark:ring-neutral-800/70"> {{ this.page.author.author.substring(0, 1).toUpperCase() }}
               </div>
             </div>
 
             <h3 class="mt-2 sm:mt-0 text-base font-semibold text-slate-900">
-              {{ this.page.author }}
+              {{ this.page.author.author }}
             </h3>
           </div>
 
           <p class="mt-2 ml-3 text-sm text-slate-600">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent at egestas dui, nec dapibus purus. Pellentesque id gravida urna, vel venenatis ipsum.
+            {{ this.page.author.description }}
           </p>
         </div>
 

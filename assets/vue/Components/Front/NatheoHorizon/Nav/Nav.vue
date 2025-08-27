@@ -95,7 +95,7 @@ export default {
           <div class="hidden lg:flex lg:items-center">
 
             <button onclick="(() => document.documentElement.classList.toggle('dark'))()"
-                    class="group h-10 w-10 rounded-full p-2 hover:bg-theme-4-750 dark:hover:bg-gray-600 me-2 cursor-pointer">
+                    class="group h-10 w-10 rounded-full p-2 hover:bg-theme-4-750 dark:hover:bg-gray-600 me-2 cursor-pointer border-1 border-gray-300">
               <svg class="fill-violet-700 block group-hover:fill-theme-1-100 dark:hidden" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
               </svg>
@@ -112,19 +112,24 @@ export default {
               {{ this.translate.login }}
             </a>
 
-            <button v-else class="flex items-center space-x-2 focus:outline-none">
+            <div v-else class="flex items-center space-x-2 focus:outline-none">
               <div class="relative">
-                <div
+                <div v-if="this.userInfo.avatarImg === null || this.userInfo.avatarImg === ''"
                     class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-theme-4-750 rounded-full dark:bg-gray-600">
                   <span class="font-medium text-theme-1-100 dark:text-gray-300">{{ this.userInfo.avatar }}</span>
                 </div>
+                <div v-else class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden rounded-full mt-1">
+                  <img :src="'/' + userInfo.pathImgAvatar + this.userInfo.avatarImg"  alt="avatar" class="w-10 h-10"/>
+
+                </div>
+
               </div>
               <div class="hidden lg:flex flex-col items-start">
                 <span class=" font-medium text-slate-600">{{ this.userInfo.login }}</span>
                 <a :href="this.urls.logout" class="text-xs text-slate-600">{{ this.translate.logout }}</a>
               </div>
               <i class="fas fa-chevron-down text-xs text-gray-500 hidden lg:inline transition-transform duration-200 group-hover:text-blue-600"></i>
-            </button>
+            </div>
           </div>
 
           <!-- Mobile menu button -->
