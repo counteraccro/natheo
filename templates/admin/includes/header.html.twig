@@ -22,6 +22,13 @@
                     <span class="d-none-mini"> {{ 'global.dashboard' | trans({}, 'global') }}</span>
                 </a>
 
+                {%set urlSite = get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_ADRESSE_SITE')) %}
+
+                <a class="nav-link active" href="{{ urlSite }}">
+                    <i class="bi-h bi-display-fill-h"></i>
+                    <span class="d-none-mini"> {{ 'global.display' | trans({}, 'global') }}</span>
+                </a>
+
                 {%set notification = get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_NOTIFICATION')) %}
 
                 {% if notification is same as("1") %}
