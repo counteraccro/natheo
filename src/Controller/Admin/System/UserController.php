@@ -178,7 +178,8 @@ class UserController extends AppAdminController
         #[MapEntity(id: 'id')] User $user,
         UserService                 $userService,
         TranslatorInterface         $translator,
-        OptionSystemService         $optionSystemService
+        OptionSystemService         $optionSystemService,
+        #[Autowire('%app.folder.upload.avatar%')] string $avatarDirectory
     ): JsonResponse
     {
         $role = new Role($user);
@@ -199,6 +200,12 @@ class UserController extends AppAdminController
                 $userService->anonymizer($user);
                 $msg = $translator->trans('user.success_anonymous', domain: 'user');
             } else {
+
+                if($user->getAvatar() !== null) {
+                    $fileSystem = new Filesystem();
+                    $fileSystem->remove($avatarDirectory . DIRECTORY_SEPARATOR . $user->getAvatar());
+                }
+
                 $userService->remove($user);
                 $msg = $translator->trans('user.success_remove', domain: 'user');
             }
@@ -491,6 +498,7 @@ class UserController extends AppAdminController
         MailService         $mailService,
         OptionSystemService $optionSystemService,
         NotificationService $notificationService,
+        #[Autowire('%app.folder.upload.avatar%')] string $avatarDirectory
     ): JsonResponse
     {
         $status = 0;
@@ -512,9 +520,15 @@ class UserController extends AppAdminController
                     $url = $this->generateUrl('auth_logout');
                 } else {
                     $status = 2;
+
+                    if($user->getAvatar() !== null) {
+                        $fileSystem = new Filesystem();
+                        $fileSystem->remove($avatarDirectory . DIRECTORY_SEPARATOR . $user->getAvatar());
+                    }
+
                     $userService->remove($user);
                     $msg = $translator->trans('user.danger_zone.success_remove', domain: 'user');
-                    $url = $this->generateUrl('front_index');
+                    $url = $this->generateUrl('front_no_local');
                 }
             } else {
                 $msg = $translator->trans('user.error_not_allowed', domain: 'user');
