@@ -91,11 +91,17 @@ class UserService extends AppAdminService
                 $roles = substr($roles, 0, -2);
             }
 
+            $paramBag = $this->getParameterBag();
+
+            $avatar = '';
+            if($user->getAvatar() !== null){
+                $avatar = '<img src="/' . $paramBag->get('app.path.avatar') . $user->getAvatar(). '" style="width: 40px; height: 40px; border-radius: 50%;" class="me-2" />';
+            }
 
             $actions = $this->generateTabAction($user);
             $data[] = [
                 $translator->trans('user.grid.id', domain: 'user') => $user->getId() . ' ' . $isDisabled,
-                $translator->trans('user.grid.login', domain: 'user') => $user->getLogin(),
+                $translator->trans('user.grid.login', domain: 'user') =>  $avatar . $user->getLogin(),
                 $translator->trans('user.grid.email', domain: 'user') => $email,
                 $translator->trans('user.grid.name', domain: 'user') => $user->getFirstname() . ' ' . $user->
                     getLastname(),
