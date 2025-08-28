@@ -94,6 +94,7 @@ class FrontTranslate extends AppTranslate
             'published' => $this->translator->trans('front.article.footer.published', domain: 'front'),
             'edit' => $this->translator->trans('front.article.footer.edit', domain: 'front'),
             'statPublication' => $this->translator->trans('front.article.footer.statPublication', domain: 'front'),
+            'infoDraft' => $this->translator->trans('front.article.footer.info.draft', domain: 'front'),
         ];
     }
 }

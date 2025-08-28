@@ -14,3 +14,4 @@ front.error.api.modal.error.403: __front.error.api.modal.error.403
 front.article.footer.published: __front.article.footer.published
 front.article.footer.edit: __front.article.footer.edit
 front.article.footer.statPublication: __front.article.footer.statPublication
+front.article.footer.info.draft: __front.article.footer.info.draft
