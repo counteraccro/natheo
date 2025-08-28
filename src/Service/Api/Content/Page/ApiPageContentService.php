@@ -70,6 +70,9 @@ class ApiPageContentService extends AppApiService
                 break;
             case PageConst::CONTENT_TYPE_LISTING:
                 $return['content'] = $this->formatContentListing($pageContent->getTypeId(), $dto->getLocale(), $dto->getPage(), $dto->getLimit());
+                $pageService = $this->getPageService();
+                $translator = $this->getTranslator();
+                $return['title'] = $translator->trans('page.content.listing.title', parameters: ['category' => $pageService->getCategoryById($pageContent->getPage()->getCategory())], domain: 'page', locale: $dto->getLocale());
                 break;
             default:
                 break;

@@ -239,6 +239,7 @@ class PageController extends AppAdminController
                 'list_content' => $pageService->getAllContent(),
                 'list_categories' => $pageService->getAllCategories(),
                 'list_comments_status' => $commentService->getAllStatus(),
+                'url_front' => $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE),
                 'options_commentaire' => [
                     'open' => $optionSystemService->getValueByKey(OptionSystemKey::OS_OPEN_COMMENT),
                     'new_comment' => $optionSystemService->getValueByKey(OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION)

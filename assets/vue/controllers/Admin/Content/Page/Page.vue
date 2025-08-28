@@ -528,7 +528,20 @@ export default {
      * Ouvre la préview dans un nouvel onglet
      */
     openPreview() {
-      window.open(this.urls.page_preview + '/' + this.page.id + '/' + this.currentLocale, '_blank');
+
+      let category = this.page_datas.list_categories[this.page.category].toLowerCase();
+      let slug = '';
+      let locale = this.currentLocale;
+
+      this.page.pageTranslations.forEach(function (translate) {
+        if (translate.locale === locale) {
+          slug = translate.url;
+          return false;
+        }
+      });
+
+      window.open(this.page_datas.url_front + '/' + locale + '/' + category + '/' + slug);
+      //window.open(this.urls.page_preview + '/' + this.page.id + '/' + this.currentLocale, '_blank');
     }
   }
 }
