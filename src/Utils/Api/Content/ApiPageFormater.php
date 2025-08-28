@@ -36,8 +36,13 @@ class ApiPageFormater
 
         $this->return['title'] = $pageTranslation->getTitre();
         $this->return['slug'] = $pageTranslation->getUrl();
+        $this->return['status'] = $this->page->getStatus();
         $this->return['render'] = $this->page->getRender();
-        $this->return['author'] = $this->getAuthor($this->page->getUser());
+        $this->return['author'] = [
+            'author' => $this->getAuthor($this->page->getUser()),
+            'description' => $this->page->getUser()->getDescription(),
+            'avatar' => $this->page->getUser()->getAvatar(),
+            ];
         $this->return['created'] = $this->page->getCreatedAt()->getTimestamp();
         $this->return['update'] = $this->page->getUpdateAt()->getTimestamp();
         $this->return['headerImg'] = $this->page->getHeaderImg();

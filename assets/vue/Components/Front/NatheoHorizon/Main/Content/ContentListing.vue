@@ -17,10 +17,11 @@ export default {
   data() {
     return {
       isLoad: false,
-      limit: 10,
+      limit: 20,
       page: 1,
       pages: '',
       nbElements: 0,
+      title: '',
     }
   },
   created() {
@@ -35,6 +36,7 @@ export default {
     loadContent() {
       let success = (datas) => {
         this.pages = datas.content.pages;
+        this.title = datas.title;
         this.nbElements = datas.content.rows;
       }
 
@@ -109,7 +111,8 @@ export default {
 </script>
 
 <template>
-  <div v-if="this.isLoad">
+  <h2 class="text-slate-900 text-2xl font-semibold mb-3"> {{ this.title }} </h2>
+  <div v-if="this.isLoad && this.pages.length > 0">
     <!-- Liste d’articles -->
     <ul class="mx-auto divide-y divide-gray-200">
 
@@ -146,6 +149,17 @@ export default {
         <a href="#" @click="this.changePage(this.page + 1)" :class="this.getStylePagePagination(this.page, false,true)">></a>
         <a href="#" @click="this.changePage(this.getNbPage())" :class="this.getStylePagePagination(this.page, false,true)">>></a>
       </nav>
+      <div class="flex items-center justify-center mt-2 text-gray-400 text-sm">
+         {{ this.page }} sur {{ this.getNbPage() }} - {{ this.nbElements }} page(s)
+      </div>
+  </div>
+
+  <div v-else-if="this.isLoad && this.pages.length === 0">
+    <div class="p-6">
+      <div class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 p-8 text-center">
+        <p class="text-gray-500 text-lg font-medium">Aucun élément trouvé</p>
+      </div>
+    </div>
   </div>
 
   <div v-else class="mx-auto w-full rounded-md p-4">

@@ -19,6 +19,9 @@ parameters:
   # En débug mode, créer un token par droits dans les fixtures
   app.debug_mode: true
 
+  app.folder.upload.avatar: '%kernel.project_dir%/public/uploads/avatars'
+  app.path.avatar: 'uploads/avatars/'
+
 services:
   # default configuration for services in *this* file
   _defaults:

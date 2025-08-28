@@ -35,6 +35,11 @@ use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,6 +48,7 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\ByteString;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/admin/{_locale}/user', name: 'admin_user_', requirements: ['_locale' => '%app.supported_locales%'])]
@@ -172,7 +178,8 @@ class UserController extends AppAdminController
         #[MapEntity(id: 'id')] User $user,
         UserService                 $userService,
         TranslatorInterface         $translator,
-        OptionSystemService         $optionSystemService
+        OptionSystemService         $optionSystemService,
+        #[Autowire('%app.folder.upload.avatar%')] string $avatarDirectory
     ): JsonResponse
     {
         $role = new Role($user);
@@ -193,6 +200,12 @@ class UserController extends AppAdminController
                 $userService->anonymizer($user);
                 $msg = $translator->trans('user.success_anonymous', domain: 'user');
             } else {
+
+                if($user->getAvatar() !== null) {
+                    $fileSystem = new Filesystem();
+                    $fileSystem->remove($avatarDirectory . DIRECTORY_SEPARATOR . $user->getAvatar());
+                }
+
                 $userService->remove($user);
                 $msg = $translator->trans('user.success_remove', domain: 'user');
             }
@@ -283,7 +296,10 @@ class UserController extends AppAdminController
         UserTranslate       $userTranslate,
         Request             $request,
         OptionSystemService $optionSystemService,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        SluggerInterface $slugger,
+        ParameterBagInterface $parameterBag,
+        #[Autowire('%app.folder.upload.avatar%')] string $avatarDirectory
     ): Response
     {
         $breadcrumb = [
@@ -299,7 +315,35 @@ class UserController extends AppAdminController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
             $user = $form->getData();
+
+            /** @var UploadedFile $avatarFile */
+            $avatarFile = $form->get('avatar')->getData();
+
+
+            if ($avatarFile) {
+
+                if($user->getAvatar() !== null) {
+                    $fileSystem = new Filesystem();
+                    $fileSystem->remove($avatarDirectory . DIRECTORY_SEPARATOR . $user->getAvatar());
+                }
+
+                $originalFilename = pathinfo($avatarFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $avatarFile->guessExtension();
+
+                try {
+                    $avatarFile->move($avatarDirectory, $newFilename);
+                } catch (FileException $e) {
+                    $this->addFlash(
+                        FlashKey::FLASH_DANGER,
+                        $translator->trans('user.page_my_account.upload.avatar.error', domain: 'user'));
+                }
+
+                $user->setAvatar($newFilename);
+            }
+
             $userService->save($user);
             $this->addFlash(
                 FlashKey::FLASH_SUCCESS,
@@ -313,6 +357,7 @@ class UserController extends AppAdminController
             'breadcrumb' => $breadcrumb,
             'form' => $form,
             'user' => $user,
+            'avatarDirectory' => $parameterBag->get('app.path.avatar'),
             'changePasswordTranslate' => $userTranslate->getTranslateChangePassword(),
             'dangerZoneTranslate' => $userTranslate->getTranslateDangerZone(),
             'moreOptionsTranslate' => $userTranslate->getTranslateMoreOptions(),
@@ -453,6 +498,7 @@ class UserController extends AppAdminController
         MailService         $mailService,
         OptionSystemService $optionSystemService,
         NotificationService $notificationService,
+        #[Autowire('%app.folder.upload.avatar%')] string $avatarDirectory
     ): JsonResponse
     {
         $status = 0;
@@ -474,9 +520,15 @@ class UserController extends AppAdminController
                     $url = $this->generateUrl('auth_logout');
                 } else {
                     $status = 2;
+
+                    if($user->getAvatar() !== null) {
+                        $fileSystem = new Filesystem();
+                        $fileSystem->remove($avatarDirectory . DIRECTORY_SEPARATOR . $user->getAvatar());
+                    }
+
                     $userService->remove($user);
                     $msg = $translator->trans('user.danger_zone.success_remove', domain: 'user');
-                    $url = $this->generateUrl('front_index');
+                    $url = $this->generateUrl('front_no_local');
                 }
             } else {
                 $msg = $translator->trans('user.error_not_allowed', domain: 'user');

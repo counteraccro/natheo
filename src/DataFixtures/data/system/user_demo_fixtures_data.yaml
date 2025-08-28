@@ -9,6 +9,8 @@ user:
     disabled: 0
     anonymous: 0
     founder: 0
+    avatar: 'avatar-1.png'
+    description: "Je suis un compte de démonstration généré à l'installation du CMS"
   R-Contributeur:
     email: contributeur@natheo.com
     password: contributeur@natheo.com
@@ -19,6 +21,8 @@ user:
     disabled: 0
     anonymous: 0
     founder: 0
+    avatar: 'avatar-3.png'
+    description: "Je suis un compte de démonstration généré à l'installation du CMS"
   R-Admin:
     email: admin@natheo.com
     password: admin@natheo.com
@@ -29,6 +33,8 @@ user:
     disabled: 0
     anonymous: 0
     founder: 0
+    avatar: 'avatar-4.png'
+    description: "Je suis un compte de démonstration généré à l'installation du CMS"
   R-SuperAdmin:
     email: superadmin@natheo.com
     password: superadmin@natheo.com
@@ -39,6 +45,8 @@ user:
     disabled: 0
     anonymous: 0
     founder: 0
+    avatar: 'avatar-5.png'
+    description: "Je suis un compte de démonstration généré à l'installation du CMS"
   User:
     email: user.demo@mail.fr
     password: user.demo@mail.fr
@@ -49,3 +57,5 @@ user:
     disabled: 0
     anonymous: 0
     founder: 1
+    avatar: 'avatar-2.png'
+    description: "Je suis un compte de démonstration généré à l'installation du CMS"

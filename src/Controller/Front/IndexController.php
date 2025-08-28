@@ -15,6 +15,7 @@ use App\Service\Api\Global\ApiSitemapService;
 use App\Utils\Translate\Front\FrontTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -74,6 +75,7 @@ class IndexController extends AppFrontController
         UserDataService $userDataService,
         FrontTranslate  $frontTranslate,
         LocaleSwitcher $localeSwitcher,
+        ContainerBagInterface $containerBag,
         ?string         $locale = '',
         ?string         $slug = null): Response
     {
@@ -118,7 +120,9 @@ class IndexController extends AppFrontController
             $token = $userDataService->generateUserToken($user);
             $userInfo = [
                 'login' => $user->getLogin(),
-                'avatar' => substr(ucfirst($user->getLogin()), 0, 1)
+                'avatarImg' => $user->getAvatar(),
+                'avatar' => substr(ucfirst($user->getLogin()), 0, 1),
+                'pathImgAvatar' => $containerBag->get('app.path.avatar')
             ];
         }
 
@@ -127,7 +131,7 @@ class IndexController extends AppFrontController
             'locale' => $locale,
             'pageCategories' => $this->pageService->getAllCategories(),
             'userToken' => $token,
-            'userInfo' => $userInfo
+            'userInfo' => $userInfo,
         ];
 
         $seoRobots = $this->optionSystemFrontService->getMetaRobots(true);

@@ -1,8 +1,8 @@
 user:
   User:
-    email: xavier.pages@sfr.fr
-    password: $2y$04$JMDCZPZgERg6ZTVKLGB9f.lXeqnyM8TgFo530om1x6jTiOXm87k16
-    login: stexier
+    email: martine37@jacques.com
+    password: $2y$04$KqMJMtFLWTFROm8COfmA5uanCGLfoPKvKfrUkuF6DvWHKCPweCjV2
+    login: elodie26
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN

@@ -77,6 +77,14 @@
   content: "\F3E5";
 }
 
+#adm-navbar .bi-display-fill-h::after {
+  content: "\F301";
+}
+
+#adm-navbar .bi-display-fill-h:hover::after {
+  content: "\F302";
+}
+
 #adm-navbar .bi-person-fill-exclamation-h::after {
   content: "\F89F";
 }

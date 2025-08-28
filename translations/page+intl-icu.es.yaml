@@ -175,3 +175,4 @@ page.page_content.header_img.help: __page.page_content.header_img.help
 page.page_content.header_img.no.img: __page.page_content.header_img.no.img
 page.page_content.header_img.remove: __page.page_content.header_img.remove
 page.page_content.header_img.change: __page.page_content.header_img.change
+page.content.listing.title: __page.content.listing.title

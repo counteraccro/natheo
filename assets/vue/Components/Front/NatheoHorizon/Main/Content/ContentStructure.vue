@@ -5,6 +5,7 @@ import {ContentType} from "../../../../../../utils/Front/Const/ContentType";
 import ContentText from "./ContentText.vue";
 import ContentFaq from "./ContentFaq.vue";
 import ContentListing from "./ContentListing.vue";
+import {PageStatus} from "../../../../../../utils/Front/Const/PageStatus";
 
 /**
  * @author Gourdon Aymeric
@@ -14,6 +15,9 @@ import ContentListing from "./ContentListing.vue";
 export default {
   name: 'ContentStructure',
   computed: {
+    PageStatus() {
+      return PageStatus
+    },
     ContentText() {
       return ContentText
     },
@@ -67,19 +71,22 @@ export default {
 
 <template>
 
-  <div v-if="this.page.headerImg !== null" class="relative w-full h-48 sm:h-56 md:h-72 lg:h-80">
-    <img :src="this.page.headerImg" alt="Image d'article" class="w-full h-full object-cover rounded-2xl">
-    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent rounded-2xl"></div>
+  <div class="relative w-full h-48 sm:h-56 md:h-72 lg:h-80">
+    <img v-if="this.page.headerImg !== null" :src="this.page.headerImg" alt="Image d'article" class="w-full h-full object-cover rounded-t-2xl">
+    <div class="absolute inset-0 bg-gradient-to-t to-transparent rounded-t-2xl"
+      :class="this.page.headerImg !== null ? 'from-gray-800/70 via-gray-400/30' : 'from-theme-4-750/70 via-theme-4-750/30 border-l border-l-theme-4-750/20 border-r border-r-theme-4-750/20 border-t border-t-blue-100'"></div>
     <h1 class="absolute inset-0 flex items-center justify-center text-white
              text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-center px-4">
       {{ this.page.title }}
     </h1>
   </div>
 
-  <h1 v-else
-      class="text-slate-900 text-3xl font-semibold after:content-[''] after:block after:h-1 after:w-full after:mt-2 after:rounded-full after:bg-theme-4-750 mb-4">
-    {{ this.page.title }}
-  </h1>
+  <div v-if="this.page.status === PageStatus.draft" class="border border-red-300/50 bg-red-600/10 px-4 py-2 text-slate-600">
+    <p class="text-center font-medium">
+      {{ this.translate.infoDraft }}
+    </p>
+  </div>
+
   <div class="p-4 rounded-b-2xl bg-white">
     <div v-if="this.page.render === PageRender.oneBlock">
 
@@ -339,26 +346,24 @@ export default {
         <div>
           <div class="flex flex-col sm:flex-row sm:items-center sm:gap-4">
             <div class="shrink-0">
-              <!--
-              <img
-                src="{{ AVATAR_URL }}"
-                alt="Avatar de {{ NOM_AUTEUR }}"
-                class="size-14 rounded-full object-cover ring-1 ring-neutral-200/70 dark:ring-neutral-800/70"
+              <img v-if="this.page.author.avatar !== null || this.page.author.avatar !== ''"
+                :src="'/uploads/avatars/' + this.page.author.avatar"
+                :alt="'Avatar de ' + this.page.author.author"
+                class="size-14 rounded-full object-cover"
               />
-              -->
 
-              <div class="flex size-14 items-center justify-center rounded-full bg-theme-4-750 dark:bg-gray-600
-                   text-white font-semibold ring-1 ring-neutral-200/70dark:ring-neutral-800/70"> {{ this.page.author.substring(0, 1).toUpperCase() }}
+              <div v-else class="flex size-14 items-center justify-center rounded-full bg-theme-4-750 dark:bg-gray-600
+                   text-white font-semibold ring-1 ring-neutral-200/70dark:ring-neutral-800/70"> {{ this.page.author.author.substring(0, 1).toUpperCase() }}
               </div>
             </div>
 
             <h3 class="mt-2 sm:mt-0 text-base font-semibold text-slate-900">
-              {{ this.page.author }}
+              {{ this.page.author.author }}
             </h3>
           </div>
 
           <p class="mt-2 ml-3 text-sm text-slate-600">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent at egestas dui, nec dapibus purus. Pellentesque id gravida urna, vel venenatis ipsum.
+            {{ this.page.author.description }}
           </p>
         </div>
 
