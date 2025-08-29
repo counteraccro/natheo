@@ -3,7 +3,7 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Contenu de type listing
+ * Contenu de type Faq
  */
 export default {
   name: 'ContentFaq',

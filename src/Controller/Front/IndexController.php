@@ -110,6 +110,9 @@ class IndexController extends AppFrontController
             'indexFr' => $this->generateUrl('front_index_2', ['locale' => 'fr', 'category' => null, 'slug' => null]),
             'indexEs' => $this->generateUrl('front_index_2', ['locale' => 'es', 'category' => null, 'slug' => null]),
             'indexEn' => $this->generateUrl('front_index_2', ['locale' => 'en', 'category' => null, 'slug' => null]),
+            'apiCommentsByPage' => $this->generateUrl('api_comment_by_page', ['api_version' => $version]),
+            'apiAddComment' => $this->generateUrl('api_comment_add_comment', ['api_version' => $version]),
+            'apiModerateComment' => $this->generateUrl('api_comment_moderate_comment', ['api_version' => $version, 'id' => 0]),
         ];
 
         /** @var User $user */

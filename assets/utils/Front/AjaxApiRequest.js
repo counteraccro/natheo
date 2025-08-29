@@ -46,6 +46,18 @@ class AjaxApiRequest extends AppApiRequest {
         let url = this.addParameters(this.tabUrls.apiPageContent, params)
         this.getRequest(url, successCallBack, failureCallBack, loaderCallBack);
     }
+
+    /**
+     * Retourne les commentaires d'une page
+     * @param params
+     * @param successCallBack
+     * @param failureCallBack
+     * @param loaderCallBack
+     */
+    getCommentByPage(params, successCallBack, failureCallBack, loaderCallBack) {
+        let url = this.addParameters(this.tabUrls.apiCommentsByPage, params)
+        this.getRequest(url, successCallBack, failureCallBack, loaderCallBack);
+    }
 }
 
 export {AjaxApiRequest};

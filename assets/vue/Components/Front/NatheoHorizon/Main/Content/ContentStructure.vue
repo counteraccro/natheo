@@ -6,14 +6,16 @@ import ContentText from "./ContentText.vue";
 import ContentFaq from "./ContentFaq.vue";
 import ContentListing from "./ContentListing.vue";
 import {PageStatus} from "../../../../../../utils/Front/Const/PageStatus";
+import ContentComment from "./ContentComment.vue";
 
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Content page
+ * ContentStructure page
  */
 export default {
   name: 'ContentStructure',
+  components: {ContentComment},
   computed: {
     PageStatus() {
       return PageStatus
@@ -338,6 +340,17 @@ export default {
           </component>
         </div>
       </div>
+    </div>
+
+    <div v-if="this.utilsFront.optionsSystem.OS_OPEN_COMMENT === '1' && this.page.openComment === true">
+      <ContentComment
+        :utils-front="this.utilsFront"
+        :ajax-request="this.ajaxRequest"
+        :translate="this.translate"
+        :locale="this.locale"
+        :slug="this.page.slug"
+        @api-failure="this.apiFailure"
+      />
     </div>
 
     <div class=" m-3 mt-12 border-t border-neutral-200/70 dark:border-neutral-800/70 pt-8">

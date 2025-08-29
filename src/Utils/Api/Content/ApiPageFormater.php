@@ -55,6 +55,7 @@ class ApiPageFormater
         }
         $this->return['contents'] = $this->getPageContent($this->page->getPageContents());
         $this->return['seo'] = $this->getPageMeta($this->page->getPageMetas());
+        $this->return['openComment'] = $this->page->isOpenComment();
 
         return $this;
     }
