@@ -59,13 +59,17 @@ class ApiCommentService extends AppApiService
                 $com = $translator->trans('api_errors.comment.moderate', domain: 'api_errors');
             }
 
+
+
             $return['comments'][$key] = [
                 'id' => $comment->getId(),
+                'author' => $comment->getAuthor() . rand(1, 20),
                 'status' => $comment->getStatus(),
-                'createdAt' => $comment->getCreatedAt(),
-                'updateAt' => $comment->getUpdateAt(),
+                'createdAt' => $comment->getCreatedAt()->getTimestamp(),
+                'updateAt' => $comment->getUpdateAt()->getTimestamp(),
                 'comment' => $com,
             ];
+
             if ($comment->getStatus() === CommentConst::MODERATE && $this->isGranted(['ROLE_CONTRIBUTEUR'], $user)) {
                $return['comments'][$key]['moderate'] = $comment->getModerationComment();
             }
