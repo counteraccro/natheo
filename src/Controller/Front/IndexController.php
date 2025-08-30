@@ -125,8 +125,10 @@ class IndexController extends AppFrontController
                 'login' => $user->getLogin(),
                 'avatarImg' => $user->getAvatar(),
                 'avatar' => substr(ucfirst($user->getLogin()), 0, 1),
-                'pathImgAvatar' => $containerBag->get('app.path.avatar')
+                'pathImgAvatar' => $containerBag->get('app.path.avatar'),
+                'canModerate' => $this->isGranted('ROLE_CONTRIBUTEUR', $user),
             ];
+
         }
 
         $datas = [
