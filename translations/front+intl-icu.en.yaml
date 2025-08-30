@@ -15,3 +15,6 @@ front.article.footer.published: __front.article.footer.published
 front.article.footer.edit: __front.article.footer.edit
 front.article.footer.statPublication: __front.article.footer.statPublication
 front.article.footer.info.draft: __front.article.footer.info.draft
+front.comment.title: __front.comment.title
+front.comment.nbComments: __front.comment.nbComments
+front.comment.timeAgo: __front.comment.timeAgo

@@ -95,6 +95,16 @@ class FrontTranslate extends AppTranslate
             'edit' => $this->translator->trans('front.article.footer.edit', domain: 'front'),
             'statPublication' => $this->translator->trans('front.article.footer.statPublication', domain: 'front'),
             'infoDraft' => $this->translator->trans('front.article.footer.info.draft', domain: 'front'),
+            'comment' => $this->getTranslateComment()
+        ];
+    }
+
+    private function getTranslateComment(): array
+    {
+        return [
+            'title' => $this->translator->trans('front.comment.title', domain: 'front'),
+            'nbComments' => $this->translator->trans('front.comment.nbComments', domain: 'front'),
+            'timeAgo' => $this->translator->trans('front.comment.timeAgo', domain: 'front'),
         ];
     }
 }
