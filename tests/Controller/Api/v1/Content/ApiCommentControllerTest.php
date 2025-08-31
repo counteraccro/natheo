@@ -80,9 +80,9 @@ class ApiCommentControllerTest extends AppApiTestCase
         $this->assertArrayHasKey('status', $verif);
         $this->assertEquals($comment->getStatus(), $verif['status']);
         $this->assertArrayHasKey('createdAt', $verif);
-        $this->assertEquals($comment->getCreatedAt()->format(DATE_ATOM), $verif['createdAt']);
+        $this->assertEquals($comment->getCreatedAt()->getTimestamp(), $verif['createdAt']);
         $this->assertArrayHasKey('updateAt', $verif);
-        $this->assertEquals($comment->getUpdateAt()->format(DATE_ATOM), $verif['updateAt']);
+        $this->assertEquals($comment->getUpdateAt()->getTimestamp(), $verif['updateAt']);
         $this->assertArrayHasKey('comment', $verif);
         $this->assertEquals($comment->getComment(), $verif['comment']);
         $this->assertArrayHasKey('moderate', $verif);
