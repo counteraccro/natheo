@@ -63,7 +63,7 @@ class ApiCommentService extends AppApiService
 
             $return['comments'][$key] = [
                 'id' => $comment->getId(),
-                'author' => $comment->getAuthor() . rand(1, 20),
+                'author' => $comment->getAuthor(),
                 'status' => $comment->getStatus(),
                 'createdAt' => $comment->getCreatedAt()->getTimestamp(),
                 'updateAt' => $comment->getUpdateAt()->getTimestamp(),
