@@ -42,9 +42,29 @@ class AjaxApiRequest extends AppApiRequest {
         this.getRequest(this.tabUrls.apiOptionsSystems, successCallBack, failureCallBack, loaderCallBack);
     }
 
+    /**
+     * Récupère le contenu d'une page
+     * @param params
+     * @param successCallBack
+     * @param failureCallBack
+     * @param loaderCallBack
+     */
     getContentPage(params, successCallBack, failureCallBack, loaderCallBack) {
         let url = this.addParameters(this.tabUrls.apiPageContent, params)
         this.getRequest(url, successCallBack, failureCallBack, loaderCallBack);
+    }
+
+    /**
+     * Modère un commentaire
+     * @param id
+     * @param data
+     * @param successCallBack
+     * @param failureCallBack
+     * @param loaderCallBack
+     */
+    putModerate(id, data, successCallBack, failureCallBack, loaderCallBack) {
+        let url = this.tabUrls.apiModerateComment.replace('/0', '/' + id);
+        this.putRequest(url, data, successCallBack, failureCallBack, loaderCallBack)
     }
 
     /**

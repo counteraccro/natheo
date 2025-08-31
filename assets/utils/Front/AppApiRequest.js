@@ -55,6 +55,29 @@ class AppApiRequest {
     }
 
     /**
+     * Requete put
+     * @param url
+     * @param data
+     * @param successCallBack
+     * @param failureCallBack
+     * @param loaderCallBack
+     */
+    putRequest(url, data, successCallBack, failureCallBack, loaderCallBack = null)
+    {
+        axios.put(url, data, {
+            headers: this.getHeader()
+        }).then((response) => {
+            successCallBack(response.data.data);
+        }).catch((error) => {
+            failureCallBack(error.response.data.code_http, error.response.data.errors[0]);
+        }).finally(() => {
+            if (loaderCallBack !== null) {
+                loaderCallBack(true);
+            }
+        });
+    }
+
+    /**
      * Ajoute les paramètres à l'url en paramètre
      * @param url
      * @param params

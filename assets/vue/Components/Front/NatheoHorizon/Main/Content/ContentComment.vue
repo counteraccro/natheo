@@ -9,6 +9,11 @@ import {CommentStatus} from "../../../../../../utils/Front/Const/CommentStatus";
  */
 export default {
   name: 'ContentComment',
+  computed: {
+    CommentStatus() {
+      return CommentStatus
+    }
+  },
   props: {
     slug: String,
     ajaxRequest: Object,
@@ -20,10 +25,13 @@ export default {
   data() {
     return {
       isLoad: false,
-      limit: 10,
+      isLoadModerate: true,
+      limit: 1,
       page: 1,
       comments: '',
       nbElements: 0,
+      textModerateComment: '',
+      msgSuccessModerate: '',
     }
   },
   mounted() {
@@ -132,6 +140,46 @@ export default {
       }
 
       return "bg-white";
+    },
+
+    moderateComment(id, status) {
+
+      this.isLoadModerate = false;
+      let success = (datas) => {
+      }
+
+       let reset = () => {
+         this.msgSuccessModerate = '';
+       }
+
+      let loader = () => {
+
+        this.isLoad = false;
+        this.loadComment();
+        this.isLoadModerate = true
+
+        if(status === CommentStatus.validate) {
+          this.msgSuccessModerate = 'valider à traduire'
+        }
+        if(status === CommentStatus.moderate) {
+          this.msgSuccessModerate = 'moderer à traduire'
+        }
+        if(status === CommentStatus.waitValidation) {
+          this.msgSuccessModerate = 'en attente de validation à traduire'
+        }
+
+        setTimeout(function(){
+          reset();
+        }, 3000);
+
+      }
+
+      let data = {
+        'status' : status,
+        'moderation_comment': this.textModerateComment
+      };
+
+      this.ajaxRequest.putModerate(id, data, success, this.apiFailure, loader);
     }
   }
 }
@@ -139,6 +187,11 @@ export default {
 
 <template>
 
+  <div v-if="msgSuccessModerate !== ''" class="text-slate-600 mx-auto max-w-4xl rounded-sm">
+    <p class="text-center text-sm italic">
+      {{ this.msgSuccessModerate }}
+    </p>
+  </div>
   <div v-if="this.isLoad" class="mx-auto max-w-4xl p-4 sm:p-6" id="ancre-comment">
     <!-- Header -->
     <div
@@ -171,7 +224,6 @@ export default {
               <span class="text-xs text-slate-600">• {{
                   this.utilsFront.timeAgo(comment.createdAt * 1000)
                 }}</span>
-              <div class="text-xs" v-if="this.utilsFront.isUserCanModerate()"> aaa</div>
             </div>
 
             <div class="mt-2 text-sm leading-relaxed text-slate-600"
@@ -187,6 +239,18 @@ export default {
             </div> -->
           </div>
         </div>
+        <div class="text-[0.7em] text-right" v-if="this.utilsFront.isUserCanModerate() && this.isLoadModerate">
+          <a href="#ancre-comment" @click="this.moderateComment(comment.id, CommentStatus.validate)"  class="hover:bg-green-600 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1" v-if="comment.status !== CommentStatus.validate" >Valider</a>
+          <a href="#ancre-comment" class="hover:bg-red-600 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1" v-if="comment.status !== CommentStatus.moderate" >Modérer</a>
+          <a href="#ancre-comment" @click="this.moderateComment(comment.id, CommentStatus.waitValidation)" class="hover:bg-orange-300 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1" v-if="comment.status !== CommentStatus.waitValidation" >Invalider</a>
+        </div>
+        <div v-else-if="this.utilsFront.isUserCanModerate() && !this.isLoadModerate">
+          <div class="mt-3 flex gap-3 justify-end">
+            <div class="h-3 w-12 rounded bg-neutral-200 animate-pulse dark:bg-neutral-700"></div>
+            <div class="h-3 w-12 rounded bg-neutral-200 animate-pulse dark:bg-neutral-700"></div>
+          </div>
+        </div>
+
       </div>
 
       <div v-if="this.nbElements > 0">
@@ -219,7 +283,6 @@ export default {
 
   <div v-else>
     <div class="mx-auto max-w-4xl p-4 sm:p-6">
-      <!-- Header Skeleton -->
       <div
           class="flex items-center justify-between rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
         <div class="flex items-center gap-2">
@@ -229,38 +292,8 @@ export default {
         <div class="h-4 w-16 rounded bg-neutral-200 animate-pulse dark:bg-neutral-700"></div>
       </div>
 
-      <!-- Liste skeleton -->
       <div class="mt-6 space-y-4">
-
-        <!-- Commentaire skeleton -->
-        <div
-            class="rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-          <div class="flex gap-3">
-            <!-- Avatar -->
-            <div class="h-10 w-10 shrink-0 rounded-full bg-neutral-200 animate-pulse dark:bg-neutral-700"></div>
-
-            <!-- Contenu -->
-            <div class="flex-1 space-y-2">
-              <div class="flex items-center gap-2">
-                <div class="h-4 w-20 rounded bg-neutral-200 animate-pulse dark:bg-neutral-700"></div>
-                <div class="h-3 w-12 rounded bg-neutral-200 animate-pulse dark:bg-neutral-700"></div>
-              </div>
-              <div class="h-3 w-full rounded bg-neutral-200 animate-pulse dark:bg-neutral-700"></div>
-              <div class="h-3 w-2/3 rounded bg-neutral-200 animate-pulse dark:bg-neutral-700"></div>
-
-              <!-- Actions -->
-              <div class="mt-3 flex gap-3">
-                <div class="h-3 w-12 rounded bg-neutral-200 animate-pulse dark:bg-neutral-700"></div>
-                <div class="h-3 w-12 rounded bg-neutral-200 animate-pulse dark:bg-neutral-700"></div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-        <!-- Deuxième commentaire skeleton -->
-        <div
-            class="rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+        <div class="rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
           <div class="flex gap-3">
             <div class="h-10 w-10 shrink-0 rounded-full bg-neutral-200 animate-pulse dark:bg-neutral-700"></div>
             <div class="flex-1 space-y-2">
@@ -277,7 +310,23 @@ export default {
             </div>
           </div>
         </div>
-
+        <div class="rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+          <div class="flex gap-3">
+            <div class="h-10 w-10 shrink-0 rounded-full bg-neutral-200 animate-pulse dark:bg-neutral-700"></div>
+            <div class="flex-1 space-y-2">
+              <div class="flex items-center gap-2">
+                <div class="h-4 w-20 rounded bg-neutral-200 animate-pulse dark:bg-neutral-700"></div>
+                <div class="h-3 w-12 rounded bg-neutral-200 animate-pulse dark:bg-neutral-700"></div>
+              </div>
+              <div class="h-3 w-full rounded bg-neutral-200 animate-pulse dark:bg-neutral-700"></div>
+              <div class="h-3 w-2/3 rounded bg-neutral-200 animate-pulse dark:bg-neutral-700"></div>
+              <div class="mt-3 flex gap-3">
+                <div class="h-3 w-12 rounded bg-neutral-200 animate-pulse dark:bg-neutral-700"></div>
+                <div class="h-3 w-12 rounded bg-neutral-200 animate-pulse dark:bg-neutral-700"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
