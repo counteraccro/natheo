@@ -18,3 +18,13 @@ front.article.footer.info.draft: 'Cette page est en brouillon, vous seul pouvez 
 front.comment.title: Commentaires
 front.comment.nbComments: commentaire(s)
 front.comment.timeAgo: "Il y'a"
+front.comment.validate: Valider
+front.comment.moderate: Modérer
+front.comment.waiting: Invalider
+front.comment.form.moderate.label: 'Message de modération'
+front.comment.form.moderate.placeholder: 'Message de modération pour ce commentaire, visible uniquement pas les administrateurs'
+front.comment.form.moderate.cancel: Annuler
+front.comment.form.moderate.submit: Modérer
+front.comment.success.validate: 'Commentaire validé avec succès'
+front.comment.success.moderate: 'Commentaire modéré avec succès'
+front.comment.success.waiting: 'Commentaire invalidé avec succès'

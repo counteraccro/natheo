@@ -105,6 +105,16 @@ class FrontTranslate extends AppTranslate
             'title' => $this->translator->trans('front.comment.title', domain: 'front'),
             'nbComments' => $this->translator->trans('front.comment.nbComments', domain: 'front'),
             'timeAgo' => $this->translator->trans('front.comment.timeAgo', domain: 'front'),
+            'validate' => $this->translator->trans('front.comment.validate', domain: 'front'),
+            'moderate' => $this->translator->trans('front.comment.moderate', domain: 'front'),
+            'waiting' => $this->translator->trans('front.comment.waiting', domain: 'front'),
+            'formModerateLabel' => $this->translator->trans('front.comment.form.moderate.label', domain: 'front'),
+            'formModeratePlaceHolder' => $this->translator->trans('front.comment.form.moderate.placeholder', domain: 'front'),
+            'formModerateCancel' => $this->translator->trans('front.comment.form.moderate.cancel', domain: 'front'),
+            'formModerateSubmit' => $this->translator->trans('front.comment.form.moderate.submit', domain: 'front'),
+            'successValidate' => $this->translator->trans('front.comment.success.validate', domain: 'front'),
+            'successModerate' => $this->translator->trans('front.comment.success.moderate', domain: 'front'),
+            'successWaiting' => $this->translator->trans('front.comment.success.waiting', domain: 'front'),
         ];
     }
 }

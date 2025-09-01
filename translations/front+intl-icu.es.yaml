@@ -18,3 +18,13 @@ front.article.footer.info.draft: __front.article.footer.info.draft
 front.comment.title: __front.comment.title
 front.comment.nbComments: __front.comment.nbComments
 front.comment.timeAgo: __front.comment.timeAgo
+front.comment.validate: __front.comment.validate
+front.comment.moderate: __front.comment.moderate
+front.comment.waiting: __front.comment.waiting
+front.comment.form.moderate.label: __front.comment.form.moderate.label
+front.comment.form.moderate.placeholder: __front.comment.form.moderate.placeholder
+front.comment.form.moderate.cancel: __front.comment.form.moderate.cancel
+front.comment.form.moderate.submit: __front.comment.form.moderate.submit
+front.comment.success.validate: __front.comment.success.validate
+front.comment.success.moderate: __front.comment.success.moderate
+front.comment.success.waiting: __front.comment.success.waiting
