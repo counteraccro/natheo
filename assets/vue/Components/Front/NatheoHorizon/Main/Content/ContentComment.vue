@@ -26,7 +26,7 @@ export default {
     return {
       isLoad: false,
       isLoadModerate: true,
-      limit: 1,
+      limit: 10,
       page: 1,
       comments: '',
       nbElements: 0,
@@ -142,15 +142,20 @@ export default {
       return "bg-white";
     },
 
+    /**
+     * Action de modération d'un commentaire
+     * @param id
+     * @param status
+     */
     moderateComment(id, status) {
 
       this.isLoadModerate = false;
       let success = (datas) => {
       }
 
-       let reset = () => {
-         this.msgSuccessModerate = '';
-       }
+      let reset = () => {
+        this.msgSuccessModerate = '';
+      }
 
       let loader = () => {
 
@@ -158,29 +163,41 @@ export default {
         this.loadComment();
         this.isLoadModerate = true
 
-        if(status === CommentStatus.validate) {
-          this.msgSuccessModerate = 'valider à traduire'
+        if (status === CommentStatus.validate) {
+          this.msgSuccessModerate = this.translate.successValidate
         }
-        if(status === CommentStatus.moderate) {
-          this.msgSuccessModerate = 'moderer à traduire'
+        if (status === CommentStatus.moderate) {
+          this.msgSuccessModerate = this.translate.successModerate
         }
-        if(status === CommentStatus.waitValidation) {
-          this.msgSuccessModerate = 'en attente de validation à traduire'
+        if (status === CommentStatus.waitValidation) {
+          this.msgSuccessModerate = this.translate.successWaiting
         }
 
-        setTimeout(function(){
+        setTimeout(function () {
           reset();
         }, 3000);
 
       }
 
       let data = {
-        'status' : status,
+        'status': status,
         'moderation_comment': this.textModerateComment
       };
 
       this.ajaxRequest.putModerate(id, data, success, this.apiFailure, loader);
-    }
+    },
+
+    /**
+     * Affiche ou masque le block de modération
+     */
+    renderBlockModeration(id, action) {
+        let block = document.getElementById('block-moderate-comment-' + id);
+        if(action === 'show') {
+          block.classList.remove('hidden');
+        } else {
+          block.classList.add('hidden');
+        }
+    },
   }
 }
 </script>
@@ -210,7 +227,7 @@ export default {
 
     <div class="mt-6 space-y-4">
 
-      <div v-for="comment in this.comments"
+      <div v-for="comment in this.comments" :id="'comment-' + comment.id"
            class="rounded-2xl border border-neutral-200/70 p-4 shadow-sm" :class="this.colorComment(comment.status)">
         <div class="flex gap-3">
           <div
@@ -229,6 +246,9 @@ export default {
             <div class="mt-2 text-sm leading-relaxed text-slate-600"
                  v-html="this.output(comment.comment)">
             </div>
+            <div v-if="comment.moderate" class="mt-2 text-sm leading-relaxed text-slate-800 italic"
+                 v-html="this.output('Modération : ' + comment.moderate)">
+            </div>
             <!--<div class="mt-3 flex gap-3 text-xs">
               <button class="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800">
                 ❤️ 2 J’aime
@@ -240,9 +260,15 @@ export default {
           </div>
         </div>
         <div class="text-[0.7em] text-right" v-if="this.utilsFront.isUserCanModerate() && this.isLoadModerate">
-          <a href="#ancre-comment" @click="this.moderateComment(comment.id, CommentStatus.validate)"  class="hover:bg-green-600 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1" v-if="comment.status !== CommentStatus.validate" >Valider</a>
-          <a href="#ancre-comment" class="hover:bg-red-600 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1" v-if="comment.status !== CommentStatus.moderate" >Modérer</a>
-          <a href="#ancre-comment" @click="this.moderateComment(comment.id, CommentStatus.waitValidation)" class="hover:bg-orange-300 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1" v-if="comment.status !== CommentStatus.waitValidation" >Invalider</a>
+          <a :href="'#comment-' + comment.id" @click="this.moderateComment(comment.id, CommentStatus.validate)"
+             class="hover:bg-green-600 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1"
+             v-if="comment.status !== CommentStatus.validate">{{ this.translate.validate }}</a>
+          <a :href="'#comment-' + comment.id" @click="this.renderBlockModeration(comment.id, 'show')"
+             class="hover:bg-red-600 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1"
+             v-if="comment.status !== CommentStatus.moderate">{{ this.translate.moderate }}</a>
+          <a :href="'#comment-' + comment.id" @click="this.moderateComment(comment.id, CommentStatus.waitValidation)"
+             class="hover:bg-orange-300 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1"
+             v-if="comment.status !== CommentStatus.waitValidation">{{ this.translate.waiting }}</a>
         </div>
         <div v-else-if="this.utilsFront.isUserCanModerate() && !this.isLoadModerate">
           <div class="mt-3 flex gap-3 justify-end">
@@ -251,6 +277,25 @@ export default {
           </div>
         </div>
 
+        <div :id="'block-moderate-comment-' + comment.id" class="opacity-0 translate-y-4 animate-fadeInUp mb-5 hidden">
+          <!-- Zone de texte -->
+          <label for="comment" class="block text-sm font-medium mb-2">{{ this.translate.formModerateLabel }}</label>
+          <textarea id="comment" name="comment" rows="4"
+                    class="w-full border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+                    :placeholder="this.translate.formModeratePlaceHolder" v-model="this.textModerateComment"></textarea>
+
+          <!-- Bouton -->
+          <div class="flex justify-end space-x-3">
+            <button type="button" @click="this.renderBlockModeration(comment.id,'remove')"
+                    class="bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-xl hover:bg-gray-300 transition cursor-pointer">
+              {{ this.translate.formModerateCancel }}
+            </button>
+            <button type="submit" @click="this.moderateComment(comment.id, CommentStatus.moderate)"
+                    class="text-slate-600 font-medium py-2 px-4 rounded-xl hover:bg-theme-4-750 transition border-gray-200 border-1 hover:border-theme-4-750 hover:text-white cursor-pointer">
+              {{ this.translate.formModerateSubmit }}
+            </button>
+          </div>
+        </div>
       </div>
 
       <div v-if="this.nbElements > 0">
@@ -293,7 +338,8 @@ export default {
       </div>
 
       <div class="mt-6 space-y-4">
-        <div class="rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+        <div
+            class="rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
           <div class="flex gap-3">
             <div class="h-10 w-10 shrink-0 rounded-full bg-neutral-200 animate-pulse dark:bg-neutral-700"></div>
             <div class="flex-1 space-y-2">
@@ -310,7 +356,8 @@ export default {
             </div>
           </div>
         </div>
-        <div class="rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+        <div
+            class="rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
           <div class="flex gap-3">
             <div class="h-10 w-10 shrink-0 rounded-full bg-neutral-200 animate-pulse dark:bg-neutral-700"></div>
             <div class="flex-1 space-y-2">
@@ -333,3 +380,20 @@ export default {
 
 
 </template>
+
+<style>
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+</style>
