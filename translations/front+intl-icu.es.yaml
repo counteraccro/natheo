@@ -28,3 +28,12 @@ front.comment.form.moderate.submit: __front.comment.form.moderate.submit
 front.comment.success.validate: __front.comment.success.validate
 front.comment.success.moderate: __front.comment.success.moderate
 front.comment.success.waiting: __front.comment.success.waiting
+front.comment.btn.new.comment: __front.comment.btn.new.comment
+front.comment.btn.new.comment.cancel: __front.comment.btn.new.comment.cancel
+front.comment.btn.new.comment.submit: __front.comment.btn.new.comment.submit
+front.comment.form.new.comment.pseudo.label: __front.comment.form.new.comment.pseudo.label
+front.comment.form.new.comment.pseudo.placeholder: __front.comment.form.new.comment.pseudo.placeholder
+front.comment.form.new.comment.email.label: __front.comment.form.new.comment.email.label
+front.comment.form.new.comment.email.placeholder: __front.comment.form.new.comment.email.placeholder
+front.comment.form.new.comment.comment.label: __front.comment.form.new.comment.comment.label
+front.comment.form.new.comment.comment.placeholder: __front.comment.form.new.comment.comment.placeholder

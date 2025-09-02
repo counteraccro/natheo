@@ -115,6 +115,15 @@ class FrontTranslate extends AppTranslate
             'successValidate' => $this->translator->trans('front.comment.success.validate', domain: 'front'),
             'successModerate' => $this->translator->trans('front.comment.success.moderate', domain: 'front'),
             'successWaiting' => $this->translator->trans('front.comment.success.waiting', domain: 'front'),
+            'btnNewComment' => $this->translator->trans('front.comment.btn.new.comment', domain: 'front'),
+            'btnNewCommentCancel' => $this->translator->trans('front.comment.btn.new.comment.cancel', domain: 'front'),
+            'btnNewCommentSubmit' => $this->translator->trans('front.comment.btn.new.comment.submit', domain: 'front'),
+            'formNewCommentPseudoLabel' => $this->translator->trans('front.comment.form.new.comment.pseudo.label', domain: 'front'),
+            'formNewCommentPseudoPlaceholder' => $this->translator->trans('front.comment.form.new.comment.pseudo.placeholder', domain: 'front'),
+            'formNewCommentEmailLabel' => $this->translator->trans('front.comment.form.new.comment.email.label', domain: 'front'),
+            'formNewCommentEmailPlaceholder' => $this->translator->trans('front.comment.form.new.comment.email.placeholder', domain: 'front'),
+            'formNewCommentCommentLabel' => $this->translator->trans('front.comment.form.new.comment.comment.label', domain: 'front'),
+            'formNewCommentCommentPlaceholder' => $this->translator->trans('front.comment.form.new.comment.comment.placeholder', domain: 'front'),
         ];
     }
 }
