@@ -32,6 +32,11 @@ export default {
       nbElements: 0,
       textModerateComment: '',
       msgSuccessModerate: '',
+      newComment: {
+        author: '',
+        email: '',
+        comment: ''
+      }
     }
   },
   mounted() {
@@ -190,14 +195,18 @@ export default {
     /**
      * Affiche ou masque le block de modération
      */
-    renderBlockModeration(id, action) {
-        let block = document.getElementById('block-moderate-comment-' + id);
+    renderBlock(id, action) {
+        let block = document.getElementById(id);
         if(action === 'show') {
           block.classList.remove('hidden');
         } else {
           block.classList.add('hidden');
         }
     },
+
+    addComment() {
+      alert('add Comment')
+    }
   }
 }
 </script>
@@ -211,8 +220,7 @@ export default {
   </div>
   <div v-if="this.isLoad" class="mx-auto max-w-4xl p-4 sm:p-6" id="ancre-comment">
     <!-- Header -->
-    <div
-        class="flex items-center justify-between rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm">
+    <div class="flex items-center justify-between rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm">
       <div class="flex items-center gap-2">
         <svg class="size-5 text-neutral-600 dark:text-neutral-300" fill="none" stroke="currentColor" stroke-width="2"
              viewBox="0 0 24 24">
@@ -220,10 +228,58 @@ export default {
         </svg>
         <h2 class="text-lg font-semibold tracking-tight">{{ this.translate.title }}</h2>
       </div>
+      <div>
+
+        <button type="button" @click="this.renderBlock('block-add-comment', 'show')"
+                class="text-slate-600 font-medium py-2 px-4 rounded-xl hover:bg-theme-4-750 transition border-gray-200 border-1 hover:border-theme-4-750 hover:text-white cursor-pointer">
+          {{ this.translate.btnNewComment }}
+        </button>
+
+      </div>
       <span class="text-sm text-slate-600">{{ this.nbElements }} {{
           this.translate.nbComments
         }}</span>
     </div>
+
+
+    <div id="block-add-comment" class="mx-auto max-w-4xl bg-white rounded-2xl border border-neutral-200/70 p-4 shadow-sm space-y-4 mt-5 opacity-0 animate-fadeInUp hidden">
+        <div>
+          <label for="pseudo" class="block text-sm font-medium text-gray-700 mb-1">{{ this.translate.formNewCommentPseudoLabel }} *</label>
+          <input
+              type="text"  id="pseudo"  name="pseudo" v-model="this.newComment.author"
+              :placeholder="this.translate.formNewCommentPseudoPlaceholder"
+              class="w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-theme-4-750 focus:ring focus:ring-blue-200 outline-none"  required
+          />
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">{{ this.translate.formNewCommentEmailLabel }}</label>
+          <input
+              type="email" id="email" name="email" v-model="this.newComment.email"
+              :placeholder="this.translate.formNewCommentEmailPlaceholder"
+              class="w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-theme-4-750 focus:ring focus:ring-blue-200 outline-none"
+              required
+          />
+        </div>
+        <div>
+          <label for="commentaire" class="block text-sm font-medium text-gray-700 mb-1">{{ this.translate.formNewCommentCommentLabel }} *</label>
+          <textarea
+              id="commentaire" name="commentaire" rows="4" :placeholder="this.translate.formNewCommentCommentPlaceholder" v-model="this.newComment.comment"
+              class="w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-theme-4-750 focus:ring focus:ring-blue-200 outline-none"
+              required
+          ></textarea>
+        </div>
+
+        <div class="flex justify-end space-x-3">
+          <button type="button" @click="this.renderBlock('block-add-comment', 'remove')"
+                  class="bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-xl hover:bg-gray-300 transition cursor-pointer">
+            {{ this.translate.btnNewCommentCancel }}
+          </button>
+          <button type="submit" @click="this.addComment()"
+                  class="text-slate-600 font-medium py-2 px-4 rounded-xl hover:bg-theme-4-750 transition border-gray-200 border-1 hover:border-theme-4-750 hover:text-white cursor-pointer">
+            {{ this.translate.btnNewCommentSubmit }}
+          </button>
+        </div>
+      </div>
 
     <div class="mt-6 space-y-4">
 
@@ -263,7 +319,7 @@ export default {
           <a :href="'#comment-' + comment.id" @click="this.moderateComment(comment.id, CommentStatus.validate)"
              class="hover:bg-green-600 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1"
              v-if="comment.status !== CommentStatus.validate">{{ this.translate.validate }}</a>
-          <a :href="'#comment-' + comment.id" @click="this.renderBlockModeration(comment.id, 'show')"
+          <a :href="'#comment-' + comment.id" @click="this.renderBlock('block-moderate-comment-' + comment.id, 'show')"
              class="hover:bg-red-600 hover:!text-theme-1-100 rounded-md hover:dark:bg-gray-600 p-1"
              v-if="comment.status !== CommentStatus.moderate">{{ this.translate.moderate }}</a>
           <a :href="'#comment-' + comment.id" @click="this.moderateComment(comment.id, CommentStatus.waitValidation)"
@@ -281,12 +337,12 @@ export default {
           <!-- Zone de texte -->
           <label for="comment" class="block text-sm font-medium mb-2">{{ this.translate.formModerateLabel }}</label>
           <textarea id="comment" name="comment" rows="4"
-                    class="w-full border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+                    class="w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-theme-4-750 focus:ring focus:ring-blue-200 outline-none"
                     :placeholder="this.translate.formModeratePlaceHolder" v-model="this.textModerateComment"></textarea>
 
           <!-- Bouton -->
-          <div class="flex justify-end space-x-3">
-            <button type="button" @click="this.renderBlockModeration(comment.id,'remove')"
+          <div class="flex justify-end space-x-3 mt-4">
+            <button type="button" @click="this.renderBlock('block-moderate-comment-' + comment.id,'remove')"
                     class="bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-xl hover:bg-gray-300 transition cursor-pointer">
               {{ this.translate.formModerateCancel }}
             </button>
@@ -322,7 +378,6 @@ export default {
           {{ this.page }} sur {{ this.getNbPage() }} - {{ this.nbElements }} {{ this.translate.nbComments }}
         </div>
       </div>
-
     </div>
   </div>
 
