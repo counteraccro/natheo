@@ -37,3 +37,6 @@ front.comment.form.new.comment.email.label: __front.comment.form.new.comment.ema
 front.comment.form.new.comment.email.placeholder: __front.comment.form.new.comment.email.placeholder
 front.comment.form.new.comment.comment.label: __front.comment.form.new.comment.comment.label
 front.comment.form.new.comment.comment.placeholder: __front.comment.form.new.comment.comment.placeholder
+front.comment.form.new.comment.pseudo.error: __front.comment.form.new.comment.pseudo.error
+front.comment.form.new.comment.error: __front.comment.form.new.comment.error
+front.comment.new.success.message: __front.comment.new.success.message

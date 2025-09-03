@@ -120,10 +120,13 @@ class FrontTranslate extends AppTranslate
             'btnNewCommentSubmit' => $this->translator->trans('front.comment.btn.new.comment.submit', domain: 'front'),
             'formNewCommentPseudoLabel' => $this->translator->trans('front.comment.form.new.comment.pseudo.label', domain: 'front'),
             'formNewCommentPseudoPlaceholder' => $this->translator->trans('front.comment.form.new.comment.pseudo.placeholder', domain: 'front'),
+            'formNewCommentPseudoError' => $this->translator->trans('front.comment.form.new.comment.pseudo.error', domain: 'front'),
             'formNewCommentEmailLabel' => $this->translator->trans('front.comment.form.new.comment.email.label', domain: 'front'),
             'formNewCommentEmailPlaceholder' => $this->translator->trans('front.comment.form.new.comment.email.placeholder', domain: 'front'),
             'formNewCommentCommentLabel' => $this->translator->trans('front.comment.form.new.comment.comment.label', domain: 'front'),
             'formNewCommentCommentPlaceholder' => $this->translator->trans('front.comment.form.new.comment.comment.placeholder', domain: 'front'),
+            'formNewCommentCommentError' => $this->translator->trans('front.comment.form.new.comment.error', domain: 'front'),
+            'formNewCommentSuccessMessage' => $this->translator->trans('front.comment.new.success.message', domain: 'front'),
         ];
     }
 }

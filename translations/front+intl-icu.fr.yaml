@@ -37,3 +37,6 @@ front.comment.form.new.comment.email.label: 'Adresse email'
 front.comment.form.new.comment.email.placeholder: 'Votre adresse email'
 front.comment.form.new.comment.comment.label: Commentaire
 front.comment.form.new.comment.comment.placeholder: 'Laisser un petit commentaire ;)'
+front.comment.form.new.comment.pseudo.error: 'Veuillez saisir un pseudonyme'
+front.comment.form.new.comment.error: 'Le commentaire ne doit pas être vide'
+front.comment.new.success.message: 'Commentaire ajouté avec succès'
