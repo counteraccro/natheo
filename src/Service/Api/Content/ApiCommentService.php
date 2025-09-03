@@ -108,6 +108,10 @@ class ApiCommentService extends AppApiService
         }
 
         $isMustValidate = boolval($this->getOptionSystemService()->getValueByKey(OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION));
+         if($page->getRuleComment() === CommentConst::WAIT_VALIDATION || $page->getRuleComment() === CommentConst::MODERATE) {
+             $isMustValidate = true;
+         }
+
         $status = CommentConst::VALIDATE;
         if($isMustValidate) {
             $status = CommentConst::WAIT_VALIDATION;
