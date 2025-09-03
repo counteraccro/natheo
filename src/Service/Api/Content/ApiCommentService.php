@@ -59,13 +59,17 @@ class ApiCommentService extends AppApiService
                 $com = $translator->trans('api_errors.comment.moderate', domain: 'api_errors');
             }
 
+
+
             $return['comments'][$key] = [
                 'id' => $comment->getId(),
+                'author' => $comment->getAuthor(),
                 'status' => $comment->getStatus(),
-                'createdAt' => $comment->getCreatedAt(),
-                'updateAt' => $comment->getUpdateAt(),
+                'createdAt' => $comment->getCreatedAt()->getTimestamp(),
+                'updateAt' => $comment->getUpdateAt()->getTimestamp(),
                 'comment' => $com,
             ];
+
             if ($comment->getStatus() === CommentConst::MODERATE && $this->isGranted(['ROLE_CONTRIBUTEUR'], $user)) {
                $return['comments'][$key]['moderate'] = $comment->getModerationComment();
             }
@@ -104,6 +108,10 @@ class ApiCommentService extends AppApiService
         }
 
         $isMustValidate = boolval($this->getOptionSystemService()->getValueByKey(OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION));
+         if($page->getRuleComment() === CommentConst::WAIT_VALIDATION || $page->getRuleComment() === CommentConst::MODERATE) {
+             $isMustValidate = true;
+         }
+
         $status = CommentConst::VALIDATE;
         if($isMustValidate) {
             $status = CommentConst::WAIT_VALIDATION;

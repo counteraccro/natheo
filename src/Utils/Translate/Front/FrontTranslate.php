@@ -95,6 +95,38 @@ class FrontTranslate extends AppTranslate
             'edit' => $this->translator->trans('front.article.footer.edit', domain: 'front'),
             'statPublication' => $this->translator->trans('front.article.footer.statPublication', domain: 'front'),
             'infoDraft' => $this->translator->trans('front.article.footer.info.draft', domain: 'front'),
+            'comment' => $this->getTranslateComment()
+        ];
+    }
+
+    private function getTranslateComment(): array
+    {
+        return [
+            'title' => $this->translator->trans('front.comment.title', domain: 'front'),
+            'nbComments' => $this->translator->trans('front.comment.nbComments', domain: 'front'),
+            'timeAgo' => $this->translator->trans('front.comment.timeAgo', domain: 'front'),
+            'validate' => $this->translator->trans('front.comment.validate', domain: 'front'),
+            'moderate' => $this->translator->trans('front.comment.moderate', domain: 'front'),
+            'waiting' => $this->translator->trans('front.comment.waiting', domain: 'front'),
+            'formModerateLabel' => $this->translator->trans('front.comment.form.moderate.label', domain: 'front'),
+            'formModeratePlaceHolder' => $this->translator->trans('front.comment.form.moderate.placeholder', domain: 'front'),
+            'formModerateCancel' => $this->translator->trans('front.comment.form.moderate.cancel', domain: 'front'),
+            'formModerateSubmit' => $this->translator->trans('front.comment.form.moderate.submit', domain: 'front'),
+            'successValidate' => $this->translator->trans('front.comment.success.validate', domain: 'front'),
+            'successModerate' => $this->translator->trans('front.comment.success.moderate', domain: 'front'),
+            'successWaiting' => $this->translator->trans('front.comment.success.waiting', domain: 'front'),
+            'btnNewComment' => $this->translator->trans('front.comment.btn.new.comment', domain: 'front'),
+            'btnNewCommentCancel' => $this->translator->trans('front.comment.btn.new.comment.cancel', domain: 'front'),
+            'btnNewCommentSubmit' => $this->translator->trans('front.comment.btn.new.comment.submit', domain: 'front'),
+            'formNewCommentPseudoLabel' => $this->translator->trans('front.comment.form.new.comment.pseudo.label', domain: 'front'),
+            'formNewCommentPseudoPlaceholder' => $this->translator->trans('front.comment.form.new.comment.pseudo.placeholder', domain: 'front'),
+            'formNewCommentPseudoError' => $this->translator->trans('front.comment.form.new.comment.pseudo.error', domain: 'front'),
+            'formNewCommentEmailLabel' => $this->translator->trans('front.comment.form.new.comment.email.label', domain: 'front'),
+            'formNewCommentEmailPlaceholder' => $this->translator->trans('front.comment.form.new.comment.email.placeholder', domain: 'front'),
+            'formNewCommentCommentLabel' => $this->translator->trans('front.comment.form.new.comment.comment.label', domain: 'front'),
+            'formNewCommentCommentPlaceholder' => $this->translator->trans('front.comment.form.new.comment.comment.placeholder', domain: 'front'),
+            'formNewCommentCommentError' => $this->translator->trans('front.comment.form.new.comment.error', domain: 'front'),
+            'formNewCommentSuccessMessage' => $this->translator->trans('front.comment.new.success.message', domain: 'front'),
         ];
     }
 }

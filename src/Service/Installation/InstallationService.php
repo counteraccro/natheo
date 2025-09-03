@@ -4,6 +4,7 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
+
 namespace App\Service\Installation;
 
 use App\Entity\Admin\System\User;
@@ -59,7 +60,7 @@ class InstallationService extends AppAdminService
         $a = '0123456789abcdef';
         $secret = '';
         for ($i = 0; $i < 32; $i++) {
-            $secret .= $a[rand(0, strlen($a)-1)];
+            $secret .= $a[rand(0, strlen($a) - 1)];
         }
         return EnvFile::KEY_APP_SECRET . '=' . $secret;
     }
@@ -216,7 +217,9 @@ class InstallationService extends AppAdminService
                     'roles' => 'ROLE_SUPER_ADMIN',
                     'disabled' => 0,
                     'anonymous' => 0,
-                    'founder' => 1
+                    'founder' => 1,
+                    'avatar' => 'avatar-2.png',
+                    'description' => "N'oubliez pas de mettre à jour cette description"
                 ],
             ]
         ];

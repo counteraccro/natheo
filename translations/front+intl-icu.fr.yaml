@@ -15,3 +15,28 @@ front.article.footer.published: 'Publié le'
 front.article.footer.edit: 'Edité le'
 front.article.footer.statPublication: publications
 front.article.footer.info.draft: 'Cette page est en brouillon, vous seul pouvez la lire actuellement'
+front.comment.title: Commentaires
+front.comment.nbComments: commentaire(s)
+front.comment.timeAgo: "Il y'a"
+front.comment.validate: Valider
+front.comment.moderate: Modérer
+front.comment.waiting: Invalider
+front.comment.form.moderate.label: 'Message de modération'
+front.comment.form.moderate.placeholder: 'Message de modération pour ce commentaire, visible uniquement pas les administrateurs'
+front.comment.form.moderate.cancel: Annuler
+front.comment.form.moderate.submit: Modérer
+front.comment.success.validate: 'Commentaire validé avec succès'
+front.comment.success.moderate: 'Commentaire modéré avec succès'
+front.comment.success.waiting: 'Commentaire invalidé avec succès'
+front.comment.btn.new.comment: 'Laisser un commentaire'
+front.comment.btn.new.comment.cancel: Annuler
+front.comment.btn.new.comment.submit: Poster
+front.comment.form.new.comment.pseudo.label: Pseudonyme
+front.comment.form.new.comment.pseudo.placeholder: 'Votre pseudonyme'
+front.comment.form.new.comment.email.label: 'Adresse email'
+front.comment.form.new.comment.email.placeholder: 'Votre adresse email'
+front.comment.form.new.comment.comment.label: Commentaire
+front.comment.form.new.comment.comment.placeholder: 'Laisser un petit commentaire ;)'
+front.comment.form.new.comment.pseudo.error: 'Veuillez saisir un pseudonyme'
+front.comment.form.new.comment.error: 'Le commentaire ne doit pas être vide'
+front.comment.new.success.message: 'Commentaire ajouté avec succès'

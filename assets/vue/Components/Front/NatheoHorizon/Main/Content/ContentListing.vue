@@ -136,15 +136,14 @@ export default {
     </ul>
 
 
-      <nav class="content-paginate flex items-center justify-center mt-8 space-x-2" aria-label="Pagination">
+      <nav class="content-paginate flex items-center justify-center mt-8 space-x-1" aria-label="Pagination">
         <a href="#" @click="this.changePage(1)" :class="this.getStylePagePagination(this.page, false, false)"><<</a>
         <a href="#" @click="this.changePage(this.page - 1)" :class="this.getStylePagePagination(this.page, false,false)"><</a>
 
-        <a href="#" v-for="(n, i) in this.getNbPage()"
-           :class="this.getStylePagePagination(n, true,false)" @click="this.changePage(n)">
-          <span v-if="n === this.page-1 || n === this.page+1 || n === this.page || n <= 2 || n >= this.getNbPage()-1">{{ n }}</span>
-          <span v-else-if="n === this.page-2 || n === this.page+2">...</span>
-        </a>
+        <div v-for="(n, i) in this.getNbPage()">
+          <a href="#"  :class="this.getStylePagePagination(n, true,false)" @click="this.changePage(n)" v-if="n === this.page-1 || n === this.page+1 || n === this.page || n <= 2 || n >= this.getNbPage()-1">{{ n }}</a>
+          <a href="#"  :class="this.getStylePagePagination(n, true,false)" @click="this.changePage(n)" v-else-if="n === this.page-2 || n === this.page+2">...</a>
+        </div>
 
         <a href="#" @click="this.changePage(this.page + 1)" :class="this.getStylePagePagination(this.page, false,true)">></a>
         <a href="#" @click="this.changePage(this.getNbPage())" :class="this.getStylePagePagination(this.page, false,true)">>></a>

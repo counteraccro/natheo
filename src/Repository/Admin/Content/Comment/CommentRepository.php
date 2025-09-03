@@ -44,7 +44,7 @@ class CommentRepository extends ServiceEntityRepository
     public function getAllPaginate(int $page, int $limit, ?string $search = null, $userId = null): Paginator
     {
         $query = $this->createQueryBuilder('c')
-            ->orderBy('c.id', 'ASC');
+            ->orderBy('c.id', 'DESC');
 
         if ($userId !== null) {
             $query->andwhere('c.userModeration = :userId')

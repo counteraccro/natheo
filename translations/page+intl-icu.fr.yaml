@@ -175,4 +175,4 @@ page.page_content.header_img.help: "Cette image apparaîtra en entête de page, 
 page.page_content.header_img.no.img: 'Aucune image sélectionnée'
 page.page_content.header_img.remove: Supprimer
 page.page_content.header_img.change: Changer
-page.content.listing.title: "Liste des pages pour la catégorie \"{category}\""
+page.content.listing.title: 'Liste des pages pour la catégorie "{category}"'

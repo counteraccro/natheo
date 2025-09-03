@@ -62,16 +62,18 @@ class IndexController extends AppFrontController
      * Redirige vers la connexion
      * @param UserDataService $userDataService
      * @param FrontTranslate $frontTranslate
+     * @param LocaleSwitcher $localeSwitcher
+     * @param ContainerBagInterface $containerBag
      * @param string|null $locale
      * @param string|null $slug
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws \DateMalformedStringException
-     *
      */
     #[Route('/{locale}/{category}/{slug}', name: 'index_2', requirements: ['category' => '|faq|page|article|projet|blog|evenement|documentation|evolution'])]
     public function index(
+        Request $request,
         UserDataService $userDataService,
         FrontTranslate  $frontTranslate,
         LocaleSwitcher $localeSwitcher,
@@ -110,6 +112,9 @@ class IndexController extends AppFrontController
             'indexFr' => $this->generateUrl('front_index_2', ['locale' => 'fr', 'category' => null, 'slug' => null]),
             'indexEs' => $this->generateUrl('front_index_2', ['locale' => 'es', 'category' => null, 'slug' => null]),
             'indexEn' => $this->generateUrl('front_index_2', ['locale' => 'en', 'category' => null, 'slug' => null]),
+            'apiCommentsByPage' => $this->generateUrl('api_comment_by_page', ['api_version' => $version]),
+            'apiAddComment' => $this->generateUrl('api_comment_add_comment', ['api_version' => $version]),
+            'apiModerateComment' => $this->generateUrl('api_comment_moderate_comment', ['api_version' => $version, 'id' => 0]),
         ];
 
         /** @var User $user */
@@ -122,13 +127,16 @@ class IndexController extends AppFrontController
                 'login' => $user->getLogin(),
                 'avatarImg' => $user->getAvatar(),
                 'avatar' => substr(ucfirst($user->getLogin()), 0, 1),
-                'pathImgAvatar' => $containerBag->get('app.path.avatar')
+                'pathImgAvatar' => $containerBag->get('app.path.avatar'),
+                'canModerate' => $this->isGranted('ROLE_CONTRIBUTEUR', $user),
             ];
+
         }
 
         $datas = [
             'slug' => $slug,
             'locale' => $locale,
+            'ip' => $request->getClientIp(),
             'pageCategories' => $this->pageService->getAllCategories(),
             'userToken' => $token,
             'userInfo' => $userInfo,
