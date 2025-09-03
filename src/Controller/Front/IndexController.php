@@ -62,16 +62,18 @@ class IndexController extends AppFrontController
      * Redirige vers la connexion
      * @param UserDataService $userDataService
      * @param FrontTranslate $frontTranslate
+     * @param LocaleSwitcher $localeSwitcher
+     * @param ContainerBagInterface $containerBag
      * @param string|null $locale
      * @param string|null $slug
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws \DateMalformedStringException
-     *
      */
     #[Route('/{locale}/{category}/{slug}', name: 'index_2', requirements: ['category' => '|faq|page|article|projet|blog|evenement|documentation|evolution'])]
     public function index(
+        Request $request,
         UserDataService $userDataService,
         FrontTranslate  $frontTranslate,
         LocaleSwitcher $localeSwitcher,
@@ -134,6 +136,7 @@ class IndexController extends AppFrontController
         $datas = [
             'slug' => $slug,
             'locale' => $locale,
+            'ip' => $request->getClientIp(),
             'pageCategories' => $this->pageService->getAllCategories(),
             'userToken' => $token,
             'userInfo' => $userInfo,

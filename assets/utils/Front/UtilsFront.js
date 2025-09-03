@@ -133,6 +133,13 @@ class UtilsFront {
         }
         return false;
     }
+
+    /**
+     * Retourne l'IP
+     */
+    getIp() {
+        return this.data.ip
+    }
 }
 
 export {UtilsFront}

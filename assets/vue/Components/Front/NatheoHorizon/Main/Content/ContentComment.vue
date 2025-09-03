@@ -36,6 +36,10 @@ export default {
         author: '',
         email: '',
         comment: ''
+      },
+      validateNewComment: {
+        author: true,
+        comment: true
       }
     }
   },
@@ -204,8 +208,51 @@ export default {
         }
     },
 
+    /**
+     * Permet d'ajouter un commentaire
+     */
     addComment() {
-      alert('add Comment')
+
+      this.validateNewComment.author = this.newComment.author !== '';
+      this.validateNewComment.comment = this.newComment.comment !== '';
+
+      if(!this.validateNewComment.comment || !this.validateNewComment.author) {
+        return;
+      }
+
+      this.isLoad = false;
+
+      let success = (datas) => {
+      }
+
+      let reset = () => {
+        this.msgSuccessModerate = '';
+      }
+
+      let loader = () => {
+
+        this.newComment.comment = '';
+        this.newComment.email = '';
+        this.newComment.author = '';
+
+        this.loadComment();
+        this.msgSuccessModerate = this.translate.formNewCommentSuccessMessage;
+        setTimeout(function () {
+          reset();
+        }, 3000);
+      }
+
+      let data = {
+        'page_slug' : this.slug,
+        'author' : this.newComment.author,
+        'email' : this.newComment.email,
+        'comment' : this.newComment.comment,
+        'ip' : this.utilsFront.getIp(),
+        'user_agent': navigator.userAgent
+      };
+
+      this.ajaxRequest.addComment(data, success, this.apiFailure, loader);
+
     }
   }
 }
@@ -248,8 +295,11 @@ export default {
           <input
               type="text"  id="pseudo"  name="pseudo" v-model="this.newComment.author"
               :placeholder="this.translate.formNewCommentPseudoPlaceholder"
-              class="w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-theme-4-750 focus:ring focus:ring-blue-200 outline-none"  required
+              class="w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-theme-4-750 focus:ring focus:ring-blue-200 outline-none" :class="!this.validateNewComment.author ? 'invalid:border-red-500 invalid:text-red-600' : ''"  required
           />
+          <p v-if="!this.validateNewComment.author" class="mt-1 text-sm text-red-600">
+            {{ this.translate.formNewCommentPseudoError}}
+          </p>
         </div>
         <div>
           <label for="email" class="block text-sm font-medium text-gray-700 mb-1">{{ this.translate.formNewCommentEmailLabel }}</label>
@@ -257,16 +307,18 @@ export default {
               type="email" id="email" name="email" v-model="this.newComment.email"
               :placeholder="this.translate.formNewCommentEmailPlaceholder"
               class="w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-theme-4-750 focus:ring focus:ring-blue-200 outline-none"
-              required
           />
         </div>
         <div>
           <label for="commentaire" class="block text-sm font-medium text-gray-700 mb-1">{{ this.translate.formNewCommentCommentLabel }} *</label>
           <textarea
               id="commentaire" name="commentaire" rows="4" :placeholder="this.translate.formNewCommentCommentPlaceholder" v-model="this.newComment.comment"
-              class="w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-theme-4-750 focus:ring focus:ring-blue-200 outline-none"
+              class="w-full rounded-xl border border-gray-300 px-3 py-2 focus:border-theme-4-750 focus:ring focus:ring-blue-200 outline-none" :class="!this.validateNewComment.comment ? 'invalid:border-red-500 invalid:text-red-600' : ''"
               required
           ></textarea>
+          <p v-if="!this.validateNewComment.comment" class="mt-1 text-sm text-red-600">
+            {{ this.translate.formNewCommentCommentError}}
+          </p>
         </div>
 
         <div class="flex justify-end space-x-3">
@@ -361,13 +413,12 @@ export default {
           <a href="#ancre-comment" @click="this.changePage(this.page - 1)"
              :class="this.getStylePagePagination(this.page, false,false)"><</a>
 
-          <a href="#ancre-comment" v-for="(n, i) in this.getNbPage()"
-             :class="this.getStylePagePagination(n, true,false)" @click="this.changePage(n)">
-          <span v-if="n === this.page-1 || n === this.page+1 || n === this.page || n <= 2 || n >= this.getNbPage()-1">{{
+          <div href="#ancre-comment" v-for="(n, i) in this.getNbPage()" :id="'p-comment-' + n">
+          <a href="#ancre-comment" :class="this.getStylePagePagination(n, true,false)" @click="this.changePage(n)" v-if="n === this.page-1 || n === this.page+1 || n === this.page || n <= 2 || n >= this.getNbPage()-1">{{
               n
-            }}</span>
-            <span v-else-if="n === this.page-2 || n === this.page+2">...</span>
-          </a>
+            }}</a>
+            <a href="#ancre-comment" :class="this.getStylePagePagination(n, true,false)" @click="this.changePage(n)" v-else-if="n === this.page-2 || n === this.page+2">...</a>
+          </div>
 
           <a href="#ancre-comment" @click="this.changePage(this.page + 1)"
              :class="this.getStylePagePagination(this.page, false,true)">></a>

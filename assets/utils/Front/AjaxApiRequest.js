@@ -69,7 +69,7 @@ class AjaxApiRequest extends AppApiRequest {
 
     addComment(data, successCallBack, failureCallBack, loaderCallBack) {
         let url = this.tabUrls.apiAddComment;
-        this.putRequest(url, data, successCallBack, failureCallBack, loaderCallBack)
+        this.postRequest(url, data, successCallBack, failureCallBack, loaderCallBack)
     }
 
     /**
