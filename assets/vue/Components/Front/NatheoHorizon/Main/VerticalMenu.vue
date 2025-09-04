@@ -2,6 +2,7 @@
 
 
 import {MenuType} from "../../../../../utils/Front/Const/Menu";
+import VerticalMenuElement from "./VerticalMenuElement.vue";
 
 /**
  * @author Gourdon Aymeric
@@ -10,6 +11,7 @@ import {MenuType} from "../../../../../utils/Front/Const/Menu";
  */
 export default {
   name: 'VerticalMenu',
+  components: {VerticalMenuElement},
   computed: {
     MenuType() {
       return MenuType
@@ -20,7 +22,6 @@ export default {
     type: Number,
     slug: String,
     menu: Object,
-    deep: Number
   },
   data() {
     return {
@@ -76,7 +77,124 @@ export default {
 
 <template>
 
-  <ul :class="this.getClassUl()" :style="'margin-left: ' + this.deep + ' em'">
+  <nav class="w-full max-w-sm bg-white shadow-md rounded-xl border border-gray-200 mb-5">
+
+    <a href="#"
+       class="block px-5 py-3 font-semibold text-gray-800 hover:bg-blue-50 hover:text-blue-700 transition border-b">
+      À propos
+    </a>
+
+    <details class="group/parent border-b">
+      <summary
+          class="flex items-center justify-between cursor-pointer px-5 py-3 font-semibold text-gray-800 hover:bg-gray-50">
+        Produits
+        <span class="transition-transform group-open/parent:rotate-90 text-gray-500">➤</span>
+      </summary>
+      <div class="bg-gray-50">
+        <details class="group/sub border-t">
+          <summary
+              class="flex items-center justify-between cursor-pointer px-6 py-2 text-gray-700 hover:bg-gray-100 font-medium">
+            Catégorie A
+            <span class="transition-transform group-open/sub:rotate-90 text-gray-500">➤</span>
+          </summary>
+          <ul class="space-y-1 pb-2">
+            <li>
+              <a href="#"
+                 class="block px-8 py-2 text-gray-600 rounded-md hover:bg-blue-50 hover:text-blue-700 transition">
+                Produit A1
+              </a>
+            </li>
+            <li>
+              <a href="#"
+                 class="block px-8 py-2 text-gray-600 rounded-md hover:bg-blue-50 hover:text-blue-700 transition">
+                Produit A2
+              </a>
+            </li>
+          </ul>
+        </details>
+
+        <ul class="space-y-1 border-t">
+          <li>
+            <a href="#"
+               class="block px-6 py-2 text-gray-600 rounded-md hover:bg-blue-50 hover:text-blue-700 transition">
+              Catégorie B
+            </a>
+          </li>
+          <li>
+            <a href="#"
+               class="block px-6 py-2 text-gray-600 rounded-md hover:bg-blue-50 hover:text-blue-700 transition">
+              Catégorie C
+            </a>
+          </li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="group/parent border-b">
+      <summary
+          class="flex items-center justify-between cursor-pointer px-5 py-3 font-semibold text-gray-800 hover:bg-gray-50">
+        Services
+        <span class="transition-transform group-open/parent:rotate-90 text-gray-500">➤</span>
+      </summary>
+      <ul class="bg-gray-50 space-y-1 pb-2 border-t">
+        <li>
+          <a href="#" class="block px-6 py-2 text-gray-600 rounded-md hover:bg-blue-50 hover:text-blue-700 transition">
+            Conseil
+          </a>
+        </li>
+        <li>
+          <a href="#"
+             class="block px-6 py-2 text-gray-600 rounded-md hover:bg-blue-50 hover:text-blue-700 transition active">
+            Support
+          </a>
+        </li>
+      </ul>
+    </details>
+
+    <details class="group/parent">
+      <summary
+          class="flex items-center justify-between cursor-pointer px-5 py-3 font-semibold text-gray-800 hover:bg-gray-50">
+        Contact
+        <span class="transition-transform group-open/parent:rotate-90 text-gray-500">➤</span>
+      </summary>
+      <ul class="bg-gray-50 space-y-1 pb-2 border-t">
+        <li>
+          <a href="#" class="block px-6 py-2 text-gray-600 rounded-md hover:bg-blue-50 hover:text-blue-700 transition">
+            Email
+          </a>
+        </li>
+        <li>
+          <a href="#" class="block px-6 py-2 text-gray-600 rounded-md hover:bg-blue-50 hover:text-blue-700 transition">
+            Téléphone
+          </a>
+        </li>
+      </ul>
+    </details>
+  </nav>
+
+  <nav class="w-full max-w bg-white shadow-md rounded-xl border border-gray-200">
+    <div v-for="(element, index) in this.menuElement">
+      <a v-if="!element.elements" :href="generateUrl(element)" :target="element.target"
+         class="block px-5 py-3 font-semibold text-gray-800 hover:bg-blue-50 hover:text-blue-700 transition border-b">
+        {{ element.label }}
+      </a>
+      <vertical-menu-element v-else
+                             :utils-front="this.utilsFront"
+                             :slug="this.slug"
+                             :element="element"
+                             :deep="0"
+                             :size="this.menuElement.length"
+                             :index="index"
+      />
+    </div>
+    <span class="group/group-0 group/group-1 group/group-2 group/group-3 group/group-4 group/group-5"></span>
+    <span
+        class="group-open/group-0:rotate-90 group-open/group-1:rotate-90 group-open/group-2:rotate-90 group-open/group-3:rotate-90 group-open/group-4:rotate-90 group-open/group-5:rotate-90"></span>
+  </nav>
+
+  <!-- Sidebar -->
+
+  <!--<ul :class="this.getClassUl()" :style="'margin-left: ' + this.deep + ' em'">
     <li v-for="element in this.menuElement">
       <a v-if="!element.elements || this.type === MenuType.leftRightSideBar" :class="this.getClassA(element)"
          :href="generateUrl(element)"
@@ -106,5 +224,5 @@ export default {
         </div>
       </details>
     </li>
-  </ul>
+  </ul> -->
 </template>
