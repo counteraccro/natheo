@@ -47,14 +47,15 @@ export default {
 
 <template>
   <div v-if="this.page.menus.LEFT && this.page.menus.RIGHT" class="grid grid-cols-12 gap-2 mt-2">
-    <div class="col-span-12 lg:col-span-2 lg:order-1">
+    <div class="col-span-12 lg:col-span-2 lg:order-1 bg-white rounded-2xl mr-1">
       <VerticalMenu
           :utils-front="this.utilsFront"
           :type="this.page.menus.LEFT.type"
           :slug="this.page.slug"
           :menu="this.page.menus.LEFT"
-          :deep="0"
       />
+
+
     </div>
     <div class="col-span-12 lg:col-span-8 lg:order-2 order-3">
       <content-structure
@@ -66,26 +67,24 @@ export default {
           @api-failure="this.apiFailure"
       />
     </div>
-    <div class="col-span-12 lg:col-span-2 lg:order-3 order-2">
+    <div class="col-span-12 lg:col-span-2 lg:order-3 order-2 bg-white rounded-2xl ml-1">
       <VerticalMenu
           :utils-front="this.utilsFront"
           :type="this.page.menus.RIGHT.type"
           :slug="this.page.slug"
           :menu="this.page.menus.RIGHT"
-          :deep="0"
       />
     </div>
   </div>
 
   <div v-else-if="this.page.menus.LEFT" class="grid grid-cols-12 gap-2 mt-2">
-    <div class="col-span-12 lg:col-span-2">
+    <div class="col-span-12 lg:col-span-2 bg-white rounded-2xl mr-1">
 
       <VerticalMenu
           :utils-front="this.utilsFront"
           :type="this.page.menus.LEFT.type"
           :slug="this.page.slug"
           :menu="this.page.menus.LEFT"
-          :deep="0"
       />
     </div>
     <div class="col-span-12 lg:col-span-10">
@@ -111,13 +110,12 @@ export default {
           @api-failure="this.apiFailure"
       />
     </div>
-    <div class="col-span-12 lg:col-span-2 lg:order-2 order-1">
+    <div class="col-span-12 lg:col-span-2 lg:order-2 order-1 bg-white rounded-2xl ml-1">
       <VerticalMenu
           :utils-front="this.utilsFront"
           :type="this.page.menus.RIGHT.type"
           :slug="this.page.slug"
           :menu="this.page.menus.RIGHT"
-          :deep="0"
       />
     </div>
   </div>
