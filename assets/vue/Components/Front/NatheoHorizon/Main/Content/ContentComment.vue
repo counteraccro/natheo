@@ -26,7 +26,7 @@ export default {
     return {
       isLoad: false,
       isLoadModerate: true,
-      limit: 10,
+      limit: 3,
       page: 1,
       comments: '',
       nbElements: 0,
