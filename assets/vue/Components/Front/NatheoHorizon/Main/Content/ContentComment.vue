@@ -408,9 +408,9 @@ export default {
 
       <div v-if="this.nbElements > 0">
         <nav class="content-paginate flex items-center justify-center mt-8 space-x-2" aria-label="Pagination">
-          <a href="#ancre-comment" @click="this.changePage(1)"
+          <a href="#ancre-comment" @click="this.changePage(1)" class="text-sm"
              :class="this.getStylePagePagination(this.page, false, false)"><<</a>
-          <a href="#ancre-comment" @click="this.changePage(this.page - 1)"
+          <a href="#ancre-comment" @click="this.changePage(this.page - 1)" class="text-sm"
              :class="this.getStylePagePagination(this.page, false,false)"><</a>
 
           <div href="#ancre-comment" v-for="(n, i) in this.getNbPage()" :id="'p-comment-' + n">
@@ -418,17 +418,18 @@ export default {
               n
             }}</a>
             <a href="#ancre-comment" :class="this.getStylePagePagination(n, true,false)" @click="this.changePage(n)" v-else-if="n === this.page-2 || n === this.page+2">...</a>
-          </div>
+          </div href="#ancre-comment">
 
-          <a href="#ancre-comment" @click="this.changePage(this.page + 1)"
+          <a href="#ancre-comment" @click="this.changePage(this.page + 1)" class="text-sm"
              :class="this.getStylePagePagination(this.page, false,true)">></a>
-          <a href="#ancre-comment" @click="this.changePage(this.getNbPage())"
+          <a href="#ancre-comment" @click="this.changePage(this.getNbPage())" class="text-sm"
              :class="this.getStylePagePagination(this.page, false,true)">>></a>
         </nav>
         <div class="flex items-center justify-center mt-2 text-gray-400 text-sm">
           {{ this.page }} sur {{ this.getNbPage() }} - {{ this.nbElements }} {{ this.translate.nbComments }}
         </div>
       </div>
+
     </div>
   </div>
 
