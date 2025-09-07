@@ -136,7 +136,7 @@ export default {
     </ul>
 
 
-      <nav class="content-paginate flex items-center justify-center mt-8 space-x-1" aria-label="Pagination">
+      <nav class="content-paginate flex flex-wrap gap-y-3 items-center justify-center mt-8 space-x-1" aria-label="Pagination">
         <a href="#" @click="this.changePage(1)" :class="this.getStylePagePagination(this.page, false, false)" class="text-sm"><<</a>
         <a href="#" @click="this.changePage(this.page - 1)" :class="this.getStylePagePagination(this.page, false,false)" class="text-sm"><</a>
 

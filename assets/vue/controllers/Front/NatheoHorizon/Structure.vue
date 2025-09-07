@@ -49,9 +49,20 @@ export default {
 
   },
   mounted() {
+    this.loadDarkMode();
   },
 
   methods: {
+
+    /**
+     * Charge le mode sombre
+     */
+    loadDarkMode() {
+      let mode = localStorage.getItem("theme");
+      if(mode === 'dark') {
+        document.documentElement.classList.toggle('dark');
+      }
+    },
 
     /**
      * Chargement des options Systems
