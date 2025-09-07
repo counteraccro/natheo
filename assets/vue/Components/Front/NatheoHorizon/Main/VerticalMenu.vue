@@ -72,7 +72,7 @@ export default {
 
 <template>
 
-  <nav class="w-full max-w bg-white shadow-md rounded-xl border border-neutral-200/70">
+  <nav class="w-full max-w bg-white shadow-md rounded-xl border border-neutral-200/70 sticky top-5">
     <div v-for="(element, index) in this.menuElement">
       <a v-if="!element.elements" :href="generateUrl(element)" :target="element.target"
          class="block px-5 py-3 font-semibold text-gray-800 hover:bg-theme-4-750 hover:!text-theme-1-100 transition border-b border-neutral-200/70" :class="this.getHoverElement(index, this.menuElement.length)">
