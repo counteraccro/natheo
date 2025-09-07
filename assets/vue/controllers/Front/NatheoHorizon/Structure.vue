@@ -49,9 +49,20 @@ export default {
 
   },
   mounted() {
+    this.loadDarkMode();
   },
 
   methods: {
+
+    /**
+     * Charge le mode sombre
+     */
+    loadDarkMode() {
+      let mode = localStorage.getItem("theme");
+      if(mode === 'dark') {
+        document.documentElement.classList.toggle('dark');
+      }
+    },
 
     /**
      * Chargement des options Systems
@@ -112,6 +123,7 @@ export default {
 </script>
 
 <template>
+
   <div v-if="this.isLoad.optionsSystem && this.isLoad.page">
     <header>
       <Nav
@@ -135,7 +147,7 @@ export default {
       />
     </main>
 
-    <footer class="tracking-wide bg-theme-1-100 px-2 pt-6 pb-6">
+    <footer class="tracking-wide bg-white px-2 pt-6 pb-6 border-0 rounded-2xl mt-3">
       <Footer
           :options-system="this.optionsSystem"
           :translate="this.translate.footer"

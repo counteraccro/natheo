@@ -79,28 +79,31 @@ export default {
   <div v-if="this.isLoad" class="natheo-content-text" v-html="this.output"></div>
   <div v-else>
     <div class="mx-auto w-full rounded-md p-4">
-      <div class="flex animate-pulse space-x-4">
-        <div class="size-10 rounded-full bg-gray-200"></div>
+      <div class="flex flex-col sm:flex-row animate-pulse gap-4">
+        <div class="size-10 rounded-full bg-gray-200 mx-auto sm:mx-0"></div>
         <div class="flex-1 space-y-6 py-1">
           <div class="h-2 rounded bg-gray-200"></div>
+
           <div class="space-y-3">
-            <div class="grid grid-cols-3 gap-4">
-              <div class="col-span-2 h-2 rounded bg-gray-200"></div>
-              <div class="col-span-1 h-2 rounded bg-gray-200"></div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div class="sm:col-span-2 h-2 rounded bg-gray-200"></div>
+              <div class="sm:col-span-1 h-2 rounded bg-gray-200"></div>
             </div>
+
             <div class="h-2 rounded bg-gray-200"></div>
             <div class="h-2 bg-gray-200 rounded mt-2"></div>
-            <div class="mt-6"></div>
-            <div class="h-4 bg-gray-200 rounded w-100 mt-2"></div>
-            <div class="h-2 bg-gray-200 rounded mt-2"></div>
-            <div class="h-2 bg-gray-200 rounded mt-2"></div>
-            <div class="h-2 bg-gray-200 rounded mt-2 w-100"></div>
 
             <div class="mt-6"></div>
-            <div class="h-4 bg-gray-200 rounded w-100 mt-2"></div>
+            <div class="h-4 bg-gray-200 rounded w-full mt-2"></div>
             <div class="h-2 bg-gray-200 rounded mt-2"></div>
             <div class="h-2 bg-gray-200 rounded mt-2"></div>
-            <div class="h-2 bg-gray-200 rounded mt-2 w-100"></div>
+            <div class="h-2 bg-gray-200 rounded mt-2 w-full"></div>
+
+            <div class="mt-6"></div>
+            <div class="h-4 bg-gray-200 rounded w-full mt-2"></div>
+            <div class="h-2 bg-gray-200 rounded mt-2"></div>
+            <div class="h-2 bg-gray-200 rounded mt-2"></div>
+            <div class="h-2 bg-gray-200 rounded mt-2 w-full"></div>
           </div>
         </div>
       </div>

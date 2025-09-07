@@ -26,7 +26,7 @@ export default {
     return {
       isLoad: false,
       isLoadModerate: true,
-      limit: 10,
+      limit: 3,
       page: 1,
       comments: '',
       nbElements: 0,
@@ -267,7 +267,7 @@ export default {
   </div>
   <div v-if="this.isLoad" class="mx-auto max-w-4xl p-4 sm:p-6" id="ancre-comment">
     <!-- Header -->
-    <div class="flex items-center justify-between rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm">
+    <div class="flex flex-wrap items-center justify-between rounded-2xl border border-neutral-200/70 bg-white p-4 shadow-sm">
       <div class="flex items-center gap-2">
         <svg class="size-5 text-neutral-600 dark:text-neutral-300" fill="none" stroke="currentColor" stroke-width="2"
              viewBox="0 0 24 24">
@@ -278,12 +278,12 @@ export default {
       <div>
 
         <button type="button" @click="this.renderBlock('block-add-comment', 'show')"
-                class="text-slate-600 font-medium py-2 px-4 rounded-xl hover:bg-theme-4-750 transition border-gray-200 border-1 hover:border-theme-4-750 hover:text-white cursor-pointer">
+                class="text-slate-600 font-medium py-2 px-4 rounded-xl hover:bg-theme-4-750 transition border-gray-200 border-1 hover:border-theme-4-750 hover:text-white cursor-pointer mt-3 text-sm md:text-base md:mt-0">
           {{ this.translate.btnNewComment }}
         </button>
 
       </div>
-      <span class="text-sm text-slate-600">{{ this.nbElements }} {{
+      <span class="text-sm text-slate-600 mt-3 md:mt-0">{{ this.nbElements }} {{
           this.translate.nbComments
         }}</span>
     </div>
@@ -357,14 +357,6 @@ export default {
             <div v-if="comment.moderate" class="mt-2 text-sm leading-relaxed text-slate-800 italic"
                  v-html="this.output('Modération : ' + comment.moderate)">
             </div>
-            <!--<div class="mt-3 flex gap-3 text-xs">
-              <button class="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800">
-                ❤️ 2 J’aime
-              </button>
-              <button class="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800">
-                ↩️ Répondre
-              </button>
-            </div> -->
           </div>
         </div>
         <div class="text-[0.7em] text-right" v-if="this.utilsFront.isUserCanModerate() && this.isLoadModerate">
@@ -407,28 +399,29 @@ export default {
       </div>
 
       <div v-if="this.nbElements > 0">
-        <nav class="content-paginate flex items-center justify-center mt-8 space-x-2" aria-label="Pagination">
-          <a href="#ancre-comment" @click="this.changePage(1)"
+        <nav class="content-paginate flex flex-wrap gap-y-3 items-center justify-center mt-8 space-x-2" aria-label="Pagination">
+          <a href="#ancre-comment" @click="this.changePage(1)" class="text-sm "
              :class="this.getStylePagePagination(this.page, false, false)"><<</a>
-          <a href="#ancre-comment" @click="this.changePage(this.page - 1)"
+          <a href="#ancre-comment" @click="this.changePage(this.page - 1)" class="text-sm"
              :class="this.getStylePagePagination(this.page, false,false)"><</a>
 
-          <div href="#ancre-comment" v-for="(n, i) in this.getNbPage()" :id="'p-comment-' + n">
+          <div v-for="(n, i) in this.getNbPage()" :id="'p-comment-' + n">
           <a href="#ancre-comment" :class="this.getStylePagePagination(n, true,false)" @click="this.changePage(n)" v-if="n === this.page-1 || n === this.page+1 || n === this.page || n <= 2 || n >= this.getNbPage()-1">{{
               n
             }}</a>
             <a href="#ancre-comment" :class="this.getStylePagePagination(n, true,false)" @click="this.changePage(n)" v-else-if="n === this.page-2 || n === this.page+2">...</a>
           </div>
 
-          <a href="#ancre-comment" @click="this.changePage(this.page + 1)"
+          <a href="#ancre-comment" @click="this.changePage(this.page + 1)" class="text-sm"
              :class="this.getStylePagePagination(this.page, false,true)">></a>
-          <a href="#ancre-comment" @click="this.changePage(this.getNbPage())"
+          <a href="#ancre-comment" @click="this.changePage(this.getNbPage())" class="text-sm"
              :class="this.getStylePagePagination(this.page, false,true)">>></a>
         </nav>
         <div class="flex items-center justify-center mt-2 text-gray-400 text-sm">
           {{ this.page }} sur {{ this.getNbPage() }} - {{ this.nbElements }} {{ this.translate.nbComments }}
         </div>
       </div>
+
     </div>
   </div>
 

@@ -34,8 +34,17 @@ export default {
   mounted() {
     this.utilsFront.eventDropDownMobileToggle();
   },
+  methods: {
+    switchDarkMode() {
 
-  methods: {}
+      let mode = 'dark';
+      if (document.documentElement.classList.contains("dark")) {
+        mode = 'light';
+      }
+
+      this.utilsFront.switchDarkMode(mode)
+    }
+  }
 }
 </script>
 
@@ -94,8 +103,7 @@ export default {
         <div class="absolute inset-y-0 right-0 flex items-center pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0">
           <div class="hidden lg:flex lg:items-center">
 
-            <button onclick="(() => document.documentElement.classList.toggle('dark'))()"
-                    class="group h-10 w-10 rounded-full p-2 hover:bg-theme-4-750 dark:hover:bg-gray-600 me-2 cursor-pointer border-1 border-gray-300">
+            <button class="group h-10 w-10 rounded-full p-2 hover:bg-theme-4-750 dark:hover:bg-gray-600 me-2 cursor-pointer border-1 border-gray-300" @click="this.switchDarkMode()">
               <svg class="fill-violet-700 block group-hover:fill-theme-1-100 dark:hidden" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
               </svg>
@@ -167,10 +175,8 @@ export default {
         <div class="pt-4 pb-3 border-t border-gray-200">
           <div class="flex items-center px-3 space-y-2 flex-col">
 
-            <div class="group block w-full text-center hover:bg-theme-4-750 hover:!text-theme-1-100 rounded-md text-base cursor-pointer hover:dark:bg-gray-600"
-                 onclick="(() => document.documentElement.classList.toggle('dark'))()">
-              <div
-                  class="h-10 w-10 rounded-lg p-2 m-auto">
+            <div class="group block w-full text-center hover:bg-theme-4-750 hover:!text-theme-1-100 rounded-md text-base cursor-pointer hover:dark:bg-gray-600" @click="this.switchDarkMode()">
+              <div class="h-10 w-10 rounded-lg p-2 m-auto">
                 <svg class="fill-violet-700 group-hover:fill-theme-1-100 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
                 </svg>
