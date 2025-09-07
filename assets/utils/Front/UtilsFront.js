@@ -86,6 +86,18 @@ class UtilsFront {
     }
 
     /**
+     * Enregistre le mode sombre ou claire
+     * @param mode
+     */
+    switchDarkMode(mode) {
+
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem("theme", mode);
+    }
+
+
+
+    /**
      * Calcul une date au format il y'a
      * @param timestamp
      * @returns {string}
