@@ -7,6 +7,7 @@ import ContentFaq from "./ContentFaq.vue";
 import ContentListing from "./ContentListing.vue";
 import {PageStatus} from "../../../../../../utils/Front/Const/PageStatus";
 import ContentComment from "./ContentComment.vue";
+import Breadcrumb from "./Breadcrumb.vue";
 
 /**
  * @author Gourdon Aymeric
@@ -15,7 +16,7 @@ import ContentComment from "./ContentComment.vue";
  */
 export default {
   name: 'ContentStructure',
-  components: {ContentComment},
+  components: {Breadcrumb, ContentComment},
   computed: {
     PageStatus() {
       return PageStatus
@@ -90,6 +91,13 @@ export default {
   </div>
 
   <div class="p-4 rounded-b-2xl bg-white">
+
+    <Breadcrumb
+      :page="this.page"
+      :utils-front="this.utilsFront"
+      :locale="this.locale"
+    />
+
     <div v-if="this.page.render === PageRender.oneBlock">
 
       <div class="grid grid-cols-12">
@@ -370,9 +378,6 @@ export default {
         </div>
 
         <div class="sm:text-right">
-          <time datetime="ISO_DATE" class="block text-sm text-slate-600">
-            {{ this.translate.published }} {{ this.utilsFront.formatDate(this.page.created * 1000) }}
-          </time>
           <time datetime="ISO_DATE" class="block text-sm text-slate-600">
             {{ this.translate.edit }} {{ this.utilsFront.formatDate(this.page.update * 1000) }}
           </time>
