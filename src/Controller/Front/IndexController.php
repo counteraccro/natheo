@@ -76,13 +76,10 @@ class IndexController extends AppFrontController
         Request $request,
         UserDataService $userDataService,
         FrontTranslate  $frontTranslate,
-        LocaleSwitcher $localeSwitcher,
         ContainerBagInterface $containerBag,
         ?string         $locale = '',
         ?string         $slug = null): Response
     {
-
-        $localeSwitcher->setLocale($locale);
 
         if (!$this->installationService->checkSchema()) {
             return $this->redirectToRoute('installation_step_1');
@@ -151,7 +148,7 @@ class IndexController extends AppFrontController
             [
                 'urls' => $urls,
                 'datas' => $datas,
-                'translate' => $frontTranslate->getTranslate(),
+                'translate' => $frontTranslate->getTranslate($locale),
                 'scriptsTag' => $this->getScriptTags(),
                 'metaSeo' => $seo,
             ]);

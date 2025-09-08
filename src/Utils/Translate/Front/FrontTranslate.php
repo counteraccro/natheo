@@ -18,6 +18,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class FrontTranslate extends AppTranslate
 {
 
+    /**
+     * @var string
+     */
+    private string $locale;
+
     public function __construct(#[AutowireLocator([
         'translator' => TranslatorInterface::class,
         'parameterBag' => ContainerBagInterface::class,
@@ -32,8 +37,10 @@ class FrontTranslate extends AppTranslate
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getTranslate(): array
+    public function getTranslate(string $locale): array
     {
+        $this->locale = $locale;
+
         return [
             'errorApi' => $this->getTranslateErrorApi(),
             'footer' => $this->getTranslateFooter(),
@@ -47,8 +54,8 @@ class FrontTranslate extends AppTranslate
     public function getTranslateErrorApi(): array
     {
         return [
-            '401' => $this->translator->trans('front.error.api.modal.error.401', domain: 'front'),
-            '403' => $this->translator->trans('front.error.api.modal.error.403', domain: 'front'),
+            '401' => $this->translator->trans('front.error.api.modal.error.401', domain: 'front', locale: $this->locale),
+            '403' => $this->translator->trans('front.error.api.modal.error.403', domain: 'front', locale: $this->locale),
         ];
     }
 
@@ -64,14 +71,14 @@ class FrontTranslate extends AppTranslate
         $parameterBag = $this->handlers->get('parameterBag');
 
         return [
-            'credit' => $this->translator->trans('front.footer.credit', ['year' => date('Y'), 'version' => $parameterBag->get('app.version')], 'front'),
-            'templateVersion' => $this->translator->trans('front.footer.template.version', ['version' => $parameterBag->get('app.natheo_horizon.version')], 'front'),
-            'adminLink' => $this->translator->trans('front.footer.admin.link', domain: 'front'),
-            'githubLink' => $this->translator->trans('front.footer.github.link', domain: 'front'),
-            'sitemapLink' => $this->translator->trans('front.footer.sitemap.link', domain: 'front'),
-            'frLink' => $this->translator->trans('front.footer.fr.link', domain: 'front'),
-            'esLink' => $this->translator->trans('front.footer.es.link', domain: 'front'),
-            'enLink' => $this->translator->trans('front.footer.en.link', domain: 'front'),
+            'credit' => $this->translator->trans('front.footer.credit', ['year' => date('Y'), 'version' => $parameterBag->get('app.version')], 'front', locale: $this->locale),
+            'templateVersion' => $this->translator->trans('front.footer.template.version', ['version' => $parameterBag->get('app.natheo_horizon.version')], 'front', locale: $this->locale),
+            'adminLink' => $this->translator->trans('front.footer.admin.link', domain: 'front', locale: $this->locale),
+            'githubLink' => $this->translator->trans('front.footer.github.link', domain: 'front', locale: $this->locale),
+            'sitemapLink' => $this->translator->trans('front.footer.sitemap.link', domain: 'front', locale: $this->locale),
+            'frLink' => $this->translator->trans('front.footer.fr.link', domain: 'front', locale: $this->locale),
+            'esLink' => $this->translator->trans('front.footer.es.link', domain: 'front', locale: $this->locale),
+            'enLink' => $this->translator->trans('front.footer.en.link', domain: 'front', locale: $this->locale),
         ];
     }
 
@@ -82,8 +89,8 @@ class FrontTranslate extends AppTranslate
     private function getTranslateHeader(): array
     {
         return [
-            'login' => $this->translator->trans('front.header.login', domain: 'front'),
-            'logout' => $this->translator->trans('front.header.logout', domain: 'front'),
+            'login' => $this->translator->trans('front.header.login', domain: 'front', locale: $this->locale),
+            'logout' => $this->translator->trans('front.header.logout', domain: 'front', locale: $this->locale),
         ];
 
     }
@@ -91,10 +98,9 @@ class FrontTranslate extends AppTranslate
     private function getTranslateArticleFooter(): array
     {
         return [
-            'published' => $this->translator->trans('front.article.footer.published', domain: 'front'),
-            'edit' => $this->translator->trans('front.article.footer.edit', domain: 'front'),
-            'statPublication' => $this->translator->trans('front.article.footer.statPublication', domain: 'front'),
-            'infoDraft' => $this->translator->trans('front.article.footer.info.draft', domain: 'front'),
+            'edit' => $this->translator->trans('front.article.footer.edit', domain: 'front', locale: $this->locale),
+            'statPublication' => $this->translator->trans('front.article.footer.statPublication', domain: 'front', locale: $this->locale),
+            'infoDraft' => $this->translator->trans('front.article.footer.info.draft', domain: 'front', locale: $this->locale),
             'comment' => $this->getTranslateComment()
         ];
     }
@@ -102,31 +108,31 @@ class FrontTranslate extends AppTranslate
     private function getTranslateComment(): array
     {
         return [
-            'title' => $this->translator->trans('front.comment.title', domain: 'front'),
-            'nbComments' => $this->translator->trans('front.comment.nbComments', domain: 'front'),
-            'timeAgo' => $this->translator->trans('front.comment.timeAgo', domain: 'front'),
-            'validate' => $this->translator->trans('front.comment.validate', domain: 'front'),
-            'moderate' => $this->translator->trans('front.comment.moderate', domain: 'front'),
-            'waiting' => $this->translator->trans('front.comment.waiting', domain: 'front'),
-            'formModerateLabel' => $this->translator->trans('front.comment.form.moderate.label', domain: 'front'),
-            'formModeratePlaceHolder' => $this->translator->trans('front.comment.form.moderate.placeholder', domain: 'front'),
-            'formModerateCancel' => $this->translator->trans('front.comment.form.moderate.cancel', domain: 'front'),
-            'formModerateSubmit' => $this->translator->trans('front.comment.form.moderate.submit', domain: 'front'),
-            'successValidate' => $this->translator->trans('front.comment.success.validate', domain: 'front'),
-            'successModerate' => $this->translator->trans('front.comment.success.moderate', domain: 'front'),
-            'successWaiting' => $this->translator->trans('front.comment.success.waiting', domain: 'front'),
-            'btnNewComment' => $this->translator->trans('front.comment.btn.new.comment', domain: 'front'),
-            'btnNewCommentCancel' => $this->translator->trans('front.comment.btn.new.comment.cancel', domain: 'front'),
-            'btnNewCommentSubmit' => $this->translator->trans('front.comment.btn.new.comment.submit', domain: 'front'),
-            'formNewCommentPseudoLabel' => $this->translator->trans('front.comment.form.new.comment.pseudo.label', domain: 'front'),
-            'formNewCommentPseudoPlaceholder' => $this->translator->trans('front.comment.form.new.comment.pseudo.placeholder', domain: 'front'),
-            'formNewCommentPseudoError' => $this->translator->trans('front.comment.form.new.comment.pseudo.error', domain: 'front'),
-            'formNewCommentEmailLabel' => $this->translator->trans('front.comment.form.new.comment.email.label', domain: 'front'),
-            'formNewCommentEmailPlaceholder' => $this->translator->trans('front.comment.form.new.comment.email.placeholder', domain: 'front'),
-            'formNewCommentCommentLabel' => $this->translator->trans('front.comment.form.new.comment.comment.label', domain: 'front'),
-            'formNewCommentCommentPlaceholder' => $this->translator->trans('front.comment.form.new.comment.comment.placeholder', domain: 'front'),
-            'formNewCommentCommentError' => $this->translator->trans('front.comment.form.new.comment.error', domain: 'front'),
-            'formNewCommentSuccessMessage' => $this->translator->trans('front.comment.new.success.message', domain: 'front'),
+            'title' => $this->translator->trans('front.comment.title', domain: 'front', locale: $this->locale),
+            'nbComments' => $this->translator->trans('front.comment.nbComments', domain: 'front', locale: $this->locale),
+            'timeAgo' => $this->translator->trans('front.comment.timeAgo', domain: 'front', locale: $this->locale),
+            'validate' => $this->translator->trans('front.comment.validate', domain: 'front', locale: $this->locale),
+            'moderate' => $this->translator->trans('front.comment.moderate', domain: 'front', locale: $this->locale),
+            'waiting' => $this->translator->trans('front.comment.waiting', domain: 'front', locale: $this->locale),
+            'formModerateLabel' => $this->translator->trans('front.comment.form.moderate.label', domain: 'front', locale: $this->locale),
+            'formModeratePlaceHolder' => $this->translator->trans('front.comment.form.moderate.placeholder', domain: 'front', locale: $this->locale),
+            'formModerateCancel' => $this->translator->trans('front.comment.form.moderate.cancel', domain: 'front', locale: $this->locale),
+            'formModerateSubmit' => $this->translator->trans('front.comment.form.moderate.submit', domain: 'front', locale: $this->locale),
+            'successValidate' => $this->translator->trans('front.comment.success.validate', domain: 'front', locale: $this->locale),
+            'successModerate' => $this->translator->trans('front.comment.success.moderate', domain: 'front', locale: $this->locale),
+            'successWaiting' => $this->translator->trans('front.comment.success.waiting', domain: 'front', locale: $this->locale),
+            'btnNewComment' => $this->translator->trans('front.comment.btn.new.comment', domain: 'front', locale: $this->locale),
+            'btnNewCommentCancel' => $this->translator->trans('front.comment.btn.new.comment.cancel', domain: 'front', locale: $this->locale),
+            'btnNewCommentSubmit' => $this->translator->trans('front.comment.btn.new.comment.submit', domain: 'front', locale: $this->locale),
+            'formNewCommentPseudoLabel' => $this->translator->trans('front.comment.form.new.comment.pseudo.label', domain: 'front', locale: $this->locale),
+            'formNewCommentPseudoPlaceholder' => $this->translator->trans('front.comment.form.new.comment.pseudo.placeholder', domain: 'front', locale: $this->locale),
+            'formNewCommentPseudoError' => $this->translator->trans('front.comment.form.new.comment.pseudo.error', domain: 'front', locale: $this->locale),
+            'formNewCommentEmailLabel' => $this->translator->trans('front.comment.form.new.comment.email.label', domain: 'front', locale: $this->locale),
+            'formNewCommentEmailPlaceholder' => $this->translator->trans('front.comment.form.new.comment.email.placeholder', domain: 'front', locale: $this->locale),
+            'formNewCommentCommentLabel' => $this->translator->trans('front.comment.form.new.comment.comment.label', domain: 'front', locale: $this->locale),
+            'formNewCommentCommentPlaceholder' => $this->translator->trans('front.comment.form.new.comment.comment.placeholder', domain: 'front', locale: $this->locale),
+            'formNewCommentCommentError' => $this->translator->trans('front.comment.form.new.comment.error', domain: 'front', locale: $this->locale),
+            'formNewCommentSuccessMessage' => $this->translator->trans('front.comment.new.success.message', domain: 'front', locale: $this->locale),
         ];
     }
 }
