@@ -141,6 +141,9 @@ export default {
       axios.get(url, {}
       ).then((response) => {
         this.page = response.data.page;
+        if (this.page.tags[0] === '-1') {
+          this.page.tags = [];
+        }
         this.historyInfo = response.data.history
         this.menus = response.data.menus
       }).catch((error) => {
@@ -156,7 +159,7 @@ export default {
     loadTabHistory() {
 
       let url = this.urls.load_tab_history + '/' + this.id;
-      if(this.id === null) {
+      if (this.id === null) {
         url = this.urls.load_tab_history;
       }
 
@@ -524,9 +527,21 @@ export default {
     /**
      * Ouvre la préview dans un nouvel onglet
      */
-    openPreview()
-    {
-      window.open(this.urls.page_preview + '/' + this.page.id + '/' + this.currentLocale, '_blank');
+    openPreview() {
+
+      let category = this.page_datas.list_categories[this.page.category].toLowerCase();
+      let slug = '';
+      let locale = this.currentLocale;
+
+      this.page.pageTranslations.forEach(function (translate) {
+        if (translate.locale === locale) {
+          slug = translate.url;
+          return false;
+        }
+      });
+
+      window.open(this.page_datas.url_front + '/' + locale + '/' + category + '/' + slug);
+      //window.open(this.urls.page_preview + '/' + this.page.id + '/' + this.currentLocale, '_blank');
     }
   }
 }
@@ -553,7 +568,7 @@ export default {
       <select id="select-language" class="form-select float-end w-25" @change="this.switchLocale($event)">
         <option value="" selected>{{ this.translate.select_locale }}</option>
         <option v-for="(language, key) in this.locales.localesTranslate" :value="key"
-            :selected="key===this.currentLocale">{{ language }}
+                :selected="key===this.currentLocale">{{ language }}
         </option>
       </select>
       <div v-if="this.page.id !== null" class="btn btn-secondary float-end me-2" @click="this.openPreview()">
@@ -561,28 +576,28 @@ export default {
       </div>
       <div class="nav nav-pills mb-3" id="nav-tab-page" role="tablist">
         <button class="nav-link active" @click="this.switchTab('content')" id="content-tab" data-bs-toggle="tab"
-            data-bs-target="#nav-content" type="button" role="tab" aria-selected="true">
+                data-bs-target="#nav-content" type="button" role="tab" aria-selected="true">
           <span v-html="this.showTabError('content')"></span>
           <i class="bi bi-file-text"></i> {{ this.translate.onglet_content }}
         </button>
         <button class="nav-link" @click="this.switchTab('seo')" id="seo-tab" data-bs-toggle="tab"
-            data-bs-target="#nav-seo" type="button" role="tab" aria-selected="false" tabindex="-1">
+                data-bs-target="#nav-seo" type="button" role="tab" aria-selected="false" tabindex="-1">
           <i class="bi bi-tools"></i> {{ this.translate.onglet_seo }}
         </button>
         <button class="nav-link" @click="this.switchTab('tags')" id="tags-tab" data-bs-toggle="tab"
-            data-bs-target="#nav-tags" type="button" role="tab" aria-selected="false" tabindex="-1">
+                data-bs-target="#nav-tags" type="button" role="tab" aria-selected="false" tabindex="-1">
           <i class="bi bi-tags"></i> {{ this.translate.onglet_tags }}
         </button>
         <button class="nav-link" @click="this.switchTab('comments')" id="comments-tab" data-bs-toggle="tab"
-            data-bs-target="#nav-comments" type="button" role="tab" aria-selected="false" tabindex="-1">
+                data-bs-target="#nav-comments" type="button" role="tab" aria-selected="false" tabindex="-1">
           <i class="bi bi-chat-text"></i> {{ this.translate.onglet_comments }}
         </button>
         <button class="nav-link" @click="this.switchTab('history')" id="history-tab" data-bs-toggle="tab"
-            data-bs-target="#nav-history" type="button" role="tab" aria-selected="false" tabindex="-1">
+                data-bs-target="#nav-history" type="button" role="tab" aria-selected="false" tabindex="-1">
           <i class="bi bi-clock-history"></i> {{ this.translate.onglet_history }}
         </button>
         <button class="nav-link" @click="this.switchTab('save')" id="save-tab" data-bs-toggle="tab"
-            data-bs-target="#nav-save" type="button" role="tab" aria-selected="false" tabindex="-1">
+                data-bs-target="#nav-save" type="button" role="tab" aria-selected="false" tabindex="-1">
           <i class="bi bi-floppy"></i> {{ this.translate.onglet_save }}
         </button>
       </div>
@@ -591,7 +606,7 @@ export default {
 
       <!-- Formulaire page -->
       <div class="tab-pane fade show active" id="nav-content" role="tabpanel" aria-labelledby="content-tab"
-          tabindex="0">
+           tabindex="0">
         <div v-if="this.loading" class="overlay">
           <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
             <div class="spinner-border text-primary" role="status"></div>
@@ -599,28 +614,29 @@ export default {
           </div>
         </div>
         <page-content-form :key="12 + '-' + this.componentKey"
-            :locale="this.currentLocale"
-            :page="this.page"
-            :translate="this.translate.page_content_form"
-            :list-render="this.page_datas.list_render"
-            :list-categories="this.page_datas.list_categories"
-            :tab-error="this.tabError.contentForm"
-            @auto-save="this.autoSave"
-            @is-unique-url="this.isUniqueUrl"
+                           :locale="this.currentLocale"
+                           :urls="this.urls"
+                           :page="this.page"
+                           :translate="this.translate.page_content_form"
+                           :list-render="this.page_datas.list_render"
+                           :list-categories="this.page_datas.list_categories"
+                           :tab-error="this.tabError.contentForm"
+                           @auto-save="this.autoSave"
+                           @is-unique-url="this.isUniqueUrl"
         />
 
         <div id="page-content">
           <page-content :key="13 + '-' + this.componentKey"
-              :locale="this.currentLocale"
-              :url="this.urls.liste_content_by_id"
-              :url-info="this.urls.info_render_block"
-              :list-content="this.page_datas.list_content"
-              :translate="this.translate.page_content"
-              :page="this.page"
-              @update-content-text="this.updateContentText"
-              @remove-content="this.removeContent"
-              @new-content="this.newContent"
-              @move-content="this.moveContent"
+                        :locale="this.currentLocale"
+                        :url="this.urls.liste_content_by_id"
+                        :url-info="this.urls.info_render_block"
+                        :list-content="this.page_datas.list_content"
+                        :translate="this.translate.page_content"
+                        :page="this.page"
+                        @update-content-text="this.updateContentText"
+                        @remove-content="this.removeContent"
+                        @new-content="this.newContent"
+                        @move-content="this.moveContent"
           />
         </div>
 
@@ -628,7 +644,30 @@ export default {
       <!-- Fin Formulaire page -->
       <!-- Bloc SEO -->
       <div class="tab-pane fade" id="nav-seo" role="tabpanel" aria-labelledby="seo-tab" tabindex="0">
-        Tab1
+        <h5>{{ this.translate.page_seo.title }}</h5>
+
+        <fieldset class="mb-3">
+          <legend>
+            {{ this.translate.page_seo.help_legend }}
+          </legend>
+          {{ this.translate.page_seo.help_description }}
+        </fieldset>
+
+        <div v-for="meta in this.page.pageMetas">
+          <div class="mb-3">
+            <div v-for="pageMetaTranslation in meta.pageMetaTranslations">
+              <div v-if="pageMetaTranslation.locale === this.currentLocale">
+                <label for="page-sdsd"
+                       class="form-label">{{ this.translate.page_seo['input_meta_' + meta.name + '_label'] }}</label>
+                <input type="text" class="form-control" id="page-sdsd" v-model="pageMetaTranslation.value" @change="this.autoSave(this.page)">
+                <div id="page-sdsdHelp" class="form-text">
+                  {{ this.translate.page_seo['input_meta_' + meta.name + '_help'] }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
       <!-- Fin bloc SEO -->
       <!-- Bloc tag -->
@@ -645,7 +684,8 @@ export default {
 
         <h6>{{ this.translate.tag_sub_title }}</h6>
         <div id="block-tag">
-          <span v-for="tag in this.page.tags" class="me-1 badge rounded-pill badge-nat" :style="'background-color:' +tag.color">
+          <span v-for="tag in this.page.tags" class="me-1 badge rounded-pill badge-nat"
+                :style="'background-color:' +tag.color">
            {{ this.getTagLabel(tag) }}
             <i class="bi bi-x-circle" style="cursor: pointer" @click="this.removeTag(tag)"></i>
           </span>
@@ -662,20 +702,29 @@ export default {
         <fieldset class="mb-3">
           <legend>{{ this.translate.page_comment.info }}</legend>
           <div v-if="this.page_datas.options_commentaire.open === '1'"> {{ this.translate.page_comment.comment_open }}
-            <span v-if="this.page_datas.options_commentaire.new_comment === '1'">{{ this.translate.page_comment.comment_moderate }}</span>
+            <span v-if="this.page_datas.options_commentaire.new_comment === '1'">{{
+                this.translate.page_comment.comment_moderate
+              }}</span>
           </div>
           <div v-else>{{ this.translate.page_comment.comment_close }}</div>
         </fieldset>
 
         <div class="form-check form-switch mb-3">
-          <input class="form-check-input" type="checkbox" role="switch" id="openComment" v-model="this.page.openComment" @change="this.autoSave(this.page)">
+          <input class="form-check-input" type="checkbox" role="switch" id="openComment" v-model="this.page.openComment"
+                 @change="this.autoSave(this.page)">
           <label class="form-check-label" for="openComment">{{ this.translate.page_comment.input_open_comment }}</label>
         </div>
 
         <div class="mb-3">
-          <label for="list-status-page" class="form-label">{{ this.translate.page_comment.input_status_comment_label }}</label>
-          <select id="list-status-page" class="form-select" aria-label="Default select example" v-model="this.page.ruleComment" @change="this.autoSave(this.page)">
-            <option v-for="(value, key) in this.page_datas.list_comments_status" :value="parseInt(key)">{{ value }}</option>
+          <label for="list-status-page" class="form-label">{{
+              this.translate.page_comment.input_status_comment_label
+            }}</label>
+          <select id="list-status-page" class="form-select" aria-label="Default select example"
+                  v-model="this.page.ruleComment" @change="this.autoSave(this.page)">
+            <option v-for="(value, key) in this.page_datas.list_comments_status" :value="parseInt(key)">{{
+                value
+              }}
+            </option>
           </select>
           <div id="list-status-help" class="form-text">{{ this.translate.page_comment.input_status_comment_help }}</div>
         </div>
@@ -712,9 +761,11 @@ export default {
 
         <div class="mb-3">
           <label for="list-menu-page" class="form-label">{{ this.translate.page_save.list_menu_label }}</label>
-          <select id="list-menu-page" class="form-select" aria-label="Default select example" v-model="this.page.menus" multiple @change="this.autoSave(this.page)">
+          <select id="list-menu-page" class="form-select" aria-label="Default select example" v-model="this.page.menus"
+                  multiple @change="this.autoSave(this.page)">
             <option value="-1">{{ this.translate.page_save.list_menu_empty }}</option>
-            <option v-for="menu in this.menus" :value="parseInt(menu.id)" v-html="(menu.disabled) ? menu.name + ' (' + this.translate.page_save.list_menu_disabled + ')' : menu.name">
+            <option v-for="menu in this.menus" :value="parseInt(menu.id)"
+                    v-html="(menu.disabled) ? menu.name + ' (' + this.translate.page_save.list_menu_disabled + ')' : menu.name">
             </option>
           </select>
 
@@ -725,17 +776,21 @@ export default {
         </div>
 
         <div class="mb-3">
-          <label for="list-status-page" class="form-label">{{ this.translate.page_save.list_landing_page_label }}</label>
-          <select id="list-status-page" class="form-select" aria-label="Default select example" v-model="this.page.landingPage">
-            <option  :value="true">{{ this.translate.page_save.select_page_landing_page }}</option>
-            <option  :value="false">{{ this.translate.page_save.select_page_normal_page }}</option>
+          <label for="list-status-page" class="form-label">{{
+              this.translate.page_save.list_landing_page_label
+            }}</label>
+          <select id="list-status-page" class="form-select" aria-label="Default select example"
+                  v-model="this.page.landingPage">
+            <option :value="true">{{ this.translate.page_save.select_page_landing_page }}</option>
+            <option :value="false">{{ this.translate.page_save.select_page_normal_page }}</option>
           </select>
           <div id="list-status-help" class="form-text">{{ this.translate.page_save.list_landing_page_help }}</div>
         </div>
 
         <div class="mb-3">
           <label for="list-status-page" class="form-label">{{ this.translate.page_save.list_status_label }}</label>
-          <select id="list-status-page" class="form-select" aria-label="Default select example" v-model="this.page.status">
+          <select id="list-status-page" class="form-select" aria-label="Default select example"
+                  v-model="this.page.status">
             <option v-for="(value, key) in this.list_status" :value="parseInt(key)">{{ value }}</option>
           </select>
           <div id="list-status-help" class="form-text">{{ this.translate.page_save.list_status_help }}</div>

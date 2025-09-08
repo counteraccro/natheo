@@ -159,3 +159,20 @@ page.page_comment.info: 'Paramétrage globale des commentaires'
 page.page_comment.comment.open: 'Les commentaires sont ouverts'
 page.page_comment.comment.close: 'Les commentaires sont fermés'
 page.page_comment.comment.moderate: 'et sont en attente de validation par défaut'
+page.page_seo.title: 'SEO de la page'
+page.page_seo.input.meta_description.label: 'Balise méta "description"'
+page.page_seo.input.meta_description.help: 'Une brève description de votre page'
+page.page_seo.input.meta_keywords.label: 'Balise méta "keywords"'
+page.page_seo.input.meta_keywords.help: 'Liste de mots clés séparé par une virgule, exemple natheo, article, cms'
+page.page_seo.input.meta_author.label: 'Balise méta "author"'
+page.page_seo.input.meta_author.help: "L'auteur de la page"
+page.page_seo.input.meta_copyright.label: 'Balise méta "copyright"'
+page.page_seo.input.meta_copyright.help: 'Le copyright de votre page'
+page.page_seo.help.legend: Information
+page.page_seo.help.description: 'Le SEO vous permet de facilité le référencement de votre page, il est important de prendre le temps de remplir correctement les données'
+page.page_content.header_img.title: 'Image en entête de la page'
+page.page_content.header_img.help: "Cette image apparaîtra en entête de page, elle doit être suffisament grande pour avoir un rendu correcte. Laissez vide pour ne pas mettre d'image sur votre page"
+page.page_content.header_img.no.img: 'Aucune image sélectionnée'
+page.page_content.header_img.remove: Supprimer
+page.page_content.header_img.change: Changer
+page.content.listing.title: 'Liste des pages pour la catégorie "{category}"'

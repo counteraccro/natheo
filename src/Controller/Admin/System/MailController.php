@@ -203,13 +203,13 @@ class MailController extends AppAdminController
 
         $tabKeyWord = match ($mail->getKey()) {
             MailKey::MAIL_CHANGE_PASSWORD =>
-            $keyWord->getMailChangePassword($user, $this->generateUrl('index_index'), $optionSystemService),
+            $keyWord->getMailChangePassword($user, $this->generateUrl('front_no_local'), $optionSystemService),
             MailKey::MAIL_ACCOUNT_ADM_DISABLE =>
             $keyWord->getTabMailAccountAdmDisabled($user, $user, $optionSystemService),
             MailKey::MAIL_ACCOUNT_ADM_ENABLE =>
             $keyWord->getTabMailAccountAdmEnabled($user, $user, $optionSystemService),
             MailKey::MAIL_CREATE_ACCOUNT_ADM =>
-            $keyWord->getTabMailCreateAccountAdm($user, $user, $this->generateUrl('index_index'), $optionSystemService),
+            $keyWord->getTabMailCreateAccountAdm($user, $user, $this->generateUrl('front_no_local'), $optionSystemService),
             MailKey::MAIL_SELF_DISABLED_ACCOUNT =>
             $keyWord->getTabMailSelfDisabled($user, $optionSystemService),
             MailKey::MAIL_SELF_DELETE_ACCOUNT =>
@@ -217,7 +217,7 @@ class MailController extends AppAdminController
             MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT =>
             $keyWord->getTabMailSelfAnonymous($user, $optionSystemService),
             MailKey::MAIL_RESET_PASSWORD =>
-            $keyWord->getTabMailResetPassword($user, $user, $this->generateUrl('index_index'), $optionSystemService),
+            $keyWord->getTabMailResetPassword($user, $user, $this->generateUrl('front_no_local'), $optionSystemService),
             default => [
                 KeyWord::KEY_SEARCH => [],
                 KeyWord::KEY_REPLACE => []

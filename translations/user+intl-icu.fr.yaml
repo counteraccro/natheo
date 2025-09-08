@@ -187,3 +187,12 @@ user.more_options.loading: 'traitement en cours...'
 user.more_options.btn.show_help: "Afficher l'aide de configuration"
 user.more_options.btn.hide_help: "Masquer l'aide de configuration"
 user.page_my_account.options.divers: 'Autres options'
+user.page_my_account.other_data: 'Autres données'
+user.form.description.label: 'Description personnelle'
+user.form.description.help: 'Une petite description de vous qui apparaitra en bas de vos articles'
+user.form.description.placeholder: 'Une petite description de vous'
+user.form.avatar.label: 'Votre avatar'
+user.form.avatar.help: 'Image qui sera placé en bas de vos articles'
+user.form.avatar.placeholder: 'Sélectionné un avatar'
+user.form.avatar.error.upload: 'Merci de télécharger une image au format jpg, gif ou png valide'
+user.page_my_account.upload.avatar.error: 'Une erreur est survenue lors du téléchargement de votre avatar'

@@ -10,6 +10,7 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
+use App\Enum\Content\Page\PageMeta;
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
@@ -23,7 +24,9 @@ use App\Utils\Content\Page\PageHistory;
 use App\Utils\Content\Page\PagePopulate;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
+use App\Utils\System\User\PersonalData;
 use App\Utils\Translate\Content\PageTranslate;
+use App\Utils\Translate\MarkdownEditorTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -202,6 +205,7 @@ class PageController extends AppAdminController
     public function add(
         PageService         $pageService,
         PageTranslate       $pageTranslate,
+        MarkdownEditorTranslate $markdownEditorTranslate,
         CommentService      $commentService,
         OptionSystemService $optionSystemService,
         ?int                $id = null
@@ -221,6 +225,7 @@ class PageController extends AppAdminController
         ];
 
         $translate = $pageTranslate->getTranslate();
+        $translate['page_content_form']['mediatheque'] = $markdownEditorTranslate->getTranslateMediateque();
         $locales = $pageService->getLocales();
 
         return $this->render('admin/content/page/add_update.html.twig', [
@@ -234,6 +239,7 @@ class PageController extends AppAdminController
                 'list_content' => $pageService->getAllContent(),
                 'list_categories' => $pageService->getAllCategories(),
                 'list_comments_status' => $commentService->getAllStatus(),
+                'url_front' => $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE),
                 'options_commentaire' => [
                     'open' => $optionSystemService->getValueByKey(OptionSystemKey::OS_OPEN_COMMENT),
                     'new_comment' => $optionSystemService->getValueByKey(OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION)
@@ -251,7 +257,8 @@ class PageController extends AppAdminController
                 'liste_content_by_id' => $this->generateUrl('admin_page_liste_content_by_id'),
                 'is_unique_url_page' => $this->generateUrl('admin_page_is_unique_url_page'),
                 'info_render_block' => $this->generateUrl('admin_page_info_render_block'),
-                'page_preview' => $this->generateUrl('admin_page_preview')
+                'page_preview' => $this->generateUrl('admin_page_preview'),
+                'load_media' => $this->generateUrl('admin_media_load_medias'),
             ]
         ]);
     }
@@ -261,6 +268,7 @@ class PageController extends AppAdminController
      * Permet de charger le contenu du tab content
      * @param PageService $pageService
      * @param MenuService $menuService
+     * @param OptionSystemService $optionSystemService
      * @param int|null $id
      * @return JsonResponse
      * @throws ContainerExceptionInterface
@@ -271,6 +279,7 @@ class PageController extends AppAdminController
     public function loadTabContent(
         PageService $pageService,
         MenuService $menuService,
+        OptionSystemService $optionSystemService,
         ?int        $id = null,
     ): JsonResponse
     {
@@ -283,6 +292,25 @@ class PageController extends AppAdminController
             $page->setCategory(PageConst::PAGE_CATEGORY_PAGE);
             $page->setLandingPage(PageConst::DEFAULT_LANDING_PAGE);
             $page->getPageContents()->clear();
+
+
+            foreach($page->getPageMetas() as $meta) {
+                $value = null;
+                if($meta->getName() === PageMeta::AUTHOR->value) {
+                    $personalData = new PersonalData($this->getUser(), $this->optionUserService->getValueByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER));
+                    $value = $personalData->getPersonalData();
+                }
+                if($meta->getName() === PageMeta::COPYRIGHT->value) {
+                    $value = $optionSystemService->getValueByKey(OptionSystemKey::OS_SITE_NAME) . ' ' . date('Y');
+                }
+
+                if($value !== null) {
+                    foreach($meta->getPageMetaTranslations() as $translation) {
+                        $translation->setValue($value);
+                    }
+                }
+            }
+
         } else {
             $page = $pageService->findOneById(Page::class, $id);
         }

@@ -1,11 +1,13 @@
 user:
   User:
-    email: xavier.pages@sfr.fr
-    password: $2y$04$JMDCZPZgERg6ZTVKLGB9f.lXeqnyM8TgFo530om1x6jTiOXm87k16
-    login: stexier
+    email: nicolas32@gilbert.fr
+    password: $2y$04$4jQy/ojG2HpzOKLIaBS1vuRKB2kbFX1k8xiboAuNg3c7f79.ZZxxG
+    login: blanc.michele
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN
     disabled: 0
     anonymous: 0
     founder: 1
+    avatar: avatar-2.png
+    description: "N'oubliez pas de mettre à jour cette description"

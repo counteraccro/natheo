@@ -59,7 +59,7 @@ class ApiPageContentService extends AppApiService
      */
     public function getFormatContent(PageContent $pageContent, ApiFindPageContentDto $dto): array
     {
-        $return = [];
+        $return = ['id' => $pageContent->getId()];
 
         switch ($pageContent->getType()) {
             case PageConst::CONTENT_TYPE_TEXT:
@@ -70,6 +70,9 @@ class ApiPageContentService extends AppApiService
                 break;
             case PageConst::CONTENT_TYPE_LISTING:
                 $return['content'] = $this->formatContentListing($pageContent->getTypeId(), $dto->getLocale(), $dto->getPage(), $dto->getLimit());
+                $pageService = $this->getPageService();
+                $translator = $this->getTranslator();
+                $return['title'] = $translator->trans('page.content.listing.title', parameters: ['category' => $pageService->getCategoryById($pageContent->getPage()->getCategory())], domain: 'page', locale: $dto->getLocale());
                 break;
             default:
                 break;
@@ -127,8 +130,10 @@ class ApiPageContentService extends AppApiService
 
             $pageTranslation = $page->getPageTranslationByLocale($locale);
             $return['pages'][] = [
+                'img' => $page->getHeaderImg(),
                 'title' => $pageTranslation->getTitre(),
                 'slug' => $pageTranslation->getUrl(),
+                'category' => $page->getCategory(),
                 'author' => $personalData->getPersonalData(),
                 'created' => $page->getCreatedAt()->getTimestamp(),
                 'update' => $page->getUpdateAt()->getTimestamp()

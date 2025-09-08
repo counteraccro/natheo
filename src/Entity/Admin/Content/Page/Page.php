@@ -71,13 +71,13 @@ class Page
     #[JoinTable(name: 'page_tag')]
     private Collection $tags;
 
-    #[ORM\OneToMany(mappedBy: 'page', targetEntity: PageStatistique::class, cascade: ['persist'] , orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: PageStatistique::class, mappedBy: 'page', cascade: ['persist'], orphanRemoval: true)]
     private Collection $pageStatistiques;
 
     /**
      * @var Collection<int, MenuElement>
      */
-    #[ORM\OneToMany(mappedBy: 'page', targetEntity: MenuElement::class)]
+    #[ORM\OneToMany(targetEntity: MenuElement::class, mappedBy: 'page')]
     private Collection $menuElements;
 
     /**
@@ -90,8 +90,17 @@ class Page
     /**
      * @var Collection<int, Comment>
      */
-    #[ORM\OneToMany(mappedBy: 'page', targetEntity: Comment::class, orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'page', orphanRemoval: true)]
     private Collection $comments;
+
+    /**
+     * @var Collection<int, PageMeta>
+     */
+    #[ORM\OneToMany(targetEntity: PageMeta::class, mappedBy: 'page', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $pageMetas;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $headerImg = null;
 
 
     public function __construct()
@@ -103,6 +112,7 @@ class Page
         $this->menuElements = new ArrayCollection();
         $this->menus = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->pageMetas = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -476,6 +486,48 @@ class Page
     public function setRuleComment(int $ruleComment): static
     {
         $this->ruleComment = $ruleComment;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PageMeta>
+     */
+    public function getPageMetas(): Collection
+    {
+        return $this->pageMetas;
+    }
+
+    public function addPageMeta(PageMeta $pageMeta): static
+    {
+        if (!$this->pageMetas->contains($pageMeta)) {
+            $this->pageMetas->add($pageMeta);
+            $pageMeta->setPage($this);
+        }
+
+        return $this;
+    }
+
+    public function removePageMeta(PageMeta $pageMeta): static
+    {
+        if ($this->pageMetas->removeElement($pageMeta)) {
+            // set the owning side to null (unless already changed)
+            if ($pageMeta->getPage() === $this) {
+                $pageMeta->setPage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getHeaderImg(): ?string
+    {
+        return $this->headerImg;
+    }
+
+    public function setHeaderImg(?string $headerImg): static
+    {
+        $this->headerImg = $headerImg;
 
         return $this;
     }

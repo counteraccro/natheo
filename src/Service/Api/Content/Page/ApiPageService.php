@@ -19,6 +19,8 @@ use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
 use App\Service\Api\Content\ApiMenuService;
 use App\Utils\Api\Content\ApiPageFormater;
+use App\Utils\Content\Menu\MenuConst;
+use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageStatistiqueKey;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\PersonalData;
@@ -41,7 +43,7 @@ class ApiPageService extends AppApiService
      */
     public function getPageForApi(ApiFindPageDto $dto, ?User $user = null): array
     {
-        $page = $this->getPageBySlug($dto->getSlug());
+        $page = $this->getPageBySlug($dto->getSlug(), $user);
         if (empty($page)) {
             return [];
         }
@@ -66,13 +68,30 @@ class ApiPageService extends AppApiService
             $tabDefault[$default['position']] = $default['id'];
         }
 
+        $isRightMenu = $isLeftMenu = false;
         foreach ($page->getMenus() as $menu) {
             unset($tabDefault[$menu->getPosition()]);
+            if ($menu->getPosition() === MenuConst::POSITION_RIGHT) {
+                $isRightMenu = true;
+            }
+
+            if ($menu->getPosition() === MenuConst::POSITION_LEFT) {
+                $isLeftMenu = true;
+            }
+
             $pageApi = $this->getFormatedMenu($menu->getId(), $dto->getLocale(), $pageApi, $apiMenuService, $menuRepo);
         }
 
+
         if (!empty($tabDefault)) {
-            foreach ($tabDefault as $id) {
+            foreach ($tabDefault as $position => $id) {
+                if ($position === MenuConst::POSITION_LEFT && $isRightMenu) {
+                    continue;
+                }
+
+                if ($position === MenuConst::POSITION_RIGHT && $isLeftMenu) {
+                    continue;
+                }
                 $pageApi = $this->getFormatedMenu($id, $dto->getLocale(), $pageApi, $apiMenuService, $menuRepo);
             }
         }
@@ -200,15 +219,22 @@ class ApiPageService extends AppApiService
     /**
      * Retourne une page en fonction du slug
      * @param string $slug
+     * @param User|null $user
      * @return Page|null
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws NonUniqueResultException
      */
-    private function getPageBySlug(string $slug): ?Page
+    private function getPageBySlug(string $slug, ?User $user = null): ?Page
     {
         /** @var PageRepository $repository */
         $repository = $this->getRepository(Page::class);
-        return $repository->getBySlug($slug);
+        $security = $this->getSecurity();
+
+        $status = [PageConst::STATUS_PUBLISH];
+        if($user !== null && $security->isGrantedForUser($user, 'ROLE_CONTRIBUTEUR')) {
+            $status = [PageConst::STATUS_PUBLISH, PageConst::STATUS_DRAFT];
+        }
+
+        return $repository->getBySlug($slug, $status);
     }
 }

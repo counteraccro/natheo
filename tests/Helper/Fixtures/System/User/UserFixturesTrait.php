@@ -36,6 +36,8 @@ trait UserFixturesTrait
             'disabled' => self::getFaker()->boolean(),
             'anonymous' => self::getFaker()->boolean(),
             'founder' => false,
+            'avatar' => self::getFaker()->imageUrl(),
+            'description' => self::getFaker()->text(50),
         ];
 
         $user = $this->initEntity(User::class, array_merge($data, $customData));

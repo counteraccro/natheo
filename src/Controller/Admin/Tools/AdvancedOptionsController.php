@@ -131,7 +131,7 @@ class AdvancedOptionsController extends AbstractController
         $commandService->dropDatabase();
 
         $return['msg'] = $translator->trans('advanced_options.success.reset.database', domain: 'advanced_options');
-        $return['redirect'] = $this->generateUrl('index_index');
+        $return['redirect'] = $this->generateUrl('front_no_local');
         $return['success'] = true;
 
         return $this->json($return);

@@ -34,7 +34,10 @@ class ApiPageFormaterTest extends AppWebTestCase
         $this->assertArrayHasKey('render', $result);
         $this->assertEquals($page->getRender(), $result['render']);
         $this->assertArrayHasKey('author', $result);
-        $this->assertEquals($page->getUser()->getEmail(), $result['author']);
+        $this->assertIsArray($result['author']);
+        $this->assertEquals($page->getUser()->getEmail(), $result['author']['author']);
+        $this->assertEquals($page->getUser()->getAvatar(), $result['author']['avatar']);
+        $this->assertEquals($page->getUser()->getDescription(), $result['author']['description']);
         $this->assertArrayHasKey('statistiques', $result);
         $this->assertArrayHasKey('contents', $result);
         $this->assertCount($page->getPageContents()->count(), $result['contents']);

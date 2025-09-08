@@ -5,6 +5,7 @@ namespace App\Utils\Api\Content;
 use App\Dto\Api\Content\Page\ApiFindPageDto;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageContent;
+use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
 use App\Utils\Content\Page\PageConst;
@@ -34,10 +35,17 @@ class ApiPageFormater
         $pageTranslation = $this->page->getPageTranslationByLocale($this->dto->getLocale());
 
         $this->return['title'] = $pageTranslation->getTitre();
+        $this->return['slug'] = $pageTranslation->getUrl();
+        $this->return['status'] = $this->page->getStatus();
         $this->return['render'] = $this->page->getRender();
-        $this->return['author'] = $this->getAuthor($this->page->getUser());
+        $this->return['author'] = [
+            'author' => $this->getAuthor($this->page->getUser()),
+            'description' => $this->page->getUser()->getDescription(),
+            'avatar' => $this->page->getUser()->getAvatar(),
+            ];
         $this->return['created'] = $this->page->getCreatedAt()->getTimestamp();
         $this->return['update'] = $this->page->getUpdateAt()->getTimestamp();
+        $this->return['headerImg'] = $this->page->getHeaderImg();
         if ($this->dto->isShowTags()) {
             $this->return['tags'] = $this->getTags($this->page->getTags());
         }
@@ -46,9 +54,29 @@ class ApiPageFormater
             $this->return['statistiques'] = $this->getStatistiques();
         }
         $this->return['contents'] = $this->getPageContent($this->page->getPageContents());
+        $this->return['seo'] = $this->getPageMeta($this->page->getPageMetas());
+        $this->return['openComment'] = $this->page->isOpenComment();
 
         return $this;
     }
+
+    private function getPageMeta(Collection $pageMetas): array {
+        $return = [];
+
+        foreach($pageMetas as $pageMeta) {
+            /** @var PageMeta $pageMeta */
+
+            $value = $pageMeta->getPageMetaTranslationByLocale($this->dto->getLocale())->getValue();
+
+            $return[] = [
+                'name' => $pageMeta->getName(),
+                'value' => $value,
+                'balise' => '<meta name="' . $pageMeta->getName() . '" content="' . $value . '">'
+            ];
+        }
+
+        return $return;
+}
 
     /**
      * Retourne les pageContents d'une page

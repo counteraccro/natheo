@@ -6,17 +6,21 @@
 parameters:
   app.supported_locales: 'fr|en|es'
   app.api_version: 'v1'
-  app.ip_api_active_filter: true  #Si true alors filtre l'accès à l'API par les API défini dans app.ip_api_authorize
+  app.ip_api_active_filter: true  #Si true alors filtre l'accès à l'API par les IP défini dans app.ip_api_authorize
   app.ip_api_authorize: [127.0.0.1, ::1]
   app.default_locale: 'fr'
   app.default_database_prefix: '' # un "_" est ajouté par défaut, laissez vide si pas de prefix
   app.default_database_schema: '%env(NATHEO_SCHEMA)%'  # schéma de la base de donnée
   app.version: '1.0.0-beta.1.0.1'
+  app.natheo_horizon.version: 'Natheo-Horizon v1.0.0'
   app.current_branche: 'master'
   # Permet d'activer le mode débug du CMS
   # En débug mode, créer un type d'utilisateur par droit dans les fixtures
   # En débug mode, créer un token par droits dans les fixtures
   app.debug_mode: true
+
+  app.folder.upload.avatar: '%kernel.project_dir%/public/uploads/avatars'
+  app.path.avatar: 'uploads/avatars/'
 
 services:
   # default configuration for services in *this* file
