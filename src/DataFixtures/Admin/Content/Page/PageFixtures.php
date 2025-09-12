@@ -31,6 +31,10 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::PAGE_FIXTURES_DATA_FILE);
 
+        if($data === null) {
+            return;
+        }
+
         foreach ($data['pages'] as $ref => $data) {
 
             $page = new Page();

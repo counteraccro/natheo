@@ -23,6 +23,10 @@ class PageMenuFixtures extends AppFixtures implements FixtureGroupInterface, Ord
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::PAGE_MENU_FIXTURES_DATA_FILE);
 
+        if($data === null) {
+            return;
+        }
+
         foreach ($data['pageMenu'] as $ref => $dataMenu) {
             $page = $this->getReference($dataMenu['page'], Page::class);
             $menu = $this->getReference($dataMenu['menu'], Menu::class);

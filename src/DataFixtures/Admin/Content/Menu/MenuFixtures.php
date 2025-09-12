@@ -26,6 +26,10 @@ class MenuFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::MENU_FIXTURES_DATA_FILE);
 
+        if($data === null) {
+            return;
+        }
+
         foreach ($data['menu'] as $ref => $dataMenu) {
             $menu = new Menu();
 
