@@ -1,0 +1,233 @@
+pages:
+  Page_landing:
+    user: User
+    render: 6
+    status: 1
+    category: 1
+    landingPage: true
+    isOpenComment: 1
+    nbComment: 0
+    ruleComment: 2
+    headerImg: media-7
+    tags:
+      - Tag_natheo
+      - Tag_dev
+      - Tag_article
+      - Tag_page
+    pageTranslation:
+      fr:
+        locale: fr
+        titre: 'Natheo CMS installé avec succès'
+        url: 'home'
+      en:
+        locale: en
+        titre: 'Natheo CMS successfully installed'
+        url: 'home'
+      es:
+        locale: es
+        titre: 'Natheo CMS se instaló correctamente'
+        url: 'home'
+    pageContent:
+      content_1:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              ## Félicitation
+
+              Bravo ! NatheoCMS est maintenant installé
+              Vous êtes sur la page d’accueil, une des pages générée automatiquement lors de l’installation. 
+
+              Retrouvez un ensemble de pages de démonstration pour vous présenter l'ensemble des possibilités du CMS 
+
+              *Vous pouvez modifier cette page à tout moment depuis l'administration*
+          en:
+            locale: en
+            text: |
+              ## Congratulations
+
+              Congratulations! NatheoCMS is now installed.
+              You are on the home page, one of the pages automatically generated during installation.
+
+              Find a set of demo pages to show you all the CMS's capabilities.
+
+              *You can edit this page at any time from the administration menu.*
+          es:
+            locale: es
+            text: |
+              ## ¡Felicitaciones!
+
+              ¡Felicitaciones! NatheoCMS ya está instalado.
+              Estás en la página de inicio, una de las páginas generadas automáticamente durante la instalación.
+
+              Encuentra un conjunto de páginas de demostración para mostrarte todas las funciones del CMS.
+
+              *Puedes editar esta página en cualquier momento desde el menú de administración.*
+      content_2:
+        renderBlock: 2
+        renderOrder: 1
+        type: 2
+        typeId: faq-1
+      content_3:
+        renderBlock: 3
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              # Redeo parantem micuerunt collo
+
+              ## Mersaeque occursu
+
+              Lorem markdownum **perque** Philyreia novos, sua blanditiis illi cruores venturi
+              et dolorem necem undas regio. Levibus saepe discrimina Euagrus iubet omnibus
+              consilii fatis: putes telum; stamen necem, mortali ut fortisque adsis. Simillima
+              Phrygum Eurydicenque alter canescere ignis: ausa intra postquam virgineis quod;
+              nec. Aut violentus Iapygiam gessit arduus, in obliquo umeris adhuc.
+
+                  var debugGraphicSystem = username.forum(-1, copy_wordart_tween) +
+                          burnWinsOverclocking - 1;
+                  wireless += pc_compiler_dual.gui_ecc_desktop(solidSyncCaps, apache(
+                          gigabyte.backside(impressionMediaSimplex, 5, blockchainSerp)), kde +
+                          hardware_http);
+                  pinterestHttpsDirectory(system, phishing_grep.tooltip(85, 5), trash);
+                  video_troubleshooting(defragment_hdv, jumper, dac_mount.unixPassword(
+                          wPublishing, boolean_runtime, vlb_ddr(basic_tiger_unix,
+                          stick_throughput_traceroute, num)));
+                  var dfs_bit_design = ipv_uat;
+
+              Sacerdotis ictu habere pectora. Ibi precantibus petit semel nimia
+              `forum_logic_method`, cum queritur avis mihi est amissa volucri
+              `design_time_task` erat Tagus rapit tollere non misera demptos. Velo herbas da
+              collaque `hashtag` cyclopum, abscidit deponunt lympha
+              [dabimus](#nunc-iovis-statque), Ithacus?
+
+              1. Quarum meam deficiunt caede
+              2. Nec pendent sed
+              3. Quod accipe
+          en:
+            locale: en
+            text: |
+              # Redeo parantem micuerunt collo
+
+              ## Mersaeque occursu
+
+              Lorem markdownum **perque** Philyreia novos, sua blanditiis illi cruores venturi
+              et dolorem necem undas regio. Levibus saepe discrimina Euagrus iubet omnibus
+              consilii fatis: putes telum; stamen necem, mortali ut fortisque adsis. Simillima
+              Phrygum Eurydicenque alter canescere ignis: ausa intra postquam virgineis quod;
+              nec. Aut violentus Iapygiam gessit arduus, in obliquo umeris adhuc.
+
+                  var debugGraphicSystem = username.forum(-1, copy_wordart_tween) +
+                          burnWinsOverclocking - 1;
+                  wireless += pc_compiler_dual.gui_ecc_desktop(solidSyncCaps, apache(
+                          gigabyte.backside(impressionMediaSimplex, 5, blockchainSerp)), kde +
+                          hardware_http);
+                  pinterestHttpsDirectory(system, phishing_grep.tooltip(85, 5), trash);
+                  video_troubleshooting(defragment_hdv, jumper, dac_mount.unixPassword(
+                          wPublishing, boolean_runtime, vlb_ddr(basic_tiger_unix,
+                          stick_throughput_traceroute, num)));
+                  var dfs_bit_design = ipv_uat;
+
+              Sacerdotis ictu habere pectora. Ibi precantibus petit semel nimia
+              `forum_logic_method`, cum queritur avis mihi est amissa volucri
+              `design_time_task` erat Tagus rapit tollere non misera demptos. Velo herbas da
+              collaque `hashtag` cyclopum, abscidit deponunt lympha
+              [dabimus](#nunc-iovis-statque), Ithacus?
+
+              1. Quarum meam deficiunt caede
+              2. Nec pendent sed
+              3. Quod accipe
+          es:
+            locale: es
+            text: |
+              # Redeo parantem micuerunt collo
+
+              ## Mersaeque occursu
+
+              Lorem markdownum **perque** Philyreia novos, sua blanditiis illi cruores venturi
+              et dolorem necem undas regio. Levibus saepe discrimina Euagrus iubet omnibus
+              consilii fatis: putes telum; stamen necem, mortali ut fortisque adsis. Simillima
+              Phrygum Eurydicenque alter canescere ignis: ausa intra postquam virgineis quod;
+              nec. Aut violentus Iapygiam gessit arduus, in obliquo umeris adhuc.
+
+                  var debugGraphicSystem = username.forum(-1, copy_wordart_tween) +
+                          burnWinsOverclocking - 1;
+                  wireless += pc_compiler_dual.gui_ecc_desktop(solidSyncCaps, apache(
+                          gigabyte.backside(impressionMediaSimplex, 5, blockchainSerp)), kde +
+                          hardware_http);
+                  pinterestHttpsDirectory(system, phishing_grep.tooltip(85, 5), trash);
+                  video_troubleshooting(defragment_hdv, jumper, dac_mount.unixPassword(
+                          wPublishing, boolean_runtime, vlb_ddr(basic_tiger_unix,
+                          stick_throughput_traceroute, num)));
+                  var dfs_bit_design = ipv_uat;
+
+              Sacerdotis ictu habere pectora. Ibi precantibus petit semel nimia
+              `forum_logic_method`, cum queritur avis mihi est amissa volucri
+              `design_time_task` erat Tagus rapit tollere non misera demptos. Velo herbas da
+              collaque `hashtag` cyclopum, abscidit deponunt lympha
+              [dabimus](#nunc-iovis-statque), Ithacus?
+
+              1. Quarum meam deficiunt caede
+              2. Nec pendent sed
+              3. Quod accipe
+    pageStatistique:
+      PAGE_NB_VISITEUR:
+        key: PAGE_NB_VISITEUR
+        value: 1
+      PAGE_NB_READ:
+        key: PAGE_NB_READ
+        value: 1
+    pageMeta:
+      meta1:
+        name: 'description'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Page index'
+          es:
+            locale: es
+            value: 'Página de índice'
+          en:
+            locale: en
+            value: 'Index page'
+      meta2:
+        name: 'keywords'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS, page, landing page, index'
+          es:
+            locale: es
+            value: 'Natheo-CMS, página, página de destino, índice'
+          en:
+            locale: en
+            value: 'Natheo-CMS, page, landing page, index'
+      meta3:
+        name: 'author'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS'
+          es:
+            locale: es
+            value: 'es-Natheo-CMS'
+          en:
+            locale: en
+            value: 'en-Natheo-CMS'
+      meta4:
+        name: 'copyright'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Propulsé par Nathéo CMS'
+          es:
+            locale: es
+            value: 'Desarrollado por Nathéo CMS'
+          en:
+            locale: en
+            value: 'Powered by Nathéo CMS'
