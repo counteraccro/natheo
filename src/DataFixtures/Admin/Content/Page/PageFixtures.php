@@ -8,6 +8,7 @@ namespace App\DataFixtures\Admin\Content\Page;
 
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\Content\Faq\Faq;
+use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\Content\Page\PageContentTranslation;
@@ -16,6 +17,7 @@ use App\Entity\Admin\Content\Page\PageMetaTranslation;
 use App\Entity\Admin\Content\Page\PageStatistique;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
+use App\Entity\Admin\System\OptionSystem;
 use App\Entity\Admin\System\User;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -45,6 +47,12 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                         break;
                     case "tags" :
                         $this->addTag($page, $value);
+                        break;
+                    case "headerImg" :
+                        $media = $this->getReference($value, Media::class);
+                        $optionOsAdresseSite = $this->getReference('OS_ADRESSE_SITE', OptionSystem::class);
+                        $optionOsMediaPath = $this->getReference('OS_MEDIA_PATH', OptionSystem::class);
+                        $page->setHeaderImg($optionOsAdresseSite->getValue() . '/assets/' . $optionOsMediaPath->getValue() . '/' . $media->getPath());
                         break;
                     case "pageTranslation":
                         foreach ($value as $pageTrans) {

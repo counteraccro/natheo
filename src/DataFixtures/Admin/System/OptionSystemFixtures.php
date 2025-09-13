@@ -22,9 +22,10 @@ class OptionSystemFixtures extends AppFixtures implements FixtureGroupInterface,
     public function load(ObjectManager $manager): void
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::OPTION_SYSTEM_FIXTURES_DATA_FILE);
-        foreach ($data['option_system'] as $dataOS) {
+        foreach ($data['option_system'] as $ref => $dataOS) {
             $optionSystem = $this->populateEntity($dataOS, new OptionSystem());
             $manager->persist($optionSystem);
+            $this->addReference($ref, $optionSystem);
         }
         $manager->flush();
     }
