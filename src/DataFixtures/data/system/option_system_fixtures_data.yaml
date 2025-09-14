@@ -4,7 +4,7 @@ option_system:
     value: 'Nathéo CMS'
   OS_OPEN_SITE:
     key: 'OS_OPEN_SITE'
-    value: 0
+    value: 1
   OS_FRONT_SCRIPT_TOP:
     key: 'OS_FRONT_SCRIPT_TOP'
     value: ''
