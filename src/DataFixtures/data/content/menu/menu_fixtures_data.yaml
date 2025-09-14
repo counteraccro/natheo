@@ -1,0 +1,91 @@
+menu:
+  menu_default_header:
+    user: User
+    name: "Menu Header généré lors de l'installation"
+    type: 3
+    position: 1
+    renderOrder: 1
+    disabled: 0
+    defaultMenu: true
+    menuElement:
+      default_header_page_landing:
+        page: 'Page_landing'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Index'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Índice'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Index'
+            externalLink: '#'
+
+  #Menu Gauche de démo
+
+  menu_default_left:
+    user: User
+    name: "Menu Gauche généré lors de l'installation"
+    type: 12
+    position: 4
+    renderOrder: 1
+    disabled: 0
+    defaultMenu: true
+    menuElement:
+      default_menu_left_page_landing:
+        page: 'Page_landing'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Index'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Índice'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Index'
+            externalLink: '#'
+
+  #Menu footer de démo
+
+  menu_footer_left:
+    user: User
+    name: "Footer généré lors de l'installation"
+    type: 16
+    position: 3
+    renderOrder: 1
+    disabled: 0
+    defaultMenu: true
+    menuElement:
+      default_footer_page_landing:
+        page: 'Page_landing'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Index'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Índice'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Index'
+            externalLink: '#'
