@@ -29,7 +29,6 @@ menu:
             externalLink: '#'
 
   #Menu Gauche de démo
-
   menu_default_left:
     user: User
     name: "Menu Gauche généré lors de l'installation"
@@ -58,10 +57,49 @@ menu:
             locale: en
             textLink: 'Index'
             externalLink: '#'
+      default_menu_left_blog_listing_titre:
+        page: 'page_list_blog'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 2
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Mon blog'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Mi blog'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'My blog'
+            externalLink: '#'
+      default_menu_left_blog_listing:
+        parent: default_menu_left_blog_listing_titre
+        page: 'page_list_blog'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Mon blog'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Mi blog'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'My blog'
+            externalLink: '#'
 
   #Menu footer de démo
 
-  menu_footer_left:
+  menu_footer:
     user: User
     name: "Footer généré lors de l'installation"
     type: 16
@@ -88,4 +126,54 @@ menu:
           en:
             locale: en
             textLink: 'Index'
+            externalLink: '#'
+
+  #Menu pour les pages de blog démo
+  menu_blog_right:
+    user: User
+    name: "Menu Droite du blog généré lors de l'installation"
+    type: 12
+    position: 2
+    renderOrder: 1
+    disabled: 0
+    defaultMenu: false
+    menuElement:
+      menu_blog_right_listing_titre:
+        page: 'page_list_blog'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 2
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Mon blog'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Mi blog'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'My blog'
+            externalLink: '#'
+      menu_blog_right_blog_listing:
+        parent: menu_blog_right_listing_titre
+        page: 'page_list_blog'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Mon blog'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Mi blog'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'My blog'
             externalLink: '#'

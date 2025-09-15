@@ -1,0 +1,7 @@
+pageMenu:
+  pageMenu1:
+    page: page_list_blog
+    menu: menu_blog_right
+  pageMenu2:
+    page: page_list_blog
+    menu: menu_default_left
