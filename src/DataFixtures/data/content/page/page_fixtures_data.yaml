@@ -1,4 +1,5 @@
 pages:
+  #landing page
   Page_landing:
     user: User
     render: 6
@@ -215,10 +216,167 @@ pages:
             value: 'Natheo-CMS'
           es:
             locale: es
-            value: 'es-Natheo-CMS'
+            value: 'Natheo-CMS'
           en:
             locale: en
-            value: 'en-Natheo-CMS'
+            value: 'Natheo-CMS'
+      meta4:
+        name: 'copyright'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Propulsé par Nathéo CMS'
+          es:
+            locale: es
+            value: 'Desarrollado por Nathéo CMS'
+          en:
+            locale: en
+            value: 'Powered by Nathéo CMS'
+  #Page listing blog
+  page_list_blog:
+    user: User
+    render: 4
+    status: 1
+    category: 4
+    landingPage: false
+    isOpenComment: 1
+    nbComment: 0
+    ruleComment: 2
+    headerImg: media-5
+    tags:
+      - Tag_blog
+      - Tag_demo
+    pageTranslation:
+      fr:
+        locale: fr
+        titre: 'Mon blog'
+        url: blog
+      es:
+        locale: es
+        titre: 'Mi blog'
+        url: blog
+      en:
+        locale: en
+        titre: 'My blog'
+        url: blog
+    pageContent:
+      content_1:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              Lorem markdownum caelo, argentea undique **ad**, ceu non! Saevis ego natalis
+              species videor parce tuum rursus ignea instruitur arcus; auro dolens? Procumbit
+              semina pariter ferinas servent: tanto saepe Labros possit nec Bactrius, Atrides.
+              Sim Indos simul, corpora accedere collis, regis Arcesius, loqui victor Thebae
+              vehebat facienda iuxta.
+              
+              > Nec praedae, ista ruit nullus versus iuvencae vulgique, tot urbs **res tenus
+              > me** quod, sonis tanta dixit. Minus surgit grata est non, vasti ipsam clamore
+              > discite; et cum! Lacertis iuvencae nondum Numidasque cupit.
+              
+              Quae ante [lacrimas](#nostram-et-talibus), suo vitae monstra finire deam cuius,
+              alto habebat cognitus perire nubilaque, deiecerat [ad
+              difficilis](#nostram-et-talibus). Unus erant actum ferendum credulitas vidi
+              continuam iaculum **obscenis referre fuit** manus: dedit duos
+              [dominum](#nostram-et-talibus), isto: Aiacis. Abdidit et **pudor** illiusque,
+              telum momentaque fortisque ad certe viso, occidit, nec. Illis dumque ad Acesten
+              rapuit. Sed Veneris, finxit, ferox ad fas [verum mihi](#nostram-et-talibus) non
+              novi.
+          en:
+            locale: en
+            text: |
+              Lorem markdownum caelo, argentea undique **ad**, ceu non! Saevis ego natalis
+              species videor parce tuum rursus ignea instruitur arcus; auro dolens? Procumbit
+              semina pariter ferinas servent: tanto saepe Labros possit nec Bactrius, Atrides.
+              Sim Indos simul, corpora accedere collis, regis Arcesius, loqui victor Thebae
+              vehebat facienda iuxta.
+              
+              > Nec praedae, ista ruit nullus versus iuvencae vulgique, tot urbs **res tenus
+              > me** quod, sonis tanta dixit. Minus surgit grata est non, vasti ipsam clamore
+              > discite; et cum! Lacertis iuvencae nondum Numidasque cupit.
+              
+              Quae ante [lacrimas](#nostram-et-talibus), suo vitae monstra finire deam cuius,
+              alto habebat cognitus perire nubilaque, deiecerat [ad
+              difficilis](#nostram-et-talibus). Unus erant actum ferendum credulitas vidi
+              continuam iaculum **obscenis referre fuit** manus: dedit duos
+              [dominum](#nostram-et-talibus), isto: Aiacis. Abdidit et **pudor** illiusque,
+              telum momentaque fortisque ad certe viso, occidit, nec. Illis dumque ad Acesten
+              rapuit. Sed Veneris, finxit, ferox ad fas [verum mihi](#nostram-et-talibus) non
+              novi.
+          es:
+            locale: es
+            text: |
+              Lorem markdownum caelo, argentea undique **ad**, ceu non! Saevis ego natalis
+              species videor parce tuum rursus ignea instruitur arcus; auro dolens? Procumbit
+              semina pariter ferinas servent: tanto saepe Labros possit nec Bactrius, Atrides.
+              Sim Indos simul, corpora accedere collis, regis Arcesius, loqui victor Thebae
+              vehebat facienda iuxta.
+              
+              > Nec praedae, ista ruit nullus versus iuvencae vulgique, tot urbs **res tenus
+              > me** quod, sonis tanta dixit. Minus surgit grata est non, vasti ipsam clamore
+              > discite; et cum! Lacertis iuvencae nondum Numidasque cupit.
+              
+              Quae ante [lacrimas](#nostram-et-talibus), suo vitae monstra finire deam cuius,
+              alto habebat cognitus perire nubilaque, deiecerat [ad
+              difficilis](#nostram-et-talibus). Unus erant actum ferendum credulitas vidi
+              continuam iaculum **obscenis referre fuit** manus: dedit duos
+              [dominum](#nostram-et-talibus), isto: Aiacis. Abdidit et **pudor** illiusque,
+              telum momentaque fortisque ad certe viso, occidit, nec. Illis dumque ad Acesten
+              rapuit. Sed Veneris, finxit, ferox ad fas [verum mihi](#nostram-et-talibus) non
+              novi.
+      content_2:
+        renderBlock: 1
+        renderOrder: 1
+        type: 3
+        typeId: 4
+    pageStatistique:
+      PAGE_NB_VISITEUR:
+        key: PAGE_NB_VISITEUR
+        value: 0
+      PAGE_NB_READ:
+        key: PAGE_NB_READ
+        value: 0
+    pageMeta:
+      meta1:
+        name: 'description'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'les articles du blog'
+          es:
+            locale: es
+            value: 'artículos de blog'
+          en:
+            locale: en
+            value: 'blog articles'
+      meta2:
+        name: 'keywords'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS, liste, blog, articles'
+          es:
+            locale: es
+            value: 'Natheo-CMS, lista, blog, artículos'
+          en:
+            locale: en
+            value: 'Natheo-CMS, list, blog, articles'
+      meta3:
+        name: 'author'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS'
+          es:
+            locale: es
+            value: 'Natheo-CMS'
+          en:
+            locale: en
+            value: 'Natheo-CMS'
       meta4:
         name: 'copyright'
         pageMetaTranslation:
