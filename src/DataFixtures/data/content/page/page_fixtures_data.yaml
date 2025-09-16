@@ -389,3 +389,233 @@ pages:
           en:
             locale: en
             value: 'Powered by Nathéo CMS'
+  #Blog page 1 blog
+  page_blog_1_bloc:
+    user: User
+    render: 1
+    status: 1
+    category: 4
+    landingPage: false
+    isOpenComment: 1
+    nbComment: 0
+    ruleComment: 2
+    headerImg: media-1
+    tags:
+      - Tag_blog
+      - Tag_demo
+    pageTranslation:
+      fr:
+        locale: fr
+        titre: 'Blog - 1 bloc'
+        url: 'blog-1-bloc'
+      en:
+        locale: en
+        titre: 'Blog - 1 block'
+        url: 'blog-1-block'
+      es:
+        locale: es
+        titre: 'Blog - 1 bloque'
+        url: 'blog-1-bloque'
+    pageContent:
+      content_1:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              # Adspexit inposito in transit
+
+              ## Modo plenoque
+                
+                *Lorem markdownum* tibi *non sint* tremulo terras tumidarum referunt Duxerat
+              fruges. Sed Aeginam, non nunc vestigia idem: suem cum lenis Eoo lapsasque illa
+                potest.
+              
+              ## Sinat ignis quibusque
+              
+              Ponit uva habuit, inspiciunt libidine astringi tegebat. Quamquam sunt ille:
+              Themi insequitur viribus, transire conspectum saltem opibusque. Mihi manu aliis:
+                celant ille; qui studeat harenis diffudere mediis ait traiecta. Bracchia
+                superabitur nutricis verbisque nomina viris transtulit illius vetuere
+                [et](#decem-non-est-excubias)? Summo **quod** adfectas hic cultos iaculum dictis
+              pectore Haemonio: trahit gaudet abest crederet procumbit tendebat iusto.
+                
+                > Qui auras nihil sacerdotis petunt quaerenti auxilium; his et Clytien. Ire
+                > operum avitis glaebam ipsaque geminum tulerant; sed *letalem* aliter tanto
+                > volant matertera? Tonitrus laeva sub rursus Eryx luget mundi; alvum licet
+                > cornua oscula accingere illam: attonitaeque viae cum adversum pulsatus.
+              
+              ## Decem non est excubias
+                
+                Postquam leones ereptus et nulla, acta est litusque sentire. Quam homini vide
+              absensauxilium robora et perisset defendere munere: illi mirantur, Thracum motu
+                virum vulnere. Nec audis adventare pontus.
+                
+                1. Paulatim alis
+                2. Pes ad quod vix sorores vagina
+                3. Ducar carceris repetitaque naides esset consolantia pacem
+                4. Titulos unda cibique
+                5. Grandine voragine
+                
+                ## Talia esse per bracchia
+                
+                Modo vel, aut fertur late `scalable_trackball` amores properent tectura! Cum
+                hostem removit armis `development` super pectore victibus magna causam fateri
+                vellem et lenta spoliavit in ferarum se scilicet est. Semeles pinnas digitoque
+              en haec nepotum: tuta novum, fistula laniare.
+                
+                > Ex fierent aliis, fit vos rite speculo hausit dedere neque. Nec decidere sors
+                > tempore vox instrumenta Latia. Quod venabula virorum ferens humo Elateius,
+                > postquam a tam flumina.
+          en:
+            locale: en
+            text: |
+              # Adspexit inposito in transit
+
+              ## Modo plenoque
+              
+                *Lorem markdownum* tibi *non sint* tremulo terras tumidarum referunt Duxerat
+              fruges. Sed Aeginam, non nunc vestigia idem: suem cum lenis Eoo lapsasque illa
+                potest.
+              
+              ## Sinat ignis quibusque
+              
+              Ponit uva habuit, inspiciunt libidine astringi tegebat. Quamquam sunt ille:
+              Themi insequitur viribus, transire conspectum saltem opibusque. Mihi manu aliis:
+                celant ille; qui studeat harenis diffudere mediis ait traiecta. Bracchia
+                superabitur nutricis verbisque nomina viris transtulit illius vetuere
+                [et](#decem-non-est-excubias)? Summo **quod** adfectas hic cultos iaculum dictis
+              pectore Haemonio: trahit gaudet abest crederet procumbit tendebat iusto.
+              
+                > Qui auras nihil sacerdotis petunt quaerenti auxilium; his et Clytien. Ire
+                > operum avitis glaebam ipsaque geminum tulerant; sed *letalem* aliter tanto
+                > volant matertera? Tonitrus laeva sub rursus Eryx luget mundi; alvum licet
+                > cornua oscula accingere illam: attonitaeque viae cum adversum pulsatus.
+              
+              ## Decem non est excubias
+              
+                Postquam leones ereptus et nulla, acta est litusque sentire. Quam homini vide
+              absensauxilium robora et perisset defendere munere: illi mirantur, Thracum motu
+                virum vulnere. Nec audis adventare pontus.
+              
+                1. Paulatim alis
+                2. Pes ad quod vix sorores vagina
+                3. Ducar carceris repetitaque naides esset consolantia pacem
+                4. Titulos unda cibique
+                5. Grandine voragine
+              
+                ## Talia esse per bracchia
+              
+                Modo vel, aut fertur late `scalable_trackball` amores properent tectura! Cum
+                hostem removit armis `development` super pectore victibus magna causam fateri
+                vellem et lenta spoliavit in ferarum se scilicet est. Semeles pinnas digitoque
+              en haec nepotum: tuta novum, fistula laniare.
+              
+                > Ex fierent aliis, fit vos rite speculo hausit dedere neque. Nec decidere sors
+                > tempore vox instrumenta Latia. Quod venabula virorum ferens humo Elateius,
+                > postquam a tam flumina.
+          es:
+            locale: es
+            text: |
+              # Adspexit inposito in transit
+
+              ## Modo plenoque
+              
+                *Lorem markdownum* tibi *non sint* tremulo terras tumidarum referunt Duxerat
+              fruges. Sed Aeginam, non nunc vestigia idem: suem cum lenis Eoo lapsasque illa
+                potest.
+              
+              ## Sinat ignis quibusque
+              
+              Ponit uva habuit, inspiciunt libidine astringi tegebat. Quamquam sunt ille:
+              Themi insequitur viribus, transire conspectum saltem opibusque. Mihi manu aliis:
+                celant ille; qui studeat harenis diffudere mediis ait traiecta. Bracchia
+                superabitur nutricis verbisque nomina viris transtulit illius vetuere
+                [et](#decem-non-est-excubias)? Summo **quod** adfectas hic cultos iaculum dictis
+              pectore Haemonio: trahit gaudet abest crederet procumbit tendebat iusto.
+              
+                > Qui auras nihil sacerdotis petunt quaerenti auxilium; his et Clytien. Ire
+                > operum avitis glaebam ipsaque geminum tulerant; sed *letalem* aliter tanto
+                > volant matertera? Tonitrus laeva sub rursus Eryx luget mundi; alvum licet
+                > cornua oscula accingere illam: attonitaeque viae cum adversum pulsatus.
+              
+              ## Decem non est excubias
+              
+                Postquam leones ereptus et nulla, acta est litusque sentire. Quam homini vide
+              absensauxilium robora et perisset defendere munere: illi mirantur, Thracum motu
+                virum vulnere. Nec audis adventare pontus.
+              
+                1. Paulatim alis
+                2. Pes ad quod vix sorores vagina
+                3. Ducar carceris repetitaque naides esset consolantia pacem
+                4. Titulos unda cibique
+                5. Grandine voragine
+              
+                ## Talia esse per bracchia
+              
+                Modo vel, aut fertur late `scalable_trackball` amores properent tectura! Cum
+                hostem removit armis `development` super pectore victibus magna causam fateri
+                vellem et lenta spoliavit in ferarum se scilicet est. Semeles pinnas digitoque
+              en haec nepotum: tuta novum, fistula laniare.
+              
+                > Ex fierent aliis, fit vos rite speculo hausit dedere neque. Nec decidere sors
+                > tempore vox instrumenta Latia. Quod venabula virorum ferens humo Elateius,
+                > postquam a tam flumina.
+    pageStatistique:
+      PAGE_NB_VISITEUR:
+        key: PAGE_NB_VISITEUR
+        value: 0
+      PAGE_NB_READ:
+        key: PAGE_NB_READ
+        value: 0
+    pageMeta:
+      meta1:
+        name: 'description'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Blog - 1 bloc'
+          es:
+            locale: es
+            value: 'Blog - 1 bloque'
+          en:
+            locale: en
+            value: 'Blog - 1 block'
+      meta2:
+        name: 'keywords'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS, blog, demo, exemple'
+          es:
+            locale: es
+            value: 'Natheo-CMS, blog, demostración, ejemplo'
+          en:
+            locale: en
+            value: 'Natheo-CMS, blog, demo, example'
+      meta3:
+        name: 'author'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS'
+          es:
+            locale: es
+            value: 'Natheo-CMS'
+          en:
+            locale: en
+            value: 'Natheo-CMS'
+      meta4:
+        name: 'copyright'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Propulsé par Nathéo CMS'
+          es:
+            locale: es
+            value: 'Desarrollado por Nathéo CMS'
+          en:
+            locale: en
+            value: 'Powered by Nathéo CMS'
