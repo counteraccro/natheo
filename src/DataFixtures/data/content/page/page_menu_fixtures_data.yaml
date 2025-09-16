@@ -5,3 +5,9 @@ pageMenu:
   pageMenu2:
     page: page_list_blog
     menu: menu_default_left
+  pageMenu3:
+    page: page_blog_1_bloc
+    menu: menu_blog_right
+  pageMenu4:
+    page: page_blog_1_bloc
+    menu: menu_default_left

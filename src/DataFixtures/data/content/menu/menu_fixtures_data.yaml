@@ -2,7 +2,7 @@ menu:
   menu_default_header:
     user: User
     name: "Menu Header généré lors de l'installation"
-    type: 3
+    type: 2
     position: 1
     renderOrder: 1
     disabled: 0
@@ -26,6 +26,25 @@ menu:
           en:
             locale: en
             textLink: 'Index'
+            externalLink: '#'
+      default_header_index_blog:
+        page: 'page_list_blog'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Mon blog'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Mi blog'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'My blog'
             externalLink: '#'
 
   #Menu Gauche de démo
@@ -96,6 +115,26 @@ menu:
             locale: en
             textLink: 'My blog'
             externalLink: '#'
+      default_menu_left_blog_1_bloc:
+        parent: default_menu_left_blog_listing_titre
+        page: 'page_blog_1_bloc'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Blog - 1 bloc'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Blog - 1 bloque'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Blog - 1 block'
+            externalLink: '#'
 
   #Menu footer de démo
 
@@ -108,7 +147,7 @@ menu:
     disabled: 0
     defaultMenu: true
     menuElement:
-      default_footer_page_landing:
+      default_footer_index_blog:
         page: 'Page_landing'
         disabled: 0
         columnPosition: 1
@@ -117,15 +156,55 @@ menu:
         menuElementTranslation:
           fr:
             locale: fr
-            textLink: 'Index'
+            textLink: 'Blog'
             externalLink: '#'
           es:
             locale: es
-            textLink: 'Índice'
+            textLink: 'Blog'
             externalLink: '#'
           en:
             locale: en
-            textLink: 'Index'
+            textLink: 'Blog'
+            externalLink: '#'
+      default_footer_blog_listing:
+        parent: default_footer_index_blog
+        page: 'page_list_blog'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 2
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Mon blog'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Mi blog'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'My blog'
+            externalLink: '#'
+      default_footer_blog_1_bloc:
+        parent: default_footer_index_blog
+        page: 'page_blog_1_bloc'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 3
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Blog - 1 bloc'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Blog - 1 bloque'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Blog - 1 block'
             externalLink: '#'
 
   #Menu pour les pages de blog démo
@@ -176,4 +255,24 @@ menu:
           en:
             locale: en
             textLink: 'My blog'
+            externalLink: '#'
+      menu_blog_right_blog_1_bloc:
+        parent: menu_blog_right_listing_titre
+        page: 'page_blog_1_bloc'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Blog - 1 bloc'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Blog - 1 bloque'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Blog - 1 block'
             externalLink: '#'
