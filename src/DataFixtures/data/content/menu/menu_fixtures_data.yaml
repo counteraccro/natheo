@@ -80,7 +80,7 @@ menu:
         page: 'page_list_blog'
         disabled: 0
         columnPosition: 1
-        rowPosition: 2
+        rowPosition: 1
         linkTarget: '_self'
         menuElementTranslation:
           fr:
@@ -100,7 +100,7 @@ menu:
         page: 'page_list_blog'
         disabled: 0
         columnPosition: 1
-        rowPosition: 1
+        rowPosition: 2
         linkTarget: '_self'
         menuElementTranslation:
           fr:
@@ -120,7 +120,7 @@ menu:
         page: 'page_blog_1_bloc'
         disabled: 0
         columnPosition: 1
-        rowPosition: 1
+        rowPosition: 3
         linkTarget: '_self'
         menuElementTranslation:
           fr:
@@ -134,6 +134,46 @@ menu:
           en:
             locale: en
             textLink: 'Blog - 1 block'
+            externalLink: '#'
+      default_menu_left_blog_2_block_together:
+        parent: default_menu_left_blog_listing_titre
+        page: 'page_blog_2_bloc_together'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 4
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Blog - 2 blocs côte à côte'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Blog - 2 bloques lado a lado'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Blog - 2 blocks side by side'
+            externalLink: '#'
+      default_menu_left_blog_3_block_together:
+        parent: default_menu_left_blog_listing_titre
+        page: 'page_blog_3_blocs_together'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 5
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Blog - 3 blocs côte à côte'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Blog - 3 bloques lado a lado'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Blog - 3 blocks side by side'
             externalLink: '#'
 
   #Menu footer de démo
@@ -171,7 +211,7 @@ menu:
         page: 'page_list_blog'
         disabled: 0
         columnPosition: 1
-        rowPosition: 2
+        rowPosition: 1
         linkTarget: '_self'
         menuElementTranslation:
           fr:
@@ -191,7 +231,7 @@ menu:
         page: 'page_blog_1_bloc'
         disabled: 0
         columnPosition: 1
-        rowPosition: 3
+        rowPosition: 2
         linkTarget: '_self'
         menuElementTranslation:
           fr:
@@ -205,6 +245,46 @@ menu:
           en:
             locale: en
             textLink: 'Blog - 1 block'
+            externalLink: '#'
+      default_footer_blog_2_block_together:
+        parent: default_footer_index_blog
+        page: 'page_blog_2_bloc_together'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 3
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Blog - 2 blocs côte à côte'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Blog - 2 bloques lado a lado'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Blog - 2 blocks side by side'
+            externalLink: '#'
+      default_footer_blog_3_block_together:
+        parent: default_footer_index_blog
+        page: 'page_blog_3_blocs_together'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 4
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Blog - 3 blocs côte à côte'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Blog - 3 bloques lado a lado'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Blog - 3 blocks side by side'
             externalLink: '#'
 
   #Menu pour les pages de blog démo
@@ -221,7 +301,7 @@ menu:
         page: 'page_list_blog'
         disabled: 0
         columnPosition: 1
-        rowPosition: 2
+        rowPosition: 1
         linkTarget: '_self'
         menuElementTranslation:
           fr:
@@ -261,7 +341,7 @@ menu:
         page: 'page_blog_1_bloc'
         disabled: 0
         columnPosition: 1
-        rowPosition: 1
+        rowPosition: 2
         linkTarget: '_self'
         menuElementTranslation:
           fr:
@@ -275,4 +355,44 @@ menu:
           en:
             locale: en
             textLink: 'Blog - 1 block'
+            externalLink: '#'
+      menu_blog_right_blog_2_block_together:
+        parent: menu_blog_right_listing_titre
+        page: 'page_blog_2_bloc_together'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 3
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Blog - 2 blocs côte à côte'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Blog - 2 bloques lado a lado'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Blog - 2 blocks side by side'
+            externalLink: '#'
+      menu_blog_right_blog_3_block_together:
+        parent: menu_blog_right_listing_titre
+        page: 'page_blog_3_blocs_together'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 4
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Blog - 3 blocs côte à côte'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Blog - 3 bloques lado a lado'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Blog - 3 blocks side by side'
             externalLink: '#'

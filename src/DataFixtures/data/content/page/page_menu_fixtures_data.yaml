@@ -11,3 +11,15 @@ pageMenu:
   pageMenu4:
     page: page_blog_1_bloc
     menu: menu_default_left
+  pageMenu5:
+    page: page_blog_2_bloc_together
+    menu: menu_blog_right
+  pageMenu6:
+    page: page_blog_2_bloc_together
+    menu: menu_default_left
+  pageMenu7:
+    page: page_blog_3_blocs_together
+    menu: menu_blog_right
+  pageMenu8:
+    page: page_blog_3_blocs_together
+    menu: menu_default_left
