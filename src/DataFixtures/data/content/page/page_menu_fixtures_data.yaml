@@ -23,3 +23,15 @@ pageMenu:
   pageMenu8:
     page: page_blog_3_blocs_together
     menu: menu_default_left
+  pageMenu9:
+    page: page_list_articles
+    menu: menu_article_right
+  pageMenu10:
+    page: page_list_articles
+    menu: menu_default_left
+  pageMenu11:
+    page: page_articles_2_blocs_up_down
+    menu: menu_article_right
+  pageMenu12:
+    page: page_articles_2_blocs_up_down
+    menu: menu_default_left

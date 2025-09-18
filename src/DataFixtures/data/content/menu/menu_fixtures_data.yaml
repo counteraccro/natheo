@@ -31,7 +31,7 @@ menu:
         page: 'page_list_blog'
         disabled: 0
         columnPosition: 1
-        rowPosition: 1
+        rowPosition: 2
         linkTarget: '_self'
         menuElementTranslation:
           fr:
@@ -45,6 +45,25 @@ menu:
           en:
             locale: en
             textLink: 'My blog'
+            externalLink: '#'
+      default_header_index_articles:
+        page: 'page_list_articles'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 3
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Articles'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Artículos'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Articles'
             externalLink: '#'
 
   #Menu Gauche de démo
@@ -175,6 +194,65 @@ menu:
             locale: en
             textLink: 'Blog - 3 blocks side by side'
             externalLink: '#'
+      default_menu_left_index_article:
+        page: 'page_list_articles'
+        disabled: 0
+        columnPosition: 2
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Articles'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Artículos'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Articles'
+            externalLink: '#'
+      default_menu_left_article_listing:
+        parent: default_menu_left_index_article
+        page: 'page_list_articles'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Articles'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Artículos'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Articles'
+            externalLink: '#'
+      default_menu_left_article_2_blocs_up_down:
+        parent: default_menu_left_index_article
+        page: 'page_articles_2_blocs_up_down'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 2
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Article - 2 blocs verticals'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Artículo - 2 bloques verticales'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Article - 2 vertical blocks'
+            externalLink: '#'
 
   #Menu footer de démo
 
@@ -286,6 +364,65 @@ menu:
             locale: en
             textLink: 'Blog - 3 blocks side by side'
             externalLink: '#'
+      default_footer_index_article:
+        page: 'page_list_articles'
+        disabled: 0
+        columnPosition: 2
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Articles'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Artículos'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Articles'
+            externalLink: '#'
+      default_footer_article_listing:
+        parent: default_footer_index_article
+        page: 'page_list_articles'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Articles'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Artículos'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Articles'
+            externalLink: '#'
+      default_footer_article_2_blocs_up_down:
+        parent: default_footer_index_article
+        page: 'page_articles_2_blocs_up_down'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 2
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Article - 2 blocs verticals'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Artículo - 2 bloques verticales'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Article - 2 vertical blocks'
+            externalLink: '#'
 
   #Menu pour les pages de blog démo
   menu_blog_right:
@@ -395,4 +532,74 @@ menu:
           en:
             locale: en
             textLink: 'Blog - 3 blocks side by side'
+            externalLink: '#'
+
+  #Menu pour les pages de blog démo
+  menu_article_right:
+    user: User
+    name: "Menu Droite des articles généré lors de l'installation"
+    type: 12
+    position: 2
+    renderOrder: 1
+    disabled: 0
+    defaultMenu: false
+    menuElement:
+      menu_article_right_index_article:
+        page: 'page_list_articles'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Articles'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Artículos'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Articles'
+            externalLink: '#'
+      menu_article_right_article_listing:
+        parent: menu_article_right_index_article
+        page: 'page_list_articles'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Articles'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Artículos'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Articles'
+            externalLink: '#'
+      menu_article_right_article_2_blocs_up_down:
+        parent: menu_article_right_index_article
+        page: 'page_articles_2_blocs_up_down'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 2
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Article - 2 blocs verticals'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Artículo - 2 bloques verticales'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Article - 2 vertical blocks'
             externalLink: '#'
