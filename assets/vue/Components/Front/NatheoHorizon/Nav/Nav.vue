@@ -188,7 +188,7 @@ export default {
               </div>
             </div>
 
-            <a :href="this.urls.adminAuth" v-if="this.userInfo === ''"
+            <a :href="this.urls.adminAuth" v-if="Object.keys(this.userInfo).length === 0"
                class="block w-full text-center !text-gray-500 hover:bg-theme-4-750 hover:!text-theme-1-100 px-3 py-2 rounded-md text-base font-medium hover:dark:bg-gray-600">
               {{ this.translate.login }}
             </a>
