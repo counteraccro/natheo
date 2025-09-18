@@ -1406,3 +1406,377 @@ pages:
           en:
             locale: en
             value: 'Powered by Nathéo CMS'
+  #Page listing articles
+  page_list_articles:
+    user: User
+    render: 4
+    status: 1
+    category: 2
+    landingPage: false
+    isOpenComment: 1
+    nbComment: 0
+    ruleComment: 2
+    headerImg: media-6
+    tags:
+      - Tag_article
+      - Tag_demo
+    pageTranslation:
+      fr:
+        locale: fr
+        titre: 'Articles'
+        url: articles
+      es:
+        locale: es
+        titre: 'Artículos'
+        url: artículos
+      en:
+        locale: en
+        titre: 'Articles'
+        url: articles
+    pageContent:
+      content_1:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              ## Ut utramque auras
+
+              Et Graia, dixit. Coepit **pectoraque caput terrarumque** fausto liventia
+              rettulit terra Dictaei evanuit! Ales sub sacroque latet dempserat submissa
+              faciem; minuunt ut fugatis sed dat `record` cum. Occupat verba, ante aut
+              proavitaque totiens terga, quid molli ergo mihi subtemen `pixel`, opposui!
+          en:
+            locale: en
+            text: |
+              ## Ut utramque auras
+
+              Et Graia, dixit. Coepit **pectoraque caput terrarumque** fausto liventia
+              rettulit terra Dictaei evanuit! Ales sub sacroque latet dempserat submissa
+              faciem; minuunt ut fugatis sed dat `record` cum. Occupat verba, ante aut
+              proavitaque totiens terga, quid molli ergo mihi subtemen `pixel`, opposui!
+          es:
+            locale: es
+            text: |
+              ## Ut utramque auras
+
+              Et Graia, dixit. Coepit **pectoraque caput terrarumque** fausto liventia
+              rettulit terra Dictaei evanuit! Ales sub sacroque latet dempserat submissa
+              faciem; minuunt ut fugatis sed dat `record` cum. Occupat verba, ante aut
+              proavitaque totiens terga, quid molli ergo mihi subtemen `pixel`, opposui!
+      content_2:
+        renderBlock: 1
+        renderOrder: 1
+        type: 3
+        typeId: 2
+    pageStatistique:
+      PAGE_NB_VISITEUR:
+        key: PAGE_NB_VISITEUR
+        value: 0
+      PAGE_NB_READ:
+        key: PAGE_NB_READ
+        value: 0
+    pageMeta:
+      meta1:
+        name: 'description'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'les articles'
+          es:
+            locale: es
+            value: 'artículos'
+          en:
+            locale: en
+            value: 'articles'
+      meta2:
+        name: 'keywords'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS, liste, articles'
+          es:
+            locale: es
+            value: 'Natheo-CMS, lista, artículos'
+          en:
+            locale: en
+            value: 'Natheo-CMS, list, articles'
+      meta3:
+        name: 'author'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS'
+          es:
+            locale: es
+            value: 'Natheo-CMS'
+          en:
+            locale: en
+            value: 'Natheo-CMS'
+      meta4:
+        name: 'copyright'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Propulsé par Nathéo CMS'
+          es:
+            locale: es
+            value: 'Desarrollado por Nathéo CMS'
+          en:
+            locale: en
+            value: 'Powered by Nathéo CMS'
+  #Page articles 2 block l'un en dessous de l'autre
+  page_articles_2_blocs_up_down:
+    user: User
+    render: 4
+    status: 1
+    category: 2
+    landingPage: false
+    isOpenComment: 1
+    nbComment: 0
+    ruleComment: 2
+    headerImg: media-6
+    tags:
+      - Tag_article
+      - Tag_demo
+    pageTranslation:
+      fr:
+        locale: fr
+        titre: 'Article - 2 blocs verticals'
+        url: article-2-blocs-verticals
+      es:
+        locale: es
+        titre: 'Artículo - 2 bloques verticales'
+        url: artículo-2-bloques-verticales
+      en:
+        locale: en
+        titre: 'Article - 2 vertical blocks'
+        url: Article-2-vertical-blocks
+    pageContent:
+      content_1:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              # Locus per alendum hostis
+
+              ## Cycni deus seque moenia
+
+              Lorem markdownum: bracchia onerataque pennis deus! Undae ferrugine ducentem
+              postquam rupit Olenios `rosetta_simplex_parity` protinus, Themi. Deae
+              firmissimus petunt. Aenis neque pectore sua fiducia referat. Pudorem at tamen si
+              invidit aperto crudelem, meruisse novitate verterat nostri, tibi coniuge
+              gladium!
+
+              Aut tremulis genis; visaque sustineant moenia, suas facit: falsae: parentem. Non
+              quos An augentur `subdirectory` modo; quod epulas meminisse dum sed quid ad nisi
+              portant ut.
+
+              Felix cupidine nocte nisi solus *extrema emi et* ensem dum, teneris, cumque hic
+              *irata aestus*. Miserere tenebras atque. *Tolerare* lacesse lugubris nunc: et
+              tellus poplite stravimus Finierat Burin caute trahebant urebat. Promissi et
+              inque terrigenam siquis, est medio. Dea aeno poena, mei ibimus, cum neque magni.
+
+              Pararet quatiens, unda adiit favent medius ipsa versa, sole bis indignabere tu
+              *et*, ense has quam! Atria coniunx et tum usus in stant nitidaeque ingenio
+              fugias, Mareoticaque! Putat mugitibus `logic_drive_petabyte` advertens pariter
+              postquam aliena, videres deos caelo, e condi. Optatae iuvencos, ita ducimus
+              adest fit Pandiona oraque, cognoscite vidisset stillataque in finem iuro his ora
+              inimica! Placebant nulla resonabat suam promptu et **quis**!
+
+              ## Filius tibi
+
+              *De* stipes: creatis adest: tot quid natus scelerate, non. Divino pacta hoc
+              raptum ante collo, pennis modo possem dumque sub quid erat insidiisque vicimus.
+              Vulnere superbos ni procul tamquam elige illis Antigonen, ramosque **fulmina**
+              metus, hunc manus parilique imagine.
+
+              Ipse pertulerint erat sorbere: sua vidit cum quoque, ventisque **faciem** ictu.
+              Iunctis at segetem restabat abstulit, oblitus plumbea Seriphi iamque; nec viva.
+              Detulit sensere habuit duas desolatas.
+
+              Manet ut ardetque gentis obambulat cupio animum est lumina Pelion: supplicat
+              timeam anhelitus infans fessa, carcere. **Committere corpore** mentisque silvis.
+              Velamina quo dare perque arva, at spectatas desunt. Veri suis, Pallas tot
+              occumbere Hyanteo contulit materna interrita per nam rursusque quo est, est.
+          en:
+            locale: en
+            text: |
+              # Locus per alendum hostis
+
+              ## Cycni deus seque moenia
+
+              Lorem markdownum: bracchia onerataque pennis deus! Undae ferrugine ducentem
+              postquam rupit Olenios `rosetta_simplex_parity` protinus, Themi. Deae
+              firmissimus petunt. Aenis neque pectore sua fiducia referat. Pudorem at tamen si
+              invidit aperto crudelem, meruisse novitate verterat nostri, tibi coniuge
+              gladium!
+
+              Aut tremulis genis; visaque sustineant moenia, suas facit: falsae: parentem. Non
+              quos An augentur `subdirectory` modo; quod epulas meminisse dum sed quid ad nisi
+              portant ut.
+
+              Felix cupidine nocte nisi solus *extrema emi et* ensem dum, teneris, cumque hic
+              *irata aestus*. Miserere tenebras atque. *Tolerare* lacesse lugubris nunc: et
+              tellus poplite stravimus Finierat Burin caute trahebant urebat. Promissi et
+              inque terrigenam siquis, est medio. Dea aeno poena, mei ibimus, cum neque magni.
+
+              Pararet quatiens, unda adiit favent medius ipsa versa, sole bis indignabere tu
+              *et*, ense has quam! Atria coniunx et tum usus in stant nitidaeque ingenio
+              fugias, Mareoticaque! Putat mugitibus `logic_drive_petabyte` advertens pariter
+              postquam aliena, videres deos caelo, e condi. Optatae iuvencos, ita ducimus
+              adest fit Pandiona oraque, cognoscite vidisset stillataque in finem iuro his ora
+              inimica! Placebant nulla resonabat suam promptu et **quis**!
+
+              ## Filius tibi
+
+              *De* stipes: creatis adest: tot quid natus scelerate, non. Divino pacta hoc
+              raptum ante collo, pennis modo possem dumque sub quid erat insidiisque vicimus.
+              Vulnere superbos ni procul tamquam elige illis Antigonen, ramosque **fulmina**
+              metus, hunc manus parilique imagine.
+
+              Ipse pertulerint erat sorbere: sua vidit cum quoque, ventisque **faciem** ictu.
+              Iunctis at segetem restabat abstulit, oblitus plumbea Seriphi iamque; nec viva.
+              Detulit sensere habuit duas desolatas.
+
+              Manet ut ardetque gentis obambulat cupio animum est lumina Pelion: supplicat
+              timeam anhelitus infans fessa, carcere. **Committere corpore** mentisque silvis.
+              Velamina quo dare perque arva, at spectatas desunt. Veri suis, Pallas tot
+              occumbere Hyanteo contulit materna interrita per nam rursusque quo est, est.
+          es:
+            locale: es
+            text: |
+              # Locus per alendum hostis
+
+              ## Cycni deus seque moenia
+
+              Lorem markdownum: bracchia onerataque pennis deus! Undae ferrugine ducentem
+              postquam rupit Olenios `rosetta_simplex_parity` protinus, Themi. Deae
+              firmissimus petunt. Aenis neque pectore sua fiducia referat. Pudorem at tamen si
+              invidit aperto crudelem, meruisse novitate verterat nostri, tibi coniuge
+              gladium!
+
+              Aut tremulis genis; visaque sustineant moenia, suas facit: falsae: parentem. Non
+              quos An augentur `subdirectory` modo; quod epulas meminisse dum sed quid ad nisi
+              portant ut.
+
+              Felix cupidine nocte nisi solus *extrema emi et* ensem dum, teneris, cumque hic
+              *irata aestus*. Miserere tenebras atque. *Tolerare* lacesse lugubris nunc: et
+              tellus poplite stravimus Finierat Burin caute trahebant urebat. Promissi et
+              inque terrigenam siquis, est medio. Dea aeno poena, mei ibimus, cum neque magni.
+
+              Pararet quatiens, unda adiit favent medius ipsa versa, sole bis indignabere tu
+              *et*, ense has quam! Atria coniunx et tum usus in stant nitidaeque ingenio
+              fugias, Mareoticaque! Putat mugitibus `logic_drive_petabyte` advertens pariter
+              postquam aliena, videres deos caelo, e condi. Optatae iuvencos, ita ducimus
+              adest fit Pandiona oraque, cognoscite vidisset stillataque in finem iuro his ora
+              inimica! Placebant nulla resonabat suam promptu et **quis**!
+
+              ## Filius tibi
+
+              *De* stipes: creatis adest: tot quid natus scelerate, non. Divino pacta hoc
+              raptum ante collo, pennis modo possem dumque sub quid erat insidiisque vicimus.
+              Vulnere superbos ni procul tamquam elige illis Antigonen, ramosque **fulmina**
+              metus, hunc manus parilique imagine.
+
+              Ipse pertulerint erat sorbere: sua vidit cum quoque, ventisque **faciem** ictu.
+              Iunctis at segetem restabat abstulit, oblitus plumbea Seriphi iamque; nec viva.
+              Detulit sensere habuit duas desolatas.
+
+              Manet ut ardetque gentis obambulat cupio animum est lumina Pelion: supplicat
+              timeam anhelitus infans fessa, carcere. **Committere corpore** mentisque silvis.
+              Velamina quo dare perque arva, at spectatas desunt. Veri suis, Pallas tot
+              occumbere Hyanteo contulit materna interrita per nam rursusque quo est, est.
+      content_2:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              ## Ut utramque auras
+
+              Et Graia, dixit. Coepit **pectoraque caput terrarumque** fausto liventia
+              rettulit terra Dictaei evanuit! Ales sub sacroque latet dempserat submissa
+              faciem; minuunt ut fugatis sed dat `record` cum. Occupat verba, ante aut
+              proavitaque totiens terga, quid molli ergo mihi subtemen `pixel`, opposui!
+          en:
+            locale: en
+            text: |
+              ## Ut utramque auras
+
+              Et Graia, dixit. Coepit **pectoraque caput terrarumque** fausto liventia
+              rettulit terra Dictaei evanuit! Ales sub sacroque latet dempserat submissa
+              faciem; minuunt ut fugatis sed dat `record` cum. Occupat verba, ante aut
+              proavitaque totiens terga, quid molli ergo mihi subtemen `pixel`, opposui!
+          es:
+            locale: es
+            text: |
+              ## Ut utramque auras
+
+              Et Graia, dixit. Coepit **pectoraque caput terrarumque** fausto liventia
+              rettulit terra Dictaei evanuit! Ales sub sacroque latet dempserat submissa
+              faciem; minuunt ut fugatis sed dat `record` cum. Occupat verba, ante aut
+              proavitaque totiens terga, quid molli ergo mihi subtemen `pixel`, opposui!
+    pageStatistique:
+      PAGE_NB_VISITEUR:
+        key: PAGE_NB_VISITEUR
+        value: 0
+      PAGE_NB_READ:
+        key: PAGE_NB_READ
+        value: 0
+    pageMeta:
+      meta1:
+        name: 'description'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Article - 2 blocs verticals'
+          es:
+            locale: es
+            value: 'Artículo - 2 bloques verticales'
+          en:
+            locale: en
+            value: 'Article - 2 vertical blocks'
+      meta2:
+        name: 'keywords'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS, articles'
+          es:
+            locale: es
+            value: 'Natheo-CMS, artículos'
+          en:
+            locale: en
+            value: 'Natheo-CMS, articles'
+      meta3:
+        name: 'author'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS'
+          es:
+            locale: es
+            value: 'Natheo-CMS'
+          en:
+            locale: en
+            value: 'Natheo-CMS'
+      meta4:
+        name: 'copyright'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Propulsé par Nathéo CMS'
+          es:
+            locale: es
+            value: 'Desarrollado por Nathéo CMS'
+          en:
+            locale: en
+            value: 'Powered by Nathéo CMS'
