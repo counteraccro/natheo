@@ -1537,7 +1537,7 @@ pages:
     isOpenComment: 1
     nbComment: 0
     ruleComment: 2
-    headerImg: media-6
+    headerImg: media-4
     tags:
       - Tag_article
       - Tag_demo
@@ -1744,6 +1744,270 @@ pages:
           en:
             locale: en
             value: 'Article - 2 vertical blocks'
+      meta2:
+        name: 'keywords'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS, articles'
+          es:
+            locale: es
+            value: 'Natheo-CMS, artículos'
+          en:
+            locale: en
+            value: 'Natheo-CMS, articles'
+      meta3:
+        name: 'author'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS'
+          es:
+            locale: es
+            value: 'Natheo-CMS'
+          en:
+            locale: en
+            value: 'Natheo-CMS'
+      meta4:
+        name: 'copyright'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Propulsé par Nathéo CMS'
+          es:
+            locale: es
+            value: 'Desarrollado por Nathéo CMS'
+          en:
+            locale: en
+            value: 'Powered by Nathéo CMS'
+  #Page articles 3 block l'un en dessous de l'autre
+  page_articles_3_blocs_up_down:
+    user: User
+    render: 5
+    status: 1
+    category: 2
+    landingPage: false
+    isOpenComment: 1
+    nbComment: 0
+    ruleComment: 2
+    headerImg: media-2
+    tags:
+      - Tag_article
+      - Tag_demo
+    pageTranslation:
+      fr:
+        locale: fr
+        titre: 'Article - 3 blocs verticals'
+        url: article-3-blocs-verticals
+      es:
+        locale: es
+        titre: 'Artículo - 3 bloques verticales'
+        url: artículo-3-bloques-verticales
+      en:
+        locale: en
+        titre: 'Article - 3 vertical blocks'
+        url: Article-3-vertical-blocks
+    pageContent:
+      content_1:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              # Secus quotiensque conplexa cur
+
+              ## Parmam quam quoque me
+
+              Lorem markdownum clauserat perque per `smartphone` sertaque haec suus, adspicias
+              adhuc dedignata talibus fuisti! Facta inmutatque, gemitum vocesque homini est,
+              Alcithoe vult, ignota imumque sub ut et tenetur: est. Fiducia erat canendo,
+              nocebant sui.
+
+              ## Catenas ornum nam positoque
+
+              Quoque meum tandem est sacra ille capitum lectum perdere feretro; gravitate
+              caput vestros. Nuntia nec bella est: amans erat signa canes loquar.
+
+                  if (banner >= virus_mini) {
+                      yahoo += disk_portal_unicode;
+                  }
+                  var pdfKilobit = -5;
+                  var rss_software = snmp_key_website * minisite_infringement - eide +
+                          eUserNosql;
+                  box_domain_api = guiRing;
+          en:
+            locale: en
+            text: |
+              # Secus quotiensque conplexa cur
+
+              ## Parmam quam quoque me
+
+              Lorem markdownum clauserat perque per `smartphone` sertaque haec suus, adspicias
+              adhuc dedignata talibus fuisti! Facta inmutatque, gemitum vocesque homini est,
+              Alcithoe vult, ignota imumque sub ut et tenetur: est. Fiducia erat canendo,
+              nocebant sui.
+
+              ## Catenas ornum nam positoque
+
+              Quoque meum tandem est sacra ille capitum lectum perdere feretro; gravitate
+              caput vestros. Nuntia nec bella est: amans erat signa canes loquar.
+
+                  if (banner >= virus_mini) {
+                      yahoo += disk_portal_unicode;
+                  }
+                  var pdfKilobit = -5;
+                  var rss_software = snmp_key_website * minisite_infringement - eide +
+                          eUserNosql;
+                  box_domain_api = guiRing;
+          es:
+            locale: es
+            text: |
+              # Secus quotiensque conplexa cur
+
+              ## Parmam quam quoque me
+
+              Lorem markdownum clauserat perque per `smartphone` sertaque haec suus, adspicias
+              adhuc dedignata talibus fuisti! Facta inmutatque, gemitum vocesque homini est,
+              Alcithoe vult, ignota imumque sub ut et tenetur: est. Fiducia erat canendo,
+              nocebant sui.
+
+              ## Catenas ornum nam positoque
+
+              Quoque meum tandem est sacra ille capitum lectum perdere feretro; gravitate
+              caput vestros. Nuntia nec bella est: amans erat signa canes loquar.
+
+                  if (banner >= virus_mini) {
+                      yahoo += disk_portal_unicode;
+                  }
+                  var pdfKilobit = -5;
+                  var rss_software = snmp_key_website * minisite_infringement - eide +
+                          eUserNosql;
+                  box_domain_api = guiRing;
+      content_2:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              ## Ut utramque auras
+
+              Et Graia, dixit. Coepit **pectoraque caput terrarumque** fausto liventia
+              rettulit terra Dictaei evanuit! Ales sub sacroque latet dempserat submissa
+              faciem; minuunt ut fugatis sed dat `record` cum. Occupat verba, ante aut
+              proavitaque totiens terga, quid molli ergo mihi subtemen `pixel`, opposui!
+          en:
+            locale: en
+            text: |
+              ## Ut utramque auras
+
+              Et Graia, dixit. Coepit **pectoraque caput terrarumque** fausto liventia
+              rettulit terra Dictaei evanuit! Ales sub sacroque latet dempserat submissa
+              faciem; minuunt ut fugatis sed dat `record` cum. Occupat verba, ante aut
+              proavitaque totiens terga, quid molli ergo mihi subtemen `pixel`, opposui!
+          es:
+            locale: es
+            text: |
+              ## Ut utramque auras
+
+              Et Graia, dixit. Coepit **pectoraque caput terrarumque** fausto liventia
+              rettulit terra Dictaei evanuit! Ales sub sacroque latet dempserat submissa
+              faciem; minuunt ut fugatis sed dat `record` cum. Occupat verba, ante aut
+              proavitaque totiens terga, quid molli ergo mihi subtemen `pixel`, opposui!
+      content_3:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              # Nova erit inultos
+
+              ## Carina pondere magni terror
+
+              ### Concordi iacentem ventis
+
+              Lorem `pplTutorial` markdownum quanta, quid magis feruntur lacerum tamen,
+              nominis edendi et et illo medias ausum divellite visu. Caput silvamque inquit
+              genetrixque crescunt fatale, est hoc erat, promptas occuluit simul caput,
+              litusque. Iacentes videre contraria et solvit enim mutastis `push_model` vulnere
+              pronam Troum. Ferarum est aquis nox `exportBinClock` cum poena redemit quotiens
+              videres, nostro `apple` tuae visus Annus petiitque Echecli dedit, sanguineam! Et
+              ferantur Est `subnetServices` fratri Phocis tota Thybris vipereis habet
+              transformia pronusque; Phaethon felices lauro.
+
+              Ferebam arma: inquit suspirat ut quis domino per quondam manus? Ait unum dixit
+              repletum hinc sed miserrimus flectere in Thracum busta Phoebus quondam. Variarum
+              sacerdos viderunt in est ante vox nunc coniugis Pico paternis pallae rostro
+              Saturnia sub Cephenum velare. Nectare nomen.
+          en:
+            locale: en
+            text: |
+              # Nova erit inultos
+
+              ## Carina pondere magni terror
+
+              ### Concordi iacentem ventis
+
+              Lorem `pplTutorial` markdownum quanta, quid magis feruntur lacerum tamen,
+              nominis edendi et et illo medias ausum divellite visu. Caput silvamque inquit
+              genetrixque crescunt fatale, est hoc erat, promptas occuluit simul caput,
+              litusque. Iacentes videre contraria et solvit enim mutastis `push_model` vulnere
+              pronam Troum. Ferarum est aquis nox `exportBinClock` cum poena redemit quotiens
+              videres, nostro `apple` tuae visus Annus petiitque Echecli dedit, sanguineam! Et
+              ferantur Est `subnetServices` fratri Phocis tota Thybris vipereis habet
+              transformia pronusque; Phaethon felices lauro.
+
+              Ferebam arma: inquit suspirat ut quis domino per quondam manus? Ait unum dixit
+              repletum hinc sed miserrimus flectere in Thracum busta Phoebus quondam. Variarum
+              sacerdos viderunt in est ante vox nunc coniugis Pico paternis pallae rostro
+              Saturnia sub Cephenum velare. Nectare nomen.
+          es:
+            locale: es
+            text: |
+              # Nova erit inultos
+
+              ## Carina pondere magni terror
+
+              ### Concordi iacentem ventis
+
+              Lorem `pplTutorial` markdownum quanta, quid magis feruntur lacerum tamen,
+              nominis edendi et et illo medias ausum divellite visu. Caput silvamque inquit
+              genetrixque crescunt fatale, est hoc erat, promptas occuluit simul caput,
+              litusque. Iacentes videre contraria et solvit enim mutastis `push_model` vulnere
+              pronam Troum. Ferarum est aquis nox `exportBinClock` cum poena redemit quotiens
+              videres, nostro `apple` tuae visus Annus petiitque Echecli dedit, sanguineam! Et
+              ferantur Est `subnetServices` fratri Phocis tota Thybris vipereis habet
+              transformia pronusque; Phaethon felices lauro.
+
+              Ferebam arma: inquit suspirat ut quis domino per quondam manus? Ait unum dixit
+              repletum hinc sed miserrimus flectere in Thracum busta Phoebus quondam. Variarum
+              sacerdos viderunt in est ante vox nunc coniugis Pico paternis pallae rostro
+              Saturnia sub Cephenum velare. Nectare nomen.
+    pageStatistique:
+      PAGE_NB_VISITEUR:
+        key: PAGE_NB_VISITEUR
+        value: 0
+      PAGE_NB_READ:
+        key: PAGE_NB_READ
+        value: 0
+    pageMeta:
+      meta1:
+        name: 'description'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Article - 3 blocs verticals'
+          es:
+            locale: es
+            value: 'Artículo - 3 bloques verticales'
+          en:
+            locale: en
+            value: 'Article - 3 vertical blocks'
       meta2:
         name: 'keywords'
         pageMetaTranslation:
