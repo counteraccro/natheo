@@ -41,3 +41,9 @@ pageMenu:
   pageMenu14:
     page: page_articles_3_blocs_up_down
     menu: menu_default_left
+  pageMenu15:
+    page: page_articles_1_blocs_up_2_blocs_down
+    menu: menu_article_right
+  pageMenu16:
+    page: page_articles_1_blocs_up_2_blocs_down
+    menu: menu_default_left
