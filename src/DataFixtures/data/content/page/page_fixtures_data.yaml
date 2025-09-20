@@ -2044,3 +2044,645 @@ pages:
           en:
             locale: en
             value: 'Powered by Nathéo CMS'
+  #Page articles 1 bloc au dessus et 2 block l'un à côté de l'autre en dessous
+  page_articles_1_blocs_up_2_blocs_down:
+    user: User
+    render: 6
+    status: 1
+    category: 2
+    landingPage: false
+    isOpenComment: 1
+    nbComment: 0
+    ruleComment: 2
+    headerImg: media-1
+    tags:
+      - Tag_article
+      - Tag_demo
+    pageTranslation:
+      fr:
+        locale: fr
+        titre: 'Article - 1 bloc + 2 blocs'
+        url: article-1-bloc-2-blocs
+      es:
+        locale: es
+        titre: 'Artículo - 1 bloque + 2 bloques'
+        url: artículo-1-bloque-2-bloques
+      en:
+        locale: en
+        titre: 'Article - 1 block + 2 blocks'
+        url: Article-1-block-2-blocks
+    pageContent:
+      content_1:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              # Falsus Hypaepis pondus
+
+              ## Simul tempore nidor
+
+              Lorem markdownum *de* unde solidum caecus mihi deducitur pennis aquas
+              `soundCache`! Lumina comitata unus et impediet *naides*, deos inter tuum
+              pronaque `cdfsRepositoryClient` Athamanta.
+
+                  if (mamp > file) {
+                      suffixWampOutbox.exifDslam.reciprocal(learning_bin(89));
+                      graphic.copyright_monochrome = 2;
+                  } else {
+                      pcmcia *= typeface_megahertz;
+                      exportScrollingSecondary += repeater_domain_core;
+                      dot_scanner_bitmap = trim_vpn_refresh(page, 2);
+                  }
+                  rateEnterprise = encoding_suffix.flashMbpsWorkstation(active_hover_array);
+                  name = 43;
+                  if (url_storage - 5 * megapixel_record_snmp <= 3) {
+                      browserDiskRipping(digital(4), backboneData(5, compression),
+                              prebinding_payload_exabyte);
+                      iphone(18, 64, 4);
+                      extension.leopard_tape_handle(petabyte, logicDos(
+                              interfaceOleDeprecated));
+                  }
+          en:
+            locale: en
+            text: |
+              # Falsus Hypaepis pondus
+
+              ## Simul tempore nidor
+
+              Lorem markdownum *de* unde solidum caecus mihi deducitur pennis aquas
+              `soundCache`! Lumina comitata unus et impediet *naides*, deos inter tuum
+              pronaque `cdfsRepositoryClient` Athamanta.
+
+                  if (mamp > file) {
+                      suffixWampOutbox.exifDslam.reciprocal(learning_bin(89));
+                      graphic.copyright_monochrome = 2;
+                  } else {
+                      pcmcia *= typeface_megahertz;
+                      exportScrollingSecondary += repeater_domain_core;
+                      dot_scanner_bitmap = trim_vpn_refresh(page, 2);
+                  }
+                  rateEnterprise = encoding_suffix.flashMbpsWorkstation(active_hover_array);
+                  name = 43;
+                  if (url_storage - 5 * megapixel_record_snmp <= 3) {
+                      browserDiskRipping(digital(4), backboneData(5, compression),
+                              prebinding_payload_exabyte);
+                      iphone(18, 64, 4);
+                      extension.leopard_tape_handle(petabyte, logicDos(
+                              interfaceOleDeprecated));
+                  }
+          es:
+            locale: es
+            text: |
+              # Falsus Hypaepis pondus
+
+              ## Simul tempore nidor
+
+              Lorem markdownum *de* unde solidum caecus mihi deducitur pennis aquas
+              `soundCache`! Lumina comitata unus et impediet *naides*, deos inter tuum
+              pronaque `cdfsRepositoryClient` Athamanta.
+
+                  if (mamp > file) {
+                      suffixWampOutbox.exifDslam.reciprocal(learning_bin(89));
+                      graphic.copyright_monochrome = 2;
+                  } else {
+                      pcmcia *= typeface_megahertz;
+                      exportScrollingSecondary += repeater_domain_core;
+                      dot_scanner_bitmap = trim_vpn_refresh(page, 2);
+                  }
+                  rateEnterprise = encoding_suffix.flashMbpsWorkstation(active_hover_array);
+                  name = 43;
+                  if (url_storage - 5 * megapixel_record_snmp <= 3) {
+                      browserDiskRipping(digital(4), backboneData(5, compression),
+                              prebinding_payload_exabyte);
+                      iphone(18, 64, 4);
+                      extension.leopard_tape_handle(petabyte, logicDos(
+                              interfaceOleDeprecated));
+                  }
+      content_2:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              ## Ut utramque auras
+
+              Et Graia, dixit. Coepit **pectoraque caput terrarumque** fausto liventia
+              rettulit terra Dictaei evanuit! Ales sub sacroque latet dempserat submissa
+              faciem; minuunt ut fugatis sed dat `record` cum. Occupat verba, ante aut
+              proavitaque totiens terga, quid molli ergo mihi subtemen `pixel`, opposui!
+          en:
+            locale: en
+            text: |
+              ## Ut utramque auras
+
+              Et Graia, dixit. Coepit **pectoraque caput terrarumque** fausto liventia
+              rettulit terra Dictaei evanuit! Ales sub sacroque latet dempserat submissa
+              faciem; minuunt ut fugatis sed dat `record` cum. Occupat verba, ante aut
+              proavitaque totiens terga, quid molli ergo mihi subtemen `pixel`, opposui!
+          es:
+            locale: es
+            text: |
+              ## Ut utramque auras
+
+              Et Graia, dixit. Coepit **pectoraque caput terrarumque** fausto liventia
+              rettulit terra Dictaei evanuit! Ales sub sacroque latet dempserat submissa
+              faciem; minuunt ut fugatis sed dat `record` cum. Occupat verba, ante aut
+              proavitaque totiens terga, quid molli ergo mihi subtemen `pixel`, opposui!
+      content_3:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              # Genuit gravis
+
+              Lorem markdownum digitis ingrederis conscia, illa duabus qua nec proditione
+              inmemor docebo attrahite `ppiCut` vocavit. Nec potuisse suum vallibus ceperat in
+              anhelo dextra, nactus atque tulerunt corpora. Cum repetit rapta neque ferre
+              capitis `terminal_blockchain`; ubi lumina nec, dies est; loqui inter litora
+              inritamenta!
+
+              - Quid inhibere et oculos acumine
+              - Ne rapit dixit rex
+              - Non illas plangente conplexus hanc Ide officio
+              - Sceptra spatio mutataque
+              - Iuvenis pellens par quem moratur litore
+              - Est factum humo curvari auster cervice dis
+
+              Sonum Nixique falli cum. **Inquirant quoque mihi** amanti vixque petentes
+              armigerumque tum nec currus cremat Miletida numeratur serpente exsecrantia
+              subigebant. Garrula restare accessit. Iuppiter ille suis satis, mihi lacrimabile
+              `full` deserit sub quod singultibus adest verba dicunt.
+
+              - Ut quae auras
+              - Communes sui
+              - Fabrae cum et unda redde restantem probat
+              - Patrio nec mira lacerto
+              - Fletus conferat quaesitae
+              - Deae sub alter carpit
+
+              Lato marcida aere pinus traxere *ea famaque pollens*: possis ingemuit verba
+              `threading_lamp` equina. Removere atque nec tu Rhamnusia Hercule mora
+              nexilibusque carmine ausum carmen memoraverat densa ea? Perseus quibus; copia
+              crudelem timuit quod, rabies, illic per tamen sumpto grave quoque; nemus est
+              saevitiae. Nurusque venisses umbrasque ad altis repetisse geminat capillis
+              aulaea lapillis nullus. Montis paro caput vicinia, sitim aequore hominemque
+              Lyncestius tenebant petis quod *est caput* et o contra annoso Lyaeo.
+          en:
+            locale: en
+            text: |
+              # Genuit gravis
+
+              Lorem markdownum digitis ingrederis conscia, illa duabus qua nec proditione
+              inmemor docebo attrahite `ppiCut` vocavit. Nec potuisse suum vallibus ceperat in
+              anhelo dextra, nactus atque tulerunt corpora. Cum repetit rapta neque ferre
+              capitis `terminal_blockchain`; ubi lumina nec, dies est; loqui inter litora
+              inritamenta!
+
+              - Quid inhibere et oculos acumine
+              - Ne rapit dixit rex
+              - Non illas plangente conplexus hanc Ide officio
+              - Sceptra spatio mutataque
+              - Iuvenis pellens par quem moratur litore
+              - Est factum humo curvari auster cervice dis
+
+              Sonum Nixique falli cum. **Inquirant quoque mihi** amanti vixque petentes
+              armigerumque tum nec currus cremat Miletida numeratur serpente exsecrantia
+              subigebant. Garrula restare accessit. Iuppiter ille suis satis, mihi lacrimabile
+              `full` deserit sub quod singultibus adest verba dicunt.
+
+              - Ut quae auras
+              - Communes sui
+              - Fabrae cum et unda redde restantem probat
+              - Patrio nec mira lacerto
+              - Fletus conferat quaesitae
+              - Deae sub alter carpit
+
+              Lato marcida aere pinus traxere *ea famaque pollens*: possis ingemuit verba
+              `threading_lamp` equina. Removere atque nec tu Rhamnusia Hercule mora
+              nexilibusque carmine ausum carmen memoraverat densa ea? Perseus quibus; copia
+              crudelem timuit quod, rabies, illic per tamen sumpto grave quoque; nemus est
+              saevitiae. Nurusque venisses umbrasque ad altis repetisse geminat capillis
+              aulaea lapillis nullus. Montis paro caput vicinia, sitim aequore hominemque
+              Lyncestius tenebant petis quod *est caput* et o contra annoso Lyaeo.
+          es:
+            locale: es
+            text: |
+              # Genuit gravis
+
+              Lorem markdownum digitis ingrederis conscia, illa duabus qua nec proditione
+              inmemor docebo attrahite `ppiCut` vocavit. Nec potuisse suum vallibus ceperat in
+              anhelo dextra, nactus atque tulerunt corpora. Cum repetit rapta neque ferre
+              capitis `terminal_blockchain`; ubi lumina nec, dies est; loqui inter litora
+              inritamenta!
+
+              - Quid inhibere et oculos acumine
+              - Ne rapit dixit rex
+              - Non illas plangente conplexus hanc Ide officio
+              - Sceptra spatio mutataque
+              - Iuvenis pellens par quem moratur litore
+              - Est factum humo curvari auster cervice dis
+
+              Sonum Nixique falli cum. **Inquirant quoque mihi** amanti vixque petentes
+              armigerumque tum nec currus cremat Miletida numeratur serpente exsecrantia
+              subigebant. Garrula restare accessit. Iuppiter ille suis satis, mihi lacrimabile
+              `full` deserit sub quod singultibus adest verba dicunt.
+
+              - Ut quae auras
+              - Communes sui
+              - Fabrae cum et unda redde restantem probat
+              - Patrio nec mira lacerto
+              - Fletus conferat quaesitae
+              - Deae sub alter carpit
+
+              Lato marcida aere pinus traxere *ea famaque pollens*: possis ingemuit verba
+              `threading_lamp` equina. Removere atque nec tu Rhamnusia Hercule mora
+              nexilibusque carmine ausum carmen memoraverat densa ea? Perseus quibus; copia
+              crudelem timuit quod, rabies, illic per tamen sumpto grave quoque; nemus est
+              saevitiae. Nurusque venisses umbrasque ad altis repetisse geminat capillis
+              aulaea lapillis nullus. Montis paro caput vicinia, sitim aequore hominemque
+              Lyncestius tenebant petis quod *est caput* et o contra annoso Lyaeo.
+    pageStatistique:
+      PAGE_NB_VISITEUR:
+        key: PAGE_NB_VISITEUR
+        value: 0
+      PAGE_NB_READ:
+        key: PAGE_NB_READ
+        value: 0
+    pageMeta:
+      meta1:
+        name: 'description'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Article - 3 blocs verticals'
+          es:
+            locale: es
+            value: 'Artículo - 3 bloques verticales'
+          en:
+            locale: en
+            value: 'Article - 3 vertical blocks'
+      meta2:
+        name: 'keywords'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS, articles'
+          es:
+            locale: es
+            value: 'Natheo-CMS, artículos'
+          en:
+            locale: en
+            value: 'Natheo-CMS, articles'
+      meta3:
+        name: 'author'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS'
+          es:
+            locale: es
+            value: 'Natheo-CMS'
+          en:
+            locale: en
+            value: 'Natheo-CMS'
+      meta4:
+        name: 'copyright'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Propulsé par Nathéo CMS'
+          es:
+            locale: es
+            value: 'Desarrollado por Nathéo CMS'
+          en:
+            locale: en
+            value: 'Powered by Nathéo CMS'
+  #Page articles 1 bloc au dessus et 2 block l'un à côté de l'autre en dessous
+  page_articles_1_blocs_up_2_blocs_down:
+    user: User
+    render: 6
+    status: 1
+    category: 2
+    landingPage: false
+    isOpenComment: 1
+    nbComment: 0
+    ruleComment: 2
+    headerImg: media-1
+    tags:
+      - Tag_article
+      - Tag_demo
+    pageTranslation:
+      fr:
+        locale: fr
+        titre: 'Article - 1 bloc + 2 blocs'
+        url: article-1-bloc-2-blocs
+      es:
+        locale: es
+        titre: 'Artículo - 1 bloque + 2 bloques'
+        url: artículo-1-bloque-2-bloques
+      en:
+        locale: en
+        titre: 'Article - 1 block + 2 blocks'
+        url: Article-1-block-2-blocks
+    pageContent:
+      content_1:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              # Falsus Hypaepis pondus
+
+              ## Simul tempore nidor
+
+              Lorem markdownum *de* unde solidum caecus mihi deducitur pennis aquas
+              `soundCache`! Lumina comitata unus et impediet *naides*, deos inter tuum
+              pronaque `cdfsRepositoryClient` Athamanta.
+
+                  if (mamp > file) {
+                      suffixWampOutbox.exifDslam.reciprocal(learning_bin(89));
+                      graphic.copyright_monochrome = 2;
+                  } else {
+                      pcmcia *= typeface_megahertz;
+                      exportScrollingSecondary += repeater_domain_core;
+                      dot_scanner_bitmap = trim_vpn_refresh(page, 2);
+                  }
+                  rateEnterprise = encoding_suffix.flashMbpsWorkstation(active_hover_array);
+                  name = 43;
+                  if (url_storage - 5 * megapixel_record_snmp <= 3) {
+                      browserDiskRipping(digital(4), backboneData(5, compression),
+                              prebinding_payload_exabyte);
+                      iphone(18, 64, 4);
+                      extension.leopard_tape_handle(petabyte, logicDos(
+                              interfaceOleDeprecated));
+                  }
+          en:
+            locale: en
+            text: |
+              # Falsus Hypaepis pondus
+
+              ## Simul tempore nidor
+
+              Lorem markdownum *de* unde solidum caecus mihi deducitur pennis aquas
+              `soundCache`! Lumina comitata unus et impediet *naides*, deos inter tuum
+              pronaque `cdfsRepositoryClient` Athamanta.
+
+                  if (mamp > file) {
+                      suffixWampOutbox.exifDslam.reciprocal(learning_bin(89));
+                      graphic.copyright_monochrome = 2;
+                  } else {
+                      pcmcia *= typeface_megahertz;
+                      exportScrollingSecondary += repeater_domain_core;
+                      dot_scanner_bitmap = trim_vpn_refresh(page, 2);
+                  }
+                  rateEnterprise = encoding_suffix.flashMbpsWorkstation(active_hover_array);
+                  name = 43;
+                  if (url_storage - 5 * megapixel_record_snmp <= 3) {
+                      browserDiskRipping(digital(4), backboneData(5, compression),
+                              prebinding_payload_exabyte);
+                      iphone(18, 64, 4);
+                      extension.leopard_tape_handle(petabyte, logicDos(
+                              interfaceOleDeprecated));
+                  }
+          es:
+            locale: es
+            text: |
+              # Falsus Hypaepis pondus
+
+              ## Simul tempore nidor
+
+              Lorem markdownum *de* unde solidum caecus mihi deducitur pennis aquas
+              `soundCache`! Lumina comitata unus et impediet *naides*, deos inter tuum
+              pronaque `cdfsRepositoryClient` Athamanta.
+
+                  if (mamp > file) {
+                      suffixWampOutbox.exifDslam.reciprocal(learning_bin(89));
+                      graphic.copyright_monochrome = 2;
+                  } else {
+                      pcmcia *= typeface_megahertz;
+                      exportScrollingSecondary += repeater_domain_core;
+                      dot_scanner_bitmap = trim_vpn_refresh(page, 2);
+                  }
+                  rateEnterprise = encoding_suffix.flashMbpsWorkstation(active_hover_array);
+                  name = 43;
+                  if (url_storage - 5 * megapixel_record_snmp <= 3) {
+                      browserDiskRipping(digital(4), backboneData(5, compression),
+                              prebinding_payload_exabyte);
+                      iphone(18, 64, 4);
+                      extension.leopard_tape_handle(petabyte, logicDos(
+                              interfaceOleDeprecated));
+                  }
+      content_2:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              ## Ut utramque auras
+
+              Et Graia, dixit. Coepit **pectoraque caput terrarumque** fausto liventia
+              rettulit terra Dictaei evanuit! Ales sub sacroque latet dempserat submissa
+              faciem; minuunt ut fugatis sed dat `record` cum. Occupat verba, ante aut
+              proavitaque totiens terga, quid molli ergo mihi subtemen `pixel`, opposui!
+          en:
+            locale: en
+            text: |
+              ## Ut utramque auras
+
+              Et Graia, dixit. Coepit **pectoraque caput terrarumque** fausto liventia
+              rettulit terra Dictaei evanuit! Ales sub sacroque latet dempserat submissa
+              faciem; minuunt ut fugatis sed dat `record` cum. Occupat verba, ante aut
+              proavitaque totiens terga, quid molli ergo mihi subtemen `pixel`, opposui!
+          es:
+            locale: es
+            text: |
+              ## Ut utramque auras
+
+              Et Graia, dixit. Coepit **pectoraque caput terrarumque** fausto liventia
+              rettulit terra Dictaei evanuit! Ales sub sacroque latet dempserat submissa
+              faciem; minuunt ut fugatis sed dat `record` cum. Occupat verba, ante aut
+              proavitaque totiens terga, quid molli ergo mihi subtemen `pixel`, opposui!
+      content_3:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              # Genuit gravis
+
+              Lorem markdownum digitis ingrederis conscia, illa duabus qua nec proditione
+              inmemor docebo attrahite `ppiCut` vocavit. Nec potuisse suum vallibus ceperat in
+              anhelo dextra, nactus atque tulerunt corpora. Cum repetit rapta neque ferre
+              capitis `terminal_blockchain`; ubi lumina nec, dies est; loqui inter litora
+              inritamenta!
+
+              - Quid inhibere et oculos acumine
+              - Ne rapit dixit rex
+              - Non illas plangente conplexus hanc Ide officio
+              - Sceptra spatio mutataque
+              - Iuvenis pellens par quem moratur litore
+              - Est factum humo curvari auster cervice dis
+
+              Sonum Nixique falli cum. **Inquirant quoque mihi** amanti vixque petentes
+              armigerumque tum nec currus cremat Miletida numeratur serpente exsecrantia
+              subigebant. Garrula restare accessit. Iuppiter ille suis satis, mihi lacrimabile
+              `full` deserit sub quod singultibus adest verba dicunt.
+
+              - Ut quae auras
+              - Communes sui
+              - Fabrae cum et unda redde restantem probat
+              - Patrio nec mira lacerto
+              - Fletus conferat quaesitae
+              - Deae sub alter carpit
+
+              Lato marcida aere pinus traxere *ea famaque pollens*: possis ingemuit verba
+              `threading_lamp` equina. Removere atque nec tu Rhamnusia Hercule mora
+              nexilibusque carmine ausum carmen memoraverat densa ea? Perseus quibus; copia
+              crudelem timuit quod, rabies, illic per tamen sumpto grave quoque; nemus est
+              saevitiae. Nurusque venisses umbrasque ad altis repetisse geminat capillis
+              aulaea lapillis nullus. Montis paro caput vicinia, sitim aequore hominemque
+              Lyncestius tenebant petis quod *est caput* et o contra annoso Lyaeo.
+          en:
+            locale: en
+            text: |
+              # Genuit gravis
+
+              Lorem markdownum digitis ingrederis conscia, illa duabus qua nec proditione
+              inmemor docebo attrahite `ppiCut` vocavit. Nec potuisse suum vallibus ceperat in
+              anhelo dextra, nactus atque tulerunt corpora. Cum repetit rapta neque ferre
+              capitis `terminal_blockchain`; ubi lumina nec, dies est; loqui inter litora
+              inritamenta!
+
+              - Quid inhibere et oculos acumine
+              - Ne rapit dixit rex
+              - Non illas plangente conplexus hanc Ide officio
+              - Sceptra spatio mutataque
+              - Iuvenis pellens par quem moratur litore
+              - Est factum humo curvari auster cervice dis
+
+              Sonum Nixique falli cum. **Inquirant quoque mihi** amanti vixque petentes
+              armigerumque tum nec currus cremat Miletida numeratur serpente exsecrantia
+              subigebant. Garrula restare accessit. Iuppiter ille suis satis, mihi lacrimabile
+              `full` deserit sub quod singultibus adest verba dicunt.
+
+              - Ut quae auras
+              - Communes sui
+              - Fabrae cum et unda redde restantem probat
+              - Patrio nec mira lacerto
+              - Fletus conferat quaesitae
+              - Deae sub alter carpit
+
+              Lato marcida aere pinus traxere *ea famaque pollens*: possis ingemuit verba
+              `threading_lamp` equina. Removere atque nec tu Rhamnusia Hercule mora
+              nexilibusque carmine ausum carmen memoraverat densa ea? Perseus quibus; copia
+              crudelem timuit quod, rabies, illic per tamen sumpto grave quoque; nemus est
+              saevitiae. Nurusque venisses umbrasque ad altis repetisse geminat capillis
+              aulaea lapillis nullus. Montis paro caput vicinia, sitim aequore hominemque
+              Lyncestius tenebant petis quod *est caput* et o contra annoso Lyaeo.
+          es:
+            locale: es
+            text: |
+              # Genuit gravis
+
+              Lorem markdownum digitis ingrederis conscia, illa duabus qua nec proditione
+              inmemor docebo attrahite `ppiCut` vocavit. Nec potuisse suum vallibus ceperat in
+              anhelo dextra, nactus atque tulerunt corpora. Cum repetit rapta neque ferre
+              capitis `terminal_blockchain`; ubi lumina nec, dies est; loqui inter litora
+              inritamenta!
+
+              - Quid inhibere et oculos acumine
+              - Ne rapit dixit rex
+              - Non illas plangente conplexus hanc Ide officio
+              - Sceptra spatio mutataque
+              - Iuvenis pellens par quem moratur litore
+              - Est factum humo curvari auster cervice dis
+
+              Sonum Nixique falli cum. **Inquirant quoque mihi** amanti vixque petentes
+              armigerumque tum nec currus cremat Miletida numeratur serpente exsecrantia
+              subigebant. Garrula restare accessit. Iuppiter ille suis satis, mihi lacrimabile
+              `full` deserit sub quod singultibus adest verba dicunt.
+
+              - Ut quae auras
+              - Communes sui
+              - Fabrae cum et unda redde restantem probat
+              - Patrio nec mira lacerto
+              - Fletus conferat quaesitae
+              - Deae sub alter carpit
+
+              Lato marcida aere pinus traxere *ea famaque pollens*: possis ingemuit verba
+              `threading_lamp` equina. Removere atque nec tu Rhamnusia Hercule mora
+              nexilibusque carmine ausum carmen memoraverat densa ea? Perseus quibus; copia
+              crudelem timuit quod, rabies, illic per tamen sumpto grave quoque; nemus est
+              saevitiae. Nurusque venisses umbrasque ad altis repetisse geminat capillis
+              aulaea lapillis nullus. Montis paro caput vicinia, sitim aequore hominemque
+              Lyncestius tenebant petis quod *est caput* et o contra annoso Lyaeo.
+    pageStatistique:
+      PAGE_NB_VISITEUR:
+        key: PAGE_NB_VISITEUR
+        value: 0
+      PAGE_NB_READ:
+        key: PAGE_NB_READ
+        value: 0
+    pageMeta:
+      meta1:
+        name: 'description'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Article - 3 blocs verticals'
+          es:
+            locale: es
+            value: 'Artículo - 3 bloques verticales'
+          en:
+            locale: en
+            value: 'Article - 3 vertical blocks'
+      meta2:
+        name: 'keywords'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS, articles'
+          es:
+            locale: es
+            value: 'Natheo-CMS, artículos'
+          en:
+            locale: en
+            value: 'Natheo-CMS, articles'
+      meta3:
+        name: 'author'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS'
+          es:
+            locale: es
+            value: 'Natheo-CMS'
+          en:
+            locale: en
+            value: 'Natheo-CMS'
+      meta4:
+        name: 'copyright'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Propulsé par Nathéo CMS'
+          es:
+            locale: es
+            value: 'Desarrollado por Nathéo CMS'
+          en:
+            locale: en
+            value: 'Powered by Nathéo CMS'
