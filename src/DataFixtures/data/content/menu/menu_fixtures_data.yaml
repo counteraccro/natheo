@@ -293,6 +293,46 @@ menu:
             locale: en
             textLink: 'Article - 1 block + 2 blocks'
             externalLink: '#'
+      default_menu_left_articles_2_blocs_up_1_blocs_down:
+        parent: default_menu_left_index_article
+        page: 'page_articles_2_blocs_up_1_bloc_down'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 5
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Article - 2 blocs + 1 bloc'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Artículo - 2 bloques + 1 bloque'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Article - 2 blocks + 1 block'
+            externalLink: '#'
+      default_menu_left_articles_2_blocs_up_2_blocs_down:
+        parent: default_menu_left_index_article
+        page: 'page_articles_2_blocs_up_2_bloc_down'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 6
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Article - 2 blocs + 2 blocs'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Artículo - 2 bloques + 2 bloques'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Article - 2 blocks + 2 blocks'
+            externalLink: '#'
 
   #Menu footer de démo
 
@@ -502,6 +542,46 @@ menu:
           en:
             locale: en
             textLink: 'Article - 1 block + 2 blocks'
+            externalLink: '#'
+      default_footer_articles_2_blocs_up_1_blocs_down:
+        parent: default_footer_index_article
+        page: 'page_articles_2_blocs_up_1_bloc_down'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 5
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Article - 2 blocs + 1 bloc'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Artículo - 2 bloques + 1 bloque'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Article - 2 blocks + 1 block'
+            externalLink: '#'
+      default_footer_articles_2_blocs_up_2_blocs_down:
+        parent: default_footer_index_article
+        page: 'page_articles_2_blocs_up_2_bloc_down'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 6
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Article - 2 blocs + 2 blocs'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Artículo - 2 bloques + 2 bloques'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Article - 2 blocks + 2 blocks'
             externalLink: '#'
 
   #Menu pour les pages de blog démo
@@ -722,4 +802,44 @@ menu:
           en:
             locale: en
             textLink: 'Article - 1 block + 2 blocks'
+            externalLink: '#'
+      menu_article_right_articles_2_blocs_up_1_blocs_down:
+        parent: menu_article_right_index_article
+        page: 'page_articles_2_blocs_up_1_bloc_down'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 5
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Article - 2 blocs + 1 bloc'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Artículo - 2 bloques + 1 bloque'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Article - 2 blocks + 1 block'
+            externalLink: '#'
+      menu_article_right_articles_2_blocs_up_2_blocs_down:
+        parent: menu_article_right_index_article
+        page: 'page_articles_2_blocs_up_2_bloc_down'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 6
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Article - 2 blocs + 2 blocs'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Artículo - 2 bloques + 2 bloques'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Article - 2 blocks + 2 blocks'
             externalLink: '#'

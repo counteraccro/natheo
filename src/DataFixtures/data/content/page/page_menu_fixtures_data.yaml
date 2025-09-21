@@ -47,3 +47,15 @@ pageMenu:
   pageMenu16:
     page: page_articles_1_blocs_up_2_blocs_down
     menu: menu_default_left
+  pageMenu17:
+    page: page_articles_2_blocs_up_1_bloc_down
+    menu: menu_article_right
+  pageMenu18:
+    page: page_articles_2_blocs_up_1_bloc_down
+    menu: menu_default_left
+  pageMenu19:
+    page: page_articles_2_blocs_up_2_bloc_down
+    menu: menu_article_right
+  pageMenu20:
+    page: page_articles_2_blocs_up_2_bloc_down
+    menu: menu_default_left
