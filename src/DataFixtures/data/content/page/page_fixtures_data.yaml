@@ -2988,3 +2988,210 @@ pages:
           en:
             locale: en
             value: 'Powered by Nathéo CMS'
+  #Page articles 3 block l'un en dessous de l'autre
+  page_faq:
+    user: User
+    render: 5
+    status: 1
+    category: 2
+    landingPage: false
+    isOpenComment: 1
+    nbComment: 0
+    ruleComment: 2
+    headerImg: media-6
+    tags:
+      - Tag_faq
+      - Tag_demo
+    pageTranslation:
+      fr:
+        locale: fr
+        titre: 'La Faq de Natheo CMS'
+        url: faq-natheo-cms
+      es:
+        locale: es
+        titre: 'Preguntas frecuentes sobre Natheo CMS'
+        url: faq-natheo-cms
+      en:
+        locale: en
+        titre: 'The Natheo CMS FAQ'
+        url: faq-natheo-cms
+    pageContent:
+      content_1:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              # Promere hiemes Procris vati
+
+              ## Contigit procorum ignisque et
+
+              Lorem markdownum. Non non quas erroribus; cum ferre Eryx pisce Pyreneus tendunt
+              pictis. Paravi **adicit** septem nuper: hosti in flos indignantem baculo
+              reminiscitur **magni** palladias biformis carinae relictum udaeque neque,
+              aniles. Tenedon ego pater data posset nec in tum satis reicere; non quod si sit
+              **des ne haerentem**?
+
+              1. Anni crinem aut Pana petitve
+              2. Quale attraxerat sanguine tribuere in umor sitis
+              3. Oraque modo validos Euippe manu Latois
+              4. Ore glorior mediis viro
+              5. Quod cum sua traiecit perque terraque caput
+          en:
+            locale: en
+            text: |
+              # Promere hiemes Procris vati
+
+              ## Contigit procorum ignisque et
+
+              Lorem markdownum. Non non quas erroribus; cum ferre Eryx pisce Pyreneus tendunt
+              pictis. Paravi **adicit** septem nuper: hosti in flos indignantem baculo
+              reminiscitur **magni** palladias biformis carinae relictum udaeque neque,
+              aniles. Tenedon ego pater data posset nec in tum satis reicere; non quod si sit
+              **des ne haerentem**?
+
+              1. Anni crinem aut Pana petitve
+              2. Quale attraxerat sanguine tribuere in umor sitis
+              3. Oraque modo validos Euippe manu Latois
+              4. Ore glorior mediis viro
+              5. Quod cum sua traiecit perque terraque caput
+          es:
+            locale: es
+            text: |
+              # Promere hiemes Procris vati
+
+              ## Contigit procorum ignisque et
+
+              Lorem markdownum. Non non quas erroribus; cum ferre Eryx pisce Pyreneus tendunt
+              pictis. Paravi **adicit** septem nuper: hosti in flos indignantem baculo
+              reminiscitur **magni** palladias biformis carinae relictum udaeque neque,
+              aniles. Tenedon ego pater data posset nec in tum satis reicere; non quod si sit
+              **des ne haerentem**?
+
+              1. Anni crinem aut Pana petitve
+              2. Quale attraxerat sanguine tribuere in umor sitis
+              3. Oraque modo validos Euippe manu Latois
+              4. Ore glorior mediis viro
+              5. Quod cum sua traiecit perque terraque caput
+      content_2:
+        renderBlock: 1
+        renderOrder: 1
+        type: 2
+        typeId: faq-1
+      content_3:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              ## Vidit terraeque omnia preces
+
+              Est zona volucrumque creatus pelagi est orbe ingenti ante mihi dat solo enim non
+              horret dextra. Mea ausit fine, illa pressa, carmina vultu ferrum, spectantem et
+              erat iacentes.
+
+              - Fine Hecate
+              - Ebur generum nymphis caecae
+              - Insiluit sonum
+              - Miseram fluctus
+              - Unda videt inquit Tirynthius sepulto quod intumuit
+
+              Anilia Cypro, ipsum, est petatur cecinisse nec Ulixes; ore mentas. Iuno esse ad
+              dixit et duraeque `isa_fragmentation_bittorrent` ignes sedere matri: nec Iovis
+              una moriemur picem ab.
+          en:
+            locale: en
+            text: |
+              ## Vidit terraeque omnia preces
+
+              Est zona volucrumque creatus pelagi est orbe ingenti ante mihi dat solo enim non
+              horret dextra. Mea ausit fine, illa pressa, carmina vultu ferrum, spectantem et
+              erat iacentes.
+
+              - Fine Hecate
+              - Ebur generum nymphis caecae
+              - Insiluit sonum
+              - Miseram fluctus
+              - Unda videt inquit Tirynthius sepulto quod intumuit
+
+              Anilia Cypro, ipsum, est petatur cecinisse nec Ulixes; ore mentas. Iuno esse ad
+              dixit et duraeque `isa_fragmentation_bittorrent` ignes sedere matri: nec Iovis
+              una moriemur picem ab.
+          es:
+            locale: es
+            text: |
+              ## Vidit terraeque omnia preces
+
+              Est zona volucrumque creatus pelagi est orbe ingenti ante mihi dat solo enim non
+              horret dextra. Mea ausit fine, illa pressa, carmina vultu ferrum, spectantem et
+              erat iacentes.
+
+              - Fine Hecate
+              - Ebur generum nymphis caecae
+              - Insiluit sonum
+              - Miseram fluctus
+              - Unda videt inquit Tirynthius sepulto quod intumuit
+
+              Anilia Cypro, ipsum, est petatur cecinisse nec Ulixes; ore mentas. Iuno esse ad
+              dixit et duraeque `isa_fragmentation_bittorrent` ignes sedere matri: nec Iovis
+              una moriemur picem ab.
+    pageStatistique:
+      PAGE_NB_VISITEUR:
+        key: PAGE_NB_VISITEUR
+        value: 0
+      PAGE_NB_READ:
+        key: PAGE_NB_READ
+        value: 0
+    pageMeta:
+      meta1:
+        name: 'description'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'La Faq de Natheo CMS'
+          es:
+            locale: es
+            value: 'Preguntas frecuentes sobre Natheo CMS'
+          en:
+            locale: en
+            value: 'The Natheo CMS FAQ'
+      meta2:
+        name: 'keywords'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS, demo, FAQ'
+          es:
+            locale: es
+            value: 'Natheo-CMS, demo, FAQ'
+          en:
+            locale: en
+            value: 'Natheo-CMS, demo, FAQ'
+      meta3:
+        name: 'author'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS'
+          es:
+            locale: es
+            value: 'Natheo-CMS'
+          en:
+            locale: en
+            value: 'Natheo-CMS'
+      meta4:
+        name: 'copyright'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Propulsé par Nathéo CMS'
+          es:
+            locale: es
+            value: 'Desarrollado por Nathéo CMS'
+          en:
+            locale: en
+            value: 'Powered by Nathéo CMS'
