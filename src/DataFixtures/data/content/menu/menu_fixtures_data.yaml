@@ -65,6 +65,25 @@ menu:
             locale: en
             textLink: 'Articles'
             externalLink: '#'
+      default_header_faq:
+        page: 'page_faq'
+        disabled: 0
+        columnPosition: 1
+        rowPosition: 4
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'FAQ'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Preguntas frecuentes'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'FAQ'
+            externalLink: '#'
 
   #Menu Gauche de démo
   menu_default_left:
@@ -333,6 +352,25 @@ menu:
             locale: en
             textLink: 'Article - 2 blocks + 2 blocks'
             externalLink: '#'
+      default_menu_left_faq:
+        page: 'page_faq'
+        disabled: 0
+        columnPosition: 3
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'FAQ'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Preguntas frecuentes'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'FAQ'
+            externalLink: '#'
 
   #Menu footer de démo
 
@@ -582,6 +620,45 @@ menu:
           en:
             locale: en
             textLink: 'Article - 2 blocks + 2 blocks'
+            externalLink: '#'
+      default_footer_index_divert:
+        page: 'page_list_articles'
+        disabled: 0
+        columnPosition: 2
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Divers'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Misceláneas'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'Miscellaneous'
+            externalLink: '#'
+      default_footer_faq:
+        parent: default_footer_index_divert
+        page: 'page_faq'
+        disabled: 0
+        columnPosition: 3
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'FAQ'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Preguntas frecuentes'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'FAQ'
             externalLink: '#'
 
   #Menu pour les pages de blog démo
