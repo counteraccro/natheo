@@ -2988,12 +2988,12 @@ pages:
           en:
             locale: en
             value: 'Powered by Nathéo CMS'
-  #Page articles 3 block l'un en dessous de l'autre
+  #Page FAQ
   page_faq:
     user: User
     render: 5
     status: 1
-    category: 2
+    category: 9
     landingPage: false
     isOpenComment: 1
     nbComment: 0
@@ -3139,6 +3139,321 @@ pages:
               Anilia Cypro, ipsum, est petatur cecinisse nec Ulixes; ore mentas. Iuno esse ad
               dixit et duraeque `isa_fragmentation_bittorrent` ignes sedere matri: nec Iovis
               una moriemur picem ab.
+    pageStatistique:
+      PAGE_NB_VISITEUR:
+        key: PAGE_NB_VISITEUR
+        value: 0
+      PAGE_NB_READ:
+        key: PAGE_NB_READ
+        value: 0
+    pageMeta:
+      meta1:
+        name: 'description'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'La Faq de Natheo CMS'
+          es:
+            locale: es
+            value: 'Preguntas frecuentes sobre Natheo CMS'
+          en:
+            locale: en
+            value: 'The Natheo CMS FAQ'
+      meta2:
+        name: 'keywords'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS, demo, FAQ'
+          es:
+            locale: es
+            value: 'Natheo-CMS, demo, FAQ'
+          en:
+            locale: en
+            value: 'Natheo-CMS, demo, FAQ'
+      meta3:
+        name: 'author'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Natheo-CMS'
+          es:
+            locale: es
+            value: 'Natheo-CMS'
+          en:
+            locale: en
+            value: 'Natheo-CMS'
+      meta4:
+        name: 'copyright'
+        pageMetaTranslation:
+          fr:
+            locale: fr
+            value: 'Propulsé par Nathéo CMS'
+          es:
+            locale: es
+            value: 'Desarrollado por Nathéo CMS'
+          en:
+            locale: en
+            value: 'Powered by Nathéo CMS'
+  #Page A propos
+  page_a_propos:
+    user: User
+    render: 5
+    status: 1
+    category: 1
+    landingPage: false
+    isOpenComment: 1
+    nbComment: 0
+    ruleComment: 2
+    headerImg: media-6
+    tags:
+      - Tag_faq
+      - Tag_demo
+    pageTranslation:
+      fr:
+        locale: fr
+        titre: 'A propos'
+        url: a-propos
+      es:
+        locale: es
+        titre: 'Acerca de'
+        url: acerca-de
+      en:
+        locale: en
+        titre: 'About'
+        url: about
+    pageContent:
+      content_1:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              # Teneo ad saetigeri nocte
+
+              Lorem markdownum ipse supplex subito, versus eadem, hastam nocebant te
+              **piscem**. Haec simulacra ut quae. Facta Phene desinite; in parte ut vidisset,
+              substitit, dum nec, reverti quae.
+
+                  web_orientation_services.server_access_wordart *= drive_fifo;
+                  lion.rup_uml += 51;
+                  if (wiredInstallKeystroke) {
+                      serp.process_wave_mirrored(fiosCrtOnline, postscriptQwertyGigo,
+                              ribbon_sli + 4);
+                      tBitBox(91, parity_domain, 1);
+                      partitionRecycle(folder, core_drive_tweak.vlbFlashCard(dns, rfid),
+                              dock_tftp);
+                  }
+
+              Anilem quae aestus susurra spectabilis illa. Illum noxa sensus nunc properabat
+              poplite; glandibus perque Haemoniam magnorum caelo ibi. Isthmo veniam illa
+              piorum summae cutis inpune subito, coniuge multaque cornu. Leve modo pontus est
+              est igni perdidit Pelasgos vicit.
+          en:
+            locale: en
+            text: |
+              # Teneo ad saetigeri nocte
+
+              Lorem markdownum ipse supplex subito, versus eadem, hastam nocebant te
+              **piscem**. Haec simulacra ut quae. Facta Phene desinite; in parte ut vidisset,
+              substitit, dum nec, reverti quae.
+
+                  web_orientation_services.server_access_wordart *= drive_fifo;
+                  lion.rup_uml += 51;
+                  if (wiredInstallKeystroke) {
+                      serp.process_wave_mirrored(fiosCrtOnline, postscriptQwertyGigo,
+                              ribbon_sli + 4);
+                      tBitBox(91, parity_domain, 1);
+                      partitionRecycle(folder, core_drive_tweak.vlbFlashCard(dns, rfid),
+                              dock_tftp);
+                  }
+
+              Anilem quae aestus susurra spectabilis illa. Illum noxa sensus nunc properabat
+              poplite; glandibus perque Haemoniam magnorum caelo ibi. Isthmo veniam illa
+              piorum summae cutis inpune subito, coniuge multaque cornu. Leve modo pontus est
+              est igni perdidit Pelasgos vicit.
+          es:
+            locale: es
+            text: |
+              # Teneo ad saetigeri nocte
+
+              Lorem markdownum ipse supplex subito, versus eadem, hastam nocebant te
+              **piscem**. Haec simulacra ut quae. Facta Phene desinite; in parte ut vidisset,
+              substitit, dum nec, reverti quae.
+
+                  web_orientation_services.server_access_wordart *= drive_fifo;
+                  lion.rup_uml += 51;
+                  if (wiredInstallKeystroke) {
+                      serp.process_wave_mirrored(fiosCrtOnline, postscriptQwertyGigo,
+                              ribbon_sli + 4);
+                      tBitBox(91, parity_domain, 1);
+                      partitionRecycle(folder, core_drive_tweak.vlbFlashCard(dns, rfid),
+                              dock_tftp);
+                  }
+
+              Anilem quae aestus susurra spectabilis illa. Illum noxa sensus nunc properabat
+              poplite; glandibus perque Haemoniam magnorum caelo ibi. Isthmo veniam illa
+              piorum summae cutis inpune subito, coniuge multaque cornu. Leve modo pontus est
+              est igni perdidit Pelasgos vicit.
+      content_2:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              ## Halesi constitit nihil conplentur
+
+              *Tribuisse ima*? Et pennis cervice intumuit intima vivacisque Boeotaque sanguine
+              vestibus Panomphaeo vocis dedit est perdere parente ubique patriumque. Tenent
+              quo sine, redeunt verba nullos vocem aditus! Praerupta se sinu *iam certe
+              refugitque* abest verum nefasque adversum quod nunc manu reddunt.
+
+              Tetigisse tellus exspiravit domus crescit, clamavit silvarum **posita**, rerum
+              suos corpusque recurva **Phoebi linquit** cervix mea morer vobis. Mater Echecli
+              oculos. Versata non cadas supplex nec simul sole versasse memores naturae
+              **ademit adulterium Delius** habet et audiet duxere statuit retexit. Tu porrigit
+              `variable` inops mihi spicula: faciem adest meritis et uno interea pontus
+              solacia at. Longius formae.
+          en:
+            locale: en
+            text: |
+              ## Halesi constitit nihil conplentur
+
+              *Tribuisse ima*? Et pennis cervice intumuit intima vivacisque Boeotaque sanguine
+              vestibus Panomphaeo vocis dedit est perdere parente ubique patriumque. Tenent
+              quo sine, redeunt verba nullos vocem aditus! Praerupta se sinu *iam certe
+              refugitque* abest verum nefasque adversum quod nunc manu reddunt.
+
+              Tetigisse tellus exspiravit domus crescit, clamavit silvarum **posita**, rerum
+              suos corpusque recurva **Phoebi linquit** cervix mea morer vobis. Mater Echecli
+              oculos. Versata non cadas supplex nec simul sole versasse memores naturae
+              **ademit adulterium Delius** habet et audiet duxere statuit retexit. Tu porrigit
+              `variable` inops mihi spicula: faciem adest meritis et uno interea pontus
+              solacia at. Longius formae.
+          es:
+            locale: es
+            text: |
+              ## Halesi constitit nihil conplentur
+
+              *Tribuisse ima*? Et pennis cervice intumuit intima vivacisque Boeotaque sanguine
+              vestibus Panomphaeo vocis dedit est perdere parente ubique patriumque. Tenent
+              quo sine, redeunt verba nullos vocem aditus! Praerupta se sinu *iam certe
+              refugitque* abest verum nefasque adversum quod nunc manu reddunt.
+
+              Tetigisse tellus exspiravit domus crescit, clamavit silvarum **posita**, rerum
+              suos corpusque recurva **Phoebi linquit** cervix mea morer vobis. Mater Echecli
+              oculos. Versata non cadas supplex nec simul sole versasse memores naturae
+              **ademit adulterium Delius** habet et audiet duxere statuit retexit. Tu porrigit
+              `variable` inops mihi spicula: faciem adest meritis et uno interea pontus
+              solacia at. Longius formae.
+      content_3:
+        renderBlock: 1
+        renderOrder: 1
+        type: 1
+        pageContentTranslation:
+          fr:
+            locale: fr
+            text: |
+              # Iubis recepit scripta Iove
+
+              ## Messenia corpus maior
+
+              Lorem markdownum quod; in cruor sidera inque alta `unc` occupat velit, ingemuit
+              undique vero soror *nostra*, ilia. In cives constituit vestrum asperitas nymphas
+              fuissem hostem tulisse dicitur arbor. Quoque quid excidit simulacra **in** hunc
+              Lyciae, caelum artem *perdiderat*, peto. Auras resolvit: cum sorori quae et illa
+              flores tamen me primosque conscia. In hoc otia, nec crescere, nam tutae deducit,
+              ille hoc!
+
+              [Genitus](#messenia-corpus-maior) arbusta, erat quod fortis [eos
+              aquas](#halesi-constitit-nihil-conplentur) meum Astyanax, inmortalis culpavit
+              pendentiaque artus latos. Exercere et Circes quoque, ore equis tempora quorum.
+              Superabat *tempus inpositum* Castalio concita, et revocata abesto quia nec dixit
+              acciperet at. Caelo pennas dum adempto artibus sub numen specie explorant
+              relictas.
+
+              Bene territaque satis, es vocet. Nec matre nomine ora mutatis laevum hominumque
+              sagacior intima, carpit! Dives litora, nec Xanthos multaque lupum *pendens parte
+              abscedit* umeris, retia transfert fratrum alendi sanguine Hersilien.
+
+              ## Ossa placebant inops ex
+
+              Errare non; numine limite, nec exitio Phaethon ima magnos onus nefas mihi,
+              accepti Pulchrior. Insonuit quatenus se namque frustra dedit esset Maeonias ne
+              pelagi patriae et alii debes mitte arcere capillos, ripae enim. Hic sua apulus,
+              suos reddunt maius inguinibus putetis mutare, iam cum est cupidine. Exstitit
+              freta in *cornicis* perque divamque ac male, ratibusque ratem habebat? Nostris
+              dentes e Pelia statione de sorores auctor vis, e dei Ophias.
+          en:
+            locale: en
+            text: |
+              # Iubis recepit scripta Iove
+
+              ## Messenia corpus maior
+
+              Lorem markdownum quod; in cruor sidera inque alta `unc` occupat velit, ingemuit
+              undique vero soror *nostra*, ilia. In cives constituit vestrum asperitas nymphas
+              fuissem hostem tulisse dicitur arbor. Quoque quid excidit simulacra **in** hunc
+              Lyciae, caelum artem *perdiderat*, peto. Auras resolvit: cum sorori quae et illa
+              flores tamen me primosque conscia. In hoc otia, nec crescere, nam tutae deducit,
+              ille hoc!
+
+              [Genitus](#messenia-corpus-maior) arbusta, erat quod fortis [eos
+              aquas](#halesi-constitit-nihil-conplentur) meum Astyanax, inmortalis culpavit
+              pendentiaque artus latos. Exercere et Circes quoque, ore equis tempora quorum.
+              Superabat *tempus inpositum* Castalio concita, et revocata abesto quia nec dixit
+              acciperet at. Caelo pennas dum adempto artibus sub numen specie explorant
+              relictas.
+
+              Bene territaque satis, es vocet. Nec matre nomine ora mutatis laevum hominumque
+              sagacior intima, carpit! Dives litora, nec Xanthos multaque lupum *pendens parte
+              abscedit* umeris, retia transfert fratrum alendi sanguine Hersilien.
+
+              ## Ossa placebant inops ex
+
+              Errare non; numine limite, nec exitio Phaethon ima magnos onus nefas mihi,
+              accepti Pulchrior. Insonuit quatenus se namque frustra dedit esset Maeonias ne
+              pelagi patriae et alii debes mitte arcere capillos, ripae enim. Hic sua apulus,
+              suos reddunt maius inguinibus putetis mutare, iam cum est cupidine. Exstitit
+              freta in *cornicis* perque divamque ac male, ratibusque ratem habebat? Nostris
+              dentes e Pelia statione de sorores auctor vis, e dei Ophias.
+          es:
+            locale: es
+            text: |
+              # Iubis recepit scripta Iove
+
+              ## Messenia corpus maior
+
+              Lorem markdownum quod; in cruor sidera inque alta `unc` occupat velit, ingemuit
+              undique vero soror *nostra*, ilia. In cives constituit vestrum asperitas nymphas
+              fuissem hostem tulisse dicitur arbor. Quoque quid excidit simulacra **in** hunc
+              Lyciae, caelum artem *perdiderat*, peto. Auras resolvit: cum sorori quae et illa
+              flores tamen me primosque conscia. In hoc otia, nec crescere, nam tutae deducit,
+              ille hoc!
+
+              [Genitus](#messenia-corpus-maior) arbusta, erat quod fortis [eos
+              aquas](#halesi-constitit-nihil-conplentur) meum Astyanax, inmortalis culpavit
+              pendentiaque artus latos. Exercere et Circes quoque, ore equis tempora quorum.
+              Superabat *tempus inpositum* Castalio concita, et revocata abesto quia nec dixit
+              acciperet at. Caelo pennas dum adempto artibus sub numen specie explorant
+              relictas.
+
+              Bene territaque satis, es vocet. Nec matre nomine ora mutatis laevum hominumque
+              sagacior intima, carpit! Dives litora, nec Xanthos multaque lupum *pendens parte
+              abscedit* umeris, retia transfert fratrum alendi sanguine Hersilien.
+
+              ## Ossa placebant inops ex
+
+              Errare non; numine limite, nec exitio Phaethon ima magnos onus nefas mihi,
+              accepti Pulchrior. Insonuit quatenus se namque frustra dedit esset Maeonias ne
+              pelagi patriae et alii debes mitte arcere capillos, ripae enim. Hic sua apulus,
+              suos reddunt maius inguinibus putetis mutare, iam cum est cupidine. Exstitit
+              freta in *cornicis* perque divamque ac male, ratibusque ratem habebat? Nostris
+              dentes e Pelia statione de sorores auctor vis, e dei Ophias.
     pageStatistique:
       PAGE_NB_VISITEUR:
         key: PAGE_NB_VISITEUR
