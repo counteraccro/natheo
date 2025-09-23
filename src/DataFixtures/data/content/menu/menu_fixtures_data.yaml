@@ -84,6 +84,25 @@ menu:
             locale: en
             textLink: 'FAQ'
             externalLink: '#'
+      default_header_a_propos:
+        page: 'page_a_propos'
+        disabled: 0
+        columnPosition: 4
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'A propos'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Acerca de'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'About'
+            externalLink: '#'
 
   #Menu Gauche de démo
   menu_default_left:
@@ -370,6 +389,25 @@ menu:
           en:
             locale: en
             textLink: 'FAQ'
+            externalLink: '#'
+      default_menu_left_a_propos:
+        page: 'page_a_propos'
+        disabled: 0
+        columnPosition: 4
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'A propos'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Acerca de'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'About'
             externalLink: '#'
 
   #Menu footer de démo
@@ -660,6 +698,83 @@ menu:
             locale: en
             textLink: 'FAQ'
             externalLink: '#'
+      default_footer_a_propos:
+        parent: default_footer_index_divert
+        page: 'page_a_propos'
+        disabled: 0
+        columnPosition: 4
+        rowPosition: 1
+        linkTarget: '_self'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'A propos'
+            externalLink: '#'
+          es:
+            locale: es
+            textLink: 'Acerca de'
+            externalLink: '#'
+          en:
+            locale: en
+            textLink: 'About'
+            externalLink: '#'
+      default_footer_doc:
+        parent: default_footer_index_divert
+        disabled: 0
+        columnPosition: 4
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Documentation'
+            externalLink: 'https://counteraccro.github.io/natheo.doc/'
+          es:
+            locale: es
+            textLink: 'ADocumentación'
+            externalLink: 'https://counteraccro.github.io/natheo.doc/'
+          en:
+            locale: en
+            textLink: 'Documentation'
+            externalLink: 'https://counteraccro.github.io/natheo.doc/'
+      default_footer_git:
+        parent: default_footer_index_divert
+        disabled: 0
+        columnPosition: 4
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'GitHub'
+            externalLink: 'https://github.com/counteraccro/natheo'
+          es:
+            locale: es
+            textLink: 'GitHub'
+            externalLink: 'https://github.com/counteraccro/natheo'
+          en:
+            locale: en
+            textLink: 'GitHub'
+            externalLink: 'https://github.com/counteraccro/natheo'
+      default_footer_realise:
+        parent: default_footer_index_divert
+        disabled: 0
+        columnPosition: 4
+        rowPosition: 1
+        linkTarget: '_blank'
+        menuElementTranslation:
+          fr:
+            locale: fr
+            textLink: 'Releases'
+            externalLink: 'https://github.com/counteraccro/natheo/releases'
+          es:
+            locale: es
+            textLink: 'Releases'
+            externalLink: 'https://github.com/counteraccro/natheo/releases'
+          en:
+            locale: en
+            textLink: 'Releases'
+            externalLink: 'https://github.com/counteraccro/natheo/releases'
 
   #Menu pour les pages de blog démo
   menu_blog_right:
