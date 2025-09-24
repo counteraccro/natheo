@@ -53,7 +53,7 @@ class MediaFixtures extends AppFixtures implements FixtureGroupInterface, Ordere
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::MEDIA_FIXTURES_DATA_FILE);
 
-        foreach ($data['media'] as $data) {
+        foreach ($data['media'] as $ref => $data) {
             $media = new Media();
             foreach ($data as $key => $value) {
                 switch ($key) {
@@ -77,6 +77,7 @@ class MediaFixtures extends AppFixtures implements FixtureGroupInterface, Ordere
                 }
             }
             $manager->persist($media);
+            $this->addReference($ref, $media);
         }
         $manager->flush();
     }

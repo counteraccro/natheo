@@ -1,13 +1,61 @@
 pageMenu:
   pageMenu1:
-    page: Page_listing_page
-    menu: menu_left_page
+    page: page_list_blog
+    menu: menu_blog_right
   pageMenu2:
-    page: Page_nouveaute
-    menu: menu_left_page
+    page: page_list_blog
+    menu: menu_default_left
   pageMenu3:
-    page: Page_demo
-    menu: menu_left_page
+    page: page_blog_1_bloc
+    menu: menu_blog_right
   pageMenu4:
-    page: Page_presentation
-    menu: menu_left_page
+    page: page_blog_1_bloc
+    menu: menu_default_left
+  pageMenu5:
+    page: page_blog_2_bloc_together
+    menu: menu_blog_right
+  pageMenu6:
+    page: page_blog_2_bloc_together
+    menu: menu_default_left
+  pageMenu7:
+    page: page_blog_3_blocs_together
+    menu: menu_blog_right
+  pageMenu8:
+    page: page_blog_3_blocs_together
+    menu: menu_default_left
+  pageMenu9:
+    page: page_list_articles
+    menu: menu_article_right
+  pageMenu10:
+    page: page_list_articles
+    menu: menu_default_left
+  pageMenu11:
+    page: page_articles_2_blocs_up_down
+    menu: menu_article_right
+  pageMenu12:
+    page: page_articles_2_blocs_up_down
+    menu: menu_default_left
+  pageMenu13:
+    page: page_articles_3_blocs_up_down
+    menu: menu_article_right
+  pageMenu14:
+    page: page_articles_3_blocs_up_down
+    menu: menu_default_left
+  pageMenu15:
+    page: page_articles_1_blocs_up_2_blocs_down
+    menu: menu_article_right
+  pageMenu16:
+    page: page_articles_1_blocs_up_2_blocs_down
+    menu: menu_default_left
+  pageMenu17:
+    page: page_articles_2_blocs_up_1_bloc_down
+    menu: menu_article_right
+  pageMenu18:
+    page: page_articles_2_blocs_up_1_bloc_down
+    menu: menu_default_left
+  pageMenu19:
+    page: page_articles_2_blocs_up_2_bloc_down
+    menu: menu_article_right
+  pageMenu20:
+    page: page_articles_2_blocs_up_2_bloc_down
+    menu: menu_default_left

@@ -1,5 +1,7 @@
 <script>
 
+import {marked} from 'marked'
+
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -24,11 +26,36 @@ export default {
     this.loadContent();
   },
   mounted() {
+    /**
+     * Ajoute un span à la fin de chaque ligne
+     */
+    document.querySelectorAll("pre code").forEach(codeEl => {
+      if (codeEl.dataset.lnProcessed === "1") return;
 
+      if (codeEl.querySelector(".code-line")) {
+        codeEl.dataset.lnProcessed = "1";
+        return;
+      }
+
+      const html = codeEl.innerHTML;
+      let lines = html.split(/\r?\n/);
+      if (lines.length && lines[lines.length - 1].trim() === "") lines.pop();
+
+      const wrapped = lines
+          .map(line => `<span class="code-line">${line.length ? line : "&nbsp;"}</span>`).join("");
+      codeEl.innerHTML = wrapped;
+      codeEl.dataset.lnProcessed = "1";
+    });
   },
   computed: {
+
   },
   methods: {
+
+    output(content) {
+      return marked(content);
+    },
+
     loadContent() {
       let success = (datas) => {
         this.faq = datas
@@ -68,8 +95,7 @@ export default {
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </summary>
-        <p class="px-4 pt-4 text-slate-600">
-          {{ question.answer }}
+        <p class="px-4 pt-4 text-slate-600" v-html="this.output(question.answer)">
         </p>
       </details>
     </div>

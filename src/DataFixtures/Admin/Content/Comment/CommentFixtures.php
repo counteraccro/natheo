@@ -29,6 +29,10 @@ class CommentFixtures extends AppFixtures implements FixtureGroupInterface, Orde
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::COMMENT_FIXTURES_DATA_FILE);
 
+        if($data === null) {
+            return;
+        }
+
         foreach ($data['comments'] as $ref => $commentData) {
             $comment = new Comment();
             foreach ($commentData as $key => $value) {

@@ -29,6 +29,10 @@ class FaqFixtures extends AppFixtures implements FixtureGroupInterface, OrderedF
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::FAQ_FIXTURES_DATA_FILE);
 
+        if($data === null) {
+            return;
+        }
+
         foreach ($data['faq'] as $ref => $faqData) {
             $faq = new Faq();
             foreach ($faqData as $key => $value) {

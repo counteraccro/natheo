@@ -26,7 +26,7 @@ export default {
     return {
       isLoad: false,
       isLoadModerate: true,
-      limit: 3,
+      limit: 5,
       page: 1,
       comments: '',
       nbElements: 0,
@@ -339,7 +339,7 @@ export default {
            class="rounded-2xl border border-neutral-200/70 p-4 shadow-sm" :class="this.colorComment(comment.status)">
         <div class="flex gap-3">
           <div
-              class="grid size-10 place-items-center rounded-full text-sm font-semibold text-white shadow-sm ring-2 ring-white "
+              class="grid size-10 place-items-center rounded-full text-sm font-semibold text-white shadow-sm ring-2 ring-white"
               :class="this.pickColor(comment.author)">
             {{ this.utilsFront.getInitials(comment.author) }}
           </div>
@@ -351,7 +351,7 @@ export default {
                 }}</span>
             </div>
 
-            <div class="mt-2 text-sm leading-relaxed text-slate-600"
+            <div class="mt-2 text-sm leading-relaxed text-slate-600 natheo-content-text"
                  v-html="this.output(comment.comment)">
             </div>
             <div v-if="comment.moderate" class="mt-2 text-sm leading-relaxed text-slate-800 italic"

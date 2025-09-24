@@ -3,80 +3,71 @@ tag:
     color: '#6F42C1'
     translate:
       - locale: fr
-        label: 'Natheo'
+        label: 'Natheo CMS'
       - locale: es
-        label: 'Natheo'
+        label: 'Natheo CMS'
       - locale: en
-        label: 'Natheo'
+        label: 'Natheo CMS'
   Tag_dev:
     color: '#7A86B8'
     translate:
       - locale: fr
         label: 'Développement'
       - locale: es
-        label: 'Développement (ES)'
+        label: 'Desarrollo'
       - locale: en
-        label: 'Développement (EN)'
-  Tag_media:
-    color: '#8fb408'
-    translate:
-      - locale: fr
-        label: 'Média'
-      - locale: es
-        label: 'Média (ES)'
-      - locale: en
-        label: 'Média (EN)'
+        label: 'Development'
   Tag_article:
     color: '#1188b4'
     translate:
       - locale: fr
         label: 'Article'
       - locale: es
-        label: 'Article (ES)'
+        label: 'Artículo'
       - locale: en
-        label: 'Article (EN)'
+        label: 'Article'
   Tag_evolution:
     color: '#b61114'
     translate:
       - locale: fr
         label: 'Evolution'
       - locale: es
-        label: 'Evolution (ES)'
+        label: 'Evolución'
       - locale: en
-        label: 'Evolution (EN)'
-  Tag_listing:
-    color: '#e19f0e'
-    translate:
-      - locale: fr
-        label: 'Listing'
-      - locale: es
-        label: 'Listing (ES)'
-      - locale: en
-        label: 'Listing (EN)'
+        label: 'Evolution'
   Tag_faq:
     color: '#262cdf'
     translate:
       - locale: fr
         label: 'FAQ'
       - locale: es
-        label: 'FAQ (ES)'
+        label: 'Preguntas frecuentes'
       - locale: en
-        label: 'FAQ (EN)'
+        label: 'FAQ'
   Tag_page:
     color: '#23e515'
     translate:
       - locale: fr
         label: 'Page'
       - locale: es
-        label: 'Page (ES)'
+        label: 'Página'
       - locale: en
-        label: 'Page (EN)'
+        label: 'Page'
   Tag_blog:
     color: '#b8db0a'
     translate:
       - locale: fr
         label: 'Blog'
       - locale: es
-        label: 'Blog (ES)'
+        label: 'Blog'
       - locale: en
-        label: 'Blog (EN)'
+        label: 'Blog'
+  Tag_demo:
+    color: '#F0C847'
+    translate:
+      - locale: fr
+        label: 'Démo'
+      - locale: es
+        label: 'Manifestación'
+      - locale: en
+        label: 'Demo'
