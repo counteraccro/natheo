@@ -1,8 +1,8 @@
 user:
   User:
-    email: lucas.fabre@legros.fr
-    password: $2y$04$RQdEwA/GhTKJ2kZDbpf.ZeaqxOqiBU0abpsLARbEzAd5X9VbwaIdm
-    login: claude.lemoine
+    email: daniel58@weber.com
+    password: $2y$04$imNxK4T2t/m27gQocXcWR.xF469FZBW7cMZZxX9FapFu6yLrRUbcK
+    login: nicole32
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN
