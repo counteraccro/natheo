@@ -1,8 +1,8 @@
 user:
   User:
-    email: nfaure@leroux.com
-    password: $2y$04$TvWXEGShNUQu85r.bj6cCe/6ff39oDE2haIfkkSVoaanMOZFHj6Ka
-    login: zmoreno
+    email: munoz.martine@dbmail.com
+    password: $2y$04$kSg0QCdBg2J3QF6.qBpSqOY71mjyiurXjbCmVUCcw3wYfZN4TFa/m
+    login: adelaide.merle
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN
