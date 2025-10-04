@@ -4,17 +4,15 @@
  * Point d'entrée pour le JS et CSS Admin
  */
 
-// any CSS you import will output into a single css file (app.css in this case)
-import 'bootstrap';
+// Import Bootstrap JS
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
+// Import des librairies
 import bsCustomFileInput from 'bs-custom-file-input';
-import 'masonry-layout';
+import Masonry from 'masonry-layout';
 
-
-// start the Stimulus application
-import './bootstrap';
-
+// Initialisation de bs-custom-file-input
 bsCustomFileInput.init();
 
-import { registerVueControllerComponents } from '@symfony/ux-vue';
-registerVueControllerComponents(require.context('./vue/controllers', true, /\.vue$/));
-//registerVueControllerComponents(require.context('./vue', true, /\.vue$/, 'lazy'));
+// Start the Stimulus application (qui gère aussi Vue)
+import './bootstrap';
