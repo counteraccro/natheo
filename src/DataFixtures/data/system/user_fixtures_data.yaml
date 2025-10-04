@@ -1,8 +1,8 @@
 user:
   User:
-    email: daniel58@weber.com
-    password: $2y$04$imNxK4T2t/m27gQocXcWR.xF469FZBW7cMZZxX9FapFu6yLrRUbcK
-    login: nicole32
+    email: nfaure@leroux.com
+    password: $2y$04$TvWXEGShNUQu85r.bj6cCe/6ff39oDE2haIfkkSVoaanMOZFHj6Ka
+    login: zmoreno
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN
