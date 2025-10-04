@@ -40,7 +40,7 @@ export default {
       </div>
       <div class="col-4 d-flex justify-content-center align-items-center text-center">
         <div v-if="!IsEmpty(this.data) && this.data.type === 'folder'">
-          <img src="/assets/natheo/mediatheque/folder.png" alt="folder" height="100"/>
+          <img :src="'/assets/natheo/mediatheque/folder.png'" alt="folder" height="100"/>
         </div>
         <div v-else-if="!IsEmpty(this.data) && this.data.type === 'media'">
           <img :src="this.data.thumbnail" :alt="this.data.thumbnail" class="img-fluid"/> <br/>

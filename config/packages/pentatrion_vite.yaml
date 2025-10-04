@@ -1,0 +1,3 @@
+pentatrion_vite:
+  build_directory: build
+  proxy_origin: 'http://dev.natheo:5173'

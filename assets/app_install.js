@@ -1,19 +1,17 @@
 /*!
  * Author : Gourdon Aymeric
  * Version : 1.0
- * Point d'entrée pour le JS et CSS Front
+ * Point d'entrée pour le JS et CSS Install
  */
 
-// any CSS you import will output into a single css file (app.css in this case)
+// Import du CSS install
 import './styles/app_install.scss';
 
-import 'bootstrap';
+// Import Bootstrap JS
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
+// Import Bootstrap Icons
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-
-// start the Stimulus application
+// Start the Stimulus application (qui gère aussi Vue)
 import './bootstrap';
-
-import { registerVueControllerComponents } from '@symfony/ux-vue';
-registerVueControllerComponents(require.context('./vue/controllers', true, /\.vue$/));
-//registerVueControllerComponents(require.context('./vue', true, /\.vue$/, 'lazy'));

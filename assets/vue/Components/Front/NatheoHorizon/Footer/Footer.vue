@@ -74,37 +74,37 @@ export default {
       <ul v-if="this.data.type === this.menuType.colonne" class="mt-5 flex space-x-5">
         <li v-if="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_X_URL !== ''">
           <a :href="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_X_URL">
-            <img src="/assets/natheo/front/reseaux-sociaux/x_logo_icon.png" class="w-10 h-auto"/>
+            <img :src="'/assets/natheo/front/reseaux-sociaux/x_logo_icon.png'" class="w-10 h-auto"/>
           </a>
         </li>
         <li v-if="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL !== ''">
           <a :href="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL">
-            <img src="/assets/natheo/front/reseaux-sociaux/facebook_logo_icon.png" class="w-10 h-auto"/>
+            <img :src="'/assets/natheo/front/reseaux-sociaux/facebook_logo_icon.png'" class="w-10 h-auto"/>
           </a>
         </li>
         <li v-if="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_GITHUB_URL !== ''">
           <a :href="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_GITHUB_URL">
-            <img src="/assets/natheo/front/reseaux-sociaux/github_logo_icon.png" class="w-10 h-auto"/>
+            <img :src="'/assets/natheo/front/reseaux-sociaux/github_logo_icon.png'" class="w-10 h-auto"/>
           </a>
         </li>
         <li v-if="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL !== ''">
           <a :href="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL">
-            <img src="/assets/natheo/front/reseaux-sociaux/instagram_logo_icon.png" class="w-10 h-auto"/>
+            <img :src="'/assets/natheo/front/reseaux-sociaux/instagram_logo_icon.png'" class="w-10 h-auto"/>
           </a>
         </li>
         <li v-if="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL !== ''">
           <a :href="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL">
-            <img src="/assets/natheo/front/reseaux-sociaux/linkedin_logo_icon.png" class="w-10 h-auto"/>
+            <img :src="'/assets/natheo/front/reseaux-sociaux/linkedin_logo_icon.png'" class="w-10 h-auto"/>
           </a>
         </li>
         <li v-if="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL !== ''">
           <a :href="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL">
-            <img src="/assets/natheo/front/reseaux-sociaux/tiktok_icon.png" class="w-10 h-auto"/>
+            <img :src="'/assets/natheo/front/reseaux-sociaux/tiktok_icon.png'" class="w-10 h-auto"/>
           </a>
         </li>
         <li v-if="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL !== ''">
           <a :href="this.optionsSystem.OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL">
-            <img src="/assets/natheo/front/reseaux-sociaux/youtube_logo_icon.png" class="w-10 h-auto"/>
+            <img :src="'/assets/natheo/front/reseaux-sociaux/youtube_logo_icon.png'" class="w-10 h-auto"/>
           </a>
         </li>
       </ul>
