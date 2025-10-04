@@ -41,7 +41,7 @@ $utilities-text-colors: map-loop($utilities-text, rgba-css-var, "$key", "text");
 $utilities-bg: map-merge($utilities-bg, $utilities-colors);
 $utilities-bg-colors: map-loop($utilities-bg, rgba-css-var, "$key", "bg");
 
-@import "~bootstrap/scss/bootstrap";
+@import "bootstrap/scss/bootstrap";
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 
 // Import surcharge boostrap CSS
