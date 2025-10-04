@@ -9,11 +9,11 @@
     {% block stylesheets %}
 
         {% set theme = get_option_user_value_by_key(constant('App\\Utils\\System\\Options\\OptionUserKey::OU_THEME_SITE')) %}
-        {{ encore_entry_link_tags('admin_'~theme) }}
+        {{ vite_entry_link_tags('admin_'~theme) }}
     {% endblock %}
 
     {% block javascripts %}
-        {{ encore_entry_script_tags('admin') }}
+        {{ vite_entry_script_tags('admin') }}
     {% endblock %}
 </head>
 <body>
