@@ -81,8 +81,6 @@ class MailServiceTest extends AppWebTestCase
      */
     public function testSendMail(): void
     {
-        $this->markTestSkipped('Le mail ne semble pas exister en test, à vérifier');
-
         $this->generateDefaultMails();
         $user = $this->createUser();
         $userSuperAdmin = $this->createUserSuperAdmin();
@@ -100,8 +98,11 @@ class MailServiceTest extends AppWebTestCase
         $params[MailService::TO] = $user->getEmail();
 
         $this->mailService->sendMail($params);
+        $messages = $this->getMailerMessages();
 
-        $email = $this->getMailerMessage();
+        $this->assertCount(1, $messages);
+
+        $email = $messages[0];
         $this->assertEmailHtmlBodyContains($email, $user->getLogin());
     }
 
