@@ -7,7 +7,7 @@ use App\Utils\Installation\InstallationConst;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name : "mail_translation")]
+#[ORM\Table(name: 'mail_translation')]
 #[ORM\Entity(repositoryClass: MailTranslationRepository::class)]
 class MailTranslation
 {
@@ -16,7 +16,7 @@ class MailTranslation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(cascade: ["persist"], inversedBy: 'mailTranslations')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'mailTranslations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Mail $mail = null;
 
@@ -28,7 +28,6 @@ class MailTranslation
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
-
 
     public function getId(): ?int
     {

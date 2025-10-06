@@ -9,26 +9,26 @@ const application = Application.start();
 
 // Controller pour monter les composants Vue via Stimulus
 class VueController extends Controller {
-    static values = {
-        component: String,
-        props: Object
+  static values = {
+    component: String,
+    props: Object,
+  };
+
+  connect() {
+    const componentPath = this.componentValue;
+    const fullPath = `./vue/controllers/${componentPath}.vue`;
+
+    const componentModule = vueComponents[fullPath];
+
+    if (!componentModule) {
+      console.error(`Composant Vue non trouvé: ${fullPath}`);
+      return;
     }
 
-    connect() {
-        const componentPath = this.componentValue;
-        const fullPath = `./vue/controllers/${componentPath}.vue`;
-
-        const componentModule = vueComponents[fullPath];
-
-        if (!componentModule) {
-            console.error(`Composant Vue non trouvé: ${fullPath}`);
-            return;
-        }
-
-        const component = componentModule.default;
-        const app = createApp(component, this.propsValue || {});
-        app.mount(this.element);
-    }
+    const component = componentModule.default;
+    const app = createApp(component, this.propsValue || {});
+    app.mount(this.element);
+  }
 }
 
 // Enregistrer le controller avec le nom utilisé par Symfony UX

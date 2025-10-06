@@ -9,8 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-
-#[ORM\Table(name : "mail")]
+#[ORM\Table(name: 'mail')]
 #[ORM\Entity(repositoryClass: MailRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Mail
@@ -20,7 +19,7 @@ class Mail
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(name:'`key`', length: 255)]
+    #[ORM\Column(name: '`key`', length: 255)]
     private ?string $key = null;
 
     #[ORM\Column(length: 255)]
@@ -38,7 +37,7 @@ class Mail
     #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updateAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'mail', targetEntity: MailTranslation::class, cascade: ["persist"], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'mail', targetEntity: MailTranslation::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $mailTranslations;
 
     public function __construct()
@@ -137,9 +136,11 @@ class Mail
      */
     public function geMailTranslationByLocale(string $locale): MailTranslation
     {
-        return $this->getMailTranslations()->filter(function (MailTranslation $mailTranslation) use ($locale) {
-            return $mailTranslation->getLocale() === $locale;
-        })->first();
+        return $this->getMailTranslations()
+            ->filter(function (MailTranslation $mailTranslation) use ($locale) {
+                return $mailTranslation->getLocale() === $locale;
+            })
+            ->first();
     }
 
     public function getDescription(): ?string

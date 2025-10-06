@@ -42,7 +42,10 @@ class SidebarControllerTest extends AppWebTestCase
 
         $userSuperAdm = $this->createUserSuperAdmin();
         $this->client->loginUser($userSuperAdm, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_sidebar_load_grid_data', ['page' => 1, 'limit' => 8]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_sidebar_load_grid_data', ['page' => 1, 'limit' => 8]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -51,7 +54,6 @@ class SidebarControllerTest extends AppWebTestCase
 
         $this->assertEquals(10, $content['nb']);
         $this->assertCount(8, $content['data']);
-
     }
 
     /**
@@ -66,7 +68,10 @@ class SidebarControllerTest extends AppWebTestCase
 
         $userSuperAdm = $this->createUserSuperAdmin();
         $this->client->loginUser($userSuperAdm, 'admin');
-        $this->client->request('PUT', $this->router->generate('admin_sidebar_update_disabled', ['id' => $sidebarElement->getId()]));
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_sidebar_update_disabled', ['id' => $sidebarElement->getId()]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());

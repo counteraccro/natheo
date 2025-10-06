@@ -1,115 +1,115 @@
 option_system:
-  OS_SITE_NAME:
-    key: 'OS_SITE_NAME'
-    value: 'Nathéo CMS'
-  OS_OPEN_SITE:
-    key: 'OS_OPEN_SITE'
-    value: 1
-  OS_FRONT_SCRIPT_TOP:
-    key: 'OS_FRONT_SCRIPT_TOP'
-    value: ''
-  OS_FRONT_SCRIPT_START_BODY:
-    key: 'OS_FRONT_SCRIPT_START_BODY'
-    value: ''
-  OS_FRONT_SCRIPT_END_BODY:
-    key: 'OS_FRONT_SCRIPT_END_BODY'
-    value: ''
-  OS_REPLACE_DELETE_USER:
-    key: 'OS_REPLACE_DELETE_USER'
-    value: 1
-  OS_CONFIRM_LEAVE_FORM:
-    key: 'OS_CONFIRM_LEAVE_FORM'
-    value: 1
-  OS_ALLOW_DELETE_DATA:
-    key: 'OS_ALLOW_DELETE_DATA'
-    value: 1
-  OS_DEFAULT_LANGUAGE:
-    key: 'OS_DEFAULT_LANGUAGE'
-    value: 'fr'
-  OS_LOGO_SITE:
-    key: 'OS_LOGO_SITE'
-    value: 'bi-yin-yang'
-  OS_THEME_SITE:
-    key: 'OS_THEME_SITE'
-    value: 'purple'
-  OS_NB_ELEMENT:
-    key: 'OS_NB_ELEMENT'
-    value: 20
-  OS_LOG_DOCTRINE:
-    key: 'OS_LOG_DOCTRINE'
-    value: 1
-  OS_MAIL_FROM:
-    key: 'OS_MAIL_FROM'
-    value: 'support@natheo.fr'
-  OS_MAIL_REPLY_TO:
-    key: 'OS_MAIL_REPLY_TO'
-    value: 'support@natheo.fr'
-  OS_ADRESSE_SITE:
-    key: 'OS_ADRESSE_SITE'
-    value: 'http://dev.natheo:8888'
-  OS_MAIL_SIGNATURE:
-    key: 'OS_MAIL_SIGNATURE'
-    value: "<hr />Cordialement, <br />L'équipe de Natheo CMS"
-  OS_MAIL_NOTIFICATION:
-    key: 'OS_MAIL_NOTIFICATION'
-    value: 1
-  OS_NOTIFICATION:
-    key: 'OS_NOTIFICATION'
-    value: 1
-  OS_PURGE_NOTIFICATION:
-    key: 'OS_PURGE_NOTIFICATION'
-    value: 30
-  OS_MAIL_RESET_PASSWORD_TIME:
-    key: 'OS_MAIL_RESET_PASSWORD_TIME'
-    value: 20
-  OS_MEDIA_CREATE_PHYSICAL_FOLDER:
-    key: 'OS_MEDIA_CREATE_PHYSICAL_FOLDER'
-    value: 1
-  OS_MEDIA_PATH:
-    key: 'OS_MEDIA_PATH'
-    value: natheotheque
-  OS_MEDIA_URL:
-    key: 'OS_MEDIA_URL'
-    value: 'http://dev.natheo:8888'
-  OS_API_TIME_VALIDATE_USER_TOKEN:
-    key: 'OS_API_TIME_VALIDATE_USER_TOKEN'
-    value: 60
-  OS_OPEN_COMMENT:
-    key: 'OS_OPEN_COMMENT'
-    value: 1
-  OS_NEW_COMMENT_WAIT_VALIDATION:
-    key: 'OS_NEW_COMMENT_WAIT_VALIDATION'
-    value: 1
-  OS_THEME_FRONT_SITE:
-    key: 'OS_THEME_FRONT_SITE'
-    value: 'natheo_horizon'
-  OS_FRONT_FOOTER_TEXTE:
-    key: 'OS_FRONT_FOOTER_TEXTE'
-    value: 'NatheoCMS est un CMS headless développé avec Symfony pour vous offrir le meilleur compromis entre un site clé en main et la possibilité de le façonner à votre envie'
-  OS_FRONT_FOOTER_SOCIAL_GITHUB_URL:
-    key: 'OS_FRONT_FOOTER_SOCIAL_GITHUB_URL'
-    value: https://github.com/counteraccro/natheo
-  OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL:
-    key: 'OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL'
-    value: https://www.linkedin.com/in/aymeric-gourdon-7b1a6264/
-  OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL:
-    key: 'OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL'
-    value: ''
-  OS_FRONT_FOOTER_SOCIAL_X_URL:
-    key: 'OS_FRONT_FOOTER_SOCIAL_X_URL'
-    value: 'https://x.com/NatheoCms'
-  OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL:
-    key: 'OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL'
-    value: ''
-  OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL:
-    key: 'OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL'
-    value: ''
-  OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL:
-    key: 'OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL'
-    value: ''
-  OS_FRONT_ROBOT_NO_INDEX:
-    key: 'OS_FRONT_ROBOT_NO_INDEX'
-    value: 0
-  OS_FRONT_ROBOT_NO_FOLLOW:
-    key: 'OS_FRONT_ROBOT_NO_FOLLOW'
-    value: 0
+    OS_SITE_NAME:
+        key: 'OS_SITE_NAME'
+        value: 'Nathéo CMS'
+    OS_OPEN_SITE:
+        key: 'OS_OPEN_SITE'
+        value: 1
+    OS_FRONT_SCRIPT_TOP:
+        key: 'OS_FRONT_SCRIPT_TOP'
+        value: ''
+    OS_FRONT_SCRIPT_START_BODY:
+        key: 'OS_FRONT_SCRIPT_START_BODY'
+        value: ''
+    OS_FRONT_SCRIPT_END_BODY:
+        key: 'OS_FRONT_SCRIPT_END_BODY'
+        value: ''
+    OS_REPLACE_DELETE_USER:
+        key: 'OS_REPLACE_DELETE_USER'
+        value: 1
+    OS_CONFIRM_LEAVE_FORM:
+        key: 'OS_CONFIRM_LEAVE_FORM'
+        value: 1
+    OS_ALLOW_DELETE_DATA:
+        key: 'OS_ALLOW_DELETE_DATA'
+        value: 1
+    OS_DEFAULT_LANGUAGE:
+        key: 'OS_DEFAULT_LANGUAGE'
+        value: 'fr'
+    OS_LOGO_SITE:
+        key: 'OS_LOGO_SITE'
+        value: 'bi-yin-yang'
+    OS_THEME_SITE:
+        key: 'OS_THEME_SITE'
+        value: 'purple'
+    OS_NB_ELEMENT:
+        key: 'OS_NB_ELEMENT'
+        value: 20
+    OS_LOG_DOCTRINE:
+        key: 'OS_LOG_DOCTRINE'
+        value: 1
+    OS_MAIL_FROM:
+        key: 'OS_MAIL_FROM'
+        value: 'support@natheo.fr'
+    OS_MAIL_REPLY_TO:
+        key: 'OS_MAIL_REPLY_TO'
+        value: 'support@natheo.fr'
+    OS_ADRESSE_SITE:
+        key: 'OS_ADRESSE_SITE'
+        value: 'http://dev.natheo:8888'
+    OS_MAIL_SIGNATURE:
+        key: 'OS_MAIL_SIGNATURE'
+        value: "<hr />Cordialement, <br />L'équipe de Natheo CMS"
+    OS_MAIL_NOTIFICATION:
+        key: 'OS_MAIL_NOTIFICATION'
+        value: 1
+    OS_NOTIFICATION:
+        key: 'OS_NOTIFICATION'
+        value: 1
+    OS_PURGE_NOTIFICATION:
+        key: 'OS_PURGE_NOTIFICATION'
+        value: 30
+    OS_MAIL_RESET_PASSWORD_TIME:
+        key: 'OS_MAIL_RESET_PASSWORD_TIME'
+        value: 20
+    OS_MEDIA_CREATE_PHYSICAL_FOLDER:
+        key: 'OS_MEDIA_CREATE_PHYSICAL_FOLDER'
+        value: 1
+    OS_MEDIA_PATH:
+        key: 'OS_MEDIA_PATH'
+        value: natheotheque
+    OS_MEDIA_URL:
+        key: 'OS_MEDIA_URL'
+        value: 'http://dev.natheo:8888'
+    OS_API_TIME_VALIDATE_USER_TOKEN:
+        key: 'OS_API_TIME_VALIDATE_USER_TOKEN'
+        value: 60
+    OS_OPEN_COMMENT:
+        key: 'OS_OPEN_COMMENT'
+        value: 1
+    OS_NEW_COMMENT_WAIT_VALIDATION:
+        key: 'OS_NEW_COMMENT_WAIT_VALIDATION'
+        value: 1
+    OS_THEME_FRONT_SITE:
+        key: 'OS_THEME_FRONT_SITE'
+        value: 'natheo_horizon'
+    OS_FRONT_FOOTER_TEXTE:
+        key: 'OS_FRONT_FOOTER_TEXTE'
+        value: 'NatheoCMS est un CMS headless développé avec Symfony pour vous offrir le meilleur compromis entre un site clé en main et la possibilité de le façonner à votre envie'
+    OS_FRONT_FOOTER_SOCIAL_GITHUB_URL:
+        key: 'OS_FRONT_FOOTER_SOCIAL_GITHUB_URL'
+        value: https://github.com/counteraccro/natheo
+    OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL:
+        key: 'OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL'
+        value: https://www.linkedin.com/in/aymeric-gourdon-7b1a6264/
+    OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL:
+        key: 'OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL'
+        value: ''
+    OS_FRONT_FOOTER_SOCIAL_X_URL:
+        key: 'OS_FRONT_FOOTER_SOCIAL_X_URL'
+        value: 'https://x.com/NatheoCms'
+    OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL:
+        key: 'OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL'
+        value: ''
+    OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL:
+        key: 'OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL'
+        value: ''
+    OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL:
+        key: 'OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL'
+        value: ''
+    OS_FRONT_ROBOT_NO_INDEX:
+        key: 'OS_FRONT_ROBOT_NO_INDEX'
+        value: 0
+    OS_FRONT_ROBOT_NO_FOLLOW:
+        key: 'OS_FRONT_ROBOT_NO_FOLLOW'
+        value: 0

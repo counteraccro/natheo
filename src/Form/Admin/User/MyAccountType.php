@@ -25,39 +25,38 @@ class MyAccountType extends AppFormType
             ->add('email', EmailType::class, [
                 'label' => $this->translator->trans('user.form.adresse_email.label', domain: 'user'),
                 'help' => $this->translator->trans('user.form.adresse_email.help', domain: 'user'),
-                'disabled' => true
+                'disabled' => true,
             ])
             ->add('login', TextType::class, [
                 'label' => $this->translator->trans('user.form.login.label', domain: 'user'),
                 'help' => $this->translator->trans('user.form.login.help', domain: 'user'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('user.form.login.placeholder', domain: 'user')
+                    'placeholder' => $this->translator->trans('user.form.login.placeholder', domain: 'user'),
                 ],
-                'required' => false
+                'required' => false,
             ])
             ->add('firstname', TextType::class, [
                 'label' => $this->translator->trans('user.form.firstname.label', domain: 'user'),
                 'help' => $this->translator->trans('user.form.firstname.help', domain: 'user'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('user.form.firstname.placeholder', domain: 'user')
+                    'placeholder' => $this->translator->trans('user.form.firstname.placeholder', domain: 'user'),
                 ],
-                'required' => false
-
+                'required' => false,
             ])
             ->add('lastname', TextType::class, [
                 'label' => $this->translator->trans('user.form.lastname.label', domain: 'user'),
                 'help' => $this->translator->trans('user.form.lastname.help', domain: 'user'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('user.form.lastname.placeholder', domain: 'user')
+                    'placeholder' => $this->translator->trans('user.form.lastname.placeholder', domain: 'user'),
                 ],
-                'required' => false
+                'required' => false,
             ])
 
             ->add('avatar', FileType::class, [
                 'label' => $this->translator->trans('user.form.avatar.label', domain: 'user'),
                 'help' => $this->translator->trans('user.form.avatar.help', domain: 'user'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('user.form.avatar.placeholder', domain: 'user')
+                    'placeholder' => $this->translator->trans('user.form.avatar.placeholder', domain: 'user'),
                 ],
                 'required' => false,
                 'mapped' => false,
@@ -66,26 +65,25 @@ class MyAccountType extends AppFormType
                         maxSize: '1024k',
                         extensions: ['gif', 'jpg', 'jpeg', 'png'],
                         extensionsMessage: $this->translator->trans('user.form.avatar.error.upload', domain: 'user'),
-                    )
-    ],
+                    ),
+                ],
             ])
 
             ->add('description', TextareaType::class, [
                 'label' => $this->translator->trans('user.form.description.label', domain: 'user'),
                 'help' => $this->translator->trans('user.form.description.help', domain: 'user'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('user.form.description.placeholder', domain: 'user')
+                    'placeholder' => $this->translator->trans('user.form.description.placeholder', domain: 'user'),
                 ],
-                'required' => false
+                'required' => false,
             ])
 
             ->add('save', SubmitType::class, [
                 'label' => $this->translator->trans('user.form.submit', domain: 'user'),
                 'attr' => [
-                    'class' => 'btn-secondary'
-                ]
-            ])
-        ;
+                    'class' => 'btn-secondary',
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

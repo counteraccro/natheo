@@ -22,11 +22,9 @@ use Psr\Container\NotFoundExceptionInterface;
 #[AsDoctrineListener('postUpdate')]
 class DatabaseActivityListener
 {
-
     private OptionSystemService $optionSystemService;
 
     private LoggerService $loggerService;
-
 
     public function __construct(OptionSystemService $optionSystemService, LoggerService $loggerService)
     {
@@ -38,11 +36,7 @@ class DatabaseActivityListener
     // custom method name to execute when each event triggers
     public function getSubscribedEvents(): array
     {
-        return [
-            Events::postPersist,
-            Events::postRemove,
-            Events::postUpdate,
-        ];
+        return [Events::postPersist, Events::postRemove, Events::postUpdate];
     }
 
     /**
@@ -98,7 +92,7 @@ class DatabaseActivityListener
             return;
         }
 
-        $class = substr(strrchr($entity::class, "\\"), 1);
+        $class = substr(strrchr($entity::class, '\\'), 1);
         $this->loggerService->logDoctrine($action, $class, $entity->getId());
     }
 }

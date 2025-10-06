@@ -20,7 +20,7 @@ trait TagFixturesTrait
      * @param bool $persist
      * @return Tag
      */
-    public function createTag(array $customData = [], bool $persist = true) : Tag
+    public function createTag(array $customData = [], bool $persist = true): Tag
     {
         $data = [
             'color' => self::getFaker()->hexColor(),
@@ -42,7 +42,7 @@ trait TagFixturesTrait
      * @param bool $persist
      * @return TagTranslation
      */
-    public function createTagTranslation(?Tag $tag = null, array $customData = [], bool $persist = true) : TagTranslation
+    public function createTagTranslation(?Tag $tag = null, array $customData = [], bool $persist = true): TagTranslation
     {
         $data = [
             'locale' => self::getFaker()->languageCode(),

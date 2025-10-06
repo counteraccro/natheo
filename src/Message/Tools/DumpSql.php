@@ -13,12 +13,7 @@ class DumpSql
      * @param array $options
      * @param int $userId
      */
-    public function __construct(
-        private readonly array $options,
-        private readonly int $userId
-    )
-    {
-    }
+    public function __construct(private readonly array $options, private readonly int $userId) {}
 
     /**
      * Retourne les options
@@ -37,5 +32,4 @@ class DumpSql
     {
         return $this->userId;
     }
-
 }

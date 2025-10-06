@@ -15,7 +15,7 @@ class LogControllerTest extends AppWebTestCase
      * Test méthode index()
      * @return void
      */
-    public function testIndex() :void
+    public function testIndex(): void
     {
         $this->checkNoAccess('admin_log_index');
 
@@ -31,7 +31,7 @@ class LogControllerTest extends AppWebTestCase
      * Test méthode dataSelect()
      * @return void
      */
-    public function testDataSelect() :void
+    public function testDataSelect(): void
     {
         $this->checkNoAccess('admin_log_ajax_data_select_log');
         $userSuperAdm = $this->createUserSuperAdmin();
@@ -53,7 +53,7 @@ class LogControllerTest extends AppWebTestCase
      * Test méthode loadLogFile()
      * @return void
      */
-    public function testLoadLogFile() :void
+    public function testLoadLogFile(): void
     {
         $logFile = 'auth-' . date('Y-m-d') . '.log';
         $loggerService = $this->container->get(LoggerService::class);
@@ -64,7 +64,10 @@ class LogControllerTest extends AppWebTestCase
         $this->checkNoAccess('admin_log_ajax_load_log_file', ['file' => $logFile]);
 
         $this->client->loginUser($userSuperAdm, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_log_ajax_load_log_file', ['file' => $logFile, 'page' => 1, 'limit' => 1]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_log_ajax_load_log_file', ['file' => $logFile, 'page' => 1, 'limit' => 1]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -82,7 +85,7 @@ class LogControllerTest extends AppWebTestCase
      * Teste méthode deleteFile()
      * @return void
      */
-    public function testDeleteFile() :void
+    public function testDeleteFile(): void
     {
         $this->checkNoAccess('admin_log_ajax_delete_file', ['file' => 'auth-' . date('Y-m-d') . '.log'], 'DELETE');
 
@@ -109,7 +112,7 @@ class LogControllerTest extends AppWebTestCase
      * Test méthode downloadFile()
      * @return void
      */
-    public function testDownloadFile() :void
+    public function testDownloadFile(): void
     {
         $logFile = 'auth-' . date('Y-m-d') . '.log';
         $loggerService = $this->container->get(LoggerService::class);

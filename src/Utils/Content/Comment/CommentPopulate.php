@@ -37,7 +37,13 @@ class CommentPopulate
      */
     public function populate(): static
     {
-        $this->comment = $this->mergeData($this->comment, $this->populate, ['id', 'page', 'userModeration', 'createdAt', 'updateAt']);
+        $this->comment = $this->mergeData($this->comment, $this->populate, [
+            'id',
+            'page',
+            'userModeration',
+            'createdAt',
+            'updateAt',
+        ]);
         return $this;
     }
 

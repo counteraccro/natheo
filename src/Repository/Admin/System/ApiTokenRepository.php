@@ -54,16 +54,15 @@ class ApiTokenRepository extends ServiceEntityRepository
      */
     public function getAllPaginate(int $page, int $limit, ?string $search = null): Paginator
     {
-        $query = $this->createQueryBuilder('at')
-            ->orderBy('at.id', 'ASC');
+        $query = $this->createQueryBuilder('at')->orderBy('at.id', 'ASC');
 
         if ($search !== null) {
-            $query->where('at.name like :search')
-                ->setParameter('search', '%' . $search . '%');
+            $query->where('at.name like :search')->setParameter('search', '%' . $search . '%');
         }
 
         $paginator = new Paginator($query->getQuery(), true);
-        $paginator->getQuery()
+        $paginator
+            ->getQuery()
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;

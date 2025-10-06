@@ -20,7 +20,7 @@ trait OptionSystemFixturesTrait
      * @param bool $persist
      * @return OptionSystem
      */
-    public function createOptionSystem(array $customData = [], bool $persist = true) : OptionSystem
+    public function createOptionSystem(array $customData = [], bool $persist = true): OptionSystem
     {
         $data = [
             'key' => self::getFaker()->text(),
@@ -38,7 +38,8 @@ trait OptionSystemFixturesTrait
      * Génère les options système par défaut
      * @return void
      */
-    public function generateDefaultOptionSystem() : void {
+    public function generateDefaultOptionSystem(): void
+    {
         $data = [
             'key' => OptionSystemKey::OS_SITE_NAME,
             'value' => 'Nathéo CMS',

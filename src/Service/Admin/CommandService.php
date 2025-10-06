@@ -17,7 +17,6 @@ use Symfony\Component\Console\Output\NullOutput;
 
 class CommandService extends AppAdminService
 {
-
     /**
      * Permet de recharger le cache applicatif de Symfony
      * @throws ContainerExceptionInterface
@@ -68,7 +67,7 @@ class CommandService extends AppAdminService
 
         $input = new ArrayInput([
             'command' => 'doctrine:schema:drop',
-            '--force' => true
+            '--force' => true,
         ]);
 
         $output = new NullOutput();
@@ -88,7 +87,7 @@ class CommandService extends AppAdminService
 
         $input = new ArrayInput([
             'command' => 'doctrine:database:drop',
-            '--force' => true
+            '--force' => true,
         ]);
 
         $output = new NullOutput();
@@ -121,11 +120,11 @@ class CommandService extends AppAdminService
      */
     public function loadFixtures(): void
     {
-       $application = $this->getApplication();
+        $application = $this->getApplication();
 
         $input = new ArrayInput([
             'command' => 'doctrine:fixtures:load',
-            '--append' => true
+            '--append' => true,
         ]);
 
         $output = new BufferedOutput();
@@ -141,7 +140,7 @@ class CommandService extends AppAdminService
     private function getApplication(): Application
     {
         if (!defined('STDIN')) {
-            define('STDIN', fopen("php://stdin", "r"));
+            define('STDIN', fopen('php://stdin', 'r'));
         }
         $kernel = $this->getKernel();
 

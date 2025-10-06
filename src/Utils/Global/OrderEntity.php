@@ -123,8 +123,7 @@ class OrderEntity
     {
         $getFunction = 'get' . ucfirst($this->propertyName);
         foreach ($this->elements as &$element) {
-            if($element->$getFunction() === $order)
-            {
+            if ($element->$getFunction() === $order) {
                 return $element->getId();
             }
         }
@@ -138,9 +137,8 @@ class OrderEntity
     public function reOrderList(): OrderEntity
     {
         $setFunction = 'set' . ucfirst($this->propertyName);
-        $order  = 1;
-        foreach($this->elements as $element)
-        {
+        $order = 1;
+        foreach ($this->elements as $element) {
             $element->$setFunction($order);
             $order++;
         }
@@ -157,7 +155,7 @@ class OrderEntity
         $getFunction = 'get' . ucfirst($this->propertyName);
         $iterator = $this->elements->getIterator();
         $iterator->uasort(function ($a, $b) use ($getFunction) {
-            return ($a->$getFunction() < $b->$getFunction()) ? -1 : 1;
+            return $a->$getFunction() < $b->$getFunction() ? -1 : 1;
         });
         $this->elements = new ArrayCollection(iterator_to_array($iterator));
         return $this;
@@ -171,7 +169,6 @@ class OrderEntity
         return $this->elements;
     }
 
-
     /**
      * Retourne un element de la liste par sa property et sa valeur
      * @param string $property
@@ -181,9 +178,11 @@ class OrderEntity
     private function getElementByPropertyAndValue(string $property, mixed $value): object
     {
         $getFunction = 'get' . ucfirst($property);
-        $element = $this->elements->filter(function (object $element) use ($value, $getFunction) {
-            return $element->$getFunction() === $value;
-        })->first();
+        $element = $this->elements
+            ->filter(function (object $element) use ($value, $getFunction) {
+                return $element->$getFunction() === $value;
+            })
+            ->first();
 
         if (!$element) {
             throw new AssetNotFoundException('Item #' . $id . ' not found in list');
@@ -201,8 +200,9 @@ class OrderEntity
     {
         $element = $this->elements->first();
         if (!property_exists($element::class, $this->propertyName)) {
-            throw new PropertyException($this->propertyName .
-                '() property does not exist for object ' . $element::class);
+            throw new PropertyException(
+                $this->propertyName . '() property does not exist for object ' . $element::class,
+            );
         }
     }
 }

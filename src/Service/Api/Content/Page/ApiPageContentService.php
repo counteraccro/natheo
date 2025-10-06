@@ -25,7 +25,6 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class ApiPageContentService extends AppApiService
 {
-
     /**
      * @param ApiFindPageContentDto $dto
      * @param User|null $user
@@ -63,16 +62,28 @@ class ApiPageContentService extends AppApiService
 
         switch ($pageContent->getType()) {
             case PageConst::CONTENT_TYPE_TEXT:
-                $return['content'] = $this->formatContentText($pageContent->getPageContentTranslationByLocale($dto->getLocale())->getText());
+                $return['content'] = $this->formatContentText(
+                    $pageContent->getPageContentTranslationByLocale($dto->getLocale())->getText(),
+                );
                 break;
             case PageConst::CONTENT_TYPE_FAQ:
                 $return['content'] = $this->formatContentFAq($pageContent->getTypeId(), $dto->getLocale());
                 break;
             case PageConst::CONTENT_TYPE_LISTING:
-                $return['content'] = $this->formatContentListing($pageContent->getTypeId(), $dto->getLocale(), $dto->getPage(), $dto->getLimit());
+                $return['content'] = $this->formatContentListing(
+                    $pageContent->getTypeId(),
+                    $dto->getLocale(),
+                    $dto->getPage(),
+                    $dto->getLimit(),
+                );
                 $pageService = $this->getPageService();
                 $translator = $this->getTranslator();
-                $return['title'] = $translator->trans('page.content.listing.title', parameters: ['category' => $pageService->getCategoryById($pageContent->getPage()->getCategory())], domain: 'page', locale: $dto->getLocale());
+                $return['title'] = $translator->trans(
+                    'page.content.listing.title',
+                    parameters: ['category' => $pageService->getCategoryById($pageContent->getPage()->getCategory())],
+                    domain: 'page',
+                    locale: $dto->getLocale(),
+                );
                 break;
             default:
                 break;
@@ -118,13 +129,12 @@ class ApiPageContentService extends AppApiService
         $pageRepository = $this->getRepository(Page::class);
         $listePages = $pageRepository->getPagesByCategoryPaginate($currentPage, $limit, $typeListing);
 
-        foreach($listePages as $page)
-        {
+        foreach ($listePages as $page) {
             /** @var Page $page */
             $render = $page->getUser()->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue();
             $personalData = new PersonalData($page->getUser(), $render);
 
-            if($page->getPageTranslations()->count() === 0) {
+            if ($page->getPageTranslations()->count() === 0) {
                 continue;
             }
 
@@ -136,7 +146,7 @@ class ApiPageContentService extends AppApiService
                 'category' => $page->getCategory(),
                 'author' => $personalData->getPersonalData(),
                 'created' => $page->getCreatedAt()->getTimestamp(),
-                'update' => $page->getUpdateAt()->getTimestamp()
+                'update' => $page->getUpdateAt()->getTimestamp(),
             ];
         }
         $nb = $listePages->count();
@@ -144,7 +154,6 @@ class ApiPageContentService extends AppApiService
 
         return $return;
     }
-
 
     /**
      * Format une FAQ pour les API
@@ -161,11 +170,10 @@ class ApiPageContentService extends AppApiService
 
         $return = [
             'title' => $faq->getFaqTranslationByLocale($locale)->getTitle(),
-            'categories' => []
+            'categories' => [],
         ];
 
         foreach ($faq->getFaqCategories() as $faqCategory) {
-
             /** @var FaqCategory $category */
             if ($faqCategory->isDisabled()) {
                 continue;
@@ -173,18 +181,17 @@ class ApiPageContentService extends AppApiService
 
             $category = [
                 'title' => $faqCategory->getFaqCategoryTranslationByLocale($locale)->getTitle(),
-                'questions' => []
+                'questions' => [],
             ];
 
             foreach ($faqCategory->getFaqQuestions() as $faqQuestion) {
-
                 if ($faqQuestion->isDisabled()) {
                     continue;
                 }
 
                 $category['questions'][] = [
                     'title' => $faqQuestion->getFaqQuestionTranslationByLocale($locale)->getTitle(),
-                    'answer' => $faqQuestion->getFaqQuestionTranslationByLocale($locale)->getAnswer()
+                    'answer' => $faqQuestion->getFaqQuestionTranslationByLocale($locale)->getAnswer(),
                 ];
             }
             $return['categories'][] = $category;

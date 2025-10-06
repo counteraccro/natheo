@@ -20,7 +20,6 @@ use Symfony\Component\String\ByteString;
 
 class UserDataService extends AppAdminService
 {
-
     /**
      * Met à jour une dataUser avec value en fonction de sa clé et du user
      * @param string $key

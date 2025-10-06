@@ -33,8 +33,14 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\String\ByteString;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route('{_locale}/admin/', name: 'auth_', requirements: ['_locale' => '%app.supported_locales%'],
-    defaults: ["_locale" => "%app.default_locale%"])]
+#[
+    Route(
+        '{_locale}/admin/',
+        name: 'auth_',
+        requirements: ['_locale' => '%app.supported_locales%'],
+        defaults: ['_locale' => '%app.default_locale%'],
+    ),
+]
 class SecurityController extends AbstractController
 {
     /**
@@ -85,13 +91,12 @@ class SecurityController extends AbstractController
     #[Route(path: 'change-password/{key}', name: 'change_password_user', methods: ['GET'])]
     #[Route(path: 'new-password/{key}', name: 'change_new_password_user', methods: ['GET'])]
     public function changePasswordAdm(
-        string              $key,
-        SecurityService     $securityService,
+        string $key,
+        SecurityService $securityService,
         TranslatorInterface $translator,
-        UserTranslate       $userTranslate,
-        Request             $request
-    ): Response
-    {
+        UserTranslate $userTranslate,
+        Request $request,
+    ): Response {
         $user = $securityService->canChangePassword($key);
 
         if ($user === null) {
@@ -106,7 +111,7 @@ class SecurityController extends AbstractController
         return $this->render('security/admin/change_password.html.twig', [
             'changePasswordTranslate' => $userTranslate->getTranslateChangePassword(),
             'user' => $user,
-            'new' => $new
+            'new' => $new,
         ]);
     }
 
@@ -123,18 +128,17 @@ class SecurityController extends AbstractController
     #[Route('/change-password/update/{id}', name: 'change_password_update_user', methods: ['POST'])]
     public function updatePassword(
         #[MapEntity(id: 'id')] User $user,
-        UserService                 $userService,
-        Request                     $request,
-        TranslatorInterface         $translator
-    ): JsonResponse
-    {
+        UserService $userService,
+        Request $request,
+        TranslatorInterface $translator,
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
         $userService->updatePassword($user, $data['data']);
 
         return $this->json([
             'status' => 'success',
             'msg' => $translator->trans('user.change_password.success', domain: 'user'),
-            'redirect' => $this->generateUrl('auth_user_login')
+            'redirect' => $this->generateUrl('auth_user_login'),
         ]);
     }
 
@@ -153,35 +157,31 @@ class SecurityController extends AbstractController
      */
     #[Route('reset-password/update', name: 'reset_password_user', methods: ['GET', 'POST'])]
     public function resetPassword(
-        Request             $request,
-        UserService         $userService,
-        MailService         $mailService,
+        Request $request,
+        UserService $userService,
+        MailService $mailService,
         OptionSystemService $optionSystemService,
-        UserDataService     $userDataService,
-        TranslatorInterface $translator
-    ): Response
-    {
+        UserDataService $userDataService,
+        TranslatorInterface $translator,
+    ): Response {
         $msg = '';
         $email = $request->get('email');
 
         if (!empty($email)) {
-
             $msg = $translator->trans('user.reset_password.success', domain: 'user');
 
             $user = $userService->findOneBy(User::class, 'email', $email);
 
             if ($user != null) {
-
                 $key = ByteString::fromRandom(48)->toString();
                 $userDataService->update(UserDataKey::KEY_RESET_PASSWORD, $key, $user);
-
 
                 $mail = $mailService->getByKey(MailKey::MAIL_CHANGE_PASSWORD);
                 $keyWord = new KeyWord($mail->getKey());
                 $tabKeyWord = $keyWord->getMailChangePassword(
                     $user,
                     $this->generateUrl('auth_change_password_user', ['key' => $key]),
-                    $optionSystemService
+                    $optionSystemService,
                 );
                 $params = $mailService->getDefaultParams($mail, $tabKeyWord);
                 $params[MailService::TO] = $user->getEmail();
@@ -191,7 +191,7 @@ class SecurityController extends AbstractController
         }
 
         return $this->render('security/admin/reset_password.html.twig', [
-            'msg' => $msg
+            'msg' => $msg,
         ]);
     }
 }

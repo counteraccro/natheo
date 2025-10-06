@@ -46,13 +46,11 @@ class MediaFolderRepository extends ServiceEntityRepository
      * @param bool $disabled : par défaut false
      * @return float|int|mixed|string
      */
-    public function getByMediaFolder
-    (
+    public function getByMediaFolder(
         ?MediaFolder $mediaFolder = null,
-        bool         $trash = false,
-        bool         $disabled = false
-    ): mixed
-    {
+        bool $trash = false,
+        bool $disabled = false,
+    ): mixed {
         $query = $this->createQueryBuilder('mf')
             ->andWhere('mf.disabled = :disabled')
             ->setParameter('disabled', $disabled)
@@ -68,7 +66,6 @@ class MediaFolderRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
-
     /**
      * Retourne une liste de médiaFolder contenant dans path la chaine $name
      * @param string $name
@@ -80,7 +77,8 @@ class MediaFolderRepository extends ServiceEntityRepository
             ->andWhere('m.path LIKE :name')
             ->setParameter('name', '%' . $name . '%')
             ->orderBy('m.id', 'ASC')
-            ->getQuery()->getResult();
+            ->getQuery()
+            ->getResult();
     }
 
     /**
@@ -94,13 +92,13 @@ class MediaFolderRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('m');
 
         if ($mediaFolder != null) {
-            $queryBuilder->andWhere('m.path NOT LIKE :name')
+            $queryBuilder
+                ->andWhere('m.path NOT LIKE :name')
                 ->setParameter('name', '%' . $mediaFolder->getName() . '%')
                 ->andWhere('m.id != :id')
                 ->setParameter('id', $mediaFolder->getId());
         }
-        return $queryBuilder->orderBy('m.id', 'ASC')
-            ->getQuery()->getResult();
+        return $queryBuilder->orderBy('m.id', 'ASC')->getQuery()->getResult();
     }
 
     /**
@@ -112,7 +110,8 @@ class MediaFolderRepository extends ServiceEntityRepository
         $result = $this->createQueryBuilder('m')
             ->select('count(m.id) as nb')
             ->where('m.trash = true')
-            ->getQuery()->getScalarResult();
+            ->getQuery()
+            ->getScalarResult();
 
         if (isset($result[0]['nb'])) {
             return $result[0]['nb'];

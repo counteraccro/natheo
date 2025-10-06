@@ -39,7 +39,6 @@ class ApiParametersCommentByPageRef
      */
     public const string PARAM_LIMIT = 'limit';
 
-
     /**
      * Paramètre order_by
      * @var string

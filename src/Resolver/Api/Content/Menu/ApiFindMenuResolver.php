@@ -21,7 +21,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApiFindMenuResolver extends AppApiResolver implements ValueResolverInterface
 {
-
     /**
      * Permet de mapper ApiAuthUserDto avec Request
      * @param Request $request
@@ -32,7 +31,6 @@ class ApiFindMenuResolver extends AppApiResolver implements ValueResolverInterfa
      */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-
         // Test pour éviter que ce résolver soit appeler pour autre chose que ApiAuthUserDto
         $argumentType = $argument->getType();
         if (!is_a($argumentType, ApiFindMenuDto::class, true)) {
@@ -57,10 +55,10 @@ class ApiFindMenuResolver extends AppApiResolver implements ValueResolverInterfa
             $tabParameters[ApiParametersFindMenuRef::PARAM_PAGE_SLUG],
             $tabParameters[ApiParametersFindMenuRef::PARAM_POSITION],
             $tabParameters[ApiParametersFindMenuRef::PARAM_LOCALE],
-            $tabParameters[ApiParametersFindMenuRef::PARAM_USER_TOKEN]
+            $tabParameters[ApiParametersFindMenuRef::PARAM_USER_TOKEN],
         );
 
-       $this->validateDto($dto);
+        $this->validateDto($dto);
         return [$dto];
     }
 
@@ -70,15 +68,25 @@ class ApiFindMenuResolver extends AppApiResolver implements ValueResolverInterfa
         $translator = $this->handlers->get('translator');
 
         // Cas id et page_slug sont vides (n'existe pas dans la query)
-        if (empty($parameters[ApiParametersFindMenuRef::PARAM_ID])
-            && empty($parameters[ApiParametersFindMenuRef::PARAM_PAGE_SLUG])) {
-            throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.find.menu.not.id.slug.together', domain: 'api_errors'));
+        if (
+            empty($parameters[ApiParametersFindMenuRef::PARAM_ID]) &&
+            empty($parameters[ApiParametersFindMenuRef::PARAM_PAGE_SLUG])
+        ) {
+            throw new HttpException(
+                Response::HTTP_FORBIDDEN,
+                $translator->trans('api_errors.find.menu.not.id.slug.together', domain: 'api_errors'),
+            );
         }
 
         // Cas id et page_slug ensemble
-        if (!empty($parameters[ApiParametersFindMenuRef::PARAM_ID])
-            && !empty($parameters[ApiParametersFindMenuRef::PARAM_PAGE_SLUG])) {
-            throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.find.menu.id.slug.together', domain: 'api_errors'));
+        if (
+            !empty($parameters[ApiParametersFindMenuRef::PARAM_ID]) &&
+            !empty($parameters[ApiParametersFindMenuRef::PARAM_PAGE_SLUG])
+        ) {
+            throw new HttpException(
+                Response::HTTP_FORBIDDEN,
+                $translator->trans('api_errors.find.menu.id.slug.together', domain: 'api_errors'),
+            );
         }
     }
 }

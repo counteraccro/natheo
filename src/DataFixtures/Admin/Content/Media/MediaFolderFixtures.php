@@ -26,23 +26,26 @@ class MediaFolderFixtures extends AppFixtures implements FixtureGroupInterface, 
 {
     private MediaFolderService $mediaFolderService;
 
-
     /**
      * @param ContainerInterface $handlers
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function __construct(#[AutowireLocator([
-        'container' => ContainerBagInterface::class,
-        'mediaFolderService' => MediaFolderService::class
-    ])] private readonly ContainerInterface $handlers)
-    {
+    public function __construct(
+        #[
+            AutowireLocator([
+                'container' => ContainerBagInterface::class,
+                'mediaFolderService' => MediaFolderService::class,
+            ]),
+        ]
+        private readonly ContainerInterface $handlers,
+    ) {
         $this->mediaFolderService = $this->handlers->get('mediaFolderService');
         parent::__construct($this->handlers);
     }
 
-    const TAG_FIXTURES_DATA_FILE = 'content' . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR .
-    'media_folder_fixtures_data.yaml';
+    const TAG_FIXTURES_DATA_FILE =
+        'content' . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR . 'media_folder_fixtures_data.yaml';
 
     public function load(ObjectManager $manager): void
     {
@@ -54,7 +57,7 @@ class MediaFolderFixtures extends AppFixtures implements FixtureGroupInterface, 
 
             foreach ($folder as $key => $value) {
                 switch ($key) {
-                    case 'parent' :
+                    case 'parent':
                         $this->setParent($value, $mediaFolder);
                         break;
                     default:
@@ -66,7 +69,6 @@ class MediaFolderFixtures extends AppFixtures implements FixtureGroupInterface, 
             $this->addReference($ref, $mediaFolder);
         }
         $manager->flush();
-
     }
 
     /**

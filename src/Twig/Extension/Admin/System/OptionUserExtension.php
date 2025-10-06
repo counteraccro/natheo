@@ -32,14 +32,15 @@ class OptionUserExtension extends AppAdminExtension
      * @throws NotFoundExceptionInterface
      */
     public function __construct(
-        #[AutowireLocator([
-            'translator' => TranslatorInterface::class,
-            'router' => RouterInterface::class,
-            'optionUserService' => OptionUserService::class
-        ])]
-        private readonly ContainerInterface $handlers
-    )
-    {
+        #[
+            AutowireLocator([
+                'translator' => TranslatorInterface::class,
+                'router' => RouterInterface::class,
+                'optionUserService' => OptionUserService::class,
+            ]),
+        ]
+        private readonly ContainerInterface $handlers,
+    ) {
         $this->optionUserService = $this->handlers->get('optionUserService');
         parent::__construct($this->handlers);
     }

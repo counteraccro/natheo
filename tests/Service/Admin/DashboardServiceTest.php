@@ -44,7 +44,7 @@ class DashboardServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetBlockHelpConfig():void
+    public function testGetBlockHelpConfig(): void
     {
         $apiToken = $this->createApiToken(['token' => ApiTokenConst::API_TOKEN_READ]);
 
@@ -94,7 +94,7 @@ class DashboardServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetBlockLastComment() :void
+    public function testGetBlockLastComment(): void
     {
         $page = $this->createPage();
         foreach ($this->locales as $locale) {
@@ -123,7 +123,7 @@ class DashboardServiceTest extends AppWebTestCase
      * @param array $array
      * @return void
      */
-    private function checkValidFormatErrorReturnBlockHelpConfig(string $key, array $array):void
+    private function checkValidFormatErrorReturnBlockHelpConfig(string $key, array $array): void
     {
         $this->assertArrayHasKey($key, $array);
         $this->assertArrayHasKey('success', $array[$key]);
@@ -138,7 +138,7 @@ class DashboardServiceTest extends AppWebTestCase
      * @param array $array
      * @return void
      */
-    private function checkValidFormatSuccessReturnBlockHelpConfig(string $key, array $array):void
+    private function checkValidFormatSuccessReturnBlockHelpConfig(string $key, array $array): void
     {
         $this->assertArrayHasKey($key, $array);
         $this->assertArrayHasKey('success', $array[$key]);

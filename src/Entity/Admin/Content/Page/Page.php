@@ -15,7 +15,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinTable;
 
-
 #[ORM\Entity(repositoryClass: PageRepository::class)]
 #[ORM\Table(name: 'page')]
 #[ORM\HasLifecycleCallbacks]
@@ -64,7 +63,7 @@ class Page
     private Collection $pageTranslations;
 
     #[ORM\OneToMany(targetEntity: PageContent::class, mappedBy: 'page', cascade: ['persist'], orphanRemoval: true)]
-    #[ORM\OrderBy(["renderBlock" => "ASC"])]
+    #[ORM\OrderBy(['renderBlock' => 'ASC'])]
     private Collection $pageContents;
 
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'pages')]
@@ -96,12 +95,18 @@ class Page
     /**
      * @var Collection<int, PageMeta>
      */
-    #[ORM\OneToMany(targetEntity: PageMeta::class, mappedBy: 'page', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[
+        ORM\OneToMany(
+            targetEntity: PageMeta::class,
+            mappedBy: 'page',
+            cascade: ['persist', 'remove'],
+            orphanRemoval: true,
+        ),
+    ]
     private Collection $pageMetas;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $headerImg = null;
-
 
     public function __construct()
     {
@@ -127,7 +132,6 @@ class Page
     {
         $this->updateAt = new \DateTime();
     }
-
 
     public function getId(): ?int
     {
@@ -327,9 +331,11 @@ class Page
      */
     public function getPageTranslationByLocale(string $locale): PageTranslation
     {
-        return $this->getPageTranslations()->filter(function (PageTranslation $pageTranslation) use ($locale) {
-            return $pageTranslation->getLocale() === $locale;
-        })->first();
+        return $this->getPageTranslations()
+            ->filter(function (PageTranslation $pageTranslation) use ($locale) {
+                return $pageTranslation->getLocale() === $locale;
+            })
+            ->first();
     }
 
     /**
@@ -338,9 +344,11 @@ class Page
      */
     public function getPageStatistiqueByKey(string $key): PageStatistique
     {
-        return $this->getPageStatistiques()->filter(function (PageStatistique $pageStatistique) use ($key) {
-            return $pageStatistique->getKey() === $key;
-        })->first();
+        return $this->getPageStatistiques()
+            ->filter(function (PageStatistique $pageStatistique) use ($key) {
+                return $pageStatistique->getKey() === $key;
+            })
+            ->first();
     }
 
     /**

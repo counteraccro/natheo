@@ -19,7 +19,6 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class TagService extends AppAdminService
 {
-
     /**
      * Retourne une liste de tag paginé
      * @param int $page
@@ -49,7 +48,6 @@ class TagService extends AppAdminService
         $translator = $this->getTranslator();
         $gridService = $this->getGridService();
         $requestStack = $this->getRequestStack();
-
 
         $column = [
             $translator->trans('tag.grid.id', domain: 'tag'),
@@ -82,9 +80,9 @@ class TagService extends AppAdminService
                 $translator->trans('tag.grid.label', domain: 'tag') => $tagRender->getHtml(),
                 $translator->trans('tag.grid.color', domain: 'tag') => $element->getColor(),
                 $translator->trans('tag.grid.created_at', domain: 'tag') => $element
-                    ->getCreatedAt()->format('d/m/y H:i'),
-                $translator->trans('tag.grid.update_at', domain: 'tag') => $element
-                    ->getUpdateAt()->format('d/m/y H:i'),
+                    ->getCreatedAt()
+                    ->format('d/m/y H:i'),
+                $translator->trans('tag.grid.update_at', domain: 'tag') => $element->getUpdateAt()->format('d/m/y H:i'),
                 GridService::KEY_ACTION => $action,
             ];
         }
@@ -93,10 +91,9 @@ class TagService extends AppAdminService
             GridService::KEY_NB => $nb,
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
-            GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate)
+            GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate),
         ];
         return $gridService->addAllDataRequiredGrid($tabReturn);
-
     }
 
     /**
@@ -115,32 +112,32 @@ class TagService extends AppAdminService
 
         $label = $tag->getTagTranslationByLocale($requestStack->getCurrentRequest()->getLocale())->getLabel();
 
-        $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
+        $actionDisabled = [
+            'label' => '<i class="bi bi-eye-slash-fill"></i>',
             'type' => 'put',
             'url' => $router->generate('admin_tag_update_disabled', ['id' => $tag->getId()]),
             'ajax' => true,
             'confirm' => true,
-            'msgConfirm' => $translator->trans('tag.confirm.disabled.msg', ['label' => $label], 'tag')];
+            'msgConfirm' => $translator->trans('tag.confirm.disabled.msg', ['label' => $label], 'tag'),
+        ];
         if ($tag->isDisabled()) {
             $actionDisabled = [
                 'label' => '<i class="bi bi-eye-fill"></i>',
                 'type' => 'put',
                 'url' => $router->generate('admin_tag_update_disabled', ['id' => $tag->getId()]),
-                'ajax' => true
+                'ajax' => true,
             ];
         }
 
         $actionDelete = '';
         if ($optionSystemService->canDelete()) {
-
             $actionDelete = [
                 'label' => '<i class="bi bi-trash"></i>',
                 'type' => 'delete',
                 'url' => $router->generate('admin_tag_delete', ['id' => $tag->getId()]),
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $translator->trans('tag.confirm.delete.msg', ['label' =>
-                    $label], 'tag')
+                'msgConfirm' => $translator->trans('tag.confirm.delete.msg', ['label' => $label], 'tag'),
             ];
         }
 
@@ -151,11 +148,13 @@ class TagService extends AppAdminService
         }
 
         // Bouton edit
-        $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
+        $actions[] = [
+            'label' => '<i class="bi bi-pencil-fill"></i>',
             'type' => 'post',
             'id' => $tag->getId(),
             'url' => $router->generate('admin_tag_update', ['id' => $tag->getId()]),
-            'ajax' => false];
+            'ajax' => false,
+        ];
 
         return $actions;
     }
@@ -176,12 +175,16 @@ class TagService extends AppAdminService
 
         $return = [];
         foreach ($result as $row) {
-            $return[$row['id']] =
-                [
-                    'label' => '<span class="me-1 badge rounded-pill badge-nat no-control" 
-            style="background-color: ' . $row['color'] . ';">' . $row['label'] . '</span>',
-                    'data' => $row['label']
-                ];
+            $return[$row['id']] = [
+                'label' =>
+                    '<span class="me-1 badge rounded-pill badge-nat no-control" 
+            style="background-color: ' .
+                    $row['color'] .
+                    ';">' .
+                    $row['label'] .
+                    '</span>',
+                'data' => $row['label'],
+            ];
         }
         return $return;
     }
@@ -223,7 +226,7 @@ class TagService extends AppAdminService
         }
 
         $tag = new Tag();
-        $tag->setColor('#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT));
+        $tag->setColor('#' . str_pad(dechex(mt_rand(0, 0xffffff)), 6, '0', STR_PAD_LEFT));
 
         $locales = $this->getLocales();
         foreach ($locales['locales'] as $loc) {

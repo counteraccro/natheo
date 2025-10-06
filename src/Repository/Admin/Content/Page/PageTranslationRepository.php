@@ -29,13 +29,10 @@ class PageTranslationRepository extends ServiceEntityRepository
      */
     public function isUniqueUrl(string $url, ?int $id = null): bool
     {
-        $query = $this->createQueryBuilder('pt')
-            ->andWhere('pt.url = :val')
-            ->setParameter('val', $url);
+        $query = $this->createQueryBuilder('pt')->andWhere('pt.url = :val')->setParameter('val', $url);
 
         if ($id !== null) {
-            $query->andWhere('pt.id != :id')
-                ->setParameter('id', $id);
+            $query->andWhere('pt.id != :id')->setParameter('id', $id);
         }
         $result = $query->getQuery()->getOneOrNullResult();
 

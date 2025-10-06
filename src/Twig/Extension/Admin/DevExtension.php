@@ -30,21 +30,22 @@ class DevExtension extends AppAdminExtension
      */
     private GitService $gitService;
 
-
     /**
      * @param ContainerInterface $handlers
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     public function __construct(
-        #[AutowireLocator([
-            'translator' => TranslatorInterface::class,
-            'router' => RouterInterface::class,
-            'parameterBag' => ParameterBagInterface::class,
-            'gitService' => GitService::class
-        ])]
-        private readonly ContainerInterface $handlers)
-    {
+        #[
+            AutowireLocator([
+                'translator' => TranslatorInterface::class,
+                'router' => RouterInterface::class,
+                'parameterBag' => ParameterBagInterface::class,
+                'gitService' => GitService::class,
+            ]),
+        ]
+        private readonly ContainerInterface $handlers,
+    ) {
         $this->parameterBag = $this->handlers->get('parameterBag');
         $this->gitService = $this->handlers->get('gitService');
         parent::__construct($this->handlers);
@@ -65,8 +66,13 @@ class DevExtension extends AppAdminExtension
         if ($debug) {
             $return = $this->getDevInfo();
         } else {
-            $return = '<i class="bi bi-bug-fill"></i> <i>
-            ' . $this->translator->trans('dev.info.version', domain: 'dev') . ' <b>' . $version . '</b></i>';
+            $return =
+                '<i class="bi bi-bug-fill"></i> <i>
+            ' .
+                $this->translator->trans('dev.info.version', domain: 'dev') .
+                ' <b>' .
+                $version .
+                '</b></i>';
         }
 
         return $return;
@@ -83,34 +89,59 @@ class DevExtension extends AppAdminExtension
         $version = $this->parameterBag->get('app.version');
         $env = $this->parameterBag->get('kernel.environment');
         $infoGit = $this->gitService->getInfoGit();
-        $database = match(InstallationConst::STRATEGY) {
+        $database = match (InstallationConst::STRATEGY) {
             InstallationConst::STRATEGY_MYSQL => 'Mysql',
             InstallationConst::STRATEGY_POSTGRESQL => 'PostgreSQL',
         };
-        
+
         return '<fieldset>
-        <legend class="text-white">' . $this->translator->trans('dev.info', domain: 'dev') . '</legend>
+        <legend class="text-white">' .
+            $this->translator->trans('dev.info', domain: 'dev') .
+            '</legend>
             <i class="bi bi-git"></i> <i>
-            ' . $this->translator->trans('dev.info.branche', domain: 'dev') .
-            ' <b>' . $infoGit[GitService::KEY_BRANCHE] . '</b></i> <br />
+            ' .
+            $this->translator->trans('dev.info.branche', domain: 'dev') .
+            ' <b>' .
+            $infoGit[GitService::KEY_BRANCHE] .
+            '</b></i> <br />
             <i class="bi bi-github"></i> <i>
-            ' . $this->translator->trans('dev.info.last.commit', domain: 'dev') .
-            ' <b><abbr title="' . $infoGit[GitService::KEY_HASH] . '">'
-            . substr($infoGit[GitService::KEY_HASH], 0, 7) . '</abbr></b></i>
+            ' .
+            $this->translator->trans('dev.info.last.commit', domain: 'dev') .
+            ' <b><abbr title="' .
+            $infoGit[GitService::KEY_HASH] .
+            '">' .
+            substr($infoGit[GitService::KEY_HASH], 0, 7) .
+            '</abbr></b></i>
             <br />
              <i class="bi bi-calendar3"></i> <i>
-            ' . $this->translator->trans('dev.info.date.last.commit', domain: 'dev') .
-            ' <b><abbr title="' . $infoGit[GitService::KEY_LAST_COMMIT] . '">'
-            . $infoGit[GitService::KEY_LAST_COMMIT_SHORT] . '</abbr></b></i>
+            ' .
+            $this->translator->trans('dev.info.date.last.commit', domain: 'dev') .
+            ' <b><abbr title="' .
+            $infoGit[GitService::KEY_LAST_COMMIT] .
+            '">' .
+            $infoGit[GitService::KEY_LAST_COMMIT_SHORT] .
+            '</abbr></b></i>
             <br />
             <i class="bi bi-bug-fill"></i> <i>
-            ' . $this->translator->trans('dev.info.version', domain: 'dev') . ' <b>' . $version . '</b></i>
+            ' .
+            $this->translator->trans('dev.info.version', domain: 'dev') .
+            ' <b>' .
+            $version .
+            '</b></i>
              <br />
             <i class="bi bi-hdd-fill"></i> <i>
-            ' . $this->translator->trans('dev.info.env', domain: 'dev') . ' <b>' . $env . '</b></i>
+            ' .
+            $this->translator->trans('dev.info.env', domain: 'dev') .
+            ' <b>' .
+            $env .
+            '</b></i>
             <br />
             <i class="bi bi-database-fill"></i> <i>
-            ' . $this->translator->trans('dev.info.database', domain: 'dev') .' <b> ' . $database . '</b>
+            ' .
+            $this->translator->trans('dev.info.database', domain: 'dev') .
+            ' <b> ' .
+            $database .
+            '</b>
             </i>
         </fieldset>';
     }

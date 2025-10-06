@@ -29,12 +29,24 @@ class FaqCategory
     #[ORM\Column(name: 'render_order')]
     private ?int $renderOrder = null;
 
-    #[ORM\OneToMany(targetEntity: FaqCategoryTranslation::class, mappedBy: 'faqCategory',
-        cascade: ['persist'], orphanRemoval: true)]
+    #[
+        ORM\OneToMany(
+            targetEntity: FaqCategoryTranslation::class,
+            mappedBy: 'faqCategory',
+            cascade: ['persist'],
+            orphanRemoval: true,
+        ),
+    ]
     private Collection $faqCategoryTranslations;
 
-    #[ORM\OneToMany(targetEntity: FaqQuestion::class, mappedBy: 'faqCategory',
-        cascade: ['persist'], orphanRemoval: true)]
+    #[
+        ORM\OneToMany(
+            targetEntity: FaqQuestion::class,
+            mappedBy: 'faqCategory',
+            cascade: ['persist'],
+            orphanRemoval: true,
+        ),
+    ]
     #[ORM\OrderBy(['renderOrder' => 'asc'])]
     private Collection $faqQuestions;
 
@@ -129,8 +141,7 @@ class FaqCategory
      */
     public function getSortedFaqQuestion(Order $sort = Order::Ascending): Collection
     {
-        $criteria = Criteria::create()
-            ->orderBy(array("renderOrder" => $sort));
+        $criteria = Criteria::create()->orderBy(['renderOrder' => $sort]);
 
         return $this->faqQuestions->matching($criteria);
     }
@@ -164,10 +175,11 @@ class FaqCategory
      */
     public function getFaqCategoryTranslationByLocale(string $locale): FaqCategoryTranslation
     {
-        return $this->faqCategoryTranslations->filter(
-            function (FaqCategoryTranslation $faqCategoryTranslation) use ($locale) {
+        return $this->faqCategoryTranslations
+            ->filter(function (FaqCategoryTranslation $faqCategoryTranslation) use ($locale) {
                 return $faqCategoryTranslation->getLocale() === $locale;
-            })->first();
+            })
+            ->first();
     }
 
     /**

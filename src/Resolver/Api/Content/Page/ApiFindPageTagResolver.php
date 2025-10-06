@@ -19,7 +19,6 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 class ApiFindPageTagResolver extends AppApiResolver implements ValueResolverInterface
 {
-
     /**
      * Permet de mapper ApiFindPageContent avec Request
      * @param Request $request
@@ -30,7 +29,6 @@ class ApiFindPageTagResolver extends AppApiResolver implements ValueResolverInte
      */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-
         // Test pour éviter que ce résolver soit appeler pour autre chose que ApiAuthUserDto
         $argumentType = $argument->getType();
         if (!is_a($argumentType, ApiFindPageTagDto::class, true)) {
@@ -55,7 +53,7 @@ class ApiFindPageTagResolver extends AppApiResolver implements ValueResolverInte
             $tabParameters[ApiParametersFindPageTagRef::PARAM_LOCALE],
             intval($tabParameters[ApiParametersFindPageTagRef::PARAM_PAGE]),
             intval($tabParameters[ApiParametersFindPageTagRef::PARAM_LIMIT]),
-            $tabParameters[ApiParametersFindPageTagRef::PARAM_USER_TOKEN]
+            $tabParameters[ApiParametersFindPageTagRef::PARAM_USER_TOKEN],
         );
 
         $this->validateDto($dto);

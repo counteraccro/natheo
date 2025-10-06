@@ -25,8 +25,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/admin/{_locale}/notification', name: 'admin_notification_',
-    requirements: ['_locale' => '%app.supported_locales%'])]
+#[
+    Route(
+        '/admin/{_locale}/notification',
+        name: 'admin_notification_',
+        requirements: ['_locale' => '%app.supported_locales%'],
+    ),
+]
 #[IsGranted('ROLE_USER')]
 class NotificationController extends AppAdminController
 {
@@ -40,7 +45,6 @@ class NotificationController extends AppAdminController
     #[Route('/', name: 'index')]
     public function index(OptionSystemService $optionSystemService): Response
     {
-
         if (!$optionSystemService->canNotification()) {
             return $this->redirectToRoute('admin_dashboard_index');
         }
@@ -49,15 +53,15 @@ class NotificationController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'notification',
             Breadcrumb::BREADCRUMB => [
-                'notification.page_title_h1' => '#'
-            ]
+                'notification.page_title_h1' => '#',
+            ],
         ];
 
         return $this->render('admin/notification/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
             'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
-            'nbDay' => $nbDay
+            'nbDay' => $nbDay,
         ]);
     }
 
@@ -93,12 +97,11 @@ class NotificationController extends AppAdminController
     public function list(
         Request $request,
         NotificationService $notificationService,
-        GridService         $gridService,
-        int                 $page = 1,
-        int                 $limit = 20,
-        int                 $pOnlyNotRead = 1
-    ): JsonResponse
-    {
+        GridService $gridService,
+        int $page = 1,
+        int $limit = 20,
+        int $pOnlyNotRead = 1,
+    ): JsonResponse {
         $onlyNotRead = false;
         if ($pOnlyNotRead === 1) {
             $onlyNotRead = true;
@@ -113,7 +116,7 @@ class NotificationController extends AppAdminController
             'urlRead' => $this->generateUrl('admin_notification_read'),
             'urlReadAll' => $this->generateUrl('admin_notification_read_all'),
             'listLimit' => $gridService->addOptionsSelectLimit([])['listLimit'],
-            'locale' => $request->getLocale()
+            'locale' => $request->getLocale(),
         ]);
     }
 
@@ -134,8 +137,7 @@ class NotificationController extends AppAdminController
         $notification->setRead(true);
         $notificationService->save($notification);
 
-        return $this->json(
-            ['success' => true]);
+        return $this->json(['success' => true]);
     }
 
     /**

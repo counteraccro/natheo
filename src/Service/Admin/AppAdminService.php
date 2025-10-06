@@ -28,14 +28,13 @@ use Symfony\Component\Serializer\Serializer;
 
 class AppAdminService extends AppAdminHandlerService
 {
-
     /**
      * Structure de la réponse d'un appel AJAX
      * @var array|
      */
     private array $ajaxResponse = [
         'success' => false,
-        'msg' => ''
+        'msg' => '',
     ];
 
     /**
@@ -120,7 +119,6 @@ class AppAdminService extends AppAdminHandlerService
         }
     }
 
-
     /**
      * Permet de vérifier les droits
      * @param User $user
@@ -133,11 +131,10 @@ class AppAdminService extends AppAdminHandlerService
     protected function isGranted(User $user, array $attributes, mixed $object = null): bool
     {
         $accessDecisionManager = $this->getAccessDecisionManager();
-        
+
         $token = new UsernamePasswordToken($user, 'none', $user->getRoles());
         return $accessDecisionManager->decide($token, $attributes, $object);
     }
-
 
     /**
      * Retourne une entité en fonction de son id
@@ -180,12 +177,11 @@ class AppAdminService extends AppAdminHandlerService
      */
     public function findBy(
         string $entity,
-        array  $criteria = [],
-        array  $orderBy = [],
-        ?int   $limit = null,
-        ?int $offset = null
-    ): array
-    {
+        array $criteria = [],
+        array $orderBy = [],
+        ?int $limit = null,
+        ?int $offset = null,
+    ): array {
         $repo = $this->getRepository($entity);
         return $repo->findBy($criteria, $orderBy, $limit, $offset);
     }
@@ -203,7 +199,7 @@ class AppAdminService extends AppAdminHandlerService
             AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
                 return $object->getId();
             },
-            AbstractNormalizer::IGNORED_ATTRIBUTES => $ignoredAttributes
+            AbstractNormalizer::IGNORED_ATTRIBUTES => $ignoredAttributes,
         ];
         $normalizer = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
         $serializer = new Serializer([$normalizer], []);
@@ -219,19 +215,17 @@ class AppAdminService extends AppAdminHandlerService
      */
     public function convertObjectsToJson($objects, array $ignoredAttributes = []): string
     {
-
         $defaultContext = [
             AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object, $format, $context) {
                 return $object->getId();
             },
-            AbstractNormalizer::IGNORED_ATTRIBUTES => $ignoredAttributes
+            AbstractNormalizer::IGNORED_ATTRIBUTES => $ignoredAttributes,
         ];
         $normalizer = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
         $serializer = new Serializer([$normalizer], [new JsonEncoder()]);
 
         return $serializer->serialize($objects, 'json', $defaultContext);
     }
-
 
     /**
      * Met à jour l'objet entity avec les données de $array
@@ -246,15 +240,10 @@ class AppAdminService extends AppAdminHandlerService
         $normalizer = new ObjectNormalizer(null, null, null, $extractor);
         $serializer = new Serializer([$normalizer, new ArrayDenormalizer()]);
 
-        return $serializer->denormalize(
-            $array,
-            $objectClass,
-            null,
-            [
-                AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true,
-                AbstractNormalizer::OBJECT_TO_POPULATE => $object
-            ]
-        );
+        return $serializer->denormalize($array, $objectClass, null, [
+            AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true,
+            AbstractNormalizer::OBJECT_TO_POPULATE => $object,
+        ]);
     }
 
     /**
@@ -270,9 +259,8 @@ class AppAdminService extends AppAdminHandlerService
     {
         $optionSystemService = $this->getOptionSystemService();
         if ($this->getRequestStack()->getCurrentRequest() !== null) {
-            $current =  $this->getRequestStack()->getCurrentRequest()->getLocale();
-        }
-        else {
+            $current = $this->getRequestStack()->getCurrentRequest()->getLocale();
+        } else {
             $current = $optionSystemService->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE);
         }
 
@@ -287,8 +275,7 @@ class AppAdminService extends AppAdminHandlerService
         return [
             'locales' => array_values(array_unique($locales)),
             'localesTranslate' => $localesTranslate,
-            'current' => $current
+            'current' => $current,
         ];
     }
-
 }

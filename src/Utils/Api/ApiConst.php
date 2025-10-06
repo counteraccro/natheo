@@ -8,7 +8,6 @@ namespace App\Utils\Api;
 
 class ApiConst
 {
-
     /**
      * Taille du token pour le user
      * @var int

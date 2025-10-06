@@ -5,135 +5,141 @@
  */
 
 body {
-  font-family: 'Verdana', 'Poppins', sans-serif;
-  //background-color: var(--light);
-  font-size: 0.9em;
+    font-family: 'Verdana', 'Poppins', sans-serif;
+    //background-color: var(--light);
+    font-size: 0.9em;
 }
 
 p {
-  font-weight: 300;
-  line-height: 1.7em;
-  color: #999;
+    font-weight: 300;
+    line-height: 1.7em;
+    color: #999;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  color: var(--primary);
-  //background: linear-gradient(to right, $light, #FFF);
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--primary);
+    //background: linear-gradient(to right, $light, #FFF);
 }
 
-b, strong {
-  font-weight: bold;
+b,
+strong {
+    font-weight: bold;
 }
 
 .wrapper {
-  display: flex;
-  width: 100%;
-  align-items: stretch;
+    display: flex;
+    width: 100%;
+    align-items: stretch;
 }
 
 #content {
-  width: 100%;
-  min-height: 100vh;
-  transition: all 0.3s;
+    width: 100%;
+    min-height: 100vh;
+    transition: all 0.3s;
 }
 
 #block-content {
-  width: 100%;
-  padding: 20px;
-  min-height: 100vh;
-  transition: all 0.3s;
+    width: 100%;
+    padding: 20px;
+    min-height: 100vh;
+    transition: all 0.3s;
 }
 
 /** CSS gird **/
 .block-grid {
-  position: relative;
+    position: relative;
 }
 
 .overlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: #CCC;
-  z-index: 100;
-  opacity: 0.4;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #ccc;
+    z-index: 100;
+    opacity: 0.4;
 }
 
 .overlay .txt-overlay {
-  color: var(--primary);
-  font-weight: bold;
+    color: var(--primary);
+    font-weight: bold;
 }
 
 fieldset {
-  display: block;
-  margin-inline-start: 2px;
-  margin-inline-end: 2px;
-  padding-block-start: 0.35em;
-  padding-inline-start: 0.75em;
-  padding-inline-end: 0.75em;
-  padding-block-end: 0.625em;
-  min-inline-size: min-content;
-  border-width: 2px;
-  border-style: groove;
-  border-image: initial;
-  border-radius: 5px;
+    display: block;
+    margin-inline-start: 2px;
+    margin-inline-end: 2px;
+    padding-block-start: 0.35em;
+    padding-inline-start: 0.75em;
+    padding-inline-end: 0.75em;
+    padding-block-end: 0.625em;
+    min-inline-size: min-content;
+    border-width: 2px;
+    border-style: groove;
+    border-image: initial;
+    border-radius: 5px;
 }
 
 legend {
-  all:unset;
-  padding-inline-start: 6px;
-  padding-inline-end: 6px;
-  color: #999;
+    all: unset;
+    padding-inline-start: 6px;
+    padding-inline-end: 6px;
+    color: #999;
 }
 
 /** Notification **/
 
 #notifications .card.no-read {
-  border-left: 5px solid var(--primary);
+    border-left: 5px solid var(--primary);
 }
 
 /* Tooltip */
 .tooltip-nat {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black;
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
 }
 
 /* Tooltip text */
 .tooltip-nat .tooltiptext-nat {
-  visibility: hidden;
-  width: auto;
-  background-color: #555;
-  color: #fff;
-  text-align: center;
-  padding: 5px 0;
-  border-radius: 6px;
+    visibility: hidden;
+    width: auto;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
 
-  /* Position the tooltip text */
-  position: absolute;
-  z-index: 1;
-  bottom: 125%;
-  left: 50%;
-  margin-left: -60px;
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
 
-  /* Fade in tooltip */
-  opacity: 0;
-  transition: opacity 0.3s;
+    /* Fade in tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
 }
 
 /* Tooltip arrow */
 .tooltip-nat .tooltiptext-nat::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
 .tooltip-nat:hover .tooltiptext-nat {
-  visibility: visible;
-  opacity: 1;
+    visibility: visible;
+    opacity: 1;
 }

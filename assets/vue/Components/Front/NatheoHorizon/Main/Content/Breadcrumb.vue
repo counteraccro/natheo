@@ -9,22 +9,18 @@ export default {
   props: {
     utilsFront: Object,
     page: Object,
-    locale: String
+    locale: String,
   },
   emits: [],
   data() {
     return {
       value: 'Value',
-    }
+    };
   },
-  mounted() {
+  mounted() {},
 
-  },
-
-  methods: {
-
-  }
-}
+  methods: {},
+};
 </script>
 
 <template>
@@ -41,7 +37,13 @@ export default {
       <!-- Séparateur -->
       <li aria-hidden="true" class="text-gray-400">
         <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-          <path d="M7 6l5 4-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path
+            d="M7 6l5 4-5 4"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
         </svg>
       </li>
 
@@ -51,5 +53,4 @@ export default {
       </li>
     </ol>
   </nav>
-
 </template>

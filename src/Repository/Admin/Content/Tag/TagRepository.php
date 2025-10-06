@@ -54,21 +54,21 @@ class TagRepository extends ServiceEntityRepository
      */
     public function getAllPaginate(int $page, int $limit, ?string $search = null): Paginator
     {
-        $query = $this->createQueryBuilder('t')
-            ->orderBy('t.id', 'ASC');
+        $query = $this->createQueryBuilder('t')->orderBy('t.id', 'ASC');
 
         if ($search !== null) {
-            $query->join('t.tagTranslations', 'tt')
+            $query
+                ->join('t.tagTranslations', 'tt')
                 ->where('tt.label like :search')
                 ->setParameter('search', '%' . $search . '%');
         }
 
         $paginator = new Paginator($query->getQuery(), true);
-        $paginator->getQuery()
+        $paginator
+            ->getQuery()
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;
-
     }
 
     /**
@@ -91,8 +91,7 @@ class TagRepository extends ServiceEntityRepository
             $query->andWhere('t.disabled = false');
         }
 
-        return $query->getQuery()
-            ->getArrayResult();
+        return $query->getQuery()->getArrayResult();
     }
 
     /**
@@ -107,13 +106,15 @@ class TagRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('t');
 
-        $query->join('t.tagTranslations', 'tt')
+        $query
+            ->join('t.tagTranslations', 'tt')
             ->orWhere('tt.label like :search AND tt.locale = :locale')
             ->setParameter('search', '%' . $search . '%')
             ->setParameter('locale', $locale);
 
         $paginator = new Paginator($query->getQuery(), true);
-        $paginator->getQuery()
+        $paginator
+            ->getQuery()
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;

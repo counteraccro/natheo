@@ -191,13 +191,13 @@ class OptionSystemKey
      * Clé option theme du front site
      * @var string
      */
-    const string OS_THEME_FRONT_SITE  = 'OS_THEME_FRONT_SITE';
+    const string OS_THEME_FRONT_SITE = 'OS_THEME_FRONT_SITE';
 
     /**
      * Clé option front, texte en bas du footer
      * @var string
      */
-    const string OS_FRONT_FOOTER_TEXTE  = 'OS_FRONT_FOOTER_TEXTE';
+    const string OS_FRONT_FOOTER_TEXTE = 'OS_FRONT_FOOTER_TEXTE';
 
     /**
      * Clé option front, url réseau social GITHUB
@@ -250,6 +250,4 @@ class OptionSystemKey
      * Clé option front, pas de suivi des liens
      */
     const string OS_FRONT_ROBOT_NO_FOLLOW = 'OS_FRONT_ROBOT_NO_FOLLOW';
-
-
 }

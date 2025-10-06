@@ -37,14 +37,14 @@ class SidebarController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'sidebar',
             Breadcrumb::BREADCRUMB => [
-                'sidebar.page_title_h1' => '#'
-            ]
+                'sidebar.page_title_h1' => '#',
+            ],
         ];
 
         return $this->render('admin/system/sidebar/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT)
+            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
         ]);
     }
 
@@ -60,10 +60,9 @@ class SidebarController extends AppAdminController
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     public function loadGridData(
         SidebarElementService $sidebarElementService,
-        int                   $page = 1,
-        int                   $limit = 20
-    ): JsonResponse
-    {
+        int $page = 1,
+        int $limit = 20,
+    ): JsonResponse {
         $grid = $sidebarElementService->getAllFormatToGrid($page, $limit);
         return $this->json($grid);
     }
@@ -80,19 +79,34 @@ class SidebarController extends AppAdminController
     #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', methods: ['PUT'])]
     public function updateDisabled(
         #[MapEntity(id: 'id')] SidebarElement $sidebarElement,
-        SidebarElementService                 $sidebarElementService,
-        TranslatorInterface                   $translator
-    ): JsonResponse
-    {
+        SidebarElementService $sidebarElementService,
+        TranslatorInterface $translator,
+    ): JsonResponse {
         $sidebarElement->setDisabled(!$sidebarElement->isDisabled());
         $sidebarElementService->save($sidebarElement);
 
-        $msg = $translator->trans('sidebar.success.no.disabled', ['label' => '<i class="bi ' .
-            $sidebarElement->getIcon() . '"></i> ' . $translator->trans($sidebarElement->getLabel())], 'sidebar'
+        $msg = $translator->trans(
+            'sidebar.success.no.disabled',
+            [
+                'label' =>
+                    '<i class="bi ' .
+                    $sidebarElement->getIcon() .
+                    '"></i> ' .
+                    $translator->trans($sidebarElement->getLabel()),
+            ],
+            'sidebar',
         );
         if ($sidebarElement->isDisabled()) {
-            $msg = $translator->trans('sidebar.success.disabled', ['label' => '<i class="bi ' .
-                $sidebarElement->getIcon() . '"></i> ' . $translator->trans($sidebarElement->getLabel())], 'sidebar'
+            $msg = $translator->trans(
+                'sidebar.success.disabled',
+                [
+                    'label' =>
+                        '<i class="bi ' .
+                        $sidebarElement->getIcon() .
+                        '"></i> ' .
+                        $translator->trans($sidebarElement->getLabel()),
+                ],
+                'sidebar',
             );
         }
 

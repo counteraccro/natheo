@@ -19,7 +19,6 @@ class OptionSystemService extends AppAdminService
 {
     const OPTION_SYSTEM_CONFIG_FILE = 'options_system.yaml';
 
-
     /**
      * Retourne l'ensemble des options systèmes
      * @return array|object[]
@@ -72,7 +71,12 @@ class OptionSystemService extends AppAdminService
         $containerBag = $this->getContainerBag();
 
         $kernel = $containerBag->get('kernel.project_dir');
-        return $kernel . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'cms' . DIRECTORY_SEPARATOR .
+        return $kernel .
+            DIRECTORY_SEPARATOR .
+            'config' .
+            DIRECTORY_SEPARATOR .
+            'cms' .
+            DIRECTORY_SEPARATOR .
             self::OPTION_SYSTEM_CONFIG_FILE;
     }
 
@@ -85,7 +89,7 @@ class OptionSystemService extends AppAdminService
         $return = [];
         try {
             $return = Yaml::parseFile($this->getPathConfig());
-        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+        } catch (NotFoundExceptionInterface | ContainerExceptionInterface $e) {
             die($e->getMessage());
         }
         return $return;
@@ -162,5 +166,4 @@ class OptionSystemService extends AppAdminService
         }
         return false;
     }
-
 }

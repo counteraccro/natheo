@@ -27,9 +27,22 @@ use Doctrine\ORM\EntityManagerInterface;
 
 trait FixturesTrait
 {
-    use UserFixturesTrait, OptionUserFixturesTrait, OptionSystemFixturesTrait, MailFixturesTrait, UserDataFixturesTrait,
-        NotificationFixturesTrait, SidebarElementFixturesTrait, TagFixturesTrait, ApiTokenFixturesTrait, TranslateFixturesTrait,
-        SqlManagerFixturesTrait, FaqFixturesTrait, MediaFolderFixturesTrait, MediaFixturesTrait, MenuFixturesTrait, PageFixturesTrait,
+    use UserFixturesTrait,
+        OptionUserFixturesTrait,
+        OptionSystemFixturesTrait,
+        MailFixturesTrait,
+        UserDataFixturesTrait,
+        NotificationFixturesTrait,
+        SidebarElementFixturesTrait,
+        TagFixturesTrait,
+        ApiTokenFixturesTrait,
+        TranslateFixturesTrait,
+        SqlManagerFixturesTrait,
+        FaqFixturesTrait,
+        MediaFolderFixturesTrait,
+        MediaFixturesTrait,
+        MenuFixturesTrait,
+        PageFixturesTrait,
         CommentFixturesTrait;
 
     /**
@@ -53,7 +66,7 @@ trait FixturesTrait
 
         foreach ($data as $property => $value) {
             if (!property_exists($object, $property)) {
-                echo "error " . $property . " not existe for " . $object::class . "\n";
+                echo 'error ' . $property . ' not existe for ' . $object::class . "\n";
                 continue;
             }
 
@@ -61,7 +74,7 @@ trait FixturesTrait
             $setterName = 'set' . ucfirst($property);
 
             // add
-            if(method_exists($object, $setterAddName) && !method_exists($object, $setterName)) {
+            if (method_exists($object, $setterAddName) && !method_exists($object, $setterName)) {
                 $value = is_array($value) ? $value : [$value];
                 foreach ($value as $item) {
                     $object->$setterAddName($item);

@@ -120,12 +120,9 @@ class KeyWord
             self::ADMIN_LOGIN_ACTION => '',
             self::URL_TIME => '',
         ],
-        MailKey::MAIL_SELF_DISABLED_ACCOUNT => [
-        ],
-        MailKey::MAIL_SELF_DELETE_ACCOUNT => [
-        ],
-        MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT => [
-        ]
+        MailKey::MAIL_SELF_DISABLED_ACCOUNT => [],
+        MailKey::MAIL_SELF_DELETE_ACCOUNT => [],
+        MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT => [],
     ];
 
     /**
@@ -143,7 +140,6 @@ class KeyWord
         if (isset($this->tabKeyWord[$key])) {
             $this->currentTabKeyWord = array_merge($this->currentTabKeyWord, $this->tabKeyWord[$key]);
         }
-
     }
 
     /**
@@ -186,7 +182,7 @@ class KeyWord
     {
         return [
             self::KEY_SEARCH => array_keys($return),
-            self::KEY_REPLACE => array_values($return)
+            self::KEY_REPLACE => array_values($return),
         ];
     }
 
@@ -213,11 +209,10 @@ class KeyWord
      * @throws NotFoundExceptionInterface
      */
     public function getMailChangePassword(
-        User                $user,
-        string              $urlChangePassword,
-        OptionSystemService $optionSystemService
-    ): array
-    {
+        User $user,
+        string $urlChangePassword,
+        OptionSystemService $optionSystemService,
+    ): array {
         $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
 
         $tab = $this->getGlobalKeyWord($user, $optionSystemService);
@@ -238,11 +233,10 @@ class KeyWord
      * @return array
      */
     public function getTabMailAccountAdmDisabled(
-        User                $user,
-        User                $admin,
-        OptionSystemService $optionSystemService
-    ): array
-    {
+        User $user,
+        User $admin,
+        OptionSystemService $optionSystemService,
+    ): array {
         $tab = $this->getGlobalKeyWord($user, $optionSystemService);
         $tab2 = $this->getAdminLoginAction($admin);
         $tab = array_merge($tab, $tab2);
@@ -258,11 +252,10 @@ class KeyWord
      * @return array
      */
     public function getTabMailAccountAdmEnabled(
-        User                $user,
-        User                $admin,
-        OptionSystemService $optionSystemService
-    ): array
-    {
+        User $user,
+        User $admin,
+        OptionSystemService $optionSystemService,
+    ): array {
         return $this->getTabMailAccountAdmDisabled($user, $admin, $optionSystemService);
     }
 
@@ -275,12 +268,11 @@ class KeyWord
      * @return array
      */
     public function getTabMailCreateAccountAdm(
-        User                $user,
-        User                $admin,
-        string              $url,
-        OptionSystemService $optionSystemService
-    ): array
-    {
+        User $user,
+        User $admin,
+        string $url,
+        OptionSystemService $optionSystemService,
+    ): array {
         return $this->getTabMailResetPassword($user, $admin, $url, $optionSystemService);
     }
 
@@ -292,10 +284,7 @@ class KeyWord
      * @param OptionSystemService $optionSystemService
      * @return array
      */
-    public function getTabMailSelfDisabled(
-        User                $user,
-        OptionSystemService $optionSystemService
-    ): array
+    public function getTabMailSelfDisabled(User $user, OptionSystemService $optionSystemService): array
     {
         $tab = $this->getGlobalKeyWord($user, $optionSystemService);
         return $this->formatReturnValue($tab);
@@ -309,10 +298,7 @@ class KeyWord
      * @param OptionSystemService $optionSystemService
      * @return array
      */
-    public function getTabMailSelfDelete(
-        User                $user,
-        OptionSystemService $optionSystemService
-    ): array
+    public function getTabMailSelfDelete(User $user, OptionSystemService $optionSystemService): array
     {
         return $this->getTabMailSelfDisabled($user, $optionSystemService);
     }
@@ -324,10 +310,7 @@ class KeyWord
      * @param OptionSystemService $optionSystemService
      * @return array
      */
-    public function getTabMailSelfAnonymous(
-        User                $user,
-        OptionSystemService $optionSystemService
-    ): array
+    public function getTabMailSelfAnonymous(User $user, OptionSystemService $optionSystemService): array
     {
         return $this->getTabMailSelfDisabled($user, $optionSystemService);
     }
@@ -341,12 +324,11 @@ class KeyWord
      * @return array
      */
     public function getTabMailResetPassword(
-        User                $user,
-        User                $admin,
-        string              $urlPath,
-        OptionSystemService $optionSystemService
-    ): array
-    {
+        User $user,
+        User $admin,
+        string $urlPath,
+        OptionSystemService $optionSystemService,
+    ): array {
         $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
         $minutes = $optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_RESET_PASSWORD_TIME);
 

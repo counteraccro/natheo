@@ -23,7 +23,6 @@ use Symfony\Component\Yaml\Yaml;
 
 class InstallationService extends AppAdminService
 {
-
     /**
      * Retourne une valeur en fonction d'un clé dans le fichier .env
      * @param string $key
@@ -74,7 +73,8 @@ class InstallationService extends AppAdminService
     public function formatDatabaseUrlForEnvFile(array $data, string $option): string
     {
         $return = EnvFile::KEY_DATABASE_URL . '="';
-        $return .= $data['type'] . '://' . $data['login'] . ':' . $data['password'] . '@' . $data['ip'] . ':' . $data['port'];
+        $return .=
+            $data['type'] . '://' . $data['login'] . ':' . $data['password'] . '@' . $data['ip'] . ':' . $data['port'];
 
         if ($option === InstallationConst::OPTION_DATABASE_URL_CREATE_DATABASE) {
             $return .= '/' . $data['bdd_name'] . '?serverVersion=' . $data['version'] . '&charset=' . $data['charset'];
@@ -96,9 +96,14 @@ class InstallationService extends AppAdminService
         preg_match_all($pattern, $databaseUrl, $matches, PREG_SET_ORDER, 0);
 
         $return = [
-            'type' => '', 'login' => '', 'password' => '',
-            'ip' => '', 'port' => '', 'bdd_name' => '',
-            'version' => '', 'charset' => 'utf8',
+            'type' => '',
+            'login' => '',
+            'password' => '',
+            'ip' => '',
+            'port' => '',
+            'bdd_name' => '',
+            'version' => '',
+            'charset' => 'utf8',
         ];
 
         if (empty($matches)) {
@@ -172,13 +177,14 @@ class InstallationService extends AppAdminService
         $user = $userRepo->findAll()[0];
         $user->getNotifications()->clear();
         $notificationFactory = new NotificationFactory($user);
-        $notificationFactory->addNotification(NotificationKey::NOTIFICATION_NEW_FONDATEUR,
-            ['login' => $user->getLogin(), 'url_aide' => 'todo-a-changer']);
+        $notificationFactory->addNotification(NotificationKey::NOTIFICATION_NEW_FONDATEUR, [
+            'login' => $user->getLogin(),
+            'url_aide' => 'todo-a-changer',
+        ]);
         $user = $notificationFactory->getUser();
         $this->save($user);
 
         $this->createDataUser($user);
-
     }
 
     /**
@@ -219,9 +225,9 @@ class InstallationService extends AppAdminService
                     'anonymous' => 0,
                     'founder' => 1,
                     'avatar' => 'avatar-2.png',
-                    'description' => "N'oubliez pas de mettre à jour cette description"
+                    'description' => "N'oubliez pas de mettre à jour cette description",
                 ],
-            ]
+            ],
         ];
         $yamlData = Yaml::dump($tab, 3, 2);
         $filesystem = new Filesystem();
@@ -246,9 +252,13 @@ class InstallationService extends AppAdminService
         $container = $this->getContainerBag();
 
         $kernel = $container->get('kernel.project_dir');
-        return $kernel . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR .
-            'DataFixtures' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
+        return $kernel .
+            DIRECTORY_SEPARATOR .
+            'src' .
+            DIRECTORY_SEPARATOR .
+            'DataFixtures' .
+            DIRECTORY_SEPARATOR .
+            'data' .
+            DIRECTORY_SEPARATOR;
     }
-
-
 }

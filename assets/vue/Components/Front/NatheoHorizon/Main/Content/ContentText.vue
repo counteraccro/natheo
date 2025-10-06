@@ -1,5 +1,5 @@
 <script>
-import {marked} from 'marked'
+import { marked } from 'marked';
 
 /**
  * @author Gourdon Aymeric
@@ -19,32 +19,30 @@ export default {
     return {
       content: '',
       isLoad: false,
-    }
+    };
   },
   created() {
     this.loadContent();
   },
   mounted() {
-
     /**
      * Ajoute un span à la fin de chaque ligne
      */
-    document.querySelectorAll("pre code").forEach(codeEl => {
-      if (codeEl.dataset.lnProcessed === "1") return;
+    document.querySelectorAll('pre code').forEach((codeEl) => {
+      if (codeEl.dataset.lnProcessed === '1') return;
 
-      if (codeEl.querySelector(".code-line")) {
-        codeEl.dataset.lnProcessed = "1";
+      if (codeEl.querySelector('.code-line')) {
+        codeEl.dataset.lnProcessed = '1';
         return;
       }
 
       const html = codeEl.innerHTML;
       let lines = html.split(/\r?\n/);
-      if (lines.length && lines[lines.length - 1].trim() === "") lines.pop();
+      if (lines.length && lines[lines.length - 1].trim() === '') lines.pop();
 
-      const wrapped = lines
-          .map(line => `<span class="code-line">${line.length ? line : "&nbsp;"}</span>`).join("");
+      const wrapped = lines.map((line) => `<span class="code-line">${line.length ? line : '&nbsp;'}</span>`).join('');
       codeEl.innerHTML = wrapped;
-      codeEl.dataset.lnProcessed = "1";
+      codeEl.dataset.lnProcessed = '1';
     });
   },
   computed: {
@@ -56,23 +54,23 @@ export default {
     loadContent() {
       let success = (datas) => {
         this.content = datas.content;
-      }
+      };
 
       let loader = () => {
         this.isLoad = true;
-      }
-      let params = {
-        'id': this.data.id,
-        'locale': this.locale
       };
-      this.ajaxRequest.getContentPage(params, success, this.apiFailure, loader)
+      let params = {
+        id: this.data.id,
+        locale: this.locale,
+      };
+      this.ajaxRequest.getContentPage(params, success, this.apiFailure, loader);
     },
 
     apiFailure(code, msg) {
       this.$emit('api-failure', code, msg);
     },
-  }
-}
+  },
+};
 </script>
 
 <template>

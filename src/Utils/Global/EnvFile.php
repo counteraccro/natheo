@@ -17,7 +17,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class EnvFile
 {
-
     /**
      * Nom fichier env de l'application
      * @var string
@@ -69,12 +68,15 @@ class EnvFile
     /**
      * @param ContainerInterface $handlers
      */
-    public function __construct(#[AutowireLocator([
-        'kernel' => KernelInterface::class,
-        'parameterBag' => ParameterBagInterface::class,
-    ])] protected ContainerInterface $handlers)
-    {
-    }
+    public function __construct(
+        #[
+            AutowireLocator([
+                'kernel' => KernelInterface::class,
+                'parameterBag' => ParameterBagInterface::class,
+            ]),
+        ]
+        protected ContainerInterface $handlers,
+    ) {}
 
     /**
      * Retourne le Path du fichier env
@@ -170,5 +172,4 @@ class EnvFile
         $content = str_replace($oldValue, $newValue, $content);
         $this->dumpEnvFile($content);
     }
-
 }

@@ -12,8 +12,8 @@ security:
 
         api_provider:
             #entity:
-                #class: App\Entity\Api\ApiToken
-                #property: token
+            #class: App\Entity\Api\ApiToken
+            #property: token
             id: App\Security\Provider\ApiProvider
 
     firewalls:
@@ -49,12 +49,12 @@ security:
             switch_user: { target_route: admin_dashboard_index }
 
     role_hierarchy:
-        ROLE_CONTRIBUTEUR : ROLE_USER
+        ROLE_CONTRIBUTEUR: ROLE_USER
         ROLE_READ_API: ROLE_USER
         ROLE_WRITE_API: ROLE_READ_API
         ROLE_ADMIN_API: ROLE_WRITE_API
-        ROLE_ADMIN : ROLE_CONTRIBUTEUR
-        ROLE_SUPER_ADMIN : [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_ADMIN: ROLE_CONTRIBUTEUR
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used

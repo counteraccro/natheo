@@ -20,15 +20,15 @@ class OrderEntityTest extends AppWebTestCase
      */
     public function testOrderByIdByAction(): void
     {
-
         $faq = $this->createFaq();
         $this->createFaqCategory($faq, ['renderOrder' => 1]);
         $faqCat2 = $this->createFaqCategory($faq, ['renderOrder' => 2]);
         $faqCat3 = $this->createFaqCategory($faq, ['renderOrder' => 3]);
 
-
         $orderEntity = new OrderEntity($faq->getFaqCategories());
-        $result = $orderEntity->orderByIdByAction($faqCat2->getId(), $faqCat3->getId(), OrderEntity::ACTION_BEFORE)->getCollection();
+        $result = $orderEntity
+            ->orderByIdByAction($faqCat2->getId(), $faqCat3->getId(), OrderEntity::ACTION_BEFORE)
+            ->getCollection();
         foreach ($result as $item) {
             /** @var FaqCategory $item */
 
@@ -41,7 +41,9 @@ class OrderEntityTest extends AppWebTestCase
             }
         }
 
-        $result = $orderEntity->orderByIdByAction($faqCat2->getId(), $faqCat3->getId(), OrderEntity::ACTION_AFTER)->getCollection();
+        $result = $orderEntity
+            ->orderByIdByAction($faqCat2->getId(), $faqCat3->getId(), OrderEntity::ACTION_AFTER)
+            ->getCollection();
         foreach ($result as $item) {
             /** @var FaqCategory $item */
 
@@ -60,7 +62,7 @@ class OrderEntityTest extends AppWebTestCase
      * @return void
      * @throws \Exception
      */
-    public function testGetIdByOrder() :void
+    public function testGetIdByOrder(): void
     {
         $faq = $this->createFaq();
         $faqCat1 = $this->createFaqCategory($faq, ['renderOrder' => 1]);
@@ -77,7 +79,6 @@ class OrderEntityTest extends AppWebTestCase
 
         $id = $orderEntity->getIdByOrder($faqCat3->getRenderOrder());
         $this->assertEquals($faqCat3->getId(), $id);
-
     }
 
     /**
@@ -117,7 +118,7 @@ class OrderEntityTest extends AppWebTestCase
      * @return void
      * @throws \Exception
      */
-    public function testSortByProperty() :void
+    public function testSortByProperty(): void
     {
         $faq = $this->createFaq();
         $faqCat1 = $this->createFaqCategory($faq, ['renderOrder' => 3]);
@@ -149,7 +150,7 @@ class OrderEntityTest extends AppWebTestCase
      * @return void
      * @throws \Exception
      */
-    public function testGetCollection() :void
+    public function testGetCollection(): void
     {
         $faq = $this->createFaq();
         $this->createFaqCategory($faq, ['renderOrder' => 3]);

@@ -58,5 +58,4 @@ class ApiParametersFindPageCategoryRef
         self::PARAM_PAGE => 1,
         self::PARAM_LIMIT => 25,
     ];
-
 }

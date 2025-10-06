@@ -12,12 +12,7 @@ use App\Entity\Admin\System\User;
 
 class NotificationFactory
 {
-    public function __construct(
-        private User $user
-    )
-    {
-
-    }
+    public function __construct(private User $user) {}
 
     /**
      * Créer une entité Notification
@@ -51,7 +46,6 @@ class NotificationFactory
      */
     public function addNotification(string $key, array $params): NotificationFactory
     {
-
         if (!isset(NotificationKey::TAB_NOTIFICATIONS[$key])) {
             return $this;
         }

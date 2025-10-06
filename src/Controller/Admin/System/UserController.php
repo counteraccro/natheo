@@ -67,8 +67,8 @@ class UserController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'user',
             Breadcrumb::BREADCRUMB => [
-                'user.page_title_h1' => '#'
-            ]
+                'user.page_title_h1' => '#',
+            ],
         ];
 
         return $this->render('admin/system/user/index.html.twig', [
@@ -89,8 +89,8 @@ class UserController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'user',
             Breadcrumb::BREADCRUMB => [
-                'user.my_option_title_h1' => '#'
-            ]
+                'user.my_option_title_h1' => '#',
+            ],
         ];
 
         return $this->render('admin/system/user/my_options.html.twig', [
@@ -128,11 +128,10 @@ class UserController extends AppAdminController
     #[IsGranted('ROLE_SUPER_ADMIN')]
     public function loadGridData(
         UserService $userService,
-        Request     $request,
-        int         $page = 1,
-        int         $limit = 20
-    ): JsonResponse
-    {
+        Request $request,
+        int $page = 1,
+        int $limit = 20,
+    ): JsonResponse {
         $search = $request->query->get('search');
         $grid = $userService->getAllFormatToGrid($page, $limit, $search);
         return $this->json($grid);
@@ -151,14 +150,14 @@ class UserController extends AppAdminController
     #[IsGranted('ROLE_SUPER_ADMIN')]
     public function updateDisabled(
         #[MapEntity(id: 'id')] User $user,
-        UserService                 $userService,
-        TranslatorInterface         $translator): JsonResponse
-    {
+        UserService $userService,
+        TranslatorInterface $translator,
+    ): JsonResponse {
         $role = new Role($user);
         if ($role->isSuperAdmin() && $user->isFounder()) {
             return $this->json([
                 'success' => 'false',
-                'msg' => $translator->trans('user.error_not_disabled', domain: 'user')
+                'msg' => $translator->trans('user.error_not_disabled', domain: 'user'),
             ]);
         }
 
@@ -176,19 +175,17 @@ class UserController extends AppAdminController
     #[IsGranted('ROLE_SUPER_ADMIN')]
     public function delete(
         #[MapEntity(id: 'id')] User $user,
-        UserService                 $userService,
-        TranslatorInterface         $translator,
-        OptionSystemService         $optionSystemService,
-        #[Autowire('%app.folder.upload.avatar%')] string $avatarDirectory
-    ): JsonResponse
-    {
+        UserService $userService,
+        TranslatorInterface $translator,
+        OptionSystemService $optionSystemService,
+        #[Autowire('%app.folder.upload.avatar%')] string $avatarDirectory,
+    ): JsonResponse {
         $role = new Role($user);
         if ($role->isSuperAdmin() && $user->isFounder()) {
             return $this->json([
                 'success' => 'false',
-                'msg' => $translator->trans('user.error_not_disabled', domain: 'user')
+                'msg' => $translator->trans('user.error_not_disabled', domain: 'user'),
             ]);
-
         }
 
         $canDelete = $optionSystemService->getValueByKey(OptionSystemKey::OS_ALLOW_DELETE_DATA);
@@ -200,8 +197,7 @@ class UserController extends AppAdminController
                 $userService->anonymizer($user);
                 $msg = $translator->trans('user.success_anonymous', domain: 'user');
             } else {
-
-                if($user->getAvatar() !== null) {
+                if ($user->getAvatar() !== null) {
                     $fileSystem = new Filesystem();
                     $fileSystem->remove($avatarDirectory . DIRECTORY_SEPARATOR . $user->getAvatar());
                 }
@@ -230,18 +226,17 @@ class UserController extends AppAdminController
     #[IsGranted('ROLE_SUPER_ADMIN')]
     public function update(
         #[MapEntity(id: 'id')] User $user,
-        UserService                 $userService,
-        Request                     $request,
-        TranslatorInterface         $translator,
-        UserDataService             $userDataService
-    ): Response
-    {
+        UserService $userService,
+        Request $request,
+        TranslatorInterface $translator,
+        UserDataService $userDataService,
+    ): Response {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'user',
             Breadcrumb::BREADCRUMB => [
                 'user.page_title_h1' => 'admin_user_index',
-                'user.page_update_title_h1_2' => '#'
-            ]
+                'user.page_update_title_h1_2' => '#',
+            ],
         ];
 
         if ($user->isFounder() && $this->getUser()->getId() !== $user->getId()) {
@@ -262,7 +257,8 @@ class UserController extends AppAdminController
             $userService->save($user);
             $this->addFlash(
                 FlashKey::FLASH_SUCCESS,
-                $translator->trans('user.page_update.success', ['email' => $user->getEmail()], domain: 'user'));
+                $translator->trans('user.page_update.success', ['email' => $user->getEmail()], domain: 'user'),
+            );
         }
 
         $lastConnexion = $userDataService->getLastConnexion($user);
@@ -272,7 +268,7 @@ class UserController extends AppAdminController
             'form' => $form,
             'user' => $user,
             'lastConnexion' => $lastConnexion,
-            'isSuperAdmin' => $isSuperAdmin
+            'isSuperAdmin' => $isSuperAdmin,
         ]);
     }
 
@@ -291,22 +287,21 @@ class UserController extends AppAdminController
     #[Route('/my-account', name: 'my_account', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
     public function updateMyAccount(
-        UserService         $userService,
-        UserDataService     $userDataService,
-        UserTranslate       $userTranslate,
-        Request             $request,
+        UserService $userService,
+        UserDataService $userDataService,
+        UserTranslate $userTranslate,
+        Request $request,
         OptionSystemService $optionSystemService,
         TranslatorInterface $translator,
         SluggerInterface $slugger,
         ParameterBagInterface $parameterBag,
-        #[Autowire('%app.folder.upload.avatar%')] string $avatarDirectory
-    ): Response
-    {
+        #[Autowire('%app.folder.upload.avatar%')] string $avatarDirectory,
+    ): Response {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'user',
             Breadcrumb::BREADCRUMB => [
-                'user.page_my_account.title_h1' => '#'
-            ]
+                'user.page_my_account.title_h1' => '#',
+            ],
         ];
 
         /** @var User $user */
@@ -315,16 +310,13 @@ class UserController extends AppAdminController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             $user = $form->getData();
 
             /** @var UploadedFile $avatarFile */
             $avatarFile = $form->get('avatar')->getData();
 
-
             if ($avatarFile) {
-
-                if($user->getAvatar() !== null) {
+                if ($user->getAvatar() !== null) {
                     $fileSystem = new Filesystem();
                     $fileSystem->remove($avatarDirectory . DIRECTORY_SEPARATOR . $user->getAvatar());
                 }
@@ -338,7 +330,8 @@ class UserController extends AppAdminController
                 } catch (FileException $e) {
                     $this->addFlash(
                         FlashKey::FLASH_DANGER,
-                        $translator->trans('user.page_my_account.upload.avatar.error', domain: 'user'));
+                        $translator->trans('user.page_my_account.upload.avatar.error', domain: 'user'),
+                    );
                 }
 
                 $user->setAvatar($newFilename);
@@ -347,7 +340,8 @@ class UserController extends AppAdminController
             $userService->save($user);
             $this->addFlash(
                 FlashKey::FLASH_SUCCESS,
-                $translator->trans('user.page_my_account.success', domain: 'user'));
+                $translator->trans('user.page_my_account.success', domain: 'user'),
+            );
         }
 
         $canDelete = $optionSystemService->getValueByKey(OptionSystemKey::OS_ALLOW_DELETE_DATA);
@@ -363,10 +357,10 @@ class UserController extends AppAdminController
             'moreOptionsTranslate' => $userTranslate->getTranslateMoreOptions(),
             'moreOptionsDatas' => [
                 'help_first_connexion' => $userDataService->getHelpFirstConnexion($this->getUser()),
-                'user_data_key_first_connexion' => UserDataKey::KEY_HELP_FIRST_CONNEXION
+                'user_data_key_first_connexion' => UserDataKey::KEY_HELP_FIRST_CONNEXION,
             ],
             'canDelete' => $canDelete,
-            'canReplace' => $canReplace
+            'canReplace' => $canReplace,
         ]);
     }
 
@@ -382,11 +376,10 @@ class UserController extends AppAdminController
     #[Route('/change-my-password', name: 'change_my_password', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
     public function updatePassword(
-        UserService         $userService,
-        Request             $request,
-        TranslatorInterface $translator
-    ): JsonResponse
-    {
+        UserService $userService,
+        Request $request,
+        TranslatorInterface $translator,
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
         /* @var User $user */
         $user = $this->getUser();
@@ -414,12 +407,11 @@ class UserController extends AppAdminController
     #[IsGranted('ROLE_USER')]
     public function selfDisabled(
         TranslatorInterface $translator,
-        UserService         $userService,
-        MailService         $mailService,
+        UserService $userService,
+        MailService $mailService,
         OptionSystemService $optionSystemService,
-        NotificationService $notificationService
-    ): JsonResponse
-    {
+        NotificationService $notificationService,
+    ): JsonResponse {
         /** @var User $user */
         $user = $this->getUser();
         $role = new Role($user);
@@ -433,46 +425,38 @@ class UserController extends AppAdminController
             $url = $this->generateUrl('auth_logout');
         }
 
-
         if ($optionSystemService->canSendMailNotification() && !$role->isSuperAdmin()) {
             $mail = $mailService->getByKey(MailKey::MAIL_SELF_DISABLED_ACCOUNT);
             $keyWord = new KeyWord($mail->getKey());
             $tabKeyWord = $keyWord->getTabMailSelfDisabled($user, $optionSystemService);
             $params = $mailService->getDefaultParams($mail, $tabKeyWord);
-            $tabTo = $userService->getTabMailByListeUser(
-                $userService->getByRole(Role::ROLE_SUPER_ADMIN)
-            );
+            $tabTo = $userService->getTabMailByListeUser($userService->getByRole(Role::ROLE_SUPER_ADMIN));
 
             try {
                 foreach ($tabTo as $to) {
                     $params[MailService::TO] = $to;
                     $mailService->sendMail($params);
                 }
-
-            } catch (CommonMarkException|TransportExceptionInterface $e) {
+            } catch (CommonMarkException | TransportExceptionInterface $e) {
                 die($e->getMessage());
             }
         }
 
         // Notifications
         if ($optionSystemService->canNotification() && !$role->isSuperAdmin()) {
-
             $users = $userService->getByRole(Role::ROLE_SUPER_ADMIN);
 
             foreach ($users as $user_notification) {
-                $notificationService->add(
-                    $user_notification,
-                    NotificationKey::NOTIFICATION_SELF_DISABLED,
-                    ['login' => $user->getLogin()]
-                );
+                $notificationService->add($user_notification, NotificationKey::NOTIFICATION_SELF_DISABLED, [
+                    'login' => $user->getLogin(),
+                ]);
             }
         }
-
 
         return $this->json([
             'status' => 'success',
             'msg' => $msg,
-            'redirect' => $url
+            'redirect' => $url,
         ]);
     }
 
@@ -494,13 +478,12 @@ class UserController extends AppAdminController
     #[IsGranted('ROLE_USER')]
     public function selfDelete(
         TranslatorInterface $translator,
-        UserService         $userService,
-        MailService         $mailService,
+        UserService $userService,
+        MailService $mailService,
         OptionSystemService $optionSystemService,
         NotificationService $notificationService,
-        #[Autowire('%app.folder.upload.avatar%')] string $avatarDirectory
-    ): JsonResponse
-    {
+        #[Autowire('%app.folder.upload.avatar%')] string $avatarDirectory,
+    ): JsonResponse {
         $status = 0;
 
         /** @var User $user */
@@ -511,7 +494,6 @@ class UserController extends AppAdminController
         if ($role->isSuperAdmin()) {
             $msg = $translator->trans('user.error_not_disabled', domain: 'user');
         } else {
-
             if ($optionSystemService->canDelete()) {
                 if ($optionSystemService->canReplace()) {
                     $status = 1;
@@ -521,7 +503,7 @@ class UserController extends AppAdminController
                 } else {
                     $status = 2;
 
-                    if($user->getAvatar() !== null) {
+                    if ($user->getAvatar() !== null) {
                         $fileSystem = new Filesystem();
                         $fileSystem->remove($avatarDirectory . DIRECTORY_SEPARATOR . $user->getAvatar());
                     }
@@ -536,20 +518,24 @@ class UserController extends AppAdminController
         }
 
         // Envoi emails
-        if ($optionSystemService->canSendMailNotification() && !$role->isSuperAdmin() && $optionSystemService->canDelete()) {
-            if ($status === 1) { // anonymisation
+        if (
+            $optionSystemService->canSendMailNotification() &&
+            !$role->isSuperAdmin() &&
+            $optionSystemService->canDelete()
+        ) {
+            if ($status === 1) {
+                // anonymisation
                 $mail = $mailService->getByKey(MailKey::MAIL_SELF_ANONYMOUS_ACCOUNT);
                 $keyWord = new KeyWord($mail->getKey());
                 $tabKeyWord = $keyWord->getTabMailSelfAnonymous($user2, $optionSystemService);
-            } else { // delete
+            } else {
+                // delete
                 $mail = $mailService->getByKey(MailKey::MAIL_SELF_DELETE_ACCOUNT);
                 $keyWord = new KeyWord($mail->getKey());
                 $tabKeyWord = $keyWord->getTabMailSelfDelete($user2, $optionSystemService);
             }
             $params = $mailService->getDefaultParams($mail, $tabKeyWord);
-            $tabTo = $userService->getTabMailByListeUser(
-                $userService->getByRole(Role::ROLE_SUPER_ADMIN)
-            );
+            $tabTo = $userService->getTabMailByListeUser($userService->getByRole(Role::ROLE_SUPER_ADMIN));
 
             foreach ($tabTo as $to) {
                 $params[MailService::TO] = $to;
@@ -574,7 +560,7 @@ class UserController extends AppAdminController
         return $this->json([
             'status' => 'success',
             'msg' => $msg,
-            'redirect' => $url
+            'redirect' => $url,
         ]);
     }
 
@@ -597,22 +583,21 @@ class UserController extends AppAdminController
     #[Route('/add', name: 'add', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]
     public function add(
-        Request             $request,
-        UserService         $userService,
-        OptionUserService   $optionUserService,
+        Request $request,
+        UserService $userService,
+        OptionUserService $optionUserService,
         OptionSystemService $optionSystemService,
         TranslatorInterface $translator,
-        UserDataService     $userDataService,
+        UserDataService $userDataService,
         NotificationService $notificationService,
-        MailService         $mailService
-    ): Response
-    {
+        MailService $mailService,
+    ): Response {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'user',
             Breadcrumb::BREADCRUMB => [
                 'user.page_title_h1' => 'admin_user_index',
-                'user.page_add_title_h1' => '#'
-            ]
+                'user.page_add_title_h1' => '#',
+            ],
         ];
 
         $user = new User();
@@ -629,14 +614,13 @@ class UserController extends AppAdminController
             $key = ByteString::fromRandom(48)->toString();
             $userDataService->update(UserDataKey::KEY_RESET_PASSWORD, $key, $user);
 
-
             $mail = $mailService->getByKey(MailKey::MAIL_CREATE_ACCOUNT_ADM);
             $keyWord = new KeyWord($mail->getKey());
             $tabKeyWord = $keyWord->getTabMailCreateAccountAdm(
                 $user,
                 $this->getUser(),
                 $this->generateUrl('auth_change_new_password_user', ['key' => $key]),
-                $optionSystemService
+                $optionSystemService,
             );
             $params = $mailService->getDefaultParams($mail, $tabKeyWord);
             $params[MailService::TO] = $user->getEmail();
@@ -645,18 +629,15 @@ class UserController extends AppAdminController
 
             $this->addFlash(
                 FlashKey::FLASH_SUCCESS,
-                $translator->trans('user.page_add.success', ['email' => $user->getEmail()], domain: 'user'));
+                $translator->trans('user.page_add.success', ['email' => $user->getEmail()], domain: 'user'),
+            );
 
             if ($optionSystemService->canNotification()) {
-                $notificationService->add(
-                    $user,
-                    NotificationKey::NOTIFICATION_WELCOME,
-                    [
-                        'login' => $user->getLogin(),
-                        'url_aide' => 'url_aide',
-                        'role' => $user->getRoles()[0]
-                    ]
-                );
+                $notificationService->add($user, NotificationKey::NOTIFICATION_WELCOME, [
+                    'login' => $user->getLogin(),
+                    'url_aide' => 'url_aide',
+                    'role' => $user->getRoles()[0],
+                ]);
             }
 
             return $this->redirectToRoute('admin_user_index');
@@ -664,7 +645,7 @@ class UserController extends AppAdminController
 
         return $this->render('admin/system/user/add.html.twig', [
             'breadcrumb' => $breadcrumb,
-            'form' => $form
+            'form' => $form,
         ]);
     }
 
@@ -700,15 +681,13 @@ class UserController extends AppAdminController
     #[IsGranted('ROLE_SUPER_ADMIN')]
     public function sendResetPassword(
         #[MapEntity(id: 'id')] User $user,
-        MailService                 $mailService,
-        OptionSystemService         $optionSystemService,
-        UserDataService             $userDataService,
-        TranslatorInterface         $translator
-    ): RedirectResponse
-    {
+        MailService $mailService,
+        OptionSystemService $optionSystemService,
+        UserDataService $userDataService,
+        TranslatorInterface $translator,
+    ): RedirectResponse {
         $key = ByteString::fromRandom(48)->toString();
         $userDataService->update(UserDataKey::KEY_RESET_PASSWORD, $key, $user);
-
 
         $mail = $mailService->getByKey(MailKey::MAIL_RESET_PASSWORD);
         $keyWord = new KeyWord($mail->getKey());
@@ -716,7 +695,7 @@ class UserController extends AppAdminController
             $user,
             $this->getUser(),
             $this->generateUrl('auth_change_password_user', ['key' => $key]),
-            $optionSystemService
+            $optionSystemService,
         );
         $params = $mailService->getDefaultParams($mail, $tabKeyWord);
         $params[MailService::TO] = $user->getEmail();
@@ -725,7 +704,8 @@ class UserController extends AppAdminController
 
         $this->addFlash(
             FlashKey::FLASH_SUCCESS,
-            $translator->trans('user.page_my_account.reset_password_success', domain: 'user'));
+            $translator->trans('user.page_my_account.reset_password_success', domain: 'user'),
+        );
 
         return $this->redirectToRoute('admin_user_update', ['id' => $user->getId()]);
     }
@@ -740,10 +720,7 @@ class UserController extends AppAdminController
      */
     #[Route('/update-user-data', name: 'update_user_data', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function updateUserdata(
-        Request         $request,
-        UserDataService $userDataService
-    ): Response
+    public function updateUserdata(Request $request, UserDataService $userDataService): Response
     {
         $data = json_decode($request->getContent(), true);
         $userDataService->update($data['key'], $data['value'], $this->getUser());

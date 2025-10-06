@@ -21,7 +21,7 @@ class OptionUser
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\Column(name:'`key`', type: Types::TEXT)]
+    #[ORM\Column(name: '`key`', type: Types::TEXT)]
     private ?string $key = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

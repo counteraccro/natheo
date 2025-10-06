@@ -27,7 +27,10 @@ class ApiTokenControllerTest extends AppWebTestCase
         $this->client->loginUser($userSuperAdm, 'admin');
         $this->client->request('GET', $this->router->generate('admin_api_token_index'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('api_token.page_title_h1', domain: 'api_token'));
+        $this->assertSelectorTextContains(
+            'h1',
+            $this->translator->trans('api_token.page_title_h1', domain: 'api_token'),
+        );
     }
 
     /**
@@ -43,7 +46,10 @@ class ApiTokenControllerTest extends AppWebTestCase
         $this->checkNoAccess('admin_api_token_load_grid_data');
         $userSuperAdm = $this->createUserSuperAdmin();
         $this->client->loginUser($userSuperAdm, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_api_token_load_grid_data', ['page' => 1, 'limit' => 5]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_api_token_load_grid_data', ['page' => 1, 'limit' => 5]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -65,7 +71,10 @@ class ApiTokenControllerTest extends AppWebTestCase
         $this->checkNoAccess('admin_api_token_update_disabled', ['id' => $apiToken->getId()], 'PUT');
         $userSuperAdm = $this->createUserSuperAdmin();
         $this->client->loginUser($userSuperAdm, 'admin');
-        $this->client->request('PUT', $this->router->generate('admin_api_token_update_disabled', ['id' => $apiToken->getId()]));
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_api_token_update_disabled', ['id' => $apiToken->getId()]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -90,7 +99,10 @@ class ApiTokenControllerTest extends AppWebTestCase
         $this->checkNoAccess('admin_api_token_delete', ['id' => $apiToken->getId()], 'DELETE');
         $userSuperAdm = $this->createUserSuperAdmin();
         $this->client->loginUser($userSuperAdm, 'admin');
-        $this->client->request('DELETE', $this->router->generate('admin_api_token_delete', ['id' => $apiToken->getId()]));
+        $this->client->request(
+            'DELETE',
+            $this->router->generate('admin_api_token_delete', ['id' => $apiToken->getId()]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -119,11 +131,17 @@ class ApiTokenControllerTest extends AppWebTestCase
         $this->client->loginUser($userSuperAdm, 'admin');
         $this->client->request('GET', $this->router->generate('admin_api_token_add'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('api_token.add.page_title_h1', domain: 'api_token'));
+        $this->assertSelectorTextContains(
+            'h1',
+            $this->translator->trans('api_token.add.page_title_h1', domain: 'api_token'),
+        );
 
         $this->client->request('GET', $this->router->generate('admin_api_token_update', ['id' => $apiToken->getId()]));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('api_token.update.page_title_h1', domain: 'api_token'));
+        $this->assertSelectorTextContains(
+            'h1',
+            $this->translator->trans('api_token.update.page_title_h1', domain: 'api_token'),
+        );
     }
 
     /**
@@ -159,12 +177,10 @@ class ApiTokenControllerTest extends AppWebTestCase
                 'id' => null,
                 'name' => self::getFaker()->text(),
                 'token' => self::getFaker()->text(),
-                'roles' => [
-                    ApiTokenConst::API_TOKEN_ROLE_ADMIN
-                ],
+                'roles' => [ApiTokenConst::API_TOKEN_ROLE_ADMIN],
                 'comment' => self::getFaker()->text(),
                 'disabled' => false,
-            ]
+            ],
         ];
 
         $userSuperAdm = $this->createUserSuperAdmin();
@@ -194,7 +210,7 @@ class ApiTokenControllerTest extends AppWebTestCase
                 'roles' => [ApiTokenConst::API_TOKEN_ROLE_ADMIN],
                 'comment' => self::getFaker()->text(),
                 'disabled' => false,
-            ]
+            ],
         ];
         $this->client->request('POST', $this->router->generate('admin_api_token_save'), content: json_encode($data));
         $this->assertResponseIsSuccessful();
@@ -207,6 +223,5 @@ class ApiTokenControllerTest extends AppWebTestCase
         $apiTokenCheck = $repo->findOneBy(['id' => $data['apiToken']['id']]);
         $this->assertInstanceOf(ApiToken::class, $apiToken);
         $this->assertEquals($data['apiToken']['name'], $apiTokenCheck->getName());
-
     }
 }

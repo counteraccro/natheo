@@ -23,7 +23,7 @@ class SecurityServiceTest extends AppWebTestCase
     /**
      * @return void
      */
-    public function setUp() :void
+    public function setUp(): void
     {
         parent::setUp();
         $this->securityService = $this->container->get(SecurityService::class);
@@ -39,7 +39,10 @@ class SecurityServiceTest extends AppWebTestCase
     public function testCanChangePassword(): void
     {
         $user = $this->createUser();
-        $optionUser = $this->createUserData($user, ['key' => UserDataKey::KEY_RESET_PASSWORD, 'value' => self::getFaker()->text()]);
+        $optionUser = $this->createUserData($user, [
+            'key' => UserDataKey::KEY_RESET_PASSWORD,
+            'value' => self::getFaker()->text(),
+        ]);
         $result = $this->securityService->canChangePassword($optionUser->getValue());
         $this->assertNotNull($result);
         $this->assertInstanceOf(User::class, $result);
@@ -47,6 +50,5 @@ class SecurityServiceTest extends AppWebTestCase
 
         $result = $this->securityService->canChangePassword(self::getFaker()->text());
         $this->assertNull($result);
-
     }
 }

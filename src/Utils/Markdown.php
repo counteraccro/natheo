@@ -23,7 +23,6 @@ class Markdown
      */
     public function convertMarkdownToHtml(string $text): string
     {
-
         $environment = new Environment();
         $environment->addExtension(new CommonMarkCoreExtension());
         $environment->addExtension(new TableExtension());

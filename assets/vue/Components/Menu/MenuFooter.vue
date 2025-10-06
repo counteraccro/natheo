@@ -1,28 +1,26 @@
-<script>/**
+<script>
+/**
  * @author Gourdon Aymeric
  * @version 1.0
  * Composant footer pour la création /edition d'un menu
  */
-import {MenuElementTools} from "../../../utils/Admin/Content/Menu/MenuElementsTools";
+import { MenuElementTools } from '../../../utils/Admin/Content/Menu/MenuElementsTools';
 
 export default {
-  name: "MenuFooter",
+  name: 'MenuFooter',
   components: {},
   emit: [],
   props: {
     menu: Object,
     type: Number,
     data: Object,
-    locale: String
+    locale: String,
   },
   data() {
-    return {}
+    return {};
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
-
     /**
      * Retourne l'année courante
      * @return {number}
@@ -40,12 +38,17 @@ export default {
       menuElement.children.forEach((element) => {
         let elementTranslate = this.getTranslationByLocale(element.menuElementTranslations);
         if (!element.disabled) {
-
-          html += ' <li class="nav-item mb-2"><a class="nav-link p-0 text-body-secondary"  target="' + element.linkTarget + '" href="' + elementTranslate.link + '">' + elementTranslate.text + '</a>'
+          html +=
+            ' <li class="nav-item mb-2"><a class="nav-link p-0 text-body-secondary"  target="' +
+            element.linkTarget +
+            '" href="' +
+            elementTranslate.link +
+            '">' +
+            elementTranslate.text +
+            '</a>';
 
           if (this.isHaveChildren(element)) {
-
-            html += '<ul>'
+            html += '<ul>';
             html = this.renderColDeep(element, html);
             html += '</ul>';
           }
@@ -71,27 +74,37 @@ export default {
     isHaveChildren(menuElement) {
       return menuElement.hasOwnProperty('children');
     },
-
-  }
-}
+  },
+};
 </script>
 
 <template>
-
   <!-- Menu footer 1 ligne à droite TYPE_FOOTER_1_ROW_RIGHT !-->
-  <div class="container" v-if="this.type===17">
+  <div class="container" v-if="this.type === 17">
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-      <p class="col-md-4 mb-0 text-body-secondary">© <span v-html="this.getCurrentYear()"></span> {{ this.data.name }}
+      <p class="col-md-4 mb-0 text-body-secondary">
+        © <span v-html="this.getCurrentYear()"></span> {{ this.data.name }}
       </p>
 
-      <a :href="this.data.ur_site" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+      <a
+        :href="this.data.ur_site"
+        class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
+      >
         <i class="bi" :class="this.data.logo"></i>&nbsp;{{ this.data.name }}
       </a>
 
       <ul class="nav col-md-4 justify-content-end">
-        <li v-for="(element) in this.menu.menuElements" class="nav-item" :set="elementTranslate = this.getTranslationByLocale(element.menuElementTranslations)">
-          <a v-if="!element.disabled" class="nav-link px-2 text-body-secondary"
-              :target="element.linkTarget" :href="elementTranslate.link">{{ elementTranslate.text }}
+        <li
+          v-for="element in this.menu.menuElements"
+          class="nav-item"
+          :set="elementTranslate = this.getTranslationByLocale(element.menuElementTranslations)"
+        >
+          <a
+            v-if="!element.disabled"
+            class="nav-link px-2 text-body-secondary"
+            :target="element.linkTarget"
+            :href="elementTranslate.link"
+            >{{ elementTranslate.text }}
           </a>
         </li>
       </ul>
@@ -99,17 +112,26 @@ export default {
   </div>
 
   <!-- Menu footer 1 ligne centrée TYPE_FOOTER_1_ROW_CENTER !-->
-  <div class="container" v-if="this.type===18">
+  <div class="container" v-if="this.type === 18">
     <footer class="py-3 my-4">
       <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-
-        <li v-for="(element) in this.menu.menuElements" class="nav-item" :set="elementTranslate = this.getTranslationByLocale(element.menuElementTranslations)">
-          <a v-if="!element.disabled" class="nav-link px-2 text-body-secondary"
-              :target="element.linkTarget" :href="elementTranslate.link">{{ elementTranslate.text }}
+        <li
+          v-for="element in this.menu.menuElements"
+          class="nav-item"
+          :set="elementTranslate = this.getTranslationByLocale(element.menuElementTranslations)"
+        >
+          <a
+            v-if="!element.disabled"
+            class="nav-link px-2 text-body-secondary"
+            :target="element.linkTarget"
+            :href="elementTranslate.link"
+            >{{ elementTranslate.text }}
           </a>
         </li>
       </ul>
-      <p class="text-center text-body-secondary">© <span v-html="this.getCurrentYear()"></span> {{ this.data.name }}</p>
+      <p class="text-center text-body-secondary">
+        © <span v-html="this.getCurrentYear()"></span> {{ this.data.name }}
+      </p>
     </footer>
   </div>
 
@@ -124,18 +146,23 @@ export default {
 
       <div class="col mb-2"></div>
 
-      <div v-for="(element) in this.menu.menuElements" class="col mb-2" :set="elementTranslate = this.getTranslationByLocale(element.menuElementTranslations)">
+      <div
+        v-for="element in this.menu.menuElements"
+        class="col mb-2"
+        :set="elementTranslate = this.getTranslationByLocale(element.menuElementTranslations)"
+      >
         <div v-if="this.isHaveChildren(element) && !element.disabled">
           <h5>{{ elementTranslate.text }}</h5>
           <ul class="nav flex-column" v-html="this.renderColDeep(element, '')"></ul>
         </div>
         <div v-else-if="!element.disabled">
           <h5>
-            <a :target="element.linkTarget" :href="elementTranslate.link" class="text-decoration-none">{{ elementTranslate.text }}</a>
+            <a :target="element.linkTarget" :href="elementTranslate.link" class="text-decoration-none">{{
+              elementTranslate.text
+            }}</a>
           </h5>
         </div>
       </div>
     </footer>
   </div>
-
 </template>

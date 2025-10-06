@@ -8,7 +8,6 @@ namespace App\Utils\System\Mail;
 
 class MailTemplate
 {
-
     private const EMAIL_PATH = 'emails' . DIRECTORY_SEPARATOR;
 
     /**

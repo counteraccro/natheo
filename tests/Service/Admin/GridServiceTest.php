@@ -52,7 +52,7 @@ class GridServiceTest extends AppWebTestCase
      */
     public function testGetFormatedSQLQuery(): void
     {
-        for($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $this->createUser();
         }
 
@@ -93,7 +93,10 @@ class GridServiceTest extends AppWebTestCase
 
         $result = $this->gridService->renderRole('ROLE_CONTRIBUTEUR');
         $this->assertIsString($result);
-        $this->assertStringContainsString($this->translator->trans('global.role.contributeur', domain: 'global'), $result);
+        $this->assertStringContainsString(
+            $this->translator->trans('global.role.contributeur', domain: 'global'),
+            $result,
+        );
 
         $result = $this->gridService->renderRole('ROLE_ADMIN');
         $this->assertIsString($result);
@@ -101,6 +104,9 @@ class GridServiceTest extends AppWebTestCase
 
         $result = $this->gridService->renderRole('ROLE_SUPER_ADMIN');
         $this->assertIsString($result);
-        $this->assertStringContainsString($this->translator->trans('global.role.superadmin', domain: 'global'), $result);
+        $this->assertStringContainsString(
+            $this->translator->trans('global.role.superadmin', domain: 'global'),
+            $result,
+        );
     }
 }

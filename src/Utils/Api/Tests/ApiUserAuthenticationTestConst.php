@@ -93,6 +93,4 @@ class ApiUserAuthenticationTestConst
             ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_PASSWORD => self::PASSWORD_SUPER_ADMIN,
         ],
     ];
-
-
 }

@@ -26,50 +26,55 @@ use Symfony\Component\Yaml\Yaml;
 
 class PageFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
-    const PAGE_FIXTURES_DATA_FILE = 'content' . DIRECTORY_SEPARATOR . 'page' . DIRECTORY_SEPARATOR .
-    'page_fixtures_data.yaml';
+    const PAGE_FIXTURES_DATA_FILE =
+        'content' . DIRECTORY_SEPARATOR . 'page' . DIRECTORY_SEPARATOR . 'page_fixtures_data.yaml';
 
     public function load(ObjectManager $manager): void
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::PAGE_FIXTURES_DATA_FILE);
 
-        if($data === null) {
+        if ($data === null) {
             return;
         }
 
         foreach ($data['pages'] as $ref => $data) {
-
             $page = new Page();
             foreach ($data as $key => $value) {
                 switch ($key) {
-                    case "user" :
+                    case 'user':
                         $page->setUser($this->getReference($value, User::class));
                         break;
-                    case "tags" :
+                    case 'tags':
                         $this->addTag($page, $value);
                         break;
-                    case "headerImg" :
+                    case 'headerImg':
                         $media = $this->getReference($value, Media::class);
                         $optionOsAdresseSite = $this->getReference('OS_ADRESSE_SITE', OptionSystem::class);
                         $optionOsMediaPath = $this->getReference('OS_MEDIA_PATH', OptionSystem::class);
-                        $page->setHeaderImg($optionOsAdresseSite->getValue() . '/assets/' . $optionOsMediaPath->getValue() . '/' . $media->getPath());
+                        $page->setHeaderImg(
+                            $optionOsAdresseSite->getValue() .
+                                '/assets/' .
+                                $optionOsMediaPath->getValue() .
+                                '/' .
+                                $media->getPath(),
+                        );
                         break;
-                    case "pageTranslation":
+                    case 'pageTranslation':
                         foreach ($value as $pageTrans) {
                             $page->addPageTranslation($this->populateEntity($pageTrans, new PageTranslation()));
                         }
                         break;
-                    case "pageContent":
+                    case 'pageContent':
                         foreach ($value as $pageCont) {
                             $page->addPageContent($this->createPageContent($pageCont));
                         }
                         break;
-                    case "pageStatistique":
+                    case 'pageStatistique':
                         foreach ($value as $pageStat) {
                             $page->addPageStatistique($this->populateEntity($pageStat, new PageStatistique()));
                         }
                         break;
-                    case "pageMeta":
+                    case 'pageMeta':
                         foreach ($value as $pageMet) {
                             $page->addPageMeta($this->createPageMeta($pageMet));
                         }
@@ -106,20 +111,19 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     {
         $pageContent = new PageContent();
         foreach ($data as $key => $value) {
-
             if ($key === 'pageContentTranslation') {
                 foreach ($value as $pageContTrans) {
-                    $pageContent->addPageContentTranslation($this->populateEntity(
-                        $pageContTrans, new PageContentTranslation()));
+                    $pageContent->addPageContentTranslation(
+                        $this->populateEntity($pageContTrans, new PageContentTranslation()),
+                    );
                 }
             } elseif ($key === 'typeId') {
                 // Possible que la référence soit un id en dur
                 if ($this->hasReference($value, Faq::class)) {
                     $pageContent->setTypeId($this->getReference($value, Faq::class)->getId());
-                }else {
+                } else {
                     $pageContent->setTypeId($value);
                 }
-
             } else {
                 $this->setData($key, $value, $pageContent);
             }
@@ -133,15 +137,15 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
      * @param array $data
      * @return PageMeta
      */
-    private function createPageMeta(array $data): PageMeta {
+    private function createPageMeta(array $data): PageMeta
+    {
         $pageMeta = new PageMeta();
         foreach ($data as $key => $value) {
             if ($key === 'pageMetaTranslation') {
                 foreach ($value as $pageMetaTrans) {
                     $pageMeta->addPageMetaTranslation($this->populateEntity($pageMetaTrans, new PageMetaTranslation()));
                 }
-            }
-            else {
+            } else {
                 $this->setData($key, $value, $pageMeta);
             }
         }

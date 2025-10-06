@@ -1,5 +1,5 @@
 @mixin theme-dark() {
-    --primary : #202223;
+    --primary: #202223;
     --secondary: #444750;
     --success: #0c5402;
     --danger: #670101;
@@ -7,10 +7,8 @@
     --light: #ff02ca;
     --warning: #705f02;
     --dark: #060606;
-  }
+}
 
- .theme-dark {
-     @include theme-dark();
- }
-
-
+.theme-dark {
+    @include theme-dark();
+}

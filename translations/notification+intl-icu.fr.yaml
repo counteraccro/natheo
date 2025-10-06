@@ -21,4 +21,4 @@ notification.read_All: 'Marquer tout comme lu'
 notification.all: 'Toutes les notifications'
 notification.all_success: 'Toutes vos notifications on été considérées comme lu'
 notification.msg.new_fondateur.title: 'Bienvenue !'
-notification.msg.new_fondateur.content: "Bonjour <b>{login}</b>, Vous venez de finalisez l'installation de Natheo CMS. Encore quelques paramétrages et votre site sera opérationnel. <br /> Pour vous accompagner dans la mise en ligne de votre site, vous pouvez consulter <a href=\"{url_aide}\" target='_blank'>l'aide</a> du site"
+notification.msg.new_fondateur.content: 'Bonjour <b>{login}</b>, Vous venez de finalisez l''installation de Natheo CMS. Encore quelques paramétrages et votre site sera opérationnel. <br /> Pour vous accompagner dans la mise en ligne de votre site, vous pouvez consulter <a href="{url_aide}" target=''_blank''>l''aide</a> du site'

@@ -6,7 +6,6 @@
  */
 namespace App\Service\Api;
 
-
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\MarkdownEditorService;
 use App\Service\Admin\System\OptionSystemService;
@@ -30,26 +29,28 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppApiHandlerService
 {
-
     public function __construct(
-        #[AutowireLocator([
-            'logger' => LoggerInterface::class,
-            'entityManager' => EntityManagerInterface::class,
-            'containerBag' => ContainerBagInterface::class,
-            'translator' => TranslatorInterface::class,
-            'router' => UrlGeneratorInterface::class,
-            'security' => Security::class,
-            'requestStack' => RequestStack::class,
-            'parameterBag' => ParameterBagInterface::class,
-            'optionSystemService' => OptionSystemService::class,
-            'pageService' => PageService::class,
-            'apiMenuService' => ApiMenuService::class,
-            'apiPageContentService' => ApiPageContentService::class,
-            'kernel' => KernelInterface::class,
-            'markdownEditorService' => MarkdownEditorService::class,
-            'accessDecisionManager' => AccessDecisionManagerInterface::class,
-        ])]
-        protected ContainerInterface $handlers){}
+        #[
+            AutowireLocator([
+                'logger' => LoggerInterface::class,
+                'entityManager' => EntityManagerInterface::class,
+                'containerBag' => ContainerBagInterface::class,
+                'translator' => TranslatorInterface::class,
+                'router' => UrlGeneratorInterface::class,
+                'security' => Security::class,
+                'requestStack' => RequestStack::class,
+                'parameterBag' => ParameterBagInterface::class,
+                'optionSystemService' => OptionSystemService::class,
+                'pageService' => PageService::class,
+                'apiMenuService' => ApiMenuService::class,
+                'apiPageContentService' => ApiPageContentService::class,
+                'kernel' => KernelInterface::class,
+                'markdownEditorService' => MarkdownEditorService::class,
+                'accessDecisionManager' => AccessDecisionManagerInterface::class,
+            ]),
+        ]
+        protected ContainerInterface $handlers,
+    ) {}
 
     /**
      * Retourne l'interface LoggerInterface
@@ -79,7 +80,7 @@ class AppApiHandlerService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function getGridTranslate() : GridTranslate
+    protected function getGridTranslate(): GridTranslate
     {
         return $this->handlers->get('gridTranslate');
     }
@@ -90,11 +91,10 @@ class AppApiHandlerService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function getKernel() : KernelInterface
+    protected function getKernel(): KernelInterface
     {
         return $this->handlers->get('kernel');
     }
-
 
     /**
      * Retourne l'interface ParameterBagInterface
@@ -106,7 +106,6 @@ class AppApiHandlerService
     {
         return $this->handlers->get('parameterBag');
     }
-
 
     /**
      * Retourne la class Security
@@ -128,7 +127,6 @@ class AppApiHandlerService
     {
         return $this->handlers->get('router');
     }
-
 
     /**
      * Retourne la class OptionSystemService
@@ -180,7 +178,7 @@ class AppApiHandlerService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function getPageService() : PageService
+    protected function getPageService(): PageService
     {
         return $this->handlers->get('pageService');
     }
@@ -224,7 +222,7 @@ class AppApiHandlerService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function getAccessDecisionManager() :AccessDecisionManagerInterface
+    protected function getAccessDecisionManager(): AccessDecisionManagerInterface
     {
         return $this->handlers->get('accessDecisionManager');
     }

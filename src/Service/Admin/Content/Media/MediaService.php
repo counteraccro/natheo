@@ -23,7 +23,6 @@ use Symfony\Component\Finder\Finder;
 
 class MediaService extends MediaFolderService
 {
-
     /**
      * Pour les fixtures, déplace un média du dossier fixture vers le dossier média
      * @param string $file
@@ -37,8 +36,8 @@ class MediaService extends MediaFolderService
         $containerBag = $this->getContainerBag();
 
         $rootPath = $containerBag->get('kernel.project_dir');
-        $fixturesPath = $rootPath . DIRECTORY_SEPARATOR .
-            MediaFolderConst::ROOT_FOLDER_NAME . 'fixtures' . DIRECTORY_SEPARATOR;
+        $fixturesPath =
+            $rootPath . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_FOLDER_NAME . 'fixtures' . DIRECTORY_SEPARATOR;
 
         $fileSystem = new Filesystem();
 
@@ -72,9 +71,10 @@ class MediaService extends MediaFolderService
 
         if ($finder->hasResults()) {
             foreach ($finder as $file) {
-
-                $pathMedia = str_replace($this->rootPathMedia, '', $file->getPath()) .
-                    DIRECTORY_SEPARATOR . $file->getFilename();
+                $pathMedia =
+                    str_replace($this->rootPathMedia, '', $file->getPath()) .
+                    DIRECTORY_SEPARATOR .
+                    $file->getFilename();
 
                 // Cas étrange de fichier qui remonte avec un path commençant par //
                 if (preg_match('/^\\\\\\\\/m', $pathMedia)) {
@@ -112,8 +112,7 @@ class MediaService extends MediaFolderService
         $mediaFolder = $media->getMediaFolder();
         $path = '/' . $media->getName();
         if ($mediaFolder != null) {
-            $path = $mediaFolder->getPath() . '/' .
-                $mediaFolder->getName() . '/' . $media->getName();
+            $path = $mediaFolder->getPath() . '/' . $mediaFolder->getName() . '/' . $media->getName();
         }
 
         $path = str_replace('\\', '/', $path);
@@ -131,8 +130,7 @@ class MediaService extends MediaFolderService
         $mediaFolder = $media->getMediaFolder();
         $path = DIRECTORY_SEPARATOR . $media->getName();
         if ($mediaFolder != null) {
-            $path = $mediaFolder->getPath() .
-                $mediaFolder->getName() . DIRECTORY_SEPARATOR . $media->getName();
+            $path = $mediaFolder->getPath() . $mediaFolder->getName() . DIRECTORY_SEPARATOR . $media->getName();
         }
         return str_replace('//', '/', $path);
     }
@@ -157,13 +155,11 @@ class MediaService extends MediaFolderService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getALlMediaAndMediaFolderByMediaFolder
-    (
+    public function getALlMediaAndMediaFolderByMediaFolder(
         ?MediaFolder $mediaFolder = null,
-        string       $filter = 'created_at',
-        string       $order = 'asc'
-    ): array
-    {
+        string $filter = 'created_at',
+        string $order = 'asc',
+    ): array {
         $medias = $this->getMediaByMediaFolder($mediaFolder);
         $folders = $this->getMediaFolderByMediaFolder($mediaFolder);
 
@@ -180,7 +176,7 @@ class MediaService extends MediaFolderService
                 'webPath' => $media->getWebPath(),
                 'thumbnail' => $this->getThumbnail($media),
                 'created_at' => $media->getCreatedAt()->getTimestamp(),
-                'date' => $media->getCreatedAt()->format('d-m-Y H:i:s')
+                'date' => $media->getCreatedAt()->format('d-m-Y H:i:s'),
             ];
         }
 
@@ -191,7 +187,7 @@ class MediaService extends MediaFolderService
                 'id' => $folder->getId(),
                 'name' => $folder->getName(),
                 'created_at' => $folder->getCreatedAt()->getTimestamp(),
-                'date' => $folder->getCreatedAt()->format('d-m-Y H:i:s')
+                'date' => $folder->getCreatedAt()->format('d-m-Y H:i:s'),
             ];
         }
 
@@ -241,22 +237,29 @@ class MediaService extends MediaFolderService
             'data' => [
                 $translator->trans('media.mediatheque.info.media.name', domain: 'media') => $media->getName(),
                 $translator->trans('media.mediatheque.info.media.titre', domain: 'media') => $media->getTitle(),
-                $translator->trans('media.mediatheque.info.media.description', domain: 'media')
-                => $media->getDescription(),
+                $translator->trans(
+                    'media.mediatheque.info.media.description',
+                    domain: 'media',
+                ) => $media->getDescription(),
                 $translator->trans('media.mediatheque.info.media.extension', domain: 'media') => $media->getExtension(),
-                $translator->trans('media.mediatheque.info.media.user', domain: 'media')
-                => $personalData->getPersonalData(),
+                $translator->trans(
+                    'media.mediatheque.info.media.user',
+                    domain: 'media',
+                ) => $personalData->getPersonalData(),
                 $translator->trans('media.mediatheque.info.media.emplacement', domain: 'media') => $media->getPath(),
-                $translator->trans('media.mediatheque.info.media.size', domain: 'media')
-                => Utils::getSizeName($media->getSize()),
-                $translator->trans('media.mediatheque.info.media.date_created', domain: 'media')
-                => $media->getCreatedAt()->format('d/m/y H:i'),
-                $translator->trans('media.mediatheque.info.media.date_update', domain: 'media')
-                => $media->getUpdateAt()->format('d/m/y H:i'),
+                $translator->trans('media.mediatheque.info.media.size', domain: 'media') => Utils::getSizeName(
+                    $media->getSize(),
+                ),
+                $translator->trans('media.mediatheque.info.media.date_created', domain: 'media') => $media
+                    ->getCreatedAt()
+                    ->format('d/m/y H:i'),
+                $translator->trans('media.mediatheque.info.media.date_update', domain: 'media') => $media
+                    ->getUpdateAt()
+                    ->format('d/m/y H:i'),
             ],
             'thumbnail' => $this->getThumbnail($media),
             'web_path' => $media->getWebPath(),
-            'media_type' => $media->getType()
+            'media_type' => $media->getType(),
         ];
     }
 
@@ -281,10 +284,9 @@ class MediaService extends MediaFolderService
 
         $path = str_replace(['\/', '\\'], DIRECTORY_SEPARATOR, $path);
 
-        list(, $data) = explode(';', $file['url']);
-        list(, $data) = explode(',', $data);
+        [, $data] = explode(';', $file['url']);
+        [, $data] = explode(',', $data);
         $data = base64_decode($data);
-
 
         $name = str_replace(' ', '-', $file['name']) . '-' . time() . '.' . $file['fileExtention'];
         file_put_contents($path . $name, $data);
@@ -333,7 +335,6 @@ class MediaService extends MediaFolderService
             $media = $this->findOneById(Media::class, $id);
             $folder = $this->findOneById(MediaFolder::class, $idToMove);
             $this->moveMedia($media, $folder);
-
         } else {
             $folder = $this->findOneById(MediaFolder::class, $id);
             $folderInMove = $this->findOneById(MediaFolder::class, $idToMove);
@@ -358,7 +359,7 @@ class MediaService extends MediaFolderService
 
         $media->setMediaFolder($mediaFolderInMove);
 
-        if($mediaFolderInMove !== null) {
+        if ($mediaFolderInMove !== null) {
             $mediaFolderInMove->addMedia($media);
         }
 
@@ -409,12 +410,10 @@ class MediaService extends MediaFolderService
         $repoMediaFolder = $this->getRepository(MediaFolder::class);
         $folders = $repoMediaFolder->findBy(['trash' => true]);
 
-
         $return = [];
 
         /** @var Media $media */
         foreach ($medias as $media) {
-
             $return[] = [
                 'type' => 'media',
                 'id' => $media->getId(),
@@ -423,7 +422,7 @@ class MediaService extends MediaFolderService
                 'size' => Utils::getSizeName($media->getSize()),
                 'webPath' => $media->getWebPath(),
                 'thumbnail' => $this->getThumbnail($media),
-                'created_at' => $media->getCreatedAt()->getTimestamp()
+                'created_at' => $media->getCreatedAt()->getTimestamp(),
             ];
         }
 
@@ -433,12 +432,11 @@ class MediaService extends MediaFolderService
                 'type' => 'folder',
                 'id' => $folder->getId(),
                 'name' => $folder->getName(),
-                'created_at' => $folder->getCreatedAt()->getTimestamp()
+                'created_at' => $folder->getCreatedAt()->getTimestamp(),
             ];
         }
 
         return $return;
-
     }
 
     /**
@@ -479,8 +477,7 @@ class MediaService extends MediaFolderService
         if ($type === 'media') {
             /** @var Media $media */
             $entity = $this->findOneById(Media::class, $id);
-            $path =  $this->rootPathMedia . $this->getPath($entity);
-
+            $path = $this->rootPathMedia . $this->getPath($entity);
         } else {
             /** @var MediaFolder $entity */
             $entity = $this->findOneById(MediaFolder::class, $id);
@@ -488,7 +485,6 @@ class MediaService extends MediaFolderService
         }
 
         if ($this->canCreatePhysicalFolder) {
-
             $fileSystem = new Filesystem();
             $fileSystem->remove($path);
         }

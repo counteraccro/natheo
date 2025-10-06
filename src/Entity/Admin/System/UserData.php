@@ -25,7 +25,7 @@ class UserData
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\Column(name:'`key`', length: 255)]
+    #[ORM\Column(name: '`key`', length: 255)]
     private ?string $key = null;
 
     #[ORM\Column(type: Types::TEXT)]

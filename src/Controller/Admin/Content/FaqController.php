@@ -44,14 +44,14 @@ class FaqController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'faq',
             Breadcrumb::BREADCRUMB => [
-                'faq.index.page_title_h1' => '#'
-            ]
+                'faq.index.page_title_h1' => '#',
+            ],
         ];
 
         return $this->render('admin/content/faq/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT)
+            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
         ]);
     }
 
@@ -66,12 +66,7 @@ class FaqController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
-    public function loadGridData(
-        FaqService $faqService,
-        Request    $request,
-        int        $page = 1,
-        int        $limit = 20
-    ): JsonResponse
+    public function loadGridData(FaqService $faqService, Request $request, int $page = 1, int $limit = 20): JsonResponse
     {
         $search = $request->query->get('search');
         $filter = $request->query->get('filter');
@@ -97,12 +92,11 @@ class FaqController extends AppAdminController
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
     public function add(
-        FaqService              $faqService,
-        FaqTranslate            $faqTranslate,
+        FaqService $faqService,
+        FaqTranslate $faqTranslate,
         MarkdownEditorTranslate $markdownEditorTranslate,
-        ?int                    $id = null,
-    ): Response
-    {
+        ?int $id = null,
+    ): Response {
         $breadcrumbTitle = 'faq.update.page_title_h1';
         if ($id === null) {
             $breadcrumbTitle = 'faq.add.page_title_h1';
@@ -112,8 +106,8 @@ class FaqController extends AppAdminController
             Breadcrumb::DOMAIN => 'faq',
             Breadcrumb::BREADCRUMB => [
                 'faq.index.page_title' => 'admin_faq_index',
-                $breadcrumbTitle => '#'
-            ]
+                $breadcrumbTitle => '#',
+            ],
         ];
 
         $translate = $faqTranslate->getTranslate();
@@ -125,8 +119,7 @@ class FaqController extends AppAdminController
             'translate' => $translate,
             'locales' => $locales,
             'id' => $id,
-            'datas' => [
-            ],
+            'datas' => [],
             'urls' => [
                 'load_faq' => $this->generateUrl('admin_faq_load_faq'),
                 'save' => $this->generateUrl('admin_faq_save'),
@@ -135,9 +128,8 @@ class FaqController extends AppAdminController
                 'order_by_type' => $this->generateUrl('admin_faq_order_by_type'),
                 'new_cat_question' => $this->generateUrl('admin_faq_new_cat_question'),
                 'update_order' => $this->generateUrl('admin_faq_update_order'),
-                'delete_category_question' => $this->generateUrl('admin_faq_delete_category_question')
-            ]
-
+                'delete_category_question' => $this->generateUrl('admin_faq_delete_category_question'),
+            ],
         ]);
     }
 
@@ -154,11 +146,10 @@ class FaqController extends AppAdminController
     #[Route('/ajax/disabled/{id}', name: 'disabled', methods: ['PUT'])]
     public function updateDisabled(
         #[MapEntity(id: 'id')] Faq $faq,
-        FaqService                 $faqService,
-        TranslatorInterface        $translator,
-        Request                    $request): JsonResponse
-    {
-
+        FaqService $faqService,
+        TranslatorInterface $translator,
+        Request $request,
+    ): JsonResponse {
         $faq->setDisabled(!$faq->isDisabled());
 
         $faqTranslate = $faq->getFaqTranslationByLocale($request->getLocale());
@@ -183,10 +174,10 @@ class FaqController extends AppAdminController
     #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(
         #[MapEntity(id: 'id')] Faq $faq,
-        FaqService                 $faqService,
-        TranslatorInterface        $translator,
-        Request                    $request): JsonResponse
-    {
+        FaqService $faqService,
+        TranslatorInterface $translator,
+        Request $request,
+    ): JsonResponse {
         $titre = $faq->getFaqTranslationByLocale($request->getLocale())->getTitle();
         $msg = $translator->trans('faq.remove.success', ['label' => $titre], domain: 'faq');
 
@@ -216,11 +207,19 @@ class FaqController extends AppAdminController
             $faq = $faqService->findOneById(Faq::class, $id);
         }
         $faqArray = $faqService->convertEntityToArray($faq, [
-            'createdAt', 'updateAt', 'user', 'maxRenderOrderQuestion', 'maxRenderOrderCategory', 'allMaxRender', 'sortedFaqQuestion', 'sortedFaqCategories']);
+            'createdAt',
+            'updateAt',
+            'user',
+            'maxRenderOrderQuestion',
+            'maxRenderOrderCategory',
+            'allMaxRender',
+            'sortedFaqQuestion',
+            'sortedFaqCategories',
+        ]);
 
         return $this->json([
             'faq' => $faqArray,
-            'max_render_order' => $faq->getAllMaxRender()
+            'max_render_order' => $faq->getAllMaxRender(),
         ]);
     }
 
@@ -258,9 +257,7 @@ class FaqController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/new-faq', name: 'new_faq', methods: 'POST')]
-    public function newFaq(Request             $request,
-                           FaqService          $faqService,
-                           TranslatorInterface $translator): JsonResponse
+    public function newFaq(Request $request, FaqService $faqService, TranslatorInterface $translator): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $faqFactory = new FaqFactory($faqService->getLocales()['locales']);
@@ -293,22 +290,22 @@ class FaqController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/update-disabled', name: 'update_disabled', methods: 'PUT')]
-    public function updateDisabledCatQuestion(
-        Request    $request,
-        FaqService $faqService): JsonResponse
+    public function updateDisabledCatQuestion(Request $request, FaqService $faqService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
         $msg = match ($data['type']) {
             FaqConst::TYPE_QUESTION => $faqService->updateDisabledQuestion($data['id'], $data['value']),
-            FaqConst::TYPE_CATEGORY => $faqService->updateDisabledCategory($data['id'],
-                $data['allQuestion'], $data['value']),
+            FaqConst::TYPE_CATEGORY => $faqService->updateDisabledCategory(
+                $data['id'],
+                $data['allQuestion'],
+                $data['value'],
+            ),
             default => 'Erreur type',
         };
 
         return $this->json($faqService->getResponseAjax($msg));
     }
-
 
     /**
      * Retourne une liste de Category ou question dans l'order orderRender en fonction de son type
@@ -322,17 +319,16 @@ class FaqController extends AppAdminController
      */
     #[Route('/ajax/order-by/{id}/{type}', name: 'order_by_type', methods: 'GET')]
     public function orderListeByEntity(
-        FaqService          $faqService,
+        FaqService $faqService,
         TranslatorInterface $translator,
-        int                 $id = 0,
-        string              $type = 'category'): JsonResponse
-    {
-
+        int $id = 0,
+        string $type = 'category',
+    ): JsonResponse {
         $msg = '';
         $data = [];
         $success = false;
         switch ($type) {
-            case FaqConst::TYPE_QUESTION :
+            case FaqConst::TYPE_QUESTION:
                 $data = $faqService->getListeQuestionOrderByCategory($id);
                 $success = true;
                 break;
@@ -358,14 +354,14 @@ class FaqController extends AppAdminController
      */
     #[Route('/ajax/new/', name: 'new_cat_question', methods: 'POST')]
     public function newCatQuestion(
-        FaqService          $faqService,
-        Request             $request,
-        TranslatorInterface $translator): JsonResponse
-    {
+        FaqService $faqService,
+        Request $request,
+        TranslatorInterface $translator,
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
         switch ($data['type']) {
-            case FaqConst::TYPE_CATEGORY :
+            case FaqConst::TYPE_CATEGORY:
                 $faqService->addNewCategory($data['id'], $data['idOrder'], $data['orderType']);
                 $msg = $translator->trans('faq.category.new.success', domain: 'faq');
                 break;
@@ -391,12 +387,15 @@ class FaqController extends AppAdminController
      * @throws Exception
      */
     #[Route('/ajax/update-order/', name: 'update_order', methods: 'PUT')]
-    public function changeOrderRender(FaqService $faqService, Request $request, TranslatorInterface $translator): JsonResponse
-    {
+    public function changeOrderRender(
+        FaqService $faqService,
+        Request $request,
+        TranslatorInterface $translator,
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
         switch ($data['type']) {
-            case FaqConst::TYPE_CATEGORY :
+            case FaqConst::TYPE_CATEGORY:
                 $faqService->updateOrderCategory($data['id'], $data['idOrder'], $data['orderType']);
                 $msg = $translator->trans('faq.category.update.order', domain: 'faq');
                 break;
@@ -423,14 +422,13 @@ class FaqController extends AppAdminController
      */
     #[Route('/ajax/delete-q-r/{id}/{type}', name: 'delete_category_question', methods: 'DELETE')]
     public function deleteCategoryQuestion(
-        FaqService          $faqService,
+        FaqService $faqService,
         TranslatorInterface $translator,
-        int                 $id = 0,
-        string              $type = 'category'
-    ): JsonResponse
-    {
+        int $id = 0,
+        string $type = 'category',
+    ): JsonResponse {
         switch ($type) {
-            case FaqConst::TYPE_CATEGORY :
+            case FaqConst::TYPE_CATEGORY:
                 $faqService->deleteCategory($id);
                 $msg = $translator->trans('faq.category.remove.success', domain: 'faq');
                 break;

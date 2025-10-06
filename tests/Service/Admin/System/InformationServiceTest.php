@@ -19,7 +19,7 @@ class InformationServiceTest extends AppWebTestCase
      */
     private InformationService $informationService;
 
-    public function  setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
         $this->informationService = $this->container->get(InformationService::class);
@@ -61,7 +61,7 @@ class InformationServiceTest extends AppWebTestCase
      * Test méthode getInformationDatabase()
      * @return void
      */
-    public function testGetInformationDatabase() :void
+    public function testGetInformationDatabase(): void
     {
         $result = $this->informationService->getInformationDatabase();
         $this->assertIsArray($result);
@@ -77,7 +77,7 @@ class InformationServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetInformationWebsite() :void
+    public function testGetInformationWebsite(): void
     {
         $result = $this->informationService->getInformationWebsite();
         $this->assertIsArray($result);
@@ -89,7 +89,7 @@ class InformationServiceTest extends AppWebTestCase
      * Test méthode getInformationNavigateur()
      * @return void
      */
-    public function testGetInformationNavigateur() :void
+    public function testGetInformationNavigateur(): void
     {
         $result = $this->informationService->getInformationNavigateur();
         $this->assertIsArray($result);

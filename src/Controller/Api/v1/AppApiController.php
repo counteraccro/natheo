@@ -18,7 +18,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class AppApiController extends AppApiHandlerController
 {
-
     /**
      * Créer une réponse d'API formatée
      * @param string $message
@@ -30,8 +29,13 @@ class AppApiController extends AppApiHandlerController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function apiResponse(string $message, mixed $data, array $errors = [], int $status = 200, array $headers = []): JsonResponse
-    {
+    protected function apiResponse(
+        string $message,
+        mixed $data,
+        array $errors = [],
+        int $status = 200,
+        array $headers = [],
+    ): JsonResponse {
         if (empty($headers)) {
             $headers = ['Content-Type' => 'application/json'];
         }
@@ -39,9 +43,16 @@ class AppApiController extends AppApiHandlerController
         $body = $this->formatApiResponse($message, $data, $errors, $status);
 
         if ($this->container->has('serializer')) {
-            $json = $this->container->get('serializer')->serialize($body, 'json', array_merge([
-                'json_encode_options' => JsonResponse::DEFAULT_ENCODING_OPTIONS,
-            ], []));
+            $json = $this->container->get('serializer')->serialize(
+                $body,
+                'json',
+                array_merge(
+                    [
+                        'json_encode_options' => JsonResponse::DEFAULT_ENCODING_OPTIONS,
+                    ],
+                    [],
+                ),
+            );
             return new JsonResponse($json, $status, $headers, true);
         }
         return new JsonResponse($body, $status, $headers, false);
@@ -86,8 +97,11 @@ class AppApiController extends AppApiHandlerController
         $apiUserService = $this->getApiUserService();
         $translator = $this->getTranslator();
         $user = $apiUserService->getUserByUserToken($userToken);
-        if($user === null) {
-            throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans($translator->trans('api_errors.user.token.not.found', domain: 'api_errors')));
+        if ($user === null) {
+            throw new HttpException(
+                Response::HTTP_FORBIDDEN,
+                $translator->trans($translator->trans('api_errors.user.token.not.found', domain: 'api_errors')),
+            );
         }
         return $user;
     }

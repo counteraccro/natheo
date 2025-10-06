@@ -11,7 +11,7 @@ use App\Utils\Installation\InstallationConst;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name : "option_system")]
+#[ORM\Table(name: 'option_system')]
 #[ORM\Entity(repositoryClass: OptionSystemRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class OptionSystem
@@ -21,7 +21,7 @@ class OptionSystem
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(name:'`key`', length: 255)]
+    #[ORM\Column(name: '`key`', length: 255)]
     private ?string $key = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

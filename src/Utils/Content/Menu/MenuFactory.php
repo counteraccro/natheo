@@ -12,9 +12,7 @@ use App\Entity\Admin\Content\Menu\MenuElementTranslation;
 
 class MenuFactory
 {
-    public function __construct(private readonly array $locales)
-    {
-    }
+    public function __construct(private readonly array $locales) {}
 
     /**
      * Créer un menuElement

@@ -37,6 +37,4 @@ class FaqConst
      * @var string
      */
     const STATISTIQUE_ACTION_OVERWRITE = 'overwrite';
-
-
 }

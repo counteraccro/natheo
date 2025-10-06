@@ -22,8 +22,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route('/admin/{_locale}/translation', name: 'admin_translation_',
-    requirements: ['_locale' => '%app.supported_locales%'])]
+#[
+    Route(
+        '/admin/{_locale}/translation',
+        name: 'admin_translation_',
+        requirements: ['_locale' => '%app.supported_locales%'],
+    ),
+]
 #[IsGranted('ROLE_SUPER_ADMIN')]
 class TranslationController extends AppAdminController
 {
@@ -37,8 +42,8 @@ class TranslationController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'translate',
             Breadcrumb::BREADCRUMB => [
-                'translate.page_title_h1' => '#'
-            ]
+                'translate.page_title_h1' => '#',
+            ],
         ];
 
         return $this->render('admin/system/translation/index.html.twig', [
@@ -55,13 +60,11 @@ class TranslationController extends AppAdminController
     #[Route('/ajax/languages', name: 'list_languages', methods: ['GET'])]
     public function loadLanguages(
         TranslateService $translateService,
-        TranslationTranslate $translationTranslate
-    ): JsonResponse
-    {
-
+        TranslationTranslate $translationTranslate,
+    ): JsonResponse {
         try {
             $languages = $translateService->getListLanguages();
-        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+        } catch (NotFoundExceptionInterface | ContainerExceptionInterface $e) {
             die($e->getMessage());
         }
 
@@ -77,10 +80,7 @@ class TranslationController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/files-translates/{language}', name: 'files_translate', methods: ['GET'])]
-    public function loadFilesTranslates(
-        TranslateService $translateService,
-        string $language = 'fr'
-    ): JsonResponse
+    public function loadFilesTranslates(TranslateService $translateService, string $language = 'fr'): JsonResponse
     {
         $files = $translateService->getTranslationFilesByLanguage($language);
         return $this->json(['files' => $files]);
@@ -95,10 +95,7 @@ class TranslationController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/file-translate/{file}', name: 'file_translate', methods: ['GET'])]
-    public function loadFileTranslate(
-        TranslateService $translateService,
-        string $file = ''
-    ): JsonResponse
+    public function loadFileTranslate(TranslateService $translateService, string $file = ''): JsonResponse
     {
         $file = $translateService->getTranslationFile($file);
         return $this->json(['file' => $file]);
@@ -116,8 +113,8 @@ class TranslationController extends AppAdminController
     public function saveTranslate(
         Request $request,
         TranslatorInterface $translator,
-        TranslateService $translateService): JsonResponse
-    {
+        TranslateService $translateService,
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
         try {

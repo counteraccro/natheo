@@ -37,26 +37,31 @@ class DashboardController extends AppAdminController
     #[Route('', name: 'index_2')]
     public function index(DashboardTranslate $dashboardTranslate, UserDataService $userDataService): Response
     {
-
         return $this->render('admin/dashboard/index.html.twig', [
             'translate' => $dashboardTranslate->getTranslate(),
             'urls' => [
                 'dashboard_help_first_connexion' => [
-                    'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', ['id' => DashboardKey::DASHBOARD_HELP_FIRST_CONNEXION_ID]),
+                    'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', [
+                        'id' => DashboardKey::DASHBOARD_HELP_FIRST_CONNEXION_ID,
+                    ]),
                     'update_user_data' => $this->generateUrl('admin_user_update_user_data'),
                 ],
                 'dashboard_last_comments' => [
-                    'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', ['id' => DashboardKey::DASHBOARD_LAST_COMMENT]),
-                    'url_comments' => $this->generateUrl('admin_comment_index')
+                    'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', [
+                        'id' => DashboardKey::DASHBOARD_LAST_COMMENT,
+                    ]),
+                    'url_comments' => $this->generateUrl('admin_comment_index'),
                 ],
                 'dashboard_last_pages' => [
-                    'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', ['id' => 'todo-a-faire']),
+                    'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', [
+                        'id' => 'todo-a-faire',
+                    ]),
                 ],
             ],
             'datas' => [
                 'dashboard_help_first_connexion' => [
                     'help_first_connexion' => $userDataService->getHelpFirstConnexion($this->getUser()),
-                    'user_data_key_first_connexion' => UserDataKey::KEY_HELP_FIRST_CONNEXION
+                    'user_data_key_first_connexion' => UserDataKey::KEY_HELP_FIRST_CONNEXION,
                 ],
             ],
         ]);
@@ -73,15 +78,18 @@ class DashboardController extends AppAdminController
      */
     #[Route('/ajax/load-block-dashboard/{id}', name: 'load_block', methods: ['GET'])]
     public function loadDashboardBlock(
-        string              $id,
+        string $id,
         TranslatorInterface $translator,
-        DashboardService    $dashboardService
-    ): JsonResponse
-    {
+        DashboardService $dashboardService,
+    ): JsonResponse {
         $return = match ($id) {
             DashboardKey::DASHBOARD_HELP_FIRST_CONNEXION_ID => $dashboardService->getBlockHelpConfig(),
             DashboardKey::DASHBOARD_LAST_COMMENT => $dashboardService->getBlockLastComment(),
-            default => ['success' => false, 'body' => null, 'error' => $translator->trans('dashboard.error.load.block', domain: 'dashboard')],
+            default => [
+                'success' => false,
+                'body' => null,
+                'error' => $translator->trans('dashboard.error.load.block', domain: 'dashboard'),
+            ],
         };
         return $this->json($return);
     }
@@ -98,8 +106,8 @@ class DashboardController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'message',
             Breadcrumb::BREADCRUMB => [
-                'pagedemo.element.html' => '#'
-            ]
+                'pagedemo.element.html' => '#',
+            ],
         ];
 
         return $this->render('admin/dashboard/page_demo.html.twig', ['breadcrumb' => $breadcrumb]);

@@ -8,7 +8,7 @@ namespace App\Twig\Components\Admin;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent()]
+#[AsTwigComponent]
 final class ModaleComponent
 {
     public string $id = 'id-modal';

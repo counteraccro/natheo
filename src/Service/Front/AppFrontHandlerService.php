@@ -24,21 +24,23 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppFrontHandlerService
 {
-
     public function __construct(
-        #[AutowireLocator([
-            'logger' => LoggerInterface::class,
-            'entityManager' => EntityManagerInterface::class,
-            'containerBag' => ContainerBagInterface::class,
-            'translator' => TranslatorInterface::class,
-            'router' => UrlGeneratorInterface::class,
-            'security' => Security::class,
-            'requestStack' => RequestStack::class,
-            'parameterBag' => ParameterBagInterface::class,
-            'optionSystemService' => OptionSystemService::class,
-            'kernel' => KernelInterface::class,
-        ])]
-        protected ContainerInterface $handlers){}
+        #[
+            AutowireLocator([
+                'logger' => LoggerInterface::class,
+                'entityManager' => EntityManagerInterface::class,
+                'containerBag' => ContainerBagInterface::class,
+                'translator' => TranslatorInterface::class,
+                'router' => UrlGeneratorInterface::class,
+                'security' => Security::class,
+                'requestStack' => RequestStack::class,
+                'parameterBag' => ParameterBagInterface::class,
+                'optionSystemService' => OptionSystemService::class,
+                'kernel' => KernelInterface::class,
+            ]),
+        ]
+        protected ContainerInterface $handlers,
+    ) {}
 
     /**
      * Retourne l'interface LoggerInterface
@@ -68,11 +70,10 @@ class AppFrontHandlerService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function getKernel() : KernelInterface
+    protected function getKernel(): KernelInterface
     {
         return $this->handlers->get('kernel');
     }
-
 
     /**
      * Retourne l'interface ParameterBagInterface
@@ -84,7 +85,6 @@ class AppFrontHandlerService
     {
         return $this->handlers->get('parameterBag');
     }
-
 
     /**
      * Retourne la class Security
@@ -106,7 +106,6 @@ class AppFrontHandlerService
     {
         return $this->handlers->get('router');
     }
-
 
     /**
      * Retourne la class OptionSystemService

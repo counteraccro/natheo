@@ -25,10 +25,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApiAuthenticator extends AbstractAuthenticator
 {
-    public function __construct(private TranslatorInterface $translator, private OptionSystemService $optionSystemService)
-    {
-
-    }
+    public function __construct(
+        private TranslatorInterface $translator,
+        private OptionSystemService $optionSystemService,
+    ) {}
 
     /**
      * @param Request $request
@@ -36,7 +36,8 @@ class ApiAuthenticator extends AbstractAuthenticator
      */
     public function supports(Request $request): ?bool
     {
-        return $request->headers->has('Authorization') && str_contains($request->headers->get('Authorization'), 'Bearer ');
+        return $request->headers->has('Authorization') &&
+            str_contains($request->headers->get('Authorization'), 'Bearer ');
     }
 
     /**
@@ -50,9 +51,7 @@ class ApiAuthenticator extends AbstractAuthenticator
         $this->isOpenApi();
 
         $identifier = trim(str_replace('Bearer ', '', $request->headers->get('Authorization')));
-        return new SelfValidatingPassport(
-            new UserBadge($identifier)
-        );
+        return new SelfValidatingPassport(new UserBadge($identifier));
     }
 
     /**
@@ -73,7 +72,10 @@ class ApiAuthenticator extends AbstractAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        throw new HttpException(Response::HTTP_UNAUTHORIZED, $this->translator->trans('api_errors.authentication.failure', domain: 'api_errors'));
+        throw new HttpException(
+            Response::HTTP_UNAUTHORIZED,
+            $this->translator->trans('api_errors.authentication.failure', domain: 'api_errors'),
+        );
     }
 
     /**
@@ -82,11 +84,14 @@ class ApiAuthenticator extends AbstractAuthenticator
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function isOpenApi() :void {
+    private function isOpenApi(): void
+    {
         $isOpenApi = intval($this->optionSystemService->getValueByKey(OptionSystemKey::OS_OPEN_SITE));
-        if($isOpenApi === 0)
-        {
-            throw new HttpException(Response::HTTP_FORBIDDEN, $this->translator->trans('api_errors.api.not.open', domain: 'api_errors'));
+        if ($isOpenApi === 0) {
+            throw new HttpException(
+                Response::HTTP_FORBIDDEN,
+                $this->translator->trans('api_errors.api.not.open', domain: 'api_errors'),
+            );
         }
     }
 }

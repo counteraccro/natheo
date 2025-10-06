@@ -22,11 +22,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\LocaleSwitcher;
 
-#[Route('/', name: 'front_', requirements: ['_locale' => '%app.supported_locales%'],
-    defaults: ["_locale" => "%app.default_locale%"])]
+#[
+    Route(
+        '/',
+        name: 'front_',
+        requirements: ['_locale' => '%app.supported_locales%'],
+        defaults: ['_locale' => '%app.default_locale%'],
+    ),
+]
 class IndexController extends AppFrontController
 {
-
     /**
      * Génération du sitemap du site
      * @param Request $request
@@ -42,7 +47,7 @@ class IndexController extends AppFrontController
 
         $xml = $this->renderView($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'sitemap.xml.twig', [
             'urls' => $apiSitemapService->getSitemap(),
-            'hostname' => $hostname
+            'hostname' => $hostname,
         ]);
         return new Response($xml, 200, ['Content-Type' => 'text/xml']);
     }
@@ -71,16 +76,21 @@ class IndexController extends AppFrontController
      * @throws NotFoundExceptionInterface
      * @throws \DateMalformedStringException
      */
-    #[Route('/{locale}/{category}/{slug}', name: 'index_2', requirements: ['category' => '|faq|page|article|projet|blog|evenement|documentation|evolution'])]
+    #[
+        Route(
+            '/{locale}/{category}/{slug}',
+            name: 'index_2',
+            requirements: ['category' => '|faq|page|article|projet|blog|evenement|documentation|evolution'],
+        ),
+    ]
     public function index(
         Request $request,
         UserDataService $userDataService,
-        FrontTranslate  $frontTranslate,
+        FrontTranslate $frontTranslate,
         ContainerBagInterface $containerBag,
-        ?string         $locale = '',
-        ?string         $slug = null): Response
-    {
-
+        ?string $locale = '',
+        ?string $slug = null,
+    ): Response {
         if (!$this->installationService->checkSchema()) {
             return $this->redirectToRoute('installation_step_1');
         }
@@ -90,7 +100,9 @@ class IndexController extends AppFrontController
         }
 
         if (!$this->isOpenSite()) {
-            return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'close.html.twig', ['scriptsTag' => $this->getScriptTags()]);
+            return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'close.html.twig', [
+                'scriptsTag' => $this->getScriptTags(),
+            ]);
         }
 
         if ($locale === '') {
@@ -111,7 +123,10 @@ class IndexController extends AppFrontController
             'indexEn' => $this->generateUrl('front_index_2', ['locale' => 'en', 'category' => null, 'slug' => null]),
             'apiCommentsByPage' => $this->generateUrl('api_comment_by_page', ['api_version' => $version]),
             'apiAddComment' => $this->generateUrl('api_comment_add_comment', ['api_version' => $version]),
-            'apiModerateComment' => $this->generateUrl('api_comment_moderate_comment', ['api_version' => $version, 'id' => 0]),
+            'apiModerateComment' => $this->generateUrl('api_comment_moderate_comment', [
+                'api_version' => $version,
+                'id' => 0,
+            ]),
         ];
 
         /** @var User $user */
@@ -127,7 +142,6 @@ class IndexController extends AppFrontController
                 'pathImgAvatar' => $containerBag->get('app.path.avatar'),
                 'canModerate' => $this->isGranted('ROLE_CONTRIBUTEUR', $user),
             ];
-
         }
 
         $datas = [
@@ -144,13 +158,12 @@ class IndexController extends AppFrontController
         $seoPage = $pageMetaRepo->getMetasByPageAndLocale($locale, $slug);
         $seo = array_merge($seoPage, $seoRobots);
 
-        return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig',
-            [
-                'urls' => $urls,
-                'datas' => $datas,
-                'translate' => $frontTranslate->getTranslate($locale),
-                'scriptsTag' => $this->getScriptTags(),
-                'metaSeo' => $seo,
-            ]);
+        return $this->render($this->getPathTemplate() . DIRECTORY_SEPARATOR . 'index.html.twig', [
+            'urls' => $urls,
+            'datas' => $datas,
+            'translate' => $frontTranslate->getTranslate($locale),
+            'scriptsTag' => $this->getScriptTags(),
+            'metaSeo' => $seo,
+        ]);
     }
 }

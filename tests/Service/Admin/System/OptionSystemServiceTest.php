@@ -46,7 +46,7 @@ class OptionSystemServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetByKey() :void
+    public function testGetByKey(): void
     {
         $result = $this->optionSystemService->getByKey(OptionSystemKey::OS_SITE_NAME);
         $this->assertInstanceOf(OptionSystem::class, $result);
@@ -70,7 +70,7 @@ class OptionSystemServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetValueByKey() :void
+    public function testGetValueByKey(): void
     {
         $result = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_SITE_NAME);
         $this->assertNotNull($result);
@@ -92,7 +92,7 @@ class OptionSystemServiceTest extends AppWebTestCase
      * Test méthode getOptionsSystemConfig()
      * @return void
      */
-    public function testGetOptionsSystemConfig() :void
+    public function testGetOptionsSystemConfig(): void
     {
         $result = $this->optionSystemService->getOptionsSystemConfig();
         $this->assertIsArray($result);
@@ -105,7 +105,7 @@ class OptionSystemServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testSaveValueByKee() :void
+    public function testSaveValueByKee(): void
     {
         $this->optionSystemService->saveValueByKee(OptionSystemKey::OS_THEME_SITE, 'edit-purple');
         $result = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_THEME_SITE);
@@ -119,7 +119,7 @@ class OptionSystemServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testCanSendMailNotification() :void
+    public function testCanSendMailNotification(): void
     {
         $this->optionSystemService->saveValueByKee(OptionSystemKey::OS_MAIL_NOTIFICATION, '1');
         $result = $this->optionSystemService->canSendMailNotification();
@@ -136,7 +136,7 @@ class OptionSystemServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testCanDelete() :void
+    public function testCanDelete(): void
     {
         $this->optionSystemService->saveValueByKee(OptionSystemKey::OS_ALLOW_DELETE_DATA, '1');
         $result = $this->optionSystemService->canDelete();
@@ -153,7 +153,7 @@ class OptionSystemServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testCanReplace() :void
+    public function testCanReplace(): void
     {
         $this->optionSystemService->saveValueByKee(OptionSystemKey::OS_REPLACE_DELETE_USER, '1');
         $result = $this->optionSystemService->canReplace();
@@ -170,7 +170,7 @@ class OptionSystemServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testCanNotification() :void
+    public function testCanNotification(): void
     {
         $this->optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '1');
         $result = $this->optionSystemService->canNotification();

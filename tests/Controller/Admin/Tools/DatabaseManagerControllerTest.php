@@ -26,7 +26,10 @@ class DatabaseManagerControllerTest extends AppWebTestCase
         $this->client->loginUser($userSuperAdm, 'admin');
         $this->client->request('GET', $this->router->generate('admin_database_manager_index'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('database_manager.index.page_title_h1', domain: 'database_manager'));
+        $this->assertSelectorTextContains(
+            'h1',
+            $this->translator->trans('database_manager.index.page_title_h1', domain: 'database_manager'),
+        );
     }
 
     /**
@@ -59,7 +62,10 @@ class DatabaseManagerControllerTest extends AppWebTestCase
         $userSuperAdm = $this->createUserSuperAdmin();
         $this->client->loginUser($userSuperAdm, 'admin');
 
-        $this->client->request('GET', $this->router->generate('admin_database_manager_load_schema_table', ['table' => 'user']));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_database_manager_load_schema_table', ['table' => 'user']),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -94,12 +100,11 @@ class DatabaseManagerControllerTest extends AppWebTestCase
     public function testSaveBdd(): void
     {
         $data = [
-            "options" => [
-                "all" => false,
-                "tables" => [
-                    "api_token"],
-                "data" => "table"
-            ]
+            'options' => [
+                'all' => false,
+                'tables' => ['api_token'],
+                'data' => 'table',
+            ],
         ];
 
         $this->checkNoAccess('admin_database_manager_save_database', methode: 'POST');
@@ -107,7 +112,11 @@ class DatabaseManagerControllerTest extends AppWebTestCase
         $userSuperAdm = $this->createUserSuperAdmin();
         $this->client->loginUser($userSuperAdm, 'admin');
 
-        $this->client->request('POST', $this->router->generate('admin_database_manager_save_database'), content: json_encode($data));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_database_manager_save_database'),
+            content: json_encode($data),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -123,7 +132,10 @@ class DatabaseManagerControllerTest extends AppWebTestCase
     public function testGetAllFileDump(): void
     {
         $fileSystem = new Filesystem();
-        $fileSystem->dumpFile(self::$kernel->getProjectDir() . DatabaseManagerConst::ROOT_FOLDER_NAME . 'demo.sql', 'dump');
+        $fileSystem->dumpFile(
+            self::$kernel->getProjectDir() . DatabaseManagerConst::ROOT_FOLDER_NAME . 'demo.sql',
+            'dump',
+        );
 
         $this->checkNoAccess('admin_database_manager_all_dump_file');
 

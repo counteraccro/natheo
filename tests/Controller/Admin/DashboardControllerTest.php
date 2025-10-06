@@ -35,7 +35,12 @@ class DashboardControllerTest extends AppWebTestCase
     {
         $user = $this->createUser();
         $this->client->loginUser($user, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_dashboard_load_block', ['id' => DashboardKey::DASHBOARD_HELP_FIRST_CONNEXION_ID]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_dashboard_load_block', [
+                'id' => DashboardKey::DASHBOARD_HELP_FIRST_CONNEXION_ID,
+            ]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());

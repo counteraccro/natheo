@@ -19,9 +19,8 @@ trait SidebarElementFixturesTrait
      * @param bool $persist
      * @return SidebarElement
      */
-    public function createSidebarElement(array $customData = [], bool $persist = true) :SidebarElement
+    public function createSidebarElement(array $customData = [], bool $persist = true): SidebarElement
     {
-
         $data = [
             'icon' => self::getFaker()->text(20),
             'label' => self::getFaker()->text(),
@@ -34,8 +33,8 @@ trait SidebarElementFixturesTrait
 
         /** @var SidebarElement $sidebar */
         $sidebar = $this->initEntity(SidebarElement::class, array_merge($data, $customData));
-        if(isset($customData['children'])){
-           $sidebar->addChild($this->createSidebarElement($customData['children']));
+        if (isset($customData['children'])) {
+            $sidebar->addChild($this->createSidebarElement($customData['children']));
         }
 
         if ($persist) {

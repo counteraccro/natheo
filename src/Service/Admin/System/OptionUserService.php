@@ -20,7 +20,6 @@ use Symfony\Component\Yaml\Yaml;
 
 class OptionUserService extends AppAdminService
 {
-
     /**
      * Nom du fichier de config
      */
@@ -42,7 +41,7 @@ class OptionUserService extends AppAdminService
         $options = [
             OptionSystemKey::OS_THEME_SITE => OptionUserKey::OU_THEME_SITE,
             OptionSystemKey::OS_DEFAULT_LANGUAGE => OptionUserKey::OU_DEFAULT_LANGUAGE,
-            OptionSystemKey::OS_NB_ELEMENT => OptionUserKey::OU_NB_ELEMENT
+            OptionSystemKey::OS_NB_ELEMENT => OptionUserKey::OU_NB_ELEMENT,
         ];
 
         foreach ($options as $optionSystemKey => $optionUserKey) {
@@ -54,7 +53,7 @@ class OptionUserService extends AppAdminService
         }
 
         $options = [
-            OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER => 'email'
+            OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER => 'email',
         ];
         foreach ($options as $key => $value) {
             $optionUser = new OptionUser();
@@ -134,7 +133,12 @@ class OptionUserService extends AppAdminService
     {
         $containerBag = $this->getContainerBag();
         $kernel = $containerBag->get('kernel.project_dir');
-        return $kernel . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'cms' . DIRECTORY_SEPARATOR .
+        return $kernel .
+            DIRECTORY_SEPARATOR .
+            'config' .
+            DIRECTORY_SEPARATOR .
+            'cms' .
+            DIRECTORY_SEPARATOR .
             self::OPTION_USER_CONFIG_FILE;
     }
 
@@ -147,7 +151,7 @@ class OptionUserService extends AppAdminService
         $return = [];
         try {
             $return = Yaml::parseFile($this->getPathConfig());
-        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+        } catch (NotFoundExceptionInterface | ContainerExceptionInterface $e) {
             die($e->getMessage());
         }
         return $return;

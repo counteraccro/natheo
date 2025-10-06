@@ -19,7 +19,6 @@ use App\Utils\Content\Comment\CommentConst;
 
 class PageFactory
 {
-
     /**
      * @var ?Page
      */
@@ -93,13 +92,11 @@ class PageFactory
      * @return PageContent
      */
     private function createPageContent(
-        int  $type = PageConst::CONTENT_TYPE_TEXT,
+        int $type = PageConst::CONTENT_TYPE_TEXT,
         ?int $type_id = null,
-        int  $renderBlock = 1
-    ): PageContent
-    {
-        if($type === PageConst::CONTENT_TYPE_TEXT)
-        {
+        int $renderBlock = 1,
+    ): PageContent {
+        if ($type === PageConst::CONTENT_TYPE_TEXT) {
             $type_id = null;
         }
 
@@ -109,7 +106,7 @@ class PageFactory
         $pageContent->setRenderBlock($renderBlock);
         $pageContent->setRenderOrder(1);
 
-        if($type === PageConst::CONTENT_TYPE_TEXT) {
+        if ($type === PageConst::CONTENT_TYPE_TEXT) {
             foreach ($this->locales as $locale) {
                 $pageContentTranslation = new PageContentTranslation();
                 $pageContentTranslation->setLocale($locale);
@@ -133,7 +130,6 @@ class PageFactory
      */
     private function createPageStatistique(): void
     {
-
         foreach (PageStatistiqueKey::getConstants() as $constant) {
             $pageStatistique = new PageStatistique();
             $pageStatistique->setKey($constant);
@@ -153,7 +149,7 @@ class PageFactory
             $pageMeta = new PageMeta();
             $pageMeta->setName($meta->value);
             $pageMeta->setPage($this->page);
-            foreach($this->locales as $locale) {
+            foreach ($this->locales as $locale) {
                 $pageMetaTranslation = new PageMetaTranslation();
                 $pageMetaTranslation->setLocale($locale);
                 $pageMetaTranslation->setPageMeta($pageMeta);

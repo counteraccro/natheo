@@ -37,14 +37,26 @@ class ApiUserServiceTest extends AppWebTestCase
     public function testGetUserByUserToken(): void
     {
         $user = $this->createUserContributeur();
-        $userData = $this->createUserData($user, ['key' => UserDataKey::KEY_TOKEN_CONNEXION, 'value' => 'azerty-token']);
-        $this->createUserData($user, ['key' => UserDataKey::TIME_VALIDATE_TOKEN, 'value' => (new \DateTime())->add(new \DateInterval('P10D'))->getTimestamp()]);
+        $userData = $this->createUserData($user, [
+            'key' => UserDataKey::KEY_TOKEN_CONNEXION,
+            'value' => 'azerty-token',
+        ]);
+        $this->createUserData($user, [
+            'key' => UserDataKey::TIME_VALIDATE_TOKEN,
+            'value' => (new \DateTime())->add(new \DateInterval('P10D'))->getTimestamp(),
+        ]);
         $user = $this->apiUserService->getUserByUserToken($userData->getValue());
         $this->assertInstanceOf(User::class, $user);
 
         $user = $this->createUserContributeur();
-        $userData = $this->createUserData($user, ['key' => UserDataKey::KEY_TOKEN_CONNEXION, 'value' => 'azerty-token-2']);
-        $this->createUserData($user, ['key' => UserDataKey::TIME_VALIDATE_TOKEN, 'value' => (new \DateTime())->sub(new \DateInterval('P10D'))->getTimestamp()]);
+        $userData = $this->createUserData($user, [
+            'key' => UserDataKey::KEY_TOKEN_CONNEXION,
+            'value' => 'azerty-token-2',
+        ]);
+        $this->createUserData($user, [
+            'key' => UserDataKey::TIME_VALIDATE_TOKEN,
+            'value' => (new \DateTime())->sub(new \DateInterval('P10D'))->getTimestamp(),
+        ]);
         $user = $this->apiUserService->getUserByUserToken($userData->getValue());
         $this->assertNull($user);
     }

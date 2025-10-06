@@ -16,7 +16,6 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class AppApiService extends AppApiHandlerService
 {
-
     /**
      * Retourne le repository en fonction de l'entité
      * @param string $entity
@@ -84,12 +83,11 @@ class AppApiService extends AppApiHandlerService
      */
     public function findBy(
         string $entity,
-        array  $criteria = [],
-        array  $orderBy = [],
-        ?int   $limit = null,
-        ?int $offset = null
-    ): array
-    {
+        array $criteria = [],
+        array $orderBy = [],
+        ?int $limit = null,
+        ?int $offset = null,
+    ): array {
         $repo = $this->getRepository($entity);
         return $repo->findBy($criteria, $orderBy, $limit, $offset);
     }
@@ -139,7 +137,7 @@ class AppApiService extends AppApiHandlerService
      */
     protected function isGranted(array $attributes, ?User $user = null, mixed $object = null): bool
     {
-        if($user === null) {
+        if ($user === null) {
             return false;
         }
 

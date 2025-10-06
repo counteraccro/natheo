@@ -94,11 +94,11 @@ class NotificationKey
             self::KEY_PARAMETER => [
                 'login' => '',
                 'role' => '',
-                'url_aide' => ''
+                'url_aide' => '',
             ],
             self::KEY_TITLE => 'notification.msg.welcome.title',
             self::KEY_CONTENT => 'notification.msg.welcome.content',
-            self::KEY_LEVEL => self::LEVEL_INFO
+            self::KEY_LEVEL => self::LEVEL_INFO,
         ],
         self::NOTIFICATION_SELF_DISABLED => [
             self::KEY_PARAMETER => [
@@ -106,7 +106,7 @@ class NotificationKey
             ],
             self::KEY_TITLE => 'notification.msg.self_disabled.title',
             self::KEY_CONTENT => 'notification.msg.self_disabled.content',
-            self::KEY_LEVEL => self::LEVEL_WARNING
+            self::KEY_LEVEL => self::LEVEL_WARNING,
         ],
         self::NOTIFICATION_SELF_DELETE => [
             self::KEY_PARAMETER => [
@@ -114,7 +114,7 @@ class NotificationKey
             ],
             self::KEY_TITLE => 'notification.msg.self_delete.title',
             self::KEY_CONTENT => 'notification.msg.self_delete.content',
-            self::KEY_LEVEL => self::LEVEL_WARNING
+            self::KEY_LEVEL => self::LEVEL_WARNING,
         ],
         self::NOTIFICATION_SELF_ANONYMOUS => [
             self::KEY_PARAMETER => [
@@ -122,16 +122,16 @@ class NotificationKey
             ],
             self::KEY_TITLE => 'notification.msg.self_anonymous.title',
             self::KEY_CONTENT => 'notification.msg.self_anonymous.content',
-            self::KEY_LEVEL => self::LEVEL_WARNING
+            self::KEY_LEVEL => self::LEVEL_WARNING,
         ],
         self::NOTIFICATION_DUMP_SQL => [
             self::KEY_PARAMETER => [
                 'file' => '',
-                'url' => ''
+                'url' => '',
             ],
             self::KEY_TITLE => 'notification.msg.dump_sql.title',
             self::KEY_CONTENT => 'notification.msg.dump_sql.content',
-            self::KEY_LEVEL => self::LEVEL_INFO
+            self::KEY_LEVEL => self::LEVEL_INFO,
         ],
         self::NOTIFICATION_NEW_FONDATEUR => [
             self::KEY_PARAMETER => [
@@ -140,7 +140,7 @@ class NotificationKey
             ],
             self::KEY_TITLE => 'notification.msg.new_fondateur.title',
             self::KEY_CONTENT => 'notification.msg.new_fondateur.content',
-            self::KEY_LEVEL => self::LEVEL_INFO
-        ]
+            self::KEY_LEVEL => self::LEVEL_INFO,
+        ],
     ];
 }

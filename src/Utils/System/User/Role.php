@@ -91,7 +91,7 @@ class Role
      * @param String $role
      * @return bool
      */
-    private function isRole(String $role):bool
+    private function isRole(string $role): bool
     {
         return in_array($role, $this->user->getRoles());
     }

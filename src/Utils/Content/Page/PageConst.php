@@ -146,8 +146,4 @@ class PageConst
      * @var boolean
      */
     const DEFAULT_LANDING_PAGE = false;
-
-
-
-
 }

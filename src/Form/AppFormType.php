@@ -8,7 +8,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppFormType extends AbstractType
 {
-
     /**
      * @var TranslatorInterface
      */

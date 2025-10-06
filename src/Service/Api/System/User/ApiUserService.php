@@ -23,11 +23,11 @@ class ApiUserService extends AppApiService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getUserByUserToken(string $userToken) :?User
+    public function getUserByUserToken(string $userToken): ?User
     {
         $repository = $this->getRepository(UserData::class);
         $userData = $repository->findByKeyValue(UserDataKey::KEY_TOKEN_CONNEXION, $userToken);
-        if(is_null($userData)){
+        if (is_null($userData)) {
             return null;
         }
         /** @var User $user */
@@ -35,7 +35,7 @@ class ApiUserService extends AppApiService
         $time = intval($user->getUserDataByKey(UserDataKey::TIME_VALIDATE_TOKEN)->getValue());
 
         // Si le token n'est pas périmé
-        if($time > time()) {
+        if ($time > time()) {
             return $user;
         }
         return null;

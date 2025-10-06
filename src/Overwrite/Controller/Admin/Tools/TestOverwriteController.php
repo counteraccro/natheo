@@ -19,7 +19,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_USER')]
 class TestOverwriteController extends AppAdminController
 {
-
     /**
      * Page Démo pour les elements html
      * @param OptionSystemService $optionSystemService
@@ -33,8 +32,8 @@ class TestOverwriteController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'message',
             Breadcrumb::BREADCRUMB => [
-                'pagedemo.element.html' => '#'
-            ]
+                'pagedemo.element.html' => '#',
+            ],
         ];
 
         return $this->render('overwrite/admin/tools/page_demo.html.twig', ['breadcrumb' => $breadcrumb, 'id' => $id]);

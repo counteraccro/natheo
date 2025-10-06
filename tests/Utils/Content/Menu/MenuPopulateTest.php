@@ -24,50 +24,48 @@ class MenuPopulateTest extends AppWebTestCase
         $menu = $this->createMenu();
 
         $data = [
-            "id" => $menu->getId(),
-            "name" => "Unit-test",
-            "type" => MenuConst::TYPE_FOOTER_1_ROW_CENTER,
-            "position" => MenuConst::POSITION_FOOTER,
-            "renderOrder" => 1,
-            "defaultMenu" => false,
-            "disabled" => true,
-            "pageMenu" => [
-                "-1"
-            ],
-            "menuElements" => [
+            'id' => $menu->getId(),
+            'name' => 'Unit-test',
+            'type' => MenuConst::TYPE_FOOTER_1_ROW_CENTER,
+            'position' => MenuConst::POSITION_FOOTER,
+            'renderOrder' => 1,
+            'defaultMenu' => false,
+            'disabled' => true,
+            'pageMenu' => ['-1'],
+            'menuElements' => [
                 [
-                    "id" => '1',
-                    "columnPosition" => 1,
-                    "rowPosition" => 1,
-                    "linkTarget" => "_self",
-                    "disabled" => false,
-                    "parent" => "",
-                    "page" => "",
-                    "menuElementTranslations" => [
+                    'id' => '1',
+                    'columnPosition' => 1,
+                    'rowPosition' => 1,
+                    'linkTarget' => '_self',
+                    'disabled' => false,
+                    'parent' => '',
+                    'page' => '',
+                    'menuElementTranslations' => [
                         [
-                            "id" => 177,
-                            "locale" => "es",
-                            "textLink" => "es- new",
-                            "externalLink" => "http://www.es.com",
-                            "link" => ""
+                            'id' => 177,
+                            'locale' => 'es',
+                            'textLink' => 'es- new',
+                            'externalLink' => 'http://www.es.com',
+                            'link' => '',
                         ],
                         [
-                            "id" => 176,
-                            "locale" => "en",
-                            "textLink" => "en- new",
-                            "externalLink" => "http://www.en.com",
-                            "link" => ""
+                            'id' => 176,
+                            'locale' => 'en',
+                            'textLink' => 'en- new',
+                            'externalLink' => 'http://www.en.com',
+                            'link' => '',
                         ],
                         [
-                            "id" => 175,
-                            "locale" => "fr",
-                            "textLink" => "fr- new",
-                            "externalLink" => "http://www.fr.com",
-                            "link" => ""
-                        ]
-                    ]
-                ]
-            ]
+                            'id' => 175,
+                            'locale' => 'fr',
+                            'textLink' => 'fr- new',
+                            'externalLink' => 'http://www.fr.com',
+                            'link' => '',
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $menuService = $this->getContainer()->get(MenuService::class);
@@ -93,7 +91,6 @@ class MenuPopulateTest extends AppWebTestCase
         $this->assertNull($menuElements->getParent());
         $this->assertNull($menuElements->getPage());
         $this->assertEquals(3, $menuElements->getMenuElementTranslations()->count());
-
 
         $dataTranslate = $dataMenuElements['menuElementTranslations'][2];
         $translate = $menuElements->getMenuElementTranslationByLocale('fr');

@@ -146,6 +146,5 @@ class MailServiceTest extends AppWebTestCase
         $this->assertArrayHasKey(MailService::CONTENT, $params);
         $this->assertArrayHasKey(MailService::TO, $params);
         $this->assertArrayHasKey(MailService::TEMPLATE, $params);
-
     }
 }

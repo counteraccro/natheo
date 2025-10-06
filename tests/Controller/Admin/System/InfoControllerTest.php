@@ -14,7 +14,7 @@ class InfoControllerTest extends AppWebTestCase
      * Test méthode index();
      * @return void
      */
-    public function testIndex():void
+    public function testIndex(): void
     {
         $_SERVER['SERVER_SOFTWARE'] = self::getFaker()->text();
         $_SERVER['REQUEST_SCHEME'] = self::getFaker()->domainName();

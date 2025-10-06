@@ -35,34 +35,36 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppAdminHandlerService
 {
-
     public function __construct(
-        #[AutowireLocator([
-            'logger' => LoggerInterface::class,
-            'entityManager' => EntityManagerInterface::class,
-            'containerBag' => ContainerBagInterface::class,
-            'translator' => TranslatorInterface::class,
-            'router' => UrlGeneratorInterface::class,
-            'security' => Security::class,
-            'requestStack' => RequestStack::class,
-            'parameterBag' => ParameterBagInterface::class,
-            'optionSystemService' => OptionSystemService::class,
-            'gridService' => GridService::class,
-            'markdownEditorService' => MarkdownEditorService::class,
-            'userPasswordHasher' => UserPasswordHasherInterface::class,
-            'mailer' => MailerInterface::class,
-            'kernel' => KernelInterface::class,
-            'gridTranslate' => GridTranslate::class,
-            'database' => Database::class,
-            'envFile' => EnvFile::class,
-            'userData' => UserDataService::class,
-            'rawQueryManager' => RawQueryManager::class,
-            'rawResultQueryManager' => RawResultQueryManager::class,
-            'pageService' => PageService::class,
-            'commentService' => CommentService::class,
-            'accessDecisionManager' => AccessDecisionManagerInterface::class,
-        ])]
-        protected ContainerInterface $handlers){}
+        #[
+            AutowireLocator([
+                'logger' => LoggerInterface::class,
+                'entityManager' => EntityManagerInterface::class,
+                'containerBag' => ContainerBagInterface::class,
+                'translator' => TranslatorInterface::class,
+                'router' => UrlGeneratorInterface::class,
+                'security' => Security::class,
+                'requestStack' => RequestStack::class,
+                'parameterBag' => ParameterBagInterface::class,
+                'optionSystemService' => OptionSystemService::class,
+                'gridService' => GridService::class,
+                'markdownEditorService' => MarkdownEditorService::class,
+                'userPasswordHasher' => UserPasswordHasherInterface::class,
+                'mailer' => MailerInterface::class,
+                'kernel' => KernelInterface::class,
+                'gridTranslate' => GridTranslate::class,
+                'database' => Database::class,
+                'envFile' => EnvFile::class,
+                'userData' => UserDataService::class,
+                'rawQueryManager' => RawQueryManager::class,
+                'rawResultQueryManager' => RawResultQueryManager::class,
+                'pageService' => PageService::class,
+                'commentService' => CommentService::class,
+                'accessDecisionManager' => AccessDecisionManagerInterface::class,
+            ]),
+        ]
+        protected ContainerInterface $handlers,
+    ) {}
 
     /**
      * Retourne l'interface LoggerInterface
@@ -92,7 +94,7 @@ class AppAdminHandlerService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function getGridTranslate() : GridTranslate
+    protected function getGridTranslate(): GridTranslate
     {
         return $this->handlers->get('gridTranslate');
     }
@@ -103,7 +105,7 @@ class AppAdminHandlerService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function getKernel() : KernelInterface
+    protected function getKernel(): KernelInterface
     {
         return $this->handlers->get('kernel');
     }
@@ -245,7 +247,7 @@ class AppAdminHandlerService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function getDatabase() :DataBase
+    protected function getDatabase(): DataBase
     {
         return $this->handlers->get('database');
     }
@@ -256,7 +258,7 @@ class AppAdminHandlerService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function getUserData() :UserDataService
+    protected function getUserData(): UserDataService
     {
         return $this->handlers->get('userData');
     }
@@ -267,7 +269,7 @@ class AppAdminHandlerService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function getRawQueryManager() : RawQueryManager
+    protected function getRawQueryManager(): RawQueryManager
     {
         return $this->handlers->get('rawQueryManager');
     }
@@ -278,7 +280,7 @@ class AppAdminHandlerService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function getRawResultQueryManager() : RawResultQueryManager
+    protected function getRawResultQueryManager(): RawResultQueryManager
     {
         return $this->handlers->get('rawResultQueryManager');
     }
@@ -289,7 +291,7 @@ class AppAdminHandlerService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function getPageService() : PageService
+    protected function getPageService(): PageService
     {
         return $this->handlers->get('pageService');
     }
@@ -300,7 +302,7 @@ class AppAdminHandlerService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function getCommentService() : CommentService
+    protected function getCommentService(): CommentService
     {
         return $this->handlers->get('commentService');
     }
@@ -311,7 +313,7 @@ class AppAdminHandlerService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function getAccessDecisionManager() :AccessDecisionManagerInterface
+    protected function getAccessDecisionManager(): AccessDecisionManagerInterface
     {
         return $this->handlers->get('accessDecisionManager');
     }

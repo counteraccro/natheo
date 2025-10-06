@@ -96,7 +96,11 @@ class FaqControllerTest extends AppWebTestCase
         $user = $this->createUserContributeur();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('PUT', $this->router->generate('admin_faq_disabled', ['id' => $faq->getId()]), parameters: ['_locale' => 'fr']);
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_faq_disabled', ['id' => $faq->getId()]),
+            parameters: ['_locale' => 'fr'],
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -123,7 +127,11 @@ class FaqControllerTest extends AppWebTestCase
         $user = $this->createUserContributeur();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('DELETE', $this->router->generate('admin_faq_delete', ['id' => $faq->getId()]), parameters: ['_locale' => 'fr']);
+        $this->client->request(
+            'DELETE',
+            $this->router->generate('admin_faq_delete', ['id' => $faq->getId()]),
+            parameters: ['_locale' => 'fr'],
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -143,7 +151,6 @@ class FaqControllerTest extends AppWebTestCase
      */
     public function testLoadFaq(): void
     {
-
         $faq = $this->createFaqAllDataDefault();
 
         $this->checkNoAccess('admin_faq_load_faq');
@@ -151,7 +158,11 @@ class FaqControllerTest extends AppWebTestCase
         $user = $this->createUserContributeur();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_faq_load_faq', ['id' => $faq->getId()]), parameters: ['_locale' => 'fr']);
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_faq_load_faq', ['id' => $faq->getId()]),
+            parameters: ['_locale' => 'fr'],
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -172,101 +183,101 @@ class FaqControllerTest extends AppWebTestCase
         $faq = $this->createFaqAllDataDefault();
 
         $dataPopulate = [
-            "id" => $faq->getId(),
-            "disabled" => false,
-            "faqTranslations" => [
+            'id' => $faq->getId(),
+            'disabled' => false,
+            'faqTranslations' => [
                 0 => [
-                    "id" => 4,
-                    "faq" => 2,
-                    "locale" => "fr",
-                    "title" => self::getFaker()->text('20')
+                    'id' => 4,
+                    'faq' => 2,
+                    'locale' => 'fr',
+                    'title' => self::getFaker()->text('20'),
                 ],
                 1 => [
-                    "id" => 5,
-                    "faq" => 2,
-                    "locale" => "en",
-                    "title" => self::getFaker()->text('20'),
+                    'id' => 5,
+                    'faq' => 2,
+                    'locale' => 'en',
+                    'title' => self::getFaker()->text('20'),
                 ],
                 2 => [
-                    "id" => 6,
-                    "faq" => 2,
-                    "locale" => "es",
-                    "title" => self::getFaker()->text('20')
-                ]
+                    'id' => 6,
+                    'faq' => 2,
+                    'locale' => 'es',
+                    'title' => self::getFaker()->text('20'),
+                ],
             ],
-            "faqCategories" => [
+            'faqCategories' => [
                 0 => [
-                    "id" => 5,
-                    "faq" => 2,
-                    "disabled" => false,
-                    "renderOrder" => 1,
-                    "faqCategoryTranslations" => [
+                    'id' => 5,
+                    'faq' => 2,
+                    'disabled' => false,
+                    'renderOrder' => 1,
+                    'faqCategoryTranslations' => [
                         0 => [
-                            "id" => 13,
-                            "faqCategory" => 5,
-                            "locale" => "fr",
-                            "title" => self::getFaker()->text('20')
+                            'id' => 13,
+                            'faqCategory' => 5,
+                            'locale' => 'fr',
+                            'title' => self::getFaker()->text('20'),
                         ],
                         1 => [
-                            "id" => 14,
-                            "faqCategory" => 5,
-                            "locale" => "en",
-                            "title" => self::getFaker()->text('20')
+                            'id' => 14,
+                            'faqCategory' => 5,
+                            'locale' => 'en',
+                            'title' => self::getFaker()->text('20'),
                         ],
                         2 => [
-                            "id" => 15,
-                            "faqCategory" => 5,
-                            "locale" => "es",
-                            "title" => self::getFaker()->text('20')
-                        ]
+                            'id' => 15,
+                            'faqCategory' => 5,
+                            'locale' => 'es',
+                            'title' => self::getFaker()->text('20'),
+                        ],
                     ],
-                    "faqQuestions" => [
+                    'faqQuestions' => [
                         0 => [
-                            "id" => 7,
-                            "faqCategory" => 5,
-                            "disabled" => false,
-                            "renderOrder" => 1,
-                            "faqQuestionTranslations" => [
+                            'id' => 7,
+                            'faqCategory' => 5,
+                            'disabled' => false,
+                            'renderOrder' => 1,
+                            'faqQuestionTranslations' => [
                                 0 => [
-                                    "id" => 19,
-                                    "FaqQuestion" => 7,
-                                    "locale" => "fr",
-                                    "title" => self::getFaker()->text('20'),
-                                    "answer" => self::getFaker()->text('100')
+                                    'id' => 19,
+                                    'FaqQuestion' => 7,
+                                    'locale' => 'fr',
+                                    'title' => self::getFaker()->text('20'),
+                                    'answer' => self::getFaker()->text('100'),
                                 ],
                                 1 => [
-                                    "id" => 20,
-                                    "FaqQuestion" => 7,
-                                    "locale" => "en",
-                                    "title" => self::getFaker()->text('20'),
-                                    "answer" => self::getFaker()->text('100')
+                                    'id' => 20,
+                                    'FaqQuestion' => 7,
+                                    'locale' => 'en',
+                                    'title' => self::getFaker()->text('20'),
+                                    'answer' => self::getFaker()->text('100'),
                                 ],
                                 2 => [
-                                    "id" => 21,
-                                    "FaqQuestion" => 7,
-                                    "locale" => "es",
-                                    "title" => self::getFaker()->text('20'),
-                                    "answer" => self::getFaker()->text('100')
-                                ]
-                            ]
-                        ]
+                                    'id' => 21,
+                                    'FaqQuestion' => 7,
+                                    'locale' => 'es',
+                                    'title' => self::getFaker()->text('20'),
+                                    'answer' => self::getFaker()->text('100'),
+                                ],
+                            ],
+                        ],
                     ],
                 ],
             ],
-            "faqStatistiques" => [
+            'faqStatistiques' => [
                 0 => [
-                    "id" => 3,
-                    "faq" => 2,
-                    "key" => "KEY_STAT_NB_CATEGORIES",
-                    "value" => "1",
+                    'id' => 3,
+                    'faq' => 2,
+                    'key' => 'KEY_STAT_NB_CATEGORIES',
+                    'value' => '1',
                 ],
                 1 => [
-                    "id" => 4,
-                    "faq" => 2,
-                    "key" => "KEY_STAT_NB_QUESTIONS",
-                    "value" => "1",
-                ]
-            ]
+                    'id' => 4,
+                    'faq' => 2,
+                    'key' => 'KEY_STAT_NB_QUESTIONS',
+                    'value' => '1',
+                ],
+            ],
         ];
 
         $this->checkNoAccess('admin_faq_save', methode: 'PUT');
@@ -274,7 +285,11 @@ class FaqControllerTest extends AppWebTestCase
         $user = $this->createUserContributeur();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('PUT', $this->router->generate('admin_faq_save'), content: json_encode(['faq' => $dataPopulate]));
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_faq_save'),
+            content: json_encode(['faq' => $dataPopulate]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -331,7 +346,7 @@ class FaqControllerTest extends AppWebTestCase
             'allQuestion' => true,
             'id' => $question->getId(),
             'type' => FaqConst::TYPE_QUESTION,
-            'value' => true
+            'value' => true,
         ];
 
         $this->checkNoAccess('admin_faq_update_disabled', methode: 'PUT');
@@ -339,7 +354,11 @@ class FaqControllerTest extends AppWebTestCase
         $user = $this->createUserContributeur();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('PUT', $this->router->generate('admin_faq_update_disabled'), content: json_encode($data));
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_faq_update_disabled'),
+            content: json_encode($data),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -353,7 +372,7 @@ class FaqControllerTest extends AppWebTestCase
             'allQuestion' => true,
             'id' => $category->getId(),
             'type' => FaqConst::TYPE_CATEGORY,
-            'value' => false
+            'value' => false,
         ];
 
         $this->checkNoAccess('admin_faq_update_disabled', methode: 'PUT');
@@ -361,7 +380,11 @@ class FaqControllerTest extends AppWebTestCase
         $user = $this->createUserContributeur();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('PUT', $this->router->generate('admin_faq_update_disabled'), content: json_encode($data));
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_faq_update_disabled'),
+            content: json_encode($data),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -401,7 +424,13 @@ class FaqControllerTest extends AppWebTestCase
 
         $user = $this->createUserContributeur();
         $this->client->loginUser($user, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_faq_order_by_type', ['id' => $faqCat1->getId(), 'type' => FaqConst::TYPE_QUESTION]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_faq_order_by_type', [
+                'id' => $faqCat1->getId(),
+                'type' => FaqConst::TYPE_QUESTION,
+            ]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -417,7 +446,13 @@ class FaqControllerTest extends AppWebTestCase
         $this->assertEquals($question1->getId(), $content['list'][1]['id']);
         $this->assertEquals($question3->getId(), $content['list'][2]['id']);
 
-        $this->client->request('GET', $this->router->generate('admin_faq_order_by_type', ['id' => $faq->getId(), 'type' => FaqConst::TYPE_CATEGORY]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_faq_order_by_type', [
+                'id' => $faq->getId(),
+                'type' => FaqConst::TYPE_CATEGORY,
+            ]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -444,21 +479,31 @@ class FaqControllerTest extends AppWebTestCase
         $this->checkNoAccess('admin_faq_new_cat_question', methode: 'POST');
 
         $faq = $this->createFaq();
-        $this->createFaqStatistique($faq, ['key' => FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES, 'value' => self::getFaker()->numberBetween(1, 1000)]);
-        $this->createFaqStatistique($faq, ['key' => FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS, 'value' => self::getFaker()->numberBetween(1, 5)]);
+        $this->createFaqStatistique($faq, [
+            'key' => FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES,
+            'value' => self::getFaker()->numberBetween(1, 1000),
+        ]);
+        $this->createFaqStatistique($faq, [
+            'key' => FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
+            'value' => self::getFaker()->numberBetween(1, 5),
+        ]);
         $faqCat1 = $this->createFaqCategory($faq, ['renderOrder' => 1]);
         $question = $this->createFaqQuestion($faqCat1, ['renderOrder' => 1]);
 
         $data = [
             'id' => $faq->getId(),
             'idOrder' => $faqCat1->getId(),
-            'orderType' => "before",
-            'type' => FaqConst::TYPE_CATEGORY
+            'orderType' => 'before',
+            'type' => FaqConst::TYPE_CATEGORY,
         ];
 
         $user = $this->createUserContributeur();
         $this->client->loginUser($user, 'admin');
-        $this->client->request('POST', $this->router->generate('admin_faq_new_cat_question'), content: json_encode($data));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_faq_new_cat_question'),
+            content: json_encode($data),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -471,12 +516,16 @@ class FaqControllerTest extends AppWebTestCase
         $data = [
             'id' => $faqCat1->getId(),
             'idOrder' => $question->getId(),
-            'orderType' => "before",
-            'type' => FaqConst::TYPE_QUESTION
+            'orderType' => 'before',
+            'type' => FaqConst::TYPE_QUESTION,
         ];
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('POST', $this->router->generate('admin_faq_new_cat_question'), content: json_encode($data));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_faq_new_cat_question'),
+            content: json_encode($data),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -491,8 +540,8 @@ class FaqControllerTest extends AppWebTestCase
      * test méthode changeOrderRender()
      * @return void
      */
-    public function testChangeOrderRender(): void {
-
+    public function testChangeOrderRender(): void
+    {
         $faq = $this->createFaq();
 
         $faqCat1 = $this->createFaqCategory($faq, ['renderOrder' => 1]);
@@ -521,8 +570,8 @@ class FaqControllerTest extends AppWebTestCase
         $data = [
             'id' => $faq->getId(),
             'idOrder' => $faqCat3->getId(),
-            'orderType' => "before",
-            'type' => FaqConst::TYPE_CATEGORY
+            'orderType' => 'before',
+            'type' => FaqConst::TYPE_CATEGORY,
         ];
 
         $this->client->request('PUT', $this->router->generate('admin_faq_update_order'), content: json_encode($data));
@@ -538,8 +587,8 @@ class FaqControllerTest extends AppWebTestCase
         $data = [
             'id' => $faqCat1->getId(),
             'idOrder' => $question2->getId(),
-            'orderType' => "before",
-            'type' => FaqConst::TYPE_QUESTION
+            'orderType' => 'before',
+            'type' => FaqConst::TYPE_QUESTION,
         ];
 
         $this->client->request('PUT', $this->router->generate('admin_faq_update_order'), content: json_encode($data));
@@ -557,7 +606,8 @@ class FaqControllerTest extends AppWebTestCase
      * Test méthode deleteCategoryQuestion()
      * @return void
      */
-    public function testDeleteCategoryQuestion() :void {
+    public function testDeleteCategoryQuestion(): void
+    {
         $faq = $this->createFaq();
         $this->createFaqStatistique($faq, ['key' => FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES, 'value' => 3]);
         $this->createFaqStatistique($faq, ['key' => FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS, 'value' => 3]);
@@ -580,7 +630,13 @@ class FaqControllerTest extends AppWebTestCase
         $user = $this->createUserContributeur();
         $this->client->loginUser($user, 'admin');
 
-        $this->client->request('DELETE', $this->router->generate('admin_faq_delete_category_question', ['id' => $question1->getId(), 'type' => FaqConst::TYPE_QUESTION]));
+        $this->client->request(
+            'DELETE',
+            $this->router->generate('admin_faq_delete_category_question', [
+                'id' => $question1->getId(),
+                'type' => FaqConst::TYPE_QUESTION,
+            ]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -590,7 +646,13 @@ class FaqControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('success', $content);
         $this->assertTrue($content['success']);
 
-        $this->client->request('DELETE', $this->router->generate('admin_faq_delete_category_question', ['id' => $faqCat1->getId(), 'type' => FaqConst::TYPE_CATEGORY]));
+        $this->client->request(
+            'DELETE',
+            $this->router->generate('admin_faq_delete_category_question', [
+                'id' => $faqCat1->getId(),
+                'type' => FaqConst::TYPE_CATEGORY,
+            ]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());

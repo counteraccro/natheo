@@ -34,13 +34,9 @@ class PageMetaRepository extends ServiceEntityRepository
             ->setParameter('locale', $locale);
 
         if (is_int($page)) {
-            $query->andWhere('p.id = :id')
-                ->setParameter('id', $page);
-
-        } else if (is_string($page)) {
-            $query->join('p.pageTranslations', 'pt')
-                ->andWhere('pt.url = :url')
-                ->setParameter('url', $page);
+            $query->andWhere('p.id = :id')->setParameter('id', $page);
+        } elseif (is_string($page)) {
+            $query->join('p.pageTranslations', 'pt')->andWhere('pt.url = :url')->setParameter('url', $page);
         } else {
             $query->andWhere('p.landingPage = 1');
         }

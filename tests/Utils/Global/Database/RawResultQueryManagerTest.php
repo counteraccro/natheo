@@ -44,7 +44,7 @@ class RawResultQueryManagerTest extends AppWebTestCase
      * Test méthode getResultAllInformationSchema()
      * @return void
      */
-    public function testGetResultAllInformationSchema() : void
+    public function testGetResultAllInformationSchema(): void
     {
         $sql = $this->rawQueryManager->getQueryAllInformationSchema('natheo_test');
         $result = $this->database->executeRawQuery($sql);
@@ -77,7 +77,7 @@ class RawResultQueryManagerTest extends AppWebTestCase
      * Test méthode getResultStructureTable()
      * @return void
      */
-    public function testGetResultStructureTable() :void
+    public function testGetResultStructureTable(): void
     {
         $sql = $this->rawQueryManager->getQueryStructureTable('user');
         $result = $this->database->executeRawQuery($sql);
@@ -106,7 +106,7 @@ class RawResultQueryManagerTest extends AppWebTestCase
      * test méthode getResultExistTable()
      * @return void
      */
-    public function testGetResultExistTable() :void
+    public function testGetResultExistTable(): void
     {
         $sql = $this->rawQueryManager->getQueryExistTable('natheo_test', 'user');
         $result = $this->database->executeRawQuery($sql);

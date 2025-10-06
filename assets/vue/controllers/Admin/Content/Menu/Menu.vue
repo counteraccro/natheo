@@ -1,19 +1,20 @@
-<script>/**
+<script>
+/**
  * Permet d'ajouter ou éditer un menu
  * @author Gourdon Aymeric
  * @version 1.O
  */
-import axios from "axios";
-import Toast from "../../../../Components/Global/Toast.vue";
-import Modal from "../../../../Components/Global/Modal.vue";
-import MenuFooter from "../../../../Components/Menu/MenuFooter.vue";
-import MenuHeader from "../../../../Components/Menu/MenuHeader.vue";
-import MenuLeftRight from "../../../../Components/Menu/MenuLeftRight.vue";
-import MenuTree from "../../../../Components/Menu/MenuTree.vue";
-import FieldEditor from "../../../../Components/Global/FieldEditor.vue";
-import {emitter} from "../../../../../utils/useEvent";
-import MenuForm from "../../../../Components/Menu/MenuForm.vue";
-import {MenuElementTools} from "../../../../../utils/Admin/Content/Menu/MenuElementsTools";
+import axios from 'axios';
+import Toast from '../../../../Components/Global/Toast.vue';
+import Modal from '../../../../Components/Global/Modal.vue';
+import MenuFooter from '../../../../Components/Menu/MenuFooter.vue';
+import MenuHeader from '../../../../Components/Menu/MenuHeader.vue';
+import MenuLeftRight from '../../../../Components/Menu/MenuLeftRight.vue';
+import MenuTree from '../../../../Components/Menu/MenuTree.vue';
+import FieldEditor from '../../../../Components/Global/FieldEditor.vue';
+import { emitter } from '../../../../../utils/useEvent';
+import MenuForm from '../../../../Components/Menu/MenuForm.vue';
+import { MenuElementTools } from '../../../../../utils/Admin/Content/Menu/MenuElementsTools';
 
 export default {
   name: 'Menu',
@@ -24,14 +25,15 @@ export default {
     MenuLeftRight,
     MenuHeader,
     MenuFooter,
-    Toast, Modal
+    Toast,
+    Modal,
   },
   props: {
     urls: Object,
     translate: Object,
     locales: Object,
     menu_datas: Object,
-    id: Number
+    id: Number,
   },
   emits: [],
   data() {
@@ -69,9 +71,9 @@ export default {
         toastAutoSave: {
           show: false,
           msg: '',
-        }
+        },
       },
-    }
+    };
   },
   mounted() {
     this.currentLocale = this.locales.current;
@@ -87,31 +89,29 @@ export default {
     });
 
     emitter.on('delete-menu-element', async (id) => {
-      this.idToDelete = id
+      this.idToDelete = id;
       this.deleteElement(true);
     });
   },
   computed: {},
   methods: {
-
     /**
      * event pour détecter le dropdown et le masqyer
      * @param e
      */
     handleClick(e) {
-      const elt = e.target.closest(".dropdown-toggle");
+      const elt = e.target.closest('.dropdown-toggle');
       if (elt) {
-        let el = elt.nextElementSibling
-        el.style.display = el.style.display === 'block' ? 'none' : 'block'
+        let el = elt.nextElementSibling;
+        el.style.display = el.style.display === 'block' ? 'none' : 'block';
       } else {
-        let el = document.getElementsByClassName("dropdown-toggle");
+        let el = document.getElementsByClassName('dropdown-toggle');
         for (let item of el) {
-          let next = item.nextElementSibling
+          let next = item.nextElementSibling;
           next.style.display = 'none';
         }
       }
     },
-
 
     /**
      * Permet de changer la locale pour la création/édition d'une page
@@ -120,7 +120,6 @@ export default {
     switchLocale(event) {
       this.currentLocale = event.target.value;
     },
-
 
     /**
      * Permet de changer de position
@@ -135,18 +134,18 @@ export default {
      */
     switchComposant(idPosition) {
       switch (parseInt(idPosition)) {
-        case 1 :
+        case 1:
           this.selectComponent = 'MenuHeader';
           break;
-        case 2 :
-        case 4 :
+        case 2:
+        case 4:
           this.selectComponent = 'MenuLeftRight';
           break;
         case 3:
           this.selectComponent = 'MenuFooter';
           break;
         default:
-          this.selectComponent = 'MenuHeader'
+          this.selectComponent = 'MenuHeader';
           break;
       }
     },
@@ -156,7 +155,6 @@ export default {
      * @param position
      */
     selectListTypeByPosition(position) {
-
       // Premier chargement car listType est forcement vide
       let isFirstLoad = false;
       if (this.listTypeByPosition.length === 0) {
@@ -182,7 +180,6 @@ export default {
       this.switchComposant(position);
     },
 
-
     /**
      * Charge le menu
      * Si forceUpdate est à true, affiche le formulaire du menuElemet défini par id
@@ -193,63 +190,64 @@ export default {
         url = this.urls.load_menu;
       }
       this.loading = true;
-      axios.get(url, {}
-      ).then((response) => {
+      axios
+        .get(url, {})
+        .then((response) => {
+          this.menu = response.data.menu;
+          this.dataMenu = response.data.data;
+          this.selectListTypeByPosition(this.menu.position);
+          this.renderLabelDisabled();
+          this.renderLabelDefaultMenu();
 
-        this.menu = response.data.menu;
-        this.dataMenu = response.data.data;
-        this.selectListTypeByPosition(this.menu.position);
-        this.renderLabelDisabled();
-        this.renderLabelDefaultMenu();
+          if (this.menu.id === '') {
+            this.canSave = false;
+          }
 
-        if (this.menu.id === "") {
-          this.canSave = false;
-        }
-
-        if (Number.isInteger(idToOpen) && idToOpen > 0) {
-          this.updateElement(idToOpen)
-        }
-
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.loading = false
-      });
+          if (Number.isInteger(idToOpen) && idToOpen > 0) {
+            this.updateElement(idToOpen);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
 
     /**
      * Permet de sauvegarder un menu
      */
     saveMenu() {
-
       if (!this.verifCanSave()) {
         return false;
       }
 
       this.loading = true;
-      axios.post(this.urls.save_menu, {
-            'menu': this.menu
+      axios
+        .post(this.urls.save_menu, {
+          menu: this.menu,
+        })
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccess.msg = response.data.msg;
+            this.toasts.toastSuccess.show = true;
+            // Cas première page, on force la redirection pour passer en mode édition
+            if (response.data.redirect === true) {
+              window.location.replace(response.data.url);
+            }
+          } else {
+            this.toasts.toastError.msg = response.data.msg;
+            this.toasts.toastError.show = true;
           }
-      ).then((response) => {
-
-        if (response.data.success === true) {
-          this.toasts.toastSuccess.msg = response.data.msg;
-          this.toasts.toastSuccess.show = true;
-          // Cas première page, on force la redirection pour passer en mode édition
-          if (response.data.redirect === true) {
-            window.location.replace(response.data.url);
-          }
-        } else {
-          this.toasts.toastError.msg = response.data.msg;
-          this.toasts.toastError.show = true;
-        }
-
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.loading = false
-        emitter.emit('reset-check-confirm');
-      });
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+          emitter.emit('reset-check-confirm');
+        });
     },
 
     /**
@@ -257,7 +255,7 @@ export default {
      * @returns {boolean}
      */
     verifCanSave() {
-      if (Object.entries(this.menu.menuElements).length === 0 && this.menu.id !== "") {
+      if (Object.entries(this.menu.menuElements).length === 0 && this.menu.id !== '') {
         this.isErrorNoElement = true;
         return false;
       }
@@ -269,31 +267,32 @@ export default {
      * @param id
      */
     updateElement(id) {
-
       this.loading = true;
-      axios.get(this.urls.list_parent_menu_element + '/' + this.menu.id + '/' + id).then((response) => {
-        this.listValidParent = response.data.listParent;
+      axios
+        .get(this.urls.list_parent_menu_element + '/' + this.menu.id + '/' + id)
+        .then((response) => {
+          this.listValidParent = response.data.listParent;
 
-        let element = MenuElementTools.getElementMenuById(this.menu.menuElements, id);
-        if (element === null) {
-          console.warn(`id ${id} not found in menuElement`);
-          this.showForm = false;
-        } else {
-          if (element.hasOwnProperty('parent')) {
-            this.positions = MenuElementTools.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, element.parent);
+          let element = MenuElementTools.getElementMenuById(this.menu.menuElements, id);
+          if (element === null) {
+            console.warn(`id ${id} not found in menuElement`);
+            this.showForm = false;
           } else {
-            this.positions = MenuElementTools.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, null);
+            if (element.hasOwnProperty('parent')) {
+              this.positions = MenuElementTools.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, element.parent);
+            } else {
+              this.positions = MenuElementTools.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, null);
+            }
+            this.selectMenuElement = element;
+            this.showForm = true;
           }
-          this.selectMenuElement = element;
-          this.showForm = true;
-        }
-
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.loading = false;
-      });
-
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
 
     /**
@@ -311,13 +310,12 @@ export default {
      * @param deep
      */
     updateParent(id, idParent, deep) {
-
       idParent = parseInt(idParent);
       let positions = MenuElementTools.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, idParent);
       console.log(positions);
       if (positions.columnMax === 0) {
         positions.columnMax = 1;
-        positions[positions.columnMax] = {'colum': 1, 'rowMax': 0};
+        positions[positions.columnMax] = { colum: 1, rowMax: 0 };
       }
 
       // Si la profondeur n'est pas 1 alors on force la valeur de column max
@@ -326,27 +324,29 @@ export default {
       }
 
       this.loading = true;
-      axios.patch(this.urls.update_parent_menu_element, {
-        'id': id,
-        'idParent': idParent,
-        'columP': positions.columnMax,
-        'rowP': (positions[positions.columnMax].rowMax) + 1,
-      }).then((response) => {
-        if (response.data.success === true) {
-          this.toasts.toastSuccess.msg = response.data.msg;
-          this.toasts.toastSuccess.show = true;
-          this.currentDeep = deep;
-          this.loadMenu(response.data.id);
-
-        } else {
-          this.toasts.toastError.msg = response.data.msg;
-          this.toasts.toastError.show = true;
-          this.loading = false
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-      });
+      axios
+        .patch(this.urls.update_parent_menu_element, {
+          id: id,
+          idParent: idParent,
+          columP: positions.columnMax,
+          rowP: positions[positions.columnMax].rowMax + 1,
+        })
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccess.msg = response.data.msg;
+            this.toasts.toastSuccess.show = true;
+            this.currentDeep = deep;
+            this.loadMenu(response.data.id);
+          } else {
+            this.toasts.toastError.msg = response.data.msg;
+            this.toasts.toastError.show = true;
+            this.loading = false;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {});
     },
 
     /**
@@ -354,14 +354,13 @@ export default {
      * @param parent
      */
     newElement(parent) {
-
       if (parent === 0) {
         parent = null;
       }
       let positions = MenuElementTools.calculMaxColAndRowMaxByIdParent(this.menu.menuElements, parent);
       if (positions.columnMax === 0) {
         positions.columnMax = 1;
-        positions[positions.columnMax] = {'colum': 1, 'rowMax': 0};
+        positions[positions.columnMax] = { colum: 1, rowMax: 0 };
       }
 
       if (this.currentDeep !== 1) {
@@ -369,28 +368,29 @@ export default {
       }
 
       this.loading = true;
-      axios.post(this.urls.new_menu_element, {
-        'idParent': parent,
-        'idMenu': this.menu.id,
-        'columP': positions.columnMax,
-        'rowP': (positions[positions.columnMax].rowMax) + 1,
-      }).then((response) => {
-        if (response.data.success === true) {
-          this.toasts.toastSuccess.msg = response.data.msg;
-          this.toasts.toastSuccess.show = true;
-          this.loadMenu(response.data.id);
-
-        } else {
-          this.toasts.toastError.msg = response.data.msg;
-          this.toasts.toastError.show = true;
-          this.loading = false
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-      });
+      axios
+        .post(this.urls.new_menu_element, {
+          idParent: parent,
+          idMenu: this.menu.id,
+          columP: positions.columnMax,
+          rowP: positions[positions.columnMax].rowMax + 1,
+        })
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccess.msg = response.data.msg;
+            this.toasts.toastSuccess.show = true;
+            this.loadMenu(response.data.id);
+          } else {
+            this.toasts.toastError.msg = response.data.msg;
+            this.toasts.toastError.show = true;
+            this.loading = false;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {});
     },
-
 
     /**
      * Supprime un élement
@@ -398,7 +398,6 @@ export default {
      * @param confirm
      */
     deleteElement(confirm) {
-
       if (confirm) {
         this.updateModale('deleteMenuElement', true);
         return true;
@@ -406,25 +405,25 @@ export default {
       this.updateModale('deleteMenuElement', false);
 
       this.loading = true;
-      axios.delete(this.urls.delete_menu_element + '/' + this.idToDelete).then((response) => {
-        if (response.data.success === true) {
-          this.toasts.toastSuccess.msg = response.data.msg;
-          this.toasts.toastSuccess.show = true;
-          this.selectMenuElement = [];
-          this.showForm = false;
-          this.loadMenu();
-        } else {
-          this.toasts.toastError.msg = response.data.msg;
-          this.toasts.toastError.show = true;
-          this.loading = false
-        }
-
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-      });
-
-
+      axios
+        .delete(this.urls.delete_menu_element + '/' + this.idToDelete)
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccess.msg = response.data.msg;
+            this.toasts.toastSuccess.show = true;
+            this.selectMenuElement = [];
+            this.showForm = false;
+            this.loadMenu();
+          } else {
+            this.toasts.toastError.msg = response.data.msg;
+            this.toasts.toastError.show = true;
+            this.loading = false;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {});
     },
 
     /**
@@ -432,29 +431,29 @@ export default {
      * @param data
      */
     reorderElement(data) {
-
       data['menu'] = this.menu.id;
 
       this.loading = true;
-      axios.patch(this.urls.reorder_menu_element, {
-        data
-      }).then((response) => {
-        if (response.data.success === true) {
-          this.toasts.toastSuccess.msg = response.data.msg;
-          this.toasts.toastSuccess.show = true;
-          this.loadMenu(response.data.id);
-          //this.loading = true;
-
-        } else {
-          this.toasts.toastError.msg = response.data.msg;
-          this.toasts.toastError.show = true;
-          this.loading = false
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-      });
-
+      axios
+        .patch(this.urls.reorder_menu_element, {
+          data,
+        })
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccess.msg = response.data.msg;
+            this.toasts.toastSuccess.show = true;
+            this.loadMenu(response.data.id);
+            //this.loading = true;
+          } else {
+            this.toasts.toastError.msg = response.data.msg;
+            this.toasts.toastError.show = true;
+            this.loading = false;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {});
     },
 
     /**
@@ -498,13 +497,12 @@ export default {
       this.updateModale(nameModale, false);
     },
 
-
     /**
      * Ferme le toast défini par nameToast
      * @param nameToast
      */
     closeToast(nameToast) {
-      this.toasts[nameToast].show = false
+      this.toasts[nameToast].show = false;
     },
 
     /**
@@ -518,19 +516,15 @@ export default {
         this.isValideName = true;
         this.canSave = true;
       }
-    }
-  }
-}
-
-
+    },
+  },
+};
 </script>
 
 <template>
-
   <div id="global-menu" :class="this.loading === true ? 'block-grid' : ''" @click="handleClick">
-
     <div v-if="this.loading" class="overlay">
-      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
+      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000">
         <div class="spinner-border text-primary" role="status"></div>
         <span class="txt-overlay">{{ this.translate.loading }}</span>
       </div>
@@ -538,8 +532,12 @@ export default {
 
     <select id="select-language" class="form-select w-auto float-end" @change="this.switchLocale($event)">
       <option value="" selected>{{ this.translate.select_locale }}</option>
-      <option v-for="(language, key) in this.locales.localesTranslate" :value="key"
-          :selected="key===this.currentLocale">{{ language }}
+      <option
+        v-for="(language, key) in this.locales.localesTranslate"
+        :value="key"
+        :selected="key === this.currentLocale"
+      >
+        {{ language }}
       </option>
     </select>
     <div class="clearfix"></div>
@@ -550,14 +548,15 @@ export default {
       </div>
     </div>
     <div v-else class="block-create-menu mt-2">
-
       <fieldset>
         <legend>{{ this.translate.title_demo }}</legend>
-        <Component :is="this.selectComponent" class="mb-5 mt-2"
-            :menu="this.menu"
-            :type="parseInt(this.menu.type)"
-            :locale="this.currentLocale"
-            :data="this.dataMenu"
+        <Component
+          :is="this.selectComponent"
+          class="mb-5 mt-2"
+          :menu="this.menu"
+          :type="parseInt(this.menu.type)"
+          :locale="this.currentLocale"
+          :data="this.dataMenu"
         />
 
         <div class="clearfix"></div>
@@ -567,13 +566,22 @@ export default {
       <fieldset class="mt-2">
         <legend>{{ this.translate.title_global_form }}</legend>
 
-
         <div class="w-100">
-          <div v-if="this.id !== null" class="btn btn-secondary float-end" :class="!this.canSave ? 'disabled' : ''" @click="this.saveMenu">
+          <div
+            v-if="this.id !== null"
+            class="btn btn-secondary float-end"
+            :class="!this.canSave ? 'disabled' : ''"
+            @click="this.saveMenu"
+          >
             <i class="bi bi-floppy-fill"></i>
             {{ this.translate.btn_save }}
           </div>
-          <div v-else class="btn btn-secondary float-end" :class="!this.canSave ? 'disabled' : ''" @click="this.saveMenu">
+          <div
+            v-else
+            class="btn btn-secondary float-end"
+            :class="!this.canSave ? 'disabled' : ''"
+            @click="this.saveMenu"
+          >
             <i class="bi bi-menu-button-wide-fill"></i>
             {{ this.translate.btn_new }}
           </div>
@@ -589,22 +597,48 @@ export default {
               <div class="col">
                 <div class="mb-3">
                   <label for="menu-title" class="form-label">{{ this.translate.input_name_label }}</label>
-                  <input type="text" class="form-control" :class="!this.isValideName ? 'is-invalid' : ''" id="menu-title"
-                      v-model="this.menu.name" :placeholder="this.translate.input_name_placeholder" @change="this.isEmptyName()">
+                  <input
+                    type="text"
+                    class="form-control"
+                    :class="!this.isValideName ? 'is-invalid' : ''"
+                    id="menu-title"
+                    v-model="this.menu.name"
+                    :placeholder="this.translate.input_name_placeholder"
+                    @change="this.isEmptyName()"
+                  />
                   <div class="invalid-feedback">
                     {{ this.translate.input_name_error }}
                   </div>
                 </div>
 
                 <div class="mb-3">
-
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" v-model="this.menu.defaultMenu" type="radio" name="defaultMenu" id="default-menu-false" :value="false" @change="this.renderLabelDefaultMenu">
-                    <label class="form-check-label" for="default-menu-false"> {{ this.translate.checkbox_default_menu_false_label }}</label>
+                    <input
+                      class="form-check-input"
+                      v-model="this.menu.defaultMenu"
+                      type="radio"
+                      name="defaultMenu"
+                      id="default-menu-false"
+                      :value="false"
+                      @change="this.renderLabelDefaultMenu"
+                    />
+                    <label class="form-check-label" for="default-menu-false">
+                      {{ this.translate.checkbox_default_menu_false_label }}</label
+                    >
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" v-model="this.menu.defaultMenu" type="radio" name="defaultMenu" id="default-menu-true" :value="true" @change="this.renderLabelDefaultMenu">
-                    <label class="form-check-label" for="default-menu-true">{{ this.translate.checkbox_default_menu_true_label }}</label>
+                    <input
+                      class="form-check-input"
+                      v-model="this.menu.defaultMenu"
+                      type="radio"
+                      name="defaultMenu"
+                      id="default-menu-true"
+                      :value="true"
+                      @change="this.renderLabelDefaultMenu"
+                    />
+                    <label class="form-check-label" for="default-menu-true">{{
+                      this.translate.checkbox_default_menu_true_label
+                    }}</label>
                   </div>
 
                   <div class="clearfix"></div>
@@ -614,14 +648,33 @@ export default {
                 </div>
 
                 <div class="mb-3">
-
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" v-model="this.menu.disabled" type="radio" name="menuDisabled" id="menu-enabled" :value="false" @change="this.renderLabelDisabled">
-                    <label class="form-check-label" for="menu-enabled"> {{ this.translate.checkbox_enabled_label }}</label>
+                    <input
+                      class="form-check-input"
+                      v-model="this.menu.disabled"
+                      type="radio"
+                      name="menuDisabled"
+                      id="menu-enabled"
+                      :value="false"
+                      @change="this.renderLabelDisabled"
+                    />
+                    <label class="form-check-label" for="menu-enabled">
+                      {{ this.translate.checkbox_enabled_label }}</label
+                    >
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" v-model="this.menu.disabled" type="radio" name="menuDisabled" id="menu-disabled" :value="true" @change="this.renderLabelDisabled">
-                    <label class="form-check-label" for="menu-disabled">{{ this.translate.checkbox_disabled_label }}</label>
+                    <input
+                      class="form-check-input"
+                      v-model="this.menu.disabled"
+                      type="radio"
+                      name="menuDisabled"
+                      id="menu-disabled"
+                      :value="true"
+                      @change="this.renderLabelDisabled"
+                    />
+                    <label class="form-check-label" for="menu-disabled">{{
+                      this.translate.checkbox_disabled_label
+                    }}</label>
                   </div>
 
                   <div class="clearfix"></div>
@@ -629,25 +682,34 @@ export default {
                     <i> {{ this.labelDisabled }} </i>
                   </div>
                 </div>
-
               </div>
               <div class="col">
                 <div class="mb-3">
                   <label for="menu-position" class="form-label">{{ this.translate.select_position_label }}</label>
-                  <select id="menu-position" class="form-select" v-model="this.menu.position" @change="this.switchPosition($event)">
-                    <option v-for="(position, key) in this.menu_datas.list_position" :value="key">{{ position }}
+                  <select
+                    id="menu-position"
+                    class="form-select"
+                    v-model="this.menu.position"
+                    @change="this.switchPosition($event)"
+                  >
+                    <option v-for="(position, key) in this.menu_datas.list_position" :value="key">
+                      {{ position }}
                     </option>
                   </select>
                 </div>
 
                 <div class="mb-3">
                   <label for="menu-type" class="form-label">{{ this.translate.select_type_label }}</label>
-                  <select id="menu-type" class="form-select" v-model="this.menu.type" :disabled="this.listTypeByPosition.length === 0">
+                  <select
+                    id="menu-type"
+                    class="form-select"
+                    v-model="this.menu.type"
+                    :disabled="this.listTypeByPosition.length === 0"
+                  >
                     <option value="" selected v-if="this.listTypeByPosition.length === 0">
                       {{ this.translate.select_type }}
                     </option>
-                    <option v-for="(position, key) in this.listTypeByPosition" :value="key">{{ position }}
-                    </option>
+                    <option v-for="(position, key) in this.listTypeByPosition" :value="key">{{ position }}</option>
                   </select>
                 </div>
 
@@ -655,7 +717,8 @@ export default {
                   <label for="menu-page" class="form-label">{{ this.translate.select_page_label }}</label>
                   <select id="menu-page" class="form-select" size="10" v-model="this.menu.pageMenu" multiple>
                     <option value="-1">{{ this.translate.select_page_no_page }}</option>
-                    <option v-for="(page, id) in this.dataMenu.pages" :value=id>{{ page[this.currentLocale]['title'] }}
+                    <option v-for="(page, id) in this.dataMenu.pages" :value="id">
+                      {{ page[this.currentLocale]['title'] }}
                     </option>
                   </select>
                   <div class="form-text">
@@ -664,34 +727,32 @@ export default {
                 </div>
               </div>
             </div>
-
           </div>
         </div>
 
         <div class="row">
           <div class="col-4">
-
             <div class="card border" :class="this.isErrorNoElement ? 'border-danger' : 'border-secondary'">
               <div class="card-header" :class="this.isErrorNoElement ? 'text-bg-danger' : 'text-bg-secondary'">
                 {{ this.translate.title_architecture }}
               </div>
               <div class="card-body">
-
                 <div v-if="this.menu.id !== ''">
-                  <ul class=" tree-menu">
+                  <ul class="tree-menu">
                     <menu-tree
-                        v-for="menuElement in this.menu.menuElements"
-                        :menu-element="menuElement"
-                        :locale="this.currentLocale"
-                        :id-select="this.selectMenuElement.id"
-                        :translate="this.translate.menu_tree"
-                        :deep="0"
+                      v-for="menuElement in this.menu.menuElements"
+                      :menu-element="menuElement"
+                      :locale="this.currentLocale"
+                      :id-select="this.selectMenuElement.id"
+                      :translate="this.translate.menu_tree"
+                      :deep="0"
                     />
                     <li>
                       <div>
-                          <span class="btn btn-outline-secondary btn-sm" @click="this.newElement(0)"><i class="bi bi-plus-square"></i>
-                            {{ this.translate.btn_new_menu_element }}
-                          </span>
+                        <span class="btn btn-outline-secondary btn-sm" @click="this.newElement(0)"
+                          ><i class="bi bi-plus-square"></i>
+                          {{ this.translate.btn_new_menu_element }}
+                        </span>
                       </div>
                     </li>
                   </ul>
@@ -700,26 +761,23 @@ export default {
                     <i class="bi bi-exclamation-triangle-fill"></i> <i>{{ this.translate.error_no_element }}</i>
                   </div>
                 </div>
-                <div v-else>
-                  <i class="bi bi-info-circle"></i> {{ this.translate.msg_no_element_new_menu }}
-                </div>
+                <div v-else><i class="bi bi-info-circle"></i> {{ this.translate.msg_no_element_new_menu }}</div>
               </div>
             </div>
           </div>
           <div class="col-8">
-
             <menu-form
-                v-if="this.showForm"
-                :menu-element="this.selectMenuElement"
-                :translate="this.translate.menu_form"
-                :locale="this.currentLocale"
-                :pages="this.dataMenu.pages"
-                :positions="this.positions"
-                :all-elements="this.listValidParent"
-                :deep="this.currentDeep"
-                @reorder-element="this.reorderElement"
-                @change-parent="this.updateParent"
-                @close-form="this.closeForm"
+              v-if="this.showForm"
+              :menu-element="this.selectMenuElement"
+              :translate="this.translate.menu_form"
+              :locale="this.currentLocale"
+              :pages="this.dataMenu.pages"
+              :positions="this.positions"
+              :all-elements="this.listValidParent"
+              :deep="this.currentDeep"
+              @reorder-element="this.reorderElement"
+              @change-parent="this.updateParent"
+              @close-form="this.closeForm"
             >
             </menu-form>
 
@@ -728,18 +786,19 @@ export default {
                 {{ this.translate.no_select_menu_form }}
               </div>
               <div class="card-body">
-                <p class="text-black"><i>{{ this.translate.no_select_menu_form_msg }}</i></p>
+                <p class="text-black">
+                  <i>{{ this.translate.no_select_menu_form_msg }}</i>
+                </p>
 
-                {{ this.translate.help_title }} <br/>
+                {{ this.translate.help_title }} <br />
 
                 <i class="bi bi-arrow-right"></i> <i class="bi bi-pencil-fill"></i> {{ this.translate.help_edition }}
-                <br/>
-                <i class="bi bi-arrow-right"></i> <i class="bi bi-x-lg"></i> {{ this.translate.help_delete }} <br/>
+                <br />
+                <i class="bi bi-arrow-right"></i> <i class="bi bi-x-lg"></i> {{ this.translate.help_delete }} <br />
                 <i class="bi bi-arrow-right"></i> <i class="bi bi-plus-square"></i> {{ this.translate.help_new }}
-                <br/>
+                <br />
                 <i class="bi bi-arrow-right"></i>
                 <i class="bi bi-eye-slash-fill"></i> {{ this.translate.help_disabled }}
-
               </div>
             </div>
           </div>
@@ -750,13 +809,14 @@ export default {
 
   <!-- modale confirmation suppression -->
   <modal
-      :id="'deleteMenuElement'"
-      :show="this.modalTab.deleteMenuElement"
-      @close-modal="this.closeModal"
-      :option-show-close-btn="false">
+    :id="'deleteMenuElement'"
+    :show="this.modalTab.deleteMenuElement"
+    @close-modal="this.closeModal"
+    :option-show-close-btn="false"
+  >
     <template #title>
       <i class="bi bi-sign-stop-fill"></i>&nbsp;
-                                          {{ this.translate.menu_element_confirm_delete_title }}
+      {{ this.translate.menu_element_confirm_delete_title }}
     </template>
     <template #body>
       {{ this.translate.menu_element_confirm_delete_body }}
@@ -772,15 +832,13 @@ export default {
   </modal>
   <!-- fin modale confirmation suppression -->
 
-
   <!-- toast -->
   <div class="toast-container position-fixed top-0 end-0 p-2">
-
     <toast
-        :id="'toastSuccess'"
-        :option-class-header="'text-success'"
-        :show="this.toasts.toastSuccess.show"
-        @close-toast="this.closeToast"
+      :id="'toastSuccess'"
+      :option-class-header="'text-success'"
+      :show="this.toasts.toastSuccess.show"
+      @close-toast="this.closeToast"
     >
       <template #header>
         <i class="bi bi-check-circle-fill"></i> &nbsp;
@@ -793,10 +851,10 @@ export default {
     </toast>
 
     <toast
-        :id="'toastError'"
-        :option-class-header="'text-danger'"
-        :show="this.toasts.toastError.show"
-        @close-toast="this.closeToast"
+      :id="'toastError'"
+      :option-class-header="'text-danger'"
+      :show="this.toasts.toastError.show"
+      @close-toast="this.closeToast"
     >
       <template #header>
         <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
@@ -808,5 +866,4 @@ export default {
       </template>
     </toast>
   </div>
-
 </template>

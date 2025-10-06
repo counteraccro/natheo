@@ -23,7 +23,6 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 class MailService extends AppAdminService
 {
-
     /**
      * Clé FROM
      * @const string
@@ -78,7 +77,6 @@ class MailService extends AppAdminService
      */
     public const BODY = 'body';
 
-
     /**
      * Retourne une liste de mail formaté pour vueJs et automatiquement traduit en fonction de langue par défaut
      * @param string $locale
@@ -100,7 +98,7 @@ class MailService extends AppAdminService
             'description' => $translator->trans($mail->getDescription()),
             'keyWords' => $this->formatKeyWord($mail->getKeyWords()),
             'titleTrans' => $mailTranslation->getTitle(),
-            'contentTrans' => $mailTranslation->getContent()
+            'contentTrans' => $mailTranslation->getContent(),
         ];
         return $return;
     }
@@ -172,13 +170,14 @@ class MailService extends AppAdminService
             $data[] = [
                 $translator->trans('mail.grid.id', domain: 'mail') => $mail->getId(),
                 $translator->trans('mail.grid.title', domain: 'mail') => $translator->trans($mail->getTitle()),
-                $translator->trans('mail.grid.description', domain: 'mail') =>
-                    $translator->trans($mail->getDescription()),
-                $translator->trans('mail.grid.created_at', domain: 'mail') => $mail->getCreatedAt()->
-                format('d/m/y H:i'),
-                $translator->trans('mail.grid.update_at', domain: 'mail') => $mail->getUpdateAt()->
-                format('d/m/y H:i'),
-                GridService::KEY_ACTION => $actions
+                $translator->trans('mail.grid.description', domain: 'mail') => $translator->trans(
+                    $mail->getDescription(),
+                ),
+                $translator->trans('mail.grid.created_at', domain: 'mail') => $mail
+                    ->getCreatedAt()
+                    ->format('d/m/y H:i'),
+                $translator->trans('mail.grid.update_at', domain: 'mail') => $mail->getUpdateAt()->format('d/m/y H:i'),
+                GridService::KEY_ACTION => $actions,
             ];
         }
 
@@ -186,10 +185,9 @@ class MailService extends AppAdminService
             GridService::KEY_NB => $nb,
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
-            GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate)
+            GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate),
         ];
         return $gridService->addAllDataRequiredGrid($tabReturn);
-
     }
 
     /**
@@ -215,12 +213,14 @@ class MailService extends AppAdminService
         ];
 
         // Bouton edit
-        $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>', 'type' => 'get',
+        $actions[] = [
+            'label' => '<i class="bi bi-pencil-fill"></i>',
+            'type' => 'get',
             'id' => $mail->getId(),
             'url' => $router->generate('admin_mail_edit', ['id' => $mail->getId()]),
-            'ajax' => false];
+            'ajax' => false,
+        ];
         return $actions;
-
     }
 
     /**
@@ -244,7 +244,6 @@ class MailService extends AppAdminService
      */
     public function sendMail(array $params): void
     {
-
         $mailer = $this->getMailer();
         $optionSystemService = $this->getOptionSystemService();
 
@@ -261,7 +260,7 @@ class MailService extends AppAdminService
         $content = $markdown->convertMarkdownToHtml($content);
         $content = $content . $signature;
 
-        $body = array_merge((array)$body, ['content' => $content]);
+        $body = array_merge((array) $body, ['content' => $content]);
 
         $email = (new TemplatedEmail())
             ->from($from)
@@ -296,7 +295,7 @@ class MailService extends AppAdminService
     {
         $optionSystemService = $this->getOptionSystemService();
 
-        if (isset($params[$key]) && ($params[$key] !== "" || $params !== null)) {
+        if (isset($params[$key]) && ($params[$key] !== '' || $params !== null)) {
             return $params[$key];
         }
 
@@ -338,19 +337,20 @@ class MailService extends AppAdminService
     {
         $optionSystemService = $this->getOptionSystemService();
 
-        $mailTranslate = $mail->geMailTranslationByLocale($optionSystemService
-            ->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE));
+        $mailTranslate = $mail->geMailTranslationByLocale(
+            $optionSystemService->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE),
+        );
         $content = str_replace(
             $tabKeyWord[KeyWord::KEY_SEARCH],
             $tabKeyWord[KeyWord::KEY_REPLACE],
-            $mailTranslate->getContent()
+            $mailTranslate->getContent(),
         );
 
         return [
             MailService::TITLE => $mailTranslate->getTitle(),
             MailService::CONTENT => $content,
             MailService::TO => '',
-            MailService::TEMPLATE => MailTemplate::EMAIL_SIMPLE_TEMPLATE
+            MailService::TEMPLATE => MailTemplate::EMAIL_SIMPLE_TEMPLATE,
         ];
     }
 }

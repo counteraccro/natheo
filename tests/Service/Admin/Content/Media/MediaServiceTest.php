@@ -32,7 +32,6 @@ class MediaServiceTest extends AppWebTestCase
 
     const IMG_UNIT_TEST = 'road.jpg';
 
-
     public function setUp(): void
     {
         parent::setUp();
@@ -59,9 +58,14 @@ class MediaServiceTest extends AppWebTestCase
         $media = $this->createMedia($mediaFolder);
         $this->mediaService->moveMediaFixture(self::IMG_UNIT_TEST, $media);
 
-        $result = $this->fileSystem->exists($this->mediaService->getRootPathMedia() . DIRECTORY_SEPARATOR . $mediaFolder->getName() . '/' . self::IMG_UNIT_TEST);
+        $result = $this->fileSystem->exists(
+            $this->mediaService->getRootPathMedia() .
+                DIRECTORY_SEPARATOR .
+                $mediaFolder->getName() .
+                '/' .
+                self::IMG_UNIT_TEST,
+        );
         $this->assertTrue($result);
-
     }
 
     /**
@@ -81,9 +85,13 @@ class MediaServiceTest extends AppWebTestCase
 
         /** @var Media $verif */
         $verif = $this->mediaService->findOneById(Media::class, $media->getId());
-        $result = $this->fileSystem->exists($this->mediaService->getRootPathMedia() . DIRECTORY_SEPARATOR . $media->getPath());
+        $result = $this->fileSystem->exists(
+            $this->mediaService->getRootPathMedia() . DIRECTORY_SEPARATOR . $media->getPath(),
+        );
         $this->assertTrue($result);
-        $result = $this->fileSystem->exists($this->mediaService->getRootPathThumbnail() . DIRECTORY_SEPARATOR . $verif->getThumbnail());
+        $result = $this->fileSystem->exists(
+            $this->mediaService->getRootPathThumbnail() . DIRECTORY_SEPARATOR . $verif->getThumbnail(),
+        );
         $this->assertTrue($result);
     }
 
@@ -111,7 +119,6 @@ class MediaServiceTest extends AppWebTestCase
         $media = $this->createMedia($mediaFolder);
         $result = $this->mediaService->getWebPathThumbnail($media->getThumbnail());
         $this->assertNotNull($result);
-
     }
 
     /**
@@ -193,15 +200,42 @@ class MediaServiceTest extends AppWebTestCase
         $this->assertNotNull($result);
         $this->assertIsArray($result);
         $this->assertArrayHasKey('data', $result);
-        $this->assertArrayHasKey($this->translator->trans('media.mediatheque.info.media.name', domain: 'media'), $result['data']);
-        $this->assertArrayHasKey($this->translator->trans('media.mediatheque.info.media.titre', domain: 'media'), $result['data']);
-        $this->assertArrayHasKey($this->translator->trans('media.mediatheque.info.media.description', domain: 'media'), $result['data']);
-        $this->assertArrayHasKey($this->translator->trans('media.mediatheque.info.media.extension', domain: 'media'), $result['data']);
-        $this->assertArrayHasKey($this->translator->trans('media.mediatheque.info.media.user', domain: 'media'), $result['data']);
-        $this->assertArrayHasKey($this->translator->trans('media.mediatheque.info.media.emplacement', domain: 'media'), $result['data']);
-        $this->assertArrayHasKey($this->translator->trans('media.mediatheque.info.media.size', domain: 'media'), $result['data']);
-        $this->assertArrayHasKey($this->translator->trans('media.mediatheque.info.media.date_created', domain: 'media'), $result['data']);
-        $this->assertArrayHasKey($this->translator->trans('media.mediatheque.info.media.date_update', domain: 'media'), $result['data']);
+        $this->assertArrayHasKey(
+            $this->translator->trans('media.mediatheque.info.media.name', domain: 'media'),
+            $result['data'],
+        );
+        $this->assertArrayHasKey(
+            $this->translator->trans('media.mediatheque.info.media.titre', domain: 'media'),
+            $result['data'],
+        );
+        $this->assertArrayHasKey(
+            $this->translator->trans('media.mediatheque.info.media.description', domain: 'media'),
+            $result['data'],
+        );
+        $this->assertArrayHasKey(
+            $this->translator->trans('media.mediatheque.info.media.extension', domain: 'media'),
+            $result['data'],
+        );
+        $this->assertArrayHasKey(
+            $this->translator->trans('media.mediatheque.info.media.user', domain: 'media'),
+            $result['data'],
+        );
+        $this->assertArrayHasKey(
+            $this->translator->trans('media.mediatheque.info.media.emplacement', domain: 'media'),
+            $result['data'],
+        );
+        $this->assertArrayHasKey(
+            $this->translator->trans('media.mediatheque.info.media.size', domain: 'media'),
+            $result['data'],
+        );
+        $this->assertArrayHasKey(
+            $this->translator->trans('media.mediatheque.info.media.date_created', domain: 'media'),
+            $result['data'],
+        );
+        $this->assertArrayHasKey(
+            $this->translator->trans('media.mediatheque.info.media.date_update', domain: 'media'),
+            $result['data'],
+        );
         $this->assertArrayHasKey('thumbnail', $result);
         $this->assertArrayHasKey('web_path', $result);
         $this->assertArrayHasKey('media_type', $result);
@@ -256,17 +290,32 @@ class MediaServiceTest extends AppWebTestCase
         $this->mediaService->createFolder($mediaFolderEnd);
 
         $this->mediaService->move($media->getId(), 'media', $mediaFolderEnd->getId());
-        $result = $this->fileSystem->exists($this->mediaService->getRootPathMedia() . DIRECTORY_SEPARATOR . 'end-folder' . DIRECTORY_SEPARATOR . self::IMG_UNIT_TEST);
+        $result = $this->fileSystem->exists(
+            $this->mediaService->getRootPathMedia() .
+                DIRECTORY_SEPARATOR .
+                'end-folder' .
+                DIRECTORY_SEPARATOR .
+                self::IMG_UNIT_TEST,
+        );
         $this->assertTrue($result);
 
         /** @var MediaFolder $folderVerif */
         $folderVerif = $this->mediaService->findOneById(MediaFolder::class, $mediaFolderEnd->getId());
         $this->assertCount(1, $folderVerif->getMedias());
         $media = $folderVerif->getMedias()->first();
-        $this->assertEquals($folderVerif->getPath() . $folderVerif->getName() . DIRECTORY_SEPARATOR . $media->getName(), $media->getPath());
+        $this->assertEquals(
+            $folderVerif->getPath() . $folderVerif->getName() . DIRECTORY_SEPARATOR . $media->getName(),
+            $media->getPath(),
+        );
 
         $this->mediaService->move($mediaFolder->getId(), 'folder', $mediaFolderEnd->getId());
-        $result = $this->fileSystem->exists($this->mediaService->getRootPathMedia() . DIRECTORY_SEPARATOR . 'end-folder' . DIRECTORY_SEPARATOR . $mediaFolder->getName());
+        $result = $this->fileSystem->exists(
+            $this->mediaService->getRootPathMedia() .
+                DIRECTORY_SEPARATOR .
+                'end-folder' .
+                DIRECTORY_SEPARATOR .
+                $mediaFolder->getName(),
+        );
         $this->assertTrue($result);
 
         /** @var MediaFolder $folderVerif */
@@ -321,7 +370,7 @@ class MediaServiceTest extends AppWebTestCase
         $nbFolder = 0;
         $nbMedia = 0;
         foreach ($result as $data) {
-            if($data['type'] == 'media') {
+            if ($data['type'] == 'media') {
                 $this->assertArrayHasKey('type', $data);
                 $this->assertArrayHasKey('id', $data);
                 $this->assertArrayHasKey('name', $data);
@@ -333,7 +382,7 @@ class MediaServiceTest extends AppWebTestCase
                 $nbMedia++;
             }
 
-            if($data['type'] == 'folder') {
+            if ($data['type'] == 'folder') {
                 $this->assertArrayHasKey('type', $data);
                 $this->assertArrayHasKey('id', $data);
                 $this->assertArrayHasKey('name', $data);
@@ -351,7 +400,7 @@ class MediaServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testUpdateTrash() :void
+    public function testUpdateTrash(): void
     {
         $mediaFolder = $this->createMediaFolder(customData: ['trash' => false]);
         $media = $this->createMedia($mediaFolder, customData: ['name' => self::IMG_UNIT_TEST, 'trash' => true]);
@@ -374,7 +423,7 @@ class MediaServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testConfirmTrash() :void
+    public function testConfirmTrash(): void
     {
         $this->mediaService->resetAllMedia();
         $mediaFolder = $this->createMediaFolder(customData: ['trash' => false]);
@@ -385,13 +434,17 @@ class MediaServiceTest extends AppWebTestCase
         $idFolder = $mediaFolder->getId();
 
         $this->mediaService->confirmTrash('folder', $mediaFolder->getId());
-        $verif = $this->mediaService->findOneById(MediaFolder::class,  $idFolder);
+        $verif = $this->mediaService->findOneById(MediaFolder::class, $idFolder);
         $this->assertNull($verif);
 
         $verif = $this->mediaService->findOneById(Media::class, $idMedia);
         $this->assertNull($verif);
 
-        $this->assertFalse($this->fileSystem->exists($this->mediaService->getRootPathMedia() . $mediaFolder->getPath() . $mediaFolder->getName()));
+        $this->assertFalse(
+            $this->fileSystem->exists(
+                $this->mediaService->getRootPathMedia() . $mediaFolder->getPath() . $mediaFolder->getName(),
+            ),
+        );
 
         $mediaFolder = $this->createMediaFolder(customData: ['trash' => false]);
         $media = $this->createMedia($mediaFolder, customData: ['name' => self::IMG_UNIT_TEST, 'trash' => true]);

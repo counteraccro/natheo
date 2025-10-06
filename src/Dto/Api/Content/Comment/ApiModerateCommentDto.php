@@ -17,25 +17,29 @@ class ApiModerateCommentDto extends AppApiDto
          * status
          * @var string
          */
-        #[Assert\Type(type: 'string', message: 'The status parameter must be a string')]
-        #[Assert\NotNull(message: 'The status parameter cannot be empty')]
-        #[Assert\NotBlank(message: 'The status parameter cannot be empty')]
-        private readonly string $status,
+        #[Assert\Type(type: 'string', message: 'The status parameter must be a string')] #[
+            Assert\NotNull(message: 'The status parameter cannot be empty'),
+        ]
+        #[Assert\NotBlank(message: 'The status parameter cannot be empty')] private readonly string $status,
 
         /**
          * moderation comment
          * @var string
          */
-        #[Assert\Type(type: 'string', message: 'The moderation_comment parameter must be a string')]
+        #[
+            Assert\Type(type: 'string', message: 'The moderation_comment parameter must be a string'),
+        ]
         private readonly string $moderationComment,
 
         /**
          * Token
          * @var string
          */
-        #[Assert\Type(type: 'string', message: 'The user_token parameter must be a string')]
+        #[
+            Assert\Type(type: 'string', message: 'The user_token parameter must be a string'),
+        ]
         private readonly string $userToken,
-    ){}
+    ) {}
 
     /**
      * @return string

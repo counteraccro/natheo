@@ -32,13 +32,14 @@ class AppAdminExtension
      * @throws NotFoundExceptionInterface
      */
     public function __construct(
-        #[AutowireLocator([
-            'translator' => TranslatorInterface::class,
-            'router' => RouterInterface::class,
-        ])]
-        private readonly ContainerInterface $handlers
-    )
-    {
+        #[
+            AutowireLocator([
+                'translator' => TranslatorInterface::class,
+                'router' => RouterInterface::class,
+            ]),
+        ]
+        private readonly ContainerInterface $handlers,
+    ) {
         $this->router = $this->handlers->get('router');
         $this->translator = $this->handlers->get('translator');
     }

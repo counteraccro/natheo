@@ -83,21 +83,18 @@ class GridService extends AppAdminService
         $parameters = $paginator->getQuery()->getParameters();
 
         $tmp = '';
-        foreach($parameters as $parameter) {
-
-            if($parameter->getName() == 'userId') {
+        foreach ($parameters as $parameter) {
+            if ($parameter->getName() == 'userId') {
                 $search = u($parameter->getName())->snake() . " = '" . $tmp . "'";
                 $replace = u($parameter->getName())->snake() . ' = ' . $parameter->getValue();
                 $sql = str_replace($search, $replace, $sql, $count);
-            }
-            else {
+            } else {
                 $sql = str_replace('?', "'" . $parameter->getValue() . "'", $sql, $count);
             }
 
             $tmp = $parameter->getValue();
         }
         return $sql;
-
     }
 
     /**
@@ -130,7 +127,7 @@ class GridService extends AppAdminService
             'ROLE_USER' => $translator->trans('global.role.user', domain: 'global'),
             'ROLE_CONTRIBUTEUR' => $translator->trans('global.role.contributeur', domain: 'global'),
             'ROLE_ADMIN' => $translator->trans('global.role.admin', domain: 'global'),
-            'ROLE_SUPER_ADMIN' => $translator->trans('global.role.superadmin', domain: 'global')
+            'ROLE_SUPER_ADMIN' => $translator->trans('global.role.superadmin', domain: 'global'),
         ];
         return $tabRole[$role];
     }

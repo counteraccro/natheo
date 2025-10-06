@@ -23,15 +23,15 @@ class InfoController extends AbstractController
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'info',
             Breadcrumb::BREADCRUMB => [
-                'info.page.title.h1' => '#'
-            ]
+                'info.page.title.h1' => '#',
+            ],
         ];
 
         $tabInformation = $informationService->getAllInformation();
 
         return $this->render('admin/system/info/index.html.twig', [
             'breadcrumb' => $breadcrumb,
-            'tabInfo' => $tabInformation
+            'tabInfo' => $tabInformation,
         ]);
     }
 

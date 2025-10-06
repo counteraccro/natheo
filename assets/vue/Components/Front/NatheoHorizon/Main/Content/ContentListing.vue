@@ -1,5 +1,4 @@
 <script>
-
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -22,34 +21,31 @@ export default {
       pages: '',
       nbElements: 0,
       title: '',
-    }
+    };
   },
   created() {
     this.loadContent();
   },
-  mounted() {
-
-  },
-  computed: {
-  },
+  mounted() {},
+  computed: {},
   methods: {
     loadContent() {
       let success = (datas) => {
         this.pages = datas.content.pages;
         this.title = datas.title;
         this.nbElements = datas.content.rows;
-      }
+      };
 
       let loader = () => {
-        this.isLoad = true
-      }
-      let params = {
-        'id': this.data.id,
-        'locale': this.locale,
-        'limit': this.limit,
-        'page': this.page
+        this.isLoad = true;
       };
-      this.ajaxRequest.getContentPage(params, success, this.apiFailure, loader)
+      let params = {
+        id: this.data.id,
+        locale: this.locale,
+        limit: this.limit,
+        page: this.page,
+      };
+      this.ajaxRequest.getContentPage(params, success, this.apiFailure, loader);
     },
 
     /**
@@ -79,20 +75,19 @@ export default {
      * @returns {string}
      */
     getStylePagePagination(numberPage, isCentral, isEnd) {
-
-      if(numberPage === this.page && isCentral) {
-        return "px-3 py-1 rounded-lg border border-gray-300 bg-theme-4-750 !text-theme-1-100 hover:dark:bg-gray-600 transition"
+      if (numberPage === this.page && isCentral) {
+        return 'px-3 py-1 rounded-lg border border-gray-300 bg-theme-4-750 !text-theme-1-100 hover:dark:bg-gray-600 transition';
       }
 
-      if(numberPage === this.getNbPage() && isEnd) {
-        return "px-3 py-1 rounded-lg border border-gray-100 text-gray-300 transition disabled"
+      if (numberPage === this.getNbPage() && isEnd) {
+        return 'px-3 py-1 rounded-lg border border-gray-100 text-gray-300 transition disabled';
       }
 
-      if(numberPage <= 1 && !isEnd && !isCentral) {
-        return "px-3 py-1 rounded-lg border border-gray-100 text-gray-300 transition disabled"
+      if (numberPage <= 1 && !isEnd && !isCentral) {
+        return 'px-3 py-1 rounded-lg border border-gray-100 text-gray-300 transition disabled';
       }
 
-      return "px-3 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-theme-4-750 hover:!text-theme-1-100 hover:dark:bg-gray-600 transition"
+      return 'px-3 py-1 rounded-lg border border-gray-300 text-gray-600 hover:bg-theme-4-750 hover:!text-theme-1-100 hover:dark:bg-gray-600 transition';
     },
 
     /**
@@ -106,20 +101,31 @@ export default {
     apiFailure(code, msg) {
       this.$emit('api-failure', code, msg);
     },
-  }
-}
+  },
+};
 </script>
 
 <template>
-  <h2 class="text-slate-900 text-2xl font-semibold mb-3"> {{ this.title }} </h2>
+  <h2 class="text-slate-900 text-2xl font-semibold mb-3">{{ this.title }}</h2>
   <div v-if="this.isLoad && this.pages.length > 0">
     <!-- Liste d’articles -->
     <ul class="mx-auto divide-y divide-gray-200">
-
       <li v-for="page in this.pages" class="py-2">
-        <a :href="this.generateUrl(page)" class="flex gap-4 hover:bg-theme-4-750/15  hover:dark:bg-gray-600 rounded-xl p-2 transition">
-          <img v-if="page.img !== null" :src="page.img" :alt="page.title" class="h-28 w-40 flex-none rounded-xl object-cover" loading="lazy"/>
-          <div v-else class="h-28 w-40 flex-none rounded-xl bg-gray-200 flex flex-col items-center justify-center text-gray-400 text-sm font-medium">
+        <a
+          :href="this.generateUrl(page)"
+          class="flex gap-4 hover:bg-theme-4-750/15 hover:dark:bg-gray-600 rounded-xl p-2 transition"
+        >
+          <img
+            v-if="page.img !== null"
+            :src="page.img"
+            :alt="page.title"
+            class="h-28 w-40 flex-none rounded-xl object-cover"
+            loading="lazy"
+          />
+          <div
+            v-else
+            class="h-28 w-40 flex-none rounded-xl bg-gray-200 flex flex-col items-center justify-center text-gray-400 text-sm font-medium"
+          >
             <div class="h-10 w-16 bg-gray-300 rounded-md mb-2"></div>
             <span>Pas d’image</span>
           </div>
@@ -128,34 +134,75 @@ export default {
               {{ page.title }}
             </h3>
             <p class="mt-1 text-sm text-gray-500">
-              Par <span class="font-medium text-gray-700">{{ page.author }}</span> • {{ this.utilsFront.formatDate(page.created * 1000) }}
+              Par <span class="font-medium text-gray-700">{{ page.author }}</span> •
+              {{ this.utilsFront.formatDate(page.created * 1000) }}
             </p>
           </div>
         </a>
       </li>
     </ul>
 
+    <nav
+      class="content-paginate flex flex-wrap gap-y-3 items-center justify-center mt-8 space-x-1"
+      aria-label="Pagination"
+    >
+      <a
+        href="#"
+        @click="this.changePage(1)"
+        :class="this.getStylePagePagination(this.page, false, false)"
+        class="text-sm"
+        ><<</a
+      >
+      <a
+        href="#"
+        @click="this.changePage(this.page - 1)"
+        :class="this.getStylePagePagination(this.page, false, false)"
+        class="text-sm"
+        ><</a
+      >
 
-      <nav class="content-paginate flex flex-wrap gap-y-3 items-center justify-center mt-8 space-x-1" aria-label="Pagination">
-        <a href="#" @click="this.changePage(1)" :class="this.getStylePagePagination(this.page, false, false)" class="text-sm"><<</a>
-        <a href="#" @click="this.changePage(this.page - 1)" :class="this.getStylePagePagination(this.page, false,false)" class="text-sm"><</a>
-
-        <div v-for="(n, i) in this.getNbPage()">
-          <a href="#"  :class="this.getStylePagePagination(n, true,false)" @click="this.changePage(n)" v-if="n === this.page-1 || n === this.page+1 || n === this.page || n <= 2 || n >= this.getNbPage()-1">{{ n }}</a>
-          <a href="#"  :class="this.getStylePagePagination(n, true,false)" @click="this.changePage(n)" v-else-if="n === this.page-2 || n === this.page+2">...</a>
-        </div>
-
-        <a href="#" @click="this.changePage(this.page + 1)" :class="this.getStylePagePagination(this.page, false,true)" class="text-sm">></a>
-        <a href="#" @click="this.changePage(this.getNbPage())" :class="this.getStylePagePagination(this.page, false,true)" class="text-sm">>></a>
-      </nav>
-      <div class="flex items-center justify-center mt-2 text-gray-400 text-sm">
-         {{ this.page }} sur {{ this.getNbPage() }} - {{ this.nbElements }} page(s)
+      <div v-for="(n, i) in this.getNbPage()">
+        <a
+          href="#"
+          :class="this.getStylePagePagination(n, true, false)"
+          @click="this.changePage(n)"
+          v-if="n === this.page - 1 || n === this.page + 1 || n === this.page || n <= 2 || n >= this.getNbPage() - 1"
+          >{{ n }}</a
+        >
+        <a
+          href="#"
+          :class="this.getStylePagePagination(n, true, false)"
+          @click="this.changePage(n)"
+          v-else-if="n === this.page - 2 || n === this.page + 2"
+          >...</a
+        >
       </div>
+
+      <a
+        href="#"
+        @click="this.changePage(this.page + 1)"
+        :class="this.getStylePagePagination(this.page, false, true)"
+        class="text-sm"
+        >></a
+      >
+      <a
+        href="#"
+        @click="this.changePage(this.getNbPage())"
+        :class="this.getStylePagePagination(this.page, false, true)"
+        class="text-sm"
+        >>></a
+      >
+    </nav>
+    <div class="flex items-center justify-center mt-2 text-gray-400 text-sm">
+      {{ this.page }} sur {{ this.getNbPage() }} - {{ this.nbElements }} page(s)
+    </div>
   </div>
 
   <div v-else-if="this.isLoad && this.pages.length === 0">
     <div class="p-6">
-      <div class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 p-8 text-center">
+      <div
+        class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 p-8 text-center"
+      >
         <p class="text-gray-500 text-lg font-medium">Aucun élément trouvé</p>
       </div>
     </div>
@@ -163,7 +210,6 @@ export default {
 
   <div v-else class="mx-auto w-full rounded-md p-4">
     <ul class="divide-y divide-gray-200">
-
       <li class="flex items-center gap-4 pb-4">
         <div class="size-10 rounded-full bg-gray-200 animate-pulse"></div>
         <div class="flex-1 space-y-2">
@@ -195,7 +241,6 @@ export default {
           <div class="h-3 w-10/12 rounded bg-gray-200 animate-pulse"></div>
         </div>
       </li>
-
     </ul>
   </div>
 </template>

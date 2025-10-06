@@ -65,26 +65,26 @@ class FaqRepository extends ServiceEntityRepository
      */
     public function getAllPaginate(int $page, int $limit, ?string $search = null, ?int $userId = null): Paginator
     {
-        $query = $this->createQueryBuilder('f')
-            ->orderBy('f.id', 'ASC');
+        $query = $this->createQueryBuilder('f')->orderBy('f.id', 'ASC');
 
         if ($search !== null) {
-            $query->join('f.faqTranslations', 'ft')
+            $query
+                ->join('f.faqTranslations', 'ft')
                 ->where('ft.title like :search')
                 ->setParameter('search', '%' . $search . '%');
         }
 
-        if($userId !== null){
+        if ($userId !== null) {
             $query->andWhere('f.user = :userId');
             $query->setParameter('userId', $userId);
         }
 
         $paginator = new Paginator($query->getQuery(), true);
-        $paginator->getQuery()
+        $paginator
+            ->getQuery()
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;
-
     }
 
     /**
@@ -95,18 +95,18 @@ class FaqRepository extends ServiceEntityRepository
      */
     public function getListeFaq(string $locale = 'fr', bool $disabled = false): array
     {
-        $result =  $this->createQueryBuilder('f')
+        $result = $this->createQueryBuilder('f')
             ->select('f.id', 'ft.title')
             ->leftJoin('f.faqTranslations', 'ft')
             ->where('f.disabled = :disabled')
             ->andWhere('ft.locale = :locale')
             ->setParameter('locale', $locale)
             ->setParameter('disabled', $disabled)
-            ->getQuery()->getArrayResult();
+            ->getQuery()
+            ->getArrayResult();
 
-        $return = array();
-        foreach($result as $data)
-        {
+        $return = [];
+        foreach ($result as $data) {
             $return[$data['id']] = $data['title'];
         }
         return $return;
@@ -124,7 +124,8 @@ class FaqRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('f');
 
-        $query->join('f.faqTranslations', 'ft')
+        $query
+            ->join('f.faqTranslations', 'ft')
             ->leftJoin('f.faqCategories', 'fc')
             ->leftJoin('fc.faqCategoryTranslations', 'fct')
             ->leftJoin('fc.faqQuestions', 'fq')
@@ -139,7 +140,8 @@ class FaqRepository extends ServiceEntityRepository
             ->setParameter('locale', $locale);
 
         $paginator = new Paginator($query->getQuery(), true);
-        $paginator->getQuery()
+        $paginator
+            ->getQuery()
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;

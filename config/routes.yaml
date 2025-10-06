@@ -9,4 +9,3 @@ overwrite:
         path: ../src/Overwrite/Controller/
         namespace: App\Overwrite\Controller
     type: attribute
-

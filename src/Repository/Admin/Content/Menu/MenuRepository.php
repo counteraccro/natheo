@@ -58,8 +58,7 @@ class MenuRepository extends ServiceEntityRepository
      */
     public function getAllPaginate(int $page, int $limit, ?string $search = null, ?int $userId = null): Paginator
     {
-        $query = $this->createQueryBuilder('m')
-            ->orderBy('m.id', 'ASC');
+        $query = $this->createQueryBuilder('m')->orderBy('m.id', 'ASC');
 
         if ($search !== null) {
             $query->where('m.name like :search');
@@ -72,7 +71,8 @@ class MenuRepository extends ServiceEntityRepository
         }
 
         $paginator = new Paginator($query->getQuery(), true);
-        $paginator->getQuery()
+        $paginator
+            ->getQuery()
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;
@@ -88,9 +88,8 @@ class MenuRepository extends ServiceEntityRepository
     public function getAllWithoutExcludeByPosition(string $field, mixed $value, int $position): mixed
     {
         $query = $this->createQueryBuilder('m');
-        $query->where(
-            $query->expr()->neq('m.' . $field, ':value')
-        )
+        $query
+            ->where($query->expr()->neq('m.' . $field, ':value'))
             ->setParameters(new ArrayCollection([new Parameter('value', $value)]))
             ->andWhere('m.position = :position')
             ->setParameter('position', $position);
@@ -169,14 +168,13 @@ class MenuRepository extends ServiceEntityRepository
             ->orWhere('u.login like :search')
             ->orWhere('met.textLink like :search and met.locale = :locale')
             ->setParameter('search', '%' . $search . '%')
-            ->setParameter('locale', $locale)
-        ;
+            ->setParameter('locale', $locale);
 
         $paginator = new Paginator($query->getQuery(), true);
-        $paginator->getQuery()
+        $paginator
+            ->getQuery()
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;
-
     }
 }

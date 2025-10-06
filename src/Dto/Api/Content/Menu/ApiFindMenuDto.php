@@ -19,7 +19,7 @@ class ApiFindMenuDto extends AppApiDto
         MenuConst::POSITION_HEADER,
         MenuConst::POSITION_RIGHT,
         MenuConst::POSITION_FOOTER,
-        MenuConst::POSITION_LEFT
+        MenuConst::POSITION_LEFT,
     ];
 
     /**
@@ -30,48 +30,51 @@ class ApiFindMenuDto extends AppApiDto
      * @param string $userToken
      */
     public function __construct(
-
         /**
          * Id du menu
          * @var int
          */
-        #[Assert\Type(type: 'integer', message: 'The id parameter must be a integer')]
-        private readonly int $id,
+        #[Assert\Type(type: 'integer', message: 'The id parameter must be a integer')] private readonly int $id,
 
         /**
          * Url de la page ou le menu est associé
          * @var string
          */
-        #[Assert\Type(type: 'string', message: 'The pageSlug parameter must be a string')]
-        #[Assert\NotNull(message: 'The pageSlug parameter cannot be empty')]
+        #[Assert\Type(type: 'string', message: 'The pageSlug parameter must be a string')] #[
+            Assert\NotNull(message: 'The pageSlug parameter cannot be empty'),
+        ]
         private readonly string $pageSlug,
 
         /**
          * Position du menu
          * @var int
          */
-        #[Assert\Type(type: 'integer', message: 'The position parameter must be a integer')]
-        #[Assert\Choice(choices: self::MENU_POSITIONS, message: 'Choose a position between 1 (top), 2 (right), 3 (bottom), 4 (left)')]
+        #[Assert\Type(type: 'integer', message: 'The position parameter must be a integer')] #[
+            Assert\Choice(
+                choices: self::MENU_POSITIONS,
+                message: 'Choose a position between 1 (top), 2 (right), 3 (bottom), 4 (left)',
+            ),
+        ]
         private readonly int $position,
 
         /**
          * Locale du menu
          * @var string
          */
-        #[Assert\Type(type: 'string', message: 'The locale parameter must be a string')]
-        #[Assert\Choice(choices: self::LOCALES, message: 'Choose a locale between en or es or fr')]
+        #[Assert\Type(type: 'string', message: 'The locale parameter must be a string')] #[
+            Assert\Choice(choices: self::LOCALES, message: 'Choose a locale between en or es or fr'),
+        ]
         private readonly string $locale,
 
         /**
          * Token
          * @var string
          */
-        #[Assert\Type(type: 'string', message: 'The user_token parameter must be a string')]
+        #[
+            Assert\Type(type: 'string', message: 'The user_token parameter must be a string'),
+        ]
         private readonly string $userToken,
-    )
-    {
-
-    }
+    ) {}
 
     /**
      * Id
@@ -117,6 +120,4 @@ class ApiFindMenuDto extends AppApiDto
     {
         return $this->userToken;
     }
-
-
 }

@@ -21,43 +21,40 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType extends AppFormType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('email', EmailType::class, [
                 'label' => $this->translator->trans('user.form_update.adresse_email.label', domain: 'user'),
                 'help' => $this->translator->trans('user.form_update.adresse_email.help', domain: 'user'),
-                'required' => true
+                'required' => true,
             ])
             ->add('login', TextType::class, [
                 'label' => $this->translator->trans('user.form_update.login.label', domain: 'user'),
                 'help' => $this->translator->trans('user.form_update.login.help', domain: 'user'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('user.form_update.login.placeholder', domain: 'user')
+                    'placeholder' => $this->translator->trans('user.form_update.login.placeholder', domain: 'user'),
                 ],
-                'required' => false
+                'required' => false,
             ])
             ->add('firstname', TextType::class, [
                 'label' => $this->translator->trans('user.form_update.firstname.label', domain: 'user'),
                 'help' => $this->translator->trans('user.form_update.firstname.help', domain: 'user'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('user.form_update.firstname.placeholder', domain: 'user')
+                    'placeholder' => $this->translator->trans('user.form_update.firstname.placeholder', domain: 'user'),
                 ],
-                'required' => false
-
+                'required' => false,
             ])
             ->add('lastname', TextType::class, [
                 'label' => $this->translator->trans('user.form_update.lastname.label', domain: 'user'),
                 'help' => $this->translator->trans('user.form_update.lastname.help', domain: 'user'),
                 'attr' => [
-                    'placeholder' => $this->translator->trans('user.form_update.lastname.placeholder', domain: 'user')
+                    'placeholder' => $this->translator->trans('user.form_update.lastname.placeholder', domain: 'user'),
                 ],
-                'required' => false
+                'required' => false,
             ]);
 
         if (!$options['is_super_adm']) {
-
             $roles = Role::getListRole();
             $rolesTrans = [];
             foreach ($roles as $key => $role) {
@@ -70,17 +67,18 @@ class UserType extends AppFormType
                 'help' => $this->translator->trans('user.form_update.role.help', domain: 'user'),
             ]);
 
-            $builder->get('roles')
-                ->addModelTransformer(new CallbackTransformer(
+            $builder->get('roles')->addModelTransformer(
+                new CallbackTransformer(
                     function ($rolesArray) {
                         // transform the array to a string
-                        return count($rolesArray)? $rolesArray[0]: null;
+                        return count($rolesArray) ? $rolesArray[0] : null;
                     },
                     function ($rolesString) {
                         // transform the string back to an array
                         return [$rolesString];
-                    }
-                ));
+                    },
+                ),
+            );
 
             $builder->add('disabled', CheckboxType::class, [
                 'label_attr' => ['class' => 'checkbox-switch'],
@@ -93,8 +91,8 @@ class UserType extends AppFormType
         $builder->add('save', SubmitType::class, [
             'label' => $this->translator->trans('user.form_update.submit', domain: 'user'),
             'attr' => [
-                'class' => 'btn-secondary'
-            ]
+                'class' => 'btn-secondary',
+            ],
         ]);
     }
 
@@ -102,7 +100,7 @@ class UserType extends AppFormType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'is_super_adm' => false
+            'is_super_adm' => false,
         ]);
     }
 }

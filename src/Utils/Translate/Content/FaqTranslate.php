@@ -41,8 +41,10 @@ class FaqTranslate extends AppTranslate
             'faq_question_disabled_message' => $this->translator->trans('faq.question.disabled.message', domain: 'faq'),
             'faq_category_enabled_title' => $this->translator->trans('faq.category.enabled.title', domain: 'faq'),
             'faq_category_enabled_message' => $this->translator->trans('faq.category.enabled.message', domain: 'faq'),
-            'faq_category_enabled_message_2' =>
-                $this->translator->trans('faq.category.enabled.message.2', domain: 'faq'),
+            'faq_category_enabled_message_2' => $this->translator->trans(
+                'faq.category.enabled.message.2',
+                domain: 'faq',
+            ),
             'faq_question_enabled_title' => $this->translator->trans('faq.question.enabled.title', domain: 'faq'),
             'faq_question_enabled_message' => $this->translator->trans('faq.question.enabled.message', domain: 'faq'),
             'faq_category_new_title' => $this->translator->trans('faq.category.new.title', domain: 'faq'),
@@ -59,15 +61,22 @@ class FaqTranslate extends AppTranslate
             'faq_question_new_help' => $this->translator->trans('faq.question.new.help', domain: 'faq'),
             'faq_question_new_btn_validate' => $this->translator->trans('faq.question.new.btn.validate', domain: 'faq'),
             'faq_question_new_btn_cancel' => $this->translator->trans('faq.question.new.btn.cancel', domain: 'faq'),
-            'faq_question_delete_titre_confirm' =>
-                $this->translator->trans('faq.question.delete.titre.confirm', domain: 'faq'),
-            'faq_question_delete_body_confirm' =>
-                $this->translator->trans('faq.question.delete.body.confirm', domain: 'faq'),
-            'faq_category_delete_titre_confirm' =>
-                $this->translator->trans('faq.category.delete.titre.confirm', domain: 'faq'),
-            'faq_category_delete_body_confirm' =>
-                $this->translator->trans('faq.category.delete.body.confirm', domain: 'faq'),
-
+            'faq_question_delete_titre_confirm' => $this->translator->trans(
+                'faq.question.delete.titre.confirm',
+                domain: 'faq',
+            ),
+            'faq_question_delete_body_confirm' => $this->translator->trans(
+                'faq.question.delete.body.confirm',
+                domain: 'faq',
+            ),
+            'faq_category_delete_titre_confirm' => $this->translator->trans(
+                'faq.category.delete.titre.confirm',
+                domain: 'faq',
+            ),
+            'faq_category_delete_body_confirm' => $this->translator->trans(
+                'faq.category.delete.body.confirm',
+                domain: 'faq',
+            ),
         ];
     }
 }

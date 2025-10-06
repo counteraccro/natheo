@@ -24,8 +24,10 @@ class ApiSitemapControllerTest extends AppApiTestCase
             $verif[] = $this->createPageAllDataDefault();
         }
 
-        $this->client->request('GET', $this->router->generate('api_sitemap_sitemap', ['api_version' => self::API_VERSION, 'locale' => 'fr']),
-            server: $this->getCustomHeaders()
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_sitemap_sitemap', ['api_version' => self::API_VERSION, 'locale' => 'fr']),
+            server: $this->getCustomHeaders(),
         );
         $response = $this->client->getResponse();
 
@@ -42,7 +44,13 @@ class ApiSitemapControllerTest extends AppApiTestCase
             foreach ($verif as $page) {
                 /** @var Page $page */
                 foreach ($page->getPageTranslations() as $pageTranslation) {
-                    $url = '/' . $pageTranslation->getLocale() . '/' . strtolower($pageService->getCategoryById($page->getCategory())) . '/' . $pageTranslation->getUrl();
+                    $url =
+                        '/' .
+                        $pageTranslation->getLocale() .
+                        '/' .
+                        strtolower($pageService->getCategoryById($page->getCategory())) .
+                        '/' .
+                        $pageTranslation->getUrl();
                     if (str_contains($item['loc'], $pageTranslation->getUrl()) === true) {
                         $this->assertEquals($url, $item['loc']);
                         $this->assertEquals('1.00', $item['priority']);

@@ -37,10 +37,9 @@ class ApiPageServiceTest extends AppWebTestCase
      */
     public function testGetPageForApi(): void
     {
-
         $page = $this->createPageAllDataDefault();
         $slug = $page->getPageTranslationByLocale('fr')->getUrl();
-        $dto = new ApiFindPageDto($slug, 'fr', false, false, true, [0], "");
+        $dto = new ApiFindPageDto($slug, 'fr', false, false, true, [0], '');
 
         $result = $this->apiPageService->getPageForApi($dto);
         $this->assertIsArray($result);
@@ -92,8 +91,7 @@ class ApiPageServiceTest extends AppWebTestCase
     {
         $page = $this->createPageAllDataDefault();
         $tag = $this->createTag(['disabled' => false]);
-        foreach($this->locales as $locale)
-        {
+        foreach ($this->locales as $locale) {
             $this->createTagTranslation($tag, ['locale' => $locale, 'label' => 'unit-tag-' . $locale]);
         }
         $page->addTag($tag);
@@ -101,7 +99,7 @@ class ApiPageServiceTest extends AppWebTestCase
         $this->em->persist($page);
         $this->em->flush();
 
-        $dto = new ApiFindPageTagDto('unit-tag-fr', 'fr', 1, 10, "");
+        $dto = new ApiFindPageTagDto('unit-tag-fr', 'fr', 1, 10, '');
         $result = $this->apiPageService->getListingPagesByTag($dto);
 
         $this->assertIsArray($result);
@@ -114,7 +112,7 @@ class ApiPageServiceTest extends AppWebTestCase
         $this->assertArrayHasKey('rows', $result);
         $this->assertEquals(1, $result['rows']);
 
-        $dto = new ApiFindPageTagDto('unit-tag-no-exist-fr', 'fr', 1, 10, "");
+        $dto = new ApiFindPageTagDto('unit-tag-no-exist-fr', 'fr', 1, 10, '');
         $result = $this->apiPageService->getListingPagesByTag($dto);
         $this->assertIsArray($result);
         $this->assertArrayHasKey('pages', $result);

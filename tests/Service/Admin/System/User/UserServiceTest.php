@@ -18,7 +18,6 @@ use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
 
 class UserServiceTest extends AppWebTestCase
 {
-
     /**
      * @var UserService
      */
@@ -117,7 +116,6 @@ class UserServiceTest extends AppWebTestCase
         $this->assertTrue($user->isAnonymous());
         $this->assertFalse($user->isFounder());
         $this->assertCount(0, $user->getOptionsUser()->toArray());
-
     }
 
     /**
@@ -139,9 +137,9 @@ class UserServiceTest extends AppWebTestCase
     public function testGetTabMailByListeUser(): void
     {
         $array = [
-            $user = $this->createUser(),
-            $user2 = $this->createUserFounder(),
-            $user3 = $this->createUserContributeur(),
+            ($user = $this->createUser()),
+            ($user2 = $this->createUserFounder()),
+            ($user3 = $this->createUserContributeur()),
         ];
 
         $result = $this->userService->getTabMailByListeUser($array);
@@ -194,6 +192,5 @@ class UserServiceTest extends AppWebTestCase
         $user = $this->createUser(['disabled' => true, 'anonymous' => true, 'password' => $password]);
         $result = $this->userService->getUserByEmailAndPassword($user->getEmail(), $password);
         $this->assertNull($result);
-
     }
 }

@@ -119,7 +119,10 @@ class PageControllerTest extends AppWebTestCase
         $user = $this->createUserContributeur();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('PUT', $this->router->generate('admin_page_switch_Landing_page', ['id' => $page1->getId()]));
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_page_switch_Landing_page', ['id' => $page1->getId()]),
+        );
 
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -172,7 +175,6 @@ class PageControllerTest extends AppWebTestCase
      */
     public function testLoadTabContent(): void
     {
-
         $this->checkNoAccess('admin_page_load_tab_content');
 
         $user = $this->createUserContributeur();
@@ -311,7 +313,11 @@ class PageControllerTest extends AppWebTestCase
 
         $this->client->loginUser($user, 'admin');
         $this->client->request('PUT', $this->router->generate('admin_page_auto_save'), content: json_encode($data));
-        $this->client->request('GET', $this->router->generate('admin_page_reload_page_history'), content: json_encode(['row_id' => 0, 'id' => null]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_page_reload_page_history'),
+            content: json_encode(['row_id' => 0, 'id' => null]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -383,9 +389,9 @@ class PageControllerTest extends AppWebTestCase
         $this->checkNoAccess('admin_page_new_content', methode: 'POST');
 
         $data = [
-            "type" => PageConst::CONTENT_TYPE_TEXT,
-            "type_id" => 0,
-            "renderBlock" => 1
+            'type' => PageConst::CONTENT_TYPE_TEXT,
+            'type_id' => 0,
+            'renderBlock' => 1,
         ];
 
         $user = $this->createUserContributeur();
@@ -398,7 +404,6 @@ class PageControllerTest extends AppWebTestCase
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
         $this->assertArrayHasKey('pageContent', $content);
-
     }
 
     /**
@@ -411,7 +416,10 @@ class PageControllerTest extends AppWebTestCase
         $user = $this->createUserContributeur();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_page_liste_content_by_id', ['type' => PageConst::CONTENT_TYPE_TEXT]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_page_liste_content_by_id', ['type' => PageConst::CONTENT_TYPE_TEXT]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -423,7 +431,10 @@ class PageControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('help', $content);
 
         $faq = $this->createFaqAllDataDefault();
-        $this->client->request('GET', $this->router->generate('admin_page_liste_content_by_id', ['type' => PageConst::CONTENT_TYPE_FAQ]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_page_liste_content_by_id', ['type' => PageConst::CONTENT_TYPE_FAQ]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -439,7 +450,6 @@ class PageControllerTest extends AppWebTestCase
      */
     public function testIsUniqueUrlPage(): void
     {
-
         $page = $this->createPageAllDataDefault();
 
         $this->checkNoAccess('admin_page_is_unique_url_page', methode: 'POST');
@@ -449,10 +459,14 @@ class PageControllerTest extends AppWebTestCase
 
         $data = [
             'url' => $page->getPageTranslationByLocale('fr')->getUrl(),
-            'id' => $page->getId()
+            'id' => $page->getId(),
         ];
 
-        $this->client->request('POST', $this->router->generate('admin_page_is_unique_url_page'), content: json_encode($data));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_page_is_unique_url_page'),
+            content: json_encode($data),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -463,10 +477,14 @@ class PageControllerTest extends AppWebTestCase
 
         $data = [
             'url' => 'toto-url',
-            'id' => $page->getId()
+            'id' => $page->getId(),
         ];
 
-        $this->client->request('POST', $this->router->generate('admin_page_is_unique_url_page'), content: json_encode($data));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_page_is_unique_url_page'),
+            content: json_encode($data),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -488,7 +506,13 @@ class PageControllerTest extends AppWebTestCase
 
         $this->client->loginUser($user, 'admin');
 
-        $this->client->request('GET', $this->router->generate('admin_page_info_render_block', ['type' => PageConst::CONTENT_TYPE_FAQ, 'typeId' => $faq->getId()]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_page_info_render_block', [
+                'type' => PageConst::CONTENT_TYPE_FAQ,
+                'typeId' => $faq->getId(),
+            ]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -497,7 +521,6 @@ class PageControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('type', $content);
         $this->assertArrayHasKey('info', $content);
         $this->assertStringContainsString($faq->getFaqTranslationByLocale('fr')->getTitle(), $content['info']);
-
     }
 
     /**
@@ -535,7 +558,10 @@ class PageControllerTest extends AppWebTestCase
         $user = $this->createUserContributeur();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_page_preview', ['id' => $page->getId(), 'locale' => 'fr']));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_page_preview', ['id' => $page->getId(), 'locale' => 'fr']),
+        );
         $this->assertResponseIsSuccessful();
     }
 
@@ -546,195 +572,192 @@ class PageControllerTest extends AppWebTestCase
      */
     private function getDataTest($idPage = null): array
     {
-
         $tag1 = $this->createTag();
         $tag2 = $this->createTag();
         $tag3 = $this->createTag();
         $menu = $this->createMenuAllDataDefault();
 
         return [
-            "id" => $idPage,
-            "render" => 1,
-            "status" => 1,
-            "pageMeta" => [
-                "id" => 1,
-                "page" => 1,
-                "name" => "description",
-                "pageMetaTranslations" => [
+            'id' => $idPage,
+            'render' => 1,
+            'status' => 1,
+            'pageMeta' => [
+                'id' => 1,
+                'page' => 1,
+                'name' => 'description',
+                'pageMetaTranslations' => [
                     [
-                        "id" => 1,
-                        "pageMeta" => 1,
-                        "locale" => "fr",
-                        "value" => "Page présentation"
+                        'id' => 1,
+                        'pageMeta' => 1,
+                        'locale' => 'fr',
+                        'value' => 'Page présentation',
                     ],
                     [
-                        "id" => 1,
-                        "pageMeta" => 1,
-                        "locale" => "es",
-                        "value" => "es-Page présentation"
+                        'id' => 1,
+                        'pageMeta' => 1,
+                        'locale' => 'es',
+                        'value' => 'es-Page présentation',
                     ],
                     [
-                        "id" => 1,
-                        "pageMeta" => 1,
-                        "locale" => "en",
-                        "value" => "en-Page présentation"
+                        'id' => 1,
+                        'pageMeta' => 1,
+                        'locale' => 'en',
+                        'value' => 'en-Page présentation',
                     ],
                 ],
             ],
-            "pageTranslations" => [
+            'pageTranslations' => [
                 [
-                    "id" => 1,
-                    "page" => 1,
-                    "locale" => "fr",
-                    "titre" => "Dernières pages",
-                    "url" => "pages"
+                    'id' => 1,
+                    'page' => 1,
+                    'locale' => 'fr',
+                    'titre' => 'Dernières pages',
+                    'url' => 'pages',
                 ],
                 [
-                    "id" => 2,
-                    "page" => 1,
-                    "locale" => "es",
-                    "titre" => "Últimas páginas",
-                    "url" => "paginas"
+                    'id' => 2,
+                    'page' => 1,
+                    'locale' => 'es',
+                    'titre' => 'Últimas páginas',
+                    'url' => 'paginas',
                 ],
                 [
-                    "id" => 3,
-                    "page" => 1,
-                    "locale" => "en",
-                    "titre" => "Last pages",
-                    "url" => "page"
-                ]
+                    'id' => 3,
+                    'page' => 1,
+                    'locale' => 'en',
+                    'titre' => 'Last pages',
+                    'url' => 'page',
+                ],
             ],
-            "pageContents" => [
+            'pageContents' => [
                 [
-                    "id" => 23,
-                    "page" => 1,
-                    "renderOrder" => 1,
-                    "type" => 1,
-                    "pageContentTranslations" => [
+                    'id' => 23,
+                    'page' => 1,
+                    'renderOrder' => 1,
+                    'type' => 1,
+                    'pageContentTranslations' => [
                         [
-                            "id" => 37,
-                            "pageContent" => 23,
-                            "locale" => "fr",
-                            "text" => "[fr] Contenu de votre page"
+                            'id' => 37,
+                            'pageContent' => 23,
+                            'locale' => 'fr',
+                            'text' => '[fr] Contenu de votre page',
                         ],
                         [
-                            "id" => 38,
-                            "pageContent" => 23,
-                            "locale" => "en",
-                            "text" => "[en] Contenu de votre page"
+                            'id' => 38,
+                            'pageContent' => 23,
+                            'locale' => 'en',
+                            'text' => '[en] Contenu de votre page',
                         ],
                         [
-                            "id" => 39,
-                            "pageContent" => 23,
-                            "locale" => "es",
-                            "text" => "[es] Contenu de votre page"
-                        ]
+                            'id' => 39,
+                            'pageContent' => 23,
+                            'locale' => 'es',
+                            'text' => '[es] Contenu de votre page',
+                        ],
                     ],
-                    "typeId" => null,
-                    "renderBlock" => 1
-                ]
+                    'typeId' => null,
+                    'renderBlock' => 1,
+                ],
             ],
-            "pageStatistiques" => [
+            'pageStatistiques' => [
                 [
-                    "id" => 1,
-                    "page" => 1,
-                    "key" => "PAGE_NB_VISITEUR",
-                    "value" => "100"
+                    'id' => 1,
+                    'page' => 1,
+                    'key' => 'PAGE_NB_VISITEUR',
+                    'value' => '100',
                 ],
                 [
-                    "id" => 2,
-                    "page" => 1,
-                    "key" => "PAGE_NB_READ",
-                    "value" => "32"
-                ]
+                    'id' => 2,
+                    'page' => 1,
+                    'key' => 'PAGE_NB_READ',
+                    'value' => '32',
+                ],
             ],
-            "disabled" => false,
-            "category" => 1,
-            "landingPage" => false,
-            "openComment" => true,
-            "nbComment" => 10,
-            "ruleComment" => 2,
+            'disabled' => false,
+            'category' => 1,
+            'landingPage' => false,
+            'openComment' => true,
+            'nbComment' => 10,
+            'ruleComment' => 2,
             'headerImg' => null,
-            "menus" => [
-                $menu->getId()
+            'menus' => [$menu->getId()],
+            'tags' => [
+                [
+                    'id' => $tag1->getId(),
+                    'color' => '#6F42C1',
+                    'disabled' => false,
+                    'tagTranslations' => [
+                        [
+                            'id' => 1,
+                            'tag' => 1,
+                            'locale' => 'fr',
+                            'label' => 'Natheo',
+                        ],
+                        [
+                            'id' => 2,
+                            'tag' => 1,
+                            'locale' => 'es',
+                            'label' => 'Natheo',
+                        ],
+                        [
+                            'id' => 3,
+                            'tag' => 1,
+                            'locale' => 'en',
+                            'label' => 'Natheo',
+                        ],
+                    ],
+                ],
+                [
+                    'id' => $tag2->getId(),
+                    'color' => '#23e515',
+                    'disabled' => false,
+                    'tagTranslations' => [
+                        [
+                            'id' => 22,
+                            'tag' => 8,
+                            'locale' => 'fr',
+                            'label' => 'Page',
+                        ],
+                        [
+                            'id' => 23,
+                            'tag' => 8,
+                            'locale' => 'es',
+                            'label' => 'Page (ES)',
+                        ],
+                        [
+                            'id' => 24,
+                            'tag' => 8,
+                            'locale' => 'en',
+                            'label' => 'Page (EN)',
+                        ],
+                    ],
+                ],
+                [
+                    'id' => $tag3->getId(),
+                    'color' => '#00478c',
+                    'disabled' => false,
+                    'tagTranslations' => [
+                        [
+                            'id' => 28,
+                            'tag' => 10,
+                            'locale' => 'fr',
+                            'label' => 'toto',
+                        ],
+                        [
+                            'id' => 29,
+                            'tag' => 10,
+                            'locale' => 'en',
+                            'label' => 'toto (en)',
+                        ],
+                        [
+                            'id' => 30,
+                            'tag' => 10,
+                            'locale' => 'es',
+                            'label' => 'toto (es)',
+                        ],
+                    ],
+                ],
             ],
-            "tags" => [
-                [
-                    "id" => $tag1->getId(),
-                    "color" => "#6F42C1",
-                    "disabled" => false,
-                    "tagTranslations" => [
-                        [
-                            "id" => 1,
-                            "tag" => 1,
-                            "locale" => "fr",
-                            "label" => "Natheo"
-                        ],
-                        [
-                            "id" => 2,
-                            "tag" => 1,
-                            "locale" => "es",
-                            "label" => "Natheo"
-                        ],
-                        [
-                            "id" => 3,
-                            "tag" => 1,
-                            "locale" => "en",
-                            "label" => "Natheo"
-                        ]
-                    ]
-                ],
-                [
-                    "id" => $tag2->getId(),
-                    "color" => "#23e515",
-                    "disabled" => false,
-                    "tagTranslations" => [
-                        [
-                            "id" => 22,
-                            "tag" => 8,
-                            "locale" => "fr",
-                            "label" => "Page"
-                        ],
-                        [
-                            "id" => 23,
-                            "tag" => 8,
-                            "locale" => "es",
-                            "label" => "Page (ES)"
-                        ],
-                        [
-                            "id" => 24,
-                            "tag" => 8,
-                            "locale" => "en",
-                            "label" => "Page (EN)"
-                        ]
-                    ]
-                ],
-                [
-                    "id" => $tag3->getId(),
-                    "color" => "#00478c",
-                    "disabled" => false,
-                    "tagTranslations" => [
-                        [
-                            "id" => 28,
-                            "tag" => 10,
-                            "locale" => "fr",
-                            "label" => "toto"
-                        ],
-                        [
-                            "id" => 29,
-                            "tag" => 10,
-                            "locale" => "en",
-                            "label" => "toto (en)"
-                        ],
-                        [
-                            "id" => 30,
-                            "tag" => 10,
-                            "locale" => "es",
-                            "label" => "toto (es)"
-                        ]
-                    ]
-                ]
-            ]
         ];
     }
 }

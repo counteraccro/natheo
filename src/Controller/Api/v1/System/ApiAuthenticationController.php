@@ -20,8 +20,14 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/api/{api_version}/authentication', name: 'api_authentication_', requirements: ['_version' => '%app.api_version%'])]
-#[IsGranted("ROLE_READ_API")]
+#[
+    Route(
+        '/api/{api_version}/authentication',
+        name: 'api_authentication_',
+        requirements: ['_version' => '%app.api_version%'],
+    ),
+]
+#[IsGranted('ROLE_READ_API')]
 class ApiAuthenticationController extends AppApiController
 {
     /**
@@ -35,7 +41,7 @@ class ApiAuthenticationController extends AppApiController
     public function auth(): JsonResponse
     {
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, [
-            'roles' => $this->getUser()->getRoles()
+            'roles' => $this->getUser()->getRoles(),
         ]);
     }
 
@@ -49,23 +55,20 @@ class ApiAuthenticationController extends AppApiController
      */
     #[Route('/user', name: 'auth_user', methods: ['POST'], format: 'json')]
     public function authUser(
-        #[MapRequestPayload(
-            resolver: ApiAuthUserResolver::class
-        )] ApiAuthUserDto $apiAuthUserDto,
-    ): JsonResponse
-    {
-
+        #[MapRequestPayload(resolver: ApiAuthUserResolver::class)] ApiAuthUserDto $apiAuthUserDto,
+    ): JsonResponse {
         $translator = $this->getTranslator();
         $userService = $this->getUserService();
         $userDataService = $this->getUserDataService();
 
         $user = $userService->getUserByEmailAndPassword($apiAuthUserDto->getUsername(), $apiAuthUserDto->getPassword());
         if ($user === null || (count($user->getRoles()) === 1 && $user->getRoles()[0] === 'ROLE_USER')) {
-            throw new HttpException(Response::HTTP_UNAUTHORIZED, $translator->trans('api_errors.user.not.found', domain: 'api_errors'));
+            throw new HttpException(
+                Response::HTTP_UNAUTHORIZED,
+                $translator->trans('api_errors.user.not.found', domain: 'api_errors'),
+            );
         }
         $token = $userDataService->generateUserToken($user);
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['token' => $token]);
     }
-
-
 }

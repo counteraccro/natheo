@@ -30,15 +30,19 @@ class SecurityService extends AppService
 {
     private OptionSystemService $optionSystemService;
 
-    public function __construct(#[AutowireLocator([
-        'entityManager' => EntityManagerInterface::class,
-        'containerBag' => ContainerBagInterface::class,
-        'translator' => TranslatorInterface::class,
-        'security' => Security::class,
-        'requestStack' => RequestStack::class,
-        'OptionSystemService' => OptionSystemService::class
-    ])] private readonly ContainerInterface $handlers)
-    {
+    public function __construct(
+        #[
+            AutowireLocator([
+                'entityManager' => EntityManagerInterface::class,
+                'containerBag' => ContainerBagInterface::class,
+                'translator' => TranslatorInterface::class,
+                'security' => Security::class,
+                'requestStack' => RequestStack::class,
+                'OptionSystemService' => OptionSystemService::class,
+            ]),
+        ]
+        private readonly ContainerInterface $handlers,
+    ) {
         $this->optionSystemService = $this->handlers->get('OptionSystemService');
         parent::__construct($handlers);
     }
@@ -64,8 +68,12 @@ class SecurityService extends AppService
         $time = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_RESET_PASSWORD_TIME);
         $now = new \DateTime();
 
-        if ($userData->getUpdateAt()->add(new \DateInterval('PT' . $time . 'M'))->getTimestamp() <
-            $now->getTimestamp()) {
+        if (
+            $userData
+                ->getUpdateAt()
+                ->add(new \DateInterval('PT' . $time . 'M'))
+                ->getTimestamp() < $now->getTimestamp()
+        ) {
             return null;
         }
 

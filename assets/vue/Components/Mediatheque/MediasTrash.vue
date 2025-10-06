@@ -12,33 +12,44 @@ export default {
   },
   emits: ['revert-trash', 'delete'],
   data() {
-    return {}
+    return {};
   },
   computed: {},
   methods: {
-
     /**
      * Permet d'ouvrir un média
      * @param path
      */
     openMedia(path) {
-      window.open(path, "_blank");
-    }
-  }
-}
+      window.open(path, '_blank');
+    },
+  },
+};
 </script>
 
 <template>
-
   <div id="block-media-grid" class="mt-3 row">
     <div v-if="this.medias.length > 0" class="media col-auto mb-4" v-for="media in this.medias">
-      <img v-if="media.type === 'media'" height="200" width="200" class="rounded-3"
-          :src="media.thumbnail" style="cursor:pointer;"
-          :alt="media.name" @click="this.openMedia(media.webPath)"/>
+      <img
+        v-if="media.type === 'media'"
+        height="200"
+        width="200"
+        class="rounded-3"
+        :src="media.thumbnail"
+        style="cursor: pointer"
+        :alt="media.name"
+        @click="this.openMedia(media.webPath)"
+      />
       <div v-else class="folder" alt="media.name"></div>
       <div class="info-media rounded-bottom-3">
         <div class="btn-group">
-          <button type="button" class="btn btn-link btn-sm dropdown-toggle pt-2" style="color: #FFFFFF; margin-top: -5px;" data-bs-toggle="dropdown" aria-expanded="false">
+          <button
+            type="button"
+            class="btn btn-link btn-sm dropdown-toggle pt-2"
+            style="color: #ffffff; margin-top: -5px"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
             <i class="bi bi-justify"></i>
           </button>
           <ul class="dropdown-menu">
@@ -49,28 +60,27 @@ export default {
               </a>
             </li>
             <li>
-              <hr class="dropdown-divider">
+              <hr class="dropdown-divider" />
             </li>
-            <li><a class="dropdown-item text-danger" @click="$emit('delete', media.type, media.id, media.name, false)">
-              <i class="bi bi-trash-fill"></i> {{ this.translate.link_delete }}
-            </a>
+            <li>
+              <a class="dropdown-item text-danger" @click="$emit('delete', media.type, media.id, media.name, false)">
+                <i class="bi bi-trash-fill"></i> {{ this.translate.link_delete }}
+              </a>
             </li>
           </ul>
         </div>
-        <span class="d-inline-block text-truncate" style="max-width: 140px;vertical-align: middle;"> {{ media.name }} </span>
-
+        <span class="d-inline-block text-truncate" style="max-width: 140px; vertical-align: middle">
+          {{ media.name }}
+        </span>
       </div>
     </div>
     <div v-else class="text-center mt-3">
-      <i class="bi bi-folder-x"></i> <i>
-      {{ this.translate.no_media }}
-    </i>
+      <i class="bi bi-folder-x"></i>
+      <i>
+        {{ this.translate.no_media }}
+      </i>
     </div>
   </div>
-
-
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

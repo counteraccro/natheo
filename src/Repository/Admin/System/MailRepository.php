@@ -50,11 +50,11 @@ class MailRepository extends ServiceEntityRepository
      */
     public function getAllPaginate(int $page, int $limit): Paginator
     {
-        $query = $this->createQueryBuilder('m')
-            ->orderBy('m.id', 'ASC');
+        $query = $this->createQueryBuilder('m')->orderBy('m.id', 'ASC');
 
         $paginator = new Paginator($query->getQuery(), true);
-        $paginator->getQuery()
+        $paginator
+            ->getQuery()
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;
@@ -67,7 +67,7 @@ class MailRepository extends ServiceEntityRepository
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function findByKey(string $key) : Mail
+    public function findByKey(string $key): Mail
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.key = :key')

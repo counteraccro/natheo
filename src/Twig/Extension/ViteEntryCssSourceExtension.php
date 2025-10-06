@@ -41,11 +41,13 @@ class ViteEntryCssSourceExtension
      * @throws NotFoundExceptionInterface
      */
     public function __construct(
-        #[AutowireLocator([
-            'container' => ContainerBagInterface::class,
-        ])]
-        private readonly ContainerInterface $handlers)
-    {
+        #[
+            AutowireLocator([
+                'container' => ContainerBagInterface::class,
+            ]),
+        ]
+        private readonly ContainerInterface $handlers,
+    ) {
         $this->container = $this->handlers->get('container');
         $this->publicDir = $this->container->get('kernel.project_dir') . DIRECTORY_SEPARATOR . 'public';
         $this->buildDir = 'build';
@@ -122,13 +124,22 @@ class ViteEntryCssSourceExtension
     private function getManifest(): array
     {
         if ($this->manifest === null) {
-            $manifestPath = $this->publicDir . DIRECTORY_SEPARATOR . $this->buildDir . DIRECTORY_SEPARATOR . '.vite' . DIRECTORY_SEPARATOR . 'manifest.json';
+            $manifestPath =
+                $this->publicDir .
+                DIRECTORY_SEPARATOR .
+                $this->buildDir .
+                DIRECTORY_SEPARATOR .
+                '.vite' .
+                DIRECTORY_SEPARATOR .
+                'manifest.json';
 
             if (!file_exists($manifestPath)) {
-                throw new \RuntimeException(sprintf(
-                    'Le fichier manifest Vite n\'existe pas : %s. Avez-vous lancé "yarn build" ?',
-                    $manifestPath
-                ));
+                throw new \RuntimeException(
+                    sprintf(
+                        'Le fichier manifest Vite n\'existe pas : %s. Avez-vous lancé "yarn build" ?',
+                        $manifestPath,
+                    ),
+                );
             }
 
             $manifestContent = file_get_contents($manifestPath);

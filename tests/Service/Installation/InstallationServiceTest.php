@@ -35,9 +35,9 @@ class InstallationServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetValueByKeyInEnvFile() :void
+    public function testGetValueByKeyInEnvFile(): void
     {
-        $result  = $this->installationService->getValueByKeyInEnvFile(EnvFile::KEY_APP_ENV);
+        $result = $this->installationService->getValueByKeyInEnvFile(EnvFile::KEY_APP_ENV);
         $this->assertNotEmpty($result);
         $this->assertIsString($result);
         $this->assertStringContainsString(EnvFile::KEY_APP_ENV, $result);
@@ -49,11 +49,11 @@ class InstallationServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testUpdateValueByKeyInEnvFile() :void
+    public function testUpdateValueByKeyInEnvFile(): void
     {
         $this->installationService->updateValueByKeyInEnvFile('APP_DEBUG', 'APP_DEBUG=3');
 
-        $result  = $this->installationService->getValueByKeyInEnvFile('APP_DEBUG');
+        $result = $this->installationService->getValueByKeyInEnvFile('APP_DEBUG');
         $this->assertNotEmpty($result);
         $this->assertIsString($result);
         $this->assertEquals('APP_DEBUG=3', $result);
@@ -65,9 +65,9 @@ class InstallationServiceTest extends AppWebTestCase
      * Test méthode generateSecret()
      * @return void
      */
-    public function testGenerateSecret() : void
+    public function testGenerateSecret(): void
     {
-        $result  = $this->installationService->generateSecret();
+        $result = $this->installationService->generateSecret();
         $this->assertNotEmpty($result);
         $this->assertIsString($result);
         $this->assertStringContainsString(EnvFile::KEY_APP_SECRET, $result);
@@ -77,7 +77,7 @@ class InstallationServiceTest extends AppWebTestCase
      * Test méthode formatDatabaseUrlForEnvFile()
      * @return void
      */
-    public function testFormatDatabaseUrlForEnvFile() : void
+    public function testFormatDatabaseUrlForEnvFile(): void
     {
         $data = [
             'type' => 'mysql',
@@ -93,13 +93,47 @@ class InstallationServiceTest extends AppWebTestCase
         $result = $this->installationService->formatDatabaseUrlForEnvFile($data, 'toto');
         $this->assertNotEmpty($result);
         $this->assertIsString($result);
-        $this->assertEquals('DATABASE_URL="' . $data['type'] . '://' . $data['login'] . ':' . $data['password'] . '@' . $data['ip'] . ':' . $data['port'] . '"', $result);
+        $this->assertEquals(
+            'DATABASE_URL="' .
+                $data['type'] .
+                '://' .
+                $data['login'] .
+                ':' .
+                $data['password'] .
+                '@' .
+                $data['ip'] .
+                ':' .
+                $data['port'] .
+                '"',
+            $result,
+        );
 
-        $result = $this->installationService->formatDatabaseUrlForEnvFile($data, InstallationConst::OPTION_DATABASE_URL_CREATE_DATABASE);
+        $result = $this->installationService->formatDatabaseUrlForEnvFile(
+            $data,
+            InstallationConst::OPTION_DATABASE_URL_CREATE_DATABASE,
+        );
         $this->assertNotEmpty($result);
         $this->assertIsString($result);
-        $this->assertEquals('DATABASE_URL="' . $data['type'] . '://' . $data['login'] . ':' . $data['password'] . '@' . $data['ip'] . ':' . $data['port'] . '/' . $data['bdd_name'] . '?serverVersion=' . $data['version'] . '&charset=' . $data['charset'] . '"', $result);
-
+        $this->assertEquals(
+            'DATABASE_URL="' .
+                $data['type'] .
+                '://' .
+                $data['login'] .
+                ':' .
+                $data['password'] .
+                '@' .
+                $data['ip'] .
+                ':' .
+                $data['port'] .
+                '/' .
+                $data['bdd_name'] .
+                '?serverVersion=' .
+                $data['version'] .
+                '&charset=' .
+                $data['charset'] .
+                '"',
+            $result,
+        );
     }
 
     /**
@@ -108,9 +142,9 @@ class InstallationServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetDatabaseUrl() : void
+    public function testGetDatabaseUrl(): void
     {
-        $result  = $this->installationService->getDatabaseUrl();
+        $result = $this->installationService->getDatabaseUrl();
         $this->assertNotEmpty($result);
         $this->assertIsArray($result);
         $this->assertArrayHasKey('type', $result);
@@ -129,9 +163,9 @@ class InstallationServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testCheckSchema() : void
+    public function testCheckSchema(): void
     {
-        $result  = $this->installationService->checkSchema();
+        $result = $this->installationService->checkSchema();
         $this->assertTrue($result);
     }
 
@@ -141,13 +175,13 @@ class InstallationServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testCheckDataExiste() : void
+    public function testCheckDataExiste(): void
     {
-        $result  = $this->installationService->checkDataExiste(User::class);
+        $result = $this->installationService->checkDataExiste(User::class);
         $this->assertFalse($result);
 
         $this->createUser();
-        $result  = $this->installationService->checkDataExiste(User::class);
+        $result = $this->installationService->checkDataExiste(User::class);
         $this->assertTrue($result);
     }
 
@@ -157,7 +191,7 @@ class InstallationServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testCreateNotificationFondateur() : void
+    public function testCreateNotificationFondateur(): void
     {
         $user = $this->createUser();
         $this->installationService->createNotificationFondateur();
@@ -172,7 +206,7 @@ class InstallationServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testCreateUser() : void
+    public function testCreateUser(): void
     {
         $data = [
             'email' => self::getFaker()->email(),

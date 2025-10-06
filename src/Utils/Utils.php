@@ -16,7 +16,7 @@ class Utils
      */
     public static function getSizeName(int $octet): string
     {
-        $unite = array(' octet', ' Ko', ' Mo', ' Go');
+        $unite = [' octet', ' Ko', ' Mo', ' Go'];
 
         if ($octet < 1000) {
             return $octet . $unite[0];

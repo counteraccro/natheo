@@ -75,13 +75,15 @@ class ApiTokenService extends AppAdminService
                 $translator->trans('api_token.grid.id', domain: 'api_token') => $apiToken->getId() . ' ' . $isDisabled,
                 $translator->trans('api_token.grid.name', domain: 'api_token') => $apiToken->getName(),
                 $translator->trans('api_token.grid.comment', domain: 'api_token') => $apiToken->getComment(),
-                $translator->trans('api_token.grid.token', domain: 'api_token') => "******",
-                $translator->trans('api_token.grid.roles', domain: 'api_token') => implode(", ", $apiToken->getRoles()),
-                $translator->trans('api_token.grid.created_at', domain: 'api_token') => $apiToken->getCreatedAt()->
-                format('d/m/y H:i'),
-                $translator->trans('api_token.grid.update_at', domain: 'api_token') => $apiToken->getUpdateAt()->
-                format('d/m/y H:i'),
-                GridService::KEY_ACTION => $actions
+                $translator->trans('api_token.grid.token', domain: 'api_token') => '******',
+                $translator->trans('api_token.grid.roles', domain: 'api_token') => implode(', ', $apiToken->getRoles()),
+                $translator->trans('api_token.grid.created_at', domain: 'api_token') => $apiToken
+                    ->getCreatedAt()
+                    ->format('d/m/y H:i'),
+                $translator->trans('api_token.grid.update_at', domain: 'api_token') => $apiToken
+                    ->getUpdateAt()
+                    ->format('d/m/y H:i'),
+                GridService::KEY_ACTION => $actions,
             ];
         }
 
@@ -89,10 +91,9 @@ class ApiTokenService extends AppAdminService
             GridService::KEY_NB => $nb,
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
-            GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate)
+            GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate),
         ];
         return $gridService->addAllDataRequiredGrid($tabReturn);
-
     }
 
     /**
@@ -109,32 +110,32 @@ class ApiTokenService extends AppAdminService
 
         $label = $apiToken->getName();
 
-        $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
+        $actionDisabled = [
+            'label' => '<i class="bi bi-eye-slash-fill"></i>',
             'type' => 'put',
             'url' => $router->generate('admin_api_token_update_disabled', ['id' => $apiToken->getId()]),
             'ajax' => true,
             'confirm' => true,
-            'msgConfirm' => $translator->trans('api_token.confirm.disabled.msg', ['label' => $label], 'api_token')];
+            'msgConfirm' => $translator->trans('api_token.confirm.disabled.msg', ['label' => $label], 'api_token'),
+        ];
         if ($apiToken->isDisabled()) {
             $actionDisabled = [
                 'label' => '<i class="bi bi-eye-fill"></i>',
                 'type' => 'put',
                 'url' => $router->generate('admin_api_token_update_disabled', ['id' => $apiToken->getId()]),
-                'ajax' => true
+                'ajax' => true,
             ];
         }
 
         $actionDelete = '';
         if ($optionSystemService->canDelete()) {
-
             $actionDelete = [
                 'label' => '<i class="bi bi-trash"></i>',
                 'type' => 'delete',
                 'url' => $router->generate('admin_api_token_delete', ['id' => $apiToken->getId()]),
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $translator->trans('api_token.confirm.delete.msg', ['label' =>
-                    $label], 'api_token')
+                'msgConfirm' => $translator->trans('api_token.confirm.delete.msg', ['label' => $label], 'api_token'),
             ];
         }
 
@@ -145,11 +146,13 @@ class ApiTokenService extends AppAdminService
         }
 
         // Bouton edit
-        $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
+        $actions[] = [
+            'label' => '<i class="bi bi-pencil-fill"></i>',
             'type' => 'post',
             'id' => $apiToken->getId(),
             'url' => $router->generate('admin_api_token_update', ['id' => $apiToken->getId()]),
-            'ajax' => false];
+            'ajax' => false,
+        ];
 
         return $actions;
     }
@@ -165,7 +168,6 @@ class ApiTokenService extends AppAdminService
             $token .= ByteString::fromRandom(ApiTokenConst::API_TOKEN_LENGTH)->toString() . '.';
         }
         return substr($token, 0, -1);
-
     }
 
     /**
@@ -194,8 +196,7 @@ class ApiTokenService extends AppAdminService
     public function createUpdateApiToken(array $data): int
     {
         $apiToken = new ApiToken();
-        if($data['id'] !== null || $data['id'] > 0)
-        {
+        if ($data['id'] !== null || $data['id'] > 0) {
             $apiToken = $this->findOneById(ApiToken::class, $data['id']);
         }
         $apiToken->setDisabled(false);
@@ -218,8 +219,7 @@ class ApiTokenService extends AppAdminService
     {
         /** @var ApiToken $apiToken */
         $apiToken = $this->findBy(ApiToken::class, ['disabled' => false], ['id' => 'DESC'], 1);
-        if(!empty($apiToken))
-        {
+        if (!empty($apiToken)) {
             return $apiToken[0]->getToken();
         }
         return null;

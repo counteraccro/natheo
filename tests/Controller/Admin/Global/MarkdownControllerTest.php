@@ -16,7 +16,8 @@ class MarkdownControllerTest extends AppWebTestCase
      * Test méthode loadDatas
      * @return void
      */
-    public function testLoadDatas() :void {
+    public function testLoadDatas(): void
+    {
         $this->checkNoAccess('admin_markdown_load-datas');
 
         $userContributeur = $this->createUserContributeur();
@@ -37,14 +38,19 @@ class MarkdownControllerTest extends AppWebTestCase
      * Test méthode setPreviewSession()
      * @return void
      */
-    public function testSetPreviewSession() :void {
+    public function testSetPreviewSession(): void
+    {
         $this->checkNoAccess('admin_markdown_init_preview', methode: 'POST');
 
         $userContributeur = $this->createUserContributeur();
         $this->client->loginUser($userContributeur, 'admin');
 
         $data = ['value' => 'Je suis un **text**'];
-        $this->client->request('POST', $this->router->generate('admin_markdown_init_preview'), content: json_encode($data));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_markdown_init_preview'),
+            content: json_encode($data),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -59,14 +65,19 @@ class MarkdownControllerTest extends AppWebTestCase
      * Test méthode preview()
      * @return void
      */
-    public function testPreview() :void {
+    public function testPreview(): void
+    {
         $this->checkNoAccess('admin_markdown_preview');
 
         $userContributeur = $this->createUserContributeur();
         $this->client->loginUser($userContributeur, 'admin');
 
         $data = ['value' => 'Je suis un **text**'];
-        $this->client->request('POST', $this->router->generate('admin_markdown_init_preview'), content: json_encode($data));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_markdown_init_preview'),
+            content: json_encode($data),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -78,7 +89,9 @@ class MarkdownControllerTest extends AppWebTestCase
 
         $this->client->request('GET', $this->router->generate('admin_markdown_preview'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains("legend", $this->translator->trans('preview.preview', domain: 'editor_markdown'));
+        $this->assertSelectorTextContains(
+            'legend',
+            $this->translator->trans('preview.preview', domain: 'editor_markdown'),
+        );
     }
-
 }

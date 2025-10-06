@@ -18,7 +18,6 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterface
 {
-
     /**
      * Permet de mapper ApiAuthUserDto avec Request
      * @param Request $request
@@ -29,7 +28,6 @@ class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterfa
      */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-
         // Test pour éviter que ce résolver soit appeler pour autre chose que ApiAuthUserDto
         $argumentType = $argument->getType();
         if (!is_a($argumentType, ApiFindPageDto::class, true)) {
@@ -39,14 +37,11 @@ class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterfa
         $tabParameters = ApiParametersFindPageRef::PARAMS_REF;
 
         foreach ($tabParameters as $parameter => $value) {
-
             if (in_array($parameter, ['show_menus', 'show_tags', 'show_statistiques'])) {
                 $value = $request->get($parameter, true);
-            }
-            else {
+            } else {
                 $value = $request->get($parameter, '');
             }
-
 
             if ($parameter === ApiParametersFindPageRef::PARAM_MENU_POSITION && !empty($value)) {
                 $tab = explode(',', $value);
@@ -64,7 +59,11 @@ class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterfa
                 }
             }
 
-            if ( !is_bool($value) && empty($value) && isset(ApiParametersFindPageRef::PARAMS_DEFAULT_VALUE[$parameter])) {
+            if (
+                !is_bool($value) &&
+                empty($value) &&
+                isset(ApiParametersFindPageRef::PARAMS_DEFAULT_VALUE[$parameter])
+            ) {
                 $value = ApiParametersFindPageRef::PARAMS_DEFAULT_VALUE[$parameter];
             }
 
@@ -80,7 +79,7 @@ class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterfa
             filter_var($tabParameters[ApiParametersFindPageRef::PARAM_SHOW_TAGS], FILTER_VALIDATE_BOOLEAN),
             filter_var($tabParameters[ApiParametersFindPageRef::PARAM_SHOW_STATISTIQUES], FILTER_VALIDATE_BOOLEAN),
             $tabParameters[ApiParametersFindPageRef::PARAM_MENU_POSITION],
-            $tabParameters[ApiParametersFindPageRef::PARAM_USER_TOKEN]
+            $tabParameters[ApiParametersFindPageRef::PARAM_USER_TOKEN],
         );
 
         $this->validateDto($dto);

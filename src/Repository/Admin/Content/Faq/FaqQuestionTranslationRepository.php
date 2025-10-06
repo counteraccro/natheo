@@ -20,5 +20,4 @@ class FaqQuestionTranslationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, FaqQuestionTranslation::class);
     }
-
 }

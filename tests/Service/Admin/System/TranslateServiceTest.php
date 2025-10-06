@@ -58,7 +58,7 @@ class TranslateServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetTranslationFile() :void
+    public function testGetTranslationFile(): void
     {
         $data = [
             'unit-test.key.1' => self::getFaker()->text(),
@@ -88,7 +88,7 @@ class TranslateServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testUpdateTranslateFile() :void
+    public function testUpdateTranslateFile(): void
     {
         $data = [
             'unit-test.key.1' => self::getFaker()->text(),
@@ -102,7 +102,9 @@ class TranslateServiceTest extends AppWebTestCase
         $tmp = explode(DIRECTORY_SEPARATOR, $path);
         $fileName = $tmp[array_key_last($tmp)];
 
-        $this->translateService->updateTranslateFile($fileName, [['key' => 'unit-test.key.1', 'value' => 'mise à jour']]);
+        $this->translateService->updateTranslateFile($fileName, [
+            ['key' => 'unit-test.key.1', 'value' => 'mise à jour'],
+        ]);
         $result = $this->translateService->getTranslationFile($fileName);
         $this->assertCount(5, $result);
         $keys = array_keys($data);

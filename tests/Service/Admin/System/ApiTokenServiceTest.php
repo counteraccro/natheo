@@ -74,7 +74,8 @@ class ApiTokenServiceTest extends AppWebTestCase
      * test méthode generateToken()
      * @return void
      */
-    public function testGenerateToken() :void {
+    public function testGenerateToken(): void
+    {
         $string = $this->apiTokenService->generateToken();
         $this->assertNotEmpty($string);
         $this->assertIsString($string);
@@ -86,7 +87,7 @@ class ApiTokenServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetRolesApi() : void
+    public function testGetRolesApi(): void
     {
         $result = $this->apiTokenService->getRolesApi();
         $this->assertIsArray($result);
@@ -101,14 +102,14 @@ class ApiTokenServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testCreateUpdateApiToken() : void
+    public function testCreateUpdateApiToken(): void
     {
         $data = [
             'id' => null,
             'name' => 'test',
             'roles' => [ApiTokenConst::API_TOKEN_ROLE_READ],
             'comment' => 'test comment',
-            'token' => 'un-token'
+            'token' => 'un-token',
         ];
         $id = $this->apiTokenService->createUpdateApiToken($data);
         $this->assertIsInt($id);
@@ -123,7 +124,7 @@ class ApiTokenServiceTest extends AppWebTestCase
             'name' => 'test',
             'roles' => [ApiTokenConst::API_TOKEN_ROLE_READ],
             'comment' => 'test comment',
-            'token' => 'un-token-edit'
+            'token' => 'un-token-edit',
         ];
 
         $id = $this->apiTokenService->createUpdateApiToken($data);
@@ -139,7 +140,7 @@ class ApiTokenServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetTokenForPreview() : void
+    public function testGetTokenForPreview(): void
     {
         $result = $this->apiTokenService->getTokenForPreview();
         $this->assertNull($result);

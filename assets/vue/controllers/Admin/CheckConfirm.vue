@@ -4,13 +4,12 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
-import {emitter} from "../../../utils/useEvent";
-import Modal from "../../Components/Global/Modal.vue";
-
+import { emitter } from '../../../utils/useEvent';
+import Modal from '../../Components/Global/Modal.vue';
 
 export default {
   name: 'CheckConfirm',
-  components: {Modal},
+  components: { Modal },
   props: {
     option: String,
     translate: Object,
@@ -24,13 +23,11 @@ export default {
       modalTab: {
         confirmModal: false,
       },
-    }
+    };
   },
   mounted() {
-
     document.addEventListener('click', this.onClick);
-    document.addEventListener("input", (evt) => {
-
+    document.addEventListener('input', (evt) => {
       let tabClass = evt.target.className.split(' ');
 
       // Si on détecte la class excluante, on ne fait rien
@@ -45,8 +42,7 @@ export default {
   },
   beforeDestroy() {
     document.removeEventListener('click', this.onClick);
-    document.removeEventListener("input", (evt) => {
-    });
+    document.removeEventListener('input', (evt) => {});
   },
   computed: {},
   methods: {
@@ -65,7 +61,7 @@ export default {
 
     /** Ferme la modale **/
     closeModal(id) {
-      this.updateModal(id, false)
+      this.updateModal(id, false);
     },
 
     /**
@@ -74,9 +70,8 @@ export default {
      * @returns {boolean}
      */
     onClick(ev) {
-
       let target = ev.target;
-      let parent = target.parentElement
+      let parent = target.parentElement;
 
       let tabClass = target.className.split(' ');
 
@@ -94,7 +89,7 @@ export default {
         }
 
         if (this.isChange) {
-          this.updateModal('confirmModal', true)
+          this.updateModal('confirmModal', true);
           ev.preventDefault();
           ev.stopImmediatePropagation();
         }
@@ -107,21 +102,20 @@ export default {
     redirect() {
       this.isChange = false;
       document.location.href = this.tmpUrl;
-    }
-
-  }
-}
+    },
+  },
+};
 </script>
 
 <template>
   <modal
-      :id="'confirmModal'"
-      :show="this.modalTab.confirmModal"
-      @close-modal="this.closeModal"
-      :option-modal-backdrop="'static'"
-      :option-show-close-btn="false"
+    :id="'confirmModal'"
+    :show="this.modalTab.confirmModal"
+    @close-modal="this.closeModal"
+    :option-modal-backdrop="'static'"
+    :option-show-close-btn="false"
   >
-    <template #title><i class="bi bi-exclamation-triangle"></i>  {{ this.translate.titre }}</template>
+    <template #title><i class="bi bi-exclamation-triangle"></i> {{ this.translate.titre }}</template>
     <template #body>
       {{ this.translate.corps }}
     </template>

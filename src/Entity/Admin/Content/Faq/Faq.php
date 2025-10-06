@@ -162,8 +162,7 @@ class Faq
      */
     public function getSortedFaqCategories(Order $sort = Order::Ascending): Collection
     {
-        $criteria = Criteria::create()
-            ->orderBy(array("renderOrder" => $sort));
+        $criteria = Criteria::create()->orderBy(['renderOrder' => $sort]);
 
         return $this->faqCategories->matching($criteria);
     }
@@ -227,9 +226,11 @@ class Faq
      */
     public function getFaqTranslationByLocale(string $locale): FaqTranslation
     {
-        return $this->getFaqTranslations()->filter(function (FaqTranslation $faqTranslation) use ($locale) {
-            return $faqTranslation->getLocale() === $locale;
-        })->first();
+        return $this->getFaqTranslations()
+            ->filter(function (FaqTranslation $faqTranslation) use ($locale) {
+                return $faqTranslation->getLocale() === $locale;
+            })
+            ->first();
     }
 
     /**
@@ -239,9 +240,11 @@ class Faq
      */
     public function getFaqStatistiqueByKey(string $key): FaqStatistique
     {
-        return $this->getFaqStatistiques()->filter(function (FaqStatistique $faqStatistique) use ($key) {
-            return $faqStatistique->getKey() === $key;
-        })->first();
+        return $this->getFaqStatistiques()
+            ->filter(function (FaqStatistique $faqStatistique) use ($key) {
+                return $faqStatistique->getKey() === $key;
+            })
+            ->first();
     }
 
     /**
@@ -260,19 +263,17 @@ class Faq
     public function getAllMaxRender(): array
     {
         $return = [
-                'max_render_order_category' => $this->getMaxRenderOrderCategory(),
-                'max_render_order_questions' => []
+            'max_render_order_category' => $this->getMaxRenderOrderCategory(),
+            'max_render_order_questions' => [],
         ];
 
-        foreach($this->getFaqCategories() as $category)
-        {
+        foreach ($this->getFaqCategories() as $category) {
             $return['max_render_order_questions'][] = [
                 'id_cat' => $category->getId(),
-                'max_render' => $category->getMaxRenderOrderQuestion()
+                'max_render' => $category->getMaxRenderOrderQuestion(),
             ];
         }
 
         return $return;
-
     }
 }

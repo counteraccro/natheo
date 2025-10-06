@@ -27,8 +27,14 @@ class FaqQuestion
     #[ORM\Column(name: 'render_order')]
     private ?int $renderOrder = null;
 
-    #[ORM\OneToMany(mappedBy: 'FaqQuestion', targetEntity: FaqQuestionTranslation::class,
-        cascade: ['persist'], orphanRemoval: true)]
+    #[
+        ORM\OneToMany(
+            mappedBy: 'FaqQuestion',
+            targetEntity: FaqQuestionTranslation::class,
+            cascade: ['persist'],
+            orphanRemoval: true,
+        ),
+    ]
     private Collection $faqQuestionTranslations;
 
     public function __construct()
@@ -114,9 +120,10 @@ class FaqQuestion
      */
     public function getFaqQuestionTranslationByLocale(string $locale): FaqQuestionTranslation
     {
-        return $this->faqQuestionTranslations->filter(
-            function (FaqQuestionTranslation $faqQuestionTranslation) use ($locale) {
+        return $this->faqQuestionTranslations
+            ->filter(function (FaqQuestionTranslation $faqQuestionTranslation) use ($locale) {
                 return $faqQuestionTranslation->getLocale() === $locale;
-            })->first();
+            })
+            ->first();
     }
 }

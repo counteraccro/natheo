@@ -18,7 +18,7 @@ class GridTranslate extends AppTranslate
         return [
             'genericGrid' => $this->getTranslateGenericGrid(),
             'gridPaginate' => $this->getTranslateGridPaginate(),
-            'grid' => $this->getTranslateGrid()
+            'grid' => $this->getTranslateGrid(),
         ];
     }
 
@@ -57,7 +57,7 @@ class GridTranslate extends AppTranslate
         return [
             'page' => $this->translator->trans('grid.page', [], domain: 'grid'),
             'on' => $this->translator->trans('grid.on', [], domain: 'grid'),
-            'row' => $this->translator->trans('grid.row', [], domain: 'grid')
+            'row' => $this->translator->trans('grid.row', [], domain: 'grid'),
         ];
     }
 
@@ -68,7 +68,7 @@ class GridTranslate extends AppTranslate
     private function getTranslateGrid(): array
     {
         return [
-            'noresult' => $this->translator->trans('grid.no.result', [], domain: 'grid')
+            'noresult' => $this->translator->trans('grid.no.result', [], domain: 'grid'),
         ];
     }
 }

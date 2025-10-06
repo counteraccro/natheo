@@ -6,24 +6,17 @@
  */
 export default {
   name: 'Header',
-  props: {
-  },
+  props: {},
   emits: [],
   data() {
     return {
       value: 'Value',
-    }
+    };
   },
-  mounted() {
+  mounted() {},
 
-  },
-
-  methods: {
-
-  }
-}
+  methods: {},
+};
 </script>
 
-<template>
-  Module header
-</template>
+<template>Module header</template>

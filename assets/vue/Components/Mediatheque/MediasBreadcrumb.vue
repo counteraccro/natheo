@@ -1,6 +1,5 @@
 <script>
-
-import {isEmpty} from "lodash-es";
+import { isEmpty } from 'lodash-es';
 
 /**
  * @author Gourdon Aymeric
@@ -14,29 +13,35 @@ export default {
   },
   emits: ['load-folder'],
   data() {
-    return {}
+    return {};
   },
   computed: {},
-  methods: {isEmpty}
-
-}
+  methods: { isEmpty },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
 
 <template>
-
-  <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" id="mediaBreadcrumb">
+  <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb" id="mediaBreadcrumb">
     <ol class="breadcrumb mb-0">
       <li class="breadcrumb-item text-white" aria-current="page">
         <i class="bi bi-house-fill"></i>&nbsp;
         <span v-if="isEmpty(this.paths)">Home</span>
         <a v-else class="text-white no-control" style="cursor: pointer" @click="$emit('load-folder', 0)">Home</a>
       </li>
-      <li v-for="item in this.paths" class="breadcrumb-item text-white" :class="this.paths.indexOf(item) === Object.keys(this.paths).length-1 ? 'active' : ''">
-        <a v-if="this.paths.indexOf(item) !== Object.keys(this.paths).length-1" class="text-white no-control" style="cursor: pointer" @click="$emit('load-folder', item.id)">{{ item.name }}</a>
+      <li
+        v-for="item in this.paths"
+        class="breadcrumb-item text-white"
+        :class="this.paths.indexOf(item) === Object.keys(this.paths).length - 1 ? 'active' : ''"
+      >
+        <a
+          v-if="this.paths.indexOf(item) !== Object.keys(this.paths).length - 1"
+          class="text-white no-control"
+          style="cursor: pointer"
+          @click="$emit('load-folder', item.id)"
+          >{{ item.name }}</a
+        >
         <span v-else>{{ item.name }}</span>
       </li>
     </ol>

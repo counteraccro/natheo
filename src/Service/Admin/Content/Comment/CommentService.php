@@ -66,9 +66,18 @@ class CommentService extends AppAdminService
                 $translator->trans('comment.grid.id', domain: 'comment') => $element->getId() . $isDisabled,
                 $translator->trans('comment.grid.comment', domain: 'comment') => u($comment)->truncate(100, '…'),
                 $translator->trans('comment.grid.author', domain: 'comment') => $element->getAuthor(),
-                $translator->trans('comment.grid.page', domain: 'comment') => '<a href=' . $router->generate('admin_page_update', ['id' => $element->getPage()->getId()]) . '>' . $titre . '</a>',
-                $translator->trans('comment.grid.status', domain: 'comment') => $this->getStatusFormatedByCode($element->getStatus()),
-                $translator->trans('comment.grid.created_at', domain: 'comment') => $element->getCreatedAt()->format('d/m/y H:i'),
+                $translator->trans('comment.grid.page', domain: 'comment') =>
+                    '<a href=' .
+                    $router->generate('admin_page_update', ['id' => $element->getPage()->getId()]) .
+                    '>' .
+                    $titre .
+                    '</a>',
+                $translator->trans('comment.grid.status', domain: 'comment') => $this->getStatusFormatedByCode(
+                    $element->getStatus(),
+                ),
+                $translator->trans('comment.grid.created_at', domain: 'comment') => $element
+                    ->getCreatedAt()
+                    ->format('d/m/y H:i'),
                 GridService::KEY_ACTION => $action,
             ];
         }
@@ -77,10 +86,9 @@ class CommentService extends AppAdminService
             GridService::KEY_NB => $nb,
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
-            GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate)
+            GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate),
         ];
         return $gridService->addAllDataRequiredGrid($tabReturn);
-
     }
 
     /**
@@ -113,10 +121,12 @@ class CommentService extends AppAdminService
         $actions = [];
 
         // Bouton edit
-        $actions[] = ['label' => '<i class="bi bi-chat-dots-fill"></i>',
+        $actions[] = [
+            'label' => '<i class="bi bi-chat-dots-fill"></i>',
             'id' => $comment->getId(),
             'url' => $router->generate('admin_comment_see', ['id' => $comment->getId()]),
-            'ajax' => false];
+            'ajax' => false,
+        ];
 
         return $actions;
     }
@@ -189,13 +199,12 @@ class CommentService extends AppAdminService
         $locale = $this->getLocales()['current'];
 
         $data = [];
-        foreach($result as $comment) {
-
+        foreach ($result as $comment) {
             /** @var Comment $comment */
 
             $pageTitle = $comment->getPage()->getPageTranslationByLocale($locale)->getTitre();
             $moderator = null;
-            if($comment->getUserModeration() !== null) {
+            if ($comment->getUserModeration() !== null) {
                 $moderator = $comment->getUserModeration()->getEmail();
             }
 
@@ -231,7 +240,6 @@ class CommentService extends AppAdminService
     {
         $repository = $this->getRepository(Comment::class);
         return $repository->getNbByType($status);
-
     }
 
     /**
@@ -247,10 +255,10 @@ class CommentService extends AppAdminService
         $repository = $this->getRepository(Comment::class);
         $comments = $repository->findBy(['id' => $data['selected']]);
 
-        foreach($comments as $comment) {
+        foreach ($comments as $comment) {
             /** @var Comment $comment */
             $comment->setStatus($data['status']);
-            if($comment->getStatus() !== CommentConst::MODERATE) {
+            if ($comment->getStatus() !== CommentConst::MODERATE) {
                 $comment->setModerationComment(null);
                 $comment->setUserModeration(null);
             } else {

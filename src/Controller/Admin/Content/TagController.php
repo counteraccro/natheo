@@ -42,14 +42,14 @@ class TagController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'tag',
             Breadcrumb::BREADCRUMB => [
-                'tag.index.page_title_h1' => '#'
-            ]
+                'tag.index.page_title_h1' => '#',
+            ],
         ];
 
         return $this->render('admin/content/tag/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT)
+            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
         ]);
     }
 
@@ -62,11 +62,7 @@ class TagController extends AppAdminController
      * @return JsonResponse
      */
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
-    public function loadGridData(
-        TagService $tagService,
-        Request    $request,
-        int        $page = 1, int $limit = 20
-    ): JsonResponse
+    public function loadGridData(TagService $tagService, Request $request, int $page = 1, int $limit = 20): JsonResponse
     {
         $search = $request->query->get('search');
         $grid = $tagService->getAllFormatToGrid($page, $limit, $search);
@@ -86,11 +82,10 @@ class TagController extends AppAdminController
     #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', methods: ['PUT'])]
     public function updateDisabled(
         #[MapEntity(id: 'id')] Tag $tag,
-        TagService                 $tagService,
-        TranslatorInterface        $translator,
-        Request                    $request
-    ): JsonResponse
-    {
+        TagService $tagService,
+        TranslatorInterface $translator,
+        Request $request,
+    ): JsonResponse {
         $tag->setDisabled(!$tag->isDisabled());
         $tagService->save($tag);
 
@@ -117,11 +112,10 @@ class TagController extends AppAdminController
     #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(
         #[MapEntity(id: 'id')] Tag $tag,
-        TagService                 $tagService,
-        TranslatorInterface        $translator,
-        Request                    $request
-    ): JsonResponse
-    {
+        TagService $tagService,
+        TranslatorInterface $translator,
+        Request $request,
+    ): JsonResponse {
         $label = $tag->getTagTranslationByLocale($request->getLocale())->getLabel();
         $msg = $translator->trans('tag.remove.success', ['label' => $label], domain: 'tag');
         $tagService->remove($tag);
@@ -142,12 +136,11 @@ class TagController extends AppAdminController
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
     public function add(
-        TagService                 $tagService,
-        TagTranslate               $tagTranslate,
-        Request                    $request,
-        #[MapEntity(id: 'id')] ?Tag $tag = null
-    ): Response
-    {
+        TagService $tagService,
+        TagTranslate $tagTranslate,
+        Request $request,
+        #[MapEntity(id: 'id')] ?Tag $tag = null,
+    ): Response {
         $breadcrumbTitle = 'tag.update.page_title_h1';
         if ($tag === null) {
             $breadcrumbTitle = 'tag.add.page_title_h1';
@@ -157,14 +150,13 @@ class TagController extends AppAdminController
             Breadcrumb::DOMAIN => 'tag',
             Breadcrumb::BREADCRUMB => [
                 'tag.index.page_title' => 'admin_tag_index',
-                $breadcrumbTitle => '#'
-            ]
+                $breadcrumbTitle => '#',
+            ],
         ];
 
         $translate = $tagTranslate->getTranslate();
         $locales = $tagService->getLocales();
         $locales['current'] = $request->getLocale();
-
 
         if ($tag === null) {
             $tag = new Tag();
@@ -172,7 +164,6 @@ class TagController extends AppAdminController
                 $tagTranslation = new TagTranslation();
                 $tagTranslation->setLocale($locale)->setTag($tag);
                 $tag->addTagTranslation($tagTranslation);
-
             }
         }
         $tag = $tagService->convertEntityToArray($tag, ['createdAt', 'updateAt', 'pages']);
@@ -181,7 +172,7 @@ class TagController extends AppAdminController
             'breadcrumb' => $breadcrumb,
             'translate' => $translate,
             'locales' => $locales,
-            'tag' => $tag
+            'tag' => $tag,
         ]);
     }
 
@@ -195,11 +186,7 @@ class TagController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/save/', name: 'save', methods: ['POST'])]
-    public function save(
-        TagService          $tagService,
-        Request             $request,
-        TranslatorInterface $translator
-    ): JsonResponse
+    public function save(TagService $tagService, Request $request, TranslatorInterface $translator): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -215,9 +202,10 @@ class TagController extends AppAdminController
         $tag->setUpdateAt(new \DateTime());
         $tagService->save($tag);
 
-        $msg = $translator->trans('tag.save.' . $status,
+        $msg = $translator->trans(
+            'tag.save.' . $status,
             ['label' => $tag->getTagTranslationByLocale($request->getLocale())->getLabel()],
-            domain: 'tag'
+            domain: 'tag',
         );
         $tab = $tagService->getResponseAjax($msg);
 
@@ -238,7 +226,7 @@ class TagController extends AppAdminController
     public function statistique(#[MapEntity(id: 'id')] ?Tag $tag = null): Response
     {
         return $this->render('admin/content/tag/date_update.html.twig', [
-            'tag' => $tag
+            'tag' => $tag,
         ]);
     }
 
@@ -272,10 +260,9 @@ class TagController extends AppAdminController
     public function getTagByName(
         TagService $tagService,
         TranslatorInterface $translator,
-        string              $search = '',
-        string              $locale = ''): Response
-    {
-
+        string $search = '',
+        string $locale = '',
+    ): Response {
         $tag = $tagService->newTagByNameAndLocale($locale, $search);
 
         $msg = '';

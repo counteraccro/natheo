@@ -26,7 +26,10 @@ class SqlManagerControllerTest extends AppWebTestCase
         $this->client->loginUser($userSuperAdm, 'admin');
         $this->client->request('GET', $this->router->generate('admin_sql_manager_index'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('sql_manager.index.page_title_h1', domain: 'sql_manager'));
+        $this->assertSelectorTextContains(
+            'h1',
+            $this->translator->trans('sql_manager.index.page_title_h1', domain: 'sql_manager'),
+        );
     }
 
     /**
@@ -43,7 +46,10 @@ class SqlManagerControllerTest extends AppWebTestCase
 
         $userSuperAdm = $this->createUserSuperAdmin();
         $this->client->loginUser($userSuperAdm, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_sql_manager_load_grid_data', ['page' => 1, 'limit' => 5]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_sql_manager_load_grid_data', ['page' => 1, 'limit' => 5]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -53,7 +59,14 @@ class SqlManagerControllerTest extends AppWebTestCase
         $this->assertEquals(10, $content['nb']);
         $this->assertCount(5, $content['data']);
 
-        $this->client->request('GET', $this->router->generate('admin_sql_manager_load_grid_data', ['page' => 1, 'limit' => 5, 'search' => $sqlManager->getName()]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_sql_manager_load_grid_data', [
+                'page' => 1,
+                'limit' => 5,
+                'search' => $sqlManager->getName(),
+            ]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -76,7 +89,10 @@ class SqlManagerControllerTest extends AppWebTestCase
 
         $userSuperAdm = $this->createUserSuperAdmin();
         $this->client->loginUser($userSuperAdm, 'admin');
-        $this->client->request('PUT', $this->router->generate('admin_sql_manager_disabled', ['id' => $sqlManager->getId()]));
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_sql_manager_disabled', ['id' => $sqlManager->getId()]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -102,7 +118,10 @@ class SqlManagerControllerTest extends AppWebTestCase
 
         $userSuperAdm = $this->createUserSuperAdmin();
         $this->client->loginUser($userSuperAdm, 'admin');
-        $this->client->request('DELETE', $this->router->generate('admin_sql_manager_delete', ['id' => $sqlManager->getId()]));
+        $this->client->request(
+            'DELETE',
+            $this->router->generate('admin_sql_manager_delete', ['id' => $sqlManager->getId()]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -131,18 +150,36 @@ class SqlManagerControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
         $this->client->request('GET', $this->router->generate('admin_sql_manager_add'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('sql_manager.add.page_title_h1', domain: 'sql_manager'));
+        $this->assertSelectorTextContains(
+            'h1',
+            $this->translator->trans('sql_manager.add.page_title_h1', domain: 'sql_manager'),
+        );
 
-        $this->client->request('GET', $this->router->generate('admin_sql_manager_update', ['id' => $sqlManager->getId()]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_sql_manager_update', ['id' => $sqlManager->getId()]),
+        );
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('sql_manager.update.page_title_h1', domain: 'sql_manager'));
+        $this->assertSelectorTextContains(
+            'h1',
+            $this->translator->trans('sql_manager.update.page_title_h1', domain: 'sql_manager'),
+        );
 
-        $this->client->request('GET', $this->router->generate('admin_sql_manager_execute', ['id' => $sqlManager->getId(), 'isExecute' => true]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_sql_manager_execute', ['id' => $sqlManager->getId(), 'isExecute' => true]),
+        );
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('sql_manager.execute.page_title_h1', domain: 'sql_manager'));
+        $this->assertSelectorTextContains(
+            'h1',
+            $this->translator->trans('sql_manager.execute.page_title_h1', domain: 'sql_manager'),
+        );
 
         $sqlManager = $this->createSqlManager(customData: ['disabled' => true]);
-        $this->client->request('GET', $this->router->generate('admin_sql_manager_execute', ['id' => $sqlManager->getId(), 'isExecute' => true]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_sql_manager_execute', ['id' => $sqlManager->getId(), 'isExecute' => true]),
+        );
         $this->assertResponseRedirects();
     }
 
@@ -172,7 +209,10 @@ class SqlManagerControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('updateAt', $content['sqlManager']);
 
         $sqlManager = $this->createSqlManager();
-        $this->client->request('GET', $this->router->generate('admin_sql_manager_load_data', ['id' => $sqlManager->getId()]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_sql_manager_load_data', ['id' => $sqlManager->getId()]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -225,7 +265,11 @@ class SqlManagerControllerTest extends AppWebTestCase
         $userSuperAdm = $this->createUserSuperAdmin();
         $this->client->loginUser($userSuperAdm, 'admin');
         $data = ['query' => 'SELECT id, name from sql_manager'];
-        $this->client->request('POST', $this->router->generate('admin_sql_manager_execute_sql'), content: json_encode($data));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_sql_manager_execute_sql'),
+            content: json_encode($data),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -233,24 +277,27 @@ class SqlManagerControllerTest extends AppWebTestCase
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
         $this->assertArrayHasKey('data', $content);
-        $this->assertArrayHasKey("result", $content['data']);
-        $this->assertArrayHasKey("id", $content['data']['result'][0]);
-        $this->assertArrayHasKey("name", $content['data']['result'][0]);
-        $this->assertArrayHasKey("header", $content['data']);
-        $this->assertArrayHasKey("error", $content['data']);
+        $this->assertArrayHasKey('result', $content['data']);
+        $this->assertArrayHasKey('id', $content['data']['result'][0]);
+        $this->assertArrayHasKey('name', $content['data']['result'][0]);
+        $this->assertArrayHasKey('header', $content['data']);
+        $this->assertArrayHasKey('error', $content['data']);
         $this->assertEmpty($content['data']['error']);
 
         $data = ['query' => 'SELECT toto from sql_manager'];
-        $this->client->request('POST', $this->router->generate('admin_sql_manager_execute_sql'), content: json_encode($data));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_sql_manager_execute_sql'),
+            content: json_encode($data),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
 
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
-        $this->assertArrayHasKey("error", $content['data']);
+        $this->assertArrayHasKey('error', $content['data']);
         $this->assertNotEmpty($content['data']['error']);
-
     }
 
     /**
@@ -260,10 +307,10 @@ class SqlManagerControllerTest extends AppWebTestCase
     public function testSave(): void
     {
         $data = [
-            "id" => null,
-            "name" => 'test',
-            "query" => 'SELECT * from test',
-            "disabled" => false,
+            'id' => null,
+            'name' => 'test',
+            'query' => 'SELECT * from test',
+            'disabled' => false,
         ];
 
         $this->checkNoAccess('admin_sql_manager_save', methode: 'POST');
@@ -285,10 +332,10 @@ class SqlManagerControllerTest extends AppWebTestCase
         $this->assertEquals('SELECT * from test', $verif->getQuery());
 
         $data = [
-            "id" => $verif->getId(),
-            "name" => 'test-edit',
-            "query" => 'SELECT * from test',
-            "disabled" => false,
+            'id' => $verif->getId(),
+            'name' => 'test-edit',
+            'query' => 'SELECT * from test',
+            'disabled' => false,
         ];
 
         $this->checkNoAccess('admin_sql_manager_save', methode: 'POST');
@@ -311,10 +358,10 @@ class SqlManagerControllerTest extends AppWebTestCase
         $this->assertEquals('test-edit', $verif2->getName());
 
         $data = [
-            "id" => null,
-            "name" => 'test',
-            "query" => 'DELETE from test where id=1',
-            "disabled" => false,
+            'id' => null,
+            'name' => 'test',
+            'query' => 'DELETE from test where id=1',
+            'disabled' => false,
         ];
 
         $this->checkNoAccess('admin_sql_manager_save', methode: 'POST');
@@ -328,20 +375,24 @@ class SqlManagerControllerTest extends AppWebTestCase
 
         $content = json_decode($response->getContent(), true);
         $this->assertFalse($content['success']);
-
     }
 
     /**
      * Test méthode saveGenericQuery()
      * @return void
      */
-    public function testSaveGenericQuery(): void {
+    public function testSaveGenericQuery(): void
+    {
         $this->checkNoAccess('admin_sql_manager_save_generic_query', methode: 'POST');
 
         $userSuperAdm = $this->createUserSuperAdmin();
         $this->client->loginUser($userSuperAdm, 'admin');
         $data = ['query' => 'SELECT * from test'];
-        $this->client->request('POST', $this->router->generate('admin_sql_manager_save_generic_query'), content: json_encode($data));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_sql_manager_save_generic_query'),
+            content: json_encode($data),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());

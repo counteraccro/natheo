@@ -13,7 +13,6 @@ use App\Utils\System\Options\OptionSystemKey;
 
 class ApiMenuFormater
 {
-
     /**
      * @var array
      */
@@ -23,12 +22,7 @@ class ApiMenuFormater
      * @param array $menu
      * @param string $locale
      */
-    public function __construct(
-        private readonly array  $menu,
-        private readonly string $locale,
-    )
-    {
-    }
+    public function __construct(private readonly array $menu, private readonly string $locale) {}
 
     /**
      * Converti un menu en array pour API
@@ -64,7 +58,7 @@ class ApiMenuFormater
             if ($element->getPage() !== null) {
                 $url = '';
                 $slug = $element->getPage()->getPageTranslationByLocale($this->locale)->getUrl();
-                $category =  $element->getPage()->getCategory();
+                $category = $element->getPage()->getCategory();
             } else {
                 $url = $elementTranslation->getExternalLink();
                 $slug = '';
@@ -99,11 +93,11 @@ class ApiMenuFormater
     private function getStringPosition(int $position): string
     {
         return match ($position) {
-            MenuConst::POSITION_HEADER => "HEADER",
-            MenuConst::POSITION_RIGHT => "RIGHT",
-            MenuConst::POSITION_FOOTER => "FOOTER",
-            MenuConst::POSITION_LEFT => "LEFT",
-            default => "NONE",
+            MenuConst::POSITION_HEADER => 'HEADER',
+            MenuConst::POSITION_RIGHT => 'RIGHT',
+            MenuConst::POSITION_FOOTER => 'FOOTER',
+            MenuConst::POSITION_LEFT => 'LEFT',
+            default => 'NONE',
         };
     }
 

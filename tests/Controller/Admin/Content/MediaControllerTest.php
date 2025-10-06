@@ -27,7 +27,6 @@ class MediaControllerTest extends AppWebTestCase
      */
     private Filesystem $fileSystem;
 
-
     public function setUp(): void
     {
         parent::setUp();
@@ -64,7 +63,14 @@ class MediaControllerTest extends AppWebTestCase
         $media = $this->createMedia($folder, customData: ['trash' => false]);
         $media2 = $this->createMedia($folder, customData: ['trash' => false]);
 
-        $this->client->request('GET', $this->router->generate('admin_media_load_medias', ['folder' => $folder->getId(), 'order' => 'desc', 'filter' => 'name']));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_media_load_medias', [
+                'folder' => $folder->getId(),
+                'order' => 'desc',
+                'filter' => 'name',
+            ]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -127,7 +133,10 @@ class MediaControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('path', $content['folder']);
         $this->assertEquals($folder->getPath(), $content['folder']['path']);
 
-        $this->client->request('GET', $this->router->generate('admin_media_load_folder', ['id' => $folder->getId(), 'action' => 'see']));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_media_load_folder', ['id' => $folder->getId(), 'action' => 'see']),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -153,10 +162,16 @@ class MediaControllerTest extends AppWebTestCase
         $this->mediaService->createFolder($folder);
         $subFolder = $this->createMediaFolder($folder);
         $this->mediaService->createFolder($subFolder);
-        $media = $this->createMedia($subFolder, customData: ['name' => 'road.jpg', 'path' => $subFolder->getPath() . DIRECTORY_SEPARATOR . $subFolder->getName()]);
+        $media = $this->createMedia(
+            $subFolder,
+            customData: [
+                'name' => 'road.jpg',
+                'path' => $subFolder->getPath() . DIRECTORY_SEPARATOR . $subFolder->getName(),
+            ],
+        );
         $this->mediaService->moveMediaFixture('road.jpg', $media);
 
-        $data = ['name' => "unitTest", 'currentFolder' => 0, 'editFolder' => 0];
+        $data = ['name' => 'unitTest', 'currentFolder' => 0, 'editFolder' => 0];
         $this->client->request('POST', $this->router->generate('admin_media_save_folder'), content: json_encode($data));
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -169,10 +184,11 @@ class MediaControllerTest extends AppWebTestCase
         /** @var MediaFolder $verif */
         $verif = $this->mediaService->findOneBy(MediaFolder::class, 'name', 'unitTest');
         $this->assertNotNull($verif);
-        $this->assertTrue($this->fileSystem->exists($this->mediaService->getRootPathMedia() . $verif->getPath() . $verif->getName()));
+        $this->assertTrue(
+            $this->fileSystem->exists($this->mediaService->getRootPathMedia() . $verif->getPath() . $verif->getName()),
+        );
 
-
-        $data = ['name' => "editUnitTest", 'currentFolder' => 0, 'editFolder' => $folder->getId()];
+        $data = ['name' => 'editUnitTest', 'currentFolder' => 0, 'editFolder' => $folder->getId()];
         $this->client->request('POST', $this->router->generate('admin_media_save_folder'), content: json_encode($data));
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -186,10 +202,11 @@ class MediaControllerTest extends AppWebTestCase
         /** @var MediaFolder $verif */
         $verif = $this->mediaService->findOneById(MediaFolder::class, $folder->getId());
         $this->assertNotNull($verif);
-        $this->assertTrue($this->fileSystem->exists($this->mediaService->getRootPathMedia() . $verif->getPath() . $verif->getName()));
+        $this->assertTrue(
+            $this->fileSystem->exists($this->mediaService->getRootPathMedia() . $verif->getPath() . $verif->getName()),
+        );
 
-
-        $data = ['name' => "subEditUnitTest", 'currentFolder' => $folder->getId(), 'editFolder' => $subFolder->getId()];
+        $data = ['name' => 'subEditUnitTest', 'currentFolder' => $folder->getId(), 'editFolder' => $subFolder->getId()];
         $this->client->request('POST', $this->router->generate('admin_media_save_folder'), content: json_encode($data));
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -204,9 +221,18 @@ class MediaControllerTest extends AppWebTestCase
         $verif2 = $this->mediaService->findOneById(MediaFolder::class, $subFolder->getId());
         $this->assertNotNull($verif);
         $this->assertEquals($verif->getPath() . $verif->getName(), $verif2->getPath());
-        $this->assertTrue($this->fileSystem->exists($this->mediaService->getRootPathMedia() . $verif->getPath() . DIRECTORY_SEPARATOR . $verif->getName()));
+        $this->assertTrue(
+            $this->fileSystem->exists(
+                $this->mediaService->getRootPathMedia() . $verif->getPath() . DIRECTORY_SEPARATOR . $verif->getName(),
+            ),
+        );
 
-        $path = $this->mediaService->getRootPathMedia() . $verif->getPath() . $verif->getName() . DIRECTORY_SEPARATOR . $verif2->getName();
+        $path =
+            $this->mediaService->getRootPathMedia() .
+            $verif->getPath() .
+            $verif->getName() .
+            DIRECTORY_SEPARATOR .
+            $verif2->getName();
         $media = $verif2->getMedias()->first();
         $this->assertNotNull($media);
         $this->assertEquals($this->mediaService->getRootPathMedia() . $media->getPath(), $path);
@@ -228,10 +254,16 @@ class MediaControllerTest extends AppWebTestCase
 
         $folder = $this->createMediaFolder();
         $this->mediaService->createFolder($folder);
-        $media = $this->createMedia($folder, customData: ['name' => 'road.jpg', 'path' => $folder->getPath() . DIRECTORY_SEPARATOR . $folder->getName()]);
+        $media = $this->createMedia(
+            $folder,
+            customData: ['name' => 'road.jpg', 'path' => $folder->getPath() . DIRECTORY_SEPARATOR . $folder->getName()],
+        );
         $this->mediaService->moveMediaFixture('road.jpg', $media);
 
-        $this->client->request('GET', $this->router->generate('admin_media_load_info', ['id' => $folder->getId(), 'type' => 'folder']));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_media_load_info', ['id' => $folder->getId(), 'type' => 'folder']),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -247,7 +279,10 @@ class MediaControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('Créer le', $content['data']);
         $this->assertArrayHasKey('Dernière modification le', $content['data']);
 
-        $this->client->request('GET', $this->router->generate('admin_media_load_info', ['id' => $media->getId(), 'type' => 'media']));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_media_load_info', ['id' => $media->getId(), 'type' => 'media']),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -285,7 +320,10 @@ class MediaControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
 
         $media = $this->createMedia();
-        $this->client->request('GET', $this->router->generate('admin_media_load_media_edit', ['id' => $media->getId()]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_media_load_media_edit', ['id' => $media->getId()]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -308,13 +346,15 @@ class MediaControllerTest extends AppWebTestCase
      */
     public function testSaveMedia(): void
     {
-
         $this->checkNoAccess('admin_media_save_media_edit', methode: 'POST');
         $user = $this->createUserContributeur();
         $this->client->loginUser($user, 'admin');
 
         $media = $this->createMedia();
-        $this->client->request('GET', $this->router->generate('admin_media_load_media_edit', ['id' => $media->getId()]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_media_load_media_edit', ['id' => $media->getId()]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -323,7 +363,11 @@ class MediaControllerTest extends AppWebTestCase
         $content['media']['name'] = 'title-edit';
         $content['media']['description'] = 'description-edit';
 
-        $this->client->request('POST', $this->router->generate('admin_media_save_media_edit'), content: json_encode($content));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_media_save_media_edit'),
+            content: json_encode($content),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -357,7 +401,10 @@ class MediaControllerTest extends AppWebTestCase
         $user = $this->createUserContributeur();
         $this->client->loginUser($user, 'admin');
 
-        $this->client->request('GET', $this->router->generate('admin_media_liste_move', ['id' => $media->getId(), 'type' => 'media']));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_media_liste_move', ['id' => $media->getId(), 'type' => 'media']),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -382,7 +429,10 @@ class MediaControllerTest extends AppWebTestCase
         }
         $this->assertTrue($check);
 
-        $this->client->request('GET', $this->router->generate('admin_media_liste_move', ['id' => $folder2->getId(), 'type' => 'folder']));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_media_liste_move', ['id' => $folder2->getId(), 'type' => 'folder']),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -434,7 +484,13 @@ class MediaControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('success', $content);
         $this->assertIsBool($content['success']);
 
-        $result = $this->fileSystem->exists($this->mediaService->getRootPathMedia() . DIRECTORY_SEPARATOR . 'end-folder' . DIRECTORY_SEPARATOR . 'road.jpg');
+        $result = $this->fileSystem->exists(
+            $this->mediaService->getRootPathMedia() .
+                DIRECTORY_SEPARATOR .
+                'end-folder' .
+                DIRECTORY_SEPARATOR .
+                'road.jpg',
+        );
         $this->assertTrue($result);
     }
 
@@ -455,7 +511,11 @@ class MediaControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
 
         $data = ['type' => 'media', 'id' => $media->getId(), 'trash' => !$media->isTrash()];
-        $this->client->request('POST', $this->router->generate('admin_media_update_trash'), content: json_encode($data));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_media_update_trash'),
+            content: json_encode($data),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -467,7 +527,6 @@ class MediaControllerTest extends AppWebTestCase
         $this->em->clear();
         $verif = $this->mediaService->findOneById(Media::class, $media->getId());
         $this->assertEquals(!$media->isTrash(), $verif->isTrash());
-
     }
 
     /**
@@ -499,7 +558,8 @@ class MediaControllerTest extends AppWebTestCase
      * Test méthode listTrash()
      * @return void
      */
-    public function testListTrash(): void {
+    public function testListTrash(): void
+    {
         $folder = $this->createMediaFolder(customData: ['disabled' => false, 'trash' => true]);
         $folder2 = $this->createMediaFolder(customData: ['disabled' => false, 'trash' => false]);
         $this->createMedia($folder, customData: ['disabled' => false, 'trash' => true]);
@@ -525,8 +585,8 @@ class MediaControllerTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testRemoveTrash() :void {
-
+    public function testRemoveTrash(): void
+    {
         $this->mediaService->resetAllMedia();
 
         $this->checkNoAccess('admin_media_remove', methode: 'POST');
@@ -547,6 +607,10 @@ class MediaControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('success', $content);
         $this->assertEquals('remove', $content['success']);
 
-        $this->assertFalse($this->fileSystem->exists($this->mediaService->getRootPathMedia() . $mediaFolder->getPath() . $mediaFolder->getName()));
+        $this->assertFalse(
+            $this->fileSystem->exists(
+                $this->mediaService->getRootPathMedia() . $mediaFolder->getPath() . $mediaFolder->getName(),
+            ),
+        );
     }
 }

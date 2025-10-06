@@ -50,8 +50,8 @@ class CommentController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'comment',
             Breadcrumb::BREADCRUMB => [
-                'comment.index.page_title_h1' => '#'
-            ]
+                'comment.index.page_title_h1' => '#',
+            ],
         ];
 
         return $this->render('admin/content/comment/index.html.twig', [
@@ -60,7 +60,7 @@ class CommentController extends AppAdminController
             'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
             'isOpenComment' => $optionSystemService->getValueByKey(OptionSystemKey::OS_OPEN_COMMENT),
             'isModerate' => $optionSystemService->getValueByKey(OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION),
-            'nbCommentWaitValidation' => $commentService->getNbCommentByStatus(CommentConst::WAIT_VALIDATION)
+            'nbCommentWaitValidation' => $commentService->getNbCommentByStatus(CommentConst::WAIT_VALIDATION),
         ]);
     }
 
@@ -78,11 +78,10 @@ class CommentController extends AppAdminController
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     public function loadGridData(
         CommentService $commentService,
-        Request        $request,
-        int            $page = 1,
-        int            $limit = 20
-    ): JsonResponse
-    {
+        Request $request,
+        int $page = 1,
+        int $limit = 20,
+    ): JsonResponse {
         $search = $request->query->get('search');
         $filter = $request->query->get('filter');
 
@@ -106,18 +105,17 @@ class CommentController extends AppAdminController
      */
     #[Route('/moderate', name: 'moderate_comments', methods: ['GET'])]
     public function moderateComments(
-        Request          $request,
-        CommentService   $commentService,
-        PageService      $pageService,
-        CommentTranslate $commentTranslate
-    ): Response
-    {
+        Request $request,
+        CommentService $commentService,
+        PageService $pageService,
+        CommentTranslate $commentTranslate,
+    ): Response {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'comment',
             Breadcrumb::BREADCRUMB => [
                 'comment.index.page_title_h1' => 'admin_comment_index',
-                'comment.moderate.comments.page_title' => '#'
-            ]
+                'comment.moderate.comments.page_title' => '#',
+            ],
         ];
 
         return $this->render('admin/content/comment/moderate_comments.html.twig', [
@@ -133,7 +131,7 @@ class CommentController extends AppAdminController
                 'defaultStatus' => CommentConst::WAIT_VALIDATION,
                 'page' => 1,
                 'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
-            ]
+            ],
         ]);
     }
 
@@ -148,15 +146,20 @@ class CommentController extends AppAdminController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/moderate/ajax/filter/{status}/{idPage}/{page}/{limit}', name: 'moderate_comments_filter', methods: ['GET'])]
+    #[
+        Route(
+            '/moderate/ajax/filter/{status}/{idPage}/{page}/{limit}',
+            name: 'moderate_comments_filter',
+            methods: ['GET'],
+        ),
+    ]
     public function filterCommentsModeration(
         CommentService $commentService,
-        int            $status = CommentConst::WAIT_VALIDATION,
-        int            $idPage = 0,
-        int            $page = 1,
-        int            $limit = 20
-    ): JsonResponse
-    {
+        int $status = CommentConst::WAIT_VALIDATION,
+        int $idPage = 0,
+        int $page = 1,
+        int $limit = 20,
+    ): JsonResponse {
         $return = $commentService->getCommentFilter($status, $idPage, $page, $limit);
         return $this->json($return);
     }
@@ -174,18 +177,18 @@ class CommentController extends AppAdminController
      */
     #[Route('/see/{id}', name: 'see', methods: ['GET'])]
     public function see(
-        int                     $id,
-        Request                 $request,
-        CommentService          $commentService,
+        int $id,
+        Request $request,
+        CommentService $commentService,
         MarkdownEditorTranslate $markdownEditorTranslate,
-        CommentTranslate        $commentTranslate): Response
-    {
+        CommentTranslate $commentTranslate,
+    ): Response {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'comment',
             Breadcrumb::BREADCRUMB => [
                 'comment.index.page_title_h1' => 'admin_comment_index',
-                'comment.see.page_title' => '#'
-            ]
+                'comment.see.page_title' => '#',
+            ],
         ];
 
         $translate = $commentTranslate->getTranslateCommentSee();
@@ -201,8 +204,8 @@ class CommentController extends AppAdminController
             'datas' => [
                 'id' => $id,
                 'status' => $commentService->getAllStatus(),
-                'statusModerate' => CommentConst::MODERATE
-            ]
+                'statusModerate' => CommentConst::MODERATE,
+            ],
         ]);
     }
 
@@ -216,10 +219,7 @@ class CommentController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load/{id}', name: 'load', methods: ['GET'])]
-    public function getComment(
-        CommentService $commentService,
-        ?int $id = null
-    ): Response
+    public function getComment(CommentService $commentService, ?int $id = null): Response
     {
         /** @var Comment $comment */
         $comment = $commentService->findOneById(Comment::class, $id);
@@ -235,7 +235,10 @@ class CommentController extends AppAdminController
             $commentArray['userModeration'] = ['login' => $user->getLogin(), 'email' => $user->getEmail()];
         }
 
-        $commentArray['page'] = ['title' => $title, 'url' => $this->generateUrl('admin_page_update', ['id' => $page->getId()])];
+        $commentArray['page'] = [
+            'title' => $title,
+            'url' => $this->generateUrl('admin_page_update', ['id' => $page->getId()]),
+        ];
         $commentArray['createdAt'] = $comment->getCreatedAt()->format('d/m/y H:i');
         $commentArray['updateAt'] = $comment->getUpdateAt()->format('d/m/y H:i');
         $commentArray['statusStr'] = $commentService->getStatusFormatedByCode($comment->getStatus());
@@ -253,8 +256,11 @@ class CommentController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/save', name: 'save', methods: ['PUT'])]
-    public function updateComment(Request $request, CommentService $commentService, TranslatorInterface $translator): Response
-    {
+    public function updateComment(
+        Request $request,
+        CommentService $commentService,
+        TranslatorInterface $translator,
+    ): Response {
         $data = json_decode($request->getContent(), true);
         unset($data['comment']['statusStr']);
 
@@ -272,7 +278,9 @@ class CommentController extends AppAdminController
 
         $commentService->save($comment);
 
-        return $this->json($commentService->getResponseAjax($translator->trans('comment.see.save.success', domain: 'comment')));
+        return $this->json(
+            $commentService->getResponseAjax($translator->trans('comment.see.save.success', domain: 'comment')),
+        );
     }
 
     /**
@@ -285,8 +293,11 @@ class CommentController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/update-moderate-comments', name: 'update_moderate_comment', methods: ['POST'])]
-    public function updateCommentModerate(CommentService $commentService, Request $request, TranslatorInterface $translator): Response
-    {
+    public function updateCommentModerate(
+        CommentService $commentService,
+        Request $request,
+        TranslatorInterface $translator,
+    ): Response {
         $data = json_decode($request->getContent(), true);
 
         $commentService->updateMultipleComment($data, $this->getUser());

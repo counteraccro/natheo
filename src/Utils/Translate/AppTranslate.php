@@ -24,10 +24,14 @@ class AppTranslate
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function __construct(#[AutowireLocator([
-        'translator' => TranslatorInterface::class,
-    ])] private readonly ContainerInterface $handlers)
-    {
+    public function __construct(
+        #[
+            AutowireLocator([
+                'translator' => TranslatorInterface::class,
+            ]),
+        ]
+        private readonly ContainerInterface $handlers,
+    ) {
         $this->translator = $this->handlers->get('translator');
     }
 }

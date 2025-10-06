@@ -34,12 +34,15 @@ class TranslationTranslate extends AppTranslate
             'translate_cache_btn_accept' => $this->translator->trans('translate.cache.btn.accept', domain: 'translate'),
             'translate_cache_success' => $this->translator->trans('translate.cache.success', domain: 'translate'),
             'translate_confirm_leave' => $this->translator->trans('translate.confirm.leave', domain: 'translate'),
-            'translate_toast_title_success' =>
-                $this->translator->trans('translate.toast.title.success', domain: 'translate'),
-            'translate_toast_title_error' =>
-                $this->translator->trans('translate.toast.title.error', domain: 'translate'),
-            'translate_toast_time' =>
-                $this->translator->trans('translate.toast.time', domain: 'translate'),
+            'translate_toast_title_success' => $this->translator->trans(
+                'translate.toast.title.success',
+                domain: 'translate',
+            ),
+            'translate_toast_title_error' => $this->translator->trans(
+                'translate.toast.title.error',
+                domain: 'translate',
+            ),
+            'translate_toast_time' => $this->translator->trans('translate.toast.time', domain: 'translate'),
         ];
     }
 }

@@ -17,7 +17,7 @@ class MarkdownTest extends AppWebTestCase
      * @return void
      * @throws CommonMarkException
      */
-    public function testConvertMarkdownToHtml() :void
+    public function testConvertMarkdownToHtml(): void
     {
         $markdonw = new Markdown();
 

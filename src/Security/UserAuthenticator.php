@@ -36,9 +36,8 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
         LoggerService $loggerService,
-        UserDataService $userDataService
-    )
-    {
+        UserDataService $userDataService,
+    ) {
         $this->loggerService = $loggerService;
         $this->userDataService = $userDataService;
     }
@@ -48,13 +47,9 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         $email = $request->request->get('email', '');
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
 
-        return new Passport(
-            new UserBadge($email),
-            new PasswordCredentials($request->request->get('password', '')),
-            [
-                new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
-            ]
-        );
+        return new Passport(new UserBadge($email), new PasswordCredentials($request->request->get('password', '')), [
+            new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
+        ]);
     }
 
     /**
@@ -67,7 +62,6 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-
         /** @var User $user */
         $user = $token->getUser();
         $ip = $request->getClientIp();
@@ -75,7 +69,6 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
 
         $date = new \DateTime();
         $this->userDataService->update(UserDataKey::KEY_LAST_CONNEXION, $date->getTimestamp(), $user);
-
 
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
@@ -101,7 +94,6 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         $this->loggerService->logAuthAdmin($email, $ip, false);
         return parent::onAuthenticationFailure($request, $exception);
     }
-
 
     protected function getLoginUrl(Request $request): string
     {

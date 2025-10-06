@@ -17,23 +17,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[AsCommand(
-    name: 'natheo:install',
-    description: 'Create new database, create tables and run fixtures with dev datas',
-)]
+#[AsCommand(name: 'natheo:install', description: 'Create new database, create tables and run fixtures with dev datas')]
 class InstallCommand extends Command
 {
     public function __construct(
         private readonly TranslatorInterface $translator,
-        private readonly InstallationService $installationService
-    )
-    {
+        private readonly InstallationService $installationService,
+    ) {
         parent::__construct();
     }
 
-    protected function configure(): void
-    {
-    }
+    protected function configure(): void {}
 
     /**
      * @throws ContainerExceptionInterface
@@ -118,7 +112,7 @@ class InstallCommand extends Command
 
         $commandInput = new ArrayInput([
             'command' => 'doctrine:fixtures:load',
-            '--append' => true
+            '--append' => true,
         ]);
 
         $returnCode = $this->getApplication()->doRun($commandInput, $output);

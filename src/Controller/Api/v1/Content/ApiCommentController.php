@@ -27,7 +27,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/api/{api_version}/comment', name: 'api_comment_', requirements: ['_version' => '%app.api_version%'])]
-#[IsGranted("ROLE_READ_API")]
+#[IsGranted('ROLE_READ_API')]
 class ApiCommentController extends AppApiController
 {
     /**
@@ -37,13 +37,11 @@ class ApiCommentController extends AppApiController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/page', name: 'by_page', methods: ['GET'])]
-    public function getCommentsByPage(#[MapQueryString(
-        resolver: ApiCommentByPageResolver::class
-    )] ApiCommentByPageDto $apiCommentByPageDto): JsonResponse
-    {
-
+    public function getCommentsByPage(
+        #[MapQueryString(resolver: ApiCommentByPageResolver::class)] ApiCommentByPageDto $apiCommentByPageDto,
+    ): JsonResponse {
         $user = null;
-        if ($apiCommentByPageDto->getUserToken() !== "") {
+        if ($apiCommentByPageDto->getUserToken() !== '') {
             $user = $this->getUserByUserToken($apiCommentByPageDto->getUserToken());
         }
 
@@ -61,19 +59,25 @@ class ApiCommentController extends AppApiController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/', name: 'add_comment', methods: ['POST'])]
-    public function add(#[MapQueryString(
-        resolver: ApiAddCommentResolver::class
-    )] ApiAddCommentDto $apiAddCommentDto): JsonResponse
-    {
+    public function add(
+        #[MapQueryString(resolver: ApiAddCommentResolver::class)] ApiAddCommentDto $apiAddCommentDto,
+    ): JsonResponse {
         $translator = $this->getTranslator();
         $apiCommentService = $this->getApiCommentService();
         $comment = $apiCommentService->addNewComment($apiAddCommentDto);
 
         if ($comment->getId() === null) {
-            throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR, $translator->trans($translator->trans('api_errors.comment.not.save', domain: 'api_errors')));
+            throw new HttpException(
+                Response::HTTP_INTERNAL_SERVER_ERROR,
+                $translator->trans($translator->trans('api_errors.comment.not.save', domain: 'api_errors')),
+            );
         }
 
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['id' => $comment->getId()], status: Response::HTTP_CREATED);
+        return $this->apiResponse(
+            ApiConst::API_MSG_SUCCESS,
+            ['id' => $comment->getId()],
+            status: Response::HTTP_CREATED,
+        );
     }
 
     /**
@@ -85,15 +89,19 @@ class ApiCommentController extends AppApiController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/moderate/{id}', name: 'moderate_comment', methods: ['PUT'])]
-    public function moderateComment(#[MapQueryString(
-        resolver: ApiModerateCommentResolver::class
-    )] ApiModerateCommentDto $apiModerateCommentDto, #[MapEntity(id: 'id', message: 'Commentaire non disponible')] Comment $comment): JsonResponse
-    {
+    public function moderateComment(
+        #[MapQueryString(resolver: ApiModerateCommentResolver::class)] ApiModerateCommentDto $apiModerateCommentDto,
+        #[MapEntity(id: 'id', message: 'Commentaire non disponible')] Comment $comment,
+    ): JsonResponse {
         $translator = $this->getTranslator();
         $apiCommentService = $this->getApiCommentService();
         $user = $this->getUserByUserToken($apiModerateCommentDto->getUserToken());
         $apiCommentService->moderateComment($apiModerateCommentDto, $comment, $user);
 
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, [$translator->trans('api_errors.comment.moderate', domain: 'api_errors')], status: Response::HTTP_ACCEPTED);
+        return $this->apiResponse(
+            ApiConst::API_MSG_SUCCESS,
+            [$translator->trans('api_errors.comment.moderate', domain: 'api_errors')],
+            status: Response::HTTP_ACCEPTED,
+        );
     }
 }

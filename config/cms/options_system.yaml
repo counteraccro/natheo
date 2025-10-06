@@ -1,280 +1,280 @@
 options_system:
-  options_system.categorie_web_site:
-    title: 'options_system.categorie_web_site.title'
-    description: 'options_system.categorie_web_site.description'
-    options:
-      OS_SITE_NAME:
-        default: 'Natheo'
-        label: 'options_system.site_name'
-        type: 'text'
-        required: true
-        msg_error: 'options_system.site_name_msg_error'
-        help: 'options_system.site_name_help'
-        placeholder: 'options_system.site_name_placeholder'
-        success: 'options_system.site_name_msg_success'
-      OS_ADRESSE_SITE:
-        default: 'http://dev.natheo'
-        label: 'options_system.adresse_site'
-        type: 'text'
-        required: true
-        msg_error: 'options_system.adresse_site_msg_error'
-        help: 'options_system.adresse_site_help'
-        placeholder: 'options_system.adresse_site_placeholder'
-        success: 'options_system.adresse_site_msg_success'
-      OS_THEME_FRONT_SITE:
-        type: 'select'
-        label: 'options_system.theme.front.site'
-        list_value: 'natheo_horizon:Natheo-Horizon|natheo_storm:FrontStorm'
-        help: 'options_system.theme.front.site_help'
-        default: 'fr'
-      OS_LOGO_SITE:
-        type: 'select'
-        label: 'options_system.logo_site'
-        list_value: ':options_system.logo_site_no_value|bi-yin-yang:&#xF67E;|bi-x-diamond-fill:&#xF624;|bi bi-yelp:&#xF82A;|bi-building-fill:&#xF876;|bi-windows:&#xF65E;|bi-vector-pen:&#xF604;|bi-umbrella-fill:&#xF5FC;'
-        help: 'options_system.logo_site_help'
-        default: 'bi-yin-yan'
-      OS_OPEN_SITE:
-        type: 'boolean'
-        label: 'options_system.open_site'
-        help: 'options_system.open_site_help'
-        default: 1
-      OS_DEFAULT_LANGUAGE:
-        type: 'select'
-        label: 'options_system.default_language'
-        list_value: 'fr:global.fr|en:global.en|es:global.es'
-        help: 'options_system.default_language_help'
-        default: 'fr'
-      OS_FRONT_FOOTER_TEXTE:
-        type: 'textarea'
-        label: 'options_system.front_footer_texte'
-        help: 'options_system.front_footer_texte_help'
-        placeholder: 'options_system.front_footer_texte_placeholder'
-        default: ""
-      OS_FRONT_FOOTER_SOCIAL_GITHUB_URL:
-        default: ''
-        label: 'options_system.front_footer_social_github_url'
-        type: 'text'
-        help: 'options_system.front_footer_social_github_url_help'
-        placeholder: 'options_system.front_footer_social_github_url_placeholder'
-        success: 'options_system.front_footer_social_github_url_msg_success'
-      OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL:
-        default: ''
-        label: 'options_system.front_footer_social_linkedin_url'
-        type: 'text'
-        help: 'options_system.front_footer_social_linkedin_url_help'
-        placeholder: 'options_system.front_footer_social_linkedin_url_placeholder'
-        success: 'options_system.front_footer_social_linkedin_url_msg_success'
-      OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL:
-        default: ''
-        label: 'options_system.front_footer_social_youtube_url'
-        type: 'text'
-        help: 'options_system.front_footer_social_youtube_url_help'
-        placeholder: 'options_system.front_footer_social_youtube_url_placeholder'
-        success: 'options_system.front_footer_social_youtube_url_msg_success'
-      OS_FRONT_FOOTER_SOCIAL_X_URL:
-        default: ''
-        label: 'options_system.front_footer_social_x_url'
-        type: 'text'
-        help: 'options_system.front_footer_social_x_url_help'
-        placeholder: 'options_system.front_footer_social_x_url_placeholder'
-        success: 'options_system.front_footer_social_x_url_msg_success'
-      OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL:
-        default: ''
-        label: 'options_system.front_footer_social_facebook_url'
-        type: 'text'
-        help: 'options_system.front_footer_social_facebook_url_help'
-        placeholder: 'options_system.front_footer_social_facebook_url_placeholder'
-        success: 'options_system.front_footer_social_facebook_url_msg_success'
-      OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL:
-        default: ''
-        label: 'options_system.front_footer_social_instagram_url'
-        type: 'text'
-        help: 'options_system.front_footer_social_instagram_url_help'
-        placeholder: 'options_system.front_footer_social_instagram_url_placeholder'
-        success: 'options_system.front_footer_social_instagram_url_msg_success'
-      OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL:
-        default: ''
-        label: 'options_system.front_footer_social_tiktok_url'
-        type: 'text'
-        help: 'options_system.front_footer_social_tiktok_url_help'
-        placeholder: 'options_system.front_footer_social_tiktok_url_placeholder'
-        success: 'options_system.front_footer_social_tiktok_url_msg_success'
-      OS_FRONT_SCRIPT_TOP:
-        type: 'textarea'
-        label: 'options_system.front_script_top'
-        help: 'options_system.front_script_top_help'
-        placeholder: 'options_system.front_script_top_placeholder'
-        default: ""
-      OS_FRONT_SCRIPT_START_BODY:
-        type: 'textarea'
-        label: 'options_system.front_script_start_body'
-        help: 'options_system.front_script_start_body_help'
-        placeholder: 'options_system.front_script_start_body_placeholder'
-        default: ""
-      OS_FRONT_SCRIPT_END_BODY:
-        type: 'textarea'
-        label: 'options_system.front_script_end_body'
-        help: 'options_system.front_script_end_body_help'
-        placeholder: 'options_system.front_script_end_body_placeholder'
-        default: ""
-  options_system.categorie_seo:
-    title: 'options_system.categorie_seo.title'
-    description: 'options_system.categorie_seo.description'
-    options:
-      OS_FRONT_ROBOT_NO_INDEX:
-        type: 'boolean'
-        label: 'options_system.front_robot_no_index'
-        help: 'options_system.front_robot_no_index_help'
-        default: '0'
-      OS_FRONT_ROBOT_NO_FOLLOW:
-        type: 'boolean'
-        label: 'options_system.front_robot_no_follow'
-        help: 'options_system.front_robot_no_follow_help'
-        default: '0'
-  options_system.categorie_admin:
-    title: 'options_system.categorie_admin.title'
-    description: 'options_system.categorie_admin.description'
-    options:
-      OS_ALLOW_DELETE_DATA:
-        type: 'boolean'
-        label: 'options_system.allow_delete_data'
-        help: 'options_system.allow_delete_data_help'
-        default: '0'
-      OS_REPLACE_DELETE_USER:
-        type: 'boolean'
-        label: 'options_system.replace_delete_user'
-        help: 'options_system.replace_delete_user_help'
-        default: '1'
-      OS_CONFIRM_LEAVE_FORM:
-        type: 'boolean'
-        label: 'options_system.confirm_leave_form'
-        help: 'options_system.confirm_leave_form_help'
-        default: '1'
-      OS_THEME_SITE:
-        type: 'select'
-        label: 'options_system.theme_site'
-        list_value: 'purple:global.purple|red:global.red|orange:global.orange'
-        help: 'options_system.theme_site_help'
-        default: 'purple'
-      OS_NB_ELEMENT:
-        type: 'select'
-        label: 'options_system.nb_element'
-        list_value: '5:5|10:10|20:20|50:50|100:100'
-        help: 'options_system.nb_element_help'
-        default: '20'
-  options_system.logs:
-    title: 'options_system.logs.title'
-    description: 'options_system.logs.description'
-    options:
-      OS_LOG_DOCTRINE:
-        type: 'boolean'
-        label: 'options_system.log_doctrine'
-        help: 'options_system.log_doctrine_help'
-        default: 1
-  options_system.mails:
-    title: 'options_system.mails.title'
-    description: 'options_system.mails.description'
-    options:
-      OS_MAIL_NOTIFICATION:
-        type: 'boolean'
-        label: 'options_system.mail_notification'
-        help: 'options_system.mail_notification_help'
-        default: 1
-      OS_MAIL_RESET_PASSWORD_TIME:
-        type: 'select'
-        label: 'options_system.time_reset_password'
-        list_value: '5:5|10:10|20:20|30:30|60:60'
-        help: 'options_system.time_reset_password_help'
-        default: '20'
-      OS_MAIL_FROM:
-        default: 'aymeric.gourdon@hotmail.fr'
-        label: 'options_system.mail_from'
-        type: 'text'
-        required: true
-        msg_error: 'options_system.mail_from_msg_error'
-        help: 'options_system.mail_from_help'
-        placeholder: 'options_system.mail_from_placeholder'
-        success: 'options_system.mail_from_msg_success'
-      OS_MAIL_REPLY_TO:
-        default: 'support@natheo.fr'
-        label: 'options_system.mail_reply_to'
-        type: 'text'
-        required: true
-        msg_error: 'options_system.mail_reply_to_msg_error'
-        help: 'options_system.mail_reply_to_help'
-        placeholder: 'options_system.mail_reply_to_placeholder'
-        success: 'options_system.mail_reply_to_msg_success'
-      OS_MAIL_SIGNATURE:
-        type: 'textarea'
-        label: 'options_system.mail_signature'
-        help: 'options_system.mail_signature_help'
-        placeholder: 'options_system.mail_signature_placeholder'
-        default: ""
-  options_system.categorie_notification:
-    title: 'options_system.categorie_notification.title'
-    description: 'options_system.categorie_notification.description'
-    options:
-      OS_NOTIFICATION:
-        type: 'boolean'
-        label: 'options_system.notification'
-        help: 'options_system.notification_help'
-        default: 1
-      OS_PURGE_NOTIFICATION:
-        type: 'select'
-        label: 'options_system.purge_notification'
-        list_value: '7:options_system.purge_notification.week|30:options_system.purge_notification.month|90:options_system.purge_notification.3_month|180:options_system.purge_notification.6_month|365:options_system.purge_notification.year'
-        help: 'options_system.purge_notification_help'
-        default: '30'
-  options_system.media:
-    title: 'options_system.media.title'
-    description: 'options_system.media.description'
-    options:
-      OS_MEDIA_PATH:
-        default: 'public'
-        label: 'options_system.media_path'
-        type: 'text'
-        required: true
-        msg_error: 'options_system.media_path_msg_error'
-        help: 'options_system.media_path_help'
-        placeholder: 'options_system.media_path_placeholder'
-        success: 'options_system.media_path_msg_success'
-        disabled: true
-      OS_MEDIA_URL:
-        default: 'public'
-        label: 'options_system.media_url'
-        type: 'text'
-        required: true
-        msg_error: 'options_system.media_url_msg_error'
-        help: 'options_system.media_url_help'
-        placeholder: 'options_system.media_url_placeholder'
-        success: 'options_system.media_url_msg_success'
-        disabled: true
-      OS_MEDIA_CREATE_PHYSICAL_FOLDER:
-        type: 'boolean'
-        label: 'options_system.media_folder'
-        help: 'options_system.media_folder_help'
-        default: 1
-  options_system.api:
-    title: 'options_system.api.title'
-    description: 'options_system.api.description'
-    options:
-      OS_API_TIME_VALIDATE_USER_TOKEN:
-        type: 'select'
-        label: 'options_system.time.validation.user.token'
-        list_value: '30:options_system.time.validation.user.half.hour|60:options_system.time.validation.user.one.hour|120:options_system.time.validation.user.two.hour|180:options_system.time.validation.user.three.hour|-1:options_system.time.validation.user.no.limit'
-        help: 'options_system.time.validation.user.token.help'
-        default: '60'
-  options_system.comment:
-    title: 'options_system.comment.title'
-    description: 'options_system.comment.description'
-    options:
-      OS_OPEN_COMMENT:
-        type: 'boolean'
-        label: 'options_system.open_comment'
-        help: 'options_system.open_comment_help'
-        default: 1
-      OS_NEW_COMMENT_WAIT_VALIDATION:
-        type: 'boolean'
-        label: 'options_system.new_comment_wait_validation'
-        help: 'options_system.new_comment_wait_validation_help'
-        default: 1
+    options_system.categorie_web_site:
+        title: 'options_system.categorie_web_site.title'
+        description: 'options_system.categorie_web_site.description'
+        options:
+            OS_SITE_NAME:
+                default: 'Natheo'
+                label: 'options_system.site_name'
+                type: 'text'
+                required: true
+                msg_error: 'options_system.site_name_msg_error'
+                help: 'options_system.site_name_help'
+                placeholder: 'options_system.site_name_placeholder'
+                success: 'options_system.site_name_msg_success'
+            OS_ADRESSE_SITE:
+                default: 'http://dev.natheo'
+                label: 'options_system.adresse_site'
+                type: 'text'
+                required: true
+                msg_error: 'options_system.adresse_site_msg_error'
+                help: 'options_system.adresse_site_help'
+                placeholder: 'options_system.adresse_site_placeholder'
+                success: 'options_system.adresse_site_msg_success'
+            OS_THEME_FRONT_SITE:
+                type: 'select'
+                label: 'options_system.theme.front.site'
+                list_value: 'natheo_horizon:Natheo-Horizon|natheo_storm:FrontStorm'
+                help: 'options_system.theme.front.site_help'
+                default: 'fr'
+            OS_LOGO_SITE:
+                type: 'select'
+                label: 'options_system.logo_site'
+                list_value: ':options_system.logo_site_no_value|bi-yin-yang:&#xF67E;|bi-x-diamond-fill:&#xF624;|bi bi-yelp:&#xF82A;|bi-building-fill:&#xF876;|bi-windows:&#xF65E;|bi-vector-pen:&#xF604;|bi-umbrella-fill:&#xF5FC;'
+                help: 'options_system.logo_site_help'
+                default: 'bi-yin-yan'
+            OS_OPEN_SITE:
+                type: 'boolean'
+                label: 'options_system.open_site'
+                help: 'options_system.open_site_help'
+                default: 1
+            OS_DEFAULT_LANGUAGE:
+                type: 'select'
+                label: 'options_system.default_language'
+                list_value: 'fr:global.fr|en:global.en|es:global.es'
+                help: 'options_system.default_language_help'
+                default: 'fr'
+            OS_FRONT_FOOTER_TEXTE:
+                type: 'textarea'
+                label: 'options_system.front_footer_texte'
+                help: 'options_system.front_footer_texte_help'
+                placeholder: 'options_system.front_footer_texte_placeholder'
+                default: ''
+            OS_FRONT_FOOTER_SOCIAL_GITHUB_URL:
+                default: ''
+                label: 'options_system.front_footer_social_github_url'
+                type: 'text'
+                help: 'options_system.front_footer_social_github_url_help'
+                placeholder: 'options_system.front_footer_social_github_url_placeholder'
+                success: 'options_system.front_footer_social_github_url_msg_success'
+            OS_FRONT_FOOTER_SOCIAL_LINKEDIN_URL:
+                default: ''
+                label: 'options_system.front_footer_social_linkedin_url'
+                type: 'text'
+                help: 'options_system.front_footer_social_linkedin_url_help'
+                placeholder: 'options_system.front_footer_social_linkedin_url_placeholder'
+                success: 'options_system.front_footer_social_linkedin_url_msg_success'
+            OS_FRONT_FOOTER_SOCIAL_YOUTUBE_URL:
+                default: ''
+                label: 'options_system.front_footer_social_youtube_url'
+                type: 'text'
+                help: 'options_system.front_footer_social_youtube_url_help'
+                placeholder: 'options_system.front_footer_social_youtube_url_placeholder'
+                success: 'options_system.front_footer_social_youtube_url_msg_success'
+            OS_FRONT_FOOTER_SOCIAL_X_URL:
+                default: ''
+                label: 'options_system.front_footer_social_x_url'
+                type: 'text'
+                help: 'options_system.front_footer_social_x_url_help'
+                placeholder: 'options_system.front_footer_social_x_url_placeholder'
+                success: 'options_system.front_footer_social_x_url_msg_success'
+            OS_FRONT_FOOTER_SOCIAL_FACEBOOK_URL:
+                default: ''
+                label: 'options_system.front_footer_social_facebook_url'
+                type: 'text'
+                help: 'options_system.front_footer_social_facebook_url_help'
+                placeholder: 'options_system.front_footer_social_facebook_url_placeholder'
+                success: 'options_system.front_footer_social_facebook_url_msg_success'
+            OS_FRONT_FOOTER_SOCIAL_INSTAGRAM_URL:
+                default: ''
+                label: 'options_system.front_footer_social_instagram_url'
+                type: 'text'
+                help: 'options_system.front_footer_social_instagram_url_help'
+                placeholder: 'options_system.front_footer_social_instagram_url_placeholder'
+                success: 'options_system.front_footer_social_instagram_url_msg_success'
+            OS_FRONT_FOOTER_SOCIAL_TIKTOK_URL:
+                default: ''
+                label: 'options_system.front_footer_social_tiktok_url'
+                type: 'text'
+                help: 'options_system.front_footer_social_tiktok_url_help'
+                placeholder: 'options_system.front_footer_social_tiktok_url_placeholder'
+                success: 'options_system.front_footer_social_tiktok_url_msg_success'
+            OS_FRONT_SCRIPT_TOP:
+                type: 'textarea'
+                label: 'options_system.front_script_top'
+                help: 'options_system.front_script_top_help'
+                placeholder: 'options_system.front_script_top_placeholder'
+                default: ''
+            OS_FRONT_SCRIPT_START_BODY:
+                type: 'textarea'
+                label: 'options_system.front_script_start_body'
+                help: 'options_system.front_script_start_body_help'
+                placeholder: 'options_system.front_script_start_body_placeholder'
+                default: ''
+            OS_FRONT_SCRIPT_END_BODY:
+                type: 'textarea'
+                label: 'options_system.front_script_end_body'
+                help: 'options_system.front_script_end_body_help'
+                placeholder: 'options_system.front_script_end_body_placeholder'
+                default: ''
+    options_system.categorie_seo:
+        title: 'options_system.categorie_seo.title'
+        description: 'options_system.categorie_seo.description'
+        options:
+            OS_FRONT_ROBOT_NO_INDEX:
+                type: 'boolean'
+                label: 'options_system.front_robot_no_index'
+                help: 'options_system.front_robot_no_index_help'
+                default: '0'
+            OS_FRONT_ROBOT_NO_FOLLOW:
+                type: 'boolean'
+                label: 'options_system.front_robot_no_follow'
+                help: 'options_system.front_robot_no_follow_help'
+                default: '0'
+    options_system.categorie_admin:
+        title: 'options_system.categorie_admin.title'
+        description: 'options_system.categorie_admin.description'
+        options:
+            OS_ALLOW_DELETE_DATA:
+                type: 'boolean'
+                label: 'options_system.allow_delete_data'
+                help: 'options_system.allow_delete_data_help'
+                default: '0'
+            OS_REPLACE_DELETE_USER:
+                type: 'boolean'
+                label: 'options_system.replace_delete_user'
+                help: 'options_system.replace_delete_user_help'
+                default: '1'
+            OS_CONFIRM_LEAVE_FORM:
+                type: 'boolean'
+                label: 'options_system.confirm_leave_form'
+                help: 'options_system.confirm_leave_form_help'
+                default: '1'
+            OS_THEME_SITE:
+                type: 'select'
+                label: 'options_system.theme_site'
+                list_value: 'purple:global.purple|red:global.red|orange:global.orange'
+                help: 'options_system.theme_site_help'
+                default: 'purple'
+            OS_NB_ELEMENT:
+                type: 'select'
+                label: 'options_system.nb_element'
+                list_value: '5:5|10:10|20:20|50:50|100:100'
+                help: 'options_system.nb_element_help'
+                default: '20'
+    options_system.logs:
+        title: 'options_system.logs.title'
+        description: 'options_system.logs.description'
+        options:
+            OS_LOG_DOCTRINE:
+                type: 'boolean'
+                label: 'options_system.log_doctrine'
+                help: 'options_system.log_doctrine_help'
+                default: 1
+    options_system.mails:
+        title: 'options_system.mails.title'
+        description: 'options_system.mails.description'
+        options:
+            OS_MAIL_NOTIFICATION:
+                type: 'boolean'
+                label: 'options_system.mail_notification'
+                help: 'options_system.mail_notification_help'
+                default: 1
+            OS_MAIL_RESET_PASSWORD_TIME:
+                type: 'select'
+                label: 'options_system.time_reset_password'
+                list_value: '5:5|10:10|20:20|30:30|60:60'
+                help: 'options_system.time_reset_password_help'
+                default: '20'
+            OS_MAIL_FROM:
+                default: 'aymeric.gourdon@hotmail.fr'
+                label: 'options_system.mail_from'
+                type: 'text'
+                required: true
+                msg_error: 'options_system.mail_from_msg_error'
+                help: 'options_system.mail_from_help'
+                placeholder: 'options_system.mail_from_placeholder'
+                success: 'options_system.mail_from_msg_success'
+            OS_MAIL_REPLY_TO:
+                default: 'support@natheo.fr'
+                label: 'options_system.mail_reply_to'
+                type: 'text'
+                required: true
+                msg_error: 'options_system.mail_reply_to_msg_error'
+                help: 'options_system.mail_reply_to_help'
+                placeholder: 'options_system.mail_reply_to_placeholder'
+                success: 'options_system.mail_reply_to_msg_success'
+            OS_MAIL_SIGNATURE:
+                type: 'textarea'
+                label: 'options_system.mail_signature'
+                help: 'options_system.mail_signature_help'
+                placeholder: 'options_system.mail_signature_placeholder'
+                default: ''
+    options_system.categorie_notification:
+        title: 'options_system.categorie_notification.title'
+        description: 'options_system.categorie_notification.description'
+        options:
+            OS_NOTIFICATION:
+                type: 'boolean'
+                label: 'options_system.notification'
+                help: 'options_system.notification_help'
+                default: 1
+            OS_PURGE_NOTIFICATION:
+                type: 'select'
+                label: 'options_system.purge_notification'
+                list_value: '7:options_system.purge_notification.week|30:options_system.purge_notification.month|90:options_system.purge_notification.3_month|180:options_system.purge_notification.6_month|365:options_system.purge_notification.year'
+                help: 'options_system.purge_notification_help'
+                default: '30'
+    options_system.media:
+        title: 'options_system.media.title'
+        description: 'options_system.media.description'
+        options:
+            OS_MEDIA_PATH:
+                default: 'public'
+                label: 'options_system.media_path'
+                type: 'text'
+                required: true
+                msg_error: 'options_system.media_path_msg_error'
+                help: 'options_system.media_path_help'
+                placeholder: 'options_system.media_path_placeholder'
+                success: 'options_system.media_path_msg_success'
+                disabled: true
+            OS_MEDIA_URL:
+                default: 'public'
+                label: 'options_system.media_url'
+                type: 'text'
+                required: true
+                msg_error: 'options_system.media_url_msg_error'
+                help: 'options_system.media_url_help'
+                placeholder: 'options_system.media_url_placeholder'
+                success: 'options_system.media_url_msg_success'
+                disabled: true
+            OS_MEDIA_CREATE_PHYSICAL_FOLDER:
+                type: 'boolean'
+                label: 'options_system.media_folder'
+                help: 'options_system.media_folder_help'
+                default: 1
+    options_system.api:
+        title: 'options_system.api.title'
+        description: 'options_system.api.description'
+        options:
+            OS_API_TIME_VALIDATE_USER_TOKEN:
+                type: 'select'
+                label: 'options_system.time.validation.user.token'
+                list_value: '30:options_system.time.validation.user.half.hour|60:options_system.time.validation.user.one.hour|120:options_system.time.validation.user.two.hour|180:options_system.time.validation.user.three.hour|-1:options_system.time.validation.user.no.limit'
+                help: 'options_system.time.validation.user.token.help'
+                default: '60'
+    options_system.comment:
+        title: 'options_system.comment.title'
+        description: 'options_system.comment.description'
+        options:
+            OS_OPEN_COMMENT:
+                type: 'boolean'
+                label: 'options_system.open_comment'
+                help: 'options_system.open_comment_help'
+                default: 1
+            OS_NEW_COMMENT_WAIT_VALIDATION:
+                type: 'boolean'
+                label: 'options_system.new_comment_wait_validation'
+                help: 'options_system.new_comment_wait_validation_help'
+                default: 1

@@ -30,8 +30,14 @@ class PageContent
     #[ORM\Column]
     private ?int $type = null;
 
-    #[ORM\OneToMany(mappedBy: 'pageContent', targetEntity: PageContentTranslation::class,
-        cascade: ['persist'] ,orphanRemoval: true)]
+    #[
+        ORM\OneToMany(
+            mappedBy: 'pageContent',
+            targetEntity: PageContentTranslation::class,
+            cascade: ['persist'],
+            orphanRemoval: true,
+        ),
+    ]
     private Collection $pageContentTranslations;
 
     #[ORM\Column(nullable: true)]
@@ -144,8 +150,10 @@ class PageContent
      */
     public function getPageContentTranslationByLocale(string $locale): PageContentTranslation
     {
-        return $this->getPageContentTranslations()->filter(function (PageContentTranslation $pageContentTranslation) use ($locale) {
-            return $pageContentTranslation->getLocale() === $locale;
-        })->first();
+        return $this->getPageContentTranslations()
+            ->filter(function (PageContentTranslation $pageContentTranslation) use ($locale) {
+                return $pageContentTranslation->getLocale() === $locale;
+            })
+            ->first();
     }
 }

@@ -4,10 +4,10 @@
  * Point d'entrée pour le design mail
  */
 
-@import "bootstrap/scss/functions";
-@import "bootstrap/scss/variables";
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
 
-@import "admin/themes/purple";
+@import 'admin/themes/purple';
 
-@import "admin/style";
-@import "admin/global/markdown-editor";
+@import 'admin/style';
+@import 'admin/global/markdown-editor';

@@ -25,7 +25,14 @@ class PageMeta
     /**
      * @var Collection<int, PageMetaTranslation>
      */
-    #[ORM\OneToMany(targetEntity: PageMetaTranslation::class, mappedBy: 'pageMeta', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[
+        ORM\OneToMany(
+            targetEntity: PageMetaTranslation::class,
+            mappedBy: 'pageMeta',
+            cascade: ['persist', 'remove'],
+            orphanRemoval: true,
+        ),
+    ]
     private Collection $pageMetaTranslations;
 
     public function __construct()
@@ -77,9 +84,11 @@ class PageMeta
      */
     public function getPageMetaTranslationByLocale(string $locale): PageMetaTranslation
     {
-        return $this->getPageMetaTranslations()->filter(function (PageMetaTranslation $pageMetaTranslation) use ($locale) {
-            return $pageMetaTranslation->getLocale() === $locale;
-        })->first();
+        return $this->getPageMetaTranslations()
+            ->filter(function (PageMetaTranslation $pageMetaTranslation) use ($locale) {
+                return $pageMetaTranslation->getLocale() === $locale;
+            })
+            ->first();
     }
 
     public function addPageMetaTranslation(PageMetaTranslation $pageMetaTranslation): static

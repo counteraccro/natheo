@@ -67,8 +67,11 @@ trait PageFixturesTrait
      * @param bool $persist
      * @return PageTranslation
      */
-    public function createPageTranslation(?Page $page = null, array $customData = [], bool $persist = true): PageTranslation
-    {
+    public function createPageTranslation(
+        ?Page $page = null,
+        array $customData = [],
+        bool $persist = true,
+    ): PageTranslation {
         if ($page === null) {
             $page = $this->createPage();
         }
@@ -128,8 +131,11 @@ trait PageFixturesTrait
      * @param bool $persist
      * @return PageContentTranslation
      */
-    public function createPageContentTranslation(?PageContent $pageContent = null, array $customData = [], bool $persist = true): PageContentTranslation
-    {
+    public function createPageContentTranslation(
+        ?PageContent $pageContent = null,
+        array $customData = [],
+        bool $persist = true,
+    ): PageContentTranslation {
         if ($pageContent === null) {
             $pageContent = $this->createPageContent();
         }
@@ -156,8 +162,11 @@ trait PageFixturesTrait
      * @param bool $persist
      * @return PageStatistique
      */
-    public function createPageStatistique(?Page $page = null, array $customData = [], bool $persist = true): PageStatistique
-    {
+    public function createPageStatistique(
+        ?Page $page = null,
+        array $customData = [],
+        bool $persist = true,
+    ): PageStatistique {
         if ($page === null) {
             $page = $this->createPage();
         }
@@ -212,8 +221,11 @@ trait PageFixturesTrait
      * @param bool $persist
      * @return PageMetaTranslation
      */
-    public function createPageMetaTranslation(?PageMeta $pageMeta = null, array $customData = [], bool $persist = true): PageMetaTranslation
-    {
+    public function createPageMetaTranslation(
+        ?PageMeta $pageMeta = null,
+        array $customData = [],
+        bool $persist = true,
+    ): PageMetaTranslation {
         if ($pageMeta === null) {
             $pageMeta = $this->createPageMeta();
         }
@@ -294,15 +306,26 @@ trait PageFixturesTrait
      */
     public function createPageAllDataDefault(): Page
     {
-        $page = $this->createPage(customData: ['render' => PageConst::RENDER_2_BLOCK_BOTTOM,
-            'disabled' => false, 'category' => PageConst::PAGE_CATEGORY_PAGE, 'isOpenComment' => true]);
+        $page = $this->createPage(
+            customData: [
+                'render' => PageConst::RENDER_2_BLOCK_BOTTOM,
+                'disabled' => false,
+                'category' => PageConst::PAGE_CATEGORY_PAGE,
+                'isOpenComment' => true,
+            ],
+        );
 
         foreach ($this->locales as $locale) {
             $this->createPageTranslation($page, ['locale' => $locale]);
         }
 
         $faq = $this->createFaqAllDataDefault();
-        $this->createPageContent($page, ['renderBlock' => 1, 'renderOrder' => 1, 'type' => PageConst::CONTENT_TYPE_FAQ, 'typeId' => $faq->getId()]);
+        $this->createPageContent($page, [
+            'renderBlock' => 1,
+            'renderOrder' => 1,
+            'type' => PageConst::CONTENT_TYPE_FAQ,
+            'typeId' => $faq->getId(),
+        ]);
         $pageContent = $this->createPageContent($page, ['renderBlock' => 2, 'renderOrder' => 1]);
         foreach ($this->locales as $locale) {
             $this->createPageContentTranslation($pageContent, ['locale' => $locale]);
@@ -317,8 +340,14 @@ trait PageFixturesTrait
 
         $this->createPageTag($page);
 
-        $this->createPageStatistique($page, ['key' => PageStatistiqueKey::KEY_PAGE_NB_READ, 'value' => self::getFaker()->randomNumber(3)]);
-        $this->createPageStatistique($page, ['key' => PageStatistiqueKey::KEY_PAGE_NB_VISITEUR, 'value' => self::getFaker()->randomNumber(3)]);
+        $this->createPageStatistique($page, [
+            'key' => PageStatistiqueKey::KEY_PAGE_NB_READ,
+            'value' => self::getFaker()->randomNumber(3),
+        ]);
+        $this->createPageStatistique($page, [
+            'key' => PageStatistiqueKey::KEY_PAGE_NB_VISITEUR,
+            'value' => self::getFaker()->randomNumber(3),
+        ]);
         return $page;
     }
 }

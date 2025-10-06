@@ -36,7 +36,6 @@ class ApiCommentServiceTest extends AppWebTestCase
      */
     public function testGetCommentByPageIdOrSlug()
     {
-
         $translator = $this->container->get(TranslatorInterface::class);
         $page = $this->createPageAllDataDefault();
 
@@ -46,7 +45,11 @@ class ApiCommentServiceTest extends AppWebTestCase
 
         $user = $this->createUserContributeur();
         for ($i = 0; $i < 4; $i++) {
-            $this->createComment($page, $user, customData: ['status' => CommentConst::MODERATE, 'moderationComment' => self::getFaker()->text(40)]);
+            $this->createComment(
+                $page,
+                $user,
+                customData: ['status' => CommentConst::MODERATE, 'moderationComment' => self::getFaker()->text(40)],
+            );
         }
 
         for ($i = 0; $i < 4; $i++) {
@@ -72,17 +75,22 @@ class ApiCommentServiceTest extends AppWebTestCase
         $this->assertEquals(12, $result['rows']);
         $this->assertEquals(10, $result['limit']);
 
-
         $status1 = $status2 = $status3 = 0;
         foreach ($result['comments'] as $comment) {
             switch ($comment['status']) {
                 case CommentConst::WAIT_VALIDATION:
                     $status1++;
-                    $this->assertNotEquals($translator->trans('api_errors.comment.wait.validation', domain: 'api_errors'), $comment['comment']);
+                    $this->assertNotEquals(
+                        $translator->trans('api_errors.comment.wait.validation', domain: 'api_errors'),
+                        $comment['comment'],
+                    );
                     break;
                 case CommentConst::MODERATE:
                     $status3++;
-                    $this->assertNotEquals($translator->trans('api_errors.comment.moderate', domain: 'api_errors'), $comment['comment']);
+                    $this->assertNotEquals(
+                        $translator->trans('api_errors.comment.moderate', domain: 'api_errors'),
+                        $comment['comment'],
+                    );
                     $this->assertArrayHasKey('moderate', $comment);
                     break;
                 case CommentConst::VALIDATE:
@@ -99,18 +107,33 @@ class ApiCommentServiceTest extends AppWebTestCase
 
         $user = $this->createUser();
         // Test slug
-        $dto = new ApiCommentByPageDto(0, $page->getPageTranslationByLocale('fr')->getUrl(), 'fr', 1, 10, 'id', 'asc', '');
+        $dto = new ApiCommentByPageDto(
+            0,
+            $page->getPageTranslationByLocale('fr')->getUrl(),
+            'fr',
+            1,
+            10,
+            'id',
+            'asc',
+            '',
+        );
         $result = $this->apiCommentService->getCommentByPageIdOrSlug($dto, $user);
         $status1 = $status2 = $status3 = 0;
         foreach ($result['comments'] as $comment) {
             switch ($comment['status']) {
                 case CommentConst::WAIT_VALIDATION:
                     $status1++;
-                    $this->assertEquals($translator->trans('api_errors.comment.wait.validation', domain: 'api_errors'), $comment['comment']);
+                    $this->assertEquals(
+                        $translator->trans('api_errors.comment.wait.validation', domain: 'api_errors'),
+                        $comment['comment'],
+                    );
                     break;
                 case CommentConst::MODERATE:
                     $status3++;
-                    $this->assertEquals($translator->trans('api_errors.comment.moderate', domain: 'api_errors'), $comment['comment']);
+                    $this->assertEquals(
+                        $translator->trans('api_errors.comment.moderate', domain: 'api_errors'),
+                        $comment['comment'],
+                    );
                     $this->assertArrayNotHasKey('moderate', $comment);
                     break;
                 case CommentConst::VALIDATE:
@@ -132,7 +155,8 @@ class ApiCommentServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testAddNewComment() {
+    public function testAddNewComment()
+    {
         $page = $this->createPageAllDataDefault();
 
         $slug = $page->getPageTranslationByLocale('fr')->getUrl();
@@ -141,7 +165,7 @@ class ApiCommentServiceTest extends AppWebTestCase
         $comment = self::getFaker()->text();
         $ip = self::getFaker()->ipv4();
         $userAgent = self::getFaker()->userAgent();
-        $dto = new ApiAddCommentDto(0, $slug, 'fr',$author, $email, $comment, $ip, $userAgent );
+        $dto = new ApiAddCommentDto(0, $slug, 'fr', $author, $email, $comment, $ip, $userAgent);
 
         /** @var Comment $result */
         $result = $this->apiCommentService->addNewComment($dto);
@@ -161,18 +185,15 @@ class ApiCommentServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testModerateCommentService() {
+    public function testModerateCommentService()
+    {
         $user = $this->createUserContributeur();
         $comment = $this->createComment();
 
         $moderate = self::getFaker()->text();
         $status = strval(CommentConst::MODERATE);
 
-        $dto = new ApiModerateCommentDto(
-            $status,
-            $moderate,
-            self::getFaker()->iosMobileToken()
-        );
+        $dto = new ApiModerateCommentDto($status, $moderate, self::getFaker()->iosMobileToken());
 
         $this->apiCommentService->moderateComment($dto, $comment, $user);
 

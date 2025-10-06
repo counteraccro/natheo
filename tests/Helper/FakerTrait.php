@@ -27,5 +27,4 @@ trait FakerTrait
         }
         return self::$faker;
     }
-
 }

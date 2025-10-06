@@ -20,13 +20,14 @@ use Symfony\Component\Yaml\Yaml;
 
 class MenuFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
-    const MENU_FIXTURES_DATA_FILE = 'content' . DIRECTORY_SEPARATOR . 'menu' . DIRECTORY_SEPARATOR . 'menu_fixtures_data.yaml';
+    const MENU_FIXTURES_DATA_FILE =
+        'content' . DIRECTORY_SEPARATOR . 'menu' . DIRECTORY_SEPARATOR . 'menu_fixtures_data.yaml';
 
     public function load(ObjectManager $manager): void
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::MENU_FIXTURES_DATA_FILE);
 
-        if($data === null) {
+        if ($data === null) {
             return;
         }
 
@@ -48,7 +49,6 @@ class MenuFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                 }
             }
 
-
             $manager->persist($menu);
             $this->addReference($ref, $menu);
         }
@@ -67,8 +67,9 @@ class MenuFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
         foreach ($data as $key => $value) {
             if ($key === 'menuElementTranslation') {
                 foreach ($value as $menuElementTranslation) {
-                    $menuElement->addMenuElementTranslation($this->populateEntity(
-                        $menuElementTranslation, new MenuElementTranslation()));
+                    $menuElement->addMenuElementTranslation(
+                        $this->populateEntity($menuElementTranslation, new MenuElementTranslation()),
+                    );
                 }
             } elseif ($key === 'page') {
                 if (!empty($value)) {

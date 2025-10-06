@@ -51,7 +51,12 @@ class CommentServiceTest extends AppWebTestCase
         $this->assertEquals(1, $result->getIterator()->count());
         $this->assertEquals(1, $result->count());
 
-        $result = $this->commentService->getAllPaginate(1, 4, $comment->getComment(), $commentModerate->getUserModeration()->getId());
+        $result = $this->commentService->getAllPaginate(
+            1,
+            4,
+            $comment->getComment(),
+            $commentModerate->getUserModeration()->getId(),
+        );
         $this->assertEquals(0, $result->count());
     }
 
@@ -84,7 +89,10 @@ class CommentServiceTest extends AppWebTestCase
         $translator = $this->container->get(TranslatorInterface::class);
 
         $result = $this->commentService->getStatusStringByCode(CommentConst::WAIT_VALIDATION);
-        $this->assertStringContainsString($translator->trans('comment.status.wait.validation', domain: 'comment'), $result);
+        $this->assertStringContainsString(
+            $translator->trans('comment.status.wait.validation', domain: 'comment'),
+            $result,
+        );
 
         $result = $this->commentService->getStatusStringByCode(CommentConst::VALIDATE);
         $this->assertStringContainsString($translator->trans('comment.status.validate', domain: 'comment'), $result);
@@ -189,48 +197,42 @@ class CommentServiceTest extends AppWebTestCase
     public function testUpdateMultipleComment(): void
     {
         $user = $this->createUserContributeur();
-        $comment1 = $this->createComment(customData: ['status' => CommentConst::WAIT_VALIDATION, 'moderationComment' => 'toto']);
+        $comment1 = $this->createComment(
+            customData: ['status' => CommentConst::WAIT_VALIDATION, 'moderationComment' => 'toto'],
+        );
         $comment2 = $this->createComment(customData: ['status' => CommentConst::WAIT_VALIDATION]);
 
         $data = [
-            "selected" => [
-                $comment1->getId(),
-                $comment2->getId()
-            ],
-            "status" => CommentConst::VALIDATE,
-            "moderateComment" => ""
+            'selected' => [$comment1->getId(), $comment2->getId()],
+            'status' => CommentConst::VALIDATE,
+            'moderateComment' => '',
         ];
 
         $this->commentService->updateMultipleComment($data, $user);
         $repository = $this->em->getRepository(Comment::class);
         $comments = $repository->findAll();
-        foreach($comments as $comment)
-        {
+        foreach ($comments as $comment) {
             $this->assertEquals(CommentConst::VALIDATE, $comment->getStatus());
             $this->assertNull($comment->getModerationComment());
         }
 
-        $comment3 = $this->createComment(customData: ['status' => CommentConst::VALIDATE, 'moderationComment' => 'toto']);
+        $comment3 = $this->createComment(
+            customData: ['status' => CommentConst::VALIDATE, 'moderationComment' => 'toto'],
+        );
         $comment4 = $this->createComment(customData: ['status' => CommentConst::VALIDATE]);
 
         $message = self::getFaker()->text(20);
         $data = [
-            "selected" => [
-                $comment1->getId(),
-                $comment2->getId(),
-                $comment3->getId(),
-                $comment4->getId()
-            ],
-            "status" => CommentConst::MODERATE,
-            "moderateComment" => $message
+            'selected' => [$comment1->getId(), $comment2->getId(), $comment3->getId(), $comment4->getId()],
+            'status' => CommentConst::MODERATE,
+            'moderateComment' => $message,
         ];
 
         $this->commentService->updateMultipleComment($data, $user);
         $repository = $this->em->getRepository(Comment::class);
         $this->em->clear();
         $comments = $repository->findAll();
-        foreach($comments as $comment)
-        {
+        foreach ($comments as $comment) {
             $this->assertEquals(CommentConst::MODERATE, $comment->getStatus());
             $this->assertEquals($message, $comment->getModerationComment());
         }

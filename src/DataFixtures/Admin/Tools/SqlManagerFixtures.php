@@ -30,7 +30,7 @@ class SqlManagerFixtures extends AppFixtures implements FixtureGroupInterface, O
             $sqlManager = new SqlManager();
             foreach ($sqlManagerData as $key => $value) {
                 switch ($key) {
-                    case "user" :
+                    case 'user':
                         $sqlManager->setUser($this->getReference($value, User::class));
                         break;
                     default:

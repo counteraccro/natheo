@@ -1,7 +1,7 @@
 when@dev:
     _pentatrion_vite:
         prefix: /build
-        resource: "@PentatrionViteBundle/Resources/config/routing.yaml"
+        resource: '@PentatrionViteBundle/Resources/config/routing.yaml'
 
     _profiler_vite:
         path: /_profiler/vite

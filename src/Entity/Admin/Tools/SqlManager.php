@@ -12,7 +12,7 @@ use App\Utils\Installation\InstallationConst;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name : "sql_manager")]
+#[ORM\Table(name: 'sql_manager')]
 #[ORM\Entity(repositoryClass: SqlManagerRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class SqlManager

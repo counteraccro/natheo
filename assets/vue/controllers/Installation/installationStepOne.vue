@@ -4,17 +4,16 @@
  * @version 1.0
  * Formulaire de création / édition d'une FAQ
  */
-import axios from "axios";
+import axios from 'axios';
 
 export default {
-  name: "Installation-step-one",
-  components: {
-  },
+  name: 'Installation-step-one',
+  components: {},
   props: {
     urls: Object,
     translate: Object,
     locales: Object,
-    datas: Object
+    datas: Object,
   },
   data() {
     return {
@@ -24,7 +23,7 @@ export default {
         isConnected: null,
         loading: false,
         updateFile: 0,
-        testConn: 0
+        testConn: 0,
       },
       createDatabase: {
         valideName: null,
@@ -33,57 +32,54 @@ export default {
         updateSecret: null,
         createBdd: null,
         createTable: null,
-        redirect : null,
-        error : null,
+        redirect: null,
+        error: null,
         showBtn: true,
       },
-    }
+    };
   },
   mounted() {
     this.bddConfig = this.datas.bdd_config;
     this.checkConnexion();
 
-    if(this.bddConfig.version !== "") {
-      this.createDatabase.valideVersion = true
+    if (this.bddConfig.version !== '') {
+      this.createDatabase.valideVersion = true;
     }
-    if(this.bddConfig.bdd_name !== "") {
-      this.createDatabase.valideName = true
+    if (this.bddConfig.bdd_name !== '') {
+      this.createDatabase.valideName = true;
     }
   },
 
   computed: {},
 
   methods: {
-
     /**
      * Mise à jour fichier env
      */
     updateConfigBddEnv(type) {
-
       this.testConnexion.loading = true;
       this.testConnexion.updateFile = 1;
       this.testConnexion.testConn = 1;
       this.testConnexion.isConnected = null;
 
-      axios.post(this.urls.update_env, {
-        'config_key': this.datas.config_key.database_url,
-        'config': this.bddConfig,
-        'type': type
-      }).then((response) => {
-
-        if(response.data.success) {
-          this.testConnexion.updateFile = 2;
-          this.checkConnexion();
-        }
-        else {
-          this.testConnexion.updateFile = 3;
-        }
-
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-
-      });
+      axios
+        .post(this.urls.update_env, {
+          config_key: this.datas.config_key.database_url,
+          config: this.bddConfig,
+          type: type,
+        })
+        .then((response) => {
+          if (response.data.success) {
+            this.testConnexion.updateFile = 2;
+            this.checkConnexion();
+          } else {
+            this.testConnexion.updateFile = 3;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {});
     },
 
     /**
@@ -91,31 +87,33 @@ export default {
      */
     checkConnexion() {
       this.testConnexion.testConn = 1;
-      axios.get(this.urls.check_database).then((response) => {
-
-        this.testConnexion.isConnected = response.data.connexion;
-        if (this.testConnexion.isConnected) {
-          this.testConnexion.testConn = 2;
-        } else {
-          this.testConnexion.testConn = 3;
-        }
-
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.testConnexion.loading = false;
-      });
+      axios
+        .get(this.urls.check_database)
+        .then((response) => {
+          this.testConnexion.isConnected = response.data.connexion;
+          if (this.testConnexion.isConnected) {
+            this.testConnexion.testConn = 2;
+          } else {
+            this.testConnexion.testConn = 3;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.testConnexion.loading = false;
+        });
     },
 
     isConnectedCardBorder() {
       if (this.testConnexion.isConnected === null) {
-        return "";
+        return '';
       }
 
       if (this.testConnexion.isConnected) {
-        return "border-success";
+        return 'border-success';
       } else {
-        return "border-danger";
+        return 'border-danger';
       }
     },
 
@@ -125,15 +123,14 @@ export default {
      */
     isConnectedCardHeaderClass() {
       if (this.testConnexion.isConnected === null) {
-        return "";
+        return '';
       }
 
       if (this.testConnexion.isConnected) {
-        return "text-bg-success";
+        return 'text-bg-success';
       } else {
-        return "text-bg-danger";
+        return 'text-bg-danger';
       }
-
     },
 
     /**
@@ -166,7 +163,7 @@ export default {
      */
     checkValideField(event, type) {
       let value = event.target.value;
-      this.createDatabase[type] = !(value === "" || value.length === 0);
+      this.createDatabase[type] = !(value === '' || value.length === 0);
     },
 
     /**
@@ -175,9 +172,8 @@ export default {
      * @return {string}
      */
     isValideInput(type) {
-
       if (this.createDatabase[type] === null) {
-        return "";
+        return '';
       }
 
       if (!this.createDatabase[type]) {
@@ -191,20 +187,17 @@ export default {
      * Active ou désactive le bouton "créer la bdd"
      * @return {string}
      */
-    canCreateBdd()
-    {
-      if(this.createDatabase.valideName && this.createDatabase.valideVersion)
-      {
-        return "";
+    canCreateBdd() {
+      if (this.createDatabase.valideName && this.createDatabase.valideVersion) {
+        return '';
       }
-      return "disabled";
+      return 'disabled';
     },
 
     /**
      * Création de l'ensemble des données (table + schema)
      */
-    createAllDataBdd()
-    {
+    createAllDataBdd() {
       this.createDatabase.updateFile = 1;
       this.createDatabase.createBdd = null;
       this.createDatabase.createTable = null;
@@ -212,100 +205,106 @@ export default {
       this.createDatabase.updateSecret = null;
       this.createDatabase.showBtn = false;
 
-      axios.post(this.urls.update_env, {
-        'config_key': this.datas.config_key.database_url,
-        'config': this.bddConfig,
-        'type': this.datas.option_connexion.create_database
-      }).then((response) => {
-        if(response.data.success) {
-          this.createDatabase.updateFile = 2;
-          this.updateSecret();
-        }
-        else {
-          this.createDatabase.updateFile = 3;
-          this.createDatabase.error = response.data.error;
-          this.createDatabase.showBtn = true;
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-
-      });
+      axios
+        .post(this.urls.update_env, {
+          config_key: this.datas.config_key.database_url,
+          config: this.bddConfig,
+          type: this.datas.option_connexion.create_database,
+        })
+        .then((response) => {
+          if (response.data.success) {
+            this.createDatabase.updateFile = 2;
+            this.updateSecret();
+          } else {
+            this.createDatabase.updateFile = 3;
+            this.createDatabase.error = response.data.error;
+            this.createDatabase.showBtn = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {});
     },
 
     /**
      * Met à jour APP_SECRET
      */
-    updateSecret()
-    {
+    updateSecret() {
       this.createDatabase.updateSecret = 1;
-      axios.get(this.urls.update_app_secret, {}).then((response) => {
-        if(response.data.success) {
-          this.createDatabase.updateSecret = 2;
-          this.createDatabaseCom();
-        }
-        else {
-          this.createDatabase.updateSecret = 3;
-          this.createDatabase.error = response.data.error;
-          this.createDatabase.showBtn = true;
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-
-      });
+      axios
+        .get(this.urls.update_app_secret, {})
+        .then((response) => {
+          if (response.data.success) {
+            this.createDatabase.updateSecret = 2;
+            this.createDatabaseCom();
+          } else {
+            this.createDatabase.updateSecret = 3;
+            this.createDatabase.error = response.data.error;
+            this.createDatabase.showBtn = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {});
     },
 
     /** Création de la base de donnée **/
-    createDatabaseCom()
-    {
+    createDatabaseCom() {
       this.createDatabase.createBdd = 1;
-      axios.get(this.urls.create_bdd, {}).then((response) => {
-        if(response.data.success) {
-          this.createDatabase.createBdd = 2;
-          this.createSchema();
-        }
-        else {
-          this.createDatabase.createBdd = 3;
-          this.createDatabase.error = response.data.error;
-          this.createDatabase.showBtn = true;
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-
-      });
+      axios
+        .get(this.urls.create_bdd, {})
+        .then((response) => {
+          if (response.data.success) {
+            this.createDatabase.createBdd = 2;
+            this.createSchema();
+          } else {
+            this.createDatabase.createBdd = 3;
+            this.createDatabase.error = response.data.error;
+            this.createDatabase.showBtn = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {});
     },
 
     /** Création de la base de donnée **/
-    createSchema()
-    {
+    createSchema() {
       this.createDatabase.createTable = 1;
-      axios.get(this.urls.create_schema, {}).then((response) => {
-        if(response.data.success) {
-          this.createDatabase.createTable = 2;
-          this.createDatabase.redirect = true;
-        }
-        else {
-          this.createDatabase.createTable = 3;
-          this.createDatabase.error = response.data.error;
-          this.createDatabase.showBtn = true;
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        document.location.href= this.urls.step_2;
-      });
-    }
+      axios
+        .get(this.urls.create_schema, {})
+        .then((response) => {
+          if (response.data.success) {
+            this.createDatabase.createTable = 2;
+            this.createDatabase.redirect = true;
+          } else {
+            this.createDatabase.createTable = 3;
+            this.createDatabase.error = response.data.error;
+            this.createDatabase.showBtn = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          document.location.href = this.urls.step_2;
+        });
+    },
   },
-}
+};
 </script>
 
 <template>
-
-  <div id="installation-step-one" class="col-lg-8 mx-auto p-4 py-md-5" :class="this.loading === true ? 'block-grid' : ''">
+  <div
+    id="installation-step-one"
+    class="col-lg-8 mx-auto p-4 py-md-5"
+    :class="this.loading === true ? 'block-grid' : ''"
+  >
     <div v-if="this.loading" class="overlay">
-      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
+      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000">
         <div class="spinner-border text-primary" role="status"></div>
         <span class="txt-overlay">{{ this.translate.loading }}</span>
       </div>
@@ -317,39 +316,36 @@ export default {
     </div>
 
     <h1 class="text-body-emphasis">{{ this.translate.title_thx_h1 }}</h1>
-    <p>
-      {{ this.translate.description_thx_1 }} <br/>
-    </p>
+    <p>{{ this.translate.description_thx_1 }} <br /></p>
 
     <h1 class="text-body-emphasis">{{ this.translate.title_h1 }}</h1>
     <p>
-      {{ this.translate.description_1 }} <br/>
+      {{ this.translate.description_1 }} <br />
       {{ this.translate.description_2 }}
     </p>
 
     <div class="card" :class="this.isConnectedCardBorder()">
-      <div class="card-header" :class="this.isConnectedCardHeaderClass()" v-html="this.isConnectedCardHeader()">
-      </div>
+      <div class="card-header" :class="this.isConnectedCardHeaderClass()" v-html="this.isConnectedCardHeader()"></div>
       <div class="card-body">
-
         <div class="row">
-
           <div class="col">
             <div class="mb-3">
               <label for="bdd-config-type" class="form-label">{{ this.translate.config_bdd_input_type_label }}</label>
-              <input type="text" class="form-control" id="bdd-config-type" v-model="this.bddConfig.type" disabled>
+              <input type="text" class="form-control" id="bdd-config-type" v-model="this.bddConfig.type" disabled />
             </div>
           </div>
           <div class="col">
             <div class="mb-3">
               <label for="bdd-config-login" class="form-label">{{ this.translate.config_bdd_input_login_label }}</label>
-              <input type="text" class="form-control" id="bdd-config-login" v-model="this.bddConfig.login">
+              <input type="text" class="form-control" id="bdd-config-login" v-model="this.bddConfig.login" />
             </div>
           </div>
           <div class="col">
             <div class="mb-3">
-              <label for="bdd-config-password" class="form-label">{{ this.translate.config_bdd_input_password_label }}</label>
-              <input type="text" class="form-control" id="bdd-config-password" v-model="this.bddConfig.password">
+              <label for="bdd-config-password" class="form-label">{{
+                this.translate.config_bdd_input_password_label
+              }}</label>
+              <input type="text" class="form-control" id="bdd-config-password" v-model="this.bddConfig.password" />
             </div>
           </div>
         </div>
@@ -357,34 +353,39 @@ export default {
           <div class="col">
             <div class="mb-3">
               <label for="bdd-config-password" class="form-label">{{ this.translate.config_bdd_input_ip_label }}</label>
-              <input type="text" class="form-control" id="bdd-config-password" v-model="this.bddConfig.ip">
+              <input type="text" class="form-control" id="bdd-config-password" v-model="this.bddConfig.ip" />
             </div>
           </div>
           <div class="col">
             <div class="mb-3">
-              <label for="bdd-config-password" class="form-label">{{ this.translate.config_bdd_input_port_label }}</label>
-              <input type="text" class="form-control" id="bdd-config-password" v-model="this.bddConfig.port">
+              <label for="bdd-config-password" class="form-label">{{
+                this.translate.config_bdd_input_port_label
+              }}</label>
+              <input type="text" class="form-control" id="bdd-config-password" v-model="this.bddConfig.port" />
             </div>
           </div>
-          <div class="col">
-          </div>
+          <div class="col"></div>
         </div>
       </div>
 
       <div class="card-footer text-body-secondary">
-
         <div class="row">
-
           <div class="col">
             <div v-if="this.testConnexion.testConn === 1">
               <span class="spinner-border spinner-border-sm text-secondary" aria-hidden="true"></span>
               <i>&nbsp;{{ this.translate.config_bdd_loading_msg_test_connexion }}</i>
             </div>
             <div v-else-if="this.testConnexion.testConn === 2">
-              <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_test_connexion_success }}</span>
+              <span class="text-success"
+                ><i class="bi bi-check-circle-fill"> </i>
+                {{ this.translate.config_bdd_loading_msg_test_connexion_success }}</span
+              >
             </div>
             <div v-else-if="this.testConnexion.testConn === 3">
-              <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_test_connexion_ko }}</span>
+              <span class="text-danger"
+                ><i class="bi bi-x-circle-fill"> </i>
+                {{ this.translate.config_bdd_loading_msg_test_connexion_ko }}</span
+              >
             </div>
           </div>
 
@@ -394,23 +395,30 @@ export default {
               <i>&nbsp;{{ this.translate.config_bdd_loading_msg_update_file }}</i>
             </div>
             <div v-else-if="this.testConnexion.updateFile === 2">
-              <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_update_file }}</span>
+              <span class="text-success"
+                ><i class="bi bi-check-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_update_file }}</span
+              >
             </div>
             <div v-else-if="this.testConnexion.updateFile === 3">
-              <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_update_file }}</span>
+              <span class="text-danger"
+                ><i class="bi bi-x-circle-fill"> </i> {{ this.translate.config_bdd_loading_msg_update_file }}</span
+              >
             </div>
-
           </div>
 
           <div class="col">
-            <div class="btn btn-secondary float-end" :class="this.testConnexion.loading ? 'disabled' : ''"
-                @click="this.updateConfigBddEnv(this.datas.option_connexion.test_connexion)">
-        <span v-if="!this.testConnexion.loading">
-          <i class="bi  bi-gear-fill"></i> {{ this.translate.config_bdd_btn_test_config }}
-        </span>
+            <div
+              class="btn btn-secondary float-end"
+              :class="this.testConnexion.loading ? 'disabled' : ''"
+              @click="this.updateConfigBddEnv(this.datas.option_connexion.test_connexion)"
+            >
+              <span v-if="!this.testConnexion.loading">
+                <i class="bi bi-gear-fill"></i> {{ this.translate.config_bdd_btn_test_config }}
+              </span>
               <span v-else>
-          <span class="spinner-border spinner-border-sm" aria-hidden="true"></span> {{ this.translate.config_bdd_btn_test_config_loading }}
-        </span>
+                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                {{ this.translate.config_bdd_btn_test_config_loading }}
+              </span>
             </div>
           </div>
         </div>
@@ -420,7 +428,7 @@ export default {
     <div v-if="this.testConnexion.isConnected" class="mt-3">
       <h1 class="text-body-emphasis">{{ this.translate.create_bdd_h1 }}</h1>
       <p>
-        {{ this.translate.create_bdd_description_1 }} <br/>
+        {{ this.translate.create_bdd_description_1 }} <br />
         {{ this.translate.create_bdd_description_2 }}
       </p>
 
@@ -428,9 +436,18 @@ export default {
         <h5 class="alert-heading"><i class="bi bi-info-circle"></i> {{ this.translate.create_bdd_alert_title }}</h5>
         <p>{{ this.translate.create_bdd_alert_text_1 }}</p>
         <ul>
-          <li>{{ this.translate.create_bdd_alert_text_2 }} : <b>{{ this.datas.bdd_params.database_schema }}</b></li>
-          <li>{{ this.translate.create_bdd_alert_text_3 }} :
-            <b v-html="this.datas.bdd_params.database_prefix === '' ? this.translate.create_bdd_alert_text_4 : this.datas.bdd_params.database_prefix + '_'"></b>
+          <li>
+            {{ this.translate.create_bdd_alert_text_2 }} : <b>{{ this.datas.bdd_params.database_schema }}</b>
+          </li>
+          <li>
+            {{ this.translate.create_bdd_alert_text_3 }} :
+            <b
+              v-html="
+                this.datas.bdd_params.database_prefix === ''
+                  ? this.translate.create_bdd_alert_text_4
+                  : this.datas.bdd_params.database_prefix + '_'
+              "
+            ></b>
           </li>
         </ul>
         <p>
@@ -439,19 +456,23 @@ export default {
       </div>
 
       <div class="card">
-        <div class="card-header">
-          <i class="bi bi-database-add"></i> {{ this.translate.create_bdd_title }}
-        </div>
+        <div class="card-header"><i class="bi bi-database-add"></i> {{ this.translate.create_bdd_title }}</div>
         <div class="card-body">
-
           <div class="row">
-
             <div class="col">
               <div class="mb-3">
-                <label for="bdd-config-bdd-name" class="form-label">{{ this.translate.create_bdd_input_bdd_name_label }}</label>
-                <input type="text" class="form-control" :class="this.isValideInput('valideName')" id="bdd-config-bdd-name"
-                    v-model="this.bddConfig.bdd_name" @keyup="this.sanitizeBddName"
-                    @change="(event) => this.checkValideField(event,'valideName')">
+                <label for="bdd-config-bdd-name" class="form-label">{{
+                  this.translate.create_bdd_input_bdd_name_label
+                }}</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  :class="this.isValideInput('valideName')"
+                  id="bdd-config-bdd-name"
+                  v-model="this.bddConfig.bdd_name"
+                  @keyup="this.sanitizeBddName"
+                  @change="(event) => this.checkValideField(event, 'valideName')"
+                />
                 <div id="bdd-config-bdd-name-error" class="invalid-feedback">
                   {{ this.translate.create_bdd_input_bdd_name_error }}
                 </div>
@@ -460,9 +481,17 @@ export default {
 
             <div class="col">
               <div class="mb-3">
-                <label for="bdd-config-bdd-name" class="form-label">{{ this.translate.create_bdd_input_version_label }}</label>
-                <input type="text" class="form-control" :class="this.isValideInput('valideVersion')"
-                    id="bdd-config-bdd-name" v-model="this.bddConfig.version" @change="(event) => this.checkValideField(event,'valideVersion')">
+                <label for="bdd-config-bdd-name" class="form-label">{{
+                  this.translate.create_bdd_input_version_label
+                }}</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  :class="this.isValideInput('valideVersion')"
+                  id="bdd-config-bdd-name"
+                  v-model="this.bddConfig.version"
+                  @change="(event) => this.checkValideField(event, 'valideVersion')"
+                />
                 <div id="bdd-config-bdd-name-error" class="invalid-feedback">
                   {{ this.translate.create_bdd_input_version_error }}
                 </div>
@@ -471,7 +500,9 @@ export default {
 
             <div class="col">
               <div class="mb-3">
-                <label for="bdd-config-bdd-name" class="form-label">{{ this.translate.create_bdd_input_charset_label }}</label>
+                <label for="bdd-config-bdd-name" class="form-label">{{
+                  this.translate.create_bdd_input_charset_label
+                }}</label>
                 <select class="form-select" id="bdd-config-bdd-name" v-model="this.bddConfig.charset">
                   <option value="utf8">utf8</option>
                   <option value="utf8mb4">utf8mb4</option>
@@ -481,8 +512,13 @@ export default {
           </div>
         </div>
         <div class="card-footer text-body-secondary">
-          <div v-if="this.createDatabase.showBtn" class="btn btn-secondary float-end" :class="this.canCreateBdd()" @click="this.createAllDataBdd()">
-           <i class="bi bi-plus-square"></i> {{ this.translate.create_bdd_btn_create }}
+          <div
+            v-if="this.createDatabase.showBtn"
+            class="btn btn-secondary float-end"
+            :class="this.canCreateBdd()"
+            @click="this.createAllDataBdd()"
+          >
+            <i class="bi bi-plus-square"></i> {{ this.translate.create_bdd_btn_create }}
           </div>
 
           <div v-if="this.createDatabase.updateFile === 1">
@@ -490,10 +526,14 @@ export default {
             <i>&nbsp;{{ this.translate.create_bdd_loading_msg_update_file }}</i>
           </div>
           <div v-else-if="this.createDatabase.updateFile === 2">
-            <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_update_file }}</span>
+            <span class="text-success"
+              ><i class="bi bi-check-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_update_file }}</span
+            >
           </div>
           <div v-else-if="this.createDatabase.updateFile === 3">
-            <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_update_file }}</span>
+            <span class="text-danger"
+              ><i class="bi bi-x-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_update_file }}</span
+            >
           </div>
 
           <div v-if="this.createDatabase.updateSecret === 1">
@@ -501,10 +541,15 @@ export default {
             <i>&nbsp;{{ this.translate.create_bdd_loading_msg_update_secret }}</i>
           </div>
           <div v-else-if="this.createDatabase.updateSecret === 2">
-            <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_update_secret_success }}</span>
+            <span class="text-success"
+              ><i class="bi bi-check-circle-fill"> </i>
+              {{ this.translate.create_bdd_loading_msg_update_secret_success }}</span
+            >
           </div>
           <div v-else-if="this.createDatabase.updateSecret === 3">
-            <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_update_secret_ko }}</span>
+            <span class="text-danger"
+              ><i class="bi bi-x-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_update_secret_ko }}</span
+            >
           </div>
 
           <div v-if="this.createDatabase.createBdd === 1">
@@ -512,10 +557,15 @@ export default {
             <i>&nbsp;{{ this.translate.create_bdd_loading_msg_create_bdd }}</i>
           </div>
           <div v-else-if="this.createDatabase.createBdd === 2">
-            <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_create_bdd_success }}</span>
+            <span class="text-success"
+              ><i class="bi bi-check-circle-fill"> </i>
+              {{ this.translate.create_bdd_loading_msg_create_bdd_success }}</span
+            >
           </div>
           <div v-else-if="this.createDatabase.createBdd === 3">
-            <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_create_bdd_ko }}</span>
+            <span class="text-danger"
+              ><i class="bi bi-x-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_create_bdd_ko }}</span
+            >
           </div>
 
           <div v-if="this.createDatabase.createTable === 1">
@@ -523,23 +573,30 @@ export default {
             <i>&nbsp;{{ this.translate.create_bdd_loading_msg_create_table }}</i>
           </div>
           <div v-else-if="this.createDatabase.createTable === 2">
-            <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_create_table_success }}</span>
+            <span class="text-success"
+              ><i class="bi bi-check-circle-fill"> </i>
+              {{ this.translate.create_bdd_loading_msg_create_table_success }}</span
+            >
           </div>
           <div v-else-if="this.createDatabase.createTable === 3">
-            <span class="text-danger"><i class="bi bi-x-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_create_table_ko }}</span>
+            <span class="text-danger"
+              ><i class="bi bi-x-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_create_table_ko }}</span
+            >
           </div>
 
           <div v-if="this.createDatabase.redirect">
-            <span class="text-success"><i class="bi bi-check-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_success }}</span>
+            <span class="text-success"
+              ><i class="bi bi-check-circle-fill"> </i> {{ this.translate.create_bdd_loading_msg_success }}</span
+            >
           </div>
 
           <div v-else-if="this.createDatabase.error !== null">
-            <span class="text-danger">&emsp;<i class="bi bi-arrow-return-right"> </i> {{ this.createDatabase.error }}</span>
+            <span class="text-danger"
+              >&emsp;<i class="bi bi-arrow-return-right"> </i> {{ this.createDatabase.error }}</span
+            >
           </div>
         </div>
       </div>
-
     </div>
-
   </div>
 </template>

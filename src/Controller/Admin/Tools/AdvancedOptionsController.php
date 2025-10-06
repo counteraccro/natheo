@@ -21,8 +21,13 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[\Symfony\Component\Routing\Annotation\Route('/admin/{_locale}/advanced-options', name: 'admin_advanced_options_',
-    requirements: ['_locale' => '%app.supported_locales%'])]
+#[
+    \Symfony\Component\Routing\Annotation\Route(
+        '/admin/{_locale}/advanced-options',
+        name: 'admin_advanced_options_',
+        requirements: ['_locale' => '%app.supported_locales%'],
+    ),
+]
 #[IsGranted('ROLE_SUPER_ADMIN')]
 class AdvancedOptionsController extends AbstractController
 {
@@ -35,15 +40,13 @@ class AdvancedOptionsController extends AbstractController
     #[Route('/', name: 'index', methods: ['GET'])]
     public function index(
         AdvancedOptionsTranslate $advancedOptionsTranslate,
-        ParameterBagInterface $parameterBag
-    ): Response
-    {
-
+        ParameterBagInterface $parameterBag,
+    ): Response {
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'advanced_options',
             Breadcrumb::BREADCRUMB => [
-                'advanced_options.index.page_title_h1' => '#'
-            ]
+                'advanced_options.index.page_title_h1' => '#',
+            ],
         ];
 
         return $this->render('admin/tools/advanced_options/index.html.twig', [
@@ -51,13 +54,13 @@ class AdvancedOptionsController extends AbstractController
             'translate' => $advancedOptionsTranslate->getTranslate(),
             'data' => [
                 'app_debug' => $parameterBag->get('kernel.debug'),
-                'app_env' => $parameterBag->get('kernel.environment')
+                'app_env' => $parameterBag->get('kernel.environment'),
             ],
             'urls' => [
                 'switch_env' => $this->generateUrl('admin_advanced_options_switch_env'),
                 'reset_data' => $this->generateUrl('admin_advanced_options_reset_data'),
                 'reset_database' => $this->generateUrl('admin_advanced_options_reset_database'),
-            ]
+            ],
         ]);
     }
 
@@ -74,9 +77,8 @@ class AdvancedOptionsController extends AbstractController
     public function switchEnv(
         TranslatorInterface $translator,
         EnvFile $envFile,
-        CommandService $commandService
-    ): JsonResponse
-    {
+        CommandService $commandService,
+    ): JsonResponse {
         $envFile->switchAppEnv();
         $commandService->reloadCache();
         $return['msg'] = $translator->trans('advanced_options.success.switch.env', domain: 'advanced_options');
@@ -94,10 +96,7 @@ class AdvancedOptionsController extends AbstractController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/reset-data', name: 'reset_data', methods: ['GET'])]
-    public function resetData(
-        TranslatorInterface $translator,
-        CommandService $commandService
-    ): JsonResponse
+    public function resetData(TranslatorInterface $translator, CommandService $commandService): JsonResponse
     {
         set_time_limit(0);
 
@@ -121,10 +120,7 @@ class AdvancedOptionsController extends AbstractController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/reset-database', name: 'reset_database', methods: ['GET'])]
-    public function resetDatabase(
-        TranslatorInterface $translator,
-        CommandService $commandService
-    ): JsonResponse
+    public function resetDatabase(TranslatorInterface $translator, CommandService $commandService): JsonResponse
     {
         set_time_limit(0);
 

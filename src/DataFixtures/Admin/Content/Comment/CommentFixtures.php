@@ -17,9 +17,8 @@ use Symfony\Component\Yaml\Yaml;
 
 class CommentFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
-
-    const COMMENT_FIXTURES_DATA_FILE = 'content' . DIRECTORY_SEPARATOR . 'Comment' . DIRECTORY_SEPARATOR .
-    'comment_fixtures_data.yaml';
+    const COMMENT_FIXTURES_DATA_FILE =
+        'content' . DIRECTORY_SEPARATOR . 'Comment' . DIRECTORY_SEPARATOR . 'comment_fixtures_data.yaml';
 
     /**
      * @param ObjectManager $manager
@@ -29,7 +28,7 @@ class CommentFixtures extends AppFixtures implements FixtureGroupInterface, Orde
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::COMMENT_FIXTURES_DATA_FILE);
 
-        if($data === null) {
+        if ($data === null) {
             return;
         }
 
@@ -37,10 +36,10 @@ class CommentFixtures extends AppFixtures implements FixtureGroupInterface, Orde
             $comment = new Comment();
             foreach ($commentData as $key => $value) {
                 switch ($key) {
-                    case "userModeration" :
+                    case 'userModeration':
                         $comment->setUserModeration($this->getReference($value, User::class));
                         break;
-                    case "page":
+                    case 'page':
                         $comment->setPage($this->getReference($value, Page::class));
                         break;
                     default:

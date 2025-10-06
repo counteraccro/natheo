@@ -26,10 +26,13 @@ class OptionSystemControllerTest extends AppWebTestCase
         $this->client->loginUser($userSuperAdm, 'admin');
         $this->client->request('GET', $this->router->generate('admin_option-system_change'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('option_system.page_title_h1', domain: 'option_system'));
+        $this->assertSelectorTextContains(
+            'h1',
+            $this->translator->trans('option_system.page_title_h1', domain: 'option_system'),
+        );
     }
 
-    public function testUpdate() : void
+    public function testUpdate(): void
     {
         $this->checkNoAccess('admin_option-system_ajax_update', methode: 'POST');
         $userSuperAdm = $this->createUserSuperAdmin();
@@ -38,9 +41,13 @@ class OptionSystemControllerTest extends AppWebTestCase
 
         $data = [
             'key' => OptionSystemKey::OS_THEME_SITE,
-            'value' => 'theme-test-unit'
+            'value' => 'theme-test-unit',
         ];
-        $this->client->request('POST', $this->router->generate('admin_option-system_ajax_update'), content: json_encode($data));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_option-system_ajax_update'),
+            content: json_encode($data),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -52,8 +59,5 @@ class OptionSystemControllerTest extends AppWebTestCase
         $optionSystemService = $this->container->get(OptionSystemService::class);
         $result = $optionSystemService->getValueByKey(OptionSystemKey::OS_THEME_SITE);
         $this->assertEquals('theme-test-unit', $result);
-
     }
 }
-
-

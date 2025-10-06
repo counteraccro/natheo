@@ -25,8 +25,12 @@ trait MediaFixturesTrait
      * @param bool $persist
      * @return Media
      */
-    public function createMedia(?MediaFolder $mediaFolder = null, ?User $user = null, array $customData = [], bool $persist = true): Media
-    {
+    public function createMedia(
+        ?MediaFolder $mediaFolder = null,
+        ?User $user = null,
+        array $customData = [],
+        bool $persist = true,
+    ): Media {
         $name = self::getFaker()->slug(2);
         $extension = 'jpg';
         $path = DIRECTORY_SEPARATOR . $name . '.' . $extension;
@@ -43,8 +47,6 @@ trait MediaFixturesTrait
         }
 
         $types = [MediaConst::MEDIA_TYPE_IMG, MediaConst::MEDIA_TYPE_FILE];
-
-
 
         $data = [
             'name' => $name,

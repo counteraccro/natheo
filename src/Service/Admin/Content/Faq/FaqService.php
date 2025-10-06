@@ -59,7 +59,6 @@ class FaqService extends AppAdminService
 
             $action = $this->generateTabAction($element);
 
-
             $isDisabled = '';
             if ($element->isDisabled()) {
                 $isDisabled = '<i class="bi bi-eye-slash"></i>';
@@ -76,12 +75,13 @@ class FaqService extends AppAdminService
             $data[] = [
                 $translator->trans('faq.grid.id', domain: 'faq') => $element->getId() . ' ' . $isDisabled,
                 $translator->trans('faq.grid.title', domain: 'faq') => $titre,
-                $translator->trans('faq.grid.nb_categories', domain: 'faq') =>
-                    $element->getFaqStatistiqueByKey(FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES)->getValue(),
-                $translator->trans('faq.grid.nb_questions', domain: 'faq') =>
-                    $element->getFaqStatistiqueByKey(FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS)->getValue(),
-                $translator->trans('faq.grid.update_at', domain: 'faq') => $element
-                    ->getUpdateAt()->format('d/m/y H:i'),
+                $translator->trans('faq.grid.nb_categories', domain: 'faq') => $element
+                    ->getFaqStatistiqueByKey(FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES)
+                    ->getValue(),
+                $translator->trans('faq.grid.nb_questions', domain: 'faq') => $element
+                    ->getFaqStatistiqueByKey(FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS)
+                    ->getValue(),
+                $translator->trans('faq.grid.update_at', domain: 'faq') => $element->getUpdateAt()->format('d/m/y H:i'),
                 GridService::KEY_ACTION => $action,
             ];
         }
@@ -90,10 +90,9 @@ class FaqService extends AppAdminService
             GridService::KEY_NB => $nb,
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
-            GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate)
+            GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate),
         ];
         return $gridService->addAllDataRequiredGrid($tabReturn);
-
     }
 
     /**
@@ -132,32 +131,32 @@ class FaqService extends AppAdminService
         }
         $label = $faq->getFaqTranslationByLocale($locale)->getTitle();
 
-        $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
+        $actionDisabled = [
+            'label' => '<i class="bi bi-eye-slash-fill"></i>',
             'type' => 'put',
             'url' => $router->generate('admin_faq_disabled', ['id' => $faq->getId()]),
             'ajax' => true,
             'confirm' => true,
-            'msgConfirm' => $translator->trans('faq.confirm.disabled.msg', ['label' => $label], 'faq')];
+            'msgConfirm' => $translator->trans('faq.confirm.disabled.msg', ['label' => $label], 'faq'),
+        ];
         if ($faq->isDisabled()) {
             $actionDisabled = [
                 'label' => '<i class="bi bi-eye-fill"></i>',
                 'type' => 'put',
                 'url' => $router->generate('admin_faq_disabled', ['id' => $faq->getId()]),
-                'ajax' => true
+                'ajax' => true,
             ];
         }
 
         $actionDelete = '';
         if ($optionSystemService->canDelete()) {
-
             $actionDelete = [
                 'label' => '<i class="bi bi-trash"></i>',
                 'type' => 'delete',
                 'url' => $router->generate('admin_faq_delete', ['id' => $faq->getId()]),
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $translator->trans('faq.confirm.delete.msg', ['label' =>
-                    $label], 'faq')
+                'msgConfirm' => $translator->trans('faq.confirm.delete.msg', ['label' => $label], 'faq'),
             ];
         }
 
@@ -168,10 +167,12 @@ class FaqService extends AppAdminService
         }
 
         // Bouton edit
-        $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
+        $actions[] = [
+            'label' => '<i class="bi bi-pencil-fill"></i>',
             'id' => $faq->getId(),
             'url' => $router->generate('admin_faq_update', ['id' => $faq->getId()]),
-            'ajax' => false];
+            'ajax' => false,
+        ];
 
         return $actions;
     }
@@ -236,11 +237,9 @@ class FaqService extends AppAdminService
         }
 
         if ($allQuestion) {
-            return $translator->trans('faq.category.enabled.all.questions.ok',
-                ['category' => $title], domain: 'faq');
+            return $translator->trans('faq.category.enabled.all.questions.ok', ['category' => $title], domain: 'faq');
         }
         return $translator->trans('faq.category.enabled.ok', ['category' => $title], domain: 'faq');
-
     }
 
     /**
@@ -262,9 +261,13 @@ class FaqService extends AppAdminService
             /** @var FaqCategory $faqCategory */
             $return[] = [
                 'id' => $faqCategory->getId(),
-                'value' => $translator->trans('faq.position', domain: 'faq')
-                    . ' ' . $faqCategory->getRenderOrder() . ' - '
-                    . $faqCategory->getFaqCategoryTranslationByLocale($this->getLocales()['current'])->getTitle()];
+                'value' =>
+                    $translator->trans('faq.position', domain: 'faq') .
+                    ' ' .
+                    $faqCategory->getRenderOrder() .
+                    ' - ' .
+                    $faqCategory->getFaqCategoryTranslationByLocale($this->getLocales()['current'])->getTitle(),
+            ];
         }
         return $return;
     }
@@ -288,9 +291,13 @@ class FaqService extends AppAdminService
             /** @var FaqQuestion $faqQuestion */
             $return[] = [
                 'id' => $faqQuestion->getId(),
-                'value' => $translator->trans('faq.position', domain: 'faq')
-                    . ' ' . $faqQuestion->getRenderOrder() . ' - '
-                    . $faqQuestion->getFaqQuestionTranslationByLocale($this->getLocales()['current'])->getTitle()];
+                'value' =>
+                    $translator->trans('faq.position', domain: 'faq') .
+                    ' ' .
+                    $faqQuestion->getRenderOrder() .
+                    ' - ' .
+                    $faqQuestion->getFaqQuestionTranslationByLocale($this->getLocales()['current'])->getTitle(),
+            ];
         }
         return $return;
     }
@@ -321,7 +328,6 @@ class FaqService extends AppAdminService
         $orderEntity = new OrderEntity($faq->getFaqCategories());
         $orderEntity->orderByIdByAction($idCatOrder, $lastCat->getId(), $orderPosition);
         $this->save($faq);
-
     }
 
     /**
@@ -398,12 +404,11 @@ class FaqService extends AppAdminService
      * @throws NotFoundExceptionInterface
      */
     public function updateFaqStatistique(
-        Faq    $faq,
+        Faq $faq,
         string $key,
         string $action = FaqConst::STATISTIQUE_ACTION_ADD,
-        int    $value = 1
-    ): void
-    {
+        int $value = 1,
+    ): void {
         $faqStat = $faq->getFaqStatistiqueByKey($key);
         $val = $faqStat->getValue();
         switch ($action) {
@@ -440,8 +445,12 @@ class FaqService extends AppAdminService
 
         $faq->removeFaqCategory($faqCategory);
         $this->updateFaqStatistique($faq, FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES, FaqConst::STATISTIQUE_ACTION_SUB);
-        $this->updateFaqStatistique($faq, FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
-            FaqConst::STATISTIQUE_ACTION_SUB, $nbQuestion);
+        $this->updateFaqStatistique(
+            $faq,
+            FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
+            FaqConst::STATISTIQUE_ACTION_SUB,
+            $nbQuestion,
+        );
 
         $orderEntity = new OrderEntity($faq->getFaqCategories());
         $orderEntity->reOrderList();
@@ -462,8 +471,11 @@ class FaqService extends AppAdminService
         $faqCategory = $faqQuestion->getFaqCategory();
 
         $faqCategory->removeFaqQuestion($faqQuestion);
-        $this->updateFaqStatistique($faqCategory->getFaq(), FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
-            FaqConst::STATISTIQUE_ACTION_SUB);
+        $this->updateFaqStatistique(
+            $faqCategory->getFaq(),
+            FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
+            FaqConst::STATISTIQUE_ACTION_SUB,
+        );
 
         $orderEntity = new OrderEntity($faqCategory->getFaqQuestions());
         $orderEntity->reOrderList();

@@ -292,7 +292,6 @@ class PageServiceTest extends AppWebTestCase
      */
     public function testGetFormatedListePageForInternalLink(): void
     {
-
         $page = $this->createPage(customData: ['disabled' => false]);
         foreach ($this->locales as $locale) {
             $this->createPageTranslation($page, ['locale' => $locale]);
@@ -323,7 +322,8 @@ class PageServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetListeTitlePageByLocale() :void {
+    public function testGetListeTitlePageByLocale(): void
+    {
         $page = $this->createPage(customData: ['disabled' => false]);
         foreach ($this->locales as $locale) {
             $this->createPageTranslation($page, ['locale' => $locale]);

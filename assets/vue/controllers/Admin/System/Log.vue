@@ -4,19 +4,19 @@
  * @version 2.0
  * Permet d'afficher les logs sous forme de tableau d'après les fichiers de logs
  */
-import Grid from '../../../Components/Grid/Grid.vue'
-import GridPaginate from "../../../Components/Grid/GridPaginate.vue";
-import axios from "axios";
-import Modal from "../../../Components/Global/Modal.vue";
-import Toast from "../../../Components/Global/Toast.vue";
+import Grid from '../../../Components/Grid/Grid.vue';
+import GridPaginate from '../../../Components/Grid/GridPaginate.vue';
+import axios from 'axios';
+import Modal from '../../../Components/Global/Modal.vue';
+import Toast from '../../../Components/Global/Toast.vue';
 
 export default {
-  name: "Log",
+  name: 'Log',
   components: {
     Toast,
     Modal,
     GridPaginate,
-    Grid
+    Grid,
   },
   props: {
     url_select: String,
@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       select: [],
-      time: "all",
+      time: 'all',
       trans: [],
       searchQuery: '',
       gridColumns: [],
@@ -57,9 +57,9 @@ export default {
         toastError: {
           show: false,
           msg: '',
-        }
-      }
-    }
+        },
+      },
+    };
   },
   mounted() {
     this.loadData();
@@ -67,14 +67,17 @@ export default {
   methods: {
     loadData() {
       this.loading = true;
-      axios.get(this.url_select + '/' + this.time).then((response) => {
-        this.select = response.data.files;
-        this.trans = response.data.trans;
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => this.loading = false);
-    }
-    ,
+      axios
+        .get(this.url_select + '/' + this.time)
+        .then((response) => {
+          this.select = response.data.files;
+          this.trans = response.data.trans;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => (this.loading = false));
+    },
     changeTimeFiltre(event) {
       this.time = event.target.value;
       this.selectFile = '';
@@ -87,7 +90,7 @@ export default {
      */
     selectLogFile(event) {
       this.selectFile = event.target.value;
-      if (this.selectFile !== "") {
+      if (this.selectFile !== '') {
         this.loadContentFile(this.page, this.limit);
       }
     },
@@ -99,35 +102,36 @@ export default {
      */
     loadContentFile(page, limit) {
       this.loading = true;
-      axios.get(this.url_load_log_file + '/' + this.selectFile + '/' + page + '/' + limit).then((response) => {
+      axios
+        .get(this.url_load_log_file + '/' + this.selectFile + '/' + page + '/' + limit)
+        .then((response) => {
+          if (response.data.success === true) {
+            if (page === 1) {
+              this.toasts.toastSuccess.msg = response.data.msg;
+              this.toasts.toastSuccess.show = true;
+            }
 
-        if (response.data.success === true) {
-          if (page === 1) {
-            this.toasts.toastSuccess.msg = response.data.msg;
-            this.toasts.toastSuccess.show = true;
+            this.gridColumns = response.data.grid.column;
+            this.gridData = response.data.grid.data;
+            this.nbElements = response.data.grid.nb;
+            this.sortOrders = this.gridColumns.reduce((o, key) => ((o[key] = 1), o), {});
+            this.listLimit = JSON.parse(response.data.grid.listLimit);
+            this.translate = JSON.parse(response.data.grid.translate.genericGrid);
+            this.translateGridPaginate = JSON.parse(response.data.grid.translate.gridPaginate);
+            this.translateGrid = JSON.parse(response.data.grid.translate.grid);
+            this.cPage = page;
+            this.cLimit = limit;
+            this.taille = response.data.grid.taille;
+          } else {
+            this.toasts.toastError.msg = response.data.msg;
+            this.toasts.toastError.show = true;
+            this.loading = false;
           }
-
-          this.gridColumns = response.data.grid.column;
-          this.gridData = response.data.grid.data;
-          this.nbElements = response.data.grid.nb;
-          this.sortOrders = this.gridColumns.reduce((o, key) => ((o[key] = 1), o), {});
-          this.listLimit = JSON.parse(response.data.grid.listLimit);
-          this.translate = JSON.parse(response.data.grid.translate.genericGrid);
-          this.translateGridPaginate = JSON.parse(response.data.grid.translate.gridPaginate);
-          this.translateGrid = JSON.parse(response.data.grid.translate.grid);
-          this.cPage = page;
-          this.cLimit = limit;
-          this.taille = response.data.grid.taille;
-
-        } else {
-          this.toasts.toastError.msg = response.data.msg;
-          this.toasts.toastError.show = true;
-          this.loading = false;
-        }
-
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => this.loading = false);
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => (this.loading = false));
     },
 
     /**
@@ -137,38 +141,43 @@ export default {
      * @returns {boolean}
      */
     delete(file, confirm) {
-
       if (confirm) {
         this.showModal();
-        this.msgConfirm = this.trans.log_delete_file_confirm + ' <b>' + this.selectFile + '</b> ? <br /> ' + this.trans.log_delete_file_confirm_2;
+        this.msgConfirm =
+          this.trans.log_delete_file_confirm +
+          ' <b>' +
+          this.selectFile +
+          '</b> ? <br /> ' +
+          this.trans.log_delete_file_confirm_2;
         return false;
       }
 
       this.hideModal();
       this.loading = true;
 
-      axios.delete(this.url_delete_file + '/' + file, {}).then((response) => {
+      axios
+        .delete(this.url_delete_file + '/' + file, {})
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccess.msg = response.data.msg;
+            this.toasts.toastSuccess.show = true;
 
-        if (response.data.success === true) {
-          this.toasts.toastSuccess.msg = response.data.msg;
-          this.toasts.toastSuccess.show = true;
-
-          document.getElementById('select-time').getElementsByTagName('option')[0].selected = 'selected';
-          document.getElementById('select-file').getElementsByTagName('option')[0].selected = 'selected';
-          this.time = '';
-          this.selectFile = '';
-          this.loadDeleteFile = false;
-          this.loadData();
-
-        } else {
-          this.toasts.toastError.msg = response.data.msg;
-          this.toasts.toastError.show = true;
-          this.loading = false;
-        }
-
-      }).catch((error) => {
-        console.error(error);
-      }).finally();
+            document.getElementById('select-time').getElementsByTagName('option')[0].selected = 'selected';
+            document.getElementById('select-file').getElementsByTagName('option')[0].selected = 'selected';
+            this.time = '';
+            this.selectFile = '';
+            this.loadDeleteFile = false;
+            this.loadData();
+          } else {
+            this.toasts.toastError.msg = response.data.msg;
+            this.toasts.toastError.show = true;
+            this.loading = false;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally();
     },
 
     /**
@@ -190,10 +199,10 @@ export default {
      * @param nameToast
      */
     closeToast(nameToast) {
-      this.toasts[nameToast].show = false
+      this.toasts[nameToast].show = false;
     },
-  }
-}
+  },
+};
 </script>
 
 <template>
@@ -222,60 +231,74 @@ export default {
     </div>
 
     <div v-if="selectFile !== ''">
-
       <div class="card mt-3 border border-secondary">
         <div class="card-header text-bg-secondary">
-
           <div class="dropdown float-end">
-            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button
+              class="btn btn-secondary btn-sm dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
               <i class="bi bi-list"></i>
             </button>
             <ul class="dropdown-menu">
               <li>
-                <a class="dropdown-item" href="#" @click="this.loadContentFile(1, this.limit)"><i class="bi bi-arrow-clockwise"></i> {{ this.trans.log_btn_reload }}</a>
+                <a class="dropdown-item" href="#" @click="this.loadContentFile(1, this.limit)"
+                  ><i class="bi bi-arrow-clockwise"></i> {{ this.trans.log_btn_reload }}</a
+                >
               </li>
               <li>
-                <a class="dropdown-item" target="_blank" :href="this.url_download_file + '/' +this.selectFile"><i class="bi bi-download"></i> {{ this.trans.log_btn_download_file }}</a>
+                <a class="dropdown-item" target="_blank" :href="this.url_download_file + '/' + this.selectFile"
+                  ><i class="bi bi-download"></i> {{ this.trans.log_btn_download_file }}</a
+                >
               </li>
               <li>
-                <a class="dropdown-item" href="#" @click="this.delete(this.selectFile, true)"><i class="bi bi-x-lg"></i> {{ this.trans.log_btn_delete_file }}</a>
+                <a class="dropdown-item" href="#" @click="this.delete(this.selectFile, true)"
+                  ><i class="bi bi-x-lg"></i> {{ this.trans.log_btn_delete_file }}</a
+                >
               </li>
             </ul>
           </div>
 
-          <div class="mt-1"><i class="bi bi-file-earmark-text"></i>
+          <div class="mt-1">
+            <i class="bi bi-file-earmark-text"></i>
             {{ this.trans.log_file }}
-            <b>{{ this.selectFile }}</b> - {{ this.trans.log_file_size }} {{ this.taille }} - {{ this.nbElements }} {{ this.trans.log_file_ligne }}
+            <b>{{ this.selectFile }}</b> - {{ this.trans.log_file_size }} {{ this.taille }} - {{ this.nbElements }}
+            {{ this.trans.log_file_ligne }}
           </div>
-
         </div>
         <div class="card-body">
-
           <form id="search">
             <div class="input-group mb-3">
               <span class="input-group-text"><i class="bi bi-search"></i></span>
-              <input type="text" class="form-control no-control" :placeholder="translate.placeholder" v-model="searchQuery">
+              <input
+                type="text"
+                class="form-control no-control"
+                :placeholder="translate.placeholder"
+                v-model="searchQuery"
+              />
             </div>
           </form>
 
           <div>
-
             <Grid
-                :data="gridData"
-                :columns="gridColumns"
-                :filter-key="searchQuery"
-                :sortOrders="sortOrders"
-                :translate="translateGrid"
-                @redirect-action="redirectAction">
+              :data="gridData"
+              :columns="gridColumns"
+              :filter-key="searchQuery"
+              :sortOrders="sortOrders"
+              :translate="translateGrid"
+              @redirect-action="redirectAction"
+            >
             </Grid>
             <GridPaginate
-                :current-page="cPage"
-                :nb-elements="limit"
-                :nb-elements-total="nbElements"
-                :url="url_load_log_file"
-                :list-limit="listLimit"
-                :translate="translateGridPaginate"
-                @change-page-event="loadContentFile"
+              :current-page="cPage"
+              :nb-elements="limit"
+              :nb-elements-total="nbElements"
+              :url="url_load_log_file"
+              :list-limit="listLimit"
+              :translate="translateGridPaginate"
+              @change-page-event="loadContentFile"
             >
             </GridPaginate>
           </div>
@@ -286,24 +309,26 @@ export default {
       <div class="card-header text-bg-secondary">
         <div class="btn btn-secondary btn-sm float-end disabled"><i class="bi bi-list"></i></div>
         <div class="mt-1">
-          <i class="bi bi-file-earmark-text"></i> {{ this.trans.log_file }} -- - {{ this.trans.log_file_size }} 0 Ko - 0 {{ this.trans.log_file_ligne }}
+          <i class="bi bi-file-earmark-text"></i> {{ this.trans.log_file }} -- - {{ this.trans.log_file_size }} 0 Ko - 0
+          {{ this.trans.log_file_ligne }}
         </div>
       </div>
       <div class="card-body">
-        <p class="text-center"><i class="bi bi-info-circle"></i> <i>{{ this.trans.log_empty_file }}</i></p>
+        <p class="text-center">
+          <i class="bi bi-info-circle"></i> <i>{{ this.trans.log_empty_file }}</i>
+        </p>
       </div>
     </div>
   </div>
 
   <!-- modale confirmation suppression -->
   <modal
-      :id="'modalDeleteLog'"
-      :show="this.modalDeleteLog"
-      @close-modal="this.hideModal"
-      :option-show-close-btn="false">
-    <template #title>
-      <i class="bi bi-sign-stop"></i> {{ translate.confirmTitle }}
-    </template>
+    :id="'modalDeleteLog'"
+    :show="this.modalDeleteLog"
+    @close-modal="this.hideModal"
+    :option-show-close-btn="false"
+  >
+    <template #title> <i class="bi bi-sign-stop"></i> {{ translate.confirmTitle }} </template>
     <template #body>
       <div v-html="this.msgConfirm"></div>
     </template>
@@ -320,12 +345,11 @@ export default {
 
   <!-- toast -->
   <div class="toast-container position-fixed top-0 end-0 p-2">
-
     <toast
-        :id="'toastSuccess'"
-        :option-class-header="'text-success'"
-        :show="this.toasts.toastSuccess.show"
-        @close-toast="this.closeToast"
+      :id="'toastSuccess'"
+      :option-class-header="'text-success'"
+      :show="this.toasts.toastSuccess.show"
+      @close-toast="this.closeToast"
     >
       <template #header>
         <i class="bi bi-check-circle-fill"></i> &nbsp;
@@ -338,10 +362,10 @@ export default {
     </toast>
 
     <toast
-        :id="'toastError'"
-        :option-class-header="'text-danger'"
-        :show="this.toasts.toastError.show"
-        @close-toast="this.closeToast"
+      :id="'toastError'"
+      :option-class-header="'text-danger'"
+      :show="this.toasts.toastError.show"
+      @close-toast="this.closeToast"
     >
       <template #header>
         <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
@@ -352,7 +376,5 @@ export default {
         <div v-html="this.toasts.toastError.msg"></div>
       </template>
     </toast>
-
   </div>
-
 </template>

@@ -29,7 +29,10 @@ class AppFrontService extends AppFrontHandlerService
         $template = $optionSystemService->getValueByKey(OptionSystemKey::OS_THEME_FRONT_SITE);
 
         if (!in_array($template, Template::toArray())) {
-            throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR,$translator->trans('front.error.not.template', ['template' => $template], domain: 'front_error') );
+            throw new HttpException(
+                Response::HTTP_INTERNAL_SERVER_ERROR,
+                $translator->trans('front.error.not.template', ['template' => $template], domain: 'front_error'),
+            );
         }
         return 'front/' . $template;
     }
@@ -47,7 +50,10 @@ class AppFrontService extends AppFrontHandlerService
         $template = $optionSystemService->getValueByKey(OptionSystemKey::OS_THEME_FRONT_SITE);
 
         if (!in_array($template, Template::toArray())) {
-            throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR,$translator->trans('front.error.not.scriptTag', ['template' => $template], domain: 'front_error') );
+            throw new HttpException(
+                Response::HTTP_INTERNAL_SERVER_ERROR,
+                $translator->trans('front.error.not.scriptTag', ['template' => $template], domain: 'front_error'),
+            );
         }
         return 'front_' . $template;
     }
