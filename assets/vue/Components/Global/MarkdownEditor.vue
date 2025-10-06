@@ -434,7 +434,7 @@ export default {
     </div>
 
     <ModalNat
-        :id="'modalMarkdownEditor'"
+        :id="this.getNameModale('modalMarkdownEditor')"
         :show="this.tabModal.modalMarkdownEditor"
         @close-modal="this.closeModal"
         :optionModalSize="'modal-lg'"
@@ -462,7 +462,7 @@ export default {
     </ModalNat>
 
     <ModalNat
-        :id="'modalInternalLink'"
+        :id="this.getNameModale('modalInternalLink')"
         :show="this.tabModal.modalInternalLink"
         @close-modal="this.closeModal"
         :optionModalSize="'modal-lg'"
