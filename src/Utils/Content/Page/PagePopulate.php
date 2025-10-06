@@ -103,6 +103,11 @@ class PagePopulate
         $this->page->setStatus($this->populate['status']);
         $this->page->setCategory($this->populate['category']);
         $this->page->setLandingPage(boolval($this->populate['landingPage']));
+        if (isset($this->populate['isOpenComment'])) {
+            $this->page->setIsOpenComment(boolval($this->populate['isOpenComment']));
+        } else {
+            $this->page->setIsOpenComment(boolval($this->populate['openComment']));
+        }
         $this->page->setIsOpenComment(boolval($this->populate['openComment']));
         $this->page->setRuleComment($this->populate['ruleComment']);
         $this->page->setHeaderImg($this->populate['headerImg']);
@@ -152,11 +157,11 @@ class PagePopulate
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function populateMenus():void
+    private function populateMenus(): void
     {
         if (isset($this->populate[self::KEY_MENUS])) {
             $this->page->getMenus()->clear();
-            if(!in_array('-1', $this->populate[self::KEY_MENUS])) {
+            if (!in_array('-1', $this->populate[self::KEY_MENUS])) {
                 foreach ($this->populate[self::KEY_MENUS] as $dataMenu) {
                     $menu = $this->pageService->findOneById(Menu::class, $dataMenu);
                     $this->page->addMenu($menu);
@@ -218,7 +223,7 @@ class PagePopulate
                 $pageMeta = $this->mergeData($pageMeta, $dataMeta,
                     ['id', 'page', 'pageMetaTranslations']);
 
-                foreach($dataMeta['pageMetaTranslations'] as $dataPageMetaTranslation) {
+                foreach ($dataMeta['pageMetaTranslations'] as $dataPageMetaTranslation) {
                     $pageMetaTranslation = new PageMetaTranslation();
                     $pageMetaTranslation = $this->mergeData($pageMetaTranslation, $dataPageMetaTranslation, ['id', 'pageMeta']);
                     $pageMeta->addPageMetaTranslation($pageMetaTranslation);
