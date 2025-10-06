@@ -175,23 +175,23 @@ class MenuServiceTest extends AppWebTestCase
         $this->assertCount(4, $verif->getMenuElements());
         foreach ($verif->getMenuElements() as $menuElement) {
             switch ($menuElement->getId()) {
-                case $menuElementPos2Row1->getId() :
+                case $menuElementPos2Row1->getId():
                     $this->assertEquals(1, $menuElement->getColumnPosition());
                     $this->assertEquals(2, $menuElement->getRowPosition());
                     break;
-                case $menuElementPos1Row1->getId() :
+                case $menuElementPos1Row1->getId():
                     $this->assertEquals(1, $menuElement->getColumnPosition());
                     $this->assertEquals(1, $menuElement->getRowPosition());
                     break;
-                case $menuElementPos1Row2->getId() :
+                case $menuElementPos1Row2->getId():
                     $this->assertEquals(1, $menuElement->getColumnPosition());
                     $this->assertEquals(3, $menuElement->getRowPosition());
                     break;
-                case $menuElementPos1Row3->getId() :
+                case $menuElementPos1Row3->getId():
                     $this->assertEquals(1, $menuElement->getColumnPosition());
                     $this->assertEquals(4, $menuElement->getRowPosition());
                     break;
-                default :
+                default:
             }
         }
     }
@@ -212,8 +212,16 @@ class MenuServiceTest extends AppWebTestCase
         $menuElementPos3Row4 = $this->createMenuElement($menu, customData: ['columnPosition' => 3, 'rowPosition' => 4]);
         $menuElementPos5Row4 = $this->createMenuElement($menu, customData: ['columnPosition' => 5, 'rowPosition' => 4]);
 
-        $subMenuElementPos1Row3 = $this->createMenuElement($menu, $menuElementPos1Row1, customData: ['columnPosition' => 1, 'rowPosition' => 3]);
-        $subMenuElementPos1Row5 = $this->createMenuElement($menu, $menuElementPos1Row1, customData: ['columnPosition' => 1, 'rowPosition' => 5]);
+        $subMenuElementPos1Row3 = $this->createMenuElement(
+            $menu,
+            $menuElementPos1Row1,
+            customData: ['columnPosition' => 1, 'rowPosition' => 3],
+        );
+        $subMenuElementPos1Row5 = $this->createMenuElement(
+            $menu,
+            $menuElementPos1Row1,
+            customData: ['columnPosition' => 1, 'rowPosition' => 5],
+        );
 
         $this->menuService->regenerateColumnAndRowPosition($menu->getMenuElements()->toArray());
 
@@ -223,17 +231,17 @@ class MenuServiceTest extends AppWebTestCase
         foreach ($verif->getMenuElements() as $menuElement) {
             /** @var MenuElement $menuElement */
             switch ($menuElement->getId()) {
-                case $menuElementPos1Row1->getId() :
+                case $menuElementPos1Row1->getId():
                     $this->assertEquals(1, $menuElement->getColumnPosition());
                     $this->assertEquals(1, $menuElement->getRowPosition());
 
                     foreach ($menuElement->getChildren() as $menuElementChild) {
                         switch ($menuElementChild->getId()) {
-                            case $subMenuElementPos1Row3->getId() :
+                            case $subMenuElementPos1Row3->getId():
                                 $this->assertEquals(1, $menuElementChild->getColumnPosition());
                                 $this->assertEquals(1, $menuElementChild->getRowPosition());
                                 break;
-                            case $subMenuElementPos1Row5->getId() :
+                            case $subMenuElementPos1Row5->getId():
                                 $this->assertEquals(1, $menuElementChild->getColumnPosition());
                                 $this->assertEquals(2, $menuElementChild->getRowPosition());
                                 break;
@@ -242,30 +250,29 @@ class MenuServiceTest extends AppWebTestCase
                     }
 
                     break;
-                case $menuElementPos1Row5->getId() :
+                case $menuElementPos1Row5->getId():
                     $this->assertEquals(1, $menuElement->getColumnPosition());
                     $this->assertEquals(2, $menuElement->getRowPosition());
                     break;
-                case $menuElementPos1Row7->getId() :
+                case $menuElementPos1Row7->getId():
                     $this->assertEquals(1, $menuElement->getColumnPosition());
                     $this->assertEquals(3, $menuElement->getRowPosition());
                     break;
-                case $menuElementPos3Row1->getId() :
+                case $menuElementPos3Row1->getId():
                     $this->assertEquals(2, $menuElement->getColumnPosition());
                     $this->assertEquals(1, $menuElement->getRowPosition());
                     break;
-                case $menuElementPos3Row4->getId() :
+                case $menuElementPos3Row4->getId():
                     $this->assertEquals(2, $menuElement->getColumnPosition());
                     $this->assertEquals(2, $menuElement->getRowPosition());
                     break;
-                case $menuElementPos5Row4->getId() :
+                case $menuElementPos5Row4->getId():
                     $this->assertEquals(3, $menuElement->getColumnPosition());
                     $this->assertEquals(1, $menuElement->getRowPosition());
                     break;
-                default :
+                default:
             }
         }
-
     }
 
     /**
@@ -288,7 +295,6 @@ class MenuServiceTest extends AppWebTestCase
         $result = $this->menuService->getMenuElementByMenuAndParent($menu->getId(), $menuElement->getId());
         $this->assertIsArray($result);
         $this->assertCount(1, $result);
-
     }
 
     /**
@@ -332,18 +338,21 @@ class MenuServiceTest extends AppWebTestCase
         $menuElementPos1Row3 = $this->createMenuElement($menu, customData: ['columnPosition' => 1, 'rowPosition' => 3]);
         $this->createMenuElement($menu, $menuElementPos1Row3, customData: ['columnPosition' => 1, 'rowPosition' => 1]);
         $this->createMenuElement($menu, $menuElementPos1Row3, customData: ['columnPosition' => 1, 'rowPosition' => 2]);
-        $subMenuElement3 = $this->createMenuElement($menu, $menuElementPos1Row3, customData: ['columnPosition' => 1, 'rowPosition' => 3]);
-
+        $subMenuElement3 = $this->createMenuElement(
+            $menu,
+            $menuElementPos1Row3,
+            customData: ['columnPosition' => 1, 'rowPosition' => 3],
+        );
 
         $data = [
-            "reorderType" => "row",
-            "newColumn" => 1,
-            "oldColumn" => 1,
-            "newRow" => 1,
-            "oldRow" => 3,
-            "id" => $menuElementPos1Row3->getId(),
-            "parent" => "",
-            "menu" => $menu->getId()
+            'reorderType' => 'row',
+            'newColumn' => 1,
+            'oldColumn' => 1,
+            'newRow' => 1,
+            'oldRow' => 3,
+            'id' => $menuElementPos1Row3->getId(),
+            'parent' => '',
+            'menu' => $menu->getId(),
         ];
 
         $this->menuService->reorderMenuElement($data);
@@ -355,14 +364,14 @@ class MenuServiceTest extends AppWebTestCase
         $this->assertEquals(2, $verif2->getRowPosition());
 
         $data = [
-            "reorderType" => "column",
-            "newColumn" => 2,
-            "oldColumn" => 1,
-            "newRow" => 1,
-            "oldRow" => 3,
-            "id" => $subMenuElement3->getId(),
-            "parent" => $menuElementPos1Row3->getId(),
-            "menu" => $menu->getId()
+            'reorderType' => 'column',
+            'newColumn' => 2,
+            'oldColumn' => 1,
+            'newRow' => 1,
+            'oldRow' => 3,
+            'id' => $subMenuElement3->getId(),
+            'parent' => $menuElementPos1Row3->getId(),
+            'menu' => $menu->getId(),
         ];
 
         $this->menuService->reorderMenuElement($data);
@@ -378,11 +387,12 @@ class MenuServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetListMenus() :void {
+    public function testGetListMenus(): void
+    {
         for ($i = 0; $i < 10; $i++) {
             $this->createMenu();
         }
-        $menu = $this->createMenu(customData : ['disabled' => false]);
+        $menu = $this->createMenu(customData: ['disabled' => false]);
 
         $result = $this->menuService->getListMenus();
         $this->assertIsArray($result);
@@ -406,15 +416,15 @@ class MenuServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testSwitchDefaultMenuToFalse() :void
+    public function testSwitchDefaultMenuToFalse(): void
     {
         for ($i = 0; $i < 3; $i++) {
-            $this->createMenu(customData : ['position' => MenuConst::POSITION_HEADER, 'defaultMenu' => 0]);
+            $this->createMenu(customData: ['position' => MenuConst::POSITION_HEADER, 'defaultMenu' => 0]);
         }
         $menuH = $this->createMenu(customData: ['position' => MenuConst::POSITION_HEADER, 'defaultMenu' => 1]);
 
         for ($i = 0; $i < 3; $i++) {
-            $rMenuF = $this->createMenu(customData : ['position' => MenuConst::POSITION_FOOTER, 'defaultMenu' => 0]);
+            $rMenuF = $this->createMenu(customData: ['position' => MenuConst::POSITION_FOOTER, 'defaultMenu' => 0]);
         }
         $menuF = $this->createMenu(customData: ['position' => MenuConst::POSITION_FOOTER, 'defaultMenu' => 1]);
 
@@ -423,16 +433,14 @@ class MenuServiceTest extends AppWebTestCase
         /** @var MenuRepository $menuRepo */
         $menuRepo = $this->em->getRepository(Menu::class);
         $result = $menuRepo->findAll();
-        foreach($result as $menu) {
+        foreach ($result as $menu) {
             /** @var Menu $menu */
-            if($menu->getPosition() === MenuConst::POSITION_FOOTER) {
+            if ($menu->getPosition() === MenuConst::POSITION_FOOTER) {
                 $this->assertFalse($menu->isDefaultMenu());
-            }
-            else {
-                if($menu->getId() === $menuH->getId()) {
+            } else {
+                if ($menu->getId() === $menuH->getId()) {
                     $this->assertTrue($menu->isDefaultMenu());
-                }
-                else {
+                } else {
                     $this->assertFalse($menu->isDefaultMenu());
                 }
             }

@@ -37,8 +37,8 @@ class ApiTokenController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'api_token',
             Breadcrumb::BREADCRUMB => [
-                'api_token.page_title_h1' => '#'
-            ]
+                'api_token.page_title_h1' => '#',
+            ],
         ];
 
         return $this->render('admin/system/api_token/index.html.twig', [
@@ -61,11 +61,10 @@ class ApiTokenController extends AppAdminController
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     public function loadGridData(
         ApiTokenService $apiTokenService,
-        Request         $request,
-        int             $page = 1,
-        int             $limit = 20
-    ): JsonResponse
-    {
+        Request $request,
+        int $page = 1,
+        int $limit = 20,
+    ): JsonResponse {
         $search = $request->query->get('search');
         $grid = $apiTokenService->getAllFormatToGrid($page, $limit, $search);
         return $this->json($grid);
@@ -83,10 +82,9 @@ class ApiTokenController extends AppAdminController
     #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', methods: ['PUT'])]
     public function updateDisabled(
         #[MapEntity(id: 'id')] ApiToken $apiToken,
-        ApiTokenService                 $apiTokenService,
-        TranslatorInterface             $translator,
-    ): JsonResponse
-    {
+        ApiTokenService $apiTokenService,
+        TranslatorInterface $translator,
+    ): JsonResponse {
         $apiToken->setDisabled(!$apiToken->isDisabled());
         $apiTokenService->save($apiToken);
 
@@ -110,10 +108,9 @@ class ApiTokenController extends AppAdminController
     #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(
         #[MapEntity(id: 'id')] ApiToken $apiToken,
-        ApiTokenService                 $apiTokenService,
-        TranslatorInterface             $translator,
-    ): JsonResponse
-    {
+        ApiTokenService $apiTokenService,
+        TranslatorInterface $translator,
+    ): JsonResponse {
         $msg = $translator->trans('api_token.remove.success', ['label' => $apiToken->getName()], domain: 'api_token');
         $apiTokenService->remove($apiToken);
         return $this->json($apiTokenService->getResponseAjax($msg));
@@ -132,11 +129,10 @@ class ApiTokenController extends AppAdminController
     #[Route('/add', name: 'add', methods: ['GET'])]
     #[Route('/update/{id}', name: 'update', methods: ['GET'])]
     public function add(
-        ApiTokenService                  $apiTokenService,
-        ApiTokenTranslate                $apiTokenTranslate,
-        #[MapEntity(id: 'id')] ?ApiToken $apiToken = null
-    ): Response
-    {
+        ApiTokenService $apiTokenService,
+        ApiTokenTranslate $apiTokenTranslate,
+        #[MapEntity(id: 'id')] ?ApiToken $apiToken = null,
+    ): Response {
         $breadcrumbTitle = 'api_token.update.page_title_h1';
         if ($apiToken === null) {
             $apiToken = new ApiToken();
@@ -147,8 +143,8 @@ class ApiTokenController extends AppAdminController
             Breadcrumb::DOMAIN => 'api_token',
             Breadcrumb::BREADCRUMB => [
                 'api_token.page_title' => 'admin_api_token_index',
-                $breadcrumbTitle => '#'
-            ]
+                $breadcrumbTitle => '#',
+            ],
         ];
 
         $translate = $apiTokenTranslate->getTranslate();
@@ -160,11 +156,11 @@ class ApiTokenController extends AppAdminController
             'apiToken' => $apiToken,
             'urls' => [
                 'generate_token' => $this->generateUrl('admin_api_token_generate_token'),
-                'save_api_token' => $this->generateUrl('admin_api_token_save')
+                'save_api_token' => $this->generateUrl('admin_api_token_save'),
             ],
             'datas' => [
-                'roles' => $apiTokenService->getRolesApi()
-            ]
+                'roles' => $apiTokenService->getRolesApi(),
+            ],
         ]);
     }
 
@@ -190,15 +186,16 @@ class ApiTokenController extends AppAdminController
      */
     #[Route('/save', name: 'save', methods: ['POST'])]
     public function saveApiToken(
-        Request             $request,
-        ApiTokenService     $apiTokenService,
+        Request $request,
+        ApiTokenService $apiTokenService,
         TranslatorInterface $translator,
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
         $id = $apiTokenService->createUpdateApiToken($data['apiToken']);
 
-        $response = $apiTokenService->getResponseAjax($translator->trans('api_token.save.success', domain: 'api_token'));
+        $response = $apiTokenService->getResponseAjax(
+            $translator->trans('api_token.save.success', domain: 'api_token'),
+        );
         $response['redirect'] = '';
         if ($data['apiToken']['id'] === null) {
             $response['redirect'] = $this->generateUrl('admin_api_token_update', ['id' => $id]);

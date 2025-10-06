@@ -42,20 +42,22 @@ class DatabaseTablePrefixListener
     {
         $classMetadata = $eventArgs->getClassMetadata();
 
-        if (!$classMetadata->isInheritanceTypeSingleTable() || $classMetadata->getName() === $classMetadata->rootEntityName) {
-
+        if (
+            !$classMetadata->isInheritanceTypeSingleTable() ||
+            $classMetadata->getName() === $classMetadata->rootEntityName
+        ) {
             $classMetadata->setPrimaryTable([
-                'name' => $this->schema . $this->prefix . $classMetadata->getTableName()
+                'name' => $this->schema . $this->prefix . $classMetadata->getTableName(),
             ]);
         }
 
         foreach ($classMetadata->getAssociationMappings() as $fieldName => $mapping) {
-
             $mapping = $mapping->toArray();
 
             if ($mapping['type'] === 8 && $mapping['isOwningSide']) {
                 $mappedTableName = $mapping['joinTable']['name'];
-                $classMetadata->associationMappings[$fieldName]['joinTable']['name'] = $this->schema . $this->prefix . $mappedTableName;
+                $classMetadata->associationMappings[$fieldName]['joinTable']['name'] =
+                    $this->schema . $this->prefix . $mappedTableName;
             }
         }
     }

@@ -4,8 +4,7 @@
  * @author Gourdon Aymeric
  * @version 1.0
  */
-import {marked} from "marked";
-
+import { marked } from 'marked';
 
 export default {
   name: 'Preview',
@@ -16,12 +15,12 @@ export default {
   data() {
     return {
       value: '',
-    }
+    };
   },
   mounted() {
-   this.value = marked(this.pValue);
+    this.value = marked(this.pValue);
   },
-}
+};
 </script>
 
 <template>

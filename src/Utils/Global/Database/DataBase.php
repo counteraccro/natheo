@@ -35,14 +35,18 @@ class DataBase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function __construct(#[AutowireLocator([
-        'entityManager' => EntityManagerInterface::class,
-        'connexion' => Connection::class,
-        'parameterBag' => ParameterBagInterface::class,
-        'rawQueryManager' => RawQueryManager::class,
-        'rawResultQueryManager' => RawResultQueryManager::class,
-    ])] private readonly ContainerInterface $handlers)
-    {
+    public function __construct(
+        #[
+            AutowireLocator([
+                'entityManager' => EntityManagerInterface::class,
+                'connexion' => Connection::class,
+                'parameterBag' => ParameterBagInterface::class,
+                'rawQueryManager' => RawQueryManager::class,
+                'rawResultQueryManager' => RawResultQueryManager::class,
+            ]),
+        ]
+        private readonly ContainerInterface $handlers,
+    ) {
         $this->entityManager = $this->handlers->get('entityManager');
         $this->connection = $this->handlers->get('connexion');
     }
@@ -77,8 +81,8 @@ class DataBase
         $schema = $parameterBag->get('app.default_database_schema');
 
         if ($tableName === null) {
-            if ($prefix !== "") {
-                $prefix .= "_";
+            if ($prefix !== '') {
+                $prefix .= '_';
             }
             $tableName = $prefix . 'user';
         }
@@ -131,10 +135,9 @@ class DataBase
 
         try {
             $schemaManager = $this->connection->createSchemaManager();
-            if ($schema !== "" && !in_array($schema, $schemaManager->listDatabases())) {
+            if ($schema !== '' && !in_array($schema, $schemaManager->listDatabases())) {
                 return false;
             }
-
         } catch (Exception) {
             return false;
         }
@@ -148,14 +151,13 @@ class DataBase
     public function getAllNameAndColumn(): array
     {
         $allMetadata = $this->entityManager->getMetadataFactory()->getAllMetadata();
-        $array = array_map(
-            function (ClassMetadata $meta) {
-                return [
-                    'name' => $meta->getTableName(),
-                    'columns' => $meta->getFieldNames(),
-                    'assocationMapping' => $meta->getAssociationMappings()
-                ];
-            }, $allMetadata);
+        $array = array_map(function (ClassMetadata $meta) {
+            return [
+                'name' => $meta->getTableName(),
+                'columns' => $meta->getFieldNames(),
+                'assocationMapping' => $meta->getAssociationMappings(),
+            ];
+        }, $allMetadata);
 
         $array = $this->mergeAssociationColumnsInColumns($array);
         $array = $this->convertFieldCamelCaseToSnakeCase($array);
@@ -210,16 +212,15 @@ class DataBase
     public function getNameAndColumByEntity(string $entity): array
     {
         $allMetadata = $this->entityManager->getMetadataFactory()->getAllMetadata();
-        $array = array_map(
-            function (ClassMetadata $meta) use ($entity) {
-                if ($entity === $meta->getName()) {
-                    return [
-                        'name' => $meta->getTableName(),
-                        'column' => $meta->getFieldNames()
-                    ];
-                }
-                return null;
-            }, $allMetadata);
+        $array = array_map(function (ClassMetadata $meta) use ($entity) {
+            if ($entity === $meta->getName()) {
+                return [
+                    'name' => $meta->getTableName(),
+                    'column' => $meta->getFieldNames(),
+                ];
+            }
+            return null;
+        }, $allMetadata);
 
         if (isset(array_values(array_filter($array))[0])) {
             return array_values(array_filter($array))[0];
@@ -236,12 +237,10 @@ class DataBase
         try {
             $statement = $this->entityManager->getConnection()->prepare($query);
         } catch (Exception $e) {
-
-
             return [
                 'result' => [],
                 'header' => [],
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ];
         }
 
@@ -265,6 +264,5 @@ class DataBase
             'header' => $header,
             'error' => '',
         ];
-
     }
 }

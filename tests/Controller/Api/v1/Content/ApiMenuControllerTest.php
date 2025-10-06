@@ -27,10 +27,16 @@ class ApiMenuControllerTest extends AppApiTestCase
         $this->em->flush();
 
         // Get menu by pageSlug
-        $this->client->request('GET', $this->router->generate('api_menu_find', ['api_version' => self::API_VERSION, 'page_slug' => $slug, 'locale' => 'fr']),
-            server: $this->getCustomHeaders(self::HEADER_READ)
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_menu_find', [
+                'api_version' => self::API_VERSION,
+                'page_slug' => $slug,
+                'locale' => 'fr',
+            ]),
+            server: $this->getCustomHeaders(self::HEADER_READ),
         );
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
@@ -48,10 +54,16 @@ class ApiMenuControllerTest extends AppApiTestCase
 
         $menu = $this->createMenuAllDataDefault();
         // Get menu By Id
-        $this->client->request('GET', $this->router->generate('api_menu_find', ['api_version' => self::API_VERSION, 'id' => $menu->getId(), 'locale' => 'fr']),
-            server: $this->getCustomHeaders(self::HEADER_READ)
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_menu_find', [
+                'api_version' => self::API_VERSION,
+                'id' => $menu->getId(),
+                'locale' => 'fr',
+            ]),
+            server: $this->getCustomHeaders(self::HEADER_READ),
         );
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
@@ -76,17 +88,27 @@ class ApiMenuControllerTest extends AppApiTestCase
     {
         $translator = $this->container->get(TranslatorInterface::class);
 
-        $this->client->request('GET', $this->router->generate('api_menu_find', ['api_version' => self::API_VERSION, 'page_slug' => 'azerty', 'id' => '2', 'locale' => 'fr']),
-            server: $this->getCustomHeaders(self::HEADER_READ)
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_menu_find', [
+                'api_version' => self::API_VERSION,
+                'page_slug' => 'azerty',
+                'id' => '2',
+                'locale' => 'fr',
+            ]),
+            server: $this->getCustomHeaders(self::HEADER_READ),
         );
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
 
         $this->assertEquals(403, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
         $this->checkStructureApiRetourError($content);
-        $this->assertEquals($translator->trans('api_errors.find.menu.id.slug.together', domain: 'api_errors'), $content['errors'][0]);
+        $this->assertEquals(
+            $translator->trans('api_errors.find.menu.id.slug.together', domain: 'api_errors'),
+            $content['errors'][0],
+        );
     }
 
     /**
@@ -97,17 +119,22 @@ class ApiMenuControllerTest extends AppApiTestCase
     {
         $translator = $this->container->get(TranslatorInterface::class);
 
-        $this->client->request('GET', $this->router->generate('api_menu_find', ['api_version' => self::API_VERSION, 'locale' => 'fr']),
-            server: $this->getCustomHeaders()
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_menu_find', ['api_version' => self::API_VERSION, 'locale' => 'fr']),
+            server: $this->getCustomHeaders(),
         );
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
 
         $this->assertEquals(403, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
         $this->checkStructureApiRetourError($content);
-        $this->assertEquals($translator->trans('api_errors.find.menu.not.id.slug.together', domain: 'api_errors'), $content['errors'][0]);
+        $this->assertEquals(
+            $translator->trans('api_errors.find.menu.not.id.slug.together', domain: 'api_errors'),
+            $content['errors'][0],
+        );
     }
 
     /**
@@ -118,17 +145,26 @@ class ApiMenuControllerTest extends AppApiTestCase
     {
         $translator = $this->container->get(TranslatorInterface::class);
 
-        $this->client->request('GET', $this->router->generate('api_menu_find', ['api_version' => self::API_VERSION, 'id' => '2', 'locale' => 'fr']),
-            server: $this->getCustomHeaders(self::HEADER_READ)
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_menu_find', [
+                'api_version' => self::API_VERSION,
+                'id' => '2',
+                'locale' => 'fr',
+            ]),
+            server: $this->getCustomHeaders(self::HEADER_READ),
         );
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
 
         $this->assertEquals(403, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
         $this->checkStructureApiRetourError($content);
-        $this->assertEquals($translator->trans('api_errors.find.menu.not.found', domain: 'api_errors'), $content['errors'][0]);
+        $this->assertEquals(
+            $translator->trans('api_errors.find.menu.not.found', domain: 'api_errors'),
+            $content['errors'][0],
+        );
     }
 
     /**
@@ -139,16 +175,25 @@ class ApiMenuControllerTest extends AppApiTestCase
     {
         $translator = $this->container->get(TranslatorInterface::class);
 
-        $this->client->request('GET', $this->router->generate('api_menu_find', ['api_version' => self::API_VERSION, 'page_slug' => 'azerty', 'locale' => 'fr']),
-            server: $this->getCustomHeaders(self::HEADER_WRONG)
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_menu_find', [
+                'api_version' => self::API_VERSION,
+                'page_slug' => 'azerty',
+                'locale' => 'fr',
+            ]),
+            server: $this->getCustomHeaders(self::HEADER_WRONG),
         );
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
 
         $this->assertEquals(401, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
         $this->checkStructureApiRetourError($content);
-        $this->assertEquals($translator->trans('api_errors.authentication.failure', domain: 'api_errors'), $content['errors'][0]);
+        $this->assertEquals(
+            $translator->trans('api_errors.authentication.failure', domain: 'api_errors'),
+            $content['errors'][0],
+        );
     }
 }

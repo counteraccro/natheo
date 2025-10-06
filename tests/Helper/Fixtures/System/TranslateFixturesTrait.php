@@ -21,24 +21,25 @@ trait TranslateFixturesTrait
      * @param array $customData
      * @return string
      */
-    public function createTranslateFile(string $filename = 'z_unit_test+intl-icu', string $locale = 'fr', array $customData = []): string
-    {
+    public function createTranslateFile(
+        string $filename = 'z_unit_test+intl-icu',
+        string $locale = 'fr',
+        array $customData = [],
+    ): string {
         $containerBag = $this->container->get(ContainerBagInterface::class);
         $kernel = $containerBag->get('kernel.project_dir');
 
         $path = $kernel . DIRECTORY_SEPARATOR . 'translations' . DIRECTORY_SEPARATOR;
 
-        if(empty($customData)) {
+        if (empty($customData)) {
             $data = [
                 'unit-test.key.1' => self::getFaker()->text(),
                 'unit-test.key.2' => self::getFaker()->text(),
                 'unit-test.key.3' => self::getFaker()->text(),
             ];
-        }
-        else {
+        } else {
             $data = $customData;
         }
-
 
         $fileName = $path . $filename . '.' . $locale . '.yml';
 

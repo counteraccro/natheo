@@ -20,18 +20,18 @@ class MenuToConvertToArrayTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testConvertToArray() :void
+    public function testConvertToArray(): void
     {
         /** @var MenuConvertToArray $menuConvertToArray */
         $menuConvertToArray = $this->container->get(MenuConvertToArray::class);
 
         $menu = $this->createMenu();
         $menuElement = $this->createMenuElement($menu);
-        foreach($this->locales as $locale) {
+        foreach ($this->locales as $locale) {
             $this->createMenuElementTranslation($menuElement, ['locale' => $locale]);
         }
         $subMenuElement = $this->createMenuElement($menu, $menuElement);
-        foreach($this->locales as $locale) {
+        foreach ($this->locales as $locale) {
             $this->createMenuElementTranslation($subMenuElement, ['locale' => $locale]);
         }
 

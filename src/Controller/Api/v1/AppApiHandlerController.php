@@ -24,19 +24,21 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class AppApiHandlerController extends AbstractController
 {
     public function __construct(
-        #[AutowireLocator([
-            'translator' => TranslatorInterface::class,
-            'userService' => UserService::class,
-            'apiUserService' => ApiUserService::class,
-            'userDataService' => UserDataService::class,
-            'apiMenuService' => ApiMenuService::class,
-            'apiPageService' => ApiPageService::class,
-            'apiPageContentService' => ApiPageContentService::class,
-            'apiCommentService' => ApiCommentService::class,
-            'apiSitemapService' => ApiSitemapService::class,
-        ])]
-        protected ContainerInterface $handlers
-    ){}
+        #[
+            AutowireLocator([
+                'translator' => TranslatorInterface::class,
+                'userService' => UserService::class,
+                'apiUserService' => ApiUserService::class,
+                'userDataService' => UserDataService::class,
+                'apiMenuService' => ApiMenuService::class,
+                'apiPageService' => ApiPageService::class,
+                'apiPageContentService' => ApiPageContentService::class,
+                'apiCommentService' => ApiCommentService::class,
+                'apiSitemapService' => ApiSitemapService::class,
+            ]),
+        ]
+        protected ContainerInterface $handlers,
+    ) {}
 
     /**
      * Retourne l'interface Translator
@@ -110,7 +112,7 @@ class AppApiHandlerController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function getApiPageContentService() : ApiPageContentService
+    protected function getApiPageContentService(): ApiPageContentService
     {
         return $this->handlers->get('apiPageContentService');
     }

@@ -22,7 +22,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApiModerateCommentResolver extends AppApiResolver implements ValueResolverInterface
 {
-
     /**
      * Permet de mapper ApiModerateCommentDto avec Request
      * @param Request $request
@@ -33,7 +32,6 @@ class ApiModerateCommentResolver extends AppApiResolver implements ValueResolver
      */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-
         // Test pour éviter que ce résolver soit appeler pour autre chose que ApiAuthUserDto
         $argumentType = $argument->getType();
         if (!is_a($argumentType, ApiModerateCommentDto::class, true)) {
@@ -44,7 +42,7 @@ class ApiModerateCommentResolver extends AppApiResolver implements ValueResolver
 
         $tabParameters = ApiParametersModerateCommentRef::PARAMS_REF;
         foreach ($tabParameters as $parameter => $value) {
-            if(array_key_exists($parameter, $content)) {
+            if (array_key_exists($parameter, $content)) {
                 $value = $content[$parameter];
             } else {
                 $value = '';
@@ -56,7 +54,7 @@ class ApiModerateCommentResolver extends AppApiResolver implements ValueResolver
             $tabParameters[$parameter] = $value;
         }
 
-        if(!is_null($request->headers->get('User-token'))) {
+        if (!is_null($request->headers->get('User-token'))) {
             $tabParameters[ApiParametersModerateCommentRef::PARAM_USER_TOKEN] = $request->headers->get('User-token');
         }
 
@@ -68,7 +66,7 @@ class ApiModerateCommentResolver extends AppApiResolver implements ValueResolver
             $tabParameters[ApiParametersModerateCommentRef::PARAM_USER_TOKEN],
         );
 
-       $this->validateDto($dto);
+        $this->validateDto($dto);
         return [$dto];
     }
 
@@ -83,11 +81,12 @@ class ApiModerateCommentResolver extends AppApiResolver implements ValueResolver
         /** @var TranslatorInterface $translator */
         $translator = $this->handlers->get('translator');
 
-        $tabStatus = [
-            CommentConst::MODERATE, CommentConst::VALIDATE, CommentConst::WAIT_VALIDATION,
-        ];
-        if(!in_array($parameters[ApiParametersModerateCommentRef::PARAM_STATUS], $tabStatus, true)) {
-            throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.comment.status.no.valid', domain: 'api_errors'));
+        $tabStatus = [CommentConst::MODERATE, CommentConst::VALIDATE, CommentConst::WAIT_VALIDATION];
+        if (!in_array($parameters[ApiParametersModerateCommentRef::PARAM_STATUS], $tabStatus, true)) {
+            throw new HttpException(
+                Response::HTTP_FORBIDDEN,
+                $translator->trans('api_errors.comment.status.no.valid', domain: 'api_errors'),
+            );
         }
     }
 }

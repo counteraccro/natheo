@@ -18,7 +18,6 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 class ApiFindPageContentResolver extends AppApiResolver implements ValueResolverInterface
 {
-
     /**
      * Permet de mapper ApiFindPageContent avec Request
      * @param Request $request
@@ -29,7 +28,6 @@ class ApiFindPageContentResolver extends AppApiResolver implements ValueResolver
      */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-
         // Test pour éviter que ce résolver soit appeler pour autre chose que ApiAuthUserDto
         $argumentType = $argument->getType();
         if (!is_a($argumentType, ApiFindPageContentDto::class, true)) {
@@ -54,7 +52,7 @@ class ApiFindPageContentResolver extends AppApiResolver implements ValueResolver
             $tabParameters[ApiParametersFindPageContentRef::PARAM_LOCALE],
             intval($tabParameters[ApiParametersFindPageContentRef::PARAM_PAGE]),
             intval($tabParameters[ApiParametersFindPageContentRef::PARAM_LIMIT]),
-            $tabParameters[ApiParametersFindPageContentRef::PARAM_USER_TOKEN]
+            $tabParameters[ApiParametersFindPageContentRef::PARAM_USER_TOKEN],
         );
 
         $this->validateDto($dto);

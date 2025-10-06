@@ -1,73 +1,73 @@
 tag:
-  Tag_natheo:
-    color: '#6F42C1'
-    translate:
-      - locale: fr
-        label: 'Natheo CMS'
-      - locale: es
-        label: 'Natheo CMS'
-      - locale: en
-        label: 'Natheo CMS'
-  Tag_dev:
-    color: '#7A86B8'
-    translate:
-      - locale: fr
-        label: 'Développement'
-      - locale: es
-        label: 'Desarrollo'
-      - locale: en
-        label: 'Development'
-  Tag_article:
-    color: '#1188b4'
-    translate:
-      - locale: fr
-        label: 'Article'
-      - locale: es
-        label: 'Artículo'
-      - locale: en
-        label: 'Article'
-  Tag_evolution:
-    color: '#b61114'
-    translate:
-      - locale: fr
-        label: 'Evolution'
-      - locale: es
-        label: 'Evolución'
-      - locale: en
-        label: 'Evolution'
-  Tag_faq:
-    color: '#262cdf'
-    translate:
-      - locale: fr
-        label: 'FAQ'
-      - locale: es
-        label: 'Preguntas frecuentes'
-      - locale: en
-        label: 'FAQ'
-  Tag_page:
-    color: '#23e515'
-    translate:
-      - locale: fr
-        label: 'Page'
-      - locale: es
-        label: 'Página'
-      - locale: en
-        label: 'Page'
-  Tag_blog:
-    color: '#b8db0a'
-    translate:
-      - locale: fr
-        label: 'Blog'
-      - locale: es
-        label: 'Blog'
-      - locale: en
-        label: 'Blog'
-  Tag_demo:
-    color: '#F0C847'
-    translate:
-      - locale: fr
-        label: 'Démo'
-      - locale: es
-        label: 'Manifestación'
-      - locale: en
-        label: 'Demo'
+    Tag_natheo:
+        color: '#6F42C1'
+        translate:
+            - locale: fr
+              label: 'Natheo CMS'
+            - locale: es
+              label: 'Natheo CMS'
+            - locale: en
+              label: 'Natheo CMS'
+    Tag_dev:
+        color: '#7A86B8'
+        translate:
+            - locale: fr
+              label: 'Développement'
+            - locale: es
+              label: 'Desarrollo'
+            - locale: en
+              label: 'Development'
+    Tag_article:
+        color: '#1188b4'
+        translate:
+            - locale: fr
+              label: 'Article'
+            - locale: es
+              label: 'Artículo'
+            - locale: en
+              label: 'Article'
+    Tag_evolution:
+        color: '#b61114'
+        translate:
+            - locale: fr
+              label: 'Evolution'
+            - locale: es
+              label: 'Evolución'
+            - locale: en
+              label: 'Evolution'
+    Tag_faq:
+        color: '#262cdf'
+        translate:
+            - locale: fr
+              label: 'FAQ'
+            - locale: es
+              label: 'Preguntas frecuentes'
+            - locale: en
+              label: 'FAQ'
+    Tag_page:
+        color: '#23e515'
+        translate:
+            - locale: fr
+              label: 'Page'
+            - locale: es
+              label: 'Página'
+            - locale: en
+              label: 'Page'
+    Tag_blog:
+        color: '#b8db0a'
+        translate:
+            - locale: fr
+              label: 'Blog'
+            - locale: es
+              label: 'Blog'
+            - locale: en
+              label: 'Blog'
+    Tag_demo:
+        color: '#F0C847'
+        translate:
+            - locale: fr
+              label: 'Démo'
+            - locale: es
+              label: 'Manifestación'
+            - locale: en
+              label: 'Demo'

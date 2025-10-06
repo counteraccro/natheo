@@ -57,8 +57,7 @@ class SidebarElementRepository extends ServiceEntityRepository
             ->setParameter('disabled', $disabled)
             ->orderBy('se.id', 'ASC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     /**
@@ -69,15 +68,13 @@ class SidebarElementRepository extends ServiceEntityRepository
      */
     public function getAllPaginate(int $page, int $limit): Paginator
     {
-        $query = $this->createQueryBuilder('se')
-            ->orderBy('se.parent', 'DESC')
-            ->orderBy('se.id', 'ASC');
+        $query = $this->createQueryBuilder('se')->orderBy('se.parent', 'DESC')->orderBy('se.id', 'ASC');
 
         $paginator = new Paginator($query->getQuery(), true);
-        $paginator->getQuery()
+        $paginator
+            ->getQuery()
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;
-
     }
 }

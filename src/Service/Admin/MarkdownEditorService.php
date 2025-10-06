@@ -15,7 +15,6 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class MarkdownEditorService extends AppAdminService
 {
-
     /**
      * Transforme certaines balises markdown custom en balise markdown officielle
      * @param string $markdown
@@ -45,11 +44,18 @@ class MarkdownEditorService extends AppAdminService
         $re = '/(P#(\d))/m';
         preg_match_all($re, $text, $matches, PREG_SET_ORDER, 0);
 
-        foreach($matches as $match) {
+        foreach ($matches as $match) {
             /** @var Page $page */
             $page = $this->findOneById(Page::class, $match[2]);
             $pageTrans = $page->getPageTranslationByLocale($locale);
-            $urlGenerate = $url . '/' . $locale . '/' . strtolower($tabCategories[$page->getCategory()]) . '/' . $pageTrans->getUrl();
+            $urlGenerate =
+                $url .
+                '/' .
+                $locale .
+                '/' .
+                strtolower($tabCategories[$page->getCategory()]) .
+                '/' .
+                $pageTrans->getUrl();
             $text = str_replace($match[0], $urlGenerate, $text);
         }
         return $text;
@@ -66,9 +72,12 @@ class MarkdownEditorService extends AppAdminService
     {
         $translator = $this->getTranslator();
 
-        trigger_deprecation('Service/Admin/MarkdownEditorService', '1.0',
+        trigger_deprecation(
+            'Service/Admin/MarkdownEditorService',
+            '1.0',
             'Méthode "%s()" dépréciée, passer maintenant par MarkdownEditorTranslate pour avoir la traduction.',
-            __METHOD__ );
+            __METHOD__,
+        );
         return [
             'btnBold' => $translator->trans('editor.button.bold', domain: 'editor_markdown'),
             'btnItalic' => $translator->trans('editor.button.italic', domain: 'editor_markdown'),
@@ -83,15 +92,15 @@ class MarkdownEditorService extends AppAdminService
             'btnCode' => $translator->trans('editor.button.code', domain: 'editor_markdown'),
             'btnSave' => $translator->trans('editor.button.save', domain: 'editor_markdown'),
             'btnKeyWord' => $translator->trans('editor.button.keyword', domain: 'editor_markdown'),
-            'titreLabel'  => $translator->trans('editor.titre.label', domain: 'editor_markdown'),
-            'titreH1'  => $translator->trans('editor.titre.h1', domain: 'editor_markdown'),
-            'titreH2'  => $translator->trans('editor.titre.h2', domain: 'editor_markdown'),
-            'titreH3'  => $translator->trans('editor.titre.h3', domain: 'editor_markdown'),
-            'titreH4'  => $translator->trans('editor.titre.h4', domain: 'editor_markdown'),
-            'titreH5'  => $translator->trans('editor.titre.h5', domain: 'editor_markdown'),
-            'titreH6'  => $translator->trans('editor.titre.h6', domain: 'editor_markdown'),
-            'help'  => $translator->trans('editor.help', domain: 'editor_markdown'),
-            'render'  => $translator->trans('editor.render', domain: 'editor_markdown'),
+            'titreLabel' => $translator->trans('editor.titre.label', domain: 'editor_markdown'),
+            'titreH1' => $translator->trans('editor.titre.h1', domain: 'editor_markdown'),
+            'titreH2' => $translator->trans('editor.titre.h2', domain: 'editor_markdown'),
+            'titreH3' => $translator->trans('editor.titre.h3', domain: 'editor_markdown'),
+            'titreH4' => $translator->trans('editor.titre.h4', domain: 'editor_markdown'),
+            'titreH5' => $translator->trans('editor.titre.h5', domain: 'editor_markdown'),
+            'titreH6' => $translator->trans('editor.titre.h6', domain: 'editor_markdown'),
+            'help' => $translator->trans('editor.help', domain: 'editor_markdown'),
+            'render' => $translator->trans('editor.render', domain: 'editor_markdown'),
             'modalTitreLink' => $translator->trans('editor.modal.titre.link', domain: 'editor_markdown'),
             'modalInputUrlLink' => $translator->trans('editor.modal.input.link', domain: 'editor_markdown'),
             'modalTitreImage' => $translator->trans('editor.modal.titre.image', domain: 'editor_markdown'),
@@ -101,7 +110,7 @@ class MarkdownEditorService extends AppAdminService
             'modalInputText' => $translator->trans('editor.modal.input.text', domain: 'editor_markdown'),
             'msgEmptyContent' => $translator->trans('editor.input.empty', domain: 'editor_markdown'),
             'btnMediatheque' => $translator->trans('editor.btn.mediatheque', domain: 'editor_markdown'),
-            'warning_edit'  => $translator->trans('editor.warning.edit', domain: 'editor_markdown'),
+            'warning_edit' => $translator->trans('editor.warning.edit', domain: 'editor_markdown'),
             'mediathequeMarkdown' => [
                 'title' => $translator->trans('editor.mediatheque.title', domain: 'editor_markdown'),
                 'btn_close' => $translator->trans('editor.mediatheque.btn.close', domain: 'editor_markdown'),
@@ -115,8 +124,7 @@ class MarkdownEditorService extends AppAdminService
                 'size_300' => $translator->trans('editor.mediatheque.size_300', domain: 'editor_markdown'),
                 'size_400' => $translator->trans('editor.mediatheque.size_400', domain: 'editor_markdown'),
                 'size_500' => $translator->trans('editor.mediatheque.size_500', domain: 'editor_markdown'),
-
-            ]
+            ],
         ];
     }
 }

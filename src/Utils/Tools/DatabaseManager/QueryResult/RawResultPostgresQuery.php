@@ -12,7 +12,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RawResultPostgresQuery implements RawResultQueryInterface
 {
-
     /**
      * @inheritDoc
      */
@@ -23,8 +22,10 @@ class RawResultPostgresQuery implements RawResultQueryInterface
             if ($header === 'total_bytes') {
                 continue;
             }
-            $newHeader[$header] = $translator->trans('database_manager.schema.all.bdd.row.' . $header,
-                domain: 'database_manager');
+            $newHeader[$header] = $translator->trans(
+                'database_manager.schema.all.bdd.row.' . $header,
+                domain: 'database_manager',
+            );
         }
 
         $nbElement = 0;
@@ -34,8 +35,10 @@ class RawResultPostgresQuery implements RawResultQueryInterface
             if (intval($row['row']) !== -1) {
                 $nbElement += intval($row['row']);
             } else {
-                $row['row'] = $translator->trans('database_manager.schema.all.bdd.error_row.',
-                    domain: 'database_manager');
+                $row['row'] = $translator->trans(
+                    'database_manager.schema.all.bdd.error_row.',
+                    domain: 'database_manager',
+                );
             }
             $sizeBite += intval($row['total_bytes']);
             unset($row['total_bytes']);
@@ -59,9 +62,10 @@ class RawResultPostgresQuery implements RawResultQueryInterface
     {
         $newHeader = [];
         foreach ($result['header'] as $header) {
-
-            $newHeader[$header] = $translator->trans('database_manager.schema.table.row.' . $header,
-                domain: 'database_manager');
+            $newHeader[$header] = $translator->trans(
+                'database_manager.schema.table.row.' . $header,
+                domain: 'database_manager',
+            );
         }
 
         $result['header'] = $newHeader;

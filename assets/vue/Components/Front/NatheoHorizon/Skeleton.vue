@@ -9,18 +9,15 @@ export default {
   props: {},
   emits: [],
   data() {
-    return {}
+    return {};
   },
-  mounted() {
+  mounted() {},
 
-  },
-
-  methods: {}
-}
+  methods: {},
+};
 </script>
 
 <template>
-
   <!-- header -->
   <div class="mx-auto w-full rounded-md border border-gray-300 p-4">
     <div class="flex animate-pulse space-x-4">
@@ -113,7 +110,6 @@ export default {
         <p class="w-24 h-2 bg-gray-200 rounded-lg"></p>
         <p class="w-24 h-2 bg-gray-200 rounded-lg"></p>
       </div>
-
     </div>
 
     <hr class="my-6 border-gray-200 md:my-10" />

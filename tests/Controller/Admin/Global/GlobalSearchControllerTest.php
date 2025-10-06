@@ -19,9 +19,16 @@ class GlobalSearchControllerTest extends AppWebTestCase
     {
         $user = $this->createUser();
         $this->client->loginUser($user, 'admin');
-        $this->client->request('POST', $this->router->generate('admin_search_index'), content: json_encode(['global-search-input' => '']));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_search_index'),
+            content: json_encode(['global-search-input' => '']),
+        );
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('global_search.index.page_title_h1', domain: 'global_search'));
+        $this->assertSelectorTextContains(
+            'h1',
+            $this->translator->trans('global_search.index.page_title_h1', domain: 'global_search'),
+        );
     }
 
     /**
@@ -35,7 +42,15 @@ class GlobalSearchControllerTest extends AppWebTestCase
 
         $user = $this->createUser();
         $this->client->loginUser($user, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_search_global', ['entity' => 'user', 'page' => 1, 'limit' => 10, 'search' => $contributeur->getEmail()]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_search_global', [
+                'entity' => 'user',
+                'page' => 1,
+                'limit' => 10,
+                'search' => $contributeur->getEmail(),
+            ]),
+        );
         $this->assertResponseIsSuccessful();
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -56,6 +71,5 @@ class GlobalSearchControllerTest extends AppWebTestCase
         $this->assertEquals(1, $content['paginate']['current']);
         $this->assertArrayHasKey('limit', $content['paginate']);
         $this->assertEquals(10, $content['paginate']['limit']);
-
     }
 }

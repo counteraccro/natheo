@@ -20,7 +20,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ApiAuthUserResolver extends AppApiResolver implements ValueResolverInterface
 {
-
     /**
      * Permet de mapper ApiAuthUserDto avec Request
      * @param Request $request
@@ -31,7 +30,6 @@ class ApiAuthUserResolver extends AppApiResolver implements ValueResolverInterfa
      */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-
         // Test pour éviter que ce résolver soit appeler pour autre chose que ApiAuthUserDto
         $argumentType = $argument->getType();
         if (!is_a($argumentType, ApiAuthUserDto::class, true)) {
@@ -48,10 +46,7 @@ class ApiAuthUserResolver extends AppApiResolver implements ValueResolverInterfa
             throw new HttpException(Response::HTTP_FORBIDDEN, implode(',', $return));
         }
 
-        $dto = new ApiAuthUserDto(
-            $data['username'],
-            $data['password']
-        );
+        $dto = new ApiAuthUserDto($data['username'], $data['password']);
 
         $this->validateDto($dto);
         return [$dto];

@@ -81,11 +81,11 @@ class NotificationRepository extends ServiceEntityRepository
         }
 
         $paginator = new Paginator($query->getQuery(), true);
-        $paginator->getQuery()
+        $paginator
+            ->getQuery()
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;
-
     }
 
     /**

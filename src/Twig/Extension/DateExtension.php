@@ -19,7 +19,6 @@ use Twig\Attribute\AsTwigFunction;
 
 class DateExtension extends AppExtension
 {
-
     private DateService $dateService;
 
     /**
@@ -27,12 +26,16 @@ class DateExtension extends AppExtension
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function __construct(#[AutowireLocator([
-        'translator' => TranslatorInterface::class,
-        'router' => RouterInterface::class,
-        'dateService' => DateService::class
-    ])] private readonly ContainerInterface $handlers)
-    {
+    public function __construct(
+        #[
+            AutowireLocator([
+                'translator' => TranslatorInterface::class,
+                'router' => RouterInterface::class,
+                'dateService' => DateService::class,
+            ]),
+        ]
+        private readonly ContainerInterface $handlers,
+    ) {
         $this->dateService = $this->handlers->get('dateService');
         parent::__construct($this->handlers);
     }

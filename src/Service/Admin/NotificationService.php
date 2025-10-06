@@ -19,7 +19,6 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class NotificationService extends AppAdminService
 {
-
     /**
      * Permet d'ajouter une notification
      * @param User $user
@@ -99,11 +98,9 @@ class NotificationService extends AppAdminService
         foreach ($list as $notification) {
             $parameter = json_decode($notification->getParameters(), true);
             $notification->setTitle($translator->trans($notification->getTitle(), domain: 'notification'));
-            $notification->setContent($translator->trans(
-                $notification->getContent(),
-                $parameter,
-                domain: 'notification'
-            ));
+            $notification->setContent(
+                $translator->trans($notification->getContent(), $parameter, domain: 'notification'),
+            );
         }
         return $list;
     }
@@ -119,14 +116,8 @@ class NotificationService extends AppAdminService
         $translator = $this->getTranslator();
 
         return [
-            'nb_notifification_show_start' => $translator->trans(
-                'notification.nb.show.start',
-                domain: 'notification'
-            ),
-            'nb_notifification_show_end' => $translator->trans(
-                'notification.nb.show.end',
-                domain: 'notification'
-            ),
+            'nb_notifification_show_start' => $translator->trans('notification.nb.show.start', domain: 'notification'),
+            'nb_notifification_show_end' => $translator->trans('notification.nb.show.end', domain: 'notification'),
             'loading' => $translator->trans('notification.loading', domain: 'notification'),
             'empty' => $translator->trans('notification.empty', domain: 'notification'),
             'onlyNotRead' => $translator->trans('notification.only_not_read', domain: 'notification'),
@@ -165,5 +156,4 @@ class NotificationService extends AppAdminService
         $repo = $this->getRepository(Notification::class);
         $repo->readAll($user);
     }
-
 }

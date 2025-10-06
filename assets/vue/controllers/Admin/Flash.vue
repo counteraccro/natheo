@@ -4,37 +4,39 @@
  * @version 1.0
  * Permet d'afficher les flashs messages sous la forme d'un toast
  */
-import toast from "bootstrap/js/src/toast";
+import toast from 'bootstrap/js/src/toast';
 
 export default {
-  name: "Flash",
+  name: 'Flash',
   props: {
     flashes: Object,
-    translate: Object
+    translate: Object,
   },
   mounted() {
-
     this.flashes.forEach((row) => {
       this.showToast('toast-flash-' + row.label);
     });
-
   },
   methods: {
-    showToast(id)
-    {
-      let element = document.getElementById(id)
-      const toastFlash = toast.getOrCreateInstance(element)
-      toastFlash.show()
-    }
-  }
-}
+    showToast(id) {
+      let element = document.getElementById(id);
+      const toastFlash = toast.getOrCreateInstance(element);
+      toastFlash.show();
+    },
+  },
+};
 </script>
 
 <template>
-
   <div class="toast-container top-0 end-0 p-3">
-    <div v-for="{label, message} in this.flashes">
-      <div :id="'toast-flash-' + label" class="toast border border-secondary bg-white" role="alert" aria-live="assertive" aria-atomic="true">
+    <div v-for="{ label, message } in this.flashes">
+      <div
+        :id="'toast-flash-' + label"
+        class="toast border border-secondary bg-white"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
         <div class="toast-header" :class="'text-' + label">
           <i v-if="label === 'success'" class="bi bi-check-circle-fill"></i>
           <strong class="me-auto" v-if="label === 'success'">&nbsp; {{ this.translate.title_success }}</strong>
@@ -51,5 +53,4 @@ export default {
       </div>
     </div>
   </div>
-
 </template>

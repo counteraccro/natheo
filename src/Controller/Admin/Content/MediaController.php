@@ -25,8 +25,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route('/admin/{_locale}/media', name: 'admin_media_',
-    requirements: ['_locale' => '%app.supported_locales%'])]
+#[Route('/admin/{_locale}/media', name: 'admin_media_', requirements: ['_locale' => '%app.supported_locales%'])]
 #[IsGranted('ROLE_CONTRIBUTEUR')]
 class MediaController extends AppAdminController
 {
@@ -41,13 +40,13 @@ class MediaController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'media',
             Breadcrumb::BREADCRUMB => [
-                'media.index.page_title_h1' => '#'
-            ]
+                'media.index.page_title_h1' => '#',
+            ],
         ];
 
         return $this->render('admin/content/media/index.html.twig', [
             'breadcrumb' => $breadcrumb,
-            'translate' => $mediaTranslate->getTranslate()
+            'translate' => $mediaTranslate->getTranslate(),
         ]);
     }
 
@@ -65,13 +64,12 @@ class MediaController extends AppAdminController
      */
     #[Route('/ajax/load-medias/{folder}/{order}/{filter}', name: 'load_medias', methods: ['GET'])]
     public function loadMedias(
-        MediaService        $mediaService,
+        MediaService $mediaService,
         OptionSystemService $optionSystemService,
-        int                 $folder = 0,
-        string              $order = 'asc',
-        string              $filter = 'created_at'
-    ): JsonResponse
-    {
+        int $folder = 0,
+        string $order = 'asc',
+        string $filter = 'created_at',
+    ): JsonResponse {
         /** @var MediaFolder $mediaFolder */
         $mediaFolder = $mediaService->findOneById(MediaFolder::class, $folder);
 
@@ -95,7 +93,7 @@ class MediaController extends AppAdminController
                 'nbTrash' => $this->generateUrl('admin_media_nb_trash'),
                 'listTrash' => $this->generateUrl('admin_media_list_trash'),
                 'remove' => $this->generateUrl('admin_media_remove'),
-            ]
+            ],
         ]);
     }
 
@@ -110,11 +108,7 @@ class MediaController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-folder/{id}/{action}', name: 'load_folder', methods: ['GET'])]
-    public function loadFolder(
-        MediaService $mediaService,
-        int $id = 0,
-        string $action = 'edit'
-    ): JsonResponse
+    public function loadFolder(MediaService $mediaService, int $id = 0, string $action = 'edit'): JsonResponse
     {
         /** @var MediaFolder $mediaFolder */
         $mediaFolder = $mediaService->findOneById(MediaFolder::class, $id);
@@ -124,7 +118,7 @@ class MediaController extends AppAdminController
             $attributes = ['medias', 'parent', 'children'];
         }
         return $this->json([
-            'folder' => $mediaService->convertEntityToArray($mediaFolder, $attributes)
+            'folder' => $mediaService->convertEntityToArray($mediaFolder, $attributes),
         ]);
     }
 
@@ -139,11 +133,10 @@ class MediaController extends AppAdminController
      */
     #[Route('/ajax/save-folder', name: 'save_folder', methods: ['POST'])]
     public function updateFolder(
-        Request             $request,
-        MediaFolderService  $mediaFolderService,
-        TranslatorInterface $translator
-    ): JsonResponse
-    {
+        Request $request,
+        MediaFolderService $mediaFolderService,
+        TranslatorInterface $translator,
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
         $editFolder = $mediaFolderService->findOneById(MediaFolder::class, $data['editFolder']);
@@ -153,7 +146,7 @@ class MediaController extends AppAdminController
         if ($exist !== null) {
             return $this->json([
                 'result' => 'error',
-                'msg' => $translator->trans('media.mediatheque.folder.error.exist_name', domain: 'media')
+                'msg' => $translator->trans('media.mediatheque.folder.error.exist_name', domain: 'media'),
             ]);
         }
 
@@ -162,14 +155,17 @@ class MediaController extends AppAdminController
             $msg = $translator->trans('media.mediatheque.folder.success', ['name' => $data['name']], domain: 'media');
             $mediaFolderService->createMediaFolder($data['name'], $currentFolder);
         } else {
-            $msg = $translator->trans('media.mediatheque.folder.edit.success',
-                ['new_name' => $data['name'], 'name' => $editFolder->getName()], domain: 'media');
+            $msg = $translator->trans(
+                'media.mediatheque.folder.edit.success',
+                ['new_name' => $data['name'], 'name' => $editFolder->getName()],
+                domain: 'media',
+            );
             $mediaFolderService->updateMediaFolder($data['name'], $editFolder);
         }
 
         return $this->json([
             'result' => $result,
-            'msg' => $msg
+            'msg' => $msg,
         ]);
     }
 
@@ -183,13 +179,8 @@ class MediaController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-info/{id}/{type}', name: 'load_info', methods: ['GET'])]
-    public function loadInfo(
-        MediaService $mediaService,
-        int          $id = 0,
-        string       $type = 'folder',
-    ): JsonResponse
+    public function loadInfo(MediaService $mediaService, int $id = 0, string $type = 'folder'): JsonResponse
     {
-
         if ($type === 'folder') {
             $json['data'] = $mediaService->getInfoFolder($id);
         } else {
@@ -225,10 +216,7 @@ class MediaController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-media/{id}', name: 'load_media_edit', methods: ['GET'])]
-    public function loadMedia(
-        MediaService $mediaService,
-        int $id = 0
-    ): JsonResponse
+    public function loadMedia(MediaService $mediaService, int $id = 0): JsonResponse
     {
         /** @var Media $media */
         $media = $mediaService->findOneById(Media::class, $id);
@@ -237,8 +225,8 @@ class MediaController extends AppAdminController
                 'id' => $media->getId(),
                 'name' => $media->getTitle(),
                 'description' => $media->getDescription(),
-                'thumbnail' => $mediaService->getThumbnail($media)
-            ]
+                'thumbnail' => $mediaService->getThumbnail($media),
+            ],
         ]);
     }
 
@@ -279,17 +267,18 @@ class MediaController extends AppAdminController
     public function listeFolderToMove(
         MediaFolderService $mediaFolderService,
         int $id = 0,
-        string $type = 'folder'
-    ): JsonResponse
-    {
+        string $type = 'folder',
+    ): JsonResponse {
         $dataMove = $mediaFolderService->getAllDataForModalMove($id, $type);
-        return $this->json(['dataMove' => [
-            'id' => $id,
-            'parentIid' => $dataMove['parentId'],
-            'label' => $dataMove['label'],
-            'type' => $type,
-            'listeFolder' => $dataMove['liste']
-        ]]);
+        return $this->json([
+            'dataMove' => [
+                'id' => $id,
+                'parentIid' => $dataMove['parentId'],
+                'label' => $dataMove['label'],
+                'type' => $type,
+                'listeFolder' => $dataMove['liste'],
+            ],
+        ]);
     }
 
     /**
@@ -335,7 +324,7 @@ class MediaController extends AppAdminController
     public function nbTrash(MediaService $mediaService): JsonResponse
     {
         $tab = $mediaService->getNbInTrash();
-        return $this->json(['nb' => ($tab['medias'] + $tab['folders'])]);
+        return $this->json(['nb' => $tab['medias'] + $tab['folders']]);
     }
 
     /**
@@ -366,6 +355,4 @@ class MediaController extends AppAdminController
         $mediaService->confirmTrash($data['type'], $data['id']);
         return $this->json(['success' => 'remove']);
     }
-
-
 }

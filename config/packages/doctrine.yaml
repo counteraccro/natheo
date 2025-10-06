@@ -12,8 +12,8 @@ doctrine:
         enable_native_lazy_objects: true
         report_fields_where_declared: true
         controller_resolver:
-                    auto_mapping: false
-                    enabled: false
+            auto_mapping: false
+            enabled: false
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         mappings:

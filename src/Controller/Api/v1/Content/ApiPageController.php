@@ -29,7 +29,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/api/{api_version}/page', name: 'api_page_', requirements: ['api_version' => '%app.api_version%'])]
-#[IsGranted("ROLE_READ_API")]
+#[IsGranted('ROLE_READ_API')]
 class ApiPageController extends AppApiController
 {
     /**
@@ -41,12 +41,11 @@ class ApiPageController extends AppApiController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/find', name: 'find', methods: ['GET'])]
-    public function find(#[MapQueryString(
-        resolver: ApiFindPageResolver::class
-    )] ApiFindPageDto $apiFindPageDto): JsonResponse
-    {
+    public function find(
+        #[MapQueryString(resolver: ApiFindPageResolver::class)] ApiFindPageDto $apiFindPageDto,
+    ): JsonResponse {
         $user = null;
-        if ($apiFindPageDto->getUserToken() !== "") {
+        if ($apiFindPageDto->getUserToken() !== '') {
             $user = $this->getUserByUserToken($apiFindPageDto->getUserToken());
         }
 
@@ -54,9 +53,11 @@ class ApiPageController extends AppApiController
         $page = $apiPageService->getPageForApi($apiFindPageDto, $user);
         if (empty($page)) {
             $translator = $this->getTranslator();
-            throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.find.page.not.found', domain: 'api_errors'));
+            throw new HttpException(
+                Response::HTTP_FORBIDDEN,
+                $translator->trans('api_errors.find.page.not.found', domain: 'api_errors'),
+            );
         }
-
 
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['page' => $page]);
     }
@@ -70,12 +71,11 @@ class ApiPageController extends AppApiController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/content', name: 'content', methods: ['GET'])]
-    public function getContentInPage(#[MapQueryString(
-        resolver: ApiFindPageContentResolver::class
-    )] ApiFindPageContentDto $apiFindPageContentDto): JsonResponse
-    {
+    public function getContentInPage(
+        #[MapQueryString(resolver: ApiFindPageContentResolver::class)] ApiFindPageContentDto $apiFindPageContentDto,
+    ): JsonResponse {
         $user = null;
-        if ($apiFindPageContentDto->getUserToken() !== "") {
+        if ($apiFindPageContentDto->getUserToken() !== '') {
             $user = $this->getUserByUserToken($apiFindPageContentDto->getUserToken());
         }
 
@@ -83,7 +83,10 @@ class ApiPageController extends AppApiController
         $pageContent = $apiPageContentService->getPageContentForApi($apiFindPageContentDto, $user);
         if (empty($pageContent)) {
             $translator = $this->getTranslator();
-            throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.find.page.content.not.found', domain: 'api_errors'));
+            throw new HttpException(
+                Response::HTTP_FORBIDDEN,
+                $translator->trans('api_errors.find.page.content.not.found', domain: 'api_errors'),
+            );
         }
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $pageContent);
     }
@@ -96,12 +99,11 @@ class ApiPageController extends AppApiController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/category', name: 'category', methods: ['GET'])]
-    public function getPageByCategory(#[MapQueryString(
-        resolver: ApiFindPageCategoryResolver::class
-    )] ApiFindPageCategoryDto $apiFindPageCategoryDto): JsonResponse
-    {
+    public function getPageByCategory(
+        #[MapQueryString(resolver: ApiFindPageCategoryResolver::class)] ApiFindPageCategoryDto $apiFindPageCategoryDto,
+    ): JsonResponse {
         $user = null;
-        if ($apiFindPageCategoryDto->getUserToken() !== "") {
+        if ($apiFindPageCategoryDto->getUserToken() !== '') {
             $user = $this->getUserByUserToken($apiFindPageCategoryDto->getUserToken());
         }
 
@@ -109,7 +111,10 @@ class ApiPageController extends AppApiController
         $listing = $apiPageService->getListingPageByCategoryForApi($apiFindPageCategoryDto, $user);
         if (empty($listing)) {
             $translator = $this->getTranslator();
-            throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.find.listing.category.not.found', domain: 'api_errors'));
+            throw new HttpException(
+                Response::HTTP_FORBIDDEN,
+                $translator->trans('api_errors.find.listing.category.not.found', domain: 'api_errors'),
+            );
         }
 
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $listing);
@@ -122,13 +127,11 @@ class ApiPageController extends AppApiController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/tag', name: 'tag', methods: ['GET'])]
-    public function getPageByTag(#[MapQueryString(
-        resolver: ApiFindPageTagResolver::class
-    )] ApiFindPageTagDto $apiFindPageTagDto): JsonResponse
-    {
-
+    public function getPageByTag(
+        #[MapQueryString(resolver: ApiFindPageTagResolver::class)] ApiFindPageTagDto $apiFindPageTagDto,
+    ): JsonResponse {
         $user = null;
-        if ($apiFindPageTagDto->getUserToken() !== "") {
+        if ($apiFindPageTagDto->getUserToken() !== '') {
             $user = $this->getUserByUserToken($apiFindPageTagDto->getUserToken());
         }
 
@@ -136,7 +139,10 @@ class ApiPageController extends AppApiController
         $listing = $apiPageService->getListingPagesByTag($apiFindPageTagDto, $user);
         if (empty($listing['pages'])) {
             $translator = $this->getTranslator();
-            throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.find.listing.tag.not.found', domain: 'api_errors'));
+            throw new HttpException(
+                Response::HTTP_FORBIDDEN,
+                $translator->trans('api_errors.find.listing.tag.not.found', domain: 'api_errors'),
+            );
         }
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $listing);
     }

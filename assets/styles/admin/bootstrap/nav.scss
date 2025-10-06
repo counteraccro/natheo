@@ -5,17 +5,15 @@
  */
 
 .nav-pills .nav-link {
-  color: #000;
+    color: #000;
 }
 
 .nav-pills .nav-link.active {
-  background-color: $secondary;
+    background-color: $secondary;
 }
 
-
 .tab-content {
-  padding: 10px;
-  border: 1px solid $secondary;
-  border-radius: 5px;
-
+    padding: 10px;
+    border: 1px solid $secondary;
+    border-radius: 5px;
 }

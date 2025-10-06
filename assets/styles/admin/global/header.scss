@@ -5,148 +5,146 @@
  */
 
 #adm-navbar.navbar {
-  padding: 15px 10px;
-  background: #fff;
-  border: none;
-  border-radius: 0;
-  margin-bottom: 0px;
+    padding: 15px 10px;
+    background: #fff;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 0px;
 }
 
 .navbar-btn {
-  box-shadow: none;
-  outline: none !important;
-  border: none;
+    box-shadow: none;
+    outline: none !important;
+    border: none;
 }
 
-#adm-navbar .badge{
-  font-size: 0.55em;
-  font-family: 'Verdana', serif;
+#adm-navbar .badge {
+    font-size: 0.55em;
+    font-family: 'Verdana', serif;
 }
 
 #adm-navbar .d-none-mini {
-  display: none;
+    display: none;
 }
 
 #adm-navbar a {
-  color: #FFF;
-  font-size: 1.4em;
+    color: #fff;
+    font-size: 1.4em;
 }
 
 #adm-navbar .bi-h {
-  font-family: "bootstrap-icons";
-  font-style: normal;
+    font-family: 'bootstrap-icons';
+    font-style: normal;
 }
 
 #adm-navbar .bi-door-fill-h::after {
-  content: "\F305";
+    content: '\F305';
 }
 
 #adm-navbar .bi-door-fill-h:hover::after {
-  content: "\F307";
+    content: '\F307';
 }
 
 #adm-navbar .bi-house-fill-h::after {
-  content: "\F424";
+    content: '\F424';
 }
 
 #adm-navbar .bi-house-fill-h:hover::after {
-  content: "\F775";
+    content: '\F775';
 }
 
 #adm-navbar .bi-bell-fill-h::after {
-  content: "\F189";
+    content: '\F189';
 }
 
 #adm-navbar .bi-bell-fill-h:hover::after {
-  content: "\F18A";
+    content: '\F18A';
 }
 
 #adm-navbar .bi-person-fill-h::after {
-  content: "\F4DA";
+    content: '\F4DA';
 }
 
 #adm-navbar .bi-person-fill-h:hover::after {
-  content: "\F4D7";
+    content: '\F4D7';
 }
 
 #adm-navbar .bi-gear-fill-h::after {
-  content: "\F3E2";
+    content: '\F3E2';
 }
 
 #adm-navbar .bi-gear-fill-h:hover::after {
-  content: "\F3E5";
+    content: '\F3E5';
 }
 
 #adm-navbar .bi-display-fill-h::after {
-  content: "\F301";
+    content: '\F301';
 }
 
 #adm-navbar .bi-display-fill-h:hover::after {
-  content: "\F302";
+    content: '\F302';
 }
 
 #adm-navbar .bi-person-fill-exclamation-h::after {
-  content: "\F89F";
+    content: '\F89F';
 }
 
 #adm-navbar .bi-person-fill-exclamation-h:hover::after {
-  content: "\F4D9";
+    content: '\F4D9';
 }
 
 #adm-navbar .badge-notification {
-  animation: bounce 2s ease infinite;
-  top: -50% !important;
+    animation: bounce 2s ease infinite;
+    top: -50% !important;
 }
 
 @keyframes bounce {
-  70% {
-    transform: translateY(0%);
-  }
-  80% {
-    transform: translateY(-15%);
-  }
-  90% {
-    transform: translateY(0%);
-  }
-  95% {
-    transform: translateY(-7%);
-  }
-  97% {
-    transform: translateY(0%);
-  }
-  99% {
-    transform: translateY(-3%);
-  }
-  100% {
-    transform: translateY(0);
-  }
+    70% {
+        transform: translateY(0%);
+    }
+    80% {
+        transform: translateY(-15%);
+    }
+    90% {
+        transform: translateY(0%);
+    }
+    95% {
+        transform: translateY(-7%);
+    }
+    97% {
+        transform: translateY(0%);
+    }
+    99% {
+        transform: translateY(-3%);
+    }
+    100% {
+        transform: translateY(0);
+    }
 }
 
-
 @media (max-width: 991px) {
+    #adm-navbar .navbar-nav {
+        margin-top: 20px;
+    }
 
-  #adm-navbar .navbar-nav{
-    margin-top: 20px;
-  }
+    #adm-navbar a {
+        color: #fff;
+        font-size: 1.2em;
+        padding-left: 10px;
+    }
 
-  #adm-navbar a {
-    color: #FFF;
-    font-size: 1.2em;
-    padding-left: 10px;
-  }
+    #adm-navbar a:hover {
+        color: var(--secondary);
+        text-decoration: none;
+        background-color: #fff;
+        transition: all 0.3s;
+    }
 
-  #adm-navbar a:hover {
-    color: var(--secondary);
-    text-decoration: none;
-    background-color: #fff;
-    transition: all 0.3s;
-  }
-
-  #adm-navbar .d-none-mini {
-    color:inherit;
-    display: inline;
-  }
-  #sidebarCollapse span {
-    display: none;
-  }
+    #adm-navbar .d-none-mini {
+        color: inherit;
+        display: inline;
+    }
+    #sidebarCollapse span {
+        display: none;
+    }
 }

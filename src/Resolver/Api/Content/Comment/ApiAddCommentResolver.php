@@ -21,7 +21,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApiAddCommentResolver extends AppApiResolver implements ValueResolverInterface
 {
-
     /**
      * Permet de mapper ApiAuthUserDto avec Request
      * @param Request $request
@@ -32,18 +31,17 @@ class ApiAddCommentResolver extends AppApiResolver implements ValueResolverInter
      */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-
         // Test pour éviter que ce résolver soit appeler pour autre chose que ApiAuthUserDto
         $argumentType = $argument->getType();
         if (!is_a($argumentType, ApiAddCommentDto::class, true)) {
             return [];
         }
 
-        $content = json_decode($request->getContent(), true);;
+        $content = json_decode($request->getContent(), true);
 
         $tabParameters = ApiParametersAddCommentRef::PARAMS_REF;
         foreach ($tabParameters as $parameter => $value) {
-            if(array_key_exists($parameter, $content)) {
+            if (array_key_exists($parameter, $content)) {
                 $value = $content[$parameter];
             } else {
                 $value = '';
@@ -65,10 +63,10 @@ class ApiAddCommentResolver extends AppApiResolver implements ValueResolverInter
             $tabParameters[ApiParametersAddCommentRef::PARAM_EMAIL],
             $tabParameters[ApiParametersAddCommentRef::PARAM_COMMENT],
             $tabParameters[ApiParametersAddCommentRef::PARAM_IP],
-            $tabParameters[ApiParametersAddCommentRef::PARAM_USER_AGENT]
+            $tabParameters[ApiParametersAddCommentRef::PARAM_USER_AGENT],
         );
 
-       $this->validateDto($dto);
+        $this->validateDto($dto);
         return [$dto];
     }
 
@@ -84,15 +82,25 @@ class ApiAddCommentResolver extends AppApiResolver implements ValueResolverInter
         $translator = $this->handlers->get('translator');
 
         // Cas id et page_slug sont vides (n'existe pas dans la query)
-        if (empty($parameters[ApiParametersAddCommentRef::PARAM_ID])
-            && empty($parameters[ApiParametersAddCommentRef::PARAM_PAGE_SLUG])) {
-            throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.comment.add.not.id.slug.together', domain: 'api_errors'));
+        if (
+            empty($parameters[ApiParametersAddCommentRef::PARAM_ID]) &&
+            empty($parameters[ApiParametersAddCommentRef::PARAM_PAGE_SLUG])
+        ) {
+            throw new HttpException(
+                Response::HTTP_FORBIDDEN,
+                $translator->trans('api_errors.comment.add.not.id.slug.together', domain: 'api_errors'),
+            );
         }
 
         // Cas id et page_slug ensemble
-        if (!empty($parameters[ApiParametersAddCommentRef::PARAM_ID])
-            && !empty($parameters[ApiParametersAddCommentRef::PARAM_PAGE_SLUG])) {
-            throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.comment.add.id.slug.together', domain: 'api_errors'));
+        if (
+            !empty($parameters[ApiParametersAddCommentRef::PARAM_ID]) &&
+            !empty($parameters[ApiParametersAddCommentRef::PARAM_PAGE_SLUG])
+        ) {
+            throw new HttpException(
+                Response::HTTP_FORBIDDEN,
+                $translator->trans('api_errors.comment.add.id.slug.together', domain: 'api_errors'),
+            );
         }
     }
 }

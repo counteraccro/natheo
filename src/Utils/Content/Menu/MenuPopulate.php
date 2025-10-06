@@ -17,7 +17,6 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class MenuPopulate
 {
-
     /**
      * Clé pour les menuElements
      * @var string
@@ -48,11 +47,10 @@ class MenuPopulate
      * @param MenuService $menuService
      */
     public function __construct(
-        private Menu                 $menu,
-        private readonly array       $populate,
-        private readonly MenuService $menuService)
-    {
-    }
+        private Menu $menu,
+        private readonly array $populate,
+        private readonly MenuService $menuService,
+    ) {}
 
     public function populate(): static
     {
@@ -88,16 +86,14 @@ class MenuPopulate
      */
     private function populatePageMenu(): void
     {
-        if(isset($this->populate[self::KEY_PAGE_MENU])){
-
-            foreach($this->menu->getPages() as $page)
-            {
+        if (isset($this->populate[self::KEY_PAGE_MENU])) {
+            foreach ($this->menu->getPages() as $page) {
                 $page->removeMenu($this->menu);
                 $this->menu->removePage($page);
             }
 
-            if(!in_array('-1', $this->populate[self::KEY_PAGE_MENU])){
-                foreach($this->populate[self::KEY_PAGE_MENU] as $id){
+            if (!in_array('-1', $this->populate[self::KEY_PAGE_MENU])) {
+                foreach ($this->populate[self::KEY_PAGE_MENU] as $id) {
                     /** @var Page $page */
                     $page = $this->menuService->findOneById(Page::class, $id);
                     $this->menu->addPage($page);
@@ -113,8 +109,11 @@ class MenuPopulate
      */
     private function populateMenuElement(): void
     {
-        if (!isset($this->populate[self::KEY_MENU_ELEMENTS]) || !is_array($this->populate[self::KEY_MENU_ELEMENTS])
-            || count($this->populate[self::KEY_MENU_ELEMENTS]) === 0) {
+        if (
+            !isset($this->populate[self::KEY_MENU_ELEMENTS]) ||
+            !is_array($this->populate[self::KEY_MENU_ELEMENTS]) ||
+            count($this->populate[self::KEY_MENU_ELEMENTS]) === 0
+        ) {
             return;
         }
 
@@ -123,7 +122,6 @@ class MenuPopulate
         foreach ($this->populate[self::KEY_MENU_ELEMENTS] as $populateMenuElement) {
             $menuElement = $this->createMenuElement($populateMenuElement);
             $this->menu->addMenuElement($menuElement);
-
         }
     }
 
@@ -137,15 +135,29 @@ class MenuPopulate
         $menuElement = new MenuElement();
         $menuElement->setMenu($this->menu);
 
-        $menuElement = $this->mergeData($menuElement, $populateChildren,
-            [self::KEY_MENU_ELEMENTS_CHILDREN, self::KEY_MENU_ELEMENTS_TRANSLATIONS, 'id', 'page', 'parent', 'refChilds']
-        );
+        $menuElement = $this->mergeData($menuElement, $populateChildren, [
+            self::KEY_MENU_ELEMENTS_CHILDREN,
+            self::KEY_MENU_ELEMENTS_TRANSLATIONS,
+            'id',
+            'page',
+            'parent',
+            'refChilds',
+        ]);
         $menuElement = $this->setPageToMenuElement($menuElement, $populateChildren['page']);
 
-        $menuElement = $this->populateMenuElementTranslation($populateChildren[self::KEY_MENU_ELEMENTS_TRANSLATIONS], $menuElement);
+        $menuElement = $this->populateMenuElementTranslation(
+            $populateChildren[self::KEY_MENU_ELEMENTS_TRANSLATIONS],
+            $menuElement,
+        );
 
-        if (isset($populateChildren[self::KEY_MENU_ELEMENTS_CHILDREN]) && count($populateChildren[self::KEY_MENU_ELEMENTS_CHILDREN]) > 0) {
-            $menuElement = $this->populateMenuElementChildren($populateChildren[self::KEY_MENU_ELEMENTS_CHILDREN], $menuElement);
+        if (
+            isset($populateChildren[self::KEY_MENU_ELEMENTS_CHILDREN]) &&
+            count($populateChildren[self::KEY_MENU_ELEMENTS_CHILDREN]) > 0
+        ) {
+            $menuElement = $this->populateMenuElementChildren(
+                $populateChildren[self::KEY_MENU_ELEMENTS_CHILDREN],
+                $menuElement,
+            );
         }
         return $menuElement;
     }
@@ -172,11 +184,16 @@ class MenuPopulate
      * @param MenuElement $menuElement
      * @return MenuElement
      */
-    private function populateMenuElementTranslation(array $populateMenuElementTranslations, MenuElement $menuElement): MenuElement
-    {
+    private function populateMenuElementTranslation(
+        array $populateMenuElementTranslations,
+        MenuElement $menuElement,
+    ): MenuElement {
         foreach ($populateMenuElementTranslations as $populateMenuElementTranslation) {
             $menuElementTranslation = new MenuElementTranslation();
-            $menuElementTranslation = $this->mergeData($menuElementTranslation, $populateMenuElementTranslation, ['id', 'link']);
+            $menuElementTranslation = $this->mergeData($menuElementTranslation, $populateMenuElementTranslation, [
+                'id',
+                'link',
+            ]);
             $menuElementTranslation->setMenuElement($menuElement);
             $menuElement->addMenuElementTranslation($menuElementTranslation);
         }
@@ -191,9 +208,9 @@ class MenuPopulate
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function setPageToMenuElement(MenuElement $menuElement, mixed $pageId = ""): MenuElement
+    private function setPageToMenuElement(MenuElement $menuElement, mixed $pageId = ''): MenuElement
     {
-        if ($pageId === "" || $pageId < 0) {
+        if ($pageId === '' || $pageId < 0) {
             return $menuElement;
         }
 

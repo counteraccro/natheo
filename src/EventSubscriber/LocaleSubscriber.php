@@ -54,13 +54,13 @@ class LocaleSubscriber implements EventSubscriberInterface
      * @param OptionSystemService $optionSystemService
      * @param DataBase $dataBase
      */
-    public function __construct(OptionUserService   $optionUserService,
-                                LocaleSwitcher      $localeSwitcher,
-                                Security            $security,
-                                OptionSystemService $optionSystemService,
-                                DataBase            $dataBase
-    )
-    {
+    public function __construct(
+        OptionUserService $optionUserService,
+        LocaleSwitcher $localeSwitcher,
+        Security $security,
+        OptionSystemService $optionSystemService,
+        DataBase $dataBase,
+    ) {
         $this->optionUserService = $optionUserService;
         $this->localeSwitcher = $localeSwitcher;
         $this->security = $security;

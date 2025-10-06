@@ -71,7 +71,10 @@ class DatabaseManagerServiceTest extends AppWebTestCase
     public function testGetAllDump(): void
     {
         $fileSystem = new Filesystem();
-        $fileSystem->dumpFile(self::$kernel->getProjectDir() . DatabaseManagerConst::ROOT_FOLDER_NAME . 'demo.sql', 'dump');
+        $fileSystem->dumpFile(
+            self::$kernel->getProjectDir() . DatabaseManagerConst::ROOT_FOLDER_NAME . 'demo.sql',
+            'dump',
+        );
         $result = $this->databaseManagerService->getAllDump();
 
         $this->assertIsArray($result);

@@ -4,23 +4,23 @@
  * @version 1.0
  * Options Avancées du CMS
  */
-import axios from "axios";
-import Toast from "../../../../Components/Global/Toast.vue";
-import Modal from "../../../../Components/Global/Modal.vue";
-import SchemaDatabase from "../../../../Components/DatabaseManager/SchemaDatabse.vue";
-import SchemaTable from "../../../../Components/DatabaseManager/SchemaTable.vue";
-import ListDump from "../../../../Components/DatabaseManager/ListDump.vue";
+import axios from 'axios';
+import Toast from '../../../../Components/Global/Toast.vue';
+import Modal from '../../../../Components/Global/Modal.vue';
+import SchemaDatabase from '../../../../Components/DatabaseManager/SchemaDatabse.vue';
+import SchemaTable from '../../../../Components/DatabaseManager/SchemaTable.vue';
+import ListDump from '../../../../Components/DatabaseManager/ListDump.vue';
 
 export default {
-  name: "AdvancedOptions",
+  name: 'AdvancedOptions',
   components: {
     Modal,
-    Toast
+    Toast,
   },
   props: {
     urls: Object,
     translate: Object,
-    data: Object
+    data: Object,
   },
   data() {
     return {
@@ -33,7 +33,7 @@ export default {
         text_1: '',
         text_2: '',
         btn_undo: '',
-        btn_go: ''
+        btn_go: '',
       },
 
       modalTab: {
@@ -47,17 +47,15 @@ export default {
         toastError: {
           show: false,
           msg: '',
-        }
+        },
       },
-    }
+    };
   },
   mounted() {
     //this.loadSchemaDataBase()
   },
   methods: {
-
     openConfirmModale(action, confirm) {
-
       this.currentConfirmAction = action;
       if (!confirm) {
         this.updateModale('modaleConfirm', true);
@@ -66,13 +64,13 @@ export default {
       }
 
       switch (action) {
-        case 'switchEnv' :
+        case 'switchEnv':
           this.switchMode(confirm);
           break;
-        case 'resetDatabase' :
+        case 'resetDatabase':
           this.resetDatabase(confirm);
           break;
-        case 'resetData' :
+        case 'resetData':
           this.resetData(confirm);
           break;
       }
@@ -83,7 +81,6 @@ export default {
      */
 
     switchMode(confirm) {
-
       if (!confirm) {
         this.modalConfirm.title = this.translate.confirm_modale_env.modale_title;
         this.modalConfirm.text_1 = this.translate.confirm_modale_env.modale_body_text_1;
@@ -93,32 +90,33 @@ export default {
         return;
       }
 
-
       this.loading = true;
       this.msgInfo = this.translate.msg_info.switch_env;
-      axios.get(this.urls.switch_env).then((response) => {
-        if (response.data.success === true) {
-          this.toasts.toastSuccess.msg = response.data.msg;
-          this.toasts.toastSuccess.show = true;
-        } else {
-          this.toasts.toastError.msg = response.data.msg;
-          this.toasts.toastError.show = true;
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.msgInfo = this.translate.msg_info.switch_env_end;
-        location.reload();
-      });
-
+      axios
+        .get(this.urls.switch_env)
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccess.msg = response.data.msg;
+            this.toasts.toastSuccess.show = true;
+          } else {
+            this.toasts.toastError.msg = response.data.msg;
+            this.toasts.toastError.show = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.msgInfo = this.translate.msg_info.switch_env_end;
+          location.reload();
+        });
     },
 
     /**
      * Reset de la base de donnée
      * @param confirm
      */
-    resetDatabase(confirm)
-    {
+    resetDatabase(confirm) {
       if (!confirm) {
         this.modalConfirm.title = this.translate.confirm_modale_reset_database.modale_title;
         this.modalConfirm.text_1 = this.translate.confirm_modale_reset_database.modale_body_text_1;
@@ -130,29 +128,32 @@ export default {
 
       this.loading = true;
       this.msgInfo = this.translate.msg_info.reset_database;
-      axios.get(this.urls.reset_database).then((response) => {
-        this.urlRedirect = response.data.redirect;
-        if (response.data.success === true) {
-          this.toasts.toastSuccess.msg = response.data.msg;
-          this.toasts.toastSuccess.show = true;
-        } else {
-          this.toasts.toastError.msg = response.data.msg;
-          this.toasts.toastError.show = true;
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.msgInfo = this.translate.msg_info.reset_database_end;
-        window.location = this.urlRedirect;
-      });
+      axios
+        .get(this.urls.reset_database)
+        .then((response) => {
+          this.urlRedirect = response.data.redirect;
+          if (response.data.success === true) {
+            this.toasts.toastSuccess.msg = response.data.msg;
+            this.toasts.toastSuccess.show = true;
+          } else {
+            this.toasts.toastError.msg = response.data.msg;
+            this.toasts.toastError.show = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.msgInfo = this.translate.msg_info.reset_database_end;
+          window.location = this.urlRedirect;
+        });
     },
 
     /**
      * Réinstallation des données
      * @param confirm
      */
-    resetData(confirm)
-    {
+    resetData(confirm) {
       if (!confirm) {
         this.modalConfirm.title = this.translate.confirm_modale_reset_data.modale_title;
         this.modalConfirm.text_1 = this.translate.confirm_modale_reset_data.modale_body_text_1;
@@ -164,20 +165,24 @@ export default {
 
       this.loading = true;
       this.msgInfo = this.translate.msg_info.reset_data;
-      axios.get(this.urls.reset_data).then((response) => {
-        if (response.data.success === true) {
-          this.toasts.toastSuccess.msg = response.data.msg;
-          this.toasts.toastSuccess.show = true;
-        } else {
-          this.toasts.toastError.msg = response.data.msg;
-          this.toasts.toastError.show = true;
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.msgInfo = this.translate.msg_info.reset_data_end;
-        location.reload();
-      });
+      axios
+        .get(this.urls.reset_data)
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccess.msg = response.data.msg;
+            this.toasts.toastSuccess.show = true;
+          } else {
+            this.toasts.toastError.msg = response.data.msg;
+            this.toasts.toastError.show = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.msgInfo = this.translate.msg_info.reset_data_end;
+          location.reload();
+        });
     },
 
     /**
@@ -188,13 +193,12 @@ export default {
       return this.data.app_env === 'dev';
     },
 
-
     /**
      * Ferme un toast en fonction de son id
      * @param nameToast
      */
     closeToast(nameToast) {
-      this.toasts[nameToast].show = false
+      this.toasts[nameToast].show = false;
     },
 
     /**
@@ -214,14 +218,11 @@ export default {
       this.updateModale(nameModale, false);
     },
   },
-}
+};
 </script>
 
 <template>
-
-
   <div id="block-advanced-options" :class="this.loading === true ? 'block-grid' : ''">
-
     <div v-if="this.msgInfo !== ''" class="card border-secondary mb-3">
       <div class="card-header text-bg-secondary">
         {{ this.translate.msg_info.title }}
@@ -235,7 +236,7 @@ export default {
     </div>
 
     <div v-if="this.loading" class="overlay">
-      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
+      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000">
         <div class="spinner-border text-primary" role="status"></div>
         <span class="txt-overlay">{{ this.translate.loading }}</span>
       </div>
@@ -262,7 +263,6 @@ export default {
           <div class="alert alert-danger">
             <i>{{ this.translate.switch_env_define_dev_warning }}</i>
           </div>
-
         </div>
         <div v-else>
           <span class="card-text"> {{ this.translate.switch_env_define_prod }}</span>
@@ -283,13 +283,14 @@ export default {
     </div>
 
     <div v-if="this.isDevEnv()">
-
       <fieldset class="border-1 border-danger mt-3 p-3">
         <legend class="text-danger">
           <i class="bi bi-exclamation-octagon-fill"></i> {{ this.translate.title_danger_zone }}
         </legend>
 
-        <p class="text-danger"><b>{{ this.translate.warning_danger_zone }}</b></p>
+        <p class="text-danger">
+          <b>{{ this.translate.warning_danger_zone }}</b>
+        </p>
 
         <div class="row">
           <div class="col-6">
@@ -298,8 +299,10 @@ export default {
                 <i class="bi bi-database-fill-down"></i> {{ this.translate.reload_data.title }}
               </div>
               <div class="card-body">
-                <p class="text-black"> {{ this.translate.reload_data.text_1 }}</p>
-                <p class="text-danger"><i>{{ this.translate.reload_data.warning }}</i></p>
+                <p class="text-black">{{ this.translate.reload_data.text_1 }}</p>
+                <p class="text-danger">
+                  <i>{{ this.translate.reload_data.warning }}</i>
+                </p>
                 <div class="btn btn-secondary float-end" @click="this.openConfirmModale('resetData', false)">
                   {{ this.translate.reload_data.btn }}
                 </div>
@@ -312,8 +315,10 @@ export default {
                 <i class="bi bi-database-fill-x"></i> {{ this.translate.reset_database.title }}
               </div>
               <div class="card-body">
-                <p class="text-black"> {{ this.translate.reset_database.text_1 }}</p>
-                <p class="text-danger"><i>{{ this.translate.reset_database.warning }}</i></p>
+                <p class="text-black">{{ this.translate.reset_database.text_1 }}</p>
+                <p class="text-danger">
+                  <i>{{ this.translate.reset_database.warning }}</i>
+                </p>
                 <div class="btn btn-secondary float-end" @click="this.openConfirmModale('resetDatabase', false)">
                   {{ this.translate.reset_database.btn }}
                 </div>
@@ -321,26 +326,25 @@ export default {
             </div>
           </div>
         </div>
-
       </fieldset>
     </div>
-
   </div>
 
   <!-- modale confirmation suppression -->
   <modal
-      :id="'modaleConfirm'"
-      :show="this.modalTab.modaleConfirm"
-      @close-modal="this.closeModal"
-      :optionModalSize="'modal-lg'"
-      :option-modal-backdrop="'static'"
-      :option-show-close-btn="false">
-    <template #title>
-      <i class="bi bi-exclamation-circle-fill"></i> {{ this.modalConfirm.title }}
-    </template>
+    :id="'modaleConfirm'"
+    :show="this.modalTab.modaleConfirm"
+    @close-modal="this.closeModal"
+    :optionModalSize="'modal-lg'"
+    :option-modal-backdrop="'static'"
+    :option-show-close-btn="false"
+  >
+    <template #title> <i class="bi bi-exclamation-circle-fill"></i> {{ this.modalConfirm.title }} </template>
     <template #body>
       <p class="text-black">{{ this.modalConfirm.text_1 }}</p>
-      <p><i>{{ this.modalConfirm.text_2 }}</i></p>
+      <p>
+        <i>{{ this.modalConfirm.text_2 }}</i>
+      </p>
     </template>
     <template #footer>
       <div class="btn btn-secondary float-end" @click="this.closeModal('modaleConfirm')">
@@ -354,12 +358,11 @@ export default {
   <!-- fin modale confirmation suppression -->
   <!-- toast -->
   <div class="toast-container position-fixed top-0 end-0 p-2">
-
     <toast
-        :id="'toastSuccess'"
-        :option-class-header="'text-success'"
-        :show="this.toasts.toastSuccess.show"
-        @close-toast="this.closeToast"
+      :id="'toastSuccess'"
+      :option-class-header="'text-success'"
+      :show="this.toasts.toastSuccess.show"
+      @close-toast="this.closeToast"
     >
       <template #header>
         <i class="bi bi-check-circle-fill"></i> &nbsp;
@@ -372,10 +375,10 @@ export default {
     </toast>
 
     <toast
-        :id="'toastError'"
-        :option-class-header="'text-danger'"
-        :show="this.toasts.toastError.show"
-        @close-toast="this.closeToast"
+      :id="'toastError'"
+      :option-class-header="'text-danger'"
+      :show="this.toasts.toastError.show"
+      @close-toast="this.closeToast"
     >
       <template #header>
         <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
@@ -386,7 +389,5 @@ export default {
         <div v-html="this.toasts.toastError.msg"></div>
       </template>
     </toast>
-
   </div>
-
 </template>

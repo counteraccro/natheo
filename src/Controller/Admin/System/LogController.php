@@ -32,8 +32,8 @@ class LogController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'log',
             Breadcrumb::BREADCRUMB => [
-                'log.page_title_h1' => '#'
-            ]
+                'log.page_title_h1' => '#',
+            ],
         ];
 
         return $this->render('admin/system/log/index.html.twig', [
@@ -53,13 +53,12 @@ class LogController extends AppAdminController
     #[Route('/ajax/data-select-log/{time}', name: 'ajax_data_select_log', methods: ['GET'])]
     public function dataSelect(
         LoggerService $loggerService,
-        LogTranslate  $logTranslate,
-        string        $time = 'all',
-    ): JsonResponse
-    {
+        LogTranslate $logTranslate,
+        string $time = 'all',
+    ): JsonResponse {
         try {
             $files = $loggerService->getAllFiles($time);
-        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+        } catch (NotFoundExceptionInterface | ContainerExceptionInterface $e) {
             die($e->getMessage());
         }
         return $this->json(['files' => $files, 'trans' => $logTranslate->getTranslate()]);
@@ -77,18 +76,17 @@ class LogController extends AppAdminController
     #[Route('/ajax/load-log-file', name: 'ajax_load_log_file_empty', methods: ['GET'])]
     #[Route('/ajax/load-log-file/{file}/{page}/{limit}', name: 'ajax_load_log_file', methods: ['GET'])]
     public function loadLogFile(
-        LoggerService       $loggerService,
+        LoggerService $loggerService,
         TranslatorInterface $translator,
-        string              $file = '',
-        int                 $page = 1,
-        int                 $limit = 20
-    ): JsonResponse
-    {
+        string $file = '',
+        int $page = 1,
+        int $limit = 20,
+    ): JsonResponse {
         try {
             $grid = $loggerService->loadLogFile($file, $page, $limit);
             $success = true;
             $msg = $translator->trans('log.load.success.file', ['file' => $file], domain: 'log');
-        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+        } catch (NotFoundExceptionInterface | ContainerExceptionInterface $e) {
             $success = false;
             $msg = $e->getMessage();
         } catch (Exception $e) {
@@ -108,15 +106,14 @@ class LogController extends AppAdminController
      */
     #[Route('/ajax/delete-file/{file}', name: 'ajax_delete_file', methods: ['DELETE'])]
     public function deleteFile(
-        LoggerService       $loggerService,
+        LoggerService $loggerService,
         TranslatorInterface $translator,
-        string              $file = ''
-    ): JsonResponse
-    {
+        string $file = '',
+    ): JsonResponse {
         try {
             $success = $loggerService->deleteLog($file);
             $msg = $translator->trans('log.delete.file.success', domain: 'log');
-        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+        } catch (NotFoundExceptionInterface | ContainerExceptionInterface $e) {
             $success = false;
             $msg = $e->getMessage();
         }

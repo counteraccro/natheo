@@ -55,23 +55,18 @@ class MenuElementRepository extends ServiceEntityRepository
      */
     public function getMenuElementByMenuAndParent(int $idMenu, ?int $parent = null, bool $showDisabled = true): mixed
     {
-        $queryB = $this->createQueryBuilder('me')
-            ->where('me.menu =  :idMenu')
-            ->setParameter('idMenu', $idMenu);
+        $queryB = $this->createQueryBuilder('me')->where('me.menu =  :idMenu')->setParameter('idMenu', $idMenu);
         if ($parent === null) {
             $queryB->andWhere('me.parent IS NULL');
         } else {
-            $queryB->andWhere('me.parent =  :parent')
-                ->setParameter('parent', $parent);
+            $queryB->andWhere('me.parent =  :parent')->setParameter('parent', $parent);
         }
 
-        if(!$showDisabled) {
-            $queryB->andWhere('me.disabled = :disabled')
-                ->setParameter('disabled', false);
+        if (!$showDisabled) {
+            $queryB->andWhere('me.disabled = :disabled')->setParameter('disabled', false);
         }
 
-        $queryB->addOrderBy('me.columnPosition', 'ASC')
-            ->addOrderBy('me.rowPosition', 'ASC');
+        $queryB->addOrderBy('me.columnPosition', 'ASC')->addOrderBy('me.rowPosition', 'ASC');
 
         return $queryB->getQuery()->getResult();
     }

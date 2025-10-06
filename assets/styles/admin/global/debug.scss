@@ -5,18 +5,18 @@
  */
 
 .block-debug-pre {
-  background-color: $light;
-  padding: 10px;
-  border: 1px solid $primary;
-  border-radius: 3px;
+    background-color: $light;
+    padding: 10px;
+    border: 1px solid $primary;
+    border-radius: 3px;
 }
 
 .block-debug-pre p {
-  color: #000;
-  font-family: monospace;
-  font-size: 0.875em;
+    color: #000;
+    font-family: monospace;
+    font-size: 0.875em;
 }
 
 .block-debug-pre p b {
-  font-weight: bold;
+    font-weight: bold;
 }

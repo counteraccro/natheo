@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/api/{api_version}/menu', name: 'api_menu_', requirements: ['_version' => '%app.api_version%'])]
-#[IsGranted("ROLE_READ_API")]
+#[IsGranted('ROLE_READ_API')]
 class ApiMenuController extends AppApiController
 {
     /**
@@ -32,12 +32,11 @@ class ApiMenuController extends AppApiController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/find', name: 'find', methods: ['GET'], format: 'json')]
-    public function find(#[MapQueryString(
-        resolver: ApiFindMenuResolver::class
-    )] ApiFindMenuDto $apiFindMenuDto): JsonResponse
-    {
+    public function find(
+        #[MapQueryString(resolver: ApiFindMenuResolver::class)] ApiFindMenuDto $apiFindMenuDto,
+    ): JsonResponse {
         $user = null;
-        if ($apiFindMenuDto->getUserToken() !== "") {
+        if ($apiFindMenuDto->getUserToken() !== '') {
             $user = $this->getUserByUserToken($apiFindMenuDto->getUserToken());
         }
 
@@ -46,7 +45,10 @@ class ApiMenuController extends AppApiController
 
         $translator = $this->getTranslator();
         if (empty($menu)) {
-            throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.find.menu.not.found', domain: 'api_errors'));
+            throw new HttpException(
+                Response::HTTP_FORBIDDEN,
+                $translator->trans('api_errors.find.menu.not.found', domain: 'api_errors'),
+            );
         }
         return $this->apiResponse(ApiConst::API_MSG_SUCCESS, $menu);
     }

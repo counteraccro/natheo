@@ -124,8 +124,11 @@ class PagePopulate
             foreach ($this->page->getPageTranslations() as &$pageTranslation) {
                 foreach ($this->populate[self::KEY_PAGE_TRANSLATION] as $dataTranslation) {
                     if ($pageTranslation->getLocale() === $dataTranslation['locale']) {
-                        $pageTranslation = $this->mergeData($pageTranslation, $dataTranslation,
-                            ['id', 'page', 'locale']);
+                        $pageTranslation = $this->mergeData($pageTranslation, $dataTranslation, [
+                            'id',
+                            'page',
+                            'locale',
+                        ]);
                     }
                 }
             }
@@ -178,7 +181,6 @@ class PagePopulate
     private function populatePageContent(): void
     {
         if (isset($this->populate[self::KEY_PAGE_CONTENT])) {
-
             $this->page->getPageContents()->clear();
 
             $nbContent = $this->getNbContentByRender($this->populate['render']);
@@ -188,16 +190,22 @@ class PagePopulate
                     if ($content['renderBlock'] === $i) {
                         $pageContent = new PageContent();
                         /** @var PageContent $pageContent */
-                        $pageContent = $this->mergeData($pageContent, $content,
-                            ['id', 'page', 'pageContentTranslations', 'typeId']);
+                        $pageContent = $this->mergeData($pageContent, $content, [
+                            'id',
+                            'page',
+                            'pageContentTranslations',
+                            'typeId',
+                        ]);
 
                         switch ($content['type']) {
                             case PageConst::CONTENT_TYPE_TEXT:
                                 foreach ($content['pageContentTranslations'] as $pageContentT) {
                                     $pageContentTranslation = new PageContentTranslation();
                                     /** @var PageContentTranslation $pageContentTranslation */
-                                    $pageContentTranslation = $this->mergeData($pageContentTranslation, $pageContentT,
-                                        ['id', 'pageContent']);
+                                    $pageContentTranslation = $this->mergeData($pageContentTranslation, $pageContentT, [
+                                        'id',
+                                        'pageContent',
+                                    ]);
                                     $pageContentTranslation->setPageContent($pageContent);
                                     $pageContent->addPageContentTranslation($pageContentTranslation);
                                 }
@@ -220,19 +228,20 @@ class PagePopulate
             $this->page->getPageMetas()->clear();
             foreach ($this->populate[self::KEY_PAGE_META] as $dataMeta) {
                 $pageMeta = new PageMeta();
-                $pageMeta = $this->mergeData($pageMeta, $dataMeta,
-                    ['id', 'page', 'pageMetaTranslations']);
+                $pageMeta = $this->mergeData($pageMeta, $dataMeta, ['id', 'page', 'pageMetaTranslations']);
 
                 foreach ($dataMeta['pageMetaTranslations'] as $dataPageMetaTranslation) {
                     $pageMetaTranslation = new PageMetaTranslation();
-                    $pageMetaTranslation = $this->mergeData($pageMetaTranslation, $dataPageMetaTranslation, ['id', 'pageMeta']);
+                    $pageMetaTranslation = $this->mergeData($pageMetaTranslation, $dataPageMetaTranslation, [
+                        'id',
+                        'pageMeta',
+                    ]);
                     $pageMeta->addPageMetaTranslation($pageMetaTranslation);
                 }
                 $this->page->addPageMeta($pageMeta);
             }
         }
     }
-
 
     /**
      * Retourne un objet Page
@@ -272,7 +281,11 @@ class PagePopulate
         return match ($render) {
             PageConst::RENDER_1_BLOCK => 1,
             PageConst::RENDER_2_BLOCK, PageConst::RENDER_2_BLOCK_BOTTOM => 2,
-            PageConst::RENDER_3_BLOCK_BOTTOM, PageConst::RENDER_1_2_BLOCK, PageConst::RENDER_2_1_BLOCK, PageConst::RENDER_3_BLOCK => 3,
+            PageConst::RENDER_3_BLOCK_BOTTOM,
+            PageConst::RENDER_1_2_BLOCK,
+            PageConst::RENDER_2_1_BLOCK,
+            PageConst::RENDER_3_BLOCK
+                => 3,
             PageConst::RENDER_2_2_BLOCK => 4,
             default => 0,
         };

@@ -14,7 +14,7 @@ class MailTranslate extends AppTranslate
      * Retourne les traductions pour les emails
      * @return array
      */
-    public function getTranslate():array
+    public function getTranslate(): array
     {
         return [
             'listLanguage' => $this->translator->trans('mail.list.language', domain: 'mail'),

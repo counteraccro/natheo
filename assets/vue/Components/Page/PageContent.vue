@@ -1,17 +1,16 @@
 <script>
-
 /**
  * Ajout de contenu dans la page
  * @author Gourdon Aymeric
  * @version 1.0
  */
-import axios from "axios";
-import PageContentBlock from "./PageContentBlock.vue";
+import axios from 'axios';
+import PageContentBlock from './PageContentBlock.vue';
 
 export default {
   name: 'PageContent',
   components: {
-    PageContentBlock
+    PageContentBlock,
   },
   props: {
     url: String,
@@ -19,21 +18,18 @@ export default {
     locale: String,
     translate: Object,
     page: Object,
-    listContent: Object
+    listContent: Object,
   },
   emits: ['remove-content', 'new-content', 'update-content-text', 'move-content'],
   data() {
     return {
       renderColumn: [1, 2, 3],
-      renderRow: [4, 5]
-    }
+      renderRow: [4, 5],
+    };
   },
-  mounted() {
-
-  },
+  mounted() {},
   computed: {},
   methods: {
-
     /**
      * Retourne le nombre d'itérations en fonction du render
      * @returns {number}
@@ -87,15 +83,14 @@ export default {
      * @returns boolean
      */
     inArray(list, number) {
-      return list.includes(number)
+      return list.includes(number);
     },
 
     /**
      * retourne un nombre aléatoire
      * @returns {string}
      */
-    randomKey()
-    {
+    randomKey() {
       return (Math.random() + 1).toString(36).substring(7);
     },
 
@@ -110,8 +105,7 @@ export default {
      * suppression d'un page content en fonction de son id
      * @param id
      */
-    removeContent(id)
-    {
+    removeContent(id) {
       this.$emit('remove-content', id);
     },
 
@@ -128,8 +122,7 @@ export default {
      * @param type_id
      * @param renderBlockId
      */
-    newContent(type, type_id, renderBlockId)
-    {
+    newContent(type, type_id, renderBlockId) {
       this.$emit('new-content', type, type_id, renderBlockId);
     },
 
@@ -145,36 +138,32 @@ export default {
         console.log(error);
       }).finally(() => {
       });*/
-    }
-
-  }
-}
-
+    },
+  },
+};
 </script>
 
 <template>
-
   <h5>{{ this.translate.title }}</h5>
 
   <div v-if="this.inArray(this.renderColumn, this.page.render)">
     <div class="row">
-      <div v-for="n in this.getNbIteration()" :class="'mb-4 col-' + (12/this.getNbIteration())">
+      <div v-for="n in this.getNbIteration()" :class="'mb-4 col-' + 12 / this.getNbIteration()">
         <page-content-block
-            :translate="this.translate.page_content_block"
-            :locale="this.locale"
-            :page-contents="this.page.pageContents"
-            :render-block-id="n"
-            :index-start="0"
-            :index-end="2"
-            :index-max="this.getNbBlock()"
-            :liste-content="this.listContent"
-            :url="this.url"
-            :url-info="this.urlInfo"
-            @update-content-text="this.updateContentText"
-            @remove-content="this.removeContent"
-            @new-content="this.newContent"
-            @move-content="this.moveContent"
-
+          :translate="this.translate.page_content_block"
+          :locale="this.locale"
+          :page-contents="this.page.pageContents"
+          :render-block-id="n"
+          :index-start="0"
+          :index-end="2"
+          :index-max="this.getNbBlock()"
+          :liste-content="this.listContent"
+          :url="this.url"
+          :url-info="this.urlInfo"
+          @update-content-text="this.updateContentText"
+          @remove-content="this.removeContent"
+          @new-content="this.newContent"
+          @move-content="this.moveContent"
         />
       </div>
     </div>
@@ -184,20 +173,20 @@ export default {
     <div class="row">
       <div v-for="n in this.getNbIteration()" class="mb-4 col-12">
         <page-content-block
-            :translate="this.translate.page_content_block"
-            :locale="this.locale"
-            :page-contents="this.page.pageContents"
-            :render-block-id="n"
-            :index-start="0"
-            :index-end="2"
-            :index-max="this.getNbBlock()"
-            :liste-content="this.listContent"
-            :url="this.url"
-            :url-info="this.urlInfo"
-            @update-content-text="this.updateContentText"
-            @remove-content="this.removeContent"
-            @new-content="this.newContent"
-            @move-content="this.moveContent"
+          :translate="this.translate.page_content_block"
+          :locale="this.locale"
+          :page-contents="this.page.pageContents"
+          :render-block-id="n"
+          :index-start="0"
+          :index-end="2"
+          :index-max="this.getNbBlock()"
+          :liste-content="this.listContent"
+          :url="this.url"
+          :url-info="this.urlInfo"
+          @update-content-text="this.updateContentText"
+          @remove-content="this.removeContent"
+          @new-content="this.newContent"
+          @move-content="this.moveContent"
         />
       </div>
     </div>
@@ -206,135 +195,137 @@ export default {
   <div v-else-if="this.page.render === 6">
     <div class="row mb-4">
       <div class="col-12">
-        <page-content-block :key="this.randomKey()"
-            :translate="this.translate.page_content_block"
-            :locale="this.locale"
-            :page-contents="this.page.pageContents"
-            :render-block-id="1"
-            :index-start="0"
-            :index-end="0"
-            :index-max="this.getNbBlock()"
-            :liste-content="this.listContent"
-            :url="this.url"
-            :url-info="this.urlInfo"
-            @update-content-text="this.updateContentText"
-            @remove-content="this.removeContent"
-            @new-content="this.newContent"
-            @move-content="this.moveContent"
+        <page-content-block
+          :key="this.randomKey()"
+          :translate="this.translate.page_content_block"
+          :locale="this.locale"
+          :page-contents="this.page.pageContents"
+          :render-block-id="1"
+          :index-start="0"
+          :index-end="0"
+          :index-max="this.getNbBlock()"
+          :liste-content="this.listContent"
+          :url="this.url"
+          :url-info="this.urlInfo"
+          @update-content-text="this.updateContentText"
+          @remove-content="this.removeContent"
+          @new-content="this.newContent"
+          @move-content="this.moveContent"
         />
       </div>
     </div>
 
     <div class="row">
       <div v-for="n in this.getNbIteration()" class="col-6">
-        <page-content-block :key="this.randomKey()"
-            :translate="this.translate.page_content_block"
-            :locale="this.locale"
-            :page-contents="this.page.pageContents"
-            :render-block-id="n+1"
-            :index-start="1"
-            :index-end="2"
-            :index-max="this.getNbBlock()"
-            :liste-content="this.listContent"
-            :url="this.url"
-            :url-info="this.urlInfo"
-            @update-content-text="this.updateContentText"
-            @remove-content="this.removeContent"
-            @new-content="this.newContent"
-            @move-content="this.moveContent"
+        <page-content-block
+          :key="this.randomKey()"
+          :translate="this.translate.page_content_block"
+          :locale="this.locale"
+          :page-contents="this.page.pageContents"
+          :render-block-id="n + 1"
+          :index-start="1"
+          :index-end="2"
+          :index-max="this.getNbBlock()"
+          :liste-content="this.listContent"
+          :url="this.url"
+          :url-info="this.urlInfo"
+          @update-content-text="this.updateContentText"
+          @remove-content="this.removeContent"
+          @new-content="this.newContent"
+          @move-content="this.moveContent"
         />
       </div>
     </div>
-
   </div>
   <div v-else-if="this.page.render === 7">
     <div class="row mb-4">
       <div v-for="n in this.getNbIteration()" class="col-6">
-        <page-content-block :key="this.randomKey()"
-            :translate="this.translate.page_content_block"
-            :locale="this.locale"
-            :page-contents="this.page.pageContents"
-            :render-block-id="n"
-            :index-start="0"
-            :index-end="1"
-            :index-max="this.getNbBlock()"
-            :liste-content="this.listContent"
-            :url="this.url"
-            :url-info="this.urlInfo"
-            @update-content-text="this.updateContentText"
-            @remove-content="this.removeContent"
-            @new-content="this.newContent"
-            @move-content="this.moveContent"
+        <page-content-block
+          :key="this.randomKey()"
+          :translate="this.translate.page_content_block"
+          :locale="this.locale"
+          :page-contents="this.page.pageContents"
+          :render-block-id="n"
+          :index-start="0"
+          :index-end="1"
+          :index-max="this.getNbBlock()"
+          :liste-content="this.listContent"
+          :url="this.url"
+          :url-info="this.urlInfo"
+          @update-content-text="this.updateContentText"
+          @remove-content="this.removeContent"
+          @new-content="this.newContent"
+          @move-content="this.moveContent"
         />
       </div>
     </div>
 
     <div class="row">
       <div class="col-12">
-        <page-content-block :key="this.randomKey()"
-            :translate="this.translate.page_content_block"
-            :locale="this.locale"
-            :page-contents="this.page.pageContents"
-            :render-block-id="3"
-            :index-start="2"
-            :index-end="2"
-            :index-max="this.getNbBlock()"
-            :liste-content="this.listContent"
-            :url="this.url"
-            :url-info="this.urlInfo"
-            @update-content-text="this.updateContentText"
-            @remove-content="this.removeContent"
-            @new-content="this.newContent"
-            @move-content="this.moveContent"
+        <page-content-block
+          :key="this.randomKey()"
+          :translate="this.translate.page_content_block"
+          :locale="this.locale"
+          :page-contents="this.page.pageContents"
+          :render-block-id="3"
+          :index-start="2"
+          :index-end="2"
+          :index-max="this.getNbBlock()"
+          :liste-content="this.listContent"
+          :url="this.url"
+          :url-info="this.urlInfo"
+          @update-content-text="this.updateContentText"
+          @remove-content="this.removeContent"
+          @new-content="this.newContent"
+          @move-content="this.moveContent"
         />
       </div>
     </div>
-
   </div>
   <div v-else-if="this.page.render === 8">
     <div class="row mb-4">
       <div v-for="n in this.getNbIteration()" class="col-6">
-        <page-content-block :key="this.randomKey()"
-            :translate="this.translate.page_content_block"
-            :locale="this.locale"
-            :page-contents="this.page.pageContents"
-            :render-block-id="n"
-            :index-start="0"
-            :index-end="1"
-            :index-max="this.getNbBlock()"
-            :liste-content="this.listContent"
-            :url="this.url"
-            :url-info="this.urlInfo"
-            @update-content-text="this.updateContentText"
-            @remove-content="this.removeContent"
-            @new-content="this.newContent"
-            @move-content="this.moveContent"
+        <page-content-block
+          :key="this.randomKey()"
+          :translate="this.translate.page_content_block"
+          :locale="this.locale"
+          :page-contents="this.page.pageContents"
+          :render-block-id="n"
+          :index-start="0"
+          :index-end="1"
+          :index-max="this.getNbBlock()"
+          :liste-content="this.listContent"
+          :url="this.url"
+          :url-info="this.urlInfo"
+          @update-content-text="this.updateContentText"
+          @remove-content="this.removeContent"
+          @new-content="this.newContent"
+          @move-content="this.moveContent"
         />
       </div>
     </div>
     <div class="row">
       <div v-for="n in this.getNbIteration()" class="col-6">
-        <page-content-block :key="this.randomKey()"
-            :translate="this.translate.page_content_block"
-            :locale="this.locale"
-            :page-contents="this.page.pageContents"
-            :render-block-id="n+2"
-            :index-start="2"
-            :index-end="3"
-            :index-max="this.getNbBlock()"
-            :liste-content="this.listContent"
-            :url="this.url"
-            :url-info="this.urlInfo"
-            @update-content-text="this.updateContentText"
-            @remove-content="this.removeContent"
-            @new-content="this.newContent"
-            @move-content="this.moveContent"
+        <page-content-block
+          :key="this.randomKey()"
+          :translate="this.translate.page_content_block"
+          :locale="this.locale"
+          :page-contents="this.page.pageContents"
+          :render-block-id="n + 2"
+          :index-start="2"
+          :index-end="3"
+          :index-max="this.getNbBlock()"
+          :liste-content="this.listContent"
+          :url="this.url"
+          :url-info="this.urlInfo"
+          @update-content-text="this.updateContentText"
+          @remove-content="this.removeContent"
+          @new-content="this.newContent"
+          @move-content="this.moveContent"
         />
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

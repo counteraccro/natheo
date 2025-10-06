@@ -1,26 +1,25 @@
 <script>
-
 /**
  * @author Gourdon Aymeric
  * @version 1.5
  * Permet de générer le tableau GRID
  */
 
-import Grid from '../../Components/Grid/Grid.vue'
-import GridPaginate from "../../Components/Grid/GridPaginate.vue";
-import axios from "axios";
-import Modal from "../../Components/Global/Modal.vue";
-import Toast from "../../Components/Global/Toast.vue";
-import {copyToClipboard} from "../../../utils/copyToClipboard";
-import {emitter} from "../../../utils/useEvent";
+import Grid from '../../Components/Grid/Grid.vue';
+import GridPaginate from '../../Components/Grid/GridPaginate.vue';
+import axios from 'axios';
+import Modal from '../../Components/Global/Modal.vue';
+import Toast from '../../Components/Global/Toast.vue';
+import { copyToClipboard } from '../../../utils/copyToClipboard';
+import { emitter } from '../../../utils/useEvent';
 
 export default {
-  name: "GenericGrid",
+  name: 'GenericGrid',
   components: {
     GridPaginate,
     Grid,
     Modal,
-    Toast
+    Toast,
   },
   props: {
     url: String,
@@ -30,10 +29,10 @@ export default {
       type: Boolean,
       default: false,
     },
-    showFilter : {
+    showFilter: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -69,9 +68,9 @@ export default {
         toastErrorGenericGrid: {
           show: false,
           msg: '',
-        }
+        },
       },
-    }
+    };
   },
   mounted() {
     this.loadData(this.page, this.limit);
@@ -87,38 +86,39 @@ export default {
 
       let strSearch = this.getSearchParams();
       let filter = this.getFilterParams();
-      axios.get(this.url + '/' + page + '/' + limit + filter  + strSearch ).then((response) => {
-        this.gridColumns = response.data.column;
-        this.gridData = response.data.data;
-        this.nbElements = response.data.nb;
-        this.sortOrders = this.gridColumns.reduce((o, key) => ((o[key] = 1), o), {});
-        this.listLimit = response.data.listLimit;
-        this.translate = response.data.translate.genericGrid;
-        this.translateGridPaginate = response.data.translate.gridPaginate;
-        this.translateGrid = response.data.translate.grid;
-        this.cPage = page;
-        this.cLimit = limit;
-        this.urlSaveQuery = response.data.urlSaveSql;
+      axios
+        .get(this.url + '/' + page + '/' + limit + filter + strSearch)
+        .then((response) => {
+          this.gridColumns = response.data.column;
+          this.gridData = response.data.data;
+          this.nbElements = response.data.nb;
+          this.sortOrders = this.gridColumns.reduce((o, key) => ((o[key] = 1), o), {});
+          this.listLimit = response.data.listLimit;
+          this.translate = response.data.translate.genericGrid;
+          this.translateGridPaginate = response.data.translate.gridPaginate;
+          this.translateGrid = response.data.translate.grid;
+          this.cPage = page;
+          this.cLimit = limit;
+          this.urlSaveQuery = response.data.urlSaveSql;
 
+          if (response.data.sql !== undefined) {
+            this.cQuery = response.data.sql;
+          }
 
-        if (response.data.sql !== undefined) {
-          this.cQuery = response.data.sql;
-        }
-
-        this.searchPlaceholder = this.translate.placeholder;
-
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => this.loading = false);
+          this.searchPlaceholder = this.translate.placeholder;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => (this.loading = false));
     },
 
     /**
      * Génération du paramètre filtre
      * @return {string}
      */
-    getFilterParams()
-    {
-      return "?filter=" + this.filter;
+    getFilterParams() {
+      return '?filter=' + this.filter;
     },
 
     /**
@@ -127,9 +127,9 @@ export default {
      */
     getSearchParams() {
       if (this.searchMode !== 'table') {
-        return "&search=" + this.searchQuery;
+        return '&search=' + this.searchQuery;
       }
-      return "";
+      return '';
     },
 
     /**
@@ -148,7 +148,6 @@ export default {
      * @param type
      */
     redirectAction(url, is_ajax, is_confirm, msg_confirm, type) {
-
       this.cUrl = url;
       this.isAjax = is_ajax;
       this.httpType = type;
@@ -164,26 +163,32 @@ export default {
 
           if (type === undefined) {
             type = 'post';
-            console.error('URL ' + url + ' n\'a aucun type défini');
+            console.error('URL ' + url + " n'a aucun type défini");
           }
 
-          axios[type](url).then((response) => {
-            if (response.data.success === true || response.data.type === 'success') {
+          axios[type](url)
+            .then((response) => {
+              if (response.data.success === true || response.data.type === 'success') {
+                if (response.data.type === 'success') {
+                  console.error(
+                    "Ancient système de retour de la réponse, à changer pour l'url " +
+                      url +
+                      ' \n ' +
+                      'Voir Controller/Admin/Content/FaqController::updateDisabled pour un exemple de la bonne pratique'
+                  );
+                }
 
-              if (response.data.type === 'success') {
-                console.error('Ancient système de retour de la réponse, à changer pour l\'url ' + url + ' \n ' +
-                    'Voir Controller/Admin/Content/FaqController::updateDisabled pour un exemple de la bonne pratique');
+                this.toasts.toastSuccessGenericGrid.msg = response.data.msg;
+                this.toasts.toastSuccessGenericGrid.show = true;
+              } else {
+                this.toasts.toastErrorGenericGrid.msg = response.data.msg;
+                this.toasts.toastErrorGenericGrid.show = true;
               }
-
-              this.toasts.toastSuccessGenericGrid.msg = response.data.msg;
-              this.toasts.toastSuccessGenericGrid.show = true;
-            } else {
-              this.toasts.toastErrorGenericGrid.msg = response.data.msg;
-              this.toasts.toastErrorGenericGrid.show = true;
-            }
-          }).catch((error) => {
-            console.error(error);
-          }).finally(() => this.loadData(this.cPage, this.cLimit));
+            })
+            .catch((error) => {
+              console.error(error);
+            })
+            .finally(() => this.loadData(this.cPage, this.cLimit));
         } else {
           window.location.href = url;
         }
@@ -209,7 +214,7 @@ export default {
      * @param nameToast
      */
     closeToast(nameToast) {
-      this.toasts[nameToast].show = false
+      this.toasts[nameToast].show = false;
     },
 
     /**
@@ -221,7 +226,7 @@ export default {
       if (this.searchMode === 'table') {
         this.searchPlaceholder = this.translate.placeholder;
       } else {
-        this.searchPlaceholder = this.translate.placeholderBddSearch
+        this.searchPlaceholder = this.translate.placeholderBddSearch;
       }
 
       return false;
@@ -251,22 +256,26 @@ export default {
 
     saveQueryRun() {
       this.loading = true;
-      axios.post(this.urlSaveQuery, {
-        'query': this.cQuery
-      }).then((response) => {
-        if (response.data.success === true) {
-          this.toasts.toastSuccessGenericGrid.msg = response.data.msg;
-          this.toasts.toastSuccessGenericGrid.show = true;
-        } else {
-          this.toasts.toastErrorGenericGrid.msg = response.data.msg;
-          this.toasts.toastErrorGenericGrid.show = true;
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.loading = false
-        this.loadData(this.page, this.limit);
-      });
+      axios
+        .post(this.urlSaveQuery, {
+          query: this.cQuery,
+        })
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccessGenericGrid.msg = response.data.msg;
+            this.toasts.toastSuccessGenericGrid.show = true;
+          } else {
+            this.toasts.toastErrorGenericGrid.msg = response.data.msg;
+            this.toasts.toastErrorGenericGrid.show = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+          this.loadData(this.page, this.limit);
+        });
     },
 
     /**
@@ -277,11 +286,11 @@ export default {
       let filter = '';
       let icon = '';
       switch (filterChange) {
-        case 'me' :
+        case 'me':
           filter = 'me';
           icon = 'bi-person-fill';
           break;
-        case 'all' :
+        case 'all':
           filter = 'all';
           icon = 'bi-people-fill';
           break;
@@ -292,11 +301,9 @@ export default {
       this.filter = filter;
       this.filterIcon = icon;
       this.loadData(1, this.limit);
-    }
-  }
-
-}
-
+    },
+  },
+};
 </script>
 
 <template>
@@ -305,7 +312,8 @@ export default {
       <div class="card-header">
         <div class="float-end">
           <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.saveQueryRun"><i class="bi bi-save"></i></div>
-          <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.copyQueryRun"><i class="bi bi-clipboard"></i>
+          <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.copyQueryRun">
+            <i class="bi bi-clipboard"></i>
           </div>
           <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.showQueryRun(false)"><i class="bi bi-x"></i></div>
         </div>
@@ -320,56 +328,92 @@ export default {
       <div class="col-10">
         <div class="input-group mb-3">
           <span class="input-group-text"><i class="bi bi-search"></i></span>
-          <input type="text" class="form-control no-control" :placeholder="this.searchPlaceholder" v-model="searchQuery">
-          <button :disabled="!this.activeSearchData" v-if="this.searchMode === 'bdd'" type="button" @click="this.loadData(this.cPage, this.cLimit)" class="btn btn-secondary">{{ this.translate.btnSearch }}</button>
-          <button :disabled="!this.activeSearchData" v-if="this.activeSearchData" type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+          <input
+            type="text"
+            class="form-control no-control"
+            :placeholder="this.searchPlaceholder"
+            v-model="searchQuery"
+          />
+          <button
+            :disabled="!this.activeSearchData"
+            v-if="this.searchMode === 'bdd'"
+            type="button"
+            @click="this.loadData(this.cPage, this.cLimit)"
+            class="btn btn-secondary"
+          >
+            {{ this.translate.btnSearch }}
+          </button>
+          <button
+            :disabled="!this.activeSearchData"
+            v-if="this.activeSearchData"
+            type="button"
+            class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
             <span class="visually-hidden">Toggle Dropdown</span>
           </button>
           <ul class="dropdown-menu dropdown-menu-end">
             <li>
-              <a class="dropdown-item" href="#" @click="this.changeSearchMode('table')"><i class="bi bi-table"></i> {{ this.translate.placeholder }}</a>
+              <a class="dropdown-item" href="#" @click="this.changeSearchMode('table')"
+                ><i class="bi bi-table"></i> {{ this.translate.placeholder }}</a
+              >
             </li>
             <li>
-              <a class="dropdown-item" href="#" @click="this.changeSearchMode('bdd')"><i class="bi bi-database-down"></i> {{ this.translate.placeholderBddSearch }}</a>
+              <a class="dropdown-item" href="#" @click="this.changeSearchMode('bdd')"
+                ><i class="bi bi-database-down"></i> {{ this.translate.placeholderBddSearch }}</a
+              >
             </li>
           </ul>
         </div>
       </div>
       <div class="col-2">
-
-        <div v-if="this.showFilter" class="btn btn-secondary dropdown-toggle m-1 mt-0" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+        <div
+          v-if="this.showFilter"
+          class="btn btn-secondary dropdown-toggle m-1 mt-0"
+          href="#"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
           <i class="bi bi-filter-circle"></i> <i class="bi" :class="this.filterIcon"></i>
         </div>
         <ul class="dropdown-menu">
           <li>
-            <a class="dropdown-item no-control" href="#" @click="this.changeFilter('me')"><i class="bi bi-person-fill"></i> {{ this.translate.filterOnlyMe }}</a>
+            <a class="dropdown-item no-control" href="#" @click="this.changeFilter('me')"
+              ><i class="bi bi-person-fill"></i> {{ this.translate.filterOnlyMe }}</a
+            >
           </li>
           <li>
-            <a class="dropdown-item no-control" href="#" @click="this.changeFilter('all')"><i class="bi bi-people-fill"></i> {{ this.translate.filterAll }}</a>
+            <a class="dropdown-item no-control" href="#" @click="this.changeFilter('all')"
+              ><i class="bi bi-people-fill"></i> {{ this.translate.filterAll }}</a
+            >
           </li>
         </ul>
 
         <div class="btn btn-secondary m-1 mt-0" @click="this.reloadData"><i class="bi bi-arrow-clockwise"></i></div>
         <div v-if="this.cQuery !== ''" class="btn btn-secondary m-1 mt-0" @click="this.showQueryRun(true)">
-          <i class="bi bi-database"></i></div>
+          <i class="bi bi-database"></i>
+        </div>
       </div>
     </div>
   </form>
 
   <modal
-      :id="'generic-grid-modale'"
-      :show="this.showModalGenericGrid"
-      @close-modal="this.hideModal"
-      :option-show-close-btn="false"
+    :id="'generic-grid-modale'"
+    :show="this.showModalGenericGrid"
+    @close-modal="this.hideModal"
+    :option-show-close-btn="false"
   >
-    <template #title>
-      <i class="bi bi-sign-stop"></i> {{ translate.confirmTitle }}
-    </template>
+    <template #title> <i class="bi bi-sign-stop"></i> {{ translate.confirmTitle }} </template>
     <template #body>
       <div v-html="msgConfirm"></div>
     </template>
     <template #footer>
-      <button type="button" class="btn btn-primary" @click="redirectAction(this.cUrl, this.isAjax, false, '', this.httpType)">
+      <button
+        type="button"
+        class="btn btn-primary"
+        @click="redirectAction(this.cUrl, this.isAjax, false, '', this.httpType)"
+      >
         <i class="bi bi-check2-circle"></i> {{ translate.confirmBtnOK }}
       </button>
       <button type="button" class="btn btn-secondary" @click="this.hideModal()">
@@ -386,32 +430,33 @@ export default {
       </div>
     </div>
     <Grid
-        :data="gridData"
-        :columns="gridColumns"
-        :filter-key="searchQuery"
-        :sortOrders="sortOrders"
-        :translate="translateGrid"
-        :search-mode="this.searchMode"
-        @redirect-action="redirectAction">
+      :data="gridData"
+      :columns="gridColumns"
+      :filter-key="searchQuery"
+      :sortOrders="sortOrders"
+      :translate="translateGrid"
+      :search-mode="this.searchMode"
+      @redirect-action="redirectAction"
+    >
     </Grid>
     <GridPaginate
-        :current-page="page"
-        :nb-elements="limit"
-        :nb-elements-total="nbElements"
-        :url="url"
-        :list-limit="listLimit"
-        :translate="translateGridPaginate"
-        @change-page-event="loadData"
+      :current-page="page"
+      :nb-elements="limit"
+      :nb-elements-total="nbElements"
+      :url="url"
+      :list-limit="listLimit"
+      :translate="translateGridPaginate"
+      @change-page-event="loadData"
     >
     </GridPaginate>
   </div>
 
   <div class="toast-container position-fixed top-0 end-0 p-2">
     <toast
-        :id="'toastSuccessGenericGrid'"
-        :option-class-header="'text-success'"
-        :show="this.toasts.toastSuccessGenericGrid.show"
-        @close-toast="this.closeToast"
+      :id="'toastSuccessGenericGrid'"
+      :option-class-header="'text-success'"
+      :show="this.toasts.toastSuccessGenericGrid.show"
+      @close-toast="this.closeToast"
     >
       <template #header>
         <i class="bi bi-check-circle-fill"></i> &nbsp;
@@ -424,10 +469,10 @@ export default {
     </toast>
 
     <toast
-        :id="'toastErrorGenericGrid'"
-        :option-class-header="'text-danger'"
-        :show="this.toasts.toastErrorGenericGrid.show"
-        @close-toast="this.closeToast"
+      :id="'toastErrorGenericGrid'"
+      :option-class-header="'text-danger'"
+      :show="this.toasts.toastErrorGenericGrid.show"
+      @close-toast="this.closeToast"
     >
       <template #header>
         <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
@@ -439,9 +484,6 @@ export default {
       </template>
     </toast>
   </div>
-
 </template>
 
-
-<style scoped>
-</style>
+<style scoped></style>

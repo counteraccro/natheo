@@ -25,8 +25,13 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route('/admin/{_locale}/sql-manager', name: 'admin_sql_manager_',
-    requirements: ['_locale' => '%app.supported_locales%'])]
+#[
+    Route(
+        '/admin/{_locale}/sql-manager',
+        name: 'admin_sql_manager_',
+        requirements: ['_locale' => '%app.supported_locales%'],
+    ),
+]
 #[IsGranted('ROLE_SUPER_ADMIN')]
 class SqlManagerController extends AppAdminController
 {
@@ -36,14 +41,14 @@ class SqlManagerController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'sql_manager',
             Breadcrumb::BREADCRUMB => [
-                'sql_manager.index.page_title_h1' => '#'
-            ]
+                'sql_manager.index.page_title_h1' => '#',
+            ],
         ];
 
         return $this->render('admin/tools/sql_manager/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT)
+            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
         ]);
     }
 
@@ -60,11 +65,10 @@ class SqlManagerController extends AppAdminController
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     public function loadGridData(
         SqlManagerService $sqlManagerService,
-        Request           $request,
-        int               $page = 1,
-        int               $limit = 20
-    ): JsonResponse
-    {
+        Request $request,
+        int $page = 1,
+        int $limit = 20,
+    ): JsonResponse {
         $search = $request->query->get('search');
         $grid = $sqlManagerService->getAllFormatToGrid($page, $limit, $search);
         return $this->json($grid);
@@ -82,17 +86,22 @@ class SqlManagerController extends AppAdminController
     #[Route('/ajax/disabled/{id}', name: 'disabled', methods: ['PUT'])]
     public function updateDisabled(
         #[MapEntity(id: 'id')] SqlManager $sqlManager,
-        SqlManagerService                 $sqlManagerService,
-        TranslatorInterface               $translator): JsonResponse
-    {
-
+        SqlManagerService $sqlManagerService,
+        TranslatorInterface $translator,
+    ): JsonResponse {
         $sqlManager->setDisabled(!$sqlManager->isDisabled());
 
-        $msg = $translator->trans('sql_manager.success.no.disabled',
-            ['label' => $sqlManager->getName()], 'sql_manager');
+        $msg = $translator->trans(
+            'sql_manager.success.no.disabled',
+            ['label' => $sqlManager->getName()],
+            'sql_manager',
+        );
         if ($sqlManager->isDisabled()) {
-            $msg = $translator->trans('sql_manager.success.disabled',
-                ['label' => $sqlManager->getName()], 'sql_manager');
+            $msg = $translator->trans(
+                'sql_manager.success.disabled',
+                ['label' => $sqlManager->getName()],
+                'sql_manager',
+            );
         }
         $sqlManagerService->save($sqlManager);
         return $this->json($sqlManagerService->getResponseAjax($msg));
@@ -109,12 +118,15 @@ class SqlManagerController extends AppAdminController
      */
     #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(
-        #[MapEntity(id: 'id')] SqlManager          $sqlManager,
-        SqlManagerService   $sqlManagerService,
-        TranslatorInterface $translator): JsonResponse
-    {
-        $msg = $translator->trans('sql_manager.remove.success', ['label' => $sqlManager->getName()],
-            domain: 'sql_manager');
+        #[MapEntity(id: 'id')] SqlManager $sqlManager,
+        SqlManagerService $sqlManagerService,
+        TranslatorInterface $translator,
+    ): JsonResponse {
+        $msg = $translator->trans(
+            'sql_manager.remove.success',
+            ['label' => $sqlManager->getName()],
+            domain: 'sql_manager',
+        );
         $sqlManagerService->remove($sqlManager);
         return $this->json($sqlManagerService->getResponseAjax($msg));
     }
@@ -134,11 +146,10 @@ class SqlManagerController extends AppAdminController
     #[Route('/execute/{id}/{isExecute}', name: 'execute')]
     public function add(
         SqlManagerTranslate $sqlManagerTranslate,
-        SqlManagerService   $sqlManagerService,
-        ?int                $id = null,
-        bool                $isExecute = false,
-    ): Response
-    {
+        SqlManagerService $sqlManagerService,
+        ?int $id = null,
+        bool $isExecute = false,
+    ): Response {
         $breadcrumbTitle = 'sql_manager.update.page_title_h1';
         if ($id === null) {
             $breadcrumbTitle = 'sql_manager.add.page_title_h1';
@@ -158,8 +169,8 @@ class SqlManagerController extends AppAdminController
             Breadcrumb::DOMAIN => 'sql_manager',
             Breadcrumb::BREADCRUMB => [
                 'sql_manager.index.page_title' => 'admin_sql_manager_index',
-                $breadcrumbTitle => '#'
-            ]
+                $breadcrumbTitle => '#',
+            ],
         ];
 
         return $this->render('admin/tools/sql_manager/add_update.html.twig', [
@@ -168,15 +179,13 @@ class SqlManagerController extends AppAdminController
             'id' => $id,
             'isExecute' => $isExecute,
             'schema' => $this->getParameter('app.default_database_schema'),
-            'datas' => [
-            ],
+            'datas' => [],
             'urls' => [
                 'load_sql_manager' => $this->generateUrl('admin_sql_manager_load_data', ['id' => $id]),
                 'load_data_database' => $this->generateUrl('admin_sql_manager_load_data_database'),
                 'execute_sql' => $this->generateUrl('admin_sql_manager_execute_sql'),
                 'save' => $this->generateUrl('admin_sql_manager_save'),
-            ]
-
+            ],
         ]);
     }
 
@@ -188,10 +197,7 @@ class SqlManagerController extends AppAdminController
      * @throws ExceptionInterface
      */
     #[Route('/ajax/load-data/{id}', name: 'load_data', methods: ['GET'])]
-    public function loadData(
-        SqlManagerService $sqlManagerService,
-        ?int $id = null
-    ): JsonResponse
+    public function loadData(SqlManagerService $sqlManagerService, ?int $id = null): JsonResponse
     {
         if ($id === null) {
             $sqlManager = new SqlManager();
@@ -208,9 +214,7 @@ class SqlManagerController extends AppAdminController
      * @return JsonResponse
      */
     #[Route('/ajax/load-data-database', name: 'load_data_database', methods: ['GET'])]
-    public function loadDataDataBase(
-        DataBase $dataBase,
-    ): JsonResponse
+    public function loadDataDataBase(DataBase $dataBase): JsonResponse
     {
         $dataBdd = $dataBase->getAllNameAndColumn();
         return $this->json(['dataInfo' => $dataBdd]);
@@ -226,12 +230,11 @@ class SqlManagerController extends AppAdminController
      */
     #[Route('/ajax/execute', name: 'execute_sql', methods: ['POST'])]
     public function executeSQL(
-        DataBase            $dataBase,
-        SqlManagerService   $sqlManagerService,
+        DataBase $dataBase,
+        SqlManagerService $sqlManagerService,
         TranslatorInterface $translator,
-        Request             $request
-    ): JsonResponse
-    {
+        Request $request,
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
         if ($sqlManagerService->isOnlySelectQuery($data['query'])) {
             $result = $dataBase->executeRawQuery($data['query']);
@@ -239,7 +242,7 @@ class SqlManagerController extends AppAdminController
             $result = [
                 'result' => [],
                 'header' => [],
-                'error' => $translator->trans('sql_manager.error.not.only.select.query', domain: 'sql_manager')
+                'error' => $translator->trans('sql_manager.error.not.only.select.query', domain: 'sql_manager'),
             ];
         }
 
@@ -257,28 +260,36 @@ class SqlManagerController extends AppAdminController
      */
     #[Route('/ajax/save', name: 'save', methods: ['POST'])]
     public function save(
-        SqlManagerService   $sqlManagerService,
-        Request             $request,
-        TranslatorInterface $translator
-    ): JsonResponse
-    {
+        SqlManagerService $sqlManagerService,
+        Request $request,
+        TranslatorInterface $translator,
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
         if ($data['name'] === null || $data['query'] === null) {
-            return $this->json($sqlManagerService->getResponseAjax(null,
-                $translator->trans('sql_manager.save.error.validate', domain: 'sql_manager')));
+            return $this->json(
+                $sqlManagerService->getResponseAjax(
+                    null,
+                    $translator->trans('sql_manager.save.error.validate', domain: 'sql_manager'),
+                ),
+            );
         }
 
         if (!$sqlManagerService->isOnlySelectQuery($data['query'])) {
-            return $this->json($sqlManagerService->getResponseAjax(null,
-                $translator->trans('sql_manager.save.error.no.select', domain: 'sql_manager')));
+            return $this->json(
+                $sqlManagerService->getResponseAjax(
+                    null,
+                    $translator->trans('sql_manager.save.error.no.select', domain: 'sql_manager'),
+                ),
+            );
         }
-
 
         $redirect = false;
         if ($data['id'] === null) {
             $sqlManager = new SqlManager();
-            $sqlManager->setUser($this->getUser())->setName($data['name'])
+            $sqlManager
+                ->setUser($this->getUser())
+                ->setName($data['name'])
                 ->setQuery($data['query'])
                 ->setDisabled(false);
             $redirect = true;
@@ -289,9 +300,9 @@ class SqlManagerController extends AppAdminController
         }
         $sqlManagerService->save($sqlManager);
 
-
         $returnArray = $sqlManagerService->getResponseAjax(
-            $translator->trans('sql_manager.save.success', domain: 'sql_manager'));
+            $translator->trans('sql_manager.save.success', domain: 'sql_manager'),
+        );
         $returnArray['url_redirect'] = $this->generateUrl('admin_sql_manager_update', ['id' => $sqlManager->getId()]);
         $returnArray['redirect'] = $redirect;
         return $this->json($returnArray);
@@ -308,22 +319,25 @@ class SqlManagerController extends AppAdminController
      */
     #[Route('/ajax/save-generic-query', name: 'save_generic_query', methods: ['POST'])]
     public function saveGenericQuery(
-        SqlManagerService   $sqlManagerService,
-        Request             $request,
-        TranslatorInterface $translator
-    ): JsonResponse
-    {
+        SqlManagerService $sqlManagerService,
+        Request $request,
+        TranslatorInterface $translator,
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
         $sqlManager = new SqlManager();
-        $sqlManager->setUser($this->getUser())
+        $sqlManager
+            ->setUser($this->getUser())
             ->setName($translator->trans('sql_manager.name.generic.query.success', domain: 'sql_manager'))
-            ->setQuery($data['query'])->setDisabled(false);
+            ->setQuery($data['query'])
+            ->setDisabled(false);
 
         $sqlManagerService->save($sqlManager);
 
-        return $this->json($sqlManagerService->getResponseAjax(
-            $translator->trans('sql_manager.save.generic.query.success', domain: 'sql_manager'))
+        return $this->json(
+            $sqlManagerService->getResponseAjax(
+                $translator->trans('sql_manager.save.generic.query.success', domain: 'sql_manager'),
+            ),
         );
     }
 }

@@ -19,20 +19,21 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class NotificationControllerTest extends AppWebTestCase
 {
-
     /**
      * Test méthode index()
      * @return void
      */
     public function testIndex(): void
     {
-
         $user = $this->createUser();
 
         $this->client->loginUser($user, 'admin');
         $this->client->request('GET', $this->router->generate('admin_notification_index'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('notification.page_title_h1', domain: 'notification'));
+        $this->assertSelectorTextContains(
+            'h1',
+            $this->translator->trans('notification.page_title_h1', domain: 'notification'),
+        );
     }
 
     /**
@@ -44,13 +45,11 @@ class NotificationControllerTest extends AppWebTestCase
         $user = $this->createUser();
 
         for ($i = 0; $i < 10; $i++) {
-
             $data = ['read' => 0];
             $this->createNotification($user, $data);
         }
 
         for ($i = 0; $i < 5; $i++) {
-
             $data = ['read' => 1];
             $this->createNotification($user, $data);
         }
@@ -74,19 +73,20 @@ class NotificationControllerTest extends AppWebTestCase
         $user = $this->createUser();
 
         for ($i = 0; $i < 10; $i++) {
-
             $data = ['read' => 0];
             $this->createNotification($user, $data);
         }
 
         for ($i = 0; $i < 5; $i++) {
-
             $data = ['read' => 1];
             $this->createNotification($user, $data);
         }
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_notification_list', ['page' => 1, 'limit' => 7, 'pOnlyNotRead' => 1]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_notification_list', ['page' => 1, 'limit' => 7, 'pOnlyNotRead' => 1]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -100,7 +100,10 @@ class NotificationControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('listLimit', $content);
         $this->assertArrayHasKey('locale', $content);
 
-        $this->client->request('GET', $this->router->generate('admin_notification_list', ['page' => 1, 'limit' => 20, 'pOnlyNotRead' => 0]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_notification_list', ['page' => 1, 'limit' => 20, 'pOnlyNotRead' => 0]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $content = json_decode($response->getContent(), true);
@@ -118,7 +121,11 @@ class NotificationControllerTest extends AppWebTestCase
         $notification = $this->createNotification($user, $data);
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('POST', $this->router->generate('admin_notification_read'), content: json_encode(['id' => $notification->getId()]));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_notification_read'),
+            content: json_encode(['id' => $notification->getId()]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -129,7 +136,6 @@ class NotificationControllerTest extends AppWebTestCase
         $notificationRepository = $this->em->getRepository(Notification::class);
         $notificationVerif = $notificationRepository->findOneBy(['id' => $notification->getId()]);
         $this->assertTrue($notificationVerif->isRead());
-
     }
 
     /**
@@ -141,13 +147,11 @@ class NotificationControllerTest extends AppWebTestCase
     {
         $user = $this->createUser();
         for ($i = 0; $i < 10; $i++) {
-
             $data = ['read' => 0];
             $this->createNotification($user, $data);
         }
 
         for ($i = 0; $i < 5; $i++) {
-
             $data = ['read' => 1];
             $notification = $this->createNotification($user, $data);
             $date = new \DateTime();
@@ -192,7 +196,7 @@ class NotificationControllerTest extends AppWebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = $this->em->getRepository(User::class);
         $user = $userRepository->findOneBy(['id' => $user->getId()]);
-        foreach($user->getNotifications() as $notification) {
+        foreach ($user->getNotifications() as $notification) {
             $this->assertTrue($notification->isRead());
         }
     }

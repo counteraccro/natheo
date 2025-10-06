@@ -20,7 +20,6 @@ class ApiCommentControllerTest extends AppApiTestCase
      */
     public function testGetCommentsByPage(): void
     {
-
         $translator = $this->container->get(TranslatorInterface::class);
 
         $page = $this->createPageAllDataDefault();
@@ -29,45 +28,76 @@ class ApiCommentControllerTest extends AppApiTestCase
         }
 
         $this->createComment($page, customData: ['status' => CommentConst::WAIT_VALIDATION]);
-        $comment = $this->createComment($page, customData: ['status' => CommentConst::MODERATE, 'moderationComment' => self::getFaker()->text(40)]);
+        $comment = $this->createComment(
+            $page,
+            customData: ['status' => CommentConst::MODERATE, 'moderationComment' => self::getFaker()->text(40)],
+        );
 
         // Erreur id et slug non présent
-        $this->client->request('GET', $this->router->generate('api_comment_by_page', ['api_version' => self::API_VERSION]),
-            server: $this->getCustomHeaders(self::HEADER_READ)
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_comment_by_page', ['api_version' => self::API_VERSION]),
+            server: $this->getCustomHeaders(self::HEADER_READ),
         );
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
         $this->assertEquals(403, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetourError($content);
-        $this->assertEquals($translator->trans('api_errors.comment.by.page.not.id.slug.together', domain: 'api_errors'), $content['errors'][0]);
+        $this->assertEquals(
+            $translator->trans('api_errors.comment.by.page.not.id.slug.together', domain: 'api_errors'),
+            $content['errors'][0],
+        );
 
         // Erreur id et slug présent
-        $this->client->request('GET', $this->router->generate('api_comment_by_page', ['api_version' => self::API_VERSION, 'id' => $page->getId(), 'page_slug' => $page->getPageTranslationByLocale('fr')->getUrl()]),
-            server: $this->getCustomHeaders(self::HEADER_READ)
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_comment_by_page', [
+                'api_version' => self::API_VERSION,
+                'id' => $page->getId(),
+                'page_slug' => $page->getPageTranslationByLocale('fr')->getUrl(),
+            ]),
+            server: $this->getCustomHeaders(self::HEADER_READ),
         );
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
         $this->assertEquals(403, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetourError($content);
-        $this->assertEquals($translator->trans('api_errors.comment.by.page.id.slug.together', domain: 'api_errors'), $content['errors'][0]);
-
-
-        $this->client->request('GET', $this->router->generate('api_comment_by_page', ['api_version' => self::API_VERSION, 'page_slug' => $page->getPageTranslationByLocale('fr')->getUrl(), 'limit' => 5, 'order_by' => 'toto']),
-            server: array_merge($this->getCustomHeaders(self::HEADER_READ), ['HTTP_User-token' => $this->authUser()])
+        $this->assertEquals(
+            $translator->trans('api_errors.comment.by.page.id.slug.together', domain: 'api_errors'),
+            $content['errors'][0],
         );
-        $response = $this->client->getResponse();;
+
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_comment_by_page', [
+                'api_version' => self::API_VERSION,
+                'page_slug' => $page->getPageTranslationByLocale('fr')->getUrl(),
+                'limit' => 5,
+                'order_by' => 'toto',
+            ]),
+            server: array_merge($this->getCustomHeaders(self::HEADER_READ), ['HTTP_User-token' => $this->authUser()]),
+        );
+        $response = $this->client->getResponse();
         $this->assertEquals(403, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetourError($content);
         $this->assertEquals('__Choose a orderBy between id or createdAt ', $content['errors'][0]);
 
-        $this->client->request('GET', $this->router->generate('api_comment_by_page', ['api_version' => self::API_VERSION, 'page_slug' => $page->getPageTranslationByLocale('fr')->getUrl(), 'limit' => 5, 'order_by' => 'id', 'order' => 'desc']),
-            server: array_merge($this->getCustomHeaders(self::HEADER_READ), ['HTTP_User-token' => $this->authUser()])
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_comment_by_page', [
+                'api_version' => self::API_VERSION,
+                'page_slug' => $page->getPageTranslationByLocale('fr')->getUrl(),
+                'limit' => 5,
+                'order_by' => 'id',
+                'order' => 'desc',
+            ]),
+            server: array_merge($this->getCustomHeaders(self::HEADER_READ), ['HTTP_User-token' => $this->authUser()]),
         );
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
@@ -98,7 +128,9 @@ class ApiCommentControllerTest extends AppApiTestCase
         $translator = $this->container->get(TranslatorInterface::class);
 
         // page id et slug together
-        $this->client->request('POST', $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
+        $this->client->request(
+            'POST',
+            $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
             server: $this->getCustomHeaders(),
             content: json_encode([
                 'page_id' => '1',
@@ -107,38 +139,48 @@ class ApiCommentControllerTest extends AppApiTestCase
                 'email' => 'azerty@gmail.com',
                 'comment' => 'test comment',
                 'ip' => '127.0.0.1',
-                'user_agent' => self::getFaker()->userAgent()
-            ])
+                'user_agent' => self::getFaker()->userAgent(),
+            ]),
         );
 
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
         $this->assertEquals(403, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetourError($content);
-        $this->assertEquals($translator->trans('api_errors.comment.add.id.slug.together', domain: 'api_errors'), $content['errors'][0]);
+        $this->assertEquals(
+            $translator->trans('api_errors.comment.add.id.slug.together', domain: 'api_errors'),
+            $content['errors'][0],
+        );
 
         // page id et slug n'existe pas
-        $this->client->request('POST', $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
+        $this->client->request(
+            'POST',
+            $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
             server: $this->getCustomHeaders(),
             content: json_encode([
                 'author' => '',
                 'email' => 'azerty@gmail.com',
                 'comment' => 'test comment',
                 'ip' => '127.0.0.1',
-                'user_agent' => self::getFaker()->userAgent()
-            ])
+                'user_agent' => self::getFaker()->userAgent(),
+            ]),
         );
 
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
         $this->assertEquals(403, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetourError($content);
-        $this->assertEquals($translator->trans('api_errors.comment.add.not.id.slug.together', domain: 'api_errors'), $content['errors'][0]);
+        $this->assertEquals(
+            $translator->trans('api_errors.comment.add.not.id.slug.together', domain: 'api_errors'),
+            $content['errors'][0],
+        );
 
         // Auteur vide
-        $this->client->request('POST', $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
+        $this->client->request(
+            'POST',
+            $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
             server: $this->getCustomHeaders(),
             content: json_encode([
                 'page_id' => '1',
@@ -146,11 +188,11 @@ class ApiCommentControllerTest extends AppApiTestCase
                 'email' => 'azerty@gmail.com',
                 'comment' => 'test comment',
                 'ip' => '127.0.0.1',
-                'user_agent' => self::getFaker()->userAgent()
-            ])
+                'user_agent' => self::getFaker()->userAgent(),
+            ]),
         );
 
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
         $this->assertEquals(403, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
@@ -158,7 +200,9 @@ class ApiCommentControllerTest extends AppApiTestCase
         $this->assertEquals('__The author parameter cannot be empty ', $content['errors'][0]);
 
         // Page id wrong
-        $this->client->request('POST', $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
+        $this->client->request(
+            'POST',
+            $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
             server: $this->getCustomHeaders(),
             content: json_encode([
                 'page_id' => '1',
@@ -167,18 +211,23 @@ class ApiCommentControllerTest extends AppApiTestCase
                 'email' => 'azerty@gmail.com',
                 'comment' => 'test comment',
                 'ip' => '127.0.0.1',
-                'user_agent' => self::getFaker()->userAgent()
-            ])
+                'user_agent' => self::getFaker()->userAgent(),
+            ]),
         );
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
         $this->assertEquals(403, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetourError($content);
-        $this->assertEquals($translator->trans('api_errors.find.page.not.found', domain: 'api_errors'), $content['errors'][0]);
+        $this->assertEquals(
+            $translator->trans('api_errors.find.page.not.found', domain: 'api_errors'),
+            $content['errors'][0],
+        );
 
         // Page slug wrong
-        $this->client->request('POST', $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
+        $this->client->request(
+            'POST',
+            $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
             server: $this->getCustomHeaders(),
             content: json_encode([
                 'page_id' => '',
@@ -187,19 +236,24 @@ class ApiCommentControllerTest extends AppApiTestCase
                 'email' => 'azerty@gmail.com',
                 'comment' => 'test comment',
                 'ip' => '127.0.0.1',
-                'user_agent' => self::getFaker()->userAgent()
-            ])
+                'user_agent' => self::getFaker()->userAgent(),
+            ]),
         );
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
         $this->assertEquals(403, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetourError($content);
-        $this->assertEquals($translator->trans('api_errors.find.page.not.found', domain: 'api_errors'), $content['errors'][0]);
+        $this->assertEquals(
+            $translator->trans('api_errors.find.page.not.found', domain: 'api_errors'),
+            $content['errors'][0],
+        );
 
         // Comment close
         $page = $this->createPage(customData: ['isOpenComment' => false, 'disabled' => false]);
-        $this->client->request('POST', $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
+        $this->client->request(
+            'POST',
+            $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
             server: $this->getCustomHeaders(),
             content: json_encode([
                 'page_id' => $page->getId(),
@@ -208,19 +262,24 @@ class ApiCommentControllerTest extends AppApiTestCase
                 'email' => 'azerty@gmail.com',
                 'comment' => 'test comment',
                 'ip' => '127.0.0.1',
-                'user_agent' => self::getFaker()->userAgent()
-            ])
+                'user_agent' => self::getFaker()->userAgent(),
+            ]),
         );
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
         $this->assertEquals(403, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetourError($content);
-        $this->assertEquals($translator->trans('api_errors.comment.not.open', domain: 'api_errors'), $content['errors'][0]);
+        $this->assertEquals(
+            $translator->trans('api_errors.comment.not.open', domain: 'api_errors'),
+            $content['errors'][0],
+        );
 
         // page id
         $page = $this->createPage(customData: ['isOpenComment' => true, 'disabled' => false]);
-        $this->client->request('POST', $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
+        $this->client->request(
+            'POST',
+            $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
             server: $this->getCustomHeaders(),
             content: json_encode([
                 'page_id' => $page->getId(),
@@ -229,10 +288,10 @@ class ApiCommentControllerTest extends AppApiTestCase
                 'email' => 'azerty@gmail.com',
                 'comment' => 'test comment',
                 'ip' => '127.0.0.1',
-                'user_agent' => self::getFaker()->userAgent()
-            ])
+                'user_agent' => self::getFaker()->userAgent(),
+            ]),
         );
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
         $this->assertEquals(201, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
@@ -245,7 +304,9 @@ class ApiCommentControllerTest extends AppApiTestCase
 
         // page slug
         $page = $this->createPageAllDataDefault();
-        $this->client->request('POST', $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
+        $this->client->request(
+            'POST',
+            $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
             server: $this->getCustomHeaders(),
             content: json_encode([
                 'page_id' => '',
@@ -254,10 +315,10 @@ class ApiCommentControllerTest extends AppApiTestCase
                 'email' => 'azerty@gmail.com',
                 'comment' => 'test comment',
                 'ip' => '127.0.0.1',
-                'user_agent' => self::getFaker()->userAgent()
-            ])
+                'user_agent' => self::getFaker()->userAgent(),
+            ]),
         );
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
         $this->assertEquals(201, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
@@ -279,60 +340,89 @@ class ApiCommentControllerTest extends AppApiTestCase
         $comment = $this->createComment();
 
         /* Status invalide */
-        $this->client->request('PUT', $this->router->generate('api_comment_moderate_comment', ['api_version' => self::API_VERSION, 'id' => $comment->getId()]),
+        $this->client->request(
+            'PUT',
+            $this->router->generate('api_comment_moderate_comment', [
+                'api_version' => self::API_VERSION,
+                'id' => $comment->getId(),
+            ]),
             server: array_merge($this->getCustomHeaders(self::HEADER_READ), ['HTTP_User-token' => $this->authUser()]),
             content: json_encode([
                 'status' => 100,
                 'moderation_comment' => self::getFaker()->text(),
-            ])
+            ]),
         );
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
         $this->assertEquals(403, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetourError($content);
-        $this->assertEquals($translator->trans('api_errors.comment.status.no.valid', domain: 'api_errors'), $content['errors'][0]);
+        $this->assertEquals(
+            $translator->trans('api_errors.comment.status.no.valid', domain: 'api_errors'),
+            $content['errors'][0],
+        );
 
         /* User invalide */
-        $this->client->request('PUT', $this->router->generate('api_comment_moderate_comment', ['api_version' => self::API_VERSION, 'id' => $comment->getId()]),
-            server: array_merge($this->getCustomHeaders(self::HEADER_READ), ['HTTP_User-token' => self::getFaker()->randomKey()]),
+        $this->client->request(
+            'PUT',
+            $this->router->generate('api_comment_moderate_comment', [
+                'api_version' => self::API_VERSION,
+                'id' => $comment->getId(),
+            ]),
+            server: array_merge($this->getCustomHeaders(self::HEADER_READ), [
+                'HTTP_User-token' => self::getFaker()->randomKey(),
+            ]),
             content: json_encode([
                 'status' => CommentConst::MODERATE,
                 'moderation_comment' => self::getFaker()->text(),
-            ])
+            ]),
         );
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
         $this->assertEquals(403, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetourError($content);
-        $this->assertEquals($translator->trans('api_errors.user.token.not.found', domain: 'api_errors'), $content['errors'][0]);
+        $this->assertEquals(
+            $translator->trans('api_errors.user.token.not.found', domain: 'api_errors'),
+            $content['errors'][0],
+        );
 
         // No user
-        $this->client->request('PUT', $this->router->generate('api_comment_moderate_comment', ['api_version' => self::API_VERSION, 'id' => $comment->getId()]),
-            server:$this->getCustomHeaders(self::HEADER_READ),
+        $this->client->request(
+            'PUT',
+            $this->router->generate('api_comment_moderate_comment', [
+                'api_version' => self::API_VERSION,
+                'id' => $comment->getId(),
+            ]),
+            server: $this->getCustomHeaders(self::HEADER_READ),
             content: json_encode([
                 'status' => CommentConst::MODERATE,
                 'moderation_comment' => self::getFaker()->text(),
-            ])
+            ]),
         );
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
         $this->assertEquals(403, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetourError($content);
-        $this->assertEquals($translator->trans('api_errors.user.token.not.found', domain: 'api_errors'), $content['errors'][0]);
-
+        $this->assertEquals(
+            $translator->trans('api_errors.user.token.not.found', domain: 'api_errors'),
+            $content['errors'][0],
+        );
 
         /* Bad comment invalide */
-        $this->client->request('PUT', $this->router->generate('api_comment_moderate_comment', ['api_version' => self::API_VERSION, 'id' => 1]),
-            server: array_merge($this->getCustomHeaders(self::HEADER_READ), ['HTTP_User-token' => self::getFaker()->randomKey()]),
+        $this->client->request(
+            'PUT',
+            $this->router->generate('api_comment_moderate_comment', ['api_version' => self::API_VERSION, 'id' => 1]),
+            server: array_merge($this->getCustomHeaders(self::HEADER_READ), [
+                'HTTP_User-token' => self::getFaker()->randomKey(),
+            ]),
             content: json_encode([
                 'status' => CommentConst::MODERATE,
                 'moderation_comment' => self::getFaker()->text(),
-            ])
+            ]),
         );
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
@@ -341,19 +431,27 @@ class ApiCommentControllerTest extends AppApiTestCase
 
         // All is good
         $token = $this->authUser();
-        $this->client->request('PUT', $this->router->generate('api_comment_moderate_comment', ['api_version' => self::API_VERSION, 'id' => $comment->getId()]),
+        $this->client->request(
+            'PUT',
+            $this->router->generate('api_comment_moderate_comment', [
+                'api_version' => self::API_VERSION,
+                'id' => $comment->getId(),
+            ]),
             server: array_merge($this->getCustomHeaders(self::HEADER_READ), ['HTTP_User-token' => $token]),
             content: json_encode([
                 'status' => CommentConst::MODERATE,
                 'moderation_comment' => self::getFaker()->text(),
-            ])
+            ]),
         );
-        $response = $this->client->getResponse();;
+        $response = $this->client->getResponse();
         $this->assertEquals(202, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetour($content);
-        $this->assertEquals($translator->trans('api_errors.comment.moderate', domain: 'api_errors'), $content['data'][0]);
+        $this->assertEquals(
+            $translator->trans('api_errors.comment.moderate', domain: 'api_errors'),
+            $content['data'][0],
+        );
     }
 
     /**
@@ -364,9 +462,17 @@ class ApiCommentControllerTest extends AppApiTestCase
     {
         // Admin
         $password = self::getFaker()->password();
-        $this->client->request('POST', $this->router->generate('api_authentication_auth_user', ['api_version' => self::API_VERSION]),
+        $this->client->request(
+            'POST',
+            $this->router->generate('api_authentication_auth_user', ['api_version' => self::API_VERSION]),
             server: $this->getCustomHeaders(),
-            content: json_encode($this->getUserAuthParams([], $this->createUserAdmin(['password' => $password, 'disabled' => false, 'anonymous' => false]), $password))
+            content: json_encode(
+                $this->getUserAuthParams(
+                    [],
+                    $this->createUserAdmin(['password' => $password, 'disabled' => false, 'anonymous' => false]),
+                    $password,
+                ),
+            ),
         );
         $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -374,7 +480,6 @@ class ApiCommentControllerTest extends AppApiTestCase
 
         $content = json_decode($response->getContent(), true);
         $this->checkStructureApiRetour($content);
-
 
         return $content['data']['token'];
     }

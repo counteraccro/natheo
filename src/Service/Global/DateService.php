@@ -13,7 +13,6 @@ use App\Service\AppService;
 
 class DateService extends AppService
 {
-
     /**
      * Format équivalent à l d F Y H:i:s
      */
@@ -40,8 +39,8 @@ class DateService extends AppService
     public function getStringDiffDate(
         ?DateTimeInterface $dateRef = null,
         ?DateTimeInterface $dateDiff = null,
-        bool               $short = false): string
-    {
+        bool $short = false,
+    ): string {
         if ($dateRef === null) {
             return '<i>' . $this->translator->trans('date.diff.no_data') . '</i>';
         }
@@ -79,7 +78,6 @@ class DateService extends AppService
         if ($dateInterval->s > 0) {
             $tabReturn['s'] = $this->getTranslateValue($dateInterval->s, 'date.diff.seconde', 'secondes');
         }
-
 
         $return = $this->constructString($tabReturn, $short);
         return $this->returnFormatString($return, $dateRef);
@@ -119,12 +117,14 @@ class DateService extends AppService
      */
     private function returnFormatString(string $str, DateTimeInterface $date): string
     {
-        return '<div class="tooltip-nat">' . $str . '
+        return '<div class="tooltip-nat">' .
+            $str .
+            '
                         <span class="tooltiptext-nat">' .
-            $date->format($this->getDateFormat(self::DATE_FORMAT_ALL)) . '</span>
+            $date->format($this->getDateFormat(self::DATE_FORMAT_ALL)) .
+            '</span>
                     </div>';
     }
-
 
     /**
      * Génère une traduction en fonction de la valeur, de la clé de traduction et de la clé
@@ -136,10 +136,7 @@ class DateService extends AppService
      */
     private function getTranslateValue(int $value, string $keyTranslate, string $keyValue = 'default'): string
     {
-        return ' ' . $value . ' ' . $this->translator->trans(
-                $keyTranslate,
-                [$keyValue => $value]
-            );
+        return ' ' . $value . ' ' . $this->translator->trans($keyTranslate, [$keyValue => $value]);
     }
 
     /**

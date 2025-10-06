@@ -32,7 +32,6 @@ trait MenuFixturesTrait
             $user = $this->createUserContributeur();
         }
 
-
         $data = [
             'user' => $user,
             'name' => self::getFaker()->text(),
@@ -60,15 +59,18 @@ trait MenuFixturesTrait
      * @param bool $persist
      * @return MenuElement
      */
-    public function createMenuElement(?Menu $menu = null, ?MenuElement $parent = null, ?Page $page = null, array $customData = [], bool $persist = true): MenuElement
-    {
+    public function createMenuElement(
+        ?Menu $menu = null,
+        ?MenuElement $parent = null,
+        ?Page $page = null,
+        array $customData = [],
+        bool $persist = true,
+    ): MenuElement {
         if ($menu === null) {
             $menu = $this->createMenu();
         }
 
-        $linkTargetArray = [
-            MenuConst::LINK_TARGET_SELF, MenuConst::LINK_TARGET_BLANK
-        ];
+        $linkTargetArray = [MenuConst::LINK_TARGET_SELF, MenuConst::LINK_TARGET_BLANK];
         $linkTarget = $linkTargetArray[array_rand($linkTargetArray)];
 
         $data = [
@@ -99,8 +101,11 @@ trait MenuFixturesTrait
      * @param bool $persist
      * @return MenuElementTranslation
      */
-    public function createMenuElementTranslation(?MenuElement $menuElement = null, array $customData = [], bool $persist = true): MenuElementTranslation
-    {
+    public function createMenuElementTranslation(
+        ?MenuElement $menuElement = null,
+        array $customData = [],
+        bool $persist = true,
+    ): MenuElementTranslation {
         if ($menuElement === null) {
             $menuElement = $this->createMenuElement();
         }
@@ -126,31 +131,47 @@ trait MenuFixturesTrait
      * Créer un jeu de donnée complet d'un menu
      * @return Menu
      */
-    public function createMenuAllDataDefault() : Menu
+    public function createMenuAllDataDefault(): Menu
     {
         $menu = $this->createMenu(customData: ['disabled' => false]);
-        $menuElement = $this->createMenuElement($menu, customData: ['columnPosition' => 1, 'rowPosition' => 1, 'disabled' => false]);
-        foreach($this->locales as $locale) {
+        $menuElement = $this->createMenuElement(
+            $menu,
+            customData: ['columnPosition' => 1, 'rowPosition' => 1, 'disabled' => false],
+        );
+        foreach ($this->locales as $locale) {
             $this->createMenuElementTranslation($menuElement, ['locale' => $locale]);
         }
 
-        $menuElement2 = $this->createMenuElement($menu, customData: ['columnPosition' => 1, 'rowPosition' => 2, 'disabled' => false]);
-        foreach($this->locales as $locale) {
+        $menuElement2 = $this->createMenuElement(
+            $menu,
+            customData: ['columnPosition' => 1, 'rowPosition' => 2, 'disabled' => false],
+        );
+        foreach ($this->locales as $locale) {
             $this->createMenuElementTranslation($menuElement2, ['locale' => $locale]);
         }
 
-        $menuElement3 = $this->createMenuElement($menu, customData: ['columnPosition' => 2, 'rowPosition' => 1, 'disabled' => false]);
-        foreach($this->locales as $locale) {
+        $menuElement3 = $this->createMenuElement(
+            $menu,
+            customData: ['columnPosition' => 2, 'rowPosition' => 1, 'disabled' => false],
+        );
+        foreach ($this->locales as $locale) {
             $this->createMenuElementTranslation($menuElement3, ['locale' => $locale]);
         }
 
-        $subMenuElement = $this->createMenuElement($menu, $menuElement3, customData: ['columnPosition' => 1, 'rowPosition' => 1, 'disabled' => false]);
-        foreach($this->locales as $locale) {
+        $subMenuElement = $this->createMenuElement(
+            $menu,
+            $menuElement3,
+            customData: ['columnPosition' => 1, 'rowPosition' => 1, 'disabled' => false],
+        );
+        foreach ($this->locales as $locale) {
             $this->createMenuElementTranslation($subMenuElement, ['locale' => $locale, 'textLink' => 'enfant']);
         }
 
-        $menuElement4 = $this->createMenuElement($menu, customData: ['columnPosition' => 3, 'rowPosition' => 1, 'disabled' => true]);
-        foreach($this->locales as $locale) {
+        $menuElement4 = $this->createMenuElement(
+            $menu,
+            customData: ['columnPosition' => 3, 'rowPosition' => 1, 'disabled' => true],
+        );
+        foreach ($this->locales as $locale) {
             $this->createMenuElementTranslation($menuElement4, ['locale' => $locale]);
         }
 

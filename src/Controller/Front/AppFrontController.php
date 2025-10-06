@@ -38,15 +38,16 @@ class AppFrontController extends AbstractController
     protected EntityManagerInterface $entityManager;
 
     public function __construct(
-        #[AutowireLocator([
-            'optionSystemFront' => OptionSystemFrontService::class,
-            'pageService' => PageService::class,
-            'installationService' => InstallationService::class,
-            'entityManager' => EntityManagerInterface::class
-        ])]
-        private readonly ContainerInterface $handlers
-    )
-    {
+        #[
+            AutowireLocator([
+                'optionSystemFront' => OptionSystemFrontService::class,
+                'pageService' => PageService::class,
+                'installationService' => InstallationService::class,
+                'entityManager' => EntityManagerInterface::class,
+            ]),
+        ]
+        private readonly ContainerInterface $handlers,
+    ) {
         $this->optionSystemFrontService = $this->handlers->get('optionSystemFront');
         $this->pageService = $this->handlers->get('pageService');
         $this->installationService = $this->handlers->get('installationService');
@@ -73,7 +74,6 @@ class AppFrontController extends AbstractController
     public function getScriptTags(): string
     {
         return $this->optionSystemFrontService->getScriptTags();
-
     }
 
     /**

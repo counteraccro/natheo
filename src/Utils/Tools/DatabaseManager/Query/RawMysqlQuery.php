@@ -10,7 +10,6 @@ use App\Utils\Tools\DatabaseManager\Query\RawQueryInterface;
 
 class RawMysqlQuery implements RawQueryInterface
 {
-
     /**
      * @inheritDoc
      */
@@ -20,7 +19,9 @@ class RawMysqlQuery implements RawQueryInterface
                 table_rows as 'row',
                 (data_length + index_length) AS 'size'
                 FROM information_schema.TABLES
-                WHERE table_schema = '" . $schema . "'
+                WHERE table_schema = '" .
+            $schema .
+            "'
                 ORDER BY table_name ASC;";
     }
 
@@ -29,7 +30,7 @@ class RawMysqlQuery implements RawQueryInterface
      */
     public static function getQueryStructureTable(string $table): string
     {
-        return "DESCRIBE " . $table . ";";
+        return 'DESCRIBE ' . $table . ';';
     }
 
     /**
@@ -39,8 +40,12 @@ class RawMysqlQuery implements RawQueryInterface
     {
         return "SELECT TABLE_NAME 
                 FROM INFORMATION_SCHEMA.TABLES 
-                WHERE TABLE_SCHEMA = '" . $schema . "' 
-                AND TABLE_NAME = '". $table ."';
+                WHERE TABLE_SCHEMA = '" .
+            $schema .
+            "' 
+                AND TABLE_NAME = '" .
+            $table .
+            "';
         ";
     }
 
@@ -49,7 +54,7 @@ class RawMysqlQuery implements RawQueryInterface
      */
     public static function getQueryAllDatabase(): string
     {
-        return "SHOW DATABASES;";
+        return 'SHOW DATABASES;';
     }
 
     /**

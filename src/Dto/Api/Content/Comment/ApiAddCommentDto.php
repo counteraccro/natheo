@@ -17,66 +17,65 @@ class ApiAddCommentDto extends AppApiDto
          * Id de la page
          * @var int
          */
-        #[Assert\Type(type: 'integer', message: 'The idPage parameter must be a integer')]
-        private readonly int $idPage,
+        #[Assert\Type(type: 'integer', message: 'The idPage parameter must be a integer')] private readonly int $idPage,
 
         /**
          * Url de la page ou le menu est associé
          * @var string
          */
-        #[Assert\Type(type: 'string', message: 'The pageSlug parameter must be a string')]
-        #[Assert\NotNull(message: 'The pageSlug parameter cannot be empty')]
+        #[Assert\Type(type: 'string', message: 'The pageSlug parameter must be a string')] #[
+            Assert\NotNull(message: 'The pageSlug parameter cannot be empty'),
+        ]
         private readonly string $pageSlug,
 
         /**
          * Locale de la page
          * @var string
          */
-        #[Assert\Type(type: 'string', message: 'The locale parameter must be a string')]
-        #[Assert\Choice(choices: self::LOCALES, message: 'Choose a locale between en or es or fr')]
+        #[Assert\Type(type: 'string', message: 'The locale parameter must be a string')] #[
+            Assert\Choice(choices: self::LOCALES, message: 'Choose a locale between en or es or fr'),
+        ]
         private readonly string $locale,
 
         /**
          * author
          * @var string
          */
-        #[Assert\Type(type: 'string', message: 'The author parameter must be a string')]
-        #[Assert\NotNull(message: 'The author parameter cannot be empty')]
-        #[Assert\NotBlank(message: 'The author parameter cannot be empty')]
-        private readonly string $author,
+        #[Assert\Type(type: 'string', message: 'The author parameter must be a string')] #[
+            Assert\NotNull(message: 'The author parameter cannot be empty'),
+        ]
+        #[Assert\NotBlank(message: 'The author parameter cannot be empty')] private readonly string $author,
 
         /**
          * author
          * @var string
          */
-        #[Assert\Email(message: 'The email parameter must be a valid email')]
-        private readonly string $email,
+        #[Assert\Email(message: 'The email parameter must be a valid email')] private readonly string $email,
 
         /**
          * author
          * @var string
          */
-        #[Assert\Type(type: 'string', message: 'The comment parameter must be a string')]
-        #[Assert\NotNull(message: 'The comment parameter cannot be empty')]
-        #[Assert\NotBlank(message: 'The comment parameter cannot be empty')]
-        private readonly string $comment,
+        #[Assert\Type(type: 'string', message: 'The comment parameter must be a string')] #[
+            Assert\NotNull(message: 'The comment parameter cannot be empty'),
+        ]
+        #[Assert\NotBlank(message: 'The comment parameter cannot be empty')] private readonly string $comment,
 
         /**
          * ip
          * @var string
          */
-        #[Assert\Ip(message: 'The ip parameter must be a valid ip')]
-        private readonly string $ip,
+        #[Assert\Ip(message: 'The ip parameter must be a valid ip')] private readonly string $ip,
 
         /**
          * user agent
          * @var string
          */
-        #[Assert\Type(type: 'string', message: 'The userAgent parameter must be a valid ip')]
+        #[
+            Assert\Type(type: 'string', message: 'The userAgent parameter must be a valid ip'),
+        ]
         private readonly string $userAgent,
-    ) {
-
-}
+    ) {}
 
     /**
      * @return string
@@ -141,5 +140,4 @@ class ApiAddCommentDto extends AppApiDto
     {
         return $this->userAgent;
     }
-
 }

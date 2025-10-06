@@ -36,7 +36,10 @@ class CommentTranslate extends AppTranslate
     {
         return [
             'loading' => $this->translator->trans('comment.moderation.loading', domain: 'comment'),
-            'toast_title_success' => $this->translator->trans('comment.moderation.toast.title.success', domain: 'comment'),
+            'toast_title_success' => $this->translator->trans(
+                'comment.moderation.toast.title.success',
+                domain: 'comment',
+            ),
             'toast_title_error' => $this->translator->trans('comment.moderation.toast.title.error', domain: 'comment'),
             'toast_time' => $this->translator->trans('comment.moderation.toast.time', domain: 'comment'),
             'legend_search' => $this->translator->trans('comment.moderation.legend.search', domain: 'comment'),
@@ -47,7 +50,10 @@ class CommentTranslate extends AppTranslate
             'selection_title' => $this->translator->trans('comment.moderation.selection.title', domain: 'comment'),
             'selection_comment' => $this->translator->trans('comment.moderation.selection.comment', domain: 'comment'),
             'selection_status' => $this->translator->trans('comment.moderation.selection.status', domain: 'comment'),
-            'selection_comment_moderation' => $this->translator->trans('comment.moderation.selection.comment.moderation', domain: 'comment'),
+            'selection_comment_moderation' => $this->translator->trans(
+                'comment.moderation.selection.comment.moderation',
+                domain: 'comment',
+            ),
             'selection_submit' => $this->translator->trans('comment.moderation.selection.submit', domain: 'comment'),
             'comment_id' => $this->translator->trans('comment.moderation.comment.id', domain: 'comment'),
             'comment_date' => $this->translator->trans('comment.moderation.comment.date', domain: 'comment'),
@@ -61,8 +67,7 @@ class CommentTranslate extends AppTranslate
             'comment_moderator' => $this->translator->trans('comment.moderation.comment.moderator', domain: 'comment'),
             'btn_reset' => $this->translator->trans('comment.moderation.btn.reset', domain: 'comment'),
             'no_result' => $this->translator->trans('comment.moderation.noResult', domain: 'comment'),
-            'paginate' => $this->getTranslatePaginate()
-
+            'paginate' => $this->getTranslatePaginate(),
         ];
     }
 
@@ -75,7 +80,7 @@ class CommentTranslate extends AppTranslate
         return [
             'page' => $this->translator->trans('comment.moderation.paginate.page', domain: 'comment'),
             'on' => $this->translator->trans('comment.moderation.paginate.on', domain: 'comment'),
-            'row' => $this->translator->trans('comment.moderation.paginate.row', domain: 'comment')
+            'row' => $this->translator->trans('comment.moderation.paginate.row', domain: 'comment'),
         ];
     }
 }

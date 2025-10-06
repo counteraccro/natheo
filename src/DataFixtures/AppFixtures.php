@@ -135,15 +135,26 @@ class AppFixtures extends Fixture
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function __construct(#[AutowireLocator([
-        'container' => ContainerBagInterface::class
-    ])] private readonly ContainerInterface $handlers)
-    {
+    public function __construct(
+        #[
+            AutowireLocator([
+                'container' => ContainerBagInterface::class,
+            ]),
+        ]
+        private readonly ContainerInterface $handlers,
+    ) {
         $this->container = $this->handlers->get('container');
 
         $kernel = $this->container->get('kernel.project_dir');
-        $this->pathDataFixtures = $kernel . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR .
-            'DataFixtures' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
+        $this->pathDataFixtures =
+            $kernel .
+            DIRECTORY_SEPARATOR .
+            'src' .
+            DIRECTORY_SEPARATOR .
+            'DataFixtures' .
+            DIRECTORY_SEPARATOR .
+            'data' .
+            DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -172,7 +183,6 @@ class AppFixtures extends Fixture
         }
         return $entity;
     }
-
 
     public function load(ObjectManager $manager): void
     {

@@ -1,15 +1,16 @@
-<script>/**
+<script>
+/**
  * Formulaire de l'onglet content
  * @author Gourdon Aymeric
  * @version 1.1
  */
-import MediaModalMarkdown from "../Mediatheque/MediaModalMarkdown.vue";
-import {Modal} from "bootstrap";
-import axios from "axios";
+import MediaModalMarkdown from '../Mediatheque/MediaModalMarkdown.vue';
+import { Modal } from 'bootstrap';
+import axios from 'axios';
 
 export default {
   name: 'PageContentForm',
-  components: {MediaModalMarkdown},
+  components: { MediaModalMarkdown },
   props: {
     page: Object,
     urls: Object,
@@ -17,7 +18,7 @@ export default {
     listCategories: Object,
     translate: Object,
     locale: String,
-    tabError: Object
+    tabError: Object,
   },
   emits: ['auto-save', 'is-unique-url'],
   data() {
@@ -27,10 +28,10 @@ export default {
       loadingMedia: false,
       modaleMedia: null,
       dataMedia: [],
-    }
+    };
   },
   mounted() {
-    this.modaleMedia = new Modal(document.getElementById(this.getNameModale("modal-markdown-mediatheque")), {});
+    this.modaleMedia = new Modal(document.getElementById(this.getNameModale('modal-markdown-mediatheque')), {});
   },
   computed: {},
   methods: {
@@ -49,7 +50,7 @@ export default {
       if (this.tabError[key].locales[locale]) {
         return 'is-invalid';
       }
-      return "";
+      return '';
     },
 
     /**
@@ -75,13 +76,12 @@ export default {
      * Si l'url est vide, génère l'url en fonction du titre
      */
     generateUrl(title, id, locale) {
-
       let url = '';
       this.page.pageTranslations.forEach((pageTranslation, index) => {
         if (pageTranslation.locale === this.locale && pageTranslation.url === '') {
           url = title.replaceAll(' ', '-');
           pageTranslation.url = url;
-          this.isUniqueUrl(url, id, locale)
+          this.isUniqueUrl(url, id, locale);
         }
       });
     },
@@ -99,21 +99,24 @@ export default {
      * Ouvre la modale de la médiathèque
      */
     openModalMediatheque() {
-      this.loadMedia(0, 'asc', 'created_at')
+      this.loadMedia(0, 'asc', 'created_at');
       this.modaleMedia.show();
     },
 
     loadMedia(folderId, order, filter) {
-
       this.loadingMedia = true;
-      axios.get(this.urls.load_media + '/' + folderId + '/' + order + '/' + filter, {}).then((response) => {
-        this.dataMedia = response.data.medias;
-        this.currentFolder = response.data.currentFolder;
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.loadingMedia = false
-      });
+      axios
+        .get(this.urls.load_media + '/' + folderId + '/' + order + '/' + filter, {})
+        .then((response) => {
+          this.dataMedia = response.data.medias;
+          this.currentFolder = response.data.currentFolder;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loadingMedia = false;
+        });
     },
 
     /**
@@ -127,7 +130,7 @@ export default {
     selectMedia(name, url, size) {
       this.page.headerImg = url;
       this.closeModalMediatheque();
-      this.autoSave()
+      this.autoSave();
     },
 
     /**
@@ -135,21 +138,26 @@ export default {
      */
     removeMedia() {
       this.page.headerImg = null;
-      this.autoSave()
-    }
-  }
-}
-
+      this.autoSave();
+    },
+  },
+};
 </script>
 
 <template>
-
   <h5>{{ this.translate.title }}</h5>
 
   <div class="mb-3">
     <label for="list-render-page" class="form-label">{{ this.translate.list_categories_label }}</label>
-    <select id="list-render-page" class="form-select" v-model="this.page.category"
-            @change="this.renderCategory(this.page.category); this.autoSave();">
+    <select
+      id="list-render-page"
+      class="form-select"
+      v-model="this.page.category"
+      @change="
+        this.renderCategory(this.page.category);
+        this.autoSave();
+      "
+    >
       <option v-for="(value, key) in this.listCategories" :value="parseInt(key)">{{ value }}</option>
     </select>
     <div id="list-status-help" class="form-text">{{ this.translate.list_categories_help }}</div>
@@ -159,8 +167,13 @@ export default {
     <div v-for="pageTranslation in this.page.pageTranslations">
       <div v-if="pageTranslation.locale === this.locale">
         <label for="page-titre" class="form-label">{{ this.translate.input_titre_label }}</label>
-        <input type="text" class="form-control" id="page-titre" v-model="pageTranslation.titre"
-               @change="this.generateUrl(pageTranslation.titre, pageTranslation.id, pageTranslation.locale)">
+        <input
+          type="text"
+          class="form-control"
+          id="page-titre"
+          v-model="pageTranslation.titre"
+          @change="this.generateUrl(pageTranslation.titre, pageTranslation.id, pageTranslation.locale)"
+        />
         <div id="pageTitreHelp" class="form-text">{{ this.translate.input_titre_info }}</div>
       </div>
     </div>
@@ -172,9 +185,14 @@ export default {
         <label for="page-url" class="form-label">{{ this.translate.input_url_label }}</label>
         <div class="input-group">
           <span class="input-group-text" id="basic-addon3" v-html="this.renderCategory(this.page.category)"></span>
-          <input type="text" class="form-control" :class="this.checkIsError('url', pageTranslation.locale)"
-                 id="page-url" v-model="pageTranslation.url"
-                 @change="this.isUniqueUrl(pageTranslation.url, pageTranslation.id, pageTranslation.locale)">
+          <input
+            type="text"
+            class="form-control"
+            :class="this.checkIsError('url', pageTranslation.locale)"
+            id="page-url"
+            v-model="pageTranslation.url"
+            @change="this.isUniqueUrl(pageTranslation.url, pageTranslation.id, pageTranslation.locale)"
+          />
         </div>
         <div class="invalid-feedback">
           {{ this.tabError.url.msg }}
@@ -189,28 +207,25 @@ export default {
 
     <div class="row">
       <div class="col-6">
-
         {{ this.translate.header_img_help }}
 
         <div class="mt-2">
-        <span v-if="this.page.headerImg" class="btn btn-secondary btn-sm me-2" @click="this.removeMedia">
-          <i class="bi bi-x"></i> {{ this.translate.header_img_remove }}
-        </span>
-        <span class="btn btn-secondary btn-sm" @click="this.openModalMediatheque">
-          <i class="bi bi-images"></i> {{ this.translate.header_img_change }}
-        </span>
+          <span v-if="this.page.headerImg" class="btn btn-secondary btn-sm me-2" @click="this.removeMedia">
+            <i class="bi bi-x"></i> {{ this.translate.header_img_remove }}
+          </span>
+          <span class="btn btn-secondary btn-sm" @click="this.openModalMediatheque">
+            <i class="bi bi-images"></i> {{ this.translate.header_img_change }}
+          </span>
         </div>
-
       </div>
       <div class="col-6">
         <div v-if="this.page.headerImg" class="w-50 img-thumbnail">
-          <img :src="this.page.headerImg" class="img-fluid" alt="bbb"/>
+          <img :src="this.page.headerImg" class="img-fluid" alt="bbb" />
         </div>
         <div v-else class="w-50 img-thumbnail">{{ this.translate.header_img_no_img }}</div>
       </div>
     </div>
   </div>
-
 
   <div class="mb-3">
     <label for="list-render-page" class="form-label">{{ this.translate.list_render_label }}</label>
@@ -220,25 +235,26 @@ export default {
     <div id="list-status-help" class="form-text">{{ this.translate.list_render_help }}</div>
   </div>
 
-
-  <div class="modal fade" :id="this.getNameModale('modal-markdown-mediatheque')" data-bs-backdrop="static"
-       data-bs-keyboard="false"
-       tabindex="-1">
+  <div
+    class="modal fade"
+    :id="this.getNameModale('modal-markdown-mediatheque')"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+  >
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <MediaModalMarkdown
-            :medias="this.dataMedia"
-            :translate="this.translate.mediatheque"
-            :current-folder="this.currentFolder"
-            :loading="this.loadingMedia"
-            @close-modale="this.closeModalMediatheque"
-            @select-media="this.selectMedia"
-            @load-media="this.loadMedia"
+          :medias="this.dataMedia"
+          :translate="this.translate.mediatheque"
+          :current-folder="this.currentFolder"
+          :loading="this.loadingMedia"
+          @close-modale="this.closeModalMediatheque"
+          @select-media="this.selectMedia"
+          @load-media="this.loadMedia"
         >
         </MediaModalMarkdown>
       </div>
     </div>
   </div>
-
-
 </template>

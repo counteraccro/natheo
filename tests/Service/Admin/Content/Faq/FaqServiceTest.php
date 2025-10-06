@@ -116,12 +116,18 @@ class FaqServiceTest extends AppWebTestCase
         $title = $question->getFaqQuestionTranslationByLocale('fr')->getTitle();
 
         $result = $this->faqService->updateDisabledQuestion($question->getId(), true);
-        $this->assertEquals($this->translator->trans('faq.question.disabled.ok', ['question' => $title], domain: 'faq'), $result);
+        $this->assertEquals(
+            $this->translator->trans('faq.question.disabled.ok', ['question' => $title], domain: 'faq'),
+            $result,
+        );
         $verif = $this->faqService->findOneById(FaqQuestion::class, $question->getId());
         $this->assertTrue($verif->isDisabled());
 
         $result = $this->faqService->updateDisabledQuestion($question->getId(), false);
-        $this->assertEquals($this->translator->trans('faq.question.enabled.ok', ['question' => $title], domain: 'faq'), $result);
+        $this->assertEquals(
+            $this->translator->trans('faq.question.enabled.ok', ['question' => $title], domain: 'faq'),
+            $result,
+        );
         $verif = $this->faqService->findOneById(FaqQuestion::class, $question->getId());
         $this->assertFalse($verif->isDisabled());
     }
@@ -139,7 +145,10 @@ class FaqServiceTest extends AppWebTestCase
 
         $title = $faqCat->getFaqCategoryTranslationByLocale('fr')->getTitle();
         $result = $this->faqService->updateDisabledCategory($faqCat->getId(), false, true);
-        $this->assertEquals($this->translator->trans('faq.category.disabled.ok', ['category' => $title], domain: 'faq'), $result);
+        $this->assertEquals(
+            $this->translator->trans('faq.category.disabled.ok', ['category' => $title], domain: 'faq'),
+            $result,
+        );
         /** @var FaqCategory $verif */
         $verif = $this->faqService->findOneById(FaqCategory::class, $faqCat->getId());
         $this->assertTrue($verif->isDisabled());
@@ -150,7 +159,10 @@ class FaqServiceTest extends AppWebTestCase
 
         $title = $faqCat->getFaqCategoryTranslationByLocale('fr')->getTitle();
         $result = $this->faqService->updateDisabledCategory($faqCat->getId(), false, false);
-        $this->assertEquals($this->translator->trans('faq.category.enabled.ok', ['category' => $title], domain: 'faq'), $result);
+        $this->assertEquals(
+            $this->translator->trans('faq.category.enabled.ok', ['category' => $title], domain: 'faq'),
+            $result,
+        );
         /** @var FaqCategory $verif */
         $verif = $this->faqService->findOneById(FaqCategory::class, $faqCat->getId());
         $this->assertFalse($verif->isDisabled());
@@ -161,7 +173,10 @@ class FaqServiceTest extends AppWebTestCase
 
         $title = $faqCat->getFaqCategoryTranslationByLocale('fr')->getTitle();
         $result = $this->faqService->updateDisabledCategory($faqCat->getId(), true, false);
-        $this->assertEquals($this->translator->trans('faq.category.enabled.all.questions.ok', ['category' => $title], domain: 'faq'), $result);
+        $this->assertEquals(
+            $this->translator->trans('faq.category.enabled.all.questions.ok', ['category' => $title], domain: 'faq'),
+            $result,
+        );
         /** @var FaqCategory $verif */
         $verif = $this->faqService->findOneById(FaqCategory::class, $faqCat->getId());
         $this->assertFalse($verif->isDisabled());
@@ -189,7 +204,6 @@ class FaqServiceTest extends AppWebTestCase
 
         $faqCat3 = $this->createFaqCategory($faq, ['renderOrder' => 3]);
         $this->createFaqCategoryTranslation($faqCat3, ['locale' => 'fr', 'title' => 'faqCat 3']);
-
 
         $result = $this->faqService->getListeCategoryOrderByFaq($faq->getId());
         $this->assertIsArray($result);
@@ -235,8 +249,14 @@ class FaqServiceTest extends AppWebTestCase
     public function testAddNewCategory(): void
     {
         $faq = $this->createFaq();
-        $this->createFaqStatistique($faq, ['key' => FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES, 'value' => self::getFaker()->numberBetween(1, 1000)]);
-        $this->createFaqStatistique($faq, ['key' => FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS, 'value' => self::getFaker()->numberBetween(1, 5)]);
+        $this->createFaqStatistique($faq, [
+            'key' => FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES,
+            'value' => self::getFaker()->numberBetween(1, 1000),
+        ]);
+        $this->createFaqStatistique($faq, [
+            'key' => FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
+            'value' => self::getFaker()->numberBetween(1, 5),
+        ]);
         $faqCat1 = $this->createFaqCategory($faq, ['renderOrder' => 1]);
         $this->faqService->addNewCategory($faq->getId(), $faqCat1->getId(), 1);
 
@@ -275,8 +295,14 @@ class FaqServiceTest extends AppWebTestCase
     public function testAddNewQuestion(): void
     {
         $faq = $this->createFaq();
-        $this->createFaqStatistique($faq, ['key' => FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES, 'value' => self::getFaker()->numberBetween(1, 1000)]);
-        $this->createFaqStatistique($faq, ['key' => FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS, 'value' => self::getFaker()->numberBetween(1, 5)]);
+        $this->createFaqStatistique($faq, [
+            'key' => FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES,
+            'value' => self::getFaker()->numberBetween(1, 1000),
+        ]);
+        $this->createFaqStatistique($faq, [
+            'key' => FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
+            'value' => self::getFaker()->numberBetween(1, 5),
+        ]);
         $faqCat1 = $this->createFaqCategory($faq, ['renderOrder' => 1]);
         $question = $this->createFaqQuestion($faqCat1, ['renderOrder' => 1]);
         $this->faqService->addNewQuestion($faqCat1->getId(), $question->getId(), 1);
@@ -349,7 +375,8 @@ class FaqServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testUpdateOrderQuestion() :void {
+    public function testUpdateOrderQuestion(): void
+    {
         $faq = $this->createFaq();
         $faqCat1 = $this->createFaqCategory($faq);
         $question1 = $this->createFaqQuestion($faqCat1, ['renderOrder' => 1]);
@@ -387,12 +414,31 @@ class FaqServiceTest extends AppWebTestCase
     public function testUpdateFaqStatistique(): void
     {
         $faq = $this->createFaq();
-        $faqStat1 = $this->createFaqStatistique($faq, ['key' => FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES, 'value' => self::getFaker()->numberBetween(1, 10)]);
-        $faqStat2 = $this->createFaqStatistique($faq, ['key' => FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS, 'value' => self::getFaker()->numberBetween(12, 40)]);
-        $faqStat3 = $this->createFaqStatistique($faq, ['key' => 'key-3', 'value' => self::getFaker()->numberBetween(12, 40)]);
+        $faqStat1 = $this->createFaqStatistique($faq, [
+            'key' => FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES,
+            'value' => self::getFaker()->numberBetween(1, 10),
+        ]);
+        $faqStat2 = $this->createFaqStatistique($faq, [
+            'key' => FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
+            'value' => self::getFaker()->numberBetween(12, 40),
+        ]);
+        $faqStat3 = $this->createFaqStatistique($faq, [
+            'key' => 'key-3',
+            'value' => self::getFaker()->numberBetween(12, 40),
+        ]);
 
-        $this->faqService->updateFaqStatistique($faq, FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES, FaqConst::STATISTIQUE_ACTION_ADD, 10);
-        $this->faqService->updateFaqStatistique($faq, FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS, FaqConst::STATISTIQUE_ACTION_SUB, 10);
+        $this->faqService->updateFaqStatistique(
+            $faq,
+            FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES,
+            FaqConst::STATISTIQUE_ACTION_ADD,
+            10,
+        );
+        $this->faqService->updateFaqStatistique(
+            $faq,
+            FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
+            FaqConst::STATISTIQUE_ACTION_SUB,
+            10,
+        );
         $this->faqService->updateFaqStatistique($faq, 'key-3', FaqConst::STATISTIQUE_ACTION_OVERWRITE, 99);
         $verif = $this->faqService->findOneById(Faq::class, $faq->getId());
 
@@ -411,8 +457,8 @@ class FaqServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testDeleteCategory() :void {
-
+    public function testDeleteCategory(): void
+    {
         $faq = $this->createFaq();
         $this->createFaqStatistique($faq, ['key' => FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES, 'value' => 3]);
         $this->createFaqStatistique($faq, ['key' => FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS, 'value' => 3]);

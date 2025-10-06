@@ -25,8 +25,10 @@ class ApiOptionSystemControllerTest extends AppApiTestCase
      */
     public function testListing(): void
     {
-        $this->client->request('GET', $this->router->generate('api_options_systems_listing', ['api_version' => self::API_VERSION]),
-            server: $this->getCustomHeaders()
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_options_systems_listing', ['api_version' => self::API_VERSION]),
+            server: $this->getCustomHeaders(),
         );
         $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -56,8 +58,13 @@ class ApiOptionSystemControllerTest extends AppApiTestCase
 
         $optionSystemService->saveValueByKee(OptionSystemKey::OS_SITE_NAME, 'unit-test_site');
 
-        $this->client->request('GET', $this->router->generate('api_options_systems_get_by_key', ['api_version' => self::API_VERSION, 'key' => OptionSystemKey::OS_SITE_NAME]),
-            server: $this->getCustomHeaders()
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_options_systems_get_by_key', [
+                'api_version' => self::API_VERSION,
+                'key' => OptionSystemKey::OS_SITE_NAME,
+            ]),
+            server: $this->getCustomHeaders(),
         );
         $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -72,8 +79,13 @@ class ApiOptionSystemControllerTest extends AppApiTestCase
         $this->assertEquals('unit-test_site', $content['data']['value']);
 
         // Clé non authorisé
-        $this->client->request('GET', $this->router->generate('api_options_systems_get_by_key', ['api_version' => self::API_VERSION, 'key' => OptionSystemKey::OS_NOTIFICATION]),
-            server: $this->getCustomHeaders()
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_options_systems_get_by_key', [
+                'api_version' => self::API_VERSION,
+                'key' => OptionSystemKey::OS_NOTIFICATION,
+            ]),
+            server: $this->getCustomHeaders(),
         );
         $response = $this->client->getResponse();
         $this->assertEquals(403, $response->getStatusCode());
@@ -81,11 +93,19 @@ class ApiOptionSystemControllerTest extends AppApiTestCase
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('errors', $content);
         $this->assertIsArray($content['errors']);
-        $this->assertStringContainsString($translator->trans('api_errors.find.option.system.not.found', domain: 'api_errors'), $content['errors'][0]);
+        $this->assertStringContainsString(
+            $translator->trans('api_errors.find.option.system.not.found', domain: 'api_errors'),
+            $content['errors'][0],
+        );
 
         // Clé qui n'existe pas
-        $this->client->request('GET', $this->router->generate('api_options_systems_get_by_key', ['api_version' => self::API_VERSION, 'key' => 'AZERTY']),
-            server: $this->getCustomHeaders()
+        $this->client->request(
+            'GET',
+            $this->router->generate('api_options_systems_get_by_key', [
+                'api_version' => self::API_VERSION,
+                'key' => 'AZERTY',
+            ]),
+            server: $this->getCustomHeaders(),
         );
         $response = $this->client->getResponse();
         $this->assertEquals(403, $response->getStatusCode());
@@ -93,6 +113,9 @@ class ApiOptionSystemControllerTest extends AppApiTestCase
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('errors', $content);
         $this->assertIsArray($content['errors']);
-        $this->assertStringContainsString($translator->trans('api_errors.find.option.system.not.found', domain: 'api_errors'), $content['errors'][0]);
+        $this->assertStringContainsString(
+            $translator->trans('api_errors.find.option.system.not.found', domain: 'api_errors'),
+            $content['errors'][0],
+        );
     }
 }

@@ -15,7 +15,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApiParametersParser
 {
-
     /**
      * Tableau d'erreur
      * @var array
@@ -33,12 +32,13 @@ class ApiParametersParser
      * @throws NotFoundExceptionInterface
      */
     public function __construct(
-        #[AutowireLocator([
-            'translator' => TranslatorInterface::class,
-        ])]
-        private readonly ContainerInterface $handlers
-    )
-    {
+        #[
+            AutowireLocator([
+                'translator' => TranslatorInterface::class,
+            ]),
+        ]
+        private readonly ContainerInterface $handlers,
+    ) {
         $this->translator = $this->handlers->get('translator');
     }
 
@@ -51,9 +51,12 @@ class ApiParametersParser
     public function parse(array $refParameter, array $apiParameters): array
     {
         foreach ($refParameter as $parameterName => $parameterType) {
-
             if (!isset($apiParameters[$parameterName])) {
-                $this->tabError[] = $this->translator->trans('api_errors.params.name.not.found', ['param' => $parameterName], domain: 'api_errors');
+                $this->tabError[] = $this->translator->trans(
+                    'api_errors.params.name.not.found',
+                    ['param' => $parameterName],
+                    domain: 'api_errors',
+                );
             }
         }
         return $this->tabError;

@@ -22,7 +22,6 @@ use Symfony\Component\String\ByteString;
 
 class UserService extends AppAdminService
 {
-
     /**
      * Retourne une liste de user paginé
      * @param int $page
@@ -94,23 +93,27 @@ class UserService extends AppAdminService
             $paramBag = $this->getParameterBag();
 
             $avatar = '';
-            if($user->getAvatar() !== null){
-                $avatar = '<img src="/' . $paramBag->get('app.path.avatar') . $user->getAvatar(). '" style="width: 40px; height: 40px; border-radius: 50%;" class="me-2" />';
+            if ($user->getAvatar() !== null) {
+                $avatar =
+                    '<img src="/' .
+                    $paramBag->get('app.path.avatar') .
+                    $user->getAvatar() .
+                    '" style="width: 40px; height: 40px; border-radius: 50%;" class="me-2" />';
             }
 
             $actions = $this->generateTabAction($user);
             $data[] = [
                 $translator->trans('user.grid.id', domain: 'user') => $user->getId() . ' ' . $isDisabled,
-                $translator->trans('user.grid.login', domain: 'user') =>  $avatar . $user->getLogin(),
+                $translator->trans('user.grid.login', domain: 'user') => $avatar . $user->getLogin(),
                 $translator->trans('user.grid.email', domain: 'user') => $email,
-                $translator->trans('user.grid.name', domain: 'user') => $user->getFirstname() . ' ' . $user->
-                    getLastname(),
+                $translator->trans('user.grid.name', domain: 'user') =>
+                    $user->getFirstname() . ' ' . $user->getLastname(),
                 $translator->trans('user.grid.role', domain: 'user') => $roles,
-                $translator->trans('user.grid.created_at', domain: 'user') => $user->getCreatedAt()->
-                format('d/m/y H:i'),
-                $translator->trans('user.grid.update_at', domain: 'user') => $user->getUpdateAt()->
-                format('d/m/y H:i'),
-                GridService::KEY_ACTION => $actions
+                $translator->trans('user.grid.created_at', domain: 'user') => $user
+                    ->getCreatedAt()
+                    ->format('d/m/y H:i'),
+                $translator->trans('user.grid.update_at', domain: 'user') => $user->getUpdateAt()->format('d/m/y H:i'),
+                GridService::KEY_ACTION => $actions,
             ];
         }
 
@@ -118,10 +121,9 @@ class UserService extends AppAdminService
             GridService::KEY_NB => $nb,
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
-            GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate)
+            GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate),
         ];
         return $gridService->addAllDataRequiredGrid($tabReturn);
-
     }
 
     /**
@@ -148,16 +150,25 @@ class UserService extends AppAdminService
         $isSuperAdmin = $user->isFounder() && $role->isSuperAdmin();
         if (!$isSuperAdmin) {
             // Bouton disabled
-            $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
+            $actionDisabled = [
+                'label' => '<i class="bi bi-eye-slash-fill"></i>',
                 'type' => 'put',
                 'url' => $router->generate('admin_user_update_disabled', ['id' => $user->getId()]),
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' =>
-                    $translator->trans('user.confirm.disabled.msg', ['{login}' => $user->getLogin()], 'user')];
+                'msgConfirm' => $translator->trans(
+                    'user.confirm.disabled.msg',
+                    ['{login}' => $user->getLogin()],
+                    'user',
+                ),
+            ];
             if ($user->isDisabled()) {
-                $actionDisabled = ['label' => '<i class="bi bi-eye-fill"></i>', 'type' => 'put', 'url' =>
-                    $router->generate('admin_user_update_disabled', ['id' => $user->getId()]), 'ajax' => true];
+                $actionDisabled = [
+                    'label' => '<i class="bi bi-eye-fill"></i>',
+                    'type' => 'put',
+                    'url' => $router->generate('admin_user_update_disabled', ['id' => $user->getId()]),
+                    'ajax' => true,
+                ];
             }
 
             $actions[] = $actionDisabled;
@@ -165,14 +176,15 @@ class UserService extends AppAdminService
             // Bouton Delete
             $actionDelete = '';
             if ($optionSystemService->canDelete()) {
-
-                $msgConfirm = $translator->trans('user.confirm.delete.msg', ['{login}' =>
-                    $user->getLogin()], 'user');
+                $msgConfirm = $translator->trans('user.confirm.delete.msg', ['{login}' => $user->getLogin()], 'user');
                 $label = '<i class="bi bi-trash"></i>';
                 $type = 'delete';
                 if ($optionSystemService->canReplace()) {
-                    $msgConfirm = $translator->trans('user.confirm.replace.msg', ['{login}' =>
-                        $user->getLogin()], 'user');
+                    $msgConfirm = $translator->trans(
+                        'user.confirm.replace.msg',
+                        ['{login}' => $user->getLogin()],
+                        'user',
+                    );
                     $label = '<i class="bi bi-person-fill-slash"></i>';
                     $type = 'put';
                 }
@@ -183,7 +195,7 @@ class UserService extends AppAdminService
                     'url' => $router->generate('admin_user_delete', ['id' => $user->getId()]),
                     'ajax' => true,
                     'confirm' => true,
-                    'msgConfirm' => $msgConfirm
+                    'msgConfirm' => $msgConfirm,
                 ];
             }
 
@@ -192,27 +204,29 @@ class UserService extends AppAdminService
             }
 
             if (!$user->isDisabled()) {
-                $actions[] = ['label' => '<i class="bi bi-arrow-left-right"></i>',
+                $actions[] = [
+                    'label' => '<i class="bi bi-arrow-left-right"></i>',
                     'id' => $user->getId(),
                     'url' => $router->generate('admin_user_switch', ['user' => $user->getEmail()]),
-                    'ajax' => false];
+                    'ajax' => false,
+                ];
             }
-
         }
 
         $isCurrentFounder = false;
-        if($security->getUser() !== null && $security->getUser()->isFounder())
-        {
+        if ($security->getUser() !== null && $security->getUser()->isFounder()) {
             $isCurrentFounder = true;
         }
 
         // Bouton édition affiché sauf pour le fondateur ou si l'utilisateur courant est le fondateur
         if (($user->isFounder() && $isCurrentFounder) || !$user->isFounder()) {
             // Bouton edit
-            $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
+            $actions[] = [
+                'label' => '<i class="bi bi-pencil-fill"></i>',
                 'id' => $user->getId(),
                 'url' => $router->generate('admin_user_update', ['id' => $user->getId()]),
-                'ajax' => false];
+                'ajax' => false,
+            ];
         }
 
         return $actions;
@@ -315,7 +329,7 @@ class UserService extends AppAdminService
         }
 
         $factory = new PasswordHasherFactory([
-            'common' => ['algorithm' => 'auto']
+            'common' => ['algorithm' => 'auto'],
         ]);
 
         $hasher = $factory->getPasswordHasher('common');
@@ -323,7 +337,5 @@ class UserService extends AppAdminService
             return $user;
         }
         return null;
-
-
     }
 }

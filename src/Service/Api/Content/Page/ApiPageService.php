@@ -82,7 +82,6 @@ class ApiPageService extends AppApiService
             $pageApi = $this->getFormatedMenu($menu->getId(), $dto->getLocale(), $pageApi, $apiMenuService, $menuRepo);
         }
 
-
         if (!empty($tabDefault)) {
             foreach ($tabDefault as $position => $id) {
                 if ($position === MenuConst::POSITION_LEFT && $isRightMenu) {
@@ -182,7 +181,7 @@ class ApiPageService extends AppApiService
                 'slug' => $pageTranslation->getUrl(),
                 'author' => $personalData->getPersonalData(),
                 'created' => $page->getCreatedAt()->getTimestamp(),
-                'update' => $page->getUpdateAt()->getTimestamp()
+                'update' => $page->getUpdateAt()->getTimestamp(),
             ];
         }
         return $return;
@@ -200,13 +199,12 @@ class ApiPageService extends AppApiService
      * @throws NotFoundExceptionInterface
      */
     private function getFormatedMenu(
-        int            $id,
-        string         $locale,
-        array          $return,
+        int $id,
+        string $locale,
+        array $return,
         ApiMenuService $apiMenuService,
-        MenuRepository $menuRepo): array
-    {
-
+        MenuRepository $menuRepo,
+    ): array {
         $m = $menuRepo->getByIdForApi($id)[0];
         $repository = $this->getRepository(MenuElement::class);
         $m['menuElements'] = $repository->getMenuElementByMenuAndParent($m['id'], null, false);
@@ -231,7 +229,7 @@ class ApiPageService extends AppApiService
         $security = $this->getSecurity();
 
         $status = [PageConst::STATUS_PUBLISH];
-        if($user !== null && $security->isGrantedForUser($user, 'ROLE_CONTRIBUTEUR')) {
+        if ($user !== null && $security->isGrantedForUser($user, 'ROLE_CONTRIBUTEUR')) {
             $status = [PageConst::STATUS_PUBLISH, PageConst::STATUS_DRAFT];
         }
 

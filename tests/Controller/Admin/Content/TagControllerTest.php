@@ -95,7 +95,6 @@ class TagControllerTest extends AppWebTestCase
         $this->em->clear();
         $verif = $repo->findOneBy(['id' => $tag->getId()]);
         $this->assertFalse($verif->isDisabled());
-
     }
 
     /**
@@ -163,30 +162,30 @@ class TagControllerTest extends AppWebTestCase
 
         $data = [
             'tag' => [
-                "id" => null,
-                "color" => "#9e2e2e",
-                "disabled" => false,
-                "tagTranslations" => [
+                'id' => null,
+                'color' => '#9e2e2e',
+                'disabled' => false,
+                'tagTranslations' => [
                     [
-                        "id" => null,
-                        "tag" => null,
-                        "locale" => "fr",
-                        "label" => "fr-test-unitaire"
+                        'id' => null,
+                        'tag' => null,
+                        'locale' => 'fr',
+                        'label' => 'fr-test-unitaire',
                     ],
                     [
-                        "id" => null,
-                        "tag" => null,
-                        "locale" => "en",
-                        "label" => "en-test-unitaire"
+                        'id' => null,
+                        'tag' => null,
+                        'locale' => 'en',
+                        'label' => 'en-test-unitaire',
                     ],
                     [
-                        "id" => null,
-                        "tag" => null,
-                        "locale" => "es",
-                        "label" => "es-test-unitaire"
-                    ]
-                ]
-            ]
+                        'id' => null,
+                        'tag' => null,
+                        'locale' => 'es',
+                        'label' => 'es-test-unitaire',
+                    ],
+                ],
+            ],
         ];
 
         $this->checkNoAccess('admin_tag_save', methode: 'POST');
@@ -222,7 +221,10 @@ class TagControllerTest extends AppWebTestCase
 
         $userContributeur = $this->createUserContributeur();
         $this->client->loginUser($userContributeur, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_tag_search', ['locale' => 'fr', 'search' => 'fr Un label']));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_tag_search', ['locale' => 'fr', 'search' => 'fr Un label']),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -244,7 +246,10 @@ class TagControllerTest extends AppWebTestCase
 
         $userContributeur = $this->createUserContributeur();
         $this->client->loginUser($userContributeur, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_tag_tag_by_name', ['locale' => 'fr', 'search' => 'label-unitaire']));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_tag_tag_by_name', ['locale' => 'fr', 'search' => 'label-unitaire']),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -260,7 +265,10 @@ class TagControllerTest extends AppWebTestCase
         foreach ($this->locales as $locale) {
             $this->createTagTranslation($tag, ['locale' => $locale, 'label' => $locale . ' Un label']);
         }
-        $this->client->request('GET', $this->router->generate('admin_tag_tag_by_name', ['locale' => 'fr', 'search' => 'fr Un label']));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_tag_tag_by_name', ['locale' => 'fr', 'search' => 'fr Un label']),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());

@@ -26,7 +26,10 @@ class CommentControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
         $this->client->request('GET', $this->router->generate('admin_comment_index'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('comment.index.page_title_h1', domain: 'comment'));
+        $this->assertSelectorTextContains(
+            'h1',
+            $this->translator->trans('comment.index.page_title_h1', domain: 'comment'),
+        );
     }
 
     /**
@@ -42,7 +45,10 @@ class CommentControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
         $this->client->request('GET', $this->router->generate('admin_comment_moderate_comments'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('comment.moderate.comments.page_title', domain: 'comment'));
+        $this->assertSelectorTextContains(
+            'h1',
+            $this->translator->trans('comment.moderate.comments.page_title', domain: 'comment'),
+        );
     }
 
     /**
@@ -77,7 +83,10 @@ class CommentControllerTest extends AppWebTestCase
         $this->createComment(customData: ['status' => CommentConst::MODERATE]);
         $this->createComment(customData: ['status' => CommentConst::VALIDATE]);
 
-        $this->client->request('GET', $this->router->generate('admin_comment_moderate_comments_filter', ['status' => CommentConst::MODERATE]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_comment_moderate_comments_filter', ['status' => CommentConst::MODERATE]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -161,24 +170,24 @@ class CommentControllerTest extends AppWebTestCase
     {
         $comment = $this->createComment();
         $data = [
-            "comment" => [
-                "id" => $comment->getId(),
-                "author" => "John Doe",
-                "email" => "john-doe@monemail.com",
-                "comment" => "Je suis un commentaire **en attente de validation**",
-                "status" => CommentConst::VALIDATE,
-                "ip" => "1.1.1",
-                "userAgent" => "windows",
-                "createdAt" => "16/04/25 13 37",
-                "updateAt" => "01/05/25 08 37",
-                "disabled" => false,
-                "moderationComment" => null,
-                "page" => [
-                    "title" => "Bienvenue sur NatheoCMS",
-                    "url" => "/admin/fr/page/update/6"
+            'comment' => [
+                'id' => $comment->getId(),
+                'author' => 'John Doe',
+                'email' => 'john-doe@monemail.com',
+                'comment' => 'Je suis un commentaire **en attente de validation**',
+                'status' => CommentConst::VALIDATE,
+                'ip' => '1.1.1',
+                'userAgent' => 'windows',
+                'createdAt' => '16/04/25 13 37',
+                'updateAt' => '01/05/25 08 37',
+                'disabled' => false,
+                'moderationComment' => null,
+                'page' => [
+                    'title' => 'Bienvenue sur NatheoCMS',
+                    'url' => '/admin/fr/page/update/6',
                 ],
-                "statusStr" => "<span class=\"badge text-bg-success\">Validé</span>"
-            ]
+                'statusStr' => "<span class=\"badge text-bg-success\">Validé</span>",
+            ],
         ];
 
         $this->checkNoAccess('admin_comment_save', methode: 'PUT');
@@ -213,13 +222,9 @@ class CommentControllerTest extends AppWebTestCase
         $comment3 = $this->createComment();
 
         $data = [
-            "selected" => [
-                $comment1->getId(),
-                $comment2->getId(),
-                $comment3->getId()
-            ],
-            "status" => CommentConst::MODERATE,
-            "moderateComment" => "Commentaire modéré en test unitaire"
+            'selected' => [$comment1->getId(), $comment2->getId(), $comment3->getId()],
+            'status' => CommentConst::MODERATE,
+            'moderateComment' => 'Commentaire modéré en test unitaire',
         ];
 
         $this->checkNoAccess('admin_comment_update_moderate_comment', methode: 'POST');
@@ -227,7 +232,11 @@ class CommentControllerTest extends AppWebTestCase
         $user = $this->createUserContributeur();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('POST', $this->router->generate('admin_comment_update_moderate_comment'), content: json_encode($data));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_comment_update_moderate_comment'),
+            content: json_encode($data),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -240,10 +249,9 @@ class CommentControllerTest extends AppWebTestCase
         $commentRepo = $this->em->getRepository(Comment::class);
         $comments = $commentRepo->findAll();
 
-        foreach($comments as $comment) {
+        foreach ($comments as $comment) {
             $this->assertEquals(CommentConst::MODERATE, $comment->getStatus());
             $this->assertEquals('Commentaire modéré en test unitaire', $comment->getModerationComment());
         }
-
     }
 }

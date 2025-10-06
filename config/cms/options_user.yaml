@@ -1,33 +1,33 @@
 options_user:
-  options_user.administration:
-    title :  'options_user.administration.title'
-    description : 'options_user.administration.description'
-    options :
-      OU_DEFAULT_LANGUAGE:
-        type: 'select'
-        label: 'options_user.default_language'
-        list_value: 'fr:global.fr|en:global.en|es:global.es'
-        help: 'options_user.default_language_help'
-        default: 'fr'
-      OU_THEME_SITE:
-        type: 'select'
-        label: 'options_user.theme_site'
-        list_value: 'purple:global.purple|red:global.red|orange:global.orange'
-        help: 'options_user.theme_site_help'
-        default: 'purple'
-      OU_NB_ELEMENT:
-        type: 'select'
-        label: 'options_user.nb_element'
-        list_value: '5:5|10:10|20:20|50:50|100:100'
-        help: 'options_user.nb_element_help'
-        default: '20'
-  options_user.donnees_personnelles:
-    title: 'options_user.donnees_personnelles.title'
-    description: 'options_user.donnees_personnelles.description'
-    options:
-      OU_DEFAULT_PERSONAL_DATA_RENDER:
-        type: 'select'
-        label: 'options_user.default_personal_data_render'
-        list_value: 'anonyme:options_user.default_personal_data_render.anonyme|email:options_user.default_personal_data_render.email|login:options_user.default_personal_data_render.login|name:options_user.default_personal_data_render.name'
-        help: 'options_user.default_personal_data_render.help'
-        default: 'email'
+    options_user.administration:
+        title: 'options_user.administration.title'
+        description: 'options_user.administration.description'
+        options:
+            OU_DEFAULT_LANGUAGE:
+                type: 'select'
+                label: 'options_user.default_language'
+                list_value: 'fr:global.fr|en:global.en|es:global.es'
+                help: 'options_user.default_language_help'
+                default: 'fr'
+            OU_THEME_SITE:
+                type: 'select'
+                label: 'options_user.theme_site'
+                list_value: 'purple:global.purple|red:global.red|orange:global.orange'
+                help: 'options_user.theme_site_help'
+                default: 'purple'
+            OU_NB_ELEMENT:
+                type: 'select'
+                label: 'options_user.nb_element'
+                list_value: '5:5|10:10|20:20|50:50|100:100'
+                help: 'options_user.nb_element_help'
+                default: '20'
+    options_user.donnees_personnelles:
+        title: 'options_user.donnees_personnelles.title'
+        description: 'options_user.donnees_personnelles.description'
+        options:
+            OU_DEFAULT_PERSONAL_DATA_RENDER:
+                type: 'select'
+                label: 'options_user.default_personal_data_render'
+                list_value: 'anonyme:options_user.default_personal_data_render.anonyme|email:options_user.default_personal_data_render.email|login:options_user.default_personal_data_render.login|name:options_user.default_personal_data_render.name'
+                help: 'options_user.default_personal_data_render.help'
+                default: 'email'

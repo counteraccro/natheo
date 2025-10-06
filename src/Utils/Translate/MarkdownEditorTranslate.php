@@ -51,7 +51,7 @@ class MarkdownEditorTranslate extends AppTranslate
             'btnMediatheque' => $this->translator->trans('editor.btn.mediatheque', domain: 'editor_markdown'),
             'warning_edit' => $this->translator->trans('editor.warning.edit', domain: 'editor_markdown'),
             'mediathequeMarkdown' => $this->getTranslateMediateque(),
-            'modaleInternalLink' => $this->getTranslateModaleInternalLink()
+            'modaleInternalLink' => $this->getTranslateModaleInternalLink(),
         ];
     }
 
@@ -63,10 +63,22 @@ class MarkdownEditorTranslate extends AppTranslate
     {
         return [
             'title' => $this->translator->trans('editor.modale.internal.link.title', domain: 'editor_markdown'),
-            'labelSearch' => $this->translator->trans('editor.modale.internal.link.label.search', domain: 'editor_markdown'),
-            'labelText' => $this->translator->trans('editor.modale.internal.link.label.text', domain: 'editor_markdown'),
-            'placeHolderSearch' => $this->translator->trans('editor.modale.internal.link.place.holder.search', domain: 'editor_markdown'),
-            'placeHolderTxt' => $this->translator->trans('editor.modale.internal.link.place.holder.text', domain: 'editor_markdown'),
+            'labelSearch' => $this->translator->trans(
+                'editor.modale.internal.link.label.search',
+                domain: 'editor_markdown',
+            ),
+            'labelText' => $this->translator->trans(
+                'editor.modale.internal.link.label.text',
+                domain: 'editor_markdown',
+            ),
+            'placeHolderSearch' => $this->translator->trans(
+                'editor.modale.internal.link.place.holder.search',
+                domain: 'editor_markdown',
+            ),
+            'placeHolderTxt' => $this->translator->trans(
+                'editor.modale.internal.link.place.holder.text',
+                domain: 'editor_markdown',
+            ),
         ];
     }
 

@@ -9,38 +9,48 @@ export default {
   props: {
     medias: Object,
     translate: Object,
-    render: String
+    render: String,
   },
   emits: ['load-data-folder', 'edit-folder', 'show-info', 'edit-media', 'move', 'trash'],
   data() {
-    return {}
+    return {};
   },
   computed: {},
   methods: {
-
     /**
      * Permet d'ouvrir un média
      * @param path
      */
     openMedia(path) {
-      window.open(path, "_blank");
-    }
-  }
-}
+      window.open(path, '_blank');
+    },
+  },
+};
 </script>
 
 <template>
-
   <div id="block-media-grid" class="mt-5 row" v-if="this.render === 'grid'">
     <div v-if="this.medias.length > 0" class="media col-auto mb-4" v-for="media in this.medias">
-      <img v-if="media.type === 'media'" height="200" width="200" class="rounded-3"
-           :src="media.thumbnail" style="cursor:pointer;"
-           :alt="media.name" @click="this.openMedia(media.webPath)"/>
+      <img
+        v-if="media.type === 'media'"
+        height="200"
+        width="200"
+        class="rounded-3"
+        :src="media.thumbnail"
+        style="cursor: pointer"
+        :alt="media.name"
+        @click="this.openMedia(media.webPath)"
+      />
       <div v-else class="folder" alt="media.name" @click="$emit('load-data-folder', media.id)"></div>
       <div class="info-media rounded-bottom-3">
         <div class="btn-group">
-          <button type="button" class="btn btn-link btn-sm dropdown-toggle pt-2"
-                  style="color: #FFFFFF; margin-top: -5px;" data-bs-toggle="dropdown" aria-expanded="false">
+          <button
+            type="button"
+            class="btn btn-link btn-sm dropdown-toggle pt-2"
+            style="color: #ffffff; margin-top: -5px"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
             <i class="bi bi-justify"></i>
           </button>
           <ul class="dropdown-menu">
@@ -65,24 +75,25 @@ export default {
               </a>
             </li>
             <li>
-              <hr class="dropdown-divider">
+              <hr class="dropdown-divider" />
             </li>
-            <li><a class="dropdown-item" @click="$emit('trash', media.type, media.id, media.name, false)">
-              <i class="bi bi-trash-fill"></i> {{ this.translate.link_remove }}
-            </a>
+            <li>
+              <a class="dropdown-item" @click="$emit('trash', media.type, media.id, media.name, false)">
+                <i class="bi bi-trash-fill"></i> {{ this.translate.link_remove }}
+              </a>
             </li>
           </ul>
         </div>
-        <span class="d-inline-block text-truncate" style="max-width: 140px;vertical-align: middle;"> {{
-            media.name
-          }} </span>
-
+        <span class="d-inline-block text-truncate" style="max-width: 140px; vertical-align: middle">
+          {{ media.name }}
+        </span>
       </div>
     </div>
     <div v-else class="text-center mt-3">
-      <i class="bi bi-folder-x"></i> <i>
-      {{ this.translate.no_media }}
-    </i>
+      <i class="bi bi-folder-x"></i>
+      <i>
+        {{ this.translate.no_media }}
+      </i>
     </div>
   </div>
   <div v-else>
@@ -92,68 +103,75 @@ export default {
           <div class="btn btn-secondary btn-sm float-end">{{ this.translate.table_caption }}</div>
         </caption>
         <thead>
-        <tr>
-          <th style="width: 3%">#</th>
-          <th>{{ this.translate.table_name }}</th>
-          <th style="width: 15%">{{ this.translate.table_date }}</th>
-          <th style="width: 10%">{{ this.translate.table_size }}</th>
-          <th style="width: 20%">{{ this.translate.table_action }}</th>
-        </tr>
+          <tr>
+            <th style="width: 3%">#</th>
+            <th>{{ this.translate.table_name }}</th>
+            <th style="width: 15%">{{ this.translate.table_date }}</th>
+            <th style="width: 10%">{{ this.translate.table_size }}</th>
+            <th style="width: 20%">{{ this.translate.table_action }}</th>
+          </tr>
         </thead>
         <tbody>
-        <tr v-if="this.medias.length > 0" v-for="media in this.medias">
-          <td>
-            <span v-if="media.type === 'media'"><i class="bi bi-file-fill"></i> </span>
-            <span v-else><i class="bi bi-folder-fill"></i> </span>
-          </td>
-          <td><a class="link-info" style="cursor:pointer;"
-                 @click.stop="media.type === 'media' ? this.openMedia(media.webPath) : $emit('load-data-folder', media.id)">{{
-              media.name
-            }}</a></td>
-          <td>{{ media.date }}</td>
-          <td><span v-if="media.type === 'media'">{{ media.size }}</span></td>
-          <td>
+          <tr v-if="this.medias.length > 0" v-for="media in this.medias">
+            <td>
+              <span v-if="media.type === 'media'"><i class="bi bi-file-fill"></i> </span>
+              <span v-else><i class="bi bi-folder-fill"></i> </span>
+            </td>
+            <td>
+              <a
+                class="link-info"
+                style="cursor: pointer"
+                @click.stop="
+                  media.type === 'media' ? this.openMedia(media.webPath) : $emit('load-data-folder', media.id)
+                "
+                >{{ media.name }}</a
+              >
+            </td>
+            <td>{{ media.date }}</td>
+            <td>
+              <span v-if="media.type === 'media'">{{ media.size }}</span>
+            </td>
+            <td>
+              <a
+                class="btn btn-sm btn-secondary me-1 mt-1"
+                @click="media.type === 'media' ? this.openMedia(media.webPath) : $emit('load-data-folder', media.id)"
+              >
+                <i class="bi" :class="media.type === 'media' ? 'bi-eye' : 'bi-folder2-open'"></i>
+              </a>
 
-            <a class="btn btn-sm btn-secondary me-1 mt-1"
-               @click="media.type === 'media' ? this.openMedia(media.webPath) : $emit('load-data-folder', media.id)">
-              <i class="bi " :class="media.type === 'media' ? 'bi-eye' : 'bi-folder2-open'"></i>
-            </a>
+              <!-- lien information -->
+              <a class="btn btn-sm btn-secondary me-1 mt-1" @click="$emit('show-info', media.type, media.id)">
+                <i class="bi bi-info-circle"></i>
+              </a>
 
-            <!-- lien information -->
-            <a class="btn btn-sm btn-secondary me-1 mt-1" @click="$emit('show-info', media.type, media.id)">
-              <i class="bi bi-info-circle"></i>
-            </a>
+              <!-- lien éditer -->
+              <a
+                class="btn btn-sm btn-secondary me-1 mt-1"
+                @click="media.type === 'media' ? $emit('edit-media', media.id) : $emit('edit-folder', media.id)"
+              >
+                <i class="bi bi-pencil-square"></i>
+              </a>
 
-            <!-- lien éditer -->
-            <a class="btn btn-sm btn-secondary me-1 mt-1"
-               @click="media.type === 'media' ? $emit('edit-media', media.id) : $emit('edit-folder', media.id)">
-              <i class="bi bi-pencil-square"></i>
-            </a>
+              <!-- lien move -->
+              <a class="btn btn-sm btn-secondary me-1 mt-1" @click="$emit('move', media.type, media.id)">
+                <i class="bi bi-arrow-right-circle"></i>
+              </a>
 
-            <!-- lien move -->
-            <a class="btn btn-sm btn-secondary me-1 mt-1" @click="$emit('move', media.type, media.id)">
-              <i class="bi bi-arrow-right-circle"></i>
-            </a>
-
-            <!-- lien corbeille -->
-            <a class="btn btn-sm btn-secondary mt-1" @click="$emit('trash', media.type, media.id, media.name, false)">
-              <i class="bi bi-trash"></i>
-            </a>
-          </td>
-        </tr>
-        <tr v-else>
-          <td colspan="4" class="text-center">
-            {{ this.translate.no_media }}
-          </td>
-        </tr>
+              <!-- lien corbeille -->
+              <a class="btn btn-sm btn-secondary mt-1" @click="$emit('trash', media.type, media.id, media.name, false)">
+                <i class="bi bi-trash"></i>
+              </a>
+            </td>
+          </tr>
+          <tr v-else>
+            <td colspan="4" class="text-center">
+              {{ this.translate.no_media }}
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
   </div>
-
-
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

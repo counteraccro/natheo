@@ -20,17 +20,17 @@ class Anonymous
     /**
      * @const
      */
-    const FIRST_NAME = "John";
+    const FIRST_NAME = 'John';
 
     /**
      * @const
      */
-    const LAST_NAME = "Doe";
+    const LAST_NAME = 'Doe';
 
     /**
      * @const
      */
-    const LOGIN = "John Doe";
+    const LOGIN = 'John Doe';
 
     /**
      * @param User $user
@@ -69,20 +69,17 @@ class Anonymous
      * @throws Exception
      */
     private function randomStr(
-        int    $length = 16,
-        string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    ): string
-    {
+        int $length = 16,
+        string $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    ): string {
         if ($length < 1) {
-            throw new \RangeException("Length must be a positive integer");
+            throw new \RangeException('Length must be a positive integer');
         }
         $pieces = [];
         $max = mb_strlen($keyspace, '8bit') - 1;
         for ($i = 0; $i < $length; ++$i) {
-            $pieces [] = $keyspace[random_int(0, $max)];
+            $pieces[] = $keyspace[random_int(0, $max)];
         }
         return implode('', $pieces);
     }
-
-
 }

@@ -17,9 +17,13 @@ trait CommentFixturesTrait
 {
     use FakerTrait;
 
-    public function createComment(?Page $page = null, ?User $userModeration = null, array $customData = [], bool $persist = true) :Comment
-    {
-        if($page === null) {
+    public function createComment(
+        ?Page $page = null,
+        ?User $userModeration = null,
+        array $customData = [],
+        bool $persist = true,
+    ): Comment {
+        if ($page === null) {
             $page = $this->createPage();
             foreach ($this->locales as $locale) {
                 $this->createPageTranslation($page, ['locale' => $locale]);

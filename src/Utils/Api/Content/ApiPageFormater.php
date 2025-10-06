@@ -19,12 +19,7 @@ class ApiPageFormater
 {
     private array $return;
 
-    public function __construct(
-        private readonly Page           $page,
-        private readonly ApiFindPageDto $dto
-    )
-    {
-    }
+    public function __construct(private readonly Page $page, private readonly ApiFindPageDto $dto) {}
 
     /**
      * Convertie une page au format API
@@ -42,7 +37,7 @@ class ApiPageFormater
             'author' => $this->getAuthor($this->page->getUser()),
             'description' => $this->page->getUser()->getDescription(),
             'avatar' => $this->page->getUser()->getAvatar(),
-            ];
+        ];
         $this->return['created'] = $this->page->getCreatedAt()->getTimestamp();
         $this->return['update'] = $this->page->getUpdateAt()->getTimestamp();
         $this->return['headerImg'] = $this->page->getHeaderImg();
@@ -60,10 +55,11 @@ class ApiPageFormater
         return $this;
     }
 
-    private function getPageMeta(Collection $pageMetas): array {
+    private function getPageMeta(Collection $pageMetas): array
+    {
         $return = [];
 
-        foreach($pageMetas as $pageMeta) {
+        foreach ($pageMetas as $pageMeta) {
             /** @var PageMeta $pageMeta */
 
             $value = $pageMeta->getPageMetaTranslationByLocale($this->dto->getLocale())->getValue();
@@ -71,12 +67,12 @@ class ApiPageFormater
             $return[] = [
                 'name' => $pageMeta->getName(),
                 'value' => $value,
-                'balise' => '<meta name="' . $pageMeta->getName() . '" content="' . $value . '">'
+                'balise' => '<meta name="' . $pageMeta->getName() . '" content="' . $value . '">',
             ];
         }
 
         return $return;
-}
+    }
 
     /**
      * Retourne les pageContents d'une page
@@ -88,7 +84,6 @@ class ApiPageFormater
         $return = [];
         foreach ($pageContents as $pageContent) {
             /** @var PageContent $pageContent */
-
 
             $return[] = [
                 'id' => $pageContent->getId(),
@@ -139,9 +134,10 @@ class ApiPageFormater
     private function getStatistiques(): array
     {
         return [
-            PageStatistiqueKey::KEY_PAGE_NB_READ => $this->page->getPageStatistiqueByKey(PageStatistiqueKey::KEY_PAGE_NB_READ)->getValue()
+            PageStatistiqueKey::KEY_PAGE_NB_READ => $this->page
+                ->getPageStatistiqueByKey(PageStatistiqueKey::KEY_PAGE_NB_READ)
+                ->getValue(),
         ];
-
     }
 
     /**

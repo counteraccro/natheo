@@ -59,19 +59,27 @@ class MediaFolderServiceTest extends AppWebTestCase
         $this->mediaFolderService->resetAllMedia();
         $mediaFolder = $this->createMediaFolder();
         $this->mediaFolderService->createFolder($mediaFolder);
-        $this->assertTrue($this->fileSystem->exists($this->mediaFolderService->getRootPathMedia() . $mediaFolder->getPath()));
+        $this->assertTrue(
+            $this->fileSystem->exists($this->mediaFolderService->getRootPathMedia() . $mediaFolder->getPath()),
+        );
 
         $subMediaFolder = $this->createMediaFolder($mediaFolder);
         $this->mediaFolderService->createFolder($subMediaFolder);
-        $this->assertTrue($this->fileSystem->exists($this->mediaFolderService->getRootPathMedia() . $subMediaFolder->getPath()));
+        $this->assertTrue(
+            $this->fileSystem->exists($this->mediaFolderService->getRootPathMedia() . $subMediaFolder->getPath()),
+        );
 
         $subSubMediaFolder = $this->createMediaFolder($subMediaFolder);
         $this->mediaFolderService->createFolder($subSubMediaFolder);
-        $this->assertTrue($this->fileSystem->exists($this->mediaFolderService->getRootPathMedia() . $subSubMediaFolder->getPath()));
+        $this->assertTrue(
+            $this->fileSystem->exists($this->mediaFolderService->getRootPathMedia() . $subSubMediaFolder->getPath()),
+        );
 
         $subSubMediaFolder2 = $this->createMediaFolder($subMediaFolder);
         $this->mediaFolderService->createFolder($subSubMediaFolder2);
-        $this->assertTrue($this->fileSystem->exists($this->mediaFolderService->getRootPathMedia() . $subSubMediaFolder2->getPath()));
+        $this->assertTrue(
+            $this->fileSystem->exists($this->mediaFolderService->getRootPathMedia() . $subSubMediaFolder2->getPath()),
+        );
     }
 
     /**
@@ -85,7 +93,11 @@ class MediaFolderServiceTest extends AppWebTestCase
         $this->createMediaFolder($subMediaFolder);
 
         $result = $this->mediaFolderService->getPathFolder($subMediaFolder, false);
-        $verif = $this->mediaFolderService->getRootPathMedia() . $subMediaFolder->getPath() . DIRECTORY_SEPARATOR . $subMediaFolder->getName();
+        $verif =
+            $this->mediaFolderService->getRootPathMedia() .
+            $subMediaFolder->getPath() .
+            DIRECTORY_SEPARATOR .
+            $subMediaFolder->getName();
         $this->assertEquals($verif, $result);
 
         $result = $this->mediaFolderService->getPathFolder($subMediaFolder);
@@ -126,7 +138,6 @@ class MediaFolderServiceTest extends AppWebTestCase
      */
     public function testGetMediaFolderInfo(): void
     {
-
         $this->mediaFolderService->resetAllMedia();
         $mediaFolder = $this->createMediaFolder();
         $this->mediaFolderService->createFolder($mediaFolder);
@@ -145,7 +156,10 @@ class MediaFolderServiceTest extends AppWebTestCase
         $this->assertArrayHasKey('size', $result);
         $this->assertEquals(Utils::getSizeName(0), $result['size']);
         $this->assertArrayHasKey('path', $result);
-        $this->assertEquals($subSubMediaFolder->getPath() . DIRECTORY_SEPARATOR . $subSubMediaFolder->getName(), $result['path']);
+        $this->assertEquals(
+            $subSubMediaFolder->getPath() . DIRECTORY_SEPARATOR . $subSubMediaFolder->getName(),
+            $result['path'],
+        );
         $this->assertArrayHasKey('id', $result);
         $this->assertEquals($subSubMediaFolder->getId(), $result['id']);
     }
@@ -203,14 +217,24 @@ class MediaFolderServiceTest extends AppWebTestCase
         $result = $this->mediaFolderService->findOneBy(MediaFolder::class, 'name', 'unit-test');
         $this->assertNotNull($result);
         $this->assertInstanceOf(MediaFolder::class, $result);
-        $exist = $this->fileSystem->exists($this->mediaFolderService->getRootPathMedia() . $result->getPath() . DIRECTORY_SEPARATOR . $result->getName());
+        $exist = $this->fileSystem->exists(
+            $this->mediaFolderService->getRootPathMedia() .
+                $result->getPath() .
+                DIRECTORY_SEPARATOR .
+                $result->getName(),
+        );
         $this->assertTrue($exist);
 
         $this->mediaFolderService->createMediaFolder('sub-unit-test', $result);
         $result = $this->mediaFolderService->findOneBy(MediaFolder::class, 'name', 'sub-unit-test');
         $this->assertNotNull($result);
         $this->assertInstanceOf(MediaFolder::class, $result);
-        $exist = $this->fileSystem->exists($this->mediaFolderService->getRootPathMedia() . $result->getPath() . DIRECTORY_SEPARATOR . $result->getName());
+        $exist = $this->fileSystem->exists(
+            $this->mediaFolderService->getRootPathMedia() .
+                $result->getPath() .
+                DIRECTORY_SEPARATOR .
+                $result->getName(),
+        );
         $this->assertTrue($exist);
     }
 
@@ -229,7 +253,6 @@ class MediaFolderServiceTest extends AppWebTestCase
         $this->mediaFolderService->createMediaFolder('sub-unit-test', $result);
         $this->mediaFolderService->createMediaFolder('sub-unit-test-2', $result);
 
-
         $this->mediaFolderService->updateMediaFolder('edit-unit-test', $result);
 
         /** @var MediaFolder $result */
@@ -240,7 +263,12 @@ class MediaFolderServiceTest extends AppWebTestCase
             $this->assertStringContainsString('edit-unit-test', $child->getPath());
         }
 
-        $exist = $this->fileSystem->exists($this->mediaFolderService->getRootPathMedia() . $result->getPath() . DIRECTORY_SEPARATOR . $result->getName());
+        $exist = $this->fileSystem->exists(
+            $this->mediaFolderService->getRootPathMedia() .
+                $result->getPath() .
+                DIRECTORY_SEPARATOR .
+                $result->getName(),
+        );
         $this->assertTrue($exist);
     }
 
@@ -345,7 +373,6 @@ class MediaFolderServiceTest extends AppWebTestCase
         $this->assertEquals($mediaFolder->getId(), $result['parentId']);
         $this->assertStringContainsString($media2->getName(), $result['label']);
         $this->assertCount(2, $result['liste']);
-
     }
 
     /**
@@ -397,7 +424,10 @@ class MediaFolderServiceTest extends AppWebTestCase
         $verif = $this->mediaFolderService->findOneById(MediaFolder::class, $mediaFolderToMove->getId());
         $this->assertNotNull($verif);
         $this->assertEquals($subSubMediaFolder->getId(), $verif->getParent()->getId());
-        $this->assertEquals($subSubMediaFolder->getPath() . DIRECTORY_SEPARATOR . $subSubMediaFolder->getName(), $verif->getPath());
+        $this->assertEquals(
+            $subSubMediaFolder->getPath() . DIRECTORY_SEPARATOR . $subSubMediaFolder->getName(),
+            $verif->getPath(),
+        );
 
         $this->mediaFolderService->moveFolder($mediaFolderToMove, $mediaFolder);
         $verif = $this->mediaFolderService->findOneById(MediaFolder::class, $mediaFolderToMove->getId());
@@ -409,7 +439,5 @@ class MediaFolderServiceTest extends AppWebTestCase
         $verif = $this->mediaFolderService->findOneById(MediaFolder::class, $mediaFolderToMove->getId());
         $this->assertNotNull($verif);
         $this->assertEquals(1, $mediaFolderToMove->getChildren()->count());
-
-
     }
 }

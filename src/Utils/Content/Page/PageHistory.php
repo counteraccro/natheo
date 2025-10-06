@@ -65,8 +65,7 @@ class PageHistory
             $this->directoryHistory = $this->directoryHistory . '-test';
         }
 
-        $this->pathPageHistory = $kernel . DIRECTORY_SEPARATOR . 'var'
-            . DIRECTORY_SEPARATOR . $this->directoryHistory;
+        $this->pathPageHistory = $kernel . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . $this->directoryHistory;
 
         $this->isExistDirectory($this->pathPageHistory);
     }
@@ -119,8 +118,10 @@ class PageHistory
 
         $serializer = new Serializer($normalizers, $encoders);
 
-        $personalData = new PersonalData($this->user,
-            $this->user->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue());
+        $personalData = new PersonalData(
+            $this->user,
+            $this->user->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue(),
+        );
 
         $data = ['time' => time(), 'user' => $personalData->getPersonalData(), 'pageH' => $page];
         return $serializer->serialize($data, 'json');
@@ -219,7 +220,7 @@ class PageHistory
      * Retourne le path du dossier history
      * @return string
      */
-    public function getPathPageHistory() :string
+    public function getPathPageHistory(): string
     {
         return $this->pathPageHistory;
     }

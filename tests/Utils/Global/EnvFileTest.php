@@ -31,7 +31,7 @@ class EnvFileTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetPathEnvFile() :void
+    public function testGetPathEnvFile(): void
     {
         $result = $this->envFile->getPathEnvFile();
         $this->assertNotEmpty($result);
@@ -44,7 +44,7 @@ class EnvFileTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetValueByKey() :void
+    public function testGetValueByKey(): void
     {
         $result = $this->envFile->getValueByKey('APP_DEBUG');
         $this->assertNotEmpty($result);
@@ -58,7 +58,7 @@ class EnvFileTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testUpdateValueByKey() :void
+    public function testUpdateValueByKey(): void
     {
         $this->envFile->updateValueByKey('APP_DEBUG', 'APP_DEBUG=0');
         $result = $this->envFile->getValueByKey('APP_DEBUG');
@@ -71,6 +71,5 @@ class EnvFileTest extends AppWebTestCase
         $this->assertNotEmpty($result);
         $this->assertIsString($result);
         $this->assertEquals('APP_DEBUG=1', $result);
-
     }
 }

@@ -88,21 +88,24 @@ class LoggerService extends AppService
      */
     const DIRECTORY_LOG = 'log';
 
-
-    public function __construct(#[AutowireLocator([
-        'entityManager' => EntityManagerInterface::class,
-        'containerBag' => ContainerBagInterface::class,
-        'translator' => TranslatorInterface::class,
-        'security' => Security::class,
-        'requestStack' => RequestStack::class,
-        'authLogger' => LoggerInterface::class,
-        'doctrineLogLogger' => LoggerInterface::class,
-        'gridService' => GridService::class,
-        'optionSystemService' => OptionSystemService::class,
-        'optionUserService' => OptionUserService::class,
-        'localeAware' => LocaleAwareInterface::class
-    ])] private readonly ContainerInterface $handlers)
-    {
+    public function __construct(
+        #[
+            AutowireLocator([
+                'entityManager' => EntityManagerInterface::class,
+                'containerBag' => ContainerBagInterface::class,
+                'translator' => TranslatorInterface::class,
+                'security' => Security::class,
+                'requestStack' => RequestStack::class,
+                'authLogger' => LoggerInterface::class,
+                'doctrineLogLogger' => LoggerInterface::class,
+                'gridService' => GridService::class,
+                'optionSystemService' => OptionSystemService::class,
+                'optionUserService' => OptionUserService::class,
+                'localeAware' => LocaleAwareInterface::class,
+            ]),
+        ]
+        private readonly ContainerInterface $handlers,
+    ) {
         $this->authLogger = $this->handlers->get('authLogger');
         $this->doctrineLogLogger = $this->handlers->get('doctrineLogLogger');
         $this->gridService = $this->handlers->get('gridService');
@@ -118,7 +121,7 @@ class LoggerService extends AppService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function getPathLog() :string
+    private function getPathLog(): string
     {
         $kernel = $this->params->get('kernel.project_dir');
         return $kernel . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . self::DIRECTORY_LOG;
@@ -135,7 +138,6 @@ class LoggerService extends AppService
      */
     public function logAuthAdmin(string $user, string $ip, bool $success = true): void
     {
-
         // On force le changement de langue pour éviter d'enregistrer les logs dans la langue du user courant
         $this->switchDefaultLocale('system');
         if ($success) {
@@ -163,7 +165,7 @@ class LoggerService extends AppService
         $msg = $this->translator->trans(
             'log.auth.admin.user.switch',
             ['user' => $user, 'userToSwitch' => $userToSwitch],
-            'log'
+            'log',
         );
         $level = LogLevel::WARNING;
         $this->authLogger->log($level, $msg);
@@ -192,23 +194,29 @@ class LoggerService extends AppService
         // On force le changement de langue pour éviter d'enregistrer les logs dans la langue du user courant
         $this->switchDefaultLocale('system');
         switch ($action) {
-            case self::ACTION_DOCTRINE_PERSIST :
-                $msg = $this->translator->trans('log.doctrine.persit', ['entity' => $entity, 'id' => $id, 'user' =>
-                    $user, 'id_user' => $idUser], 'log'
+            case self::ACTION_DOCTRINE_PERSIST:
+                $msg = $this->translator->trans(
+                    'log.doctrine.persit',
+                    ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $idUser],
+                    'log',
                 );
                 $this->doctrineLogLogger->notice($msg);
                 $typeOption = 'user';
                 break;
-            case self::ACTION_DOCTRINE_REMOVE :
-                $msg = $this->translator->trans('log.doctrine.remove', ['entity' => $entity, 'id' => $id, 'user' =>
-                    $user, 'id_user' => $idUser], 'log'
+            case self::ACTION_DOCTRINE_REMOVE:
+                $msg = $this->translator->trans(
+                    'log.doctrine.remove',
+                    ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $idUser],
+                    'log',
                 );
                 $this->doctrineLogLogger->warning($msg);
                 $typeOption = 'system';
                 break;
-            case self::ACTION_DOCTRINE_UPDATE :
-                $msg = $this->translator->trans('log.doctrine.update', ['entity' => $entity, 'id' => $id, 'user' =>
-                    $user, 'id_user' => $idUser], 'log'
+            case self::ACTION_DOCTRINE_UPDATE:
+                $msg = $this->translator->trans(
+                    'log.doctrine.update',
+                    ['entity' => $entity, 'id' => $id, 'user' => $user, 'id_user' => $idUser],
+                    'log',
                 );
                 $this->doctrineLogLogger->info($msg);
                 $typeOption = 'user';
@@ -228,18 +236,20 @@ class LoggerService extends AppService
      * @throws NotFoundExceptionInterface
      * @throws Exception
      */
-    public function getAllFiles(string $date = ""): array
+    public function getAllFiles(string $date = ''): array
     {
         $pathLog = $this->getPathLog();
 
         $finder = new Finder();
-        if ($date !== "all") {
+        if ($date !== 'all') {
             $date = new \DateTime($date);
-            $finder->files()->in($pathLog)->name('*-' . $date->format('Y-m-d') . '.log');
+            $finder
+                ->files()
+                ->in($pathLog)
+                ->name('*-' . $date->format('Y-m-d') . '.log');
         } else {
             $finder->files()->in($pathLog);
         }
-
 
         $return = [];
         foreach ($finder as $file) {
@@ -282,11 +292,10 @@ class LoggerService extends AppService
             $taille = $file->getSize();
             $content = $file->openFile();
 
-            $i = ($limit * $page) - $limit;
+            $i = $limit * $page - $limit;
             $begin = $i;
             $nb = 0;
             while (!$content->eof()) {
-
                 if ($i >= $limit * $page || $nb === $total) {
                     break;
                 }
@@ -321,7 +330,6 @@ class LoggerService extends AppService
      */
     private function formatLog(array $tabLog): array
     {
-
         $date = new \DateTime($tabLog['datetime']);
         $dateStr = $date->format('d-m-Y h:i:s');
 
@@ -336,8 +344,8 @@ class LoggerService extends AppService
         return [
             $this->translator->trans('log.grid.message', domain: 'log') => $tabLog['message'],
             $this->translator->trans('log.grid.date', domain: 'log') => $dateStr,
-            $this->translator->trans('log.grid.level', domain: 'log') => '<span class="' . $class . '">'
-                . $tabLog['level_name'] . '</span>',
+            $this->translator->trans('log.grid.level', domain: 'log') =>
+                '<span class="' . $class . '">' . $tabLog['level_name'] . '</span>',
         ];
     }
 
@@ -372,7 +380,7 @@ class LoggerService extends AppService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getPathFile(string $fileName) :string
+    public function getPathFile(string $fileName): string
     {
         $pathLog = $this->getPathLog();
         $finder = new Finder();
@@ -381,7 +389,7 @@ class LoggerService extends AppService
 
         if ($finder->hasResults()) {
             foreach ($finder as $file) {
-               return $file->getPathname();
+                return $file->getPathname();
             }
         }
         return '';

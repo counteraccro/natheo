@@ -17,7 +17,6 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class SidebarElementService extends AppAdminService
 {
-
     /**
      * Récupère l'ensemble des sidebarElement parent
      * @param bool $disabled
@@ -78,7 +77,10 @@ class SidebarElementService extends AppAdminService
 
             $parent = '---';
             if ($element->getParent() !== null) {
-                $parent = '<i class="bi ' . $element->getParent()->getIcon() . '"></i> ' .
+                $parent =
+                    '<i class="bi ' .
+                    $element->getParent()->getIcon() .
+                    '"></i> ' .
                     $translator->trans($element->getParent()->getLabel());
             }
 
@@ -94,19 +96,23 @@ class SidebarElementService extends AppAdminService
             }
 
             $data[] = [
-                $translator->trans('sidebar.grid.id', domain: 'sidebar') => $element->getId() . ' ' . $isLock .
-                    ' ' . $isDisabled,
+                $translator->trans('sidebar.grid.id', domain: 'sidebar') =>
+                    $element->getId() . ' ' . $isLock . ' ' . $isDisabled,
                 $translator->trans('sidebar.grid.parent', domain: 'sidebar') => $parent,
-                $translator->trans('sidebar.grid.label', domain: 'sidebar') => '<i class="bi ' .
-                    $element->getIcon() . '"></i> ' . $translator->trans($element->getLabel()),
-                $translator->trans('sidebar.grid.role', domain: 'sidebar') => $gridService
-                    ->renderRole($element->getRole()),
-                $translator->trans('sidebar.grid.description', domain: 'sidebar') => $translator
-                    ->trans($element->getDescription()),
+                $translator->trans('sidebar.grid.label', domain: 'sidebar') =>
+                    '<i class="bi ' . $element->getIcon() . '"></i> ' . $translator->trans($element->getLabel()),
+                $translator->trans('sidebar.grid.role', domain: 'sidebar') => $gridService->renderRole(
+                    $element->getRole(),
+                ),
+                $translator->trans('sidebar.grid.description', domain: 'sidebar') => $translator->trans(
+                    $element->getDescription(),
+                ),
                 $translator->trans('sidebar.grid.created_at', domain: 'sidebar') => $element
-                    ->getCreatedAt()->format('d/m/y H:i'),
+                    ->getCreatedAt()
+                    ->format('d/m/y H:i'),
                 $translator->trans('sidebar.grid.update_at', domain: 'sidebar') => $element
-                    ->getUpdateAt()->format('d/m/y H:i'),
+                    ->getUpdateAt()
+                    ->format('d/m/y H:i'),
                 GridService::KEY_ACTION => $action,
             ];
         }
@@ -115,10 +121,9 @@ class SidebarElementService extends AppAdminService
             GridService::KEY_NB => $nb,
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
-            GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate)
+            GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate),
         ];
         return $gridService->addAllDataRequiredGrid($tabReturn);
-
     }
 
     /**
@@ -135,19 +140,30 @@ class SidebarElementService extends AppAdminService
 
         $actionDisabled = '';
         if (!$element->isLock()) {
-            $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
+            $actionDisabled = [
+                'label' => '<i class="bi bi-eye-slash-fill"></i>',
                 'url' => $router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]),
                 'type' => 'put',
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $translator->trans('sidebar.confirm.disabled.msg', ['{label}' => '<i class="bi ' .
-                    $element->getIcon() . '"></i> ' . $translator->trans($element->getLabel())], 'sidebar')];
+                'msgConfirm' => $translator->trans(
+                    'sidebar.confirm.disabled.msg',
+                    [
+                        '{label}' =>
+                            '<i class="bi ' .
+                            $element->getIcon() .
+                            '"></i> ' .
+                            $translator->trans($element->getLabel()),
+                    ],
+                    'sidebar',
+                ),
+            ];
             if ($element->isDisabled()) {
                 $actionDisabled = [
                     'label' => '<i class="bi bi-eye-fill"></i>',
                     'type' => 'put',
                     'url' => $router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]),
-                    'ajax' => true
+                    'ajax' => true,
                 ];
             }
         }

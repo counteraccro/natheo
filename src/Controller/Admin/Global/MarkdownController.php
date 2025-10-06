@@ -17,7 +17,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_CONTRIBUTEUR')]
 class MarkdownController extends AbstractController
 {
-
     private const SESSION_NAME_PREVIEW = 'natheo-markdown-preview';
 
     /**
@@ -27,14 +26,12 @@ class MarkdownController extends AbstractController
     #[Route('/ajax/load-datas', name: 'load-datas', methods: ['GET'])]
     public function loadDatas(): Response
     {
-        return $this->json(
-            [
-                'media' => $this->generateUrl('admin_media_load_medias'),
-                'internalLinks' => $this->generateUrl('admin_page_liste_pages_internal_link'),
-                'preview' => $this->generateUrl('admin_markdown_preview'),
-                'initPreview' => $this->generateUrl('admin_markdown_init_preview'),
-            ]
-        );
+        return $this->json([
+            'media' => $this->generateUrl('admin_media_load_medias'),
+            'internalLinks' => $this->generateUrl('admin_page_liste_pages_internal_link'),
+            'preview' => $this->generateUrl('admin_markdown_preview'),
+            'initPreview' => $this->generateUrl('admin_markdown_init_preview'),
+        ]);
     }
 
     /**

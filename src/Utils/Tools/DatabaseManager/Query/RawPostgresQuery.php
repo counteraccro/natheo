@@ -59,7 +59,9 @@ class RawPostgresQuery implements RawQueryInterface
                                            LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
                               ) a
                          WHERE oid = parent
-                         AND table_schema = '" . $schema . "'
+                         AND table_schema = '" .
+            $schema .
+            "'
                      ) a
                 ORDER BY TABLE_NAME ASC";
     }
@@ -80,7 +82,9 @@ class RawPostgresQuery implements RawQueryInterface
         FROM
             information_schema.columns
         WHERE
-            table_name = '" . $table . "'";
+            table_name = '" .
+            $table .
+            "'";
     }
 
     /**
@@ -92,8 +96,12 @@ class RawPostgresQuery implements RawQueryInterface
     public static function getQueryExistTable(string $schema, string $table): string
     {
         return "SELECT EXISTS (
-            SELECT FROM information_schema.tables WHERE  table_schema = '" . $schema . "'
-            AND table_name   = '" . $table . "'
+            SELECT FROM information_schema.tables WHERE  table_schema = '" .
+            $schema .
+            "'
+            AND table_name   = '" .
+            $table .
+            "'
             )";
     }
 

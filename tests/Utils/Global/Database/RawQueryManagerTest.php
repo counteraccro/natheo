@@ -30,7 +30,7 @@ class RawQueryManagerTest extends AppWebTestCase
      * Test méthode getQueryAllInformationSchema()
      * @return void
      */
-    public function testGetQueryAllInformationSchema() :void
+    public function testGetQueryAllInformationSchema(): void
     {
         $sql = $this->rawQueryManager->getQueryAllInformationSchema('natheo_test');
         $this->assertNotEmpty($sql);
@@ -46,7 +46,7 @@ class RawQueryManagerTest extends AppWebTestCase
      * Test méthode getQueryStructureTable()
      * @return void
      */
-    public function testGetQueryStructureTable() :void
+    public function testGetQueryStructureTable(): void
     {
         $sql = $this->rawQueryManager->getQueryStructureTable('user');
         $this->assertNotEmpty($sql);
@@ -62,7 +62,7 @@ class RawQueryManagerTest extends AppWebTestCase
      * Test méthode getQueryExistTable()
      * @return void
      */
-    public function testGetQueryExistTable() :void
+    public function testGetQueryExistTable(): void
     {
         $sql = $this->rawQueryManager->getQueryExistTable('natheo_test', 'user');
         $this->assertNotEmpty($sql);
@@ -78,7 +78,7 @@ class RawQueryManagerTest extends AppWebTestCase
      * Test méthode getQueryAllDatabase()
      * @return void
      */
-    public function testGetQueryAllDatabase() :void
+    public function testGetQueryAllDatabase(): void
     {
         $sql = $this->rawQueryManager->getQueryAllDatabase();
         $this->assertNotEmpty($sql);
@@ -94,7 +94,7 @@ class RawQueryManagerTest extends AppWebTestCase
      * Test méthode getQueryPurgeNotification()
      * @return void
      */
-    public function testGetQueryPurgeNotification() :void
+    public function testGetQueryPurgeNotification(): void
     {
         $sql = $this->rawQueryManager->getQueryPurgeNotification();
         $this->assertNotEmpty($sql);

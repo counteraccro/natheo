@@ -11,9 +11,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ApiProvider implements UserProviderInterface
 {
-    public function __construct(private ApiService $apiService)
-    {
-    }
+    public function __construct(private ApiService $apiService) {}
 
     /**
      * Symfony calls this method if you use features like switch_user
@@ -28,8 +26,7 @@ class ApiProvider implements UserProviderInterface
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
         $user = $this->apiService->getUserByApiToken($identifier);
-        if($user === null)
-        {
+        if ($user === null) {
             throw new UserNotFoundException('API Key is not correct');
         }
         return $user;

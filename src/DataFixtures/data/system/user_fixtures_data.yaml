@@ -1,13 +1,13 @@
 user:
-  User:
-    email: munoz.martine@dbmail.com
-    password: $2y$04$kSg0QCdBg2J3QF6.qBpSqOY71mjyiurXjbCmVUCcw3wYfZN4TFa/m
-    login: adelaide.merle
-    firstname: ''
-    lastname: ''
-    roles: ROLE_SUPER_ADMIN
-    disabled: 0
-    anonymous: 0
-    founder: 1
-    avatar: avatar-2.png
-    description: "N'oubliez pas de mettre à jour cette description"
+    User:
+        email: munoz.martine@dbmail.com
+        password: $2y$04$kSg0QCdBg2J3QF6.qBpSqOY71mjyiurXjbCmVUCcw3wYfZN4TFa/m
+        login: adelaide.merle
+        firstname: ''
+        lastname: ''
+        roles: ROLE_SUPER_ADMIN
+        disabled: 0
+        anonymous: 0
+        founder: 1
+        avatar: avatar-2.png
+        description: "N'oubliez pas de mettre à jour cette description"

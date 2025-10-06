@@ -17,63 +17,65 @@ class ApiCommentByPageDto extends AppApiDto
          * Id du menu
          * @var int
          */
-        #[Assert\Type(type: 'integer', message: 'The id parameter must be a integer')]
-        private readonly int $id,
+        #[Assert\Type(type: 'integer', message: 'The id parameter must be a integer')] private readonly int $id,
 
         /**
          * Url de la page ou le menu est associé
          * @var string
          */
-        #[Assert\Type(type: 'string', message: 'The pageSlug parameter must be a string')]
-        #[Assert\NotNull(message: 'The pageSlug parameter cannot be empty')]
+        #[Assert\Type(type: 'string', message: 'The pageSlug parameter must be a string')] #[
+            Assert\NotNull(message: 'The pageSlug parameter cannot be empty'),
+        ]
         private readonly string $pageSlug,
 
         /**
          * Locale de la page
          * @var string
          */
-        #[Assert\Type(type: 'string', message: 'The locale parameter must be a string')]
-        #[Assert\Choice(choices: self::LOCALES, message: 'Choose a locale between en or es or fr')]
+        #[Assert\Type(type: 'string', message: 'The locale parameter must be a string')] #[
+            Assert\Choice(choices: self::LOCALES, message: 'Choose a locale between en or es or fr'),
+        ]
         private readonly string $locale,
 
         /**
          * Numéro de la page (pagination des elements de la page)
          * @var int
          */
-        #[Assert\Type(type: 'integer', message: 'The page parameter must be a integer')]
-        private readonly int $page,
+        #[Assert\Type(type: 'integer', message: 'The page parameter must be a integer')] private readonly int $page,
 
         /**
          * Nombre maximum de lignes dans un élement de page
          * @var int
          */
-        #[Assert\Type(type: 'integer', message: 'The limit parameter must be a integer')]
-        private readonly int $limit,
+        #[Assert\Type(type: 'integer', message: 'The limit parameter must be a integer')] private readonly int $limit,
 
         /**
          * Champ qui défini l'ordre du tri
          * @var string
          */
-        #[Assert\Type(type: 'string', message: 'The orderBy parameter must be a string')]
-        #[Assert\Choice(choices: ['id', 'createdAt'], message: 'Choose a orderBy between id or createdAt')]
+        #[Assert\Type(type: 'string', message: 'The orderBy parameter must be a string')] #[
+            Assert\Choice(choices: ['id', 'createdAt'], message: 'Choose a orderBy between id or createdAt'),
+        ]
         private readonly string $orderBy,
 
         /**
          * Ordre du tri
          * @var string
          */
-        #[Assert\Type(type: 'string', message: 'The order parameter must be a string')]
-        #[Assert\Choice(choices: ['desc', 'asc'], message: 'Choose a order between desc or asc')]
+        #[Assert\Type(type: 'string', message: 'The order parameter must be a string')] #[
+            Assert\Choice(choices: ['desc', 'asc'], message: 'Choose a order between desc or asc'),
+        ]
         private readonly string $order,
 
         /**
          * Token
          * @var string
          */
-        #[Assert\Type(type: 'string', message: 'The user_token parameter must be a string')]
+        #[
+            Assert\Type(type: 'string', message: 'The user_token parameter must be a string'),
+        ]
         private readonly string $userToken,
-    ){}
-
+    ) {}
 
     /**
      * Id

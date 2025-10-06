@@ -13,7 +13,6 @@ use Twig\Attribute\AsTwigFunction;
 
 class BreadcrumbExtension extends AppAdminExtension
 {
-
     /**
      * Génère le breadcrumb
      * @param array $elements Tableau contenant les elements suivants <br />
@@ -36,12 +35,18 @@ class BreadcrumbExtension extends AppAdminExtension
             }
 
             if ($nb === $i) {
-                $html .= '<li class="breadcrumb-item pl-0 active text-uppercase pl-4">' .
-                    $this->translator->trans($label, domain: $domain) . '</li>';
+                $html .=
+                    '<li class="breadcrumb-item pl-0 active text-uppercase pl-4">' .
+                    $this->translator->trans($label, domain: $domain) .
+                    '</li>';
             } else {
-                $html .= '<li class="breadcrumb-item pl-0 ' . $lastLink . '"><a href="' .
-                    $this->router->generate($route) . '" class="text-uppercase">' . $this->translator
-                        ->trans($label, domain: $domain) .
+                $html .=
+                    '<li class="breadcrumb-item pl-0 ' .
+                    $lastLink .
+                    '"><a href="' .
+                    $this->router->generate($route) .
+                    '" class="text-uppercase">' .
+                    $this->translator->trans($label, domain: $domain) .
                     '</a></li>';
             }
             $i++;
@@ -57,13 +62,22 @@ class BreadcrumbExtension extends AppAdminExtension
         return '<div id="adm-breadcrumb">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb breadcrumb-arrow p-0 bg-light">
-                                <li class="breadcrumb-item ' . $lastLink . '">
-                                    <a href="' . $this->router->generate('admin_dashboard_index') .
-                                        '" class="text-uppercase ' . $pl3 . '">
-                                        ' . $this->translator->trans('global.dashboard', domain: 'global') . '
+                                <li class="breadcrumb-item ' .
+            $lastLink .
+            '">
+                                    <a href="' .
+            $this->router->generate('admin_dashboard_index') .
+            '" class="text-uppercase ' .
+            $pl3 .
+            '">
+                                        ' .
+            $this->translator->trans('global.dashboard', domain: 'global') .
+            '
                                     </a>
                                 </li>
-                                ' . $html . '
+                                ' .
+            $html .
+            '
                             </ol>
                         </nav>
                   </div>';

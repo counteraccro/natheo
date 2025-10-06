@@ -61,20 +61,20 @@ class SqlManagerRepository extends ServiceEntityRepository
      */
     public function getAllPaginate(int $page, int $limit, ?string $search = null): Paginator
     {
-        $query = $this->createQueryBuilder('sm')
-            ->orderBy('sm.id', 'ASC');
+        $query = $this->createQueryBuilder('sm')->orderBy('sm.id', 'ASC');
 
         if ($search !== null) {
-            $query->where('sm.name like :search')
+            $query
+                ->where('sm.name like :search')
                 ->orWhere('sm.query like :search')
                 ->setParameter('search', '%' . $search . '%');
         }
 
         $paginator = new Paginator($query->getQuery(), true);
-        $paginator->getQuery()
+        $paginator
+            ->getQuery()
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;
-
     }
 }

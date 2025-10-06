@@ -19,7 +19,7 @@ class PageStatistique
     #[ORM\JoinColumn(nullable: false)]
     private ?Page $page = null;
 
-    #[ORM\Column(name:'`key`', length: 255)]
+    #[ORM\Column(name: '`key`', length: 255)]
     private ?string $key = null;
 
     #[ORM\Column(length: 255)]

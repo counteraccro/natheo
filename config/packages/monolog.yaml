@@ -12,7 +12,7 @@ monolog:
             max_files: 10
             path: '%kernel.logs_dir%/cms/%kernel.environment%/auth.log'
             formatter: 'monolog.formatter.json'
-            channels: [ auth ]
+            channels: [auth]
         doctrine_log:
             # log doctrine sur la modification/création/suppression d'une entité
             level: debug
@@ -20,16 +20,16 @@ monolog:
             max_files: 10
             path: '%kernel.logs_dir%/cms/%kernel.environment%/doctrine.log'
             formatter: 'monolog.formatter.json'
-            channels: [ doctrine_log ]
+            channels: [doctrine_log]
 
 when@dev:
     monolog:
         handlers:
             main:
                 type: rotating_file
-                path: "%kernel.logs_dir%/%kernel.environment%.log"
+                path: '%kernel.logs_dir%/%kernel.environment%.log'
                 level: debug
-                channels: ["!event"]
+                channels: ['!event']
                 formatter: 'monolog.formatter.json'
                 max_files: 5
             # uncomment to get logging in your browser
@@ -43,7 +43,7 @@ when@dev:
             console:
                 type: console
                 process_psr_3_messages: false
-                channels: ["!event", "!doctrine", "!console"]
+                channels: ['!event', '!doctrine', '!console']
 
 when@test:
     monolog:
@@ -53,10 +53,10 @@ when@test:
                 action_level: error
                 handler: nested
                 excluded_http_codes: [404, 405]
-                channels: ["!event"]
+                channels: ['!event']
             nested:
                 type: stream
-                path: "%kernel.logs_dir%/%kernel.environment%.log"
+                path: '%kernel.logs_dir%/%kernel.environment%.log'
                 level: debug
 
 when@prod:
@@ -78,7 +78,7 @@ when@prod:
             console:
                 type: console
                 process_psr_3_messages: false
-                channels: ["!event", "!doctrine"]
+                channels: ['!event', '!doctrine']
             deprecation:
                 type: stream
                 channels: [deprecation]

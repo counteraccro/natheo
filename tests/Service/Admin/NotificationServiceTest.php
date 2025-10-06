@@ -45,14 +45,18 @@ class NotificationServiceTest extends AppWebTestCase
         $optionSystemService = $this->container->get(OptionSystemService::class);
         $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '0');
 
-        $this->notificationService->add($user, NotificationKey::NOTIFICATION_SELF_DELETE, ['login' => $user->getLogin()]);
+        $this->notificationService->add($user, NotificationKey::NOTIFICATION_SELF_DELETE, [
+            'login' => $user->getLogin(),
+        ]);
 
         $user = $this->notificationService->findOneById(User::class, $user->getId());
         $this->assertCount(0, $user->getNotifications());
 
         $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '1');
 
-        $this->notificationService->add($user, NotificationKey::NOTIFICATION_SELF_DELETE, ['login' => $user->getLogin()]);
+        $this->notificationService->add($user, NotificationKey::NOTIFICATION_SELF_DELETE, [
+            'login' => $user->getLogin(),
+        ]);
         $user = $this->notificationService->findOneById(User::class, $user->getId());
         $this->assertCount(1, $user->getNotifications());
         $notification = $user->getNotifications()->first();
@@ -75,11 +79,15 @@ class NotificationServiceTest extends AppWebTestCase
 
         $optionSystemService = $this->container->get(OptionSystemService::class);
         $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '0');
-        $user = $this->notificationService->addForFixture($user, NotificationKey::NOTIFICATION_SELF_DISABLED, ['login' => $user->getLogin()]);
+        $user = $this->notificationService->addForFixture($user, NotificationKey::NOTIFICATION_SELF_DISABLED, [
+            'login' => $user->getLogin(),
+        ]);
         $this->assertCount(0, $user->getNotifications());
 
         $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '1');
-        $user = $this->notificationService->addForFixture($user, NotificationKey::NOTIFICATION_SELF_DISABLED, ['login' => $user->getLogin()]);
+        $user = $this->notificationService->addForFixture($user, NotificationKey::NOTIFICATION_SELF_DISABLED, [
+            'login' => $user->getLogin(),
+        ]);
         $this->assertCount(1, $user->getNotifications());
 
         $notification = $user->getNotifications()->first();
@@ -103,7 +111,6 @@ class NotificationServiceTest extends AppWebTestCase
         $user = $this->createUser();
 
         for ($i = 0; $i < 10; $i++) {
-
             $data = ['read' => 0];
             $this->createNotification($user, $data);
         }
@@ -120,10 +127,19 @@ class NotificationServiceTest extends AppWebTestCase
     public function testGetByUserPaginate(): void
     {
         $user = $this->createUser();
-        $this->notificationService->add($user, NotificationKey::NOTIFICATION_SELF_DELETE, ['login' => $user->getLogin()]);
-        $this->notificationService->add($user, NotificationKey::NOTIFICATION_SELF_DISABLED, ['login' => $user->getLogin()]);
-        $this->notificationService->add($user, NotificationKey::NOTIFICATION_SELF_ANONYMOUS, ['login' => $user->getLogin()]);
-        $this->notificationService->add($user, NotificationKey::NOTIFICATION_NEW_FONDATEUR, ['login' => $user->getLogin(), 'url_aide' => '#']);
+        $this->notificationService->add($user, NotificationKey::NOTIFICATION_SELF_DELETE, [
+            'login' => $user->getLogin(),
+        ]);
+        $this->notificationService->add($user, NotificationKey::NOTIFICATION_SELF_DISABLED, [
+            'login' => $user->getLogin(),
+        ]);
+        $this->notificationService->add($user, NotificationKey::NOTIFICATION_SELF_ANONYMOUS, [
+            'login' => $user->getLogin(),
+        ]);
+        $this->notificationService->add($user, NotificationKey::NOTIFICATION_NEW_FONDATEUR, [
+            'login' => $user->getLogin(),
+            'url_aide' => '#',
+        ]);
 
         $paginator = $this->notificationService->getByUserPaginate(1, 1, $user, true);
         $this->assertEquals(1, $paginator->getIterator()->count());
@@ -133,12 +149,13 @@ class NotificationServiceTest extends AppWebTestCase
 
         $notificationRef = $this->notificationService->findOneById(Notification::class, $notification->getId());
         $parameter = json_decode($notification->getParameters(), true);
-        $this->assertEquals($this->translator->trans($notificationRef->getTitle(), domain: 'notification'), $notification->getTitle());
-        $notification->setContent($this->translator->trans(
-            $notificationRef->getContent(),
-            $parameter,
-            domain: 'notification'
-        ));
+        $this->assertEquals(
+            $this->translator->trans($notificationRef->getTitle(), domain: 'notification'),
+            $notification->getTitle(),
+        );
+        $notification->setContent(
+            $this->translator->trans($notificationRef->getContent(), $parameter, domain: 'notification'),
+        );
 
         for ($i = 0; $i < 5; $i++) {
             $data = ['read' => 1];
@@ -196,7 +213,6 @@ class NotificationServiceTest extends AppWebTestCase
         $this->notificationService->purge(0, $user->getId());
         $nb = $this->notificationService->getNbByUser($user);
         $this->assertEquals(5, $nb);
-
     }
 
     /**

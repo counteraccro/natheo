@@ -5,29 +5,29 @@
  * @author Gourdon Aymeric
  */
 
-import MediasGrid from "../../../Components/Mediatheque/MediasGrid.vue";
-import MediasBreadcrumb from "../../../Components/Mediatheque/MediasBreadcrumb.vue";
-import MediaModalInfo from "../../../Components/Mediatheque/MediaModalInfo.vue";
-import FileUpload from "../../../Components/Global/FileUpload.vue";
-import MediaMove from "../../../Components/Mediatheque/MediaMove.vue";
-import MediasTrash from "../../../Components/Mediatheque/MediasTrash.vue";
-import axios from "axios";
-import {Modal} from "bootstrap";
-import {isEmpty} from "lodash-es";
+import MediasGrid from '../../../Components/Mediatheque/MediasGrid.vue';
+import MediasBreadcrumb from '../../../Components/Mediatheque/MediasBreadcrumb.vue';
+import MediaModalInfo from '../../../Components/Mediatheque/MediaModalInfo.vue';
+import FileUpload from '../../../Components/Global/FileUpload.vue';
+import MediaMove from '../../../Components/Mediatheque/MediaMove.vue';
+import MediasTrash from '../../../Components/Mediatheque/MediasTrash.vue';
+import axios from 'axios';
+import { Modal } from 'bootstrap';
+import { isEmpty } from 'lodash-es';
 
 export default {
-  name: "Mediatheque",
+  name: 'Mediatheque',
   components: {
     MediasGrid,
     MediasBreadcrumb,
     MediaModalInfo,
     FileUpload,
     MediaMove,
-    MediasTrash
+    MediasTrash,
   },
   props: {
     url: String,
-    translate: Object
+    translate: Object,
   },
   data() {
     return {
@@ -70,7 +70,7 @@ export default {
       trash: {
         type: '',
         id: '',
-        trash: true
+        trash: true,
       },
       trashMsg: '',
       trashConfirm: false,
@@ -80,18 +80,18 @@ export default {
       remove: {
         type: '',
         id: '',
-      }
-    }
+      },
+    };
   },
 
   mounted() {
-    this.modalFolder = new Modal(document.getElementById("modal-folder"), {});
-    this.modalInfo = new Modal(document.getElementById("modal-info"), {});
-    this.modalUpload = new Modal(document.getElementById("modal-upload"), {});
-    this.modalMove = new Modal(document.getElementById("modal-move"), {});
-    this.modalEditMedia = new Modal(document.getElementById("modal-edit-media"), {});
-    this.modalTrash = new Modal(document.getElementById("modal-trash"), {});
-    this.modalRemove = new Modal(document.getElementById("modal-remove"), {});
+    this.modalFolder = new Modal(document.getElementById('modal-folder'), {});
+    this.modalInfo = new Modal(document.getElementById('modal-info'), {});
+    this.modalUpload = new Modal(document.getElementById('modal-upload'), {});
+    this.modalMove = new Modal(document.getElementById('modal-move'), {});
+    this.modalEditMedia = new Modal(document.getElementById('modal-edit-media'), {});
+    this.modalTrash = new Modal(document.getElementById('modal-trash'), {});
+    this.modalRemove = new Modal(document.getElementById('modal-remove'), {});
     this.loadMedia();
   },
 
@@ -101,31 +101,37 @@ export default {
      * Charge les médias
      */
     loadMedia() {
-
       this.loading = true;
-      axios.get(this.url + '/' + this.folderId + '/' + this.order + '/' + this.filter).then((response) => {
-        this.medias = response.data.medias;
-        this.currentFolder = response.data.currentFolder;
-        this.urlActions = response.data.url;
-        this.canDelete = response.data.canDelete;
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.getNbTrash();
-        this.loading = false
-      });
+      axios
+        .get(this.url + '/' + this.folderId + '/' + this.order + '/' + this.filter)
+        .then((response) => {
+          this.medias = response.data.medias;
+          this.currentFolder = response.data.currentFolder;
+          this.urlActions = response.data.url;
+          this.canDelete = response.data.canDelete;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.getNbTrash();
+          this.loading = false;
+        });
     },
 
     /**
      * Retourne le nombre d'éléments dans la corbeille
      */
     getNbTrash() {
-      axios.get(this.urlActions.nbTrash, {}).then((response) => {
-        this.nbTrash = response.data.nb;
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-      });
+      axios
+        .get(this.urlActions.nbTrash, {})
+        .then((response) => {
+          this.nbTrash = response.data.nb;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {});
     },
 
     /**
@@ -133,7 +139,6 @@ export default {
      * @param order
      */
     changeOrder(order) {
-
       this.order = order;
       if (order === 'asc') {
         this.orderIcon = 'bi-sort-down';
@@ -146,14 +151,14 @@ export default {
     changeFilter(filter) {
       this.filter = filter;
       switch (filter) {
-        case "created_at":
-          this.filterIcon = 'bi-clock'
+        case 'created_at':
+          this.filterIcon = 'bi-clock';
           break;
-        case "name":
-          this.filterIcon = 'bi-card-text'
+        case 'name':
+          this.filterIcon = 'bi-card-text';
           break;
-        case "type":
-          this.filterIcon = 'bi-file'
+        case 'type':
+          this.filterIcon = 'bi-file';
           break;
       }
       this.loadMedia();
@@ -200,15 +205,19 @@ export default {
      */
     editFolder(id) {
       this.loading = true;
-      axios.get(this.urlActions.loadFolder + '/' + id + '/edit').then((response) => {
-        this.folderEdit = response.data.folder;
-        this.folderName = this.folderEdit.name;
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.loading = false;
-        this.openModalFolder();
-      });
+      axios
+        .get(this.urlActions.loadFolder + '/' + id + '/edit')
+        .then((response) => {
+          this.folderEdit = response.data.folder;
+          this.folderName = this.folderEdit.name;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+          this.openModalFolder();
+        });
     },
 
     /**
@@ -285,33 +294,35 @@ export default {
      * Soumission du formulaire pour éditer / new folder
      */
     submitFolder() {
-
       let editFolderId = 0;
       this.folderSuccess = this.translate.folder.msg_wait_create;
       if (!isEmpty(this.folderEdit)) {
-        editFolderId = this.folderEdit.id
+        editFolderId = this.folderEdit.id;
         this.folderSuccess = this.translate.folder.msg_wait_edit;
       }
 
-      axios.post(this.urlActions.saveFolder, {
-        'name': this.folderName,
-        'currentFolder': this.currentFolder.id,
-        'editFolder': editFolderId
-      }).then((response) => {
-        if (response.data.result === 'error') {
-          this.folderSuccess = '';
-          this.folderError = response.data.msg;
-          this.renderErrorFolderInput(true);
-        } else {
-          this.folderSuccess = response.data.msg;
-          this.renderErrorFolderInput(false);
-          setTimeout(this.closeModalFolder, 3000);
-          setTimeout(this.loadMedia, 3000);
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-      });
+      axios
+        .post(this.urlActions.saveFolder, {
+          name: this.folderName,
+          currentFolder: this.currentFolder.id,
+          editFolder: editFolderId,
+        })
+        .then((response) => {
+          if (response.data.result === 'error') {
+            this.folderSuccess = '';
+            this.folderError = response.data.msg;
+            this.renderErrorFolderInput(true);
+          } else {
+            this.folderSuccess = response.data.msg;
+            this.renderErrorFolderInput(false);
+            setTimeout(this.closeModalFolder, 3000);
+            setTimeout(this.loadMedia, 3000);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {});
     },
     /** fin bloc gestion des dossiers **/
 
@@ -324,14 +335,18 @@ export default {
      */
     loadDataInformation(type, id) {
       this.loading = true;
-      axios.get(this.urlActions.loadInfo + '/' + id + '/' + type).then((response) => {
-        this.infoData = response.data
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.loading = false;
-        this.openModalInfo();
-      });
+      axios
+        .get(this.urlActions.loadInfo + '/' + id + '/' + type)
+        .then((response) => {
+          this.infoData = response.data;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+          this.openModalInfo();
+        });
     },
 
     /**
@@ -374,20 +389,22 @@ export default {
      * @param file
      */
     getUploadedData(file) {
+      this.loadingUploadMsg = this.translate.upload.loading_msg;
 
-      this.loadingUploadMsg = this.translate.upload.loading_msg
-
-      axios.post(this.urlActions.upload, {
-        'file': file,
-        'folder': this.folderId,
-      }).then((response) => {
-        this.loadingUploadMsg = this.translate.upload.loading_msg_success
-        setTimeout(this.closeModalUpload, 3000);
-        setTimeout(this.loadMedia, 2500);
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-      });
+      axios
+        .post(this.urlActions.upload, {
+          file: file,
+          folder: this.folderId,
+        })
+        .then((response) => {
+          this.loadingUploadMsg = this.translate.upload.loading_msg_success;
+          setTimeout(this.closeModalUpload, 3000);
+          setTimeout(this.loadMedia, 2500);
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {});
     },
 
     /** Fin bloc modal upload **/
@@ -412,7 +429,7 @@ export default {
         description: '',
         thumbnail: '',
         status: '',
-      }
+      };
     },
 
     /**
@@ -421,37 +438,44 @@ export default {
      */
     editMedia(id) {
       this.loading = true;
-      axios.get(this.urlActions.loadMediaEdit + '/' + id).then((response) => {
-        this.mediaEdit = {
-          id: response.data.media.id,
-          name: response.data.media.name,
-          description: response.data.media.description,
-          thumbnail: response.data.media.thumbnail,
-          status: '',
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.loading = false;
-        this.openModalEditMedia();
-      });
+      axios
+        .get(this.urlActions.loadMediaEdit + '/' + id)
+        .then((response) => {
+          this.mediaEdit = {
+            id: response.data.media.id,
+            name: response.data.media.name,
+            description: response.data.media.description,
+            thumbnail: response.data.media.thumbnail,
+            status: '',
+          };
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+          this.openModalEditMedia();
+        });
     },
 
     /**
      * Sauvegarde les modifications d'un média
      */
     saveMedia() {
-      this.mediaEdit.status = "loading";
-      axios.post(this.urlActions.saveMediaEdit, {
-        'media': this.mediaEdit,
-      }).then((response) => {
-        this.mediaEdit.status = "success";
-        setTimeout(this.closeModalEditMedia, 3000);
-        setTimeout(this.loadMedia, 2500);
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-      });
+      this.mediaEdit.status = 'loading';
+      axios
+        .post(this.urlActions.saveMediaEdit, {
+          media: this.mediaEdit,
+        })
+        .then((response) => {
+          this.mediaEdit.status = 'success';
+          setTimeout(this.closeModalEditMedia, 3000);
+          setTimeout(this.loadMedia, 2500);
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {});
     },
 
     /** fin bloc modal edit média **/
@@ -481,14 +505,18 @@ export default {
      */
     loadListFolderMove(type, id) {
       this.loading = true;
-      axios.get(this.urlActions.listeMove + '/' + id + '/' + type).then((response) => {
-        this.dataMove = response.data.dataMove;
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.loading = false;
-        this.openModalMove();
-      });
+      axios
+        .get(this.urlActions.listeMove + '/' + id + '/' + type)
+        .then((response) => {
+          this.dataMove = response.data.dataMove;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+          this.openModalMove();
+        });
     },
 
     /**
@@ -498,20 +526,22 @@ export default {
      * @param type
      */
     moveMedia(idToMove, id, type) {
-      this.mediaMoveStatus = 'loading'
-      axios.post(this.urlActions.move, {
-        'idToMove': idToMove,
-        'id': id,
-        'type': type
-      }).then((response) => {
-
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.mediaMoveStatus = "success";
-        setTimeout(this.closeModalMove, 3000);
-        setTimeout(this.loadMedia, 2500);
-      });
+      this.mediaMoveStatus = 'loading';
+      axios
+        .post(this.urlActions.move, {
+          idToMove: idToMove,
+          id: id,
+          type: type,
+        })
+        .then((response) => {})
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.mediaMoveStatus = 'success';
+          setTimeout(this.closeModalMove, 3000);
+          setTimeout(this.loadMedia, 2500);
+        });
     },
 
     /** fin bloc modal move **/
@@ -533,18 +563,21 @@ export default {
 
       if (!confirm) {
         if (type === 'folder') {
-          this.trashMsg = this.translate.trash.text_folder + ' : <b>' + nameM +
-              '</b> ?<br /><span class="text-warning"><i class="bi bi-exclamation-triangle-fill"></i> <i>' + this.translate.trash.text_info + '</i></span>';
+          this.trashMsg =
+            this.translate.trash.text_folder +
+            ' : <b>' +
+            nameM +
+            '</b> ?<br /><span class="text-warning"><i class="bi bi-exclamation-triangle-fill"></i> <i>' +
+            this.translate.trash.text_info +
+            '</i></span>';
         } else {
-          this.trashMsg = this.translate.trash.text_media + ' : <b>' + nameM + '</b> ?'
+          this.trashMsg = this.translate.trash.text_media + ' : <b>' + nameM + '</b> ?';
         }
         this.openModalTrash();
       } else {
-        this.trashMsg = '<div class="spinner-border text-primary" role="status"></div> '
-            + this.translate.trash.loading;
+        this.trashMsg = '<div class="spinner-border text-primary" role="status"></div> ' + this.translate.trash.loading;
         this.updateTrash();
       }
-
     },
 
     /**
@@ -562,8 +595,8 @@ export default {
       this.trash = {
         type: '',
         id: '',
-        trash: true
-      }
+        trash: true,
+      };
       this.trashMsg = '';
       this.trashConfirm = false;
     },
@@ -586,24 +619,26 @@ export default {
      * Met à jour le média avec la valeur de la corbeille
      */
     updateTrash() {
-      axios.post(this.urlActions.updateTrash, {
-        'trash': this.trash.trash,
-        'id': this.trash.id,
-        'type': this.trash.type
-      }).then((response) => {
-
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-
-        if (this.trash.trash) {
-          this.trashMsg = '<span class="text-success"><i class="bi bi-check"></i>' + this.translate.trash.success_trash + '</span>';
-          setTimeout(this.closeModalTrash, 3000);
-          setTimeout(this.loadMedia, 2500);
-        } else {
-          setTimeout(this.loadInTrash, 2500);
-        }
-      });
+      axios
+        .post(this.urlActions.updateTrash, {
+          trash: this.trash.trash,
+          id: this.trash.id,
+          type: this.trash.type,
+        })
+        .then((response) => {})
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          if (this.trash.trash) {
+            this.trashMsg =
+              '<span class="text-success"><i class="bi bi-check"></i>' + this.translate.trash.success_trash + '</span>';
+            setTimeout(this.closeModalTrash, 3000);
+            setTimeout(this.loadMedia, 2500);
+          } else {
+            setTimeout(this.loadInTrash, 2500);
+          }
+        });
     },
 
     /**
@@ -611,13 +646,17 @@ export default {
      */
     loadInTrash() {
       this.loading = true;
-      axios.get(this.urlActions.listTrash).then((response) => {
-        this.mediasTrash = response.data.mediasTrash
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.loading = false;
-      });
+      axios
+        .get(this.urlActions.listTrash)
+        .then((response) => {
+          this.mediasTrash = response.data.mediasTrash;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
 
     /**
@@ -637,53 +676,58 @@ export default {
     },
 
     confirmRemove(type, id, nameM, confirm) {
-
       this.remove.type = type;
       this.remove.id = id;
       this.removeConfirm = confirm;
 
       if (!confirm) {
         if (type === 'folder') {
-          this.removeMsg = this.translate.remove.text_folder + ' : <b>' + nameM +
-              '</b> ?<br /><span class="text-warning"><i class="bi bi-exclamation-triangle-fill"></i> <i>' + this.translate.remove.text_info + '</i></span>';
+          this.removeMsg =
+            this.translate.remove.text_folder +
+            ' : <b>' +
+            nameM +
+            '</b> ?<br /><span class="text-warning"><i class="bi bi-exclamation-triangle-fill"></i> <i>' +
+            this.translate.remove.text_info +
+            '</i></span>';
         } else {
-          this.removeMsg = this.translate.remove.text_media + ' : <b>' + nameM + '</b> ?'
+          this.removeMsg = this.translate.remove.text_media + ' : <b>' + nameM + '</b> ?';
         }
         this.removeMsg += '<br /><span class="text-danger"><b>' + this.translate.remove.text_info_2 + '</b></span>';
 
         this.openModalRemove();
       } else {
-        this.removeMsg = '<div class="spinner-border text-primary" role="status"></div> '
-            + this.translate.remove.loading;
+        this.removeMsg =
+          '<div class="spinner-border text-primary" role="status"></div> ' + this.translate.remove.loading;
 
         this.loading = true;
-        axios.post(this.urlActions.remove, {
-          'id': id,
-          'type': type
-        }).then((response) => {
-
-        }).catch((error) => {
-          console.error(error);
-        }).finally(() => {
-          this.loading = false;
-          this.removeMsg = '<span class="text-success"><i class="bi bi-check"></i>' + this.translate.remove.success + '</span>';
-          setTimeout(this.closeModalRemove, 3000);
-          setTimeout(this.loadInTrash, 2500);
-        });
+        axios
+          .post(this.urlActions.remove, {
+            id: id,
+            type: type,
+          })
+          .then((response) => {})
+          .catch((error) => {
+            console.error(error);
+          })
+          .finally(() => {
+            this.loading = false;
+            this.removeMsg =
+              '<span class="text-success"><i class="bi bi-check"></i>' + this.translate.remove.success + '</span>';
+            setTimeout(this.closeModalRemove, 3000);
+            setTimeout(this.loadInTrash, 2500);
+          });
       }
-    }
+    },
 
     /** fin bloc trash **/
-
-  }
-}
+  },
+};
 </script>
 
 <template>
-
   <div id="global-mediatheque" :class="this.loading === true ? 'block-grid' : ''">
     <div v-if="this.loading" class="overlay">
-      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
+      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000">
         <div class="spinner-border text-primary" role="status"></div>
         <span class="txt-overlay">{{ this.translate.loading }}</span>
       </div>
@@ -694,11 +738,7 @@ export default {
         <div class="float-end">
           {{ this.getSizeCurrentFolder() }}
         </div>
-        <MediasBreadcrumb
-            :paths="this.currentFolder.root"
-            @load-folder="this.loadDataInFolder"
-        >
-        </MediasBreadcrumb>
+        <MediasBreadcrumb :paths="this.currentFolder.root" @load-folder="this.loadDataInFolder"> </MediasBreadcrumb>
       </div>
       <div v-else class="card-header text-bg-secondary">
         <i class="bi bi-trash"></i> {{ this.translate.trash.breadcrumb_trash }}
@@ -714,102 +754,139 @@ export default {
             <span class="d-none-mini">&nbsp;{{ this.translate.btn_new_media }}</span>
           </div>
 
-
           <div class="float-end">
             <div class="input-group float-start me-1" style="width: 250px">
               <button class="btn btn-secondary" type="button" id="button-addon1"><i class="bi bi-search"></i></button>
-              <input type="text" class="form-control no-control" :placeholder="this.translate.search_placeholder">
+              <input type="text" class="form-control no-control" :placeholder="this.translate.search_placeholder" />
             </div>
             <div class="btn-group">
-              <button type="button" class="btn btn-secondary dropdown-toggle me-1" data-bs-toggle="dropdown"
-                      aria-expanded="false">
-                <span class="d-none-mini">{{ this.translate.btn_filtre }}</span>&nbsp;<i class="bi"
-                                                                                         :class="this.filterIcon"></i>
+              <button
+                type="button"
+                class="btn btn-secondary dropdown-toggle me-1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <span class="d-none-mini">{{ this.translate.btn_filtre }}</span
+                >&nbsp;<i class="bi" :class="this.filterIcon"></i>
               </button>
               <ul class="dropdown-menu">
                 <li>
-                  <a class="dropdown-item" href="#" @click="this.changeFilter('created_at')"><i class="bi bi-clock"></i>
-                    {{ this.translate.filtre_date }}</a>
+                  <a class="dropdown-item" href="#" @click="this.changeFilter('created_at')"
+                    ><i class="bi bi-clock"></i> {{ this.translate.filtre_date }}</a
+                  >
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#" @click="this.changeFilter('name')"><i class="bi bi-card-text"></i>
-                    {{ this.translate.filtre_nom }}</a>
+                  <a class="dropdown-item" href="#" @click="this.changeFilter('name')"
+                    ><i class="bi bi-card-text"></i> {{ this.translate.filtre_nom }}</a
+                  >
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#" @click="this.changeFilter('type')"><i class="bi bi-file"></i>
-                    {{ this.translate.filtre_type }}</a>
+                  <a class="dropdown-item" href="#" @click="this.changeFilter('type')"
+                    ><i class="bi bi-file"></i> {{ this.translate.filtre_type }}</a
+                  >
                 </li>
               </ul>
             </div>
             <div class="btn-group">
-              <button type="button" class="btn btn-secondary dropdown-toggle me-1" data-bs-toggle="dropdown"
-                      aria-expanded="false">
+              <button
+                type="button"
+                class="btn btn-secondary dropdown-toggle me-1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
                 <i class="bi" :class="this.orderIcon"></i>
               </button>
               <ul class="dropdown-menu">
                 <li>
-                  <a class="dropdown-item" href="#" @click="this.changeOrder('asc')"><i class="bi bi-sort-down"></i>
-                    {{ this.translate.order_asc }}</a>
+                  <a class="dropdown-item" href="#" @click="this.changeOrder('asc')"
+                    ><i class="bi bi-sort-down"></i> {{ this.translate.order_asc }}</a
+                  >
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#" @click="this.changeOrder('desc')"><i class="bi bi-sort-up"></i>
-                    {{ this.translate.order_desc }}</a>
+                  <a class="dropdown-item" href="#" @click="this.changeOrder('desc')"
+                    ><i class="bi bi-sort-up"></i> {{ this.translate.order_desc }}</a
+                  >
                 </li>
               </ul>
             </div>
 
-            <div class="btn btn-secondary position-relative me-1" @click="this.switchRender('trash');this.loadInTrash()"
-                 v-if="this.render !== 'trash'">
+            <div
+              class="btn btn-secondary position-relative me-1"
+              @click="
+                this.switchRender('trash');
+                this.loadInTrash();
+              "
+              v-if="this.render !== 'trash'"
+            >
               <i class="bi bi-trash-fill"></i>
-              <span v-if="this.nbTrash > 0"
-                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-              {{ this.nbTrash }}
+              <span
+                v-if="this.nbTrash > 0"
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              >
+                {{ this.nbTrash }}
               </span>
             </div>
 
-            <input type="radio" class="btn-check no-control" name="options-render" id="btn-grid" autocomplete="off"
-                   checked @change="this.switchRender('grid')">
+            <input
+              type="radio"
+              class="btn-check no-control"
+              name="options-render"
+              id="btn-grid"
+              autocomplete="off"
+              checked
+              @change="this.switchRender('grid')"
+            />
             <label class="btn me-1 btn-secondary" for="btn-grid"><i class="bi bi-grid"></i></label>
-            <input type="radio" class="btn-check no-control" name="options-render" id="btn-list" autocomplete="off"
-                   @change="this.switchRender('list')">
+            <input
+              type="radio"
+              class="btn-check no-control"
+              name="options-render"
+              id="btn-list"
+              autocomplete="off"
+              @change="this.switchRender('list')"
+            />
             <label class="btn btn-secondary" for="btn-list"><i class="bi bi-list"></i></label>
           </div>
         </div>
         <div v-else>
-          <div class="btn btn-secondary me-1" @click="this.switchRender('grid');this.loadMedia()">
+          <div
+            class="btn btn-secondary me-1"
+            @click="
+              this.switchRender('grid');
+              this.loadMedia();
+            "
+          >
             <i class="bi bi-arrow-up-left-circle"></i> {{ this.translate.trash.btn_close_trash }}
           </div>
         </div>
 
         <div v-if="render !== 'trash'">
           <medias-grid
-              :render="this.render"
-              :medias="this.medias"
-              :translate="this.translate.media"
-              @load-data-folder="this.loadDataInFolder"
-              @edit-folder="this.editFolder"
-              @show-info="this.loadDataInformation"
-              @edit-media="this.editMedia"
-              @move="this.loadListFolderMove"
-              @trash="this.confirmTrash"
+            :render="this.render"
+            :medias="this.medias"
+            :translate="this.translate.media"
+            @load-data-folder="this.loadDataInFolder"
+            @edit-folder="this.editFolder"
+            @show-info="this.loadDataInformation"
+            @edit-media="this.editMedia"
+            @move="this.loadListFolderMove"
+            @trash="this.confirmTrash"
           >
           </medias-grid>
         </div>
 
         <div v-else>
           <MediasTrash
-              :translate="this.translate.trash"
-              :medias="this.mediasTrash"
-              @revert-trash="this.revertTrash"
-              @delete="this.confirmRemove"
+            :translate="this.translate.trash"
+            :medias="this.mediasTrash"
+            @revert-trash="this.revertTrash"
+            @delete="this.confirmRemove"
           >
           </MediasTrash>
         </div>
-
       </div>
     </div>
   </div>
-
 
   <!-- Modal pour la gestion des dossier -->
   <div class="modal fade" id="modal-folder" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
@@ -817,24 +894,27 @@ export default {
       <div class="modal-content">
         <div class="modal-header bg-secondary">
           <h1 class="modal-title fs-5 text-white">
-            <i class="bi" :class="isEmpty(this.folderEdit)?'bi-folder-plus': 'bi-pencil-fill'"></i>
+            <i class="bi" :class="isEmpty(this.folderEdit) ? 'bi-folder-plus' : 'bi-pencil-fill'"></i>
             {{ this.getTitleModalFolder() }}
           </h1>
           <button type="button" class="btn-close" @click="this.closeModalFolder()"></button>
         </div>
         <div class="modal-body">
-          <div class="mb-3" :class="this.folderSuccess !== '' ? 'd-none':''">
+          <div class="mb-3" :class="this.folderSuccess !== '' ? 'd-none' : ''">
             <label for="folderName" class="form-label">{{ this.translate.folder.input_label }} *</label>
-            <input type="text" v-model="folderName"
-                   @keyup="this.validateFolderName()"
-                   class="form-control no-control"
-                   id="input-folder-name"
-                   :placeholder="this.translate.folder.input_label_placeholder">
+            <input
+              type="text"
+              v-model="folderName"
+              @keyup="this.validateFolderName()"
+              class="form-control no-control"
+              id="input-folder-name"
+              :placeholder="this.translate.folder.input_label_placeholder"
+            />
             <div class="invalid-feedback">
               {{ this.folderError }}
             </div>
           </div>
-          <div class="mb-3" :class="this.folderSuccess === '' ? 'd-none':''">
+          <div class="mb-3" :class="this.folderSuccess === '' ? 'd-none' : ''">
             <div v-if="this.folderSuccess === this.translate.folder.msg_wait_create">
               <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
@@ -847,17 +927,27 @@ export default {
               </div>
               {{ this.folderSuccess }}
             </div>
-            <span v-else class="text-success"><i class="bi bi-check"></i> <i>{{ this.folderSuccess }}</i></span>
+            <span v-else class="text-success"
+              ><i class="bi bi-check"></i> <i>{{ this.folderSuccess }}</i></span
+            >
           </div>
         </div>
         <div v-if="this.folderSuccess === ''" class="modal-footer">
           <div class="btn btn-dark" @click="this.closeModalFolder()">{{ this.translate.folder.btn_cancel }}</div>
-          <div v-if="isEmpty(this.folderEdit)" @click="this.submitFolder()" class="btn btn-primary"
-               :class="this.folderCanSubmit ? '':'disabled'">
+          <div
+            v-if="isEmpty(this.folderEdit)"
+            @click="this.submitFolder()"
+            class="btn btn-primary"
+            :class="this.folderCanSubmit ? '' : 'disabled'"
+          >
             {{ this.translate.folder.btn_submit_create }}
           </div>
-          <div v-else class="btn btn-primary" @click="this.submitFolder()"
-               :class="this.folderCanSubmit ? '':'disabled'">
+          <div
+            v-else
+            class="btn btn-primary"
+            @click="this.submitFolder()"
+            :class="this.folderCanSubmit ? '' : 'disabled'"
+          >
             {{ this.translate.folder.btn_submit_edit }}
           </div>
         </div>
@@ -870,11 +960,7 @@ export default {
   <div class="modal fade" id="modal-info" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
-        <media-modal-info
-            :data="this.infoData"
-            :translate="this.translate.info"
-            @close-modale="this.closeModalInfo"
-        >
+        <media-modal-info :data="this.infoData" :translate="this.translate.info" @close-modale="this.closeModalInfo">
         </media-modal-info>
       </div>
     </div>
@@ -885,18 +971,17 @@ export default {
   <div class="modal fade" id="modal-upload" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div v-if="this.loadingUploadMsg === ''" class="modal-content">
-        <FileUpload :translate="this.translate.upload"
-                    :maxSize="20"
-                    :accept="this.extAccept"
-                    @file-uploaded="getUploadedData"
-                    @close-modale-upload="closeModalUpload"
+        <FileUpload
+          :translate="this.translate.upload"
+          :maxSize="20"
+          :accept="this.extAccept"
+          @file-uploaded="getUploadedData"
+          @close-modale-upload="closeModalUpload"
         />
       </div>
       <div v-else class="modal-content">
         <div class="modal-header bg-secondary">
-          <h1 class="modal-title fs-5 text-white">
-            <i class="bi bi-upload"></i> {{ this.translate.upload.title }}
-          </h1>
+          <h1 class="modal-title fs-5 text-white"><i class="bi bi-upload"></i> {{ this.translate.upload.title }}</h1>
         </div>
         <div class="modal-body">
           {{ this.loadingUploadMsg }}
@@ -921,25 +1006,34 @@ export default {
           <div v-if="this.mediaEdit.status === ''" class="row">
             <div class="col-8">
               <fieldset>
-                <legend> {{ this.translate.edit_media.legend }}</legend>
+                <legend>{{ this.translate.edit_media.legend }}</legend>
 
                 <div class="mb-3">
                   <label for="edit-media-title" class="form-label"> {{ this.translate.edit_media.media_name }}</label>
-                  <input type="text" class="form-control no-control" v-model="this.mediaEdit.name" id="edit-media-title"
-                         :placeholder="this.translate.edit_media.media_name_placeholder">
+                  <input
+                    type="text"
+                    class="form-control no-control"
+                    v-model="this.mediaEdit.name"
+                    id="edit-media-title"
+                    :placeholder="this.translate.edit_media.media_name_placeholder"
+                  />
                 </div>
                 <div class="mb-3">
-                  <label for="edit-media-description" class="form-label"> {{
-                      this.translate.edit_media.media_description
-                    }}</label>
-                  <input type="text" class="form-control no-control" v-model="this.mediaEdit.description"
-                         id="edit-media-description"
-                         :placeholder="this.translate.edit_media.media_description_placeholder">
+                  <label for="edit-media-description" class="form-label">
+                    {{ this.translate.edit_media.media_description }}</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control no-control"
+                    v-model="this.mediaEdit.description"
+                    id="edit-media-description"
+                    :placeholder="this.translate.edit_media.media_description_placeholder"
+                  />
                 </div>
               </fieldset>
             </div>
             <div class="col-4 d-flex justify-content-center align-items-center text-center">
-              <img :src="this.mediaEdit.thumbnail" :alt="mediaEdit.name" class="img-fluid">
+              <img :src="this.mediaEdit.thumbnail" :alt="mediaEdit.name" class="img-fluid" />
             </div>
           </div>
           <div v-else-if="this.mediaEdit.status === 'loading'">
@@ -951,11 +1045,10 @@ export default {
           <div v-else>
             <span class="text-success"><i class="bi bi-check"></i> {{ this.translate.edit_media.success }}</span>
           </div>
-
         </div>
         <div class="modal-footer">
-          <div class="btn btn-secondary" @click="this.saveMedia()"> {{ this.translate.edit_media.submit }}</div>
-          <div class="btn btn-dark" @click="this.closeModalEditMedia()"> {{ this.translate.edit_media.cancel }}</div>
+          <div class="btn btn-secondary" @click="this.saveMedia()">{{ this.translate.edit_media.submit }}</div>
+          <div class="btn btn-dark" @click="this.closeModalEditMedia()">{{ this.translate.edit_media.cancel }}</div>
         </div>
       </div>
     </div>
@@ -968,10 +1061,10 @@ export default {
       <div class="modal-content">
         <div v-if="this.mediaMoveStatus === ''">
           <media-move
-              :translate="this.translate.move"
-              :data-move="this.dataMove"
-              @move="this.moveMedia"
-              @close-modale="this.closeModalMove"
+            :translate="this.translate.move"
+            :data-move="this.dataMove"
+            @move="this.moveMedia"
+            @close-modale="this.closeModalMove"
           />
         </div>
         <div v-else>
@@ -1002,21 +1095,26 @@ export default {
     <div class="modal-dialog modal modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header bg-secondary">
-          <h1 class="modal-title fs-5 text-white">
-            <i class="bi bi-trash-fill"></i> {{ this.translate.trash.title }}
-          </h1>
-          <button v-if="!this.trashConfirm" type="button" @click="this.closeModalTrash" class="btn-close" data-bs-dismiss="modal"
-                  aria-label="Close"></button>
+          <h1 class="modal-title fs-5 text-white"><i class="bi bi-trash-fill"></i> {{ this.translate.trash.title }}</h1>
+          <button
+            v-if="!this.trashConfirm"
+            type="button"
+            @click="this.closeModalTrash"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
-        <div class="modal-body" v-html="this.trashMsg">
-        </div>
+        <div class="modal-body" v-html="this.trashMsg"></div>
         <div class="modal-footer" v-if="!this.trashConfirm">
-          <button type="button" class="btn btn-secondary" @click="this.closeModalTrash" data-bs-dismiss="modal">{{
-              this.translate.trash.btn_cancel
-            }}
+          <button type="button" class="btn btn-secondary" @click="this.closeModalTrash" data-bs-dismiss="modal">
+            {{ this.translate.trash.btn_cancel }}
           </button>
-          <button type="button" class="btn btn-primary"
-                  @click="this.confirmTrash(this.trash.type, this.trash.id, '', true)">
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="this.confirmTrash(this.trash.type, this.trash.id, '', true)"
+          >
             {{ this.translate.trash.btn_confirm }}
           </button>
         </div>
@@ -1033,27 +1131,31 @@ export default {
           <h1 class="modal-title fs-5 text-white">
             <i class="bi bi-trash-fill"></i> {{ this.translate.remove.title }}
           </h1>
-          <button v-if="!this.removeConfirm" @click="this.closeModalRemove" type="button" class="btn-close" data-bs-dismiss="modal"
-                  aria-label="Close"></button>
+          <button
+            v-if="!this.removeConfirm"
+            @click="this.closeModalRemove"
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
-        <div class="modal-body" v-html="this.removeMsg">
-        </div>
+        <div class="modal-body" v-html="this.removeMsg"></div>
         <div class="modal-footer" v-if="!this.removeConfirm">
-          <button type="button" class="btn btn-secondary" @click="this.closeModalRemove" data-bs-dismiss="modal">{{
-              this.translate.remove.btn_cancel
-            }}
+          <button type="button" class="btn btn-secondary" @click="this.closeModalRemove" data-bs-dismiss="modal">
+            {{ this.translate.remove.btn_cancel }}
           </button>
-          <button type="button" class="btn btn-primary"
-                  @click="this.confirmRemove(this.remove.type, this.remove.id, '', true)">
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="this.confirmRemove(this.remove.type, this.remove.id, '', true)"
+          >
             {{ this.translate.remove.btn_confirm }}
           </button>
         </div>
       </div>
     </div>
   </div>
-
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

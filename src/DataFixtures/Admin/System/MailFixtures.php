@@ -41,7 +41,6 @@ class MailFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
         $manager->flush();
     }
 
-
     public static function getGroups(): array
     {
         return [self::GROUP_MAIL, self::GROUP_SYSTEM];

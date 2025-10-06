@@ -85,8 +85,7 @@ class FaqPopulate
      */
     private function populateFAQCategory(): void
     {
-        if(!isset($this->populate[self::KEY_FAQ_CATEORIES]))
-        {
+        if (!isset($this->populate[self::KEY_FAQ_CATEORIES])) {
             return;
         }
 
@@ -94,8 +93,12 @@ class FaqPopulate
         foreach ($this->populate[self::KEY_FAQ_CATEORIES] as $dataFaqCategorie) {
             $faqCategory = new FaqCategory();
             $faqCategory->setFaq($this->faq);
-            $this->mergeData($faqCategory, $dataFaqCategorie,
-                ['id', 'faq', self::KEY_FAQ_CATEGORY_TRANSLATION, self::KEY_FAQ_QUESTION]);
+            $this->mergeData($faqCategory, $dataFaqCategorie, [
+                'id',
+                'faq',
+                self::KEY_FAQ_CATEGORY_TRANSLATION,
+                self::KEY_FAQ_QUESTION,
+            ]);
 
             foreach ($dataFaqCategorie[self::KEY_FAQ_CATEGORY_TRANSLATION] as $dataFaqCatTranslation) {
                 $faqCategoryTranslation = new FaqCategoryTranslation();
@@ -115,17 +118,14 @@ class FaqPopulate
      * @param array $dataFaqCategory
      * @return FaqCategory
      */
-    private function populateFAQQuestion(FaqCategory $faqCategory, array $dataFaqCategory) : FaqCategory
+    private function populateFAQQuestion(FaqCategory $faqCategory, array $dataFaqCategory): FaqCategory
     {
-        foreach ($dataFaqCategory[self::KEY_FAQ_QUESTION] as $dataFaqQuestion)
-        {
+        foreach ($dataFaqCategory[self::KEY_FAQ_QUESTION] as $dataFaqQuestion) {
             $faqQuestion = new FaqQuestion();
             $faqQuestion->setFaqCategory($faqCategory);
-            $this->mergeData($faqQuestion, $dataFaqQuestion,
-                ['id', 'faqCategory', self::KEY_FAQ_QUESTION_TRANSLATION]);
+            $this->mergeData($faqQuestion, $dataFaqQuestion, ['id', 'faqCategory', self::KEY_FAQ_QUESTION_TRANSLATION]);
 
-            foreach ($dataFaqQuestion[self::KEY_FAQ_QUESTION_TRANSLATION] as $dataFaqQuestionTranslation)
-            {
+            foreach ($dataFaqQuestion[self::KEY_FAQ_QUESTION_TRANSLATION] as $dataFaqQuestionTranslation) {
                 $faqQuestionTranslation = new FaqQuestionTranslation();
                 $faqQuestionTranslation->setFaqQuestion($faqQuestion);
                 $this->mergeData($faqQuestionTranslation, $dataFaqQuestionTranslation, ['id', 'FaqQuestion']);
@@ -135,7 +135,6 @@ class FaqPopulate
         }
         return $faqCategory;
     }
-
 
     /**
      * Merge les données de $populate dans $faqTranslation
@@ -147,8 +146,7 @@ class FaqPopulate
             foreach ($this->faq->getFaqTranslations() as &$faqTranslation) {
                 foreach ($this->populate[self::KEY_FAQ_TRANSLATIONS] as $dataTranslation) {
                     if ($faqTranslation->getLocale() === $dataTranslation['locale']) {
-                        $faqTranslation = $this->mergeData($faqTranslation, $dataTranslation,
-                            ['id', 'faq', 'locale']);
+                        $faqTranslation = $this->mergeData($faqTranslation, $dataTranslation, ['id', 'faq', 'locale']);
                     }
                 }
             }

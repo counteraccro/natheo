@@ -147,9 +147,11 @@ class Tag
      */
     public function getTagTranslationByLocale(string $locale): TagTranslation
     {
-        return $this->getTagTranslations()->filter(function (TagTranslation $tagTranslation) use ($locale) {
-            return $tagTranslation->getLocale() === $locale;
-        })->first();
+        return $this->getTagTranslations()
+            ->filter(function (TagTranslation $tagTranslation) use ($locale) {
+                return $tagTranslation->getLocale() === $locale;
+            })
+            ->first();
     }
 
     /**

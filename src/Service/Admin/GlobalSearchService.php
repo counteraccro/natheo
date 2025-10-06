@@ -37,7 +37,7 @@ class GlobalSearchService extends AppAdminService
         $translate = $this->getTranslator();
 
         $entity = $this->getEntityByString($entity);
-        if ($entity === "") {
+        if ($entity === '') {
             return ['error' => $translate->trans('global_search.error.notFound', domain: 'global_search')];
         }
 
@@ -63,7 +63,6 @@ class GlobalSearchService extends AppAdminService
             default => '',
         };
     }
-
 
     /**
      * @param Paginator $paginator
@@ -95,7 +94,6 @@ class GlobalSearchService extends AppAdminService
                     $return['elements'][] = $this->formatResultUser($item, $search);
                     break;
                 default:
-
             }
         }
 
@@ -115,8 +113,10 @@ class GlobalSearchService extends AppAdminService
     {
         $router = $this->getRouter();
 
-        $personalData = new PersonalData($user,
-            $user->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue());
+        $personalData = new PersonalData(
+            $user,
+            $user->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue(),
+        );
 
         $label = $this->highlightText($search, $personalData->getPersonalData());
 
@@ -126,11 +126,11 @@ class GlobalSearchService extends AppAdminService
             'contents' => [],
             'date' => [
                 'create' => $user->getCreatedAt()->format('d/m/y H:i'),
-                'update' => $user->getUpdateAt()->format('d/m/y H:i')
+                'update' => $user->getUpdateAt()->format('d/m/y H:i'),
             ],
             'urls' => [
                 'edit' => $router->generate('admin_user_update', ['id' => $user->getId()]),
-            ]
+            ],
         ];
     }
 
@@ -156,11 +156,11 @@ class GlobalSearchService extends AppAdminService
             'contents' => [],
             'date' => [
                 'create' => $tag->getCreatedAt()->format('d/m/y H:i'),
-                'update' => $tag->getUpdateAt()->format('d/m/y H:i')
+                'update' => $tag->getUpdateAt()->format('d/m/y H:i'),
             ],
             'urls' => [
                 'edit' => $router->generate('admin_tag_update', ['id' => $tag->getId()]),
-            ]
+            ],
         ];
     }
 
@@ -180,8 +180,10 @@ class GlobalSearchService extends AppAdminService
         $label = $faq->getFaqTranslationByLocale($locale)->getTitle();
         $label = $this->highlightText($search, $label);
 
-        $personalData = new PersonalData($faq->getUser(),
-            $faq->getUser()->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue());
+        $personalData = new PersonalData(
+            $faq->getUser(),
+            $faq->getUser()->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue(),
+        );
 
         $re = '/(\B||\b)((?-i:\w+[^\w\n]+){0,10}' . $search . '(\B||\b)(?-i:[^\w\n]+\w+){0,10})/mu';
         $content = [];
@@ -214,12 +216,12 @@ class GlobalSearchService extends AppAdminService
             'contents' => $content,
             'date' => [
                 'create' => $faq->getCreatedAt()->format('d/m/y H:i'),
-                'update' => $faq->getUpdateAt()->format('d/m/y H:i')
+                'update' => $faq->getUpdateAt()->format('d/m/y H:i'),
             ],
             'author' => $this->highlightText($search, $personalData->getPersonalData()),
             'urls' => [
                 'edit' => $router->generate('admin_faq_update', ['id' => $faq->getId()]),
-            ]
+            ],
         ];
     }
 
@@ -247,12 +249,12 @@ class GlobalSearchService extends AppAdminService
             foreach ($matches as $matche) {
                 $content[] = $this->highlightText($search, $matche[0]);
             }
-
         }
 
-
-        $personalData = new PersonalData($menu->getUser(),
-            $menu->getUser()->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue());
+        $personalData = new PersonalData(
+            $menu->getUser(),
+            $menu->getUser()->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue(),
+        );
 
         return [
             'id' => $menu->getId(),
@@ -260,12 +262,12 @@ class GlobalSearchService extends AppAdminService
             'contents' => $content,
             'date' => [
                 'create' => $menu->getCreatedAt()->format('d/m/y H:i'),
-                'update' => $menu->getUpdateAt()->format('d/m/y H:i')
+                'update' => $menu->getUpdateAt()->format('d/m/y H:i'),
             ],
             'author' => $this->highlightText($search, $personalData->getPersonalData()),
             'urls' => [
                 'edit' => $router->generate('admin_menu_update', ['id' => $menu->getId()]),
-            ]
+            ],
         ];
     }
 
@@ -296,8 +298,10 @@ class GlobalSearchService extends AppAdminService
         }
 
         $router = $this->getRouter();
-        $personalData = new PersonalData($page->getUser(),
-            $page->getUser()->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue());
+        $personalData = new PersonalData(
+            $page->getUser(),
+            $page->getUser()->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue(),
+        );
 
         return [
             'id' => $page->getId(),
@@ -305,13 +309,13 @@ class GlobalSearchService extends AppAdminService
             'contents' => $content,
             'date' => [
                 'create' => $page->getCreatedAt()->format('d/m/y H:i'),
-                'update' => $page->getUpdateAt()->format('d/m/y H:i')
+                'update' => $page->getUpdateAt()->format('d/m/y H:i'),
             ],
             'author' => $this->highlightText($search, $personalData->getPersonalData()),
             'urls' => [
                 'edit' => $router->generate('admin_page_update', ['id' => $page->getId()]),
                 'preview' => $router->generate('admin_page_preview', ['id' => $page->getId(), 'locale' => $locale]),
-            ]
+            ],
         ];
     }
 

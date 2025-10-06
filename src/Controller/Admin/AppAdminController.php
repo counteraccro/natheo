@@ -34,13 +34,14 @@ class AppAdminController extends AbstractController
      * @throws NotFoundExceptionInterface
      */
     public function __construct(
-        #[AutowireLocator([
-            'optionUserService' => OptionUserService::class,
-            'logger' => LoggerInterface::class,
-        ])]
-        private readonly ContainerInterface $handlers
-       )
-    {
+        #[
+            AutowireLocator([
+                'optionUserService' => OptionUserService::class,
+                'logger' => LoggerInterface::class,
+            ]),
+        ]
+        private readonly ContainerInterface $handlers,
+    ) {
         $this->optionUserService = $this->handlers->get('optionUserService');
         $this->logger = $this->handlers->get('logger');
     }

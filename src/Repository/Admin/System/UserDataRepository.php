@@ -47,7 +47,7 @@ class UserDataRepository extends ServiceEntityRepository
      * @return UserData|null
      * @throws NonUniqueResultException return UserData
      */
-    public function findByKeyValue(string $key, string $value) :?UserData
+    public function findByKeyValue(string $key, string $value): ?UserData
     {
         return $this->createQueryBuilder('ud')
             ->andWhere('ud.key = :key')

@@ -15,7 +15,6 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class SqlManagerService extends AppAdminService
 {
-
     /**
      * Construit le tableau de donnée à envoyé au tableau GRID
      * @param int $page
@@ -47,7 +46,6 @@ class SqlManagerService extends AppAdminService
 
             $action = $this->generateTabAction($element);
 
-
             $isDisabled = '';
             if ($element->isDisabled()) {
                 $isDisabled = '<i class="bi bi-eye-slash"></i>';
@@ -59,7 +57,8 @@ class SqlManagerService extends AppAdminService
                 $translator->trans('sql_manager.grid.name', domain: 'sql_manager') => $element->getName(),
                 $translator->trans('sql_manager.grid.query', domain: 'sql_manager') => $element->getQuery(),
                 $translator->trans('sql_manager.grid.update_at', domain: 'sql_manager') => $element
-                    ->getUpdateAt()->format('d/m/y H:i'),
+                    ->getUpdateAt()
+                    ->format('d/m/y H:i'),
                 GridService::KEY_ACTION => $action,
             ];
         }
@@ -71,7 +70,6 @@ class SqlManagerService extends AppAdminService
             GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate),
         ];
         return $gridService->addAllDataRequiredGrid($tabReturn);
-
     }
 
     /**
@@ -102,33 +100,40 @@ class SqlManagerService extends AppAdminService
         $router = $this->getRouter();
         $optionSystemService = $this->getOptionSystemService();
 
-        $actionDisabled = ['label' => '<i class="bi bi-eye-slash-fill"></i>',
+        $actionDisabled = [
+            'label' => '<i class="bi bi-eye-slash-fill"></i>',
             'type' => 'put',
             'url' => $router->generate('admin_sql_manager_disabled', ['id' => $sqlManager->getId()]),
             'ajax' => true,
             'confirm' => true,
-            'msgConfirm' => $translator->trans('sql_manager.confirm.disabled.msg',
-                ['label' => $sqlManager->getName()], 'sql_manager')];
+            'msgConfirm' => $translator->trans(
+                'sql_manager.confirm.disabled.msg',
+                ['label' => $sqlManager->getName()],
+                'sql_manager',
+            ),
+        ];
         if ($sqlManager->isDisabled()) {
             $actionDisabled = [
                 'label' => '<i class="bi bi-eye-fill"></i>',
                 'type' => 'put',
                 'url' => $router->generate('admin_sql_manager_disabled', ['id' => $sqlManager->getId()]),
-                'ajax' => true
+                'ajax' => true,
             ];
         }
 
         $actionDelete = '';
         if ($optionSystemService->canDelete() && !$sqlManager->isDisabled()) {
-
             $actionDelete = [
                 'label' => '<i class="bi bi-trash"></i>',
                 'type' => 'delete',
                 'url' => $router->generate('admin_sql_manager_delete', ['id' => $sqlManager->getId()]),
                 'ajax' => true,
                 'confirm' => true,
-                'msgConfirm' => $translator->trans('sql_manager.confirm.delete.msg', ['label' =>
-                    $sqlManager->getName()], 'sql_manager')
+                'msgConfirm' => $translator->trans(
+                    'sql_manager.confirm.delete.msg',
+                    ['label' => $sqlManager->getName()],
+                    'sql_manager',
+                ),
             ];
         }
 
@@ -140,16 +145,22 @@ class SqlManagerService extends AppAdminService
 
         if (!$sqlManager->isDisabled()) {
             // Bouton edit
-            $actions[] = ['label' => '<i class="bi bi-pencil-fill"></i>',
+            $actions[] = [
+                'label' => '<i class="bi bi-pencil-fill"></i>',
                 'id' => $sqlManager->getId(),
                 'url' => $router->generate('admin_sql_manager_update', ['id' => $sqlManager->getId()]),
-                'ajax' => false];
+                'ajax' => false,
+            ];
 
-            $actions[] = ['label' => '<i class="bi bi-database-fill-check"></i>',
+            $actions[] = [
+                'label' => '<i class="bi bi-database-fill-check"></i>',
                 'id' => $sqlManager->getId(),
-                'url' => $router->generate('admin_sql_manager_execute', ['id' => $sqlManager->getId(),
-                    'isExecute' => true]),
-                'ajax' => false];
+                'url' => $router->generate('admin_sql_manager_execute', [
+                    'id' => $sqlManager->getId(),
+                    'isExecute' => true,
+                ]),
+                'ajax' => false,
+            ];
         }
 
         return $actions;
@@ -163,10 +174,7 @@ class SqlManagerService extends AppAdminService
      */
     public function isOnlySelectQuery($query): bool
     {
-        $arrayWords = [
-            'UPDATE', 'DELETE', 'INSERT',
-            'CREATE', 'ALTER', 'DROP', 'TRUNCATE'
-        ];
+        $arrayWords = ['UPDATE', 'DELETE', 'INSERT', 'CREATE', 'ALTER', 'DROP', 'TRUNCATE'];
 
         $pattern = '/(' . strtolower(implode('|', $arrayWords)) . ')\b/i';
         if (preg_match($pattern, strtolower($query)) !== 0) {
@@ -175,6 +183,4 @@ class SqlManagerService extends AppAdminService
 
         return true;
     }
-
-
 }

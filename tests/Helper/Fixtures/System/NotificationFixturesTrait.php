@@ -29,8 +29,8 @@ trait NotificationFixturesTrait
             'title' => self::getFaker()->text(),
             'content' => self::getFaker()->text(),
             'level' => self::getFaker()->numberBetween(1, 5),
-            'read' =>   self::getFaker()->boolean(),
-            'parameters' => json_encode([])
+            'read' => self::getFaker()->boolean(),
+            'parameters' => json_encode([]),
         ];
         $notification = $this->initEntity(Notification::class, array_merge($data, $customData));
         $user->addNotification($notification);

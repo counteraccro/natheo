@@ -19,11 +19,16 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/api/{api_version}/options-systems', name: 'api_options_systems_', requirements: ['_version' => '%app.api_version%'])]
-#[IsGranted("ROLE_READ_API")]
+#[
+    Route(
+        '/api/{api_version}/options-systems',
+        name: 'api_options_systems_',
+        requirements: ['_version' => '%app.api_version%'],
+    ),
+]
+#[IsGranted('ROLE_READ_API')]
 class ApiOptionSystemController extends AppApiController
 {
-
     /**
      * Retourne la liste des optionsSystems pour le front
      * @param ApiOptionSystemService $apiOptionSystemService
@@ -49,13 +54,19 @@ class ApiOptionSystemController extends AppApiController
     #[Route('/{key}', name: 'get_by_key', methods: ['GET'])]
     public function getByKey(
         ApiOptionSystemService $apiOptionSystemService,
-        OptionSystemService    $optionSystemService,
-        ?string                $key = null): JsonResponse
-    {
+        OptionSystemService $optionSystemService,
+        ?string $key = null,
+    ): JsonResponse {
         if (!in_array($key, $apiOptionSystemService->getWhiteListeOptionSystem())) {
             $translator = $this->getTranslator();
-            throw new HttpException(Response::HTTP_FORBIDDEN, $translator->trans('api_errors.find.option.system.not.found', domain: 'api_errors'));
+            throw new HttpException(
+                Response::HTTP_FORBIDDEN,
+                $translator->trans('api_errors.find.option.system.not.found', domain: 'api_errors'),
+            );
         }
-        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, ['key' => $key, 'value' => $optionSystemService->getValueByKey($key)]);
+        return $this->apiResponse(ApiConst::API_MSG_SUCCESS, [
+            'key' => $key,
+            'value' => $optionSystemService->getValueByKey($key),
+        ]);
     }
 }

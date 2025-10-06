@@ -15,7 +15,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppApiTestCase extends AppWebTestCase
 {
-
     protected const API_VERSION = 'v1';
 
     /**
@@ -66,9 +65,8 @@ class AppApiTestCase extends AppWebTestCase
         return [
             'HTTP_Accept' => 'application/json',
             'HTTP_Content-Type' => 'application/json',
-            'HTTP_Authorization' => 'Bearer ' . $token
+            'HTTP_Authorization' => 'Bearer ' . $token,
         ];
-
     }
 
     /**
@@ -85,8 +83,10 @@ class AppApiTestCase extends AppWebTestCase
 
         $params = array_merge($params, ['api_version' => self::API_VERSION]);
 
-        $this->client->request($methode, $this->router->generate($route, $params),
-            server: $this->getCustomHeaders(self::HEADER_WRONG)
+        $this->client->request(
+            $methode,
+            $this->router->generate($route, $params),
+            server: $this->getCustomHeaders(self::HEADER_WRONG),
         );
         $response = $this->client->getResponse();
         $this->assertEquals(401, $response->getStatusCode());
@@ -95,7 +95,10 @@ class AppApiTestCase extends AppWebTestCase
         $this->assertArrayHasKey('code_http', $content);
         $this->assertArrayHasKey('message', $content);
         $this->assertArrayHasKey('errors', $content);
-        $this->assertStringContainsString($translator->trans('api_errors.authentication.failure', domain: 'api_errors'), $content['errors'][0]);
+        $this->assertStringContainsString(
+            $translator->trans('api_errors.authentication.failure', domain: 'api_errors'),
+            $content['errors'][0],
+        );
     }
 
     /**
@@ -106,8 +109,12 @@ class AppApiTestCase extends AppWebTestCase
      * @param string|null $role
      * @return array|string[]
      */
-    protected function getUserAuthParams(array $params, ?User $user = null, $password = null, ?string $role = null): array
-    {
+    protected function getUserAuthParams(
+        array $params,
+        ?User $user = null,
+        $password = null,
+        ?string $role = null,
+    ): array {
         if ($password === null) {
             $password = self::getFaker()->password();
         }
@@ -121,15 +128,15 @@ class AppApiTestCase extends AppWebTestCase
                 'username2' => $user->getEmail(),
                 'password2' => $password,
             ];
-        } else if ($role === 'bad_type') {
+        } elseif ($role === 'bad_type') {
             $userAuth = [
                 ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_USERNAME => 22,
-                ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_PASSWORD => true
+                ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_PASSWORD => true,
             ];
         } else {
             $userAuth = [
                 ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_USERNAME => $user->getEmail(),
-                ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_PASSWORD => $password
+                ApiParametersUserAuthRef::PARAMS_REF_AUTH_USER_PASSWORD => $password,
             ];
         }
         return array_merge($params, $userAuth);

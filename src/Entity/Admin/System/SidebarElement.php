@@ -14,12 +14,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name : "sidebar_element")]
+#[ORM\Table(name: 'sidebar_element')]
 #[ORM\Entity(repositoryClass: SidebarElementRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class SidebarElement
 {
-
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]
@@ -51,7 +50,7 @@ class SidebarElement
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column(name:'`lock`')]
+    #[ORM\Column(name: '`lock`')]
     private ?bool $lock = null;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]

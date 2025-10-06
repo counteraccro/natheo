@@ -18,7 +18,6 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class ApiMenuService extends AppApiService
 {
-
     /**
      * Retourne un menu formaté pour l'API
      * @param ApiFindMenuDto $dto

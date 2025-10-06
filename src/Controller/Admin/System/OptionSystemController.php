@@ -18,8 +18,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/admin/{_locale}/options-system', name: 'admin_option-system_',
-    requirements: ['_locale' => '%app.supported_locales%'])]
+#[
+    Route(
+        '/admin/{_locale}/options-system',
+        name: 'admin_option-system_',
+        requirements: ['_locale' => '%app.supported_locales%'],
+    ),
+]
 #[IsGranted('ROLE_SUPER_ADMIN')]
 class OptionSystemController extends AppAdminController
 {
@@ -33,8 +38,8 @@ class OptionSystemController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'option_system',
             Breadcrumb::BREADCRUMB => [
-                'option_system.page_title_h1' => '#'
-            ]
+                'option_system.page_title_h1' => '#',
+            ],
         ];
 
         return $this->render('admin/system/option_system/index.html.twig', [

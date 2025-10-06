@@ -1,1037 +1,1037 @@
 menu:
-  menu_default_header:
-    user: User
-    name: "Menu Header généré lors de l'installation"
-    type: 2
-    position: 1
-    renderOrder: 1
-    disabled: 0
-    defaultMenu: true
-    menuElement:
-      default_header_page_landing:
-        page: 'Page_landing'
+    menu_default_header:
+        user: User
+        name: "Menu Header généré lors de l'installation"
+        type: 2
+        position: 1
+        renderOrder: 1
         disabled: 0
-        columnPosition: 1
-        rowPosition: 1
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Index'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Índice'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Index'
-            externalLink: '#'
-      default_header_index_blog:
-        page: 'page_list_blog'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 2
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Mon blog'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Mi blog'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'My blog'
-            externalLink: '#'
-      default_header_index_articles:
-        page: 'page_list_articles'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 3
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Articles'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículos'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Articles'
-            externalLink: '#'
-      default_header_faq:
-        page: 'page_faq'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 4
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'FAQ'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Preguntas frecuentes'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'FAQ'
-            externalLink: '#'
-      default_header_a_propos:
-        page: 'page_a_propos'
-        disabled: 0
-        columnPosition: 4
-        rowPosition: 1
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'A propos'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Acerca de'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'About'
-            externalLink: '#'
+        defaultMenu: true
+        menuElement:
+            default_header_page_landing:
+                page: 'Page_landing'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 1
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Index'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Índice'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Index'
+                        externalLink: '#'
+            default_header_index_blog:
+                page: 'page_list_blog'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 2
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Mon blog'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Mi blog'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'My blog'
+                        externalLink: '#'
+            default_header_index_articles:
+                page: 'page_list_articles'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 3
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Articles'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículos'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Articles'
+                        externalLink: '#'
+            default_header_faq:
+                page: 'page_faq'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 4
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'FAQ'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Preguntas frecuentes'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'FAQ'
+                        externalLink: '#'
+            default_header_a_propos:
+                page: 'page_a_propos'
+                disabled: 0
+                columnPosition: 4
+                rowPosition: 1
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'A propos'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Acerca de'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'About'
+                        externalLink: '#'
 
-  #Menu Gauche de démo
-  menu_default_left:
-    user: User
-    name: "Menu Gauche généré lors de l'installation"
-    type: 12
-    position: 4
-    renderOrder: 1
-    disabled: 0
-    defaultMenu: true
-    menuElement:
-      default_menu_left_page_landing:
-        page: 'Page_landing'
+    #Menu Gauche de démo
+    menu_default_left:
+        user: User
+        name: "Menu Gauche généré lors de l'installation"
+        type: 12
+        position: 4
+        renderOrder: 1
         disabled: 0
-        columnPosition: 1
-        rowPosition: 1
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Index'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Índice'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Index'
-            externalLink: '#'
-      default_menu_left_blog_listing_titre:
-        page: 'page_list_blog'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 1
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Mon blog'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Mi blog'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'My blog'
-            externalLink: '#'
-      default_menu_left_blog_listing:
-        parent: default_menu_left_blog_listing_titre
-        page: 'page_list_blog'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 2
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Mon blog'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Mi blog'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'My blog'
-            externalLink: '#'
-      default_menu_left_blog_1_bloc:
-        parent: default_menu_left_blog_listing_titre
-        page: 'page_blog_1_bloc'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 3
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Blog - 1 bloc'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Blog - 1 bloque'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Blog - 1 block'
-            externalLink: '#'
-      default_menu_left_blog_2_block_together:
-        parent: default_menu_left_blog_listing_titre
-        page: 'page_blog_2_bloc_together'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 4
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Blog - 2 blocs côte à côte'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Blog - 2 bloques lado a lado'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Blog - 2 blocks side by side'
-            externalLink: '#'
-      default_menu_left_blog_3_block_together:
-        parent: default_menu_left_blog_listing_titre
-        page: 'page_blog_3_blocs_together'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 5
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Blog - 3 blocs côte à côte'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Blog - 3 bloques lado a lado'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Blog - 3 blocks side by side'
-            externalLink: '#'
-      default_menu_left_index_article:
-        page: 'page_list_articles'
-        disabled: 0
-        columnPosition: 2
-        rowPosition: 1
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Articles'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículos'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Articles'
-            externalLink: '#'
-      default_menu_left_article_listing:
-        parent: default_menu_left_index_article
-        page: 'page_list_articles'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 1
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Articles'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículos'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Articles'
-            externalLink: '#'
-      default_menu_left_article_2_blocs_up_down:
-        parent: default_menu_left_index_article
-        page: 'page_articles_2_blocs_up_down'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 2
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Article - 2 blocs verticals'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículo - 2 bloques verticales'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Article - 2 vertical blocks'
-            externalLink: '#'
-      default_menu_left_article_3_blocs_up_down:
-        parent: default_menu_left_index_article
-        page: 'page_articles_3_blocs_up_down'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 3
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Article - 3 blocs verticals'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículo - 3 bloques verticales'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Article - 3 vertical blocks'
-            externalLink: '#'
-      default_menu_left_articles_1_blocs_up_2_blocs_down:
-        parent: default_menu_left_index_article
-        page: 'page_articles_1_blocs_up_2_blocs_down'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 4
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Article - 1 bloc + 2 blocs'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículo - 1 bloque + 2 bloques'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Article - 1 block + 2 blocks'
-            externalLink: '#'
-      default_menu_left_articles_2_blocs_up_1_blocs_down:
-        parent: default_menu_left_index_article
-        page: 'page_articles_2_blocs_up_1_bloc_down'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 5
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Article - 2 blocs + 1 bloc'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículo - 2 bloques + 1 bloque'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Article - 2 blocks + 1 block'
-            externalLink: '#'
-      default_menu_left_articles_2_blocs_up_2_blocs_down:
-        parent: default_menu_left_index_article
-        page: 'page_articles_2_blocs_up_2_bloc_down'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 6
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Article - 2 blocs + 2 blocs'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículo - 2 bloques + 2 bloques'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Article - 2 blocks + 2 blocks'
-            externalLink: '#'
-      default_menu_left_faq:
-        page: 'page_faq'
-        disabled: 0
-        columnPosition: 3
-        rowPosition: 1
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'FAQ'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Preguntas frecuentes'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'FAQ'
-            externalLink: '#'
-      default_menu_left_a_propos:
-        page: 'page_a_propos'
-        disabled: 0
-        columnPosition: 4
-        rowPosition: 1
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'A propos'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Acerca de'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'About'
-            externalLink: '#'
+        defaultMenu: true
+        menuElement:
+            default_menu_left_page_landing:
+                page: 'Page_landing'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 1
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Index'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Índice'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Index'
+                        externalLink: '#'
+            default_menu_left_blog_listing_titre:
+                page: 'page_list_blog'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 1
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Mon blog'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Mi blog'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'My blog'
+                        externalLink: '#'
+            default_menu_left_blog_listing:
+                parent: default_menu_left_blog_listing_titre
+                page: 'page_list_blog'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 2
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Mon blog'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Mi blog'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'My blog'
+                        externalLink: '#'
+            default_menu_left_blog_1_bloc:
+                parent: default_menu_left_blog_listing_titre
+                page: 'page_blog_1_bloc'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 3
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Blog - 1 bloc'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Blog - 1 bloque'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Blog - 1 block'
+                        externalLink: '#'
+            default_menu_left_blog_2_block_together:
+                parent: default_menu_left_blog_listing_titre
+                page: 'page_blog_2_bloc_together'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 4
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Blog - 2 blocs côte à côte'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Blog - 2 bloques lado a lado'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Blog - 2 blocks side by side'
+                        externalLink: '#'
+            default_menu_left_blog_3_block_together:
+                parent: default_menu_left_blog_listing_titre
+                page: 'page_blog_3_blocs_together'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 5
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Blog - 3 blocs côte à côte'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Blog - 3 bloques lado a lado'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Blog - 3 blocks side by side'
+                        externalLink: '#'
+            default_menu_left_index_article:
+                page: 'page_list_articles'
+                disabled: 0
+                columnPosition: 2
+                rowPosition: 1
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Articles'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículos'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Articles'
+                        externalLink: '#'
+            default_menu_left_article_listing:
+                parent: default_menu_left_index_article
+                page: 'page_list_articles'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 1
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Articles'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículos'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Articles'
+                        externalLink: '#'
+            default_menu_left_article_2_blocs_up_down:
+                parent: default_menu_left_index_article
+                page: 'page_articles_2_blocs_up_down'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 2
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Article - 2 blocs verticals'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículo - 2 bloques verticales'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Article - 2 vertical blocks'
+                        externalLink: '#'
+            default_menu_left_article_3_blocs_up_down:
+                parent: default_menu_left_index_article
+                page: 'page_articles_3_blocs_up_down'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 3
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Article - 3 blocs verticals'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículo - 3 bloques verticales'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Article - 3 vertical blocks'
+                        externalLink: '#'
+            default_menu_left_articles_1_blocs_up_2_blocs_down:
+                parent: default_menu_left_index_article
+                page: 'page_articles_1_blocs_up_2_blocs_down'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 4
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Article - 1 bloc + 2 blocs'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículo - 1 bloque + 2 bloques'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Article - 1 block + 2 blocks'
+                        externalLink: '#'
+            default_menu_left_articles_2_blocs_up_1_blocs_down:
+                parent: default_menu_left_index_article
+                page: 'page_articles_2_blocs_up_1_bloc_down'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 5
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Article - 2 blocs + 1 bloc'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículo - 2 bloques + 1 bloque'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Article - 2 blocks + 1 block'
+                        externalLink: '#'
+            default_menu_left_articles_2_blocs_up_2_blocs_down:
+                parent: default_menu_left_index_article
+                page: 'page_articles_2_blocs_up_2_bloc_down'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 6
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Article - 2 blocs + 2 blocs'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículo - 2 bloques + 2 bloques'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Article - 2 blocks + 2 blocks'
+                        externalLink: '#'
+            default_menu_left_faq:
+                page: 'page_faq'
+                disabled: 0
+                columnPosition: 3
+                rowPosition: 1
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'FAQ'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Preguntas frecuentes'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'FAQ'
+                        externalLink: '#'
+            default_menu_left_a_propos:
+                page: 'page_a_propos'
+                disabled: 0
+                columnPosition: 4
+                rowPosition: 1
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'A propos'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Acerca de'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'About'
+                        externalLink: '#'
 
-  #Menu footer de démo
+    #Menu footer de démo
 
-  menu_footer:
-    user: User
-    name: "Footer généré lors de l'installation"
-    type: 16
-    position: 3
-    renderOrder: 1
-    disabled: 0
-    defaultMenu: true
-    menuElement:
-      default_footer_index_blog:
-        page: 'Page_landing'
+    menu_footer:
+        user: User
+        name: "Footer généré lors de l'installation"
+        type: 16
+        position: 3
+        renderOrder: 1
         disabled: 0
-        columnPosition: 1
-        rowPosition: 1
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Blog'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Blog'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Blog'
-            externalLink: '#'
-      default_footer_blog_listing:
-        parent: default_footer_index_blog
-        page: 'page_list_blog'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 1
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Mon blog'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Mi blog'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'My blog'
-            externalLink: '#'
-      default_footer_blog_1_bloc:
-        parent: default_footer_index_blog
-        page: 'page_blog_1_bloc'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 2
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Blog - 1 bloc'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Blog - 1 bloque'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Blog - 1 block'
-            externalLink: '#'
-      default_footer_blog_2_block_together:
-        parent: default_footer_index_blog
-        page: 'page_blog_2_bloc_together'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 3
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Blog - 2 blocs côte à côte'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Blog - 2 bloques lado a lado'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Blog - 2 blocks side by side'
-            externalLink: '#'
-      default_footer_blog_3_block_together:
-        parent: default_footer_index_blog
-        page: 'page_blog_3_blocs_together'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 4
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Blog - 3 blocs côte à côte'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Blog - 3 bloques lado a lado'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Blog - 3 blocks side by side'
-            externalLink: '#'
-      default_footer_index_article:
-        page: 'page_list_articles'
-        disabled: 0
-        columnPosition: 2
-        rowPosition: 1
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Articles'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículos'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Articles'
-            externalLink: '#'
-      default_footer_article_listing:
-        parent: default_footer_index_article
-        page: 'page_list_articles'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 1
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Articles'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículos'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Articles'
-            externalLink: '#'
-      default_footer_article_2_blocs_up_down:
-        parent: default_footer_index_article
-        page: 'page_articles_2_blocs_up_down'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 2
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Article - 2 blocs verticals'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículo - 2 bloques verticales'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Article - 2 vertical blocks'
-            externalLink: '#'
-      default_footer_article_3_blocs_up_down:
-        parent: default_footer_index_article
-        page: 'page_articles_3_blocs_up_down'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 3
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Article - 3 blocs verticals'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículo - 3 bloques verticales'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Article - 3 vertical blocks'
-            externalLink: '#'
-      default_footer_article_right_articles_1_blocs_up_2_blocs_down:
-        parent: default_footer_index_article
-        page: 'page_articles_1_blocs_up_2_blocs_down'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 4
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Article - 1 bloc + 2 blocs'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículo - 1 bloque + 2 bloques'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Article - 1 block + 2 blocks'
-            externalLink: '#'
-      default_footer_articles_2_blocs_up_1_blocs_down:
-        parent: default_footer_index_article
-        page: 'page_articles_2_blocs_up_1_bloc_down'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 5
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Article - 2 blocs + 1 bloc'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículo - 2 bloques + 1 bloque'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Article - 2 blocks + 1 block'
-            externalLink: '#'
-      default_footer_articles_2_blocs_up_2_blocs_down:
-        parent: default_footer_index_article
-        page: 'page_articles_2_blocs_up_2_bloc_down'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 6
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Article - 2 blocs + 2 blocs'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículo - 2 bloques + 2 bloques'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Article - 2 blocks + 2 blocks'
-            externalLink: '#'
-      default_footer_index_divert:
-        page: 'page_list_articles'
-        disabled: 0
-        columnPosition: 2
-        rowPosition: 1
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Divers'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Misceláneas'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Miscellaneous'
-            externalLink: '#'
-      default_footer_faq:
-        parent: default_footer_index_divert
-        page: 'page_faq'
-        disabled: 0
-        columnPosition: 3
-        rowPosition: 1
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'FAQ'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Preguntas frecuentes'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'FAQ'
-            externalLink: '#'
-      default_footer_a_propos:
-        parent: default_footer_index_divert
-        page: 'page_a_propos'
-        disabled: 0
-        columnPosition: 4
-        rowPosition: 1
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'A propos'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Acerca de'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'About'
-            externalLink: '#'
-      default_footer_doc:
-        parent: default_footer_index_divert
-        disabled: 0
-        columnPosition: 4
-        rowPosition: 1
-        linkTarget: '_blank'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Documentation'
-            externalLink: 'https://counteraccro.github.io/natheo.doc/'
-          es:
-            locale: es
-            textLink: 'ADocumentación'
-            externalLink: 'https://counteraccro.github.io/natheo.doc/'
-          en:
-            locale: en
-            textLink: 'Documentation'
-            externalLink: 'https://counteraccro.github.io/natheo.doc/'
-      default_footer_git:
-        parent: default_footer_index_divert
-        disabled: 0
-        columnPosition: 4
-        rowPosition: 1
-        linkTarget: '_blank'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'GitHub'
-            externalLink: 'https://github.com/counteraccro/natheo'
-          es:
-            locale: es
-            textLink: 'GitHub'
-            externalLink: 'https://github.com/counteraccro/natheo'
-          en:
-            locale: en
-            textLink: 'GitHub'
-            externalLink: 'https://github.com/counteraccro/natheo'
-      default_footer_realise:
-        parent: default_footer_index_divert
-        disabled: 0
-        columnPosition: 4
-        rowPosition: 1
-        linkTarget: '_blank'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Releases'
-            externalLink: 'https://github.com/counteraccro/natheo/releases'
-          es:
-            locale: es
-            textLink: 'Releases'
-            externalLink: 'https://github.com/counteraccro/natheo/releases'
-          en:
-            locale: en
-            textLink: 'Releases'
-            externalLink: 'https://github.com/counteraccro/natheo/releases'
+        defaultMenu: true
+        menuElement:
+            default_footer_index_blog:
+                page: 'Page_landing'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 1
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Blog'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Blog'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Blog'
+                        externalLink: '#'
+            default_footer_blog_listing:
+                parent: default_footer_index_blog
+                page: 'page_list_blog'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 1
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Mon blog'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Mi blog'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'My blog'
+                        externalLink: '#'
+            default_footer_blog_1_bloc:
+                parent: default_footer_index_blog
+                page: 'page_blog_1_bloc'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 2
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Blog - 1 bloc'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Blog - 1 bloque'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Blog - 1 block'
+                        externalLink: '#'
+            default_footer_blog_2_block_together:
+                parent: default_footer_index_blog
+                page: 'page_blog_2_bloc_together'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 3
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Blog - 2 blocs côte à côte'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Blog - 2 bloques lado a lado'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Blog - 2 blocks side by side'
+                        externalLink: '#'
+            default_footer_blog_3_block_together:
+                parent: default_footer_index_blog
+                page: 'page_blog_3_blocs_together'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 4
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Blog - 3 blocs côte à côte'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Blog - 3 bloques lado a lado'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Blog - 3 blocks side by side'
+                        externalLink: '#'
+            default_footer_index_article:
+                page: 'page_list_articles'
+                disabled: 0
+                columnPosition: 2
+                rowPosition: 1
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Articles'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículos'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Articles'
+                        externalLink: '#'
+            default_footer_article_listing:
+                parent: default_footer_index_article
+                page: 'page_list_articles'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 1
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Articles'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículos'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Articles'
+                        externalLink: '#'
+            default_footer_article_2_blocs_up_down:
+                parent: default_footer_index_article
+                page: 'page_articles_2_blocs_up_down'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 2
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Article - 2 blocs verticals'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículo - 2 bloques verticales'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Article - 2 vertical blocks'
+                        externalLink: '#'
+            default_footer_article_3_blocs_up_down:
+                parent: default_footer_index_article
+                page: 'page_articles_3_blocs_up_down'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 3
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Article - 3 blocs verticals'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículo - 3 bloques verticales'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Article - 3 vertical blocks'
+                        externalLink: '#'
+            default_footer_article_right_articles_1_blocs_up_2_blocs_down:
+                parent: default_footer_index_article
+                page: 'page_articles_1_blocs_up_2_blocs_down'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 4
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Article - 1 bloc + 2 blocs'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículo - 1 bloque + 2 bloques'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Article - 1 block + 2 blocks'
+                        externalLink: '#'
+            default_footer_articles_2_blocs_up_1_blocs_down:
+                parent: default_footer_index_article
+                page: 'page_articles_2_blocs_up_1_bloc_down'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 5
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Article - 2 blocs + 1 bloc'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículo - 2 bloques + 1 bloque'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Article - 2 blocks + 1 block'
+                        externalLink: '#'
+            default_footer_articles_2_blocs_up_2_blocs_down:
+                parent: default_footer_index_article
+                page: 'page_articles_2_blocs_up_2_bloc_down'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 6
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Article - 2 blocs + 2 blocs'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículo - 2 bloques + 2 bloques'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Article - 2 blocks + 2 blocks'
+                        externalLink: '#'
+            default_footer_index_divert:
+                page: 'page_list_articles'
+                disabled: 0
+                columnPosition: 2
+                rowPosition: 1
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Divers'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Misceláneas'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Miscellaneous'
+                        externalLink: '#'
+            default_footer_faq:
+                parent: default_footer_index_divert
+                page: 'page_faq'
+                disabled: 0
+                columnPosition: 3
+                rowPosition: 1
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'FAQ'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Preguntas frecuentes'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'FAQ'
+                        externalLink: '#'
+            default_footer_a_propos:
+                parent: default_footer_index_divert
+                page: 'page_a_propos'
+                disabled: 0
+                columnPosition: 4
+                rowPosition: 1
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'A propos'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Acerca de'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'About'
+                        externalLink: '#'
+            default_footer_doc:
+                parent: default_footer_index_divert
+                disabled: 0
+                columnPosition: 4
+                rowPosition: 1
+                linkTarget: '_blank'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Documentation'
+                        externalLink: 'https://counteraccro.github.io/natheo.doc/'
+                    es:
+                        locale: es
+                        textLink: 'ADocumentación'
+                        externalLink: 'https://counteraccro.github.io/natheo.doc/'
+                    en:
+                        locale: en
+                        textLink: 'Documentation'
+                        externalLink: 'https://counteraccro.github.io/natheo.doc/'
+            default_footer_git:
+                parent: default_footer_index_divert
+                disabled: 0
+                columnPosition: 4
+                rowPosition: 1
+                linkTarget: '_blank'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'GitHub'
+                        externalLink: 'https://github.com/counteraccro/natheo'
+                    es:
+                        locale: es
+                        textLink: 'GitHub'
+                        externalLink: 'https://github.com/counteraccro/natheo'
+                    en:
+                        locale: en
+                        textLink: 'GitHub'
+                        externalLink: 'https://github.com/counteraccro/natheo'
+            default_footer_realise:
+                parent: default_footer_index_divert
+                disabled: 0
+                columnPosition: 4
+                rowPosition: 1
+                linkTarget: '_blank'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Releases'
+                        externalLink: 'https://github.com/counteraccro/natheo/releases'
+                    es:
+                        locale: es
+                        textLink: 'Releases'
+                        externalLink: 'https://github.com/counteraccro/natheo/releases'
+                    en:
+                        locale: en
+                        textLink: 'Releases'
+                        externalLink: 'https://github.com/counteraccro/natheo/releases'
 
-  #Menu pour les pages de blog démo
-  menu_blog_right:
-    user: User
-    name: "Menu Droite du blog généré lors de l'installation"
-    type: 12
-    position: 2
-    renderOrder: 1
-    disabled: 0
-    defaultMenu: false
-    menuElement:
-      menu_blog_right_listing_titre:
-        page: 'page_list_blog'
+    #Menu pour les pages de blog démo
+    menu_blog_right:
+        user: User
+        name: "Menu Droite du blog généré lors de l'installation"
+        type: 12
+        position: 2
+        renderOrder: 1
         disabled: 0
-        columnPosition: 1
-        rowPosition: 1
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Mon blog'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Mi blog'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'My blog'
-            externalLink: '#'
-      menu_blog_right_blog_listing:
-        parent: menu_blog_right_listing_titre
-        page: 'page_list_blog'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 1
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Mon blog'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Mi blog'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'My blog'
-            externalLink: '#'
-      menu_blog_right_blog_1_bloc:
-        parent: menu_blog_right_listing_titre
-        page: 'page_blog_1_bloc'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 2
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Blog - 1 bloc'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Blog - 1 bloque'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Blog - 1 block'
-            externalLink: '#'
-      menu_blog_right_blog_2_block_together:
-        parent: menu_blog_right_listing_titre
-        page: 'page_blog_2_bloc_together'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 3
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Blog - 2 blocs côte à côte'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Blog - 2 bloques lado a lado'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Blog - 2 blocks side by side'
-            externalLink: '#'
-      menu_blog_right_blog_3_block_together:
-        parent: menu_blog_right_listing_titre
-        page: 'page_blog_3_blocs_together'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 4
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Blog - 3 blocs côte à côte'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Blog - 3 bloques lado a lado'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Blog - 3 blocks side by side'
-            externalLink: '#'
+        defaultMenu: false
+        menuElement:
+            menu_blog_right_listing_titre:
+                page: 'page_list_blog'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 1
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Mon blog'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Mi blog'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'My blog'
+                        externalLink: '#'
+            menu_blog_right_blog_listing:
+                parent: menu_blog_right_listing_titre
+                page: 'page_list_blog'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 1
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Mon blog'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Mi blog'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'My blog'
+                        externalLink: '#'
+            menu_blog_right_blog_1_bloc:
+                parent: menu_blog_right_listing_titre
+                page: 'page_blog_1_bloc'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 2
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Blog - 1 bloc'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Blog - 1 bloque'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Blog - 1 block'
+                        externalLink: '#'
+            menu_blog_right_blog_2_block_together:
+                parent: menu_blog_right_listing_titre
+                page: 'page_blog_2_bloc_together'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 3
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Blog - 2 blocs côte à côte'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Blog - 2 bloques lado a lado'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Blog - 2 blocks side by side'
+                        externalLink: '#'
+            menu_blog_right_blog_3_block_together:
+                parent: menu_blog_right_listing_titre
+                page: 'page_blog_3_blocs_together'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 4
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Blog - 3 blocs côte à côte'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Blog - 3 bloques lado a lado'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Blog - 3 blocks side by side'
+                        externalLink: '#'
 
-  #Menu pour les pages de blog démo
-  menu_article_right:
-    user: User
-    name: "Menu Droite des articles généré lors de l'installation"
-    type: 12
-    position: 2
-    renderOrder: 1
-    disabled: 0
-    defaultMenu: false
-    menuElement:
-      menu_article_right_index_article:
-        page: 'page_list_articles'
+    #Menu pour les pages de blog démo
+    menu_article_right:
+        user: User
+        name: "Menu Droite des articles généré lors de l'installation"
+        type: 12
+        position: 2
+        renderOrder: 1
         disabled: 0
-        columnPosition: 1
-        rowPosition: 1
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Articles'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículos'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Articles'
-            externalLink: '#'
-      menu_article_right_article_listing:
-        parent: menu_article_right_index_article
-        page: 'page_list_articles'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 1
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Articles'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículos'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Articles'
-            externalLink: '#'
-      menu_article_right_article_2_blocs_up_down:
-        parent: menu_article_right_index_article
-        page: 'page_articles_2_blocs_up_down'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 2
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Article - 2 blocs verticals'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículo - 2 bloques verticales'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Article - 2 vertical blocks'
-            externalLink: '#'
-      menu_article_right_article_3_blocs_up_down:
-        parent: menu_article_right_index_article
-        page: 'page_articles_3_blocs_up_down'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 3
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Article - 3 blocs verticals'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículo - 3 bloques verticales'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Article - 3 vertical blocks'
-            externalLink: '#'
-      menu_article_right_articles_1_blocs_up_2_blocs_down:
-        parent: menu_article_right_index_article
-        page: 'page_articles_1_blocs_up_2_blocs_down'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 4
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Article - 1 bloc + 2 blocs'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículo - 1 bloque + 2 bloques'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Article - 1 block + 2 blocks'
-            externalLink: '#'
-      menu_article_right_articles_2_blocs_up_1_blocs_down:
-        parent: menu_article_right_index_article
-        page: 'page_articles_2_blocs_up_1_bloc_down'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 5
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Article - 2 blocs + 1 bloc'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículo - 2 bloques + 1 bloque'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Article - 2 blocks + 1 block'
-            externalLink: '#'
-      menu_article_right_articles_2_blocs_up_2_blocs_down:
-        parent: menu_article_right_index_article
-        page: 'page_articles_2_blocs_up_2_bloc_down'
-        disabled: 0
-        columnPosition: 1
-        rowPosition: 6
-        linkTarget: '_self'
-        menuElementTranslation:
-          fr:
-            locale: fr
-            textLink: 'Article - 2 blocs + 2 blocs'
-            externalLink: '#'
-          es:
-            locale: es
-            textLink: 'Artículo - 2 bloques + 2 bloques'
-            externalLink: '#'
-          en:
-            locale: en
-            textLink: 'Article - 2 blocks + 2 blocks'
-            externalLink: '#'
+        defaultMenu: false
+        menuElement:
+            menu_article_right_index_article:
+                page: 'page_list_articles'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 1
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Articles'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículos'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Articles'
+                        externalLink: '#'
+            menu_article_right_article_listing:
+                parent: menu_article_right_index_article
+                page: 'page_list_articles'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 1
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Articles'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículos'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Articles'
+                        externalLink: '#'
+            menu_article_right_article_2_blocs_up_down:
+                parent: menu_article_right_index_article
+                page: 'page_articles_2_blocs_up_down'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 2
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Article - 2 blocs verticals'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículo - 2 bloques verticales'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Article - 2 vertical blocks'
+                        externalLink: '#'
+            menu_article_right_article_3_blocs_up_down:
+                parent: menu_article_right_index_article
+                page: 'page_articles_3_blocs_up_down'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 3
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Article - 3 blocs verticals'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículo - 3 bloques verticales'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Article - 3 vertical blocks'
+                        externalLink: '#'
+            menu_article_right_articles_1_blocs_up_2_blocs_down:
+                parent: menu_article_right_index_article
+                page: 'page_articles_1_blocs_up_2_blocs_down'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 4
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Article - 1 bloc + 2 blocs'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículo - 1 bloque + 2 bloques'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Article - 1 block + 2 blocks'
+                        externalLink: '#'
+            menu_article_right_articles_2_blocs_up_1_blocs_down:
+                parent: menu_article_right_index_article
+                page: 'page_articles_2_blocs_up_1_bloc_down'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 5
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Article - 2 blocs + 1 bloc'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículo - 2 bloques + 1 bloque'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Article - 2 blocks + 1 block'
+                        externalLink: '#'
+            menu_article_right_articles_2_blocs_up_2_blocs_down:
+                parent: menu_article_right_index_article
+                page: 'page_articles_2_blocs_up_2_bloc_down'
+                disabled: 0
+                columnPosition: 1
+                rowPosition: 6
+                linkTarget: '_self'
+                menuElementTranslation:
+                    fr:
+                        locale: fr
+                        textLink: 'Article - 2 blocs + 2 blocs'
+                        externalLink: '#'
+                    es:
+                        locale: es
+                        textLink: 'Artículo - 2 bloques + 2 bloques'
+                        externalLink: '#'
+                    en:
+                        locale: en
+                        textLink: 'Article - 2 blocks + 2 blocks'
+                        externalLink: '#'

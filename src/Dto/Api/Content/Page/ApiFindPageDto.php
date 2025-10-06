@@ -20,61 +20,75 @@ class ApiFindPageDto extends AppApiDto
         MenuConst::POSITION_HEADER,
         MenuConst::POSITION_RIGHT,
         MenuConst::POSITION_FOOTER,
-        MenuConst::POSITION_LEFT
+        MenuConst::POSITION_LEFT,
     ];
 
     public function __construct(
-
         /**
          * slug de la page
          * @var string
          */
-        #[Assert\Type(type: 'string', message: 'The pageSlug parameter must be a string')]
-        #[Assert\NotNull(message: 'The pageSlug parameter cannot be empty')]
+        #[Assert\Type(type: 'string', message: 'The pageSlug parameter must be a string')] #[
+            Assert\NotNull(message: 'The pageSlug parameter cannot be empty'),
+        ]
         private readonly string $slug,
 
         /**
          * Locale de la page
          * @var string
          */
-        #[Assert\Type(type: 'string', message: 'The locale parameter must be a string')]
-        #[Assert\Choice(choices: self::LOCALES, message: 'Choose a locale between en or es or fr')]
+        #[Assert\Type(type: 'string', message: 'The locale parameter must be a string')] #[
+            Assert\Choice(choices: self::LOCALES, message: 'Choose a locale between en or es or fr'),
+        ]
         private readonly string $locale,
 
         /**
          * Show menu
          * @var bool
          */
-        #[Assert\Type(type: 'boolean', message: 'The show_menus parameter must be a boolean')]
+        #[
+            Assert\Type(type: 'boolean', message: 'The show_menus parameter must be a boolean'),
+        ]
         private readonly bool $showMenus,
 
         /**
          * Show menu
          * @var bool
          */
-        #[Assert\Type(type: 'boolean', message: 'The show_tags parameter must be a boolean')]
+        #[
+            Assert\Type(type: 'boolean', message: 'The show_tags parameter must be a boolean'),
+        ]
         private readonly bool $showTags,
 
         /**
          * Show menu
          * @var bool
          */
-        #[Assert\Type(type: 'boolean', message: 'The show_statistiques parameter must be a boolean')]
+        #[
+            Assert\Type(type: 'boolean', message: 'The show_statistiques parameter must be a boolean'),
+        ]
         private readonly bool $showStatistiques,
 
         /**
          * Position des menus
          * @var array
          */
-        #[Assert\Type(type: 'array', message: 'The show_menus parameter must be a boolean')]
-        #[Assert\Choice(choices: self::MENU_POSITIONS, multiple: true, multipleMessage: 'Choose a position between 0, (all), 1 (top), 2 (right), 3 (bottom), 4 (left)')]
+        #[Assert\Type(type: 'array', message: 'The show_menus parameter must be a boolean')] #[
+            Assert\Choice(
+                choices: self::MENU_POSITIONS,
+                multiple: true,
+                multipleMessage: 'Choose a position between 0, (all), 1 (top), 2 (right), 3 (bottom), 4 (left)',
+            ),
+        ]
         private readonly array $menuPositions,
 
         /**
          * Token
          * @var string
          */
-        #[Assert\Type(type: 'string', message: 'The user_token parameter must be a string')]
+        #[
+            Assert\Type(type: 'string', message: 'The user_token parameter must be a string'),
+        ]
         private readonly string $userToken,
     ) {}
 
@@ -82,7 +96,8 @@ class ApiFindPageDto extends AppApiDto
      * Slug
      * @return string
      */
-    public function getSlug(): string {
+    public function getSlug(): string
+    {
         return $this->slug;
     }
 
@@ -121,8 +136,6 @@ class ApiFindPageDto extends AppApiDto
     {
         return $this->showStatistiques;
     }
-
-
 
     /**
      * Menu position

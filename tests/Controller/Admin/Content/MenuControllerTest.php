@@ -22,7 +22,6 @@ class MenuControllerTest extends AppWebTestCase
      */
     public function testIndex(): void
     {
-
         $this->checkNoAccess('admin_menu_index');
 
         $user = $this->createUserContributeur();
@@ -47,7 +46,10 @@ class MenuControllerTest extends AppWebTestCase
 
         $userContributeur = $this->createUserContributeur();
         $this->client->loginUser($userContributeur, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_menu_load_grid_data', ['page' => 1, 'limit' => 4]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_menu_load_grid_data', ['page' => 1, 'limit' => 4]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -152,7 +154,6 @@ class MenuControllerTest extends AppWebTestCase
      */
     public function testAdd(): void
     {
-
         $menu = $this->createMenuAllDataDefault();
 
         $this->checkNoAccess('admin_menu_add');
@@ -203,50 +204,48 @@ class MenuControllerTest extends AppWebTestCase
         $menu = $this->createMenu();
 
         $data['menu'] = [
-            "id" => $menu->getId(),
-            "name" => "Unit-test",
-            "type" => MenuConst::TYPE_FOOTER_1_ROW_CENTER,
-            "position" => MenuConst::POSITION_FOOTER,
-            "renderOrder" => 1,
-            "defaultMenu" => false,
-            "disabled" => true,
-            "pageMenu" => [
-                "-1"
-            ],
-            "menuElements" => [
+            'id' => $menu->getId(),
+            'name' => 'Unit-test',
+            'type' => MenuConst::TYPE_FOOTER_1_ROW_CENTER,
+            'position' => MenuConst::POSITION_FOOTER,
+            'renderOrder' => 1,
+            'defaultMenu' => false,
+            'disabled' => true,
+            'pageMenu' => ['-1'],
+            'menuElements' => [
                 [
-                    "id" => '1',
-                    "columnPosition" => 1,
-                    "rowPosition" => 1,
-                    "linkTarget" => "_self",
-                    "disabled" => false,
-                    "parent" => "",
-                    "page" => "",
-                    "menuElementTranslations" => [
+                    'id' => '1',
+                    'columnPosition' => 1,
+                    'rowPosition' => 1,
+                    'linkTarget' => '_self',
+                    'disabled' => false,
+                    'parent' => '',
+                    'page' => '',
+                    'menuElementTranslations' => [
                         [
-                            "id" => 177,
-                            "locale" => "es",
-                            "textLink" => "es- new",
-                            "externalLink" => "http://www.es.com",
-                            "link" => ""
+                            'id' => 177,
+                            'locale' => 'es',
+                            'textLink' => 'es- new',
+                            'externalLink' => 'http://www.es.com',
+                            'link' => '',
                         ],
                         [
-                            "id" => 176,
-                            "locale" => "en",
-                            "textLink" => "en- new",
-                            "externalLink" => "http://www.en.com",
-                            "link" => ""
+                            'id' => 176,
+                            'locale' => 'en',
+                            'textLink' => 'en- new',
+                            'externalLink' => 'http://www.en.com',
+                            'link' => '',
                         ],
                         [
-                            "id" => 175,
-                            "locale" => "fr",
-                            "textLink" => "fr- new",
-                            "externalLink" => "http://www.fr.com",
-                            "link" => ""
-                        ]
-                    ]
-                ]
-            ]
+                            'id' => 175,
+                            'locale' => 'fr',
+                            'textLink' => 'fr- new',
+                            'externalLink' => 'http://www.fr.com',
+                            'link' => '',
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $this->checkNoAccess('admin_menu_save_menu', methode: 'POST');
@@ -270,56 +269,53 @@ class MenuControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('url', $content);
         $this->assertStringContainsString($menu->getId(), $content['url']);
 
-
         $menuRepo = $this->em->getRepository(Menu::class);
         $verif = $menuRepo->findOneBy(['id' => $menu->getId()]);
         $this->assertEquals('Unit-test', $verif->getName());
 
         $data['menu'] = [
-            "id" => 0,
-            "name" => "Unit-test",
-            "type" => MenuConst::TYPE_FOOTER_1_ROW_CENTER,
-            "position" => MenuConst::POSITION_FOOTER,
-            "renderOrder" => 1,
-            "defaultMenu" => false,
-            "disabled" => true,
-            "pageMenu" => [
-                "-1"
-            ],
-            "menuElements" => [
+            'id' => 0,
+            'name' => 'Unit-test',
+            'type' => MenuConst::TYPE_FOOTER_1_ROW_CENTER,
+            'position' => MenuConst::POSITION_FOOTER,
+            'renderOrder' => 1,
+            'defaultMenu' => false,
+            'disabled' => true,
+            'pageMenu' => ['-1'],
+            'menuElements' => [
                 [
-                    "id" => '1',
-                    "columnPosition" => 1,
-                    "rowPosition" => 1,
-                    "linkTarget" => "_self",
-                    "disabled" => false,
-                    "parent" => "",
-                    "page" => "",
-                    "menuElementTranslations" => [
+                    'id' => '1',
+                    'columnPosition' => 1,
+                    'rowPosition' => 1,
+                    'linkTarget' => '_self',
+                    'disabled' => false,
+                    'parent' => '',
+                    'page' => '',
+                    'menuElementTranslations' => [
                         [
-                            "id" => 177,
-                            "locale" => "es",
-                            "textLink" => "es- new",
-                            "externalLink" => "http://www.es.com",
-                            "link" => ""
+                            'id' => 177,
+                            'locale' => 'es',
+                            'textLink' => 'es- new',
+                            'externalLink' => 'http://www.es.com',
+                            'link' => '',
                         ],
                         [
-                            "id" => 176,
-                            "locale" => "en",
-                            "textLink" => "en- new",
-                            "externalLink" => "http://www.en.com",
-                            "link" => ""
+                            'id' => 176,
+                            'locale' => 'en',
+                            'textLink' => 'en- new',
+                            'externalLink' => 'http://www.en.com',
+                            'link' => '',
                         ],
                         [
-                            "id" => 175,
-                            "locale" => "fr",
-                            "textLink" => "fr- new",
-                            "externalLink" => "http://www.fr.com",
-                            "link" => ""
-                        ]
-                    ]
-                ]
-            ]
+                            'id' => 175,
+                            'locale' => 'fr',
+                            'textLink' => 'fr- new',
+                            'externalLink' => 'http://www.fr.com',
+                            'link' => '',
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $this->checkNoAccess('admin_menu_save_menu', methode: 'POST');
@@ -356,7 +352,10 @@ class MenuControllerTest extends AppWebTestCase
         $user = $this->createUserContributeur();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('DELETE', $this->router->generate('admin_menu_delete_menu_element', ['id' => $menuElement->getId()]));
+        $this->client->request(
+            'DELETE',
+            $this->router->generate('admin_menu_delete_menu_element', ['id' => $menuElement->getId()]),
+        );
 
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -391,7 +390,11 @@ class MenuControllerTest extends AppWebTestCase
         $user = $this->createUserContributeur();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('POST', $this->router->generate('admin_menu_new_menu_element'), content: json_encode($data));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_menu_new_menu_element'),
+            content: json_encode($data),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -429,7 +432,11 @@ class MenuControllerTest extends AppWebTestCase
         $user = $this->createUserContributeur();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('PATCH', $this->router->generate('admin_menu_update_parent_menu_element'), content: json_encode($data));
+        $this->client->request(
+            'PATCH',
+            $this->router->generate('admin_menu_update_parent_menu_element'),
+            content: json_encode($data),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -458,12 +465,21 @@ class MenuControllerTest extends AppWebTestCase
         $subMenuElement2 = $this->createMenuElement($menu, $menuElement1);
         $subSubMenuElement = $this->createMenuElement($menu, $subMenuElement);
 
-        $this->checkNoAccess('admin_menu_list_parent_menu_element', ['menuId' => $menu->getId(), 'elementId' => $subSubMenuElement->getId()]);
+        $this->checkNoAccess('admin_menu_list_parent_menu_element', [
+            'menuId' => $menu->getId(),
+            'elementId' => $subSubMenuElement->getId(),
+        ]);
 
         $user = $this->createUserContributeur();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_menu_list_parent_menu_element', ['menuId' => $menu->getId(), 'elementId' => $subSubMenuElement->getId()]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_menu_list_parent_menu_element', [
+                'menuId' => $menu->getId(),
+                'elementId' => $subSubMenuElement->getId(),
+            ]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -479,8 +495,8 @@ class MenuControllerTest extends AppWebTestCase
      * Test méthode reorderMenuElement()
      * @return void
      */
-    public function testReorderMenuElement() :void {
-
+    public function testReorderMenuElement(): void
+    {
         $menu = $this->createMenu();
 
         $menuElementPos1Row1 = $this->createMenuElement($menu, customData: ['columnPosition' => 1, 'rowPosition' => 1]);
@@ -488,18 +504,21 @@ class MenuControllerTest extends AppWebTestCase
         $menuElementPos1Row3 = $this->createMenuElement($menu, customData: ['columnPosition' => 1, 'rowPosition' => 3]);
         $this->createMenuElement($menu, $menuElementPos1Row3, customData: ['columnPosition' => 1, 'rowPosition' => 1]);
         $this->createMenuElement($menu, $menuElementPos1Row3, customData: ['columnPosition' => 1, 'rowPosition' => 2]);
-        $subMenuElement3 = $this->createMenuElement($menu, $menuElementPos1Row3, customData: ['columnPosition' => 1, 'rowPosition' => 3]);
-
+        $subMenuElement3 = $this->createMenuElement(
+            $menu,
+            $menuElementPos1Row3,
+            customData: ['columnPosition' => 1, 'rowPosition' => 3],
+        );
 
         $data['data'] = [
-            "reorderType" => "row",
-            "newColumn" => 1,
-            "oldColumn" => 1,
-            "newRow" => 1,
-            "oldRow" => 3,
-            "id" => $menuElementPos1Row3->getId(),
-            "parent" => "",
-            "menu" => $menu->getId()
+            'reorderType' => 'row',
+            'newColumn' => 1,
+            'oldColumn' => 1,
+            'newRow' => 1,
+            'oldRow' => 3,
+            'id' => $menuElementPos1Row3->getId(),
+            'parent' => '',
+            'menu' => $menu->getId(),
         ];
 
         $this->checkNoAccess('admin_menu_reorder_menu_element', methode: 'PATCH');
@@ -507,7 +526,11 @@ class MenuControllerTest extends AppWebTestCase
         $user = $this->createUserContributeur();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('PATCH', $this->router->generate('admin_menu_reorder_menu_element'), content: json_encode($data));
+        $this->client->request(
+            'PATCH',
+            $this->router->generate('admin_menu_reorder_menu_element'),
+            content: json_encode($data),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());

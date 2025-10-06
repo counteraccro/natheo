@@ -1,17 +1,16 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: "[FEATURE]"
+title: '[FEATURE]'
 labels: enhancement
 assignees: counteraccro
-
 ---
 
 **Titre.**
-*Résumé de la feature*
+_Résumé de la feature_
 
 **Description**
-*Définition de(s) tache(s) à faire*
+_Définition de(s) tache(s) à faire_
 
 **Divers**
-*Autres infomations*
+_Autres infomations_

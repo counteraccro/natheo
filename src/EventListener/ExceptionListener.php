@@ -23,11 +23,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ExceptionListener
 {
-    public function __construct(#[AutowireLocator([
-        'translator' => TranslatorInterface::class,
-    ])] protected ContainerInterface $handlers)
-    {
-    }
+    public function __construct(
+        #[
+            AutowireLocator([
+                'translator' => TranslatorInterface::class,
+            ]),
+        ]
+        protected ContainerInterface $handlers,
+    ) {}
 
     /**
      * @param ExceptionEvent $event
@@ -40,7 +43,11 @@ class ExceptionListener
         $exception = $event->getThrowable();
         $request = $event->getRequest();
 
-        if (in_array('application/json', $request->getAcceptableContentTypes()) || 'json' === $request->getContentTypeFormat() || str_contains($request->getUri(), '/api/')) {
+        if (
+            in_array('application/json', $request->getAcceptableContentTypes()) ||
+            'json' === $request->getContentTypeFormat() ||
+            str_contains($request->getUri(), '/api/')
+        ) {
             $response = $this->createApiResponse($exception);
             $event->setResponse($response);
         }
@@ -57,7 +64,10 @@ class ExceptionListener
     {
         /** @var TranslatorInterface $translator */
         $translator = $this->handlers->get('translator');
-        $statusCode = $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : Response::HTTP_INTERNAL_SERVER_ERROR;
+        $statusCode =
+            $exception instanceof HttpExceptionInterface
+                ? $exception->getStatusCode()
+                : Response::HTTP_INTERNAL_SERVER_ERROR;
         $errors = [];
 
         $message = $exception->getMessage();
@@ -73,11 +83,17 @@ class ExceptionListener
 
         if ($exception instanceof HttpException) {
             $message = match ($exception->getStatusCode()) {
-                Response::HTTP_UNAUTHORIZED => $translator->trans('api_errors.access.unauthorized', domain: 'api_errors'),
+                Response::HTTP_UNAUTHORIZED => $translator->trans(
+                    'api_errors.access.unauthorized',
+                    domain: 'api_errors',
+                ),
                 Response::HTTP_FORBIDDEN => $translator->trans('api_errors.access.denied', domain: 'api_errors'),
                 Response::HTTP_NOT_FOUND => $translator->trans('api_errors.not.found', domain: 'api_errors'),
-                Response::HTTP_INTERNAL_SERVER_ERROR => $translator->trans('api_errors.internal.server.error', domain: 'api_errors'),
-                default => 'Code HTTP non pris en compte '. __FILE__ . ':' .  __LINE__,
+                Response::HTTP_INTERNAL_SERVER_ERROR => $translator->trans(
+                    'api_errors.internal.server.error',
+                    domain: 'api_errors',
+                ),
+                default => 'Code HTTP non pris en compte ' . __FILE__ . ':' . __LINE__,
             };
             $errors = explode(',', $exception->getMessage());
         }

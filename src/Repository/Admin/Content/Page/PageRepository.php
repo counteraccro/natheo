@@ -54,10 +54,10 @@ class PageRepository extends ServiceEntityRepository
      */
     public function getAllPaginate(int $page, int $limit, ?string $search = null, ?int $userId = null): Paginator
     {
-        $query = $this->createQueryBuilder('p')
-            ->orderBy('p.id', 'ASC');
+        $query = $this->createQueryBuilder('p')->orderBy('p.id', 'ASC');
         if ($search !== null) {
-            $query->join('p.pageTranslations', 'ppt')
+            $query
+                ->join('p.pageTranslations', 'ppt')
                 ->join('p.tags', 't')
                 ->join('t.tagTranslations', 'tt')
                 ->where('tt.label like :search')
@@ -71,11 +71,11 @@ class PageRepository extends ServiceEntityRepository
         }
 
         $paginator = new Paginator($query->getQuery(), true);
-        $paginator->getQuery()
+        $paginator
+            ->getQuery()
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;
-
     }
 
     /**
@@ -96,12 +96,12 @@ class PageRepository extends ServiceEntityRepository
             ->orderBy('p.updateAt', 'DESC');
 
         if ($categoryId !== 0) {
-            $query->andWhere('p.category = :categoryId')
-                ->setParameter('categoryId', $categoryId);
+            $query->andWhere('p.category = :categoryId')->setParameter('categoryId', $categoryId);
         }
 
         $paginator = new Paginator($query->getQuery(), true);
-        $paginator->getQuery()
+        $paginator
+            ->getQuery()
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;
@@ -127,9 +127,9 @@ class PageRepository extends ServiceEntityRepository
             ->setParameter('status', PageConst::STATUS_PUBLISH)
             ->orderBy('p.updateAt', 'DESC');
 
-
         $paginator = new Paginator($query->getQuery(), true);
-        $paginator->getQuery()
+        $paginator
+            ->getQuery()
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;
@@ -144,12 +144,9 @@ class PageRepository extends ServiceEntityRepository
     public function getAllWithoutExclude(string $field, mixed $value): mixed
     {
         $query = $this->createQueryBuilder('p');
-        $query->where(
-            $query->expr()->neq('p.' . $field, ':value')
-        )
-            ->setParameters(new ArrayCollection([
-                new Parameter('value', $value),
-            ]));
+        $query
+            ->where($query->expr()->neq('p.' . $field, ':value'))
+            ->setParameters(new ArrayCollection([new Parameter('value', $value)]));
         return $query->getQuery()->getResult();
     }
 
@@ -164,22 +161,19 @@ class PageRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('p');
 
-        if ($slug !== "") {
-            $query->join('p.pageTranslations', 'pt')
-                ->where('pt.url = :slug')
-                ->setParameter('slug', $slug);
+        if ($slug !== '') {
+            $query->join('p.pageTranslations', 'pt')->where('pt.url = :slug')->setParameter('slug', $slug);
         } else {
-            $query->where('p.landingPage = :landingPage')
-                ->setParameter('landingPage', true);
+            $query->where('p.landingPage = :landingPage')->setParameter('landingPage', true);
         }
 
-        $query->andWhere('p.disabled = :disabled')
+        $query
+            ->andWhere('p.disabled = :disabled')
             ->setParameter('disabled', false)
             ->andWhere('p.status IN (:status)')
             ->setParameter('status', $status)
             ->setMaxResults(1);
         return $query->getQuery()->getOneOrNullResult();
-
     }
 
     /**
@@ -194,7 +188,8 @@ class PageRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('p');
 
-        $query->join('p.pageTranslations', 'pt')
+        $query
+            ->join('p.pageTranslations', 'pt')
             ->leftJoin('p.pageContents', 'pc')
             ->leftJoin('pc.pageContentTranslations', 'pct')
             ->join('p.user', 'u')
@@ -207,7 +202,8 @@ class PageRepository extends ServiceEntityRepository
             ->setParameter('locale', $locale);
 
         $paginator = new Paginator($query->getQuery(), true);
-        $paginator->getQuery()
+        $paginator
+            ->getQuery()
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;

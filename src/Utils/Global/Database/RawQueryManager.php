@@ -20,8 +20,7 @@ class RawQueryManager
 
     public function __construct()
     {
-        $this->rawClass = match (InstallationConst::STRATEGY)
-        {
+        $this->rawClass = match (InstallationConst::STRATEGY) {
             InstallationConst::STRATEGY_MYSQL => RawMysqlQuery::class,
             InstallationConst::STRATEGY_POSTGRESQL => RawPostgresQuery::class,
         };

@@ -45,8 +45,11 @@ trait MailFixturesTrait
      * @param bool $persist
      * @return MailTranslation
      */
-    public function createMailTranslation(?Mail $mail = null, array $customData = [], bool $persist = true): MailTranslation
-    {
+    public function createMailTranslation(
+        ?Mail $mail = null,
+        array $customData = [],
+        bool $persist = true,
+    ): MailTranslation {
         $data = [
             'mail' => $mail ?: $this->createMail(),
             'locale' => self::getFaker()->languageCode(),
@@ -68,12 +71,21 @@ trait MailFixturesTrait
      */
     public function generateDefaultMails(): void
     {
-        $path = '.' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR .
-            'DataFixtures' . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'system' . DIRECTORY_SEPARATOR . 'mail_fixtures_data.yaml';
+        $path =
+            '.' .
+            DIRECTORY_SEPARATOR .
+            'src' .
+            DIRECTORY_SEPARATOR .
+            'DataFixtures' .
+            DIRECTORY_SEPARATOR .
+            'data' .
+            DIRECTORY_SEPARATOR .
+            'system' .
+            DIRECTORY_SEPARATOR .
+            'mail_fixtures_data.yaml';
 
         $data = Yaml::parseFile($path);
         foreach ($data['mail'] as $dataMail) {
-
             $data = [];
             $dataMailTranslate = [];
 

@@ -28,13 +28,11 @@ class MenuConvertToArray
      * @param TranslatorInterface $translator
      */
     public function __construct(
-        private readonly MenuService         $menuService,
-        private readonly DataBase            $dataBase,
-        private readonly PageService         $pageService,
-        private readonly TranslatorInterface $translator
-    )
-    {
-    }
+        private readonly MenuService $menuService,
+        private readonly DataBase $dataBase,
+        private readonly PageService $pageService,
+        private readonly TranslatorInterface $translator,
+    ) {}
 
     /**
      * Convertie un menu trouvé par son id en array adapté aux scripts côté vue
@@ -106,8 +104,10 @@ class MenuConvertToArray
             }
 
             if (!$menuElement->getMenuElementTranslations()->isEmpty()) {
-                $structure[$key]['menuElementTranslations'] =
-                    $this->mergeMenuElementTranslation($menuElement->getMenuElementTranslations(), $menuElement->getPage());
+                $structure[$key]['menuElementTranslations'] = $this->mergeMenuElementTranslation(
+                    $menuElement->getMenuElementTranslations(),
+                    $menuElement->getPage(),
+                );
             }
 
             if ($menuElement->getParent() !== null) {
@@ -118,7 +118,6 @@ class MenuConvertToArray
                 $structure[$key]['children'] = $this->mergeMenuElements($menuElement->getChildren()->toArray());
             }
             $key++;
-
         }
         return $structure;
     }
@@ -137,7 +136,6 @@ class MenuConvertToArray
         $structureMenuElementTranslation = $this->createStructure(MenuElementTranslation::class);
         $i = 0;
         foreach ($menuElementTranslations as $menuElementTranslation) {
-
             /** @var MenuElementTranslation $menuElementTranslation */
 
             $return[$i] = $this->generiqueMerge($structureMenuElementTranslation, $menuElementTranslation);
@@ -191,7 +189,7 @@ class MenuConvertToArray
         }
 
         if ($object instanceof MenuElement) {
-            $structure['parent'] = "";
+            $structure['parent'] = '';
         }
 
         if ($object instanceof Menu) {
@@ -203,7 +201,6 @@ class MenuConvertToArray
             } else {
                 $structure['pageMenu'] = ['-1'];
             }
-
         }
         return $structure;
     }

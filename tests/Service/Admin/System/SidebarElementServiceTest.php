@@ -41,7 +41,7 @@ class SidebarElementServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetAllParent() :void
+    public function testGetAllParent(): void
     {
         $this->createSidebarElement(['children' => ['disabled' => false], 'disabled' => false]);
         $this->createSidebarElement(['disabled' => false]);
@@ -62,10 +62,11 @@ class SidebarElementServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetAllPaginate() :void {
+    public function testGetAllPaginate(): void
+    {
         $this->createSidebarElement(['children' => ['disabled' => true], 'disabled' => false]);
 
-        for($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $this->createSidebarElement();
         }
 
@@ -85,7 +86,7 @@ class SidebarElementServiceTest extends AppWebTestCase
     {
         $this->createSidebarElement(['children' => ['disabled' => true], 'disabled' => false]);
 
-        for($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $this->createSidebarElement();
         }
 

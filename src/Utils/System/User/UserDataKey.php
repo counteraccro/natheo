@@ -38,5 +38,4 @@ class UserDataKey
      * @var string
      */
     const TIME_VALIDATE_TOKEN = 'TIME_VALIDATE_TOKEN';
-
 }

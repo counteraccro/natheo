@@ -24,7 +24,10 @@ class TranslationControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
         $this->client->request('GET', $this->router->generate('admin_translation_index'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('translate.page_title_h1', domain: 'translate'));
+        $this->assertSelectorTextContains(
+            'h1',
+            $this->translator->trans('translate.page_title_h1', domain: 'translate'),
+        );
     }
 
     /**
@@ -70,7 +73,10 @@ class TranslationControllerTest extends AppWebTestCase
         $this->assertNotEmpty($content);
         $this->assertArrayHasKey('files', $content);
 
-        $this->client->request('GET', $this->router->generate('admin_translation_files_translate', ['language' => 'es']));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_translation_files_translate', ['language' => 'es']),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -79,7 +85,10 @@ class TranslationControllerTest extends AppWebTestCase
         $this->assertNotEmpty($content);
         $this->assertArrayHasKey('files', $content);
 
-        $this->client->request('GET', $this->router->generate('admin_translation_files_translate', ['language' => 'en']));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_translation_files_translate', ['language' => 'en']),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -95,7 +104,6 @@ class TranslationControllerTest extends AppWebTestCase
      */
     public function testLoadFileTranslate(): void
     {
-
         $path = $this->createTranslateFile();
         $tmp = explode(DIRECTORY_SEPARATOR, $path);
         $fileName = $tmp[array_key_last($tmp)];
@@ -105,7 +113,10 @@ class TranslationControllerTest extends AppWebTestCase
         $user = $this->createUserSuperAdmin();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_translation_file_translate', ['file' => $fileName]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_translation_file_translate', ['file' => $fileName]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -116,7 +127,6 @@ class TranslationControllerTest extends AppWebTestCase
         $this->assertNotEmpty($content['file']);
 
         $this->removeTranslateFile($path);
-
     }
 
     /**
@@ -137,20 +147,23 @@ class TranslationControllerTest extends AppWebTestCase
         $this->checkNoAccess('admin_translation_save_translate', methode: 'PUT');
 
         $data = [
-            "file" => $fileName,
-            "translates" => [
+            'file' => $fileName,
+            'translates' => [
                 [
-                    "key" => "key",
-                    "value" => "value edit"
-                ]
-            ]
+                    'key' => 'key',
+                    'value' => 'value edit',
+                ],
+            ],
         ];
-
 
         $user = $this->createUserSuperAdmin();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('PUT', $this->router->generate('admin_translation_save_translate'), content: json_encode($data));
+        $this->client->request(
+            'PUT',
+            $this->router->generate('admin_translation_save_translate'),
+            content: json_encode($data),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -161,7 +174,10 @@ class TranslationControllerTest extends AppWebTestCase
         $this->assertTrue($content['success']);
         $this->assertArrayHasKey('msg', $content);
 
-        $this->client->request('GET', $this->router->generate('admin_translation_file_translate', ['file' => $fileName]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_translation_file_translate', ['file' => $fileName]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());

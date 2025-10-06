@@ -21,7 +21,6 @@ class MailControllerTest extends AppWebTestCase
      */
     public function testIndex()
     {
-
         $this->checkNoAccess('admin_mail_index');
 
         $userSuperAdm = $this->createUserSuperAdmin();
@@ -38,13 +37,15 @@ class MailControllerTest extends AppWebTestCase
      */
     public function testLoadGridData()
     {
-
         $this->generateDefaultMails();
 
         $this->checkNoAccess('admin_mail_load_grid_data');
         $userSuperAdm = $this->createUserSuperAdmin();
         $this->client->loginUser($userSuperAdm, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_mail_load_grid_data', ['page' => 1, 'limit' => 5]));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_mail_load_grid_data', ['page' => 1, 'limit' => 5]),
+        );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
@@ -61,7 +62,6 @@ class MailControllerTest extends AppWebTestCase
      */
     public function testEdit()
     {
-
         $mail = $this->createMail();
         $this->createMailTranslation($mail, ['locale' => 'fr']);
 
@@ -89,7 +89,10 @@ class MailControllerTest extends AppWebTestCase
         $userSuperAdm = $this->createUserSuperAdmin();
 
         $this->client->loginUser($userSuperAdm, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_mail_load_data', ['id' => $mail->getId(), 'locale' => 'fr']));
+        $this->client->request(
+            'GET',
+            $this->router->generate('admin_mail_load_data', ['id' => $mail->getId(), 'locale' => 'fr']),
+        );
 
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -124,7 +127,11 @@ class MailControllerTest extends AppWebTestCase
         $userSuperAdm = $this->createUserSuperAdmin();
 
         $this->client->loginUser($userSuperAdm, 'admin');
-        $this->client->request('POST', $this->router->generate('admin_mail_save', ['id' => $mail->getId()]), content: json_encode($parameters));
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_mail_save', ['id' => $mail->getId()]),
+            content: json_encode($parameters),
+        );
 
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();

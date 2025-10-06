@@ -19,14 +19,15 @@ class AppApiResolver
      * @param ContainerInterface $handlers
      */
     public function __construct(
-        #[AutowireLocator([
-            'apiParametersParser' => ApiParametersParser::class,
-            'validator' => ValidatorInterface::class,
-            'translator' => TranslatorInterface::class
-        ])]
-        protected ContainerInterface $handlers
-    )
-    {}
+        #[
+            AutowireLocator([
+                'apiParametersParser' => ApiParametersParser::class,
+                'validator' => ValidatorInterface::class,
+                'translator' => TranslatorInterface::class,
+            ]),
+        ]
+        protected ContainerInterface $handlers,
+    ) {}
 
     /**
      * Valide un objet de type Dto
@@ -56,7 +57,7 @@ class AppApiResolver
      */
     protected function getUserToken(Request $request): string
     {
-        if($request->headers->has('User-token')) {
+        if ($request->headers->has('User-token')) {
             return $request->headers->get('User-token');
         }
         return '';

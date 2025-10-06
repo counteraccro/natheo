@@ -24,11 +24,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[\Symfony\Component\Routing\Annotation\Route('/{_locale}/installation', name: 'installation_',
-    requirements: ['_locale' => '%app.supported_locales%'])]
+#[
+    \Symfony\Component\Routing\Annotation\Route(
+        '/{_locale}/installation',
+        name: 'installation_',
+        requirements: ['_locale' => '%app.supported_locales%'],
+    ),
+]
 class InstallationController extends AbstractController
 {
-
     #[Route('/', name: 'index', methods: ['GET'])]
     public function index(): Response
     {
@@ -48,11 +52,9 @@ class InstallationController extends AbstractController
     #[Route('/step-1', name: 'step_1', methods: ['GET'])]
     public function stepOne(
         InstallationTranslate $installationTranslate,
-        InstallationService   $installationService,
-        ParameterBagInterface $parameterBag
-    ): Response
-    {
-
+        InstallationService $installationService,
+        ParameterBagInterface $parameterBag,
+    ): Response {
         if ($installationService->checkSchema()) {
             if ($installationService->checkDataExiste(User::class)) {
                 return $this->redirectToRoute('auth_user_login');
@@ -67,24 +69,24 @@ class InstallationController extends AbstractController
                 'create_bdd' => $this->generateUrl('installation_create_bdd'),
                 'create_schema' => $this->generateUrl('installation_create_schema'),
                 'update_app_secret' => $this->generateUrl('installation_update_app_secret'),
-                'step_2' => $this->generateUrl('installation_step_2')
+                'step_2' => $this->generateUrl('installation_step_2'),
             ],
             'translate' => $installationTranslate->getTranslateStepOne(),
             'locales' => $installationService->getLocales(),
             'datas' => [
                 'bdd_config' => $installationService->getDatabaseUrl(),
                 'config_key' => [
-                    'database_url' => EnvFile::KEY_DATABASE_URL
+                    'database_url' => EnvFile::KEY_DATABASE_URL,
                 ],
                 'option_connexion' => [
                     'test_connexion' => InstallationConst::OPTION_DATABASE_URL_TEST,
-                    'create_database' => InstallationConst::OPTION_DATABASE_URL_CREATE_DATABASE
+                    'create_database' => InstallationConst::OPTION_DATABASE_URL_CREATE_DATABASE,
                 ],
                 'bdd_params' => [
                     'database_schema' => $parameterBag->get('app.default_database_schema'),
                     'database_prefix' => $parameterBag->get('app.default_database_prefix'),
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 
@@ -96,8 +98,7 @@ class InstallationController extends AbstractController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/check-database', name: 'check_database', methods: ['GET'])]
-    public function testConnexionDatabase(
-        DataBase $dataBase): JsonResponse
+    public function testConnexionDatabase(DataBase $dataBase): JsonResponse
     {
         return $this->json(['connexion' => $dataBase->isConnected()]);
     }
@@ -120,7 +121,10 @@ class InstallationController extends AbstractController
             $installationService->updateValueByKeyInEnvFile(EnvFile::KEY_DATABASE_URL, $newValue);
 
             if ($data['type'] === InstallationConst::OPTION_DATABASE_URL_CREATE_DATABASE) {
-                $installationService->updateValueByKeyInEnvFile(EnvFile::KEY_NATHEO_SCHEMA, EnvFile::KEY_NATHEO_SCHEMA . '="' . $data['config']['bdd_name'] . '"');
+                $installationService->updateValueByKeyInEnvFile(
+                    EnvFile::KEY_NATHEO_SCHEMA,
+                    EnvFile::KEY_NATHEO_SCHEMA . '="' . $data['config']['bdd_name'] . '"',
+                );
             }
 
             return $this->json(['success' => true]);
@@ -140,7 +144,10 @@ class InstallationController extends AbstractController
     public function updateSecret(InstallationService $installationService): JsonResponse
     {
         try {
-            $installationService->updateValueByKeyInEnvFile(EnvFile::KEY_APP_SECRET, $installationService->generateSecret());
+            $installationService->updateValueByKeyInEnvFile(
+                EnvFile::KEY_APP_SECRET,
+                $installationService->generateSecret(),
+            );
             return $this->json(['success' => true]);
         } catch (\Exception $e) {
             return $this->json(['success' => false, 'error' => $e->getMessage()]);
@@ -158,7 +165,7 @@ class InstallationController extends AbstractController
         try {
             $commandService->createDatabase();
             return $this->json(['success' => true]);
-        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+        } catch (NotFoundExceptionInterface | ContainerExceptionInterface $e) {
             return $this->json(['success' => false, 'error' => $e->getMessage()]);
         } catch (\Exception $e) {
             return $this->json(['success' => false, 'error' => $e->getMessage()]);
@@ -176,7 +183,7 @@ class InstallationController extends AbstractController
         try {
             $commandService->createSchema();
             return $this->json(['success' => true]);
-        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+        } catch (NotFoundExceptionInterface | ContainerExceptionInterface $e) {
             return $this->json(['success' => false, 'error' => $e->getMessage()]);
         } catch (\Exception $e) {
             return $this->json(['success' => false, 'error' => $e->getMessage()]);
@@ -195,11 +202,9 @@ class InstallationController extends AbstractController
     #[Route('/step-2', name: 'step_2', methods: ['GET'])]
     public function stepTwo(
         InstallationTranslate $installationTranslate,
-        InstallationService   $installationService,
-        ParameterBagInterface $parameterBag
-    ): Response
-    {
-
+        InstallationService $installationService,
+        ParameterBagInterface $parameterBag,
+    ): Response {
         if (!$installationService->checkSchema()) {
             return $this->redirectToRoute('installation_step_1');
         }
@@ -218,8 +223,8 @@ class InstallationController extends AbstractController
             'translate' => $installationTranslate->getTranslateStepTwo(),
             'locales' => $installationService->getLocales(),
             'datas' => [
-                'debug_mode' => $parameterBag->get('app.debug_mode')
-            ]
+                'debug_mode' => $parameterBag->get('app.debug_mode'),
+            ],
         ]);
     }
 
@@ -238,7 +243,6 @@ class InstallationController extends AbstractController
         $return = $installationService->createUser($data['user']);
 
         return $this->json($return);
-
     }
 
     /**
@@ -269,17 +273,18 @@ class InstallationController extends AbstractController
      * @throws \Exception
      */
     #[Route('/load-fixtures', name: 'load_fixtures', methods: ['GET'])]
-    public function loadFixtures(CommandService        $commandService,
-                                 InstallationService   $installationService,
-                                 ParameterBagInterface $parameterBag): JsonResponse
-    {
+    public function loadFixtures(
+        CommandService $commandService,
+        InstallationService $installationService,
+        ParameterBagInterface $parameterBag,
+    ): JsonResponse {
         try {
             $commandService->loadFixtures();
             if ($parameterBag->get('app.debug_mode') === false) {
                 $installationService->createNotificationFondateur();
             }
             return $this->json(['success' => true]);
-        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+        } catch (NotFoundExceptionInterface | ContainerExceptionInterface $e) {
             return $this->json(['success' => false, 'error' => $e->getMessage()]);
         }
     }
@@ -295,12 +300,11 @@ class InstallationController extends AbstractController
     public function clearCache(CommandService $commandService, InstallationService $installationService): JsonResponse
     {
         try {
-
             $value = EnvFile::KEY_APP_ENV . '=' . EnvFile::ENV_PROD;
             $installationService->updateValueByKeyInEnvFile(EnvFile::KEY_APP_ENV, $value);
             $commandService->reloadCache();
             return $this->json(['success' => true]);
-        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+        } catch (NotFoundExceptionInterface | ContainerExceptionInterface $e) {
             return $this->json(['success' => false, 'error' => $e->getMessage()]);
         }
     }

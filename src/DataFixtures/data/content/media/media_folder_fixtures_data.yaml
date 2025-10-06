@@ -1,25 +1,25 @@
 media_folder:
-  Folder_media:
-    name: medias
-    path: \
-    parent:
-  Folder_documentation:
-    name: documentations
-    path: \
-    parent:
-  Folder_paysage:
-    name: paysage
-    path: \medias
-    parent: Folder_media
-  Folder_article:
-    name: articles
-    path: \medias
-    parent: Folder_media
-  Folder_CV:
-    name: cv
-    path: \medias
-    parent: Folder_media
-  Folder_2023:
-    name: 2023
-    path: \medias\articles
-    parent: Folder_article
+    Folder_media:
+        name: medias
+        path: \
+        parent:
+    Folder_documentation:
+        name: documentations
+        path: \
+        parent:
+    Folder_paysage:
+        name: paysage
+        path: \medias
+        parent: Folder_media
+    Folder_article:
+        name: articles
+        path: \medias
+        parent: Folder_media
+    Folder_CV:
+        name: cv
+        path: \medias
+        parent: Folder_media
+    Folder_2023:
+        name: 2023
+        path: \medias\articles
+        parent: Folder_article

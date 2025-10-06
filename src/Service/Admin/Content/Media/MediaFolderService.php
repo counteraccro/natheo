@@ -35,7 +35,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MediaFolderService extends AppAdminService
 {
-
     /**
      * Path de la médiathèque
      * @var string
@@ -76,20 +75,24 @@ class MediaFolderService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function __construct(#[AutowireLocator([
-        'logger' => LoggerInterface::class,
-        'entityManager' => EntityManagerInterface::class,
-        'containerBag' => ContainerBagInterface::class,
-        'translator' => TranslatorInterface::class,
-        'router' => UrlGeneratorInterface::class,
-        'security' => Security::class,
-        'requestStack' => RequestStack::class,
-        'parameterBag' => ParameterBagInterface::class,
-        'optionSystemService' => OptionSystemService::class,
-        'gridService' => GridService::class,
-        'markdownEditorService' => MarkdownEditorService::class
-    ])] protected ContainerInterface $handlers)
-    {
+    public function __construct(
+        #[
+            AutowireLocator([
+                'logger' => LoggerInterface::class,
+                'entityManager' => EntityManagerInterface::class,
+                'containerBag' => ContainerBagInterface::class,
+                'translator' => TranslatorInterface::class,
+                'router' => UrlGeneratorInterface::class,
+                'security' => Security::class,
+                'requestStack' => RequestStack::class,
+                'parameterBag' => ParameterBagInterface::class,
+                'optionSystemService' => OptionSystemService::class,
+                'gridService' => GridService::class,
+                'markdownEditorService' => MarkdownEditorService::class,
+            ]),
+        ]
+        protected ContainerInterface $handlers,
+    ) {
         $this->initValue();
         parent::__construct($handlers);
     }
@@ -117,19 +120,20 @@ class MediaFolderService extends AppAdminService
         $this->rootPathThumbnail = $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_THUMBNAILS;
         if ($env === 'test') {
             $mediaFolder = MediaFolderConst::NAME_DEFAULT_FOLDER_MEDIATHEQUE_TEST;
-            $this->rootPathThumbnail = $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_THUMBNAILS . '-test';
+            $this->rootPathThumbnail =
+                $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_THUMBNAILS . '-test';
         }
 
         //TODO gérer cas url externe
-        $this->rootPathMedia = $this->rootPath . DIRECTORY_SEPARATOR .
-            MediaFolderConst::ROOT_FOLDER_NAME . $mediaFolder;
+        $this->rootPathMedia =
+            $this->rootPath . DIRECTORY_SEPARATOR . MediaFolderConst::ROOT_FOLDER_NAME . $mediaFolder;
 
         $this->webPathMedia = $rootWebPath . MediaFolderConst::PATH_WEB_PATH . $mediaFolder;
 
         $this->webPathThumbnail = $rootWebPath . MediaFolderConst::PATH_WEB_THUMBNAILS;
 
         $optCanCreatePhysicalFolder = $optionSystemService->getValueByKey(
-            OptionSystemKey::OS_MEDIA_CREATE_PHYSICAL_FOLDER
+            OptionSystemKey::OS_MEDIA_CREATE_PHYSICAL_FOLDER,
         );
 
         if ($optCanCreatePhysicalFolder !== null && $optCanCreatePhysicalFolder !== '') {
@@ -171,15 +175,11 @@ class MediaFolderService extends AppAdminService
 
         $filesystem = new Filesystem();
 
-
-
-        if ($mediaFolder->getParent() != null &&
-            !$filesystem->exists($this->rootPathMedia . $mediaFolder->getPath())) {
+        if ($mediaFolder->getParent() != null && !$filesystem->exists($this->rootPathMedia . $mediaFolder->getPath())) {
             return $this->createFolder($mediaFolder->getParent());
         }
 
-        $path = $this->rootPathMedia . $mediaFolder->getPath() .
-            DIRECTORY_SEPARATOR . $mediaFolder->getName();
+        $path = $this->rootPathMedia . $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $mediaFolder->getName();
         $path = str_replace(['\/', '\\'], DIRECTORY_SEPARATOR, $path);
 
         $filesystem->mkdir($path);
@@ -211,13 +211,11 @@ class MediaFolderService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getMediaFolderByMediaFolder
-    (
+    public function getMediaFolderByMediaFolder(
         ?MediaFolder $mediaFolder = null,
-        bool         $trash = false,
-        bool         $disabled = false
-    ): mixed
-    {
+        bool $trash = false,
+        bool $disabled = false,
+    ): mixed {
         $repo = $this->getRepository(MediaFolder::class);
 
         /** @var MediaFolderRepository $repo */
@@ -245,7 +243,7 @@ class MediaFolderService extends AppAdminService
             'root' => $root,
             'size' => Utils::getSizeName($size),
             'path' => $path,
-            'id' => $id
+            'id' => $id,
         ];
     }
 
@@ -276,7 +274,6 @@ class MediaFolderService extends AppAdminService
             $path = $this->getPathFolder($mediaFolder, false);
         }
         return $this->folderSize($path);
-
     }
 
     /**
@@ -310,7 +307,6 @@ class MediaFolderService extends AppAdminService
         if ($parent !== null) {
             $parent->addChild($mediaFolder);
         }
-
 
         $path = DIRECTORY_SEPARATOR;
         if ($parent !== null) {
@@ -362,13 +358,13 @@ class MediaFolderService extends AppAdminService
     private function updateAllPathChildren(string $old, string $new): void
     {
         $patternPath = '/\b' . preg_quote($old) . '\b/';
-        if (stristr($old, "\/") === false) {
+        if (stristr($old, '\/') === false) {
             $patternPath = '/' . preg_quote($old, '/') . '/';
         }
 
         $newWebPath = $new;
         $patternWebPath = '/\b' . preg_quote($old) . '\b/';
-        if (stristr($old, "/") === false) {
+        if (stristr($old, '/') === false) {
             $replace = str_replace('\\', '\/', $old);
             $patternWebPath = '/' . $replace . '/';
             $newWebPath = str_replace('\\', '/', $new);
@@ -383,7 +379,6 @@ class MediaFolderService extends AppAdminService
         $i = 0;
         $flush = false;
         foreach ($listMediaFolder as $mediaFolderChildren) {
-
             $i++;
             if ($i === $nb) {
                 $flush = true;
@@ -403,7 +398,6 @@ class MediaFolderService extends AppAdminService
         $i = 0;
         $flush = false;
         foreach ($listeMedia as $media) {
-
             $i++;
             if ($i === $nb) {
                 $flush = true;
@@ -432,16 +426,23 @@ class MediaFolderService extends AppAdminService
         return [
             $translator->trans('media.mediatheque.info.folder.name', domain: 'media') => $mediaFolder->getName(),
             $translator->trans('media.mediatheque.info.folder.emplacement', domain: 'media') => $mediaFolder->getPath(),
-            $translator->trans('media.mediatheque.info.folder.taille.disque', domain: 'media')
-            => Utils::getSizeName($this->getFolderSize($mediaFolder)),
-            $translator->trans('media.mediatheque.info.folder.contenu', domain: 'media') => $content['files'] . ' ' .
-                $translator->trans('media.mediatheque.info.folder.files', domain: 'media') . ', ' .
-                $content['directory'] . ' ' .
+            $translator->trans('media.mediatheque.info.folder.taille.disque', domain: 'media') => Utils::getSizeName(
+                $this->getFolderSize($mediaFolder),
+            ),
+            $translator->trans('media.mediatheque.info.folder.contenu', domain: 'media') =>
+                $content['files'] .
+                ' ' .
+                $translator->trans('media.mediatheque.info.folder.files', domain: 'media') .
+                ', ' .
+                $content['directory'] .
+                ' ' .
                 $translator->trans('media.mediatheque.info.folder.folder', domain: 'media'),
-            $translator->trans('media.mediatheque.info.folder.date_creation', domain: 'media')
-            => $mediaFolder->getCreatedAt()->format('d/m/y H:i'),
-            $translator->trans('media.mediatheque.info.folder.date_update', domain: 'media')
-            => $mediaFolder->getUpdateAt()->format('d/m/y H:i')
+            $translator->trans('media.mediatheque.info.folder.date_creation', domain: 'media') => $mediaFolder
+                ->getCreatedAt()
+                ->format('d/m/y H:i'),
+            $translator->trans('media.mediatheque.info.folder.date_update', domain: 'media') => $mediaFolder
+                ->getUpdateAt()
+                ->format('d/m/y H:i'),
         ];
     }
 
@@ -459,7 +460,7 @@ class MediaFolderService extends AppAdminService
 
         return [
             'files' => $nbFile,
-            'directory' => $nbDirectory
+            'directory' => $nbDirectory,
         ];
     }
 
@@ -480,14 +481,19 @@ class MediaFolderService extends AppAdminService
             $entity = $this->findOneById(Media::class, $id);
             $folder = $entity->getMediaFolder();
 
-            $label = $translator->trans('media.mediatheque.move.label.media',
-                ['name' => $entity->getName()], domain: 'media');
-
+            $label = $translator->trans(
+                'media.mediatheque.move.label.media',
+                ['name' => $entity->getName()],
+                domain: 'media',
+            );
         } else {
             /** @var MediaFolder $folder */
             $folder = $this->findOneById(MediaFolder::class, $id);
-            $label = $translator->trans('media.mediatheque.move.label.folder',
-                ['name' => $folder->getName()], domain: 'media');
+            $label = $translator->trans(
+                'media.mediatheque.move.label.folder',
+                ['name' => $folder->getName()],
+                domain: 'media',
+            );
         }
 
         $return = [];
@@ -512,7 +518,6 @@ class MediaFolderService extends AppAdminService
      */
     public function getListeFolderToMove(?MediaFolder $folder = null): array
     {
-
         /** @var MediaFolderRepository $repo */
         $repo = $this->getRepository(MediaFolder::class);
         $result = $repo->getAllFolderNoChild($folder);
@@ -550,9 +555,11 @@ class MediaFolderService extends AppAdminService
             foreach ($folder->getChildren() as $child) {
                 foreach ($folders as $fold) {
                     if ($fold->getId() === $child->getId()) {
-                        $return[] = ['id' => $child->getId(), 'name' => '|' . str_pad($child->getName(),
-                                strlen($child->getName()) + $depth
-                                , "-", STR_PAD_LEFT)];
+                        $return[] = [
+                            'id' => $child->getId(),
+                            'name' =>
+                                '|' . str_pad($child->getName(), strlen($child->getName()) + $depth, '-', STR_PAD_LEFT),
+                        ];
                         break;
                     }
                 }
@@ -582,8 +589,12 @@ class MediaFolderService extends AppAdminService
             $oldParent = $mediaFolder->getParent();
             $old = $oldParent->getPath() . $oldParent->getName() . DIRECTORY_SEPARATOR . $mediaFolder->getName();
             if ($oldParent->getPath() !== DIRECTORY_SEPARATOR) {
-                $old = $oldParent->getPath() . DIRECTORY_SEPARATOR .
-                    $oldParent->getName() . DIRECTORY_SEPARATOR . $mediaFolder->getName();
+                $old =
+                    $oldParent->getPath() .
+                    DIRECTORY_SEPARATOR .
+                    $oldParent->getName() .
+                    DIRECTORY_SEPARATOR .
+                    $mediaFolder->getName();
             }
         }
 
@@ -598,8 +609,12 @@ class MediaFolderService extends AppAdminService
             }
             $new = $newParent->getPath() . $newParent->getName() . DIRECTORY_SEPARATOR . $mediaFolder->getName();
             if ($newParent->getPath() !== DIRECTORY_SEPARATOR) {
-                $new = $newParent->getPath() . DIRECTORY_SEPARATOR .
-                    $newParent->getName() . DIRECTORY_SEPARATOR . $mediaFolder->getName();
+                $new =
+                    $newParent->getPath() .
+                    DIRECTORY_SEPARATOR .
+                    $newParent->getName() .
+                    DIRECTORY_SEPARATOR .
+                    $mediaFolder->getName();
             }
         }
 

@@ -25,15 +25,12 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 class DumpSqlHandler
 {
-
     public function __construct(
-        private NotificationService    $notificationService,
+        private NotificationService $notificationService,
         private EntityManagerInterface $entityManager,
-        private ParameterBagInterface  $parameterBag,
-        private KernelInterface $kernel
-    )
-    {
-    }
+        private ParameterBagInterface $parameterBag,
+        private KernelInterface $kernel,
+    ) {}
 
     /**
      * @param DumpSql $dumpSql
@@ -46,7 +43,8 @@ class DumpSqlHandler
     {
         $filesystem = new Filesystem();
         $options = $dumpSql->getOptions();
-        $fileName = DatabaseManagerConst::FILE_NAME_DUMP . date('d-m-Y-H-i-s') . DatabaseManagerConst::FILE_DUMP_EXTENSION;
+        $fileName =
+            DatabaseManagerConst::FILE_NAME_DUMP . date('d-m-Y-H-i-s') . DatabaseManagerConst::FILE_DUMP_EXTENSION;
         $path = $this->kernel->getProjectDir() . DatabaseManagerConst::ROOT_FOLDER_NAME . $fileName;
         $url = '/' . DatabaseManagerConst::FOLDER_NAME . '/' . $fileName;
 
@@ -66,11 +64,13 @@ class DumpSqlHandler
                 $query = $this->generateInsertQuery($table);
                 $filesystem->appendToFile($path, $query . "\n");
             }
-
         }
 
         $user = $this->notificationService->findOneById(User::class, $dumpSql->getUserId());
-        $this->notificationService->add($user, NotificationKey::NOTIFICATION_DUMP_SQL, ['file' => $fileName, 'url' => $url]);
+        $this->notificationService->add($user, NotificationKey::NOTIFICATION_DUMP_SQL, [
+            'file' => $fileName,
+            'url' => $url,
+        ]);
     }
 
     /**

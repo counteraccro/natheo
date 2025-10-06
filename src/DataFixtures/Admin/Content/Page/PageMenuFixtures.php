@@ -17,13 +17,14 @@ use Symfony\Component\Yaml\Yaml;
 
 class PageMenuFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
-    const PAGE_MENU_FIXTURES_DATA_FILE = 'content' . DIRECTORY_SEPARATOR . 'page' . DIRECTORY_SEPARATOR . 'page_menu_fixtures_data.yaml';
+    const PAGE_MENU_FIXTURES_DATA_FILE =
+        'content' . DIRECTORY_SEPARATOR . 'page' . DIRECTORY_SEPARATOR . 'page_menu_fixtures_data.yaml';
 
     public function load(ObjectManager $manager): void
     {
         $data = Yaml::parseFile($this->pathDataFixtures . self::PAGE_MENU_FIXTURES_DATA_FILE);
 
-        if($data === null) {
+        if ($data === null) {
             return;
         }
 

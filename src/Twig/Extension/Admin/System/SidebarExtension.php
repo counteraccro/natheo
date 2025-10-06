@@ -22,7 +22,6 @@ use Twig\Attribute\AsTwigFunction;
 
 class SidebarExtension extends AppAdminExtension
 {
-
     /**
      * @var SidebarElementService
      */
@@ -37,21 +36,22 @@ class SidebarExtension extends AppAdminExtension
 
     private array $tabNotification = [];
 
-
     /**
      * @param ContainerInterface $handlers
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     public function __construct(
-        #[AutowireLocator([
-            'translator' => TranslatorInterface::class,
-            'router' => RouterInterface::class,
-            'sidebarElementService' => SidebarElementService::class,
-            'security' => Security::class
-        ])]
-        private readonly ContainerInterface $handlers)
-    {
+        #[
+            AutowireLocator([
+                'translator' => TranslatorInterface::class,
+                'router' => RouterInterface::class,
+                'sidebarElementService' => SidebarElementService::class,
+                'security' => Security::class,
+            ]),
+        ]
+        private readonly ContainerInterface $handlers,
+    ) {
         $this->sidebarElementService = $this->handlers->get('sidebarElementService');
         $this->security = $this->handlers->get('security');
         parent::__construct($this->handlers);
@@ -97,10 +97,18 @@ class SidebarExtension extends AppAdminExtension
         $url = $this->generateRealUrl($sidebarElement->getRoute());
         $active = $this->isClassActive($sidebarElement->getRoute(), false);
 
-        return '<li ' . $active . '>
-            <a href="' . $url . '">
-                <i class="bi ' . $sidebarElement->getIcon() . '"></i>
-                <span class="d-none-mini">' . $this->translator->trans($sidebarElement->getLabel()) . '</span>
+        return '<li ' .
+            $active .
+            '>
+            <a href="' .
+            $url .
+            '">
+                <i class="bi ' .
+            $sidebarElement->getIcon() .
+            '"></i>
+                <span class="d-none-mini">' .
+            $this->translator->trans($sidebarElement->getLabel()) .
+            '</span>
             </a>
         </li>';
     }
@@ -120,7 +128,7 @@ class SidebarExtension extends AppAdminExtension
             'collapsed' => 'collapsed',
             'aria-expanded' => false,
             'show' => '',
-            'active' => ''
+            'active' => '',
         ];
 
         $html = '';
@@ -139,7 +147,7 @@ class SidebarExtension extends AppAdminExtension
                     'collapsed' => '',
                     'aria-expanded' => true,
                     'show' => 'show',
-                    'active' => 'class="active"'
+                    'active' => 'class="active"',
                 ];
             }
 
@@ -149,13 +157,22 @@ class SidebarExtension extends AppAdminExtension
                 $notification = $this->getHTMLNotification($this->tabNotification[$child->getLabel()]);
             }
 
-
             $url = $this->generateRealUrl($child->getRoute());
-            $html .= '<li ' . $active . '>
-                    <a href="' . $url . '">
-                        <i class="bi ' . $child->getIcon() . '"></i>
-                        <span class="d-none-mini">' . $this->translator->trans($child->getLabel()) .
-                ' ' . $notification . '</span>
+            $html .=
+                '<li ' .
+                $active .
+                '>
+                    <a href="' .
+                $url .
+                '">
+                        <i class="bi ' .
+                $child->getIcon() .
+                '"></i>
+                        <span class="d-none-mini">' .
+                $this->translator->trans($child->getLabel()) .
+                ' ' .
+                $notification .
+                '</span>
                     </a>
                  </li>';
         }
@@ -170,16 +187,33 @@ class SidebarExtension extends AppAdminExtension
             $notification = $this->getHTMLNotification($nbTotalNotification);
         }
 
-        return '<li ' . $tabToggle['active'] . '>
-            <a class="' . $tabToggle['collapsed'] . ' nav-toggle no-control" href="' .
-            $route . '" data-bs-toggle="collapse" data-bs-target="' .
-            $route . '" aria-current="page" aria-expanded="' . $tabToggle['aria-expanded'] . '">
-                <i class="bi ' . $sidebarElement->getIcon() . '"></i> <span class="d-none-mini">'
-            . $this->translator->trans($sidebarElement->getLabel()) . '</span>
-                <i class="bi bi-chevron-right float-end d-none-mini no-control"></i> ' . $notification . '
+        return '<li ' .
+            $tabToggle['active'] .
+            '>
+            <a class="' .
+            $tabToggle['collapsed'] .
+            ' nav-toggle no-control" href="' .
+            $route .
+            '" data-bs-toggle="collapse" data-bs-target="' .
+            $route .
+            '" aria-current="page" aria-expanded="' .
+            $tabToggle['aria-expanded'] .
+            '">
+                <i class="bi ' .
+            $sidebarElement->getIcon() .
+            '"></i> <span class="d-none-mini">' .
+            $this->translator->trans($sidebarElement->getLabel()) .
+            '</span>
+                <i class="bi bi-chevron-right float-end d-none-mini no-control"></i> ' .
+            $notification .
+            '
             </a>
-            <ul class="collapse list-unstyled ' . $tabToggle['show'] . '" id="'
-            . $routeId . '" data-bs-parent="#sidebar">' . $html;
+            <ul class="collapse list-unstyled ' .
+            $tabToggle['show'] .
+            '" id="' .
+            $routeId .
+            '" data-bs-parent="#sidebar">' .
+            $html;
     }
 
     /**
@@ -189,8 +223,9 @@ class SidebarExtension extends AppAdminExtension
      */
     private function getHTMLNotification(int $nb): string
     {
-        return '<span class="badge rounded-pill bg-danger float-end d-none-mini" style="margin-right: 10px">'
-            . $nb . '</span>';
+        return '<span class="badge rounded-pill bg-danger float-end d-none-mini" style="margin-right: 10px">' .
+            $nb .
+            '</span>';
     }
 
     /**
@@ -200,7 +235,7 @@ class SidebarExtension extends AppAdminExtension
     private function getNbNotification(): void
     {
         $this->tabNotification = [
-            'global.update' => 1
+            'global.update' => 1,
         ];
     }
 

@@ -1,10 +1,9 @@
 # Ce fichier permet de définir la surcharge d'un controller par un autre
 
 overwrite:
-    -
-      controller: App\Controller\Admin\DashboardController
+    - controller: App\Controller\Admin\DashboardController
       route: admin_dashboard_page_demo
       overwrite:
-        route: admin_overwrite_page_demo
-        parameters:
-          param : id
+          route: admin_overwrite_page_demo
+          parameters:
+              param: id

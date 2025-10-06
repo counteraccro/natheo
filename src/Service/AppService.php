@@ -51,17 +51,18 @@ class AppService
      * @throws ContainerExceptionInterface
      */
     public function __construct(
-        #[AutowireLocator([
-            'entityManager' => EntityManagerInterface::class,
-            'containerBag' => ContainerBagInterface::class,
-            'translator' => TranslatorInterface::class,
-            'security' => Security::class,
-            'requestStack' => RequestStack::class,
-        ])]
-        private readonly ContainerInterface $handlers
-    )
-    {
-        $this->translator = $this->handlers->get('translator');;
+        #[
+            AutowireLocator([
+                'entityManager' => EntityManagerInterface::class,
+                'containerBag' => ContainerBagInterface::class,
+                'translator' => TranslatorInterface::class,
+                'security' => Security::class,
+                'requestStack' => RequestStack::class,
+            ]),
+        ]
+        private readonly ContainerInterface $handlers,
+    ) {
+        $this->translator = $this->handlers->get('translator');
         $this->requestStack = $this->handlers->get('requestStack');
         $this->security = $this->handlers->get('security');
         $this->params = $this->handlers->get('containerBag');

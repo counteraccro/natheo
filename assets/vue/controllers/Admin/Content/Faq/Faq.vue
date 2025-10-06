@@ -4,28 +4,28 @@
  * @version 1.0
  * Formulaire de création / édition d'une FAQ
  */
-import axios from "axios";
-import FieldEditor from "../../../../Components/Global/FieldEditor.vue";
-import MarkdownEditor from "../../../../Components/Global/MarkdownEditor.vue";
-import Modal from "../../../../Components/Global/Modal.vue";
-import Toast from "../../../../Components/Global/Toast.vue";
-import OptionSystem from "../../System/Option.vue";
-import {emitter} from "../../../../../utils/useEvent";
+import axios from 'axios';
+import FieldEditor from '../../../../Components/Global/FieldEditor.vue';
+import MarkdownEditor from '../../../../Components/Global/MarkdownEditor.vue';
+import Modal from '../../../../Components/Global/Modal.vue';
+import Toast from '../../../../Components/Global/Toast.vue';
+import OptionSystem from '../../System/Option.vue';
+import { emitter } from '../../../../../utils/useEvent';
 
 export default {
-  name: "Faq",
+  name: 'Faq',
   components: {
     OptionSystem,
     MarkdownEditor,
     FieldEditor,
     Modal,
-    Toast
+    Toast,
   },
   props: {
     urls: Object,
     translate: Object,
     locales: Object,
-    id: Number
+    id: Number,
   },
   data() {
     return {
@@ -44,23 +44,23 @@ export default {
         type: '',
         id: '',
         idOrder: 0,
-        orderType: 'before'
+        orderType: 'before',
       },
       dataDisabled: {
         type: '',
         id: '',
         value: '',
-        allQuestion: true
+        allQuestion: true,
       },
       dataDelete: {
         id: '',
-        type: ''
+        type: '',
       },
       modalTab: {
         newCatFaq: false,
         newQuestionFaq: false,
         disabledCatQuestFaq: false,
-        deleteCatQuestFaq: false
+        deleteCatQuestFaq: false,
       },
       toasts: {
         toastSuccessFaq: {
@@ -70,9 +70,9 @@ export default {
         toastErrorFaq: {
           show: false,
           msg: '',
-        }
+        },
       },
-    }
+    };
   },
   mounted() {
     if (this.id !== null) {
@@ -80,23 +80,26 @@ export default {
     }
   },
   methods: {
-
     /**
      * Chargement des données FAQ
      */
     loadFaq() {
       this.loading = true;
-      axios.get(this.urls.load_faq + '/' + this.id).then((response) => {
-        this.faq = response.data.faq;
-        this.tabMaxRenderOrder = response.data.max_render_order;
-        this.loadData = true;
-        this.keyVal += 1;
-        emitter.emit('reset-check-confirm');
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.loading = false;
-      });
+      axios
+        .get(this.urls.load_faq + '/' + this.id)
+        .then((response) => {
+          this.faq = response.data.faq;
+          this.tabMaxRenderOrder = response.data.max_render_order;
+          this.loadData = true;
+          this.keyVal += 1;
+          emitter.emit('reset-check-confirm');
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
 
     /**
@@ -116,10 +119,9 @@ export default {
      * @param concatValue
      * @returns {string}
      */
-    getValueByLocale(elements, property, concatValue = "") {
-
+    getValueByLocale(elements, property, concatValue = '') {
       if (elements === undefined) {
-        return "";
+        return '';
       }
 
       let str = '';
@@ -128,12 +130,11 @@ export default {
           str = item[property];
           return true;
         }
-      })
-      if (concatValue !== "") {
-        return str + "-" + concatValue;
+      });
+      if (concatValue !== '') {
+        return str + '-' + concatValue;
       }
       return str;
-
     },
 
     /**
@@ -146,36 +147,35 @@ export default {
       this.updateNoSave = true;
 
       switch (tmp[1]) {
-        case "faqTranslations":
+        case 'faqTranslations':
           this.faq.faqTranslations.forEach((item) => {
             if (item.id === parseInt(tmp[0])) {
               item.title = value;
             }
-          })
+          });
           break;
-        case "faqCategoryTranslations":
+        case 'faqCategoryTranslations':
           this.faq.faqCategories.forEach((faqC) => {
             faqC.faqCategoryTranslations.forEach((item) => {
               if (item.id === parseInt(tmp[0])) {
                 item.title = value;
               }
-            })
-          })
+            });
+          });
           break;
-        case "faqQuestionTranslations":
+        case 'faqQuestionTranslations':
           this.faq.faqCategories.forEach((faqC) => {
             faqC.faqQuestions.forEach((faqQ) => {
               faqQ.faqQuestionTranslations.forEach((item) => {
                 if (item.id === parseInt(tmp[0])) {
                   item[tmp[2]] = value;
                 }
-              })
-            })
-          })
+              });
+            });
+          });
           break;
         default:
       }
-
     },
 
     /**
@@ -191,26 +191,27 @@ export default {
      * Permet de sauvegarder une FAQ
      */
     save() {
-
       this.loading = true;
-      axios.put(this.urls.save, {
-        'faq': this.faq
-      }).then((response) => {
-
-        if (response.data.success === true) {
-          this.toasts.toastSuccessFaq.msg = response.data.msg;
-          this.toasts.toastSuccessFaq.show = true;
-          this.updateNoSave = false;
-        } else {
-          this.toasts.toastErrorFaq.msg = response.data.msg;
-          this.toasts.toastErrorFaq.show = true;
-        }
-
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.loadFaq();
-      });
+      axios
+        .put(this.urls.save, {
+          faq: this.faq,
+        })
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccessFaq.msg = response.data.msg;
+            this.toasts.toastSuccessFaq.show = true;
+            this.updateNoSave = false;
+          } else {
+            this.toasts.toastErrorFaq.msg = response.data.msg;
+            this.toasts.toastErrorFaq.show = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loadFaq();
+        });
     },
 
     /**
@@ -219,7 +220,7 @@ export default {
      */
     checkInputNewFaq() {
       let element = document.getElementById('new-title-faq');
-      if (this.title === "" || this.title === null) {
+      if (this.title === '' || this.title === null) {
         element.classList.add('is-invalid');
         return false;
       } else {
@@ -232,30 +233,31 @@ export default {
      * Créer une nouvelle FAQ
      */
     newFaq() {
-
       if (!this.checkInputNewFaq()) {
         return false;
       }
 
       this.loading = true;
-      axios.post(this.urls.new_faq, {
-        'title': this.title
-      }).then((response) => {
-
-        if (response.data.success === true) {
-          this.toasts.toastSuccessFaq.msg = response.data.msg;
-          this.toasts.toastSuccessFaq.show = true;
-          emitter.emit('reset-check-confirm');
-          window.location.replace(response.data.url_redirect);
-        } else {
-          this.toasts.toastErrorFaq.msg = response.data.msg;
-          this.toasts.toastErrorFaq.show = true;
-          this.loading = false;
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-      });
+      axios
+        .post(this.urls.new_faq, {
+          title: this.title,
+        })
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccessFaq.msg = response.data.msg;
+            this.toasts.toastSuccessFaq.show = true;
+            emitter.emit('reset-check-confirm');
+            window.location.replace(response.data.url_redirect);
+          } else {
+            this.toasts.toastErrorFaq.msg = response.data.msg;
+            this.toasts.toastErrorFaq.show = true;
+            this.loading = false;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {});
     },
 
     /**
@@ -284,12 +286,11 @@ export default {
             r = renderOrder !== 1;
           } else if (btnType === 'down') {
             r = element.max_render !== renderOrder;
-          }
-          else {
-            r = element.max_render !== 1
+          } else {
+            r = element.max_render !== 1;
           }
         }
-      })
+      });
       return r;
     },
 
@@ -300,7 +301,7 @@ export default {
      */
     getClassByDisabled(disabled) {
       if (disabled) {
-        return 'bg-body-secondary'
+        return 'bg-body-secondary';
       }
       return 'text-bg-light';
     },
@@ -327,7 +328,7 @@ export default {
      * @param nameToast
      */
     closeToast(nameToast) {
-      this.toasts[nameToast].show = false
+      this.toasts[nameToast].show = false;
     },
 
     /**
@@ -342,10 +343,10 @@ export default {
       this.dataDisabled.value = true;
       this.updateModale('disabledCatQuestFaq', true);
       if (type === 'category') {
-        this.msgBodyDisabled = this.translate.faq_category_disabled_message.replace("{categorie}", name);
+        this.msgBodyDisabled = this.translate.faq_category_disabled_message.replace('{categorie}', name);
         this.titleDisabled = this.translate.faq_category_disabled_title;
       } else {
-        this.msgBodyDisabled = this.translate.faq_question_disabled_message.replace("{question}", name);
+        this.msgBodyDisabled = this.translate.faq_question_disabled_message.replace('{question}', name);
         this.titleDisabled = this.translate.faq_question_disabled_title;
       }
     },
@@ -362,14 +363,13 @@ export default {
       this.dataDisabled.value = false;
       this.updateModale('disabledCatQuestFaq', true);
       if (type === 'category') {
-        this.msgBodyDisabled = this.translate.faq_category_enabled_message.replace("{categorie}", name);
+        this.msgBodyDisabled = this.translate.faq_category_enabled_message.replace('{categorie}', name);
         this.titleDisabled = this.translate.faq_category_enabled_title;
       } else {
-        this.msgBodyDisabled = this.translate.faq_question_enabled_message.replace("{question}", name);
+        this.msgBodyDisabled = this.translate.faq_question_enabled_message.replace('{question}', name);
         this.titleDisabled = this.translate.faq_question_enabled_title;
       }
     },
-
 
     /**
      * Met à jour le champ disabled d'une FAQ ou question
@@ -377,26 +377,29 @@ export default {
     updateDisabledCatQuestionFaq() {
       this.updateModale('disabledCatQuestFaq', false);
       this.loading = true;
-      axios.put(this.urls.update_disabled, {
-        'value': this.dataDisabled.value,
-        'id': this.dataDisabled.id,
-        'type': this.dataDisabled.type,
-        'allQuestion': this.dataDisabled.allQuestion
-      }).then((response) => {
-
-        if (response.data.success === true) {
-          this.toasts.toastSuccessFaq.msg = response.data.msg;
-          this.toasts.toastSuccessFaq.show = true;
-        } else {
-          this.toasts.toastErrorFaq.msg = response.data.msg;
-          this.toasts.toastErrorFaq.show = true;
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.loading = false;
-        this.loadFaq();
-      });
+      axios
+        .put(this.urls.update_disabled, {
+          value: this.dataDisabled.value,
+          id: this.dataDisabled.id,
+          type: this.dataDisabled.type,
+          allQuestion: this.dataDisabled.allQuestion,
+        })
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccessFaq.msg = response.data.msg;
+            this.toasts.toastSuccessFaq.show = true;
+          } else {
+            this.toasts.toastErrorFaq.msg = response.data.msg;
+            this.toasts.toastErrorFaq.show = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+          this.loadFaq();
+        });
     },
 
     /**
@@ -406,29 +409,31 @@ export default {
      * @param modaleName
      */
     newFaqCategoryQuestionData(id, type, modaleName) {
-
       this.newDataOrder.id = id;
-      this.newDataOrder.type = type
+      this.newDataOrder.type = type;
 
       this.loading = true;
-      axios.get(this.urls.order_by_type + '/' + id + '/' + type).then((response) => {
+      axios
+        .get(this.urls.order_by_type + '/' + id + '/' + type)
+        .then((response) => {
+          if (response.data.success === true) {
+            this.listeOrderNew = response.data.list;
+            if (this.listeOrderNew.length > 0) {
+              this.newDataOrder.idOrder = this.listeOrderNew[0].id;
+            }
 
-        if (response.data.success === true) {
-          this.listeOrderNew = response.data.list;
-          if (this.listeOrderNew.length > 0) {
-            this.newDataOrder.idOrder = this.listeOrderNew[0].id;
+            this.updateModale(modaleName, true);
+          } else {
+            this.toasts.toastErrorFaq.msg = response.data.msg;
+            this.toasts.toastErrorFaq.show = true;
           }
-
-          this.updateModale(modaleName, true);
-        } else {
-          this.toasts.toastErrorFaq.msg = response.data.msg;
-          this.toasts.toastErrorFaq.show = true;
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.loading = false;
-      });
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
 
     /**
@@ -437,27 +442,30 @@ export default {
      */
     newFaqCategoryQuestion(modaleName) {
       this.loading = true;
-      axios.post(this.urls.new_cat_question, {
-        type : this.newDataOrder.type,
-        orderType : this.newDataOrder.orderType,
-        id: this.newDataOrder.id,
-        idOrder : this.newDataOrder.idOrder,
-      }).then((response) => {
-
-        if (response.data.success === true) {
-          this.toasts.toastSuccessFaq.msg = response.data.msg;
-          this.toasts.toastSuccessFaq.show = true;
-          this.updateModale(modaleName, false);
-          this.loadFaq();
-        } else {
-          this.toasts.toastErrorFaq.msg = response.data.msg;
-          this.toasts.toastErrorFaq.show = true;
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.loading = false;
-      });
+      axios
+        .post(this.urls.new_cat_question, {
+          type: this.newDataOrder.type,
+          orderType: this.newDataOrder.orderType,
+          id: this.newDataOrder.id,
+          idOrder: this.newDataOrder.idOrder,
+        })
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccessFaq.msg = response.data.msg;
+            this.toasts.toastSuccessFaq.show = true;
+            this.updateModale(modaleName, false);
+            this.loadFaq();
+          } else {
+            this.toasts.toastErrorFaq.msg = response.data.msg;
+            this.toasts.toastErrorFaq.show = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
 
     /**
@@ -469,26 +477,29 @@ export default {
      */
     updateOrder(id, idOrder, type, orderType) {
       this.loading = true;
-      axios.put(this.urls.update_order, {
-        id: id,
-        type : type,
-        orderType : orderType,
-        idOrder: idOrder,
-      }).then((response) => {
-
-        if (response.data.success === true) {
-          this.toasts.toastSuccessFaq.msg = response.data.msg;
-          this.toasts.toastSuccessFaq.show = true;
-          this.loadFaq();
-        } else {
-          this.toasts.toastErrorFaq.msg = response.data.msg;
-          this.toasts.toastErrorFaq.show = true;
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        //this.loading = false;
-      });
+      axios
+        .put(this.urls.update_order, {
+          id: id,
+          type: type,
+          orderType: orderType,
+          idOrder: idOrder,
+        })
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccessFaq.msg = response.data.msg;
+            this.toasts.toastSuccessFaq.show = true;
+            this.loadFaq();
+          } else {
+            this.toasts.toastErrorFaq.msg = response.data.msg;
+            this.toasts.toastErrorFaq.show = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          //this.loading = false;
+        });
     },
 
     /**
@@ -496,8 +507,7 @@ export default {
      * @param id
      * @param type
      */
-    openModaleDelete(id, type)
-    {
+    openModaleDelete(id, type) {
       this.dataDelete.id = id;
       this.dataDelete.type = type;
       this.updateModale('deleteCatQuestFaq', true);
@@ -506,36 +516,36 @@ export default {
     /**
      * Supprime une catégorie ou une question
      */
-    deleteFaqCategoryQuestion()
-    {
+    deleteFaqCategoryQuestion() {
       this.loading = true;
-      axios.delete(this.urls.delete_category_question + '/' + this.dataDelete.id + '/' + this.dataDelete.type).then((response) => {
-        if (response.data.success === true) {
-          this.toasts.toastSuccessFaq.msg = response.data.msg;
-          this.toasts.toastSuccessFaq.show = true;
-          this.updateModale('deleteCatQuestFaq', false);
-          this.loadFaq();
-        } else {
-          this.toasts.toastErrorFaq.msg = response.data.msg;
-          this.toasts.toastErrorFaq.show = true;
-        }
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        //this.loading = false;
-      });
-    }
+      axios
+        .delete(this.urls.delete_category_question + '/' + this.dataDelete.id + '/' + this.dataDelete.type)
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccessFaq.msg = response.data.msg;
+            this.toasts.toastSuccessFaq.show = true;
+            this.updateModale('deleteCatQuestFaq', false);
+            this.loadFaq();
+          } else {
+            this.toasts.toastErrorFaq.msg = response.data.msg;
+            this.toasts.toastErrorFaq.show = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          //this.loading = false;
+        });
+    },
   },
-}
+};
 </script>
 
 <template>
-
-
   <div id="block-faq" :class="this.loading === true ? 'block-grid' : ''">
-
     <div v-if="this.loading" class="overlay">
-      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000;">
+      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000">
         <div class="spinner-border text-primary" role="status"></div>
         <span class="txt-overlay">{{ this.translate.loading }}</span>
       </div>
@@ -545,70 +555,123 @@ export default {
       <!-- Edition d'un FAQ -->
 
       <div v-if="this.loadData">
-
         <div class="sticky-md-top p-3 mb-2 mt-2 bg-white border border-1 border-right rounded-1">
           <div class="row">
             <div class="col-9">
               <div class="btn btn-secondary" :class="isDisabled()" @click="this.save">
                 <i class="bi bi-floppy-fill"></i> {{ this.translate.save }}
               </div>
-              <div class="btn btn-secondary ms-3" :class="isDisabled()" @click="this.newFaqCategoryQuestionData(this.id, 'category', 'newCatFaq')">
+              <div
+                class="btn btn-secondary ms-3"
+                :class="isDisabled()"
+                @click="this.newFaqCategoryQuestionData(this.id, 'category', 'newCatFaq')"
+              >
                 <i class="bi bi-plus-square"></i> {{ this.translate.new_category_btn }}
               </div>
             </div>
             <div class="col-3">
               <select id="select-language" class="form-select" @change="this.switchLocale($event)">
-                <option v-for="(language, key) in this.locales.localesTranslate" :value="key"
-                    :selected="key===this.currentLocale">{{ language }}
+                <option
+                  v-for="(language, key) in this.locales.localesTranslate"
+                  :value="key"
+                  :selected="key === this.currentLocale"
+                >
+                  {{ language }}
                 </option>
               </select>
             </div>
           </div>
-          <div v-if="this.updateNoSave" class="text-danger mt-3 text-center p-2 bg-danger-subtle rounded-1 border-right border border-1">
+          <div
+            v-if="this.updateNoSave"
+            class="text-danger mt-3 text-center p-2 bg-danger-subtle rounded-1 border-right border border-1"
+          >
             <i class="bi bi-exclamation-circle-fill"></i> <i>{{ this.translate.msg_no_save }}</i>
           </div>
         </div>
 
-        <FieldEditor :key="this.keyVal"
-            :id="this.getValueByLocale(this.faq.faqTranslations, 'id', 'faqTranslations')"
-            :p-value="this.getValueByLocale(this.faq.faqTranslations, 'title')"
-            balise="h1"
-            rule="isEmpty"
-            :rule-msg="this.translate.error_empty_value"
-            @get-value="this.updateValueByLocale"
+        <FieldEditor
+          :key="this.keyVal"
+          :id="this.getValueByLocale(this.faq.faqTranslations, 'id', 'faqTranslations')"
+          :p-value="this.getValueByLocale(this.faq.faqTranslations, 'title')"
+          balise="h1"
+          rule="isEmpty"
+          :rule-msg="this.translate.error_empty_value"
+          @get-value="this.updateValueByLocale"
         />
 
         <div v-for="fcat in this.faq.faqCategories">
-
           <div class="row">
             <div class="col-10">
-              <FieldEditor :key="this.keyVal"
-                  :id="this.getValueByLocale(fcat.faqCategoryTranslations, 'id', 'faqCategoryTranslations')"
-                  :p-value="this.getValueByLocale(fcat.faqCategoryTranslations, 'title')"
-                  balise="h3"
-                  rule="isEmpty"
-                  :rule-msg="this.translate.error_empty_value"
-                  @get-value="this.updateValueByLocale"
+              <FieldEditor
+                :key="this.keyVal"
+                :id="this.getValueByLocale(fcat.faqCategoryTranslations, 'id', 'faqCategoryTranslations')"
+                :p-value="this.getValueByLocale(fcat.faqCategoryTranslations, 'title')"
+                balise="h3"
+                rule="isEmpty"
+                :rule-msg="this.translate.error_empty_value"
+                @get-value="this.updateValueByLocale"
               />
             </div>
             <div class="col-2">
               <div class="float-end">
-                <div class="btn btn-secondary me-1 mb-1" @click="this.newFaqCategoryQuestionData(fcat.id, 'question', 'newQuestionFaq')">
+                <div
+                  class="btn btn-secondary me-1 mb-1"
+                  @click="this.newFaqCategoryQuestionData(fcat.id, 'question', 'newQuestionFaq')"
+                >
                   <i class="bi bi-file-plus"></i>
                 </div>
-                <div v-if="fcat.renderOrder !== 1" class="btn btn-secondary me-1 mb-1" @click="this.updateOrder(this.faq.id, fcat.id, 'category', 'before')"><i class="bi bi-arrow-up"></i>
+                <div
+                  v-if="fcat.renderOrder !== 1"
+                  class="btn btn-secondary me-1 mb-1"
+                  @click="this.updateOrder(this.faq.id, fcat.id, 'category', 'before')"
+                >
+                  <i class="bi bi-arrow-up"></i>
                 </div>
-                <div v-if="fcat.renderOrder !== this.tabMaxRenderOrder.max_render_order_category" class="btn btn-secondary me-1 mb-1" @click="this.updateOrder(this.faq.id, fcat.id, 'category', 'after')">
+                <div
+                  v-if="fcat.renderOrder !== this.tabMaxRenderOrder.max_render_order_category"
+                  class="btn btn-secondary me-1 mb-1"
+                  @click="this.updateOrder(this.faq.id, fcat.id, 'category', 'after')"
+                >
                   <i class="bi bi-arrow-down"></i>
                 </div>
-                <div v-if="this.tabMaxRenderOrder.max_render_order_category !== 1" class="btn btn-secondary me-1 mb-1" @click="this.openModaleDelete(fcat.id, 'category')"><i class="bi bi-trash"></i></div>
-                <div v-if="fcat.disabled" @click="this.openModalEnabled('category', fcat.id, this.getValueByLocale(fcat.faqCategoryTranslations, 'title'))" class="btn btn-secondary me-1 mb-1">
-                  <i class="bi bi-eye"></i></div>
-                <div v-if="!fcat.disabled" @click="this.openModalDisabled('category', fcat.id, this.getValueByLocale(fcat.faqCategoryTranslations, 'title'))" class="btn btn-secondary me-1 mb-1">
-                  <i class="bi bi-eye-slash"></i></div>
+                <div
+                  v-if="this.tabMaxRenderOrder.max_render_order_category !== 1"
+                  class="btn btn-secondary me-1 mb-1"
+                  @click="this.openModaleDelete(fcat.id, 'category')"
+                >
+                  <i class="bi bi-trash"></i>
+                </div>
+                <div
+                  v-if="fcat.disabled"
+                  @click="
+                    this.openModalEnabled(
+                      'category',
+                      fcat.id,
+                      this.getValueByLocale(fcat.faqCategoryTranslations, 'title')
+                    )
+                  "
+                  class="btn btn-secondary me-1 mb-1"
+                >
+                  <i class="bi bi-eye"></i>
+                </div>
+                <div
+                  v-if="!fcat.disabled"
+                  @click="
+                    this.openModalDisabled(
+                      'category',
+                      fcat.id,
+                      this.getValueByLocale(fcat.faqCategoryTranslations, 'title')
+                    )
+                  "
+                  class="btn btn-secondary me-1 mb-1"
+                >
+                  <i class="bi bi-eye-slash"></i>
+                </div>
               </div>
               <div class="clearfix"></div>
-              <div class="float-end text-small text-secondary me-2"><i>#{{ fcat.renderOrder }}</i></div>
+              <div class="float-end text-small text-secondary me-2">
+                <i>#{{ fcat.renderOrder }}</i>
+              </div>
             </div>
             <div v-if="fcat.disabled" class="float-end">
               <i>{{ this.translate.faq_category_disabled }}</i>
@@ -616,72 +679,115 @@ export default {
           </div>
 
           <div v-for="fQuestion in fcat.faqQuestions">
-
             <div class="card mt-2 mb-2" :class="this.getClassByDisabled(fQuestion.disabled)">
               <div class="row align-items-center">
-
                 <div class="col-11">
                   <div class="card-body">
-                    <FieldEditor :key="this.keyVal" class="mb-3"
-                        :id="this.getValueByLocale(fQuestion.faqQuestionTranslations, 'id', 'faqQuestionTranslations-title')"
-                        :p-value="this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title')"
-                        balise="h5"
-                        rule="isEmpty"
-                        :rule-msg="this.translate.error_empty_value"
-                        @get-value="this.updateValueByLocale"
+                    <FieldEditor
+                      :key="this.keyVal"
+                      class="mb-3"
+                      :id="
+                        this.getValueByLocale(fQuestion.faqQuestionTranslations, 'id', 'faqQuestionTranslations-title')
+                      "
+                      :p-value="this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title')"
+                      balise="h5"
+                      rule="isEmpty"
+                      :rule-msg="this.translate.error_empty_value"
+                      @get-value="this.updateValueByLocale"
                     />
 
-                    <markdown-editor :key="this.keyVal"
-                        :me-id="this.getValueByLocale(fQuestion.faqQuestionTranslations, 'id', 'faqQuestionTranslations-answer')"
-                        :me-value="this.getValueByLocale(fQuestion.faqQuestionTranslations, 'answer')"
-                        :me-rows="14"
-                        :me-translate="this.translate.markdown"
-                        :me-key-words="[]"
-                        :me-save="true"
-                        :me-preview="false"
-                        @editor-value="this.updateAnswer"
-                        @editor-value-change=""
+                    <markdown-editor
+                      :key="this.keyVal"
+                      :me-id="
+                        this.getValueByLocale(fQuestion.faqQuestionTranslations, 'id', 'faqQuestionTranslations-answer')
+                      "
+                      :me-value="this.getValueByLocale(fQuestion.faqQuestionTranslations, 'answer')"
+                      :me-rows="14"
+                      :me-translate="this.translate.markdown"
+                      :me-key-words="[]"
+                      :me-save="true"
+                      :me-preview="false"
+                      @editor-value="this.updateAnswer"
+                      @editor-value-change=""
                     />
 
                     <div v-if="fQuestion.disabled" class="float-end">
                       <i>{{ this.translate.faq_question_disabled }}</i>
                     </div>
-
                   </div>
                 </div>
                 <div class="col-1">
-                  <div v-if="this.showQuestionButton(fQuestion.faqCategory, fQuestion.renderOrder, 'up')" class="btn btn-secondary mt-1" @click="this.updateOrder(fcat.id, fQuestion.id, 'question', 'before')">
+                  <div
+                    v-if="this.showQuestionButton(fQuestion.faqCategory, fQuestion.renderOrder, 'up')"
+                    class="btn btn-secondary mt-1"
+                    @click="this.updateOrder(fcat.id, fQuestion.id, 'question', 'before')"
+                  >
                     <i class="bi bi-arrow-up"></i>
                   </div>
                   <div class="clearfix"></div>
-                  <div v-if="this.showQuestionButton(fQuestion.faqCategory, fQuestion.renderOrder, 'down')" class="btn btn-secondary mt-1" @click="this.updateOrder(fcat.id, fQuestion.id, 'question', 'after')">
-                    <i class="bi bi-arrow-down"></i></div>
+                  <div
+                    v-if="this.showQuestionButton(fQuestion.faqCategory, fQuestion.renderOrder, 'down')"
+                    class="btn btn-secondary mt-1"
+                    @click="this.updateOrder(fcat.id, fQuestion.id, 'question', 'after')"
+                  >
+                    <i class="bi bi-arrow-down"></i>
+                  </div>
                   <div class="clearfix"></div>
-                  <div v-if="this.showQuestionButton(fQuestion.faqCategory, fQuestion.renderOrder, 'trash')" class="btn btn-secondary mt-1" @click="this.openModaleDelete(fQuestion.id, 'question')"><i class="bi bi-trash"></i></div>
+                  <div
+                    v-if="this.showQuestionButton(fQuestion.faqCategory, fQuestion.renderOrder, 'trash')"
+                    class="btn btn-secondary mt-1"
+                    @click="this.openModaleDelete(fQuestion.id, 'question')"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </div>
                   <div class="clearfix"></div>
-                  <div v-if="fQuestion.disabled" @click="this.openModalEnabled('question', fQuestion.id, this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title'))" class="btn btn-secondary mt-1">
-                    <i class="bi bi-eye"></i></div>
+                  <div
+                    v-if="fQuestion.disabled"
+                    @click="
+                      this.openModalEnabled(
+                        'question',
+                        fQuestion.id,
+                        this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title')
+                      )
+                    "
+                    class="btn btn-secondary mt-1"
+                  >
+                    <i class="bi bi-eye"></i>
+                  </div>
                   <div class="clearfix"></div>
-                  <div v-if="!fQuestion.disabled" @click="this.openModalDisabled('question', fQuestion.id, this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title'))" class="btn btn-secondary mt-1">
-                    <i class="bi bi-eye-slash"></i></div>
+                  <div
+                    v-if="!fQuestion.disabled"
+                    @click="
+                      this.openModalDisabled(
+                        'question',
+                        fQuestion.id,
+                        this.getValueByLocale(fQuestion.faqQuestionTranslations, 'title')
+                      )
+                    "
+                    class="btn btn-secondary mt-1"
+                  >
+                    <i class="bi bi-eye-slash"></i>
+                  </div>
                 </div>
               </div>
-              <div class="position-absolute bottom-0 end-0 text-small text-secondary me-2"><i>#{{ fQuestion.renderOrder }}</i></div>
+              <div class="position-absolute bottom-0 end-0 text-small text-secondary me-2">
+                <i>#{{ fQuestion.renderOrder }}</i>
+              </div>
             </div>
           </div>
-          <hr/>
+          <hr />
         </div>
       </div>
       <!-- FIN Edition d'une FAQ -->
 
       <!-- modale nouvelle categogie -->
       <modal
-          :id="'newCatFaq'"
-          :show="this.modalTab.newCatFaq"
-          @close-modal="this.closeModal"
-          :option-modal-size="'modal-lg'"
-          :option-modal-backdrop="'static'"
-          :option-show-close-btn="false"
+        :id="'newCatFaq'"
+        :show="this.modalTab.newCatFaq"
+        @close-modal="this.closeModal"
+        :option-modal-size="'modal-lg'"
+        :option-modal-backdrop="'static'"
+        :option-show-close-btn="false"
       >
         <template #title><i class="bi bi-plus-square"></i> {{ this.translate.faq_category_new_title }}</template>
         <template #body>
@@ -690,20 +796,37 @@ export default {
           </p>
           <label for="list-order-cat" class="form-label">{{ this.translate.faq_category_new_liste_cat }}</label>
           <select class="form-select" id="list-order-cat" v-model="newDataOrder.idOrder">
-            <option v-for="element in this.listeOrderNew" :value="element.id"> {{ element.value }}</option>
+            <option v-for="element in this.listeOrderNew" :value="element.id">{{ element.value }}</option>
           </select>
 
           <div class="mt-3">
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="check-order-type-c" id="check-order-type-before-c" v-model="newDataOrder.orderType" value="before">
-              <label class="form-check-label" for="check-order-type-before-c">{{ this.translate.faq_category_new_before }}</label>
+              <input
+                class="form-check-input"
+                type="radio"
+                name="check-order-type-c"
+                id="check-order-type-before-c"
+                v-model="newDataOrder.orderType"
+                value="before"
+              />
+              <label class="form-check-label" for="check-order-type-before-c">{{
+                this.translate.faq_category_new_before
+              }}</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="check-order-type-c" id="check-order-type-after-c" v-model="newDataOrder.orderType" value="after">
-              <label class="form-check-label" for="check-order-type-after-c">{{ this.translate.faq_category_new_after }}</label>
+              <input
+                class="form-check-input"
+                type="radio"
+                name="check-order-type-c"
+                id="check-order-type-after-c"
+                v-model="newDataOrder.orderType"
+                value="after"
+              />
+              <label class="form-check-label" for="check-order-type-after-c">{{
+                this.translate.faq_category_new_after
+              }}</label>
             </div>
           </div>
-
         </template>
         <template #footer>
           <button type="button" class="btn btn-primary" @click="this.newFaqCategoryQuestion('newCatFaq')">
@@ -718,12 +841,13 @@ export default {
 
       <!-- modale nouvelle question -->
       <modal
-          :id="'newQuestionFaq'"
-          :show="this.modalTab.newQuestionFaq"
-          @close-modal="this.closeModal"
-          :option-modal-size="'modal-lg'"
-          :option-modal-backdrop="'static'"
-          :option-show-close-btn="false">
+        :id="'newQuestionFaq'"
+        :show="this.modalTab.newQuestionFaq"
+        @close-modal="this.closeModal"
+        :option-modal-size="'modal-lg'"
+        :option-modal-backdrop="'static'"
+        :option-show-close-btn="false"
+      >
         <template #title><i class="bi bi-file-plus"></i> {{ this.translate.faq_question_new_title }}</template>
         <template #body>
           <p>
@@ -731,20 +855,37 @@ export default {
           </p>
           <label for="list-order-quest" class="form-label">{{ this.translate.faq_question_new_liste_cat }}</label>
           <select class="form-select" id="list-order-quest" v-model="newDataOrder.idOrder">
-            <option v-for="element in this.listeOrderNew" :value="element.id"> {{ element.value }}</option>
+            <option v-for="element in this.listeOrderNew" :value="element.id">{{ element.value }}</option>
           </select>
 
           <div class="mt-3">
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="check-order-type-q" id="check-order-type-before-q" v-model="newDataOrder.orderType" value="before">
-              <label class="form-check-label" for="check-order-type-before-q">{{ this.translate.faq_question_new_before }}</label>
+              <input
+                class="form-check-input"
+                type="radio"
+                name="check-order-type-q"
+                id="check-order-type-before-q"
+                v-model="newDataOrder.orderType"
+                value="before"
+              />
+              <label class="form-check-label" for="check-order-type-before-q">{{
+                this.translate.faq_question_new_before
+              }}</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="check-order-type-q" id="check-order-type-after-q" v-model="newDataOrder.orderType" value="after">
-              <label class="form-check-label" for="check-order-type-after-q">{{ this.translate.faq_question_new_after }}</label>
+              <input
+                class="form-check-input"
+                type="radio"
+                name="check-order-type-q"
+                id="check-order-type-after-q"
+                v-model="newDataOrder.orderType"
+                value="after"
+              />
+              <label class="form-check-label" for="check-order-type-after-q">{{
+                this.translate.faq_question_new_after
+              }}</label>
             </div>
           </div>
-
         </template>
         <template #footer>
           <button type="button" class="btn btn-primary" @click="this.newFaqCategoryQuestion('newQuestionFaq')">
@@ -759,10 +900,11 @@ export default {
 
       <!-- modale disabled category -->
       <modal
-          :id="'disabledCatQuestFaq'"
-          :show="this.modalTab.disabledCatQuestFaq"
-          @close-modal="this.closeModal"
-          :option-show-close-btn="false">
+        :id="'disabledCatQuestFaq'"
+        :show="this.modalTab.disabledCatQuestFaq"
+        @close-modal="this.closeModal"
+        :option-show-close-btn="false"
+      >
         <template #title>
           <i v-if="this.dataDisabled.value" class="bi bi-eye-slash"></i>
           <i v-if="!this.dataDisabled.value" class="bi bi-eye"></i>
@@ -770,9 +912,14 @@ export default {
         </template>
         <template #body>
           <div v-html="this.msgBodyDisabled"></div>
-          <div v-if="!this.dataDisabled.value && this.dataDisabled.type==='category'">
+          <div v-if="!this.dataDisabled.value && this.dataDisabled.type === 'category'">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" v-model="this.dataDisabled.allQuestion" id="check-all-question-visible">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                v-model="this.dataDisabled.allQuestion"
+                id="check-all-question-visible"
+              />
               <label class="form-check-label" for="check-all-question-visible">
                 {{ this.translate.faq_category_enabled_message_2 }}
               </label>
@@ -791,18 +938,25 @@ export default {
 
       <!-- modale confirmation suppression -->
       <modal
-          :id="'deleteCatQuestFaq'"
-          :show="this.modalTab.deleteCatQuestFaq"
-          @close-modal="this.closeModal"
-          :option-show-close-btn="false">
+        :id="'deleteCatQuestFaq'"
+        :show="this.modalTab.deleteCatQuestFaq"
+        @close-modal="this.closeModal"
+        :option-show-close-btn="false"
+      >
         <template #title>
           <i class="bi bi-sign-stop-fill"></i>&nbsp;
           <span v-if="this.dataDelete.type === 'question'">{{ this.translate.faq_question_delete_titre_confirm }}</span>
           <span v-if="this.dataDelete.type === 'category'">{{ this.translate.faq_category_delete_titre_confirm }}</span>
         </template>
         <template #body>
-          <div v-if="this.dataDelete.type === 'question'" v-html="this.translate.faq_question_delete_body_confirm"></div>
-          <div v-if="this.dataDelete.type === 'category'" v-html="this.translate.faq_category_delete_body_confirm"></div>
+          <div
+            v-if="this.dataDelete.type === 'question'"
+            v-html="this.translate.faq_question_delete_body_confirm"
+          ></div>
+          <div
+            v-if="this.dataDelete.type === 'category'"
+            v-html="this.translate.faq_category_delete_body_confirm"
+          ></div>
         </template>
         <template #footer>
           <button type="button" class="btn btn-primary" @click="this.deleteFaqCategoryQuestion()">
@@ -814,8 +968,6 @@ export default {
         </template>
       </modal>
       <!-- fin modale nouvelle categogie -->
-
-
     </div>
     <!-- Création d'une FAQ -->
     <div v-else>
@@ -826,8 +978,14 @@ export default {
         <div class="card-body">
           <div class="mb-3">
             <label for="new-title-faq" class="form-label">{{ this.translate.new_faq_input_title }}</label>
-            <input type="text" class="form-control no-control" id="new-title-faq" v-model="this.title"
-                :placeholder="this.translate.new_faq_input_title" @change="checkInputNewFaq">
+            <input
+              type="text"
+              class="form-control no-control"
+              id="new-title-faq"
+              v-model="this.title"
+              :placeholder="this.translate.new_faq_input_title"
+              @change="checkInputNewFaq"
+            />
             <div class="invalid-feedback">
               {{ this.translate.new_faq_error_empty }}
             </div>
@@ -850,12 +1008,11 @@ export default {
 
   <!-- toast -->
   <div class="toast-container position-fixed top-0 end-0 p-2">
-
     <toast
-        :id="'toastSuccessFaq'"
-        :option-class-header="'text-success'"
-        :show="this.toasts.toastSuccessFaq.show"
-        @close-toast="this.closeToast"
+      :id="'toastSuccessFaq'"
+      :option-class-header="'text-success'"
+      :show="this.toasts.toastSuccessFaq.show"
+      @close-toast="this.closeToast"
     >
       <template #header>
         <i class="bi bi-check-circle-fill"></i> &nbsp;
@@ -868,10 +1025,10 @@ export default {
     </toast>
 
     <toast
-        :id="'toastErrorFaq'"
-        :option-class-header="'text-danger'"
-        :show="this.toasts.toastErrorFaq.show"
-        @close-toast="this.closeToast"
+      :id="'toastErrorFaq'"
+      :option-class-header="'text-danger'"
+      :show="this.toasts.toastErrorFaq.show"
+      @close-toast="this.closeToast"
     >
       <template #header>
         <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
@@ -882,7 +1039,5 @@ export default {
         <div v-html="this.toasts.toastErrorFaq.msg"></div>
       </template>
     </toast>
-
   </div>
-
 </template>

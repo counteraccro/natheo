@@ -26,7 +26,7 @@ class UserTranslate extends AppTranslate
             'force_chiffre' => $this->translator->trans('user.change_password.force.chiffre', domain: 'user'),
             'force_character_spe' => $this->translator->trans(
                 'user.change_password.force.character_spe',
-                domain: 'user'
+                domain: 'user',
             ),
             'error_password_2' => $this->translator->trans('user.error.password_2', domain: 'user'),
         ];

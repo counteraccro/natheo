@@ -18,7 +18,6 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class PageHistoryTest extends AppWebTestCase
 {
-
     /**
      * @var PageHistory
      */
@@ -55,13 +54,21 @@ class PageHistoryTest extends AppWebTestCase
     public function testSave(): void
     {
         $this->pageHistory->save($this->getDataTest());
-        $exist = $this->filesystem->exists($this->pageHistory->getPathPageHistory() . DIRECTORY_SEPARATOR . 'page-user-' . $this->currentUser->getId() . '.txt');
+        $exist = $this->filesystem->exists(
+            $this->pageHistory->getPathPageHistory() .
+                DIRECTORY_SEPARATOR .
+                'page-user-' .
+                $this->currentUser->getId() .
+                '.txt',
+        );
         $this->assertTrue($exist);
         $this->pageHistory->removePageHistory();
 
         $id = 1;
         $this->pageHistory->save($this->getDataTest($id));
-        $exist = $this->filesystem->exists($this->pageHistory->getPathPageHistory() . DIRECTORY_SEPARATOR . 'page-' . $id . '.txt');
+        $exist = $this->filesystem->exists(
+            $this->pageHistory->getPathPageHistory() . DIRECTORY_SEPARATOR . 'page-' . $id . '.txt',
+        );
         $this->assertTrue($exist);
         $this->pageHistory->removePageHistory($id);
     }
@@ -74,13 +81,21 @@ class PageHistoryTest extends AppWebTestCase
     {
         $this->pageHistory->save($this->getDataTest());
         $this->pageHistory->removePageHistory();
-        $exist = $this->filesystem->exists($this->pageHistory->getPathPageHistory() . DIRECTORY_SEPARATOR . 'page-user-' . $this->currentUser->getId() . '.txt');
+        $exist = $this->filesystem->exists(
+            $this->pageHistory->getPathPageHistory() .
+                DIRECTORY_SEPARATOR .
+                'page-user-' .
+                $this->currentUser->getId() .
+                '.txt',
+        );
         $this->assertFalse($exist);
 
         $id = 1;
         $this->pageHistory->save($this->getDataTest($id));
         $this->pageHistory->removePageHistory($id);
-        $exist = $this->filesystem->exists($this->pageHistory->getPathPageHistory() . DIRECTORY_SEPARATOR . 'page-' . $id . '.txt');
+        $exist = $this->filesystem->exists(
+            $this->pageHistory->getPathPageHistory() . DIRECTORY_SEPARATOR . 'page-' . $id . '.txt',
+        );
         $this->assertFalse($exist);
     }
 
@@ -124,7 +139,6 @@ class PageHistoryTest extends AppWebTestCase
         $this->assertEmpty($result);
         $this->pageHistory->removePageHistory($id);
 
-
         $id = null;
         $this->pageHistory->save($this->getDataTest($id));
         $this->pageHistory->save($this->getDataTest($id));
@@ -141,7 +155,12 @@ class PageHistoryTest extends AppWebTestCase
     public function testRenamePageHistorySave(): void
     {
         $this->pageHistory->save($this->getDataTest());
-        $path = $this->pageHistory->getPathPageHistory() . DIRECTORY_SEPARATOR . 'page-user-' . $this->currentUser->getId() . '.txt';
+        $path =
+            $this->pageHistory->getPathPageHistory() .
+            DIRECTORY_SEPARATOR .
+            'page-user-' .
+            $this->currentUser->getId() .
+            '.txt';
         $exist = $this->filesystem->exists($path);
         $this->assertTrue($exist);
 
@@ -150,7 +169,9 @@ class PageHistoryTest extends AppWebTestCase
         $exist = $this->filesystem->exists($path);
         $this->assertFalse($exist);
 
-        $exist = $this->filesystem->exists($this->pageHistory->getPathPageHistory() . DIRECTORY_SEPARATOR . 'page-' . $idPage . '.txt');
+        $exist = $this->filesystem->exists(
+            $this->pageHistory->getPathPageHistory() . DIRECTORY_SEPARATOR . 'page-' . $idPage . '.txt',
+        );
         $this->assertTrue($exist);
         $this->pageHistory->removePageHistory($idPage);
     }
@@ -162,164 +183,161 @@ class PageHistoryTest extends AppWebTestCase
      */
     private function getDataTest($idPage = null): array
     {
-
         return [
-            "id" => $idPage,
-            "render" => 1,
-            "status" => 1,
-            "pageTranslations" => [
+            'id' => $idPage,
+            'render' => 1,
+            'status' => 1,
+            'pageTranslations' => [
                 [
-                    "id" => 1,
-                    "page" => 1,
-                    "locale" => "fr",
-                    "titre" => "Dernières pages",
-                    "url" => "pages"
+                    'id' => 1,
+                    'page' => 1,
+                    'locale' => 'fr',
+                    'titre' => 'Dernières pages',
+                    'url' => 'pages',
                 ],
                 [
-                    "id" => 2,
-                    "page" => 1,
-                    "locale" => "es",
-                    "titre" => "Últimas páginas",
-                    "url" => "paginas"
+                    'id' => 2,
+                    'page' => 1,
+                    'locale' => 'es',
+                    'titre' => 'Últimas páginas',
+                    'url' => 'paginas',
                 ],
                 [
-                    "id" => 3,
-                    "page" => 1,
-                    "locale" => "en",
-                    "titre" => "Last pages",
-                    "url" => "page"
-                ]
+                    'id' => 3,
+                    'page' => 1,
+                    'locale' => 'en',
+                    'titre' => 'Last pages',
+                    'url' => 'page',
+                ],
             ],
-            "pageContents" => [
+            'pageContents' => [
                 [
-                    "id" => 23,
-                    "page" => 1,
-                    "renderOrder" => 1,
-                    "type" => 1,
-                    "pageContentTranslations" => [
+                    'id' => 23,
+                    'page' => 1,
+                    'renderOrder' => 1,
+                    'type' => 1,
+                    'pageContentTranslations' => [
                         [
-                            "id" => 37,
-                            "pageContent" => 23,
-                            "locale" => "fr",
-                            "text" => "[fr] Contenu de votre page"
+                            'id' => 37,
+                            'pageContent' => 23,
+                            'locale' => 'fr',
+                            'text' => '[fr] Contenu de votre page',
                         ],
                         [
-                            "id" => 38,
-                            "pageContent" => 23,
-                            "locale" => "en",
-                            "text" => "[en] Contenu de votre page"
+                            'id' => 38,
+                            'pageContent' => 23,
+                            'locale' => 'en',
+                            'text' => '[en] Contenu de votre page',
                         ],
                         [
-                            "id" => 39,
-                            "pageContent" => 23,
-                            "locale" => "es",
-                            "text" => "[es] Contenu de votre page"
-                        ]
+                            'id' => 39,
+                            'pageContent' => 23,
+                            'locale' => 'es',
+                            'text' => '[es] Contenu de votre page',
+                        ],
                     ],
-                    "typeId" => null,
-                    "renderBlock" => 1
-                ]
+                    'typeId' => null,
+                    'renderBlock' => 1,
+                ],
             ],
-            "pageStatistiques" => [
+            'pageStatistiques' => [
                 [
-                    "id" => 1,
-                    "page" => 1,
-                    "key" => "PAGE_NB_VISITEUR",
-                    "value" => "100"
+                    'id' => 1,
+                    'page' => 1,
+                    'key' => 'PAGE_NB_VISITEUR',
+                    'value' => '100',
                 ],
                 [
-                    "id" => 2,
-                    "page" => 1,
-                    "key" => "PAGE_NB_READ",
-                    "value" => "32"
-                ]
+                    'id' => 2,
+                    'page' => 1,
+                    'key' => 'PAGE_NB_READ',
+                    'value' => '32',
+                ],
             ],
-            "disabled" => false,
-            "category" => 1,
-            "landingPage" => false,
-            "openComment" => true,
-            "nbComment" => 0,
-            "ruleComment" => 2,
-            "menus" => [
-                4
-            ],
-            "tags" => [
+            'disabled' => false,
+            'category' => 1,
+            'landingPage' => false,
+            'openComment' => true,
+            'nbComment' => 0,
+            'ruleComment' => 2,
+            'menus' => [4],
+            'tags' => [
                 [
-                    "id" => 1,
-                    "color" => "#6F42C1",
-                    "disabled" => false,
-                    "tagTranslations" => [
+                    'id' => 1,
+                    'color' => '#6F42C1',
+                    'disabled' => false,
+                    'tagTranslations' => [
                         [
-                            "id" => 1,
-                            "tag" => 1,
-                            "locale" => "fr",
-                            "label" => "Natheo"
+                            'id' => 1,
+                            'tag' => 1,
+                            'locale' => 'fr',
+                            'label' => 'Natheo',
                         ],
                         [
-                            "id" => 2,
-                            "tag" => 1,
-                            "locale" => "es",
-                            "label" => "Natheo"
+                            'id' => 2,
+                            'tag' => 1,
+                            'locale' => 'es',
+                            'label' => 'Natheo',
                         ],
                         [
-                            "id" => 3,
-                            "tag" => 1,
-                            "locale" => "en",
-                            "label" => "Natheo"
-                        ]
-                    ]
+                            'id' => 3,
+                            'tag' => 1,
+                            'locale' => 'en',
+                            'label' => 'Natheo',
+                        ],
+                    ],
                 ],
                 [
-                    "id" => 8,
-                    "color" => "#23e515",
-                    "disabled" => false,
-                    "tagTranslations" => [
+                    'id' => 8,
+                    'color' => '#23e515',
+                    'disabled' => false,
+                    'tagTranslations' => [
                         [
-                            "id" => 22,
-                            "tag" => 8,
-                            "locale" => "fr",
-                            "label" => "Page"
+                            'id' => 22,
+                            'tag' => 8,
+                            'locale' => 'fr',
+                            'label' => 'Page',
                         ],
                         [
-                            "id" => 23,
-                            "tag" => 8,
-                            "locale" => "es",
-                            "label" => "Page (ES)"
+                            'id' => 23,
+                            'tag' => 8,
+                            'locale' => 'es',
+                            'label' => 'Page (ES)',
                         ],
                         [
-                            "id" => 24,
-                            "tag" => 8,
-                            "locale" => "en",
-                            "label" => "Page (EN)"
-                        ]
-                    ]
+                            'id' => 24,
+                            'tag' => 8,
+                            'locale' => 'en',
+                            'label' => 'Page (EN)',
+                        ],
+                    ],
                 ],
                 [
-                    "id" => 10,
-                    "color" => "#00478c",
-                    "disabled" => false,
-                    "tagTranslations" => [
+                    'id' => 10,
+                    'color' => '#00478c',
+                    'disabled' => false,
+                    'tagTranslations' => [
                         [
-                            "id" => 28,
-                            "tag" => 10,
-                            "locale" => "fr",
-                            "label" => "toto"
+                            'id' => 28,
+                            'tag' => 10,
+                            'locale' => 'fr',
+                            'label' => 'toto',
                         ],
                         [
-                            "id" => 29,
-                            "tag" => 10,
-                            "locale" => "en",
-                            "label" => "toto (en)"
+                            'id' => 29,
+                            'tag' => 10,
+                            'locale' => 'en',
+                            'label' => 'toto (en)',
                         ],
                         [
-                            "id" => 30,
-                            "tag" => 10,
-                            "locale" => "es",
-                            "label" => "toto (es)"
-                        ]
-                    ]
-                ]
-            ]
+                            'id' => 30,
+                            'tag' => 10,
+                            'locale' => 'es',
+                            'label' => 'toto (es)',
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 }

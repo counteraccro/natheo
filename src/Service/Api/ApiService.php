@@ -14,7 +14,6 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class ApiService extends AppApiService
 {
-
     /**
      * Détermine si on peut accéder à l'API ou non
      * @return bool
@@ -47,7 +46,7 @@ class ApiService extends AppApiService
      */
     public function getUserByApiToken(string $token): ?User
     {
-        if(!$this->canAccessToApi()) {
+        if (!$this->canAccessToApi()) {
             return null;
         }
 

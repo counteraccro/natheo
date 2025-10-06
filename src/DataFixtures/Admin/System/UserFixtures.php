@@ -25,8 +25,6 @@ use Symfony\Component\Yaml\Yaml;
 
 class UserFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
-
-
     const USER_FIXTURES_DATA_FILE = 'system' . DIRECTORY_SEPARATOR . 'user_fixtures_data.yaml';
     const USER_FIXTURES_DATA_FILE_DEMO = 'system' . DIRECTORY_SEPARATOR . 'user_demo_fixtures_data.yaml';
 
@@ -53,16 +51,16 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
      * @throws NotFoundExceptionInterface
      */
     public function __construct(
-        #[AutowireLocator([
-            'container' => ContainerBagInterface::class,
-            'passwordHasher' => UserPasswordHasherInterface::class,
-            'optionUserService' => OptionUserService::class,
-            'notificationService' => NotificationService::class,
-
-        ])] private readonly ContainerInterface $handlers
-    )
-    {
-
+        #[
+            AutowireLocator([
+                'container' => ContainerBagInterface::class,
+                'passwordHasher' => UserPasswordHasherInterface::class,
+                'optionUserService' => OptionUserService::class,
+                'notificationService' => NotificationService::class,
+            ]),
+        ]
+        private readonly ContainerInterface $handlers,
+    ) {
         $this->passwordHasher = $this->handlers->get('passwordHasher');
         $this->optionUserService = $this->handlers->get('optionUserService');
         $this->notificationService = $this->handlers->get('notificationService');
@@ -78,7 +76,7 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
      */
     public function load(ObjectManager $manager): void
     {
-        $debugMode = (bool)$this->containerBag->get('app.debug_mode');
+        $debugMode = (bool) $this->containerBag->get('app.debug_mode');
 
         if ($debugMode) {
             $data = Yaml::parseFile($this->pathDataFixtures . self::USER_FIXTURES_DATA_FILE_DEMO);
@@ -92,7 +90,7 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
             foreach ($data as $key => $value) {
                 if (in_array($key, $exclude)) {
                     switch ($key) {
-                        case 'roles' :
+                        case 'roles':
                             $user->setRoles([$value]);
                             break;
                         case 'password':
@@ -106,14 +104,12 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                 } else {
                     $this->setData($key, $value, $user);
                 }
-
             }
             $user = $this->optionUserService->createOptionsUser($user);
-            $user = $this->notificationService->addForFixture(
-                $user,
-                NotificationKey::NOTIFICATION_WELCOME,
-                ['login' => $user->getLogin(), 'role' => $user->getRoles()[0]]
-            );
+            $user = $this->notificationService->addForFixture($user, NotificationKey::NOTIFICATION_WELCOME, [
+                'login' => $user->getLogin(),
+                'role' => $user->getRoles()[0],
+            ]);
             $manager->persist($user);
             $this->addReference($ref, $user);
         }
@@ -133,5 +129,4 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
     {
         return 103; // smaller means sooner
     }
-
 }

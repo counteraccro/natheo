@@ -1,6 +1,5 @@
 <script>
-
-import {marked} from 'marked'
+import { marked } from 'marked';
 
 /**
  * @author Gourdon Aymeric
@@ -20,7 +19,7 @@ export default {
     return {
       isLoad: false,
       faq: null,
-    }
+    };
   },
   created() {
     this.loadContent();
@@ -29,74 +28,71 @@ export default {
     /**
      * Ajoute un span à la fin de chaque ligne
      */
-    document.querySelectorAll("pre code").forEach(codeEl => {
-      if (codeEl.dataset.lnProcessed === "1") return;
+    document.querySelectorAll('pre code').forEach((codeEl) => {
+      if (codeEl.dataset.lnProcessed === '1') return;
 
-      if (codeEl.querySelector(".code-line")) {
-        codeEl.dataset.lnProcessed = "1";
+      if (codeEl.querySelector('.code-line')) {
+        codeEl.dataset.lnProcessed = '1';
         return;
       }
 
       const html = codeEl.innerHTML;
       let lines = html.split(/\r?\n/);
-      if (lines.length && lines[lines.length - 1].trim() === "") lines.pop();
+      if (lines.length && lines[lines.length - 1].trim() === '') lines.pop();
 
-      const wrapped = lines
-          .map(line => `<span class="code-line">${line.length ? line : "&nbsp;"}</span>`).join("");
+      const wrapped = lines.map((line) => `<span class="code-line">${line.length ? line : '&nbsp;'}</span>`).join('');
       codeEl.innerHTML = wrapped;
-      codeEl.dataset.lnProcessed = "1";
+      codeEl.dataset.lnProcessed = '1';
     });
   },
-  computed: {
-
-  },
+  computed: {},
   methods: {
-
     output(content) {
       return marked(content);
     },
 
     loadContent() {
       let success = (datas) => {
-        this.faq = datas
-      }
+        this.faq = datas;
+      };
 
       let loader = () => {
-        this.isLoad = true
-      }
-      let params = {
-        'id': this.data.id,
-        'locale': this.locale
+        this.isLoad = true;
       };
-      this.ajaxRequest.getContentPage(params, success, this.apiFailure, loader)
+      let params = {
+        id: this.data.id,
+        locale: this.locale,
+      };
+      this.ajaxRequest.getContentPage(params, success, this.apiFailure, loader);
     },
 
     apiFailure(code, msg) {
       this.$emit('api-failure', code, msg);
     },
-  }
-}
+  },
+};
 </script>
 
 <template>
   <div v-if="this.isLoad">
-
     <div v-for="category in this.faq.content.categories" class="space-y-4">
       <h2 class="text-slate-900 text-2xl font-semibold mb-3 mt-3">{{ category.title }}</h2>
       <details v-for="question in category.questions" class="group [&_summary::-webkit-details-marker]:hidden">
-        <summary class="flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-white shadow-sm p-4 text-gray-900 group-open:bg-theme-4-750 group-open:!text-theme-1-100 group-open:dark:bg-gray-600 hover:bg-theme-4-750 hover:!text-theme-1-100 hover:cursor-pointer hover:dark:bg-gray-600">
+        <summary
+          class="flex items-center justify-between gap-1.5 rounded-md border border-gray-200 bg-white shadow-sm p-4 text-gray-900 group-open:bg-theme-4-750 group-open:!text-theme-1-100 group-open:dark:bg-gray-600 hover:bg-theme-4-750 hover:!text-theme-1-100 hover:cursor-pointer hover:dark:bg-gray-600"
+        >
           <h2 class="text-lg">{{ question.title }}</h2>
           <svg
-              class="size-5 shrink-0 transition-transform duration-300 group-open:-rotate-180"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor">
+            class="size-5 shrink-0 transition-transform duration-300 group-open:-rotate-180"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </summary>
-        <p class="px-4 pt-4 text-slate-600" v-html="this.output(question.answer)">
-        </p>
+        <p class="px-4 pt-4 text-slate-600" v-html="this.output(question.answer)"></p>
       </details>
     </div>
   </div>

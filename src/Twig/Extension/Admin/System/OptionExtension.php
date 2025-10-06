@@ -24,7 +24,6 @@ use Twig\Attribute\AsTwigFunction;
 
 class OptionExtension extends AppAdminExtension
 {
-
     /**
      * @var OptionSystemService
      */
@@ -59,15 +58,16 @@ class OptionExtension extends AppAdminExtension
      * @throws NotFoundExceptionInterface
      */
     public function __construct(
-        #[AutowireLocator([
-            'translator' => TranslatorInterface::class,
-            'router' => RouterInterface::class,
-            'optionUserService' => OptionUserService::class,
-            'optionSystemService' => OptionSystemService::class
-        ])]
-        private readonly ContainerInterface $handlers
-    )
-    {
+        #[
+            AutowireLocator([
+                'translator' => TranslatorInterface::class,
+                'router' => RouterInterface::class,
+                'optionUserService' => OptionUserService::class,
+                'optionSystemService' => OptionSystemService::class,
+            ]),
+        ]
+        private readonly ContainerInterface $handlers,
+    ) {
         $this->optionUserService = $this->handlers->get('optionUserService');
         $this->optionSystemService = $this->handlers->get('optionSystemService');
         parent::__construct($this->handlers);
@@ -130,9 +130,18 @@ class OptionExtension extends AppAdminExtension
                 $active = 'active';
             }
 
-            $html .= '<button class="nav-link ' . $active . '" id="nav-' . $key . '-tab" data-bs-toggle="tab"
-            data-bs-target="#nav-' . $key . '" type="button" role="tab">
-                    ' . $this->translator->trans($category) . '
+            $html .=
+                '<button class="nav-link ' .
+                $active .
+                '" id="nav-' .
+                $key .
+                '-tab" data-bs-toggle="tab"
+            data-bs-target="#nav-' .
+                $key .
+                '" type="button" role="tab">
+                    ' .
+                $this->translator->trans($category) .
+                '
                 </button>';
         }
         $html .= '</div></nav>';
@@ -158,15 +167,15 @@ class OptionExtension extends AppAdminExtension
             $html .= '<div class="tab-pane fade ' . $active . '" id="nav-' . $key . '" role="tabpanel" tabindex="0">';
 
             $html .= '<h5>' . $this->translator->trans($optionsConfig[$this->globalKey][$category]['title']) . '</h5>';
-            $html .= '<p>' . $this->translator->trans($optionsConfig[$this->globalKey][$category]['description']) .
-                '</p>';
+            $html .=
+                '<p>' . $this->translator->trans($optionsConfig[$this->globalKey][$category]['description']) . '</p>';
 
             foreach ($optionsConfig[$this->globalKey][$category]['options'] as $keyOption => $element) {
                 switch ($element['type']) {
-                    case 'text' :
+                    case 'text':
                         $html .= $this->generateInputText($keyOption, $element);
                         break;
-                    case 'boolean' :
+                    case 'boolean':
                         $html .= $this->generateRadioButton($keyOption, $element);
                         break;
                     case 'textarea':
@@ -210,11 +219,25 @@ class OptionExtension extends AppAdminExtension
             $disabled = 'disabled';
         }
 
-        $html = '<label for="' . $key . '" class="form-label">
-            ' . $this->translator->trans($element['label']) . '</label>
-            <input type="text" class="form-control no-control event-input" id="'
-            . $key . '" ' . $require . ' ' . $placeholder .
-            ' value="' . $this->getValueByKey($key) . '" ' . $disabled . '>' . $msgError;
+        $html =
+            '<label for="' .
+            $key .
+            '" class="form-label">
+            ' .
+            $this->translator->trans($element['label']) .
+            '</label>
+            <input type="text" class="form-control no-control event-input" id="' .
+            $key .
+            '" ' .
+            $require .
+            ' ' .
+            $placeholder .
+            ' value="' .
+            $this->getValueByKey($key) .
+            '" ' .
+            $disabled .
+            '>' .
+            $msgError;
 
         $html .= $this->getSuccess($key, $element);
         $html .= $this->getSpinner($key);
@@ -234,7 +257,7 @@ class OptionExtension extends AppAdminExtension
         $value = $this->getValueByKey($key);
 
         $checked = '';
-        if ($value === "1") {
+        if ($value === '1') {
             $checked = 'checked';
         }
 
@@ -243,18 +266,28 @@ class OptionExtension extends AppAdminExtension
             $disabled = 'disabled';
         }
 
-        $html = '<div class="form-check form-switch">
-            <input class="form-check-input no-control event-input" type="checkbox" role="switch" ' . $disabled . '
-                id="' . $key . '" ' . $checked . '>
-            <label class="form-check-label" for="' . $key . '">
-                ' . $this->translator->trans($element['label']) . '</label>';
+        $html =
+            '<div class="form-check form-switch">
+            <input class="form-check-input no-control event-input" type="checkbox" role="switch" ' .
+            $disabled .
+            '
+                id="' .
+            $key .
+            '" ' .
+            $checked .
+            '>
+            <label class="form-check-label" for="' .
+            $key .
+            '">
+                ' .
+            $this->translator->trans($element['label']) .
+            '</label>';
 
         $html .= $this->getSuccess($key, $element);
         $html .= '</div>';
 
         $html .= $this->getSpinner($key);
         $html .= $this->getHelp($key, $element);
-
 
         return $html;
     }
@@ -282,12 +315,25 @@ class OptionExtension extends AppAdminExtension
             $disabled = 'disabled';
         }
 
-        $html = '<label for="' . $key . '" class="form-label">' . $this->translator->trans($element['label']) .
+        $html =
+            '<label for="' .
+            $key .
+            '" class="form-label">' .
+            $this->translator->trans($element['label']) .
             '</label>
             <textarea class="form-control no-control event-input" rows="5"
-            id="' . $key . '" ' . $require . ' ' . $placeholder . ' ' . $disabled . '>' . $this->getValueByKey($key) .
-            '</textarea>'
-            . $msgError;
+            id="' .
+            $key .
+            '" ' .
+            $require .
+            ' ' .
+            $placeholder .
+            ' ' .
+            $disabled .
+            '>' .
+            $this->getValueByKey($key) .
+            '</textarea>' .
+            $msgError;
 
         $html .= $this->getSuccess($key, $element);
         $html .= $this->getSpinner($key);
@@ -332,10 +378,23 @@ class OptionExtension extends AppAdminExtension
             $optionHtml .= '<option value="' . $option[0] . '" ' . $selected . '>' . $optionLabel . '</option>';
         }
 
-        $html = '<label for="' . $key . '" class="form-label">
-        ' . $this->translator->trans($element['label']) . '</label>
-            <select id="' . $key . '" class="form-select no-control event-input" ' . $selectStyle . ' ' . $disabled . '>
-            ' . $optionHtml . '</select>';
+        $html =
+            '<label for="' .
+            $key .
+            '" class="form-label">
+        ' .
+            $this->translator->trans($element['label']) .
+            '</label>
+            <select id="' .
+            $key .
+            '" class="form-select no-control event-input" ' .
+            $selectStyle .
+            ' ' .
+            $disabled .
+            '>
+            ' .
+            $optionHtml .
+            '</select>';
 
         $html .= $this->getSuccess($key, $element);
         $html .= $this->getSpinner($key);
@@ -353,8 +412,11 @@ class OptionExtension extends AppAdminExtension
     private function getHelp(string $key, array $element): string
     {
         if (isset($element['help'])) {
-            return '<div id="help-' . $key . '" class="form-text"><i class="bi bi-info-circle"></i> <i>'
-                . $this->translator->trans($element['help']) . '</i></div>';
+            return '<div id="help-' .
+                $key .
+                '" class="form-text"><i class="bi bi-info-circle"></i> <i>' .
+                $this->translator->trans($element['help']) .
+                '</i></div>';
         }
         return '';
     }
@@ -368,12 +430,20 @@ class OptionExtension extends AppAdminExtension
     private function getSuccess(string $key, array $element): string
     {
         if (isset($element['success'])) {
-            return '<div id="success-' . $key . '" class="valid-feedback visually-hidden"><b>
-                <i class="bi bi-check-circle"></i>  ' . $this->translator->trans($element['success']) . '</b></div>';
+            return '<div id="success-' .
+                $key .
+                '" class="valid-feedback visually-hidden"><b>
+                <i class="bi bi-check-circle"></i>  ' .
+                $this->translator->trans($element['success']) .
+                '</b></div>';
         }
-        return '<div id="success-' . $key . '" class="valid-feedback visually-hidden"><b>
+        return '<div id="success-' .
+            $key .
+            '" class="valid-feedback visually-hidden"><b>
             <i class="bi bi-check-circle"></i>
-            ' . $this->translator->trans('options_system.default_msg_success') . '</b></div>';
+            ' .
+            $this->translator->trans('options_system.default_msg_success') .
+            '</b></div>';
     }
 
     /**
@@ -385,12 +455,19 @@ class OptionExtension extends AppAdminExtension
     private function getError(string $key, array $element): string
     {
         if (isset($element['msg_error'])) {
-            return '<div id="error-' . $key . '" class="invalid-feedback"><b>
-           <i class="bi bi-exclamation-circle"></i>  ' . $this->translator->trans($element['msg_error']) . '</b></div>';
+            return '<div id="error-' .
+                $key .
+                '" class="invalid-feedback"><b>
+           <i class="bi bi-exclamation-circle"></i>  ' .
+                $this->translator->trans($element['msg_error']) .
+                '</b></div>';
         }
-        return '<div id="error-' . $key . '" class="invalid-feedback"><b>
-        <i class="bi bi-exclamation-circle"></i> '
-            . $this->translator->trans('options_system.default_msg_error') . '</b></div>';
+        return '<div id="error-' .
+            $key .
+            '" class="invalid-feedback"><b>
+        <i class="bi bi-exclamation-circle"></i> ' .
+            $this->translator->trans('options_system.default_msg_error') .
+            '</b></div>';
     }
 
     /**
@@ -400,10 +477,13 @@ class OptionExtension extends AppAdminExtension
      */
     private function getSpinner(string $key): string
     {
-        return '<div id="spinner-' . $key . '" class="float-end visually-hidden">
+        return '<div id="spinner-' .
+            $key .
+            '" class="float-end visually-hidden">
             <div class="spinner-border spinner-border-sm text-primary" role="status">
-                </div> <span class="text-primary"><i> &#8239;&#8239; '
-            . $this->translator->trans('global.loading_save') . '</i></span></div>';
+                </div> <span class="text-primary"><i> &#8239;&#8239; ' .
+            $this->translator->trans('global.loading_save') .
+            '</i></span></div>';
     }
 
     /**

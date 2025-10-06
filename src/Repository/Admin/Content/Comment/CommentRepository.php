@@ -43,25 +43,24 @@ class CommentRepository extends ServiceEntityRepository
      */
     public function getAllPaginate(int $page, int $limit, ?string $search = null, $userId = null): Paginator
     {
-        $query = $this->createQueryBuilder('c')
-            ->orderBy('c.id', 'DESC');
+        $query = $this->createQueryBuilder('c')->orderBy('c.id', 'DESC');
 
         if ($userId !== null) {
-            $query->andwhere('c.userModeration = :userId')
-                ->setParameter('userId', $userId);
+            $query->andwhere('c.userModeration = :userId')->setParameter('userId', $userId);
         }
 
         if ($search !== null) {
-            $query->andWhere('c.comment like :search OR c.author like :search OR c.email like :search')
+            $query
+                ->andWhere('c.comment like :search OR c.author like :search OR c.email like :search')
                 ->setParameter('search', '%' . $search . '%');
         }
 
         $paginator = new Paginator($query->getQuery(), true);
-        $paginator->getQuery()
+        $paginator
+            ->getQuery()
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;
-
     }
 
     /**
@@ -77,17 +76,16 @@ class CommentRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('c');
 
         if ($status !== 0) {
-            $query->andWhere('c.status = :status')
-                ->setParameter('status', $status);
+            $query->andWhere('c.status = :status')->setParameter('status', $status);
         }
 
         if ($idPage !== 0) {
-            $query->andWhere('c.page = :page')
-                ->setParameter("page", $idPage);
+            $query->andWhere('c.page = :page')->setParameter('page', $idPage);
         }
 
         $paginator = new Paginator($query->getQuery(), true);
-        $paginator->getQuery()
+        $paginator
+            ->getQuery()
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;
@@ -101,7 +99,7 @@ class CommentRepository extends ServiceEntityRepository
     public function getNbByType(int $status): int
     {
         $query = $this->createQueryBuilder('c')
-            ->select("COUNT(c.id) as nb")
+            ->select('COUNT(c.id) as nb')
             ->where('c.status = :status')
             ->setParameter('status', $status);
 
@@ -114,15 +112,15 @@ class CommentRepository extends ServiceEntityRepository
      * @param ApiCommentByPageDto $dto
      * @return Paginator
      */
-    public function getCommentsByPageForApi(ApiCommentByPageDto $dto) :Paginator
+    public function getCommentsByPageForApi(ApiCommentByPageDto $dto): Paginator
     {
         $query = $this->createQueryBuilder('c');
 
         if (!empty($dto->getId()) || $dto->getId() !== 0) {
-            $query->andWhere('c.page = :id')
-                ->setParameter('id', $dto->getId());
+            $query->andWhere('c.page = :id')->setParameter('id', $dto->getId());
         } else {
-            $query->leftJoin('c.page', 'p')
+            $query
+                ->leftJoin('c.page', 'p')
                 ->leftJoin('p.pageTranslations', 'pt')
                 ->andWhere('pt.url = :slug')
                 ->setParameter('slug', $dto->getPageSlug())
@@ -133,7 +131,8 @@ class CommentRepository extends ServiceEntityRepository
         $query->orderBy('c.' . $dto->getOrderBy(), $dto->getOrder());
 
         $paginator = new Paginator($query->getQuery(), true);
-        $paginator->getQuery()
+        $paginator
+            ->getQuery()
             ->setFirstResult($dto->getLimit() * ($dto->getPage() - 1))
             ->setMaxResults($dto->getLimit());
         return $paginator;

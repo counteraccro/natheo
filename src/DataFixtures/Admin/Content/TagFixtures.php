@@ -17,8 +17,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class TagFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
-
-    const TAG_FIXTURES_DATA_FILE = 'content' . DIRECTORY_SEPARATOR .'tag_fixtures_data.yaml';
+    const TAG_FIXTURES_DATA_FILE = 'content' . DIRECTORY_SEPARATOR . 'tag_fixtures_data.yaml';
 
     /**
      * @param ObjectManager $manager

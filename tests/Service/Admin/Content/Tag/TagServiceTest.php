@@ -51,7 +51,6 @@ class TagServiceTest extends AppWebTestCase
         $search = $tag->getTagTranslations()->first()->getLabel();
         $result = $this->tagService->getAllPaginate(1, 7, $search);
         $this->assertEquals(1, $result->getIterator()->count());
-
     }
 
     /**

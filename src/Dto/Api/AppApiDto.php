@@ -11,7 +11,5 @@ class AppApiDto
     /**
      * Locale prise en charge
      */
-    protected const LOCALES = [
-        'fr', 'es', 'en'
-    ];
+    protected const LOCALES = ['fr', 'es', 'en'];
 }

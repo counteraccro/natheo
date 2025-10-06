@@ -1,18 +1,17 @@
 <script>
-
 /**
  * @author Gourdon Aymeric
  * @version 1.0
  * Changement du mot de passe pour un compte user
  */
 
-import axios from "axios";
+import axios from 'axios';
 
 export default {
-  name: "ChangePassword",
+  name: 'ChangePassword',
   props: {
     url_change_password: String,
-    translate: Object
+    translate: Object,
   },
   data() {
     return {
@@ -26,45 +25,49 @@ export default {
       progressColor: 'bg-danger',
       msgUpdatePassword: '',
       nbCharacter: {
-        'class': '',
-        'icon': 'bi-x-circle-fill',
-        'progress': 0
+        class: '',
+        icon: 'bi-x-circle-fill',
+        progress: 0,
       },
       majuscule: {
-        'class': '',
-        'icon': 'bi-x-circle-fill',
-        'progress': 0
+        class: '',
+        icon: 'bi-x-circle-fill',
+        progress: 0,
       },
       minuscule: {
-        'class': '',
-        'icon': 'bi-x-circle-fill',
-        'progress': 0
+        class: '',
+        icon: 'bi-x-circle-fill',
+        progress: 0,
       },
       chiffre: {
-        'class': '',
-        'icon': 'bi-x-circle-fill',
-        'progress': 0
+        class: '',
+        icon: 'bi-x-circle-fill',
+        progress: 0,
       },
       special: {
-        'class': '',
-        'icon': 'bi-x-circle-fill',
-        'progress': 0
+        class: '',
+        icon: 'bi-x-circle-fill',
+        progress: 0,
       },
       rule: {
-        'start': '^',
-        'end': '$',
-        'nbCharacter': '.{8,}',
-        'majuscule': '(?=.*[A-Z])',
-        'minuscule': '(?=.*?[a-z])',
-        'chiffre': '(?=.*?[0-9])',
-        'special': '(?=.*?[#?!@$%^&*-])'
-      }
-    }
+        start: '^',
+        end: '$',
+        nbCharacter: '.{8,}',
+        majuscule: '(?=.*[A-Z])',
+        minuscule: '(?=.*?[a-z])',
+        chiffre: '(?=.*?[0-9])',
+        special: '(?=.*?[#?!@$%^&*-])',
+      },
+    };
   },
   computed: {
     progress() {
-      let nb = this.nbCharacter.progress + this.majuscule.progress + this.minuscule.progress
-          + this.chiffre.progress + this.special.progress;
+      let nb =
+        this.nbCharacter.progress +
+        this.majuscule.progress +
+        this.minuscule.progress +
+        this.chiffre.progress +
+        this.special.progress;
 
       switch (nb) {
         case 20:
@@ -83,11 +86,18 @@ export default {
       }
 
       return nb;
-    }
+    },
   },
   methods: {
     validatePasswordFinal() {
-      let reg = new RegExp(this.rule.start + this.rule.majuscule + this.rule.minuscule + this.rule.chiffre + this.rule.special + this.rule.nbCharacter)
+      let reg = new RegExp(
+        this.rule.start +
+          this.rule.majuscule +
+          this.rule.minuscule +
+          this.rule.chiffre +
+          this.rule.special +
+          this.rule.nbCharacter
+      );
       let test = reg.test(this.password);
       if (test && this.password === this.passwordConfirm) {
         this.btnSubmit = '';
@@ -173,7 +183,6 @@ export default {
         rule.progress = 20;
         rule.class = 'text-success';
         rule.icon = 'bi-check-circle-fill';
-
       } else {
         rule.class = 'text-danger';
         rule.icon = 'bi-x-circle-fill';
@@ -205,30 +214,33 @@ export default {
      */
     savePassword() {
       this.loading = true;
-      axios.post(this.url_change_password, {
-        data: this.password
-      }).then((response) => {
-        this.msgUpdatePassword = response.data.msg;
-        this.redirect = response.data.redirect;
-      }).catch((error) => {
-        console.error(error);
-      }).finally(() => {
-        this.loading = false
-        this.resetAll();
-        setTimeout(() => {
-          this.msgUpdatePassword = '';
-          if (this.redirect !== false) {
-            window.location = this.redirect;
-          }
-        }, 4000)
-      });
+      axios
+        .post(this.url_change_password, {
+          data: this.password,
+        })
+        .then((response) => {
+          this.msgUpdatePassword = response.data.msg;
+          this.redirect = response.data.redirect;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+          this.resetAll();
+          setTimeout(() => {
+            this.msgUpdatePassword = '';
+            if (this.redirect !== false) {
+              window.location = this.redirect;
+            }
+          }, 4000);
+        });
     },
-  }
-}
+  },
+};
 </script>
 
 <template>
-
   <div :class="loading === true ? 'block-grid' : ''">
     <div v-if="loading" class="overlay">
       <div class="position-absolute top-50 start-50 translate-middle">
@@ -243,37 +255,56 @@ export default {
 
     <div class="mb-3">
       <label for="input-password-1" class="form-label">{{ this.translate.password }}</label>
-      <input type="password" class="form-control no-control" :class="this.classPassword" id="input-password-1"
-             v-model="password" @keyup="this.checkPassword">
+      <input
+        type="password"
+        class="form-control no-control"
+        :class="this.classPassword"
+        id="input-password-1"
+        v-model="password"
+        @keyup="this.checkPassword"
+      />
     </div>
     <div class="mb-3">
       <label for="input-password-2" class="form-label">{{ this.translate.password_2 }}</label>
-      <input type="password" class="form-control no-control" :class="this.classPasswordConfirm" id="input-password-2"
-             v-model="passwordConfirm" @keyup="this.validatePasswordFinal">
+      <input
+        type="password"
+        class="form-control no-control"
+        :class="this.classPasswordConfirm"
+        id="input-password-2"
+        v-model="passwordConfirm"
+        @keyup="this.validatePasswordFinal"
+      />
       <div class="invalid-feedback">
         {{ this.translate.error_password_2 }}
       </div>
     </div>
 
     <button class="btn btn-secondary" :class="btnSubmit" @click="savePassword">Modifier</button>
-    <hr/>
+    <hr />
 
     <div>
       <p class="mb-0">{{ this.translate.force }}</p>
       <div class="progress">
-        <div class="progress-bar" :class="this.progressColor" :style="'width: ' + this.progress + '%;'"
-             role="progressbar" aria-label="Basic example" :data-aria-valuenow="this.progress" aria-valuemin="0"
-             aria-valuemax="100"></div>
+        <div
+          class="progress-bar"
+          :class="this.progressColor"
+          :style="'width: ' + this.progress + '%;'"
+          role="progressbar"
+          aria-label="Basic example"
+          :data-aria-valuenow="this.progress"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
       </div>
       <div class="row">
         <div class="col-6">
           <p class="mb-0" :class="this.nbCharacter.class">
-            <i class="bi " :class="this.nbCharacter.icon"></i> {{ this.translate.force_nb_character }}
+            <i class="bi" :class="this.nbCharacter.icon"></i> {{ this.translate.force_nb_character }}
           </p>
         </div>
         <div class="col-6">
           <p class="mb-0" :class="this.majuscule.class">
-            <i class="bi " :class="this.majuscule.icon"></i> {{ this.translate.force_majuscule }}
+            <i class="bi" :class="this.majuscule.icon"></i> {{ this.translate.force_majuscule }}
           </p>
         </div>
       </div>
@@ -298,5 +329,4 @@ export default {
       </div>
     </div>
   </div>
-
 </template>

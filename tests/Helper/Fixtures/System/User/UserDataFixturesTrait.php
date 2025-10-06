@@ -23,7 +23,7 @@ trait UserDataFixturesTrait
      */
     public function createUserData(?User $user = null, array $customData = [], bool $persist = true): UserData
     {
-        if($user === null) {
+        if ($user === null) {
             $user = $this->createUser();
         }
         $data = [

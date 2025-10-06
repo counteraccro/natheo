@@ -36,7 +36,14 @@ class MenuElement
     /**
      * @var Collection<int, MenuElementTranslation>
      */
-    #[ORM\OneToMany(mappedBy: 'menuElement', targetEntity: MenuElementTranslation::class, cascade: ['persist'], orphanRemoval: true)]
+    #[
+        ORM\OneToMany(
+            mappedBy: 'menuElement',
+            targetEntity: MenuElementTranslation::class,
+            cascade: ['persist'],
+            orphanRemoval: true,
+        ),
+    ]
     private Collection $menuElementTranslations;
 
     #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'menuElements')]
@@ -53,7 +60,6 @@ class MenuElement
 
     #[ORM\Column]
     private ?bool $disabled = null;
-
 
     public function __construct()
     {
@@ -127,9 +133,11 @@ class MenuElement
      */
     public function getMenuElementTranslationByLocale(string $locale): MenuElementTranslation
     {
-        return $this->getMenuElementTranslations()->filter(function (MenuElementTranslation $menuElementTranslation) use ($locale) {
-            return $menuElementTranslation->getLocale() === $locale;
-        })->first();
+        return $this->getMenuElementTranslations()
+            ->filter(function (MenuElementTranslation $menuElementTranslation) use ($locale) {
+                return $menuElementTranslation->getLocale() === $locale;
+            })
+            ->first();
     }
 
     public function getPage(): ?Page

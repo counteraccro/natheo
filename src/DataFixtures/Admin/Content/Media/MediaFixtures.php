@@ -24,8 +24,8 @@ use Symfony\Component\Yaml\Yaml;
 
 class MediaFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
-    const MEDIA_FIXTURES_DATA_FILE = 'content' . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR .
-    'media_fixtures_data.yaml';
+    const MEDIA_FIXTURES_DATA_FILE =
+        'content' . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR . 'media_fixtures_data.yaml';
 
     private MediaService $mediaService;
 
@@ -34,11 +34,15 @@ class MediaFixtures extends AppFixtures implements FixtureGroupInterface, Ordere
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function __construct(#[AutowireLocator([
-            'container' => ContainerBagInterface::class,
-            'mediaService' => MediaService::class
-        ])] private readonly ContainerInterface $handlers)
-    {
+    public function __construct(
+        #[
+            AutowireLocator([
+                'container' => ContainerBagInterface::class,
+                'mediaService' => MediaService::class,
+            ]),
+        ]
+        private readonly ContainerInterface $handlers,
+    ) {
         $this->mediaService = $this->handlers->get('mediaService');
         parent::__construct($this->handlers);
     }
@@ -57,15 +61,15 @@ class MediaFixtures extends AppFixtures implements FixtureGroupInterface, Ordere
             $media = new Media();
             foreach ($data as $key => $value) {
                 switch ($key) {
-                    case 'folder' :
+                    case 'folder':
                         if (!empty($value)) {
                             $media->setMediaFolder($this->getReference($value, MediaFolder::class));
                         }
                         break;
-                    case 'user' :
+                    case 'user':
                         $media->setUser($this->getReference($value, User::class));
                         break;
-                    case 'description' :
+                    case 'description':
                         $media->setDescription($value);
                         break;
                     case 'image':
@@ -73,7 +77,6 @@ class MediaFixtures extends AppFixtures implements FixtureGroupInterface, Ordere
                         $this->mediaService->UpdateMediaFile($media, $value);
                         break;
                     default:
-
                 }
             }
             $manager->persist($media);

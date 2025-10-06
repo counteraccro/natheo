@@ -36,8 +36,8 @@ class ApiPageContentServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetPageContentForApi() :void {
-
+    public function testGetPageContentForApi(): void
+    {
         $page = $this->createPageAllDataDefault();
         $content = $page->getPageContents()->first();
 
@@ -61,8 +61,8 @@ class ApiPageContentServiceTest extends AppWebTestCase
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function testGetFormatContent() :void {
-
+    public function testGetFormatContent(): void
+    {
         $pageContent = $this->createPageContent();
         foreach ($this->locales as $locale) {
             $this->createPageContentTranslation($pageContent, ['locale' => $locale]);
@@ -72,12 +72,17 @@ class ApiPageContentServiceTest extends AppWebTestCase
         $result = $this->apiPageContentService->getFormatContent($pageContent, $dto);
         $this->assertIsArray($result);
         $this->assertArrayHasKey('content', $result);
-        $this->assertStringContainsString($pageContent->getPageContentTranslationByLocale('fr')->getText(), $result['content']);
+        $this->assertStringContainsString(
+            $pageContent->getPageContentTranslationByLocale('fr')->getText(),
+            $result['content'],
+        );
 
         $this->createPageAllDataDefault();
         $this->createPageAllDataDefault();
 
-        $pageContent = $this->createPageContent( customData: ['type' => PageConst::CONTENT_TYPE_LISTING, 'typeId' => PageConst::PAGE_CATEGORY_PAGE]);
+        $pageContent = $this->createPageContent(
+            customData: ['type' => PageConst::CONTENT_TYPE_LISTING, 'typeId' => PageConst::PAGE_CATEGORY_PAGE],
+        );
         $dto = new ApiFindPageContentDto($pageContent->getId(), 'fr', 1, 20, '');
         $result = $this->apiPageContentService->getFormatContent($pageContent, $dto);
         $this->assertIsArray($result);

@@ -51,15 +51,12 @@ class MediaRepository extends ServiceEntityRepository
         $query->where('m.trash = false');
 
         if ($mediaFolder !== null) {
-            $query->andWhere('m.mediaFolder = :val')
-                ->setParameter('val', $mediaFolder);
+            $query->andWhere('m.mediaFolder = :val')->setParameter('val', $mediaFolder);
         } else {
             $query->andWhere('m.mediaFolder IS NULL');
         }
 
-        return $query->orderBy('m.createdAt', 'ASC')
-            ->getQuery()
-            ->getResult();
+        return $query->orderBy('m.createdAt', 'ASC')->getQuery()->getResult();
     }
 
     /**
@@ -75,7 +72,8 @@ class MediaRepository extends ServiceEntityRepository
             ->andWhere('m.path LIKE :name')
             ->setParameter('name', '%' . $name . '%')
             ->orderBy('m.id', 'ASC')
-            ->getQuery()->getResult();
+            ->getQuery()
+            ->getResult();
     }
 
     /**
@@ -87,7 +85,8 @@ class MediaRepository extends ServiceEntityRepository
         $result = $this->createQueryBuilder('m')
             ->select('count(m.id) as nb')
             ->where('m.trash = true')
-            ->getQuery()->getScalarResult();
+            ->getQuery()
+            ->getScalarResult();
 
         if (isset($result[0]['nb'])) {
             return $result[0]['nb'];

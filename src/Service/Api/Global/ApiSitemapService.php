@@ -32,8 +32,14 @@ class ApiSitemapService extends AppApiService
 
         $return = [];
         foreach ($pages as $page) {
-            foreach($page->getPageTranslations() as $pageTranslation) {
-                $url = '/' . $pageTranslation->getLocale() . '/' . strtolower($pageService->getCategoryById($page->getCategory()))  . '/' . $pageTranslation->getUrl();
+            foreach ($page->getPageTranslations() as $pageTranslation) {
+                $url =
+                    '/' .
+                    $pageTranslation->getLocale() .
+                    '/' .
+                    strtolower($pageService->getCategoryById($page->getCategory())) .
+                    '/' .
+                    $pageTranslation->getUrl();
                 $return[] = [
                     'loc' => $url,
                     'priority' => '1.00',

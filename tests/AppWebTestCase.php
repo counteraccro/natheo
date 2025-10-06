@@ -32,7 +32,7 @@ class AppWebTestCase extends WebTestCase
      */
     protected TranslatorInterface $translator;
 
-    protected array $locales =  ['fr', 'es', 'en'];
+    protected array $locales = ['fr', 'es', 'en'];
 
     public function setUp(): void
     {
@@ -59,9 +59,14 @@ class AppWebTestCase extends WebTestCase
      * @param string $firewall
      * @return void
      */
-    public function checkNoAccess(string $route, array $params = [], string $methode = 'GET', $user = null, string $firewall = 'admin'): void
-    {
-        if($user === null) {
+    public function checkNoAccess(
+        string $route,
+        array $params = [],
+        string $methode = 'GET',
+        $user = null,
+        string $firewall = 'admin',
+    ): void {
+        if ($user === null) {
             $user = $this->createUser();
         }
         $this->generateDefaultOptionUser($user);
@@ -71,5 +76,4 @@ class AppWebTestCase extends WebTestCase
 
         $this->assertResponseStatusCodeSame(403);
     }
-
 }

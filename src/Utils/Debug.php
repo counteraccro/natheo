@@ -17,10 +17,13 @@ class Debug
      */
     public static function printR(mixed $tab): void
     {
-        $tabStack = (debug_backtrace(!DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]);
+        $tabStack = debug_backtrace(!DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1];
         echo '<div class="block-debug-pre">';
-        echo '<p>Généré depuis la fonction <b>' . $tabStack['function'] . '</b> dans la class <b>'
-            . $tabStack['class'] . '</b>';
+        echo '<p>Généré depuis la fonction <b>' .
+            $tabStack['function'] .
+            '</b> dans la class <b>' .
+            $tabStack['class'] .
+            '</b>';
         echo '<pre>';
         print_r($tab);
         echo '</pre></div>';

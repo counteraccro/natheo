@@ -88,7 +88,6 @@ trait FaqFixturesTrait
         $renderOrder = 1;
         if ($faq === null) {
             $faq = $this->createFaq();
-
         } else {
             if ($faq->getFaqCategories()->count() > 0) {
                 $renderOrder = $faq->getFaqCategories()->last()->getRenderOrder() + 1;
@@ -116,8 +115,11 @@ trait FaqFixturesTrait
      * @param bool $persist
      * @return FaqCategoryTranslation
      */
-    public function createFaqCategoryTranslation(?FaqCategory $faqCategory = null, array $customData = [], bool $persist = true): FaqCategoryTranslation
-    {
+    public function createFaqCategoryTranslation(
+        ?FaqCategory $faqCategory = null,
+        array $customData = [],
+        bool $persist = true,
+    ): FaqCategoryTranslation {
         if ($faqCategory === null) {
             $faqCategory = $this->createFaqCategory();
         }
@@ -143,8 +145,11 @@ trait FaqFixturesTrait
      * @param bool $persist
      * @return FaqQuestion
      */
-    public function createFaqQuestion(?FaqCategory $faqCategory = null, array $customData = [], bool $persist = true): FaqQuestion
-    {
+    public function createFaqQuestion(
+        ?FaqCategory $faqCategory = null,
+        array $customData = [],
+        bool $persist = true,
+    ): FaqQuestion {
         $renderOrder = 1;
         if ($faqCategory === null) {
             $faqCategory = $this->createFaqCategory();
@@ -175,8 +180,11 @@ trait FaqFixturesTrait
      * @param bool $persist
      * @return FaqQuestionTranslation
      */
-    public function createFaqQuestionTranslation(?FaqQuestion $faqQuestion = null, array $customData = [], bool $persist = true): FaqQuestionTranslation
-    {
+    public function createFaqQuestionTranslation(
+        ?FaqQuestion $faqQuestion = null,
+        array $customData = [],
+        bool $persist = true,
+    ): FaqQuestionTranslation {
         if ($faqQuestion === null) {
             $faqQuestion = $this->createFaqQuestion();
         }
@@ -231,12 +239,18 @@ trait FaqFixturesTrait
     {
         $faq = $this->createFaq(customData: ['disabled' => false]);
 
-        $this->createFaqStatistique($faq, ['key' => FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES, 'value' => self::getFaker()->numberBetween(1, 1000)]);
-        $this->createFaqStatistique($faq, ['key' => FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS, 'value' => self::getFaker()->numberBetween(1, 5)]);
+        $this->createFaqStatistique($faq, [
+            'key' => FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES,
+            'value' => self::getFaker()->numberBetween(1, 1000),
+        ]);
+        $this->createFaqStatistique($faq, [
+            'key' => FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
+            'value' => self::getFaker()->numberBetween(1, 5),
+        ]);
 
         foreach ($this->locales as $locale) {
             $data = ['locale' => $locale];
-          $this->createFaqTranslation($faq, $data);
+            $this->createFaqTranslation($faq, $data);
         }
 
         for ($i = 0; $i < 2; $i++) {
@@ -244,7 +258,7 @@ trait FaqFixturesTrait
 
             foreach ($this->locales as $locale) {
                 $data = ['locale' => $locale];
-               $this->createFaqCategoryTranslation($faqCategory, $data);
+                $this->createFaqCategoryTranslation($faqCategory, $data);
             }
 
             for ($j = 0; $j < 3; $j++) {

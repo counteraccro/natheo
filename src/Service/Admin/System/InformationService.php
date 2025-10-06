@@ -13,7 +13,6 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class InformationService extends AppAdminService
 {
-
     /**
      * Retourne l'ensemble des informations du cms
      * @return array
@@ -25,9 +24,9 @@ class InformationService extends AppAdminService
                 'serveur' => $this->getInformationServer(),
                 'database' => $this->getInformationDatabase(),
                 'website' => $this->getInformationWebsite(),
-                'navigateur' => $this->getInformationNavigateur()
+                'navigateur' => $this->getInformationNavigateur(),
             ];
-        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+        } catch (NotFoundExceptionInterface | ContainerExceptionInterface $e) {
             die($e->getMessage());
         }
     }
@@ -42,7 +41,7 @@ class InformationService extends AppAdminService
             'server_software_version' => $_SERVER['SERVER_SOFTWARE'],
             'php_version' => phpversion(),
             'memory_limit' => ini_get('memory_limit'),
-            'upload_max_file_size' => ini_get(' upload_max_filesize')
+            'upload_max_file_size' => ini_get(' upload_max_filesize'),
         ];
     }
 
@@ -63,7 +62,7 @@ class InformationService extends AppAdminService
             'database_type' => $matches[0][0],
             'database_user' => $matches[1][0],
             'database_server' => $dataBaseServer[1] . ':' . $matches[3][0],
-            'database_name' => $dataBaseName[0]
+            'database_name' => $dataBaseName[0],
         ];
     }
 
@@ -77,7 +76,7 @@ class InformationService extends AppAdminService
         $containerBag = $this->getContainerBag();
         return [
             'website_version' => $containerBag->get('app.version'),
-            'website_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
+            'website_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'],
         ];
     }
 
@@ -85,10 +84,10 @@ class InformationService extends AppAdminService
      * Retourne les informations du navigateur
      * @return array
      */
-    public function getInformationNavigateur():array
+    public function getInformationNavigateur(): array
     {
         return [
-            'navigateur_info' => $_SERVER['HTTP_USER_AGENT']
+            'navigateur_info' => $_SERVER['HTTP_USER_AGENT'],
         ];
     }
 }

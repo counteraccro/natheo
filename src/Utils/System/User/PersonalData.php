@@ -47,7 +47,7 @@ class PersonalData
         self::OU_PERSONAL_DATA_RENDER_ANONYME,
         self::OU_PERSONAL_DATA_RENDER_EMAIL,
         self::OU_PERSONAL_DATA_RENDER_LOGIN,
-        self::OU_PERSONAL_DATA_RENDER_NAME
+        self::OU_PERSONAL_DATA_RENDER_NAME,
     ];
 
     /**
@@ -101,8 +101,7 @@ class PersonalData
      */
     private function getLogin(): ?string
     {
-        if(empty($this->user->getLogin()))
-        {
+        if (empty($this->user->getLogin())) {
             return $this->getEmail();
         }
         return $this->user->getLogin();
@@ -114,8 +113,7 @@ class PersonalData
      */
     private function getName(): ?string
     {
-        if(empty($this->user->getFirstname()) && empty($this->user->getLastname()))
-        {
+        if (empty($this->user->getFirstname()) && empty($this->user->getLastname())) {
             return $this->getLogin();
         }
         return $this->user->getLastname() . ' ' . $this->user->getFirstname();

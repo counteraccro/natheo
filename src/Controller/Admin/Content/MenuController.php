@@ -45,14 +45,14 @@ class MenuController extends AppAdminController
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'menu',
             Breadcrumb::BREADCRUMB => [
-                'menu.index.page_title_h1' => '#'
-            ]
+                'menu.index.page_title_h1' => '#',
+            ],
         ];
 
         return $this->render('admin/content/menu/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT)
+            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
         ]);
     }
 
@@ -69,11 +69,10 @@ class MenuController extends AppAdminController
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     public function loadGridData(
         MenuService $menuService,
-        Request     $request,
-        int         $page = 1,
-        int         $limit = 20
-    ): JsonResponse
-    {
+        Request $request,
+        int $page = 1,
+        int $limit = 20,
+    ): JsonResponse {
         $search = $request->query->get('search');
         $filter = $request->query->get('filter');
 
@@ -98,10 +97,9 @@ class MenuController extends AppAdminController
     #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', methods: 'PUT')]
     public function updateDisabled(
         #[MapEntity(id: 'id')] Menu $menu,
-        MenuService                 $menuService,
-        TranslatorInterface         $translator,
-    ): JsonResponse
-    {
+        MenuService $menuService,
+        TranslatorInterface $translator,
+    ): JsonResponse {
         $menu->setDisabled(!$menu->isDisabled());
         $menuService->save($menu);
 
@@ -124,10 +122,9 @@ class MenuController extends AppAdminController
     #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(
         #[MapEntity(id: 'id')] Menu $menu,
-        MenuService                 $menuService,
-        TranslatorInterface         $translator,
-    ): JsonResponse
-    {
+        MenuService $menuService,
+        TranslatorInterface $translator,
+    ): JsonResponse {
         $titre = $menu->getName();
         $menuService->remove($menu);
 
@@ -147,17 +144,15 @@ class MenuController extends AppAdminController
     #[Route('/ajax/switch-default/{id}', name: 'switch_default', methods: ['PUT'])]
     public function switchDefaultMenu(
         #[MapEntity(id: 'id')] Menu $menu,
-        MenuService                 $menuService,
-        TranslatorInterface         $translator,
-    ): JsonResponse
-    {
+        MenuService $menuService,
+        TranslatorInterface $translator,
+    ): JsonResponse {
         $menu->setDefaultMenu(true);
         $menuService->save($menu);
         $menuService->switchDefaultMenuToFalse($menu->getId(), $menu->getPosition());
         $msg = $translator->trans('menu.success.switch.default', ['label' => $menu->getName()], 'menu');
         return $this->json($menuService->getResponseAjax($msg));
     }
-
 
     /**
      * Création / édition d'un menu
@@ -170,11 +165,7 @@ class MenuController extends AppAdminController
      */
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
-    public function add(
-        MenuService   $menuService,
-        MenuTranslate $menuTranslate,
-        ?int          $id = null
-    ): Response
+    public function add(MenuService $menuService, MenuTranslate $menuTranslate, ?int $id = null): Response
     {
         $breadcrumbTitle = 'menu.update.menu_title_h1';
         if ($id === null) {
@@ -185,8 +176,8 @@ class MenuController extends AppAdminController
             Breadcrumb::DOMAIN => 'menu',
             Breadcrumb::BREADCRUMB => [
                 'menu.index.page_title' => 'admin_menu_index',
-                $breadcrumbTitle => '#'
-            ]
+                $breadcrumbTitle => '#',
+            ],
         ];
 
         $translate = $menuTranslate->getTranslate();
@@ -199,8 +190,7 @@ class MenuController extends AppAdminController
             'id' => $id,
             'datas' => [
                 'list_position' => $menuService->getListPosition(),
-                'list_type' => $menuService->getListType()
-
+                'list_type' => $menuService->getListType(),
             ],
             'urls' => [
                 'load_menu' => $this->generateUrl('admin_menu_load_menu'),
@@ -209,8 +199,8 @@ class MenuController extends AppAdminController
                 'new_menu_element' => $this->generateUrl('admin_menu_new_menu_element'),
                 'update_parent_menu_element' => $this->generateUrl('admin_menu_update_parent_menu_element'),
                 'list_parent_menu_element' => $this->generateUrl('admin_menu_list_parent_menu_element'),
-                'reorder_menu_element' => $this->generateUrl('admin_menu_reorder_menu_element')
-            ]
+                'reorder_menu_element' => $this->generateUrl('admin_menu_reorder_menu_element'),
+            ],
         ]);
     }
 
@@ -226,12 +216,11 @@ class MenuController extends AppAdminController
      */
     #[Route('/ajax/load-menu/{id}', name: 'load_menu', methods: ['GET'])]
     public function getMenuById(
-        MenuConvertToArray  $menuJson,
+        MenuConvertToArray $menuJson,
         OptionSystemService $optionSystemService,
-        PageService         $pageService,
-        ?int                $id = null
-    ): JsonResponse
-    {
+        PageService $pageService,
+        ?int $id = null,
+    ): JsonResponse {
         $menu = $menuJson->convertToArray($id);
         $name = $optionSystemService->getValueByKey(OptionSystemKey::OS_SITE_NAME);
         $logo = $optionSystemService->getValueByKey(OptionSystemKey::OS_LOGO_SITE);
@@ -242,14 +231,16 @@ class MenuController extends AppAdminController
             unset($menu['allElements']);
         }
 
-
-        return $this->json(['menu' => $menu, 'data' => [
-            'all_elements' => $allElement,
-            'name' => $name,
-            'logo' => $logo,
-            'url_site' => $urlSite,
-            'pages' => $pageService->getAllTitleAndUrlPage(),
-        ]]);
+        return $this->json([
+            'menu' => $menu,
+            'data' => [
+                'all_elements' => $allElement,
+                'name' => $name,
+                'logo' => $logo,
+                'url_site' => $urlSite,
+                'pages' => $pageService->getAllTitleAndUrlPage(),
+            ],
+        ]);
     }
 
     /**
@@ -261,11 +252,7 @@ class MenuController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/save-menu', name: 'save_menu', methods: ['POST'])]
-    public function save(
-        Request             $request,
-        MenuService         $menuService,
-        TranslatorInterface $translator
-    ): JsonResponse
+    public function save(Request $request, MenuService $menuService, TranslatorInterface $translator): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $menu = new Menu();
@@ -299,18 +286,19 @@ class MenuController extends AppAdminController
      */
     #[Route('/ajax/delete-menu-element/{id}', name: 'delete_menu_element', methods: ['DELETE'])]
     public function deleteMenuElement(
-        MenuService         $menuService,
+        MenuService $menuService,
         TranslatorInterface $translator,
-        ?int                $id = null,
-    ): JsonResponse
-    {
+        ?int $id = null,
+    ): JsonResponse {
         if ($id === null) {
             return $this->json($menuService->getResponseAjax());
         }
 
         $menuElement = $menuService->findOneById(MenuElement::class, $id);
         $menuService->remove($menuElement);
-        return $this->json($menuService->getResponseAjax($translator->trans('menu.element.remove.success', [], 'menu')));
+        return $this->json(
+            $menuService->getResponseAjax($translator->trans('menu.element.remove.success', [], 'menu')),
+        );
     }
 
     /**
@@ -324,11 +312,10 @@ class MenuController extends AppAdminController
      */
     #[Route('/ajax/new-menu-element', name: 'new_menu_element', methods: ['POST'])]
     public function newMenuElement(
-        MenuService         $menuService,
+        MenuService $menuService,
         TranslatorInterface $translator,
-        Request             $request
-    ): JsonResponse
-    {
+        Request $request,
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
         $id = $menuService->addMenuElement($data['idMenu'], $data['columP'], $data['rowP'], $data['idParent']);
         $response = $menuService->getResponseAjax($translator->trans('menu.element.new.success', domain: 'menu'));
@@ -347,15 +334,16 @@ class MenuController extends AppAdminController
      */
     #[Route('/ajax/update-parent', name: 'update_parent_menu_element', methods: ['PATCH'])]
     public function changeParent(
-        MenuService         $menuService,
+        MenuService $menuService,
         TranslatorInterface $translator,
-        Request             $request
-    ): JsonResponse
-    {
+        Request $request,
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
         $menuService->updateParent($data['id'], $data['columP'], $data['rowP'], $data['idParent']);
 
-        $response = $menuService->getResponseAjax($translator->trans('menu.element.change.parent.success', domain: 'menu'));
+        $response = $menuService->getResponseAjax(
+            $translator->trans('menu.element.change.parent.success', domain: 'menu'),
+        );
         $response['id'] = $data['id'];
         return $this->json($response);
     }
@@ -370,11 +358,7 @@ class MenuController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/get-list-parent/{menuId}/{elementId}', name: 'list_parent_menu_element', methods: ['GET'])]
-    public function getListParent(
-        MenuService $menuService,
-        ?int        $menuId = null,
-        ?int        $elementId = null
-    ): JsonResponse
+    public function getListParent(MenuService $menuService, ?int $menuId = null, ?int $elementId = null): JsonResponse
     {
         $listeParent = $menuService->getListeParentByMenuElement($menuId, $elementId);
 
@@ -392,11 +376,10 @@ class MenuController extends AppAdminController
      */
     #[Route('/ajax/reorder-menu-element', name: 'reorder_menu_element', methods: ['PATCH'])]
     public function reorderMenuElement(
-        Request             $request,
-        MenuService         $menuService,
+        Request $request,
+        MenuService $menuService,
         TranslatorInterface $translator,
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
         $menuService->reorderMenuElement($data['data']);
         $return = $menuService->getResponseAjax($translator->trans('menu.element.reorder.success', domain: 'menu'));

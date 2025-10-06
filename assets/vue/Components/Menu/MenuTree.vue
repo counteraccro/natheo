@@ -1,12 +1,13 @@
-<script>/**
+<script>
+/**
  * @author Gourdon Aymeric
  * @version 1.0
  * Composant pour gérer l'arbre du menu
  */
-import {emitter} from "../../../utils/useEvent";
+import { emitter } from '../../../utils/useEvent';
 
 export default {
-  name: "MenuTree",
+  name: 'MenuTree',
   components: {},
   emit: [],
   props: {
@@ -14,12 +15,12 @@ export default {
     menuElement: Object,
     locale: String,
     idSelect: Number,
-    deep: Number
+    deep: Number,
   },
   data() {
     return {
-      isOpen: false
-    }
+      isOpen: false,
+    };
   },
   mounted() {},
   updated() {
@@ -27,13 +28,12 @@ export default {
   },
 
   computed: {
-
     /**
      * Test si des enfants existent
      * @returns {boolean}
      */
     haveChildren() {
-      return this.menuElement.hasOwnProperty('children') && this.menuElement.children.length
+      return this.menuElement.hasOwnProperty('children') && this.menuElement.children.length;
     },
 
     /**
@@ -41,15 +41,14 @@ export default {
      * @returns {boolean}
      */
     haveParent() {
-      return this.menuElement.hasOwnProperty('parent') && this.menuElement.parent !== "";
+      return this.menuElement.hasOwnProperty('parent') && this.menuElement.parent !== '';
     },
 
     /**
      * Test si le menuElement est désactivé ou non
      * @returns {boolean}
      */
-    isDisabled()
-    {
+    isDisabled() {
       return this.menuElement.disabled;
     },
 
@@ -59,17 +58,14 @@ export default {
      */
     isSelected() {
       if (this.menuElement.id === this.idSelect) {
-        return "selected";
+        return 'selected';
       } else {
         return '';
       }
-    }
-
-
+    },
   },
 
   methods: {
-
     /**
      * Force l'ouverture d'un noeud dans le cas d'une création
      */
@@ -89,14 +85,14 @@ export default {
      */
     updateElement() {
       console.log(this.deep);
-      emitter.emit('update-menu-element', {id : this.menuElement.id, deep : this.deep});
+      emitter.emit('update-menu-element', { id: this.menuElement.id, deep: this.deep });
     },
 
     /**
      * Créer un nouvel élément au menu
      */
     newElement() {
-      emitter.emit('new-menu-element', {id : this.menuElement.id, deep : this.deep + 1});
+      emitter.emit('new-menu-element', { id: this.menuElement.id, deep: this.deep + 1 });
     },
 
     /**
@@ -104,7 +100,7 @@ export default {
      * @param id
      */
     newChildren(id) {
-      emitter.emit('new-menu-element', {id : this.menuElement.id, deep : this.deep +1});
+      emitter.emit('new-menu-element', { id: this.menuElement.id, deep: this.deep + 1 });
     },
 
     /**
@@ -119,7 +115,7 @@ export default {
      */
     toggle() {
       if (this.haveChildren) {
-        this.isOpen = !this.isOpen
+        this.isOpen = !this.isOpen;
       }
     },
 
@@ -129,56 +125,54 @@ export default {
      * @param key
      */
     getTranslationValueByKeyAndByLocale(tabMenuElementTranslation, key) {
-
       let str = '';
       tabMenuElementTranslation.forEach((menuElementTranslation) => {
         if (menuElementTranslation.locale === this.locale) {
           str = menuElementTranslation[key];
         }
-      })
+      });
       return str;
     },
-  }
-}
+  },
+};
 </script>
 
 <template>
-
   <li>
     <div class="li-hover" :class="this.isSelected">
-    <span class="no-control" @click="this.toggle">
-      <i v-if="this.haveParent" class="bi bi-arrow-return-right"></i>
-      <i v-else class="bi bi-arrow-right-square"></i>
-      &nbsp;<i v-if="this.isDisabled" class="bi bi-eye-slash-fill"></i>
-      {{ this.getTranslationValueByKeyAndByLocale(this.menuElement.menuElementTranslations, 'textLink') }}
-      <span v-if="this.haveChildren">
-        <i class="bi" :class="this.isOpen ? 'bi-chevron-down' : 'bi-chevron-right'"></i>
+      <span class="no-control" @click="this.toggle">
+        <i v-if="this.haveParent" class="bi bi-arrow-return-right"></i>
+        <i v-else class="bi bi-arrow-right-square"></i>
+        &nbsp;<i v-if="this.isDisabled" class="bi bi-eye-slash-fill"></i>
+        {{ this.getTranslationValueByKeyAndByLocale(this.menuElement.menuElementTranslations, 'textLink') }}
+        <span v-if="this.haveChildren">
+          <i class="bi" :class="this.isOpen ? 'bi-chevron-down' : 'bi-chevron-right'"></i>
+        </span>
       </span>
-    </span>
       <span class="float-end">
         <i v-if="!this.haveChildren" class="bi bi-plus-square" @click="this.newElement"></i>&nbsp;
         <i class="bi bi-pencil-fill" @click="this.updateElement"></i>&nbsp;
         <i class="bi bi-x-lg" @click="this.deleteElement"></i>
-    </span>
+      </span>
     </div>
     <ul class="tree-menu" v-show="this.isOpen" v-if="this.haveChildren">
       <menu-tree
-          v-for="menuElement in this.menuElement.children"
-          :menu-element="menuElement"
-          :translate="this.translate"
-          :locale="this.locale"
-          :id-select="this.idSelect"
-          :deep="(this.deep+1)"
+        v-for="menuElement in this.menuElement.children"
+        :menu-element="menuElement"
+        :translate="this.translate"
+        :locale="this.locale"
+        :id-select="this.idSelect"
+        :deep="this.deep + 1"
       >
       </menu-tree>
       <li>
         <div>
-          <span class="btn btn-outline-secondary btn-sm" @click="this.newElement"><i class="bi bi-plus-square"></i>
+          <span class="btn btn-outline-secondary btn-sm" @click="this.newElement"
+            ><i class="bi bi-plus-square"></i>
             {{ this.translate.btn_new_menu_element }}
           </span>
         </div>
       </li>
     </ul>
   </li>
-
 </template>

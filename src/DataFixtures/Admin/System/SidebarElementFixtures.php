@@ -27,7 +27,6 @@ class SidebarElementFixtures extends AppFixtures implements FixtureGroupInterfac
                 if ($key === 'children') {
                     $this->addReference($id, $sidebarElement);
                     foreach ($value as $tab) {
-
                         $tmpKey = key($tab);
                         $sidebarElementChild = new SidebarElement();
                         foreach ($tab[$tmpKey] as $keyChild => $valueChild) {

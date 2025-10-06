@@ -8,7 +8,6 @@ namespace App\Utils\Api\Parameters;
 
 class ApiParametersUserAuthRef
 {
-
     /**
      * Type String
      * @var string
@@ -35,6 +34,6 @@ class ApiParametersUserAuthRef
      */
     public const PARAMS_REF_AUTH_USER = [
         self::PARAMS_REF_AUTH_USER_USERNAME => self::TYPE_STRING,
-        self::PARAMS_REF_AUTH_USER_PASSWORD => self::TYPE_STRING
+        self::PARAMS_REF_AUTH_USER_PASSWORD => self::TYPE_STRING,
     ];
 }

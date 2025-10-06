@@ -144,7 +144,7 @@ class FaqFactory
      * @param string $value
      * @return void
      */
-    private function createFaqStatistique(string $key, string $value):void
+    private function createFaqStatistique(string $key, string $value): void
     {
         $faqStatistique = new FaqStatistique();
         $faqStatistique->setFaq($this->faq);

@@ -35,7 +35,7 @@ class MediaTranslate extends AppTranslate
             'edit_media' => $this->getEditMediaTranslate(),
             'move' => $this->getMoveTranslate(),
             'trash' => $this->getTrashTranslate(),
-            'remove' => $this->getRemoveTranslate()
+            'remove' => $this->getRemoveTranslate(),
         ];
     }
 
@@ -95,7 +95,7 @@ class MediaTranslate extends AppTranslate
             'input_label' => $this->translator->trans('media.mediatheque.move.input.label', domain: 'media'),
             'input_info' => $this->translator->trans('media.mediatheque.move.input.info', domain: 'media'),
             'loading' => $this->translator->trans('media.mediatheque.move.loading', domain: 'media'),
-            'success' => $this->translator->trans('media.mediatheque.move.success', domain: 'media')
+            'success' => $this->translator->trans('media.mediatheque.move.success', domain: 'media'),
         ];
     }
 
@@ -116,7 +116,7 @@ class MediaTranslate extends AppTranslate
             'table_size' => $this->translator->trans('media.mediatheque.media.table.size', domain: 'media'),
             'table_action' => $this->translator->trans('media.mediatheque.media.table.action', domain: 'media'),
             'table_caption' => $this->translator->trans('media.mediatheque.media.table.caption', domain: 'media'),
-            'table_date' => $this->translator->trans('media.mediatheque.media.table.date', domain: 'media')
+            'table_date' => $this->translator->trans('media.mediatheque.media.table.date', domain: 'media'),
         ];
     }
 
@@ -130,11 +130,15 @@ class MediaTranslate extends AppTranslate
             'new' => $this->translator->trans('media.mediatheque.folder.new', domain: 'media'),
             'edit' => $this->translator->trans('media.mediatheque.folder.edit', domain: 'media'),
             'input_label' => $this->translator->trans('media.mediatheque.folder.input.label', domain: 'media'),
-            'input_label_placeholder' =>
-                $this->translator->trans('media.mediatheque.folder.input.label.placeholder', domain: 'media'),
+            'input_label_placeholder' => $this->translator->trans(
+                'media.mediatheque.folder.input.label.placeholder',
+                domain: 'media',
+            ),
             'input_error' => $this->translator->trans('media.mediatheque.folder.input.error', domain: 'media'),
-            'btn_submit_create' =>
-                $this->translator->trans('media.mediatheque.folder.btn.submit.create', domain: 'media'),
+            'btn_submit_create' => $this->translator->trans(
+                'media.mediatheque.folder.btn.submit.create',
+                domain: 'media',
+            ),
             'btn_submit_edit' => $this->translator->trans('media.mediatheque.folder.btn.submit.edit', domain: 'media'),
             'btn_cancel' => $this->translator->trans('media.mediatheque.folder.btn.cancel', domain: 'media'),
             'msg_wait_create' => $this->translator->trans('media.mediatheque.folder.msg.wait.create', domain: 'media'),
@@ -169,9 +173,18 @@ class MediaTranslate extends AppTranslate
             'input_upload' => $this->translator->trans('media.mediatheque.upload.input.upload', domain: 'media'),
             'btn_close' => $this->translator->trans('media.mediatheque.upload.btn.close', domain: 'media'),
             'input_title' => $this->translator->trans('media.mediatheque.upload.input.title', domain: 'media'),
-            'input_title_help' => $this->translator->trans('media.mediatheque.upload.input.title.help', domain: 'media'),
-            'input_description' => $this->translator->trans('media.mediatheque.upload.input.description', domain: 'media'),
-            'input_description_help' => $this->translator->trans('media.mediatheque.upload.input.description.help', domain: 'media'),
+            'input_title_help' => $this->translator->trans(
+                'media.mediatheque.upload.input.title.help',
+                domain: 'media',
+            ),
+            'input_description' => $this->translator->trans(
+                'media.mediatheque.upload.input.description',
+                domain: 'media',
+            ),
+            'input_description_help' => $this->translator->trans(
+                'media.mediatheque.upload.input.description.help',
+                domain: 'media',
+            ),
             'btn_cancel' => $this->translator->trans('media.mediatheque.upload.btn.cancel', domain: 'media'),
             'btn_upload' => $this->translator->trans('media.mediatheque.upload.btn.upload', domain: 'media'),
             'error_title' => $this->translator->trans('media.mediatheque.upload.error.title', domain: 'media'),
@@ -181,7 +194,10 @@ class MediaTranslate extends AppTranslate
             'preview' => $this->translator->trans('media.mediatheque.upload.preview', domain: 'media'),
             'preview_help' => $this->translator->trans('media.mediatheque.upload.preview.help', domain: 'media'),
             'loading_msg' => $this->translator->trans('media.mediatheque.upload.loading.msg', domain: 'media'),
-            'loading_msg_success' => $this->translator->trans('media.mediatheque.upload.loading.msg.success', domain: 'media'),
+            'loading_msg_success' => $this->translator->trans(
+                'media.mediatheque.upload.loading.msg.success',
+                domain: 'media',
+            ),
         ];
     }
 
@@ -195,10 +211,18 @@ class MediaTranslate extends AppTranslate
             'title' => $this->translator->trans('media.mediatheque.edit.media.title', domain: 'media'),
             'legend' => $this->translator->trans('media.mediatheque.edit.media.legend', domain: 'media'),
             'media_name' => $this->translator->trans('media.mediatheque.edit.media.name', domain: 'media'),
-            'media_name_placeholder' => $this->translator->trans('media.mediatheque.edit.media.name.placeholder', domain: 'media'),
-            'media_description' => $this->translator->trans('media.mediatheque.edit.media.description', domain: 'media'),
-            'media_description_placeholder' =>
-                $this->translator->trans('media.mediatheque.edit.media.description.placeholder', domain: 'media'),
+            'media_name_placeholder' => $this->translator->trans(
+                'media.mediatheque.edit.media.name.placeholder',
+                domain: 'media',
+            ),
+            'media_description' => $this->translator->trans(
+                'media.mediatheque.edit.media.description',
+                domain: 'media',
+            ),
+            'media_description_placeholder' => $this->translator->trans(
+                'media.mediatheque.edit.media.description.placeholder',
+                domain: 'media',
+            ),
             'submit' => $this->translator->trans('media.mediatheque.edit.media.submit', domain: 'media'),
             'cancel' => $this->translator->trans('media.mediatheque.edit.media.cancel', domain: 'media'),
             'loading' => $this->translator->trans('media.mediatheque.edit.media.loading', domain: 'media'),

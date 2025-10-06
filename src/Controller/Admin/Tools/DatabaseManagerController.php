@@ -24,12 +24,16 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[\Symfony\Component\Routing\Annotation\Route('/admin/{_locale}/database-manager', name: 'admin_database_manager_',
-    requirements: ['_locale' => '%app.supported_locales%'])]
+#[
+    \Symfony\Component\Routing\Annotation\Route(
+        '/admin/{_locale}/database-manager',
+        name: 'admin_database_manager_',
+        requirements: ['_locale' => '%app.supported_locales%'],
+    ),
+]
 #[IsGranted('ROLE_SUPER_ADMIN')]
 class DatabaseManagerController extends AbstractController
 {
-
     /**
      * Point d'entrée
      * @param DatabaseManagerTranslate $databaseManagerTranslate
@@ -41,8 +45,8 @@ class DatabaseManagerController extends AbstractController
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'database_manager',
             Breadcrumb::BREADCRUMB => [
-                'database_manager.index.page_title_h1' => '#'
-            ]
+                'database_manager.index.page_title_h1' => '#',
+            ],
         ];
 
         return $this->render('admin/tools/database_manager/index.html.twig', [
@@ -54,7 +58,7 @@ class DatabaseManagerController extends AbstractController
                 'load_tables_database' => $this->generateUrl('admin_database_manager_load_tables_database'),
                 'save_database' => $this->generateUrl('admin_database_manager_save_database'),
                 'all_dump_file' => $this->generateUrl('admin_database_manager_all_dump_file'),
-            ]
+            ],
         ]);
     }
 
@@ -105,11 +109,7 @@ class DatabaseManagerController extends AbstractController
      * @throws ExceptionInterface
      */
     #[Route('/ajax/save-database', name: 'save_database', methods: ['POST'])]
-    public function saveBdd(
-        MessageBusInterface $bus,
-        Request             $request,
-        TranslatorInterface $translator
-    ): JsonResponse
+    public function saveBdd(MessageBusInterface $bus, Request $request, TranslatorInterface $translator): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $bus->dispatch(new DumpSql($data['options'], $this->getUser()->getId()));
@@ -126,9 +126,7 @@ class DatabaseManagerController extends AbstractController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/all-dump-file', name: 'all_dump_file', methods: ['GET'])]
-    public function getAllFileDump(
-        DatabaseManagerService $databaseManagerService
-    ):JsonResponse
+    public function getAllFileDump(DatabaseManagerService $databaseManagerService): JsonResponse
     {
         return $this->json(['result' => $databaseManagerService->getAllDump()]);
     }

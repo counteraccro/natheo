@@ -13,7 +13,6 @@ use Symfony\Component\Yaml\Yaml;
 
 class ApiTokenFixture extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
-
     const API_TOKEN_FIXTURES_DATA_FILE = 'system' . DIRECTORY_SEPARATOR . 'api_token_fixtures_data.yaml';
 
     /**
@@ -24,7 +23,7 @@ class ApiTokenFixture extends AppFixtures implements FixtureGroupInterface, Orde
      */
     public function load(ObjectManager $manager): void
     {
-        $debugMode = (bool)$this->container->get('app.debug_mode');
+        $debugMode = (bool) $this->container->get('app.debug_mode');
 
         if (!$debugMode) {
             return;
@@ -34,13 +33,11 @@ class ApiTokenFixture extends AppFixtures implements FixtureGroupInterface, Orde
         foreach ($data['api_token'] as $dataApiToken) {
             $apiToken = new ApiToken();
             foreach ($dataApiToken as $key => $value) {
-
                 if ($key === 'roles') {
-                   $apiToken->setRoles([$value]);
+                    $apiToken->setRoles([$value]);
                 } else {
                     $this->setData($key, $value, $apiToken);
                 }
-
             }
             $manager->persist($apiToken);
         }

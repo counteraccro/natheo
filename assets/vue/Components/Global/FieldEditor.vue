@@ -6,7 +6,7 @@
  */
 
 export default {
-  name: "FieldEditor",
+  name: 'FieldEditor',
   components: {},
   emit: ['get-value'],
   props: {
@@ -15,25 +15,22 @@ export default {
     id: String,
     rule: {
       type: String,
-      default: "",
+      default: '',
     },
     ruleMsg: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   data() {
     return {
       editMode: false,
       value: this.pValue,
-      errorClass: ""
-    }
+      errorClass: '',
+    };
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
-
     /**
      * Génère la balise html, si end = true, génère une balise fermente
      * @param end
@@ -60,7 +57,6 @@ export default {
       } else {
         this.editMode = false;
       }
-
     },
 
     /**
@@ -76,11 +72,10 @@ export default {
      * @returns {boolean}
      */
     checkRule(value) {
-
       let bReturn = true;
       switch (this.rule) {
-        case "isEmpty" :
-          bReturn = value.trim() !== "";
+        case 'isEmpty':
+          bReturn = value.trim() !== '';
           break;
         default:
           bReturn = true;
@@ -93,27 +88,34 @@ export default {
      */
     getValue() {
       if (this.checkRule(this.value)) {
-        this.errorClass = "";
+        this.errorClass = '';
         this.switchMode('see');
         this.$emit('get-value', this.value, this.id);
       } else {
-        this.errorClass = "is-invalid";
+        this.errorClass = 'is-invalid';
       }
     },
-  }
-}
+  },
+};
 </script>
 
 <template>
-
   <div class="clearfix">
     <div v-if="!editMode">
       <div class="float-start me-2" v-html="this.getTextValue()"></div>
-      <span class="btn btn-sm btn-secondary" style=" --bs-btn-font-size: .75rem;" @click="this.switchMode()"><i class="bi bi-pencil-fill"></i></span>
+      <span class="btn btn-sm btn-secondary" style="--bs-btn-font-size: 0.75rem" @click="this.switchMode()"
+        ><i class="bi bi-pencil-fill"></i
+      ></span>
     </div>
     <div v-else>
       <div class="input-group mb-2">
-        <input type="text" class="form-control" :class="this.errorClass" :id="'field-editor-input-' + this.id" v-model="this.value">
+        <input
+          type="text"
+          class="form-control"
+          :class="this.errorClass"
+          :id="'field-editor-input-' + this.id"
+          v-model="this.value"
+        />
         <button class="btn btn-outline-secondary" type="button" @click="this.getValue">
           <i class="bi bi-check-circle"></i>
         </button>
@@ -124,5 +126,4 @@ export default {
       <div class="text-danger" v-if="this.errorClass === 'is-invalid'" v-html="this.ruleMsg"></div>
     </div>
   </div>
-
 </template>

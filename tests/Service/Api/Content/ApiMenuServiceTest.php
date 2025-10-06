@@ -40,8 +40,8 @@ class ApiMenuServiceTest extends AppWebTestCase
         $dto = new ApiFindMenuDto($menu->getId(), '', 1, 'fr', '');
 
         $nb = 0;
-        foreach($menu->getMenuElements() as $menuElement) {
-            if($menuElement->getParent() === null && !$menuElement->isDisabled()) {
+        foreach ($menu->getMenuElements() as $menuElement) {
+            if ($menuElement->getParent() === null && !$menuElement->isDisabled()) {
                 $nb++;
             }
         }

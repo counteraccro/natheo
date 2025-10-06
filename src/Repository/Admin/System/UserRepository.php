@@ -54,10 +54,10 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
     public function loadUserByIdentifier(string $identifier): ?User
     {
         $query = $this->createQueryBuilder('u')
-        ->where('u.email = :email')
-        ->setParameter('email', $identifier)
-        ->andWhere('u.disabled = false')
-        ->andWhere('u.anonymous = false');
+            ->where('u.email = :email')
+            ->setParameter('email', $identifier)
+            ->andWhere('u.disabled = false')
+            ->andWhere('u.anonymous = false');
 
         return $query->getQuery()->getOneOrNullResult();
     }
@@ -71,11 +71,9 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
      */
     public function getAllPaginate(int $page, int $limit, ?string $search = null): Paginator
     {
-        $query = $this->createQueryBuilder('u')
-            ->orderBy('u.id', 'ASC');
+        $query = $this->createQueryBuilder('u')->orderBy('u.id', 'ASC');
 
-        if($search !== null)
-        {
+        if ($search !== null) {
             $query->where('u.email like :search');
             $query->orWhere('u.login like :search');
             $query->orWhere('u.firstname like :search');
@@ -84,11 +82,11 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
         }
 
         $paginator = new Paginator($query->getQuery(), true);
-        $paginator->getQuery()
+        $paginator
+            ->getQuery()
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;
-
     }
 
     /**
@@ -108,10 +106,9 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
              * ->setParameter('role', '["'.$role.'"]')
              */
             ->where('u.founder = 1')
-        ->orderBy('u.id', 'ASC')
-        ->getQuery()
-        ->getResult();
-
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
     /**
@@ -139,14 +136,16 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
     {
         $query = $this->createQueryBuilder('u');
 
-        $query->orWhere('u.login like :search')
+        $query
+            ->orWhere('u.login like :search')
             ->orWhere('u.email like :search')
             ->orWhere('u.firstname like :search')
             ->orWhere('u.lastname like :search')
             ->setParameter('search', '%' . $search . '%');
 
         $paginator = new Paginator($query->getQuery(), true);
-        $paginator->getQuery()
+        $paginator
+            ->getQuery()
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
         return $paginator;

@@ -53,7 +53,7 @@ class ApiParametersFindMenuRef
     /**
      * Tableau valeur par défaut
      */
-    public const PARAMS_REF_DEFAULT_VALUE =[
+    public const PARAMS_REF_DEFAULT_VALUE = [
         self::PARAM_POSITION => 1,
         self::PARAM_LOCALE => 'fr',
     ];

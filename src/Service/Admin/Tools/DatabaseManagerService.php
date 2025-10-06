@@ -16,7 +16,6 @@ use Symfony\Component\Finder\Finder;
 
 class DatabaseManagerService extends AppAdminService
 {
-
     /**
      * Retourne les informations de la base de données
      * @return array
@@ -33,7 +32,9 @@ class DatabaseManagerService extends AppAdminService
         $translator = $this->getTranslator();
         $parameterBag = $this->getParameterBag();
 
-        $query = $rawQuery->getQueryAllInformationSchema(str_replace('.', '',$parameterBag->get('app.default_database_schema')));
+        $query = $rawQuery->getQueryAllInformationSchema(
+            str_replace('.', '', $parameterBag->get('app.default_database_schema')),
+        );
         $result = $database->executeRawQuery($query);
 
         return $rawResultQuery->getResultAllInformationSchema($result, $translator);
@@ -59,7 +60,6 @@ class DatabaseManagerService extends AppAdminService
         $result = $rawResultQuery->getResultStructureTable($result, $translator);
         $result['table'] = $tableName;
         return $result;
-
     }
 
     /**
@@ -77,10 +77,9 @@ class DatabaseManagerService extends AppAdminService
 
         $return = [];
         foreach ($finder as $file) {
-
             $return[] = [
                 'name' => $file->getFilename(),
-                'url' => '/' . DatabaseManagerConst::FOLDER_NAME . '/' . $file->getFilename()
+                'url' => '/' . DatabaseManagerConst::FOLDER_NAME . '/' . $file->getFilename(),
             ];
         }
         return array_reverse($return);

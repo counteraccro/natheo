@@ -24,7 +24,7 @@ trait OptionUserFixturesTrait
      */
     public function createOptionUser(?User $user = null, array $customData = [], bool $persist = true): OptionUser
     {
-        if($user === null) {
+        if ($user === null) {
             $user = $this->createUser();
         }
         $data = [
@@ -46,32 +46,29 @@ trait OptionUserFixturesTrait
      * @param User $user
      * @return void
      */
-    public function generateDefaultOptionUser(User $user):void
+    public function generateDefaultOptionUser(User $user): void
     {
         $data = [
             'key' => OptionUserKey::OU_THEME_SITE,
-            'value' => 'purple'
+            'value' => 'purple',
         ];
         $this->createOptionUser($user, $data);
-
 
         $data = [
             'key' => OptionUserKey::OU_DEFAULT_LANGUAGE,
-            'value' => 'fr'
+            'value' => 'fr',
         ];
         $this->createOptionUser($user, $data);
-
 
         $data = [
             'key' => OptionUserKey::OU_NB_ELEMENT,
-            'value' => '20'
+            'value' => '20',
         ];
         $this->createOptionUser($user, $data);
 
-
         $data = [
             'key' => OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER,
-            'value' => 'email'
+            'value' => 'email',
         ];
         $this->createOptionUser($user, $data);
     }

@@ -48,7 +48,10 @@ class TranslateService extends AppAdminService
         $kernel = $containerBag->get('kernel.project_dir');
         $pathLog = $kernel . DIRECTORY_SEPARATOR . 'translations' . DIRECTORY_SEPARATOR;
         $finder = new Finder();
-        $finder->files()->in($pathLog)->name('*.' . $language . '.*');
+        $finder
+            ->files()
+            ->in($pathLog)
+            ->name('*.' . $language . '.*');
 
         $return = [];
         foreach ($finder as $file) {
@@ -119,4 +122,3 @@ class TranslateService extends AppAdminService
         }
     }
 }
-

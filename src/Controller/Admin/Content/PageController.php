@@ -43,7 +43,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[IsGranted('ROLE_CONTRIBUTEUR')]
 class PageController extends AppAdminController
 {
-
     /**
      * @return Response
      * @throws ContainerExceptionInterface
@@ -52,18 +51,17 @@ class PageController extends AppAdminController
     #[Route('/', name: 'index')]
     public function index(): Response
     {
-
         $breadcrumb = [
             Breadcrumb::DOMAIN => 'page',
             Breadcrumb::BREADCRUMB => [
-                'page.index.page_title_h1' => '#'
-            ]
+                'page.index.page_title_h1' => '#',
+            ],
         ];
 
         return $this->render('admin/content/page/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT)
+            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
         ]);
     }
 
@@ -80,11 +78,10 @@ class PageController extends AppAdminController
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     public function loadGridData(
         PageService $pageService,
-        Request     $request,
-        int         $page = 1,
-        int         $limit = 20
-    ): JsonResponse
-    {
+        Request $request,
+        int $page = 1,
+        int $limit = 20,
+    ): JsonResponse {
         $search = $request->query->get('search');
         $filter = $request->query->get('filter');
 
@@ -109,11 +106,10 @@ class PageController extends AppAdminController
     #[Route('/ajax/update-disabled/{id}', name: 'update_disabled', methods: 'PUT')]
     public function updateDisabled(
         #[MapEntity(id: 'id')] Page $page,
-        PageService                 $pageService,
-        TranslatorInterface         $translator,
-        Request                     $request
-    ): JsonResponse
-    {
+        PageService $pageService,
+        TranslatorInterface $translator,
+        Request $request,
+    ): JsonResponse {
         $page->setDisabled(!$page->isDisabled());
         $pageService->save($page);
 
@@ -140,12 +136,11 @@ class PageController extends AppAdminController
     #[Route('/ajax/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(
         #[MapEntity(id: 'id')] Page $page,
-        PageService                 $pageService,
-        TranslatorInterface         $translator,
-        Request                     $request,
-        ContainerBagInterface       $containerBag
-    ): JsonResponse
-    {
+        PageService $pageService,
+        TranslatorInterface $translator,
+        Request $request,
+        ContainerBagInterface $containerBag,
+    ): JsonResponse {
         $titre = $page->getPageTranslationByLocale($request->getLocale())->getTitre();
         $id = $page->getId();
         /** @var User $user */
@@ -173,11 +168,10 @@ class PageController extends AppAdminController
     #[Route('/ajax/switch-landing-page/{id}', name: 'switch_Landing_page', methods: ['PUT'])]
     public function switchLandingPage(
         #[MapEntity(id: 'id')] Page $page,
-        PageService                 $pageService,
-        TranslatorInterface         $translator,
-        Request                     $request,
-    ): jsonResponse
-    {
+        PageService $pageService,
+        TranslatorInterface $translator,
+        Request $request,
+    ): jsonResponse {
         $titre = $page->getPageTranslationByLocale($request->getLocale())->getTitre();
 
         $page->setLandingPage(true);
@@ -187,7 +181,6 @@ class PageController extends AppAdminController
         $msg = $translator->trans('page.switch.landing.page.success', ['label' => $titre], domain: 'page');
         return $this->json($pageService->getResponseAjax($msg));
     }
-
 
     /**
      * Création / édition d'une page
@@ -203,14 +196,13 @@ class PageController extends AppAdminController
     #[Route('/add/', name: 'add')]
     #[Route('/update/{id}', name: 'update')]
     public function add(
-        PageService         $pageService,
-        PageTranslate       $pageTranslate,
+        PageService $pageService,
+        PageTranslate $pageTranslate,
         MarkdownEditorTranslate $markdownEditorTranslate,
-        CommentService      $commentService,
+        CommentService $commentService,
         OptionSystemService $optionSystemService,
-        ?int                $id = null
-    ): Response
-    {
+        ?int $id = null,
+    ): Response {
         $breadcrumbTitle = 'page.update.page_title_h1';
         if ($id === null) {
             $breadcrumbTitle = 'page.add.page_title_h1';
@@ -220,8 +212,8 @@ class PageController extends AppAdminController
             Breadcrumb::DOMAIN => 'page',
             Breadcrumb::BREADCRUMB => [
                 'page.index.page_title' => 'admin_page_index',
-                $breadcrumbTitle => '#'
-            ]
+                $breadcrumbTitle => '#',
+            ],
         ];
 
         $translate = $pageTranslate->getTranslate();
@@ -242,8 +234,10 @@ class PageController extends AppAdminController
                 'url_front' => $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE),
                 'options_commentaire' => [
                     'open' => $optionSystemService->getValueByKey(OptionSystemKey::OS_OPEN_COMMENT),
-                    'new_comment' => $optionSystemService->getValueByKey(OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION)
-                ]
+                    'new_comment' => $optionSystemService->getValueByKey(
+                        OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION,
+                    ),
+                ],
             ],
             'urls' => [
                 'load_tab_content' => $this->generateUrl('admin_page_load_tab_content'),
@@ -259,10 +253,9 @@ class PageController extends AppAdminController
                 'info_render_block' => $this->generateUrl('admin_page_info_render_block'),
                 'page_preview' => $this->generateUrl('admin_page_preview'),
                 'load_media' => $this->generateUrl('admin_media_load_medias'),
-            ]
+            ],
         ]);
     }
-
 
     /**
      * Permet de charger le contenu du tab content
@@ -280,9 +273,8 @@ class PageController extends AppAdminController
         PageService $pageService,
         MenuService $menuService,
         OptionSystemService $optionSystemService,
-        ?int        $id = null,
-    ): JsonResponse
-    {
+        ?int $id = null,
+    ): JsonResponse {
         $locales = $pageService->getLocales();
         if ($id === null) {
             $pageFactory = new PageFactory($locales['locales']);
@@ -293,28 +285,37 @@ class PageController extends AppAdminController
             $page->setLandingPage(PageConst::DEFAULT_LANDING_PAGE);
             $page->getPageContents()->clear();
 
-
-            foreach($page->getPageMetas() as $meta) {
+            foreach ($page->getPageMetas() as $meta) {
                 $value = null;
-                if($meta->getName() === PageMeta::AUTHOR->value) {
-                    $personalData = new PersonalData($this->getUser(), $this->optionUserService->getValueByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER));
+                if ($meta->getName() === PageMeta::AUTHOR->value) {
+                    $personalData = new PersonalData(
+                        $this->getUser(),
+                        $this->optionUserService->getValueByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER),
+                    );
                     $value = $personalData->getPersonalData();
                 }
-                if($meta->getName() === PageMeta::COPYRIGHT->value) {
+                if ($meta->getName() === PageMeta::COPYRIGHT->value) {
                     $value = $optionSystemService->getValueByKey(OptionSystemKey::OS_SITE_NAME) . ' ' . date('Y');
                 }
 
-                if($value !== null) {
-                    foreach($meta->getPageMetaTranslations() as $translation) {
+                if ($value !== null) {
+                    foreach ($meta->getPageMetaTranslations() as $translation) {
                         $translation->setValue($value);
                     }
                 }
             }
-
         } else {
             $page = $pageService->findOneById(Page::class, $id);
         }
-        $pageArray = $pageService->convertEntityToArray($page, ['createdAt', 'updateAt', 'user', 'menuElements', 'menus', 'comments', 'tags']);
+        $pageArray = $pageService->convertEntityToArray($page, [
+            'createdAt',
+            'updateAt',
+            'user',
+            'menuElements',
+            'menus',
+            'comments',
+            'tags',
+        ]);
 
         // On lie les menus à la page
         if (!$page->getMenus()->isEmpty()) {
@@ -322,7 +323,7 @@ class PageController extends AppAdminController
                 $pageArray['menus'][] = $menu->getId();
             }
         } else {
-            $pageArray['menus'][] = "-1";
+            $pageArray['menus'][] = '-1';
         }
 
         if (!$page->getTags()->isEmpty()) {
@@ -345,13 +346,13 @@ class PageController extends AppAdminController
                 $i++;
             }
         } else {
-            $pageArray['tags'][] = "-1";
+            $pageArray['tags'][] = '-1';
         }
 
         return $this->json([
             'page' => $pageArray,
             'history' => $pageService->getDiffBetweenHistoryAndPage($page),
-            'menus' => $menuService->getListMenus()
+            'menus' => $menuService->getListMenus(),
         ]);
     }
 
@@ -371,7 +372,7 @@ class PageController extends AppAdminController
         try {
             $pageHistory = new PageHistory($containerBag, $user);
             $pageHistory->save($data['page']);
-        } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+        } catch (NotFoundExceptionInterface | ContainerExceptionInterface $e) {
             return $this->json(['success' => false, 'msg' => $e->getMessage()]);
         }
         return $this->json(['success' => true]);
@@ -389,10 +390,9 @@ class PageController extends AppAdminController
     #[Route('/ajax/load-tab-history/{id}', name: 'load_tab_history', methods: ['GET'])]
     public function loadTabHistory(
         ContainerBagInterface $containerBag,
-        DateService           $dateService,
-        ?int                  $id = null
-    ): JsonResponse
-    {
+        DateService $dateService,
+        ?int $id = null,
+    ): JsonResponse {
         /** @var User $user */
         $user = $this->getUser();
         $pageHistory = new PageHistory($containerBag, $user);
@@ -418,10 +418,9 @@ class PageController extends AppAdminController
     #[Route('/ajax/reload-page-history', name: 'reload_page_history')]
     public function reloadPageHistory(
         ContainerBagInterface $containerBag,
-        Request               $request,
-        TranslatorInterface   $translator,
-    ): JsonResponse
-    {
+        Request $request,
+        TranslatorInterface $translator,
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
         /** @var User $user */
         $user = $this->getUser();
@@ -439,7 +438,7 @@ class PageController extends AppAdminController
         return $this->json([
             'success' => $success,
             'page' => $page,
-            'msg' => $msg
+            'msg' => $msg,
         ]);
     }
 
@@ -455,12 +454,11 @@ class PageController extends AppAdminController
      */
     #[Route('/ajax/save', name: 'save', methods: ['POST'])]
     public function save(
-        Request               $request,
-        PageService           $pageService,
-        TranslatorInterface   $translator,
-        ContainerBagInterface $containerBag
-    ): JsonResponse
-    {
+        Request $request,
+        PageService $pageService,
+        TranslatorInterface $translator,
+        ContainerBagInterface $containerBag,
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
         $pageFactory = new PageFactory($pageService->getLocales()['locales']);
 
@@ -513,7 +511,7 @@ class PageController extends AppAdminController
         $pageContent = $pageService->convertEntityToArray($pageContent);
 
         return $this->json([
-            'pageContent' => $pageContent
+            'pageContent' => $pageContent,
         ]);
     }
 
@@ -546,7 +544,7 @@ class PageController extends AppAdminController
         $data = json_decode($request->getContent(), true);
 
         return $this->json([
-            'is_unique' => $pageService->isUniqueUrl($data['url'], $data['id'])
+            'is_unique' => $pageService->isUniqueUrl($data['url'], $data['id']),
         ]);
     }
 
@@ -592,15 +590,13 @@ class PageController extends AppAdminController
      */
     #[Route('/preview/{id}/{locale}', name: 'preview', methods: ['GET'])]
     public function preview(
-        PageService         $pageService,
-        ApiTokenService     $apiTokenService,
-        PageTranslate       $pageTranslate,
+        PageService $pageService,
+        ApiTokenService $apiTokenService,
+        PageTranslate $pageTranslate,
         OptionSystemService $optionSystemService,
-        ?string             $locale = null,
-        ?int                $id = null,
-    ): Response
-    {
-
+        ?string $locale = null,
+        ?int $id = null,
+    ): Response {
         if ($locale === null) {
             $locale = $pageService->getLocales()['current'];
         }
@@ -611,7 +607,6 @@ class PageController extends AppAdminController
         foreach ($pageService->getLocales()['locales'] as $loc) {
             $tabUrl[$loc] = $this->generateUrl('admin_page_preview', ['id' => $id, 'locale' => $loc]);
         }
-
 
         if ($id != null) {
             /** @var Page $page */
@@ -626,7 +621,6 @@ class PageController extends AppAdminController
         $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
         $logo = $optionSystemService->getValueByKey(OptionSystemKey::OS_LOGO_SITE);
 
-
         return $this->render('admin/content/page/preview.html.twig', [
             'datas' => [
                 'token' => $token,
@@ -634,15 +628,21 @@ class PageController extends AppAdminController
                 'site' => [
                     'name' => $siteName,
                     'url' => $url,
-                    'logo' => $logo
+                    'logo' => $logo,
                 ],
             ],
             'redirects' => $tabUrl,
             'urls' => [
-                'apiFindPage' => $this->generateUrl('api_page_find', ['slug' => $slug, 'locale' => $locale, 'api_version' => $this->getParameter('app.api_version')]),
-                'apiGetContent' => $this->generateUrl('api_page_content', ['api_version' => $this->getParameter('app.api_version')]),
+                'apiFindPage' => $this->generateUrl('api_page_find', [
+                    'slug' => $slug,
+                    'locale' => $locale,
+                    'api_version' => $this->getParameter('app.api_version'),
+                ]),
+                'apiGetContent' => $this->generateUrl('api_page_content', [
+                    'api_version' => $this->getParameter('app.api_version'),
+                ]),
             ],
-            'translate' => $pageTranslate->getTranslatePreview()
+            'translate' => $pageTranslate->getTranslatePreview(),
         ]);
     }
 }

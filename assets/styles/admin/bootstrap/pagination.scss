@@ -1,11 +1,11 @@
 /** Surcharge class pagination **/
 
 .pagination {
-  --bs-pagination-active-color: #fff;
-  --bs-pagination-active-bg: var(--secondary);
-  --bs-pagination-hover-color: var(--primary);
-  --bs-pagination-focus-color: var(--primary);
-  --bs-pagination-color: var(--primary);
-  --bs-pagination-active-border-color: var(--primary);
-  --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(var(--primary-rgb), 0.25);
+    --bs-pagination-active-color: #fff;
+    --bs-pagination-active-bg: var(--secondary);
+    --bs-pagination-hover-color: var(--primary);
+    --bs-pagination-focus-color: var(--primary);
+    --bs-pagination-color: var(--primary);
+    --bs-pagination-active-border-color: var(--primary);
+    --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(var(--primary-rgb), 0.25);
 }

@@ -51,12 +51,11 @@ class DumpSqlHandlerTest extends AppWebTestCase
         }
 
         $data = [
-            "options" => [
-                "all" => false,
-                "tables" => [
-                    "api_token", "user"],
-                "data" => "table_data"
-            ]
+            'options' => [
+                'all' => false,
+                'tables' => ['api_token', 'user'],
+                'data' => 'table_data',
+            ],
         ];
 
         $dumpSql = new DumpSql($data['options'], $userAdm->getId());
@@ -104,6 +103,8 @@ class DumpSqlHandlerTest extends AppWebTestCase
      */
     private function readFile(string $fileName): string
     {
-        return $this->fileSystem->readFile(self::$kernel->getProjectDir() . DatabaseManagerConst::ROOT_FOLDER_NAME . $fileName);
+        return $this->fileSystem->readFile(
+            self::$kernel->getProjectDir() . DatabaseManagerConst::ROOT_FOLDER_NAME . $fileName,
+        );
     }
 }

@@ -16,7 +16,7 @@ class PageStatistiqueKey
      * Retourne la liste de constantes de la class
      * @return array
      */
-    public static function getConstants() : array
+    public static function getConstants(): array
     {
         // "static::class" here does the magic
         $reflectionClass = new \ReflectionClass(static::class);

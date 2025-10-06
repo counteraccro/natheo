@@ -4,29 +4,29 @@
  * Surcharge des éléments form de bootstrap
  */
 
-
-.form-control:focus, .form-select:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
 }
 
 .form-check-input:checked {
-  background-color: var(--secondary);
-  border-color: var(--secondary);
+    background-color: var(--secondary);
+    border-color: var(--secondary);
 }
 
 label.required:after {
-  content: " *";
-  color: var(--danger);
-  font-weight: bold;
+    content: ' *';
+    color: var(--danger);
+    font-weight: bold;
 }
 
 /* Ajout is-update equivalent is-error ou is-validate */
 .is-update {
-  border-color: var(--warning);
-  padding-right: calc(1.5em + 0.75rem);
-  background-image: url("../icons/pencil-fill.svg");
-  background-repeat: no-repeat;
-  background-position: right calc(0.375em + 0.1875rem) center;
-  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    border-color: var(--warning);
+    padding-right: calc(1.5em + 0.75rem);
+    background-image: url('../icons/pencil-fill.svg');
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }

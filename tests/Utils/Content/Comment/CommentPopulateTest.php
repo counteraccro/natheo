@@ -17,7 +17,8 @@ class CommentPopulateTest extends AppWebTestCase
      * Test de la méthode populate()
      * @return void
      */
-    public function testPopulate() :void {
+    public function testPopulate(): void
+    {
         $comment = $this->createComment();
         $populate = [
             'comment' => 'Commentaire test',

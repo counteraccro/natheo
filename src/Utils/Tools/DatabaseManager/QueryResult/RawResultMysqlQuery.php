@@ -13,7 +13,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RawResultMysqlQuery implements RawResultQueryInterface
 {
-
     /**
      * @inheritDoc
      */
@@ -21,9 +20,12 @@ class RawResultMysqlQuery implements RawResultQueryInterface
     {
         $newHeader = [
             'schema' => $translator->trans('database_manager.schema.all.bdd.row.schema', domain: 'database_manager'),
-            'table_name' => $translator->trans('database_manager.schema.all.bdd.row.table_name', domain: 'database_manager'),
+            'table_name' => $translator->trans(
+                'database_manager.schema.all.bdd.row.table_name',
+                domain: 'database_manager',
+            ),
             'row' => $translator->trans('database_manager.schema.all.bdd.row.row', domain: 'database_manager'),
-            'size' => $translator->trans('database_manager.schema.all.bdd.row.size', domain: 'database_manager')
+            'size' => $translator->trans('database_manager.schema.all.bdd.row.size', domain: 'database_manager'),
         ];
 
         $nbElement = 0;
@@ -33,8 +35,10 @@ class RawResultMysqlQuery implements RawResultQueryInterface
             if (intval($row['row']) !== -1) {
                 $nbElement += intval($row['row']);
             } else {
-                $row['row'] = $translator->trans('database_manager.schema.all.bdd.error_row.',
-                    domain: 'database_manager');
+                $row['row'] = $translator->trans(
+                    'database_manager.schema.all.bdd.error_row.',
+                    domain: 'database_manager',
+                );
             }
             $sizeBite += intval($row['size']);
             $row['size'] = Utils::getSizeName($row['size']);
@@ -57,17 +61,31 @@ class RawResultMysqlQuery implements RawResultQueryInterface
     public static function getResultStructureTable(array $result, TranslatorInterface $translator): array
     {
         $newHeader = [
-            'column_name' => $translator->trans('database_manager.schema.table.row.column_name', domain: 'database_manager'),
-            'data_type' => $translator->trans('database_manager.schema.table.row.data_type', domain: 'database_manager'),
-            'character_maximum_length' => $translator->trans('database_manager.schema.table.row.character_maximum_length', domain: 'database_manager'),
-            'is_nullable' => $translator->trans('database_manager.schema.table.row.is_nullable', domain: 'database_manager'),
-            'column_default' => $translator->trans('database_manager.schema.table.row.column_default', domain: 'database_manager'),
+            'column_name' => $translator->trans(
+                'database_manager.schema.table.row.column_name',
+                domain: 'database_manager',
+            ),
+            'data_type' => $translator->trans(
+                'database_manager.schema.table.row.data_type',
+                domain: 'database_manager',
+            ),
+            'character_maximum_length' => $translator->trans(
+                'database_manager.schema.table.row.character_maximum_length',
+                domain: 'database_manager',
+            ),
+            'is_nullable' => $translator->trans(
+                'database_manager.schema.table.row.is_nullable',
+                domain: 'database_manager',
+            ),
+            'column_default' => $translator->trans(
+                'database_manager.schema.table.row.column_default',
+                domain: 'database_manager',
+            ),
         ];
 
         $return = [];
 
         foreach ($result['result'] as $row) {
-
             $dataType = $row['Type'];
             $length = '';
             preg_match('#\((.*?)\)#', $row['Type'], $match);
