@@ -99,19 +99,11 @@ class PagePopulate
      */
     private function populatePage(): void
     {
-        //dd($this->populate);
-
         $this->page->setRender($this->populate['render']);
         $this->page->setStatus($this->populate['status']);
         $this->page->setCategory($this->populate['category']);
         $this->page->setLandingPage(boolval($this->populate['landingPage']));
-        if(isset($this->populate['isOpenComment'])) {
-            $this->page->setIsOpenComment(boolval($this->populate['isOpenComment']));
-        }
-        else {
-            $this->page->setIsOpenComment(boolval($this->populate['openComment']));
-        }
-
+        $this->page->setIsOpenComment(boolval($this->populate['openComment']));
         $this->page->setRuleComment($this->populate['ruleComment']);
         $this->page->setHeaderImg($this->populate['headerImg']);
     }
