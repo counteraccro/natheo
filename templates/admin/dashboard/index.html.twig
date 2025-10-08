@@ -1,10 +1,9 @@
 {% extends 'admin/admin_base.html.twig' %}
 
 {% block title %}{{ 'dashboard.index' | trans({}, 'dashboard') }}{% endblock %}
+{% block titlePage %}aaa{% endblock %}
 
 {% block body %}
-
-    <h1 class="mb-3">{{ 'dashboard.index' | trans({}, 'dashboard') }}</h1>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6">
         <div class="card rounded-lg p-6">
@@ -76,3 +75,8 @@
     }) }}>
     </div>
 {% endblock %}
+{% block scriptJavascript %}
+setPageTitle('{{ 'dashboard.index' | trans({}, 'dashboard') }}')
+{% endblock %}
+
+

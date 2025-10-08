@@ -5,10 +5,11 @@
  * Composant card derniers commentaires
  */
 import axios from 'axios';
+import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
 
 export default {
   name: 'BlockLastComment',
-  components: {},
+  components: { SkeletonTable },
   emit: [],
   props: {
     urls: Object,
@@ -65,7 +66,13 @@ export default {
       }}</a>
     </div>
 
-    <div v-if="this.errorMessage !== null"><i class="bi bi-exclamation-circle"></i> {{ this.errorMessage }}</div>
+    <div
+      v-if="this.errorMessage !== null"
+      class="ms-4 me-4 mt-4 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+      role="alert"
+    >
+      {{ this.errorMessage }}
+    </div>
 
     <div class="overflow-x-auto" v-if="this.result !== null">
       <table class="w-full">
@@ -110,6 +117,9 @@ export default {
           </tr>
         </tbody>
       </table>
+    </div>
+    <div v-else>
+      <SkeletonTable :rows="5" :columns="3" />
     </div>
   </div>
 </template>

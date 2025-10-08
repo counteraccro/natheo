@@ -67,7 +67,7 @@ export default {
       />
     </div>
 
-    <div class="col-6 mb-3">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
       <block-last-comment
         :translate="this.translate.dashboard_last_comments"
         :urls="this.urls.dashboard_last_comments"

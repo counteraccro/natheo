@@ -77,10 +77,12 @@
 
         if (isDark) {
             root.removeAttribute('data-theme-mode');
+            root.classList.remove('dark');
             toggle.classList.remove('active');
             localStorage.setItem('darkMode', 'light');
         } else {
             root.setAttribute('data-theme-mode', 'dark');
+            root.classList.add('dark');
             toggle.classList.add('active');
             localStorage.setItem('darkMode', 'dark');
         }
@@ -110,6 +112,7 @@
         // Restaurer le mode sombre
         if (savedDarkMode === 'dark') {
             document.documentElement.setAttribute('data-theme-mode', 'dark');
+            document.documentElement.classList.add('dark');
             document.getElementById('darkToggle').classList.add('active');
         }
     });
@@ -134,4 +137,9 @@
             toolbar.classList.add('minimized');
         }
     });
+
+    function setPageTitle(value) {
+        const div = document.getElementById('title-page');
+        div.innerHTML = value;
+    }
 </script>
