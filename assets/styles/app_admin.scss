@@ -1,5 +1,10 @@
-@import "tailwindcss";
+@use "tailwindcss";
 
-@import "flowbite/src/themes/default";
+@use "flowbite/src/themes/default";
+
+@use "admin/variables";
+@use "admin/style";
+
 @plugin "flowbite/plugin";
 @source "../../node_modules/flowbite";
+

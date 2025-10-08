@@ -5,7 +5,6 @@
  * Vue rendu du dashboard
  */
 import BlockHelpFirstConnexion from '../../../Components/Dashboard/BlockHelpFirstConnexion.vue';
-import Masonry from 'masonry-layout';
 import BlockLastComment from '../../../Components/Dashboard/BlockLastComment.vue';
 import BlockLastPage from '../../../Components/Dashboard/BlockLastPage.vue';
 
@@ -20,7 +19,6 @@ export default {
   },
   data() {
     return {
-      masonry: null,
       showBlockHelpFirstConnexion: true,
     };
   },
@@ -29,12 +27,7 @@ export default {
     /**
      * Rechargement du grid
      */
-    reloadGrid() {
-      setTimeout(() => {
-        this.masonry = new Masonry('#grid-block-dashboard', { percentPosition: true });
-        this.masonry.layout();
-      }, 1000);
-    },
+    reloadGrid() {},
 
     /**
      * Masque le bloc de première connexion
@@ -61,15 +54,12 @@ export default {
       />
     </div>
 
-    <div class="col-6 mb-3">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
       <block-last-comment
         :translate="this.translate.dashboard_last_comments"
         :urls="this.urls.dashboard_last_comments"
         @reload-grid="this.reloadGrid"
       />
-    </div>
-
-    <div class="col-6 mb-3">
       <block-last-page
         :translate="this.translate.dashboard_last_pages"
         :urls="this.urls.dashboard_last_pages"

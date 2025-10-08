@@ -41,11 +41,11 @@ $utilities-text-colors: map-loop($utilities-text, rgba-css-var, '$key', 'text');
 $utilities-bg: map-merge($utilities-bg, $utilities-colors);
 $utilities-bg-colors: map-loop($utilities-bg, rgba-css-var, '$key', 'bg');
 
-/*@import 'bootstrap/scss/bootstrap';
+@import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 
 // Import surcharge boostrap CSS
-/*@import 'admin/bootstrap/nav';
+@import 'admin/bootstrap/nav';
 @import 'admin/bootstrap/pagination';
 @import 'admin/bootstrap/form';
 @import 'admin/bootstrap/badge';
@@ -58,11 +58,5 @@ $utilities-bg-colors: map-loop($utilities-bg, rgba-css-var, '$key', 'bg');
 @import 'admin/global/markdown-editor';
 @import 'admin/content/mediatheque';
 @import 'admin/content/page';
-@import 'admin/content/menu';*/
+@import 'admin/content/menu';
 
-// V2 Flowbite
-@import "tailwindcss";
-
-@import "flowbite/src/themes/default";
-@plugin "flowbite/plugin";
-@source "../../node_modules/flowbite";
