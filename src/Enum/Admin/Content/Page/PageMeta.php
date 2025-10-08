@@ -5,7 +5,7 @@
  * @version 1.0
  */
 
-namespace App\Enum\Content\Page;
+namespace App\Enum\Admin\Content\Page;
 
 enum PageMeta: string
 {

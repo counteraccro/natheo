@@ -8,6 +8,7 @@
 namespace App\Tests\Service\Admin\Content\Comment;
 
 use App\Entity\Admin\Content\Comment\Comment;
+use App\Enum\Admin\Comment\Status;
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Tests\AppWebTestCase;
 use App\Utils\Content\Comment\CommentConst;
@@ -68,14 +69,14 @@ class CommentServiceTest extends AppWebTestCase
      */
     public function testGetStatusFormatedByCode(): void
     {
-        $result = $this->commentService->getStatusFormatedByCode(CommentConst::WAIT_VALIDATION);
-        $this->assertStringContainsString('badge text-bg-primary', $result);
+        $result = $this->commentService->getStatusFormatedByCode(Status::WAIT_VALIDATION->value);
+        $this->assertStringContainsString('badge badge-pending', $result);
 
-        $result = $this->commentService->getStatusFormatedByCode(CommentConst::MODERATE);
-        $this->assertStringContainsString('badge text-bg-danger', $result);
+        $result = $this->commentService->getStatusFormatedByCode(Status::MODERATE->value);
+        $this->assertStringContainsString('badge badge-moderate', $result);
 
-        $result = $this->commentService->getStatusFormatedByCode(CommentConst::VALIDATE);
-        $this->assertStringContainsString('badge text-bg-success', $result);
+        $result = $this->commentService->getStatusFormatedByCode(Status::VALIDATE->value);
+        $this->assertStringContainsString('badge badge-validated', $result);
     }
 
     /**
@@ -88,16 +89,16 @@ class CommentServiceTest extends AppWebTestCase
     {
         $translator = $this->container->get(TranslatorInterface::class);
 
-        $result = $this->commentService->getStatusStringByCode(CommentConst::WAIT_VALIDATION);
+        $result = $this->commentService->getStatusStringByCode(Status::WAIT_VALIDATION->value);
         $this->assertStringContainsString(
             $translator->trans('comment.status.wait.validation', domain: 'comment'),
             $result,
         );
 
-        $result = $this->commentService->getStatusStringByCode(CommentConst::VALIDATE);
+        $result = $this->commentService->getStatusStringByCode(Status::VALIDATE->value);
         $this->assertStringContainsString($translator->trans('comment.status.validate', domain: 'comment'), $result);
 
-        $result = $this->commentService->getStatusStringByCode(CommentConst::MODERATE);
+        $result = $this->commentService->getStatusStringByCode(Status::MODERATE->value);
         $this->assertStringContainsString($translator->trans('comment.status.moderate', domain: 'comment'), $result);
     }
 
@@ -126,29 +127,29 @@ class CommentServiceTest extends AppWebTestCase
             $this->createPageTranslation($page, ['locale' => $locale]);
         }
         for ($i = 0; $i < 3; $i++) {
-            $this->createComment($page, customData: ['status' => CommentConst::WAIT_VALIDATION]);
+            $this->createComment($page, customData: ['status' => Status::WAIT_VALIDATION->value]);
         }
         for ($i = 0; $i < 4; $i++) {
-            $this->createComment($page, customData: ['status' => CommentConst::MODERATE]);
+            $this->createComment($page, customData: ['status' => Status::MODERATE->value]);
         }
 
         for ($i = 0; $i < 5; $i++) {
-            $this->createComment($page, customData: ['status' => CommentConst::VALIDATE]);
+            $this->createComment($page, customData: ['status' => Status::VALIDATE->value]);
         }
 
-        $result = $this->commentService->getCommentFilter(CommentConst::WAIT_VALIDATION, $page->getId(), 1, 2);
+        $result = $this->commentService->getCommentFilter(Status::WAIT_VALIDATION->value, $page->getId(), 1, 2);
         $this->assertArrayHasKey('nb', $result);
         $this->assertEquals(3, $result['nb']);
         $this->assertArrayHasKey('data', $result);
         $this->assertCount(2, $result['data']);
 
-        $result = $this->commentService->getCommentFilter(CommentConst::MODERATE, $page->getId(), 1, 2);
+        $result = $this->commentService->getCommentFilter(Status::MODERATE->value, $page->getId(), 1, 2);
         $this->assertArrayHasKey('nb', $result);
         $this->assertEquals(4, $result['nb']);
         $this->assertArrayHasKey('data', $result);
         $this->assertCount(2, $result['data']);
 
-        $result = $this->commentService->getCommentFilter(CommentConst::VALIDATE, $page->getId(), 1, 2);
+        $result = $this->commentService->getCommentFilter(Status::VALIDATE->value, $page->getId(), 1, 2);
         $this->assertArrayHasKey('nb', $result);
         $this->assertEquals(5, $result['nb']);
         $this->assertArrayHasKey('data', $result);
@@ -168,23 +169,23 @@ class CommentServiceTest extends AppWebTestCase
             $this->createPageTranslation($page, ['locale' => $locale]);
         }
         for ($i = 0; $i < 3; $i++) {
-            $this->createComment($page, customData: ['status' => CommentConst::WAIT_VALIDATION]);
+            $this->createComment($page, customData: ['status' => Status::WAIT_VALIDATION->value]);
         }
         for ($i = 0; $i < 4; $i++) {
-            $this->createComment($page, customData: ['status' => CommentConst::MODERATE]);
+            $this->createComment($page, customData: ['status' => Status::MODERATE->value]);
         }
 
         for ($i = 0; $i < 5; $i++) {
-            $this->createComment($page, customData: ['status' => CommentConst::VALIDATE]);
+            $this->createComment($page, customData: ['status' => Status::VALIDATE->value]);
         }
 
-        $result = $this->commentService->getNbCommentByStatus(CommentConst::WAIT_VALIDATION);
+        $result = $this->commentService->getNbCommentByStatus(Status::WAIT_VALIDATION->value);
         $this->assertEquals(3, $result);
 
-        $result = $this->commentService->getNbCommentByStatus(CommentConst::MODERATE);
+        $result = $this->commentService->getNbCommentByStatus(Status::MODERATE->value);
         $this->assertEquals(4, $result);
 
-        $result = $this->commentService->getNbCommentByStatus(CommentConst::VALIDATE);
+        $result = $this->commentService->getNbCommentByStatus(Status::VALIDATE->value);
         $this->assertEquals(5, $result);
     }
 
@@ -200,11 +201,11 @@ class CommentServiceTest extends AppWebTestCase
         $comment1 = $this->createComment(
             customData: ['status' => CommentConst::WAIT_VALIDATION, 'moderationComment' => 'toto'],
         );
-        $comment2 = $this->createComment(customData: ['status' => CommentConst::WAIT_VALIDATION]);
+        $comment2 = $this->createComment(customData: ['status' => Status::WAIT_VALIDATION->value]);
 
         $data = [
             'selected' => [$comment1->getId(), $comment2->getId()],
-            'status' => CommentConst::VALIDATE,
+            'status' => Status::VALIDATE->value,
             'moderateComment' => '',
         ];
 
@@ -212,19 +213,19 @@ class CommentServiceTest extends AppWebTestCase
         $repository = $this->em->getRepository(Comment::class);
         $comments = $repository->findAll();
         foreach ($comments as $comment) {
-            $this->assertEquals(CommentConst::VALIDATE, $comment->getStatus());
+            $this->assertEquals(Status::VALIDATE->value, $comment->getStatus());
             $this->assertNull($comment->getModerationComment());
         }
 
         $comment3 = $this->createComment(
-            customData: ['status' => CommentConst::VALIDATE, 'moderationComment' => 'toto'],
+            customData: ['status' => Status::VALIDATE->value, 'moderationComment' => 'toto'],
         );
-        $comment4 = $this->createComment(customData: ['status' => CommentConst::VALIDATE]);
+        $comment4 = $this->createComment(customData: ['status' => Status::VALIDATE->value]);
 
         $message = self::getFaker()->text(20);
         $data = [
             'selected' => [$comment1->getId(), $comment2->getId(), $comment3->getId(), $comment4->getId()],
-            'status' => CommentConst::MODERATE,
+            'status' => Status::MODERATE->value,
             'moderateComment' => $message,
         ];
 
@@ -233,7 +234,7 @@ class CommentServiceTest extends AppWebTestCase
         $this->em->clear();
         $comments = $repository->findAll();
         foreach ($comments as $comment) {
-            $this->assertEquals(CommentConst::MODERATE, $comment->getStatus());
+            $this->assertEquals(Status::MODERATE->value, $comment->getStatus());
             $this->assertEquals($message, $comment->getModerationComment());
         }
     }
