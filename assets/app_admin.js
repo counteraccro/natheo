@@ -7,12 +7,7 @@
 // Import Bootstrap JS
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-// Import des librairies
-import bsCustomFileInput from 'bs-custom-file-input';
-import Masonry from 'masonry-layout';
-
-// Initialisation de bs-custom-file-input
-bsCustomFileInput.init();
-
 // Start the Stimulus application (qui gère aussi Vue)
 import './bootstrap';
+
+import 'flowbite';
