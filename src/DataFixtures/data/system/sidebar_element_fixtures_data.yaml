@@ -1,6 +1,6 @@
 sidebarElement:
     se_dashboard:
-        icon: 'bi-house-fill'
+        icon: 'fa-house'
         label: 'global.dashboard'
         route: 'admin_dashboard_index'
         disabled: false
@@ -8,7 +8,7 @@ sidebarElement:
         lock: true
         description: 'sidebar.dashboard.description'
     se_membre:
-        icon: 'bi-person-lines-fill'
+        icon: 'fa-user'
         label: 'global.membre'
         route: '#'
         disabled: false
@@ -16,7 +16,7 @@ sidebarElement:
         lock: false
         description: 'sidebar.membre.description'
     se_content:
-        icon: 'bi-folder-fill'
+        icon: 'fa-folder-open'
         label: 'global.content'
         route: '#contenus'
         disabled: false
@@ -25,7 +25,7 @@ sidebarElement:
         lock: true
         children:
             - se_menu:
-                  icon: 'bi-menu-button-wide-fill'
+                  icon: 'fa-rectangle-list'
                   label: 'global.menu'
                   route: 'admin_menu_index'
                   disabled: false
@@ -34,7 +34,7 @@ sidebarElement:
                   description: 'sidebar.menu.description'
                   lock: true
             - se_page:
-                  icon: 'bi-file-earmark-text-fill'
+                  icon: 'fa-file'
                   label: 'global.page'
                   route: 'admin_page_index'
                   disabled: false
@@ -43,7 +43,7 @@ sidebarElement:
                   description: 'sidebar.page.description'
                   lock: true
             - se_comment:
-                  icon: 'bi-chat-text-fill'
+                  icon: 'fa-comments'
                   label: 'global.comment'
                   route: 'admin_comment_index'
                   disabled: false
@@ -52,7 +52,7 @@ sidebarElement:
                   description: 'sidebar.comment.description'
                   lock: true
             - se_tag:
-                  icon: 'bi-tags-fill'
+                  icon: 'fa-bookmark'
                   label: 'global.tag'
                   route: 'admin_tag_index'
                   disabled: false
@@ -61,7 +61,7 @@ sidebarElement:
                   description: 'sidebar.tag.description'
                   lock: true
             - se_media:
-                  icon: 'bi-file-earmark-image-fill'
+                  icon: 'fa-images'
                   label: 'global.mediatheque'
                   route: 'admin_media_index'
                   disabled: false
@@ -70,7 +70,7 @@ sidebarElement:
                   description: 'sidebar.mediatheque.description'
                   lock: true
             - se_faq:
-                  icon: 'bi-question-circle-fill'
+                  icon: 'fa-circle-question'
                   label: 'global.faq'
                   route: 'admin_faq_index'
                   disabled: false
@@ -79,7 +79,7 @@ sidebarElement:
                   description: 'sidebar.faq.description'
                   lock: false
     se_system:
-        icon: 'bi-gear-fill'
+        icon: 'fa-sun'
         label: 'global.system'
         route: '#system'
         disabled: false
@@ -88,7 +88,7 @@ sidebarElement:
         lock: true
         children:
             - se_user:
-                  icon: 'bi-person-fill'
+                  icon: 'fa-circle-user'
                   label: 'global.user'
                   route: 'admin_user_index'
                   disabled: false
@@ -97,7 +97,7 @@ sidebarElement:
                   description: 'sidebar.user.description'
                   lock: true
             - se_droits:
-                  icon: 'bi-layout-text-sidebar'
+                  icon: 'fa-rectangle-list'
                   label: 'global.sidebar'
                   route: 'admin_sidebar_index'
                   disabled: false
@@ -106,7 +106,7 @@ sidebarElement:
                   description: 'sidebar.sidebar.description'
                   lock: true
             - se_options:
-                  icon: 'bi-option'
+                  icon: 'fa-star'
                   label: 'global.system_options'
                   route: 'admin_option-system_change'
                   disabled: false
@@ -115,7 +115,7 @@ sidebarElement:
                   description: 'sidebar.system_options.description'
                   lock: true
             - se_api_token:
-                  icon: 'bi-gear-wide-connected'
+                  icon: 'fa-handshake'
                   label: 'global.api_token'
                   route: 'admin_api_token_index'
                   disabled: false
@@ -124,7 +124,7 @@ sidebarElement:
                   description: 'sidebar.api_token.description'
                   lock: true
             - se_email:
-                  icon: 'bi-envelope-fill'
+                  icon: 'fa-envelope'
                   label: 'global.mail'
                   route: 'admin_mail_index'
                   disabled: false
@@ -133,7 +133,7 @@ sidebarElement:
                   description: 'sidebar.mail.description'
                   lock: false
             - se_translate:
-                  icon: 'bi-translate'
+                  icon: 'fa-face-laugh-beam'
                   label: 'global.translate'
                   route: 'admin_translation_index'
                   disabled: false
@@ -142,7 +142,7 @@ sidebarElement:
                   description: 'sidebar.translate.description'
                   lock: true
             - se_logs:
-                  icon: 'bi-file-earmark-text'
+                  icon: 'fa-file-line'
                   label: 'global.logs'
                   route: 'admin_log_index'
                   disabled: false
@@ -151,7 +151,7 @@ sidebarElement:
                   description: 'sidebar.log.description'
                   lock: false
             - se_update:
-                  icon: 'bi-cloud-arrow-down'
+                  icon: 'fa-bell'
                   label: 'global.update'
                   route: '#'
                   disabled: false
@@ -160,7 +160,7 @@ sidebarElement:
                   description: 'sidebar.update.description'
                   lock: true
             - se_info:
-                  icon: 'bi-info-circle'
+                  icon: 'fa-eye'
                   label: 'global.info'
                   route: 'admin_info_index'
                   disabled: false
@@ -169,7 +169,7 @@ sidebarElement:
                   description: 'sidebar.info.description'
                   lock: true
     se_devTools:
-        icon: 'bi-tools'
+        icon: 'fa-file-code'
         label: 'global.devtools'
         route: '#devTools'
         disabled: false
@@ -178,7 +178,7 @@ sidebarElement:
         lock: false
         children:
             - se_devOptions:
-                  icon: 'bi-code-slash'
+                  icon: 'fa-file-code'
                   label: 'global.dev_options'
                   route: 'admin_advanced_options_index'
                   disabled: false
@@ -187,7 +187,7 @@ sidebarElement:
                   description: 'sidebar.dev_options.description'
                   lock: false
             - se_sql:
-                  icon: 'bi-database-fill-gear'
+                  icon: 'fa-floppy-disk'
                   label: 'global.sql'
                   route: 'admin_sql_manager_index'
                   disabled: false
@@ -196,7 +196,7 @@ sidebarElement:
                   description: 'sidebar.sql.description'
                   lock: false
             - se_database:
-                  icon: 'bi-database-fill'
+                  icon: 'fa-hard-drive'
                   label: 'global.database'
                   route: 'admin_database_manager_index'
                   disabled: false
@@ -205,7 +205,7 @@ sidebarElement:
                   description: 'sidebar.database.description'
                   lock: false
             - se_html-element:
-                  icon: 'bi-code'
+                  icon: 'fa-hand'
                   label: 'global.html_element'
                   route: 'admin_dashboard_page_demo'
                   disabled: false
