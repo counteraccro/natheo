@@ -97,7 +97,20 @@ class SidebarExtension extends AppAdminExtension
         $url = $this->generateRealUrl($sidebarElement->getRoute());
         $active = $this->isClassActive($sidebarElement->getRoute(), false);
 
-        return '<li ' .
+        return '<a href="' .
+            $url .
+            '" class="sidebar-item ' .
+            $active .
+            ' flex items-center px-4 py-3 rounded-lg">
+                <i class="fa-regular ' .
+            $sidebarElement->getIcon() .
+            ' w-5 h-5 mr-3"></i>
+                <span>' .
+            $this->translator->trans($sidebarElement->getLabel()) .
+            '</span>
+            </a>';
+
+        /*return '<li ' .
             $active .
             '>
             <a href="' .
@@ -110,7 +123,7 @@ class SidebarExtension extends AppAdminExtension
             $this->translator->trans($sidebarElement->getLabel()) .
             '</span>
             </a>
-        </li>';
+        </li>';*/
     }
 
     /**
@@ -263,9 +276,9 @@ class SidebarExtension extends AppAdminExtension
     {
         $return = '';
         if ($route === $this->currentRoute) {
-            $return = 'class="active"';
+            $return = 'active';
             if ($child) {
-                $return = 'class="sub-active"';
+                $return = 'active';
             }
         }
         return $return;
