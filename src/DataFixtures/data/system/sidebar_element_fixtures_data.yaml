@@ -1,6 +1,6 @@
 sidebarElement:
     se_dashboard:
-        icon: 'fa-house'
+        icon: 'm4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5'
         label: 'global.dashboard'
         route: 'admin_dashboard_index'
         disabled: false
@@ -8,7 +8,7 @@ sidebarElement:
         lock: true
         description: 'sidebar.dashboard.description'
     se_membre:
-        icon: 'fa-user'
+        icon: 'M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z'
         label: 'global.membre'
         route: '#'
         disabled: false
@@ -16,7 +16,7 @@ sidebarElement:
         lock: false
         description: 'sidebar.membre.description'
     se_content:
-        icon: 'fa-folder-open'
+        icon: 'M10 3v4a1 1 0 0 1-1 1H5m4 8h6m-6-4h6m4-8v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z'
         label: 'global.content'
         route: '#contenus'
         disabled: false
@@ -25,7 +25,7 @@ sidebarElement:
         lock: true
         children:
             - se_menu:
-                  icon: 'fa-rectangle-list'
+                  icon: 'M5 7h14M5 12h14M5 17h14'
                   label: 'global.menu'
                   route: 'admin_menu_index'
                   disabled: false
@@ -34,7 +34,7 @@ sidebarElement:
                   description: 'sidebar.menu.description'
                   lock: true
             - se_page:
-                  icon: 'fa-file'
+                  icon: 'M10 3v4a1 1 0 0 1-1 1H5m14-4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1ZM8 18h8l-2-4-1.5 2-2-4L8 18Zm7-8.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z'
                   label: 'global.page'
                   route: 'admin_page_index'
                   disabled: false
@@ -43,7 +43,7 @@ sidebarElement:
                   description: 'sidebar.page.description'
                   lock: true
             - se_comment:
-                  icon: 'fa-comments'
+                  icon: 'M9 17h6l3 3v-3h2V9h-2M4 4h11v8H9l-3 3v-3H4V4Z'
                   label: 'global.comment'
                   route: 'admin_comment_index'
                   disabled: false
@@ -52,7 +52,7 @@ sidebarElement:
                   description: 'sidebar.comment.description'
                   lock: true
             - se_tag:
-                  icon: 'fa-bookmark'
+                  icon: 'M15.2 6H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11.2a1 1 0 0 0 .747-.334l4.46-5a1 1 0 0 0 0-1.332l-4.46-5A1 1 0 0 0 15.2 6Z"/>'
                   label: 'global.tag'
                   route: 'admin_tag_index'
                   disabled: false
@@ -61,7 +61,7 @@ sidebarElement:
                   description: 'sidebar.tag.description'
                   lock: true
             - se_media:
-                  icon: 'fa-images'
+                  icon: 'm3 16 5-7 6 6.5m6.5 2.5L16 13l-4.286 6M14 10h.01M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z'
                   label: 'global.mediatheque'
                   route: 'admin_media_index'
                   disabled: false
@@ -70,7 +70,7 @@ sidebarElement:
                   description: 'sidebar.mediatheque.description'
                   lock: true
             - se_faq:
-                  icon: 'fa-circle-question'
+                  icon: 'M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
                   label: 'global.faq'
                   route: 'admin_faq_index'
                   disabled: false
@@ -79,7 +79,7 @@ sidebarElement:
                   description: 'sidebar.faq.description'
                   lock: false
     se_system:
-        icon: 'fa-sun'
+        icon: 'M8 8v8m0-8h8M8 8H6a2 2 0 1 1 2-2v2Zm0 8h8m-8 0H6a2 2 0 1 0 2 2v-2Zm8 0V8m0 8h2a2 2 0 1 1-2 2v-2Zm0-8h2a2 2 0 1 0-2-2v2Z'
         label: 'global.system'
         route: '#system'
         disabled: false
@@ -88,7 +88,7 @@ sidebarElement:
         lock: true
         children:
             - se_user:
-                  icon: 'fa-circle-user'
+                  icon: 'M16 19h4a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-2m-2.236-4a3 3 0 1 0 0-4M3 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z'
                   label: 'global.user'
                   route: 'admin_user_index'
                   disabled: false
@@ -97,7 +97,7 @@ sidebarElement:
                   description: 'sidebar.user.description'
                   lock: true
             - se_droits:
-                  icon: 'fa-rectangle-list'
+                  icon: 'M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z'
                   label: 'global.sidebar'
                   route: 'admin_sidebar_index'
                   disabled: false
@@ -106,7 +106,7 @@ sidebarElement:
                   description: 'sidebar.sidebar.description'
                   lock: true
             - se_options:
-                  icon: 'fa-star'
+                  icon: 'M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm16 14a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2ZM4 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6Zm16-2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6Z'
                   label: 'global.system_options'
                   route: 'admin_option-system_change'
                   disabled: false
@@ -115,7 +115,7 @@ sidebarElement:
                   description: 'sidebar.system_options.description'
                   lock: true
             - se_api_token:
-                  icon: 'fa-handshake'
+                  icon: 'M8.54025 15.4598c-.15524.0503-.82936-1.9171-.89837-2.3619-.08825-.5688.03111-1.7696.15081-1.7963.1197-.0267.68672 1.2412.75573 1.686.06901.4447.14706 2.4219-.00817 2.4722Zm0 0c-.00841-.163 2.06645-.3049 2.51395-.2565.5722.062 1.7012.4881 1.696.6106-.0052.1225-1.3766.3421-1.8241.2936-.4475-.0484-2.37745-.4848-2.38585-.6477Zm3.71475-3.7147L4 20m8.255-8.2549 6.6038-6.6039m-6.6038 6.6039c-.1553.0503-.8294-1.91714-.8984-2.36191-.0883-.56876.0311-1.76956.1508-1.79626.1197-.0267.6867 1.24116.7557 1.68593.069.44477.1471 2.42194-.0081 2.47224Zm0 0c-.0084-.163 2.0664-.3049 2.5139-.2565.5722.062 1.7012.4881 1.696.6106-.0052.1225-1.3766.3421-1.8241.2936-.4475-.0484-2.3774-.4848-2.3858-.6477ZM20 8.95298l-1.2713 1.27132m-3.6816-6.22427-1.2713 1.27129M5.26953 18.7305c-.15523.0503-.82935-1.9171-.89836-2.3619-.08825-.5687.0311-1.7696.1508-1.7963.1197-.0267.68673 1.2412.75574 1.686.06901.4447.14705 2.4219-.00818 2.4722Zm0 0c-.0084-.163 2.06645-.3049 2.51393-.2565.57221.062 1.70121.4881 1.69602.6106-.00519.1226-1.37661.3421-1.82408.2937-.44748-.0485-2.37746-.4848-2.38587-.6478Z'
                   label: 'global.api_token'
                   route: 'admin_api_token_index'
                   disabled: false
@@ -124,7 +124,7 @@ sidebarElement:
                   description: 'sidebar.api_token.description'
                   lock: true
             - se_email:
-                  icon: 'fa-envelope'
+                  icon: 'm3.5 5.5 7.893 6.036a1 1 0 0 0 1.214 0L20.5 5.5M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z'
                   label: 'global.mail'
                   route: 'admin_mail_index'
                   disabled: false
@@ -133,7 +133,7 @@ sidebarElement:
                   description: 'sidebar.mail.description'
                   lock: false
             - se_translate:
-                  icon: 'fa-face-laugh-beam'
+                  icon: 'm13 19 3.5-9 3.5 9m-6.125-2h5.25M3 7h7m0 0h2m-2 0c0 1.63-.793 3.926-2.239 5.655M7.5 6.818V5m.261 7.655C6.79 13.82 5.521 14.725 4 15m3.761-2.345L5 10m2.761 2.655L10.2 15'
                   label: 'global.translate'
                   route: 'admin_translation_index'
                   disabled: false
@@ -142,7 +142,7 @@ sidebarElement:
                   description: 'sidebar.translate.description'
                   lock: true
             - se_logs:
-                  icon: 'fa-file-line'
+                  icon: 'M10 3v4a1 1 0 0 1-1 1H5m4 8h6m-6-4h6m4-8v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z'
                   label: 'global.logs'
                   route: 'admin_log_index'
                   disabled: false
@@ -151,7 +151,7 @@ sidebarElement:
                   description: 'sidebar.log.description'
                   lock: false
             - se_update:
-                  icon: 'fa-bell'
+                  icon: 'M15 17h3a3 3 0 0 0 0-6h-.025a5.56 5.56 0 0 0 .025-.5A5.5 5.5 0 0 0 7.207 9.021C7.137 9.017 7.071 9 7 9a4 4 0 1 0 0 8h2.167M12 19v-9m0 0-2 2m2-2 2 2'
                   label: 'global.update'
                   route: '#'
                   disabled: false
@@ -160,7 +160,7 @@ sidebarElement:
                   description: 'sidebar.update.description'
                   lock: true
             - se_info:
-                  icon: 'fa-eye'
+                  icon: 'M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
                   label: 'global.info'
                   route: 'admin_info_index'
                   disabled: false
@@ -169,7 +169,7 @@ sidebarElement:
                   description: 'sidebar.info.description'
                   lock: true
     se_devTools:
-        icon: 'fa-file-code'
+        icon: 'm8 8-4 4 4 4m8 0 4-4-4-4m-2-3-4 14'
         label: 'global.devtools'
         route: '#devTools'
         disabled: false
@@ -178,7 +178,7 @@ sidebarElement:
         lock: false
         children:
             - se_devOptions:
-                  icon: 'fa-file-code'
+                  icon: 'm8 8-4 4 4 4m8 0 4-4-4-4m-2-3-4 14'
                   label: 'global.dev_options'
                   route: 'admin_advanced_options_index'
                   disabled: false
@@ -187,7 +187,7 @@ sidebarElement:
                   description: 'sidebar.dev_options.description'
                   lock: false
             - se_sql:
-                  icon: 'fa-floppy-disk'
+                  icon: 'M19 6c0 1.657-3.134 3-7 3S5 7.657 5 6m14 0c0-1.657-3.134-3-7-3S5 4.343 5 6m14 0v6M5 6v6m0 0c0 1.657 3.134 3 7 3s7-1.343 7-3M5 12v6c0 1.657 3.134 3 7 3s7-1.343 7-3v-6'
                   label: 'global.sql'
                   route: 'admin_sql_manager_index'
                   disabled: false
@@ -196,7 +196,7 @@ sidebarElement:
                   description: 'sidebar.sql.description'
                   lock: false
             - se_database:
-                  icon: 'fa-hard-drive'
+                  icon: 'M19 6c0 1.657-3.134 3-7 3S5 7.657 5 6m14 0c0-1.657-3.134-3-7-3S5 4.343 5 6m14 0v6M5 6v6m0 0c0 1.657 3.134 3 7 3s7-1.343 7-3M5 12v6c0 1.657 3.134 3 7 3s7-1.343 7-3v-6'
                   label: 'global.database'
                   route: 'admin_database_manager_index'
                   disabled: false
@@ -205,7 +205,7 @@ sidebarElement:
                   description: 'sidebar.database.description'
                   lock: false
             - se_html-element:
-                  icon: 'fa-hand'
+                  icon: 'M15.041 13.862A4.999 4.999 0 0 1 17 17.831V21M7 3v3.169a5 5 0 0 0 1.891 3.916M17 3v3.169a5 5 0 0 1-2.428 4.288l-5.144 3.086A5 5 0 0 0 7 17.831V21M7 5h10M7.399 8h9.252M8 16h8.652M7 19h10'
                   label: 'global.html_element'
                   route: 'admin_dashboard_page_demo'
                   disabled: false
