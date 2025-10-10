@@ -32,7 +32,7 @@ class SidebarElement
     #[ORM\OrderBy(['id' => 'ASC'])]
     private Collection $children;
 
-    #[ORM\Column(length: 40)]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $icon = null;
 
     #[ORM\Column(length: 255)]

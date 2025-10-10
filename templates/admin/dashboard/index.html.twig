@@ -1,7 +1,6 @@
 {% extends 'admin/admin_base.html.twig' %}
 
 {% block title %}{{ 'dashboard.index' | trans({}, 'dashboard') }}{% endblock %}
-{% block titlePage %}aaa{% endblock %}
 
 {% block body %}
 
@@ -75,6 +74,7 @@
     }) }}>
     </div>
 {% endblock %}
+
 {% block scriptJavascript %}
 setPageTitle('{{ 'dashboard.index' | trans({}, 'dashboard') }}')
 {% endblock %}
