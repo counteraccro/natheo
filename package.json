@@ -29,7 +29,6 @@
         "vue-loader": "^17.0.1"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^7.1.0",
         "@popperjs/core": "^2.11.6",
         "axios": "^1.8.4",
         "bootstrap": "5.3.1",
