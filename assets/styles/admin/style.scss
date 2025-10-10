@@ -277,7 +277,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1rem;
-  background: rgba(139, 92, 246, 0.15);
+  background: rgb(from var(--primary) r g b / 0.15);
   border-bottom: 1px solid rgba(139, 92, 246, 0.3);
 }
 
@@ -320,7 +320,7 @@ body {
 }
 
 .debug-item:hover {
-  background-color: rgba(139, 92, 246, 0.15);
+  background-color: rgb(from var(--primary) r g b / 0.15);
 }
 
 .debug-item-label {
