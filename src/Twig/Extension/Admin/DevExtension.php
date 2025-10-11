@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Retourne des infos pour le développement
  */
 
@@ -57,34 +57,8 @@ class DevExtension extends AppAdminExtension
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[AsTwigFunction('getVersion', isSafe: ['html'])]
-    public function getVersion(): string
-    {
-        $version = $this->parameterBag->get('app.version');
-        $debug = $this->parameterBag->get('app.debug_mode');
-
-        if ($debug) {
-            $return = $this->getDevInfo();
-        } else {
-            $return =
-                '<i class="bi bi-bug-fill"></i> <i>
-            ' .
-                $this->translator->trans('dev.info.version', domain: 'dev') .
-                ' <b>' .
-                $version .
-                '</b></i>';
-        }
-
-        return $return;
-    }
-
-    /**
-     * Retourne les informations pour les dev
-     * @return string
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    private function getDevInfo(): string
+    #[AsTwigFunction('devInfo', isSafe: ['html'])]
+    public function getDevInfo(): array
     {
         $version = $this->parameterBag->get('app.version');
         $env = $this->parameterBag->get('kernel.environment');
@@ -94,56 +68,20 @@ class DevExtension extends AppAdminExtension
             InstallationConst::STRATEGY_POSTGRESQL => 'PostgreSQL',
         };
 
-        return '<fieldset>
-        <legend class="text-white">' .
-            $this->translator->trans('dev.info', domain: 'dev') .
-            '</legend>
-            <i class="bi bi-git"></i> <i>
-            ' .
-            $this->translator->trans('dev.info.branche', domain: 'dev') .
-            ' <b>' .
-            $infoGit[GitService::KEY_BRANCHE] .
-            '</b></i> <br />
-            <i class="bi bi-github"></i> <i>
-            ' .
-            $this->translator->trans('dev.info.last.commit', domain: 'dev') .
-            ' <b><abbr title="' .
-            $infoGit[GitService::KEY_HASH] .
-            '">' .
-            substr($infoGit[GitService::KEY_HASH], 0, 7) .
-            '</abbr></b></i>
-            <br />
-             <i class="bi bi-calendar3"></i> <i>
-            ' .
-            $this->translator->trans('dev.info.date.last.commit', domain: 'dev') .
-            ' <b><abbr title="' .
-            $infoGit[GitService::KEY_LAST_COMMIT] .
-            '">' .
-            $infoGit[GitService::KEY_LAST_COMMIT_SHORT] .
-            '</abbr></b></i>
-            <br />
-            <i class="bi bi-bug-fill"></i> <i>
-            ' .
-            $this->translator->trans('dev.info.version', domain: 'dev') .
-            ' <b>' .
-            $version .
-            '</b></i>
-             <br />
-            <i class="bi bi-hdd-fill"></i> <i>
-            ' .
-            $this->translator->trans('dev.info.env', domain: 'dev') .
-            ' <b>' .
-            $env .
-            '</b></i>
-            <br />
-            <i class="bi bi-database-fill"></i> <i>
-            ' .
-            $this->translator->trans('dev.info.database', domain: 'dev') .
-            ' <b> ' .
-            $database .
-            '</b>
-            </i>
-        </fieldset>';
+        return [
+            'php' => phpversion(),
+            'git_branche' => $infoGit[GitService::KEY_BRANCHE],
+            'last_commit' =>
+                '<abbr title="' .
+                $infoGit[GitService::KEY_HASH] .
+                '">' .
+                substr($infoGit[GitService::KEY_HASH], 0, 7) .
+                '</abbr>',
+            'last_commit_date' => $infoGit[GitService::KEY_LAST_COMMIT],
+            'version' => $version,
+            'env' => $env,
+            'database' => $database,
+        ];
     }
 
     /**
