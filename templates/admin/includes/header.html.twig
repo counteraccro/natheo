@@ -173,7 +173,7 @@
                     </svg>
                 </button>
                 <!-- Dropdown menu -->
-                <div id="newContentDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-56">
+                <div id="newContentDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-56 border-1 border-gray-200">
                     <ul class="py-2 text-sm text-gray-700">
                         <li>
                             <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-100">
@@ -206,13 +206,18 @@
             <!-- User Menu Dropdown -->
             <div class="relative">
                 <button id="userMenuButton" data-dropdown-toggle="userMenuDropdown" data-dropdown-placement="bottom-end" class="flex items-center space-x-2" type="button">
-                    <div class="avatar w-8 h-8 text-xs text-white" style="background-color: #8b5cf6;">A</div>
+
+                    {% if app.user.getAvatar is null %}
+                        <div class="avatar w-8 h-8 text-xs text-white" style="background-color: var(--primary);">A</div>
+                    {% else  %}
+                        <img src="/uploads/avatars/{{ app.user.getAvatar }}" class="avatar w-8 h-8 text-xs text-white" />
+                    {% endif %}
                     <svg class="w-4 h-4 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </button>
                 <!-- Dropdown menu -->
-                <div id="userMenuDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-56">
+                <div id="userMenuDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-56 border-1 border-gray-200">
                     <ul class="py-2 text-sm text-gray-700">
                         <li>
                             <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-100">
@@ -241,7 +246,7 @@
                         </li>
                     </ul>
                     <div class="py-2">
-                        <a href="#" class="flex items-center px-4 py-3 text-sm text-red-600 hover:bg-gray-100">
+                        <a href="{{ path('auth_logout') }}" class="flex items-center px-4 py-3 text-sm text-red-600 hover:bg-gray-100">
                             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                             </svg>
