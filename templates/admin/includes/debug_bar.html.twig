@@ -136,6 +136,8 @@
                 </div>
             </div>
 
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+
             <div class="debug-separator"></div>
 
             <!-- Section Se connecter en tant que -->
@@ -159,49 +161,35 @@
                     </svg>
                 </button>
             </div>
+
+            {% endif %}
         </div>
     </div>
 
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
     <!-- Dropdown menu -->
     <div id="switchUserDropdown" class="z-50 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-56">
         <ul class="py-2 text-sm text-gray-700">
-            <li>
-                <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-100">
-                    <div class="avatar w-6 h-6 text-xs text-white mr-3" style="background-color: #8b5cf6;">A</div>
-                    <div>
-                        <div class="font-semibold text-gray-900">admin</div>
-                        <div class="text-xs text-gray-500">Administrateur</div>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-100">
-                    <div class="avatar w-6 h-6 text-xs text-white mr-3" style="background-color: #a78bfa;">E</div>
-                    <div>
-                        <div class="font-semibold text-gray-900">editor</div>
-                        <div class="text-xs text-gray-500">Éditeur</div>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-100">
-                    <div class="avatar w-6 h-6 text-xs text-white mr-3" style="background-color: #94a3b8;">U</div>
-                    <div>
-                        <div class="font-semibold text-gray-900">user-demo</div>
-                        <div class="text-xs text-gray-500">Utilisateur</div>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="flex items-center px-4 py-3 hover:bg-gray-100">
-                    <div class="avatar w-6 h-6 text-xs text-white mr-3" style="background-color: #6b7280;">G</div>
-                    <div>
-                        <div class="font-semibold text-gray-900">guest</div>
-                        <div class="text-xs text-gray-500">Invité</div>
-                    </div>
-                </a>
-            </li>
+
+            {% for user in listeUsersToLogin() %}
+
+                <li>
+                    <a href="{{ user['url'] }}" class="flex items-center px-4 py-3 hover:bg-gray-100">
+                        {% if user['avatar'] is not null %}
+                        <img src="{{  user['avatar'] }}" class="avatar w-6 h-6 text-xs text-white mr-3" alt="img-{{ user['login'] }}">
+                        {% else %}
+                            <div class="avatar w-6 h-6 text-xs text-white mr-3" style="background-color: var(--primary);">{{ user['firstLetter'] }}</div>
+                        {% endif %}
+                        <div>
+                            <div class="font-semibold text-gray-900">{{ user['login'] }}</div>
+                            <div class="text-xs text-gray-500">{{ user['role'] }}</div>
+                        </div>
+                    </a>
+                </li>
+
+            {% endfor %}
         </ul>
     </div>
+   {% endif %}
 </div>
 {% endif %}

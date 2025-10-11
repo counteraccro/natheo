@@ -41,6 +41,9 @@ security:
                     - cache
                     - storage
                     - executionContexts
+            login_link:
+                check_route: auth_login_check
+                signature_properties: [ 'id' ]
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

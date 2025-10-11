@@ -7,14 +7,18 @@
 
 namespace App\Twig\Extension\Admin;
 
+use App\Entity\Admin\System\User;
 use App\Service\Admin\Dev\GitService;
+use App\Service\Admin\GridService;
 use App\Utils\Installation\InstallationConst;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Attribute\AsTwigFunction;
 
@@ -42,6 +46,9 @@ class DevExtension extends AppAdminExtension
                 'router' => RouterInterface::class,
                 'parameterBag' => ParameterBagInterface::class,
                 'gitService' => GitService::class,
+                'entityManager' => EntityManagerInterface::class,
+                'loginLinkHandler' => LoginLinkHandlerInterface::class,
+                'gridService' => GridService::class,
             ]),
         ]
         private readonly ContainerInterface $handlers,
@@ -92,5 +99,35 @@ class DevExtension extends AppAdminExtension
     public function getPhpInfo(): void
     {
         phpinfo();
+    }
+
+    #[AsTwigFunction('listeUsersToLogin', isSafe: ['html'])]
+    public function getListeUsers(): array
+    {
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $this->handlers->get('entityManager');
+
+        /** @var LoginLinkHandlerInterface $loginLinkHandler */
+        $loginLinkHandler = $this->handlers->get('loginLinkHandler');
+
+        /** @var GridService $gridService */
+        $gridService = $this->handlers->get('gridService');
+
+        $users = $entityManager->getRepository(User::class)->findAll();
+
+        $return = [];
+        foreach ($users as $user) {
+            /** @var User $user */
+            $url = $loginLinkHandler->createLoginLink($user);
+            $return[] = [
+                'url' => $url,
+                'firstLetter' => ucfirst($user->getLogin()[0]),
+                'login' => $user->getLogin(),
+                'avatar' => '/' . $this->parameterBag->get('app.path.avatar') . $user->getAvatar(),
+                'role' => $gridService->renderRole($user->getRoles()[0]),
+            ];
+        }
+
+        return $return;
     }
 }

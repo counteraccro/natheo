@@ -194,4 +194,14 @@ class SecurityController extends AbstractController
             'msg' => $msg,
         ]);
     }
+
+    /**
+     * Vérification pour authentification
+     * @return never
+     */
+    #[Route('/login_check', name: 'login_check')]
+    public function check(): never
+    {
+        throw new \LogicException('This code should never be reached');
+    }
 }
