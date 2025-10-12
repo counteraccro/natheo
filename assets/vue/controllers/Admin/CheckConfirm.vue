@@ -120,7 +120,11 @@ export default {
       {{ this.translate.corps }}
     </template>
     <template #footer>
-      <button type="button" class="btn btn-primary" @click="this.redirect">
+      <button
+        type="button"
+        class="btn-primary flex items-center px-4 py-2 rounded-lg font-medium cursor-pointer"
+        @click="this.redirect"
+      >
         <i class="bi bi-check2-circle"></i> {{ this.translate.oui }}
       </button>
       <button type="button" class="btn btn-secondary" @click="this.updateModal('confirmModal', false)">
