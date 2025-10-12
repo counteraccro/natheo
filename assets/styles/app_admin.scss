@@ -1,5 +1,13 @@
-@import "tailwindcss";
+@use "tailwindcss";
 
-@import "flowbite/src/themes/default";
+@use "flowbite/src/themes/default";
+
+@use "admin/variables";
+@use "admin/style";
+@use "admin/global/button";
+
 @plugin "flowbite/plugin";
 @source "../../node_modules/flowbite";
+
+@custom-variant dark (&:where(.dark, .dark *));
+

@@ -5,10 +5,11 @@
  * Composant card derniers commentaires
  */
 import axios from 'axios';
+import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
 
 export default {
   name: 'BlockLastComment',
-  components: {},
+  components: { SkeletonTable },
   emit: [],
   props: {
     urls: Object,
@@ -57,43 +58,68 @@ export default {
 </script>
 
 <template>
-  <div class="card">
-    <h5 class="card-header"><i class="bi bi-chat-left-text"></i> {{ this.translate.title }}</h5>
-
-    <div class="card-body" v-if="this.loading">
-      <div class="spinner-border spinner-border-sm text-secondary" role="status">
-        <span class="visually-hidden">{{ this.translate.loading }}</span>
-      </div>
-      {{ this.translate.loading }}
+  <div class="card rounded-lg overflow-hidden">
+    <div class="px-4 sm:px-6 py-4 border-b flex items-center justify-between" style="border-color: var(--border-color)">
+      <h3 class="text-lg font-semibold">{{ this.translate.title }}</h3>
+      <a :href="this.urls.url_comments" class="text-sm font-medium hover:underline" style="color: var(--primary)">{{
+        this.translate.link_comment
+      }}</a>
     </div>
 
-    <div class="card-body" v-else>
-      <div v-if="this.errorMessage !== null"><i class="bi bi-exclamation-circle"></i> {{ this.errorMessage }}</div>
+    <div
+      v-if="this.errorMessage !== null"
+      class="ms-4 me-4 mt-4 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+      role="alert"
+    >
+      {{ this.errorMessage }}
+    </div>
 
-      <div v-if="this.result !== null">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>{{ this.translate.table_id }}</th>
-              <th>{{ this.translate.table_author }}</th>
-              <th>{{ this.translate.table_status }}</th>
-              <th>{{ this.translate.table_date }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="comment in this.result">
-              <td>{{ comment.id }}</td>
-              <td>{{ comment.author }}</td>
-              <td><span v-html="comment.status"></span></td>
-              <td>{{ comment.date }}</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <a :href="this.urls.url_comments" class="float-end"
-          ><i>{{ this.translate.link_comment }}</i></a
-        >
-      </div>
+    <div class="overflow-x-auto" v-if="this.result !== null">
+      <table class="w-full">
+        <thead style="background-color: var(--bg-main)">
+          <tr>
+            <th
+              class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+              style="color: var(--text-secondary)"
+            >
+              {{ this.translate.table_id }}
+            </th>
+            <th
+              class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+              style="color: var(--text-secondary)"
+            >
+              {{ this.translate.table_author }}
+            </th>
+            <th
+              class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+              style="color: var(--text-secondary)"
+            >
+              {{ this.translate.table_status }}
+            </th>
+            <th
+              class="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+              style="color: var(--text-secondary)"
+            >
+              {{ this.translate.table_date }}
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[var(--border-color)]">
+          <tr
+            v-for="comment in this.result"
+            class="hover:bg-gray-50 transition"
+            style="background-color: var(--bg-card)"
+          >
+            <td class="px-4 sm:px-6 py-4 text-sm font-medium">#{{ comment.id }}</td>
+            <td class="px-4 sm:px-6 py-4 text-sm">{{ comment.author }}</td>
+            <td class="px-4 sm:px-6 py-4 whitespace-nowrap"><span class="badge" v-html="comment.status"></span></td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm" style="color: var(--text-secondary)">{{ comment.date }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div v-else>
+      <SkeletonTable :rows="5" :columns="3" />
     </div>
   </div>
 </template>

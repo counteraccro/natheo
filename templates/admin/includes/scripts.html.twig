@@ -1,5 +1,5 @@
 
-<div {{ vue_component('Admin/CheckConfirm', {
+ <div {{ vue_component('Admin/CheckConfirm', {
     'option' : get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_CONFIRM_LEAVE_FORM')),
     'translate' : {
         'titre' : 'message.global.modal.confirm.titre' | trans,
@@ -12,78 +12,155 @@
 
 
 <script>
+
+    // ============================================
+    // GESTION DES SOUS-MENUS
+    // ============================================
+    function toggleSubmenu(id) {
+        const submenu = document.getElementById('submenu-' + id);
+        const chevron = document.getElementById('chevron-' + id);
+
+        submenu.classList.toggle('open');
+        chevron.classList.toggle('rotate');
+    }
+
+    // ============================================
+    // GESTION DE LA SIDEBAR MOBILE
+    // ============================================
+    function toggleMobileSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('show');
+    }
+
+    // Fermer la sidebar au clic sur un lien (mobile)
+    document.querySelectorAll('.sidebar-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            if (window.innerWidth < 1024 && !this.hasAttribute('onclick')) {
+                toggleMobileSidebar();
+            }
+        });
+    });
+
+    // ============================================
+    // GESTION DES THÈMES DE COULEURS
+    // ============================================
+    function setTheme(theme) {
+        const root = document.documentElement;
+
+        // Supprimer l'ancien thème
+        root.removeAttribute('data-theme');
+
+        // Ajouter le nouveau thème si ce n'est pas violet (par défaut)
+        if (theme !== 'violet') {
+            root.setAttribute('data-theme', theme);
+        }
+
+        // Mettre à jour les boutons actifs
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`.theme-${theme}`).classList.add('active');
+
+        // Sauvegarder dans localStorage
+        localStorage.setItem('theme', theme);
+    }
+
+    // ============================================
+    // GESTION DU MODE SOMBRE
+    // ============================================
+    function toggleDarkMode() {
+        const root = document.documentElement;
+        const toggle = document.getElementById('darkToggle');
+        const isDark = root.getAttribute('data-theme-mode') === 'dark';
+
+        if (isDark) {
+            root.removeAttribute('data-theme-mode');
+            root.classList.remove('dark');
+            toggle.classList.remove('active');
+            localStorage.setItem('darkMode', 'light');
+        } else {
+            root.setAttribute('data-theme-mode', 'dark');
+            root.classList.add('dark');
+            toggle.classList.add('active');
+            localStorage.setItem('darkMode', 'dark');
+        }
+    }
+
+    // ============================================
+    // RESTAURER LES PRÉFÉRENCES AU CHARGEMENT
+    // ============================================
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = localStorage.getItem('theme') || 'violet';
+        const savedDarkMode = localStorage.getItem('darkMode') || 'light';
+
+        // Restaurer le thème de couleur
+        if (savedTheme !== 'violet') {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+
+        // Mettre à jour le bouton de thème actif
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        const activeThemeBtn = document.querySelector(`.theme-${savedTheme}`);
+        if (activeThemeBtn) {
+            activeThemeBtn.classList.add('active');
+        }
+
+        // Restaurer le mode sombre
+        if (savedDarkMode === 'dark') {
+            document.documentElement.setAttribute('data-theme-mode', 'dark');
+            document.documentElement.classList.add('dark');
+            document.getElementById('darkToggle').classList.add('active');
+        }
+    });
+
+    // ============================================
+    // GESTION DE LA DEBUG TOOLBAR
+    // ============================================
+    function toggleDebugToolbar() {
+        const toolbar = document.getElementById('debugToolbar');
+        toolbar.classList.toggle('minimized');
+    }
+
+    // Fermer le debug panel au clic extérieur
+    document.addEventListener('click', function(event) {
+        const toolbar = document.getElementById('debugToolbar');
+        const panel = toolbar.querySelector('.debug-toolbar-panel');
+        const toggle = toolbar.querySelector('.debug-toolbar-toggle');
+
+        if (!toolbar.classList.contains('minimized') &&
+            !panel.contains(event.target) &&
+            !toggle.contains(event.target)) {
+            toolbar.classList.add('minimized');
+        }
+    });
+
     /**
-     * Script JS pour détecter tout changement dans un formulaire
+     * Mise à jour header
+     * @param value
      */
-    "use strict";
-    /*(() => {
-        let checkConfirm = '{{ get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_CONFIRM_LEAVE_FORM'))}}';
-        if(checkConfirm === '0' || true)
-        {
-            return false;
-        }
+    function setPageTitle(value) {
+        const div = document.getElementById('title-page');
+        div.innerHTML = value;
+    }
 
-        function inArray(needle, haystack) {
-            const length = haystack.length;
-            for(let i = 0; i < length; i++) {
-                if(haystack[i] === needle) return true;
-            }
-            return false;
-        }
+    /**
+     * Script pour la recherche globale
+     */
+    function runGlobalSearch() {
+        const inputField = document.getElementById('global-search-input');
 
-        // Class exclus du control
-        const classExclude = 'no-control'
-        const modified_inputs = new Set;
-        const defaultValue = "defaultValue";
-
-        // Stock des valeurs par défaut
-        addEventListener("beforeinput", (evt) => {
-            const target = evt.target;
-            if (!(defaultValue in target || defaultValue in target.dataset)) {
-                target.dataset[defaultValue] = ("" + (target.value || target.textContent)).trim();
+        inputField.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Empêche le comportement par défaut
+                document.getElementById('form-global-search').submit();
             }
         });
-        // détection modification
-        addEventListener("input", (evt) => {
-            const target = evt.target;
+    }
 
-            if(inArray(classExclude, target.classList))
-            {
-                return false;
-            }
-
-            let original;
-            if (defaultValue in target) {
-                original = target[defaultValue];
-            } else {
-                original = target.dataset[defaultValue];
-            }
-            if (original !== ("" + (target.value || target.textContent)).trim()) {
-                if (!modified_inputs.has(target)) {
-                    modified_inputs.add(target);
-                }
-            } else if (modified_inputs.has(target)) {
-                modified_inputs.delete(target);
-            }
-        });
-
-        // Cas submit, on clean tout
-        addEventListener("submit", (evt) => {
-            modified_inputs.clear();
-            let msg = '{{ 'message.global.loading' | trans }}'
-            evt.submitter.innerHTML = ' <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> ' + msg;
-            document.querySelector('#' + evt.submitter.id).disabled = true;
-            // to prevent the warning from happening, it is advisable
-            // that you clear your form controls back to their default
-            // state with evt.target.reset() or form.reset() after submission
-        });
-
-        // Changement du message
-        addEventListener("beforeunload", (evt) => {
-            if (modified_inputs.size) {
-                evt.returnValue = "Changes you made may not be saved.";
-                return evt;
-            }
-        });
-    })();*/
+    runGlobalSearch();
 </script>

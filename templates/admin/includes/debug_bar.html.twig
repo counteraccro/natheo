@@ -1,0 +1,195 @@
+<!-- Debug Toolbar -->
+
+
+{% set devInfo = devInfo() %}
+
+{% if devInfo['env'] is same as 'dev' %}
+
+
+<div class="debug-toolbar minimized" id="debugToolbar">
+    <!-- Bouton toggle -->
+    <div class="debug-toolbar-toggle" onclick="toggleDebugToolbar()">
+        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+        </svg>
+    </div>
+
+    <!-- Panel -->
+    <div class="debug-toolbar-panel">
+        <div class="debug-toolbar-header">
+            <div class="flex items-center gap-2">
+                <svg class="w-4 h-4" style="color: var(--primary-light);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                </svg>
+                <span class="text-sm font-bold text-gray-300">{{ 'dev.debug.bar.title' | trans({}, 'dev') }}</span>
+                <span class="debug-badge">DEV</span>
+            </div>
+            <button onclick="toggleDebugToolbar()" class="text-gray-400 hover:text-white">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="debug-toolbar-content">
+            <!-- Section Système -->
+            <div class="debug-section">
+                <div class="debug-section-title">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                    </svg>
+                    {{ 'dev.debug.bar.system' | trans({}, 'dev') }}
+                </div>
+
+                <div class="debug-item">
+                    <span class="debug-item-label">
+                        <svg class="debug-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                        PHP
+                    </span>
+                    <span class="debug-item-value">{{ devInfo['php'] }}</span>
+                </div>
+
+                <div class="debug-item">
+                    <span class="debug-item-label">
+                        <svg class="debug-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                         {{ 'dev.debug.bar.environnement' | trans({}, 'dev') }}
+                    </span>
+                    <span class="debug-item-value">{{ devInfo["env"] }}</span>
+                </div>
+
+                <div class="debug-item">
+                    <span class="debug-item-label">
+                        <svg class="debug-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 6c0 1.657-3.134 3-7 3S5 7.657 5 6m14 0c0-1.657-3.134-3-7-3S5 4.343 5 6m14 0v6M5 6v6m0 0c0 1.657 3.134 3 7 3s7-1.343 7-3M5 12v6c0 1.657 3.134 3 7 3s7-1.343 7-3v-6"></path>
+                        </svg>
+                         {{ 'dev.debug.bar.database' | trans({}, 'dev') }}
+                    </span>
+                    <span class="debug-item-value">{{ devInfo["database"] }}</span>
+                </div>
+            </div>
+
+            <div class="debug-separator"></div>
+
+            <!-- Section Git -->
+            <div class="debug-section">
+                <div class="debug-section-title">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                    {{ 'dev.debug.bar.git' | trans({}, 'dev') }}
+                </div>
+
+                <div class="debug-item">
+                    <span class="debug-item-label">
+                        <svg class="debug-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path>
+                        </svg>
+                         {{ 'dev.debug.bar.branche' | trans({}, 'dev') }}
+                    </span>
+                    <span class="debug-item-value w-40 truncate">{{ devInfo['git_branche'] }}</span>
+                </div>
+
+                <div class="debug-item">
+                    <span class="debug-item-label">
+                        <svg class="debug-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
+                        </svg>
+                         {{ 'dev.debug.bar.commit' | trans({}, 'dev') }}
+                    </span>
+                    <span class="debug-item-value">{{ devInfo['last_commit'] | raw }}</span>
+                </div>
+
+                <div class="debug-item">
+                    <span class="debug-item-label">
+                        <svg class="debug-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                         {{ 'dev.debug.bar.commit.date' | trans({}, 'dev') }}
+                    </span>
+                    <span class="debug-item-value">{{ devInfo['last_commit_date'] }}</span>
+                </div>
+            </div>
+
+            <div class="debug-separator"></div>
+
+            <!-- Section Application -->
+            <div class="debug-section">
+                <div class="debug-section-title">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    {{ 'dev.debug.bar.application' | trans({}, 'dev') }}
+                </div>
+
+                <div class="debug-item">
+                    <span class="debug-item-label">
+                        <svg class="debug-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                        </svg>
+                         {{ 'dev.debug.bar.version' | trans({}, 'dev') }}
+                    </span>
+                    <span class="debug-item-value">{{ devInfo['version'] }}</span>
+                </div>
+            </div>
+
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+
+            <div class="debug-separator"></div>
+
+            <!-- Section Se connecter en tant que -->
+            <div class="debug-section">
+                <div class="debug-section-title">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    {{ 'dev.debug.bar.login.with' | trans({}, 'dev') }}
+                </div>
+
+                <button id="switchUserButton" data-dropdown-toggle="switchUserDropdown" data-dropdown-placement="top-start" type="button" class="debug-item w-full text-left">
+                    <span class="debug-item-label">
+                        <svg class="debug-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                        </svg>
+                         {{ 'dev.debug.bar.switch.user' | trans({}, 'dev') }}
+                    </span>
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                    </svg>
+                </button>
+            </div>
+
+            {% endif %}
+        </div>
+    </div>
+
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+    <!-- Dropdown menu -->
+    <div id="switchUserDropdown" class="z-50 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-56">
+        <ul class="py-2 text-sm text-gray-700">
+
+            {% for user in listeUsersToLogin() %}
+
+                <li>
+                    <a href="{{ user['url'] }}" class="flex items-center px-4 py-3 hover:bg-gray-100">
+                        {% if user['avatar'] is not null %}
+                        <img src="{{  user['avatar'] }}" class="avatar w-6 h-6 text-xs text-white mr-3" alt="img-{{ user['login'] }}">
+                        {% else %}
+                            <div class="avatar w-6 h-6 text-xs text-white mr-3" style="background-color: var(--primary);">{{ user['firstLetter'] }}</div>
+                        {% endif %}
+                        <div>
+                            <div class="font-semibold text-gray-900">{{ user['login'] }}</div>
+                            <div class="text-xs text-gray-500">{{ user['role'] }}</div>
+                        </div>
+                    </a>
+                </li>
+
+            {% endfor %}
+        </ul>
+    </div>
+   {% endif %}
+</div>
+{% endif %}

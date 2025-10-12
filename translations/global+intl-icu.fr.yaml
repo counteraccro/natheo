@@ -12,5 +12,16 @@ global.user.impersonation: 'Reprendre mon profil'
 global.citation: 'À vaincre sans péril, on triomphe sans gloire.'
 global.citation.auteur: 'Pierre corneille <cite title="Le Cid, p.207">Le cid</cite>'
 global.search.placeholder: 'Rechercher une page, un tag....'
-global.search.btn: Rechercher
 global.display: 'Mon site web'
+global.search.btn: __global.search.btn
+global.header.btn.nouveau: Nouveau
+global.header.btn.nouveau.page: 'Nouvelle page'
+global.header.btn.menu: 'Nouveau menu'
+global.header.btn.faq: 'Nouvelle FAQ'
+global.header.btn.tag: 'Nouveau tag'
+global.header.menu.impersonation: 'Retour mon compte'
+global.header.menu.my.account: 'Mon compte'
+global.header.menu.my.options: 'Mes options'
+global.header.menu.website: 'Mon site web'
+global.header.menu.logout: Déconnexion
+global.header.search.input: 'Rechercher une page, un tag, un menu...'

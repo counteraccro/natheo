@@ -14,7 +14,7 @@ use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\Content\Page\PageMetaTranslation;
 use App\Entity\Admin\Content\Page\PageStatistique;
 use App\Entity\Admin\Content\Page\PageTranslation;
-use App\Enum\Content\Page\PageMeta as PageMetaEnum;
+use App\Enum\Admin\Content\Page\PageMeta as PageMetaEnum;
 use App\Utils\Content\Comment\CommentConst;
 
 class PageFactory

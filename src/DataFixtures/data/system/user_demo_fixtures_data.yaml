@@ -2,7 +2,7 @@ user:
     R-User:
         email: user@natheo.com
         password: user@natheo.com
-        login: user-1
+        login: user
         firstname: user-demo
         lastname: the-demo
         roles: ROLE_USER
@@ -14,7 +14,7 @@ user:
     R-Contributeur:
         email: contributeur@natheo.com
         password: contributeur@natheo.com
-        login: contributeur-1
+        login: contributeur
         firstname: contributeur-demo
         lastname: the-demo
         roles: ROLE_CONTRIBUTEUR
@@ -26,7 +26,7 @@ user:
     R-Admin:
         email: admin@natheo.com
         password: admin@natheo.com
-        login: admin-1
+        login: admin
         firstname: admin-demo
         lastname: the-demo
         roles: ROLE_ADMIN
@@ -38,7 +38,7 @@ user:
     R-SuperAdmin:
         email: superadmin@natheo.com
         password: superadmin@natheo.com
-        login: super-admin-1
+        login: super-admin
         firstname: super-admin-demo
         lastname: the-demo
         roles: ROLE_SUPER_ADMIN

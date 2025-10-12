@@ -5,10 +5,11 @@
  * Composant card derniers commentaires
  */
 import axios from 'axios';
+import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
 
 export default {
   name: 'BlockLastPage',
-  components: {},
+  components: { SkeletonTable },
   emit: [],
   props: {
     urls: Object,
@@ -55,18 +56,23 @@ export default {
 </script>
 
 <template>
-  <div class="card">
-    <h5 class="card-header"><i class="bi bi-file-earmark-text-fill"></i> {{ this.translate.title }}</h5>
-
-    <div class="card-body" v-if="this.loading">
-      <div class="spinner-border spinner-border-sm text-secondary" role="status">
-        <span class="visually-hidden">{{ this.translate.loading }}</span>
-      </div>
-      {{ this.translate.loading }}
+  <div class="card rounded-lg overflow-hidden">
+    <div class="px-4 sm:px-6 py-4 border-b flex items-center justify-between" style="border-color: var(--border-color)">
+      <h3 class="text-lg font-semibold">Dernières pages</h3>
+      <button class="text-sm font-medium hover:underline" style="color: var(--primary)">Voir tout</button>
     </div>
 
-    <div class="card-body" v-else>
-      <div v-if="this.errorMessage !== null"><i class="bi bi-exclamation-circle"></i> {{ this.errorMessage }}</div>
+    <div class="overflow-x-auto" v-if="!this.loading">
+      <div
+        v-if="this.errorMessage !== null"
+        class="ms-4 me-4 mt-4 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+        role="alert"
+      >
+        {{ this.errorMessage }}
+      </div>
+    </div>
+    <div v-else>
+      <SkeletonTable :rows="5" :columns="3" />
     </div>
   </div>
 </template>

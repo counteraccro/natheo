@@ -4,7 +4,68 @@
 
 {% block body %}
 
-    <h1 class="mb-3">{{ 'dashboard.index' | trans({}, 'dashboard') }}</h1>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6">
+        <div class="card rounded-lg p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium" style="color: var(--text-secondary);">Total Articles</p>
+                    <p class="text-3xl font-bold mt-2">156</p>
+                    <p class="text-xs mt-1" style="color: var(--text-light);">+12% ce mois</p>
+                </div>
+                <div class="p-3 rounded-lg" style="background-color: var(--primary); opacity: 0.1;">
+                    <svg class="w-8 h-8" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="card rounded-lg p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium" style="color: var(--text-secondary);">Commentaires</p>
+                    <p class="text-3xl font-bold mt-2">342</p>
+                    <p class="text-xs mt-1" style="color: var(--text-light);">3 en attente</p>
+                </div>
+                <div class="p-3 rounded-lg" style="background-color: var(--status-validated); opacity: 0.1;">
+                    <svg class="w-8 h-8" style="color: var(--status-validated);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="card rounded-lg p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium" style="color: var(--text-secondary);">Utilisateurs</p>
+                    <p class="text-3xl font-bold mt-2">89</p>
+                    <p class="text-xs mt-1" style="color: var(--text-light);">+5 cette semaine</p>
+                </div>
+                <div class="p-3 rounded-lg" style="background-color: var(--secondary); opacity: 0.1;">
+                    <svg class="w-8 h-8" style="color: var(--secondary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="card rounded-lg p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium" style="color: var(--text-secondary);">Vues totales</p>
+                    <p class="text-3xl font-bold mt-2">12.5k</p>
+                    <p class="text-xs mt-1" style="color: var(--text-light);">+8% ce mois</p>
+                </div>
+                <div class="p-3 rounded-lg" style="background-color: var(--status-pending); opacity: 0.1;">
+                    <svg class="w-8 h-8" style="color: var(--status-pending);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div {{ vue_component('Admin/Dashboard/dashboard', {
         'urls' : urls,
@@ -13,3 +74,9 @@
     }) }}>
     </div>
 {% endblock %}
+
+{% block scriptJavascript %}
+setPageTitle('{{ 'dashboard.index' | trans({}, 'dashboard') }}')
+{% endblock %}
+
+
