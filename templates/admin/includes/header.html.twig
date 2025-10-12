@@ -1,91 +1,3 @@
-<!--<nav id="adm-navbar" class="navbar navbar-expand-lg bg-secondary">
-    <div class="container-fluid">
-        <button type="button" id="sidebarCollapse" class="btn btn-primary">
-            <i id="icon-toggle-sidebar" class="bi bi-chevron-double-left"></i>
-        </button>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarToggleExternalContent">
-            <div class="navbar-nav navbar-collapse justify-content-center">
-                <form class="d-flex" role="search" action="{{ path('admin_search_index') }}" method="post">
-                    <div class="input-group">
-                        <input type="text" name="global-search-input" class="form-control" size="45" placeholder=" {{ 'global.search.placeholder' | trans({}, 'global') }}">
-                        <button class="btn btn-primary" type="submit" id="button-addon2"><i class="bi bi-search"></i>  {{ 'global.search.btn' | trans({}, 'global') }}</button>
-                    </div>
-                </form>
-            </div>
-            <!-- ml-auto still works just fine-->
-            <!--<div class="navbar-nav ms-auto">
-                <a class="nav-link active" href="#">
-                    <i class="bi-h bi-house-fill-h"></i>
-                    <span class="d-none-mini"> {{ 'global.dashboard' | trans({}, 'global') }}</span>
-                </a>
-
-                {% set urlSite = get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_ADRESSE_SITE')) %}
-
-                <a class="nav-link active" href="{{ urlSite }}">
-                    <i class="bi-h bi-display-fill-h"></i>
-                    <span class="d-none-mini"> {{ 'global.display' | trans({}, 'global') }}</span>
-                </a>
-
-                {%set notification = get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_NOTIFICATION')) %}
-
-                {% if notification is same as("1") %}
-                    <a class="nav-link link-notification" href="{{ path('admin_notification_index') }}">
-                        <i class="bi-h bi-bell-fill-h position-relative">
-                            <span {{ vue_component('Admin/Notification/NotificationBadge', {'url' : path('admin_notification_number')}) }}></span>
-                        </i>
-                            <span class="d-none-mini"> {{ 'global.notification' | trans({}, 'global') }}</span>
-                    </a>
-                {% endif %}
-
-                <a class="nav-link" href="{{ path('admin_user_my_account') }}">
-                    <i class="bi-h bi-person-fill-h"></i>
-                    <span class="d-none-mini"> {{ 'global.profil' | trans({}, 'global') }}</span>
-                </a>
-                <a class="nav-link" href="{{ path('admin_user_my_option') }}">
-                    <i class="bi-h bi-gear-fill-h"></i>
-                    <span class="d-none-mini"> {{ 'global.user.option' | trans({}, 'global') }}</span>
-                </a>
-
-                {% if is_granted('IS_IMPERSONATOR') %}
-                    <a class="nav-link" href="{{ impersonation_exit_path(path('admin_dashboard_index') ) }}">
-                        <i class="bi-h bi-person-fill-exclamation-h"></i>
-                        <span class="d-none-mini"> {{ 'global.user.impersonation' | trans({}, 'global') }}</span>
-                    </a>
-                {% endif %}
-
-                <a class="nav-link" href="{{ path('auth_logout') }}">
-                    <i class="bi-h bi-door-fill-h"></i>
-                    <span class="d-none-mini"> {{ 'global.logout' | trans({}, 'global') }}</span>
-                </a>
-            </div>
-        </div>
-    </div>
-</nav>
-
-<script>
-
-    let IconElement = document.getElementById('icon-toggle-sidebar');
-    let iconRightClass = 'bi-chevron-double-right';
-    let IconLeftClass = 'bi-chevron-double-left';
-    document.addEventListener("DOMContentLoaded", () => {
-        let sidebarCollapse = document.getElementById('sidebarCollapse');
-        sidebarCollapse.onclick = function () {
-            if (IconElement.classList.contains(iconRightClass)) {
-                IconElement.classList.remove(iconRightClass);
-                IconElement.classList.add(IconLeftClass);
-            } else {
-                IconElement.classList.remove(IconLeftClass);
-                IconElement.classList.add(iconRightClass);
-            }
-            document.getElementById('sidebar').classList.toggle('active');
-            return false;
-        };
-    });
-</script>-->
-
 <nav class="navbar px-4 py-3">
     <div class="flex items-center justify-between">
         <!-- Left: Menu burger + Title -->
@@ -107,7 +19,7 @@
                     </svg>
                 </div>
                 <form id="form-global-search" class="d-flex" role="search" action="{{ path('admin_search_index') }}" method="post">
-                <input type="search" name="global-search-input" class="search-input w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="{{ 'global.header.search.input' | trans({}, 'global') }}">
+                <input type="search" name="global-search-input" class="search-input w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] no-control" placeholder="{{ 'global.header.search.input' | trans({}, 'global') }}">
                 </form>
             </div>
         </div>
@@ -127,10 +39,10 @@
                     <div class="mb-4">
                         <h3 class="text-sm font-semibold mb-3" style="color: var(--text-primary);">Thème de couleur</h3>
                         <div class="flex items-center justify-between gap-3">
-                            <button class="theme-btn theme-violet active" onclick="setTheme('violet')" title="Violet"></button>
-                            <button class="theme-btn theme-blue" onclick="setTheme('blue')" title="Bleu"></button>
-                            <button class="theme-btn theme-green" onclick="setTheme('green')" title="Vert"></button>
-                            <button class="theme-btn theme-red" onclick="setTheme('red')" title="Rouge"></button>
+                            <button class="theme-btn theme-violet active no-control" onclick="setTheme('violet')" title="Violet"></button>
+                            <button class="theme-btn theme-blue no-control" onclick="setTheme('blue')" title="Bleu"></button>
+                            <button class="theme-btn theme-green no-control" onclick="setTheme('green')" title="Vert"></button>
+                            <button class="theme-btn theme-red no-control" onclick="setTheme('red')" title="Rouge"></button>
                         </div>
                     </div>
 
@@ -169,7 +81,7 @@
 
             <!-- New Content Dropdown -->
             <div class="hidden sm:block">
-                <button id="newContentButton" data-dropdown-toggle="newContentDropdown" class="btn-primary flex items-center px-4 py-2 rounded-lg font-medium" type="button">
+                <button id="newContentButton" data-dropdown-toggle="newContentDropdown" class="btn btn-sm btn-primary flex items-center px-4 py-2 rounded-lg font-medium" type="button">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
