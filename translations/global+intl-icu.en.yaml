@@ -14,3 +14,9 @@ global.citation.auteur: __global.citation.auteur
 global.search.placeholder: __global.search.placeholder
 global.search.btn: __global.search.btn
 global.display: __global.display
+global.header.btn.nouveau: __global.header.btn.nouveau
+global.header.btn.nouveau.page: __global.header.btn.nouveau.page
+global.header.btn.menu: __global.header.btn.menu
+global.header.btn.faq: __global.header.btn.faq
+global.header.btn.tag: __global.header.btn.tag
+global.header.menu.impersonation: __global.header.menu.impersonation

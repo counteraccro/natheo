@@ -2,11 +2,11 @@ dev.debug.bar.title: 'Nathéo CMS'
 dev.debug.bar.system: Système
 dev.debug.bar.environnement: Environnement
 dev.debug.bar.database: 'Base de données'
-dev.debug.bar.git: 'Git'
-dev.debug.bar.branche: 'Branche'
-dev.debug.bar.commit: 'Commit'
-dev.debug.bar.commit.date: 'Date'
-dev.debug.bar.application: 'Application'
-dev.debug.bar.version: 'Version'
+dev.debug.bar.git: Git
+dev.debug.bar.branche: Branche
+dev.debug.bar.commit: Commit
+dev.debug.bar.commit.date: Date
+dev.debug.bar.application: Application
+dev.debug.bar.version: Version
 dev.debug.bar.login.with: 'Ce connecter avec'
 dev.debug.bar.switch.user: 'Choisir le compte'

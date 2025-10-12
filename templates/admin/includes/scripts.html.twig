@@ -1,5 +1,5 @@
 
-<!-- <div {{ vue_component('Admin/CheckConfirm', {
+ <div {{ vue_component('Admin/CheckConfirm', {
     'option' : get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_CONFIRM_LEAVE_FORM')),
     'translate' : {
         'titre' : 'message.global.modal.confirm.titre' | trans,
@@ -8,10 +8,13 @@
         'non' : 'message.global.modal.confirm.non' | trans
 
     }
-}) }}></div> -->
+}) }}></div>
 
 
 <script>
+
+    runGlobalSearch();
+
     // ============================================
     // GESTION DES SOUS-MENUS
     // ============================================
@@ -138,8 +141,26 @@
         }
     });
 
+    /**
+     * Mise à jour header
+     * @param value
+     */
     function setPageTitle(value) {
         const div = document.getElementById('title-page');
         div.innerHTML = value;
+    }
+
+    /**
+     * Script pour la recherche globale
+     */
+    function runGlobalSearch() {
+        const inputField = document.getElementById('global-search-input');
+
+        inputField.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Empêche le comportement par défaut
+                document.getElementById('form-global-search').submit();
+            }
+        });
     }
 </script>
