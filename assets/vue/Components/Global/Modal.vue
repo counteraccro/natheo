@@ -109,10 +109,12 @@ export default {
       <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
         <!-- Modal header -->
         <div
-          class="flex items-center justify-between p-4 md:p-5 border-b rounded-t"
-          style="background: rgb(from var(--primary) r g b / 0.15)"
+          class="flex p-4 md:p-5 rounded-t border-b text-white dark:border-b-[var(--primary)]"
+          style="background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%)"
         >
-          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+          <slot name="icon"></slot>
+
+          <h3 class="text-xl font-semibold">
             <slot name="title"></slot>
           </h3>
           <button
