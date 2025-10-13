@@ -25,3 +25,5 @@ global.header.menu.my.options: 'Mes options'
 global.header.menu.website: 'Mon site web'
 global.header.menu.logout: Déconnexion
 global.header.search.input: 'Rechercher une page, un tag, un menu...'
+global.header.theme: 'Thèmes disponibles'
+global.header.dark.mode: 'Mode sombre'

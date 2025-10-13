@@ -20,3 +20,10 @@ global.header.btn.menu: __global.header.btn.menu
 global.header.btn.faq: __global.header.btn.faq
 global.header.btn.tag: __global.header.btn.tag
 global.header.menu.impersonation: __global.header.menu.impersonation
+global.header.search.input: __global.header.search.input
+global.header.menu.my.account: __global.header.menu.my.account
+global.header.menu.my.options: __global.header.menu.my.options
+global.header.menu.website: __global.header.menu.website
+global.header.menu.logout: __global.header.menu.logout
+global.header.theme: __global.header.theme
+global.header.dark.mode: __global.header.dark.mode
