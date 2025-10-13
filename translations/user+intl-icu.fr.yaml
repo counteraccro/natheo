@@ -26,8 +26,9 @@ user.login_user.password: 'Mot de passe'
 user.login_user.forgot_password: 'Mot de passe oublié ?'
 user.login_user.remember_me: 'Ce souvenir de moi'
 user.login_user.btn_login: Connexion
-user.login.always_log: 'Vous êtes déjà connecté en tant que '
-user.login.logout: Déconnexion
+user.login.always_log.title: 'Information importante'
+user.login.always_log: 'Vous êtes déjà connecté en tant que {login}, souhaitez vous, vous '
+user.login.logout: 'déconnecter ?'
 user.login.title: Authentification
 user.page_my_account.title: 'Mon compte'
 user.page_my_account.title_h1: 'Mon compte'
