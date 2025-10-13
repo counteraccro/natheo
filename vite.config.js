@@ -21,10 +21,6 @@ export default defineConfig(({ command }) => ({
     assetsDir: '',
     rollupOptions: {
       input: {
-        // Vos différents points d'entrée
-        admin_red: './assets/styles/app_admin_red.scss',
-        admin_purple: './assets/styles/app_admin_purple.scss',
-        admin_orange: './assets/styles/app_admin_orange.scss',
         admin_css: './assets/styles/app_admin.scss',
         install_css: './assets/styles/app_install.scss',
         email: './assets/styles/app_email.scss',
