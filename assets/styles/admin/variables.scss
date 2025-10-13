@@ -7,6 +7,7 @@
   --primary: #8b5cf6;
   --primary-hover: #7c3aed;
   --primary-light: #a78bfa;
+  --primary-lighter: #ede9fe;
   --secondary: #a78bfa;
   --secondary-hover: #8b5cf6;
 }
@@ -16,6 +17,7 @@
   --primary: #3b82f6;
   --primary-hover: #2563eb;
   --primary-light: #60a5fa;
+  --primary-lighter: #dbeafe;
   --secondary: #60a5fa;
   --secondary-hover: #3b82f6;
 }
@@ -25,6 +27,7 @@
   --primary: #10b981;
   --primary-hover: #059669;
   --primary-light: #34d399;
+  --primary-lighter: #d1fae5;
   --secondary: #34d399;
   --secondary-hover: #10b981;
 }
@@ -34,6 +37,7 @@
   --primary: #ef4444;
   --primary-hover: #dc2626;
   --primary-light: #f87171;
+  --primary-lighter: #fee2e2;
   --secondary: #f87171;
   --secondary-hover: #ef4444;
 }
@@ -80,6 +84,27 @@
   --btn-dark: #1f2937;
   --btn-dark-hover: #111827;
 
+  /* Alerte */
+  --alert-success: #10b981;
+  --alert-success-bg: #d1fae5;
+  --alert-success-border: #6ee7b7;
+  --alert-success-text: #065f46;
+
+  --alert-warning: #f59e0b;
+  --alert-warning-bg: #fef3c7;
+  --alert-warning-border: #fcd34d;
+  --alert-warning-text: #92400e;
+
+  --alert-danger: #ef4444;
+  --alert-danger-bg: #fee2e2;
+  --alert-danger-border: #fca5a5;
+  --alert-danger-text: #991b1b;
+
+  --alert-info: #3b82f6;
+  --alert-info-bg: #dbeafe;
+  --alert-info-border: #93c5fd;
+  --alert-info-text: #1e40af;
+
   /* Navbar */
   --navbar-bg: #ffffff;
   --navbar-border: #e5e7eb;
@@ -115,6 +140,23 @@
   /* Navbar */
   --navbar-bg: #1e293b;
   --navbar-border: #334155;
+
+  /* Alert */
+  --alert-success-bg: #064e3b;
+  --alert-success-border: #059669;
+  --alert-success-text: #6ee7b7;
+
+  --alert-warning-bg: #78350f;
+  --alert-warning-border: #d97706;
+  --alert-warning-text: #fcd34d;
+
+  --alert-danger-bg: #7f1d1d;
+  --alert-danger-border: #dc2626;
+  --alert-danger-text: #fca5a5;
+
+  --alert-info-bg: #1e3a8a;
+  --alert-info-border: #2563eb;
+  --alert-info-text: #93c5fd;
 
   /* Shadow plus subtil */
   --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
