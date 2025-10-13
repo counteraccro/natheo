@@ -5,6 +5,8 @@
 @use "admin/variables";
 @use "admin/style";
 @use "admin/global/button";
+@use "admin/global/form-input";
+@use "admin/global/alerte";
 
 @plugin "flowbite/plugin";
 @source "../../node_modules/flowbite";
