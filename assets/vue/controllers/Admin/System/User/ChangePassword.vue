@@ -21,32 +21,32 @@ export default {
       classPasswordConfirm: '',
       redirect: false,
       loading: false,
-      btnSubmit: 'disabled',
-      progressColor: 'bg-danger',
+      btnSubmit: true,
+      progressColor: 'bg-[var(--btn-danger)]',
       msgUpdatePassword: '',
       nbCharacter: {
-        class: '',
-        icon: 'bi-x-circle-fill',
+        class: 'text-[var(--input-invalid)]',
+        icon: 'm15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
         progress: 0,
       },
       majuscule: {
-        class: '',
-        icon: 'bi-x-circle-fill',
+        class: 'text-[var(--input-invalid)]',
+        icon: 'm15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
         progress: 0,
       },
       minuscule: {
-        class: '',
-        icon: 'bi-x-circle-fill',
+        class: 'text-[var(--input-invalid)]',
+        icon: 'm15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
         progress: 0,
       },
       chiffre: {
-        class: '',
-        icon: 'bi-x-circle-fill',
+        class: 'text-[var(--input-invalid)]',
+        icon: 'm15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
         progress: 0,
       },
       special: {
-        class: '',
-        icon: 'bi-x-circle-fill',
+        class: 'text-[var(--input-invalid)]',
+        icon: 'm15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
         progress: 0,
       },
       rule: {
@@ -72,14 +72,14 @@ export default {
       switch (nb) {
         case 20:
         case 40:
-          this.progressColor = 'bg-danger';
+          this.progressColor = 'bg-[var(--btn-danger)]';
           break;
         case 60:
         case 80:
-          this.progressColor = 'bg-warning';
+          this.progressColor = 'bg-[var(--btn-warning)]';
           break;
         case 100:
-          this.progressColor = 'bg-primary';
+          this.progressColor = 'bg-[var(--btn-success)]';
           break;
         default:
           this.progressColor = '';
@@ -100,11 +100,11 @@ export default {
       );
       let test = reg.test(this.password);
       if (test && this.password === this.passwordConfirm) {
-        this.btnSubmit = '';
+        this.btnSubmit = false;
         this.classPasswordConfirm = 'is-valid';
         this.classPassword = 'is-valid';
       } else {
-        this.btnSubmit = 'disabled';
+        this.btnSubmit = true;
       }
 
       if (this.password !== this.passwordConfirm) {
@@ -181,11 +181,11 @@ export default {
     updateRender(test, rule) {
       if (test) {
         rule.progress = 20;
-        rule.class = 'text-success';
-        rule.icon = 'bi-check-circle-fill';
+        rule.class = 'text-[var(--input-valid)]';
+        rule.icon = 'M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z';
       } else {
-        rule.class = 'text-danger';
-        rule.icon = 'bi-x-circle-fill';
+        rule.class = 'text-[var(--input-invalid)]';
+        rule.icon = 'm15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z';
         rule.progress = 0;
       }
     },
@@ -195,7 +195,7 @@ export default {
       this.passwordConfirm = '';
       this.classPasswordConfirm = '';
       this.classPassword = '';
-      this.btnSubmit = 'disabled';
+      this.btnSubmit = true;
       this.resetRender(this.nbCharacter);
       this.resetRender(this.majuscule);
       this.resetRender(this.minuscule);
@@ -205,8 +205,8 @@ export default {
 
     resetRender(rule) {
       rule.progress = 0;
-      rule.class = '';
-      rule.icon = 'bi-x-circle-fill';
+      rule.class = 'text-[var(--input-invalid)]';
+      rule.icon = 'm15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z';
     },
 
     /**
@@ -241,92 +241,190 @@ export default {
 </script>
 
 <template>
-  <div :class="loading === true ? 'block-grid' : ''">
-    <div v-if="loading" class="overlay">
-      <div class="position-absolute top-50 start-50 translate-middle">
-        <div class="spinner-border text-primary" role="status"></div>
-        <span class="txt-overlay">{{ translate.loading }}</span>
+  <div>
+    <div
+      v-if="loading"
+      class="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-gray-200 dark:border-slate-700 p-8 w-full max-w-md"
+    >
+      <!-- Logo Skeleton -->
+      <div class="text-center mb-8">
+        <div class="h-9 w-40 bg-gray-200 dark:bg-slate-700 rounded mx-auto mb-2 animate-pulse"></div>
+        <div class="h-5 w-56 bg-gray-200 dark:bg-slate-700 rounded mx-auto animate-pulse"></div>
+      </div>
+
+      <!-- Form Skeleton -->
+      <div class="space-y-6">
+        <!-- Email Field -->
+        <div>
+          <div class="h-5 w-32 bg-gray-200 dark:bg-slate-700 rounded mb-2 animate-pulse"></div>
+          <div class="h-11 w-full bg-gray-200 dark:bg-slate-700 rounded-lg animate-pulse"></div>
+        </div>
+
+        <!-- Password Field -->
+        <div>
+          <div class="h-5 w-28 bg-gray-200 dark:bg-slate-700 rounded mb-2 animate-pulse"></div>
+          <div class="h-11 w-full bg-gray-200 dark:bg-slate-700 rounded-lg animate-pulse"></div>
+        </div>
+
+        <!-- Remember & Forgot -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-4 h-4 bg-gray-200 dark:bg-slate-700 rounded animate-pulse"></div>
+            <div class="h-4 w-32 bg-gray-200 dark:bg-slate-700 rounded animate-pulse"></div>
+          </div>
+          <div class="h-4 w-36 bg-gray-200 dark:bg-slate-700 rounded animate-pulse"></div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="h-11 w-full bg-gray-200 dark:bg-slate-700 rounded-lg animate-pulse"></div>
       </div>
     </div>
-
-    <div v-if="this.msgUpdatePassword !== ''" class="alert alert-success">
-      <i class="bi bi-check-circle-fill"></i> {{ this.msgUpdatePassword }}
-    </div>
-
-    <div class="mb-3">
-      <label for="input-password-1" class="lock mb-2 text-sm font-medium text-gray-900 dark:text-white">{{
-        this.translate.password
-      }}</label>
-      <input
-        type="password"
-        class="form-input no-control"
-        :class="this.classPassword"
-        id="input-password-1"
-        v-model="password"
-        @keyup="this.checkPassword"
-      />
-    </div>
-    <div class="mb-3">
-      <label for="input-password-2" class="form-label">{{ this.translate.password_2 }}</label>
-      <input
-        type="password"
-        class="form-input no-control"
-        :class="this.classPasswordConfirm"
-        id="input-password-2"
-        v-model="passwordConfirm"
-        @keyup="this.validatePasswordFinal"
-      />
-      <div class="invalid-feedback">
-        {{ this.translate.error_password_2 }}
-      </div>
-    </div>
-
-    <button class="btn btn-secondary btn-md w-full" :disabled="btnSubmit" @click="savePassword">Modifier</button>
-    <hr />
-
-    <div>
-      <p class="mb-0">{{ this.translate.force }}</p>
-      <div class="progress">
-        <div
-          class="progress-bar"
-          :class="this.progressColor"
-          :style="'width: ' + this.progress + '%;'"
-          role="progressbar"
-          aria-label="Basic example"
-          :data-aria-valuenow="this.progress"
-          aria-valuemin="0"
-          aria-valuemax="100"
-        ></div>
-      </div>
-      <div class="row">
-        <div class="col-6">
-          <p class="mb-0" :class="this.nbCharacter.class">
-            <i class="bi" :class="this.nbCharacter.icon"></i> {{ this.translate.force_nb_character }}
-          </p>
-        </div>
-        <div class="col-6">
-          <p class="mb-0" :class="this.majuscule.class">
-            <i class="bi" :class="this.majuscule.icon"></i> {{ this.translate.force_majuscule }}
-          </p>
+    <div v-else>
+      <div v-if="this.msgUpdatePassword !== ''" class="alert alert-primary-light">
+        <svg class="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          ></path>
+        </svg>
+        <div class="alert-content">
+          <div class="alert-message">{{ this.msgUpdatePassword }}</div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-6">
-          <p class="mb-0" :class="this.minuscule.class">
-            <i class="bi" :class="this.minuscule.icon"></i> {{ this.translate.force_minuscule }}
-          </p>
-        </div>
-        <div class="col-6">
-          <p class="mb-0" :class="this.chiffre.class">
-            <i class="bi" :class="this.chiffre.icon"></i> {{ this.translate.force_chiffre }}
-          </p>
+
+      <div>
+        <label for="input-password-1" class="lock mb-2 text-sm font-medium text-gray-900 dark:text-white">{{
+          this.translate.password
+        }}</label>
+        <input
+          type="password"
+          class="form-input no-control"
+          :class="this.classPassword"
+          id="input-password-1"
+          v-model="password"
+          @keyup="this.checkPassword"
+        />
+      </div>
+      <div>
+        <label for="input-password-2" class="form-label">{{ this.translate.password_2 }}</label>
+        <input
+          type="password"
+          class="form-input no-control"
+          :class="this.classPasswordConfirm"
+          id="input-password-2"
+          v-model="passwordConfirm"
+          @keyup="this.validatePasswordFinal"
+        />
+        <div v-if="this.classPasswordConfirm === 'is-invalid'" class="text-[var(--text-secondary)] text-sm mt-1">
+          {{ this.translate.error_password_2 }}
         </div>
       </div>
-      <div class="row">
-        <div class="col-6">
-          <p class="mb-0" :class="this.special.class">
-            <i class="bi" :class="this.special.icon"></i> {{ this.translate.force_character_spe }} - #?!@$%^&*-
-          </p>
+
+      <button class="btn btn-secondary btn-md w-full mt-4" :disabled="btnSubmit" @click="savePassword">Modifier</button>
+
+      <div
+        class="mt-4 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 text-sm"
+      >
+        <p class="text-[var(--text-secondary)]">{{ this.translate.force }}</p>
+        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mt-2 mb-2">
+          <div
+            class="h-2.5 rounded-full"
+            :class="this.progressColor"
+            :style="'width: ' + this.progress + '%; transition: width 0.6s ease-in-out;'"
+          ></div>
+        </div>
+        <div :class="this.nbCharacter.class">
+          <svg
+            class="float-left me-1 w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              :d="this.nbCharacter.icon"
+            />
+          </svg>
+
+          {{ this.translate.force_nb_character }}
+        </div>
+        <div :class="this.majuscule.class">
+          <svg
+            class="float-left me-1 w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              :d="this.majuscule.icon"
+            />
+          </svg>
+          {{ this.translate.force_majuscule }}
+        </div>
+        <div :class="this.minuscule.class">
+          <svg
+            class="float-left me-1 w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              :d="this.minuscule.icon"
+            />
+          </svg>
+          {{ this.translate.force_minuscule }}
+        </div>
+        <div :class="this.chiffre.class">
+          <svg
+            class="float-left me-1 w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              :d="this.chiffre.icon"
+            />
+          </svg>
+          {{ this.translate.force_chiffre }}
+        </div>
+        <div :class="this.special.class">
+          <svg
+            class="float-left me-1 w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              :d="this.chiffre.icon"
+            />
+          </svg>
+          {{ this.translate.force_character_spe }} - #?!@$%^&*-
         </div>
       </div>
     </div>
