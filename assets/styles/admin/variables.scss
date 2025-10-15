@@ -105,6 +105,12 @@
   --alert-info-border: #93c5fd;
   --alert-info-text: #1e40af;
 
+  /** input **/
+  --input-valid: #10b981;
+  --input-valid-light: #d1fae5;
+  --input-invalid: #ef4444;
+  --input-invalid-light: #fee2e2;
+
   /* Navbar */
   --navbar-bg: #ffffff;
   --navbar-border: #e5e7eb;
@@ -157,6 +163,10 @@
   --alert-info-bg: #1e3a8a;
   --alert-info-border: #2563eb;
   --alert-info-text: #93c5fd;
+
+  /** Input */
+  --input-valid-light: #064e3b;
+  --input-invalid-light: #7f1d1d;
 
   /* Shadow plus subtil */
   --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
