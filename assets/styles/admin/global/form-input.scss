@@ -30,3 +30,24 @@
 .form-input::placeholder {
   color: var(--text-light);
 }
+
+.form-input.is-valid {
+  border-color: var(--input-valid);
+  background-color: rgb(from var(--input-valid-light) r g b / 0.25);
+  padding-right: 2.5rem;
+}
+
+.form-input.is-valid:focus {
+  box-shadow: 0 0 0 3px var(--input-valid-light);
+}
+
+/* INVALID STATE */
+.form-input.is-invalid {
+  border-color: var(--input-invalid);
+  background-color: rgb(from var(--input-invalid-light) r g b / 0.25);
+  padding-right: 2.5rem;
+}
+
+.form-input.is-invalid:focus {
+  box-shadow: 0 0 0 3px var(--input-invalid-light);
+}
