@@ -254,10 +254,12 @@ export default {
     </div>
 
     <div class="mb-3">
-      <label for="input-password-1" class="form-label">{{ this.translate.password }}</label>
+      <label for="input-password-1" class="lock mb-2 text-sm font-medium text-gray-900 dark:text-white">{{
+        this.translate.password
+      }}</label>
       <input
         type="password"
-        class="form-control no-control"
+        class="form-input no-control"
         :class="this.classPassword"
         id="input-password-1"
         v-model="password"
@@ -268,7 +270,7 @@ export default {
       <label for="input-password-2" class="form-label">{{ this.translate.password_2 }}</label>
       <input
         type="password"
-        class="form-control no-control"
+        class="form-input no-control"
         :class="this.classPasswordConfirm"
         id="input-password-2"
         v-model="passwordConfirm"
@@ -279,7 +281,7 @@ export default {
       </div>
     </div>
 
-    <button class="btn btn-secondary" :class="btnSubmit" @click="savePassword">Modifier</button>
+    <button class="btn btn-secondary btn-md w-full" :disabled="btnSubmit" @click="savePassword">Modifier</button>
     <hr />
 
     <div>

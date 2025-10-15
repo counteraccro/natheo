@@ -60,7 +60,6 @@ class SecurityService extends AppService
         /** @var UserDataRepository $repo */
         $repo = $this->getRepository(UserData::class);
         $userData = $repo->findByKeyValue(UserDataKey::KEY_RESET_PASSWORD, $key);
-
         if ($userData === null) {
             return null;
         }
