@@ -195,3 +195,4 @@ user.form.description.help: __user.form.description.help
 user.form.description.placeholder: __user.form.description.placeholder
 user.page_my_account.upload.avatar.error: __user.page_my_account.upload.avatar.error
 user.page_my_account.other_data: __user.page_my_account.other_data
+user.login.always_log.title: __user.login.always_log.title

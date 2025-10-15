@@ -136,8 +136,6 @@
                 </div>
             </div>
 
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
-
             <div class="debug-separator"></div>
 
             <!-- Section Se connecter en tant que -->
@@ -161,12 +159,9 @@
                     </svg>
                 </button>
             </div>
-
-            {% endif %}
         </div>
     </div>
 
-    {% if is_granted('ROLE_SUPER_ADMIN') %}
     <!-- Dropdown menu -->
     <div id="switchUserDropdown" class="z-50 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-56">
         <ul class="py-2 text-sm text-gray-700">
@@ -190,6 +185,5 @@
             {% endfor %}
         </ul>
     </div>
-   {% endif %}
 </div>
 {% endif %}
