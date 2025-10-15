@@ -34,6 +34,21 @@
                         </div>
                     {% endif %}
 
+                    {% if error %}
+
+                        <div class="alert alert-danger-light">
+                            <svg class="alert-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                            </svg>
+
+                            <div class="alert-content">
+                                <div class="alert-message">
+                                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
                     <form class="space-y-4 md:space-y-6" method="POST">
                         <div>
                             <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ 'user.login_user.email' | trans({}, 'user') }}</label>
