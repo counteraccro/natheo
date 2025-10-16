@@ -375,7 +375,7 @@ main {
 
 /* Head title */
 h1.head-title{
-  @apply text-2xl font-bold mb-2 py-1 px-6 rounded-lg border-l-4 border-[var(--primary)] bg-gradient-to-r from-[var(--primary-light)]/40 to-[var(--primary-light)]/0
+  @apply text-2xl font-bold mb-2 border-b-2 border-[var(--primary)] w-full inline-flex items-center gap-1
 }
 
 /* Page Authentification */
