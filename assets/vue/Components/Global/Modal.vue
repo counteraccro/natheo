@@ -68,35 +68,6 @@ export default {
 </script>
 
 <template>
-  <!--<div
-    class="modal fade"
-    :id="this.id"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-    :data-bs-backdrop="this.optionModalBackdrop"
-  >
-    <div class="modal-dialog modal-dialog-centered" :class="this.optionModalSize">
-      <div class="modal-content">
-        <div class="modal-header bg-secondary">
-          <h1 class="modal-title fs-5 text-white">
-            <slot name="title"></slot>
-          </h1>
-          <button type="button" class="btn-close" @click="this.close()"></button>
-        </div>
-        <div class="modal-body">
-          <slot name="body"></slot>
-        </div>
-        <div class="modal-footer">
-          <slot name="footer"></slot>
-          <button v-if="this.optionShowCloseBtn" type="button" class="btn btn-secondary" @click="this.close()">
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>-->
-
   <div
     :id="this.id"
     :data-modal-backdrop="this.optionModalBackdrop"
@@ -105,9 +76,7 @@ export default {
     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
   >
     <div class="relative p-4 w-full max-w-2xl max-h-full">
-      <!-- Modal content -->
       <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
-        <!-- Modal header -->
         <div
           class="flex p-4 md:p-5 rounded-t border-b text-white dark:border-b-[var(--primary)]"
           style="background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%)"
