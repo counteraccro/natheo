@@ -27,3 +27,4 @@ global.header.menu.website: __global.header.menu.website
 global.header.menu.logout: __global.header.menu.logout
 global.header.theme: __global.header.theme
 global.header.dark.mode: __global.header.dark.mode
+global.modale.help.close: __global.modale.help.close
