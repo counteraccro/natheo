@@ -10,8 +10,8 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\Content\Tag\TagService;
-use App\Utils\Breadcrumb;
 use App\Utils\Flash\FlashKey;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Content\TagTranslate;
@@ -40,8 +40,8 @@ class TagController extends AppAdminController
     public function index(): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'tag',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'tag',
+            Breadcrumb::BREADCRUMB->value => [
                 'tag.index.page_title_h1' => '#',
             ],
         ];
@@ -147,8 +147,8 @@ class TagController extends AppAdminController
         }
 
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'tag',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'tag',
+            Breadcrumb::BREADCRUMB->value => [
                 'tag.index.page_title' => 'admin_tag_index',
                 $breadcrumbTitle => '#',
             ],
