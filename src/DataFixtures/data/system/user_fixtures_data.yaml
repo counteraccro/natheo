@@ -1,8 +1,8 @@
 user:
   User:
-    email: corinne87@briand.fr
-    password: $2y$04$F2uLULf/txONMkc3pwubs.x00elQFgy1Elv46oa6hzytTixUtcz7i
-    login: jean.laurent
+    email: rene41@collin.fr
+    password: $2y$04$Tlhg4G4J3iScx9d6KYwpH.OXRkYcEpoM0xXE96RKh9ZA5R3JjuhMe
+    login: ybrunet
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN

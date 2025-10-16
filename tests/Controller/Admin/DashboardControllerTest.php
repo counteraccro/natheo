@@ -24,7 +24,10 @@ class DashboardControllerTest extends AppWebTestCase
         $this->client->loginUser($user, 'admin');
         $this->client->request('GET', $this->router->generate('admin_dashboard_index'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', $this->translator->trans('dashboard.index', domain: 'dashboard'));
+        $this->assertSelectorTextContains(
+            '#unit-test',
+            $this->translator->trans('dashboard.index', domain: 'dashboard'),
+        );
     }
 
     /**
