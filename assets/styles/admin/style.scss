@@ -373,6 +373,11 @@ main {
   padding-bottom: 2rem !important;
 }
 
+/* Head title */
+h1.head-title{
+  @apply text-2xl font-bold mb-2 py-1 px-6 rounded-lg border-l-4 border-[var(--primary)] bg-gradient-to-r from-[var(--primary-light)]/40 to-[var(--primary-light)]/0
+}
+
 /* Page Authentification */
 
 #auth-form {
