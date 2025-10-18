@@ -12,10 +12,12 @@ import Modal from '../../Components/Global/Modal.vue';
 import Toast from '../../Components/Global/Toast.vue';
 import { copyToClipboard } from '../../../utils/copyToClipboard';
 import { emitter } from '../../../utils/useEvent';
+import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
 
 export default {
   name: 'GenericGrid',
   components: {
+    SkeletonTable,
     GridPaginate,
     Grid,
     Modal,
@@ -307,96 +309,126 @@ export default {
 </script>
 
 <template>
-  <form id="search">
-    <div v-if="this.showQuery" class="card mb-4">
-      <div class="card-header">
-        <div class="float-end">
-          <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.saveQueryRun"><i class="bi bi-save"></i></div>
-          <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.copyQueryRun">
-            <i class="bi bi-clipboard"></i>
+  <div class="card rounded-lg mt-4 p-2">
+    <form id="search">
+      <div v-if="this.showQuery" class="card mb-4">
+        <div class="card-header">
+          <div class="float-end">
+            <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.saveQueryRun"><i class="bi bi-save"></i></div>
+            <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.copyQueryRun">
+              <i class="bi bi-clipboard"></i>
+            </div>
+            <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.showQueryRun(false)">
+              <i class="bi bi-x"></i>
+            </div>
           </div>
-          <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.showQueryRun(false)"><i class="bi bi-x"></i></div>
+          {{ this.translate.queryTitle }}
         </div>
-        {{ this.translate.queryTitle }}
+        <div class="card-body">
+          {{ this.cQuery }}
+        </div>
       </div>
-      <div class="card-body">
-        {{ this.cQuery }}
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="col-10">
-        <div class="input-group mb-3">
-          <span class="input-group-text"><i class="bi bi-search"></i></span>
-          <input
-            type="text"
-            class="form-control no-control"
-            :placeholder="this.searchPlaceholder"
-            v-model="searchQuery"
-          />
-          <button
-            :disabled="!this.activeSearchData"
-            v-if="this.searchMode === 'bdd'"
-            type="button"
-            @click="this.loadData(this.cPage, this.cLimit)"
-            class="btn btn-secondary"
-          >
-            {{ this.translate.btnSearch }}
-          </button>
-          <button
-            :disabled="!this.activeSearchData"
-            v-if="this.activeSearchData"
-            type="button"
-            class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+      <div class="row">
+        <div class="col-10">
+          <div class="input-group mb-3">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input
+              type="text"
+              class="form-control no-control"
+              :placeholder="this.searchPlaceholder"
+              v-model="searchQuery"
+            />
+            <button
+              :disabled="!this.activeSearchData"
+              v-if="this.searchMode === 'bdd'"
+              type="button"
+              @click="this.loadData(this.cPage, this.cLimit)"
+              class="btn btn-secondary"
+            >
+              {{ this.translate.btnSearch }}
+            </button>
+            <button
+              :disabled="!this.activeSearchData"
+              v-if="this.activeSearchData"
+              type="button"
+              class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <a class="dropdown-item" href="#" @click="this.changeSearchMode('table')"
+                  ><i class="bi bi-table"></i> {{ this.translate.placeholder }}</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" @click="this.changeSearchMode('bdd')"
+                  ><i class="bi bi-database-down"></i> {{ this.translate.placeholderBddSearch }}</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-2">
+          <div
+            v-if="this.showFilter"
+            class="btn btn-secondary dropdown-toggle m-1 mt-0"
+            href="#"
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <span class="visually-hidden">Toggle Dropdown</span>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end">
+            <i class="bi bi-filter-circle"></i> <i class="bi" :class="this.filterIcon"></i>
+          </div>
+          <ul class="dropdown-menu">
             <li>
-              <a class="dropdown-item" href="#" @click="this.changeSearchMode('table')"
-                ><i class="bi bi-table"></i> {{ this.translate.placeholder }}</a
+              <a class="dropdown-item no-control" href="#" @click="this.changeFilter('me')"
+                ><i class="bi bi-person-fill"></i> {{ this.translate.filterOnlyMe }}</a
               >
             </li>
             <li>
-              <a class="dropdown-item" href="#" @click="this.changeSearchMode('bdd')"
-                ><i class="bi bi-database-down"></i> {{ this.translate.placeholderBddSearch }}</a
+              <a class="dropdown-item no-control" href="#" @click="this.changeFilter('all')"
+                ><i class="bi bi-people-fill"></i> {{ this.translate.filterAll }}</a
               >
             </li>
           </ul>
-        </div>
-      </div>
-      <div class="col-2">
-        <div
-          v-if="this.showFilter"
-          class="btn btn-secondary dropdown-toggle m-1 mt-0"
-          href="#"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          <i class="bi bi-filter-circle"></i> <i class="bi" :class="this.filterIcon"></i>
-        </div>
-        <ul class="dropdown-menu">
-          <li>
-            <a class="dropdown-item no-control" href="#" @click="this.changeFilter('me')"
-              ><i class="bi bi-person-fill"></i> {{ this.translate.filterOnlyMe }}</a
-            >
-          </li>
-          <li>
-            <a class="dropdown-item no-control" href="#" @click="this.changeFilter('all')"
-              ><i class="bi bi-people-fill"></i> {{ this.translate.filterAll }}</a
-            >
-          </li>
-        </ul>
 
-        <div class="btn btn-secondary m-1 mt-0" @click="this.reloadData"><i class="bi bi-arrow-clockwise"></i></div>
-        <div v-if="this.cQuery !== ''" class="btn btn-secondary m-1 mt-0" @click="this.showQueryRun(true)">
-          <i class="bi bi-database"></i>
+          <div class="btn btn-secondary m-1 mt-0" @click="this.reloadData"><i class="bi bi-arrow-clockwise"></i></div>
+          <div v-if="this.cQuery !== ''" class="btn btn-secondary m-1 mt-0" @click="this.showQueryRun(true)">
+            <i class="bi bi-database"></i>
+          </div>
         </div>
       </div>
+    </form>
+
+    <div v-if="this.loading">
+      <SkeletonTable :rows="5" :columns="5" />
     </div>
-  </form>
+    <div v-else>
+      <Grid
+        :data="gridData"
+        :columns="gridColumns"
+        :filter-key="searchQuery"
+        :sortOrders="sortOrders"
+        :translate="translateGrid"
+        :search-mode="this.searchMode"
+        @redirect-action="redirectAction"
+      >
+      </Grid>
+      <GridPaginate
+        :current-page="page"
+        :nb-elements="limit"
+        :nb-elements-total="nbElements"
+        :url="url"
+        :list-limit="listLimit"
+        :translate="translateGridPaginate"
+        @change-page-event="loadData"
+      >
+      </GridPaginate>
+    </div>
+  </div>
 
   <modal
     :id="'generic-grid-modale'"
@@ -421,35 +453,6 @@ export default {
       </button>
     </template>
   </modal>
-
-  <div :class="loading === true ? 'block-grid' : ''">
-    <div v-if="loading" class="overlay">
-      <div class="position-absolute top-50 start-50 translate-middle">
-        <div class="spinner-border text-primary" role="status"></div>
-        <span class="txt-overlay">{{ translate.loading }}</span>
-      </div>
-    </div>
-    <Grid
-      :data="gridData"
-      :columns="gridColumns"
-      :filter-key="searchQuery"
-      :sortOrders="sortOrders"
-      :translate="translateGrid"
-      :search-mode="this.searchMode"
-      @redirect-action="redirectAction"
-    >
-    </Grid>
-    <GridPaginate
-      :current-page="page"
-      :nb-elements="limit"
-      :nb-elements-total="nbElements"
-      :url="url"
-      :list-limit="listLimit"
-      :translate="translateGridPaginate"
-      @change-page-event="loadData"
-    >
-    </GridPaginate>
-  </div>
 
   <div class="toast-container position-fixed top-0 end-0 p-2">
     <toast
