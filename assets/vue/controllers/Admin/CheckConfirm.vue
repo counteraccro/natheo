@@ -72,8 +72,13 @@ export default {
     onClick(ev) {
       let target = ev.target;
       let parent = target.parentElement;
+      let tabClass = '';
 
-      let tabClass = target.className.split(' ');
+      if (target.className instanceof SVGAnimatedString) {
+        return true;
+      }
+
+      tabClass = target.className.split(' ');
 
       // Si on détecte la class excluante, on ne fait rien
       if (tabClass.includes(this.excludeClass)) {
