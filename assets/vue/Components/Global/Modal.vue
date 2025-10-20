@@ -109,7 +109,7 @@ export default {
           <slot name="body"></slot>
         </div>
         <!-- Modal footer -->
-        <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+        <div class="flex items-end justify-end p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
           <slot name="footer"></slot>
           <button v-if="this.optionShowCloseBtn" type="button" class="btn btn-secondary" @click="this.close()">
             Close
