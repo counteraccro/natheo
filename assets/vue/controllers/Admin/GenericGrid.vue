@@ -11,7 +11,6 @@ import axios from 'axios';
 import Modal from '../../Components/Global/Modal.vue';
 import Toast from '../../Components/Global/Toast.vue';
 import { copyToClipboard } from '../../../utils/copyToClipboard';
-import { emitter } from '../../../utils/useEvent';
 import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
 
 export default {
@@ -443,13 +442,48 @@ export default {
     <template #footer>
       <button
         type="button"
-        class="btn btn-primary"
+        class="btn btn-primary btn-sm me-2"
         @click="redirectAction(this.cUrl, this.isAjax, false, '', this.httpType)"
       >
-        <i class="bi bi-check2-circle"></i> {{ translate.confirmBtnOK }}
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ translate.confirmBtnOK }}
       </button>
-      <button type="button" class="btn btn-secondary" @click="this.hideModal()">
-        <i class="bi bi-x-circle"></i> {{ translate.confirmBtnNo }}
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="this.hideModal()">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+
+        {{ translate.confirmBtnNo }}
       </button>
     </template>
   </modal>
@@ -457,15 +491,10 @@ export default {
   <div class="toast-container position-fixed top-0 end-0 p-2">
     <toast
       :id="'toastSuccessGenericGrid'"
-      :option-class-header="'text-success'"
+      :type="'success'"
       :show="this.toasts.toastSuccessGenericGrid.show"
       @close-toast="this.closeToast"
     >
-      <template #header>
-        <i class="bi bi-check-circle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ translate.titleSuccess }}</strong>
-        <small class="text-black-50">{{ translate.time }}</small>
-      </template>
       <template #body>
         <div v-html="this.toasts.toastSuccessGenericGrid.msg"></div>
       </template>
@@ -473,15 +502,10 @@ export default {
 
     <toast
       :id="'toastErrorGenericGrid'"
-      :option-class-header="'text-danger'"
+      :type="'danger'"
       :show="this.toasts.toastErrorGenericGrid.show"
       @close-toast="this.closeToast"
     >
-      <template #header>
-        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ translate.titleError }}</strong>
-        <small class="text-black-50">{{ translate.time }}</small>
-      </template>
       <template #body>
         <div v-html="this.toasts.toastErrorGenericGrid.msg"></div>
       </template>
