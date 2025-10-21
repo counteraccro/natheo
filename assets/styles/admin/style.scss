@@ -399,3 +399,11 @@ h1.head-title{
     color: white;
   }
 }
+
+.disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.5;
+  color: #999;
+  text-decoration: none;
+}
