@@ -12,6 +12,7 @@ import Modal from '../../Components/Global/Modal.vue';
 import Toast from '../../Components/Global/Toast.vue';
 import { copyToClipboard } from '../../../utils/copyToClipboard';
 import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
+import { emitter } from '../../../utils/useEvent';
 
 export default {
   name: 'GenericGrid',
@@ -74,7 +75,7 @@ export default {
     };
   },
   mounted() {
-    this.loadData(this.page, this.limit);
+    this.loadData(this.page, 1);
   },
   methods: {
     /**
@@ -417,8 +418,8 @@ export default {
       >
       </Grid>
       <GridPaginate
-        :current-page="page"
-        :nb-elements="limit"
+        :current-page="cPage"
+        :nb-elements="cLimit"
         :nb-elements-total="nbElements"
         :url="url"
         :list-limit="listLimit"
