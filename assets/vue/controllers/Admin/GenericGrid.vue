@@ -75,7 +75,7 @@ export default {
     };
   },
   mounted() {
-    this.loadData(this.page, 1);
+    this.loadData(this.page, this.limit);
   },
   methods: {
     /**
