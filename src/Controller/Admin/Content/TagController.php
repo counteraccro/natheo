@@ -60,6 +60,8 @@ class TagController extends AppAdminController
      * @param int $page
      * @param int $limit
      * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     public function loadGridData(TagService $tagService, Request $request, int $page = 1, int $limit = 20): JsonResponse
