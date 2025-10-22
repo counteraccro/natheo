@@ -54,7 +54,7 @@ class TagRepository extends ServiceEntityRepository
      */
     public function getAllPaginate(int $page, int $limit, ?string $search = null): Paginator
     {
-        $query = $this->createQueryBuilder('t')->orderBy('t.id', 'ASC');
+        $query = $this->createQueryBuilder('t')->orderBy('t.id', 'DESC');
 
         if ($search !== null) {
             $query
