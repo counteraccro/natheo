@@ -1,7 +1,7 @@
 tag.index.page_title: 'Gestion des tags'
 tag.index.page_title_h1: 'Gestion des tags'
 tag.index.btn.new: 'Nouveau tag'
-tag.index.description: 'Les tags permettent de pouvoir trier les pages de votre site'
+tag.index.description: 'Gérer les tags associés au contenu de votre site'
 tag.grid.id: id
 tag.grid.label: label
 tag.grid.color: couleur
@@ -20,7 +20,6 @@ tag.index.popin.help.disabled_user: 'Désactiver un tag'
 tag.index.popin.help.enable_user: 'Activer un tag'
 tag.index.popin.help.delete: 'Supprimer un tag'
 tag.index.popin.help.edit: 'Modifier un tag'
-tag.index.description2: 'Les tags marqué de {icon} sont désactivés et donc non visible sur le site. Les contenus liés à ce tag peuvent être masqués'
 tag.remove.success: 'Le tag <strong>{label}</strong> à été correctement supprimé'
 tag.form.loading: 'Chargement des données...'
 tag.form.title.create: 'Nouveau tag'

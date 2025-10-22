@@ -14,7 +14,6 @@ tag.remove.success: __tag.remove.success
 tag.confirm.delete.msg: __tag.confirm.delete.msg
 tag.add.page_title: __tag.add.page_title
 tag.add.page_title_h1: __tag.add.page_title_h1
-tag.index.description2: __tag.index.description2
 tag.index.popin.help.title: __tag.index.popin.help.title
 tag.index.popin.help.disabled_user: __tag.index.popin.help.disabled_user
 tag.index.popin.help.enable_user: __tag.index.popin.help.enable_user
