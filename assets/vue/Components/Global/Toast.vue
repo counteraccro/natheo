@@ -29,10 +29,8 @@ export default {
     };
   },
   mounted() {
-    console.log(this.id);
     this.elm = document.getElementById(this.id);
     this.elm.classList.add('hidden');
-    console.log(this.elm);
 
     this.elm.addEventListener('hide.bs.toast', () => {
       this.$emit('close-toast', this.id);
@@ -57,7 +55,6 @@ export default {
         if (newValue !== oldValue) {
           if (newValue) {
             this.elm.classList.remove('hidden');
-            console.log(this.elm);
             setTimeout(() => {
               this.elm.classList.add('hidden');
               this.$emit('close-toast', this.id);
