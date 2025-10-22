@@ -2,7 +2,7 @@ tag.index.page_title: 'Gestion des tags'
 tag.index.page_title_h1: 'Gestion des tags'
 tag.index.btn.new: 'Nouveau tag'
 tag.index.description: 'Gérer les tags associés au contenu de votre site'
-tag.grid.id: id
+tag.grid.id: '#'
 tag.grid.label: label
 tag.grid.color: couleur
 tag.grid.created_at: Création
