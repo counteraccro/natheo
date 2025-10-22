@@ -35,8 +35,8 @@ export default {
 </script>
 
 <template>
-  <nav class="flex justify-between mt-4">
-    <div>
+  <nav class="flex items-center justify-between mt-6">
+    <div class="text-sm text-[var(--text-secondary)]">
       {{ translate.page }} <strong>{{ cPage }}</strong> {{ translate.on }} <strong>{{ this.getNbPage() }}</strong> -
       {{ this.nbElementsTotal }} {{ translate.row }}
     </div>
@@ -65,7 +65,7 @@ export default {
         <a
           href="#"
           @click="[$emit('change-page-event', cPage - 1, cLimit), updateCurrentPage(cPage - 1)]"
-          class="flex items-center justify-center px-3 h-8 leading-tight text-[var(--primary)] bg-white border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
+          class="no-control flex items-center justify-center px-3 h-8 leading-tight text-[var(--primary)] bg-white border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
           :class="cPage === 1 ? 'disabled' : ''"
         >
           <span class="sr-only">Previous</span>
@@ -91,7 +91,7 @@ export default {
           v-if="n === cPage - 1 || n === cPage + 1 || n === cPage || n <= 2 || n >= this.getNbPage() - 1"
           href="#"
           @click="[$emit('change-page-event', n, cLimit), updateCurrentPage(n)]"
-          class="flex items-center justify-center px-3 h-8 leading-tight border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
+          class="no-control flex items-center justify-center px-3 h-8 leading-tight border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
           :class="cPage === n ? 'bg-[var(--primary-hover)] text-white' : 'bg-white text-[var(--primary)]'"
           >{{ n }}</a
         >
@@ -107,7 +107,7 @@ export default {
         <a
           href="#"
           @click="[$emit('change-page-event', cPage + 1, cLimit), updateCurrentPage(cPage + 1)]"
-          class="flex items-center justify-center px-3 h-8 leading-tight text-[var(--primary)] bg-white border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
+          class="no-control flex items-center justify-center px-3 h-8 leading-tight text-[var(--primary)] bg-white border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
           :class="cPage === this.getNbPage() ? 'disabled' : ''"
         >
           <span class="sr-only">Next</span>
@@ -132,7 +132,7 @@ export default {
         <a
           href="#"
           @click="[$emit('change-page-event', this.getNbPage(), cLimit), updateCurrentPage(this.getNbPage())]"
-          class="flex items-center justify-center px-3 h-8 leading-tight rounded-e-lg text-[var(--primary)] bg-white border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
+          class="no-control flex items-center justify-center px-3 h-8 leading-tight rounded-e-lg text-[var(--primary)] bg-white border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
           :class="cPage === this.getNbPage() ? 'disabled' : ''"
         >
           <span class="sr-only">Next</span>
@@ -150,11 +150,7 @@ export default {
     </ul>
 
     <div>
-      <select
-        class="form-select form-select-sm no-control"
-        v-model="cLimit"
-        @change="$emit('change-page-event', 1, cLimit)"
-      >
+      <select class="form-input form-input-sm" v-model="cLimit" @change="$emit('change-page-event', 1, cLimit)">
         <option v-for="i in this.listLimit" :value="i">{{ i }}</option>
       </select>
     </div>

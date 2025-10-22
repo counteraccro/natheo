@@ -4,8 +4,10 @@
  * @version 1.0
  * Génération du tableau GRID
  */
+import Page from '@/vue/controllers/Admin/Content/Page/Page.vue';
 
 export default {
+  components: { Page },
   props: {
     data: Array,
     columns: Array,
@@ -92,7 +94,7 @@ export default {
         return text;
       }
       return text.toString().replace(new RegExp(this.filterKey, 'gi'), (match) => {
-        return '<span class="bg-secondary text-white p-1">' + match + '</span>';
+        return '<span class="bg-[var(--primary)] text-white p-1 ps-3 pe-3 rounded ">' + match + '</span>';
       });
     },
   },
@@ -100,34 +102,101 @@ export default {
 </script>
 
 <template>
-  <table class="table table-striped table-hover align-middle" v-if="filteredData.length" aria-label="Table-grid">
-    <thead>
-      <tr>
-        <th v-for="key in columns" @click="sortBy(key)" :class="{ active: sortKey === key }">
-          {{ capitalize(key) }}
-          <span class="bi" :class="sortOrders[key] > 0 ? 'bi-caret-down-fill' : 'bi-caret-up-fill'"> </span>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="entry in filteredData">
-        <td v-for="key in columns">
-          <span v-if="key !== 'action'" v-html="this.highlightSearch(entry[key])"></span>
-          <div v-else>
-            <button
-              class="btn btn-secondary btn-sm m-1"
-              v-for="data in entry[key]"
-              @click="$emit('redirect-action', data.url, data.ajax, data.confirm, data.msgConfirm, data.type)"
-              v-html="data.label"
-            ></button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <div v-else>
-    <p class="text-center">
-      <i class="bi bi-search"></i> <i>{{ translate.noresult }}</i>
-    </p>
+  <div class="card rounded-lg overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full" v-if="filteredData.length">
+        <thead class="bg-[var(--bg-main)]">
+          <tr>
+            <th
+              class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]"
+              v-for="key in columns"
+              @click="sortBy(key)"
+              :class="{ active: sortKey === key }"
+            >
+              <div class="flex items-center justify-center">
+                {{ capitalize(key) }}
+
+                <svg
+                  class="w-3 h-3 cursor-pointer"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    :d="sortOrders[key] > 0 ? 'm8 10 4 4 4-4' : 'm16 14-4-4-4 4'"
+                  />
+                </svg>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-[var(--border-color)]">
+          <tr class="bg-[var(--bg-card)] hover:bg-[var(--bg-hover)]" v-for="entry in filteredData">
+            <td
+              class="px-3 py-1 text-sm text-[var(--text-secondary)] text-center"
+              v-for="key in columns"
+              :class="entry.isDisabled && key !== 'action' ? 'opacity-25' : ''"
+            >
+              <span v-if="key !== 'action'" v-html="this.highlightSearch(entry[key])"></span>
+              <div v-else>
+                <button
+                  class="btn btn-icon m-1 btn-xs"
+                  :class="'btn-ghost-' + data.color"
+                  v-for="data in entry[key]"
+                  @click="$emit('redirect-action', data.url, data.ajax, data.confirm, data.msgConfirm, data.type)"
+                >
+                  <svg
+                    class="icon-sm"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      v-if="typeof data.label[0] != 'undefined'"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      :d="data.label[0]"
+                    ></path>
+                    <path
+                      v-if="typeof data.label[1] != 'undefined'"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      :d="data.label[1]"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div v-else class="flex items-center justify-center p-4 text-[var(--text-primary)]">
+        <svg
+          class="w-6 h-6 me-2"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-width="2"
+            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+          />
+        </svg>
+        <i>{{ translate.noresult }}</i>
+      </div>
+    </div>
   </div>
 </template>

@@ -88,8 +88,32 @@ export default {
 
       let strSearch = this.getSearchParams();
       let filter = this.getFilterParams();
+
+      let tmp = this.url.split('/');
+      let url = this.url + '/' + page + '/' + limit + filter + strSearch;
+      if (tmp.length > 6) {
+        url =
+          tmp[0] +
+          '/' +
+          tmp[1] +
+          '/' +
+          tmp[2] +
+          '/' +
+          tmp[3] +
+          '/' +
+          tmp[4] +
+          '/' +
+          tmp[5] +
+          '/' +
+          page +
+          '/' +
+          limit +
+          filter +
+          strSearch;
+      }
+
       axios
-        .get(this.url + '/' + page + '/' + limit + filter + strSearch)
+        .get(url)
         .then((response) => {
           this.gridColumns = response.data.column;
           this.gridData = response.data.data;
@@ -309,102 +333,104 @@ export default {
 </script>
 
 <template>
-  <div class="card rounded-lg mt-4 p-2">
-    <form id="search">
-      <div v-if="this.showQuery" class="card mb-4">
-        <div class="card-header">
-          <div class="float-end">
-            <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.saveQueryRun"><i class="bi bi-save"></i></div>
-            <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.copyQueryRun">
-              <i class="bi bi-clipboard"></i>
+  <div>
+    <div class="card rounded-lg mt-8 p-2 mb-6">
+      <form id="search">
+        <div v-if="this.showQuery" class="card mb-4">
+          <div class="card-header">
+            <div class="float-end">
+              <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.saveQueryRun"><i class="bi bi-save"></i></div>
+              <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.copyQueryRun">
+                <i class="bi bi-clipboard"></i>
+              </div>
+              <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.showQueryRun(false)">
+                <i class="bi bi-x"></i>
+              </div>
             </div>
-            <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.showQueryRun(false)">
-              <i class="bi bi-x"></i>
+            {{ this.translate.queryTitle }}
+          </div>
+          <div class="card-body">
+            {{ this.cQuery }}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-10">
+            <div class="input-group mb-3">
+              <span class="input-group-text"><i class="bi bi-search"></i></span>
+              <input
+                type="text"
+                class="form-control no-control"
+                :placeholder="this.searchPlaceholder"
+                v-model="searchQuery"
+              />
+              <button
+                :disabled="!this.activeSearchData"
+                v-if="this.searchMode === 'bdd'"
+                type="button"
+                @click="this.loadData(this.cPage, this.cLimit)"
+                class="btn btn-secondary"
+              >
+                {{ this.translate.btnSearch }}
+              </button>
+              <button
+                :disabled="!this.activeSearchData"
+                v-if="this.activeSearchData"
+                type="button"
+                class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <span class="visually-hidden">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="#" @click="this.changeSearchMode('table')"
+                    ><i class="bi bi-table"></i> {{ this.translate.placeholder }}</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#" @click="this.changeSearchMode('bdd')"
+                    ><i class="bi bi-database-down"></i> {{ this.translate.placeholderBddSearch }}</a
+                  >
+                </li>
+              </ul>
             </div>
           </div>
-          {{ this.translate.queryTitle }}
-        </div>
-        <div class="card-body">
-          {{ this.cQuery }}
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-10">
-          <div class="input-group mb-3">
-            <span class="input-group-text"><i class="bi bi-search"></i></span>
-            <input
-              type="text"
-              class="form-control no-control"
-              :placeholder="this.searchPlaceholder"
-              v-model="searchQuery"
-            />
-            <button
-              :disabled="!this.activeSearchData"
-              v-if="this.searchMode === 'bdd'"
-              type="button"
-              @click="this.loadData(this.cPage, this.cLimit)"
-              class="btn btn-secondary"
-            >
-              {{ this.translate.btnSearch }}
-            </button>
-            <button
-              :disabled="!this.activeSearchData"
-              v-if="this.activeSearchData"
-              type="button"
-              class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+          <div class="col-2">
+            <div
+              v-if="this.showFilter"
+              class="btn btn-secondary dropdown-toggle m-1 mt-0"
+              href="#"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              <span class="visually-hidden">Toggle Dropdown</span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end">
+              <i class="bi bi-filter-circle"></i> <i class="bi" :class="this.filterIcon"></i>
+            </div>
+            <ul class="dropdown-menu">
               <li>
-                <a class="dropdown-item" href="#" @click="this.changeSearchMode('table')"
-                  ><i class="bi bi-table"></i> {{ this.translate.placeholder }}</a
+                <a class="dropdown-item no-control" href="#" @click="this.changeFilter('me')"
+                  ><i class="bi bi-person-fill"></i> {{ this.translate.filterOnlyMe }}</a
                 >
               </li>
               <li>
-                <a class="dropdown-item" href="#" @click="this.changeSearchMode('bdd')"
-                  ><i class="bi bi-database-down"></i> {{ this.translate.placeholderBddSearch }}</a
+                <a class="dropdown-item no-control" href="#" @click="this.changeFilter('all')"
+                  ><i class="bi bi-people-fill"></i> {{ this.translate.filterAll }}</a
                 >
               </li>
             </ul>
-          </div>
-        </div>
-        <div class="col-2">
-          <div
-            v-if="this.showFilter"
-            class="btn btn-secondary dropdown-toggle m-1 mt-0"
-            href="#"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <i class="bi bi-filter-circle"></i> <i class="bi" :class="this.filterIcon"></i>
-          </div>
-          <ul class="dropdown-menu">
-            <li>
-              <a class="dropdown-item no-control" href="#" @click="this.changeFilter('me')"
-                ><i class="bi bi-person-fill"></i> {{ this.translate.filterOnlyMe }}</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item no-control" href="#" @click="this.changeFilter('all')"
-                ><i class="bi bi-people-fill"></i> {{ this.translate.filterAll }}</a
-              >
-            </li>
-          </ul>
 
-          <div class="btn btn-secondary m-1 mt-0" @click="this.reloadData"><i class="bi bi-arrow-clockwise"></i></div>
-          <div v-if="this.cQuery !== ''" class="btn btn-secondary m-1 mt-0" @click="this.showQueryRun(true)">
-            <i class="bi bi-database"></i>
+            <div class="btn btn-secondary m-1 mt-0" @click="this.reloadData"><i class="bi bi-arrow-clockwise"></i></div>
+            <div v-if="this.cQuery !== ''" class="btn btn-secondary m-1 mt-0" @click="this.showQueryRun(true)">
+              <i class="bi bi-database"></i>
+            </div>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
 
     <div v-if="this.loading">
-      <SkeletonTable :rows="5" :columns="5" />
+      <SkeletonTable :rows="5" :columns="5" :full="true" />
     </div>
     <div v-else>
       <Grid
