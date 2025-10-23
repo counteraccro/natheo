@@ -6,6 +6,7 @@
  */
 
 import { watch } from 'vue';
+import { Modal } from 'flowbite';
 
 export default {
   name: 'Modal',
@@ -33,16 +34,12 @@ export default {
   },
   mounted() {
     const modalElement = document.getElementById(this.id);
-    const modalOptions = {
-      placement: 'center',
-      backdrop: 'dynamic',
-      backdropClasses: 'bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40',
-      closable: false,
-      onHide: () => {},
-      onShow: () => {},
-      onToggle: () => {},
+    // instance options object
+    const instanceOptions = {
+      id: this.id,
+      override: true,
     };
-    this.modal = new Modal(modalElement, modalOptions);
+    this.modal = new Modal(modalElement, {}, instanceOptions);
 
     watch(
       () => this.show,
