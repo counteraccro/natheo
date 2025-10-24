@@ -31,6 +31,15 @@ class GridTranslate extends AppTranslate
         return [
             'placeholder' => $this->translator->trans('grid.search.placeholder', domain: 'grid'),
             'placeholderBddSearch' => $this->translator->trans('grid.search.placeholder.bdd.search', domain: 'grid'),
+            'placeholderTableSearch' => $this->translator->trans(
+                'grid.search.placeholder.table.search',
+                domain: 'grid',
+            ),
+            'textBddSearch' => $this->translator->trans('grid.search.text.bdd.search', domain: 'grid'),
+            'titleSearch' => $this->translator->trans('grid.search.title.search', domain: 'grid'),
+            'textTableSearch' => $this->translator->trans('grid.search.text.table.search', domain: 'grid'),
+            'textShowQuery' => $this->translator->trans('grid.text.show.query', domain: 'grid'),
+            'textHideQuery' => $this->translator->trans('grid.text.hide.query', domain: 'grid'),
             'btnSearch' => $this->translator->trans('grid.btn.search', domain: 'grid'),
             'loading' => $this->translator->trans('grid.loading', domain: 'grid'),
             'titleSuccess' => $this->translator->trans('grid.success.titre', domain: 'grid'),
