@@ -133,11 +133,13 @@ export default {
           this.cLimit = limit;
           this.urlSaveQuery = response.data.urlSaveSql;
 
+          if (this.searchPlaceholder === '') {
+            this.searchPlaceholder = this.translate.placeholder;
+          }
+
           if (response.data.sql !== undefined) {
             this.cQuery = response.data.sql;
           }
-
-          this.searchPlaceholder = this.translate.placeholder;
         })
         .catch((error) => {
           console.error(error);
@@ -270,6 +272,7 @@ export default {
      * @param bool
      */
     showQueryRun(bool) {
+      this.btnSearchMode.hide();
       this.showQuery = bool;
     },
 
@@ -399,23 +402,61 @@ export default {
               {{ this.translate.btnSearch }}
             </button>
 
-            <button id="searchModeButton" data-dropdown-open="searchMode" class="btn btn-outline-primary btn-md">
-              <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button
+              id="searchModeButton"
+              data-dropdown-open="searchMode"
+              data-dropdown-offset-skidding="100"
+              data-dropdown-placement="left"
+              class="btn btn-outline-primary btn-md btn-icon"
+            >
+              <svg
+                class="icon-sm"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
                 <path
+                  stroke="currentColor"
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-                ></path>
+                  d="M21 13v-2a1 1 0 0 0-1-1h-.757l-.707-1.707.535-.536a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 0l-.536.535L14 4.757V4a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v.757l-1.707.707-.536-.535a1 1 0 0 0-1.414 0L4.929 6.343a1 1 0 0 0 0 1.414l.536.536L4.757 10H4a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h.757l.707 1.707-.535.536a1 1 0 0 0 0 1.414l1.414 1.414a1 1 0 0 0 1.414 0l.536-.535 1.707.707V20a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-.757l1.707-.708.536.536a1 1 0 0 0 1.414 0l1.414-1.414a1 1 0 0 0 0-1.414l-.535-.536.707-1.707H20a1 1 0 0 0 1-1Z"
+                />
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                />
               </svg>
-              Filtrer
             </button>
 
             <div
               id="searchMode"
-              class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-auto border-1 border-gray-200"
+              class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-auto border-1 border-gray-200 text-gray-700"
             >
-              <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+              <div class="px-4 py-2 text-sm flex items-center">
+                <svg
+                  class="w-5 h-5 mr-3 text-[var(--primary)]"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-width="2"
+                    d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+                  />
+                </svg>
+                <div class="font-medium">{{ this.translate.titleSearch }}</div>
+              </div>
+              <ul class="py-2 text-sm" aria-labelledby="dropdownDefaultButton">
                 <li>
                   <a
                     href="#"
@@ -438,7 +479,7 @@ export default {
                       />
                     </svg>
 
-                    {{ this.translate.placeholder }}</a
+                    {{ this.translate.textTableSearch }}</a
                   >
                 </li>
                 <li>
@@ -465,22 +506,61 @@ export default {
                       />
                     </svg>
 
-                    {{ this.translate.placeholderBddSearch }}</a
+                    {{ this.translate.textBddSearch }}</a
                   >
                 </li>
               </ul>
+              <div class="py-2">
+                <a
+                  href="#"
+                  class="no-control flex items-center px-4 py-2 text-sm hover:bg-gray-100"
+                  @click="this.showQuery ? this.showQueryRun(false) : this.showQueryRun(true)"
+                >
+                  <svg
+                    class="w-5 h-5 mr-3 text-[var(--primary)]"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 6c0 1.657-3.134 3-7 3S5 7.657 5 6m14 0c0-1.657-3.134-3-7-3S5 4.343 5 6m14 0v6M5 6v6m0 0c0 1.657 3.134 3 7 3s7-1.343 7-3M5 12v6c0 1.657 3.134 3 7 3s7-1.343 7-3v-6"
+                    />
+                  </svg>
+
+                  <span v-if="!this.showQuery">{{ this.translate.textShowQuery }}</span>
+                  <span v-else>{{ this.translate.textHideQuery }}</span>
+                </a>
+              </div>
             </div>
 
-            <button class="btn btn-primary btn-md">
-              <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button class="btn btn-outline-primary btn-icon btn-md">
+              <svg
+                class="icon-sm"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
                 <path
+                  stroke="currentColor"
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                ></path>
+                  d="M21 13v-2a1 1 0 0 0-1-1h-.757l-.707-1.707.535-.536a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 0l-.536.535L14 4.757V4a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v.757l-1.707.707-.536-.535a1 1 0 0 0-1.414 0L4.929 6.343a1 1 0 0 0 0 1.414l.536.536L4.757 10H4a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h.757l.707 1.707-.535.536a1 1 0 0 0 0 1.414l1.414 1.414a1 1 0 0 0 1.414 0l.536-.535 1.707.707V20a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-.757l1.707-.708.536.536a1 1 0 0 0 1.414 0l1.414-1.414a1 1 0 0 0 0-1.414l-.535-.536.707-1.707H20a1 1 0 0 0 1-1Z"
+                />
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                />
               </svg>
-              Trier
             </button>
           </div>
         </div>
