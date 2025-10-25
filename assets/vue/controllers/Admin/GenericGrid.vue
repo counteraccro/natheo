@@ -13,10 +13,12 @@ import Toast from '../../Components/Global/Toast.vue';
 import { copyToClipboard } from '../../../utils/copyToClipboard';
 import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
 import { emitter } from '../../../utils/useEvent';
+import SqlHighLight from '@/vue/Components/Global/SqlHighlight.vue';
 
 export default {
   name: 'GenericGrid',
   components: {
+    SqlHighLight,
     SkeletonTable,
     GridPaginate,
     Grid,
@@ -336,6 +338,9 @@ export default {
       }
       this.filter = filter;
       this.filterIcon = icon;
+
+      this.btnSearchMode.hide();
+
       this.loadData(1, this.limit);
     },
   },
@@ -536,125 +541,71 @@ export default {
                   <span v-else>{{ this.translate.textHideQuery }}</span>
                 </a>
               </div>
-            </div>
-
-            <button class="btn btn-outline-primary btn-icon btn-md">
-              <svg
-                class="icon-sm"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M21 13v-2a1 1 0 0 0-1-1h-.757l-.707-1.707.535-.536a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 0l-.536.535L14 4.757V4a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v.757l-1.707.707-.536-.535a1 1 0 0 0-1.414 0L4.929 6.343a1 1 0 0 0 0 1.414l.536.536L4.757 10H4a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h.757l.707 1.707-.535.536a1 1 0 0 0 0 1.414l1.414 1.414a1 1 0 0 0 1.414 0l.536-.535 1.707.707V20a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-.757l1.707-.708.536.536a1 1 0 0 0 1.414 0l1.414-1.414a1 1 0 0 0 0-1.414l-.535-.536.707-1.707H20a1 1 0 0 0 1-1Z"
-                />
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <div v-if="this.showQuery" class="card mb-4">
-          <div class="card-header">
-            <div class="float-end">
-              <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.saveQueryRun"><i class="bi bi-save"></i></div>
-              <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.copyQueryRun">
-                <i class="bi bi-clipboard"></i>
-              </div>
-              <div class="btn btn-secondary btn-sm m-1 mt-0" @click="this.showQueryRun(false)">
-                <i class="bi bi-x"></i>
-              </div>
-            </div>
-            {{ this.translate.queryTitle }}
-          </div>
-          <div class="card-body">
-            {{ this.cQuery }}
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-10">
-            <div class="input-group mb-3">
-              <span class="input-group-text"><i class="bi bi-search"></i></span>
-              <input
-                type="text"
-                class="form-control no-control"
-                :placeholder="this.searchPlaceholder"
-                v-model="searchQuery"
-              />
-              <button
-                :disabled="!this.activeSearchData"
-                v-if="this.searchMode === 'bdd'"
-                type="button"
-                @click="this.loadData(this.cPage, this.cLimit)"
-                class="btn btn-secondary"
-              >
-                {{ this.translate.btnSearch }}
-              </button>
-              <button
-                :disabled="!this.activeSearchData"
-                v-if="this.activeSearchData"
-                type="button"
-                class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <span class="visually-hidden">Toggle Dropdown</span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end">
+              <ul v-if="this.showFilter" class="py-2 text-sm">
                 <li>
-                  <a class="dropdown-item" href="#" @click="this.changeSearchMode('table')"
-                    ><i class="bi bi-table"></i> {{ this.translate.placeholder }}</a
+                  <a
+                    class="no-control flex items-center px-4 py-2 text-sm hover:bg-gray-100"
+                    href="#"
+                    @click="this.changeFilter('me')"
+                  >
+                    <svg
+                      class="w-5 h-5 mr-3 text-[var(--primary)]"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke="currentColor"
+                        stroke-width="2"
+                        d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                      />
+                    </svg>
+                    {{ this.translate.filterOnlyMe }}</a
                   >
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#" @click="this.changeSearchMode('bdd')"
-                    ><i class="bi bi-database-down"></i> {{ this.translate.placeholderBddSearch }}</a
+                  <a
+                    class="no-control flex items-center px-4 py-2 text-sm hover:bg-gray-100"
+                    href="#"
+                    @click="this.changeFilter('all')"
+                  >
+                    <svg
+                      class="w-5 h-5 mr-3 text-[var(--primary)]"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-width="2"
+                        d="M16 19h4a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-2m-2.236-4a3 3 0 1 0 0-4M3 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                      />
+                    </svg>
+
+                    {{ this.translate.filterAll }}</a
                   >
                 </li>
               </ul>
             </div>
           </div>
-          <div class="col-2">
-            <div
-              v-if="this.showFilter"
-              class="btn btn-secondary dropdown-toggle m-1 mt-0"
-              href="#"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <i class="bi bi-filter-circle"></i> <i class="bi" :class="this.filterIcon"></i> filter
-            </div>
-            <ul class="dropdown-menu">
-              <li>
-                <a class="dropdown-item no-control" href="#" @click="this.changeFilter('me')"
-                  ><i class="bi bi-person-fill"></i> {{ this.translate.filterOnlyMe }}</a
-                >
-              </li>
-              <li>
-                <a class="dropdown-item no-control" href="#" @click="this.changeFilter('all')"
-                  ><i class="bi bi-people-fill"></i> {{ this.translate.filterAll }}</a
-                >
-              </li>
-            </ul>
-
-            <div class="btn btn-secondary m-1 mt-0" @click="this.reloadData"><i class="bi bi-arrow-clockwise"></i></div>
-            <div v-if="this.cQuery !== ''" class="btn btn-secondary m-1 mt-0" @click="this.showQueryRun(true)">
-              <i class="bi bi-database"></i> show query
-            </div>
-          </div>
         </div>
+
+        <SqlHighLight
+          v-if="this.showQuery"
+          :sql="this.cQuery"
+          :label="this.translate.queryTitle"
+          @copy-sql="this.copyQueryRun"
+          @hide-sql="this.showQueryRun(false)"
+          @save-sql="this.saveQueryRun"
+        >
+        </SqlHighLight>
       </form>
     </div>
 
