@@ -409,6 +409,7 @@ export default {
 
             <button
               id="searchModeButton"
+              type="button"
               data-dropdown-open="searchMode"
               data-dropdown-offset-skidding="100"
               data-dropdown-placement="left"
