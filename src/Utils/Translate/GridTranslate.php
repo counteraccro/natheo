@@ -40,6 +40,8 @@ class GridTranslate extends AppTranslate
             'textTableSearch' => $this->translator->trans('grid.search.text.table.search', domain: 'grid'),
             'textShowQuery' => $this->translator->trans('grid.text.show.query', domain: 'grid'),
             'textHideQuery' => $this->translator->trans('grid.text.hide.query', domain: 'grid'),
+            'textShowTrieOption' => $this->translator->trans('grid.text.show.trie.option', domain: 'grid'),
+            'textHideTrieOption' => $this->translator->trans('grid.text.hide.trie.option', domain: 'grid'),
             'btnSearch' => $this->translator->trans('grid.btn.search', domain: 'grid'),
             'loading' => $this->translator->trans('grid.loading', domain: 'grid'),
             'titleSuccess' => $this->translator->trans('grid.success.titre', domain: 'grid'),
@@ -54,6 +56,7 @@ class GridTranslate extends AppTranslate
             'queryTitle' => $this->translator->trans('grid.query.title', domain: 'grid'),
             'filterOnlyMe' => $this->translator->trans('grid.filter.only.me', domain: 'grid'),
             'filterAll' => $this->translator->trans('grid.filter.all', domain: 'grid'),
+            'titleTrieOption' => $this->translator->trans('grid.trie.title.option', domain: 'grid'),
         ];
     }
 

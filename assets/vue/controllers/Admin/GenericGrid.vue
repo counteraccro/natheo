@@ -61,6 +61,7 @@ export default {
       searchPlaceholder: '',
       cQuery: '',
       showQuery: false,
+      showMoreOption: false,
       urlSaveQuery: '',
       filter: 'all',
       filterIcon: 'bi-people-fill',
@@ -276,6 +277,15 @@ export default {
     showQueryRun(bool) {
       this.btnSearchMode.hide();
       this.showQuery = bool;
+    },
+
+    /**
+     * Affiche le bloc plus d'options
+     * @param bool
+     */
+    showMoreOptionBloc(bool) {
+      this.btnSearchMode.hide();
+      this.showMoreOption = bool;
     },
 
     /**
@@ -538,8 +548,8 @@ export default {
                     />
                   </svg>
 
-                  <span v-if="!this.showQuery">{{ this.translate.textShowQuery }}</span>
-                  <span v-else>{{ this.translate.textHideQuery }}</span>
+                  <span class="no-control" v-if="!this.showQuery">{{ this.translate.textShowQuery }}</span>
+                  <span class="no-control" v-else>{{ this.translate.textHideQuery }}</span>
                 </a>
               </div>
               <ul v-if="this.showFilter" class="py-2 text-sm">
@@ -594,6 +604,38 @@ export default {
                   >
                 </li>
               </ul>
+              <div class="py-2">
+                <a
+                  href="#"
+                  class="no-control flex items-center px-4 py-2 text-sm hover:bg-gray-100"
+                  @click="this.showMoreOption ? this.showMoreOptionBloc(false) : this.showMoreOptionBloc(true)"
+                >
+                  <svg
+                    class="w-5 h-5 mr-3 text-[var(--primary)]"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M21 13v-2a1 1 0 0 0-1-1h-.757l-.707-1.707.535-.536a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 0l-.536.535L14 4.757V4a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v.757l-1.707.707-.536-.535a1 1 0 0 0-1.414 0L4.929 6.343a1 1 0 0 0 0 1.414l.536.536L4.757 10H4a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h.757l.707 1.707-.535.536a1 1 0 0 0 0 1.414l1.414 1.414a1 1 0 0 0 1.414 0l.536-.535 1.707.707V20a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-.757l1.707-.708.536.536a1 1 0 0 0 1.414 0l1.414-1.414a1 1 0 0 0 0-1.414l-.535-.536.707-1.707H20a1 1 0 0 0 1-1Z"
+                    />
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                    />
+                  </svg>
+                  <span class="no-control" v-if="!this.showMoreOption">{{ this.translate.textShowTrieOption }}</span>
+                  <span class="no-control" v-else>{{ this.translate.textHideTrieOption }}</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -607,6 +649,54 @@ export default {
           @save-sql="this.saveQueryRun"
         >
         </SqlHighLight>
+
+        <div
+          v-if="this.showMoreOption"
+          class="bg-[var(--bg-card)] rounded-xl shadow-sm border border-[var(--border-color)] mt-3"
+        >
+          <div class="flex items-center justify-between px-4 py-3 bg-[var(--bg-main)] rounded-xl">
+            <span class="text-sm text-slate-400 flex items-center">
+              <svg
+                class="h-4 w-4 me-2"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 13v-2a1 1 0 0 0-1-1h-.757l-.707-1.707.535-.536a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 0l-.536.535L14 4.757V4a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v.757l-1.707.707-.536-.535a1 1 0 0 0-1.414 0L4.929 6.343a1 1 0 0 0 0 1.414l.536.536L4.757 10H4a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h.757l.707 1.707-.535.536a1 1 0 0 0 0 1.414l1.414 1.414a1 1 0 0 0 1.414 0l.536-.535 1.707.707V20a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-.757l1.707-.708.536.536a1 1 0 0 0 1.414 0l1.414-1.414a1 1 0 0 0 0-1.414l-.535-.536.707-1.707H20a1 1 0 0 0 1-1Z"
+                />
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                />
+              </svg>
+              {{ this.translate.titleTrieOption }}
+            </span>
+            <div>
+              <button @click="this.showMoreOptionBloc(false)" class="btn-icon btn btn-ghost-primary">
+                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="p-5"></div>
+        </div>
       </form>
     </div>
 
