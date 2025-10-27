@@ -24,3 +24,6 @@ grid.search.title.search: Rechercher
 grid.search.text.table.search: 'Dans le tableau'
 grid.text.show.query: 'Afficher le SQL'
 grid.text.hide.query: 'Masquer le SQL'
+grid.trie.title.option: 'Autres options'
+grid.text.show.trie.option: "Plus d'options"
+grid.text.hide.trie.option: "Masquer les options"

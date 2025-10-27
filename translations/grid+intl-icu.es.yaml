@@ -24,3 +24,6 @@ grid.search.title.search: __grid.search.title.search
 grid.search.text.table.search: __grid.search.text.table.search
 grid.text.show.query: __grid.text.show.query
 grid.text.hide.query: __grid.text.hide.query
+grid.text.show.trie.option: __grid.text.show.trie.option
+grid.text.hide.trie.option: __grid.text.hide.trie.option
+grid.trie.title.option: __grid.trie.title.option
