@@ -64,6 +64,8 @@ export default {
       showMoreOption: false,
       urlSaveQuery: '',
       filter: 'all',
+      orderField: 'id',
+      order: 'ASC',
       filterIcon: 'bi-people-fill',
       btnSearchMode: '',
       toasts: {
@@ -97,9 +99,10 @@ export default {
 
       let strSearch = this.getSearchParams();
       let filter = this.getFilterParams();
+      let order = this.getOrderParams();
 
       let tmp = this.url.split('/');
-      let url = this.url + '/' + page + '/' + limit + filter + strSearch;
+      let url = this.url + '/' + page + '/' + limit + filter + strSearch + order;
       if (tmp.length > 6) {
         url =
           tmp[0] +
@@ -118,7 +121,8 @@ export default {
           '/' +
           limit +
           filter +
-          strSearch;
+          strSearch +
+          order;
       }
 
       axios
@@ -167,6 +171,14 @@ export default {
         return '&search=' + this.searchQuery;
       }
       return '';
+    },
+
+    /**
+     * Génération du paramètre de trie
+     * @returns {string}
+     */
+    getOrderParams() {
+      return '&orderField=' + this.orderField + '&order=' + this.order;
     },
 
     /**

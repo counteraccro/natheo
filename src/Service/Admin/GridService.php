@@ -18,32 +18,34 @@ class GridService extends AppAdminService
     /**
      * Cle pour les actions dans les tableaux grid
      */
-    const KEY_ACTION = 'action';
+    const string KEY_ACTION = 'action';
 
     /**
      * Clé pour le nombre d'éléments
      */
-    const KEY_NB = 'nb';
+    const string KEY_NB = 'nb';
 
     /**
      * Clé pour les données
      */
-    const KEY_DATA = 'data';
+    const string KEY_DATA = 'data';
 
     /**
      * Clé pour les colonnes
      */
-    const KEY_COLUMN = 'column';
+    const string KEY_COLUMN = 'column';
 
     /**
      * Clé pour la raw SQL
      */
-    const KEY_RAW_SQL = 'sql';
+    const string KEY_RAW_SQL = 'sql';
 
     /**
      * Clé pour l'url de sauvegarde de la raw sql
      */
-    const KEY_URL_SAVE_RAW_SQL = 'urlSaveSql';
+    const string KEY_URL_SAVE_RAW_SQL = 'urlSaveSql';
+
+    const string KEY_LIST_ORDER_FIELD = 'listOrderField';
 
     /**
      * Retourne l'ensemble des données obligatoires pour le grid

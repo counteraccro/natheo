@@ -66,8 +66,13 @@ class TagController extends AppAdminController
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     public function loadGridData(TagService $tagService, Request $request, int $page = 1, int $limit = 20): JsonResponse
     {
-        $search = $request->query->get('search');
-        $grid = $tagService->getAllFormatToGrid($page, $limit, $search);
+        $queryParams = [
+            'search' => $request->query->get('search'),
+            'orderField' => $request->query->get('orderField'),
+            'order' => $request->query->get('order'),
+        ];
+
+        $grid = $tagService->getAllFormatToGrid($page, $limit, $queryParams);
         return $this->json($grid);
     }
 

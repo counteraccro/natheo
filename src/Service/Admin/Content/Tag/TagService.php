@@ -23,27 +23,27 @@ class TagService extends AppAdminService
      * Retourne une liste de tag paginé
      * @param int $page
      * @param int $limit
-     * @param string|null $search
+     * @param array $queryParams
      * @return Paginator
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllPaginate(int $page, int $limit, ?string $search = null): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
     {
         $repo = $this->getRepository(Tag::class);
-        return $repo->getAllPaginate($page, $limit, $search);
+        return $repo->getAllPaginate($page, $limit, $queryParams);
     }
 
     /**
      * Construit le tableau de donnée à envoyé au tableau GRID
      * @param int $page
      * @param int $limit
-     * @param string|null $search
+     * @param array $queryParams
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllFormatToGrid(int $page, int $limit, ?string $search = null): array
+    public function getAllFormatToGrid(int $page, int $limit, array $queryParams): array
     {
         $translator = $this->getTranslator();
         $gridService = $this->getGridService();
@@ -58,7 +58,7 @@ class TagService extends AppAdminService
             GridService::KEY_ACTION,
         ];
 
-        $dataPaginate = $this->getAllPaginate($page, $limit, $search);
+        $dataPaginate = $this->getAllPaginate($page, $limit, $queryParams);
 
         $nb = $dataPaginate->count();
         $data = [];
@@ -87,6 +87,7 @@ class TagService extends AppAdminService
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
             GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate),
+            GridService::KEY_LIST_ORDER_FIELD => [],
         ];
         return $gridService->addAllDataRequiredGrid($tabReturn);
     }
