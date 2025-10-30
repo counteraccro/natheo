@@ -65,7 +65,9 @@ export default {
       urlSaveQuery: '',
       filter: 'all',
       orderField: 'id',
-      order: 'ASC',
+      listOrderField: {},
+      order: 'DESC',
+      listOrder: { 0: 'ASC', 1: 'DESC' },
       filterIcon: 'bi-people-fill',
       btnSearchMode: '',
       toasts: {
@@ -142,6 +144,10 @@ export default {
 
           if (this.searchPlaceholder === '') {
             this.searchPlaceholder = this.translate.placeholder;
+          }
+
+          if (response.data.listOrderField !== undefined) {
+            this.listOrderField = response.data.listOrderField;
           }
 
           if (response.data.sql !== undefined) {
@@ -707,7 +713,27 @@ export default {
               </button>
             </div>
           </div>
-          <div class="p-5"></div>
+          <div class="p-5">
+            <div class="flex justify-items-center">
+              <div class="form-group me-3">
+                <label class="form-label">aaa</label>
+                <select class="form-input" v-model="this.orderField">
+                  <option v-for="field in this.listOrderField" :value="field">{{ field }}</option>
+                </select>
+              </div>
+
+              <div class="form-group me-3">
+                <label class="form-label">bbbb</label>
+                <select class="form-input" v-model="this.order">
+                  <option v-for="order in this.listOrder" :value="order">{{ order }}</option>
+                </select>
+              </div>
+
+              <div class="mt-[2rem]">
+                <button type="button" class="btn btn-primary btn-sm">cccc</button>
+              </div>
+            </div>
+          </div>
         </div>
       </form>
     </div>
