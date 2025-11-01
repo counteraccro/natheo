@@ -57,6 +57,10 @@ class GridTranslate extends AppTranslate
             'filterOnlyMe' => $this->translator->trans('grid.filter.only.me', domain: 'grid'),
             'filterAll' => $this->translator->trans('grid.filter.all', domain: 'grid'),
             'titleTrieOption' => $this->translator->trans('grid.trie.title.option', domain: 'grid'),
+            'titleTrieOptionSubMenu' => $this->translator->trans('grid.trie.title.option.sub', domain: 'grid'),
+            'trieOptionListeField' => $this->translator->trans('grid.trie.option.liste.field', domain: 'grid'),
+            'trieOptionListeOrder' => $this->translator->trans('grid.trie.option.liste.order', domain: 'grid'),
+            'trieOptionBtn' => $this->translator->trans('grid.trie.option.btn', domain: 'grid'),
         ];
     }
 

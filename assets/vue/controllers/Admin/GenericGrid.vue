@@ -43,7 +43,7 @@ export default {
       searchQuery: '',
       gridColumns: [],
       gridData: [],
-      sortOrders: [],
+      sortOrders: { Id: -1 },
       nbElements: 0,
       loading: true,
       cPage: this.page,
@@ -133,7 +133,6 @@ export default {
           this.gridColumns = response.data.column;
           this.gridData = response.data.data;
           this.nbElements = response.data.nb;
-          this.sortOrders = this.gridColumns.reduce((o, key) => ((o[key] = 1), o), {});
           this.listLimit = response.data.listLimit;
           this.translate = response.data.translate.genericGrid;
           this.translateGridPaginate = response.data.translate.gridPaginate;
@@ -148,11 +147,20 @@ export default {
 
           if (response.data.listOrderField !== undefined) {
             this.listOrderField = response.data.listOrderField;
+            for (var key in this.listOrderField) {
+              this.sortOrders[this.listOrderField[key]] = 1;
+            }
+          }
+
+          if (this.order === 'DESC') {
+            this.sortOrders[this.listOrderField[this.orderField]] = -1;
           }
 
           if (response.data.sql !== undefined) {
             this.cQuery = response.data.sql;
           }
+
+          console.log(this.sortOrders);
         })
         .catch((error) => {
           console.error(error);
@@ -369,6 +377,13 @@ export default {
 
       this.btnSearchMode.hide();
 
+      this.loadData(1, this.limit);
+    },
+
+    /**
+     * Change l'ordre et le trie
+     */
+    changeOrder() {
       this.loadData(1, this.limit);
     },
   },
@@ -714,23 +729,28 @@ export default {
             </div>
           </div>
           <div class="p-5">
-            <div class="flex justify-items-center">
-              <div class="form-group me-3">
-                <label class="form-label">aaa</label>
-                <select class="form-input" v-model="this.orderField">
-                  <option v-for="field in this.listOrderField" :value="field">{{ field }}</option>
-                </select>
-              </div>
+            <div>
+              <h3 class="text-[var(--primary)] font-bold">{{ this.translate.titleTrieOptionSubMenu }}</h3>
+              <div class="flex justify-items-center">
+                <div class="form-group me-3">
+                  <label class="form-label">{{ this.translate.trieOptionListeField }}</label>
+                  <select class="form-input" v-model="this.orderField">
+                    <option v-for="(label, field) in this.listOrderField" :value="field">{{ label }}</option>
+                  </select>
+                </div>
 
-              <div class="form-group me-3">
-                <label class="form-label">bbbb</label>
-                <select class="form-input" v-model="this.order">
-                  <option v-for="order in this.listOrder" :value="order">{{ order }}</option>
-                </select>
-              </div>
+                <div class="form-group me-3">
+                  <label class="form-label">{{ this.translate.trieOptionListeOrder }}</label>
+                  <select class="form-input" v-model="this.order">
+                    <option v-for="order in this.listOrder" :value="order">{{ order }}</option>
+                  </select>
+                </div>
 
-              <div class="mt-[2rem]">
-                <button type="button" class="btn btn-primary btn-sm">cccc</button>
+                <div class="mt-[2rem]">
+                  <button type="button" class="btn btn-primary btn-sm" @click="this.changeOrder">
+                    {{ this.translate.trieOptionBtn }}
+                  </button>
+                </div>
               </div>
             </div>
           </div>

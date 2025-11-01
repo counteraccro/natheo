@@ -87,7 +87,13 @@ class TagService extends AppAdminService
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
             GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate),
-            GridService::KEY_LIST_ORDER_FIELD => ['id', 'label', 'color', 'createdAt', 'updateAt'],
+            GridService::KEY_LIST_ORDER_FIELD => [
+                'id' => $translator->trans('tag.grid.id', domain: 'tag'),
+                'label' => $translator->trans('tag.grid.label', domain: 'tag'),
+                'color' => $translator->trans('tag.grid.color', domain: 'tag'),
+                'createdAt' => $translator->trans('tag.grid.created_at', domain: 'tag'),
+                'updateAt' => $translator->trans('tag.grid.update_at', domain: 'tag'),
+            ],
         ];
         return $gridService->addAllDataRequiredGrid($tabReturn);
     }

@@ -65,7 +65,13 @@ class TagRepository extends ServiceEntityRepository
             $order = $queryParams['order'];
         }
 
-        $query = $this->createQueryBuilder(Tag::DEFAULT_ALIAS)->orderBy(Tag::DEFAULT_ALIAS . '.' . $orderField, $order);
+        $query = $this->createQueryBuilder(Tag::DEFAULT_ALIAS);
+        if ($orderField !== 'label') {
+            $query->orderBy(Tag::DEFAULT_ALIAS . '.' . $orderField, $order);
+        } else {
+            $query->join(Tag::DEFAULT_ALIAS . '.tagTranslations', TagTranslation::DEFAULT_ALIAS);
+            $query->orderBy(TagTranslation::DEFAULT_ALIAS . '.' . $orderField, $order);
+        }
 
         if ($queryParams['search'] !== null) {
             $query
