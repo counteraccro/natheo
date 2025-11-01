@@ -26,4 +26,8 @@ grid.text.show.query: 'Afficher le SQL'
 grid.text.hide.query: 'Masquer le SQL'
 grid.trie.title.option: 'Autres options'
 grid.text.show.trie.option: "Plus d'options"
-grid.text.hide.trie.option: "Masquer les options"
+grid.text.hide.trie.option: 'Masquer les options'
+grid.trie.option.liste.field: Colonnes
+grid.trie.option.liste.order: Ordre
+grid.trie.option.btn: Trier
+grid.trie.title.option.sub: 'Options de trie'

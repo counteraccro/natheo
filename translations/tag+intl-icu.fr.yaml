@@ -2,11 +2,11 @@ tag.index.page_title: 'Gestion des tags'
 tag.index.page_title_h1: 'Gestion des tags'
 tag.index.btn.new: 'Nouveau tag'
 tag.index.description: 'Gérer les tags associés au contenu de votre site'
-tag.grid.id: '#'
-tag.grid.label: label
-tag.grid.color: couleur
-tag.grid.created_at: Création
-tag.grid.update_at: 'Mise à jour'
+tag.grid.id: Id
+tag.grid.label: Label
+tag.grid.color: Couleur
+tag.grid.created_at: 'Date création'
+tag.grid.update_at: 'Date mise à jour'
 tag.confirm.disabled.msg: "La désactivation du tag <strong>{label}</strong> entraine sa désactivation et son invisibilité sur le site. Aucune donnée n'est supprimés. Par contre les contenus liés à ce tag peuvent être masqués"
 tag.success.no.disabled: 'Le tag <strong>{label}</strong> est maintenant activé'
 tag.success.disabled: 'Le tag <strong>{label}</strong> est maintenant désactivé'
