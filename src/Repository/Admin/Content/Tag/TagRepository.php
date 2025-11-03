@@ -66,17 +66,21 @@ class TagRepository extends ServiceEntityRepository
         }
 
         $query = $this->createQueryBuilder(Tag::DEFAULT_ALIAS);
+        if ($orderField === 'label' || $queryParams['search'] !== null) {
+            $query->join(Tag::DEFAULT_ALIAS . '.tagTranslations', TagTranslation::DEFAULT_ALIAS);
+        }
+
         if ($orderField !== 'label') {
             $query->orderBy(Tag::DEFAULT_ALIAS . '.' . $orderField, $order);
         } else {
-            $query->join(Tag::DEFAULT_ALIAS . '.tagTranslations', TagTranslation::DEFAULT_ALIAS);
+            //$query->andWhere(TagTranslation::DEFAULT_ALIAS . '.locale = :locale');
+            //$query->setParameter('locale', $queryParams['locale']);
             $query->orderBy(TagTranslation::DEFAULT_ALIAS . '.' . $orderField, $order);
         }
 
         if ($queryParams['search'] !== null) {
             $query
-                ->join(Tag::DEFAULT_ALIAS . '.tagTranslations', TagTranslation::DEFAULT_ALIAS)
-                ->where(TagTranslation::DEFAULT_ALIAS . '.label like :search')
+                ->andWhere(TagTranslation::DEFAULT_ALIAS . '.label like :search')
                 ->setParameter('search', '%' . $queryParams['search'] . '%');
         }
 

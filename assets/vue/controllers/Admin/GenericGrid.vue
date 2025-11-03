@@ -159,8 +159,6 @@ export default {
           if (response.data.sql !== undefined) {
             this.cQuery = response.data.sql;
           }
-
-          console.log(this.sortOrders);
         })
         .catch((error) => {
           console.error(error);
@@ -256,6 +254,25 @@ export default {
           window.location.href = url;
         }
       }
+    },
+
+    /**
+     * Défini le trie à faire
+     * @param field
+     * @param order
+     */
+    sortAction(field, order) {
+      for (var key in this.listOrderField) {
+        if (this.listOrderField[key] === field) {
+          this.orderField = key;
+        }
+
+        this.order = 'ASC';
+        if (order === -1) {
+          this.order = 'DESC';
+        }
+      }
+      this.loadData(this.page, this.limit);
     },
 
     /**
@@ -357,24 +374,7 @@ export default {
      * @param filterChange
      */
     changeFilter(filterChange) {
-      let filter = '';
-      let icon = '';
-      switch (filterChange) {
-        case 'me':
-          filter = 'me';
-          icon = 'bi-person-fill';
-          break;
-        case 'all':
-          filter = 'all';
-          icon = 'bi-people-fill';
-          break;
-        default:
-          filter = 'all';
-          icon = 'bi-people-fill';
-      }
-      this.filter = filter;
-      this.filterIcon = icon;
-
+      this.filter = filterChange;
       this.btnSearchMode.hide();
 
       this.loadData(1, this.limit);
@@ -770,6 +770,7 @@ export default {
         :translate="translateGrid"
         :search-mode="this.searchMode"
         @redirect-action="redirectAction"
+        @sort-action="sortAction"
       >
       </Grid>
       <GridPaginate

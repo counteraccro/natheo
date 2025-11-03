@@ -16,7 +16,7 @@ export default {
     translate: Object,
     searchMode: String,
   },
-  emits: ['redirect-action'],
+  emits: ['redirect-action', 'sort-action'],
   data() {
     return {
       sortKey: '',
@@ -40,13 +40,13 @@ export default {
         });
       }
 
-      if (sortKey) {
+      /*if (sortKey) {
         data = data.slice().sort((a, b) => {
           a = a[sortKey];
           b = b[sortKey];
           return (a === b ? 0 : a > b ? 1 : -1) * order;
         });
-      }
+      }*/
       return data;
     },
   },
@@ -66,6 +66,7 @@ export default {
     sortBy(key) {
       this.sortKey = key;
       this.sortOrders[key] = this.sortOrders[key] * -1;
+      this.$emit('sort-action', this.sortKey, this.sortOrders[key]);
     },
 
     capitalize(str) {
@@ -110,13 +111,13 @@ export default {
             <th
               class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]"
               v-for="key in columns"
-              @click="sortBy(key)"
-              :class="{ active: sortKey === key }"
+              @click="key !== 'action' ? sortBy(key) : ''"
             >
               <div class="flex items-center justify-center">
                 {{ capitalize(key) }}
 
                 <svg
+                  v-if="key !== 'action'"
                   class="w-3 h-3 cursor-pointer"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"

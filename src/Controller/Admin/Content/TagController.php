@@ -70,6 +70,7 @@ class TagController extends AppAdminController
             'search' => $request->query->get('search'),
             'orderField' => $request->query->get('orderField'),
             'order' => $request->query->get('order'),
+            'locale' => $request->getLocale(),
         ];
 
         $grid = $tagService->getAllFormatToGrid($page, $limit, $queryParams);
