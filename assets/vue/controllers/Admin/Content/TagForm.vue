@@ -196,6 +196,38 @@ export default {
 </script>
 
 <template>
+  <div>
+    <div class="form-group">
+      <label for="tagColor" class="form-label">{{ this.translate.colorTitle }} </label>
+      <div class="flex items-center gap-3">
+        <input
+          type="color"
+          @change="
+            this.isErrorHexa = false;
+            this.msgErrorExa = '';
+          "
+          class="form-color"
+          id="tagColor"
+          v-model="this.tag.color"
+        />
+
+        <input
+          type="text"
+          class="form-input flex-1"
+          :class="this.msgErrorExa !== '' ? 'is-invalid' : ''"
+          id="tagColorinput"
+          v-model="this.tag.color"
+          size="7"
+          style="width: auto"
+          @change="this.checkValideHex()"
+          maxlength="7"
+        />
+      </div>
+      <span v-if="this.msgErrorExa" class="form-text text-error">✗ {{ this.msgErrorExa }}</span>
+      <span v-else class="form-text">Choisissez une couleur pour identifier visuellement ce tag</span>
+    </div>
+  </div>
+
   <div class="row">
     <div class="col">
       <div class="card border-secondary" :class="this.loading === true ? 'block-grid' : ''">
