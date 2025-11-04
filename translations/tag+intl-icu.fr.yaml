@@ -12,7 +12,7 @@ tag.success.no.disabled: 'Le tag <strong>{label}</strong> est maintenant activé
 tag.success.disabled: 'Le tag <strong>{label}</strong> est maintenant désactivé'
 tag.confirm.delete.msg: 'La suppression du tag <strong>{label}</strong> est définitif. Seul le tag est supprimé et non les données associées'
 tag.add.page_title: 'Nouveau tag'
-tag.add.page_title_h1: 'Ajouter un tag'
+tag.add.page_title_h1: 'Créer un nouveau tag'
 tag.update.page_title: 'Edition du tag #{id}'
 tag.update.page_title_h1: "Edition d'un tag"
 tag.index.popin.help.title: Aide
@@ -24,13 +24,13 @@ tag.remove.success: 'Le tag <strong>{label}</strong> à été correctement suppr
 tag.form.loading: 'Chargement des données...'
 tag.form.title.create: 'Nouveau tag'
 tag.form.title.update: 'Edition du tag'
-tag.add.description: 'Aouter un nouveau tag pour pouvoir classer vos contenus plus facilement'
+tag.add.description: 'Aouter un nouveau tag pour organiser votre contenu'
 tag.update.description: "L'édition du tag ne modifie pas les contenus associés à celui-ci"
 tag.form.input.color.label: 'Couleur du tag'
 tag.form.input.label.label: 'Label en'
 tag.form.input.color.error: 'le format attendu est "#rrggbb" ou rr, gg, bb sont 2 valeurs hexadecimal.'
 tag.form.link.color.choice: 'Exemple de couleur'
-tag.form.color.title: 'Choix de la couleur'
+tag.form.color.title: 'Couleur du tag'
 tag.form.color.description: 'Vous pouvez choisir une couleur personnalisé pour votre tag'
 tag.form.title.label.current: 'Langue courante'
 tag.form.title.label.other: 'Autres langues'
