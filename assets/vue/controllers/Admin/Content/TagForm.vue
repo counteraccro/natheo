@@ -184,6 +184,10 @@ export default {
       }
     },
 
+    toggleCopy() {
+      this.autoCopy = !this.autoCopy;
+    },
+
     /**
      * Active ou désactive le bouton submit
      * @returns {boolean}
@@ -225,6 +229,55 @@ export default {
       </div>
       <span v-if="this.msgErrorExa" class="form-text text-error">✗ {{ this.msgErrorExa }}</span>
       <span v-else class="form-text">Choisissez une couleur pour identifier visuellement ce tag</span>
+    </div>
+
+    <div class="form-switch">
+      <div class="switch-input" :class="this.autoCopy ? 'active' : ''" @click="this.toggleCopy()"></div>
+      <span class="switch-label" @click="this.toggleCopy()">{{ this.translate.autoCopy }}</span>
+    </div>
+
+    <div v-for="key in this.locales.locales">
+      <div v-for="translation in tag.tagTranslations">
+        <div v-if="translation.locale === key">
+          <div v-if="translation.locale === this.locales.current">
+            <div class="form-check form-switch float-end">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="flexSwitchCheckDefault"
+                v-model="this.autoCopy"
+              />
+              <label class="form-check-label" for="flexSwitchCheckDefault">{{ this.translate.autoCopy }}</label>
+            </div>
+
+            <h5 class="card-title">{{ this.translate.labelCurrent }}</h5>
+          </div>
+          <h5 v-else-if="this.locales.locales[1] === key" class="card-title">{{ this.translate.labelOther }}</h5>
+          <div class="mb-3">
+            <label :for="'label-' + translation.locale" class="form-label"
+              >{{ this.translate.formInputLabelLabel }} {{ this.locales.localesTranslate[key] }}</label
+            >
+            <input
+              type="text"
+              :class="this.isNoEmptyInput(translation.id)"
+              class="form-control"
+              :id="'label-' + translation.locale"
+              placeholder=""
+              :disabled="this.isDisabled(translation.locale)"
+              v-model="translation.label"
+              v-on="
+                this.autoCopy && translation.locale === this.locales.current
+                  ? { keyup: () => this.copyLabel(translation.label) }
+                  : {}
+              "
+            />
+            <div class="invalid-feedback">
+              {{ this.translate.formInputLabelError }}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
