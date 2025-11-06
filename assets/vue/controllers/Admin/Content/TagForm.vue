@@ -27,7 +27,7 @@ export default {
       msgErrorExa: '',
       autoCopy: true,
       isErrorHexa: true,
-      isErrorLabel: true,
+      showErrors: false,
       templateStat: '',
       classNoControl: '',
     };
@@ -39,6 +39,15 @@ export default {
       this.autoCopy = false;
       this.loadStat();
     }
+  },
+  computed: {
+    isErrorLabel() {
+      if (!this.showErrors) {
+        return false;
+      }
+
+      return this.tag.tagTranslations.some((translation) => translation.label === '' || translation.label === null);
+    },
   },
 
   methods: {
@@ -132,7 +141,6 @@ export default {
      * @param label
      */
     copyLabel(label) {
-      this.isErrorLabel = false;
       this.locales.locales.forEach((locale) => {
         this.tag.tagTranslations.forEach((translation) => {
           if (locale === translation.locale && translation.locale !== this.locales.current) {
@@ -158,14 +166,9 @@ export default {
      */
     isNoEmptyInput(translation_id) {
       let css = '';
-      this.isErrorLabel = false;
       this.tag.tagTranslations.forEach((translation) => {
         if (translation.id === translation_id && translation.label === '') {
           css = 'is-invalid';
-        }
-
-        if (translation.label === '' || translation.label === null) {
-          this.isErrorLabel = true;
         }
       });
       return css;
@@ -231,39 +234,20 @@ export default {
       <span v-else class="form-text">Choisissez une couleur pour identifier visuellement ce tag</span>
     </div>
 
-    <div class="form-switch">
-      <div class="switch-input" :class="this.autoCopy ? 'active' : ''" @click="this.toggleCopy()"></div>
-      <span class="switch-label" @click="this.toggleCopy()">{{ this.translate.autoCopy }}</span>
-    </div>
-
     <div v-for="key in this.locales.locales">
       <div v-for="translation in tag.tagTranslations">
         <div v-if="translation.locale === key">
-          <div v-if="translation.locale === this.locales.current">
-            <div class="form-check form-switch float-end">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-                v-model="this.autoCopy"
-              />
-              <label class="form-check-label" for="flexSwitchCheckDefault">{{ this.translate.autoCopy }}</label>
-            </div>
-
-            <h5 class="card-title">{{ this.translate.labelCurrent }}</h5>
-          </div>
-          <h5 v-else-if="this.locales.locales[1] === key" class="card-title">{{ this.translate.labelOther }}</h5>
-          <div class="mb-3">
+          <div class="form-group">
             <label :for="'label-' + translation.locale" class="form-label"
-              >{{ this.translate.formInputLabelLabel }} {{ this.locales.localesTranslate[key] }}</label
-            >
+              >{{ this.translate.formInputLabelLabel }} {{ this.locales.localesTranslate[key] }}
+            </label>
             <input
               type="text"
               :class="this.isNoEmptyInput(translation.id)"
-              class="form-control"
+              class="form-input"
               :id="'label-' + translation.locale"
               placeholder=""
+              @blur="if (!translation.label) showErrors = true;"
               :disabled="this.isDisabled(translation.locale)"
               v-model="translation.label"
               v-on="
@@ -272,9 +256,17 @@ export default {
                   : {}
               "
             />
-            <div class="invalid-feedback">
-              {{ this.translate.formInputLabelError }}
+
+            <div class="form-switch float-end mt-2" v-if="translation.locale === this.locales.current">
+              <div class="switch-input" :class="this.autoCopy ? 'active' : ''" @click="this.toggleCopy()"></div>
+              <span class="switch-label" @click="this.toggleCopy()">{{ this.translate.autoCopy }}</span>
             </div>
+            <span
+              v-if="this.isErrorLabel && (translation.locale === this.locales.current || !this.autoCopy)"
+              class="form-text text-error"
+              >✗
+              {{ this.translate.formInputLabelError }}
+            </span>
           </div>
         </div>
       </div>
@@ -411,6 +403,7 @@ export default {
           {{ this.translate.renduTitle }}
         </div>
         <div class="card-body">
+          <!--
           <div v-for="key in this.locales.locales">
             <div v-for="translation in tag.tagTranslations">
               <div v-if="translation.locale === key">
@@ -427,6 +420,7 @@ export default {
               </div>
             </div>
           </div>
+          -->
         </div>
       </div>
 
