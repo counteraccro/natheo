@@ -10,6 +10,7 @@ namespace App\Controller\Admin\System;
 
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Form\Admin\User\MyAccountType;
 use App\Form\Admin\User\UserAddType;
 use App\Form\Admin\User\UserType;
@@ -20,7 +21,6 @@ use App\Service\Admin\System\OptionUserService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
 use App\Service\LoggerService;
-use App\Utils\Breadcrumb;
 use App\Utils\Flash\FlashKey;
 use App\Utils\Notification\NotificationKey;
 use App\Utils\System\Mail\KeyWord;
@@ -65,8 +65,8 @@ class UserController extends AppAdminController
     public function index(): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'user',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'user',
+            Breadcrumb::BREADCRUMB->value => [
                 'user.page_title_h1' => '#',
             ],
         ];
@@ -87,8 +87,8 @@ class UserController extends AppAdminController
     public function userOption(): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'user',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'user',
+            Breadcrumb::BREADCRUMB->value => [
                 'user.my_option_title_h1' => '#',
             ],
         ];
@@ -232,8 +232,8 @@ class UserController extends AppAdminController
         UserDataService $userDataService,
     ): Response {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'user',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'user',
+            Breadcrumb::BREADCRUMB->value => [
                 'user.page_title_h1' => 'admin_user_index',
                 'user.page_update_title_h1_2' => '#',
             ],
@@ -298,8 +298,8 @@ class UserController extends AppAdminController
         #[Autowire('%app.folder.upload.avatar%')] string $avatarDirectory,
     ): Response {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'user',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'user',
+            Breadcrumb::BREADCRUMB->value => [
                 'user.page_my_account.title_h1' => '#',
             ],
         ];
@@ -593,8 +593,8 @@ class UserController extends AppAdminController
         MailService $mailService,
     ): Response {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'user',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'user',
+            Breadcrumb::BREADCRUMB->value => [
                 'user.page_title_h1' => 'admin_user_index',
                 'user.page_add_title_h1' => '#',
             ],
