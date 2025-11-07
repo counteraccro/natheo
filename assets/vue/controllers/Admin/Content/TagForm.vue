@@ -243,7 +243,7 @@ export default {
         <span v-else class="form-text">Choisissez une couleur pour identifier visuellement ce tag</span>
       </div>
 
-      <div class="w-2/12">
+      <div class="w-3/12">
         <label for="tagColor" class="form-label">{{ this.translate.renduTitle }} </label>
         <div v-for="key in this.locales.locales">
           <div v-for="translation in tag.tagTranslations">
@@ -296,12 +296,57 @@ export default {
       </div>
     </div>
 
-    <button
-      class="btn btn-sm btn-primary mt-3"
-      @click="this.save()"
-      :disabled="this.canSubmit()"
-      v-html="this.getLabelSubmit()"
-    ></button>
+    <div
+      v-if="this.tag.id !== null && this.templateStat !== ''"
+      class="card p-4 mb-6 mt-4"
+      style="background-color: var(--bg-hover)"
+    >
+      <h3>
+        <svg
+          class="w-4 h-4 inline"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 4v15a1 1 0 0 0 1 1h15M8 16l2.5-5.5 3 3L17.273 7 20 9.667"
+          />
+        </svg>
+
+        {{ this.translate.statTitle }}
+      </h3>
+      <div class="form-text" v-html="this.templateStat"></div>
+    </div>
+
+    <div class="flex flex-wrap gap-3 pt-4 border-t border-[var(--border-color)] mt-5">
+      <button
+        class="btn btn-sm btn-primary"
+        @click="this.save()"
+        :disabled="this.canSubmit()"
+        v-html="this.getLabelSubmit()"
+      ></button>
+      <button type="button" class="btn btn-outline-dark btn-md" onclick="window.history.back()">
+        {{ this.translate.btnCancel }}
+      </button>
+      <button v-if="this.tag.id !== null" type="button" class="btn btn-danger btn-md ml-auto">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+          ></path>
+        </svg>
+        {{ this.translate.btnDelete }}
+      </button>
+    </div>
   </div>
 
   <div class="row">

@@ -36,6 +36,8 @@ class TagTranslate extends AppTranslate
             'btnSubmitCreate' => $this->translator->trans('tag.form.submit.create', domain: 'tag'),
             'statTitle' => $this->translator->trans('tag.form.stat.title', domain: 'tag'),
             'formDisabledLabel' => $this->translator->trans('tag.form.input.disabled.label', domain: 'tag'),
+            'btnCancel' => $this->translator->trans('tag.form.button.cancel', domain: 'tag'),
+            'btnDelete' => $this->translator->trans('tag.form.button.delete', domain: 'tag'),
         ];
     }
 }
