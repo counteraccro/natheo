@@ -23,6 +23,7 @@ class TagTranslate extends AppTranslate
             'formInputColorLabel' => $this->translator->trans('tag.form.input.color.label', domain: 'tag'),
             'formInputColorError' => $this->translator->trans('tag.form.input.color.error', domain: 'tag'),
             'formInputLabelLabel' => $this->translator->trans('tag.form.input.label.label', domain: 'tag'),
+            'formInputLabelPlaceholder' => $this->translator->trans('tag.form.input.label.placeholder', domain: 'tag'),
             'formInputLabelError' => $this->translator->trans('tag.form.input.label.error', domain: 'tag'),
             'linkColorChoice' => $this->translator->trans('tag.form.link.color.choice', domain: 'tag'),
             'colorTitle' => $this->translator->trans('tag.form.color.title', domain: 'tag'),

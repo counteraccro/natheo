@@ -7,9 +7,11 @@
 
 import axios from 'axios';
 import { emitter } from '../../../../utils/useEvent';
+import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
 
 export default {
   name: 'TagForm',
+  components: { SkeletonForm },
   props: {
     url: String,
     url_stats: String,
@@ -121,7 +123,10 @@ export default {
      */
     getLabelSubmit() {
       if (this.tag.id === null) {
-        return this.translate.btnSubmitCreate;
+        let icon =
+          '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> ';
+
+        return icon + this.translate.btnSubmitCreate;
       }
       return this.translate.btnSubmitUpdate;
     },
@@ -203,41 +208,60 @@ export default {
 </script>
 
 <template>
-  <div>
-    <div class="form-group">
-      <label for="tagColor" class="form-label">{{ this.translate.colorTitle }} </label>
-      <div class="flex items-center gap-3">
-        <input
-          type="color"
-          @change="
-            this.isErrorHexa = false;
-            this.msgErrorExa = '';
-          "
-          class="form-color"
-          id="tagColor"
-          v-model="this.tag.color"
-        />
+  <div v-if="this.loading">
+    <SkeletonForm />
+  </div>
+  <div v-else>
+    <div class="flex justify-between gap-10">
+      <div class="form-group w-7/12">
+        <label for="tagColor" class="form-label">{{ this.translate.colorTitle }} </label>
+        <div class="flex items-center gap-3">
+          <input
+            type="color"
+            @change="
+              this.isErrorHexa = false;
+              this.msgErrorExa = '';
+            "
+            class="form-color"
+            id="tagColor"
+            v-model="this.tag.color"
+          />
 
-        <input
-          type="text"
-          class="form-input flex-1"
-          :class="this.msgErrorExa !== '' ? 'is-invalid' : ''"
-          id="tagColorinput"
-          v-model="this.tag.color"
-          size="7"
-          style="width: auto"
-          @change="this.checkValideHex()"
-          maxlength="7"
-        />
+          <input
+            type="text"
+            class="form-input flex-1"
+            :class="this.msgErrorExa !== '' ? 'is-invalid' : ''"
+            id="tagColorinput"
+            v-model="this.tag.color"
+            size="7"
+            style="width: auto"
+            @change="this.checkValideHex()"
+            maxlength="7"
+          />
+        </div>
+        <span v-if="this.msgErrorExa" class="form-text text-error">✗ {{ this.msgErrorExa }}</span>
+        <span v-else class="form-text">Choisissez une couleur pour identifier visuellement ce tag</span>
       </div>
-      <span v-if="this.msgErrorExa" class="form-text text-error">✗ {{ this.msgErrorExa }}</span>
-      <span v-else class="form-text">Choisissez une couleur pour identifier visuellement ce tag</span>
+
+      <div class="w-2/12">
+        <label for="tagColor" class="form-label">{{ this.translate.renduTitle }} </label>
+        <div v-for="key in this.locales.locales">
+          <div v-for="translation in tag.tagTranslations">
+            <div v-if="translation.locale === key" class="text-[var(--text-primary)] text-sm mb-1">
+              {{ this.locales.localesTranslate[key] }} :
+              <span class="badge rounded-pill badge-nat" :style="'background-color: ' + tag.color">{{
+                translation.label
+              }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div v-for="key in this.locales.locales">
       <div v-for="translation in tag.tagTranslations">
         <div v-if="translation.locale === key">
-          <div class="form-group">
+          <div class="form-group mt-4">
             <label :for="'label-' + translation.locale" class="form-label"
               >{{ this.translate.formInputLabelLabel }} {{ this.locales.localesTranslate[key] }}
             </label>
@@ -246,7 +270,7 @@ export default {
               :class="this.isNoEmptyInput(translation.id)"
               class="form-input"
               :id="'label-' + translation.locale"
-              placeholder=""
+              :placeholder="this.translate.formInputLabelPlaceholder"
               @blur="if (!translation.label) showErrors = true;"
               :disabled="this.isDisabled(translation.locale)"
               v-model="translation.label"
@@ -271,6 +295,13 @@ export default {
         </div>
       </div>
     </div>
+
+    <button
+      class="btn btn-sm btn-primary mt-3"
+      @click="this.save()"
+      :disabled="this.canSubmit()"
+      v-html="this.getLabelSubmit()"
+    ></button>
   </div>
 
   <div class="row">
@@ -403,7 +434,6 @@ export default {
           {{ this.translate.renduTitle }}
         </div>
         <div class="card-body">
-          <!--
           <div v-for="key in this.locales.locales">
             <div v-for="translation in tag.tagTranslations">
               <div v-if="translation.locale === key">
@@ -420,7 +450,6 @@ export default {
               </div>
             </div>
           </div>
-          -->
         </div>
       </div>
 
