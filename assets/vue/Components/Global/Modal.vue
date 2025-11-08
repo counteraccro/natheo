@@ -39,7 +39,13 @@ export default {
       id: this.id,
       override: true,
     };
-    this.modal = new Modal(modalElement, {}, instanceOptions);
+
+    const options = {
+      backdrop: this.optionModalBackdrop || 'static',
+      closable: this.optionShowCloseBtn,
+    };
+
+    this.modal = new Modal(modalElement, options, instanceOptions);
 
     watch(
       () => this.show,
@@ -57,7 +63,7 @@ export default {
   },
   methods: {
     close() {
-      this.modal.hide();
+      //this.modal.hide();
       this.$emit('close-modal', this.id);
     },
   },
@@ -86,7 +92,8 @@ export default {
           <button
             v-if="this.optionShowCloseBtn"
             type="button"
-            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            class="text-gray-800 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+            @click="this.close()"
             :data-modal-hide="this.id"
           >
             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -108,9 +115,6 @@ export default {
         <!-- Modal footer -->
         <div class="flex items-end justify-end p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
           <slot name="footer"></slot>
-          <button v-if="this.optionShowCloseBtn" type="button" class="btn btn-secondary" @click="this.close()">
-            Close
-          </button>
         </div>
       </div>
     </div>

@@ -396,7 +396,7 @@ export default {
   </div>
 
   <modal
-    :id="'generic-grid-modale'"
+    :id="'modal-confirm-delete'"
     :show="this.showModalConfirmDelete"
     @close-modal="this.hideModal"
     :option-show-close-btn="false"
