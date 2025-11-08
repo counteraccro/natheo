@@ -38,6 +38,24 @@ class TagTranslate extends AppTranslate
             'formDisabledLabel' => $this->translator->trans('tag.form.input.disabled.label', domain: 'tag'),
             'btnCancel' => $this->translator->trans('tag.form.button.cancel', domain: 'tag'),
             'btnDelete' => $this->translator->trans('tag.form.button.delete', domain: 'tag'),
+            'successSave' => $this->translator->trans('tag.form.success.save', domain: 'tag'),
+            'errorSave' => $this->translator->trans('tag.form.error.save', domain: 'tag'),
+            'modaleConfirmDeleteTitle' => $this->translator->trans(
+                'tag.form.modale.confirm.delete.title',
+                domain: 'tag',
+            ),
+            'modaleConfirmDeleteMessage' => $this->translator->trans(
+                'tag.form.modale.confirm.delete.message',
+                domain: 'tag',
+            ),
+            'modaleConfirmDeleteBtnOK' => $this->translator->trans(
+                'tag.form.modale.confirm.delete.btn.ok',
+                domain: 'tag',
+            ),
+            'modaleConfirmDeleteBtnKo' => $this->translator->trans(
+                'tag.form.modale.confirm.delete.btn.ko',
+                domain: 'tag',
+            ),
         ];
     }
 }

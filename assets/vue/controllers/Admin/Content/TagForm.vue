@@ -8,10 +8,12 @@
 import axios from 'axios';
 import { emitter } from '../../../../utils/useEvent';
 import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
+import Toast from '@/vue/Components/Global/Toast.vue';
+import Modal from '@/vue/Components/Global/Modal.vue';
 
 export default {
   name: 'TagForm',
-  components: { SkeletonForm },
+  components: { Modal, Toast, SkeletonForm },
   props: {
     url: String,
     url_stats: String,
@@ -32,6 +34,17 @@ export default {
       showErrors: false,
       templateStat: '',
       classNoControl: '',
+      showModalConfirmDelete: false,
+      toasts: {
+        toastSuccess: {
+          show: false,
+          msg: '',
+        },
+        toastError: {
+          show: false,
+          msg: '',
+        },
+      },
     };
   },
   mounted() {
@@ -66,17 +79,21 @@ export default {
         })
         .then((response) => {
           emitter.emit('reset-check-confirm');
+          this.toasts.toastSuccess.msg = this.translate.successSave;
+          this.toasts.toastSuccess.show = true;
+
           if (response.data.etat === 'new') {
             window.location = this.url_index;
-          } else {
-            window.location = this.url_update;
           }
         })
         .catch((error) => {
           console.error(error);
+          this.toasts.toastError.msg = this.translate.errorSave;
+          this.toasts.toastError.show = true;
         })
         .finally(() => {
-          //this.loading = false
+          this.loadStat();
+          this.loading = false;
         });
     },
 
@@ -90,6 +107,15 @@ export default {
           console.error(error);
         })
         .finally(() => {});
+    },
+
+    /**
+     * Supprime un tag
+     */
+    ajaxDelete() {
+      this.loading = true;
+      this.showModalConfirmDelete = false;
+      alert('oki');
     },
 
     /**
@@ -202,6 +228,21 @@ export default {
      */
     canSubmit() {
       return this.isErrorHexa || this.isErrorLabel;
+    },
+
+    /**
+     * Ferme le toast défini par nameToast
+     * @param nameToast
+     */
+    closeToast(nameToast) {
+      this.toasts[nameToast].show = false;
+    },
+
+    /**
+     * Ferme la modale
+     */
+    hideModal() {
+      this.showModalConfirmDelete = false;
     },
   },
 };
@@ -335,7 +376,12 @@ export default {
       <button type="button" class="btn btn-outline-dark btn-md" onclick="window.history.back()">
         {{ this.translate.btnCancel }}
       </button>
-      <button v-if="this.tag.id !== null" type="button" class="btn btn-danger btn-md ml-auto">
+      <button
+        v-if="this.tag.id !== null"
+        type="button"
+        class="btn btn-danger btn-md ml-auto"
+        @click="this.showModalConfirmDelete = true"
+      >
         <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
@@ -349,7 +395,76 @@ export default {
     </div>
   </div>
 
-  <div class="row">
+  <modal
+    :id="'generic-grid-modale'"
+    :show="this.showModalConfirmDelete"
+    @close-modal="this.hideModal"
+    :option-show-close-btn="false"
+  >
+    <template #title> <i class="bi bi-sign-stop"></i> {{ translate.modaleConfirmDeleteTitle }} </template>
+    <template #body>
+      <div v-html="this.translate.modaleConfirmDeleteMessage"></div>
+    </template>
+    <template #footer>
+      <button type="button" class="btn btn-primary btn-sm me-2" @click="ajaxDelete">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ translate.modaleConfirmDeleteBtnOK }}
+      </button>
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="this.hideModal()">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+
+        {{ translate.modaleConfirmDeleteBtnKo }}
+      </button>
+    </template>
+  </modal>
+
+  <div class="toast-container position-fixed top-0 end-0 p-2">
+    <toast :id="'toastSuccess'" :type="'success'" :show="this.toasts.toastSuccess.show" @close-toast="this.closeToast">
+      <template #body>
+        <div v-html="this.toasts.toastSuccess.msg"></div>
+      </template>
+    </toast>
+
+    <toast :id="'toastError'" :type="'danger'" :show="this.toasts.toastError.show" @close-toast="this.closeToast">
+      <template #body>
+        <div v-html="this.toasts.toastError.msg"></div>
+      </template>
+    </toast>
+  </div>
+
+  <!--<div class="row">
     <div class="col">
       <div class="card border-secondary" :class="this.loading === true ? 'block-grid' : ''">
         <div v-if="this.loading" class="overlay">
@@ -387,7 +502,7 @@ export default {
                     class="dropdown-item no-control"
                     :style="'cursor:pointer;color:' + color"
                     @click="this.switchColor(color)"
-                    >{{ color }}</a
+                  >{{ color }}</a
                   >
                 </li>
               </ul>
@@ -443,7 +558,7 @@ export default {
                 <h5 v-else-if="this.locales.locales[1] === key" class="card-title">{{ this.translate.labelOther }}</h5>
                 <div class="mb-3">
                   <label :for="'label-' + translation.locale" class="form-label"
-                    >{{ this.translate.formInputLabelLabel }} {{ this.locales.localesTranslate[key] }}</label
+                  >{{ this.translate.formInputLabelLabel }} {{ this.locales.localesTranslate[key] }}</label
                   >
                   <input
                     type="text"
@@ -490,8 +605,8 @@ export default {
                 </h5>
                 <b>{{ this.locales.localesTranslate[key] }}</b> :
                 <span class="badge rounded-pill badge-nat" :style="'background-color: ' + tag.color">{{
-                  translation.label
-                }}</span>
+                    translation.label
+                  }}</span>
               </div>
             </div>
           </div>
@@ -505,7 +620,7 @@ export default {
         <div class="card-body" v-html="this.templateStat"></div>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <style scoped></style>
