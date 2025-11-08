@@ -47,3 +47,9 @@ tag.page.error.tag.disabled: __tag.page.error.tag.disabled
 tag.form.input.label.placeholder: __tag.form.input.label.placeholder
 tag.form.button.cancel: __tag.form.button.cancel
 tag.form.button.delete: __tag.form.button.delete
+tag.form.success.save: __tag.form.success.save
+tag.form.error.save: __tag.form.error.save
+tag.form.modale.confirm.delete.title: __tag.form.modale.confirm.delete.title
+tag.form.modale.confirm.delete.message: __tag.form.modale.confirm.delete.message
+tag.form.modale.confirm.delete.btn.ok: __tag.form.modale.confirm.delete.btn.ok
+tag.form.modale.confirm.delete.btn.ko: __tag.form.modale.confirm.delete.btn.ko
