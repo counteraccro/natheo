@@ -1,8 +1,8 @@
 user:
   User:
-    email: rene41@collin.fr
-    password: $2y$04$Tlhg4G4J3iScx9d6KYwpH.OXRkYcEpoM0xXE96RKh9ZA5R3JjuhMe
-    login: ybrunet
+    email: josette59@chauvin.net
+    password: $2y$04$z4flToxp8dkcyLflrAMVV.mDVZ/nzr2nv.r4G7Sks5dOj0MgwMmru
+    login: perez.michel
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN

@@ -8,9 +8,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\DashboardService;
 use App\Service\Admin\System\User\UserDataService;
-use App\Utils\Breadcrumb;
 use App\Utils\Dashboard\DashboardKey;
 use App\Utils\System\User\UserDataKey;
 use App\Utils\Translate\Dashboard\DashboardTranslate;
@@ -104,8 +104,8 @@ class DashboardController extends AppAdminController
     public function pageDemo(int $param = 5): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'message',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'message',
+            Breadcrumb::BREADCRUMB->value => [
                 'pagedemo.element.html' => '#',
             ],
         ];

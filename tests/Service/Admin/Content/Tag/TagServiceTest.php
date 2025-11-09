@@ -43,13 +43,13 @@ class TagServiceTest extends AppWebTestCase
             }
         }
 
-        $result = $this->tagService->getAllPaginate(1, 7);
+        $result = $this->tagService->getAllPaginate(1, 7, []);
         $this->assertInstanceOf(Paginator::class, $result);
         $this->assertEquals(7, $result->getIterator()->count());
         $this->assertEquals(10, $result->count());
 
         $search = $tag->getTagTranslations()->first()->getLabel();
-        $result = $this->tagService->getAllPaginate(1, 7, $search);
+        $result = $this->tagService->getAllPaginate(1, 7, ['search' => $search]);
         $this->assertEquals(1, $result->getIterator()->count());
     }
 

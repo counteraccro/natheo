@@ -57,16 +57,16 @@ class TagRepository extends ServiceEntityRepository
     {
         $orderField = 'id';
         $order = 'DESC';
-        if ($queryParams['orderField'] !== null) {
+        if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
             $orderField = $queryParams['orderField'];
         }
 
-        if ($queryParams['order'] !== null) {
+        if (isset($queryParams['order']) && $queryParams['order'] !== '') {
             $order = $queryParams['order'];
         }
 
         $query = $this->createQueryBuilder(Tag::DEFAULT_ALIAS);
-        if ($orderField === 'label' || $queryParams['search'] !== null) {
+        if ($orderField === 'label' || (isset($queryParams['search']) && $queryParams['search'] !== '')) {
             $query->join(Tag::DEFAULT_ALIAS . '.tagTranslations', TagTranslation::DEFAULT_ALIAS);
         }
 
@@ -78,7 +78,7 @@ class TagRepository extends ServiceEntityRepository
             $query->orderBy(TagTranslation::DEFAULT_ALIAS . '.' . $orderField, $order);
         }
 
-        if ($queryParams['search'] !== null) {
+        if (isset($queryParams['search']) && $queryParams['search'] !== null) {
             $query
                 ->andWhere(TagTranslation::DEFAULT_ALIAS . '.label like :search')
                 ->setParameter('search', '%' . $queryParams['search'] . '%');
@@ -105,7 +105,7 @@ class TagRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder(Tag::DEFAULT_ALIAS)
             ->select(
                 Tag::DEFAULT_ALIAS . '.id',
-                'tt.label',
+                TagTranslation::DEFAULT_ALIAS . '.label',
                 Tag::DEFAULT_ALIAS . '.disabled',
                 Tag::DEFAULT_ALIAS . '.color',
             )
@@ -113,7 +113,7 @@ class TagRepository extends ServiceEntityRepository
                 Tag::DEFAULT_ALIAS . '.tagTranslations',
                 TagTranslation::DEFAULT_ALIAS,
                 'WITH',
-                "tt.locale = '" . $locale . "'",
+                TagTranslation::DEFAULT_ALIAS . ".locale = '" . $locale . "'",
             )
             ->andWhere('LOWER(' . TagTranslation::DEFAULT_ALIAS . '.label) LIKE LOWER(:label)')
             ->setParameter('label', '%' . $search . '%');
