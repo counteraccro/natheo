@@ -6,6 +6,7 @@
  */
 
 import { watch } from 'vue';
+import { Modal } from 'flowbite';
 
 export default {
   name: 'Modal',
@@ -33,16 +34,18 @@ export default {
   },
   mounted() {
     const modalElement = document.getElementById(this.id);
-    const modalOptions = {
-      placement: 'center',
-      backdrop: 'dynamic',
-      backdropClasses: 'bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40',
-      closable: false,
-      onHide: () => {},
-      onShow: () => {},
-      onToggle: () => {},
+    // instance options object
+    const instanceOptions = {
+      id: this.id,
+      override: true,
     };
-    this.modal = new Modal(modalElement, modalOptions);
+
+    const options = {
+      backdrop: this.optionModalBackdrop || 'static',
+      closable: this.optionShowCloseBtn,
+    };
+
+    this.modal = new Modal(modalElement, options, instanceOptions);
 
     watch(
       () => this.show,
@@ -60,7 +63,7 @@ export default {
   },
   methods: {
     close() {
-      this.modal.hide();
+      //this.modal.hide();
       this.$emit('close-modal', this.id);
     },
   },
@@ -68,35 +71,6 @@ export default {
 </script>
 
 <template>
-  <!--<div
-    class="modal fade"
-    :id="this.id"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-    :data-bs-backdrop="this.optionModalBackdrop"
-  >
-    <div class="modal-dialog modal-dialog-centered" :class="this.optionModalSize">
-      <div class="modal-content">
-        <div class="modal-header bg-secondary">
-          <h1 class="modal-title fs-5 text-white">
-            <slot name="title"></slot>
-          </h1>
-          <button type="button" class="btn-close" @click="this.close()"></button>
-        </div>
-        <div class="modal-body">
-          <slot name="body"></slot>
-        </div>
-        <div class="modal-footer">
-          <slot name="footer"></slot>
-          <button v-if="this.optionShowCloseBtn" type="button" class="btn btn-secondary" @click="this.close()">
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>-->
-
   <div
     :id="this.id"
     :data-modal-backdrop="this.optionModalBackdrop"
@@ -105,9 +79,7 @@ export default {
     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
   >
     <div class="relative p-4 w-full max-w-2xl max-h-full">
-      <!-- Modal content -->
       <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
-        <!-- Modal header -->
         <div
           class="flex p-4 md:p-5 rounded-t border-b text-white dark:border-b-[var(--primary)]"
           style="background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%)"
@@ -120,7 +92,8 @@ export default {
           <button
             v-if="this.optionShowCloseBtn"
             type="button"
-            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            class="text-gray-800 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+            @click="this.close()"
             :data-modal-hide="this.id"
           >
             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -140,11 +113,8 @@ export default {
           <slot name="body"></slot>
         </div>
         <!-- Modal footer -->
-        <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+        <div class="flex items-end justify-end p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
           <slot name="footer"></slot>
-          <button v-if="this.optionShowCloseBtn" type="button" class="btn btn-secondary" @click="this.close()">
-            Close
-          </button>
         </div>
       </div>
     </div>

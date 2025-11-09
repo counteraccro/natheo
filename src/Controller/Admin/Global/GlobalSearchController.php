@@ -3,8 +3,8 @@
 namespace App\Controller\Admin\Global;
 
 use App\Controller\Admin\AppAdminController;
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\GlobalSearchService;
-use App\Utils\Breadcrumb;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\GlobalSearchTranslate;
 use Psr\Container\ContainerExceptionInterface;
@@ -36,8 +36,8 @@ class GlobalSearchController extends AppAdminController
     public function index(Request $request, GlobalSearchTranslate $globalSearchTranslate): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'global_search',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'global_search',
+            Breadcrumb::BREADCRUMB->value => [
                 'global_search.index.page_title_h1' => '#',
             ],
         ];

@@ -1,8 +1,8 @@
 user:
   User:
-    email: corinne87@briand.fr
-    password: $2y$04$F2uLULf/txONMkc3pwubs.x00elQFgy1Elv46oa6hzytTixUtcz7i
-    login: jean.laurent
+    email: josette59@chauvin.net
+    password: $2y$04$z4flToxp8dkcyLflrAMVV.mDVZ/nzr2nv.r4G7Sks5dOj0MgwMmru
+    login: perez.michel
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN

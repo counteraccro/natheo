@@ -194,7 +194,7 @@
 .btn-outline-dark {
   background-color: transparent;
   color: var(--text-primary);
-  border: 2px solid var(--border-color);
+  border: 1px solid var(--border-color);
 }
 
 .btn-outline-dark:hover:not(:disabled) {
@@ -269,4 +269,20 @@
 
 .btn-icon.btn-lg {
   padding: 0.75rem;
+}
+
+/** Icon **/
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.icon-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+.icon-lg {
+  width: 1.5rem;
+  height: 1.5rem;
 }

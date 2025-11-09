@@ -8,6 +8,7 @@
 namespace App\Repository\Admin\Content\Tag;
 
 use App\Entity\Admin\Content\Tag\Tag;
+use App\Entity\Admin\Content\Tag\TagTranslation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -49,18 +50,38 @@ class TagRepository extends ServiceEntityRepository
      * Retourne une liste de tag Paginé
      * @param int $page
      * @param int $limit
-     * @param string|null $search
+     * @param array $queryParams
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, ?string $search = null): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
     {
-        $query = $this->createQueryBuilder('t')->orderBy('t.id', 'ASC');
+        $orderField = 'id';
+        $order = 'DESC';
+        if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
+            $orderField = $queryParams['orderField'];
+        }
 
-        if ($search !== null) {
+        if (isset($queryParams['order']) && $queryParams['order'] !== '') {
+            $order = $queryParams['order'];
+        }
+
+        $query = $this->createQueryBuilder(Tag::DEFAULT_ALIAS);
+        if ($orderField === 'label' || (isset($queryParams['search']) && $queryParams['search'] !== '')) {
+            $query->join(Tag::DEFAULT_ALIAS . '.tagTranslations', TagTranslation::DEFAULT_ALIAS);
+        }
+
+        if ($orderField !== 'label') {
+            $query->orderBy(Tag::DEFAULT_ALIAS . '.' . $orderField, $order);
+        } else {
+            //$query->andWhere(TagTranslation::DEFAULT_ALIAS . '.locale = :locale');
+            //$query->setParameter('locale', $queryParams['locale']);
+            $query->orderBy(TagTranslation::DEFAULT_ALIAS . '.' . $orderField, $order);
+        }
+
+        if (isset($queryParams['search']) && $queryParams['search'] !== null) {
             $query
-                ->join('t.tagTranslations', 'tt')
-                ->where('tt.label like :search')
-                ->setParameter('search', '%' . $search . '%');
+                ->andWhere(TagTranslation::DEFAULT_ALIAS . '.label like :search')
+                ->setParameter('search', '%' . $queryParams['search'] . '%');
         }
 
         $paginator = new Paginator($query->getQuery(), true);
@@ -81,14 +102,24 @@ class TagRepository extends ServiceEntityRepository
      */
     public function searchByName(string $locale, string $search, bool $withDisabled = false): array
     {
-        $query = $this->createQueryBuilder('t')
-            ->select('t.id', 'tt.label', 't.disabled', 't.color')
-            ->join('t.tagTranslations', 'tt', 'WITH', "tt.locale = '" . $locale . "'")
-            ->andWhere('LOWER(tt.label) LIKE LOWER(:label)')
+        $query = $this->createQueryBuilder(Tag::DEFAULT_ALIAS)
+            ->select(
+                Tag::DEFAULT_ALIAS . '.id',
+                TagTranslation::DEFAULT_ALIAS . '.label',
+                Tag::DEFAULT_ALIAS . '.disabled',
+                Tag::DEFAULT_ALIAS . '.color',
+            )
+            ->join(
+                Tag::DEFAULT_ALIAS . '.tagTranslations',
+                TagTranslation::DEFAULT_ALIAS,
+                'WITH',
+                TagTranslation::DEFAULT_ALIAS . ".locale = '" . $locale . "'",
+            )
+            ->andWhere('LOWER(' . TagTranslation::DEFAULT_ALIAS . '.label) LIKE LOWER(:label)')
             ->setParameter('label', '%' . $search . '%');
 
         if (!$withDisabled) {
-            $query->andWhere('t.disabled = false');
+            $query->andWhere(Tag::DEFAULT_ALIAS . '.disabled = false');
         }
 
         return $query->getQuery()->getArrayResult();
@@ -104,11 +135,16 @@ class TagRepository extends ServiceEntityRepository
      */
     public function search(string $search, string $locale, int $page, int $limit): Paginator
     {
-        $query = $this->createQueryBuilder('t');
+        $query = $this->createQueryBuilder(Tag::DEFAULT_ALIAS);
 
         $query
-            ->join('t.tagTranslations', 'tt')
-            ->orWhere('tt.label like :search AND tt.locale = :locale')
+            ->join(Tag::DEFAULT_ALIAS . '.tagTranslations', TagTranslation::DEFAULT_ALIAS)
+            ->orWhere(
+                TagTranslation::DEFAULT_ALIAS .
+                    '.label like :search AND ' .
+                    TagTranslation::DEFAULT_ALIAS .
+                    '.locale = :locale',
+            )
             ->setParameter('search', '%' . $search . '%')
             ->setParameter('locale', $locale);
 

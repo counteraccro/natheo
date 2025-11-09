@@ -11,13 +11,13 @@ use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageMeta;
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\ApiTokenService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Global\DateService;
-use App\Utils\Breadcrumb;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageFactory;
 use App\Utils\Content\Page\PageHistory;
@@ -52,8 +52,8 @@ class PageController extends AppAdminController
     public function index(): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'page',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'page',
+            Breadcrumb::BREADCRUMB->value => [
                 'page.index.page_title_h1' => '#',
             ],
         ];
@@ -209,8 +209,8 @@ class PageController extends AppAdminController
         }
 
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'page',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'page',
+            Breadcrumb::BREADCRUMB->value => [
                 'page.index.page_title' => 'admin_page_index',
                 $breadcrumbTitle => '#',
             ],

@@ -15,6 +15,10 @@ export default {
       type: Number,
       default: 3,
     },
+    full: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: [],
   data() {
@@ -34,7 +38,7 @@ export default {
 </script>
 
 <template>
-  <div class="w-full max-w-4xl mx-auto p-6">
+  <div :class="this.full ? 'w-full mx-auto' : 'w-full max-w-4xl mx-auto p-6'">
     <div class="overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow">
       <!-- Header -->
       <div class="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-6 py-4">

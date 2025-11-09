@@ -14,7 +14,6 @@ tag.remove.success: __tag.remove.success
 tag.confirm.delete.msg: __tag.confirm.delete.msg
 tag.add.page_title: __tag.add.page_title
 tag.add.page_title_h1: __tag.add.page_title_h1
-tag.index.description2: __tag.index.description2
 tag.index.popin.help.title: __tag.index.popin.help.title
 tag.index.popin.help.disabled_user: __tag.index.popin.help.disabled_user
 tag.index.popin.help.enable_user: __tag.index.popin.help.enable_user
@@ -45,3 +44,12 @@ tag.form.input.disabled.label: __tag.form.input.disabled.label
 tag.page_date_update.created: __tag.page_date_update.created
 tag.page_date_update.last_update: __tag.page_date_update.last_update
 tag.page.error.tag.disabled: __tag.page.error.tag.disabled
+tag.form.input.label.placeholder: __tag.form.input.label.placeholder
+tag.form.button.cancel: __tag.form.button.cancel
+tag.form.button.delete: __tag.form.button.delete
+tag.form.success.save: __tag.form.success.save
+tag.form.error.save: __tag.form.error.save
+tag.form.modale.confirm.delete.title: __tag.form.modale.confirm.delete.title
+tag.form.modale.confirm.delete.message: __tag.form.modale.confirm.delete.message
+tag.form.modale.confirm.delete.btn.ok: __tag.form.modale.confirm.delete.btn.ok
+tag.form.modale.confirm.delete.btn.ko: __tag.form.modale.confirm.delete.btn.ko

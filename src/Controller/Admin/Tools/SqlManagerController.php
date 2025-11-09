@@ -9,8 +9,8 @@ namespace App\Controller\Admin\Tools;
 
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Tools\SqlManager;
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\Tools\SqlManagerService;
-use App\Utils\Breadcrumb;
 use App\Utils\Global\Database\DataBase;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Tools\SqlManagerTranslate;
@@ -39,8 +39,8 @@ class SqlManagerController extends AppAdminController
     public function index(): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'sql_manager',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'sql_manager',
+            Breadcrumb::BREADCRUMB->value => [
                 'sql_manager.index.page_title_h1' => '#',
             ],
         ];
@@ -166,8 +166,8 @@ class SqlManagerController extends AppAdminController
         }
 
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'sql_manager',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'sql_manager',
+            Breadcrumb::BREADCRUMB->value => [
                 'sql_manager.index.page_title' => 'admin_sql_manager_index',
                 $breadcrumbTitle => '#',
             ],

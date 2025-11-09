@@ -23,6 +23,7 @@ class TagTranslate extends AppTranslate
             'formInputColorLabel' => $this->translator->trans('tag.form.input.color.label', domain: 'tag'),
             'formInputColorError' => $this->translator->trans('tag.form.input.color.error', domain: 'tag'),
             'formInputLabelLabel' => $this->translator->trans('tag.form.input.label.label', domain: 'tag'),
+            'formInputLabelPlaceholder' => $this->translator->trans('tag.form.input.label.placeholder', domain: 'tag'),
             'formInputLabelError' => $this->translator->trans('tag.form.input.label.error', domain: 'tag'),
             'linkColorChoice' => $this->translator->trans('tag.form.link.color.choice', domain: 'tag'),
             'colorTitle' => $this->translator->trans('tag.form.color.title', domain: 'tag'),
@@ -35,6 +36,26 @@ class TagTranslate extends AppTranslate
             'btnSubmitCreate' => $this->translator->trans('tag.form.submit.create', domain: 'tag'),
             'statTitle' => $this->translator->trans('tag.form.stat.title', domain: 'tag'),
             'formDisabledLabel' => $this->translator->trans('tag.form.input.disabled.label', domain: 'tag'),
+            'btnCancel' => $this->translator->trans('tag.form.button.cancel', domain: 'tag'),
+            'btnDelete' => $this->translator->trans('tag.form.button.delete', domain: 'tag'),
+            'successSave' => $this->translator->trans('tag.form.success.save', domain: 'tag'),
+            'errorSave' => $this->translator->trans('tag.form.error.save', domain: 'tag'),
+            'modaleConfirmDeleteTitle' => $this->translator->trans(
+                'tag.form.modale.confirm.delete.title',
+                domain: 'tag',
+            ),
+            'modaleConfirmDeleteMessage' => $this->translator->trans(
+                'tag.form.modale.confirm.delete.message',
+                domain: 'tag',
+            ),
+            'modaleConfirmDeleteBtnOK' => $this->translator->trans(
+                'tag.form.modale.confirm.delete.btn.ok',
+                domain: 'tag',
+            ),
+            'modaleConfirmDeleteBtnKo' => $this->translator->trans(
+                'tag.form.modale.confirm.delete.btn.ko',
+                domain: 'tag',
+            ),
         ];
     }
 }

@@ -373,6 +373,11 @@ main {
   padding-bottom: 2rem !important;
 }
 
+/* Head title */
+h1.head-title{
+  @apply text-2xl font-bold mb-2 border-b-2 border-[var(--primary)] w-full inline-flex items-center gap-1
+}
+
 /* Page Authentification */
 
 #auth-form {
@@ -393,4 +398,12 @@ main {
     height: 32px;
     color: white;
   }
+}
+
+.disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.5;
+  color: #999;
+  text-decoration: none;
 }

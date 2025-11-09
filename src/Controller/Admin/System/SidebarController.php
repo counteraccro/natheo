@@ -9,8 +9,8 @@ namespace App\Controller\Admin\System;
 
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\System\SidebarElement;
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\System\SidebarElementService;
-use App\Utils\Breadcrumb;
 use App\Utils\System\Options\OptionUserKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -35,8 +35,8 @@ class SidebarController extends AppAdminController
     public function index(): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'sidebar',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'sidebar',
+            Breadcrumb::BREADCRUMB->value => [
                 'sidebar.page_title_h1' => '#',
             ],
         ];

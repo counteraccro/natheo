@@ -8,11 +8,10 @@
 namespace App\Controller\Admin\System;
 
 use App\Controller\Admin\AppAdminController;
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\CommandService;
 use App\Service\Admin\System\TranslateService;
-use App\Utils\Breadcrumb;
 use App\Utils\Translate\System\TranslationTranslate;
-use Exception;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -40,8 +39,8 @@ class TranslationController extends AppAdminController
     public function index(): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'translate',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'translate',
+            Breadcrumb::BREADCRUMB->value => [
                 'translate.page_title_h1' => '#',
             ],
         ];

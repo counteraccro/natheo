@@ -1,18 +1,18 @@
 tag.index.page_title: 'Gestion des tags'
 tag.index.page_title_h1: 'Gestion des tags'
 tag.index.btn.new: 'Nouveau tag'
-tag.index.description: 'Utiliser les tags pour pouvoir classer le contenu de votre site comme vous le souhaitez'
-tag.grid.id: id
-tag.grid.label: label
-tag.grid.color: couleur
-tag.grid.created_at: Création
-tag.grid.update_at: 'Mise à jour'
+tag.index.description: 'Gérer les tags associés au contenu de votre site'
+tag.grid.id: Id
+tag.grid.label: Label
+tag.grid.color: Couleur
+tag.grid.created_at: 'Date création'
+tag.grid.update_at: 'Date mise à jour'
 tag.confirm.disabled.msg: "La désactivation du tag <strong>{label}</strong> entraine sa désactivation et son invisibilité sur le site. Aucune donnée n'est supprimés. Par contre les contenus liés à ce tag peuvent être masqués"
 tag.success.no.disabled: 'Le tag <strong>{label}</strong> est maintenant activé'
 tag.success.disabled: 'Le tag <strong>{label}</strong> est maintenant désactivé'
 tag.confirm.delete.msg: 'La suppression du tag <strong>{label}</strong> est définitif. Seul le tag est supprimé et non les données associées'
 tag.add.page_title: 'Nouveau tag'
-tag.add.page_title_h1: 'Ajouter un tag'
+tag.add.page_title_h1: 'Créer un nouveau tag'
 tag.update.page_title: 'Edition du tag #{id}'
 tag.update.page_title_h1: "Edition d'un tag"
 tag.index.popin.help.title: Aide
@@ -20,18 +20,17 @@ tag.index.popin.help.disabled_user: 'Désactiver un tag'
 tag.index.popin.help.enable_user: 'Activer un tag'
 tag.index.popin.help.delete: 'Supprimer un tag'
 tag.index.popin.help.edit: 'Modifier un tag'
-tag.index.description2: 'Les tags marqué de {icon} sont désactivés et donc non visible sur le site. Les contenus liés à ce tag peuvent être masqués'
 tag.remove.success: 'Le tag <strong>{label}</strong> à été correctement supprimé'
 tag.form.loading: 'Chargement des données...'
 tag.form.title.create: 'Nouveau tag'
 tag.form.title.update: 'Edition du tag'
-tag.add.description: 'Aouter un nouveau tag pour pouvoir classer vos contenus plus facilement'
+tag.add.description: 'Aouter un nouveau tag pour organiser votre contenu'
 tag.update.description: "L'édition du tag ne modifie pas les contenus associés à celui-ci"
 tag.form.input.color.label: 'Couleur du tag'
 tag.form.input.label.label: 'Label en'
 tag.form.input.color.error: 'le format attendu est "#rrggbb" ou rr, gg, bb sont 2 valeurs hexadecimal.'
 tag.form.link.color.choice: 'Exemple de couleur'
-tag.form.color.title: 'Choix de la couleur'
+tag.form.color.title: 'Couleur du tag'
 tag.form.color.description: 'Vous pouvez choisir une couleur personnalisé pour votre tag'
 tag.form.title.label.current: 'Langue courante'
 tag.form.title.label.other: 'Autres langues'
@@ -39,7 +38,7 @@ tag.form.check.auto.copy: 'dupliquer le label pour les autres langues'
 tag.form.input.label.error: 'Le label du tag ne peux pas être vide'
 tag.form.rendu.title: 'Aperçu du tag'
 tag.form.submit.update: Modifier
-tag.form.submit.create: Créer
+tag.form.submit.create: 'Créer le tag'
 tag.save.new: 'Le tag <strong>{label}</strong> à été créé avec succès'
 tag.save.edit: 'Le tag <strong>{label}</strong> à été modifié avec succès'
 tag.form.stat.title: Statistiques
@@ -47,3 +46,12 @@ tag.page_date_update.created: 'Date de création'
 tag.page_date_update.last_update: 'Dernière modification'
 tag.form.input.disabled.label: __tag.form.input.disabled.label
 tag.page.error.tag.disabled: "Ce tag est désactivé, son ajout n'est pas possible"
+tag.form.input.label.placeholder: 'Label du tag'
+tag.form.button.cancel: Annuler
+tag.form.button.delete: Supprimer
+tag.form.success.save: 'Tag sauvegardé avec succès'
+tag.form.error.save: 'Une erreur est survenue lors de la sauvegarde du tag'
+tag.form.modale.confirm.delete.message: 'La suppression de ce tag est définitif et sans possibilité de retour, votre contenu ne sera pas impacté par cette action'
+tag.form.modale.confirm.delete.btn.ok: 'Oui je confirme'
+tag.form.modale.confirm.delete.btn.ko: 'Non'
+tag.form.modale.confirm.delete.title: 'Confirmez vous la suppression de ce tag ?'

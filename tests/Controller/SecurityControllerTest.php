@@ -27,18 +27,12 @@ class SecurityControllerTest extends AppWebTestCase
 
         $this->client->request('GET', $this->router->generate('auth_user_login'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains(
-            'h1.card-title',
-            $this->translator->trans('user.login_user.title', domain: 'user'),
-        );
+        $this->assertSelectorTextContains('p', $this->translator->trans('user.login_user.title', domain: 'user'));
 
         $this->client->loginUser($user, 'admin');
         $this->client->request('GET', $this->router->generate('auth_user_login'));
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains(
-            'h1.card-title',
-            $this->translator->trans('user.login_user.title', domain: 'user'),
-        );
+        $this->assertSelectorTextContains('p', $this->translator->trans('user.login_user.title', domain: 'user'));
     }
 
     /**
@@ -70,10 +64,7 @@ class SecurityControllerTest extends AppWebTestCase
             $this->router->generate('auth_change_password_user', ['key' => $optionUser->getValue()]),
         );
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains(
-            'h1.card-title',
-            $this->translator->trans('user.change_password.title', domain: 'user'),
-        );
+        $this->assertSelectorTextContains('p', $this->translator->trans('user.change_password.title', domain: 'user'));
 
         $this->client->request(
             'GET',
@@ -81,7 +72,7 @@ class SecurityControllerTest extends AppWebTestCase
         );
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(
-            'h1.card-title',
+            'p',
             $this->translator->trans('user.change_password.new_title', domain: 'user'),
         );
     }

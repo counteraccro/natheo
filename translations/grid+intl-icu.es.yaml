@@ -18,3 +18,16 @@ grid.copy.error: __grid.copy.error
 grid.query.title: __grid.query.title
 grid.filter.only.me: __grid.filter.only.me
 grid.filter.all: __grid.filter.all
+grid.search.placeholder.table.search: __grid.search.placeholder.table.search
+grid.search.text.bdd.search: __grid.search.text.bdd.search
+grid.search.title.search: __grid.search.title.search
+grid.search.text.table.search: __grid.search.text.table.search
+grid.text.show.query: __grid.text.show.query
+grid.text.hide.query: __grid.text.hide.query
+grid.text.show.trie.option: __grid.text.show.trie.option
+grid.text.hide.trie.option: __grid.text.hide.trie.option
+grid.trie.title.option: __grid.trie.title.option
+grid.trie.title.option.sub: __grid.trie.title.option.sub
+grid.trie.option.liste.field: __grid.trie.option.liste.field
+grid.trie.option.liste.order: __grid.trie.option.liste.order
+grid.trie.option.btn: __grid.trie.option.btn

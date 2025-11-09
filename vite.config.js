@@ -6,7 +6,8 @@ import symfonyPlugin from 'vite-plugin-symfony';
 export default defineConfig(({ command }) => ({
   plugins: [
     symfonyPlugin({
-      stimulus: true, // Active le support Stimulus
+      stimulus: true,
+      refresh: true,
     }),
     vue(),
   ],

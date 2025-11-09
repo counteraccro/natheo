@@ -2,52 +2,502 @@
    CSS global formulaire
    ============================================ */
 
+/* Form Group */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+/* Labels */
 .form-label {
   display: block;
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
 }
 
+.form-label.required::after {
+  content: " *";
+  color: var(--error);
+}
+
+/* Input Base */
 .form-input {
+  display: block;
   width: 100%;
-  padding: 0.75rem 1rem;
-  border: 2px solid var(--border-color);
-  border-radius: 0.5rem;
-  background-color: var(--bg-input);
-  color: var(--text-primary);
+  padding: 0.625rem 0.875rem;
   font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--input-text);
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 0.5rem;
   transition: all 0.2s ease;
-}
-
-.form-input:focus {
   outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
 }
 
 .form-input::placeholder {
+  color: var(--input-placeholder);
+}
+
+.form-input:focus {
+  border-color: var(--input-border-focus);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.form-input:disabled {
+  background-color: var(--input-disabled-bg);
+  color: var(--input-disabled-text);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Tailles d'inputs */
+.form-input-sm {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+}
+
+.form-input-lg {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+}
+
+/* Input avec icône */
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon-left {
+  padding-left: 2.5rem;
+}
+
+.input-icon-right {
+  padding-right: 2.5rem;
+}
+
+.input-group .icon-left {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+  pointer-events: none;
+}
+
+.input-group .icon-right {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
   color: var(--text-light);
 }
 
+.input-group .icon-button {
+  cursor: pointer;
+  pointer-events: auto;
+  transition: color 0.2s ease;
+}
+
+.input-group .icon-button:hover {
+  color: var(--primary);
+}
+
+/* États de validation */
 .form-input.is-valid {
-  border-color: var(--input-valid);
-  background-color: rgb(from var(--input-valid-light) r g b / 0.25);
-  padding-right: 2.5rem;
+  border-color: var(--success);
 }
 
 .form-input.is-valid:focus {
-  box-shadow: 0 0 0 3px var(--input-valid-light);
+  border-color: var(--success);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
 }
 
-/* INVALID STATE */
 .form-input.is-invalid {
-  border-color: var(--input-invalid);
-  background-color: rgb(from var(--input-invalid-light) r g b / 0.25);
-  padding-right: 2.5rem;
+  border-color: var(--error);
 }
 
 .form-input.is-invalid:focus {
-  box-shadow: 0 0 0 3px var(--input-invalid-light);
+  border-color: var(--error);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.form-input.is-warning {
+  border-color: var(--warning);
+}
+
+.form-input.is-warning:focus {
+  border-color: var(--warning);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
+/* Messages d'aide et d'erreur */
+.form-text {
+  display: block;
+  margin-top: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+.form-text.text-error {
+  color: var(--error-text);
+}
+
+.form-text.text-success {
+  color: var(--success-text);
+}
+
+.form-text.text-warning {
+  color: var(--warning-text);
+}
+
+/* Textarea */
+textarea.form-input {
+  resize: vertical;
+  min-height: 100px;
+}
+
+textarea.form-input.no-resize {
+  resize: none;
+}
+
+/* Select */
+select.form-input {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1.25rem;
+  padding-right: 2.5rem;
+}
+
+/* Checkbox et Radio */
+.form-check {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.form-check:last-child {
+  margin-bottom: 0;
+}
+
+.form-check-input {
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-right: 0.625rem;
+  border: 2px solid var(--input-border);
+  background-color: var(--input-bg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.form-check-input[type="checkbox"] {
+  border-radius: 0.25rem;
+}
+
+.form-check-input[type="radio"] {
+  border-radius: 50%;
+}
+
+.form-check-input:checked {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.form-check-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.form-check-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.form-check-label {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Switch Toggle */
+.form-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.switch-input {
+  position: relative;
+  width: 3rem;
+  height: 1.5rem;
+  background-color: var(--border-dark);
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: 2px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.switch-input::after {
+  content: '';
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  background-color: white;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.switch-input.active {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.switch-input.active::after {
+  transform: translateX(1.5rem);
+}
+
+.switch-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.switch-label {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Input File */
+.form-file {
+  position: relative;
+}
+
+.form-file-input {
+  display: none;
+}
+
+.form-file-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary);
+  background-color: var(--primary-lighter);
+  border: 2px dashed var(--primary);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.form-file-label:hover {
+  background-color: var(--primary-light);
+  color: white;
+  border-style: solid;
+}
+
+.form-file-name {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+/* Input Range (Slider) */
+.form-range {
+  width: 100%;
+  height: 0.375rem;
+  background-color: var(--border-color);
+  border-radius: 0.25rem;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.form-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: var(--primary);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.form-range::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.form-range::-moz-range-thumb {
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: var(--primary);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.form-range::-moz-range-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.range-value {
+  display: inline-block;
+  margin-left: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* Input Group avec addon */
+.input-addon-group {
+  display: flex;
+  align-items: stretch;
+}
+
+.input-addon {
+  display: flex;
+  align-items: center;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background-color: var(--bg-hover);
+  border: 1px solid var(--input-border);
+  white-space: nowrap;
+}
+
+.input-addon-left {
+  border-right: 0;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+
+.input-addon-right {
+  border-left: 0;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+.input-addon-group .form-input {
+  border-radius: 0;
+}
+
+.input-addon-group .form-input:first-child {
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+
+.input-addon-group .form-input:last-child {
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+/* Color Picker */
+.form-color {
+  width: 3.5rem;
+  height: 2.5rem;
+  padding: 0.25rem;
+  border: 1px solid var(--input-border);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.form-color:hover {
+  border-color: var(--primary);
+}
+
+/* Date & Time Input */
+input[type="date"].form-input,
+input[type="time"].form-input,
+input[type="datetime-local"].form-input {
+  cursor: pointer;
+}
+
+/* Input Tags */
+.input-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid var(--input-border);
+  border-radius: 0.5rem;
+  background-color: var(--input-bg);
+  min-height: 2.75rem;
+  cursor: text;
+}
+
+.input-tags:focus-within {
+  border-color: var(--input-border-focus);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.tag-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  background-color: var(--primary-lighter);
+  color: var(--primary);
+  border-radius: 0.375rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.tag-item button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tag-item button:hover {
+  background-color: var(--primary-hover);
+  transform: scale(1.1);
+}
+
+.input-tags input {
+  flex: 1;
+  min-width: 120px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--input-text);
+  font-size: 0.875rem;
+}
+
+.input-tags input::placeholder {
+  color: var(--input-placeholder);
 }

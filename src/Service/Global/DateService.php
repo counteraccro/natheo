@@ -117,13 +117,7 @@ class DateService extends AppService
      */
     private function returnFormatString(string $str, DateTimeInterface $date): string
     {
-        return '<div class="tooltip-nat">' .
-            $str .
-            '
-                        <span class="tooltiptext-nat">' .
-            $date->format($this->getDateFormat(self::DATE_FORMAT_ALL)) .
-            '</span>
-                    </div>';
+        return '<abbr title="' . $date->format($this->getDateFormat(self::DATE_FORMAT_ALL)) . '">' . $str . '</abbr>';
     }
 
     /**
