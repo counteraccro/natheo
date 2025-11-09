@@ -19,6 +19,7 @@ export default {
     url_stats: String,
     url_index: String,
     url_update: String,
+    url_delete: String,
     translate: Object,
     locales: Object,
     pTag: Object,
@@ -115,7 +116,26 @@ export default {
     ajaxDelete() {
       this.loading = true;
       this.showModalConfirmDelete = false;
-      alert('oki');
+
+      axios
+        .delete(this.url_delete)
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccess.msg = response.data.msg;
+            this.toasts.toastSuccess.show = true;
+          } else {
+            this.toasts.toastError.msg = response.data.msg;
+            this.toasts.toastError.show = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          setTimeout(() => {
+            window.location = this.url_index;
+          }, 1500);
+        });
     },
 
     /**
