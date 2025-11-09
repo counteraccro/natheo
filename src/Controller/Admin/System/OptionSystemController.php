@@ -8,8 +8,8 @@
 namespace App\Controller\Admin\System;
 
 use App\Controller\Admin\AppAdminController;
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\System\OptionSystemService;
-use App\Utils\Breadcrumb;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -36,8 +36,8 @@ class OptionSystemController extends AppAdminController
     public function index(): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'option_system',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'option_system',
+            Breadcrumb::BREADCRUMB->value => [
                 'option_system.page_title_h1' => '#',
             ],
         ];

@@ -6,8 +6,8 @@
  */
 namespace App\Controller\Admin\System;
 
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\System\InformationService;
-use App\Utils\Breadcrumb;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -21,8 +21,8 @@ class InfoController extends AbstractController
     public function index(InformationService $informationService): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'info',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'info',
+            Breadcrumb::BREADCRUMB->value => [
                 'info.page.title.h1' => '#',
             ],
         ];

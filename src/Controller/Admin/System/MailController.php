@@ -10,10 +10,10 @@ namespace App\Controller\Admin\System;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\System\Mail;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\System\MailService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Service\Admin\System\TranslateService;
-use App\Utils\Breadcrumb;
 use App\Utils\System\Mail\KeyWord;
 use App\Utils\System\Mail\MailKey;
 use App\Utils\System\Options\OptionUserKey;
@@ -45,8 +45,8 @@ class MailController extends AppAdminController
     public function index(): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'mail',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'mail',
+            Breadcrumb::BREADCRUMB->value => [
                 'mail.page_title_h1' => '#',
             ],
         ];
@@ -83,8 +83,8 @@ class MailController extends AppAdminController
     public function edit(#[MapEntity(id: 'id')] Mail $mail): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'mail',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'mail',
+            Breadcrumb::BREADCRUMB->value => [
                 'mail.page_title_h1' => 'admin_mail_index',
                 'mail.edit_page_title_h1' => '#',
             ],

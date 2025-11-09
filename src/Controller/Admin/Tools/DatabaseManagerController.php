@@ -7,9 +7,9 @@
 
 namespace App\Controller\Admin\Tools;
 
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Message\Tools\DumpSql;
 use App\Service\Admin\Tools\DatabaseManagerService;
-use App\Utils\Breadcrumb;
 use App\Utils\Global\Database\DataBase;
 use App\Utils\Translate\Tools\DatabaseManagerTranslate;
 use Psr\Container\ContainerExceptionInterface;
@@ -43,8 +43,8 @@ class DatabaseManagerController extends AbstractController
     public function index(DatabaseManagerTranslate $databaseManagerTranslate): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'database_manager',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'database_manager',
+            Breadcrumb::BREADCRUMB->value => [
                 'database_manager.index.page_title_h1' => '#',
             ],
         ];

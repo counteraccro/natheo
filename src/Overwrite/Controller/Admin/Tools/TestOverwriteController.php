@@ -9,8 +9,8 @@
 namespace App\Overwrite\Controller\Admin\Tools;
 
 use App\Controller\Admin\AppAdminController;
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\System\OptionSystemService;
-use App\Utils\Breadcrumb;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -30,8 +30,8 @@ class TestOverwriteController extends AppAdminController
     public function pageDemo(OptionSystemService $optionSystemService, $id): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'message',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'message',
+            Breadcrumb::BREADCRUMB->value => [
                 'pagedemo.element.html' => '#',
             ],
         ];

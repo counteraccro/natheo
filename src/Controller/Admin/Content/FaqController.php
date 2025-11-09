@@ -9,8 +9,8 @@ namespace App\Controller\Admin\Content;
 
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Faq\Faq;
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\Content\Faq\FaqService;
-use App\Utils\Breadcrumb;
 use App\Utils\Content\Faq\FaqConst;
 use App\Utils\Content\Faq\FaqFactory;
 use App\Utils\Content\Faq\FaqPopulate;
@@ -42,8 +42,8 @@ class FaqController extends AppAdminController
     public function index(): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'faq',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'faq',
+            Breadcrumb::BREADCRUMB->value => [
                 'faq.index.page_title_h1' => '#',
             ],
         ];
@@ -103,8 +103,8 @@ class FaqController extends AppAdminController
         }
 
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'faq',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'faq',
+            Breadcrumb::BREADCRUMB->value => [
                 'faq.index.page_title' => 'admin_faq_index',
                 $breadcrumbTitle => '#',
             ],
