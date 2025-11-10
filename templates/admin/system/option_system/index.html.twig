@@ -3,11 +3,14 @@
 {% block title %}{{ 'option_system.page_title' | trans({}, 'option_system') }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'option_system.page_title_h1' | trans({}, 'option_system') }}</h1>
-
     {{ breadcrumb(breadcrumb) }}
+    <h1 class="head-title">
+        <svg class="w-7 h-7 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm16 14a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2ZM4 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6Zm16-2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6Z"></path></svg>
+        {{ 'option_system.page_title_h1' | trans({}, 'option_system') }}</h1>
 
-    <p>{{ 'option_system.description' | trans({}, 'option_system') }}</p>
+    <p class="text-sm" style="color: var(--text-secondary);">
+        {{ 'option_system.description' | trans({}, 'option_system') }}</p>
 
     {{ option_system_form() }}
 
