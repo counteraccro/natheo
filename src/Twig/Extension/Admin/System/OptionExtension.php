@@ -2,7 +2,7 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 2.0
  * Permet de générer le formulaire de saisie des options systèmes et options users
  */
 
@@ -157,29 +157,23 @@ class OptionExtension extends AppAdminExtension
 </div>
 
 
-<div class="nmb-4 border-b border-gray-200 dark:border-gray-700" id="nav-tab-option-system">
-    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content" data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500" data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300" role="tablist">';
+<div class="mb-4 mt-4 border-b border-gray-200 dark:border-gray-700" id="nav-tab-option-system">
+    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab" data-tabs-toggle="#nav-tab-option-system-content" data-tabs-active-classes="text-[var(--primary)] hover:text-[var(--primary-hover)] border-[var(--primary)] bg-[var(--primary-lighter)]" data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300" role="tablist">';
         foreach ($categories as $key => $category) {
-            $active = '';
-            if ($key === 0) {
-                $active = 'active';
-            }
-
             $html .=
-                '<button class="nav-link ' .
-                $active .
-                '" id="nav-' .
+                '<li class="me-2" role="presentation"><button class="inline-block ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm" id="nav-' .
                 $key .
-                '-tab" data-bs-toggle="tab"
-            data-bs-target="#nav-' .
+                '-tab" data-tabs-target="#tab-' .
                 $key .
-                '" type="button" role="tab">
+                '" type="button" role="tab" aria-controls="' .
+                $this->translator->trans($category) .
+                '" aria-selected="false">
                     ' .
                 $this->translator->trans($category) .
                 '
-                </button>';
+                </button></li>';
         }
-        $html .= '</div>';
+        $html .= '</ul></div>';
 
         return $html;
     }
@@ -192,20 +186,22 @@ class OptionExtension extends AppAdminExtension
      */
     private function generateContent(array $categories, array $optionsConfig): string
     {
-        $html = '<div class="tab-content" id="nav-tab-option-system-content">';
+        $html = '<div id="nav-tab-option-system-content" class="card rounded-lg p-6 sm:p-8">';
 
         foreach ($categories as $key => $category) {
-            $active = '';
-            if ($key === 0) {
-                $active = 'show active';
-            }
-            $html .= '<div class="tab-pane fade ' . $active . '" id="nav-' . $key . '" role="tabpanel" tabindex="0">';
+            $html .= '<div class="hidden" id="tab-' . $key . '" role="tabpanel" aria-labelledby="profile-tab">';
 
-            $html .= '<h5>' . $this->translator->trans($optionsConfig[$this->globalKey][$category]['title']) . '</h5>';
             $html .=
-                '<p>' . $this->translator->trans($optionsConfig[$this->globalKey][$category]['description']) . '</p>';
+                '<div class="mb-6"><h2 class="text-xl font-semibold mb-2 text-[var(--text-primary)]">' .
+                $this->translator->trans($optionsConfig[$this->globalKey][$category]['title']) .
+                '</h2>';
+            $html .=
+                '<p class="text-sm text-[var(--text-secondary)]">' .
+                $this->translator->trans($optionsConfig[$this->globalKey][$category]['description']) .
+                '</p></div>';
 
             foreach ($optionsConfig[$this->globalKey][$category]['options'] as $keyOption => $element) {
+                $html .= '<div class="form-group mb-3">';
                 switch ($element['type']) {
                     case 'text':
                         $html .= $this->generateInputText($keyOption, $element);
@@ -221,7 +217,7 @@ class OptionExtension extends AppAdminExtension
                         break;
                     default:
                 }
-                $html .= '<br />';
+                $html .= '</div>';
             }
             $html .= '</div>';
         }
@@ -261,7 +257,7 @@ class OptionExtension extends AppAdminExtension
             ' .
             $this->translator->trans($element['label']) .
             '</label>
-            <input type="text" class="form-control no-control event-input" id="' .
+            <input type="text" class="form-input no-control event-input" id="' .
             $key .
             '" ' .
             $require .
