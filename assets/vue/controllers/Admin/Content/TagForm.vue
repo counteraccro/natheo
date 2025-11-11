@@ -346,8 +346,17 @@ export default {
             />
 
             <div class="form-switch float-end mt-2" v-if="translation.locale === this.locales.current">
-              <div class="switch-input" :class="this.autoCopy ? 'active' : ''" @click="this.toggleCopy()"></div>
-              <span class="switch-label" @click="this.toggleCopy()">{{ this.translate.autoCopy }}</span>
+              <input
+                type="checkbox"
+                class="switch-input"
+                id="switch-basic"
+                role="switch"
+                :checked="this.autoCopy ? true : false"
+              />
+              <label class="switch-toggle" @click="this.toggleCopy()"></label>
+              <span class="switch-label" @click="this.toggleCopy()"
+                ><span class="switch-label-text">{{ this.translate.autoCopy }}</span></span
+              >
             </div>
             <span
               v-if="this.isErrorLabel && (translation.locale === this.locales.current || !this.autoCopy)"
