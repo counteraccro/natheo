@@ -26,12 +26,6 @@ option_system:
     OS_DEFAULT_LANGUAGE:
         key: 'OS_DEFAULT_LANGUAGE'
         value: 'fr'
-    OS_LOGO_SITE:
-        key: 'OS_LOGO_SITE'
-        value: 'bi-yin-yang'
-    OS_THEME_SITE:
-        key: 'OS_THEME_SITE'
-        value: 'purple'
     OS_NB_ELEMENT:
         key: 'OS_NB_ELEMENT'
         value: 20
