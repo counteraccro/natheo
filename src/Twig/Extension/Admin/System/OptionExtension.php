@@ -167,7 +167,7 @@ class OptionExtension extends AppAdminExtension
                 '</p></div>';
 
             foreach ($optionsConfig[$this->globalKey][$category]['options'] as $keyOption => $element) {
-                $html .= '<div class="form-group mb-3">';
+                $html .= '<div class="form-group mb-3 border-b border-[var(--border-color)] pb-5 last:border-0">';
                 switch ($element['type']) {
                     case 'text':
                         $html .= $this->generateInputText($keyOption, $element);
