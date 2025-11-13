@@ -12,6 +12,11 @@ options_system:
                 help: 'options_system.site_name_help'
                 placeholder: 'options_system.site_name_placeholder'
                 success: 'options_system.site_name_msg_success'
+            OS_OPEN_SITE:
+                type: 'boolean'
+                label: 'options_system.open_site'
+                help: 'options_system.open_site_help'
+                default: 1
             OS_ADRESSE_SITE:
                 default: 'http://dev.natheo'
                 label: 'options_system.adresse_site'
@@ -26,18 +31,7 @@ options_system:
                 label: 'options_system.theme.front.site'
                 list_value: 'natheo_horizon:Natheo-Horizon|natheo_storm:FrontStorm'
                 help: 'options_system.theme.front.site_help'
-                default: 'fr'
-            OS_LOGO_SITE:
-                type: 'select'
-                label: 'options_system.logo_site'
-                list_value: ':options_system.logo_site_no_value|bi-yin-yang:&#xF67E;|bi-x-diamond-fill:&#xF624;|bi bi-yelp:&#xF82A;|bi-building-fill:&#xF876;|bi-windows:&#xF65E;|bi-vector-pen:&#xF604;|bi-umbrella-fill:&#xF5FC;'
-                help: 'options_system.logo_site_help'
-                default: 'bi-yin-yan'
-            OS_OPEN_SITE:
-                type: 'boolean'
-                label: 'options_system.open_site'
-                help: 'options_system.open_site_help'
-                default: 1
+                default: 'natheo_horizon'
             OS_DEFAULT_LANGUAGE:
                 type: 'select'
                 label: 'options_system.default_language'

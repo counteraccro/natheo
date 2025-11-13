@@ -174,7 +174,10 @@ export default {
 
         return icon + this.translate.btnSubmitCreate;
       }
-      return this.translate.btnSubmitUpdate;
+
+      let icon =
+        '<svg class="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2" d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"></path></svg>';
+      return icon + this.translate.btnSubmitUpdate;
     },
 
     /**
@@ -343,8 +346,17 @@ export default {
             />
 
             <div class="form-switch float-end mt-2" v-if="translation.locale === this.locales.current">
-              <div class="switch-input" :class="this.autoCopy ? 'active' : ''" @click="this.toggleCopy()"></div>
-              <span class="switch-label" @click="this.toggleCopy()">{{ this.translate.autoCopy }}</span>
+              <input
+                type="checkbox"
+                class="switch-input"
+                id="switch-basic"
+                role="switch"
+                :checked="this.autoCopy ? true : false"
+              />
+              <label class="switch-toggle" @click="this.toggleCopy()"></label>
+              <span class="switch-label" @click="this.toggleCopy()"
+                ><span class="switch-label-text">{{ this.translate.autoCopy }}</span></span
+              >
             </div>
             <span
               v-if="this.isErrorLabel && (translation.locale === this.locales.current || !this.autoCopy)"

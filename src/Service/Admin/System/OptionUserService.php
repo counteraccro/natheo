@@ -39,7 +39,6 @@ class OptionUserService extends AppAdminService
         $optionSystemService = $this->getOptionSystemService();
 
         $options = [
-            OptionSystemKey::OS_THEME_SITE => OptionUserKey::OU_THEME_SITE,
             OptionSystemKey::OS_DEFAULT_LANGUAGE => OptionUserKey::OU_DEFAULT_LANGUAGE,
             OptionSystemKey::OS_NB_ELEMENT => OptionUserKey::OU_NB_ELEMENT,
         ];

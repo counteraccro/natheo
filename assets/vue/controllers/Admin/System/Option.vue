@@ -45,17 +45,27 @@ export default {
           if (element.checked) {
             value = 1;
           }
+
+          if (element.classList.contains('active')) {
+            element.classList.remove('active');
+          } else {
+            element.classList.add('active');
+          }
+
           break;
       }
 
       let required = element.getAttribute('required');
 
+      let error = document.getElementById('error-' + id);
       if (required !== null) {
         if (!value) {
           element.classList.add('is-invalid');
+          error.classList.remove('hidden');
           return false;
         } else {
           element.classList.remove('is-invalid');
+          error.classList.add('hidden');
         }
       }
 
@@ -64,7 +74,7 @@ export default {
       let help = document.getElementById('help-' + id);
       let success = document.getElementById('success-' + id);
 
-      spinner.classList.remove('visually-hidden');
+      spinner.classList.remove('hidden');
 
       axios
         .post(this.url_update, {
@@ -73,35 +83,28 @@ export default {
         })
         .then(function (response) {
           if (response.data.success) {
-            help.classList.add('visually-hidden');
-            success.classList.remove('visually-hidden');
+            help.classList.add('hidden');
+            success.classList.remove('hidden');
             element.classList.add('is-valid');
 
             setTimeout(() => {
               element.classList.remove('is-valid');
-              help.classList.remove('visually-hidden');
-              success.classList.add('visually-hidden');
+              help.classList.remove('hidden');
+              success.classList.add('hidden');
             }, 3000);
             element.disabled = false;
           } else {
             console.error(response.data.msg);
           }
-          spinner.classList.add('visually-hidden');
+          spinner.classList.add('hidden');
         })
         .catch(function (error) {
-          spinner.classList.add('visually-hidden');
+          spinner.classList.add('hidden');
           element.disabled = false;
           console.error(error);
         })
         .finally(() => {
           emitter.emit('reset-check-confirm');
-
-          if (id === 'OU_THEME_SITE') {
-            let stylesheet = document.querySelectorAll('[href*="/build/admin"]');
-            let href = stylesheet[0].href;
-            let tab = href.split('_');
-            stylesheet[0].href = tab[0] + '_' + value + '.css';
-          }
         });
     },
   },
