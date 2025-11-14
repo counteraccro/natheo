@@ -10,7 +10,7 @@ export default {
   props: {
     currentPage: Number,
     nbElementsTotal: Number,
-    nbElements: String,
+    nbElements: Number,
     translate: Object,
   },
   emits: ['change-page-event'],

@@ -4,11 +4,17 @@
 
 {% block body %}
 
-    <h1 class="mb-3">{{ 'global_search.index.page_title_h1' | trans({}, 'global_search') }}</h1>
-
     {{ breadcrumb(breadcrumb) }}
 
-    <p>{{ 'global_search.index.page.description' | trans({}, 'global_search') }}</p>
+    <h1 class="head-title">
+        <svg class="w-7 h-7 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        {{ 'global_search.index.page_title_h1' | trans({}, 'global_search') }}</h1>
+
+    <p class="text-sm" style="color: var(--text-secondary);">
+        {{ 'global_search.index.page.description' | trans({}, 'global_search') }}
+    </p>
 
     <div {{ vue_component('Admin/Global/GlobalSearch', {
         'urls' : urls,
