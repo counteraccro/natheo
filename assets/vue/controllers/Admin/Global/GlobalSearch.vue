@@ -81,7 +81,7 @@ export default {
 </script>
 
 <template>
-  <div class="float-end mt-2 text-sm text-[var(--text-primary)]" v-if="this.total !== 0">
+  <div class="float-end mt-2 text-sm text-[var(--text-secondary)]" v-if="this.total !== 0">
     {{ this.total }} {{ this.translate.totalResult }} <b>{{ this.search }}</b>
   </div>
   <div class="float-end mt-2" v-else>
@@ -288,9 +288,14 @@ export default {
           <span class="txt-overlay p-2">{{ translate.ongletPage.loading }}</span>
         </div>
 
-        <h5 v-if="this.results.page !== null">{{ this.results.page.total }} {{ this.translate.ongletPage.title }}</h5>
-        <h5 v-else>0 {{ this.translate.ongletPage.title }}</h5>
-        <p>{{ this.translate.ongletPage.description }}</p>
+        <h2 class="text-xl font-bold">{{ this.translate.ongletPage.description }}</h2>
+
+        <p class="text-sm text-[var(--text-secondary)]">
+          <span v-if="this.results.page !== null">
+            {{ this.results.page.total }} {{ this.translate.ongletPage.title }}
+          </span>
+          <span v-else>0 {{ this.translate.ongletPage.title }}</span>
+        </p>
 
         <div v-if="this.results.page === null && !this.loading.page">
           {{ this.translate.ongletPage.noResult }}
@@ -317,9 +322,13 @@ export default {
           <span class="txt-overlay p-2"> {{ translate.ongletMenu.loading }}</span>
         </div>
 
-        <h5 v-if="this.results.menu !== null">{{ this.results.menu.total }} {{ this.translate.ongletMenu.title }}</h5>
-        <h5 v-else>0 {{ this.translate.ongletMenu.title }}</h5>
-        <p>{{ this.translate.ongletMenu.description }}</p>
+        <h2 class="text-xl font-bold">{{ this.translate.ongletMenu.description }}</h2>
+        <p class="text-sm text-[var(--text-secondary)]">
+          <span v-if="this.results.menu !== null">
+            {{ this.results.menu.total }} {{ this.translate.ongletMenu.title }}
+          </span>
+          <span v-else>0 {{ this.translate.ongletMenu.title }}</span>
+        </p>
 
         <div v-if="this.results.menu === null && !this.loading.menu">
           {{ this.translate.ongletMenu.noResult }}
@@ -346,9 +355,13 @@ export default {
           <span class="txt-overlay p-2"> {{ translate.ongletFaq.loading }}</span>
         </div>
 
-        <h5 v-if="this.results.faq !== null">{{ this.results.faq.total }} {{ this.translate.ongletFaq.title }}</h5>
-        <h5 v-else>0 {{ this.translate.ongletFaq.title }}</h5>
-        <p>{{ this.translate.ongletFaq.description }}</p>
+        <h2 class="text-xl font-bold">{{ this.translate.ongletFaq.description }}</h2>
+        <p class="text-sm text-[var(--text-secondary)]">
+          <span v-if="this.results.faq !== null">
+            {{ this.results.menu.faq }} {{ this.translate.ongletFaq.title }}
+          </span>
+          <span v-else>0 {{ this.translate.ongletFaq.title }}</span>
+        </p>
 
         <div v-if="this.results.faq === null && !this.loading.faq">
           {{ this.translate.ongletFaq.noResult }}
@@ -375,9 +388,13 @@ export default {
           <span class="txt-overlay p-2"> {{ translate.ongletTag.loading }}</span>
         </div>
 
-        <h5 v-if="this.results.tag !== null">{{ this.results.tag.total }} {{ this.translate.ongletTag.title }}</h5>
-        <h5 v-else>0 {{ this.translate.ongletTag.title }}</h5>
-        <p>{{ this.translate.ongletTag.description }}</p>
+        <h2 class="text-xl font-bold">{{ this.translate.ongletTag.description }}</h2>
+        <p class="text-sm text-[var(--text-secondary)]">
+          <span v-if="this.results.tag !== null">
+            {{ this.results.menu.tag }} {{ this.translate.ongletTag.title }}
+          </span>
+          <span v-else>0 {{ this.translate.ongletTag.title }}</span>
+        </p>
 
         <div v-if="this.results.tag === null && !this.loading.tag">
           {{ this.translate.ongletTag.noResult }}
@@ -405,9 +422,13 @@ export default {
           <span class="txt-overlay p-2"> {{ translate.ongletUser.loading }}</span>
         </div>
 
-        <h5 v-if="this.results.user !== null">{{ this.results.user.total }} {{ this.translate.ongletUser.title }}</h5>
-        <h5 v-else>0 {{ this.translate.ongletUser.title }}</h5>
-        <p>{{ this.translate.ongletUser.description }}</p>
+        <h2 class="text-xl font-bold">{{ this.translate.ongletUser.description }}</h2>
+        <p class="text-sm text-[var(--text-secondary)]">
+          <span v-if="this.results.user !== null">
+            {{ this.results.menu.user }} {{ this.translate.ongletUser.title }}
+          </span>
+          <span v-else>0 {{ this.translate.ongletUser.title }}</span>
+        </p>
 
         <div v-if="this.results.user === null && !this.loading.tag">
           {{ this.translate.ongletTag.noResult }}
