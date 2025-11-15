@@ -2,7 +2,7 @@
 /**
  * Permet de faire une recherche globale dans le CMS
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  */
 import axios from 'axios';
 import TabSearchResult from '../../../Components/Global/Search/TabSearchResult.vue';

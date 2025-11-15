@@ -1,8 +1,8 @@
 <script>
 /**
- * Permet d'afficher la préview du footer
+ * Affiche le résultat de la recherche
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  */
 import SearchPaginate from './SearchPaginate.vue';
 

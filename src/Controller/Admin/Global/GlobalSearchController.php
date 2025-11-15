@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Controller pour la recherche globale
+ * @author Gourdon Aymeric
+ * @version 2.0
+ */
 namespace App\Controller\Admin\Global;
 
 use App\Controller\Admin\AppAdminController;
