@@ -14,6 +14,7 @@ use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
 use App\Utils\Content\Page\PageConst;
+use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\PersonalData;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -123,6 +124,7 @@ class GlobalSearchService extends AppAdminService
         return [
             'id' => $user->getId(),
             'label' => $label,
+            'img' => '/uploads/avatars/' . $user->getAvatar(),
             'contents' => [],
             'date' => [
                 'create' => $user->getCreatedAt()->format('d/m/y H:i'),
@@ -281,7 +283,8 @@ class GlobalSearchService extends AppAdminService
      */
     private function formatResulPage(Page $page, string $locale, string $search): array
     {
-        $label = $page->getPageTranslationByLocale($locale)->getTitre();
+        $pageTranslate = $page->getPageTranslationByLocale($locale);
+        $label = $pageTranslate->getTitre();
         $label = $this->highlightText($search, $label);
 
         $content = [];
@@ -303,8 +306,20 @@ class GlobalSearchService extends AppAdminService
             $page->getUser()->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue(),
         );
 
+        $url = $this->getOptionSystemService()->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
+        $pageService = $this->getPageService();
+        $preview =
+            $url .
+            '/' .
+            $locale .
+            '/' .
+            strtolower($pageService->getCategoryById($page->getCategory())) .
+            '/' .
+            $pageTranslate->getUrl();
+
         return [
             'id' => $page->getId(),
+            'img' => $page->getHeaderImg(),
             'label' => $label,
             'contents' => $content,
             'date' => [
@@ -314,7 +329,7 @@ class GlobalSearchService extends AppAdminService
             'author' => $this->highlightText($search, $personalData->getPersonalData()),
             'urls' => [
                 'edit' => $router->generate('admin_page_update', ['id' => $page->getId()]),
-                'preview' => $router->generate('admin_page_preview', ['id' => $page->getId(), 'locale' => $locale]),
+                'preview' => $preview,
             ],
         ];
     }
@@ -327,6 +342,10 @@ class GlobalSearchService extends AppAdminService
      */
     private function highlightText(string $search, string $text): string
     {
-        return str_ireplace($search, '<mark>' . $search . '</mark>', $text);
+        return str_ireplace(
+            $search,
+            '<mark class="p-0.5 rounded-sm bg-[#fef3c7] text-[#92400e] font-semibold">' . $search . '</mark>',
+            $text,
+        );
     }
 }

@@ -6,10 +6,11 @@
  */
 import axios from 'axios';
 import TabSearchResult from '../../../Components/Global/Search/TabSearchResult.vue';
+import SkeletonSearchResult from '@/vue/Components/Skeleton/SearchResult.vue';
 
 export default {
   name: 'GlobalSearch',
-  components: { TabSearchResult },
+  components: { SkeletonSearchResult, TabSearchResult },
   props: {
     search: String,
     translate: Object,
@@ -282,12 +283,10 @@ export default {
 
   <div id="tab-search-content">
     <div class="hidden" id="tab-page" role="tabpanel">
-      <div :class="this.loading.page === true ? 'block-grid' : ''">
-        <div v-if="this.loading.page" class="mt-3 float-end">
-          <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
-          <span class="txt-overlay p-2">{{ translate.ongletPage.loading }}</span>
-        </div>
-
+      <div v-if="this.loading.page">
+        <skeleton-search-result :rows="this.limit" />
+      </div>
+      <div v-else>
         <h2 class="text-xl font-bold">{{ this.translate.ongletPage.description }}</h2>
 
         <p class="text-sm text-[var(--text-secondary)]">
@@ -300,7 +299,7 @@ export default {
         <div v-if="this.results.page === null && !this.loading.page">
           {{ this.translate.ongletPage.noResult }}
         </div>
-        <div v-if="this.results.page !== null">
+        <div v-if="this.results.page !== null" class="mt-2">
           <tab-search-result
             key="1"
             :result="this.results.page"
@@ -316,12 +315,10 @@ export default {
     </div>
 
     <div class="hidden" id="tab-menu" role="tabpanel">
-      <div :class="this.loading.menu === true ? 'block-grid' : ''">
-        <div v-if="this.loading.menu" class="mt-3 float-end">
-          <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
-          <span class="txt-overlay p-2"> {{ translate.ongletMenu.loading }}</span>
-        </div>
-
+      <div v-if="this.loading.menu">
+        <skeleton-search-result :rows="this.limit" />
+      </div>
+      <div v-else>
         <h2 class="text-xl font-bold">{{ this.translate.ongletMenu.description }}</h2>
         <p class="text-sm text-[var(--text-secondary)]">
           <span v-if="this.results.menu !== null">
@@ -333,7 +330,7 @@ export default {
         <div v-if="this.results.menu === null && !this.loading.menu">
           {{ this.translate.ongletMenu.noResult }}
         </div>
-        <div v-if="this.results.menu !== null">
+        <div v-if="this.results.menu !== null" class="mt-2">
           <tab-search-result
             key="3"
             :result="this.results.menu"
@@ -349,16 +346,14 @@ export default {
     </div>
 
     <div class="hidden" id="tab-faq" role="tabpanel">
-      <div :class="this.loading.faq === true ? 'block-grid' : ''">
-        <div v-if="this.loading.faq" class="mt-3 float-end">
-          <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
-          <span class="txt-overlay p-2"> {{ translate.ongletFaq.loading }}</span>
-        </div>
-
+      <div v-if="this.loading.faq">
+        <skeleton-search-result :rows="this.limit" />
+      </div>
+      <div v-else>
         <h2 class="text-xl font-bold">{{ this.translate.ongletFaq.description }}</h2>
         <p class="text-sm text-[var(--text-secondary)]">
           <span v-if="this.results.faq !== null">
-            {{ this.results.menu.faq }} {{ this.translate.ongletFaq.title }}
+            {{ this.results.faq.total }} {{ this.translate.ongletFaq.title }}
           </span>
           <span v-else>0 {{ this.translate.ongletFaq.title }}</span>
         </p>
@@ -382,16 +377,14 @@ export default {
     </div>
 
     <div class="hidden" id="tab-tag" role="tabpanel">
-      <div :class="this.loading.tag === true ? 'block-grid' : ''">
-        <div v-if="this.loading.tag" class="mt-3 float-end">
-          <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
-          <span class="txt-overlay p-2"> {{ translate.ongletTag.loading }}</span>
-        </div>
-
+      <div v-if="this.loading.tag">
+        <skeleton-search-result :rows="this.limit" />
+      </div>
+      <div v-else>
         <h2 class="text-xl font-bold">{{ this.translate.ongletTag.description }}</h2>
         <p class="text-sm text-[var(--text-secondary)]">
           <span v-if="this.results.tag !== null">
-            {{ this.results.menu.tag }} {{ this.translate.ongletTag.title }}
+            {{ this.results.tag.total }} {{ this.translate.ongletTag.title }}
           </span>
           <span v-else>0 {{ this.translate.ongletTag.title }}</span>
         </p>
@@ -416,16 +409,14 @@ export default {
     </div>
 
     <div class="hidden" id="tab-user" role="tabpanel">
-      <div :class="this.loading.user === true ? 'block-grid' : ''">
-        <div v-if="this.loading.user" class="mt-3 float-end">
-          <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
-          <span class="txt-overlay p-2"> {{ translate.ongletUser.loading }}</span>
-        </div>
-
+      <div v-if="this.loading.user">
+        <skeleton-search-result :rows="this.limit" />
+      </div>
+      <div v-else>
         <h2 class="text-xl font-bold">{{ this.translate.ongletUser.description }}</h2>
         <p class="text-sm text-[var(--text-secondary)]">
           <span v-if="this.results.user !== null">
-            {{ this.results.menu.user }} {{ this.translate.ongletUser.title }}
+            {{ this.results.user.total }} {{ this.translate.ongletUser.title }}
           </span>
           <span v-else>0 {{ this.translate.ongletUser.title }}</span>
         </p>
