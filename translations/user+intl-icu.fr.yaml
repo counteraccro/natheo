@@ -1,6 +1,6 @@
 user.page_title: 'Gestion des utilisateurs'
 user.page_title_h1: 'Gestion des utilisateurs'
-user.description: "Gestion des utilisateurs qui peuvent se connecter dans l'administration du CMS"
+user.description: "Gérer des utilisateurs qui peuvent se connecter au CMS et gérer son contenu"
 user.success.no.disabled: "Le compte de l'utilisateur <strong>{login}</strong> à été activé"
 user.success.disabled: "Le compte de l'utilisateur <strong>{login}</strong> à été désactivé"
 user.grid.id: Id
@@ -15,7 +15,7 @@ user.confirm.replace.msg: "Le compte de l'utilisateur <strong>{login}</strong> s
 user.page_update_title: 'Edition du compte {login}'
 user.page_update_title_h1: 'Edition du compte {login}'
 user.page_update_title_h1_2: 'Edition du compte'
-user.info: "Les utilisateurs marqué d'un {icon} ont été remplacé par John Doe et sont verrouillés | les utilisateurs marqué d'un {icon2} sont désactivés"
+user.info: "Les utilisateurs [John Doe] sont anonymisés et verrouillés | les utilisateurs affiché de façon pâle sont désactivés"
 user.grid.role: Role
 user.my_option_title: 'Mes options'
 user.my_option_title_h1: 'Gestion de mes options'
