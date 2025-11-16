@@ -31,10 +31,10 @@ class UserService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllPaginate(int $page, int $limit, ?string $search = null): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
     {
         $repo = $this->getRepository(User::class);
-        return $repo->getAllPaginate($page, $limit, $search);
+        return $repo->getAllPaginate($page, $limit, $queryParams);
     }
 
     /**
@@ -46,7 +46,7 @@ class UserService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllFormatToGrid(int $page, int $limit, ?string $search = null): array
+    public function getAllFormatToGrid(int $page, int $limit, array $queryParams): array
     {
         $translator = $this->getTranslator();
         $gridService = $this->getGridService();
@@ -62,7 +62,7 @@ class UserService extends AppAdminService
             GridService::KEY_ACTION,
         ];
 
-        $dataPaginate = $this->getAllPaginate($page, $limit, $search);
+        $dataPaginate = $this->getAllPaginate($page, $limit, $queryParams);
 
         $nb = $dataPaginate->count();
         $data = [];
@@ -122,6 +122,15 @@ class UserService extends AppAdminService
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
             GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate),
+            GridService::KEY_LIST_ORDER_FIELD => [
+                'id' => $translator->trans('user.grid.id', domain: 'user'),
+                'login' => $translator->trans('user.grid.login', domain: 'user'),
+                'email' => $translator->trans('user.grid.email', domain: 'user'),
+                'firstname' => $translator->trans('user.grid.name', domain: 'user'),
+                'roles' => $translator->trans('user.grid.role', domain: 'user'),
+                'createdAt' => $translator->trans('tag.grid.created_at', domain: 'tag'),
+                'updateAt' => $translator->trans('tag.grid.update_at', domain: 'tag'),
+            ],
         ];
         return $gridService->addAllDataRequiredGrid($tabReturn);
     }

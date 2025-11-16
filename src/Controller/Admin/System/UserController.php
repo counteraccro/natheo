@@ -132,8 +132,14 @@ class UserController extends AppAdminController
         int $page = 1,
         int $limit = 20,
     ): JsonResponse {
-        $search = $request->query->get('search');
-        $grid = $userService->getAllFormatToGrid($page, $limit, $search);
+        $queryParams = [
+            'search' => $request->query->get('search'),
+            'orderField' => $request->query->get('orderField'),
+            'order' => $request->query->get('order'),
+            'locale' => $request->getLocale(),
+        ];
+
+        $grid = $userService->getAllFormatToGrid($page, $limit, $queryParams);
         return $this->json($grid);
     }
 
