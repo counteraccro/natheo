@@ -1,6 +1,6 @@
 user.page_title: 'Gestion des utilisateurs'
 user.page_title_h1: 'Gestion des utilisateurs'
-user.description: "Gérer des utilisateurs qui peuvent se connecter au CMS et gérer son contenu"
+user.description: 'Gérer des utilisateurs qui peuvent se connecter au CMS et gérer son contenu'
 user.success.no.disabled: "Le compte de l'utilisateur <strong>{login}</strong> à été activé"
 user.success.disabled: "Le compte de l'utilisateur <strong>{login}</strong> à été désactivé"
 user.grid.id: Id
@@ -15,7 +15,7 @@ user.confirm.replace.msg: "Le compte de l'utilisateur <strong>{login}</strong> s
 user.page_update_title: 'Edition du compte {login}'
 user.page_update_title_h1: 'Edition du compte {login}'
 user.page_update_title_h1_2: 'Edition du compte'
-user.info: "Les utilisateurs [John Doe] sont anonymisés et verrouillés | les utilisateurs affiché de façon pâle sont désactivés"
+user.info: 'Les utilisateurs [John Doe] sont anonymisés et verrouillés | les utilisateurs affiché de façon pâle sont désactivés'
 user.grid.role: Role
 user.my_option_title: 'Mes options'
 user.my_option_title_h1: 'Gestion de mes options'
@@ -193,7 +193,14 @@ user.form.description.label: 'Description personnelle'
 user.form.description.help: 'Une petite description de vous qui apparaitra en bas de vos articles'
 user.form.description.placeholder: 'Une petite description de vous'
 user.form.avatar.label: 'Votre avatar'
-user.form.avatar.help: 'Image qui sera placé en bas de vos articles'
+user.form.avatar.help: 'Aucune image sélectionnée'
 user.form.avatar.placeholder: 'Sélectionné un avatar'
 user.form.avatar.error.upload: 'Merci de télécharger une image au format jpg, gif ou png valide'
 user.page_my_account.upload.avatar.error: 'Une erreur est survenue lors du téléchargement de votre avatar'
+user.page_my_account.avatar: 'Mon avatar'
+user.page_my_account.avatar.subtitle: 'Avatar qui sera affiché en bas de vos articles'
+user.page_my_account.avatar.recommandation: Recommandations
+user.page_my_account.avatar.format: 'Format JPG, PNG ou GIF'
+user.page_my_account.avatar.weight: 'Taille maximale de 2 Mo'
+user.page_my_account.avatar.size: 'Image carrée recommandée (500x500px minimum)'
+user.page_my_account.avatar.delete: 'Supprimer'

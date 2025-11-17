@@ -196,3 +196,10 @@ user.form.description.placeholder: __user.form.description.placeholder
 user.page_my_account.upload.avatar.error: __user.page_my_account.upload.avatar.error
 user.page_my_account.other_data: __user.page_my_account.other_data
 user.login.always_log.title: __user.login.always_log.title
+user.page_my_account.avatar: __user.page_my_account.avatar
+user.page_my_account.avatar.subtitle: __user.page_my_account.avatar.subtitle
+user.page_my_account.avatar.recommandation: __user.page_my_account.avatar.recommandation
+user.page_my_account.avatar.format: __user.page_my_account.avatar.format
+user.page_my_account.avatar.weight: __user.page_my_account.avatar.weight
+user.page_my_account.avatar.size: __user.page_my_account.avatar.size
+user.page_my_account.avatar.delete: __user.page_my_account.avatar.delete

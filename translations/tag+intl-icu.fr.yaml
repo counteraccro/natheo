@@ -53,5 +53,5 @@ tag.form.success.save: 'Tag sauvegardé avec succès'
 tag.form.error.save: 'Une erreur est survenue lors de la sauvegarde du tag'
 tag.form.modale.confirm.delete.message: 'La suppression de ce tag est définitif et sans possibilité de retour, votre contenu ne sera pas impacté par cette action'
 tag.form.modale.confirm.delete.btn.ok: 'Oui je confirme'
-tag.form.modale.confirm.delete.btn.ko: 'Non'
+tag.form.modale.confirm.delete.btn.ko: Non
 tag.form.modale.confirm.delete.title: 'Confirmez vous la suppression de ce tag ?'
