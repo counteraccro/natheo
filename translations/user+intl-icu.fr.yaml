@@ -52,7 +52,7 @@ user.page_my_account.personal_data: 'Mes données personnelles'
 user.page_my_account.personal_data.description: "Ces données ne sont pas obligatoires, si vous laissé tous les champs vide, vos contenus ne seront pas identifiés comme vos créations. Il est conseillé d'au moins saisir un login"
 user.page_my_account.danger: 'Zone de danger'
 user.page_my_account.statistiques: 'Mes statistiques'
-user.page_my_account.password_change: 'Changement de mot de passe'
+user.page_my_account.password_change: 'Sécurité'
 user.change_password.input.password_1: 'Nouveau mot de passe'
 user.change_password.input.password_2: 'Confirmer nouveau mot de passe'
 user.change_password.force: 'Force du mot de passe, votre mot de passe doit avoir :'
@@ -203,4 +203,6 @@ user.page_my_account.avatar.recommandation: Recommandations
 user.page_my_account.avatar.format: 'Format JPG, PNG ou GIF'
 user.page_my_account.avatar.weight: 'Taille maximale de 2 Mo'
 user.page_my_account.avatar.size: 'Image carrée recommandée (500x500px minimum)'
-user.page_my_account.avatar.delete: 'Supprimer'
+user.page_my_account.avatar.delete: Supprimer
+user.page_my_account.statistiques.description: 'Retrouver les statistiques de votre compte'
+user.page_my_account.password_change.description: 'Gérer le mot de passe de votre compte'

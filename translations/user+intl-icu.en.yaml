@@ -203,3 +203,5 @@ user.page_my_account.avatar.format: __user.page_my_account.avatar.format
 user.page_my_account.avatar.weight: __user.page_my_account.avatar.weight
 user.page_my_account.avatar.size: __user.page_my_account.avatar.size
 user.page_my_account.avatar.delete: __user.page_my_account.avatar.delete
+user.page_my_account.statistiques.description: __user.page_my_account.statistiques.description
+user.page_my_account.password_change.description: __user.page_my_account.password_change.description
