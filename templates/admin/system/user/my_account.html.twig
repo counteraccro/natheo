@@ -47,7 +47,7 @@
     </p>
 
     {{ form_start(form) }}
-    <div class="card card rounded-lg p-6 mb-8">
+    <div class="card rounded-lg p-6 mb-8">
         <div class="border-b-1 border-b-[var(--border-color)] mb-4">
             <h2 class="text-lg font-bold text-[var(--text-primary)]">
                 {{ 'user.page_my_account.avatar' | trans({}, 'user') }}
@@ -118,7 +118,101 @@
             </div>
         </div>
     </div>
-    {{ form_end(form) }}
+
+    <div class="card rounded-lg p-6 mb-8 pb-14">
+
+        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+            <h2 class="text-lg font-bold text-[var(--text-primary)]">
+                {{ 'user.page_my_account.personal_data' | trans({}, 'user') }}
+            </h2>
+            <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+                {{ 'user.page_my_account.personal_data.description' | trans({}, 'user') }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ field_label(form.email) }}</label>
+            <input type="text" class="form-input" value="{{ field_value(form.email) }}" placeholder="Input moyen" id="{{ field_id(form.email) }}" name="{{ field_name(form.email) }}" disabled>
+            <span class="form-text">{{ field_help(form.email) }}</span>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ field_label(form.login) }}</label>
+            <input type="text" class="form-input" value="{{ field_value(form.login) }}" placeholder="Input moyen" id="{{ field_id(form.login) }}" name="{{ field_name(form.login) }}">
+            <span class="form-text">{{ field_help(form.login) }}</span>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ field_label(form.firstname) }}</label>
+            <input type="text" class="form-input" value="{{ field_value(form.firstname) }}" placeholder="Input moyen" id="{{ field_id(form.firstname) }}" name="{{ field_name(form.firstname) }}">
+            <span class="form-text">{{ field_help(form.firstname) }}</span>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ field_label(form.lastname) }}</label>
+            <input type="text" class="form-input" value="{{ field_value(form.lastname) }}" placeholder="Input moyen" id="{{ field_id(form.lastname) }}" name="{{ field_name(form.lastname) }}">
+            <span class="form-text">{{ field_help(form.lastname) }}</span>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ field_label(form.description) }}</label>
+            <textarea type="text" class="form-input" id="{{ field_id(form.description) }}" name="{{ field_name(form.description) }}">{{ field_value(form.description) }}</textarea>
+            <span class="form-text">{{ field_help(form.description) }}</span>
+        </div>
+
+        {{ form_end(form) }}
+
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-4">
+        <div class="card rounded-lg p-6 mb-8 w-full lg:w-3/4">
+
+            <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+                <h2 class="text-lg font-bold text-[var(--text-primary)]">
+                    {{ 'user.page_my_account.statistiques' | trans({}, 'user') }}
+                </h2>
+                <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+                    {{ 'user.page_my_account.statistiques.description' | trans({}, 'user') }}
+                </div>
+            </div>
+
+            <div>...</div>
+        </div>
+
+        <div class="card rounded-lg p-6 mb-8 lg:w-1/4">
+
+            <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+                <h2 class="text-lg font-bold text-[var(--text-primary)]">
+                    {{ 'user.page_my_account.password_change' | trans({}, 'user') }}
+                </h2>
+                <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+                    {{ 'user.page_my_account.password_change.description' | trans({}, 'user') }}
+                </div>
+            </div>
+
+            <div {{ vue_component('Admin/System/User/ChangePassword', {'url_change_password' : path('admin_user_change_my_password'),
+                'translate' : changePasswordTranslate}) }}></div>
+        </div>
+    </div>
+
+    <div class="card rounded-lg p-6 mb-8 pb-14">
+
+        {% if not is_granted(constant('App\\Utils\\System\\User\\Role::ROLE_SUPER_ADMIN')) %}
+            <div class="card mt-3 border border-danger">
+                <div class="card-header text-bg-danger">
+                    {{ 'user.page_my_account.danger' | trans({}, 'user') }}
+                </div>
+                <div class="card-body">
+                    <div {{ vue_component('Admin/System/User/MyAccountDangerZone', {'url_disabled' : path('admin_user_self_disabled'),
+                        'url_delete' : path('admin_user_self_delete'),
+                        'translate' : dangerZoneTranslate,
+                        'can_delete' : canDelete, 'can_replace' : canReplace
+                    }) }}></div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
 
     <!--<div class="row">
         <div class="col-6">
