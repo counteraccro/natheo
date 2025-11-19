@@ -12,6 +12,10 @@ export default {
   props: {
     url_change_password: String,
     translate: Object,
+    fullScreen: {
+      default: false,
+      type: Boolean,
+    },
   },
   data() {
     return {
@@ -279,53 +283,70 @@ export default {
         <div class="h-11 w-full bg-gray-200 dark:bg-slate-700 rounded-lg animate-pulse"></div>
       </div>
     </div>
-    <div v-else>
-      <div v-if="this.msgUpdatePassword !== ''" class="alert alert-primary-light">
-        <svg class="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-          ></path>
-        </svg>
-        <div class="alert-content">
-          <div class="alert-message">{{ this.msgUpdatePassword }}</div>
+    <div v-else :class="this.fullScreen ? 'flex gap-10' : ''">
+      <div :class="this.fullScreen ? 'w-2/4' : ''">
+        <div v-if="this.msgUpdatePassword !== ''" class="alert alert-primary-light">
+          <svg class="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+          <div class="alert-content">
+            <div class="alert-message">{{ this.msgUpdatePassword }}</div>
+          </div>
         </div>
-      </div>
 
-      <div>
-        <label for="input-password-1" class="lock mb-2 text-sm font-medium text-gray-900 dark:text-white">{{
-          this.translate.password
-        }}</label>
-        <input
-          type="password"
-          class="form-input no-control"
-          :class="this.classPassword"
-          id="input-password-1"
-          v-model="password"
-          @keyup="this.checkPassword"
-        />
-      </div>
-      <div>
-        <label for="input-password-2" class="form-label">{{ this.translate.password_2 }}</label>
-        <input
-          type="password"
-          class="form-input no-control"
-          :class="this.classPasswordConfirm"
-          id="input-password-2"
-          v-model="passwordConfirm"
-          @keyup="this.validatePasswordFinal"
-        />
-        <div v-if="this.classPasswordConfirm === 'is-invalid'" class="text-[var(--text-secondary)] text-sm mt-1">
-          {{ this.translate.error_password_2 }}
+        <div>
+          <label for="input-password-1" class="lock mb-2 text-sm font-medium text-gray-900 dark:text-white">{{
+            this.translate.password
+          }}</label>
+          <input
+            type="password"
+            class="form-input no-control"
+            :class="this.classPassword"
+            id="input-password-1"
+            v-model="password"
+            @keyup="this.checkPassword"
+          />
         </div>
-      </div>
+        <div>
+          <label for="input-password-2" class="form-label">{{ this.translate.password_2 }}</label>
+          <input
+            type="password"
+            class="form-input no-control"
+            :class="this.classPasswordConfirm"
+            id="input-password-2"
+            v-model="passwordConfirm"
+            @keyup="this.validatePasswordFinal"
+          />
+          <div v-if="this.classPasswordConfirm === 'is-invalid'" class="text-[var(--text-secondary)] text-sm mt-1">
+            {{ this.translate.error_password_2 }}
+          </div>
+        </div>
 
-      <button class="btn btn-secondary btn-md w-full mt-4" :disabled="btnSubmit" @click="savePassword">Modifier</button>
+        <button
+          class="btn btn-secondary btn-md mt-4"
+          :class="this.fullScreen ? 'float-end' : 'w-full'"
+          :disabled="btnSubmit"
+          @click="savePassword"
+        >
+          <svg class="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path
+              stroke="currentColor"
+              stroke-width="2"
+              d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"
+            ></path>
+          </svg>
+          {{ this.translate.btn_submit }}
+        </button>
+      </div>
 
       <div
         class="mt-4 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 text-sm"
+        :class="this.fullScreen ? 'ms-auto' : ''"
       >
         <p class="text-[var(--text-secondary)]">{{ this.translate.force }}</p>
         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mt-2 mb-2">
