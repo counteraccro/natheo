@@ -73,8 +73,8 @@ user.danger_zone.content_disabled_2: "Une intervention d'un administrateur sera 
 user.danger_zone.btn_cancel_disabled: Annuler
 user.danger_zone.btn_confirm_disabled: 'Je confirme mon choix'
 user.danger_zone.loading: 'Action en cours de réalisation...'
-user.danger_zone.btn_delete: 'Supprimer'
-user.danger_zone.btn_replace: 'Anonymiser'
+user.danger_zone.btn_delete: Supprimer
+user.danger_zone.btn_replace: Anonymiser
 user.danger_zone.btn_cancel_delete: Annuler
 user.danger_zone.btn_confirm_delete: 'Je confirme mon choix'
 user.danger_zone.title_delete: 'Suppression de mon compte'
@@ -210,3 +210,4 @@ user.danger_zone.description_disabled: 'Votre compte sera désactivé'
 user.danger_zone.description_delete: 'Votre compte sera supprimé'
 user.danger_zone.description_replace: 'Votre compte sera anonymisé'
 user.page_my_account.danger.description: 'Actions irréversibles sur votre compte'
+user.change_password.btn.submit: 'Modifier mon mot de passe'

@@ -209,3 +209,4 @@ user.danger_zone.description_disabled: __user.danger_zone.description_disabled
 user.danger_zone.description_delete: __user.danger_zone.description_delete
 user.danger_zone.description_replace: __user.danger_zone.description_replace
 user.page_my_account.danger.description: __user.page_my_account.danger.description
+user.change_password.btn.submit: __user.change_password.btn.submit
