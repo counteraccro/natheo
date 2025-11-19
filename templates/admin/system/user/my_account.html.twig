@@ -38,7 +38,8 @@
     {{ breadcrumb(breadcrumb) }}
     <h1 class="head-title">
         <svg class="w-7 h-7" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
         </svg>
         {{ 'user.page_my_account.title_h1' | trans({}, 'user') }}</h1>
 
@@ -59,13 +60,16 @@
 
         <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
             <div class="avatar-preview">
-            {% if user.avatar is not null %}
-                <img  src="{{ asset(avatarDirectory ~ user.avatar) }}" class="w-30 h-max object-fit-cover" />
-            {% endif %}
-                <div class="avatar-upload-overlay" onclick="document.getElementById('{{ field_id(form.avatar) }}').click()">
+                {% if user.avatar is not null %}
+                    <img src="{{ asset(avatarDirectory ~ user.avatar) }}" class="w-30 h-max object-fit-cover" />
+                {% endif %}
+                <div class="avatar-upload-overlay"
+                     onclick="document.getElementById('{{ field_id(form.avatar) }}').click()">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
                 </div>
             </div>
@@ -76,44 +80,54 @@
 
                     <ul class="space-y-1 text-sm text-[var(--text-secondary)]">
                         <li class="flex items-start gap-2">
-                            <svg class="icon-sm flex-shrink-0 mt-0.5" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            <svg class="icon-sm flex-shrink-0 mt-0.5" style="color: var(--primary);" fill="none"
+                                 stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M5 13l4 4L19 7"></path>
                             </svg>
                             {{ 'user.page_my_account.avatar.format' | trans({}, 'user') }}
                         </li>
                         <li class="flex items-start gap-2">
-                            <svg class="icon-sm flex-shrink-0 mt-0.5" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            <svg class="icon-sm flex-shrink-0 mt-0.5" style="color: var(--primary);" fill="none"
+                                 stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M5 13l4 4L19 7"></path>
                             </svg>
                             {{ 'user.page_my_account.avatar.weight' | trans({}, 'user') }}
                         </li>
                         <li class="flex items-start gap-2">
-                            <svg class="icon-sm flex-shrink-0 mt-0.5" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            <svg class="icon-sm flex-shrink-0 mt-0.5" style="color: var(--primary);" fill="none"
+                                 stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M5 13l4 4L19 7"></path>
                             </svg>
                             {{ 'user.page_my_account.avatar.size' | trans({}, 'user') }}
                         </li>
                     </ul>
 
-                        <div class="form-file mt-3">
-                            <input type="file" class="form-file-input" id="{{ field_id(form.avatar) }}" name="{{ field_name(form.avatar) }}">
+                    <div class="form-file mt-3">
+                        <input type="file" class="form-file-input" id="{{ field_id(form.avatar) }}"
+                               name="{{ field_name(form.avatar) }}">
 
-                            <div class="flex gap-10">
+                        <div class="flex gap-10">
                             <label for="{{ field_id(form.avatar) }}" class="form-file-label">
                                 <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                                 </svg>
                                 {{ field_label(form.avatar) }}
                             </label>
-                                <a href="#" class="btn btn-danger btn-md">
-                                    <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                    </svg>
-                                    {{ 'user.page_my_account.avatar.delete' | trans({}, 'user') }}
-                                </a>
-                            </div>
-                            <span class="form-file-name" id="file-name-{{ field_id(form.avatar) }}">{{ field_help(form.avatar) }}</span>
+                            <a href="#" class="btn btn-danger btn-md">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                                {{ 'user.page_my_account.avatar.delete' | trans({}, 'user') }}
+                            </a>
                         </div>
+                        <span class="form-file-name"
+                              id="file-name-{{ field_id(form.avatar) }}">{{ field_help(form.avatar) }}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -132,31 +146,36 @@
 
         <div class="form-group">
             <label class="form-label">{{ field_label(form.email) }}</label>
-            <input type="text" class="form-input" value="{{ field_value(form.email) }}" placeholder="Input moyen" id="{{ field_id(form.email) }}" name="{{ field_name(form.email) }}" disabled>
+            <input type="text" class="form-input" value="{{ field_value(form.email) }}" placeholder="Input moyen"
+                   id="{{ field_id(form.email) }}" name="{{ field_name(form.email) }}" disabled>
             <span class="form-text">{{ field_help(form.email) }}</span>
         </div>
 
         <div class="form-group">
             <label class="form-label">{{ field_label(form.login) }}</label>
-            <input type="text" class="form-input" value="{{ field_value(form.login) }}" placeholder="Input moyen" id="{{ field_id(form.login) }}" name="{{ field_name(form.login) }}">
+            <input type="text" class="form-input" value="{{ field_value(form.login) }}" placeholder="Input moyen"
+                   id="{{ field_id(form.login) }}" name="{{ field_name(form.login) }}">
             <span class="form-text">{{ field_help(form.login) }}</span>
         </div>
 
         <div class="form-group">
             <label class="form-label">{{ field_label(form.firstname) }}</label>
-            <input type="text" class="form-input" value="{{ field_value(form.firstname) }}" placeholder="Input moyen" id="{{ field_id(form.firstname) }}" name="{{ field_name(form.firstname) }}">
+            <input type="text" class="form-input" value="{{ field_value(form.firstname) }}" placeholder="Input moyen"
+                   id="{{ field_id(form.firstname) }}" name="{{ field_name(form.firstname) }}">
             <span class="form-text">{{ field_help(form.firstname) }}</span>
         </div>
 
         <div class="form-group">
             <label class="form-label">{{ field_label(form.lastname) }}</label>
-            <input type="text" class="form-input" value="{{ field_value(form.lastname) }}" placeholder="Input moyen" id="{{ field_id(form.lastname) }}" name="{{ field_name(form.lastname) }}">
+            <input type="text" class="form-input" value="{{ field_value(form.lastname) }}" placeholder="Input moyen"
+                   id="{{ field_id(form.lastname) }}" name="{{ field_name(form.lastname) }}">
             <span class="form-text">{{ field_help(form.lastname) }}</span>
         </div>
 
         <div class="form-group">
             <label class="form-label">{{ field_label(form.description) }}</label>
-            <textarea type="text" class="form-input" id="{{ field_id(form.description) }}" name="{{ field_name(form.description) }}">{{ field_value(form.description) }}</textarea>
+            <textarea type="text" class="form-input" id="{{ field_id(form.description) }}"
+                      name="{{ field_name(form.description) }}">{{ field_value(form.description) }}</textarea>
             <span class="form-text">{{ field_help(form.description) }}</span>
         </div>
 
@@ -195,18 +214,37 @@
         </div>
     </div>
 
-    <div class="card rounded-lg p-6 mb-8 pb-14">
-
-        {% if not is_granted(constant('App\\Utils\\System\\User\\Role::ROLE_SUPER_ADMIN')) %}
-            <div class="card mt-3 border border-danger">
-                <div class="card-header text-bg-danger">
+    {% if not is_granted(constant('App\\Utils\\System\\User\\Role::ROLE_SUPER_ADMIN')) %}
+        <div class="card rounded-lg p-6 mb-8" style="border-color: var(--btn-danger);">
+            <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+                <h2 class="text-lg font-bold text-[var(--btn-danger)]">
                     {{ 'user.page_my_account.danger' | trans({}, 'user') }}
+                </h2>
+                <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+                    {{ 'user.page_my_account.danger.description' | trans({}, 'user') }}
+                </div>
+            </div>
+
+
+            <div {{ vue_component('Admin/System/User/MyAccountDangerZone', {'url_disabled' : path('admin_user_self_disabled'),
+                'url_delete' : path('admin_user_self_delete'),
+                'translate' : dangerZoneTranslate,
+                'can_delete' : canDelete, 'can_replace' : canReplace
+            }) }}></div>
+
+        </div>
+    {% endif %}
+
+    <div class="card rounded-lg p-6">
+        {% if is_granted(constant('App\\Utils\\System\\User\\Role::ROLE_SUPER_ADMIN')) %}
+            <div class="card mt-3 border border-secondary">
+                <div class="card-header text-bg-secondary">
+                    {{ 'user.page_my_account.options.divers' | trans({}, 'user') }}
                 </div>
                 <div class="card-body">
-                    <div {{ vue_component('Admin/System/User/MyAccountDangerZone', {'url_disabled' : path('admin_user_self_disabled'),
-                        'url_delete' : path('admin_user_self_delete'),
-                        'translate' : dangerZoneTranslate,
-                        'can_delete' : canDelete, 'can_replace' : canReplace
+                    <div {{ vue_component('Admin/System/User/MyAccountMoreOptions', {'url' : path('admin_user_update_user_data'),
+                        'translate' : moreOptionsTranslate,
+                        'datas' : moreOptionsDatas
                     }) }}></div>
                 </div>
             </div>
@@ -312,11 +350,11 @@
         </div>
     </div> --> #} -->
 
-<script language='javascript'>
-document.getElementById('{{ field_id(form.avatar) }}').addEventListener('change', function(e) {
-    const fileName = e.target.files[0]?.name || 'Aucun fichier choisi';
-    document.getElementById('file-name-{{ field_id(form.avatar) }}').textContent = fileName;
-});
-</script>
+    <script language='javascript'>
+        document.getElementById('{{ field_id(form.avatar) }}').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || 'Aucun fichier choisi';
+            document.getElementById('file-name-{{ field_id(form.avatar) }}').textContent = fileName;
+        });
+    </script>
 
 {% endblock %}
