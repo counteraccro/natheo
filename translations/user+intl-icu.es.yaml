@@ -205,3 +205,7 @@ user.page_my_account.avatar.size: __user.page_my_account.avatar.size
 user.page_my_account.avatar.delete: __user.page_my_account.avatar.delete
 user.page_my_account.statistiques.description: __user.page_my_account.statistiques.description
 user.page_my_account.password_change.description: __user.page_my_account.password_change.description
+user.danger_zone.description_disabled: __user.danger_zone.description_disabled
+user.danger_zone.description_delete: __user.danger_zone.description_delete
+user.danger_zone.description_replace: __user.danger_zone.description_replace
+user.page_my_account.danger.description: __user.page_my_account.danger.description

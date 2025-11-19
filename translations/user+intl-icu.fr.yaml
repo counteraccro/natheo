@@ -52,7 +52,7 @@ user.page_my_account.personal_data: 'Mes données personnelles'
 user.page_my_account.personal_data.description: "Ces données ne sont pas obligatoires, si vous laissé tous les champs vide, vos contenus ne seront pas identifiés comme vos créations. Il est conseillé d'au moins saisir un login"
 user.page_my_account.danger: 'Zone de danger'
 user.page_my_account.statistiques: 'Mes statistiques'
-user.page_my_account.password_change: 'Sécurité'
+user.page_my_account.password_change: Sécurité
 user.change_password.input.password_1: 'Nouveau mot de passe'
 user.change_password.input.password_2: 'Confirmer nouveau mot de passe'
 user.change_password.force: 'Force du mot de passe, votre mot de passe doit avoir :'
@@ -66,15 +66,15 @@ user.error.password_2: 'Le mot de passe de confirmation est différent du mot de
 user.update_password.success: 'Le nouveau mot de passe à correctement été mis à jour'
 user.error_not_disabled: 'Vous ne pouvez pas désactiver cet utilisateur'
 user.self_disabled_success: 'Votre compte est maintenant désactivé, vous aller être déconnecté dans quelques secondes...'
-user.danger_zone.btn_disabled: 'Désactiver mon compte'
-user.danger_zone.title_disabled: 'Désactivation de votre compte'
+user.danger_zone.btn_disabled: Désactiver
+user.danger_zone.title_disabled: 'Désactiver mon compte'
 user.danger_zone.content_disabled_1: 'Vous êtes sur le point de désactiver votre compte, après cette action vous ne pourrez plus vous connecter sur le site'
 user.danger_zone.content_disabled_2: "Une intervention d'un administrateur sera nécessaire pour annuler cette action"
 user.danger_zone.btn_cancel_disabled: Annuler
 user.danger_zone.btn_confirm_disabled: 'Je confirme mon choix'
 user.danger_zone.loading: 'Action en cours de réalisation...'
-user.danger_zone.btn_delete: 'Supprimer mon compte'
-user.danger_zone.btn_replace: 'Anonymiser mon compte'
+user.danger_zone.btn_delete: 'Supprimer'
+user.danger_zone.btn_replace: 'Anonymiser'
 user.danger_zone.btn_cancel_delete: Annuler
 user.danger_zone.btn_confirm_delete: 'Je confirme mon choix'
 user.danger_zone.title_delete: 'Suppression de mon compte'
@@ -206,3 +206,7 @@ user.page_my_account.avatar.size: 'Image carrée recommandée (500x500px minimum
 user.page_my_account.avatar.delete: Supprimer
 user.page_my_account.statistiques.description: 'Retrouver les statistiques de votre compte'
 user.page_my_account.password_change.description: 'Gérer le mot de passe de votre compte'
+user.danger_zone.description_disabled: 'Votre compte sera désactivé'
+user.danger_zone.description_delete: 'Votre compte sera supprimé'
+user.danger_zone.description_replace: 'Votre compte sera anonymisé'
+user.page_my_account.danger.description: 'Actions irréversibles sur votre compte'
