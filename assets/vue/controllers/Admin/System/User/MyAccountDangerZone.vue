@@ -1,15 +1,18 @@
 <script>
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Permet de générer les events pour la danger zone
  */
 
-import { Modal } from 'bootstrap';
 import axios from 'axios';
+import Modal from '@/vue/Components/Global/Modal.vue';
 
 export default {
   name: 'MyAccountDangerZone',
+  components: {
+    Modal,
+  },
   props: {
     url_disabled: String,
     url_delete: String,
@@ -25,12 +28,13 @@ export default {
       url_reload: '',
       modalDelete: '',
       confirm_delete: false,
+      modal: {
+        disabled: false,
+        delete: false,
+      },
     };
   },
-  mounted() {
-    this.modalDisabled = new Modal(document.getElementById('modal-alert-disabled'), {});
-    this.modalDelete = new Modal(document.getElementById('modal-alert-delete'), {});
-  },
+  mounted() {},
 
   methods: {
     /**
@@ -64,7 +68,7 @@ export default {
     disabled(confirm) {
       this.confirm_disabled = confirm;
       if (!confirm) {
-        this.modalDisabled.show();
+        this.showModal('disabled');
       } else {
         axios
           .post(this.url_disabled, {})
@@ -90,6 +94,24 @@ export default {
     isReplace() {
       return this.can_delete === '1' && this.can_replace === '1';
     },
+
+    /**
+     * Affichage la modale
+     */
+    showModal(modal) {
+      this.modal[modal] = true;
+    },
+
+    /**
+     * Ferme la modale
+     */
+    hideModal(modal) {
+      this.modal[modal] = false;
+    },
+
+    hideDisabledModale() {
+      this.hideModal('disabled');
+    },
   },
 };
 </script>
@@ -106,7 +128,9 @@ export default {
           {{ this.translate.disabled_description }}
         </p>
       </div>
-      <button class="btn btn-outline-dark btn-md whitespace-nowrap">{{ this.translate.btn_disabled }}</button>
+      <button class="btn btn-outline-dark btn-md whitespace-nowrap" @click="this.disabled(false)">
+        {{ this.translate.btn_disabled }}
+      </button>
     </div>
 
     <div
@@ -156,6 +180,101 @@ export default {
       </button>
     </div>
   </div>
+
+  <modal
+    :id="'modal-disabled-user'"
+    :show="this.modal.disabled"
+    @close-modal="this.hideDisabledModale"
+    :option-show-close-btn="false"
+  >
+    <template #icon>
+      <svg class="h-6 w-6 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+        />
+      </svg>
+    </template>
+    <template #title> {{ this.translate.disabled_title }} </template>
+    <template #body>
+      <div v-if="!this.confirm_disabled">
+        <svg
+          class="icon float-start me-1"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ this.translate.disabled_content_1 }} <br />
+        <p class="mt-2">
+          <i>{{ this.translate.disabled_content_2 }}</i>
+        </p>
+      </div>
+      <div v-else>
+        <p v-html="this.msg_return"></p>
+      </div>
+    </template>
+    <template #footer>
+      <button type="button" class="btn btn-danger btn-sm me-2" @click="this.disabled(true)">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ this.translate.disabled_btn_confirm }}
+      </button>
+      <button
+        v-if="!this.confirm_disabled"
+        type="button"
+        class="btn btn-outline-dark btn-sm"
+        @click="this.hideModal('disabled')"
+      >
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ this.translate.disabled_btn_cancel }}
+      </button>
+    </template>
+  </modal>
+
+  <!-- old to delete -->
 
   <!-- Modal disabled -->
   <div

@@ -183,35 +183,33 @@
 
     </div>
 
-    <div class="flex flex-col lg:flex-row gap-4">
-        <div class="card rounded-lg p-6 mb-8 w-full lg:w-3/4">
+    <div class="card rounded-lg p-6 mb-8">
 
-            <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-                <h2 class="text-lg font-bold text-[var(--text-primary)]">
-                    {{ 'user.page_my_account.statistiques' | trans({}, 'user') }}
-                </h2>
-                <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
-                    {{ 'user.page_my_account.statistiques.description' | trans({}, 'user') }}
-                </div>
+        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+            <h2 class="text-lg font-bold text-[var(--text-primary)]">
+                {{ 'user.page_my_account.password_change' | trans({}, 'user') }}
+            </h2>
+            <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+                {{ 'user.page_my_account.password_change.description' | trans({}, 'user') }}
             </div>
-
-            <div>...</div>
         </div>
 
-        <div class="card rounded-lg p-6 mb-8 lg:w-1/4">
+        <div {{ vue_component('Admin/System/User/ChangePassword', {'url_change_password' : path('admin_user_change_my_password'),
+            'translate' : changePasswordTranslate, 'fullScreen' : true}) }}></div>
+    </div>
 
-            <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-                <h2 class="text-lg font-bold text-[var(--text-primary)]">
-                    {{ 'user.page_my_account.password_change' | trans({}, 'user') }}
-                </h2>
-                <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
-                    {{ 'user.page_my_account.password_change.description' | trans({}, 'user') }}
-                </div>
+    <div class="card rounded-lg p-6 mb-8">
+
+        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+            <h2 class="text-lg font-bold text-[var(--text-primary)]">
+                {{ 'user.page_my_account.statistiques' | trans({}, 'user') }}
+            </h2>
+            <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+                {{ 'user.page_my_account.statistiques.description' | trans({}, 'user') }}
             </div>
-
-            <div {{ vue_component('Admin/System/User/ChangePassword', {'url_change_password' : path('admin_user_change_my_password'),
-                'translate' : changePasswordTranslate}) }}></div>
         </div>
+
+        <div>...</div>
     </div>
 
     {% if not is_granted(constant('App\\Utils\\System\\User\\Role::ROLE_SUPER_ADMIN')) %}

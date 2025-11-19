@@ -20,6 +20,7 @@ class UserTranslate extends AppTranslate
             'password' => $this->translator->trans('user.change_password.input.password_1', domain: 'user'),
             'password_2' => $this->translator->trans('user.change_password.input.password_2', domain: 'user'),
             'force' => $this->translator->trans('user.change_password.force', domain: 'user'),
+            'btn_submit' => $this->translator->trans('user.change_password.btn.submit', domain: 'user'),
             'force_nb_character' => $this->translator->trans('user.change_password.force.nb_character', domain: 'user'),
             'force_majuscule' => $this->translator->trans('user.change_password.force.majuscule', domain: 'user'),
             'force_minuscule' => $this->translator->trans('user.change_password.force.minuscule', domain: 'user'),
