@@ -62,6 +62,8 @@
             <div class="avatar-preview">
                 {% if user.avatar is not null %}
                     <img src="{{ asset(avatarDirectory ~ user.avatar) }}" class="w-30 h-max object-fit-cover" />
+                {% else %}
+                    <span class="bg-[var(--primary)] p-5">{{ field_value(form.email) | slice(0,2) }}</span>
                 {% endif %}
                 <div class="avatar-upload-overlay"
                      onclick="document.getElementById('{{ field_id(form.avatar) }}').click()">
@@ -198,19 +200,7 @@
             'translate' : changePasswordTranslate, 'fullScreen' : true}) }}></div>
     </div>
 
-    <div class="card rounded-lg p-6 mb-8">
 
-        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-            <h2 class="text-lg font-bold text-[var(--text-primary)]">
-                {{ 'user.page_my_account.statistiques' | trans({}, 'user') }}
-            </h2>
-            <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
-                {{ 'user.page_my_account.statistiques.description' | trans({}, 'user') }}
-            </div>
-        </div>
-
-        <div>...</div>
-    </div>
 
     {% if not is_granted(constant('App\\Utils\\System\\User\\Role::ROLE_SUPER_ADMIN')) %}
         <div class="card rounded-lg p-6 mb-8" style="border-color: var(--btn-danger);">
@@ -233,120 +223,37 @@
         </div>
     {% endif %}
 
-    <div class="card rounded-lg p-6">
-        {% if is_granted(constant('App\\Utils\\System\\User\\Role::ROLE_SUPER_ADMIN')) %}
-            <div class="card mt-3 border border-secondary">
-                <div class="card-header text-bg-secondary">
+    {% if is_granted(constant('App\\Utils\\System\\User\\Role::ROLE_SUPER_ADMIN')) %}
+        <div class="card rounded-lg p-6">
+            <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+                <h2 class="text-lg font-bold text-[var(--text-primary)]">
                     {{ 'user.page_my_account.options.divers' | trans({}, 'user') }}
-                </div>
-                <div class="card-body">
-                    <div {{ vue_component('Admin/System/User/MyAccountMoreOptions', {'url' : path('admin_user_update_user_data'),
-                        'translate' : moreOptionsTranslate,
-                        'datas' : moreOptionsDatas
-                    }) }}></div>
+                </h2>
+                <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+                    {{ 'user.page_my_account.options.divers.description' | trans({}, 'user') }}
                 </div>
             </div>
-        {% endif %}
+
+            <div {{ vue_component('Admin/System/User/MyAccountMoreOptions', {'url' : path('admin_user_update_user_data'),
+                'translate' : moreOptionsTranslate,
+                'datas' : moreOptionsDatas
+            }) }}></div>
+        </div>
+    {% endif %}
+
+    <div class="card rounded-lg p-6 mt-8">
+
+        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+            <h2 class="text-lg font-bold text-[var(--text-primary)]">
+                {{ 'user.page_my_account.statistiques' | trans({}, 'user') }}
+            </h2>
+            <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+                {{ 'user.page_my_account.statistiques.description' | trans({}, 'user') }}
+            </div>
+        </div>
+
+        <div>...</div>
     </div>
-
-
-    <!--<div class="row">
-        <div class="col-6">
-            <div class="card border border-secondary">
-                <div class="card-header text-bg-secondary">
-                    {{ 'user.page_my_account.profil' | trans({}, 'user') }}
-                </div>
-                <div class="card-body">
-                    {# { form_start(form) }}
-                    {{ form_row(form.email) }}
-
-                    <fieldset class="mb-3">
-                        <legend> {{ 'user.page_my_account.personal_data' | trans({}, 'user') }}</legend>
-
-                        <p>
-                            <i class="bi bi-info-circle-fill"></i> {{ 'user.page_my_account.personal_data.description' | trans({}, 'user') }}
-                        </p>
-
-                        {{ form_row(form.login) }}
-
-                        {{ form_row(form.firstname)}}
-
-                        {{ form_row(form.lastname)}}
-
-                    </fieldset>
-
-                    <fieldset class="mb-3">
-                        <legend> {{ 'user.page_my_account.other_data' | trans({}, 'user') }}</legend>
-
-                        {% if user.avatar is not null %}
-                            <img src="{{ asset(avatarDirectory ~ user.avatar) }}" class="float-end border mb-2" style="vertical-align: middle; width: 50px; height: 50px; border-radius: 50%;" />
-                        {% endif %}
-
-                        {{ form_row(form.description) }}
-
-                    </fieldset>
-
-                    {{ form_row(form.save) }}
-
-                    {{ form_rest(form) }}
-
-                    {{ form_end(form) }}
-
-                    <i class="float-end">{{ 'user.page_my_account.last_update' | trans({}, 'user') }} {{ diff_now(user.updateAt) }}</i>
-                </div>
-            </div>
-        </div>
-        <div class="col-6">
-            <div class="card border border-secondary">
-                <div class="card-header text-bg-secondary">
-                    {{ 'user.page_my_account.password_change' | trans({}, 'user') }}
-                </div>
-                <div class="card-body">
-                    <div {{ vue_component('Admin/System/User/ChangePassword', {'url_change_password' : path('admin_user_change_my_password'),
-                        'translate' : changePasswordTranslate}) }}></div>
-                </div>
-            </div>
-
-            <-- A changer, le role doit être géré depuis le script JS et non ici -->
-            {% if is_granted(constant('App\\Utils\\System\\User\\Role::ROLE_SUPER_ADMIN')) %}
-                <div class="card mt-3 border border-secondary">
-                    <div class="card-header text-bg-secondary">
-                        {{ 'user.page_my_account.options.divers' | trans({}, 'user') }}
-                    </div>
-                    <div class="card-body">
-                        <div {{ vue_component('Admin/System/User/MyAccountMoreOptions', {'url' : path('admin_user_update_user_data'),
-                            'translate' : moreOptionsTranslate,
-                            'datas' : moreOptionsDatas
-                        }) }}></div>
-                    </div>
-                </div>
-            {% endif %}
-
-            {% if not is_granted(constant('App\\Utils\\System\\User\\Role::ROLE_SUPER_ADMIN')) %}
-                <div class="card mt-3 border border-danger">
-                    <div class="card-header text-bg-danger">
-                        {{ 'user.page_my_account.danger' | trans({}, 'user') }}
-                    </div>
-                    <div class="card-body">
-                        <div {{ vue_component('Admin/System/User/MyAccountDangerZone', {'url_disabled' : path('admin_user_self_disabled'),
-                            'url_delete' : path('admin_user_self_delete'),
-                            'translate' : dangerZoneTranslate,
-                            'can_delete' : canDelete, 'can_replace' : canReplace
-                        }) }}></div>
-                    </div>
-                </div>
-            {% endif %}
-        </div>
-    </div>
-
-    <div class="card mt-3 border border-secondary">
-        <div class="card-header text-bg-secondary">
-            {{ 'user.page_my_account.statistiques' | trans({}, 'user') }}
-        </div>
-        <div class="card-body">
-            <i>TODO SOON...</i>
-        </div>
-    </div> --> #} -->
 
     <script language='javascript'>
         document.getElementById('{{ field_id(form.avatar) }}').addEventListener('change', function(e) {

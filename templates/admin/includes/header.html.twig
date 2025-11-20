@@ -136,7 +136,7 @@
                 <button id="userMenuButton" data-dropdown-toggle="userMenuDropdown" data-dropdown-placement="bottom-end" class="flex items-center space-x-2" type="button">
 
                     {% if app.user.getAvatar is null %}
-                        <div class="avatar w-8 h-8 text-xs text-white" style="background-color: var(--primary);">A</div>
+                        <div class="avatar w-8 h-8 text-xs text-white" style="background-color: var(--primary);">{{ app.user.email | slice(0,1) }}</div>
                     {% else  %}
                         <img src="/uploads/avatars/{{ app.user.getAvatar }}" class="avatar w-8 h-8 text-xs text-white" />
                     {% endif %}
