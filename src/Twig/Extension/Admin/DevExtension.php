@@ -113,7 +113,7 @@ class DevExtension extends AppAdminExtension
         /** @var GridService $gridService */
         $gridService = $this->handlers->get('gridService');
 
-        $users = $entityManager->getRepository(User::class)->findAll();
+        $users = $entityManager->getRepository(User::class)->findBy(['disabled' => false]);
 
         $return = [];
         foreach ($users as $user) {
