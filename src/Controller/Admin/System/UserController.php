@@ -370,6 +370,30 @@ class UserController extends AppAdminController
         ]);
     }
 
+    #[Route('/delete-avatar', name: 'delete_avatar', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
+    public function deleteAvatar(
+        UserService $userService,
+        TranslatorInterface $translator,
+        #[Autowire('%app.folder.upload.avatar%')] string $avatarDirectory,
+    ): RedirectResponse {
+        $user = $this->getUser();
+
+        if ($this->getUser()->getAvatar() !== null) {
+            $fileSystem = new Filesystem();
+
+            echo $avatarDirectory . DIRECTORY_SEPARATOR . $user->getAvatar();
+            $fileSystem->remove($avatarDirectory . DIRECTORY_SEPARATOR . $user->getAvatar());
+
+            $this->getUser()->setAvatar(null);
+            $userService->save($user);
+        }
+
+        $this->addFlash(FlashKey::FLASH_SUCCESS, $translator->trans('user.delete_avatar.success', domain: 'user'));
+
+        return $this->redirectToRoute('admin_user_my_account');
+    }
+
     /**
      * Changement de mot passe
      * @param UserService $userService
