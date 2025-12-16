@@ -25,14 +25,16 @@
 
     {{ breadcrumb(breadcrumb) }}
 
-    <div class="card rounded-lg p-6">
-        <div class="mb-6">
-            <h1 class="text-2xl font-bold text-[var(--text-primary)]">{{ titleH1 }}</h1>
+    <h1 class="head-title">
+        <svg class="w-7 h-7" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.2 6H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11.2a1 1 0 0 0 .747-.334l4.46-5a1 1 0 0 0 0-1.332l-4.46-5A1 1 0 0 0 15.2 6Z"></path>
+        </svg>
+        {{ titleH1 }}</h1>
 
-            <p class="text-sm mt-1 text-[var(--text-secondary)]">
-                {{ description }}
-            </p>
-        </div>
+    <p class="text-sm text-[var(--text-secondary)] mb-3">
+        {{ description }}
+    </p>
+
 
         <div {{ vue_component('Admin/Content/TagForm', {
             'url' : path('admin_tag_save'),
@@ -44,6 +46,5 @@
             'translate' : translate,
             'locales' : locales}) }}>
         </div>
-    </div>
 
 {% endblock %}
