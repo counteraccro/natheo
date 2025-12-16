@@ -684,6 +684,8 @@ class UserController extends AppAdminController
      * @param Request $request
      * @param LoggerService $loggerService
      * @return RedirectResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/switch', name: 'switch', methods: ['GET'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]

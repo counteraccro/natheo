@@ -3,13 +3,32 @@
 {% block title %}{{ 'user.page_add_title' | trans({}, 'user') }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'user.page_add_title_h1' | trans({}, 'user') }}</h1>
 
     {{ breadcrumb(breadcrumb) }}
+    <h1 class="head-title">
+        <svg class="w-7 h-7" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+        </svg>
+        {{ 'user.page_add_title_h1' | trans({}, 'user') }}</h1>
 
-    <p>
-        {{ 'user.page_add.description' | trans({}, 'user') }} <br/>
+    <p class="text-sm text-[var(--text-secondary)] mb-3">
+        {{ 'user.page_add.description' | trans({}, 'user') }}
     </p>
+
+    <div class="card rounded-lg p-6 mb-4 mt-4">
+    <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+        <h2 class="text-lg font-bold text-[var(--text-primary)]"> {{ 'user.page_add.profil' | trans({}, 'user') }}</h2>
+        <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]"> {{ 'user.page_add.profil.description' | trans({}, 'user') }} </p>
+    </div>
+    </div>
+
+    <div class="card rounded-lg p-6 mb-4 mt-4">
+        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+            <h2 class="text-lg font-bold text-[var(--text-primary)]"> {{ 'user.page_add.personal_data' | trans({}, 'user') }}</h2>
+            <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]"> {{ 'user.page_add.personal_data.description' | trans({}, 'user') }} </p>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-6">
