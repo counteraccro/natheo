@@ -54,3 +54,7 @@ tag.form.modale.confirm.delete.title: __tag.form.modale.confirm.delete.title
 tag.form.modale.confirm.delete.message: __tag.form.modale.confirm.delete.message
 tag.form.modale.confirm.delete.btn.ok: __tag.form.modale.confirm.delete.btn.ok
 tag.form.modale.confirm.delete.btn.ko: __tag.form.modale.confirm.delete.btn.ko
+tag.form.style.title: __tag.form.style.title
+tag.form.style.description: __tag.form.style.description
+tag.form.text.title: __tag.form.text.title
+tag.form.text.description: __tag.form.text.description

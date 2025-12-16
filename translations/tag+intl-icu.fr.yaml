@@ -55,3 +55,7 @@ tag.form.modale.confirm.delete.message: 'La suppression de ce tag est définitif
 tag.form.modale.confirm.delete.btn.ok: 'Oui je confirme'
 tag.form.modale.confirm.delete.btn.ko: Non
 tag.form.modale.confirm.delete.title: 'Confirmez vous la suppression de ce tag ?'
+tag.form.style.title: 'Style du tag'
+tag.form.style.description: 'Définition de la couleur'
+tag.form.text.title: 'Autres informations'
+tag.form.text.description: 'Définition du label'
