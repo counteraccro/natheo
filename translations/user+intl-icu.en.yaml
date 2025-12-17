@@ -218,3 +218,4 @@ user.page_my_account.firstname.placeholder: __user.page_my_account.firstname.pla
 user.page_my_account.lastname.placeholder: __user.page_my_account.lastname.placeholder
 user.page_my_account.avatar.nofield: __user.page_my_account.avatar.nofield
 user.page_add.profil.description: __user.page_add.profil.description
+user.page_add.information.description: __user.page_add.information.description

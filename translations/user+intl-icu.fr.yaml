@@ -218,3 +218,5 @@ user.page_my_account.firstname.placeholder: 'Mon prénom'
 user.page_my_account.lastname.placeholder: 'Mon nom'
 user.page_my_account.avatar.nofield: 'Aucune image sélectionnée'
 user.delete_avatar.success: 'Avatar supprimé avec succès'
+user.page_add.profil.description: "Données utilisées pour la connexion"
+user.page_add.information.description: 'A propos des rôles'
