@@ -121,7 +121,7 @@ user.form_update.lastname.help: "Identifiant qui apparait à la fin de ses artic
 user.form_update.lastname.placeholder: 'Son nom'
 user.form_update.submit: Modifier
 user.page_update_description: "Modifier le compte d'un utilisateur et/ou consulter quelques statistiques"
-user.page_update.success: 'Utilisateur <b>{email}</b> modifié avec succès'
+user.page_update.success: 'Utilisateur {email} modifié avec succès'
 user.page_my_account.success: 'Vos données personnelles ont été correctement modifiées'
 user.page_update.created: 'Date de création'
 user.page_update.info.user_disabled: 'Cet utilisateur est désactivé, certaines actions ne sont donc pas disponibles.'
@@ -218,5 +218,7 @@ user.page_my_account.firstname.placeholder: 'Mon prénom'
 user.page_my_account.lastname.placeholder: 'Mon nom'
 user.page_my_account.avatar.nofield: 'Aucune image sélectionnée'
 user.delete_avatar.success: 'Avatar supprimé avec succès'
-user.page_add.profil.description: "Données utilisées pour la connexion"
+user.page_add.profil.description: 'Données utilisées pour la connexion'
 user.page_add.information.description: 'A propos des rôles'
+user.page_update.action.description: 'Actions possible sur le compte'
+user.page_update.information.description: 'Statistiques du compte'
