@@ -3,28 +3,155 @@
 {% block title %}{{ 'user.page_update_title' | trans({'login' : user.login}, 'user') }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'user.page_update_title_h1' | trans({'login' : user.login}, 'user') }}</h1>
-
-    <p>{{ 'user.page_update_description' | trans({}, 'user') }}</p>
 
     {{ breadcrumb(breadcrumb) }}
+
+    <h1 class="head-title">
+        <svg class="w-7 h-7" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+        </svg>
+        {{ 'user.page_update_title_h1' | trans({'login' : user.login}, 'user') }}</h1>
+
+    <p class="text-sm text-[var(--text-secondary)] mb-3">
+        {{ 'user.page_update_description' | trans({}, 'user') }}
+    </p>
+
+    {{ form_start(form) }}
+    <div class="card rounded-lg p-6 mb-4 mt-4">
+        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+            <h2 class="text-lg font-bold text-[var(--text-primary)]"> {{ 'user.page_add.profil' | trans({}, 'user') }}</h2>
+            <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]"> {{ 'user.page_add.profil.description' | trans({}, 'user') }} </p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ field_label(form.email) }}</label>
+            <input type="email" class="form-input" value="{{ field_value(form.email) }}"
+                   placeholder="{{ field_label(form.email) }}" required
+                   id="{{ field_id(form.email) }}" name="{{ field_name(form.email) }}">
+            <span class="form-text">{{ field_help(form.email) }}</span>
+        </div>
+
+        {% if isSuperAdmin is same as false %}
+        <div class="form-group">
+            <label class="form-label">{{ field_label(form.roles) }}</label>
+            <select class="form-input" id="{{ field_id(form.roles) }}" name="{{ field_name(form.roles) }}">
+                {% for label, value in field_choices(form.roles) %}
+                    <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+            <span class="form-text">{{ field_help(form.roles) }}</span>
+        </div>
+        {% endif %}
+
+        {% if isSuperAdmin is same as false %}
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="{{ field_id(form.disabled) }}" name="{{ field_name(form.disabled) }}" {% if user.disabled is same as true %} checked {% endif %}>
+            <label class="form-check-label" for="{{ field_id(form.disabled) }}">{{ field_label(form.disabled) }}</label>
+        </div>
+        <span class="form-text">{{ field_help(form.disabled) }}</span>
+        {% endif %}
+    </div>
+
+    <div class="card rounded-lg p-6 mb-4 mt-4 pb-14">
+        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+            <h2 class="text-lg font-bold text-[var(--text-primary)]"> {{ 'user.page_add.personal_data' | trans({}, 'user') }}</h2>
+            <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]"> {{ 'user.page_add.personal_data.description' | trans({}, 'user') }} </p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ field_label(form.login) }}</label>
+            <input type="text" class="form-input" value="{{ field_value(form.login) }}"
+                   placeholder="{{ field_label(form.login) }}"
+                   id="{{ field_id(form.login) }}" name="{{ field_name(form.login) }}">
+            <span class="form-text">{{ field_help(form.login) }}</span>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ field_label(form.firstname) }}</label>
+            <input type="text" class="form-input" value="{{ field_value(form.firstname) }}"
+                   placeholder="{{ field_label(form.firstname) }}"
+                   id="{{ field_id(form.firstname) }}" name="{{ field_name(form.firstname) }}">
+            <span class="form-text">{{ field_help(form.firstname) }}</span>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ field_label(form.lastname) }}</label>
+            <input type="text" class="form-input" value="{{ field_value(form.lastname) }}"
+                   placeholder="{{ field_label(form.lastname) }}"
+                   id="{{ field_id(form.lastname) }}" name="{{ field_name(form.lastname) }}">
+            <span class="form-text">{{ field_help(form.lastname) }}</span>
+        </div>
+
+        {{ form(form) }}
+        <span class="form-text float-start">{{ 'user.page_update.last_update' | trans({}, 'user') }} {{ diff_now(user.updateAt) }}</span>
+    </div>
+
+    <div class="card rounded-lg p-6 mb-4 mt-4">
+        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+            <h2 class="text-lg font-bold text-[var(--text-primary)]">  {{ 'user.page_update.action' | trans({}, 'user') }}</h2>
+            <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]"> {{ 'user.page_update.action.description' | trans({}, 'user') }} </p>
+        </div>
+
+        {% if isSuperAdmin is same as false %}
+            {% if user.disabled %}
+                <div class="alert alert-warning mt-2">
+                    <h5 class="alert-heading"> {{ 'user.page_update.info.warning' | trans({}, 'user') }}</h5>
+                    <i class="bi bi-exclamation-triangle-fill"></i> {{ 'user.page_update.info.user_disabled' | trans({}, 'user') }}
+                </div>
+            {% else %}
+                <h6>{{ 'user.page_update.reset_password' | trans({}, 'user') }}</h6>
+                <p>{{ 'user.page_update.reset_password.description' | trans({}, 'user') }}</p>
+                <a href="{{ path('admin_user_reset_password', {'id' : user.id}) }}" class="btn btn-secondary">{{ 'user.page_update.reset_password.btn' | trans({}, 'user') }}</a>
+
+                <hr/>
+                <h6>{{ 'user.page_update.connecte_to' | trans({}, 'user') }}</h6>
+                <p>{{ 'user.page_update.connecte_to.description' | trans({'login' : user.login}, 'user') }}</p>
+                <a href="{{ path('admin_user_switch', {'user' : user.email}) }}" class="btn btn-secondary">{{ 'user.page_update.connecte_to.btn' | trans({'login' : user.login}, 'user') }}</a>
+            {% endif %}
+        {% else %}
+            <p class="text-danger">
+                <i>{{ 'user.page_update.info_role_super_admin' | trans({}, 'user') | raw }}</i></p>
+        {% endif %}
+    </div>
+
+    <div class="card rounded-lg p-6 mb-4 mt-4">
+        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+            <h2 class="text-lg font-bold text-[var(--text-primary)]">   {{ 'user.page_update.information' | trans({}, 'user') }}</h2>
+            <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]"> {{ 'user.page_update.information.description' | trans({}, 'user') }} </p>
+        </div>
+
+        <svg class="w-6 h-6 float-start me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M4 9.05H3v2h1v-2Zm16 2h1v-2h-1v2ZM10 14a1 1 0 1 0 0 2v-2Zm4 2a1 1 0 1 0 0-2v2Zm-3 1a1 1 0 1 0 2 0h-2Zm2-4a1 1 0 1 0-2 0h2Zm-2-5.95a1 1 0 1 0 2 0h-2Zm2-3a1 1 0 1 0-2 0h2Zm-7 3a1 1 0 0 0 2 0H6Zm2-3a1 1 0 1 0-2 0h2Zm8 3a1 1 0 1 0 2 0h-2Zm2-3a1 1 0 1 0-2 0h2Zm-13 3h14v-2H5v2Zm14 0v12h2v-12h-2Zm0 12H5v2h14v-2Zm-14 0v-12H3v12h2Zm0 0H3a2 2 0 0 0 2 2v-2Zm14 0v2a2 2 0 0 0 2-2h-2Zm0-12h2a2 2 0 0 0-2-2v2Zm-14-2a2 2 0 0 0-2 2h2v-2Zm-1 6h16v-2H4v2ZM10 16h4v-2h-4v2Zm3 1v-4h-2v4h2Zm0-9.95v-3h-2v3h2Zm-5 0v-3H6v3h2Zm10 0v-3h-2v3h2Z"/>
+        </svg>
+        <span class="text-sm text-[var(--text-secondary)]">{{ 'user.page_update.created' | trans({}, 'user') }} : {{ diff_now(user.createdAt) }}</span>
+        <br/>
+        <svg class="w-6 h-6 float-start me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z"/>
+        </svg>
+        <span class="text-sm text-[var(--text-secondary)]">{{ 'user.page_update.last_update' | trans({}, 'user') }} : {{ diff_now(user.updateAt) }}</span>
+        <br />
+        <svg class="w-6 h-6 float-start me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+        </svg>
+        <span class="text-sm text-[var(--text-secondary)]">{{ 'user.page_update.last_connexion' | trans({}, 'user') }} : {{ diff_now(lastConnexion) }}</span>
+    </div>
 
 
     <div class="row">
         <div class="col-6">
-            {{ form_start(form) }}
             <div class="card border border-secondary">
                 <div class="card-header text-bg-secondary">
                     {{ 'user.page_update.profil' | trans({}, 'user') }}
                 </div>
                 <div class="card-body">
 
-                    {{ form_row(form.email) }}
+{# {{ form_row(form.email) }}
 
                     {% if isSuperAdmin is same as false %}
                         {{ form_row(form.roles) }}
                         {{ form_row(form.disabled) }}
-                    {% endif %}
+                    {% endif %} #}
 
                     <fieldset>
                         <legend> {{ 'user.page_update.personal_data' | trans({}, 'user') }}</legend>
@@ -33,12 +160,12 @@
                             <i class="bi bi-info-circle-fill"></i> {{ 'user.page_update.personal_data.description' | trans({}, 'user') }}
                         </p>
 
-                        {{ form(form) }}
+                        {#  { form(form) }} #}
                         <i class="float-end">{{ 'user.page_update.last_update' | trans({}, 'user') }} {{ diff_now(user.updateAt) }}</i>
                     </fieldset>
                 </div>
             </div>
-            {{ form_end(form) }}
+            {# { form_end(form) }}  #}
         </div>
         <div class="col-6">
             <div class="card border border-secondary">
