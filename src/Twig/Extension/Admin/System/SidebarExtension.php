@@ -2,7 +2,7 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Permet de générer le menu sidebar de l'administration
  */
 
@@ -97,20 +97,20 @@ class SidebarExtension extends AppAdminExtension
         $url = $this->generateRealUrl($sidebarElement->getRoute());
         $active = $this->isClassActive($sidebarElement->getRoute(), false);
 
-        return '<li ' .
-            $active .
-            '>
-            <a href="' .
+        return '<a href="' .
             $url .
-            '">
-                <i class="bi ' .
+            '" class="sidebar-item ' .
+            $active .
+            ' flex items-center px-4 py-3 rounded-lg">
+                <svg class="w-5 h-5 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="' .
             $sidebarElement->getIcon() .
-            '"></i>
-                <span class="d-none-mini">' .
+            '"/>
+                </svg>
+                <span>' .
             $this->translator->trans($sidebarElement->getLabel()) .
             '</span>
-            </a>
-        </li>';
+            </a>';
     }
 
     /**
@@ -124,15 +124,7 @@ class SidebarExtension extends AppAdminExtension
             return '';
         }
 
-        $tabToggle = [
-            'collapsed' => 'collapsed',
-            'aria-expanded' => false,
-            'show' => '',
-            'active' => '',
-        ];
-
-        $html = '';
-        $nbTotalNotification = 0;
+        $open = $html = '';
         foreach ($sidebarElement->getChildren() as $child) {
             /* @var SidebarElement $child */
 
@@ -141,79 +133,56 @@ class SidebarExtension extends AppAdminExtension
             }
 
             $active = $this->isClassActive($child->getRoute(), true);
-
             if ($active !== '') {
-                $tabToggle = [
-                    'collapsed' => '',
-                    'aria-expanded' => true,
-                    'show' => 'show',
-                    'active' => 'class="active"',
-                ];
+                $open = 'open';
             }
 
             $notification = '';
             if (isset($this->tabNotification[$child->getLabel()])) {
-                $nbTotalNotification += $this->tabNotification[$child->getLabel()];
                 $notification = $this->getHTMLNotification($this->tabNotification[$child->getLabel()]);
             }
 
-            $url = $this->generateRealUrl($child->getRoute());
             $html .=
-                '<li ' .
+                '<a href="' .
+                $this->generateRealUrl($child->getRoute()) .
+                '" class="' .
                 $active .
-                '>
-                    <a href="' .
-                $url .
-                '">
-                        <i class="bi ' .
+                ' sidebar-item flex items-center px-4 py-2 rounded-lg text-sm">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="' .
                 $child->getIcon() .
-                '"></i>
-                        <span class="d-none-mini">' .
+                '"></path></svg>
+                ' .
                 $this->translator->trans($child->getLabel()) .
-                ' ' .
                 $notification .
-                '</span>
-                    </a>
-                 </li>';
+                '</a>';
         }
 
-        $html .= '</ul></li>';
-
-        $route = $sidebarElement->getRoute();
-        $routeId = substr($route, 1);
-
-        $notification = '';
-        if ($nbTotalNotification > 0) {
-            $notification = $this->getHTMLNotification($nbTotalNotification);
-        }
-
-        return '<li ' .
-            $tabToggle['active'] .
-            '>
-            <a class="' .
-            $tabToggle['collapsed'] .
-            ' nav-toggle no-control" href="' .
-            $route .
-            '" data-bs-toggle="collapse" data-bs-target="' .
-            $route .
-            '" aria-current="page" aria-expanded="' .
-            $tabToggle['aria-expanded'] .
-            '">
-                <i class="bi ' .
+        return '<div>
+            <button class="sidebar-item flex items-center justify-between w-full px-4 py-3 rounded-lg" onclick="toggleSubmenu(\'' .
+            $sidebarElement->getId() .
+            '\')">
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="' .
             $sidebarElement->getIcon() .
-            '"></i> <span class="d-none-mini">' .
+            '"></path>
+                    </svg>
+                    <span>' .
             $this->translator->trans($sidebarElement->getLabel()) .
-            '</span>
-                <i class="bi bi-chevron-right float-end d-none-mini no-control"></i> ' .
-            $notification .
-            '
-            </a>
-            <ul class="collapse list-unstyled ' .
-            $tabToggle['show'] .
-            '" id="' .
-            $routeId .
-            '" data-bs-parent="#sidebar">' .
-            $html;
+            '</span></div><svg class="w-4 h-4 chevron" id="chevron-' .
+            $sidebarElement->getId() .
+            '" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
+            <div class="submenu ml-8 mt-1 space-y-1 ' .
+            $open .
+            '" id="submenu-' .
+            $sidebarElement->getId() .
+            '">' .
+            $html .
+            '</div></div>';
     }
 
     /**
@@ -223,7 +192,7 @@ class SidebarExtension extends AppAdminExtension
      */
     private function getHTMLNotification(int $nb): string
     {
-        return '<span class="badge rounded-pill bg-danger float-end d-none-mini" style="margin-right: 10px">' .
+        return '<span class="ml-auto inline-flex items-center justify-center px-2 py-1 text-xs font-bold text-white bg-red-500 rounded-full">' .
             $nb .
             '</span>';
     }
@@ -263,9 +232,9 @@ class SidebarExtension extends AppAdminExtension
     {
         $return = '';
         if ($route === $this->currentRoute) {
-            $return = 'class="active"';
+            $return = 'active';
             if ($child) {
-                $return = 'class="sub-active"';
+                $return = 'active';
             }
         }
         return $return;

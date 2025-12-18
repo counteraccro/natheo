@@ -1,0 +1,16 @@
+@use "tailwindcss";
+
+@use "flowbite/src/themes/default";
+
+@use "admin/variables";
+@use "admin/global/button";
+@use "admin/global/form-input";
+@use "admin/global/alerte";
+
+@use "admin/style";
+
+@plugin "flowbite/plugin";
+@source "../../node_modules/flowbite";
+
+@custom-variant dark (&:where(.dark, .dark *));
+

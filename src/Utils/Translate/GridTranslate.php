@@ -31,6 +31,17 @@ class GridTranslate extends AppTranslate
         return [
             'placeholder' => $this->translator->trans('grid.search.placeholder', domain: 'grid'),
             'placeholderBddSearch' => $this->translator->trans('grid.search.placeholder.bdd.search', domain: 'grid'),
+            'placeholderTableSearch' => $this->translator->trans(
+                'grid.search.placeholder.table.search',
+                domain: 'grid',
+            ),
+            'textBddSearch' => $this->translator->trans('grid.search.text.bdd.search', domain: 'grid'),
+            'titleSearch' => $this->translator->trans('grid.search.title.search', domain: 'grid'),
+            'textTableSearch' => $this->translator->trans('grid.search.text.table.search', domain: 'grid'),
+            'textShowQuery' => $this->translator->trans('grid.text.show.query', domain: 'grid'),
+            'textHideQuery' => $this->translator->trans('grid.text.hide.query', domain: 'grid'),
+            'textShowTrieOption' => $this->translator->trans('grid.text.show.trie.option', domain: 'grid'),
+            'textHideTrieOption' => $this->translator->trans('grid.text.hide.trie.option', domain: 'grid'),
             'btnSearch' => $this->translator->trans('grid.btn.search', domain: 'grid'),
             'loading' => $this->translator->trans('grid.loading', domain: 'grid'),
             'titleSuccess' => $this->translator->trans('grid.success.titre', domain: 'grid'),
@@ -45,6 +56,11 @@ class GridTranslate extends AppTranslate
             'queryTitle' => $this->translator->trans('grid.query.title', domain: 'grid'),
             'filterOnlyMe' => $this->translator->trans('grid.filter.only.me', domain: 'grid'),
             'filterAll' => $this->translator->trans('grid.filter.all', domain: 'grid'),
+            'titleTrieOption' => $this->translator->trans('grid.trie.title.option', domain: 'grid'),
+            'titleTrieOptionSubMenu' => $this->translator->trans('grid.trie.title.option.sub', domain: 'grid'),
+            'trieOptionListeField' => $this->translator->trans('grid.trie.option.liste.field', domain: 'grid'),
+            'trieOptionListeOrder' => $this->translator->trans('grid.trie.option.liste.order', domain: 'grid'),
+            'trieOptionBtn' => $this->translator->trans('grid.trie.option.btn', domain: 'grid'),
         ];
     }
 

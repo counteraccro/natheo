@@ -10,11 +10,10 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
-use App\Entity\Admin\System\OptionSystem;
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
-use App\Utils\Breadcrumb;
 use App\Utils\Content\Comment\CommentConst;
 use App\Utils\Content\Comment\CommentPopulate;
 use App\Utils\System\Options\OptionSystemKey;
@@ -48,8 +47,8 @@ class CommentController extends AppAdminController
     public function index(OptionSystemService $optionSystemService, CommentService $commentService): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'comment',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'comment',
+            Breadcrumb::BREADCRUMB->value => [
                 'comment.index.page_title_h1' => '#',
             ],
         ];
@@ -111,8 +110,8 @@ class CommentController extends AppAdminController
         CommentTranslate $commentTranslate,
     ): Response {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'comment',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'comment',
+            Breadcrumb::BREADCRUMB->value => [
                 'comment.index.page_title_h1' => 'admin_comment_index',
                 'comment.moderate.comments.page_title' => '#',
             ],
@@ -184,8 +183,8 @@ class CommentController extends AppAdminController
         CommentTranslate $commentTranslate,
     ): Response {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'comment',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'comment',
+            Breadcrumb::BREADCRUMB->value => [
                 'comment.index.page_title_h1' => 'admin_comment_index',
                 'comment.see.page_title' => '#',
             ],

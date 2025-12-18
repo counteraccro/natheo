@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{{ get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_SITE_NAME')) }}{% endblock %}</title>
@@ -8,7 +8,7 @@
     {% block stylesheets %}
 
         {%set theme = get_option_user_value_by_key(constant('App\\Utils\\System\\Options\\OptionUserKey::OU_THEME_SITE')) %}
-        {{ vite_entry_link_tags('admin_'~theme) }}
+        {{ vite_entry_link_tags('admin_css') }}
     {% endblock %}
 
     {% block javascripts %}
@@ -16,18 +16,28 @@
     {% endblock %}
 </head>
 <body>
-<div class="wrapper">
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMobileSidebar()"></div>
+
+<div class="flex h-screen overflow-hidden">
+
     <!-- Sidebar  -->
     {% include "/admin/includes/menu.html.twig" %}
     <!-- Page Content  -->
-    <div id="content">
+    <div class="flex-1 flex flex-col overflow-hidden">
         {% include "/admin/includes/header.html.twig" %}
-        {% include "/admin/includes/flash.html.twig" %}
-        <div id="block-content">
+        <main class="flex-1 overflow-y-auto p-4 sm:p-6">
             {% block body %}{% endblock %}
-        </div>
+        </main>
     </div>
+    {% include "/admin/includes/debug_bar.html.twig" %}
 </div>
     {% include "/admin/includes/scripts.html.twig" %}
+
+<script>
+    {% block scriptJavascript %}
+
+    {% endblock %}
+</script>
+
 </body>
 </html>

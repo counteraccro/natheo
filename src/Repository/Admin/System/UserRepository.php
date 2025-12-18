@@ -69,16 +69,29 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
      * @param string|null $search
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, ?string $search = null): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
     {
-        $query = $this->createQueryBuilder('u')->orderBy('u.id', 'ASC');
+        $orderField = 'id';
+        $order = 'DESC';
+        if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
+            $orderField = $queryParams['orderField'];
+        }
 
-        if ($search !== null) {
-            $query->where('u.email like :search');
-            $query->orWhere('u.login like :search');
-            $query->orWhere('u.firstname like :search');
-            $query->orWhere('u.lastname like :search');
-            $query->setParameter('search', '%' . $search . '%');
+        if (isset($queryParams['order']) && $queryParams['order'] !== '') {
+            $order = $queryParams['order'];
+        }
+
+        $query = $this->createQueryBuilder(User::DEFAULT_ALIAS)->orderBy(
+            User::DEFAULT_ALIAS . '.' . $orderField,
+            $order,
+        );
+
+        if (isset($queryParams['search']) && $queryParams['search'] !== '') {
+            $query->where(User::DEFAULT_ALIAS . '.email like :search');
+            $query->orWhere(User::DEFAULT_ALIAS . '.login like :search');
+            $query->orWhere(User::DEFAULT_ALIAS . '.firstname like :search');
+            $query->orWhere(User::DEFAULT_ALIAS . '.lastname like :search');
+            $query->setParameter('search', '%' . $queryParams['search'] . '%');
         }
 
         $paginator = new Paginator($query->getQuery(), true);

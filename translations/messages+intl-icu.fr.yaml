@@ -272,6 +272,6 @@ flash.title.warning: 'Attention !'
 flash.title.danger: 'Alerte !'
 flash.time: "A l'instant"
 message.global.modal.confirm.titre: 'Modification non sauvegardée détectée'
-message.global.modal.confirm.corps: 'Confirmez vous de quitter la page sans sauvegarder les modifications faites ?'
-message.global.modal.confirm.oui: 'Oui, quitter la page'
-message.global.modal.confirm.non: 'Non rester'
+message.global.modal.confirm.corps: "<b>Des modifications qui n'ont pas été sauvegardées</b> ont été détectées, confirmez vous de vouloir <b>quitter la page</b>. Toutes modifications non sauvegardées seront perdu"
+message.global.modal.confirm.oui: 'Oui je souhaite quitter la page'
+message.global.modal.confirm.non: 'Non je souhaite rester'

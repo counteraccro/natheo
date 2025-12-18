@@ -7,8 +7,8 @@
 
 namespace App\Controller\Admin\Tools;
 
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\CommandService;
-use App\Utils\Breadcrumb;
 use App\Utils\Global\EnvFile;
 use App\Utils\Translate\Tools\AdvancedOptionsTranslate;
 use Psr\Container\ContainerExceptionInterface;
@@ -43,8 +43,8 @@ class AdvancedOptionsController extends AbstractController
         ParameterBagInterface $parameterBag,
     ): Response {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'advanced_options',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'advanced_options',
+            Breadcrumb::BREADCRUMB->value => [
                 'advanced_options.index.page_title_h1' => '#',
             ],
         ];

@@ -14,3 +14,17 @@ global.citation.auteur: __global.citation.auteur
 global.search.placeholder: __global.search.placeholder
 global.search.btn: __global.search.btn
 global.display: __global.display
+global.header.btn.nouveau: __global.header.btn.nouveau
+global.header.btn.nouveau.page: __global.header.btn.nouveau.page
+global.header.btn.menu: __global.header.btn.menu
+global.header.btn.faq: __global.header.btn.faq
+global.header.btn.tag: __global.header.btn.tag
+global.header.menu.impersonation: __global.header.menu.impersonation
+global.header.search.input: __global.header.search.input
+global.header.menu.my.account: __global.header.menu.my.account
+global.header.menu.my.options: __global.header.menu.my.options
+global.header.menu.website: __global.header.menu.website
+global.header.menu.logout: __global.header.menu.logout
+global.header.theme: __global.header.theme
+global.header.dark.mode: __global.header.dark.mode
+global.modale.help.close: __global.modale.help.close

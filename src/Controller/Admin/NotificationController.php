@@ -9,10 +9,10 @@ namespace App\Controller\Admin;
 
 use App\Entity\Admin\Notification;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\GridService;
 use App\Service\Admin\NotificationService;
 use App\Service\Admin\System\OptionSystemService;
-use App\Utils\Breadcrumb;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
 use Doctrine\ORM\NonUniqueResultException;
@@ -51,8 +51,8 @@ class NotificationController extends AppAdminController
         $nbDay = $optionSystemService->getValueByKey(OptionSystemKey::OS_PURGE_NOTIFICATION);
 
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'notification',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'notification',
+            Breadcrumb::BREADCRUMB->value => [
                 'notification.page_title_h1' => '#',
             ],
         ];

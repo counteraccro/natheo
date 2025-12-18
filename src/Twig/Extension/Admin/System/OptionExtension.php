@@ -2,7 +2,7 @@
 
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 2.0
  * Permet de générer le formulaire de saisie des options systèmes et options users
  */
 
@@ -123,28 +123,23 @@ class OptionExtension extends AppAdminExtension
      */
     private function generateHeader(array $categories): string
     {
-        $html = '<nav><div class="nav nav-pills mb-3" id="nav-tab-option-system" role="tablist">';
+        $html = '<div class="mb-4 mt-4 border-b border-gray-200 dark:border-gray-700" id="nav-tab-option-system">
+    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab" data-tabs-toggle="#nav-tab-option-system-content" data-tabs-active-classes="text-[var(--primary)] hover:text-[var(--primary-hover)] border-[var(--primary)] bg-[var(--primary-lighter)]" data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300" role="tablist">';
         foreach ($categories as $key => $category) {
-            $active = '';
-            if ($key === 0) {
-                $active = 'active';
-            }
-
             $html .=
-                '<button class="nav-link ' .
-                $active .
-                '" id="nav-' .
+                '<li class="me-2" role="presentation"><button class="inline-block ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm" id="nav-' .
                 $key .
-                '-tab" data-bs-toggle="tab"
-            data-bs-target="#nav-' .
+                '-tab" data-tabs-target="#tab-' .
                 $key .
-                '" type="button" role="tab">
+                '" type="button" role="tab" aria-controls="' .
+                $this->translator->trans($category) .
+                '" aria-selected="false">
                     ' .
                 $this->translator->trans($category) .
                 '
-                </button>';
+                </button></li>';
         }
-        $html .= '</div></nav>';
+        $html .= '</ul></div>';
 
         return $html;
     }
@@ -157,20 +152,22 @@ class OptionExtension extends AppAdminExtension
      */
     private function generateContent(array $categories, array $optionsConfig): string
     {
-        $html = '<div class="tab-content" id="nav-tab-option-system-content">';
+        $html = '<div id="nav-tab-option-system-content" class="card rounded-lg p-6 sm:p-8">';
 
         foreach ($categories as $key => $category) {
-            $active = '';
-            if ($key === 0) {
-                $active = 'show active';
-            }
-            $html .= '<div class="tab-pane fade ' . $active . '" id="nav-' . $key . '" role="tabpanel" tabindex="0">';
+            $html .= '<div class="hidden" id="tab-' . $key . '" role="tabpanel" aria-labelledby="profile-tab">';
 
-            $html .= '<h5>' . $this->translator->trans($optionsConfig[$this->globalKey][$category]['title']) . '</h5>';
             $html .=
-                '<p>' . $this->translator->trans($optionsConfig[$this->globalKey][$category]['description']) . '</p>';
+                '<div class="mb-6"><h2 class="text-xl font-semibold mb-2 text-[var(--text-primary)]">' .
+                $this->translator->trans($optionsConfig[$this->globalKey][$category]['title']) .
+                '</h2>';
+            $html .=
+                '<p class="text-sm text-[var(--text-secondary)]">' .
+                $this->translator->trans($optionsConfig[$this->globalKey][$category]['description']) .
+                '</p></div>';
 
             foreach ($optionsConfig[$this->globalKey][$category]['options'] as $keyOption => $element) {
+                $html .= '<div class="form-group mb-3 border-b border-[var(--border-color)] pb-5 last:border-0">';
                 switch ($element['type']) {
                     case 'text':
                         $html .= $this->generateInputText($keyOption, $element);
@@ -186,7 +183,7 @@ class OptionExtension extends AppAdminExtension
                         break;
                     default:
                 }
-                $html .= '<br />';
+                $html .= '</div>';
             }
             $html .= '</div>';
         }
@@ -204,10 +201,11 @@ class OptionExtension extends AppAdminExtension
      */
     private function generateInputText(string $key, array $element): string
     {
-        $require = $msgError = $placeholder = '';
+        $require = $msgError = $placeholder = $labelRequire = '';
         if (isset($element['required'])) {
             $require = 'required="required"';
             $msgError = $this->getError($key, $element);
+            $labelRequire = ' <span class="text-[var(--error-text)]">*</span>';
         }
 
         if (isset($element['placeholder'])) {
@@ -225,8 +223,9 @@ class OptionExtension extends AppAdminExtension
             '" class="form-label">
             ' .
             $this->translator->trans($element['label']) .
+            $labelRequire .
             '</label>
-            <input type="text" class="form-control no-control event-input" id="' .
+            <input type="text" class="form-input no-control event-input" id="' .
             $key .
             '" ' .
             $require .
@@ -256,9 +255,10 @@ class OptionExtension extends AppAdminExtension
     {
         $value = $this->getValueByKey($key);
 
-        $checked = '';
+        $checked = $active = '';
         if ($value === '1') {
             $checked = 'checked';
+            $active = 'active';
         }
 
         $disabled = '';
@@ -267,8 +267,10 @@ class OptionExtension extends AppAdminExtension
         }
 
         $html =
-            '<div class="form-check form-switch">
-            <input class="form-check-input no-control event-input" type="checkbox" role="switch" ' .
+            '<div class="form-switch form-switch-inline">
+            <input class="switch-input no-control event-input ' .
+            $active .
+            '" type="checkbox" role="switch" ' .
             $disabled .
             '
                 id="' .
@@ -276,16 +278,18 @@ class OptionExtension extends AppAdminExtension
             '" ' .
             $checked .
             '>
-            <label class="form-check-label" for="' .
+            <label class="switch-toggle" for="' .
             $key .
-            '">
+            '"></label>
+            <label class="swith-label" for="' .
+            $key .
+            '"><span class="switch-label-text">
                 ' .
             $this->translator->trans($element['label']) .
-            '</label>';
-
-        $html .= $this->getSuccess($key, $element);
+            '</span></label>';
         $html .= '</div>';
 
+        $html .= $this->getSuccess($key, $element);
         $html .= $this->getSpinner($key);
         $html .= $this->getHelp($key, $element);
 
@@ -300,10 +304,11 @@ class OptionExtension extends AppAdminExtension
      */
     private function generateTextarea(string $key, array $element): string
     {
-        $require = $msgError = $placeholder = '';
+        $require = $msgError = $placeholder = $labelRequire = '';
         if (isset($element['required'])) {
             $require = 'required="required"';
             $msgError = $this->getError($key, $element);
+            $labelRequire = ' <span class="text-[var(--error-text)]">*</span>';
         }
 
         if (isset($element['placeholder'])) {
@@ -320,8 +325,9 @@ class OptionExtension extends AppAdminExtension
             $key .
             '" class="form-label">' .
             $this->translator->trans($element['label']) .
+            $labelRequire .
             '</label>
-            <textarea class="form-control no-control event-input" rows="5"
+            <textarea class="form-input no-control event-input" rows="5"
             id="' .
             $key .
             '" ' .
@@ -368,13 +374,7 @@ class OptionExtension extends AppAdminExtension
                 $selected = 'selected';
             }
 
-            if (!str_starts_with($option[1], '&#')) {
-                $optionLabel = $this->translator->trans($option[1]);
-            } else {
-                $optionLabel = $option[1];
-                $selectStyle = 'style="font-family: bootstrap-icons"';
-            }
-
+            $optionLabel = $this->translator->trans($option[1]);
             $optionHtml .= '<option value="' . $option[0] . '" ' . $selected . '>' . $optionLabel . '</option>';
         }
 
@@ -387,9 +387,7 @@ class OptionExtension extends AppAdminExtension
             '</label>
             <select id="' .
             $key .
-            '" class="form-select no-control event-input" ' .
-            $selectStyle .
-            ' ' .
+            '" class="form-input no-control event-input" ' .
             $disabled .
             '>
             ' .
@@ -414,7 +412,11 @@ class OptionExtension extends AppAdminExtension
         if (isset($element['help'])) {
             return '<div id="help-' .
                 $key .
-                '" class="form-text"><i class="bi bi-info-circle"></i> <i>' .
+                '" class="form-text">
+                 <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                <i>' .
                 $this->translator->trans($element['help']) .
                 '</i></div>';
         }
@@ -429,21 +431,16 @@ class OptionExtension extends AppAdminExtension
      */
     private function getSuccess(string $key, array $element): string
     {
+        $html = '<div id="success-' . $key . '" class="hidden form-text text-success"> ✓ ';
+
         if (isset($element['success'])) {
-            return '<div id="success-' .
-                $key .
-                '" class="valid-feedback visually-hidden"><b>
-                <i class="bi bi-check-circle"></i>  ' .
-                $this->translator->trans($element['success']) .
-                '</b></div>';
+            $msg = $this->translator->trans($element['success']);
+        } else {
+            $msg = $this->translator->trans('options_system.default_msg_success');
         }
-        return '<div id="success-' .
-            $key .
-            '" class="valid-feedback visually-hidden"><b>
-            <i class="bi bi-check-circle"></i>
-            ' .
-            $this->translator->trans('options_system.default_msg_success') .
-            '</b></div>';
+
+        $html .= $msg . '</div>';
+        return $html;
     }
 
     /**
@@ -454,20 +451,15 @@ class OptionExtension extends AppAdminExtension
      */
     private function getError(string $key, array $element): string
     {
+        $html = '<div id="error-' . $key . '" class="hidden form-text text-error"> ✗ ';
+
         if (isset($element['msg_error'])) {
-            return '<div id="error-' .
-                $key .
-                '" class="invalid-feedback"><b>
-           <i class="bi bi-exclamation-circle"></i>  ' .
-                $this->translator->trans($element['msg_error']) .
-                '</b></div>';
+            $msg = $this->translator->trans($element['msg_error']);
+        } else {
+            $msg = $this->translator->trans('options_system.default_msg_error');
         }
-        return '<div id="error-' .
-            $key .
-            '" class="invalid-feedback"><b>
-        <i class="bi bi-exclamation-circle"></i> ' .
-            $this->translator->trans('options_system.default_msg_error') .
-            '</b></div>';
+        $html .= $msg . '</div>';
+        return $html;
     }
 
     /**
@@ -479,9 +471,12 @@ class OptionExtension extends AppAdminExtension
     {
         return '<div id="spinner-' .
             $key .
-            '" class="float-end visually-hidden">
-            <div class="spinner-border spinner-border-sm text-primary" role="status">
-                </div> <span class="text-primary"><i> &#8239;&#8239; ' .
+            '" class="float-end hidden">
+            <svg aria-hidden="true" class="inline w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-[var(--primary)]" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+    </svg>
+             <span class="form-text"><i> ' .
             $this->translator->trans('global.loading_save') .
             '</i></span></div>';
     }

@@ -5,14 +5,16 @@
     {% set title = 'tag.add.page_title' | trans({}, 'tag') %}
     {% set titleH1 = 'tag.add.page_title_h1' | trans({}, 'tag') %}
     {% set description = 'tag.add.description' | trans({}, 'tag') %}
-    {%  set url_stats = '' %}
-    {%  set url_update = '' %}
+    {% set url_stats = '' %}
+    {% set url_update = '' %}
+    {% set url_delete = ''%}
 {% else %}
     {% set title = 'tag.update.page_title' | trans({'id' : tag.id}, 'tag') %}
     {% set titleH1 = 'tag.update.page_title_h1' | trans({}, 'tag') %}
     {% set description = 'tag.update.description' | trans({}, 'tag') %}
-    {%  set url_stats =  path('admin_tag_stats', {'id' : tag.id}) %}
-    {%  set url_update =  path('admin_tag_update', {'id' : tag.id}) %}
+    {% set url_stats =  path('admin_tag_stats', {'id' : tag.id}) %}
+    {% set url_update =  path('admin_tag_update', {'id' : tag.id}) %}
+    {% set url_delete = path('admin_tag_delete', {'id' : tag.id}) %}
 {% endif %}
 
  {% block title %}
@@ -21,22 +23,28 @@
 
 {% block body %}
 
-    <h1>{{ titleH1 }}</h1>
-
     {{ breadcrumb(breadcrumb) }}
 
-    <p>
+    <h1 class="head-title">
+        <svg class="w-7 h-7" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.2 6H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11.2a1 1 0 0 0 .747-.334l4.46-5a1 1 0 0 0 0-1.332l-4.46-5A1 1 0 0 0 15.2 6Z"></path>
+        </svg>
+        {{ titleH1 }}</h1>
+
+    <p class="text-sm text-[var(--text-secondary)] mb-3">
         {{ description }}
     </p>
 
-    <div {{ vue_component('Admin/Content/TagForm', {
-        'url' : path('admin_tag_save'),
-        'url_update' : url_update,
-        'url_stats' : url_stats,
-        'url_index' : path('admin_tag_index'),
-        'pTag' : tag,
-        'translate' : translate,
-        'locales' : locales}) }}>
-    </div>
+
+        <div {{ vue_component('Admin/Content/TagForm', {
+            'url' : path('admin_tag_save'),
+            'url_update' : url_update,
+            'url_stats' : url_stats,
+            'url_index' : path('admin_tag_index'),
+            'url_delete' : url_delete,
+            'pTag' : tag,
+            'translate' : translate,
+            'locales' : locales}) }}>
+        </div>
 
 {% endblock %}

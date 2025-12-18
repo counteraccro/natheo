@@ -8,8 +8,7 @@
 
     {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
     {% block stylesheets %}
-        {%set theme = get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_THEME_SITE')) %}
-        {{ vite_entry_link_tags('admin_'~theme) }}
+        {{ vite_entry_link_tags('admin_css') }}
     {% endblock %}
 
     {% block javascripts %}
@@ -19,5 +18,7 @@
 <body>
 
     {% block body %}{% endblock %}
+    {% include "/admin/includes/debug_bar.html.twig" %}
+    {% include "/admin/includes/scripts.html.twig" %}
 </body>
 </html>

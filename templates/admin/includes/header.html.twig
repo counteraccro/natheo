@@ -1,87 +1,200 @@
-<nav id="adm-navbar" class="navbar navbar-expand-lg bg-secondary">
-    <div class="container-fluid">
-        <button type="button" id="sidebarCollapse" class="btn btn-primary">
-            <i id="icon-toggle-sidebar" class="bi bi-chevron-double-left"></i>
-        </button>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarToggleExternalContent">
-            <div class="navbar-nav navbar-collapse justify-content-center">
-                <form class="d-flex" role="search" action="{{ path('admin_search_index') }}" method="post">
-                    <div class="input-group">
-                        <input type="text" name="global-search-input" class="form-control" size="45" placeholder=" {{ 'global.search.placeholder' | trans({}, 'global') }}">
-                        <button class="btn btn-primary" type="submit" id="button-addon2"><i class="bi bi-search"></i>  {{ 'global.search.btn' | trans({}, 'global') }}</button>
-                    </div>
+<nav class="navbar px-4 py-3">
+    <div class="flex items-center justify-between">
+        <!-- Left: Menu burger + Title -->
+        <div class="flex items-center space-x-4">
+            <button class="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition" onclick="toggleMobileSidebar()">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+            <h2 class="text-xl font-semibold hidden sm:block" id="title-page"></h2>
+        </div>
+
+        <!-- Center: Search bar (hidden on mobile) -->
+        <div class="hidden md:flex flex-1 max-w-xl mx-8">
+            <div class="relative w-full">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <form id="form-global-search" class="d-flex" role="search" action="{{ path('admin_search_index') }}" method="post">
+                <input type="search" name="global-search-input" class="search-input w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] no-control" placeholder="{{ 'global.header.search.input' | trans({}, 'global') }}">
                 </form>
             </div>
-            <!-- ml-auto still works just fine-->
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link active" href="#">
-                    <i class="bi-h bi-house-fill-h"></i>
-                    <span class="d-none-mini"> {{ 'global.dashboard' | trans({}, 'global') }}</span>
-                </a>
+        </div>
 
-                {%set urlSite = get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_ADRESSE_SITE')) %}
+        <!-- Right: Actions -->
+        <div class="flex items-center space-x-2 sm:space-x-4">
+            <!-- Theme Selector Dropdown -->
+            <div class="relative">
+                <button id="themeButton" data-dropdown-toggle="themeDropdown" data-dropdown-placement="bottom-end" class="p-2 hover:bg-gray-100 rounded-lg transition" type="button" title="Personnalisation">
+                    <svg class="theme-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
+                    </svg>
+                </button>
 
-                <a class="nav-link active" href="{{ urlSite }}">
-                    <i class="bi-h bi-display-fill-h"></i>
-                    <span class="d-none-mini"> {{ 'global.display' | trans({}, 'global') }}</span>
-                </a>
+                <!-- Theme Dropdown menu -->
+                <div id="themeDropdown" class="z-10 hidden theme-selector rounded-lg shadow-lg w-80 p-4">
+                    <div class="mb-4">
+                        <h3 class="text-sm font-semibold mb-3" style="color: var(--text-primary);">{{ 'global.header.theme' | trans({}, 'global') }}</h3>
+                        <div class="flex items-center justify-between gap-3">
+                            <button class="theme-btn theme-violet active no-control" onclick="setTheme('violet')" title="Violet"></button>
+                            <button class="theme-btn theme-blue no-control" onclick="setTheme('blue')" title="Bleu"></button>
+                            <button class="theme-btn theme-green no-control" onclick="setTheme('green')" title="Vert"></button>
+                            <button class="theme-btn theme-red no-control" onclick="setTheme('red')" title="Rouge"></button>
+                        </div>
+                    </div>
 
-                {%set notification = get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_NOTIFICATION')) %}
+                    <div class="pt-3 border-t" style="border-color: var(--border-color);">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <svg class="theme-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                </svg>
+                                <span class="text-sm font-semibold" style="color: var(--text-primary);">{{ 'global.header.dark.mode' | trans({}, 'global') }}</span>
+                            </div>
+                            <div class="dark-mode-toggle" id="darkToggle" onclick="toggleDarkMode()"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                {% if notification is same as("1") %}
-                    <a class="nav-link link-notification" href="{{ path('admin_notification_index') }}">
-                        <i class="bi-h bi-bell-fill-h position-relative">
-                            <span {{ vue_component('Admin/Notification/NotificationBadge', {'url' : path('admin_notification_number')}) }}></span>
-                        </i>
-                            <span class="d-none-mini"> {{ 'global.notification' | trans({}, 'global') }}</span>
-                    </a>
-                {% endif %}
+            <!-- Search icon mobile -->
+            <button class="md:hidden p-2 hover:bg-gray-100 rounded-lg transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+            </button>
 
-                <a class="nav-link" href="{{ path('admin_user_my_account') }}">
-                    <i class="bi-h bi-person-fill-h"></i>
-                    <span class="d-none-mini"> {{ 'global.profil' | trans({}, 'global') }}</span>
-                </a>
-                <a class="nav-link" href="{{ path('admin_user_my_option') }}">
-                    <i class="bi-h bi-gear-fill-h"></i>
-                    <span class="d-none-mini"> {{ 'global.user.option' | trans({}, 'global') }}</span>
-                </a>
+            <!-- Notifications -->
+            {%set notification = get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_NOTIFICATION')) %}
 
-                {% if is_granted('IS_IMPERSONATOR') %}
-                    <a class="nav-link" href="{{ impersonation_exit_path(path('admin_dashboard_index') ) }}">
-                        <i class="bi-h bi-person-fill-exclamation-h"></i>
-                        <span class="d-none-mini"> {{ 'global.user.impersonation' | trans({}, 'global') }}</span>
-                    </a>
-                {% endif %}
+            {% if notification is same as("1") %}
+            <a href="{{ path('admin_notification_index') }}" class="relative p-2 hover:bg-gray-100 rounded-lg transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                </svg>
+                <span {{ vue_component('Admin/Notification/NotificationBadge', {'url' : path('admin_notification_number')}) }}></span>
+            </a>
+           {% endif %}
 
-                <a class="nav-link" href="{{ path('auth_logout') }}">
-                    <i class="bi-h bi-door-fill-h"></i>
-                    <span class="d-none-mini"> {{ 'global.logout' | trans({}, 'global') }}</span>
-                </a>
+            <!-- New Content Dropdown -->
+            <div class="hidden sm:block">
+                <button id="newContentButton" data-dropdown-toggle="newContentDropdown" class="btn btn-sm btn-primary flex items-center px-4 py-2 rounded-lg font-medium" type="button">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    {{ 'global.header.btn.nouveau' | trans({}, 'global') }}
+                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                <!-- Dropdown menu -->
+                <div id="newContentDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-56 border-1 border-gray-200">
+                    <ul class="py-2 text-sm text-gray-700">
+                        <li>
+                            <a href="{{ path('admin_page_add') }}" class="flex items-center px-4 py-3 hover:bg-gray-100">
+                                <svg class="w-5 h-5 mr-3" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
+                                <span>{{ 'global.header.btn.nouveau.page' | trans({}, 'global') }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_menu_add') }}" class="flex items-center px-4 py-3 hover:bg-gray-100">
+                                <svg class="w-5 h-5 mr-3" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                                </svg>
+                                <span>{{ 'global.header.btn.menu' | trans({}, 'global') }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_faq_add') }}" class="flex items-center px-4 py-3 hover:bg-gray-100">
+                                <svg class="w-5 h-5 mr-3" style="color: var(--primary);" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                </svg>
+
+                                <span>{{ 'global.header.btn.faq' | trans({}, 'global') }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_tag_add') }}" class="flex items-center px-4 py-3 hover:bg-gray-100">
+                                <svg class="w-5 h-5 mr-3" style="color: var(--primary);" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.583 8.445h.01M10.86 19.71l-6.573-6.63a.993.993 0 0 1 0-1.4l7.329-7.394A.98.98 0 0 1 12.31 4l5.734.007A1.968 1.968 0 0 1 20 5.983v5.5a.992.992 0 0 1-.316.727l-7.44 7.5a.974.974 0 0 1-1.384.001Z"/>
+                                </svg>
+
+                                <span>{{ 'global.header.btn.tag' | trans({}, 'global') }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- User Menu Dropdown -->
+            <div class="relative">
+                <button id="userMenuButton" data-dropdown-toggle="userMenuDropdown" data-dropdown-placement="bottom-end" class="flex items-center space-x-2" type="button">
+
+                    {% if app.user.getAvatar is null %}
+                        <div class="avatar w-8 h-8 text-xs text-white" style="background-color: var(--primary);">{{ app.user.email | slice(0,1) }}</div>
+                    {% else  %}
+                        <img src="/uploads/avatars/{{ app.user.getAvatar }}" class="avatar w-8 h-8 text-xs text-white" />
+                    {% endif %}
+                    <svg class="w-4 h-4 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                <!-- Dropdown menu -->
+                <div id="userMenuDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-56 border-1 border-gray-200">
+                    <ul class="py-2 text-sm text-gray-700">
+                        <li>
+                            <a href="{{ path('admin_user_my_account') }}" class="flex items-center px-4 py-3 hover:bg-gray-100">
+                                <svg class="w-5 h-5 mr-3" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                <span>{{ 'global.header.menu.my.account' | trans({}, 'global') }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_user_my_option') }}" class="flex items-center px-4 py-3 hover:bg-gray-100">
+                                <svg class="w-5 h-5 mr-3" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                <span>{{ 'global.header.menu.my.options' | trans({}, 'global') }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            {% set urlSite = get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_ADRESSE_SITE')) %}
+                            <a href="{{ urlSite }}" class="flex items-center px-4 py-3 hover:bg-gray-100">
+                                <svg class="w-5 h-5 mr-3" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span>{{ 'global.header.menu.website' | trans({}, 'global') }}</span>
+                            </a>
+                        </li>
+                        {% if is_granted('IS_IMPERSONATOR') %}
+                            <li>
+                                <a href="{{ impersonation_exit_path(path('admin_dashboard_index') ) }}" class="flex items-center px-4 py-3 hover:bg-gray-100">
+                                    <svg class="w-5 h-5 mr-3" style="color: var(--primary);" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.7141 15h4.268c.4043 0 .732-.3838.732-.8571V3.85714c0-.47338-.3277-.85714-.732-.85714H6.71411c-.55228 0-1 .44772-1 1v4m10.99999 7v-3h3v3h-3Zm-3 6H6.71411c-.55228 0-1-.4477-1-1 0-1.6569 1.34315-3 3-3h2.99999c1.6569 0 3 1.3431 3 3 0 .5523-.4477 1-1 1Zm-1-9.5c0 1.3807-1.1193 2.5-2.5 2.5s-2.49999-1.1193-2.49999-2.5S8.8334 9 10.2141 9s2.5 1.1193 2.5 2.5Z"/>
+                                    </svg>
+
+                                    <span>{{ 'global.header.menu.impersonation' | trans({}, 'global') }}</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    <div class="py-2">
+                        <a href="{{ path('auth_logout') }}" class="flex items-center px-4 py-3 text-sm text-red-600 hover:bg-gray-100">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                            </svg>
+                            <span>{{ 'global.header.menu.logout' | trans({}, 'global') }}</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </nav>
-
-<script>
-
-    let IconElement = document.getElementById('icon-toggle-sidebar');
-    let iconRightClass = 'bi-chevron-double-right';
-    let IconLeftClass = 'bi-chevron-double-left';
-    document.addEventListener("DOMContentLoaded", () => {
-        let sidebarCollapse = document.getElementById('sidebarCollapse');
-        sidebarCollapse.onclick = function () {
-            if (IconElement.classList.contains(iconRightClass)) {
-                IconElement.classList.remove(iconRightClass);
-                IconElement.classList.add(IconLeftClass);
-            } else {
-                IconElement.classList.remove(IconLeftClass);
-                IconElement.classList.add(iconRightClass);
-            }
-            document.getElementById('sidebar').classList.toggle('active');
-            return false;
-        };
-    });
-</script>

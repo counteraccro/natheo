@@ -1,6 +1,6 @@
 user.page_title: 'Gestion des utilisateurs'
 user.page_title_h1: 'Gestion des utilisateurs'
-user.description: "Gestion des utilisateurs qui peuvent se connecter dans l'administration du CMS"
+user.description: 'Gérer des utilisateurs qui peuvent se connecter au CMS et gérer son contenu'
 user.success.no.disabled: "Le compte de l'utilisateur <strong>{login}</strong> à été activé"
 user.success.disabled: "Le compte de l'utilisateur <strong>{login}</strong> à été désactivé"
 user.grid.id: Id
@@ -15,7 +15,7 @@ user.confirm.replace.msg: "Le compte de l'utilisateur <strong>{login}</strong> s
 user.page_update_title: 'Edition du compte {login}'
 user.page_update_title_h1: 'Edition du compte {login}'
 user.page_update_title_h1_2: 'Edition du compte'
-user.info: "Les utilisateurs marqué d'un {icon} ont été remplacé par John Doe et sont verrouillés | les utilisateurs marqué d'un {icon2} sont désactivés"
+user.info: 'Les utilisateurs [John Doe] sont anonymisés et verrouillés | les utilisateurs affiché de façon pâle sont désactivés'
 user.grid.role: Role
 user.my_option_title: 'Mes options'
 user.my_option_title_h1: 'Gestion de mes options'
@@ -26,8 +26,9 @@ user.login_user.password: 'Mot de passe'
 user.login_user.forgot_password: 'Mot de passe oublié ?'
 user.login_user.remember_me: 'Ce souvenir de moi'
 user.login_user.btn_login: Connexion
-user.login.always_log: 'Vous êtes déjà connecté en tant que '
-user.login.logout: Déconnexion
+user.login.always_log.title: 'Information importante'
+user.login.always_log: 'Vous êtes déjà connecté en tant que {login}, souhaitez vous, vous '
+user.login.logout: 'déconnecter ?'
 user.login.title: Authentification
 user.page_my_account.title: 'Mon compte'
 user.page_my_account.title_h1: 'Mon compte'
@@ -51,7 +52,7 @@ user.page_my_account.personal_data: 'Mes données personnelles'
 user.page_my_account.personal_data.description: "Ces données ne sont pas obligatoires, si vous laissé tous les champs vide, vos contenus ne seront pas identifiés comme vos créations. Il est conseillé d'au moins saisir un login"
 user.page_my_account.danger: 'Zone de danger'
 user.page_my_account.statistiques: 'Mes statistiques'
-user.page_my_account.password_change: 'Changement de mot de passe'
+user.page_my_account.password_change: Sécurité
 user.change_password.input.password_1: 'Nouveau mot de passe'
 user.change_password.input.password_2: 'Confirmer nouveau mot de passe'
 user.change_password.force: 'Force du mot de passe, votre mot de passe doit avoir :'
@@ -65,15 +66,15 @@ user.error.password_2: 'Le mot de passe de confirmation est différent du mot de
 user.update_password.success: 'Le nouveau mot de passe à correctement été mis à jour'
 user.error_not_disabled: 'Vous ne pouvez pas désactiver cet utilisateur'
 user.self_disabled_success: 'Votre compte est maintenant désactivé, vous aller être déconnecté dans quelques secondes...'
-user.danger_zone.btn_disabled: 'Désactiver mon compte'
-user.danger_zone.title_disabled: 'Désactivation de votre compte'
+user.danger_zone.btn_disabled: Désactiver
+user.danger_zone.title_disabled: 'Désactiver mon compte'
 user.danger_zone.content_disabled_1: 'Vous êtes sur le point de désactiver votre compte, après cette action vous ne pourrez plus vous connecter sur le site'
 user.danger_zone.content_disabled_2: "Une intervention d'un administrateur sera nécessaire pour annuler cette action"
 user.danger_zone.btn_cancel_disabled: Annuler
 user.danger_zone.btn_confirm_disabled: 'Je confirme mon choix'
 user.danger_zone.loading: 'Action en cours de réalisation...'
-user.danger_zone.btn_delete: 'Supprimer mon compte'
-user.danger_zone.btn_replace: 'Anonymiser mon compte'
+user.danger_zone.btn_delete: Supprimer
+user.danger_zone.btn_replace: Anonymiser
 user.danger_zone.btn_cancel_delete: Annuler
 user.danger_zone.btn_confirm_delete: 'Je confirme mon choix'
 user.danger_zone.title_delete: 'Suppression de mon compte'
@@ -120,7 +121,7 @@ user.form_update.lastname.help: "Identifiant qui apparait à la fin de ses artic
 user.form_update.lastname.placeholder: 'Son nom'
 user.form_update.submit: Modifier
 user.page_update_description: "Modifier le compte d'un utilisateur et/ou consulter quelques statistiques"
-user.page_update.success: 'Utilisateur <b>{email}</b> modifié avec succès'
+user.page_update.success: 'Utilisateur {email} modifié avec succès'
 user.page_my_account.success: 'Vos données personnelles ont été correctement modifiées'
 user.page_update.created: 'Date de création'
 user.page_update.info.user_disabled: 'Cet utilisateur est désactivé, certaines actions ne sont donc pas disponibles.'
@@ -192,7 +193,32 @@ user.form.description.label: 'Description personnelle'
 user.form.description.help: 'Une petite description de vous qui apparaitra en bas de vos articles'
 user.form.description.placeholder: 'Une petite description de vous'
 user.form.avatar.label: 'Votre avatar'
-user.form.avatar.help: 'Image qui sera placé en bas de vos articles'
+user.form.avatar.help: 'Aucune image sélectionnée'
 user.form.avatar.placeholder: 'Sélectionné un avatar'
 user.form.avatar.error.upload: 'Merci de télécharger une image au format jpg, gif ou png valide'
 user.page_my_account.upload.avatar.error: 'Une erreur est survenue lors du téléchargement de votre avatar'
+user.page_my_account.avatar: 'Mon avatar'
+user.page_my_account.avatar.subtitle: 'Avatar qui sera affiché en bas de vos articles'
+user.page_my_account.avatar.recommandation: Recommandations
+user.page_my_account.avatar.format: 'Format JPG, PNG ou GIF'
+user.page_my_account.avatar.weight: 'Taille maximale de 2 Mo'
+user.page_my_account.avatar.size: 'Image carrée recommandée (500x500px minimum)'
+user.page_my_account.avatar.delete: Supprimer
+user.page_my_account.statistiques.description: 'Retrouver les statistiques de votre compte'
+user.page_my_account.password_change.description: 'Gérer le mot de passe de votre compte'
+user.danger_zone.description_disabled: 'Votre compte sera désactivé'
+user.danger_zone.description_delete: 'Votre compte sera supprimé'
+user.danger_zone.description_replace: 'Votre compte sera anonymisé'
+user.page_my_account.danger.description: 'Actions irréversibles sur votre compte'
+user.change_password.btn.submit: 'Modifier mon mot de passe'
+user.page_my_account.options.divers.description: 'Autres options de configuration'
+user.page_my_account.email.placeholder: 'Mon email'
+user.page_my_account.login.placeholder: 'Mon identifiant'
+user.page_my_account.firstname.placeholder: 'Mon prénom'
+user.page_my_account.lastname.placeholder: 'Mon nom'
+user.page_my_account.avatar.nofield: 'Aucune image sélectionnée'
+user.delete_avatar.success: 'Avatar supprimé avec succès'
+user.page_add.profil.description: 'Données utilisées pour la connexion'
+user.page_add.information.description: 'A propos des rôles'
+user.page_update.action.description: 'Actions possible sur le compte'
+user.page_update.information.description: 'Statistiques du compte'

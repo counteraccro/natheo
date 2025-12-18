@@ -3,84 +3,84 @@
 {% block title %}{{ 'user.login_user.title' | trans({}, 'user') }}{% endblock %}
 
 {% block body %}
+    <section id="auth-form" class="bg-gray-50 dark:bg-gray-900">
 
-    <section class="h-100">
-        <div class="container h-100">
-            <div class="row justify-content-sm-center h-100">
-                <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
-                    <div class="text-center my-5 mb-3"><h1>
-                            <i class="bi {{ get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_LOGO_SITE'))}}"></i>
-                            {{ get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_SITE_NAME'))}}
-                        </h1>
+        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+            <div class="w-full bg-white rounded-lg shadow-sm dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+
+                <div class="logo-container text-center mt-8">
+                    <div class="logo">
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 20v-9l-4 1.125V20h4Zm0 0h8m-8 0V6.66667M16 20v-9l4 1.125V20h-4Zm0 0V6.66667M18 8l-6-4-6 4m5 1h2m-2 3h2"/>
+                        </svg>
                     </div>
-                    <div class="card shadow-lg">
-                        <div class="card-body p-5">
-                            <h1 class="fs-4 card-title fw-bold mb-4">{{ 'user.login_user.title' | trans({}, 'user') }}</h1>
+                    <h1 style="font-size: 1.875rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;"> {{ get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_SITE_NAME'))}}</h1>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem;">{{ 'user.login_user.title' | trans({}, 'user') }}</p>
+                </div>
+                <div class="p-4 space-y-4 md:space-y-6 sm:p-8">
 
-                            {% if app.user %}
-                                <div class="mb-3">
-                                    {{ 'user.login.always_log'|trans({}, 'user') }} {{ app.user.userIdentifier }}, <a href="{{ path('auth_logout') }}">{{ 'user.login.logout'|trans({}, 'user') }}</a>
+                    {% if app.user %}
+
+                        <div class="alert alert-primary-light">
+                            <svg class="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div class="alert-content">
+                                <div class="alert-title">{{ 'user.login.always_log.title'|trans({}, 'user') }}</div>
+                                <div class="alert-message">
+                                    {{ 'user.login.always_log'|trans({'login' : app.user.userIdentifier}, 'user') }} <b><a class="link" href="{{ path('auth_logout') }}">{{ 'user.login.logout'|trans({}, 'user') }}</a></b>
                                 </div>
-                            {% else %}
-
-                            <form method="post">
-                                <div class="mb-3">
-                                    <label class="mb-2 text-muted" for="email">{{ 'user.login_user.email' | trans({}, 'user') }}</label>
-                                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-                                </div>
-
-                                <div class="mb-3">
-                                    <div class="mb-2 w-100">
-                                        <label class="text-muted" for="password">{{ 'user.login_user.password' | trans({}, 'user') }}</label>
-                                        <a href="{{ path('auth_reset_password_user') }}" class="float-end">
-                                            {{ 'user.login_user.forgot_password' | trans({}, 'user') }}
-                                        </a>
-                                    </div>
-                                    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-                                </div>
-
-                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-                                <div class="d-flex align-items-center">
-                                    {#
-                                    Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-                                    See https://symfony.com/doc/current/security/remember_me.html #}
-                                    <div class="form-check">
-                                        <input type="checkbox" name="_remember_me" id="remember" class="form-check-input">
-                                        <label for="remember" class="form-check-label">{{ 'user.login_user.remember_me' | trans({}, 'user') }}</label>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary ms-auto">
-                                        {{ 'user.login_user.btn_login' | trans({}, 'user') }}
-                                    </button>
-                                </div>
-                            </form>
-
-                            {% if error %}
-                                <p class="text-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</p>
-                            {% endif %}
-
-                            {% endif %}
-
-                        </div>
-                        <div class="card-footer py-3 border-0">
-                            <div class="text-center">
-                                <figure>
-                                    <blockquote class="blockquote" style="font-size: 1.3em">
-                                        <p><small>
-                                                {{ 'global.citation' | trans({}, 'global') }}</small></p>
-                                    </blockquote>
-                                    <figcaption class="blockquote-footer">
-                                        {{ 'global.citation.auteur' | trans({}, 'global') | raw }}
-                                    </figcaption>
-                                </figure>
                             </div>
                         </div>
-                    </div>
-                    <div class="text-center mt-5 text-muted">
-                        {{ 'global.licence'|trans({'year': 'now' | date('Y')}, 'global') | raw }}
-                    </div>
+                    {% endif %}
+
+                    {% if error %}
+
+                        <div class="alert alert-danger-light">
+                            <svg class="alert-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                            </svg>
+
+                            <div class="alert-content">
+                                <div class="alert-message">
+                                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <form class="space-y-4 md:space-y-6" method="POST">
+                        <div>
+                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ 'user.login_user.email' | trans({}, 'user') }}</label>
+                            <input type="email" name="email" id="email" value="{{ last_username }}" class="form-input" placeholder="name@company.com" required="">
+                        </div>
+                        <div>
+                            <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                            <input type="password" name="password" id="password" placeholder="••••••••" class="form-input" required="">
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-start">
+                                <div class="flex items-center h-5">
+                                    <input type="checkbox" name="_remember_me" id="remember" aria-describedby="remember" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800">
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="remember" class="text-gray-500 dark:text-gray-300">
+                                        {{ 'user.login_user.remember_me' | trans({}, 'user') }}
+                                    </label>
+                                </div>
+                            </div>
+                            <a href="{{ path('auth_reset_password_user') }}" class="text-sm link"> {{ 'user.login_user.forgot_password' | trans({}, 'user') }}</a>
+                        </div>
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                        <button type="submit" class="btn btn-primary btn-md w-full">
+                            {{ 'user.login_user.btn_login' | trans({}, 'user') }}
+                        </button>
+                    </form>
                 </div>
             </div>
+            <p class="text-center text-sm mt-6" style="color: var(--text-secondary);">
+                {{ 'global.licence'|trans({'year': 'now' | date('Y')}, 'global') | raw }}
+            </p>
         </div>
     </section>
 {% endblock %}

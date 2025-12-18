@@ -18,3 +18,16 @@ grid.copy.error: 'Une erreur est survenue lors de la copie'
 grid.query.title: 'Requête SQL'
 grid.filter.only.me: 'Afficher mes données'
 grid.filter.all: 'Afficher toutes les données'
+grid.search.placeholder.table.search: 'Rechercher dans le tableau'
+grid.search.text.bdd.search: 'Dans la base de données'
+grid.search.title.search: Rechercher
+grid.search.text.table.search: 'Dans le tableau'
+grid.text.show.query: 'Afficher le SQL'
+grid.text.hide.query: 'Masquer le SQL'
+grid.trie.title.option: 'Autres options'
+grid.text.show.trie.option: "Plus d'options"
+grid.text.hide.trie.option: 'Masquer les options'
+grid.trie.option.liste.field: Colonnes
+grid.trie.option.liste.order: Ordre
+grid.trie.option.btn: Trier
+grid.trie.title.option.sub: 'Options de trie'

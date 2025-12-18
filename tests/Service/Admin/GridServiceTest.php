@@ -58,7 +58,7 @@ class GridServiceTest extends AppWebTestCase
 
         /** @var UserService $userService */
         $userService = $this->container->get(UserService::class);
-        $paginate = $userService->getAllPaginate(1, 5);
+        $paginate = $userService->getAllPaginate(1, 5, []);
 
         $result = $this->gridService->getFormatedSQLQuery($paginate);
         $this->assertIsString($result);

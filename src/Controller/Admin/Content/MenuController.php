@@ -10,10 +10,10 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
-use App\Utils\Breadcrumb;
 use App\Utils\Content\Menu\MenuConvertToArray;
 use App\Utils\Content\Menu\MenuPopulate;
 use App\Utils\System\Options\OptionSystemKey;
@@ -43,8 +43,8 @@ class MenuController extends AppAdminController
     public function index(): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'menu',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'menu',
+            Breadcrumb::BREADCRUMB->value => [
                 'menu.index.page_title_h1' => '#',
             ],
         ];
@@ -173,8 +173,8 @@ class MenuController extends AppAdminController
         }
 
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'menu',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'menu',
+            Breadcrumb::BREADCRUMB->value => [
                 'menu.index.page_title' => 'admin_menu_index',
                 $breadcrumbTitle => '#',
             ],

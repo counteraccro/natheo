@@ -10,10 +10,10 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Media\Media;
 use App\Entity\Admin\Content\Media\MediaFolder;
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\Content\Media\MediaFolderService;
 use App\Service\Admin\Content\Media\MediaService;
 use App\Service\Admin\System\OptionSystemService;
-use App\Utils\Breadcrumb;
 use App\Utils\Translate\Content\MediaTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -38,8 +38,8 @@ class MediaController extends AppAdminController
     public function index(MediaTranslate $mediaTranslate): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'media',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'media',
+            Breadcrumb::BREADCRUMB->value => [
                 'media.index.page_title_h1' => '#',
             ],
         ];

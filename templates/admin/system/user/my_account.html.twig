@@ -3,111 +3,314 @@
 {% block title %}{{ 'user.page_my_account.title' | trans({}, 'user') }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'user.page_my_account.title_h1' | trans({}, 'user') }}</h1>
+
+    <style>
+        .avatar-preview {
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avatar-upload-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            cursor: pointer;
+        }
+
+        .avatar-preview:hover .avatar-upload-overlay {
+            opacity: 1;
+        }
+    </style>
 
     {{ breadcrumb(breadcrumb) }}
+    <h1 class="head-title">
+        <svg class="w-7 h-7" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+        </svg>
+        {{ 'user.page_my_account.title_h1' | trans({}, 'user') }}</h1>
 
-    <p>
+    <p class="text-sm text-[var(--text-secondary)] mb-3">
         {{ 'user.page_my_account.description' | trans({}, 'user') }}
     </p>
 
-    <div class="row">
-        <div class="col-6">
-            <div class="card border border-secondary">
-                <div class="card-header text-bg-secondary">
-                    {{ 'user.page_my_account.profil' | trans({}, 'user') }}
+    {{ form_start(form) }}
+    <div class="card rounded-lg p-6 mb-4">
+        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+            <h2 class="text-lg font-bold text-[var(--text-primary)]">
+                {{ 'user.page_my_account.avatar' | trans({}, 'user') }}
+            </h2>
+            <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+                {{ 'user.page_my_account.avatar.subtitle' | trans({}, 'user') }}
+            </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+            <div class="avatar-preview">
+                {% if user.avatar is not null %}
+                    <img src="{{ asset(avatarDirectory ~ user.avatar) }}" class="w-30 h-max object-fit-cover" />
+                {% else %}
+                    <span class="bg-[var(--primary)] p-5">{{ field_value(form.email) | slice(0,2) }}</span>
+                {% endif %}
+                <div class="avatar-upload-overlay"
+                     onclick="document.getElementById('{{ field_id(form.avatar) }}').click()">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
                 </div>
-                <div class="card-body">
-                    {{ form_start(form) }}
-                    {{ form_row(form.email) }}
+            </div>
+            <div>
+                <div class="form-group">
 
-                    <fieldset class="mb-3">
-                        <legend> {{ 'user.page_my_account.personal_data' | trans({}, 'user') }}</legend>
+                    <h3 class="font-semibold mb-2 text-[var(--text-primary)]">{{ 'user.page_my_account.avatar.recommandation' | trans({}, 'user') }}</h3>
 
-                        <p>
-                            <i class="bi bi-info-circle-fill"></i> {{ 'user.page_my_account.personal_data.description' | trans({}, 'user') }}
-                        </p>
+                    <ul class="space-y-1 text-sm text-[var(--text-secondary)]">
+                        <li class="flex items-start gap-2">
+                            <svg class="icon-sm flex-shrink-0 mt-0.5" style="color: var(--primary);" fill="none"
+                                 stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            {{ 'user.page_my_account.avatar.format' | trans({}, 'user') }}
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="icon-sm flex-shrink-0 mt-0.5" style="color: var(--primary);" fill="none"
+                                 stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            {{ 'user.page_my_account.avatar.weight' | trans({}, 'user') }}
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="icon-sm flex-shrink-0 mt-0.5" style="color: var(--primary);" fill="none"
+                                 stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            {{ 'user.page_my_account.avatar.size' | trans({}, 'user') }}
+                        </li>
+                    </ul>
 
-                        {{ form_row(form.login) }}
+                    <div class="form-file mt-3">
+                        <input type="file" class="form-file-input" id="{{ field_id(form.avatar) }}"
+                               name="{{ field_name(form.avatar) }}">
 
-                        {{ form_row(form.firstname)}}
+                        <div class="flex gap-10">
+                            <label for="{{ field_id(form.avatar) }}" class="form-file-label">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                </svg>
+                                {{ field_label(form.avatar) }}
+                            </label>
 
-                        {{ form_row(form.lastname)}}
-
-                    </fieldset>
-
-                    <fieldset class="mb-3">
-                        <legend> {{ 'user.page_my_account.other_data' | trans({}, 'user') }}</legend>
-
-                        {% if user.avatar is not null %}
-                            <img src="{{ asset(avatarDirectory ~ user.avatar) }}" class="float-end border mb-2" style="vertical-align: middle; width: 50px; height: 50px; border-radius: 50%;" />
-                        {% endif %}
-
-                        {{ form_row(form.avatar) }}
-                        {{ form_row(form.description) }}
-
-                    </fieldset>
-
-                    {{ form_row(form.save) }}
-
-                    {{ form_rest(form) }}
-
-                    {{ form_end(form) }}
-
-                    <i class="float-end">{{ 'user.page_my_account.last_update' | trans({}, 'user') }} {{ diff_now(user.updateAt) }}</i>
+                            {% if user.avatar is not null %}
+                            <a href="{{ path('admin_user_delete_avatar') }}" class="btn btn-danger btn-md">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                                {{ 'user.page_my_account.avatar.delete' | trans({}, 'user') }}
+                            </a>
+                            {% endif %}
+                        </div>
+                        <span class="form-file-name"
+                              id="file-name-{{ field_id(form.avatar) }}">{{ field_help(form.avatar) }}</span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-6">
-            <div class="card border border-secondary">
-                <div class="card-header text-bg-secondary">
-                    {{ 'user.page_my_account.password_change' | trans({}, 'user') }}
-                </div>
-                <div class="card-body">
-                    <div {{ vue_component('Admin/System/User/ChangePassword', {'url_change_password' : path('admin_user_change_my_password'),
-                        'translate' : changePasswordTranslate}) }}></div>
+    </div>
+
+    <div class="card rounded-lg p-6 mb-4 pb-14">
+
+        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+            <h2 class="text-lg font-bold text-[var(--text-primary)]">
+                {{ 'user.page_my_account.personal_data' | trans({}, 'user') }}
+            </h2>
+            <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+                {{ 'user.page_my_account.personal_data.description' | trans({}, 'user') }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ field_label(form.email) }}</label>
+            <input type="text" class="form-input" value="{{ field_value(form.email) }}" placeholder="{{ 'user.page_my_account.email.placeholder' | trans({}, 'user') }}"
+                   id="{{ field_id(form.email) }}" name="{{ field_name(form.email) }}" disabled>
+            <span class="form-text">{{ field_help(form.email) }}</span>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ field_label(form.login) }}</label>
+            <input type="text" class="form-input" value="{{ field_value(form.login) }}" placeholder="{{ 'user.page_my_account.login.placeholder' | trans({}, 'user') }}"
+                   id="{{ field_id(form.login) }}" name="{{ field_name(form.login) }}">
+            <span class="form-text">{{ field_help(form.login) }}</span>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ field_label(form.firstname) }}</label>
+            <input type="text" class="form-input" value="{{ field_value(form.firstname) }}" placeholder="{{ 'user.page_my_account.firstname.placeholder' | trans({}, 'user') }}"
+                   id="{{ field_id(form.firstname) }}" name="{{ field_name(form.firstname) }}">
+            <span class="form-text">{{ field_help(form.firstname) }}</span>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ field_label(form.lastname) }}</label>
+            <input type="text" class="form-input" value="{{ field_value(form.lastname) }}" placeholder="{{ 'user.page_my_account.lastname.placeholder' | trans({}, 'user') }}"
+                   id="{{ field_id(form.lastname) }}" name="{{ field_name(form.lastname) }}">
+            <span class="form-text">{{ field_help(form.lastname) }}</span>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ field_label(form.description) }}</label>
+            <textarea type="text" class="form-input" id="{{ field_id(form.description) }}"
+                      name="{{ field_name(form.description) }}">{{ field_value(form.description) }}</textarea>
+            <span class="form-text">{{ field_help(form.description) }}</span>
+        </div>
+
+        {{ form_end(form) }}
+
+    </div>
+
+    <div class="card rounded-lg p-6 mb-4">
+
+        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+            <h2 class="text-lg font-bold text-[var(--text-primary)]">
+                {{ 'user.page_my_account.password_change' | trans({}, 'user') }}
+            </h2>
+            <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+                {{ 'user.page_my_account.password_change.description' | trans({}, 'user') }}
+            </div>
+        </div>
+
+        <div {{ vue_component('Admin/System/User/ChangePassword', {'url_change_password' : path('admin_user_change_my_password'),
+            'translate' : changePasswordTranslate, 'fullScreen' : true}) }}></div>
+    </div>
+
+
+
+    {% if not is_granted(constant('App\\Utils\\System\\User\\Role::ROLE_SUPER_ADMIN')) %}
+        <div class="card rounded-lg p-6 mb-4" style="border-color: var(--btn-danger);">
+            <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+                <h2 class="text-lg font-bold text-[var(--btn-danger)]">
+                    {{ 'user.page_my_account.danger' | trans({}, 'user') }}
+                </h2>
+                <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+                    {{ 'user.page_my_account.danger.description' | trans({}, 'user') }}
                 </div>
             </div>
 
-            <!-- A changer, le role doit être géré depuis le script JS et non ici -->
-            {% if is_granted(constant('App\\Utils\\System\\User\\Role::ROLE_SUPER_ADMIN')) %}
-                <div class="card mt-3 border border-secondary">
-                    <div class="card-header text-bg-secondary">
-                        {{ 'user.page_my_account.options.divers' | trans({}, 'user') }}
-                    </div>
-                    <div class="card-body">
-                        <div {{ vue_component('Admin/System/User/MyAccountMoreOptions', {'url' : path('admin_user_update_user_data'),
-                            'translate' : moreOptionsTranslate,
-                            'datas' : moreOptionsDatas
-                        }) }}></div>
-                    </div>
-                </div>
-            {% endif %}
 
-            {% if not is_granted(constant('App\\Utils\\System\\User\\Role::ROLE_SUPER_ADMIN')) %}
-                <div class="card mt-3 border border-danger">
-                    <div class="card-header text-bg-danger">
-                        {{ 'user.page_my_account.danger' | trans({}, 'user') }}
-                    </div>
-                    <div class="card-body">
-                        <div {{ vue_component('Admin/System/User/MyAccountDangerZone', {'url_disabled' : path('admin_user_self_disabled'),
-                            'url_delete' : path('admin_user_self_delete'),
-                            'translate' : dangerZoneTranslate,
-                            'can_delete' : canDelete, 'can_replace' : canReplace
-                        }) }}></div>
-                    </div>
-                </div>
-            {% endif %}
+            <div {{ vue_component('Admin/System/User/MyAccountDangerZone', {'url_disabled' : path('admin_user_self_disabled'),
+                'url_delete' : path('admin_user_self_delete'),
+                'translate' : dangerZoneTranslate,
+                'can_delete' : canDelete, 'can_replace' : canReplace
+            }) }}></div>
+
         </div>
+    {% endif %}
+
+    {% if is_granted(constant('App\\Utils\\System\\User\\Role::ROLE_SUPER_ADMIN')) %}
+        <div class="card rounded-lg p-6">
+            <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+                <h2 class="text-lg font-bold text-[var(--text-primary)]">
+                    {{ 'user.page_my_account.options.divers' | trans({}, 'user') }}
+                </h2>
+                <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+                    {{ 'user.page_my_account.options.divers.description' | trans({}, 'user') }}
+                </div>
+            </div>
+
+            <div {{ vue_component('Admin/System/User/MyAccountMoreOptions', {'url' : path('admin_user_update_user_data'),
+                'translate' : moreOptionsTranslate,
+                'datas' : moreOptionsDatas
+            }) }}></div>
+        </div>
+    {% endif %}
+
+    <div class="card rounded-lg p-6 mt-4">
+
+        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+            <h2 class="text-lg font-bold text-[var(--text-primary)]">
+                {{ 'user.page_my_account.statistiques' | trans({}, 'user') }}
+            </h2>
+            <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+                {{ 'user.page_my_account.statistiques.description' | trans({}, 'user') }}
+            </div>
+        </div>
+
+        <div>...</div>
     </div>
 
-    <div class="card mt-3 border border-secondary">
-        <div class="card-header text-bg-secondary">
-            {{ 'user.page_my_account.statistiques' | trans({}, 'user') }}
-        </div>
-        <div class="card-body">
-            <i>TODO SOON...</i>
-        </div>
-    </div>
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div id="toast-alert-my-account" class="fixed flex items-center w-full max-w-xs p-4 text-body bg-neutral-primary-soft rounded-base shadow-xs border border-default top-5 end-5 border-[var(--alert-success-border)] bg-white" role="alert">
+                <div
+                    class="inline-flex items-center justify-center shrink-0 w-8 h-8 rounded-lg bg-[var(--alert-success-bg)] text-[var(--alert-success-text)]"
+                >
+                    <svg
+                        class="w-5 h-5"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                    >
+                        <path
+                            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"
+                        />
+                    </svg>
+                    <span class="sr-only">Check icon</span>
+                </div>
+                <div class="ms-3 text-xs font-normal text-[var(--alert-success-text)]">
+                    {{ message }}
+                </div>
+                <button
+                    type="button" id="close-flash"
+                    class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+                    aria-label="Close"
+                >
+                    <span class="sr-only">Close</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                        />
+                    </svg>
+                </button>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <script language='javascript'>
+
+        setTimeout(() => {
+            let element = document.getElementById('toast-alert-my-account');
+            element.classList.add('hidden');
+        }, 3000);
+
+        document.getElementById('{{ field_id(form.avatar) }}').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || '{{ 'user.page_my_account.avatar.nofield' | trans({}, 'user') }}';
+            document.getElementById('file-name-{{ field_id(form.avatar) }}').textContent = fileName;
+        });
+    </script>
 
 {% endblock %}

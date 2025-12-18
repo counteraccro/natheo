@@ -1,15 +1,18 @@
-<nav id="sidebar">
-    <div class="sidebar-header">
-        <h3>
-            <i class="bi {{ get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_LOGO_SITE'))}}"></i>
-            <span class="d-none-mini">{{ get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_SITE_NAME')) }}</span>
-        </h3>
-    </div>
-    <ul class="list-unstyled components">
-        {{ getSidebar(app.current_route) }}
-    </ul>
+<aside class="sidebar w-64 flex-shrink-0 overflow-y-auto" id="sidebar">
+    <div class="p-4">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold text-white">{{ get_option_system_value_by_key(constant('App\\Utils\\System\\Options\\OptionSystemKey::OS_SITE_NAME')) }}</h2>
+            <!-- Bouton fermer pour mobile -->
+            <button class="lg:hidden text-white" onclick="toggleMobileSidebar()">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
 
-    <div class="fixed-bottom d-none-mini" style="width: 250px;">
-        {{ getVersion() }}
+        <!-- Menu Navigation -->
+        <nav class="space-y-1">
+            {{ getSidebar(app.current_route) }}
+        </nav>
     </div>
-</nav>
+</aside>

@@ -16,9 +16,8 @@ use App\Service\Installation\InstallationService;
 use App\Service\SecurityService;
 use App\Utils\System\Mail\KeyWord;
 use App\Utils\System\Mail\MailKey;
-use App\Utils\System\User\UserdataKey;
+use App\Utils\System\User\UserDataKey;
 use App\Utils\Translate\System\UserTranslate;
-use Doctrine\ORM\NonUniqueResultException;
 use League\CommonMark\Exception\CommonMarkException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -193,5 +192,15 @@ class SecurityController extends AbstractController
         return $this->render('security/admin/reset_password.html.twig', [
             'msg' => $msg,
         ]);
+    }
+
+    /**
+     * Vérification pour authentification
+     * @return never
+     */
+    #[Route('/login_check', name: 'login_check')]
+    public function check(): never
+    {
+        throw new \LogicException('This code should never be reached');
     }
 }

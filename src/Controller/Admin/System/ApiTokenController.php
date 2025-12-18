@@ -4,15 +4,13 @@ namespace App\Controller\Admin\System;
 
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\System\ApiToken;
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\System\ApiTokenService;
-use App\Utils\Breadcrumb;
-use App\Utils\System\ApiToken\ApiTokenConst;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\System\ApiTokenTranslate;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,8 +33,8 @@ class ApiTokenController extends AppAdminController
     public function index(): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'api_token',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'api_token',
+            Breadcrumb::BREADCRUMB->value => [
                 'api_token.page_title_h1' => '#',
             ],
         ];
@@ -140,8 +138,8 @@ class ApiTokenController extends AppAdminController
         }
 
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'api_token',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'api_token',
+            Breadcrumb::BREADCRUMB->value => [
                 'api_token.page_title' => 'admin_api_token_index',
                 $breadcrumbTitle => '#',
             ],

@@ -10,6 +10,7 @@ namespace App\Controller\Admin\System;
 
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Global\Breadcrumb;
 use App\Form\Admin\User\MyAccountType;
 use App\Form\Admin\User\UserAddType;
 use App\Form\Admin\User\UserType;
@@ -20,7 +21,6 @@ use App\Service\Admin\System\OptionUserService;
 use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
 use App\Service\LoggerService;
-use App\Utils\Breadcrumb;
 use App\Utils\Flash\FlashKey;
 use App\Utils\Notification\NotificationKey;
 use App\Utils\System\Mail\KeyWord;
@@ -65,8 +65,8 @@ class UserController extends AppAdminController
     public function index(): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'user',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'user',
+            Breadcrumb::BREADCRUMB->value => [
                 'user.page_title_h1' => '#',
             ],
         ];
@@ -87,8 +87,8 @@ class UserController extends AppAdminController
     public function userOption(): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'user',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'user',
+            Breadcrumb::BREADCRUMB->value => [
                 'user.my_option_title_h1' => '#',
             ],
         ];
@@ -132,8 +132,14 @@ class UserController extends AppAdminController
         int $page = 1,
         int $limit = 20,
     ): JsonResponse {
-        $search = $request->query->get('search');
-        $grid = $userService->getAllFormatToGrid($page, $limit, $search);
+        $queryParams = [
+            'search' => $request->query->get('search'),
+            'orderField' => $request->query->get('orderField'),
+            'order' => $request->query->get('order'),
+            'locale' => $request->getLocale(),
+        ];
+
+        $grid = $userService->getAllFormatToGrid($page, $limit, $queryParams);
         return $this->json($grid);
     }
 
@@ -225,15 +231,19 @@ class UserController extends AppAdminController
     #[Route('/update/{id}', name: 'update', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]
     public function update(
-        #[MapEntity(id: 'id')] User $user,
         UserService $userService,
         Request $request,
         TranslatorInterface $translator,
         UserDataService $userDataService,
+        #[MapEntity(id: 'id')] ?User $user = null,
     ): Response {
+        if ($user === null) {
+            return $this->redirectToRoute('admin_user_index');
+        }
+
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'user',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'user',
+            Breadcrumb::BREADCRUMB->value => [
                 'user.page_title_h1' => 'admin_user_index',
                 'user.page_update_title_h1_2' => '#',
             ],
@@ -298,8 +308,8 @@ class UserController extends AppAdminController
         #[Autowire('%app.folder.upload.avatar%')] string $avatarDirectory,
     ): Response {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'user',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'user',
+            Breadcrumb::BREADCRUMB->value => [
                 'user.page_my_account.title_h1' => '#',
             ],
         ];
@@ -362,6 +372,30 @@ class UserController extends AppAdminController
             'canDelete' => $canDelete,
             'canReplace' => $canReplace,
         ]);
+    }
+
+    #[Route('/delete-avatar', name: 'delete_avatar', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
+    public function deleteAvatar(
+        UserService $userService,
+        TranslatorInterface $translator,
+        #[Autowire('%app.folder.upload.avatar%')] string $avatarDirectory,
+    ): RedirectResponse {
+        $user = $this->getUser();
+
+        if ($this->getUser()->getAvatar() !== null) {
+            $fileSystem = new Filesystem();
+
+            echo $avatarDirectory . DIRECTORY_SEPARATOR . $user->getAvatar();
+            $fileSystem->remove($avatarDirectory . DIRECTORY_SEPARATOR . $user->getAvatar());
+
+            $this->getUser()->setAvatar(null);
+            $userService->save($user);
+        }
+
+        $this->addFlash(FlashKey::FLASH_SUCCESS, $translator->trans('user.delete_avatar.success', domain: 'user'));
+
+        return $this->redirectToRoute('admin_user_my_account');
     }
 
     /**
@@ -593,8 +627,8 @@ class UserController extends AppAdminController
         MailService $mailService,
     ): Response {
         $breadcrumb = [
-            Breadcrumb::DOMAIN => 'user',
-            Breadcrumb::BREADCRUMB => [
+            Breadcrumb::DOMAIN->value => 'user',
+            Breadcrumb::BREADCRUMB->value => [
                 'user.page_title_h1' => 'admin_user_index',
                 'user.page_add_title_h1' => '#',
             ],
@@ -654,6 +688,8 @@ class UserController extends AppAdminController
      * @param Request $request
      * @param LoggerService $loggerService
      * @return RedirectResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/switch', name: 'switch', methods: ['GET'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]

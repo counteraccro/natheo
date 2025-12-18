@@ -1,21 +1,21 @@
 <?php
 /**
+ *
  * @author Gourdon Aymeric
  * @version 1.0
- * Service pour constantes du fil d'Ariane
  */
 
-namespace App\Utils;
+namespace App\Enum\Admin\Global;
 
-class Breadcrumb
+enum Breadcrumb: string
 {
     /**
      * Défini le domaine de traduction
      */
-    const DOMAIN = 'domain';
+    case DOMAIN = 'domain';
 
     /**
      * Clé du tableau pour construire le fil d'Ariane
      */
-    const BREADCRUMB = 'breadcrumb';
+    case BREADCRUMB = 'breadcrumb';
 }
