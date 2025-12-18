@@ -3,61 +3,103 @@
 {% block title %}{{ 'user.page_add_title' | trans({}, 'user') }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'user.page_add_title_h1' | trans({}, 'user') }}</h1>
 
     {{ breadcrumb(breadcrumb) }}
+    <h1 class="head-title">
+        <svg class="w-7 h-7" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+        </svg>
+        {{ 'user.page_add_title_h1' | trans({}, 'user') }}</h1>
 
-    <p>
-        {{ 'user.page_add.description' | trans({}, 'user') }} <br/>
+    <p class="text-sm text-[var(--text-secondary)] mb-3">
+        {{ 'user.page_add.description' | trans({}, 'user') }}
     </p>
 
-    <div class="row">
-        <div class="col-6">
-             {{ form_start(form) }}
-            <div class="card border border-secondary">
-                <div class="card-header text-bg-secondary">
-                    {{ 'user.page_add.profil' | trans({}, 'user') }}
-                </div>
-                <div class="card-body">
-
-                    {{ form_row(form.email) }}
-                    {{ form_row(form.roles) }}
-
-                    <fieldset>
-                        <legend> {{ 'user.page_add.personal_data' | trans({}, 'user') }}</legend>
-
-                        <p>
-                            <i class="bi bi-info-circle-fill"></i> {{ 'user.page_add.personal_data.description' | trans({}, 'user') }}
-                        </p>
-
-                        {{ form(form) }}
-                    </fieldset>
-                </div>
-            </div>
-            {{ form_end(form) }}
+    {{ form_start(form) }}
+    <div class="card rounded-lg p-6 mb-4 mt-4">
+        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+            <h2 class="text-lg font-bold text-[var(--text-primary)]"> {{ 'user.page_add.profil' | trans({}, 'user') }}</h2>
+            <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]"> {{ 'user.page_add.profil.description' | trans({}, 'user') }} </p>
         </div>
-        <div class="col-6">
-            <div class="card border border-secondary">
-                <div class="card-header text-bg-secondary">
-                    {{ 'user.page_add.information' | trans({}, 'user') }}
-                </div>
-                <div class="card-body">
 
-                    <p>
-                        <i class="bi bi-info-circle-fill"></i> {{ 'user.page_add.information.role.info' | trans({}, 'user') }}
-                    </p>
+        <div class="form-group">
+            <label class="form-label">{{ field_label(form.email) }}</label>
+            <input type="email" class="form-input" value="{{ field_value(form.email) }}"
+                   placeholder="{{ field_label(form.email) }}" required
+                   id="{{ field_id(form.email) }}" name="{{ field_name(form.email) }}">
+            <span class="form-text">{{ field_help(form.email) }}</span>
+        </div>
 
-                    {{ 'user.page_add.information.liste_role' | trans({}, 'user') }}
-                    <ul>
-                        <li><b>{{ 'user.page_add.information.role.user' | trans({}, 'user') }}</b> : {{ 'user.page_add.information.role.user.info' | trans({}, 'user') }}</li>
-                        <li><b>{{ 'user.page_add.information.role.contributeur' | trans({}, 'user') }}</b> : {{ 'user.page_add.information.role.contributeur.info' | trans({}, 'user') }}</li>
-                        <li><b>{{ 'user.page_add.information.role.admin' | trans({}, 'user') }}</b> : {{ 'user.page_add.information.role.admin.info' | trans({}, 'user') }}</li>
-                        <li><b>{{ 'user.page_add.information.role.super_admin' | trans({}, 'user') }}</b> : {{ 'user.page_add.information.role.super_admin.info' | trans({}, 'user') }}</li>
-                    </ul>
-                </div>
-            </div>
+        <div class="form-group">
+            <label class="form-label">{{ field_label(form.roles) }}</label>
+            <select class="form-input" id="{{ field_id(form.roles) }}" name="{{ field_name(form.roles) }}">
+                {% for label, value in field_choices(form.roles) %}
+                    <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+            <span class="form-text">{{ field_help(form.roles) }}</span>
+        </div>
 
+    </div>
+
+    <div class="card rounded-lg p-6 mb-4 mt-4 pb-14">
+        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+            <h2 class="text-lg font-bold text-[var(--text-primary)]"> {{ 'user.page_add.personal_data' | trans({}, 'user') }}</h2>
+            <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]"> {{ 'user.page_add.personal_data.description' | trans({}, 'user') }} </p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ field_label(form.login) }}</label>
+            <input type="text" class="form-input" value="{{ field_value(form.login) }}"
+                   placeholder="{{ field_label(form.login) }}"
+                   id="{{ field_id(form.login) }}" name="{{ field_name(form.login) }}">
+            <span class="form-text">{{ field_help(form.login) }}</span>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ field_label(form.firstname) }}</label>
+            <input type="text" class="form-input" value="{{ field_value(form.firstname) }}"
+                   placeholder="{{ field_label(form.firstname) }}"
+                   id="{{ field_id(form.firstname) }}" name="{{ field_name(form.firstname) }}">
+            <span class="form-text">{{ field_help(form.firstname) }}</span>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ field_label(form.lastname) }}</label>
+            <input type="text" class="form-input" value="{{ field_value(form.lastname) }}"
+                   placeholder="{{ field_label(form.lastname) }}"
+                   id="{{ field_id(form.lastname) }}" name="{{ field_name(form.lastname) }}">
+            <span class="form-text">{{ field_help(form.lastname) }}</span>
+        </div>
+
+        {{ form(form) }}
+    </div>
+
+    <div class="card card rounded-lg p-6 mb-4 mt-4">
+
+        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+            <h2 class="text-lg font-bold text-[var(--text-primary)]">  {{ 'user.page_add.information' | trans({}, 'user') }}</h2>
+            <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]"> {{ 'user.page_add.information.description' | trans({}, 'user') }} </p>
+        </div>
+
+        <div class="text-sm text-[var(--text-secondary)]">
+
+            <p class="mb-2">{{ 'user.page_add.information.role.info' | trans({}, 'user') }}</p>
+
+            {{ 'user.page_add.information.liste_role' | trans({}, 'user') }}
+            <ul class="list-inside list-disc mt-2 ms-2">
+                <li><b>{{ 'user.page_add.information.role.user' | trans({}, 'user') }}</b>
+                    : {{ 'user.page_add.information.role.user.info' | trans({}, 'user') }}</li>
+                <li><b>{{ 'user.page_add.information.role.contributeur' | trans({}, 'user') }}</b>
+                    : {{ 'user.page_add.information.role.contributeur.info' | trans({}, 'user') }}</li>
+                <li><b>{{ 'user.page_add.information.role.admin' | trans({}, 'user') }}</b>
+                    : {{ 'user.page_add.information.role.admin.info' | trans({}, 'user') }}</li>
+                <li><b>{{ 'user.page_add.information.role.super_admin' | trans({}, 'user') }}</b>
+                    : {{ 'user.page_add.information.role.super_admin.info' | trans({}, 'user') }}</li>
+            </ul>
         </div>
     </div>
+    {{ form_end(form) }}
 
 {% endblock %}

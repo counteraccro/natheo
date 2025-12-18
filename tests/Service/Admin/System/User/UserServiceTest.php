@@ -42,7 +42,7 @@ class UserServiceTest extends AppWebTestCase
     {
         $user = $this->createUser();
         $this->createUserContributeur();
-        $result = $this->userService->getAllFormatToGrid(1, 10);
+        $result = $this->userService->getAllFormatToGrid(1, 10, []);
 
         $this->assertArrayHasKey('nb', $result);
         $this->assertArrayHasKey('data', $result);
@@ -52,7 +52,7 @@ class UserServiceTest extends AppWebTestCase
         $this->assertEquals(2, $result['nb']);
         $this->assertCount(2, $result['data']);
 
-        $result = $this->userService->getAllFormatToGrid(1, 10, $user->getLogin());
+        $result = $this->userService->getAllFormatToGrid(1, 10, ['search' => $user->getLogin()]);
         $this->assertCount(1, $result['data']);
     }
 
@@ -64,11 +64,11 @@ class UserServiceTest extends AppWebTestCase
     public function testGetAllFormatToGridWitchSearch(): void
     {
         $user = $this->createUser();
-        $result = $this->userService->getAllFormatToGrid(1, 10, self::getFaker()->name());
+        $result = $this->userService->getAllFormatToGrid(1, 10, ['search' => self::getFaker()->name()]);
         $this->assertEquals(0, $result['nb']);
         $this->assertCount(0, $result['data']);
 
-        $result = $this->userService->getAllFormatToGrid(1, 10, $user->getLogin());
+        $result = $this->userService->getAllFormatToGrid(1, 10, ['search' => $user->getLogin()]);
         $this->assertEquals(1, $result['nb']);
         $this->assertCount(1, $result['data']);
     }

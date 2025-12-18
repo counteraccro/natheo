@@ -296,7 +296,10 @@ export default {
           <span v-else>0 {{ this.translate.ongletPage.title }}</span>
         </p>
 
-        <div v-if="this.results.page === null && !this.loading.page">
+        <div
+          v-if="this.results.page === null && !this.loading.page"
+          class="mt-4 text-center text-sm text-[var(--text-secondary)] italic"
+        >
           {{ this.translate.ongletPage.noResult }}
         </div>
         <div v-if="this.results.page !== null" class="mt-2">
@@ -327,7 +330,10 @@ export default {
           <span v-else>0 {{ this.translate.ongletMenu.title }}</span>
         </p>
 
-        <div v-if="this.results.menu === null && !this.loading.menu">
+        <div
+          v-if="this.results.menu === null && !this.loading.menu"
+          class="mt-4 text-center text-sm text-[var(--text-secondary)] italic"
+        >
           {{ this.translate.ongletMenu.noResult }}
         </div>
         <div v-if="this.results.menu !== null" class="mt-2">
@@ -358,7 +364,10 @@ export default {
           <span v-else>0 {{ this.translate.ongletFaq.title }}</span>
         </p>
 
-        <div v-if="this.results.faq === null && !this.loading.faq">
+        <div
+          v-if="this.results.faq === null && !this.loading.faq"
+          class="mt-4 text-center text-sm text-[var(--text-secondary)] italic"
+        >
           {{ this.translate.ongletFaq.noResult }}
         </div>
         <div v-if="this.results.faq !== null">
@@ -389,7 +398,10 @@ export default {
           <span v-else>0 {{ this.translate.ongletTag.title }}</span>
         </p>
 
-        <div v-if="this.results.tag === null && !this.loading.tag">
+        <div
+          v-if="this.results.tag === null && !this.loading.tag"
+          class="mt-4 text-center text-sm text-[var(--text-secondary)] italic"
+        >
           {{ this.translate.ongletTag.noResult }}
         </div>
 
@@ -421,8 +433,11 @@ export default {
           <span v-else>0 {{ this.translate.ongletUser.title }}</span>
         </p>
 
-        <div v-if="this.results.user === null && !this.loading.tag">
-          {{ this.translate.ongletTag.noResult }}
+        <div
+          v-if="this.results.user === null && !this.loading.tag"
+          class="mt-4 text-center text-sm text-[var(--text-secondary)] italic"
+        >
+          {{ this.translate.ongletUser.noResult }}
         </div>
 
         <div v-if="this.results.user !== null">

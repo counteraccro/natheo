@@ -56,6 +56,10 @@ class TagTranslate extends AppTranslate
                 'tag.form.modale.confirm.delete.btn.ko',
                 domain: 'tag',
             ),
+            'styleTitle' => $this->translator->trans('tag.form.style.title', domain: 'tag'),
+            'styleDescription' => $this->translator->trans('tag.form.style.description', domain: 'tag'),
+            'textTitle' => $this->translator->trans('tag.form.text.title', domain: 'tag'),
+            'textDescription' => $this->translator->trans('tag.form.text.description', domain: 'tag'),
         ];
     }
 }

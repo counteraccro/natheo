@@ -78,7 +78,7 @@ class TagRepository extends ServiceEntityRepository
             $query->orderBy(TagTranslation::DEFAULT_ALIAS . '.' . $orderField, $order);
         }
 
-        if (isset($queryParams['search']) && $queryParams['search'] !== null) {
+        if (isset($queryParams['search']) && $queryParams['search'] !== '') {
             $query
                 ->andWhere(TagTranslation::DEFAULT_ALIAS . '.label like :search')
                 ->setParameter('search', '%' . $queryParams['search'] . '%');
