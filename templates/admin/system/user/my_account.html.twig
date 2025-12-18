@@ -311,10 +311,6 @@
             const fileName = e.target.files[0]?.name || '{{ 'user.page_my_account.avatar.nofield' | trans({}, 'user') }}';
             document.getElementById('file-name-{{ field_id(form.avatar) }}').textContent = fileName;
         });
-
-        document.getElementById('close-flash').addEventListener('click', function(e) {
-            alert(e);
-        });
     </script>
 
 {% endblock %}

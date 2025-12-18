@@ -231,12 +231,16 @@ class UserController extends AppAdminController
     #[Route('/update/{id}', name: 'update', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_SUPER_ADMIN')]
     public function update(
-        #[MapEntity(id: 'id')] User $user,
         UserService $userService,
         Request $request,
         TranslatorInterface $translator,
         UserDataService $userDataService,
+        #[MapEntity(id: 'id')] ?User $user = null,
     ): Response {
+        if ($user === null) {
+            return $this->redirectToRoute('admin_user_index');
+        }
+
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'user',
             Breadcrumb::BREADCRUMB->value => [
