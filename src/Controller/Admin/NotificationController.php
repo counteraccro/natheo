@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
 #[
     Route(
@@ -92,6 +93,7 @@ class NotificationController extends AppAdminController
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws ExceptionInterface
      */
     #[Route('/ajax/list/{page}/{limit}/{pOnlyNotRead}', name: 'list', methods: ['GET'])]
     public function list(
@@ -109,6 +111,7 @@ class NotificationController extends AppAdminController
         /** @var User $user */
         $user = $this->getUser();
         $notifications = $notificationService->getByUserPaginate($page, $limit, $user, $onlyNotRead);
+        $notifications = $notificationService->convertEntityToArray($notifications, ['user']);
 
         return $this->json([
             'notifications' => $notifications,
