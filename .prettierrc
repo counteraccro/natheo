@@ -17,6 +17,7 @@
         {
             "files": "*.twig",
             "options": {
+                "parser": "melody",
                 "tabWidth": 4,
                 "twigPrintWidth": 120
             }
