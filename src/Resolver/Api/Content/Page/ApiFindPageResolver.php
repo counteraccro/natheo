@@ -38,9 +38,9 @@ class ApiFindPageResolver extends AppApiResolver implements ValueResolverInterfa
 
         foreach ($tabParameters as $parameter => $value) {
             if (in_array($parameter, ['show_menus', 'show_tags', 'show_statistiques'])) {
-                $value = $request->get($parameter, true);
+                $value = $request->query->get($parameter, true);
             } else {
-                $value = $request->get($parameter, '');
+                $value = $request->query->get($parameter, '');
             }
 
             if ($parameter === ApiParametersFindPageRef::PARAM_MENU_POSITION && !empty($value)) {

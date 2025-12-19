@@ -37,7 +37,7 @@ class ApiFindPageContentResolver extends AppApiResolver implements ValueResolver
         $tabParameters = ApiParametersFindPageContentRef::PARAMS_REF;
 
         foreach ($tabParameters as $parameter => $value) {
-            $value = $request->get($parameter, '');
+            $value = $request->query->get($parameter, '');
 
             if (empty($value) && isset(ApiParametersFindPageContentRef::PARAMS_DEFAULT_VALUE[$parameter])) {
                 $value = ApiParametersFindPageContentRef::PARAMS_DEFAULT_VALUE[$parameter];

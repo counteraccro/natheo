@@ -38,7 +38,7 @@ class ApiFindPageTagResolver extends AppApiResolver implements ValueResolverInte
         $tabParameters = ApiParametersFindPageTagRef::PARAMS_REF;
 
         foreach ($tabParameters as $parameter => $value) {
-            $value = $request->get($parameter, '');
+            $value = $request->query->get($parameter, '');
 
             if (empty($value) && isset(ApiParametersFindPageTagRef::PARAMS_DEFAULT_VALUE[$parameter])) {
                 $value = ApiParametersFindPageTagRef::PARAMS_DEFAULT_VALUE[$parameter];

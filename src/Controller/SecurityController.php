@@ -164,7 +164,7 @@ class SecurityController extends AbstractController
         TranslatorInterface $translator,
     ): Response {
         $msg = '';
-        $email = $request->get('email');
+        $email = $request->query->get('email');
 
         if (!empty($email)) {
             $msg = $translator->trans('user.reset_password.success', domain: 'user');
