@@ -17,6 +17,7 @@
         <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
         <server name="SYMFONY_PHPUNIT_VERSION" value="12" />
         <ini name="memory_limit" value="512M"/>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[direct]=0&amp;max[indirect]=999999" />
     </php>
 
     <testsuites>
