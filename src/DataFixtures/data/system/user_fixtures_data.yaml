@@ -1,8 +1,8 @@
 user:
   User:
-    email: josette59@chauvin.net
-    password: $2y$04$z4flToxp8dkcyLflrAMVV.mDVZ/nzr2nv.r4G7Sks5dOj0MgwMmru
-    login: perez.michel
+    email: marty.zacharie@sfr.fr
+    password: $2y$04$Qg1IZCVJ1vrkrwpSKjD.9ejWod2C2rdx/YMpCOsRTSGjoOL9LJz82
+    login: bernard.hugues
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN

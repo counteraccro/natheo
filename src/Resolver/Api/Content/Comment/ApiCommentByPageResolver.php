@@ -39,7 +39,7 @@ class ApiCommentByPageResolver extends AppApiResolver implements ValueResolverIn
 
         $tabParameters = ApiParametersCommentByPageRef::PARAMS_REF;
         foreach ($tabParameters as $parameter => $value) {
-            $value = $request->get($parameter, '');
+            $value = $request->query->get($parameter, '');
             if (empty($value) && isset(ApiParametersCommentByPageRef::PARAMS_DEFAULT_VALUE[$parameter])) {
                 $value = ApiParametersCommentByPageRef::PARAMS_DEFAULT_VALUE[$parameter];
             }

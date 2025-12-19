@@ -38,7 +38,7 @@ class ApiFindPageCategoryResolver extends AppApiResolver implements ValueResolve
         $tabParameters = ApiParametersFindPageCategoryRef::PARAMS_REF;
 
         foreach ($tabParameters as $parameter => $value) {
-            $value = $request->get($parameter, '');
+            $value = $request->query->get($parameter, '');
 
             if (empty($value) && isset(ApiParametersFindPageCategoryRef::PARAMS_DEFAULT_VALUE[$parameter])) {
                 $value = ApiParametersFindPageCategoryRef::PARAMS_DEFAULT_VALUE[$parameter];

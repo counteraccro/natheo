@@ -39,7 +39,7 @@ class ApiFindMenuResolver extends AppApiResolver implements ValueResolverInterfa
 
         $tabParameters = ApiParametersFindMenuRef::PARAMS_REF;
         foreach ($tabParameters as $parameter => $value) {
-            $value = $request->get($parameter, '');
+            $value = $request->query->get($parameter, '');
             if (empty($value) && isset(ApiParametersFindMenuRef::PARAMS_REF_DEFAULT_VALUE[$parameter])) {
                 $value = ApiParametersFindMenuRef::PARAMS_REF_DEFAULT_VALUE[$parameter];
             }

@@ -46,7 +46,7 @@ class GlobalSearchController extends AppAdminController
             ],
         ];
 
-        $search = $request->get('global-search-input', '');
+        $search = $request->request->get('global-search-input', '');
         return $this->render('admin/global_search/index.html.twig', [
             'search' => $search,
             'breadcrumb' => $breadcrumb,
