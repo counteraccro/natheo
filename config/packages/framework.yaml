@@ -4,7 +4,6 @@ framework:
     #csrf_protection: true
     http_method_override: false
     handle_all_throwables: true
-    annotations: false
 
     profiler:
         collect_serializer_data: true
