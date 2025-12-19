@@ -4,7 +4,7 @@
     "tabWidth": 4,
     "trailingComma": "es5",
     "printWidth": 120,
-    "plugins": ["@prettier/plugin-php", "prettier-plugin-twig"],
+    "plugins": ["@prettier/plugin-php", "prettier-plugin-twig-melody"],
     "overrides": [
         {
             "files": "*.php",
@@ -17,6 +17,7 @@
         {
             "files": "*.twig",
             "options": {
+                "parser": "melody",
                 "tabWidth": 4,
                 "twigPrintWidth": 120
             }

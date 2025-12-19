@@ -1719,10 +1719,10 @@ postcss@^8.4.41, postcss@^8.5.1, postcss@^8.5.6:
     picocolors "^1.1.1"
     source-map-js "^1.2.1"
 
-prettier-plugin-twig@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/prettier-plugin-twig/-/prettier-plugin-twig-1.0.1.tgz#41bef66f704689e304184d2229d6b1944e54385b"
-  integrity sha512-Yxfvs33rOGwpNEEhn+dsSzIZUorYAZeuiZGfFgxcZ7Rp3xARDH57RfOTLj7qjWVafdDF9kTAQMdjdfpfLuOy7A==
+prettier-plugin-twig-melody@^0.4.6:
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-twig-melody/-/prettier-plugin-twig-melody-0.4.6.tgz#0ce8f1fac622105ef3e37cc75799402cf9d325c1"
+  integrity sha512-5/sk+0efzxQ4r4hiZiWVQ6mxqaekeOIbGpwLUUtNjcKpAO4HmWsEzXpCEIdq2GjqrgjuPDlknJaa5g4B5Qx/jg==
   dependencies:
     babel-types "^6.26.0"
     melody-extension-core "^1.7.5"
