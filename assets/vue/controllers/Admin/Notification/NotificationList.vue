@@ -241,7 +241,7 @@ export default {
           >
             <div class="card-body">
               <div class="float-end">
-                <i>{{ this.formatDate(notification.createdAt) }}</i>
+                <i>{{ this.formatDate(notification.createdAt.timestamp) }}</i>
               </div>
               <h5 class="card-title">{{ notification.title }}</h5>
               <span class="card-text" v-html="notification.content"></span>

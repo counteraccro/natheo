@@ -22,6 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Attribute\MaxDepth;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email')]
@@ -72,31 +73,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(name: 'update_at', type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updateAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: OptionUser::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: OptionUser::class, mappedBy: 'user', cascade: ['persist'], orphanRemoval: true)]
     private Collection $optionsUser;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Notification::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'user', cascade: ['persist'], orphanRemoval: true)]
     private Collection $notifications;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserData::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: UserData::class, mappedBy: 'user', cascade: ['persist'], orphanRemoval: true)]
     private Collection $userData;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Media::class, orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $medias;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Page::class, orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Page::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $pages;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Faq::class, orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Faq::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $faqs;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: SqlManager::class, orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: SqlManager::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $sqlManagers;
 
     /**
      * @var Collection<int, Menu>
      */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Menu::class, orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Menu::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $menus;
 
     #[ORM\Column(length: 255, nullable: true)]

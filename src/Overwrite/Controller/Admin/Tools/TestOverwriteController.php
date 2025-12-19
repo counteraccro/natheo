@@ -12,7 +12,7 @@ use App\Controller\Admin\AppAdminController;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\System\OptionSystemService;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin/{_locale}/overwrite', name: 'admin_overwrite_', requirements: ['_locale' => '%app.supported_locales%'])]

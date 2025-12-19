@@ -22,7 +22,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[
-    \Symfony\Component\Routing\Annotation\Route(
+    Route(
         '/admin/{_locale}/advanced-options',
         name: 'admin_advanced_options_',
         requirements: ['_locale' => '%app.supported_locales%'],

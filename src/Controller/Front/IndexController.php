@@ -10,7 +10,6 @@ namespace App\Controller\Front;
 use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\System\User;
 use App\Service\Admin\System\User\UserDataService;
-use App\Service\Admin\System\User\UserService;
 use App\Service\Api\Global\ApiSitemapService;
 use App\Utils\Translate\Front\FrontTranslate;
 use Psr\Container\ContainerExceptionInterface;
@@ -19,7 +18,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Translation\LocaleSwitcher;
 
 #[
@@ -65,9 +64,9 @@ class IndexController extends AppFrontController
 
     /**
      * Redirige vers la connexion
+     * @param Request $request
      * @param UserDataService $userDataService
      * @param FrontTranslate $frontTranslate
-     * @param LocaleSwitcher $localeSwitcher
      * @param ContainerBagInterface $containerBag
      * @param string|null $locale
      * @param string|null $slug
