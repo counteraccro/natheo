@@ -119,11 +119,17 @@ class DevExtension extends AppAdminExtension
         foreach ($users as $user) {
             /** @var User $user */
             $url = $loginLinkHandler->createLoginLink($user);
+
+            $avatar = null;
+            if ($user->getAvatar() !== null) {
+                $avatar = '/' . $this->parameterBag->get('app.path.avatar') . $user->getAvatar();
+            }
+
             $return[] = [
                 'url' => $url,
                 'firstLetter' => ucfirst($user->getLogin()[0]),
                 'login' => $user->getLogin(),
-                'avatar' => '/' . $this->parameterBag->get('app.path.avatar') . $user->getAvatar(),
+                'avatar' => $avatar,
                 'role' => $gridService->renderRole($user->getRoles()[0]),
             ];
         }
