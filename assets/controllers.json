@@ -1,12 +1,9 @@
 {
     "controllers": {
-        "vue": {
-            "enabled": true,
-            "fetch": "eager",
-            "autoimport": {
-                "tom-select/dist/css/tom-select.default.css": false,
-                "tom-select/dist/css/tom-select.bootstrap5.css": false,
-                "tom-select": false
+        "@symfony/ux-vue": {
+            "vue": {
+                "enabled": true,
+                "fetch": "eager"
             }
         }
     },
