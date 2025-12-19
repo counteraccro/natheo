@@ -24,13 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[
-    \Symfony\Component\Routing\Annotation\Route(
-        '/{_locale}/installation',
-        name: 'installation_',
-        requirements: ['_locale' => '%app.supported_locales%'],
-    ),
-]
+#[Route('/{_locale}/installation', name: 'installation_', requirements: ['_locale' => '%app.supported_locales%'])]
 class InstallationController extends AbstractController
 {
     #[Route('/', name: 'index', methods: ['GET'])]

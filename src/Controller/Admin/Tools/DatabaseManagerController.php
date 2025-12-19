@@ -25,7 +25,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[
-    \Symfony\Component\Routing\Annotation\Route(
+    Route(
         '/admin/{_locale}/database-manager',
         name: 'admin_database_manager_',
         requirements: ['_locale' => '%app.supported_locales%'],

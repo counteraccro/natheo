@@ -18,13 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[
-    \Symfony\Component\Routing\Annotation\Route(
-        '/admin/{_locale}/search',
-        name: 'admin_search_',
-        requirements: ['_locale' => '%app.supported_locales%'],
-    ),
-]
+#[Route('/admin/{_locale}/search', name: 'admin_search_', requirements: ['_locale' => '%app.supported_locales%'])]
 #[IsGranted('ROLE_USER')]
 class GlobalSearchController extends AppAdminController
 {
