@@ -2,13 +2,15 @@
 /**
  * Création de notifications
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  */
 
 namespace App\Utils\Notification;
 
 use App\Entity\Admin\Notification;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Global\Notification\KeyConfig;
+use App\Enum\Admin\Global\Notification\Notification as NotificationEnum;
 
 class NotificationFactory
 {
@@ -46,12 +48,12 @@ class NotificationFactory
      */
     public function addNotification(string $key, array $params): NotificationFactory
     {
-        if (!isset(NotificationKey::TAB_NOTIFICATIONS[$key])) {
+        if (!NotificationEnum::isExist($key)) {
             return $this;
         }
-        $tabNotif = NotificationKey::TAB_NOTIFICATIONS[$key];
+        $tabNotif = NotificationEnum::getNotification($key);
 
-        $tabParameter = $tabNotif[NotificationKey::KEY_PARAMETER];
+        $tabParameter = $tabNotif[KeyConfig::PARAMETERS->value];
         foreach ($params as $key => $value) {
             if (isset($tabParameter[$key])) {
                 $tabParameter[$key] = $value;
@@ -59,9 +61,9 @@ class NotificationFactory
         }
 
         $notification = $this->createNotification();
-        $notification->setTitle($tabNotif[NotificationKey::KEY_TITLE]);
-        $notification->setContent($tabNotif[NotificationKey::KEY_CONTENT]);
-        $notification->setLevel($tabNotif[NotificationKey::KEY_LEVEL]);
+        $notification->setTitle($tabNotif[KeyConfig::TITLE->value]);
+        $notification->setContent($tabNotif[KeyConfig::CONTENT->value]);
+        $notification->setLevel($tabNotif[KeyConfig::LEVEL->value]);
         $notification->setParameters(json_encode($tabParameter));
 
         return $this;
