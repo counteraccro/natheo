@@ -51,7 +51,7 @@ enum Notification: string
 
     private const CONFIG = [
         self::WELCOME->value => [
-            KeyConfig::CATEGORY->value => Category::ADMIN,
+            KeyConfig::CATEGORY->value => Category::ADMIN->value,
             KeyConfig::LEVEL->value => Level::INFO->value,
             KeyConfig::PARAMETERS->value => [
                 'login' => '',
@@ -62,7 +62,7 @@ enum Notification: string
             KeyConfig::CONTENT->value => 'notification.msg.welcome.content',
         ],
         self::SELF_DISABLED->value => [
-            KeyConfig::CATEGORY->value => Category::ADMIN,
+            KeyConfig::CATEGORY->value => Category::ADMIN->value,
             KeyConfig::LEVEL->value => Level::WARNING->value,
             KeyConfig::PARAMETERS->value => [
                 'login' => '',
@@ -71,7 +71,7 @@ enum Notification: string
             KeyConfig::CONTENT->value => 'notification.msg.self_disabled.content',
         ],
         self::SELF_DELETE->value => [
-            KeyConfig::CATEGORY->value => Category::ADMIN,
+            KeyConfig::CATEGORY->value => Category::ADMIN->value,
             KeyConfig::LEVEL->value => Level::WARNING->value,
             KeyConfig::PARAMETERS->value => [
                 'login' => '',
@@ -80,7 +80,7 @@ enum Notification: string
             KeyConfig::CONTENT->value => 'notification.msg.self_delete.content',
         ],
         self::SELF_ANONYMOUS->value => [
-            KeyConfig::CATEGORY->value => Category::ADMIN,
+            KeyConfig::CATEGORY->value => Category::ADMIN->value,
             KeyConfig::LEVEL->value => Level::WARNING->value,
             KeyConfig::PARAMETERS->value => [
                 'login' => '',
@@ -89,7 +89,7 @@ enum Notification: string
             KeyConfig::CONTENT->value => 'notification.msg.self_anonymous.content',
         ],
         self::DUMP_SQL->value => [
-            KeyConfig::CATEGORY->value => Category::SQL,
+            KeyConfig::CATEGORY->value => Category::SQL->value,
             KeyConfig::LEVEL->value => Level::INFO->value,
             KeyConfig::PARAMETERS->value => [
                 'file' => '',
@@ -99,7 +99,7 @@ enum Notification: string
             KeyConfig::CONTENT->value => 'notification.msg.dump_sql.content',
         ],
         self::NEW_FONDATEUR->value => [
-            KeyConfig::CATEGORY->value => Category::ADMIN,
+            KeyConfig::CATEGORY->value => Category::ADMIN->value,
             KeyConfig::LEVEL->value => Level::INFO->value,
             KeyConfig::PARAMETERS->value => [
                 'login' => '',
