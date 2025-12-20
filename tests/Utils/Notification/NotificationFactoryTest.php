@@ -7,9 +7,9 @@
 namespace App\Tests\Utils\Notification;
 
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Global\Notification\Notification;
 use App\Tests\AppWebTestCase;
 use App\Utils\Notification\NotificationFactory;
-use App\Utils\Notification\NotificationKey;
 
 class NotificationFactoryTest extends AppWebTestCase
 {
@@ -21,7 +21,7 @@ class NotificationFactoryTest extends AppWebTestCase
     {
         $user = $this->createUser();
         $factory = new NotificationFactory($user);
-        $factory->addNotification(NotificationKey::NOTIFICATION_SELF_DELETE, ['login' => $user->getLogin()]);
+        $factory->addNotification(Notification::SELF_DELETE->value, ['login' => $user->getLogin()]);
 
         $user = $factory->getUser();
         $this->assertInstanceOf(User::class, $user);

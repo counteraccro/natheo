@@ -9,9 +9,9 @@ namespace App\DataFixtures\Admin\System;
 
 use App\DataFixtures\AppFixtures;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Global\Notification\Notification;
 use App\Service\Admin\NotificationService;
 use App\Service\Admin\System\OptionUserService;
-use App\Utils\Notification\NotificationKey;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -106,7 +106,7 @@ class UserFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                 }
             }
             $user = $this->optionUserService->createOptionsUser($user);
-            $user = $this->notificationService->addForFixture($user, NotificationKey::NOTIFICATION_WELCOME, [
+            $user = $this->notificationService->addForFixture($user, Notification::WELCOME->value, [
                 'login' => $user->getLogin(),
                 'role' => $user->getRoles()[0],
             ]);

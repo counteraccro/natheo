@@ -51,6 +51,7 @@ enum Notification: string
 
     private const CONFIG = [
         self::WELCOME->value => [
+            KeyConfig::CATEGORY->value => Category::ADMIN,
             KeyConfig::LEVEL->value => Level::INFO->value,
             KeyConfig::PARAMETERS->value => [
                 'login' => '',
@@ -60,48 +61,53 @@ enum Notification: string
             KeyConfig::TITLE->value => 'notification.msg.welcome.title',
             KeyConfig::CONTENT->value => 'notification.msg.welcome.content',
         ],
-        /*self::NOTIFICATION_SELF_DISABLED => [
-            self::KEY_PARAMETER => [
+        self::SELF_DISABLED->value => [
+            KeyConfig::CATEGORY->value => Category::ADMIN,
+            KeyConfig::LEVEL->value => Level::WARNING->value,
+            KeyConfig::PARAMETERS->value => [
                 'login' => '',
             ],
-            self::KEY_TITLE => 'notification.msg.self_disabled.title',
-            self::KEY_CONTENT => 'notification.msg.self_disabled.content',
-            self::KEY_LEVEL => self::LEVEL_WARNING,
+            KeyConfig::TITLE->value => 'notification.msg.self_disabled.title',
+            KeyConfig::CONTENT->value => 'notification.msg.self_disabled.content',
         ],
-        self::NOTIFICATION_SELF_DELETE => [
-            self::KEY_PARAMETER => [
+        self::SELF_DELETE->value => [
+            KeyConfig::CATEGORY->value => Category::ADMIN,
+            KeyConfig::LEVEL->value => Level::WARNING->value,
+            KeyConfig::PARAMETERS->value => [
                 'login' => '',
             ],
-            self::KEY_TITLE => 'notification.msg.self_delete.title',
-            self::KEY_CONTENT => 'notification.msg.self_delete.content',
-            self::KEY_LEVEL => self::LEVEL_WARNING,
+            KeyConfig::TITLE->value => 'notification.msg.self_delete.title',
+            KeyConfig::CONTENT->value => 'notification.msg.self_delete.content',
         ],
-        self::NOTIFICATION_SELF_ANONYMOUS => [
-            self::KEY_PARAMETER => [
+        self::SELF_ANONYMOUS->value => [
+            KeyConfig::CATEGORY->value => Category::ADMIN,
+            KeyConfig::LEVEL->value => Level::WARNING->value,
+            KeyConfig::PARAMETERS->value => [
                 'login' => '',
             ],
-            self::KEY_TITLE => 'notification.msg.self_anonymous.title',
-            self::KEY_CONTENT => 'notification.msg.self_anonymous.content',
-            self::KEY_LEVEL => self::LEVEL_WARNING,
+            KeyConfig::TITLE->value => 'notification.msg.self_anonymous.title',
+            KeyConfig::CONTENT->value => 'notification.msg.self_anonymous.content',
         ],
-        self::NOTIFICATION_DUMP_SQL => [
-            self::KEY_PARAMETER => [
+        self::DUMP_SQL->value => [
+            KeyConfig::CATEGORY->value => Category::SQL,
+            KeyConfig::LEVEL->value => Level::INFO->value,
+            KeyConfig::PARAMETERS->value => [
                 'file' => '',
                 'url' => '',
             ],
-            self::KEY_TITLE => 'notification.msg.dump_sql.title',
-            self::KEY_CONTENT => 'notification.msg.dump_sql.content',
-            self::KEY_LEVEL => self::LEVEL_INFO,
+            KeyConfig::TITLE->value => 'notification.msg.dump_sql.title',
+            KeyConfig::CONTENT->value => 'notification.msg.dump_sql.content',
         ],
-        self::NOTIFICATION_NEW_FONDATEUR => [
-            self::KEY_PARAMETER => [
+        self::NEW_FONDATEUR->value => [
+            KeyConfig::CATEGORY->value => Category::ADMIN,
+            KeyConfig::LEVEL->value => Level::INFO->value,
+            KeyConfig::PARAMETERS->value => [
                 'login' => '',
                 'url_aide' => '',
             ],
-            self::KEY_TITLE => 'notification.msg.new_fondateur.title',
-            self::KEY_CONTENT => 'notification.msg.new_fondateur.content',
-            self::KEY_LEVEL => self::LEVEL_INFO,
-        ],*/
+            KeyConfig::TITLE->value => 'notification.msg.new_fondateur.title',
+            KeyConfig::CONTENT->value => 'notification.msg.new_fondateur.content',
+        ],
         self::NEW_COMMENT->value => [
             KeyConfig::CATEGORY->value => Category::COMMENT->value,
             KeyConfig::LEVEL->value => Level::INFO->value,

@@ -277,6 +277,10 @@ class ApiCommentControllerTest extends AppApiTestCase
 
         // page id
         $page = $this->createPage(customData: ['isOpenComment' => true, 'disabled' => false]);
+        $pageTranslation = $this->createPageTranslation($page, ['locale' => 'fr']);
+        $page->addPageTranslation($pageTranslation);
+        $this->persistAndFlush($page);
+
         $this->client->request(
             'POST',
             $this->router->generate('api_comment_add_comment', ['api_version' => self::API_VERSION]),
@@ -292,6 +296,7 @@ class ApiCommentControllerTest extends AppApiTestCase
             ]),
         );
         $response = $this->client->getResponse();
+
         $this->assertEquals(201, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);

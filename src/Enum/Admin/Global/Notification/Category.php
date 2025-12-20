@@ -12,4 +12,6 @@ enum Category: string
     case COMMENT = 'comment';
 
     case ADMIN = 'admin';
+
+    case SQL = 'SQL';
 }

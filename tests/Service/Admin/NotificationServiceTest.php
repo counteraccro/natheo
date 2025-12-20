@@ -8,11 +8,12 @@
 namespace App\Tests\Service\Admin;
 
 use App\Entity\Admin\Notification;
+use App\Enum\Admin\Global\Notification\KeyConfig;
+use App\Enum\Admin\Global\Notification\Notification as NotificationEnum;
 use App\Entity\Admin\System\User;
 use App\Service\Admin\NotificationService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
-use App\Utils\Notification\NotificationKey;
 use App\Utils\System\Options\OptionSystemKey;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -45,7 +46,7 @@ class NotificationServiceTest extends AppWebTestCase
         $optionSystemService = $this->container->get(OptionSystemService::class);
         $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '0');
 
-        $this->notificationService->add($user, NotificationKey::NOTIFICATION_SELF_DELETE, [
+        $this->notificationService->add($user, NotificationEnum::SELF_DELETE->value, [
             'login' => $user->getLogin(),
         ]);
 
@@ -54,17 +55,17 @@ class NotificationServiceTest extends AppWebTestCase
 
         $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '1');
 
-        $this->notificationService->add($user, NotificationKey::NOTIFICATION_SELF_DELETE, [
+        $this->notificationService->add($user, NotificationEnum::SELF_DELETE->value, [
             'login' => $user->getLogin(),
         ]);
         $user = $this->notificationService->findOneById(User::class, $user->getId());
         $this->assertCount(1, $user->getNotifications());
         $notification = $user->getNotifications()->first();
 
-        $tab = NotificationKey::TAB_NOTIFICATIONS[NotificationKey::NOTIFICATION_SELF_DELETE];
-        $this->assertEquals($tab[NotificationKey::KEY_TITLE], $notification->getTitle());
-        $this->assertEquals($tab[NotificationKey::KEY_CONTENT], $notification->getContent());
-        $this->assertEquals($tab[NotificationKey::KEY_LEVEL], $notification->getLevel());
+        $tab = NotificationEnum::getNotification(NotificationEnum::SELF_DELETE->value);
+        $this->assertEquals($tab[KeyConfig::TITLE->value], $notification->getTitle());
+        $this->assertEquals($tab[KeyConfig::CONTENT->value], $notification->getContent());
+        $this->assertEquals($tab[KeyConfig::LEVEL->value], $notification->getLevel());
     }
 
     /**
@@ -79,23 +80,23 @@ class NotificationServiceTest extends AppWebTestCase
 
         $optionSystemService = $this->container->get(OptionSystemService::class);
         $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '0');
-        $user = $this->notificationService->addForFixture($user, NotificationKey::NOTIFICATION_SELF_DISABLED, [
+        $user = $this->notificationService->addForFixture($user, NotificationEnum::SELF_DISABLED->value, [
             'login' => $user->getLogin(),
         ]);
         $this->assertCount(0, $user->getNotifications());
 
         $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '1');
-        $user = $this->notificationService->addForFixture($user, NotificationKey::NOTIFICATION_SELF_DISABLED, [
+        $user = $this->notificationService->addForFixture($user, NotificationEnum::SELF_DISABLED->value, [
             'login' => $user->getLogin(),
         ]);
         $this->assertCount(1, $user->getNotifications());
 
         $notification = $user->getNotifications()->first();
 
-        $tab = NotificationKey::TAB_NOTIFICATIONS[NotificationKey::NOTIFICATION_SELF_DISABLED];
-        $this->assertEquals($tab[NotificationKey::KEY_TITLE], $notification->getTitle());
-        $this->assertEquals($tab[NotificationKey::KEY_CONTENT], $notification->getContent());
-        $this->assertEquals($tab[NotificationKey::KEY_LEVEL], $notification->getLevel());
+        $tab = NotificationEnum::getNotification(NotificationEnum::SELF_DISABLED->value);
+        $this->assertEquals($tab[KeyConfig::TITLE->value], $notification->getTitle());
+        $this->assertEquals($tab[KeyConfig::CONTENT->value], $notification->getContent());
+        $this->assertEquals($tab[KeyConfig::LEVEL->value], $notification->getLevel());
     }
 
     /**
@@ -127,16 +128,16 @@ class NotificationServiceTest extends AppWebTestCase
     public function testGetByUserPaginate(): void
     {
         $user = $this->createUser();
-        $this->notificationService->add($user, NotificationKey::NOTIFICATION_SELF_DELETE, [
+        $this->notificationService->add($user, NotificationEnum::SELF_DELETE->value, [
             'login' => $user->getLogin(),
         ]);
-        $this->notificationService->add($user, NotificationKey::NOTIFICATION_SELF_DISABLED, [
+        $this->notificationService->add($user, NotificationEnum::SELF_DISABLED->value, [
             'login' => $user->getLogin(),
         ]);
-        $this->notificationService->add($user, NotificationKey::NOTIFICATION_SELF_ANONYMOUS, [
+        $this->notificationService->add($user, NotificationEnum::SELF_ANONYMOUS->value, [
             'login' => $user->getLogin(),
         ]);
-        $this->notificationService->add($user, NotificationKey::NOTIFICATION_NEW_FONDATEUR, [
+        $this->notificationService->add($user, NotificationEnum::NEW_FONDATEUR->value, [
             'login' => $user->getLogin(),
             'url_aide' => '#',
         ]);

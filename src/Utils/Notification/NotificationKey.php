@@ -89,7 +89,7 @@ class NotificationKey
     /**
      * Tableau de notification
      */
-    const TAB_NOTIFICATIONS = [
+    /*const TAB_NOTIFICATIONS = [
         self::NOTIFICATION_WELCOME => [
             self::KEY_PARAMETER => [
                 'login' => '',
@@ -142,5 +142,5 @@ class NotificationKey
             self::KEY_CONTENT => 'notification.msg.new_fondateur.content',
             self::KEY_LEVEL => self::LEVEL_INFO,
         ],
-    ];
+    ];*/
 }
