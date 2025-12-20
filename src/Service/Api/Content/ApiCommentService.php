@@ -13,11 +13,14 @@ use App\Dto\Api\Content\Comment\ApiModerateCommentDto;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Global\Notification\Notification;
 use App\Repository\Admin\Content\Comment\CommentRepository;
 use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
 use App\Utils\Content\Comment\CommentConst;
 use App\Utils\Content\Page\PageConst;
+use App\Utils\Notification\NotificationFactory;
+use App\Utils\Notification\NotificationKey;
 use App\Utils\System\Options\OptionSystemKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -144,6 +147,15 @@ class ApiCommentService extends AppApiService
         $comment->setStatus($status);
         $comment->setDisabled(false);
 
+        $notificationFactory = new NotificationFactory($page->getUser());
+        $notificationFactory->addNotification(Notification::NEW_COMMENT->value, [
+            'author' => $dto->getAuthor(),
+            'status' => $status,
+            'page' => $page->getPageTranslationByLocale($dto->getLocale())->getTitre(),
+        ]);
+        $user = $notificationFactory->getUser();
+
+        $this->save($user);
         $this->save($comment);
 
         return $comment;
