@@ -41,6 +41,9 @@ class Notification
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $parameters = null;
 
+    #[ORM\Column(length: 100)]
+    private ?string $category = null;
+
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
@@ -132,6 +135,18 @@ class Notification
     public function setParameters(?string $parameters): self
     {
         $this->parameters = $parameters;
+
+        return $this;
+    }
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(string $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }

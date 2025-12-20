@@ -64,6 +64,7 @@ class NotificationFactory
         $notification->setTitle($tabNotif[KeyConfig::TITLE->value]);
         $notification->setContent($tabNotif[KeyConfig::CONTENT->value]);
         $notification->setLevel($tabNotif[KeyConfig::LEVEL->value]);
+        $notification->setCategory($tabNotif[KeyConfig::CATEGORY->value]);
         $notification->setParameters(json_encode($tabParameter));
 
         return $this;
