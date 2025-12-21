@@ -145,17 +145,18 @@ class ApiCommentService extends AppApiService
         $comment->setUserAgent($dto->getUserAgent());
         $comment->setStatus($status);
         $comment->setDisabled(false);
+        $this->save($comment);
 
         $notificationFactory = new NotificationFactory($page->getUser());
         $notificationFactory->addNotification(Notification::NEW_COMMENT->value, [
             'author' => $dto->getAuthor(),
             'status' => $status,
             'page' => $page->getPageTranslationByLocale($dto->getLocale())->getTitre(),
+            'comment' => $comment->getId(),
         ]);
         $user = $notificationFactory->getUser();
 
         $this->save($user);
-        $this->save($comment);
 
         return $comment;
     }
