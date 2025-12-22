@@ -15,6 +15,7 @@ use App\Service\Admin\NotificationService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
+use App\Utils\Translate\NotificationTranslate;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Psr\Container\ContainerExceptionInterface;
@@ -99,6 +100,7 @@ class NotificationController extends AppAdminController
     public function list(
         Request $request,
         NotificationService $notificationService,
+        NotificationTranslate $notificationTranslate,
         GridService $gridService,
         int $page = 1,
         int $limit = 20,
@@ -115,7 +117,7 @@ class NotificationController extends AppAdminController
 
         return $this->json([
             'notifications' => $notifications,
-            'translation' => $notificationService->getTranslateListNotifications(),
+            'translation' => $notificationTranslate->getTranslate(),
             'urlRead' => $this->generateUrl('admin_notification_read'),
             'urlReadAll' => $this->generateUrl('admin_notification_read_all'),
             'listLimit' => $gridService->addOptionsSelectLimit([])['listLimit'],
