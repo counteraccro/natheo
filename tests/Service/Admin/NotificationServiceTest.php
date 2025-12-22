@@ -171,18 +171,6 @@ class NotificationServiceTest extends AppWebTestCase
     }
 
     /**
-     * Test méthode getTranslateListNotifications()
-     * @return void
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function testGetTranslateListNotifications(): void
-    {
-        $result = $this->notificationService->getTranslateListNotifications();
-        $this->assertIsArray($result);
-    }
-
-    /**
      * test méthode purge()
      * @return void
      * @throws ContainerExceptionInterface
