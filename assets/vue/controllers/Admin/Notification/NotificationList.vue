@@ -1,13 +1,16 @@
 <script>
-import axios from 'axios';
-
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Permet d'afficher la liste des notifications
  */
+import axios from 'axios';
+import SkeletonCardStat from '@/vue/Components/Skeleton/CardStat.vue';
+import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
+
 export default {
   name: 'NotificationList',
+  components: { SkeletonTabs, SkeletonCardStat },
   props: {
     url: String,
     urlPurge: String,
@@ -23,6 +26,7 @@ export default {
       listLimit: Object,
       cLimit: this.limit,
       loading: false,
+      loadingStat: true,
       locale: '',
       onlyNotRead: 1,
       allReadSuccess: false,
@@ -193,7 +197,115 @@ export default {
 </script>
 
 <template>
-  <div :class="this.loading === true ? 'block-grid' : ''">
+  <div v-if="this.loadingStat">
+    <SkeletonCardStat />
+  </div>
+  <div v-else class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+    <div class="card rounded-lg p-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium" style="color: var(--text-secondary)">Non lues -tr</p>
+          <p class="text-2xl font-bold mt-1" id="unreadCount">5</p>
+        </div>
+        <div
+          class="w-12 h-12 rounded-lg flex items-center justify-center"
+          style="background-color: rgba(139, 92, 246, 0.1)"
+        >
+          <svg class="w-6 h-6" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+            ></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="card rounded-lg p-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium" style="color: var(--text-secondary)">Aujourd'hui -tr</p>
+          <p class="text-2xl font-bold mt-1" id="todayCount">8</p>
+        </div>
+        <div
+          class="w-12 h-12 rounded-lg flex items-center justify-center"
+          style="background-color: rgba(16, 185, 129, 0.1)"
+        >
+          <svg
+            class="w-6 h-6"
+            style="color: var(--status-validated)"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="card rounded-lg p-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium" style="color: var(--text-secondary)">Total -tr</p>
+          <p class="text-2xl font-bold mt-1" id="totalCount">23</p>
+        </div>
+        <div
+          class="w-12 h-12 rounded-lg flex items-center justify-center"
+          style="background-color: rgba(59, 130, 246, 0.1)"
+        >
+          <svg class="w-6 h-6" style="color: var(--btn-info)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+            ></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div v-if="this.loading">
+    <skeleton-tabs />
+  </div>
+  <div v-else>
+    <div>
+      <div class="flex items-center gap-2 float-end">
+        <button class="btn btn-outline-dark px-4 py-2 text-sm" onclick="markAllAsRead()">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+          Tout marquer comme lu -tr
+        </button>
+        <button class="btn btn-ghost-primary px-3 py-2" onclick="deleteAllRead()">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!--<div :class="this.loading === true ? 'block-grid' : ''">
     <div v-if="this.loading" class="overlay">
       <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000">
         <div class="spinner-border text-primary" role="status"></div>
@@ -265,7 +377,7 @@ export default {
         </div>
       </div>
     </div>
-  </div>
+  </div>-->
 </template>
 
 <style scoped></style>
