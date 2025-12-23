@@ -12,25 +12,29 @@ export default {
   name: 'NotificationList',
   components: { SkeletonTabs, SkeletonCardStat },
   props: {
-    url: String,
-    urlPurge: String,
+    urls: Object,
     page: Number,
     limit: Number,
+    translation: Object,
   },
   data() {
     return {
       notifications: [],
-      translation: Object,
       urlRead: '',
       urlReadAll: '',
       listLimit: Object,
       cLimit: this.limit,
-      loading: false,
+      loading: true,
       loadingStat: true,
       locale: '',
       onlyNotRead: 1,
       allReadSuccess: false,
       allReadBtn: true,
+      stats: {
+        nb_noRead: 0,
+        nb_today: 0,
+        nb_total: 0,
+      },
     };
   },
   mounted() {
@@ -38,6 +42,23 @@ export default {
     this.purge();
   },
   methods: {
+    loadStatistic() {
+      axios
+        .get(this.urls.statistics)
+        .then((response) => {
+          this.stats.nb_noRead = response.data.nb_noRead;
+          this.stats.nb_today = response.data.nb_today;
+          this.stats.nb_total = response.data.nb_total;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loadingStat = false;
+          this.canAllRead();
+        });
+    },
+
     /**
      * Chargement des données
      * @param page
@@ -45,12 +66,10 @@ export default {
      * @param onlyNotRead
      */
     loadData(page, limit, onlyNotRead) {
-      this.loading = true;
       axios
-        .get(this.url + '/' + page + '/' + limit + '/' + onlyNotRead)
+        .get(this.urls.list + '/' + page + '/' + limit + '/' + onlyNotRead)
         .then((response) => {
           this.notifications = response.data.notifications;
-          this.translation = response.data.translation;
           this.urlRead = response.data.urlRead;
           this.urlReadAll = response.data.urlReadAll;
           this.locale = response.data.locale;
@@ -119,12 +138,13 @@ export default {
     /** Lance la purge des notifications **/
     purge() {
       axios
-        .post(this.urlPurge, {})
+        .post(this.urls.purge, {})
         .then((response) => {})
         .catch((error) => {
           console.error(error);
         })
         .finally(() => {
+          this.loadStatistic();
           this.loadData(this.page, this.limit, 0);
         });
     },
@@ -204,8 +224,8 @@ export default {
     <div class="card rounded-lg p-4">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium" style="color: var(--text-secondary)">Non lues -tr</p>
-          <p class="text-2xl font-bold mt-1" id="unreadCount">5</p>
+          <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ this.translation.statNonLu }}</p>
+          <p class="text-2xl font-bold mt-1" id="unreadCount">{{ this.stats.nb_noRead }}</p>
         </div>
         <div
           class="w-12 h-12 rounded-lg flex items-center justify-center"
@@ -226,8 +246,8 @@ export default {
     <div class="card rounded-lg p-4">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium" style="color: var(--text-secondary)">Aujourd'hui -tr</p>
-          <p class="text-2xl font-bold mt-1" id="todayCount">8</p>
+          <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ this.translation.statToday }}</p>
+          <p class="text-2xl font-bold mt-1" id="todayCount">{{ this.stats.nb_today }}</p>
         </div>
         <div
           class="w-12 h-12 rounded-lg flex items-center justify-center"
@@ -254,8 +274,8 @@ export default {
     <div class="card rounded-lg p-4">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium" style="color: var(--text-secondary)">Total -tr</p>
-          <p class="text-2xl font-bold mt-1" id="totalCount">23</p>
+          <p class="text-sm font-medium" style="color: var(--text-secondary)">{{ this.translation.statAll }}</p>
+          <p class="text-2xl font-bold mt-1" id="totalCount">{{ this.stats.nb_total }}</p>
         </div>
         <div
           class="w-12 h-12 rounded-lg flex items-center justify-center"
@@ -289,7 +309,7 @@ export default {
               d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
             ></path>
           </svg>
-          Tout marquer comme lu -tr
+          {{ this.translation.all }}
         </button>
         <button class="btn btn-ghost-primary px-3 py-2" onclick="deleteAllRead()">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

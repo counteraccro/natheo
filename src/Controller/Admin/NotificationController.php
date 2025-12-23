@@ -2,7 +2,7 @@
 /**
  * Gestionnaire des notifications
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  */
 
 namespace App\Controller\Admin;
@@ -40,13 +40,16 @@ class NotificationController extends AppAdminController
     /**
      * Notification de l'Utilisateur
      * @param OptionSystemService $optionSystemService
+     * @param NotificationTranslate $notificationTranslate
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     #[Route('/', name: 'index')]
-    public function index(OptionSystemService $optionSystemService): Response
-    {
+    public function index(
+        OptionSystemService $optionSystemService,
+        NotificationTranslate $notificationTranslate,
+    ): Response {
         if (!$optionSystemService->canNotification()) {
             return $this->redirectToRoute('admin_dashboard_index');
         }
@@ -58,12 +61,23 @@ class NotificationController extends AppAdminController
                 'notification.page_title_h1' => '#',
             ],
         ];
+        $limit = $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT);
 
         return $this->render('admin/notification/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
+            'limit' => intval($limit),
             'nbDay' => $nbDay,
+            'translation' => $notificationTranslate->getTranslate(),
+            'urls' => [
+                'list' => $this->generateUrl('admin_notification_list', [
+                    'page' => 1,
+                    'limit' => $limit,
+                    'pOnlyNotRead' => 1,
+                ]),
+                'statistics' => $this->generateUrl('admin_notification_statistics'),
+                'purge' => $this->generateUrl('admin_notification_purge'),
+            ],
         ]);
     }
 
@@ -71,8 +85,8 @@ class NotificationController extends AppAdminController
      * Retourne le nombre de notifications de l'utilisateur courant
      * @param NotificationService $notificationService
      * @return JsonResponse
-     * @throws NoResultException
-     * @throws NonUniqueResultException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/number', name: 'number', methods: ['GET'])]
     public function number(NotificationService $notificationService): JsonResponse
@@ -93,14 +107,13 @@ class NotificationController extends AppAdminController
      * @param int $pOnlyNotRead
      * @return JsonResponse
      * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      * @throws ExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/list/{page}/{limit}/{pOnlyNotRead}', name: 'list', methods: ['GET'])]
     public function list(
         Request $request,
         NotificationService $notificationService,
-        NotificationTranslate $notificationTranslate,
         GridService $gridService,
         int $page = 1,
         int $limit = 20,
@@ -117,7 +130,6 @@ class NotificationController extends AppAdminController
 
         return $this->json([
             'notifications' => $notifications,
-            'translation' => $notificationTranslate->getTranslate(),
             'urlRead' => $this->generateUrl('admin_notification_read'),
             'urlReadAll' => $this->generateUrl('admin_notification_read_all'),
             'listLimit' => $gridService->addOptionsSelectLimit([])['listLimit'],
@@ -168,12 +180,22 @@ class NotificationController extends AppAdminController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/readAll', name: 'read_all')]
+    #[Route('/ajax/readAll', name: 'read_all', methods: ['GET'])]
     public function readAll(NotificationService $notificationService): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
         $notificationService->readAll($user);
         return $this->json(['success' => true]);
+    }
+
+    #[Route('/ajax/statistics', name: 'statistics', methods: ['GET'])]
+    public function getStatistics(NotificationService $notificationService): JsonResponse
+    {
+        return $this->json([
+            'nb_noRead' => 1,
+            'nb_today' => 10,
+            'nb_total' => 100,
+        ]);
     }
 }

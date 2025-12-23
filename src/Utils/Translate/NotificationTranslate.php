@@ -26,6 +26,9 @@ class NotificationTranslate extends AppTranslate
             'readAll' => $this->translator->trans('notification.read_All', domain: 'notification'),
             'all' => $this->translator->trans('notification.all', domain: 'notification'),
             'allSuccess' => $this->translator->trans('notification.all_success', domain: 'notification'),
+            'statNonLu' => $this->translator->trans('notification.stat_non_lu', domain: 'notification'),
+            'statToday' => $this->translator->trans('notification.stat_today', domain: 'notification'),
+            'statAll' => $this->translator->trans('notification.stat_all', domain: 'notification'),
         ];
     }
 }

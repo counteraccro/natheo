@@ -19,8 +19,7 @@
 
     <div id="notifications">
         <div {{ vue_component('Admin/Notification/NotificationList', {
-            'url' : path('admin_notification_list', {'page' : page, 'limit' : limit, 'pOnlyNotRead' : 1}), 'page' : page, 'limit' : limit,
-            'urlPurge' : path('admin_notification_purge')
+            'urls' : urls , 'page' : page, 'limit' : limit, 'translation' : translation
         }) }}></div>
     </div>
 
