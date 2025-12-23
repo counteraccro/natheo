@@ -22,3 +22,6 @@ notification.only_not_read: __notification.only_not_read
 notification.read_All: __notification.read_All
 notification.all: __notification.all
 notification.all_success: __notification.all_success
+notification.stat_non_lu: __notification.stat_non_lu
+notification.stat_today: __notification.stat_today
+notification.stat_all: __notification.stat_all

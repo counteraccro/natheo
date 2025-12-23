@@ -24,3 +24,6 @@ notification.msg.new_fondateur.title: 'Bienvenue !'
 notification.msg.new_fondateur.content: "Bonjour <b>{login}</b>, Vous venez de finalisez l'installation de Natheo CMS. Encore quelques paramétrages et votre site sera opérationnel. <br /> Pour vous accompagner dans la mise en ligne de votre site, vous pouvez consulter <a href=\"{url_aide}\" target='_blank'>l'aide</a> du site"
 notification.msg.new_comment.title: 'Nouveau commentaire'
 notification.msg.new_comment.content: 'Bonjour, un nouveau commentaire à été ajouté par <b>{author}</b> sur la page <b>{page}</b>, son status est {status}'
+notification.stat_non_lu: 'Non lu'
+notification.stat_today: "Aujourd'hui"
+notification.stat_all: 'Total'
