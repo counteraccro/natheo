@@ -134,4 +134,26 @@ class NotificationService extends AppAdminService
         $repo = $this->getRepository(Notification::class);
         $repo->readAll($user);
     }
+
+    /**
+     * Retourne un tableau de statistiques par user
+     * @param User $user
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getStatisticByUser(User $user): array
+    {
+        /** @var NotificationRepository $repo */
+        $repo = $this->getRepository(Notification::class);
+
+        $nbTotal = $repo->count(['user' => $user->getId()]);
+        $nbNoRead = $repo->count(['user' => $user->getId(), 'read' => 0]);
+        $nbToday = $repo->getNbNotificationByUserDateCreation($user, new \DateTime());
+        return [
+            'nb_noRead' => $nbNoRead,
+            'nb_today' => $nbToday,
+            'nb_total' => $nbTotal,
+        ];
+    }
 }

@@ -192,10 +192,14 @@ class NotificationController extends AppAdminController
     #[Route('/ajax/statistics', name: 'statistics', methods: ['GET'])]
     public function getStatistics(NotificationService $notificationService): JsonResponse
     {
+        /** @var User $user */
+        $user = $this->getUser();
+        $statistics = $notificationService->getStatisticByUser($user);
+
         return $this->json([
-            'nb_noRead' => 1,
-            'nb_today' => 10,
-            'nb_total' => 100,
+            'nb_noRead' => $statistics['nb_noRead'],
+            'nb_today' => $statistics['nb_today'],
+            'nb_total' => $statistics['nb_total'],
         ]);
     }
 }
