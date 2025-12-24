@@ -30,7 +30,7 @@ use Symfony\Component\Serializer\Attribute\MaxDepth;
 #[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    public const DEFAULT_ALIAS = 'user';
+    public const string DEFAULT_ALIAS = 'user';
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
