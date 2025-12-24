@@ -298,29 +298,146 @@ export default {
     <skeleton-tabs />
   </div>
   <div v-else>
-    <div>
-      <div class="flex items-center gap-2 float-end">
-        <button class="btn btn-outline-dark px-4 py-2 text-sm" onclick="markAllAsRead()">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-            ></path>
-          </svg>
-          {{ this.translation.all }}
-        </button>
-        <button class="btn btn-ghost-primary px-3 py-2" onclick="deleteAllRead()">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-            ></path>
-          </svg>
-        </button>
+    <div class="flex items-end gap-2 flex-row-reverse">
+      <button class="btn btn-outline-dark px-4 py-2 text-sm" onclick="markAllAsRead()">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+          ></path>
+        </svg>
+        {{ this.translation.all }}
+      </button>
+      <button class="btn btn-ghost-primary px-3 py-2" onclick="deleteAllRead()">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+          ></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div v-show="!this.loading" class="card rounded-lg mb-6 mt-3">
+    <div class="mb-4 border-b border-default" style="border-color: var(--border-color)">
+      <ul
+        class="flex flex-wrap -mb-px text-sm font-medium text-center px-4 sm:px-6"
+        id="default-tab"
+        data-tabs-toggle="#default-tab-content"
+        data-tabs-active-classes="text-[var(--primary)] border-[var(--primary)]"
+        role="tablist"
+      >
+        <li class="me-2" role="presentation">
+          <button
+            class="inline-block p-4 border-b-2 rounded-t-base border-[var(--primary)]"
+            id="profile-tab"
+            data-tabs-target="#profile"
+            type="button"
+            role="tab"
+            aria-controls="profile"
+            aria-selected="false"
+          >
+            Profile
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button
+            class="inline-block p-4 border-b-2 rounded-t-base hover:text-fg-brand hover:border-brand"
+            id="dashboard-tab"
+            data-tabs-target="#dashboard"
+            type="button"
+            role="tab"
+            aria-controls="dashboard"
+            aria-selected="false"
+          >
+            Dashboard
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button
+            class="inline-block p-4 border-b-2 rounded-t-base hover:text-fg-brand hover:border-brand"
+            id="settings-tab"
+            data-tabs-target="#settings"
+            type="button"
+            role="tab"
+            aria-controls="settings"
+            aria-selected="false"
+          >
+            Settings
+          </button>
+        </li>
+        <li role="presentation">
+          <button
+            class="inline-block p-4 border-b-2 rounded-t-base hover:text-fg-brand hover:border-brand"
+            id="contacts-tab"
+            data-tabs-target="#contacts"
+            type="button"
+            role="tab"
+            aria-controls="contacts"
+            aria-selected="false"
+          >
+            Contacts
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div id="default-tab-content">
+      <div
+        class="hidden p-4 rounded-base bg-neutral-secondary-soft"
+        id="profile"
+        role="tabpanel"
+        aria-labelledby="profile-tab"
+      >
+        <p class="text-sm text-body">
+          This is some placeholder content the
+          <strong class="font-medium text-heading">Profile tab's associated content</strong>. Clicking another tab will
+          toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content
+          visibility and styling.
+        </p>
+      </div>
+      <div
+        class="hidden p-4 rounded-base bg-neutral-secondary-soft"
+        id="dashboard"
+        role="tabpanel"
+        aria-labelledby="dashboard-tab"
+      >
+        <p class="text-sm text-body">
+          This is some placeholder content the
+          <strong class="font-medium text-heading">Dashboard tab's associated content</strong>. Clicking another tab
+          will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content
+          visibility and styling.
+        </p>
+      </div>
+      <div
+        class="hidden p-4 rounded-base bg-neutral-secondary-soft"
+        id="settings"
+        role="tabpanel"
+        aria-labelledby="settings-tab"
+      >
+        <p class="text-sm text-body">
+          This is some placeholder content the
+          <strong class="font-medium text-heading">Settings tab's associated content</strong>. Clicking another tab will
+          toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content
+          visibility and styling.
+        </p>
+      </div>
+      <div
+        class="hidden p-4 rounded-base bg-neutral-secondary-soft"
+        id="contacts"
+        role="tabpanel"
+        aria-labelledby="contacts-tab"
+      >
+        <p class="text-sm text-body">
+          This is some placeholder content the
+          <strong class="font-medium text-heading">Contacts tab's associated content</strong>. Clicking another tab will
+          toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content
+          visibility and styling.
+        </p>
       </div>
     </div>
   </div>
