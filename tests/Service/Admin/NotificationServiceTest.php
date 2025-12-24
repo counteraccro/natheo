@@ -221,4 +221,27 @@ class NotificationServiceTest extends AppWebTestCase
         $result = $this->notificationService->findBy(Notification::class, ['read' => 1]);
         $this->assertCount(5, $result);
     }
+
+    /**
+     * Test de la méthode getStatisticByUser()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetStatisticByUser(): void
+    {
+        $user = $this->createUser();
+        for ($i = 0; $i < 10; $i++) {
+            $data = ['read' => $i % 2];
+            $this->createNotification($user, $data);
+        }
+
+        $result = $this->notificationService->getStatisticByUser($user);
+        $this->assertArrayHasKey('nb_noRead', $result);
+        $this->assertArrayHasKey('nb_today', $result);
+        $this->assertArrayHasKey('nb_total', $result);
+        $this->assertEquals(5, $result['nb_noRead']);
+        $this->assertEquals(10, $result['nb_today']);
+        $this->assertEquals(10, $result['nb_total']);
+    }
 }

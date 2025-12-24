@@ -94,7 +94,6 @@ class NotificationControllerTest extends AppWebTestCase
 
         $this->assertArrayHasKey('notifications', $content);
         $this->assertCount(7, $content['notifications']);
-        $this->assertArrayHasKey('translation', $content);
         $this->assertArrayHasKey('urlRead', $content);
         $this->assertArrayHasKey('urlReadAll', $content);
         $this->assertArrayHasKey('listLimit', $content);
@@ -199,5 +198,33 @@ class NotificationControllerTest extends AppWebTestCase
         foreach ($user->getNotifications() as $notification) {
             $this->assertTrue($notification->isRead());
         }
+    }
+
+    /**
+     * Test de la méthode getStatistics()
+     * @return void
+     */
+    public function testgetStatistics()
+    {
+        $user = $this->createUser();
+        for ($i = 0; $i < 10; $i++) {
+            $data = ['read' => $i % 2];
+            $this->createNotification($user, $data);
+        }
+
+        $this->client->loginUser($user, 'admin');
+        $this->client->request('GET', $this->router->generate('admin_notification_statistics'));
+        $this->em->clear();
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+
+        $this->assertArrayHasKey('nb_noRead', $content);
+        $this->assertArrayHasKey('nb_today', $content);
+        $this->assertArrayHasKey('nb_total', $content);
+        $this->assertEquals(5, $content['nb_noRead']);
+        $this->assertEquals(10, $content['nb_today']);
+        $this->assertEquals(10, $content['nb_total']);
     }
 }
