@@ -16,9 +16,9 @@ notification.nb.show.end: 'dernières notifications'
 notification.loading: 'Chargement des données'
 notification.purge.info: 'Les notifications lues seront automatiquement supprimées au bout de <b>{nb_day}</b> jours'
 notification.empty: 'Aucune notifications pour le moment...'
-notification.only_not_read: 'Uniquement les non lues'
+notification.only_not_read: 'Non lu'
 notification.read_All: 'Marquer tout comme lu'
-notification.all: 'Toutes les notifications'
+notification.all: 'Toutes'
 notification.all_success: 'Toutes vos notifications on été considérées comme lu'
 notification.msg.new_fondateur.title: 'Bienvenue !'
 notification.msg.new_fondateur.content: "Bonjour <b>{login}</b>, Vous venez de finalisez l'installation de Natheo CMS. Encore quelques paramétrages et votre site sera opérationnel. <br /> Pour vous accompagner dans la mise en ligne de votre site, vous pouvez consulter <a href=\"{url_aide}\" target='_blank'>l'aide</a> du site"
@@ -27,3 +27,6 @@ notification.msg.new_comment.content: 'Bonjour, un nouveau commentaire à été 
 notification.stat_non_lu: 'Non lu'
 notification.stat_today: "Aujourd'hui"
 notification.stat_all: 'Total'
+notification.category.comment: 'Commentaire'
+notification.category.SQL: 'Dump'
+notification.category.admin: 'Administration'
