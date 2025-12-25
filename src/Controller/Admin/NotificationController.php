@@ -10,14 +10,13 @@ namespace App\Controller\Admin;
 use App\Entity\Admin\Notification;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\Global\Notification\Category;
 use App\Service\Admin\GridService;
 use App\Service\Admin\NotificationService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\NotificationTranslate;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,6 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[
     Route(
@@ -49,6 +49,7 @@ class NotificationController extends AppAdminController
     public function index(
         OptionSystemService $optionSystemService,
         NotificationTranslate $notificationTranslate,
+        TranslatorInterface $translator,
     ): Response {
         if (!$optionSystemService->canNotification()) {
             return $this->redirectToRoute('admin_dashboard_index');
@@ -62,6 +63,14 @@ class NotificationController extends AppAdminController
             ],
         ];
         $limit = $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT);
+
+        $catNotifications = [];
+        foreach (Category::cases() as $category) {
+            $catNotifications[$category->value] = [
+                'id' => $category->value,
+                'name' => $translator->trans('notification.category.' . $category->value, domain: 'notification'),
+            ];
+        }
 
         return $this->render('admin/notification/index.html.twig', [
             'breadcrumb' => $breadcrumb,
@@ -78,6 +87,7 @@ class NotificationController extends AppAdminController
                 'statistics' => $this->generateUrl('admin_notification_statistics'),
                 'purge' => $this->generateUrl('admin_notification_purge'),
             ],
+            'categories' => $catNotifications,
         ]);
     }
 

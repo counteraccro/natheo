@@ -16,6 +16,7 @@ export default {
     page: Number,
     limit: Number,
     translation: Object,
+    categories: Object,
   },
   data() {
     return {
@@ -334,109 +335,68 @@ export default {
       >
         <li class="me-2" role="presentation">
           <button
-            class="inline-block p-4 border-b-2 rounded-t-base border-[var(--primary)]"
-            id="profile-tab"
-            data-tabs-target="#profile"
+            class="inline-block p-3 border-b-2 rounded-t-base border-[var(--primary)]"
+            id="all-tab"
+            data-tabs-target="#all"
             type="button"
             role="tab"
-            aria-controls="profile"
+            aria-controls="all"
             aria-selected="false"
           >
-            Profile
+            {{ this.translation.all }}
           </button>
         </li>
         <li class="me-2" role="presentation">
           <button
-            class="inline-block p-4 border-b-2 rounded-t-base hover:text-fg-brand hover:border-brand"
-            id="dashboard-tab"
-            data-tabs-target="#dashboard"
+            class="inline-block border-b-2 rounded-t-base hover:text-fg-brand hover:border-brand border-[var(--primary)]"
+            :class="this.stats.nb_noRead ? 'p-[0.67em]' : 'p-3'"
+            id="not-read-tab"
+            data-tabs-target="#not-read"
             type="button"
             role="tab"
-            aria-controls="dashboard"
-            aria-selected="false"
+            aria-controls="not-read"
+            aria-selected="true"
           >
-            Dashboard
+            {{ this.translation.onlyNotRead }}
+            <span v-if="this.stats.nb_noRead > 0" class="ms-3 badge badge-primary"> {{ this.stats.nb_noRead }} </span>
           </button>
         </li>
-        <li class="me-2" role="presentation">
+        <li v-for="category in this.categories" role="presentation">
           <button
-            class="inline-block p-4 border-b-2 rounded-t-base hover:text-fg-brand hover:border-brand"
-            id="settings-tab"
-            data-tabs-target="#settings"
+            class="inline-block p-3 border-b-2 rounded-t-base hover:text-fg-brand hover:border-brand"
+            :id="category.id + '-tab'"
+            :data-tabs-target="'#' + category.id"
             type="button"
             role="tab"
-            aria-controls="settings"
+            :aria-controls="category.id"
             aria-selected="false"
           >
-            Settings
-          </button>
-        </li>
-        <li role="presentation">
-          <button
-            class="inline-block p-4 border-b-2 rounded-t-base hover:text-fg-brand hover:border-brand"
-            id="contacts-tab"
-            data-tabs-target="#contacts"
-            type="button"
-            role="tab"
-            aria-controls="contacts"
-            aria-selected="false"
-          >
-            Contacts
+            {{ category.name }}
           </button>
         </li>
       </ul>
     </div>
     <div id="default-tab-content">
-      <div
-        class="hidden p-4 rounded-base bg-neutral-secondary-soft"
-        id="profile"
-        role="tabpanel"
-        aria-labelledby="profile-tab"
-      >
-        <p class="text-sm text-body">
-          This is some placeholder content the
-          <strong class="font-medium text-heading">Profile tab's associated content</strong>. Clicking another tab will
-          toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content
-          visibility and styling.
-        </p>
+      <div class="hidden p-4 rounded-base bg-neutral-secondary-soft" id="all" role="tabpanel" aria-labelledby="all-tab">
+        <p class="text-sm text-body">all</p>
       </div>
       <div
-        class="hidden p-4 rounded-base bg-neutral-secondary-soft"
-        id="dashboard"
+        class="p-4 rounded-base bg-neutral-secondary-soft"
+        id="not-read"
         role="tabpanel"
-        aria-labelledby="dashboard-tab"
+        aria-labelledby="not-read-tab"
       >
-        <p class="text-sm text-body">
-          This is some placeholder content the
-          <strong class="font-medium text-heading">Dashboard tab's associated content</strong>. Clicking another tab
-          will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content
-          visibility and styling.
-        </p>
+        <p class="text-sm text-body">non lu</p>
       </div>
       <div
+        v-for="category in this.categories"
         class="hidden p-4 rounded-base bg-neutral-secondary-soft"
-        id="settings"
+        :id="category.id"
         role="tabpanel"
-        aria-labelledby="settings-tab"
+        :aria-labelledby="category.id + '-tab'"
       >
         <p class="text-sm text-body">
-          This is some placeholder content the
-          <strong class="font-medium text-heading">Settings tab's associated content</strong>. Clicking another tab will
-          toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content
-          visibility and styling.
-        </p>
-      </div>
-      <div
-        class="hidden p-4 rounded-base bg-neutral-secondary-soft"
-        id="contacts"
-        role="tabpanel"
-        aria-labelledby="contacts-tab"
-      >
-        <p class="text-sm text-body">
-          This is some placeholder content the
-          <strong class="font-medium text-heading">Contacts tab's associated content</strong>. Clicking another tab will
-          toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content
-          visibility and styling.
+          {{ category.name }}
         </p>
       </div>
     </div>
