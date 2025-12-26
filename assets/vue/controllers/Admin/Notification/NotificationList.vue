@@ -7,10 +7,11 @@
 import axios from 'axios';
 import SkeletonCardStat from '@/vue/Components/Skeleton/CardStat.vue';
 import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
+import Notification from '@/vue/controllers/Admin/Notification/Notification.vue';
 
 export default {
   name: 'NotificationList',
-  components: { SkeletonTabs, SkeletonCardStat },
+  components: { Notification, SkeletonTabs, SkeletonCardStat },
   props: {
     urls: Object,
     page: Number,
@@ -325,7 +326,7 @@ export default {
   </div>
 
   <div v-show="!this.loading" class="card rounded-lg mb-6 mt-3">
-    <div class="mb-4 border-b border-default" style="border-color: var(--border-color)">
+    <div class="border-b border-default" style="border-color: var(--border-color)">
       <ul
         class="flex flex-wrap -mb-px text-sm font-medium text-center px-4 sm:px-6"
         id="default-tab"
@@ -377,16 +378,16 @@ export default {
       </ul>
     </div>
     <div id="default-tab-content">
-      <div class="hidden p-4 rounded-base bg-neutral-secondary-soft" id="all" role="tabpanel" aria-labelledby="all-tab">
-        <p class="text-sm text-body">all</p>
+      <div class="hidden rounded-base bg-neutral-secondary-soft" id="all" role="tabpanel" aria-labelledby="all-tab">
+        <notification
+          v-if="this.notifications.length > 0"
+          v-for="notification in this.notifications"
+          :translation="this.translation.notification"
+          :notification="notification"
+        />
       </div>
-      <div
-        class="p-4 rounded-base bg-neutral-secondary-soft"
-        id="not-read"
-        role="tabpanel"
-        aria-labelledby="not-read-tab"
-      >
-        <p class="text-sm text-body">non lu</p>
+      <div class="rounded-base bg-neutral-secondary-soft" id="not-read" role="tabpanel" aria-labelledby="not-read-tab">
+        aaa
       </div>
       <div
         v-for="category in this.categories"
