@@ -44,6 +44,12 @@ class Notification
     #[ORM\Column(length: 100)]
     private ?string $category = null;
 
+    /**
+     * Propriété temporaire, utilisé uniquement que dans le code
+     * @var string|null
+     */
+    private ?string $tmpObjectId = null;
+
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
@@ -149,5 +155,15 @@ class Notification
         $this->category = $category;
 
         return $this;
+    }
+
+    public function getTmpObjectId(): ?string
+    {
+        return $this->tmpObjectId;
+    }
+
+    public function setTmpObjectId(?string $tmpObjectId): void
+    {
+        $this->tmpObjectId = $tmpObjectId;
     }
 }
