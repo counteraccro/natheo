@@ -152,7 +152,7 @@ class ApiCommentService extends AppApiService
             'author' => $dto->getAuthor(),
             'status' => $status,
             'page' => $page->getPageTranslationByLocale($dto->getLocale())->getTitre(),
-            'comment' => $comment->getId(),
+            'id' => $comment->getId(),
         ]);
         $user = $notificationFactory->getUser();
 
