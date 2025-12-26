@@ -101,6 +101,10 @@ class NotificationService extends AppAdminService
             $notification->setContent(
                 $translator->trans($notification->getContent(), $parameter, domain: 'notification'),
             );
+
+            if (isset($parameter['id'])) {
+                $notification->setTmpObjectId($parameter['id']);
+            }
         }
         return $list;
     }

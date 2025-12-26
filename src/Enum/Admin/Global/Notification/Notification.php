@@ -115,7 +115,7 @@ enum Notification: string
                 'author' => '',
                 'status' => '',
                 'page' => '',
-                'comment' => '',
+                'id' => '',
             ],
             KeyConfig::TITLE->value => 'notification.msg.new_comment.title',
             KeyConfig::CONTENT->value => 'notification.msg.new_comment.content',
