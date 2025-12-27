@@ -8,6 +8,7 @@ import axios from 'axios';
 import SkeletonCardStat from '@/vue/Components/Skeleton/CardStat.vue';
 import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
 import Notification from '@/vue/controllers/Admin/Notification/Notification.vue';
+import notification from '@/vue/controllers/Admin/Notification/Notification.vue';
 
 export default {
   name: 'NotificationList',
@@ -184,28 +185,6 @@ export default {
     },
 
     /**
-     * Mise en page class
-     * @param notification
-     * @returns {string}
-     */
-    cssClass(notification) {
-      let returnClass = '';
-      if (notification.read === false) {
-        returnClass += ' no-read';
-      }
-
-      if (notification.level === 2) {
-        returnClass += ' bg-warning';
-      } else if (notification.level === 3) {
-        returnClass += ' bg-danger';
-      } else {
-        returnClass += ' bg-light';
-      }
-
-      return returnClass;
-    },
-
-    /**
      * Affiche le bon format de la date
      * @param dateString
      * @returns {string}
@@ -213,6 +192,36 @@ export default {
     formatDate(dateString) {
       const date = new Date(dateString);
       return new Intl.DateTimeFormat(this.locale, { dateStyle: 'long', timeStyle: 'short' }).format(date);
+    },
+
+    /**
+     * Retourne une liste de notification en fonction de sa catégorie
+     * @param category
+     * @returns {[]}
+     */
+    getNotifByCategory(category) {
+      let tmp = [];
+      this.notifications.forEach((notification, index) => {
+        if (notification.category === category) {
+          tmp.push(notification);
+        }
+      });
+      return tmp;
+    },
+
+    /**
+     * Retourne une liste de notification en fonction de sa catégorie
+     * @returns {[]}
+     * @param isRead
+     */
+    getNotifByIsRead(isRead) {
+      let tmp = [];
+      this.notifications.forEach((notification, index) => {
+        if (notification.read === isRead) {
+          tmp.push(notification);
+        }
+      });
+      return tmp;
     },
   },
 };
@@ -387,7 +396,12 @@ export default {
         />
       </div>
       <div class="rounded-base bg-neutral-secondary-soft" id="not-read" role="tabpanel" aria-labelledby="not-read-tab">
-        aaa
+        <notification
+          v-if="this.notifications.length > 0"
+          v-for="notification in this.getNotifByIsRead(false)"
+          :translation="this.translation.notification"
+          :notification="notification"
+        />
       </div>
       <div
         v-for="category in this.categories"
@@ -396,9 +410,12 @@ export default {
         role="tabpanel"
         :aria-labelledby="category.id + '-tab'"
       >
-        <p class="text-sm text-body">
-          {{ category.name }}
-        </p>
+        <notification
+          v-if="this.notifications.length > 0"
+          v-for="notification in this.getNotifByCategory(category.id)"
+          :translation="this.translation.notification"
+          :notification="notification"
+        />
       </div>
     </div>
   </div>
