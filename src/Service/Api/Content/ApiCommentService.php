@@ -132,8 +132,10 @@ class ApiCommentService extends AppApiService
         }
 
         $status = CommentConst::VALIDATE;
+        $statusStr = $translator->trans('comment.status.validate', domain: 'comment');
         if ($isMustValidate) {
             $status = CommentConst::WAIT_VALIDATION;
+            $statusStr = $translator->trans('comment.status.wait.validation', domain: 'comment');
         }
 
         $comment = new Comment();
@@ -150,7 +152,7 @@ class ApiCommentService extends AppApiService
         $notificationFactory = new NotificationFactory($page->getUser());
         $notificationFactory->addNotification(Notification::NEW_COMMENT->value, [
             'author' => $dto->getAuthor(),
-            'status' => $status,
+            'status' => $statusStr,
             'page' => $page->getPageTranslationByLocale($dto->getLocale())->getTitre(),
             'id' => $comment->getId(),
         ]);
