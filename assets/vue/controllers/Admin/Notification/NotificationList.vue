@@ -23,6 +23,7 @@ export default {
   data() {
     return {
       notifications: [],
+      notificationsChecked: [],
       urlRead: '',
       urlReadAll: '',
       listLimit: Object,
@@ -88,6 +89,19 @@ export default {
     },
 
     /**
+     * Met à jour le tableau de notification checked
+     * @param id
+     * @param isChecked
+     */
+    updateTabNotificationChecked(id, isChecked) {
+      if (isChecked) {
+        this.notificationsChecked[id] = id;
+      } else {
+        delete this.notificationsChecked[id];
+      }
+    },
+
+    /**
      * Active ou désactive le bouton non-lu
      */
     canAllRead() {
@@ -102,18 +116,18 @@ export default {
     /**
      * Charge uniquement les notifications non lu
      */
-    loadOnlyNotRead() {
+    /*loadOnlyNotRead() {
       this.onlyNotRead = 0;
       this.loadData(1, 500, 1);
-    },
+    },*/
 
     /**
      * Charge toutes les notifications
      */
-    loadAll() {
+    /*loadAll() {
       this.onlyNotRead = 1;
       this.loadData(1, this.limit, 0);
-    },
+    },*/
 
     /**
      * Met toutes les notifications non lu en lu
@@ -393,6 +407,8 @@ export default {
           v-for="notification in this.notifications"
           :translation="this.translation.notification"
           :notification="notification"
+          :render="'all'"
+          @check-notification="this.updateTabNotificationChecked"
         />
       </div>
       <div class="rounded-base bg-neutral-secondary-soft" id="not-read" role="tabpanel" aria-labelledby="not-read-tab">
@@ -405,7 +421,7 @@ export default {
       </div>
       <div
         v-for="category in this.categories"
-        class="hidden p-4 rounded-base bg-neutral-secondary-soft"
+        class="hidden rounded-base bg-neutral-secondary-soft"
         :id="category.id"
         role="tabpanel"
         :aria-labelledby="category.id + '-tab'"

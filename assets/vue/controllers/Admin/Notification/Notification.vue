@@ -10,7 +10,9 @@ export default {
   props: {
     notification: Object,
     translation: Object,
+    render: [String, null],
   },
+  emits: ['check-notification'],
   data() {
     return {
       translate: {},
@@ -18,7 +20,12 @@ export default {
     };
   },
   mounted() {},
-  methods: {},
+  methods: {
+    checkNotification(event) {
+      let target = event.target;
+      this.$emit('check-notification', target.dataset.notification, target.checked);
+    },
+  },
 };
 </script>
 
@@ -31,7 +38,16 @@ export default {
     data-read="false"
   >
     <div class="flex items-start gap-3">
-      <div class="checkbox-custom mt-1" onclick="toggleCheck(this)"></div>
+      <div class="checkbox-custom mt-1">
+        <input
+          v-if="this.render === 'all'"
+          type="checkbox"
+          class="form-check-input"
+          id="check1"
+          :data-notification="notification.id"
+          @change="this.checkNotification"
+        />
+      </div>
 
       <div class="notification-icon-wrapper notification-icon-comment">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
