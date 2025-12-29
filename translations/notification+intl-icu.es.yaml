@@ -25,6 +25,9 @@ notification.all_success: __notification.all_success
 notification.stat_non_lu: __notification.stat_non_lu
 notification.stat_today: __notification.stat_today
 notification.stat_all: __notification.stat_all
-notification.category.comment: '__Commentaire'
-notification.category.SQL: '__Dump'
-notification.category.admin: '__Administration'
+notification.category.comment: __Commentaire
+notification.category.SQL: __Dump
+notification.category.admin: __Administration
+notification.no_read_All: __notification.no_read_All
+notification.delete_selected: __notification.delete_selected
+notification.delete_all: __notification.delete_all
