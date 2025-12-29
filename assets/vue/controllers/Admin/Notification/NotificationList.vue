@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       notifications: [],
-      notificationsChecked: [],
+      notificationsChecked: {},
       urlRead: '',
       urlReadAll: '',
       listLimit: Object,
@@ -44,6 +44,25 @@ export default {
   mounted() {
     this.loading = true;
     this.purge();
+  },
+  computed: {
+    /**
+     * Compte le nombre de notification lue
+     * @returns {boolean}
+     */
+    hasNotificationsChecked() {
+      return Object.keys(this.notificationsChecked).length > 0;
+    },
+
+    /**
+     * Au moins une notification est lue
+     * @returns {*}
+     */
+    hasAtLeastOneRead() {
+      console.log(Object.values(this.notificationsChecked).some((notif) => notif.isRead === true));
+      console.log(this.notificationsChecked);
+      return Object.values(this.notificationsChecked).some((notif) => notif.isRead === true);
+    },
   },
   methods: {
     loadStatistic() {
@@ -91,11 +110,12 @@ export default {
     /**
      * Met à jour le tableau de notification checked
      * @param id
+     * @param isRead
      * @param isChecked
      */
-    updateTabNotificationChecked(id, isChecked) {
+    updateTabNotificationChecked(id, isRead, isChecked) {
       if (isChecked) {
-        this.notificationsChecked[id] = id;
+        this.notificationsChecked[id] = { id: id, isRead: isRead === 'true' };
       } else {
         delete this.notificationsChecked[id];
       }
@@ -170,7 +190,7 @@ export default {
      * Au survol de la sourie
      * @param id
      */
-    mouseover(id) {
+    /*mouseover(id) {
       let element = document.getElementById('notification-' + id);
       let nbElement = document.getElementById('badge-notification');
       if (element.classList.contains('no-read')) {
@@ -191,12 +211,12 @@ export default {
           nbElement.remove();
         }
       }
-    },
+    },*/
 
-    changeLimit(limit) {
+    /*changeLimit(limit) {
       this.cLimit = limit;
       this.loadData(1, limit, 0);
-    },
+    },*/
 
     /**
      * Affiche le bon format de la date
@@ -324,27 +344,83 @@ export default {
   </div>
   <div v-else>
     <div class="flex items-end gap-2 flex-row-reverse">
-      <button class="btn btn-outline-dark px-4 py-2 text-sm" onclick="markAllAsRead()">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <button class="btn btn-outline-dark px-4 py-2 text-sm">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
           <path
+            stroke="currentColor"
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
-            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-          ></path>
+            d="M3 15v3c0 .5523.44772 1 1 1h10.5M3 15v-4m0 4h11M3 11V6c0-.55228.44772-1 1-1h16c.5523 0 1 .44772 1 1v5M3 11h18m0 0v1M8 11v8m4-8v8m4-8v2m1.8956 5.9528 1.5047-1.5047m0 0 1.5048-1.5048m-1.5048 1.5048 1.4605 1.4604m-1.4605-1.4604-1.4604-1.4605"
+          />
         </svg>
-        {{ this.translation.all }}
+
+        {{ this.translation.deleteAll }}
       </button>
-      <button class="btn btn-ghost-primary px-3 py-2" onclick="deleteAllRead()">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-          ></path>
-        </svg>
-      </button>
+
+      <div v-if="hasNotificationsChecked">
+        <button v-if="!hasAtLeastOneRead" class="btn btn-outline-dark px-4 py-2 text-sm me-2">
+          <svg
+            class="icon"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-width="2"
+              d="m3.5 5.5 7.893 6.036a1 1 0 0 0 1.214 0L20.5 5.5M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"
+            />
+          </svg>
+
+          {{ this.translation.readAll }}
+        </button>
+        <button v-else class="btn btn-outline-dark px-4 py-2 text-sm me-2">
+          <svg
+            class="icon"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 8v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8m18 0-8.029-4.46a2 2 0 0 0-1.942 0L3 8m18 0-9 6.5L3 8"
+            />
+          </svg>
+
+          {{ this.translation.noReadAll }}
+        </button>
+
+        <button class="btn btn-outline-dark px-4 py-2 text-sm">
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+            ></path>
+          </svg>
+          {{ this.translation.deleteSelected }}
+        </button>
+      </div>
     </div>
   </div>
 
@@ -358,6 +434,7 @@ export default {
         role="tablist"
       >
         <li class="me-2" role="presentation">
+          <input type="checkbox" class="form-check-input me-1" id="check-all" />
           <button
             class="inline-block p-3 border-b-2 rounded-t-base border-[var(--primary)]"
             id="all-tab"

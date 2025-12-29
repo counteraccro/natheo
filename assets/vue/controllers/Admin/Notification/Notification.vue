@@ -23,7 +23,7 @@ export default {
   methods: {
     checkNotification(event) {
       let target = event.target;
-      this.$emit('check-notification', target.dataset.notification, target.checked);
+      this.$emit('check-notification', target.dataset.notification, target.dataset.isread, target.checked);
     },
   },
 };
@@ -45,6 +45,7 @@ export default {
           class="form-check-input"
           id="check1"
           :data-notification="notification.id"
+          :data-isRead="notification.read"
           @change="this.checkNotification"
         />
       </div>
