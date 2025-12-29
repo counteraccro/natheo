@@ -24,6 +24,7 @@ export default {
     return {
       notifications: [],
       notificationsChecked: {},
+      checkedAll: false,
       urlRead: '',
       urlReadAll: '',
       listLimit: Object,
@@ -118,6 +119,24 @@ export default {
         this.notificationsChecked[id] = { id: id, isRead: isRead === 'true' };
       } else {
         delete this.notificationsChecked[id];
+      }
+    },
+
+    /**
+     * Selectionne toutes les notifications
+     * @param event
+     */
+    checkedAllNotification(event) {
+      let target = event.target;
+      if (target.checked) {
+        this.checkedAll = true;
+        this.notifications.forEach((notification, index) => {
+          console.log(notification.read);
+          this.notificationsChecked[notification.id] = { id: notification.id, isRead: notification.read };
+        });
+      } else {
+        this.checkedAll = false;
+        this.notificationsChecked = {};
       }
     },
 
@@ -434,7 +453,7 @@ export default {
         role="tablist"
       >
         <li class="me-2" role="presentation">
-          <input type="checkbox" class="form-check-input me-1" id="check-all" />
+          <input type="checkbox" class="form-check-input me-1" id="check-all" @change="this.checkedAllNotification" />
           <button
             class="inline-block p-3 border-b-2 rounded-t-base border-[var(--primary)]"
             id="all-tab"
@@ -486,6 +505,7 @@ export default {
           :notification="notification"
           :render="'all'"
           @check-notification="this.updateTabNotificationChecked"
+          :checked="this.checkedAll"
         />
       </div>
       <div class="rounded-base bg-neutral-secondary-soft" id="not-read" role="tabpanel" aria-labelledby="not-read-tab">

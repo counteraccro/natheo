@@ -11,6 +11,7 @@ export default {
     notification: Object,
     translation: Object,
     render: [String, null],
+    checked: [Boolean],
   },
   emits: ['check-notification'],
   data() {
@@ -46,6 +47,7 @@ export default {
           id="check1"
           :data-notification="notification.id"
           :data-isRead="notification.read"
+          :checked="this.checked"
           @change="this.checkNotification"
         />
       </div>
