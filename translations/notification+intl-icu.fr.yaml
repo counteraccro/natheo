@@ -33,3 +33,4 @@ notification.category.admin: Administration
 notification.no_read_All: 'Marquer comme non lu'
 notification.delete_selected: Supprimer
 notification.delete_all: 'Tout supprimer'
+notification.update.read.success: 'Notifications marquées comme lues'
