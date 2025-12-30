@@ -32,3 +32,5 @@ notification.no_read_All: __notification.no_read_All
 notification.delete_selected: __notification.delete_selected
 notification.delete_all: __notification.delete_all
 notification.update.success: __notification.update.success
+notification.update.unread.success: __notification.update.unread.success
+notification.update.read.success: __notification.update.read.success
