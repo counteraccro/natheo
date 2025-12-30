@@ -165,11 +165,13 @@ class NotificationController extends AppAdminController
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
         $notificationService->updateRead($data['notifications'], $data['read']);
-        return $this->json(
-            $notificationService->getResponseAjax(
-                $translator->trans('notification.update.read.success', domain: 'notification'),
-            ),
-        );
+
+        $msg = $translator->trans('notification.update.unread.success', domain: 'notification');
+        if ($data['read']) {
+            $msg = $translator->trans('notification.update.read.success', domain: 'notification');
+        }
+
+        return $this->json($notificationService->getResponseAjax($msg));
     }
 
     /**

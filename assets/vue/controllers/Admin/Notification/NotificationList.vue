@@ -9,10 +9,11 @@ import SkeletonCardStat from '@/vue/Components/Skeleton/CardStat.vue';
 import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
 import Notification from '@/vue/controllers/Admin/Notification/Notification.vue';
 import notification from '@/vue/controllers/Admin/Notification/Notification.vue';
+import Toast from '@/vue/Components/Global/Toast.vue';
 
 export default {
   name: 'NotificationList',
-  components: { Notification, SkeletonTabs, SkeletonCardStat },
+  components: { Toast, Notification, SkeletonTabs, SkeletonCardStat },
   props: {
     urls: Object,
     page: Number,
@@ -39,6 +40,16 @@ export default {
         nb_noRead: 0,
         nb_today: 0,
         nb_total: 0,
+      },
+      toasts: {
+        toastSuccess: {
+          show: false,
+          msg: '',
+        },
+        toastError: {
+          show: false,
+          msg: '',
+        },
       },
     };
   },
@@ -88,6 +99,11 @@ export default {
      * @param onlyNotRead
      */
     loadData(page, limit, onlyNotRead) {
+      setTimeout(() => {
+        this.toasts.toastSuccess.show = false;
+        this.toasts.toastError.show = false;
+      }, 2500);
+
       axios
         .get(this.urls.list + '/' + page + '/' + limit + '/' + onlyNotRead)
         .then((response) => {
@@ -160,7 +176,15 @@ export default {
       this.loading = true;
       axios
         .post(this.urls.update, { notifications: this.notificationsChecked, read: read })
-        .then((response) => {})
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccess.msg = response.data.msg;
+            this.toasts.toastSuccess.show = true;
+          } else {
+            this.toasts.toastError.msg = response.data.msg;
+            this.toasts.toastError.show = true;
+          }
+        })
         .catch((error) => {
           console.error(error);
         })
@@ -529,14 +553,57 @@ export default {
           @check-notification="this.updateTabNotificationChecked"
           :checked="this.checkedAll"
         />
+
+        <div v-else class="text-sm text-[var(--text-secondary)] p-4 sm:p-6 flex gap-1">
+          <svg
+            class="w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+
+          {{ this.translation.empty }}
+        </div>
       </div>
       <div class="rounded-base bg-neutral-secondary-soft" id="not-read" role="tabpanel" aria-labelledby="not-read-tab">
         <notification
-          v-if="this.notifications.length > 0"
+          v-if="this.getNotifByIsRead(false).length > 0"
           v-for="notification in this.getNotifByIsRead(false)"
           :translation="this.translation.notification"
           :notification="notification"
         />
+        <div v-else class="text-sm text-[var(--text-secondary)] p-4 sm:p-6 flex gap-1">
+          <svg
+            class="w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+
+          {{ this.translation.empty }}
+        </div>
       </div>
       <div
         v-for="category in this.categories"
@@ -546,13 +613,48 @@ export default {
         :aria-labelledby="category.id + '-tab'"
       >
         <notification
-          v-if="this.notifications.length > 0"
+          v-if="this.getNotifByCategory(category.id).length > 0"
           v-for="notification in this.getNotifByCategory(category.id)"
           :translation="this.translation.notification"
           :notification="notification"
         />
+        <div v-else class="text-sm text-[var(--text-secondary)] p-4 sm:p-6 flex gap-1">
+          <svg
+            class="w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+
+          {{ this.translation.empty }}
+        </div>
       </div>
     </div>
+  </div>
+
+  <div class="toast-container position-fixed top-0 end-0 p-2">
+    <toast :id="'toastSuccess'" :type="'success'" :show="this.toasts.toastSuccess.show" @close-toast="this.closeToast">
+      <template #body>
+        <div v-html="this.toasts.toastSuccess.msg"></div>
+      </template>
+    </toast>
+
+    <toast :id="'toastError'" :type="'danger'" :show="this.toasts.toastError.show" @close-toast="this.closeToast">
+      <template #body>
+        <div v-html="this.toasts.toastError.msg"></div>
+      </template>
+    </toast>
   </div>
 
   <!--<div :class="this.loading === true ? 'block-grid' : ''">
