@@ -60,8 +60,6 @@ export default {
      * @returns {*}
      */
     hasAtLeastOneRead() {
-      console.log(Object.values(this.notificationsChecked).some((notif) => notif.isRead === true));
-      console.log(this.notificationsChecked);
       return Object.values(this.notificationsChecked).some((notif) => notif.isRead === true);
     },
   },
@@ -94,17 +92,21 @@ export default {
         .get(this.urls.list + '/' + page + '/' + limit + '/' + onlyNotRead)
         .then((response) => {
           this.notifications = response.data.notifications;
-          this.urlRead = response.data.urlRead;
           this.urlReadAll = response.data.urlReadAll;
           this.locale = response.data.locale;
           this.listLimit = response.data.listLimit;
+          this.checkedAll = true;
         })
         .catch((error) => {
           console.error(error);
         })
         .finally(() => {
+          let element = document.getElementById('check-all');
+          element.checked = false;
+
+          this.notificationsChecked = {};
+          this.checkedAll = false;
           this.loading = false;
-          this.canAllRead();
         });
     },
 
@@ -131,7 +133,6 @@ export default {
       if (target.checked) {
         this.checkedAll = true;
         this.notifications.forEach((notification, index) => {
-          console.log(notification.read);
           this.notificationsChecked[notification.id] = { id: notification.id, isRead: notification.read };
         });
       } else {
@@ -150,6 +151,23 @@ export default {
       } else {
         this.allReadBtn = true;
       }
+    },
+
+    /**
+     * Met à jour une ou plusieurs notifications
+     */
+    updateNotification(read) {
+      this.loading = true;
+      axios
+        .post(this.urls.update, { notifications: this.notificationsChecked, read: read })
+        .then((response) => {})
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loadStatistic();
+          this.loadData(this.page, this.limit, 0);
+        });
     },
 
     /**
@@ -386,7 +404,11 @@ export default {
       </button>
 
       <div v-if="hasNotificationsChecked">
-        <button v-if="!hasAtLeastOneRead" class="btn btn-outline-dark px-4 py-2 text-sm me-2">
+        <button
+          v-if="!hasAtLeastOneRead"
+          class="btn btn-outline-dark px-4 py-2 text-sm me-2"
+          @click="updateNotification(true)"
+        >
           <svg
             class="icon"
             aria-hidden="true"
@@ -406,7 +428,7 @@ export default {
 
           {{ this.translation.readAll }}
         </button>
-        <button v-else class="btn btn-outline-dark px-4 py-2 text-sm me-2">
+        <button v-else class="btn btn-outline-dark px-4 py-2 text-sm me-2" @click="updateNotification(false)">
           <svg
             class="icon"
             aria-hidden="true"

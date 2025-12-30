@@ -86,6 +86,7 @@ class NotificationController extends AppAdminController
                 ]),
                 'statistics' => $this->generateUrl('admin_notification_statistics'),
                 'purge' => $this->generateUrl('admin_notification_purge'),
+                'update' => $this->generateUrl('admin_notification_update'),
             ],
             'categories' => $catNotifications,
         ]);
@@ -140,7 +141,7 @@ class NotificationController extends AppAdminController
 
         return $this->json([
             'notifications' => $notifications,
-            'urlRead' => $this->generateUrl('admin_notification_read'),
+            'urlRead' => $this->generateUrl('admin_notification_update'),
             'urlReadAll' => $this->generateUrl('admin_notification_read_all'),
             'listLimit' => $gridService->addOptionsSelectLimit([])['listLimit'],
             'locale' => $request->getLocale(),
@@ -151,20 +152,24 @@ class NotificationController extends AppAdminController
      * Met le status lu à une notification envoyé en paramètre
      * @param Request $request
      * @param NotificationService $notificationService
+     * @param TranslatorInterface $translator
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/read-notification', name: 'read', methods: ['POST'])]
-    public function read(Request $request, NotificationService $notificationService): JsonResponse
-    {
+    #[Route('/ajax/update', name: 'update', methods: ['POST'])]
+    public function updateNotification(
+        Request $request,
+        NotificationService $notificationService,
+        TranslatorInterface $translator,
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
-        /** @var Notification $notification */
-        $notification = $notificationService->findOneById(Notification::class, $data['id']);
-        $notification->setRead(true);
-        $notificationService->save($notification);
-
-        return $this->json(['success' => true]);
+        $notificationService->updateRead($data['notifications'], $data['read']);
+        return $this->json(
+            $notificationService->getResponseAjax(
+                $translator->trans('notification.update.read.success', domain: 'notification'),
+            ),
+        );
     }
 
     /**

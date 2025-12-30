@@ -160,4 +160,21 @@ class NotificationService extends AppAdminService
             'nb_total' => $nbTotal,
         ];
     }
+
+    public function updateRead(array $tabIdNotification, bool $read): void
+    {
+        $tmp = [];
+        foreach ($tabIdNotification as $row) {
+            if ($row['isRead'] !== $read) {
+                $tmp[] = $row['id'];
+            }
+        }
+        $repo = $this->getRepository(Notification::class);
+        $notifications = $repo->findBy(['id' => $tmp]);
+
+        foreach ($notifications as $notification) {
+            $notification->setRead($read);
+            $this->save($notification);
+        }
+    }
 }
