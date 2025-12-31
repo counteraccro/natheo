@@ -26,15 +26,12 @@ export default {
       notifications: [],
       notificationsChecked: {},
       checkedAll: false,
-      urlRead: '',
-      urlReadAll: '',
       listLimit: Object,
       cLimit: this.limit,
       loading: true,
       loadingStat: true,
       locale: '',
       onlyNotRead: 1,
-      allReadSuccess: false,
       allReadBtn: true,
       stats: {
         nb_noRead: 0,
@@ -108,7 +105,6 @@ export default {
         .get(this.urls.list + '/' + page + '/' + limit + '/' + onlyNotRead)
         .then((response) => {
           this.notifications = response.data.notifications;
-          this.urlReadAll = response.data.urlReadAll;
           this.locale = response.data.locale;
           this.listLimit = response.data.listLimit;
           this.checkedAll = true;
@@ -158,18 +154,6 @@ export default {
     },
 
     /**
-     * Active ou désactive le bouton non-lu
-     */
-    canAllRead() {
-      let nbElement = document.getElementById('badge-notification');
-      if (nbElement === null) {
-        this.allReadBtn = false;
-      } else {
-        this.allReadBtn = true;
-      }
-    },
-
-    /**
      * Met à jour une ou plusieurs notifications
      */
     updateNotification(read) {
@@ -214,21 +198,23 @@ export default {
      * Met toutes les notifications non lu en lu
      */
     readAll() {
-      let nbElement = document.getElementById('badge-notification');
-      nbElement.remove();
-
       this.loading = true;
       axios
-        .post(this.urlReadAll, {})
-        .then((response) => {})
+        .get(this.urls.readAll, {})
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccess.msg = response.data.msg;
+            this.toasts.toastSuccess.show = true;
+          } else {
+            this.toasts.toastError.msg = response.data.msg;
+            this.toasts.toastError.show = true;
+          }
+        })
         .catch((error) => {
           console.error(error);
         })
         .finally(() => {
-          this.allReadSuccess = true;
-          setTimeout(() => {
-            this.allReadSuccess = false;
-          }, 5000);
+          this.loadStatistic();
           this.loadData(this.page, this.limit, 0);
         });
     },
@@ -405,7 +391,11 @@ export default {
   </div>
   <div v-else>
     <div class="flex items-end gap-2 flex-row-reverse">
-      <button class="btn btn-outline-dark px-4 py-2 text-sm">
+      <button
+        class="btn btn-outline-dark px-4 py-2 text-sm"
+        @click="this.readAll"
+        :disabled="this.stats.nb_noRead === 0"
+      >
         <svg
           class="icon"
           aria-hidden="true"
@@ -420,11 +410,11 @@ export default {
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
-            d="M3 15v3c0 .5523.44772 1 1 1h10.5M3 15v-4m0 4h11M3 11V6c0-.55228.44772-1 1-1h16c.5523 0 1 .44772 1 1v5M3 11h18m0 0v1M8 11v8m4-8v8m4-8v2m1.8956 5.9528 1.5047-1.5047m0 0 1.5048-1.5048m-1.5048 1.5048 1.4605 1.4604m-1.4605-1.4604-1.4604-1.4605"
+            d="M3 15v3c0 .5523.44772 1 1 1h10.5M3 15v-4m0 4h11M3 11V6c0-.55228.44772-1 1-1h16c.5523 0 1 .44772 1 1v5M3 11h18m0 0v1M8 11v8m4-8v8m4-8v2m1 4h2m0 0h2m-2 0v2m0-2v-2"
           />
         </svg>
 
-        {{ this.translation.deleteAll }}
+        {{ this.translation.readAll }}
       </button>
 
       <div v-if="hasNotificationsChecked">
@@ -450,7 +440,7 @@ export default {
             />
           </svg>
 
-          {{ this.translation.readAll }}
+          {{ this.translation.read }}
         </button>
         <button v-else class="btn btn-outline-dark px-4 py-2 text-sm me-2" @click="updateNotification(false)">
           <svg
@@ -471,7 +461,7 @@ export default {
             />
           </svg>
 
-          {{ this.translation.noReadAll }}
+          {{ this.translation.noRead }}
         </button>
 
         <button class="btn btn-outline-dark px-4 py-2 text-sm">

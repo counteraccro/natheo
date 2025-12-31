@@ -7,7 +7,6 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Admin\Notification;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Enum\Admin\Global\Notification\Category;
@@ -41,6 +40,7 @@ class NotificationController extends AppAdminController
      * Notification de l'Utilisateur
      * @param OptionSystemService $optionSystemService
      * @param NotificationTranslate $notificationTranslate
+     * @param TranslatorInterface $translator
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -87,6 +87,7 @@ class NotificationController extends AppAdminController
                 'statistics' => $this->generateUrl('admin_notification_statistics'),
                 'purge' => $this->generateUrl('admin_notification_purge'),
                 'update' => $this->generateUrl('admin_notification_update'),
+                'readAll' => $this->generateUrl('admin_notification_read_all'),
             ],
             'categories' => $catNotifications,
         ]);
@@ -141,8 +142,6 @@ class NotificationController extends AppAdminController
 
         return $this->json([
             'notifications' => $notifications,
-            'urlRead' => $this->generateUrl('admin_notification_update'),
-            'urlReadAll' => $this->generateUrl('admin_notification_read_all'),
             'listLimit' => $gridService->addOptionsSelectLimit([])['listLimit'],
             'locale' => $request->getLocale(),
         ]);
@@ -198,12 +197,15 @@ class NotificationController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/readAll', name: 'read_all', methods: ['GET'])]
-    public function readAll(NotificationService $notificationService): JsonResponse
+    public function readAll(NotificationService $notificationService, TranslatorInterface $translator): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
         $notificationService->readAll($user);
-        return $this->json(['success' => true]);
+        return $this->json([
+            'success' => true,
+            'msg' => $translator->trans('notification.read.all.success', domain: 'notification'),
+        ]);
     }
 
     #[Route('/ajax/statistics', name: 'statistics', methods: ['GET'])]
