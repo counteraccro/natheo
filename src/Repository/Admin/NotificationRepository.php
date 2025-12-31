@@ -92,6 +92,7 @@ class NotificationRepository extends ServiceEntityRepository
      * Supprime les notifications lues en fonction du nombre de jours et de l'utilisateur
      * @param int $nbDay
      * @param int $userId
+     * @param RawQueryManager $rawQueryManager
      * @return void
      * @throws Exception
      */
