@@ -94,8 +94,6 @@ class NotificationControllerTest extends AppWebTestCase
 
         $this->assertArrayHasKey('notifications', $content);
         $this->assertCount(7, $content['notifications']);
-        $this->assertArrayHasKey('urlRead', $content);
-        $this->assertArrayHasKey('urlReadAll', $content);
         $this->assertArrayHasKey('listLimit', $content);
         $this->assertArrayHasKey('locale', $content);
 
@@ -113,17 +111,22 @@ class NotificationControllerTest extends AppWebTestCase
      * Test méthode read()
      * @return void
      */
-    public function testRead(): void
+    public function testUpdateNotification(): void
     {
         $user = $this->createUser();
         $data = ['read' => 0];
         $notification = $this->createNotification($user, $data);
 
+        $tab = [
+            'id' => $notification->getId(),
+            'isRead' => $notification->isRead(),
+        ];
+
         $this->client->loginUser($user, 'admin');
         $this->client->request(
             'POST',
-            $this->router->generate('admin_notification_read'),
-            content: json_encode(['id' => $notification->getId()]),
+            $this->router->generate('admin_notification_update'),
+            content: json_encode(['notifications' => [$tab], 'read' => true]),
         );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
