@@ -11,6 +11,7 @@ use App\Entity\Admin\Notification;
 use App\Enum\Admin\Global\Notification\KeyConfig;
 use App\Enum\Admin\Global\Notification\Notification as NotificationEnum;
 use App\Entity\Admin\System\User;
+use App\Repository\Admin\NotificationRepository;
 use App\Service\Admin\NotificationService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
@@ -243,5 +244,52 @@ class NotificationServiceTest extends AppWebTestCase
         $this->assertEquals(5, $result['nb_noRead']);
         $this->assertEquals(10, $result['nb_today']);
         $this->assertEquals(10, $result['nb_total']);
+    }
+
+    /**
+     * Test méthode removeArrayNotifications()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testRemoveArrayNotifications(): void
+    {
+        $user = $this->createUser();
+        $tab = [];
+        for ($i = 0; $i < 10; $i++) {
+            $data = ['read' => 0];
+            $notification = $this->createNotification($user, $data);
+            $tab[] = [
+                'id' => $notification->getId(),
+            ];
+        }
+        $this->notificationService->removeArrayNotifications($tab);
+        /** @var NotificationRepository $NotificationRepository */
+        $notificationRepository = $this->em->getRepository(Notification::class);
+        $nb = $notificationRepository->count(['user' => $user->getId()]);
+        $this->assertEquals(0, $nb);
+    }
+
+    /**
+     * Test méthode updateRead
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUpdateRead(): void
+    {
+        $user = $this->createUser();
+        $data = ['read' => 0];
+        $notification = $this->createNotification($user, $data);
+
+        $tab = [
+            'id' => $notification->getId(),
+            'isRead' => $notification->isRead(),
+        ];
+        $this->notificationService->updateRead([$tab], true);
+        /** @var NotificationRepository $NotificationRepository */
+        $notificationRepository = $this->em->getRepository(Notification::class);
+        $notificationVerif = $notificationRepository->findOneBy(['id' => $notification->getId()]);
+        $this->assertTrue($notificationVerif->isRead());
     }
 }

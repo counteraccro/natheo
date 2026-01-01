@@ -141,6 +141,40 @@ class NotificationControllerTest extends AppWebTestCase
     }
 
     /**
+     * Test méthode deleteNotification
+     * @return void
+     */
+    public function testDeleteNotification()
+    {
+        $user = $this->createUser();
+        $tab = [];
+        for ($i = 0; $i < 10; $i++) {
+            $data = ['read' => 0];
+            $notification = $this->createNotification($user, $data);
+            $tab[] = [
+                'id' => $notification->getId(),
+            ];
+        }
+
+        $this->client->loginUser($user, 'admin');
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_notification_delete'),
+            content: json_encode(['notifications' => $tab]),
+        );
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertTrue($content['success']);
+
+        /** @var NotificationRepository $NotificationRepository */
+        $notificationRepository = $this->em->getRepository(Notification::class);
+        $nb = $notificationRepository->count(['user' => $user->getId()]);
+        $this->assertEquals(0, $nb);
+    }
+
+    /**
      * Test méthode purge()
      * @return void
      * @throws \DateInvalidOperationException
@@ -170,13 +204,6 @@ class NotificationControllerTest extends AppWebTestCase
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->assertTrue($content['success']);
-
-        /** @var NotificationRepository $NotificationRepository */
-        $notificationRepository = $this->em->getRepository(Notification::class);
-        $result = $notificationRepository->findBy(['user' => $user]);
-
-        // TODO résultat à revoir, requête en rawQuery semble ne pas s'exécuter en test
-        //$this->assertCount(10, $result);
     }
 
     public function testReadAll(): void
