@@ -37,3 +37,8 @@ notification.update.read.success: __notification.update.read.success
 notification.no_read: __notification.no_read
 notification.read: __notification.read
 notification.read.all.success: __notification.read.all.success
+notification.confirm.title: __notification.confirm.title
+notification.confirm.btn.ok: __notification.confirm.btn.ok
+notification.confirm.btn.no: __notification.confirm.btn.no
+notification.confirm.msg: __notification.confirm.msg
+notification.delete.success: __notification.delete.success

@@ -33,6 +33,10 @@ class NotificationTranslate extends AppTranslate
             'statNonLu' => $this->translator->trans('notification.stat_non_lu', domain: 'notification'),
             'statToday' => $this->translator->trans('notification.stat_today', domain: 'notification'),
             'statAll' => $this->translator->trans('notification.stat_all', domain: 'notification'),
+            'confirmTitle' => $this->translator->trans('notification.confirm.title', domain: 'notification'),
+            'confirmBtnOK' => $this->translator->trans('notification.confirm.btn.ok', domain: 'notification'),
+            'confirmBtnNo' => $this->translator->trans('notification.confirm.btn.no', domain: 'notification'),
+            'confirmMsg' => $this->translator->trans('notification.confirm.msg', domain: 'notification'),
             'notification' => $this->getNotificationTranslate(),
         ];
     }
