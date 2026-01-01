@@ -10,10 +10,11 @@ import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
 import Notification from '@/vue/controllers/Admin/Notification/Notification.vue';
 import notification from '@/vue/controllers/Admin/Notification/Notification.vue';
 import Toast from '@/vue/Components/Global/Toast.vue';
+import Modal from '@/vue/Components/Global/Modal.vue';
 
 export default {
   name: 'NotificationList',
-  components: { Toast, Notification, SkeletonTabs, SkeletonCardStat },
+  components: { Modal, Toast, Notification, SkeletonTabs, SkeletonCardStat },
   props: {
     urls: Object,
     page: Number,
@@ -33,6 +34,10 @@ export default {
       locale: '',
       onlyNotRead: 1,
       allReadBtn: true,
+      modale: {
+        showModale: false,
+        msgConfirm: '',
+      },
       stats: {
         nb_noRead: 0,
         nb_today: 0,
@@ -85,7 +90,6 @@ export default {
         })
         .finally(() => {
           this.loadingStat = false;
-          this.canAllRead();
         });
     },
 
@@ -176,6 +180,42 @@ export default {
           this.loadStatistic();
           this.loadData(this.page, this.limit, 0);
         });
+    },
+
+    deleteNotification(confirm) {
+      if (confirm) {
+        this.showModal();
+        this.modale.msgConfirm = this.translation.confirmMsg;
+        this.modale.msgConfirm = this.modale.msgConfirm.replace(
+          '{total}',
+          Object.keys(this.notificationsChecked).length
+        );
+        this.modale.msgConfirm = this.modale.msgConfirm.replace(
+          '{noRead}',
+          Object.values(this.notificationsChecked).filter((notif) => !notif.isRead).length
+        );
+      } else {
+        this.loading = true;
+        this.modale.showModale = false;
+        axios
+          .post(this.urls.delete, { notifications: this.notificationsChecked })
+          .then((response) => {
+            if (response.data.success === true) {
+              this.toasts.toastSuccess.msg = response.data.msg;
+              this.toasts.toastSuccess.show = true;
+            } else {
+              this.toasts.toastError.msg = response.data.msg;
+              this.toasts.toastError.show = true;
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          })
+          .finally(() => {
+            this.loadStatistic();
+            this.loadData(this.page, this.limit, 0);
+          });
+      }
     },
 
     /**
@@ -303,6 +343,28 @@ export default {
         }
       });
       return tmp;
+    },
+
+    /**
+     * Affichage la modale
+     */
+    showModal() {
+      this.modale.showModale = true;
+    },
+
+    /**
+     * Ferme la modale
+     */
+    hideModal() {
+      this.modale.showModale = false;
+    },
+
+    /**
+     * Ferme un toast en fonction de son id
+     * @param nameToast
+     */
+    closeToast(nameToast) {
+      this.toasts[nameToast].show = false;
     },
   },
 };
@@ -464,7 +526,7 @@ export default {
           {{ this.translation.noRead }}
         </button>
 
-        <button class="btn btn-outline-dark px-4 py-2 text-sm">
+        <button class="btn btn-outline-dark px-4 py-2 text-sm" @click="this.deleteNotification(true)">
           <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -632,6 +694,72 @@ export default {
       </div>
     </div>
   </div>
+
+  <modal
+    :id="'confirm-modale-notification'"
+    :show="this.modale.showModale"
+    @close-modal="this.hideModal"
+    :option-show-close-btn="false"
+  >
+    <template #icon>
+      <svg class="h-6 w-6 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+        />
+      </svg>
+    </template>
+    <template #title> {{ this.translation.confirmTitle }} </template>
+    <template #body>
+      <div v-html="this.modale.msgConfirm"></div>
+    </template>
+    <template #footer>
+      <button type="button" class="btn btn-primary btn-sm me-2" @click="this.deleteNotification(false)">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ this.translation.confirmBtnOK }}
+      </button>
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="this.hideModal()">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+
+        {{ this.translation.confirmBtnNo }}
+      </button>
+    </template>
+  </modal>
 
   <div class="toast-container position-fixed top-0 end-0 p-2">
     <toast :id="'toastSuccess'" :type="'success'" :show="this.toasts.toastSuccess.show" @close-toast="this.closeToast">

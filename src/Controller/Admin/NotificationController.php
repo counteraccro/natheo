@@ -62,7 +62,7 @@ class NotificationController extends AppAdminController
                 'notification.page_title_h1' => '#',
             ],
         ];
-        $limit = $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT);
+        $limit = 100; //$this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT);
 
         $catNotifications = [];
         foreach (Category::cases() as $category) {
@@ -75,7 +75,7 @@ class NotificationController extends AppAdminController
         return $this->render('admin/notification/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
-            'limit' => intval($limit),
+            'limit' => $limit,
             'nbDay' => $nbDay,
             'translation' => $notificationTranslate->getTranslate(),
             'urls' => [
@@ -88,6 +88,7 @@ class NotificationController extends AppAdminController
                 'purge' => $this->generateUrl('admin_notification_purge'),
                 'update' => $this->generateUrl('admin_notification_update'),
                 'readAll' => $this->generateUrl('admin_notification_read_all'),
+                'delete' => $this->generateUrl('admin_notification_delete'),
             ],
             'categories' => $catNotifications,
         ]);
@@ -128,7 +129,7 @@ class NotificationController extends AppAdminController
         NotificationService $notificationService,
         GridService $gridService,
         int $page = 1,
-        int $limit = 20,
+        int $limit = 100,
         int $pOnlyNotRead = 1,
     ): JsonResponse {
         $onlyNotRead = false;
@@ -174,6 +175,28 @@ class NotificationController extends AppAdminController
     }
 
     /**
+     * Supprime une ou plusieurs notifications
+     * @param Request $request
+     * @param NotificationService $notificationService
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/ajax/delete', name: 'delete', methods: ['POST'])]
+    public function deleteNotification(
+        Request $request,
+        NotificationService $notificationService,
+        TranslatorInterface $translator,
+    ): JsonResponse {
+        $data = json_decode($request->getContent(), true);
+
+        $notificationService->removeArrayNotifications($data['notifications']);
+        $msg = $translator->trans('notification.delete.success', domain: 'notification');
+        return $this->json($notificationService->getResponseAjax($msg));
+    }
+
+    /**
      * Permet de purger les notifications
      * @param OptionSystemService $optionSystemService
      * @param NotificationService $notificationService
@@ -192,6 +215,7 @@ class NotificationController extends AppAdminController
     /**
      * Permet de marquer toutes les notifications non lu, en lu en fonction de l'utilisateur
      * @param NotificationService $notificationService
+     * @param TranslatorInterface $translator
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface

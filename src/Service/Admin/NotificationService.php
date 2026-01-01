@@ -161,6 +161,14 @@ class NotificationService extends AppAdminService
         ];
     }
 
+    /**
+     * Met à jour la propriété read
+     * @param array $tabIdNotification
+     * @param bool $read
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function updateRead(array $tabIdNotification, bool $read): void
     {
         $tmp = [];
@@ -175,6 +183,27 @@ class NotificationService extends AppAdminService
         foreach ($notifications as $notification) {
             $notification->setRead($read);
             $this->save($notification);
+        }
+    }
+
+    /**
+     * Supprime une liste de notifications
+     * @param array $tabIdNotification
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function removeArrayNotifications(array $tabIdNotification): void
+    {
+        $tmp = [];
+        foreach ($tabIdNotification as $row) {
+            $tmp[] = $row['id'];
+        }
+        $repo = $this->getRepository(Notification::class);
+        $notifications = $repo->findBy(['id' => $tmp]);
+
+        foreach ($notifications as $notification) {
+            $this->remove($notification);
         }
     }
 }
