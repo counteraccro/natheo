@@ -42,3 +42,6 @@ notification.confirm.btn.ok: 'Oui je confirme'
 notification.confirm.btn.no: Non
 notification.confirm.msg: 'Vous êtes sur le point de supprimer {total} notification(s) dont {noRead} non lu(s)'
 notification.delete.success: 'Notification(s) supprimée(s) avec succès'
+notification.notification.see.comment: 'Voir le commentaire'
+notification.notification.read: 'Marquer comme lu'
+notification.notification.time: 'il y à '

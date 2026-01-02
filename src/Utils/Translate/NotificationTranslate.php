@@ -43,6 +43,10 @@ class NotificationTranslate extends AppTranslate
 
     private function getNotificationTranslate(): array
     {
-        return [];
+        return [
+            'seeComment' => $this->translator->trans('notification.notification.see.comment', domain: 'notification'),
+            'read' => $this->translator->trans('notification.notification.read', domain: 'notification'),
+            'time' => $this->translator->trans('notification.notification.time', domain: 'notification'),
+        ];
     }
 }
