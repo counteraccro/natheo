@@ -103,7 +103,8 @@ class NotificationService extends AppAdminService
             );
 
             if (isset($parameter['id'])) {
-                $notification->setTmpObjectId($parameter['id']);
+                $router = $this->getRouter();
+                $notification->setTmpObjectId($router->generate('admin_comment_see', ['id' => $parameter['id']]));
             }
         }
         return $list;

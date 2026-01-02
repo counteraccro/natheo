@@ -13,7 +13,7 @@ export default {
     render: [String, null],
     checked: [Boolean],
   },
-  emits: ['check-notification'],
+  emits: ['check-notification', 'mark-as-read'],
   data() {
     return {
       translate: {},
@@ -22,9 +22,41 @@ export default {
   },
   mounted() {},
   methods: {
+    /**
+     * Permet de check la notification
+     * @param event
+     */
     checkNotification(event) {
       let target = event.target;
       this.$emit('check-notification', target.dataset.notification, target.dataset.isread, target.checked);
+    },
+
+    /**
+     * Affichage de l'heure
+     * @param timestamp
+     * @returns {*}
+     */
+    relativeTime(timestamp) {
+      const now = Math.floor(Date.now() / 1000);
+      const diff = now - timestamp;
+
+      const rtf = new Intl.RelativeTimeFormat('fr', { numeric: 'auto' });
+
+      if (diff < 60) return rtf.format(-diff, 'second');
+      if (diff < 3600) return rtf.format(-Math.floor(diff / 60), 'minute');
+      if (diff < 86400) return rtf.format(-Math.floor(diff / 3600), 'hour');
+      if (diff < 604800) return rtf.format(-Math.floor(diff / 86400), 'day');
+      if (diff < 2592000) return rtf.format(-Math.floor(diff / 604800), 'week');
+      if (diff < 31536000) return rtf.format(-Math.floor(diff / 2592000), 'month');
+      return rtf.format(-Math.floor(diff / 31536000), 'year');
+    },
+
+    /**
+     * Marque comme lu
+     */
+    markAsRead() {
+      this.notification.read = true;
+      this.$emit('mark-as-read', this.notification.id);
     },
   },
 };
@@ -71,7 +103,9 @@ export default {
           </div>
 
           <div class="flex justify-items-end gap-2 mb-0 items-center">
-            <span class="text-xs whitespace-nowrap" style="color: var(--text-light)">Il y a 5 min</span>
+            <span class="text-xs whitespace-nowrap" style="color: var(--text-light)">{{
+              this.relativeTime(notification.createdAt.timestamp)
+            }}</span>
             <button class="btn-ghost p-1.5 rounded" onclick="deleteNotification(this)">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -86,12 +120,28 @@ export default {
         </div>
         <p class="text-sm mb-2" style="color: var(--text-secondary)" v-html="notification.content"></p>
         <div class="flex flex-wrap items-center gap-2">
-          <button class="text-xs font-semibold hover:underline cursor-pointer" style="color: var(--primary)">
-            Voir le commentaire
-          </button>
-          <span class="text-xs" style="color: var(--text-light)">•</span>
-          <button class="text-xs hover:underline" style="color: var(--text-secondary)" onclick="markAsRead(this)">
-            Marquer comme lu
+          <a
+            v-if="notification.category === 'comment'"
+            :href="notification.tmpObjectId"
+            target="_blank"
+            class="text-xs font-semibold hover:underline cursor-pointer"
+            style="color: var(--primary)"
+          >
+            {{ this.translation.seeComment }}
+          </a>
+          <span
+            v-if="notification.category === 'comment' && notification.read === false"
+            class="text-xs"
+            style="color: var(--text-light)"
+            >•</span
+          >
+          <button
+            v-if="notification.read === false"
+            class="text-xs hover:underline cursor-pointer"
+            style="color: var(--text-secondary)"
+            @click="markAsRead()"
+          >
+            {{ this.translation.read }}
           </button>
         </div>
       </div>

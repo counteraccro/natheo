@@ -366,6 +366,11 @@ export default {
     closeToast(nameToast) {
       this.toasts[nameToast].show = false;
     },
+
+    markAsRead(id) {
+      this.stats.nb_noRead--;
+      console.log('Notification id :' + id);
+    },
   },
 };
 </script>
@@ -603,6 +608,7 @@ export default {
           :notification="notification"
           :render="'all'"
           @check-notification="this.updateTabNotificationChecked"
+          @mark-as-read="this.markAsRead"
           :checked="this.checkedAll"
         />
 
@@ -634,6 +640,7 @@ export default {
           v-for="notification in this.getNotifByIsRead(false)"
           :translation="this.translation.notification"
           :notification="notification"
+          @mark-as-read="this.markAsRead"
         />
         <div v-else class="text-sm text-[var(--text-secondary)] p-4 sm:p-6 flex gap-1">
           <svg
@@ -669,6 +676,7 @@ export default {
           v-for="notification in this.getNotifByCategory(category.id)"
           :translation="this.translation.notification"
           :notification="notification"
+          @mark-as-read="this.markAsRead"
         />
         <div v-else class="text-sm text-[var(--text-secondary)] p-4 sm:p-6 flex gap-1">
           <svg
