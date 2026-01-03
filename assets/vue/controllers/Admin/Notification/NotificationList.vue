@@ -543,7 +543,12 @@ export default {
         role="tablist"
       >
         <li class="me-2" role="presentation">
-          <input type="checkbox" class="form-check-input me-1" id="check-all" @change="this.checkedAllNotification" />
+          <input
+            type="checkbox"
+            class="form-check-input me-1 no-control"
+            id="check-all"
+            @change="this.checkedAllNotification"
+          />
           <button
             class="inline-block p-3 border-b-2 rounded-t-base border-[var(--primary)]"
             id="all-tab"
