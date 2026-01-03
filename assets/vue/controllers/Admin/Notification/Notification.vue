@@ -13,7 +13,7 @@ export default {
     render: [String, null],
     checked: [Boolean],
   },
-  emits: ['check-notification', 'mark-as-read'],
+  emits: ['check-notification', 'mark-as-read', 'delete'],
   data() {
     return {
       translate: {},
@@ -57,6 +57,13 @@ export default {
     markAsRead() {
       this.notification.read = true;
       this.$emit('mark-as-read', this.notification.id);
+    },
+
+    /**
+     * Supprime une notification
+     */
+    delete() {
+      this.$emit('delete', this.notification.id, true);
     },
   },
 };
@@ -106,7 +113,7 @@ export default {
             <span class="text-xs whitespace-nowrap" style="color: var(--text-light)">{{
               this.relativeTime(notification.createdAt.timestamp)
             }}</span>
-            <button class="btn-ghost p-1.5 rounded" onclick="deleteNotification(this)">
+            <button class="btn-ghost p-1.5 rounded cursor-pointer" @click="this.delete">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
