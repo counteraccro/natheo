@@ -94,9 +94,6 @@ class NotificationControllerTest extends AppWebTestCase
 
         $this->assertArrayHasKey('notifications', $content);
         $this->assertCount(7, $content['notifications']);
-        $this->assertArrayHasKey('translation', $content);
-        $this->assertArrayHasKey('urlRead', $content);
-        $this->assertArrayHasKey('urlReadAll', $content);
         $this->assertArrayHasKey('listLimit', $content);
         $this->assertArrayHasKey('locale', $content);
 
@@ -114,17 +111,22 @@ class NotificationControllerTest extends AppWebTestCase
      * Test méthode read()
      * @return void
      */
-    public function testRead(): void
+    public function testUpdateNotification(): void
     {
         $user = $this->createUser();
         $data = ['read' => 0];
         $notification = $this->createNotification($user, $data);
 
+        $tab = [
+            'id' => $notification->getId(),
+            'isRead' => $notification->isRead(),
+        ];
+
         $this->client->loginUser($user, 'admin');
         $this->client->request(
             'POST',
-            $this->router->generate('admin_notification_read'),
-            content: json_encode(['id' => $notification->getId()]),
+            $this->router->generate('admin_notification_update'),
+            content: json_encode(['notifications' => [$tab], 'read' => true]),
         );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -136,6 +138,40 @@ class NotificationControllerTest extends AppWebTestCase
         $notificationRepository = $this->em->getRepository(Notification::class);
         $notificationVerif = $notificationRepository->findOneBy(['id' => $notification->getId()]);
         $this->assertTrue($notificationVerif->isRead());
+    }
+
+    /**
+     * Test méthode deleteNotification
+     * @return void
+     */
+    public function testDeleteNotification()
+    {
+        $user = $this->createUser();
+        $tab = [];
+        for ($i = 0; $i < 10; $i++) {
+            $data = ['read' => 0];
+            $notification = $this->createNotification($user, $data);
+            $tab[] = [
+                'id' => $notification->getId(),
+            ];
+        }
+
+        $this->client->loginUser($user, 'admin');
+        $this->client->request(
+            'POST',
+            $this->router->generate('admin_notification_delete'),
+            content: json_encode(['notifications' => $tab]),
+        );
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertTrue($content['success']);
+
+        /** @var NotificationRepository $NotificationRepository */
+        $notificationRepository = $this->em->getRepository(Notification::class);
+        $nb = $notificationRepository->count(['user' => $user->getId()]);
+        $this->assertEquals(0, $nb);
     }
 
     /**
@@ -168,13 +204,6 @@ class NotificationControllerTest extends AppWebTestCase
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);
         $this->assertTrue($content['success']);
-
-        /** @var NotificationRepository $NotificationRepository */
-        $notificationRepository = $this->em->getRepository(Notification::class);
-        $result = $notificationRepository->findBy(['user' => $user]);
-
-        // TODO résultat à revoir, requête en rawQuery semble ne pas s'exécuter en test
-        //$this->assertCount(10, $result);
     }
 
     public function testReadAll(): void
@@ -199,5 +228,33 @@ class NotificationControllerTest extends AppWebTestCase
         foreach ($user->getNotifications() as $notification) {
             $this->assertTrue($notification->isRead());
         }
+    }
+
+    /**
+     * Test de la méthode getStatistics()
+     * @return void
+     */
+    public function testgetStatistics()
+    {
+        $user = $this->createUser();
+        for ($i = 0; $i < 10; $i++) {
+            $data = ['read' => $i % 2];
+            $this->createNotification($user, $data);
+        }
+
+        $this->client->loginUser($user, 'admin');
+        $this->client->request('GET', $this->router->generate('admin_notification_statistics'));
+        $this->em->clear();
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+
+        $this->assertArrayHasKey('nb_noRead', $content);
+        $this->assertArrayHasKey('nb_today', $content);
+        $this->assertArrayHasKey('nb_total', $content);
+        $this->assertEquals(5, $content['nb_noRead']);
+        $this->assertEquals(10, $content['nb_today']);
+        $this->assertEquals(10, $content['nb_total']);
     }
 }

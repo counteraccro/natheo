@@ -8,9 +8,9 @@
 namespace App\MessageHandler\Tools;
 
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Global\Notification\Notification;
 use App\Message\Tools\DumpSql;
 use App\Service\Admin\NotificationService;
-use App\Utils\Notification\NotificationKey;
 use App\Utils\Tools\DatabaseManager\DatabaseManagerConst;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Schema\Table;
@@ -67,7 +67,7 @@ class DumpSqlHandler
         }
 
         $user = $this->notificationService->findOneById(User::class, $dumpSql->getUserId());
-        $this->notificationService->add($user, NotificationKey::NOTIFICATION_DUMP_SQL, [
+        $this->notificationService->add($user, Notification::DUMP_SQL->value, [
             'file' => $fileName,
             'url' => $url,
         ]);

@@ -38,12 +38,20 @@ class RawMysqlQuery implements RawQueryInterface
      */
     public static function getQueryExistTable(string $schema, string $table): string
     {
+        $sqlSchema = '';
+        if ($schema != '') {
+            $sqlSchema =
+                "TABLE_SCHEMA = '" .
+                $schema .
+                "' 
+                AND";
+        }
+
         return "SELECT TABLE_NAME 
                 FROM INFORMATION_SCHEMA.TABLES 
-                WHERE TABLE_SCHEMA = '" .
-            $schema .
-            "' 
-                AND TABLE_NAME = '" .
+                WHERE " .
+            $sqlSchema .
+            " TABLE_NAME = '" .
             $table .
             "';
         ";

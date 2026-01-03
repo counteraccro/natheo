@@ -8,11 +8,13 @@
 namespace App\Tests\Service\Admin;
 
 use App\Entity\Admin\Notification;
+use App\Enum\Admin\Global\Notification\KeyConfig;
+use App\Enum\Admin\Global\Notification\Notification as NotificationEnum;
 use App\Entity\Admin\System\User;
+use App\Repository\Admin\NotificationRepository;
 use App\Service\Admin\NotificationService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
-use App\Utils\Notification\NotificationKey;
 use App\Utils\System\Options\OptionSystemKey;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -45,7 +47,7 @@ class NotificationServiceTest extends AppWebTestCase
         $optionSystemService = $this->container->get(OptionSystemService::class);
         $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '0');
 
-        $this->notificationService->add($user, NotificationKey::NOTIFICATION_SELF_DELETE, [
+        $this->notificationService->add($user, NotificationEnum::SELF_DELETE->value, [
             'login' => $user->getLogin(),
         ]);
 
@@ -54,17 +56,17 @@ class NotificationServiceTest extends AppWebTestCase
 
         $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '1');
 
-        $this->notificationService->add($user, NotificationKey::NOTIFICATION_SELF_DELETE, [
+        $this->notificationService->add($user, NotificationEnum::SELF_DELETE->value, [
             'login' => $user->getLogin(),
         ]);
         $user = $this->notificationService->findOneById(User::class, $user->getId());
         $this->assertCount(1, $user->getNotifications());
         $notification = $user->getNotifications()->first();
 
-        $tab = NotificationKey::TAB_NOTIFICATIONS[NotificationKey::NOTIFICATION_SELF_DELETE];
-        $this->assertEquals($tab[NotificationKey::KEY_TITLE], $notification->getTitle());
-        $this->assertEquals($tab[NotificationKey::KEY_CONTENT], $notification->getContent());
-        $this->assertEquals($tab[NotificationKey::KEY_LEVEL], $notification->getLevel());
+        $tab = NotificationEnum::getNotification(NotificationEnum::SELF_DELETE->value);
+        $this->assertEquals($tab[KeyConfig::TITLE->value], $notification->getTitle());
+        $this->assertEquals($tab[KeyConfig::CONTENT->value], $notification->getContent());
+        $this->assertEquals($tab[KeyConfig::LEVEL->value], $notification->getLevel());
     }
 
     /**
@@ -79,23 +81,23 @@ class NotificationServiceTest extends AppWebTestCase
 
         $optionSystemService = $this->container->get(OptionSystemService::class);
         $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '0');
-        $user = $this->notificationService->addForFixture($user, NotificationKey::NOTIFICATION_SELF_DISABLED, [
+        $user = $this->notificationService->addForFixture($user, NotificationEnum::SELF_DISABLED->value, [
             'login' => $user->getLogin(),
         ]);
         $this->assertCount(0, $user->getNotifications());
 
         $optionSystemService->saveValueByKee(OptionSystemKey::OS_NOTIFICATION, '1');
-        $user = $this->notificationService->addForFixture($user, NotificationKey::NOTIFICATION_SELF_DISABLED, [
+        $user = $this->notificationService->addForFixture($user, NotificationEnum::SELF_DISABLED->value, [
             'login' => $user->getLogin(),
         ]);
         $this->assertCount(1, $user->getNotifications());
 
         $notification = $user->getNotifications()->first();
 
-        $tab = NotificationKey::TAB_NOTIFICATIONS[NotificationKey::NOTIFICATION_SELF_DISABLED];
-        $this->assertEquals($tab[NotificationKey::KEY_TITLE], $notification->getTitle());
-        $this->assertEquals($tab[NotificationKey::KEY_CONTENT], $notification->getContent());
-        $this->assertEquals($tab[NotificationKey::KEY_LEVEL], $notification->getLevel());
+        $tab = NotificationEnum::getNotification(NotificationEnum::SELF_DISABLED->value);
+        $this->assertEquals($tab[KeyConfig::TITLE->value], $notification->getTitle());
+        $this->assertEquals($tab[KeyConfig::CONTENT->value], $notification->getContent());
+        $this->assertEquals($tab[KeyConfig::LEVEL->value], $notification->getLevel());
     }
 
     /**
@@ -127,16 +129,16 @@ class NotificationServiceTest extends AppWebTestCase
     public function testGetByUserPaginate(): void
     {
         $user = $this->createUser();
-        $this->notificationService->add($user, NotificationKey::NOTIFICATION_SELF_DELETE, [
+        $this->notificationService->add($user, NotificationEnum::SELF_DELETE->value, [
             'login' => $user->getLogin(),
         ]);
-        $this->notificationService->add($user, NotificationKey::NOTIFICATION_SELF_DISABLED, [
+        $this->notificationService->add($user, NotificationEnum::SELF_DISABLED->value, [
             'login' => $user->getLogin(),
         ]);
-        $this->notificationService->add($user, NotificationKey::NOTIFICATION_SELF_ANONYMOUS, [
+        $this->notificationService->add($user, NotificationEnum::SELF_ANONYMOUS->value, [
             'login' => $user->getLogin(),
         ]);
-        $this->notificationService->add($user, NotificationKey::NOTIFICATION_NEW_FONDATEUR, [
+        $this->notificationService->add($user, NotificationEnum::NEW_FONDATEUR->value, [
             'login' => $user->getLogin(),
             'url_aide' => '#',
         ]);
@@ -167,18 +169,6 @@ class NotificationServiceTest extends AppWebTestCase
 
         $paginator = $this->notificationService->getByUserPaginate(1, 20, $user, false);
         $this->assertEquals(9, $paginator->count());
-    }
-
-    /**
-     * Test méthode getTranslateListNotifications()
-     * @return void
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function testGetTranslateListNotifications(): void
-    {
-        $result = $this->notificationService->getTranslateListNotifications();
-        $this->assertIsArray($result);
     }
 
     /**
@@ -231,5 +221,75 @@ class NotificationServiceTest extends AppWebTestCase
         $this->notificationService->readAll($user);
         $result = $this->notificationService->findBy(Notification::class, ['read' => 1]);
         $this->assertCount(5, $result);
+    }
+
+    /**
+     * Test de la méthode getStatisticByUser()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testGetStatisticByUser(): void
+    {
+        $user = $this->createUser();
+        for ($i = 0; $i < 10; $i++) {
+            $data = ['read' => $i % 2];
+            $this->createNotification($user, $data);
+        }
+
+        $result = $this->notificationService->getStatisticByUser($user);
+        $this->assertArrayHasKey('nb_noRead', $result);
+        $this->assertArrayHasKey('nb_today', $result);
+        $this->assertArrayHasKey('nb_total', $result);
+        $this->assertEquals(5, $result['nb_noRead']);
+        $this->assertEquals(10, $result['nb_today']);
+        $this->assertEquals(10, $result['nb_total']);
+    }
+
+    /**
+     * Test méthode removeArrayNotifications()
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testRemoveArrayNotifications(): void
+    {
+        $user = $this->createUser();
+        $tab = [];
+        for ($i = 0; $i < 10; $i++) {
+            $data = ['read' => 0];
+            $notification = $this->createNotification($user, $data);
+            $tab[] = [
+                'id' => $notification->getId(),
+            ];
+        }
+        $this->notificationService->removeArrayNotifications($tab);
+        /** @var NotificationRepository $NotificationRepository */
+        $notificationRepository = $this->em->getRepository(Notification::class);
+        $nb = $notificationRepository->count(['user' => $user->getId()]);
+        $this->assertEquals(0, $nb);
+    }
+
+    /**
+     * Test méthode updateRead
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function testUpdateRead(): void
+    {
+        $user = $this->createUser();
+        $data = ['read' => 0];
+        $notification = $this->createNotification($user, $data);
+
+        $tab = [
+            'id' => $notification->getId(),
+            'isRead' => $notification->isRead(),
+        ];
+        $this->notificationService->updateRead([$tab], true);
+        /** @var NotificationRepository $NotificationRepository */
+        $notificationRepository = $this->em->getRepository(Notification::class);
+        $notificationVerif = $notificationRepository->findOneBy(['id' => $notification->getId()]);
+        $this->assertTrue($notificationVerif->isRead());
     }
 }

@@ -13,11 +13,13 @@ use App\Dto\Api\Content\Comment\ApiModerateCommentDto;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Global\Notification\Notification;
 use App\Repository\Admin\Content\Comment\CommentRepository;
 use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
 use App\Utils\Content\Comment\CommentConst;
 use App\Utils\Content\Page\PageConst;
+use App\Utils\Notification\NotificationFactory;
 use App\Utils\System\Options\OptionSystemKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -130,8 +132,10 @@ class ApiCommentService extends AppApiService
         }
 
         $status = CommentConst::VALIDATE;
+        $statusStr = $translator->trans('comment.status.validate', domain: 'comment');
         if ($isMustValidate) {
             $status = CommentConst::WAIT_VALIDATION;
+            $statusStr = $translator->trans('comment.status.wait.validation', domain: 'comment');
         }
 
         $comment = new Comment();
@@ -143,8 +147,18 @@ class ApiCommentService extends AppApiService
         $comment->setUserAgent($dto->getUserAgent());
         $comment->setStatus($status);
         $comment->setDisabled(false);
-
         $this->save($comment);
+
+        $notificationFactory = new NotificationFactory($page->getUser());
+        $notificationFactory->addNotification(Notification::NEW_COMMENT->value, [
+            'author' => $dto->getAuthor(),
+            'status' => $statusStr,
+            'page' => $page->getPageTranslationByLocale($dto->getLocale())->getTitre(),
+            'id' => $comment->getId(),
+        ]);
+        $user = $notificationFactory->getUser();
+
+        $this->save($user);
 
         return $comment;
     }

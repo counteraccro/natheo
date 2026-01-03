@@ -8,12 +8,12 @@
 namespace App\Service\Installation;
 
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Global\Notification\Notification;
 use App\Repository\Admin\System\UserRepository;
 use App\Service\Admin\AppAdminService;
 use App\Utils\Global\EnvFile;
 use App\Utils\Installation\InstallationConst;
 use App\Utils\Notification\NotificationFactory;
-use App\Utils\Notification\NotificationKey;
 use App\Utils\System\User\UserDataKey;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -177,7 +177,7 @@ class InstallationService extends AppAdminService
         $user = $userRepo->findAll()[0];
         $user->getNotifications()->clear();
         $notificationFactory = new NotificationFactory($user);
-        $notificationFactory->addNotification(NotificationKey::NOTIFICATION_NEW_FONDATEUR, [
+        $notificationFactory->addNotification(Notification::NEW_FONDATEUR->value, [
             'login' => $user->getLogin(),
             'url_aide' => 'todo-a-changer',
         ]);

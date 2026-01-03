@@ -7,20 +7,20 @@ use App\Repository\Admin\NotificationRepository;
 use App\Utils\Installation\InstallationConst;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
 #[ORM\Table(name: 'notification')]
 #[ORM\HasLifecycleCallbacks]
 class Notification
 {
+    public const string DEFAULT_ALIAS = 'notification';
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'notifications')]
-    #[Ignore]
     private ?User $user = null;
 
     #[ORM\Column(length: 255)]
@@ -40,6 +40,15 @@ class Notification
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $parameters = null;
+
+    #[ORM\Column(length: 100)]
+    private ?string $category = null;
+
+    /**
+     * Propriété temporaire, utilisé uniquement que dans le code
+     * @var string|null
+     */
+    private ?string $tmpObjectId = null;
 
     #[ORM\PrePersist]
     public function onPrePersist(): void
@@ -134,5 +143,27 @@ class Notification
         $this->parameters = $parameters;
 
         return $this;
+    }
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(string $category): static
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getTmpObjectId(): ?string
+    {
+        return $this->tmpObjectId;
+    }
+
+    public function setTmpObjectId(?string $tmpObjectId): void
+    {
+        $this->tmpObjectId = $tmpObjectId;
     }
 }

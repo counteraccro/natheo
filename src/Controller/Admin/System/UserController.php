@@ -11,6 +11,7 @@ namespace App\Controller\Admin\System;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\Global\Notification\Notification;
 use App\Form\Admin\User\MyAccountType;
 use App\Form\Admin\User\UserAddType;
 use App\Form\Admin\User\UserType;
@@ -22,7 +23,6 @@ use App\Service\Admin\System\User\UserDataService;
 use App\Service\Admin\System\User\UserService;
 use App\Service\LoggerService;
 use App\Utils\Flash\FlashKey;
-use App\Utils\Notification\NotificationKey;
 use App\Utils\System\Mail\KeyWord;
 use App\Utils\System\Mail\MailKey;
 use App\Utils\System\Options\OptionSystemKey;
@@ -481,7 +481,7 @@ class UserController extends AppAdminController
             $users = $userService->getByRole(Role::ROLE_SUPER_ADMIN);
 
             foreach ($users as $user_notification) {
-                $notificationService->add($user_notification, NotificationKey::NOTIFICATION_SELF_DISABLED, [
+                $notificationService->add($user_notification, Notification::SELF_DISABLED->value, [
                     'login' => $user->getLogin(),
                 ]);
             }
@@ -581,9 +581,9 @@ class UserController extends AppAdminController
         if ($optionSystemService->canNotification() && !$role->isSuperAdmin() && $optionSystemService->canDelete()) {
             $users = $userService->getByRole(Role::ROLE_SUPER_ADMIN);
             if ($status === 1) {
-                $key = NotificationKey::NOTIFICATION_SELF_ANONYMOUS;
+                $key = Notification::SELF_ANONYMOUS->value;
             } else {
-                $key = NotificationKey::NOTIFICATION_SELF_DELETE;
+                $key = Notification::SELF_DELETE->value;
             }
 
             foreach ($users as $user_notification) {
@@ -667,7 +667,7 @@ class UserController extends AppAdminController
             );
 
             if ($optionSystemService->canNotification()) {
-                $notificationService->add($user, NotificationKey::NOTIFICATION_WELCOME, [
+                $notificationService->add($user, Notification::WELCOME->value, [
                     'login' => $user->getLogin(),
                     'url_aide' => 'url_aide',
                     'role' => $user->getRoles()[0],

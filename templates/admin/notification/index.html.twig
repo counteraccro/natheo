@@ -3,19 +3,23 @@
 {% block title %}{{ 'notification.page_title' | trans({}, 'notification') }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'notification.page_title_h1' | trans({}, 'notification') }} </h1>
 
     {{ breadcrumb(breadcrumb) }}
 
-    <p>
+    <h1 class="head-title">
+        <svg class="w-7 h-7 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+        </svg>
+        {{ 'notification.page_title_h1' | trans({}, 'notification') }}</h1>
+
+    <p class="text-sm text-[var(--text-secondary)] mb-3">
         <i class="bi bi-bell-fill"></i> {{ 'notification.description' | trans({'mouse' : '<i class="bi bi-mouse2-fill"></i>'}, 'notification') | raw }} <br />
         <i class="bi bi-info-circle-fill"></i>  {{ 'notification.purge.info' | trans({'nb_day' : nbDay}, 'notification') | raw }}
     </p>
 
     <div id="notifications">
         <div {{ vue_component('Admin/Notification/NotificationList', {
-            'url' : path('admin_notification_list', {'page' : page, 'limit' : limit, 'pOnlyNotRead' : 1}), 'page' : page, 'limit' : limit,
-            'urlPurge' : path('admin_notification_purge')
+            'urls' : urls , 'page' : page, 'limit' : limit, 'translation' : translation, 'categories' : categories
         }) }}></div>
     </div>
 

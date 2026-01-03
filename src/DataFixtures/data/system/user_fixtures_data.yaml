@@ -1,8 +1,8 @@
 user:
   User:
-    email: marty.zacharie@sfr.fr
-    password: $2y$04$Qg1IZCVJ1vrkrwpSKjD.9ejWod2C2rdx/YMpCOsRTSGjoOL9LJz82
-    login: bernard.hugues
+    email: mbegue@raynaud.fr
+    password: $2y$04$Rzq2yOB1qWfSyXVz1S5AreaRJvlv6kcMkmwq5bkJ9he1vY7PLcFC6
+    login: hdelaunay
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN

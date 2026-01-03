@@ -30,9 +30,9 @@
         </button>
     </div>
 
-    <p class="text-sm">
+    <p class="text-sm text-[var(--text-secondary)] mb-3">
         {{ 'user.description' | trans({}, 'user') }} <br/>
-        <i class="bi bi-info-circle"></i> {{ 'user.info' | trans({'icon': '<i class="bi bi-recycle"></i>', 'icon2': '<i class="bi bi-eye-slash"></i>'}, 'user') | raw }}
+        {{ 'user.info' | trans({}, 'user') | raw }}
     </p>
 
     <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_user_load_grid_data', {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true}) }}></div>
