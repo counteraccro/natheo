@@ -45,3 +45,4 @@ notification.delete.success: __notification.delete.success
 notification.notification.see.comment: __notification.notification.see.comment
 notification.notification.read: __notification.notification.read
 notification.notification.time: __notification.notification.time
+notification.confirm.single_delete: __notification.confirm.single_delete

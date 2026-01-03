@@ -37,6 +37,10 @@ class NotificationTranslate extends AppTranslate
             'confirmBtnOK' => $this->translator->trans('notification.confirm.btn.ok', domain: 'notification'),
             'confirmBtnNo' => $this->translator->trans('notification.confirm.btn.no', domain: 'notification'),
             'confirmMsg' => $this->translator->trans('notification.confirm.msg', domain: 'notification'),
+            'confirmSingleDelete' => $this->translator->trans(
+                'notification.confirm.single_delete',
+                domain: 'notification',
+            ),
             'notification' => $this->getNotificationTranslate(),
         ];
     }
