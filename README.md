@@ -91,3 +91,11 @@ Chargement des fixtures : `php bin/console doctrine:fixtures:load`
 Compilations du JS : `yarn encore dev -- watch`
 
 Lancement des tests unitaires : `bin/phpunit `
+
+
+# Contributeurs
+
+|                                 ----                                 | Nos contributeurs                                                                                                                                                         |
+|:--------------------------------------------------------------------:|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|    ![image](https://avatars.githubusercontent.com/u/3640049?v=4)     | [Counteraccro](https://github.com/counteraccro) <br /> Fondateur, LeadDev et principal développeur                                                                        |
+| ![image](https://avatars.githubusercontent.com/u/139382475?s=48&v=4) | [MaxenceMahieux](https://github.com/MaxenceMahieux) <br /> Co-fondateur et Admin System <br /> Autre projet : [Flaase](https://github.com/MaxenceMahieux/flaase-cli-rust) |
