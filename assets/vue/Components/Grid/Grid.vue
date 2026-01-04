@@ -117,7 +117,7 @@ export default {
                 {{ capitalize(key) }}
 
                 <svg
-                  v-if="key !== 'action'"
+                  v-if="key !== 'action' && this.sortOrders[key]"
                   class="w-3 h-3 cursor-pointer"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"

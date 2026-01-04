@@ -70,7 +70,12 @@ class SidebarElementServiceTest extends AppWebTestCase
             $this->createSidebarElement();
         }
 
-        $result = $this->sidebarElementService->getAllPaginate(1, 5);
+        $queryParams = [
+            'orderField' => 'id',
+            'order' => 'ASC',
+        ];
+
+        $result = $this->sidebarElementService->getAllPaginate(1, 5, $queryParams);
         $this->assertInstanceOf(\Doctrine\ORM\Tools\Pagination\Paginator::class, $result);
         $this->assertEquals(5, $result->getIterator()->count());
         $this->assertEquals(7, $result->count());
@@ -90,7 +95,12 @@ class SidebarElementServiceTest extends AppWebTestCase
             $this->createSidebarElement();
         }
 
-        $result = $this->sidebarElementService->getAllFormatToGrid(1, 5);
+        $queryParams = [
+            'orderField' => 'id',
+            'order' => 'ASC',
+        ];
+
+        $result = $this->sidebarElementService->getAllFormatToGrid(1, 5, $queryParams);
         $this->assertArrayHasKey('nb', $result);
         $this->assertArrayHasKey('data', $result);
         $this->assertArrayHasKey('column', $result);
