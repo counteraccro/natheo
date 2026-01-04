@@ -34,25 +34,27 @@ class SidebarElementService extends AppAdminService
      * Retourne une liste de sidebarElement paginé
      * @param int $page
      * @param int $limit
+     * @param array $queryParams
      * @return Paginator
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllPaginate(int $page, int $limit): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
     {
         $repo = $this->getRepository(SidebarElement::class);
-        return $repo->getAllPaginate($page, $limit);
+        return $repo->getAllPaginate($page, $limit, $queryParams);
     }
 
     /**
      * Construit le tableau de donnée à envoyé au tableau GRID
      * @param int $page
      * @param int $limit
+     * @param array $queryParams
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllFormatToGrid(int $page, int $limit): array
+    public function getAllFormatToGrid(int $page, int $limit, array $queryParams): array
     {
         $translator = $this->getTranslator();
         $gridService = $this->getGridService();
@@ -68,7 +70,7 @@ class SidebarElementService extends AppAdminService
             GridService::KEY_ACTION,
         ];
 
-        $dataPaginate = $this->getAllPaginate($page, $limit);
+        $dataPaginate = $this->getAllPaginate($page, $limit, $queryParams);
 
         $nb = $dataPaginate->count();
         $data = [];
@@ -114,6 +116,7 @@ class SidebarElementService extends AppAdminService
                     ->getUpdateAt()
                     ->format('d/m/y H:i'),
                 GridService::KEY_ACTION => $action,
+                'isDisabled' => $element->isDisabled(),
             ];
         }
 
@@ -122,6 +125,12 @@ class SidebarElementService extends AppAdminService
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
             GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate),
+            GridService::KEY_LIST_ORDER_FIELD => [
+                'id' => $translator->trans('sidebar.grid.id', domain: 'sidebar'),
+                'label' => $translator->trans('sidebar.grid.label', domain: 'sidebar'),
+                'createdAt' => $translator->trans('sidebar.grid.created_at', domain: 'sidebar'),
+                'updateAt' => $translator->trans('sidebar.grid.update_at', domain: 'sidebar'),
+            ],
         ];
         return $gridService->addAllDataRequiredGrid($tabReturn);
     }
@@ -141,7 +150,10 @@ class SidebarElementService extends AppAdminService
         $actionDisabled = '';
         if (!$element->isLock()) {
             $actionDisabled = [
-                'label' => '<i class="bi bi-eye-slash-fill"></i>',
+                'label' => [
+                    'M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
+                ],
+                'color' => 'primary',
                 'url' => $router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]),
                 'type' => 'put',
                 'ajax' => true,
@@ -160,7 +172,11 @@ class SidebarElementService extends AppAdminService
             ];
             if ($element->isDisabled()) {
                 $actionDisabled = [
-                    'label' => '<i class="bi bi-eye-fill"></i>',
+                    'label' => [
+                        'M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z',
+                        'M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
+                    ],
+                    'color' => 'primary',
                     'type' => 'put',
                     'url' => $router->generate('admin_sidebar_update_disabled', ['id' => $element->getId()]),
                     'ajax' => true,

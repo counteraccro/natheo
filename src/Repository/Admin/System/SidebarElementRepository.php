@@ -51,11 +51,11 @@ class SidebarElementRepository extends ServiceEntityRepository
      */
     public function getAllParent(bool $disabled = false): mixed
     {
-        return $this->createQueryBuilder('se')
-            ->andWhere('se.parent IS NULL')
-            ->andWhere('se.disabled = :disabled')
+        return $this->createQueryBuilder(SidebarElement::DEFAULT_ALIAS)
+            ->andWhere(SidebarElement::DEFAULT_ALIAS . '.parent IS NULL')
+            ->andWhere(SidebarElement::DEFAULT_ALIAS . '.disabled = :disabled')
             ->setParameter('disabled', $disabled)
-            ->orderBy('se.id', 'ASC')
+            ->orderBy(SidebarElement::DEFAULT_ALIAS . '.id', 'ASC')
             ->getQuery()
             ->getResult();
     }
@@ -64,11 +64,24 @@ class SidebarElementRepository extends ServiceEntityRepository
      * Retourne une liste de SidebarElement Paginé
      * @param int $page
      * @param int $limit
+     * @param array $queryParams
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
     {
-        $query = $this->createQueryBuilder('se')->orderBy('se.parent', 'DESC')->orderBy('se.id', 'ASC');
+        $orderField = 'id';
+        $order = 'DESC';
+        if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
+            $orderField = $queryParams['orderField'];
+        }
+
+        if (isset($queryParams['order']) && $queryParams['order'] !== '') {
+            $order = $queryParams['order'];
+        }
+
+        $query = $this->createQueryBuilder(SidebarElement::DEFAULT_ALIAS)
+            ->orderBy(SidebarElement::DEFAULT_ALIAS . 'parent', 'DESC')
+            ->orderBy(SidebarElement::DEFAULT_ALIAS . '.' . $orderField, $order);
 
         $paginator = new Paginator($query->getQuery(), true);
         $paginator

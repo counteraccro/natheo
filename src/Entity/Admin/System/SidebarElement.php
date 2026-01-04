@@ -19,6 +19,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 class SidebarElement
 {
+    public const DEFAULT_ALIAS = 'sidebar_element';
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]
