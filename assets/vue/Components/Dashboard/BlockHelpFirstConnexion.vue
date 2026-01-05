@@ -6,10 +6,11 @@
  */
 import axios from 'axios';
 import Modal from '../Global/Modal.vue';
+import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 
 export default {
   name: 'BlockHelpFirstConnexion',
-  components: { Modal },
+  components: { SkeletonText, Modal },
   emit: [],
   props: {
     urls: Object,
@@ -117,10 +118,74 @@ export default {
 </script>
 
 <template>
-  <div class="card">
-    <h5 class="card-header"><i class="bi bi-info-circle"></i> {{ this.translate.title }}</h5>
+  <div class="card rounded-lg overflow-hidden">
+    <div class="px-4 sm:px-6 py-4 border-b flex items-center justify-between" style="border-color: var(--border-color)">
+      <h3 class="text-lg font-semibold">{{ this.translate.title }}</h3>
 
-    <div class="card-body" v-if="this.loading">
+      <div class="flex gap-2">
+        <a href="#" @click="this.load()" class="text-sm font-medium hover:underline text-[var(--primary)]">
+          <svg
+            class="icon"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"
+            />
+          </svg>
+        </a>
+        <a
+          href="#"
+          class="text-sm font-medium hover:underline text-[var(--primary)]"
+          @click="!this.complete ? this.showModal() : this.hideConfig()"
+        >
+          {{ this.translate.btn_def_hide }}
+        </a>
+      </div>
+    </div>
+
+    <div class="p-4" v-if="!this.loading">
+      <div v-if="this.errorMessage !== null" class="alert alert-danger-solid">
+        <svg class="alert-icon" fill="currentColor" viewBox="0 0 20 20">
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+        <div class="alert-content">
+          <div class="alert-message">{{ this.errorMessage }}</div>
+        </div>
+      </div>
+
+      <div v-if="this.hideMsgSuccess" class="alert alert-success-solid">
+        <svg class="alert-icon" fill="currentColor" viewBox="0 0 20 20">
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+        <div class="alert-content">
+          <div class="alert-message">{{ this.translate.msg_hide_success }}</div>
+        </div>
+      </div>
+      <div v-else>Content</div>
+    </div>
+    <div class="p-4" v-else>
+      <SkeletonText />
+    </div>
+  </div>
+
+  <!--<div class="card-body" v-if="this.loading">
       <div class="spinner-border spinner-border-sm text-secondary" role="status">
         <span class="visually-hidden">{{ this.translate.loading }}</span>
       </div>
@@ -167,7 +232,7 @@ export default {
         </div>
       </div>
     </div>
-  </div>
+  </div>-->
 
   <modal
     :id="'modal-config-hide-help-config'"
@@ -181,11 +246,45 @@ export default {
       <div>{{ translate.modal_confirm_body_2 }}</div>
     </template>
     <template #footer>
-      <button type="button" class="btn btn-primary" @click="this.hideConfig()">
-        <i class="bi bi-check2-circle"></i> {{ translate.modal_confirm_btn_ok }}
+      <button type="button" class="btn btn-primary btn-sm me-2" @click="this.hideConfig()">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ translate.modal_confirm_btn_ok }}
       </button>
-      <button type="button" class="btn btn-secondary" @click="this.hideModal()">
-        <i class="bi bi-x-circle"></i> {{ translate.modal_confirm_btn_ko }}
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="this.hideModal()">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ translate.modal_confirm_btn_ko }}
       </button>
     </template>
   </modal>
