@@ -8,7 +8,6 @@ namespace App\Tests\Controller\Admin;
 
 use App\Enum\Admin\DashboardBlock;
 use App\Tests\AppWebTestCase;
-use App\Utils\Dashboard\DashboardKey;
 
 class DashboardControllerTest extends AppWebTestCase
 {
