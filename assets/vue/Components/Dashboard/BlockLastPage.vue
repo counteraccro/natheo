@@ -62,13 +62,18 @@ export default {
       <button class="text-sm font-medium hover:underline" style="color: var(--primary)">Voir tout</button>
     </div>
 
-    <div class="overflow-x-auto" v-if="!this.loading">
-      <div
-        v-if="this.errorMessage !== null"
-        class="ms-4 me-4 mt-4 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-        role="alert"
-      >
-        {{ this.errorMessage }}
+    <div class="overflow-x-auto m-4" v-if="!this.loading">
+      <div v-if="this.errorMessage !== null" class="alert alert-danger-solid">
+        <svg class="alert-icon" fill="currentColor" viewBox="0 0 20 20">
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+        <div class="alert-content">
+          <div class="alert-message">{{ this.errorMessage }}</div>
+        </div>
       </div>
     </div>
     <div v-else>
