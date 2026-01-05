@@ -8,6 +8,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Enum\Admin\DashboardBlock;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\DashboardService;
 use App\Service\Admin\System\User\UserDataService;
@@ -42,13 +43,13 @@ class DashboardController extends AppAdminController
             'urls' => [
                 'dashboard_help_first_connexion' => [
                     'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', [
-                        'id' => DashboardKey::DASHBOARD_HELP_FIRST_CONNEXION_ID,
+                        'id' => DashboardBlock::HELP_FIRST_CONNEXION->value,
                     ]),
                     'update_user_data' => $this->generateUrl('admin_user_update_user_data'),
                 ],
                 'dashboard_last_comments' => [
                     'load_block_dashboard' => $this->generateUrl('admin_dashboard_load_block', [
-                        'id' => DashboardKey::DASHBOARD_LAST_COMMENT,
+                        'id' => DashboardBlock::LAST_COMMENT->value,
                     ]),
                     'url_comments' => $this->generateUrl('admin_comment_index'),
                 ],
@@ -83,8 +84,8 @@ class DashboardController extends AppAdminController
         DashboardService $dashboardService,
     ): JsonResponse {
         $return = match ($id) {
-            DashboardKey::DASHBOARD_HELP_FIRST_CONNEXION_ID => $dashboardService->getBlockHelpConfig(),
-            DashboardKey::DASHBOARD_LAST_COMMENT => $dashboardService->getBlockLastComment(),
+            DashboardBlock::HELP_FIRST_CONNEXION->value => $dashboardService->getBlockHelpConfig(),
+            DashboardBlock::LAST_COMMENT->value => $dashboardService->getBlockLastComment(),
             default => [
                 'success' => false,
                 'body' => null,

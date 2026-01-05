@@ -6,6 +6,7 @@
  */
 namespace App\Tests\Controller\Admin;
 
+use App\Enum\Admin\DashboardBlock;
 use App\Tests\AppWebTestCase;
 use App\Utils\Dashboard\DashboardKey;
 
@@ -41,7 +42,7 @@ class DashboardControllerTest extends AppWebTestCase
         $this->client->request(
             'GET',
             $this->router->generate('admin_dashboard_load_block', [
-                'id' => DashboardKey::DASHBOARD_HELP_FIRST_CONNEXION_ID,
+                'id' => DashboardBlock::HELP_FIRST_CONNEXION->value,
             ]),
         );
         $this->assertResponseIsSuccessful();
