@@ -6,10 +6,11 @@
  */
 import axios from 'axios';
 import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
+import AlertDanger from '@/vue/Components/Alert/Danger.vue';
 
 export default {
   name: 'BlockLastPage',
-  components: { SkeletonTable },
+  components: { AlertDanger, SkeletonTable },
   emit: [],
   props: {
     urls: Object,
@@ -63,18 +64,7 @@ export default {
     </div>
 
     <div class="overflow-x-auto m-4" v-if="!this.loading">
-      <div v-if="this.errorMessage !== null" class="alert alert-danger-solid">
-        <svg class="alert-icon" fill="currentColor" viewBox="0 0 20 20">
-          <path
-            fill-rule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
-        <div class="alert-content">
-          <div class="alert-message">{{ this.errorMessage }}</div>
-        </div>
-      </div>
+      <AlertDanger v-if="this.errorMessage !== null" :text="this.errorMessage" />
     </div>
     <div v-else>
       <SkeletonTable :rows="5" :columns="3" />

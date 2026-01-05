@@ -7,10 +7,12 @@
 import axios from 'axios';
 import Modal from '../Global/Modal.vue';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
+import AlertSuccess from '@/vue/Components/Alert/Success.vue';
+import AlertDanger from '@/vue/Components/Alert/Danger.vue';
 
 export default {
   name: 'BlockHelpFirstConnexion',
-  components: { SkeletonText, Modal },
+  components: { AlertDanger, AlertSuccess, SkeletonText, Modal },
   emit: [],
   props: {
     urls: Object,
@@ -153,31 +155,9 @@ export default {
     </div>
 
     <div class="p-4" v-if="!this.loading">
-      <div v-if="this.errorMessage !== null" class="alert alert-danger-solid">
-        <svg class="alert-icon" fill="currentColor" viewBox="0 0 20 20">
-          <path
-            fill-rule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
-        <div class="alert-content">
-          <div class="alert-message">{{ this.errorMessage }}</div>
-        </div>
-      </div>
+      <AlertDanger v-if="this.errorMessage !== null" :text="this.errorMessage" />
 
-      <div v-if="this.hideMsgSuccess" class="alert alert-success-solid">
-        <svg class="alert-icon" fill="currentColor" viewBox="0 0 20 20">
-          <path
-            fill-rule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-            clip-rule="evenodd"
-          ></path>
-        </svg>
-        <div class="alert-content">
-          <div class="alert-message">{{ this.translate.msg_hide_success }}</div>
-        </div>
-      </div>
+      <AlertSuccess v-if="this.hideMsgSuccess" :text="this.translate.msg_hide_success" />
       <div v-else>Content</div>
     </div>
     <div class="p-4" v-else>
