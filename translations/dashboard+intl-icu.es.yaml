@@ -35,3 +35,5 @@ dashboard.last.page: __dashboard.last.page
 dashboard.block.last.comments.link.comment: __dashboard.block.last.comments.link.comment
 dashboard.block.last.pages.title: __dashboard.block.last.pages.title
 dashboard.block.last.pages.loading: __dashboard.block.last.pages.loading
+dashboard.block.help.first.connexion.link.options: __dashboard.block.help.first.connexion.link.options
+dashboard.block.help.first.connexion.link.tokens: __dashboard.block.help.first.connexion.link.tokens
