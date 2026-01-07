@@ -128,7 +128,20 @@ class DashboardService extends AppAdminService
             }
         }
 
-        return ['success' => true, 'body' => $body, 'all', 'configComplete' => $configComplete];
+        $router = $this->getRouter();
+
+        $links = [
+            'link_options' => [
+                'label' => $translator->trans('dashboard.block.help.first.connexion.link.options', domain: 'dashboard'),
+                'link' => $router->generate('admin_option-system_change'),
+            ],
+            'link_tokens' => [
+                'label' => $translator->trans('dashboard.block.help.first.connexion.link.tokens', domain: 'dashboard'),
+                'link' => $router->generate('admin_api_token_index'),
+            ],
+        ];
+
+        return ['success' => true, 'body' => $body, 'all', 'configComplete' => $configComplete, 'links' => $links];
     }
 
     /**

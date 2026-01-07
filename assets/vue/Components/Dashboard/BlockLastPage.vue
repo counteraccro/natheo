@@ -6,10 +6,11 @@
  */
 import axios from 'axios';
 import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
+import AlertDanger from '@/vue/Components/Alert/Danger.vue';
 
 export default {
   name: 'BlockLastPage',
-  components: { SkeletonTable },
+  components: { AlertDanger, SkeletonTable },
   emit: [],
   props: {
     urls: Object,
@@ -62,14 +63,8 @@ export default {
       <button class="text-sm font-medium hover:underline" style="color: var(--primary)">Voir tout</button>
     </div>
 
-    <div class="overflow-x-auto" v-if="!this.loading">
-      <div
-        v-if="this.errorMessage !== null"
-        class="ms-4 me-4 mt-4 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-        role="alert"
-      >
-        {{ this.errorMessage }}
-      </div>
+    <div class="overflow-x-auto m-4" v-if="!this.loading">
+      <AlertDanger v-if="this.errorMessage !== null" :text="this.errorMessage" />
     </div>
     <div v-else>
       <SkeletonTable :rows="5" :columns="3" />

@@ -42,7 +42,7 @@ export default {
 <template>
   <div id="grid-block-dashboard" class="row">
     <div
-      class="col-6 mb-3"
+      class="grid grid-cols-1 gap-6 mb-6"
       v-if="this.datas.dashboard_help_first_connexion.help_first_connexion && this.showBlockHelpFirstConnexion"
     >
       <block-help-first-connexion

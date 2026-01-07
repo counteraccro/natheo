@@ -6,10 +6,13 @@
  */
 import axios from 'axios';
 import Modal from '../Global/Modal.vue';
+import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
+import AlertSuccess from '@/vue/Components/Alert/Success.vue';
+import AlertDanger from '@/vue/Components/Alert/Danger.vue';
 
 export default {
   name: 'BlockHelpFirstConnexion',
-  components: { Modal },
+  components: { AlertDanger, AlertSuccess, SkeletonText, Modal },
   emit: [],
   props: {
     urls: Object,
@@ -25,6 +28,7 @@ export default {
       errorMessage: null,
       hideMsgSuccess: null,
       complete: false,
+      links: [],
       showModalConfirm: false,
     };
   },
@@ -45,6 +49,7 @@ export default {
           } else {
             this.result = response.data.body;
             this.complete = response.data.configComplete;
+            this.links = response.data.links;
           }
         })
         .catch((error) => {
@@ -117,10 +122,146 @@ export default {
 </script>
 
 <template>
-  <div class="card">
-    <h5 class="card-header"><i class="bi bi-info-circle"></i> {{ this.translate.title }}</h5>
+  <div class="card rounded-lg overflow-hidden">
+    <div class="px-4 sm:px-6 py-4 border-b flex items-center justify-between" style="border-color: var(--border-color)">
+      <h3 class="text-lg font-semibold">{{ this.translate.title }}</h3>
 
-    <div class="card-body" v-if="this.loading">
+      <div class="flex gap-2">
+        <a href="#" @click="this.load()" class="text-sm font-medium hover:underline text-[var(--primary)]">
+          <svg
+            class="icon"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"
+            />
+          </svg>
+        </a>
+        <a
+          href="#"
+          class="text-sm font-medium hover:underline text-[var(--primary)]"
+          @click="!this.complete ? this.showModal() : this.hideConfig()"
+        >
+          {{ this.translate.btn_def_hide }}
+        </a>
+      </div>
+    </div>
+
+    <div class="p-4" v-if="!this.loading">
+      <AlertDanger v-if="this.errorMessage !== null" :text="this.errorMessage" />
+
+      <AlertSuccess v-if="this.hideMsgSuccess" :text="this.translate.msg_hide_success" />
+      <div v-else>
+        <h4 class="font-semibold mb-2 text-[var(--text-primary)]">{{ this.translate.sub_title }}</h4>
+        <p class="text-sm mb-4 text-[var(--text-secondary)]">{{ this.translate.text_1 }}</p>
+
+        <div class="space-y-1">
+          <div v-for="(item, index) in this.result" :key="index">
+            <div v-if="item.success" class="config-item config-item-success">
+              <svg class="config-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              <span> {{ item.msg }} </span>
+            </div>
+
+            <div v-else-if="!Array.isArray(item.msg)" class="config-item config-item-error">
+              <svg class="config-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              <span> {{ item.msg }} </span>
+            </div>
+            <div v-else>
+              <div class="config-item config-item-error">
+                <svg class="config-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+                <span> {{ item.msgTitle }} </span>
+              </div>
+
+              <div
+                v-for="(subItem, index) in item.msg"
+                :key="index"
+                class="config-item config-item-error config-item-nested"
+              >
+                <svg class="config-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+                <span>{{ subItem }} </span>
+              </div>
+
+              <div class="flex flex-wrap gap-4 mt-4 pt-4" style="border-top: 1px solid var(--border-color)">
+                <a
+                  :href="this.links.link_options.link"
+                  class="text-sm font-medium hover:underline flex items-center gap-1.5"
+                  style="color: var(--primary)"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm16 14a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2ZM4 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6Zm16-2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6Z"
+                    ></path>
+                  </svg>
+
+                  {{ this.links.link_options.label }}
+                </a>
+                <a
+                  :href="this.links.link_tokens.link"
+                  class="text-sm font-medium hover:underline flex items-center gap-1.5"
+                  style="color: var(--primary)"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
+                    ></path>
+                  </svg>
+                  {{ this.links.link_tokens.label }}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-4" v-else>
+      <SkeletonText />
+    </div>
+  </div>
+
+  <!--<div class="card-body" v-if="this.loading">
       <div class="spinner-border spinner-border-sm text-secondary" role="status">
         <span class="visually-hidden">{{ this.translate.loading }}</span>
       </div>
@@ -167,7 +308,7 @@ export default {
         </div>
       </div>
     </div>
-  </div>
+  </div>-->
 
   <modal
     :id="'modal-config-hide-help-config'"
@@ -181,11 +322,45 @@ export default {
       <div>{{ translate.modal_confirm_body_2 }}</div>
     </template>
     <template #footer>
-      <button type="button" class="btn btn-primary" @click="this.hideConfig()">
-        <i class="bi bi-check2-circle"></i> {{ translate.modal_confirm_btn_ok }}
+      <button type="button" class="btn btn-primary btn-sm me-2" @click="this.hideConfig()">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ translate.modal_confirm_btn_ok }}
       </button>
-      <button type="button" class="btn btn-secondary" @click="this.hideModal()">
-        <i class="bi bi-x-circle"></i> {{ translate.modal_confirm_btn_ko }}
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="this.hideModal()">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ translate.modal_confirm_btn_ko }}
       </button>
     </template>
   </modal>

@@ -421,3 +421,38 @@ h1.head-title{
   color: #999;
   text-decoration: none;
 }
+
+/**
+ Dashboard bloc config
+ */
+
+.config-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.50rem;
+  padding: 0.2rem 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.config-item-icon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.05rem;
+}
+
+.config-item-success .config-item-icon {
+  color: var(--success);
+}
+
+.config-item-error .config-item-icon {
+  color: var(--error);
+}
+
+.config-item-nested {
+  margin-left: 2rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--border-color);
+}

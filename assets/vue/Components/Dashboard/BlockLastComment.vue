@@ -6,10 +6,11 @@
  */
 import axios from 'axios';
 import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
+import AlertDanger from '@/vue/Components/Alert/Danger.vue';
 
 export default {
   name: 'BlockLastComment',
-  components: { SkeletonTable },
+  components: { AlertDanger, SkeletonTable },
   emit: [],
   props: {
     urls: Object,
@@ -66,13 +67,7 @@ export default {
       }}</a>
     </div>
 
-    <div
-      v-if="this.errorMessage !== null"
-      class="ms-4 me-4 mt-4 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-      role="alert"
-    >
-      {{ this.errorMessage }}
-    </div>
+    <AlertDanger v-if="this.errorMessage !== null" :text="this.errorMessage" />
 
     <div class="overflow-x-auto" v-if="this.result !== null">
       <table class="w-full">
