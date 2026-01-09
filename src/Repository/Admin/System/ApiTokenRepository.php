@@ -49,15 +49,30 @@ class ApiTokenRepository extends ServiceEntityRepository
      * Retourne une liste de Mail Paginé
      * @param int $page
      * @param int $limit
-     * @param string|null $search
+     * @param array $queryParams
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, ?string $search = null): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
     {
-        $query = $this->createQueryBuilder('at')->orderBy('at.id', 'ASC');
+        $orderField = 'id';
+        $order = 'DESC';
+        if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
+            $orderField = $queryParams['orderField'];
+        }
 
-        if ($search !== null) {
-            $query->where('at.name like :search')->setParameter('search', '%' . $search . '%');
+        if (isset($queryParams['order']) && $queryParams['order'] !== '') {
+            $order = $queryParams['order'];
+        }
+
+        $query = $this->createQueryBuilder(ApiToken::DEFAULT_ALIAS)->orderBy(
+            ApiToken::DEFAULT_ALIAS . '.' . $orderField,
+            $order,
+        );
+
+        if (isset($queryParams['search']) && $queryParams['search'] !== '') {
+            $query
+                ->where(ApiToken::DEFAULT_ALIAS . '.name like :search')
+                ->setParameter('search', '%' . $queryParams['search'] . '%');
         }
 
         $paginator = new Paginator($query->getQuery(), true);
