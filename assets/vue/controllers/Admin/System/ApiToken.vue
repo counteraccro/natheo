@@ -4,10 +4,12 @@ import Toast from '../../../Components/Global/Toast.vue';
 import { copyToClipboard } from '../../../../utils/copyToClipboard';
 import Modal from '../../../Components/Global/Modal.vue';
 import { emitter } from '../../../../utils/useEvent';
+import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
 
 export default {
   name: 'ApiToken',
   components: {
+    SkeletonForm,
     Modal,
     Toast,
   },
@@ -183,6 +185,48 @@ export default {
 </script>
 
 <template>
+  <div class="card rounded-lg p-6 mb-4 mt-4">
+    <div v-if="this.loading">
+      <skeleton-form />
+    </div>
+    <div v-else>
+      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+        <h2 class="text-lg font-bold text-[var(--text-primary)]">
+          <span v-if="this.apiToken.id === null">
+            {{ this.translate.title_add }}
+          </span>
+          <span v-else>
+            {{ this.translate.title_edit }}
+          </span>
+        </h2>
+
+        <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+          <span v-if="this.apiToken.id === null">
+            {{ this.translate.description_add }}
+          </span>
+          <span v-else>
+            {{ this.translate.description_edit }}
+          </span>
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label for="api-token-name" class="form-label required">{{ this.translate.title_label }}</label>
+        <input
+          type="text"
+          class="form-input"
+          :class="this.validation.name.isValide ? '' : 'is-invalid'"
+          :placeholder="this.translate.title_placeholder"
+          id="api-token-name"
+          v-model="this.apiToken.name"
+          @change="this.verifField('name', this.apiToken.name)"
+        />
+        <div class="form-text text-error">{{ this.validation.name.msg }}</div>
+        <div class="form-text">{{ this.translate.title_help }}</div>
+      </div>
+    </div>
+  </div>
+
   <div :class="loading === true ? 'block-grid' : ''">
     <div v-if="loading" class="overlay">
       <div class="position-absolute top-50 start-50 translate-middle">
@@ -191,7 +235,7 @@ export default {
       </div>
     </div>
 
-    <div class="card border border-secondary">
+    <div class="card rounded-lg p-6 mb-4 mt-4">
       <div class="card-header text-bg-secondary">
         <span v-if="this.apiToken.id === null">
           {{ this.translate.title_add }}
@@ -331,11 +375,6 @@ export default {
       :show="this.toasts.toastSuccess.show"
       @close-toast="this.closeToast('toastSuccess')"
     >
-      <template #header>
-        <i class="bi bi-check-circle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.translate.toast_title_success }}</strong>
-        <small class="text-black-50">{{ this.translate.toast_time }}</small>
-      </template>
       <template #body>
         <div v-html="this.toasts.toastSuccess.msg"></div>
       </template>
@@ -347,11 +386,6 @@ export default {
       :show="this.toasts.toastError.show"
       @close-toast="this.closeToast('toastError')"
     >
-      <template #header>
-        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.translate.toast_title_error }}</strong>
-        <small class="text-black-50">{{ this.translate.toast_time }}</small>
-      </template>
       <template #body>
         <div v-html="this.toasts.toastError.msg"></div>
       </template>
