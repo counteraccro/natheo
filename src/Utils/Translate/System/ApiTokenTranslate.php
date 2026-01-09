@@ -18,11 +18,10 @@ class ApiTokenTranslate extends AppTranslate
     {
         return [
             'loading' => $this->translator->trans('api_token.loading', domain: 'api_token'),
-            'toast_title_success' => $this->translator->trans('api_token.toast.title.success', domain: 'api_token'),
-            'toast_title_error' => $this->translator->trans('api_token.toast.title.error', domain: 'api_token'),
-            'toast_time' => $this->translator->trans('api_token.toast.time', domain: 'api_token'),
             'title_add' => $this->translator->trans('api_token.card.title.add', domain: 'api_token'),
             'title_edit' => $this->translator->trans('api_token.card.title.edit', domain: 'api_token'),
+            'description_add' => $this->translator->trans('api_token.card.description.add', domain: 'api_token'),
+            'description_edit' => $this->translator->trans('api_token.card.description.edit', domain: 'api_token'),
             'btn_new_token' => $this->translator->trans('api_token.card.btn.new_token', domain: 'api_token'),
             'generate_token_success' => $this->translator->trans(
                 'api_token.card.generate.token.success',
