@@ -49,7 +49,7 @@ api_token.modale.confirm.edit.text: 'Attention, la modification de ce token ou s
 api_token.modale.confirm.edit.btn_ok: Oui
 api_token.modale.confirm.edit.btn_ko: Non
 api_token.card.comment.label: Commentaire
-api_token.card.comment.help: 'Commentaire pour dire qui utilise le token etc...'
+api_token.card.comment.help: "Commentaire associé au token pour noter d'éventuelles informations"
 api_token.card.comment.placeholder: Commentaire
 api_token.card.btn.save.token.api: 'Créer le token'
 api_token.card.title.error: '✗ Vous devez saisir un nom pour votre token'
