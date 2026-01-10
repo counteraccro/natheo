@@ -224,6 +224,18 @@ export default {
         <div class="form-text text-error">{{ this.validation.name.msg }}</div>
         <div class="form-text">{{ this.translate.title_help }}</div>
       </div>
+
+      <div class="form-group">
+        <label for="api-token-comment" class="form-label">{{ this.translate.comment_label }}</label>
+        <textarea
+          type="text"
+          class="form-input"
+          :placeholder="this.translate.comment_placeholder"
+          id="api-token-comment"
+          v-model="this.apiToken.comment"
+        ></textarea>
+        <div class="form-text">{{ this.translate.comment_help }}</div>
+      </div>
     </div>
   </div>
 
