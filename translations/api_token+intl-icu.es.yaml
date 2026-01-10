@@ -57,3 +57,7 @@ api_token.card.input.token.error: __api_token.card.input.token.error
 api_token.save.success: __api_token.save.success
 api_token.new.token.success: __api_token.new.token.success
 api_token.loading: __api_token.loading
+api_token.card.description.add: __api_token.card.description.add
+api_token.card.description.edit: __api_token.card.description.edit
+api_token.card.token.label: __api_token.card.token.label
+api_token.card.input.token.help.add: __api_token.card.input.token.help.add

@@ -59,3 +59,5 @@ api_token.new.token.success: 'Token créé avec succès, redirection en cours...
 api_token.loading: 'Chargement en cours...'
 api_token.card.description.add: "Créer une nouvelle clé d'accès à vos données"
 api_token.card.description.edit: "Editer la clé d'accès à vos données"
+api_token.card.input.token.help.add: "Le token ne sera valide qu'une fois celui ci créé"
+api_token.card.token.label: "Token"

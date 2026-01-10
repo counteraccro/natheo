@@ -38,8 +38,13 @@ class ApiTokenTranslate extends AppTranslate
                 'api_token.card.comment.placeholder',
                 domain: 'api_token',
             ),
+            'token_label' => $this->translator->trans('api_token.card.token.label', domain: 'api_token'),
             'token_copy_success' => $this->translator->trans('api_token.card.copy.success', domain: 'api_token'),
             'input_token_help' => $this->translator->trans('api_token.card.input.token.help', domain: 'api_token'),
+            'input_token_help_add' => $this->translator->trans(
+                'api_token.card.input.token.help.add',
+                domain: 'api_token',
+            ),
             'input_token_error' => $this->translator->trans('api_token.card.input.token.error', domain: 'api_token'),
             'select_label_role' => $this->translator->trans('api_token.card.select.label.role', domain: 'api_token'),
             'help_role' => $this->translator->trans('api_token.card.help.role', domain: 'api_token'),
