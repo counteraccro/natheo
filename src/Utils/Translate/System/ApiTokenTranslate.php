@@ -52,6 +52,11 @@ class ApiTokenTranslate extends AppTranslate
             'help_role_write' => $this->translator->trans('api_token.card.help.role_write', domain: 'api_token'),
             'help_role_admin' => $this->translator->trans('api_token.card.help.role_admin', domain: 'api_token'),
             'btn_edit_token_api' => $this->translator->trans('api_token.card.btn.edit.token.api', domain: 'api_token'),
+            'btn_cancel_edit_token' => $this->translator->trans(
+                'api_token.card.btn.cancel.token.api',
+                domain: 'api_token',
+            ),
+            'btn_delete_token' => $this->translator->trans('api_token.card.btn.delete.token.api', domain: 'api_token'),
             'btn_save_token_api' => $this->translator->trans('api_token.card.btn.save.token.api', domain: 'api_token'),
             'modale_title_confirm_edit' => $this->translator->trans(
                 'api_token.modale.confirm.edit.title',
