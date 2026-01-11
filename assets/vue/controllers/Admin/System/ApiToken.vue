@@ -319,126 +319,74 @@ export default {
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div :class="loading === true ? 'block-grid' : ''">
-    <div v-if="loading" class="overlay">
-      <div class="position-absolute top-50 start-50 translate-middle">
-        <div class="spinner-border text-primary" role="status"></div>
-        <span class="txt-overlay">{{ translate.loading }}</span>
-      </div>
-    </div>
-
-    <div class="card rounded-lg p-6 mb-4 mt-4">
-      <div class="card-header text-bg-secondary">
-        <span v-if="this.apiToken.id === null">
-          {{ this.translate.title_add }}
-        </span>
-        <span v-else>
-          {{ this.translate.title_edit }}
-        </span>
-      </div>
-      <div class="card-body">
-        <div class="mb-3">
-          <label for="api-token-name" class="form-label">{{ this.translate.title_label }}</label>
-          <input
-            type="text"
-            class="form-control"
-            :class="this.validation.name.isValide ? '' : 'is-invalid'"
-            :placeholder="this.translate.title_placeholder"
-            id="api-token-name"
-            v-model="this.apiToken.name"
-            @change="this.verifField('name', this.apiToken.name)"
-          />
-          <div class="invalid-feedback">{{ this.validation.name.msg }}</div>
-          <div class="form-text">{{ this.translate.title_help }}</div>
-        </div>
-
-        <div class="mb-3">
-          <label for="api-token-name" class="form-label">{{ this.translate.comment_label }}</label>
-          <textarea
-            type="text"
-            class="form-control"
-            :placeholder="this.translate.comment_placeholder"
-            id="api-token-name"
-            v-model="this.apiToken.comment"
-          ></textarea>
-          <div class="form-text">{{ this.translate.comment_help }}</div>
-        </div>
-
-        <div class="mb-3">
-          <div v-if="this.apiToken.id === null">
-            <div class="input-group mb-3">
-              <input
-                type="text"
-                class="form-control"
-                id="token"
-                :class="this.validation.token.isValide ? '' : 'is-invalid'"
-                v-model="this.apiToken.token"
-                disabled
-              />
-              <button class="btn btn-secondary" type="button" @click="this.generateToken()">
-                <i class="bi bi-gear"></i> {{ this.translate.btn_new_token }}
-              </button>
-              <div class="invalid-feedback">{{ this.validation.token.msg }}</div>
-            </div>
-          </div>
-
-          <div v-else>
-            <div class="input-group">
-              <input
-                type="text"
-                class="form-control"
-                :class="this.validation.token.isValide ? '' : 'is-invalid'"
-                id="token"
-                v-model="this.apiToken.token"
-                disabled
-              />
-              <button class="btn btn-secondary" type="button" @click="this.generateToken()">
-                <i class="bi bi-gear"></i> {{ this.translate.btn_new_token }}
-              </button>
-              <button class="btn btn-secondary" type="button" @click="this.copyToken()">
-                <i class="bi bi-copy"></i> {{ this.translate.btn_copy_past }}
-              </button>
-              <div class="invalid-feedback">{{ this.validation.token.msg }}</div>
-            </div>
-            <div class="form-text">
-              {{ this.translate.input_token_help }}
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-4">
-            <label for="roles" class="form-label">{{ this.translate.select_label_role }}</label>
-            <select class="form-select" id="roles" v-model="this.apiToken.roles[0]">
-              <option v-for="(role, key) in this.datas.roles" :value="key">{{ role }}</option>
-            </select>
-          </div>
-          <div class="col">
-            <div>{{ this.translate.help_role }}</div>
-            <ul>
-              <li>{{ this.translate.help_role_read }}</li>
-              <li>{{ this.translate.help_role_write }}</li>
-              <li>{{ this.translate.help_role_admin }}</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="float-end">
-          <div
-            v-if="this.apiToken.id === null"
-            class="btn btn-secondary"
-            :class="!this.canSave ? 'disabled' : ''"
-            @click="this.saveToken(true)"
+      <div class="flex flex-wrap gap-3 pt-4 mt-5 flex-row-reverse">
+        <button
+          v-if="this.apiToken.id !== null"
+          type="button"
+          class="btn btn-sm btn-danger"
+          @click="this.showModalConfirmDelete = true"
+        >
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+            ></path>
+          </svg>
+          {{ this.translate.btn_delete_token }}
+        </button>
+        <button type="button" class="btn btn-outline-dark btn-sm" onclick="window.history.back()">
+          <svg
+            class="icon"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
           >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+
+          {{ this.translate.btn_cancel_edit_token }}
+        </button>
+        <button
+          class="btn btn-sm btn-primary"
+          :disabled="!canSave"
+          @click="this.apiToken.id === null ? this.saveToken(true) : this.saveToken(false)"
+        >
+          <svg v-if="this.apiToken.id === null" class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+          <svg
+            v-elsew
+            class="icon"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-width="2"
+              d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"
+            ></path>
+          </svg>
+          <span v-if="this.apiToken.id === null">
             {{ this.translate.btn_save_token_api }}
-          </div>
-          <div v-else class="btn btn-secondary" :class="!this.canSave ? 'disabled' : ''" @click="this.saveToken(false)">
-            <i class="bi bi-pencil-square"></i> {{ this.translate.btn_edit_token_api }}
-          </div>
-        </div>
+          </span>
+          <span v-else>
+            {{ this.translate.btn_edit_token_api }}
+          </span>
+        </button>
       </div>
     </div>
   </div>
@@ -454,11 +402,46 @@ export default {
       <div v-html="this.translate.modale_title_confirm_text"></div>
     </template>
     <template #footer>
-      <button type="button" class="btn btn-primary" @click="this.saveToken(true)">
-        <i class="bi bi-check2-circle"></i> {{ translate.modale_title_confirm_btn_ok }}
+      <button type="button" class="btn btn-primary btn-sm me-2" @click="this.saveToken(true)">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ translate.modale_title_confirm_btn_ok }}
       </button>
-      <button type="button" class="btn btn-secondary" @click="this.hideModal()">
-        <i class="bi bi-x-circle"></i> {{ translate.modale_title_confirm_btn_ko }}
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="this.hideModal()">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+
+        {{ translate.modale_title_confirm_btn_ko }}
       </button>
     </template>
   </modal>
