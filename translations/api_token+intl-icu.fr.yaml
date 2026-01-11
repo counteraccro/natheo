@@ -63,3 +63,5 @@ api_token.card.input.token.help.add: "Le token ne sera valide qu'une fois celui 
 api_token.card.token.label: Token
 api_token.card.btn.cancel.token.api: Annuler
 api_token.card.btn.delete.token.api: Supprimer
+api_token.modale.confirm.delete.title: 'Confirmer la suppression du token'
+api_token.modale.confirm.delete.text: "La suppression du token est définitive et sans possibilité de retour. <br /> Toutes applications l'utilisant verra ses accès instantanément coupés."

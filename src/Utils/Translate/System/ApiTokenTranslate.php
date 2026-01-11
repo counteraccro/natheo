@@ -45,7 +45,7 @@ class ApiTokenTranslate extends AppTranslate
                 'api_token.card.input.token.help.add',
                 domain: 'api_token',
             ),
-            'input_token_error' => $this->translator->trans('api_token.card.input.token.error', domain: 'api_token'),
+            'token_error' => $this->translator->trans('api_token.card.input.token.error', domain: 'api_token'),
             'select_label_role' => $this->translator->trans('api_token.card.select.label.role', domain: 'api_token'),
             'help_role' => $this->translator->trans('api_token.card.help.role', domain: 'api_token'),
             'help_role_read' => $this->translator->trans('api_token.card.help.role_read', domain: 'api_token'),
@@ -72,6 +72,14 @@ class ApiTokenTranslate extends AppTranslate
             ),
             'modale_title_confirm_btn_ko' => $this->translator->trans(
                 'api_token.modale.confirm.edit.btn_ko',
+                domain: 'api_token',
+            ),
+            'modale_title_confirm_delete' => $this->translator->trans(
+                'api_token.modale.confirm.delete.title',
+                domain: 'api_token',
+            ),
+            'modale_title_confirm_delete_text' => $this->translator->trans(
+                'api_token.modale.confirm.delete.text',
                 domain: 'api_token',
             ),
         ];
