@@ -1,9 +1,9 @@
 <script>
 import axios from 'axios';
 import Toast from '../../../Components/Global/Toast.vue';
-import { copyToClipboard } from '../../../../utils/copyToClipboard';
+import { copyToClipboard } from '@/utils/copyToClipboard';
 import Modal from '../../../Components/Global/Modal.vue';
-import { emitter } from '../../../../utils/useEvent';
+import { emitter } from '@/utils/useEvent';
 import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
 
 export default {
@@ -24,7 +24,8 @@ export default {
       loading: false,
       apiToken: this.pApiToken,
       showModalApiTokenConfirm: false,
-      canSave: false,
+      showModalApiTokenDelete: false,
+      canSave: true,
       validation: {
         name: {
           isValide: true,
@@ -47,19 +48,7 @@ export default {
       },
     };
   },
-  mounted() {
-    if (this.apiToken.id !== null) {
-      this.canSave = true;
-    }
-
-    if (this.apiToken.token === null) {
-      this.validation.token.isValide = false;
-      this.validation.token.msg = this.translate.input_token_error;
-    }
-    if (this.apiToken.name === null) {
-      this.verifField('name', '');
-    }
-  },
+  mounted() {},
   methods: {
     /**
      * Génère un token
@@ -104,6 +93,10 @@ export default {
       }
 
       this.showModalApiTokenConfirm = false;
+      this.verifField('name', this.apiToken.name);
+      this.verifField('token', this.apiToken.token);
+
+      this.isAllValidate();
 
       if (!this.canSave) {
         return false;
@@ -120,7 +113,11 @@ export default {
             this.toasts.toastSuccess.msg = response.data.msg;
 
             if (response.data.redirect !== '') {
-              window.location.replace(response.data.redirect);
+              setTimeout(() => {
+                window.location.replace(response.data.redirect);
+              }, 1500);
+            } else {
+              this.loading = false;
             }
           } else {
             this.toasts.toastError.show = true;
@@ -131,8 +128,35 @@ export default {
           console.error(error);
         })
         .finally(() => {
-          this.loading = false;
           emitter.emit('reset-check-confirm');
+        });
+    },
+
+    /**
+     * Supprime le token
+     */
+    deleteToken() {
+      this.loading = true;
+      this.showModalApiTokenDelete = false;
+
+      axios
+        .delete(this.urls.delete_api_token)
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccess.msg = response.data.msg;
+            this.toasts.toastSuccess.show = true;
+          } else {
+            this.toasts.toastError.msg = response.data.msg;
+            this.toasts.toastError.show = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          setTimeout(() => {
+            window.location = this.urls.index_api_token;
+          }, 1500);
         });
     },
 
@@ -144,7 +168,8 @@ export default {
     verifField(name, value) {
       let isValide = true;
       let msg = '';
-      if (value === '') {
+
+      if (value === '' || value === null) {
         isValide = false;
         msg = this.translate[name + '_error'];
       }
@@ -179,6 +204,7 @@ export default {
      */
     hideModal() {
       this.showModalApiTokenConfirm = false;
+      this.showModalApiTokenDelete = false;
     },
   },
 };
@@ -325,7 +351,7 @@ export default {
           v-if="this.apiToken.id !== null"
           type="button"
           class="btn btn-sm btn-danger"
-          @click="this.showModalConfirmDelete = true"
+          @click="this.showModalApiTokenDelete = true"
         >
           <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -367,7 +393,7 @@ export default {
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
           </svg>
           <svg
-            v-elsew
+            v-else
             class="icon"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
@@ -403,6 +429,61 @@ export default {
     </template>
     <template #footer>
       <button type="button" class="btn btn-primary btn-sm me-2" @click="this.saveToken(true)">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ translate.modale_title_confirm_btn_ok }}
+      </button>
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="this.hideModal()">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+
+        {{ translate.modale_title_confirm_btn_ko }}
+      </button>
+    </template>
+  </modal>
+
+  <modal
+    :id="'confirm-delete-api-token'"
+    :show="this.showModalApiTokenDelete"
+    @close-modal="this.hideModal"
+    :option-show-close-btn="false"
+  >
+    <template #title> <i class="bi bi-sign-stop"></i> {{ this.translate.modale_title_confirm_delete }} </template>
+    <template #body>
+      <div v-html="this.translate.modale_title_confirm_delete_text"></div>
+    </template>
+    <template #footer>
+      <button type="button" class="btn btn-primary btn-sm me-2" @click="this.deleteToken()">
         <svg
           class="icon"
           aria-hidden="true"
