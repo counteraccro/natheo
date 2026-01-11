@@ -63,8 +63,13 @@ class ApiTokenController extends AppAdminController
         int $page = 1,
         int $limit = 20,
     ): JsonResponse {
-        $search = $request->query->get('search');
-        $grid = $apiTokenService->getAllFormatToGrid($page, $limit, $search);
+        $queryParams = [
+            'search' => $request->query->get('search'),
+            'orderField' => $request->query->get('orderField'),
+            'order' => $request->query->get('order'),
+        ];
+
+        $grid = $apiTokenService->getAllFormatToGrid($page, $limit, $queryParams);
         return $this->json($grid);
     }
 
@@ -155,6 +160,8 @@ class ApiTokenController extends AppAdminController
             'urls' => [
                 'generate_token' => $this->generateUrl('admin_api_token_generate_token'),
                 'save_api_token' => $this->generateUrl('admin_api_token_save'),
+                'index_api_token' => $this->generateUrl('admin_api_token_index'),
+                'delete_api_token' => $this->generateUrl('admin_api_token_delete', ['id' => $apiToken['id'] ?? 0]),
             ],
             'datas' => [
                 'roles' => $apiTokenService->getRolesApi(),
@@ -196,7 +203,7 @@ class ApiTokenController extends AppAdminController
         );
         $response['redirect'] = '';
         if ($data['apiToken']['id'] === null) {
-            $response['redirect'] = $this->generateUrl('admin_api_token_update', ['id' => $id]);
+            $response['redirect'] = $this->generateUrl('admin_api_token_index');
             if ($response['success'] === true) {
                 $response['msg'] = $translator->trans('api_token.new.token.success', domain: 'api_token');
             }

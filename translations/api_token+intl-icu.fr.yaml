@@ -25,9 +25,6 @@ api_token.update.description: 'Editer les données de mon token'
 api_token.index.btn.new: 'Nouveau token'
 api_token.index.popin.help.enable: 'Activer le token'
 api_token.index.popin.help.disabled: 'Désactiver le token'
-api_token.toast.title.success: 'Succès !'
-api_token.toast.title.error: 'Erreur !'
-api_token.toast.time: "A l'instant"
 api_token.card.title.add: 'Nouveau token'
 api_token.card.title.edit: 'Mon token'
 api_token.card.btn.new_token: Générer
@@ -52,11 +49,19 @@ api_token.modale.confirm.edit.text: 'Attention, la modification de ce token ou s
 api_token.modale.confirm.edit.btn_ok: Oui
 api_token.modale.confirm.edit.btn_ko: Non
 api_token.card.comment.label: Commentaire
-api_token.card.comment.help: 'Commentaire pour dire qui utilise le token etc...'
+api_token.card.comment.help: "Commentaire associé au token pour noter d'éventuelles informations"
 api_token.card.comment.placeholder: Commentaire
 api_token.card.btn.save.token.api: 'Créer le token'
-api_token.card.title.error: 'Vous devez saisir un nom pour votre token'
-api_token.card.input.token.error: "Vous devez générer un token via le bouton 'Générer'"
+api_token.card.title.error: '✗ Vous devez saisir un nom pour votre token'
+api_token.card.input.token.error: "✗ Vous devez générer un token via le bouton 'Générer'"
 api_token.save.success: 'Token sauvegardé avec succès'
 api_token.new.token.success: 'Token créé avec succès, redirection en cours...'
 api_token.loading: 'Chargement en cours...'
+api_token.card.description.add: "Créer une nouvelle clé d'accès à vos données"
+api_token.card.description.edit: "Editer la clé d'accès à vos données"
+api_token.card.input.token.help.add: "Le token ne sera valide qu'une fois celui ci créé"
+api_token.card.token.label: Token
+api_token.card.btn.cancel.token.api: Annuler
+api_token.card.btn.delete.token.api: Supprimer
+api_token.modale.confirm.delete.title: 'Confirmer la suppression du token'
+api_token.modale.confirm.delete.text: "La suppression du token est définitive et sans possibilité de retour. <br /> Toutes applications l'utilisant verra ses accès instantanément coupés."

@@ -544,3 +544,18 @@ input[type="datetime-local"].form-input {
 .input-tags input::placeholder {
   color: var(--input-placeholder);
 }
+
+/* Input with button */
+.input-button-group {
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.input-button-group .form-input {
+  flex: 1;
+}
+
+.input-button-group .btn {
+  flex-shrink: 0;
+}

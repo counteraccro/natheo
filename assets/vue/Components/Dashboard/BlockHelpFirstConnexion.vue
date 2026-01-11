@@ -218,7 +218,7 @@ export default {
                 <span>{{ subItem }} </span>
               </div>
 
-              <div class="flex flex-wrap gap-4 mt-4 pt-4" style="border-top: 1px solid var(--border-color)">
+              <div class="flex flex-wrap gap-4 mt-4 pt-4 border-t border-[var(--border-color)]">
                 <a
                   :href="this.links.link_options.link"
                   class="text-sm font-medium hover:underline flex items-center gap-1.5"

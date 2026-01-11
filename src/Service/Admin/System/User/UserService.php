@@ -26,7 +26,7 @@ class UserService extends AppAdminService
      * Retourne une liste de user paginé
      * @param int $page
      * @param int $limit
-     * @param string|null $search
+     * @param array $queryParams
      * @return Paginator
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -41,7 +41,7 @@ class UserService extends AppAdminService
      * Construit le tableau de donnée à envoyer au tableau GRID
      * @param int $page
      * @param int $limit
-     * @param string|null $search
+     * @param array $queryParams
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -69,14 +69,8 @@ class UserService extends AppAdminService
         foreach ($dataPaginate as $user) {
             /* @var User $user */
 
-            $isDisabled = '';
-            if ($user->isDisabled()) {
-                $isDisabled = '<i class="bi bi-eye-slash"></i>';
-            }
-
             $email = $user->getEmail();
             if ($user->isAnonymous()) {
-                $isDisabled = '<i class="bi bi-recycle"></i>';
                 $email = '--@anonyme.com';
             }
 
@@ -103,7 +97,7 @@ class UserService extends AppAdminService
 
             $actions = $this->generateTabAction($user);
             $data[] = [
-                $translator->trans('user.grid.id', domain: 'user') => $user->getId() . ' ' . $isDisabled,
+                $translator->trans('user.grid.id', domain: 'user') => $user->getId(),
                 $translator->trans('user.grid.login', domain: 'user') => $avatar . $user->getLogin() . '</span>',
                 $translator->trans('user.grid.email', domain: 'user') => $email,
                 $translator->trans('user.grid.name', domain: 'user') =>
@@ -129,8 +123,8 @@ class UserService extends AppAdminService
                 'email' => $translator->trans('user.grid.email', domain: 'user'),
                 'firstname' => $translator->trans('user.grid.name', domain: 'user'),
                 'roles' => $translator->trans('user.grid.role', domain: 'user'),
-                'createdAt' => $translator->trans('tag.grid.created_at', domain: 'tag'),
-                'updateAt' => $translator->trans('tag.grid.update_at', domain: 'tag'),
+                'createdAt' => $translator->trans('user.grid.created_at', domain: 'user'),
+                'updateAt' => $translator->trans('user.grid.update_at', domain: 'user'),
             ],
         ];
         return $gridService->addAllDataRequiredGrid($tabReturn);

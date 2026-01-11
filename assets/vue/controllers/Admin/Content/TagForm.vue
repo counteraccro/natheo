@@ -386,6 +386,52 @@ export default {
           </div>
         </div>
       </div>
+
+      <div class="flex flex-wrap gap-3 pt-4 mt-5 flex-row-reverse">
+        <button
+          v-if="this.tag.id !== null"
+          type="button"
+          class="btn btn-sm btn-danger"
+          @click="this.showModalConfirmDelete = true"
+        >
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+            ></path>
+          </svg>
+          {{ this.translate.btnDelete }}
+        </button>
+        <button type="button" class="btn btn-outline-dark btn-sm" onclick="window.history.back()">
+          <svg
+            class="icon"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+
+          {{ this.translate.btnCancel }}
+        </button>
+        <button
+          class="btn btn-sm btn-primary"
+          @click="this.save()"
+          :disabled="this.canSubmit()"
+          v-html="this.getLabelSubmit()"
+        ></button>
+      </div>
     </div>
 
     <div
@@ -415,34 +461,6 @@ export default {
         {{ this.translate.statTitle }}
       </h3>
       <div class="form-text" v-html="this.templateStat"></div>
-    </div>
-
-    <div class="flex flex-wrap gap-3 pt-4 border-t border-[var(--border-color)] mt-5">
-      <button
-        class="btn btn-sm btn-primary"
-        @click="this.save()"
-        :disabled="this.canSubmit()"
-        v-html="this.getLabelSubmit()"
-      ></button>
-      <button type="button" class="btn btn-outline-dark btn-md" onclick="window.history.back()">
-        {{ this.translate.btnCancel }}
-      </button>
-      <button
-        v-if="this.tag.id !== null"
-        type="button"
-        class="btn btn-danger btn-md ml-auto"
-        @click="this.showModalConfirmDelete = true"
-      >
-        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-          ></path>
-        </svg>
-        {{ this.translate.btnDelete }}
-      </button>
     </div>
   </div>
 

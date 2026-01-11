@@ -40,7 +40,7 @@ class ApiTokenServiceTest extends AppWebTestCase
             $this->createApiToken();
         }
 
-        $result = $this->apiTokenService->getAllPaginate(1, 5);
+        $result = $this->apiTokenService->getAllPaginate(1, 5, []);
         $this->assertInstanceOf(Paginator::class, $result);
         $this->assertEquals(5, $result->getIterator()->count());
         $this->assertEquals(10, $result->count());
@@ -57,7 +57,7 @@ class ApiTokenServiceTest extends AppWebTestCase
         for ($i = 0; $i < 10; $i++) {
             $token = $this->createApiToken();
         }
-        $result = $this->apiTokenService->getAllFormatToGrid(1, 5);
+        $result = $this->apiTokenService->getAllFormatToGrid(1, 5, []);
         $this->assertArrayHasKey('nb', $result);
         $this->assertArrayHasKey('data', $result);
         $this->assertArrayHasKey('column', $result);
@@ -66,7 +66,7 @@ class ApiTokenServiceTest extends AppWebTestCase
         $this->assertEquals(10, $result['nb']);
         $this->assertCount(5, $result['data']);
 
-        $result = $this->apiTokenService->getAllFormatToGrid(1, 5, $token->getName());
+        $result = $this->apiTokenService->getAllFormatToGrid(1, 5, ['search' => $token->getName()]);
         $this->assertCount(1, $result['data']);
     }
 

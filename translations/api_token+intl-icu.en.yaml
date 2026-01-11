@@ -25,9 +25,6 @@ api_token.update.description: __api_token.update.description
 api_token.index.btn.new: __api_token.index.btn.new
 api_token.index.popin.help.enable: __api_token.index.popin.help.enable
 api_token.index.popin.help.disabled: __api_token.index.popin.help.disabled
-api_token.toast.title.success: __api_token.toast.title.success
-api_token.toast.title.error: __api_token.toast.title.error
-api_token.toast.time: __api_token.toast.time
 api_token.card.title.add: __api_token.card.title.add
 api_token.card.title.edit: __api_token.card.title.edit
 api_token.card.btn.new_token: __api_token.card.btn.new_token
@@ -60,3 +57,11 @@ api_token.card.input.token.error: __api_token.card.input.token.error
 api_token.save.success: __api_token.save.success
 api_token.new.token.success: __api_token.new.token.success
 api_token.loading: __api_token.loading
+api_token.card.description.add: __api_token.card.description.add
+api_token.card.description.edit: __api_token.card.description.edit
+api_token.card.token.label: __api_token.card.token.label
+api_token.card.input.token.help.add: __api_token.card.input.token.help.add
+api_token.card.btn.cancel.token.api: __api_token.card.btn.cancel.token.api
+api_token.card.btn.delete.token.api: __api_token.card.btn.delete.token.api
+api_token.modale.confirm.delete.title: __api_token.modale.confirm.delete.title
+api_token.modale.confirm.delete.text: __api_token.modale.confirm.delete.text

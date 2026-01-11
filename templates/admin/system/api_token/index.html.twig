@@ -3,43 +3,150 @@
 {% block title %}{{ 'api_token.page_title' | trans({}, 'api_token') }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'api_token.page_title_h1' | trans({}, 'api_token') }}</h1>
 
     {{ breadcrumb(breadcrumb) }}
 
-    <button type="button" class="btn btn-secondary float-end ms-2" data-bs-toggle="modal" data-bs-target="#help-grid-mail">
-        <i class="bi bi-question-circle"></i>
-    </button>
-    <a href="{{ path('admin_api_token_add') }}" class="float-end btn btn-secondary"><i
-                class="bi bi-gear-wide-connected"></i> {{ 'api_token.index.btn.new' | trans({}, 'api_token') }}</a>
+    <h1 class="head-title">
+        <svg class="w-7 h-7 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+        </svg>
+        {{ 'api_token.page_title_h1' | trans({}, 'api_token') }}</h1>
 
-    <p>{{ 'api_token.description' | trans({}, 'api_token') }}
-    </p><br />
+    <div class="float-end">
+
+        <a href="{{ path('admin_api_token_add') }}" class="btn btn-primary btn-sm">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+            </svg>
+            {{ 'api_token.index.btn.new' | trans({}, 'api_token') }}</a>
+        <button data-modal-target="help-grid-mail" data-modal-toggle="help-grid-mail" class="btn btn-primary btn-icon ms-2">
+            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+            </svg>
+        </button>
+    </div>
+
+    <p class="text-sm text-[var(--text-secondary)] mb-3">
+        {{ 'api_token.description' | trans({}, 'api_token') }}
+    </p>
 
 
     <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_api_token_load_grid_data', {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true}) }}></div>
 
     <twig:Admin:ModaleComponent id="help-grid-mail" bgColor="bg-secondary">
         <twig:block name="header">
-            <i class="bi bi-question-circle"></i> {{ 'api_token.index.popin.help.title' | trans({}, 'api_token') }}
+             {{ 'api_token.index.popin.help.title' | trans({}, 'api_token') }}
         </twig:block>
 
-        <div class="row">
-            <div class="col">
-                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-trash"></i></button> {{ 'api_token.index.popin.help.delete' | trans({}, 'api_token') }}
+        <div class="flex flex-row gap-10">
+            <div class="flex items-center gap-3 w-75">
+                <button type="button" class="btn btn-icon btn-xs btn-ghost-danger">
+                    <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                         viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-width="2"
+                              d="M16 12h4M4 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                    </svg>
+                </button>  {{ 'api_token.index.popin.help.delete' | trans({}, 'api_token') }}
             </div>
-            <div class="col">
-                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-pencil-fill"></i></button> {{ 'api_token.index.popin.help.edit' | trans({}, 'api_token') }}
+            <div class="flex items-center gap-3">
+                <button type="button" class="btn btn-icon btn-xs btn-ghost-primary">
+                    <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                         viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-width="2"
+                              d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"></path>
+                    </svg>
+                </button>
+                 {{ 'api_token.index.popin.help.edit' | trans({}, 'api_token') }}
             </div>
         </div>
-        <div class="row">
-            <div class="col">
-                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-eye-fill"></i>
-                </button> {{ 'api_token.index.popin.help.enable' | trans({}, 'api_token') }}
+        <div class="flex flex-row gap-10">
+            <div class="flex items-center gap-3 w-75">
+                <button type="button" class="btn btn-icon btn-xs btn-ghost-primary">
+                    <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                         viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-width="2"
+                              d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                        <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                </button>
+                 {{ 'api_token.index.popin.help.enable' | trans({}, 'api_token') }}
             </div>
-            <div class="col">
-                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-eye-slash-fill"></i>
+            <div class="flex items-center gap-3">
+                <button type="button" class="btn btn-icon btn-xs btn-ghost-primary">
+                    <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                         viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
                 </button> {{ 'api_token.index.popin.help.disabled' | trans({}, 'api_token') }}
+            </div>
+        </div>
+    </twig:Admin:ModaleComponent>
+
+    <twig:Admin:ModaleComponent id="help-grid-user" bgColor="bg-secondary">
+        <twig:block name="header">
+            {{ 'user.index.popin.help.title' | trans({}, 'user') }}
+        </twig:block>
+
+        <div class="flex flex-row gap-10">
+            <div class="flex items-center gap-3">
+                <button type="button" class="btn btn-icon btn-xs btn-ghost-primary">
+                    <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                         viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                </button> {{ 'user.index.popin.help.disabled_user' | trans({}, 'user') }}
+            </div>
+            <div class="flex items-center gap-3">
+                <button type="button" class="btn btn-icon btn-xs btn-ghost-primary">
+                    <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                         viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-width="2"
+                              d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                        <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                </button> {{ 'user.index.popin.help.enable_user' | trans({}, 'user') }}
+            </div>
+        </div>
+        <div class="flex flex-row gap-10">
+            <div class="flex items-center gap-3">
+                <button type="button" class="btn btn-icon btn-xs btn-ghost-danger">
+                    <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                         viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-width="2"
+                              d="M16 12h4M4 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                    </svg>
+                </button> {{ 'user.index.popin.help.delete' | trans({}, 'user') }}
+            </div>
+            <div class="flex items-center gap-3">
+                <button type="button" class="btn btn-icon btn-xs btn-ghost-danger">
+                    <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                         viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-width="2"
+                              d="M16 12h4M4 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                    </svg>
+                </button> {{ 'user.index.popin.help.anonymous' | trans({}, 'user') }}
+            </div>
+        </div>
+        <div class="flex flex-row gap-10">
+            <div class="flex items-center gap-3">
+                <button type="button" class="btn btn-icon btn-xs btn-ghost-primary">
+                    <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                         viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-width="2"
+                              d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"></path>
+                    </svg>
+                </button> {{ 'user.index.popin.help.edit' | trans({}, 'user') }}
+            </div>
+            <div class="flex items-center gap-3">
+                <button type="button" class="btn btn-icon btn-xs btn-ghost-success">
+                    <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                         viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-width="2"
+                              d="M16 19h4a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-2m-2.236-4a3 3 0 1 0 0-4M3 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                    </svg>
+                </button> {{ 'user.index.popin.help.switch' | trans({}, 'user') }}
             </div>
         </div>
     </twig:Admin:ModaleComponent>
