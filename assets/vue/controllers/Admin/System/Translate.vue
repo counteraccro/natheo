@@ -1,18 +1,19 @@
 <script>
 /**
  * @author Gourdon Aymeric
- * @version 2.0
+ * @version 2.1
  * Permet de gérer les traductions de l'application
  */
 
 import axios from 'axios';
-import { emitter } from '../../../../utils/useEvent';
+import { emitter } from '@/utils/useEvent';
 import Toast from '../../../Components/Global/Toast.vue';
 import Modal from '../../../Components/Global/Modal.vue';
+import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 
 export default {
   name: 'Translate',
-  components: { Modal, Toast },
+  components: { SkeletonText, Modal, Toast },
   props: {
     url_langue: String,
     url_translates_files: String,
@@ -300,6 +301,60 @@ export default {
 </script>
 
 <template>
+  <div class="card rounded-lg p-6 mb-4 mt-4">
+    <div v-if="this.loading">
+      <SkeletonText :nb-paragraphe="2" />
+    </div>
+
+    <div v-else>
+      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+        <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
+          <svg
+            class="icon-lg"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 3v4a1 1 0 0 1-1 1H5m8 7.5 2.5 2.5M19 4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Zm-5 9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"
+            />
+          </svg>
+
+          {{ this.trans.translate_block_search_title }}
+        </h2>
+        <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">{{ this.trans.translate_block_search_sub_title }}</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+        <div class="form-group">
+          <label class="form-label">{{ this.trans.translate_select_language_label }}</label>
+          <select class="form-input no-control" id="select-file" @change="selectLanguage($event)">
+            <option value="" selected>{{ this.trans.translate_select_language }}</option>
+            <option v-for="(language, key) in this.languages" v-bind:value="key">{{ language }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">{{ this.trans.translate_select_file_label }}</label>
+          <select
+            class="form-input no-control"
+            id="select-time"
+            @change="selectFile($event)"
+            :disabled="this.files.length === 0"
+          >
+            <option value="">{{ this.trans.translate_select_file }}</option>
+            <option v-for="(language, key) in this.files" v-bind:value="key">{{ language }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div :class="this.loading === true ? 'block-grid' : ''">
     <div v-if="this.loading" class="overlay">
       <div class="position-absolute top-50 start-50 translate-middle">
