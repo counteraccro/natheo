@@ -22,3 +22,7 @@ translate.save.success: __translate.save.success
 translate.toast.title.success: __translate.toast.title.success
 translate.toast.title.error: __translate.toast.title.error
 translate.toast.time: __translate.toast.time
+translate.block.search.title: __translate.block.search.title
+translate.block.search.sub.title: __translate.block.search.sub.title
+translate.select.language.label: __translate.select.language.label
+translate.select.file.label: __translate.select.file.label

@@ -18,8 +18,24 @@ class TranslationTranslate extends AppTranslate
     public function getTranslate(): array
     {
         return [
+            'translate_block_search_title' => $this->translator->trans(
+                'translate.block.search.title',
+                domain: 'translate',
+            ),
+            'translate_block_search_sub_title' => $this->translator->trans(
+                'translate.block.search.sub.title',
+                domain: 'translate',
+            ),
+            'translate_select_language_label' => $this->translator->trans(
+                'translate.select.language.label',
+                domain: 'translate',
+            ),
             'translate_select_language' => $this->translator->trans('translate.select.language', domain: 'translate'),
             'translate_select_file' => $this->translator->trans('translate.select.file', domain: 'translate'),
+            'translate_select_file_label' => $this->translator->trans(
+                'translate.select.file.label',
+                domain: 'translate',
+            ),
             'translate_empty_file' => $this->translator->trans('translate.empty.file', domain: 'translate'),
             'translate_btn_save' => $this->translator->trans('translate.btn.save', domain: 'translate'),
             'translate_btn_cache' => $this->translator->trans('translate.btn.cache', domain: 'translate'),
