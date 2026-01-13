@@ -36,6 +36,10 @@ class TranslationTranslate extends AppTranslate
                 'translate.select.file.label',
                 domain: 'translate',
             ),
+            'translate_block_edit_sub_title' => $this->translator->trans(
+                'translate.block.edit.sub.title',
+                domain: 'translate',
+            ),
             'translate_empty_file' => $this->translator->trans('translate.empty.file', domain: 'translate'),
             'translate_btn_save' => $this->translator->trans('translate.btn.save', domain: 'translate'),
             'translate_btn_cache' => $this->translator->trans('translate.btn.cache', domain: 'translate'),
