@@ -10,10 +10,11 @@ import { emitter } from '@/utils/useEvent';
 import Toast from '../../../Components/Global/Toast.vue';
 import Modal from '../../../Components/Global/Modal.vue';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
+import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
 
 export default {
   name: 'Translate',
-  components: { SkeletonText, Modal, Toast },
+  components: { SkeletonTable, SkeletonText, Modal, Toast },
   props: {
     url_langue: String,
     url_translates_files: String,
@@ -333,24 +334,121 @@ export default {
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
         <div class="form-group">
-          <label class="form-label">{{ this.trans.translate_select_language_label }}</label>
-          <select class="form-input no-control" id="select-file" @change="selectLanguage($event)">
-            <option value="" selected>{{ this.trans.translate_select_language }}</option>
+          <label class="form-label" for="select-file">{{ this.trans.translate_select_language_label }}</label>
+          <select
+            class="form-input no-control"
+            id="select-file"
+            @change="selectLanguage($event)"
+            v-model="this.currentLanguage"
+          >
+            <option value="">{{ this.trans.translate_select_language }}</option>
             <option v-for="(language, key) in this.languages" v-bind:value="key">{{ language }}</option>
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">{{ this.trans.translate_select_file_label }}</label>
+          <label class="form-label" for="select-time">{{ this.trans.translate_select_file_label }}</label>
           <select
             class="form-input no-control"
             id="select-time"
             @change="selectFile($event)"
             :disabled="this.files.length === 0"
+            v-model="this.currentFile"
           >
             <option value="">{{ this.trans.translate_select_file }}</option>
             <option v-for="(language, key) in this.files" v-bind:value="key">{{ language }}</option>
           </select>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card rounded-lg p-6 mb-4 mt-4">
+    <div v-if="this.loading">
+      <SkeletonTable :full="true" />
+    </div>
+    <div v-else>
+      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+        <div class="md:flex md:justify-between">
+          <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
+            <svg
+              class="icon-lg"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 3v4a1 1 0 0 1-1 1H5m4 8h6m-6-4h6m4-8v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z"
+              />
+            </svg>
+
+            <span v-if="this.file.length !== 0">{{ this.currentFile }}</span>
+            <span v-else> --- </span>
+          </h2>
+          <div v-if="this.file.length !== 0">
+            <button class="btn btn-primary btn-sm" @click="this.saveTranslate">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+                ></path>
+              </svg>
+              {{ this.trans.translate_btn_save }}
+            </button>
+            <button class="btn btn-dark btn-sm ms-2" @click="this.reloadCache(true)">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                ></path>
+              </svg>
+              {{ this.trans.translate_btn_cache }}
+            </button>
+          </div>
+        </div>
+        <div class="md:flex md:justify-between">
+          <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+            {{ this.trans.translate_block_edit_sub_title }}
+          </p>
+          <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]" v-if="tabTmpTranslate.length > 0">
+            <b>{{ tabTmpTranslate.length }}</b> {{ this.trans.translate_nb_edit }}
+          </p>
+        </div>
+      </div>
+
+      <div v-if="this.file.length !== 0">aaaa</div>
+      <div v-else>
+        <p class="text-center text-[var(--text-secondary)] text-sm italic flex justify-center gap-1">
+          <svg
+            class="icon"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+
+          {{ this.trans.translate_empty_file }}
+        </p>
       </div>
     </div>
   </div>
@@ -365,15 +463,15 @@ export default {
 
     <div class="row">
       <div class="col">
-        <select class="form-select no-control" id="select-file" @change="selectLanguage($event)">
-          <option value="" selected>{{ this.trans.translate_select_language }}</option>
+        <select class="form-select no-control" id="select-file2" @change="selectLanguage($event)">
+          <option value="">{{ this.trans.translate_select_language }}</option>
           <option v-for="(language, key) in this.languages" v-bind:value="key">{{ language }}</option>
         </select>
       </div>
       <div class="col">
         <select
           class="form-select no-control"
-          id="select-time"
+          id="select-time2"
           @change="selectFile($event)"
           :disabled="this.files.length === 0"
         >
