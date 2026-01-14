@@ -426,8 +426,7 @@ export default {
         </div>
       </div>
 
-      <div v-if="this.file.length !== 0">aaaa</div>
-      <div v-else>
+      <div v-if="this.file.length === 0">
         <p class="text-center text-[var(--text-secondary)] text-sm italic flex justify-center gap-1">
           <svg
             class="icon"
@@ -449,6 +448,39 @@ export default {
 
           {{ this.trans.translate_empty_file }}
         </p>
+      </div>
+      <div v-else>
+        <div
+          v-for="(translate, key) in this.file"
+          class="grid grid-cols-1 lg:grid-cols-[30%_1fr] gap-4 p-4 hover:bg-[var(--bg-hover)] transition border-b-1 border-b-[var(--border-color)]"
+        >
+          <div class="flex items-center">
+            <label :for="key" class="font-monospace text-[var(--text-secondary)] text-sm font-medium">{{ key }}</label>
+          </div>
+
+          <input
+            v-if="translate.length < 120"
+            type="text"
+            class="form-input"
+            :class="this.isChangeInput(key)"
+            :id="key"
+            :data-id="key"
+            :value="this.getValue(key, translate)"
+            :data-save="translate"
+            @change="this.saveTmpTranslate($event)"
+          />
+          <textarea
+            v-else
+            class="form-input"
+            rows="3"
+            :id="key"
+            :data-id="key"
+            :class="this.isChangeInput(key)"
+            :data-save="translate"
+            @change="this.saveTmpTranslate($event)"
+            >{{ this.getValue(key, translate) }}</textarea
+          >
+        </div>
       </div>
     </div>
   </div>
