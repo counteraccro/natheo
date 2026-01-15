@@ -367,7 +367,7 @@ export default {
       <SkeletonTable :full="true" />
     </div>
     <div v-else>
-      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+      <div class="sticky top-0 z-10 bg-white border-b-1 border-b-[var(--border-color)] mb-4">
         <div class="md:flex md:justify-between">
           <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
             <svg
