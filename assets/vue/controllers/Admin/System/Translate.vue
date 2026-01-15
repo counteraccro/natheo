@@ -1,18 +1,20 @@
 <script>
 /**
  * @author Gourdon Aymeric
- * @version 2.0
+ * @version 2.1
  * Permet de gérer les traductions de l'application
  */
 
 import axios from 'axios';
-import { emitter } from '../../../../utils/useEvent';
+import { emitter } from '@/utils/useEvent';
 import Toast from '../../../Components/Global/Toast.vue';
 import Modal from '../../../Components/Global/Modal.vue';
+import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
+import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
 
 export default {
   name: 'Translate',
-  components: { Modal, Toast },
+  components: { SkeletonTable, SkeletonText, Modal, Toast },
   props: {
     url_langue: String,
     url_translates_files: String,
@@ -187,7 +189,7 @@ export default {
      */
     isChangeInput(key) {
       if (this.isExist(key)) {
-        return 'is-update';
+        return 'is-warning';
       }
       return '';
     },
@@ -201,7 +203,7 @@ export default {
       if (this.isExist(key)) {
         return '';
       }
-      return 'd-none';
+      return 'hidden';
     },
 
     /**
@@ -300,113 +302,197 @@ export default {
 </script>
 
 <template>
-  <div :class="this.loading === true ? 'block-grid' : ''">
-    <div v-if="this.loading" class="overlay">
-      <div class="position-absolute top-50 start-50 translate-middle">
-        <div class="spinner-border text-primary" role="status"></div>
-        <span class="txt-overlay">{{ this.trans.translate_loading }}</span>
-      </div>
+  <div class="card rounded-lg p-6 mb-4 mt-4">
+    <div v-if="this.loading">
+      <SkeletonText :nb-paragraphe="2" />
     </div>
 
-    <div class="row">
-      <div class="col">
-        <select class="form-select no-control" id="select-file" @change="selectLanguage($event)">
-          <option value="" selected>{{ this.trans.translate_select_language }}</option>
-          <option v-for="(language, key) in this.languages" v-bind:value="key">{{ language }}</option>
-        </select>
+    <div v-else>
+      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+        <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
+          <svg
+            class="icon-lg"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 3v4a1 1 0 0 1-1 1H5m8 7.5 2.5 2.5M19 4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Zm-5 9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"
+            />
+          </svg>
+
+          {{ this.trans.translate_block_search_title }}
+        </h2>
+        <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">{{ this.trans.translate_block_search_sub_title }}</p>
       </div>
-      <div class="col">
-        <select
-          class="form-select no-control"
-          id="select-time"
-          @change="selectFile($event)"
-          :disabled="this.files.length === 0"
-        >
-          <option value="">{{ this.trans.translate_select_file }}</option>
-          <option v-for="(language, key) in this.files" v-bind:value="key">{{ language }}</option>
-        </select>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+        <div class="form-group">
+          <label class="form-label" for="select-file">{{ this.trans.translate_select_language_label }}</label>
+          <select
+            class="form-input no-control"
+            id="select-file"
+            @change="selectLanguage($event)"
+            v-model="this.currentLanguage"
+          >
+            <option value="">{{ this.trans.translate_select_language }}</option>
+            <option v-for="(language, key) in this.languages" v-bind:value="key">{{ language }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="select-time">{{ this.trans.translate_select_file_label }}</label>
+          <select
+            class="form-input no-control"
+            id="select-time"
+            @change="selectFile($event)"
+            :disabled="this.files.length === 0"
+            v-model="this.currentFile"
+          >
+            <option value="">{{ this.trans.translate_select_file }}</option>
+            <option v-for="(language, key) in this.files" v-bind:value="key">{{ language }}</option>
+          </select>
+        </div>
       </div>
     </div>
+  </div>
 
-    <div v-if="this.file.length !== 0">
-      <div class="card mt-3 border border-secondary">
-        <div class="card-header text-bg-secondary">
-          <div class="dropdown">
-            <button
-              class="btn btn-secondary dropdown-toggle btn-sm float-end"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <i class="bi bi-list"></i>
-            </button>
-            <ul class="dropdown-menu">
-              <li>
-                <a class="dropdown-item no-control" href="#" @click="this.saveTranslate"
-                  ><i class="bi bi-save-fill"></i> {{ this.trans.translate_btn_save }}</a
-                >
-              </li>
-              <li>
-                <a class="dropdown-item no control" href="#" @click="this.reloadCache(true)">
-                  <i class="bi bi-repeat"></i> {{ this.trans.translate_btn_cache }}</a
-                >
-              </li>
-            </ul>
-          </div>
-          <div class="mt-1">
-            <i class="bi bi-translate"></i> {{ this.currentFile }}
-            <span v-if="tabTmpTranslate.length > 0">
-              - <b>{{ tabTmpTranslate.length }}</b> {{ this.trans.translate_nb_edit }}
-            </span>
-          </div>
-        </div>
-        <div class="card-body">
-          <div v-for="(translate, key) in this.file" class="mb-3 row">
-            <label :for="key" class="col-sm-2 col-form-label">{{ key }}</label>
-            <div class="col-sm-10">
-              <input
-                v-if="translate.length < 120"
-                type="text"
-                class="form-control"
-                :class="this.isChangeInput(key)"
-                :id="key"
-                :data-id="key"
-                :value="this.getValue(key, translate)"
-                :data-save="translate"
-                @change="this.saveTmpTranslate($event)"
-              />
-              <textarea
-                v-else
-                class="form-control"
-                rows="3"
-                :id="key"
-                :data-id="key"
-                :class="this.isChangeInput(key)"
-                :data-save="translate"
-                @change="this.saveTmpTranslate($event)"
-                >{{ this.getValue(key, translate) }}</textarea
-              >
-              <div :data-id="key + '-help'" class="form-text text-warning" :class="this.isChangeHelp(key)">
-                {{ this.trans.translate_info_edit }}
-                <a href="#" onclick="return false;" @click="this.revertValue(key)" class="text-warning">{{
-                  this.trans.translate_link_revert
-                }}</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="card rounded-lg mb-4 mt-4">
+    <div v-if="this.loading">
+      <SkeletonTable :full="true" />
     </div>
     <div v-else>
-      <div class="card mt-3 border border-secondary">
-        <div class="card-header text-bg-secondary">
-          <i class="bi bi-translate"></i> ---
-          <div class="btn btn-secondary btn-sm float-end disabled">
-            <i class="bi bi-list"></i>
+      <div class="sticky p-6 top-0 z-10 bg-white border-b-1 border-b-[var(--border-color)]">
+        <div class="md:flex md:justify-between">
+          <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
+            <svg
+              class="icon-lg"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 3v4a1 1 0 0 1-1 1H5m4 8h6m-6-4h6m4-8v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z"
+              />
+            </svg>
+
+            <span v-if="this.file.length !== 0">{{ this.currentFile }}</span>
+            <span v-else> --- </span>
+          </h2>
+          <div v-if="this.file.length !== 0">
+            <button class="btn btn-primary btn-sm" @click="this.saveTranslate">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+                ></path>
+              </svg>
+              {{ this.trans.translate_btn_save }}
+            </button>
+            <button class="btn btn-dark btn-sm ms-2" @click="this.reloadCache(true)">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                ></path>
+              </svg>
+              {{ this.trans.translate_btn_cache }}
+            </button>
           </div>
         </div>
-        <div class="card-body">
+        <div class="md:flex md:justify-between">
+          <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+            {{ this.trans.translate_block_edit_sub_title }}
+          </p>
+          <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]" v-if="tabTmpTranslate.length > 0">
+            <b>{{ tabTmpTranslate.length }}</b> {{ this.trans.translate_nb_edit }}
+          </p>
+        </div>
+      </div>
+
+      <div v-if="this.file.length === 0">
+        <p class="text-center text-[var(--text-secondary)] text-sm italic flex justify-center gap-1 p-4">
+          <svg
+            class="icon"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+
           {{ this.trans.translate_empty_file }}
+        </p>
+      </div>
+      <div v-else>
+        <div
+          v-for="(translate, key) in this.file"
+          class="grid grid-cols-1 lg:grid-cols-[30%_1fr] gap-4 p-4 hover:bg-[var(--bg-hover)] transition border-b-1 border-b-[var(--border-color)]"
+        >
+          <div class="flex items-center">
+            <label :for="key" class="font-monospace text-[var(--text-secondary)] text-sm font-medium">{{ key }}</label>
+          </div>
+
+          <div>
+            <input
+              v-if="translate.length < 120"
+              type="text"
+              class="form-input"
+              :class="this.isChangeInput(key)"
+              :id="key"
+              :data-id="key"
+              :value="this.getValue(key, translate)"
+              :data-save="translate"
+              @change="this.saveTmpTranslate($event)"
+            />
+            <textarea
+              v-else
+              class="form-input"
+              rows="3"
+              :id="key"
+              :data-id="key"
+              :class="this.isChangeInput(key)"
+              :data-save="translate"
+              @change="this.saveTmpTranslate($event)"
+              >{{ this.getValue(key, translate) }}</textarea
+            >
+
+            <div :data-id="key + '-help'" class="form-text text-warning mt-2" :class="this.isChangeHelp(key)">
+              ⚠ {{ this.trans.translate_info_edit }}
+              <a
+                href="#"
+                onclick="return false;"
+                @click="this.revertValue(key)"
+                class="text-warning float-end no-control"
+                >{{ this.trans.translate_link_revert }}</a
+              >
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -427,28 +513,123 @@ export default {
           {{ this.trans.translate_cache_info }}
         </div>
         <div v-else>
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
           {{ this.trans.translate_cache_wait }}
+
+          <div class="text-center rtl:text-right mt-2">
+            <div role="status">
+              <svg
+                aria-hidden="true"
+                class="inline w-6 h-7 text-neutral-tertiary animate-spin fill-[var(--primary)]"
+                viewBox="0 0 100 101"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                  fill="currentFill"
+                />
+              </svg>
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
         </div>
       </div>
       <div v-else>
-        <div class="text-success"><i class="bi bi-check-circle-fill"></i> {{ this.trans.translate_cache_success }}</div>
+        <div class="flex justify-center gap-1">
+          <svg
+            class="icon"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+          {{ this.trans.translate_cache_success }}
+        </div>
       </div>
     </template>
     <template #footer>
       <div v-if="!isReloadCacheFinish">
-        <button v-if="!this.isReloadCache" type="button" class="btn btn-primary" @click="this.reloadCache(false)">
-          <i class="bi bi-check2-circle"></i> {{ this.trans.translate_cache_btn_accept }}
+        <button
+          v-if="!this.isReloadCache"
+          type="button"
+          class="btn btn-primary btn-sm me-2"
+          @click="this.reloadCache(false)"
+        >
+          <svg
+            class="icon"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+          {{ this.trans.translate_cache_btn_accept }}
         </button>
-        &nbsp;
-        <button v-if="!this.isReloadCache" type="button" class="btn btn-secondary" @click="this.hideModal">
-          <i class="bi bi-x-circle"></i> {{ this.trans.translate_cache_btn_close }}
+        <button v-if="!this.isReloadCache" type="button" class="btn btn-outline-dark btn-sm" @click="this.hideModal">
+          <svg
+            class="icon"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+
+          {{ this.trans.translate_cache_btn_close }}
         </button>
       </div>
       <div v-else>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+        <button type="button" class="btn btn-outline-dark btn-sm" @click="this.hideModal">
+          <svg
+            class="icon"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+
           {{ this.trans.translate_cache_btn_close }}
         </button>
       </div>
@@ -491,3 +672,23 @@ export default {
     </toast>
   </div>
 </template>
+
+<style>
+@keyframes fall-down {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(80px);
+    opacity: 0;
+  }
+}
+
+.falling-file {
+  animation: fall-down 2s ease-in infinite;
+}
+</style>

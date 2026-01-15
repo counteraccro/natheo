@@ -8,9 +8,9 @@ translate.btn.save: Sauvegarder
 translate.btn.cache: 'Mise à jour du cache'
 translate.info.edit: 'Cette traduction à été éditée'
 translate.link.revert: Annuler
-translate.nb.edit: 'Lignes modifiées (non sauvegardées)'
+translate.nb.edit: 'ligne(s) modifiée(s) (non sauvegardée(s))'
 translate.loading: 'En cours de traitement...'
-translate.description.2: "N'oubliez pas de {icon} rafraichir le cache pour prendre en compte vos modifications de traductions"
+translate.description.2: "N'oubliez pas de rafraichir le cache pour prendre en compte les modifications effectuées sur les traductions"
 translate.cache.info: 'Vous êtes sur le point de recharger le cache applicatif, cette action peux prendre quelques minutes. Confirmez vous ?'
 translate.cache.wait: 'Rechargement du cache en cours..., cela peut prendre du temps'
 translate.cache.btn.close: Fermer
@@ -22,3 +22,8 @@ translate.save.success: 'Traductions sauvegardées avec succès'
 translate.toast.title.success: 'Success !'
 translate.toast.title.error: 'Erreur !'
 translate.toast.time: "A l'instant"
+translate.block.search.title: 'Selection du fichier de traduction à éditer'
+translate.block.search.sub.title: 'Choisissez le fichier à éditer en fonction de sa langue'
+translate.select.language.label: Langue
+translate.select.file.label: Fichier
+translate.block.edit.sub.title: "Editer les traductions du fichier sélectionné"
