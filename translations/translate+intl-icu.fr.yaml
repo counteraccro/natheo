@@ -26,4 +26,4 @@ translate.block.search.title: 'Selection du fichier de traduction à éditer'
 translate.block.search.sub.title: 'Choisissez le fichier à éditer en fonction de sa langue'
 translate.select.language.label: Langue
 translate.select.file.label: Fichier
-translate.block.edit.sub.title: "Editer les traductions du fichier sélectionné"
+translate.block.edit.sub.title: 'Editer les traductions du fichier sélectionné'
