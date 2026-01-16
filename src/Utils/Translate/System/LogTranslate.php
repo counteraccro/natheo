@@ -17,7 +17,11 @@ class LogTranslate extends AppTranslate
     public function getTranslate(): array
     {
         return [
+            'log_block_search_title' => $this->translator->trans('log.block.search.title', domain: 'log'),
+            'log_block_search_sub_title' => $this->translator->trans('log.block.search.sub.title', domain: 'log'),
+            'log_select_file_label' => $this->translator->trans('log.select-file.label', domain: 'log'),
             'log_select_file' => $this->translator->trans('log.select-file', domain: 'log'),
+            'log_select_time_label' => $this->translator->trans('log.select-time.label', domain: 'log'),
             'log_select_time_all' => $this->translator->trans('log.select-time.all', domain: 'log'),
             'log_select_time_now' => $this->translator->trans('log.select-time.now', domain: 'log'),
             'log_select_time_yesterday' => $this->translator->trans('log.select-time.yesterday', domain: 'log'),
