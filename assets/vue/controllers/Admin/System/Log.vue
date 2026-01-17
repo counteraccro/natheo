@@ -10,10 +10,12 @@ import axios from 'axios';
 import Modal from '../../../Components/Global/Modal.vue';
 import Toast from '../../../Components/Global/Toast.vue';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
+import SkeletonTable from '@/vue/Components/Skeleton/Table.vue';
 
 export default {
   name: 'Log',
   components: {
+    SkeletonTable,
     SkeletonText,
     Toast,
     Modal,
@@ -48,7 +50,7 @@ export default {
       translateGrid: {},
       msgConfirm: '',
       selectFile: '',
-      taille: 0,
+      taille: '0 Ko',
       loadDeleteFile: false,
       modalDeleteLog: false,
       toasts: {
@@ -117,10 +119,10 @@ export default {
             this.gridData = response.data.grid.data;
             this.nbElements = response.data.grid.nb;
             this.sortOrders = this.gridColumns.reduce((o, key) => ((o[key] = 1), o), {});
-            this.listLimit = JSON.parse(response.data.grid.listLimit);
-            this.translate = JSON.parse(response.data.grid.translate.genericGrid);
-            this.translateGridPaginate = JSON.parse(response.data.grid.translate.gridPaginate);
-            this.translateGrid = JSON.parse(response.data.grid.translate.grid);
+            this.listLimit = response.data.grid.listLimit;
+            this.translate = response.data.grid.translate.genericGrid;
+            this.translateGridPaginate = response.data.grid.translate.gridPaginate;
+            this.translateGrid = response.data.grid.translate.grid;
             this.cPage = page;
             this.cLimit = limit;
             this.taille = response.data.grid.taille;
@@ -180,6 +182,13 @@ export default {
           console.error(error);
         })
         .finally();
+    },
+
+    /**
+     * Lance le téléchargement
+     */
+    download(url) {
+      window.open(url, '_blank').focus();
     },
 
     /**
@@ -256,6 +265,138 @@ export default {
             <option v-for="option in this.select" v-bind:value="option.path">{{ option.name }}</option>
           </select>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card rounded-lg mb-4 mt-4">
+    <div v-if="this.loading">
+      <SkeletonTable :full="true" />
+    </div>
+    <div v-else>
+      <div class="p-6 pb-0 border-b-1 border-b-[var(--border-color)] mb-4">
+        <div class="md:flex md:justify-between">
+          <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
+            <svg
+              class="icon-lg"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 3v4a1 1 0 0 1-1 1H5m4 8h6m-6-4h6m4-8v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z"
+              />
+            </svg>
+
+            {{ this.trans.log_file }} <span v-if="this.selectFile !== ''"> {{ this.selectFile }} </span>
+            <span v-else> ---- </span>
+          </h2>
+
+          <div>
+            <button
+              :disabled="selectFile === ''"
+              class="btn btn-sm btn-primary btn-icon me-2"
+              @click="this.loadContentFile(1, this.limit)"
+            >
+              <svg
+                class="icon"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"
+                />
+              </svg>
+            </button>
+            <button
+              @click="this.download(this.url_download_file + '/' + this.selectFile)"
+              :disabled="selectFile === ''"
+              class="btn btn-sm btn-primary btn-icon me-2"
+            >
+              <svg
+                class="icon"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 13V4M7 14H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2m-1-5-4 5-4-5m9 8h.01"
+                />
+              </svg>
+            </button>
+            <button
+              @click="this.delete(this.selectFile, true)"
+              :disabled="selectFile === ''"
+              class="btn btn-sm btn-dark btn-icon"
+            >
+              <svg
+                class="icon"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+          {{ this.trans.log_file_size }} {{ this.taille }} - {{ this.nbElements }} {{ this.trans.log_file_ligne }}
+        </p>
+      </div>
+
+      <div v-if="selectFile === ''">
+        <p class="text-center text-[var(--text-secondary)] text-sm italic flex justify-center gap-1 p-4 pt-0">
+          <svg
+            class="icon"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+          {{ this.trans.log_empty_file }}
+        </p>
       </div>
     </div>
   </div>
@@ -387,6 +528,49 @@ export default {
       <div v-html="this.msgConfirm"></div>
     </template>
     <template #footer>
+      <button type="button" class="btn btn-primary btn-sm me-2" @click="this.delete(this.selectFile, false)">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ trans.log_btn_delete_ok }}
+      </button>
+
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="this.hideModal">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+
+        {{ trans.log_btn_delete_ko }}
+      </button>
+
       <button type="button" class="btn btn-primary" @click="this.delete(this.selectFile, false)">
         <i class="bi bi-check2-circle"></i> {{ translate.confirmBtnOK }}
       </button>
@@ -405,11 +589,6 @@ export default {
       :show="this.toasts.toastSuccess.show"
       @close-toast="this.closeToast"
     >
-      <template #header>
-        <i class="bi bi-check-circle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.trans.toast_title_success }}</strong>
-        <small class="text-black-50">{{ this.trans.toast_time }}</small>
-      </template>
       <template #body>
         <div v-html="this.toasts.toastSuccess.msg"></div>
       </template>
@@ -421,11 +600,6 @@ export default {
       :show="this.toasts.toastError.show"
       @close-toast="this.closeToast"
     >
-      <template #header>
-        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.trans.toast_title_error }}</strong>
-        <small class="text-black-50">{{ this.trans.toast_time }}</small>
-      </template>
       <template #body>
         <div v-html="this.toasts.toastError.msg"></div>
       </template>
