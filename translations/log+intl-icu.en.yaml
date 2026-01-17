@@ -34,3 +34,5 @@ log.block.search.title: __log.block.search.title
 log.block.search.sub.title: __log.block.search.sub.title
 log.select-file.label: __log.select-file.label
 log.select-time.label: __log.select-time.label
+log.btn.delete.ok: __log.btn.delete.ok
+log.btn.delete.ko: __log.btn.delete.ko
