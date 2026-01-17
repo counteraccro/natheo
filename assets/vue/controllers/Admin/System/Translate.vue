@@ -645,11 +645,6 @@ export default {
       :show="this.toasts.toastSuccess.show"
       @close-toast="this.closeToast"
     >
-      <template #header>
-        <i class="bi bi-check-circle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.trans.translate_toast_title_success }}</strong>
-        <small class="text-black-50">{{ this.trans.translate_toast_time }}</small>
-      </template>
       <template #body>
         <div v-html="this.toasts.toastSuccess.msg"></div>
       </template>
@@ -661,11 +656,6 @@ export default {
       :show="this.toasts.toastError.show"
       @close-toast="this.closeToast"
     >
-      <template #header>
-        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.trans.translate_toast_title_error }}</strong>
-        <small class="text-black-50">{{ this.trans.translate_toast_time }}</small>
-      </template>
       <template #body>
         <div v-html="this.toasts.toastError.msg"></div>
       </template>
