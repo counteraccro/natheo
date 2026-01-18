@@ -165,12 +165,12 @@ export default {
           if (response.data.success === true) {
             this.toasts.toastSuccess.msg = response.data.msg;
             this.toasts.toastSuccess.show = true;
-
-            document.getElementById('select-time').getElementsByTagName('option')[0].selected = 'selected';
-            document.getElementById('select-file').getElementsByTagName('option')[0].selected = 'selected';
-            this.time = '';
+            this.time = 'now';
             this.selectFile = '';
+            this.taille = '0 Ko';
+            this.nbElements = 0;
             this.loadDeleteFile = false;
+
             this.loadData();
           } else {
             this.toasts.toastError.msg = response.data.msg;
@@ -398,9 +398,48 @@ export default {
           {{ this.trans.log_empty_file }}
         </p>
       </div>
+      <div v-else class="p-6 pt-0">
+        <div class="input-group mb-4">
+          <svg class="icon icon-left" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            ></path>
+          </svg>
+          <input
+            type="text"
+            class="form-input input-icon-left no-control"
+            :placeholder="translate.placeholder"
+            v-model="searchQuery"
+          />
+        </div>
+
+        <Grid
+          :data="gridData"
+          :columns="gridColumns"
+          :filter-key="searchQuery"
+          :sortOrders="sortOrders"
+          :translate="translateGrid"
+          :search-mode="'table'"
+        >
+        </Grid>
+        <GridPaginate
+          :current-page="cPage"
+          :nb-elements="cLimit.toString()"
+          :nb-elements-total="parseInt(nbElements)"
+          :url="url_load_log_file"
+          :list-limit="listLimit"
+          :translate="translateGridPaginate"
+          @change-page-event="loadContentFile"
+        >
+        </GridPaginate>
+      </div>
     </div>
   </div>
 
+  <!--
   <div :class="loading === true ? 'block-grid' : ''">
     <div v-if="loading" class="overlay">
       <div class="position-absolute top-50 start-50 translate-middle">
@@ -483,7 +522,6 @@ export default {
               :filter-key="searchQuery"
               :sortOrders="sortOrders"
               :translate="translateGrid"
-              @redirect-action="redirectAction"
             >
             </Grid>
             <GridPaginate
@@ -514,7 +552,7 @@ export default {
         </p>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <!-- modale confirmation suppression -->
   <modal
@@ -569,13 +607,6 @@ export default {
         </svg>
 
         {{ trans.log_btn_delete_ko }}
-      </button>
-
-      <button type="button" class="btn btn-primary" @click="this.delete(this.selectFile, false)">
-        <i class="bi bi-check2-circle"></i> {{ translate.confirmBtnOK }}
-      </button>
-      <button type="button" class="btn btn-secondary" @click="this.hideModal">
-        <i class="bi bi-x-circle"></i> {{ translate.confirmBtnNo }}
       </button>
     </template>
   </modal>

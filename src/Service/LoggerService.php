@@ -292,24 +292,24 @@ class LoggerService extends AppService
             $taille = $file->getSize();
             $content = $file->openFile();
 
-            $i = $limit * $page - $limit;
-            $begin = $i;
+            $offset = $total - $limit * $page;
+            $begin = max(0, $offset);
             $nb = 0;
             while (!$content->eof()) {
-                if ($i >= $limit * $page || $nb === $total) {
-                    break;
+                $line = $content->fgets();
+
+                if ($nb >= $begin && $nb < $begin + $limit) {
+                    $decoded = json_decode($line, true);
+                    if (is_array($decoded)) {
+                        $tab[] = $this->formatLog($decoded);
+                    }
                 }
 
-                if ($nb >= $begin) {
-                    $line = json_decode($content->fgets(), true);
-                    if (is_array($line)) {
-                        $tab[] = $this->formatLog($line);
-                    }
-                    $i++;
-                } else {
-                    $content->fgets();
-                }
                 $nb++;
+
+                if ($nb >= $begin + $limit) {
+                    break;
+                }
             }
         }
 
@@ -331,13 +331,13 @@ class LoggerService extends AppService
     private function formatLog(array $tabLog): array
     {
         $date = new \DateTime($tabLog['datetime']);
-        $dateStr = $date->format('d-m-Y h:i:s');
+        $dateStr = $date->format('d-m-Y H:i:s');
 
         $class = match (Level::fromName($tabLog['level_name'])) {
-            Level::Debug => 'badge text-bg-light',
-            Level::Notice, Level::Info => 'badge text-bg-info',
-            Level::Warning => 'badge text-bg-warning',
-            Level::Error, Level::Critical, Level::Alert, Level::Emergency => 'badge text-bg-danger',
+            Level::Debug => 'badge rounded-pill badge-primary',
+            Level::Notice, Level::Info => 'badge rounded-pill badge-validated',
+            Level::Warning => 'badge rounded-pill badge-pending',
+            Level::Error, Level::Critical, Level::Alert, Level::Emergency => 'badge rounded-pill badge-moderated',
             default => '',
         };
 
