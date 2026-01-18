@@ -30,3 +30,9 @@ log.toast.title.success: Success
 log.toast.time: "A l'instant"
 log.toast.title.error: Erreur
 log.load.success.file: 'Fichier <b>{file}</b> chargé avec succès'
+log.block.search.title: 'Selection du fichier de log à visionner'
+log.block.search.sub.title: 'Choisissez le fichier de log à inspecter, attention celui ci peut être volumineux'
+log.select-file.label: 'Fichiers de logs'
+log.select-time.label: 'Choix de la temporalité'
+log.btn.delete.ok: 'Supprimer le fichier'
+log.btn.delete.ko: Annuler

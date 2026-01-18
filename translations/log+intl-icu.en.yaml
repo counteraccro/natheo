@@ -30,3 +30,9 @@ log.toast.title.success: __log.toast.title.success
 log.toast.time: __log.toast.time
 log.toast.title.error: __log.toast.title.error
 log.load.success.file: __log.load.success.file
+log.block.search.title: __log.block.search.title
+log.block.search.sub.title: __log.block.search.sub.title
+log.select-file.label: __log.select-file.label
+log.select-time.label: __log.select-time.label
+log.btn.delete.ok: __log.btn.delete.ok
+log.btn.delete.ko: __log.btn.delete.ko

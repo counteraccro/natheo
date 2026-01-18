@@ -17,7 +17,11 @@ class LogTranslate extends AppTranslate
     public function getTranslate(): array
     {
         return [
+            'log_block_search_title' => $this->translator->trans('log.block.search.title', domain: 'log'),
+            'log_block_search_sub_title' => $this->translator->trans('log.block.search.sub.title', domain: 'log'),
+            'log_select_file_label' => $this->translator->trans('log.select-file.label', domain: 'log'),
             'log_select_file' => $this->translator->trans('log.select-file', domain: 'log'),
+            'log_select_time_label' => $this->translator->trans('log.select-time.label', domain: 'log'),
             'log_select_time_all' => $this->translator->trans('log.select-time.all', domain: 'log'),
             'log_select_time_now' => $this->translator->trans('log.select-time.now', domain: 'log'),
             'log_select_time_yesterday' => $this->translator->trans('log.select-time.yesterday', domain: 'log'),
@@ -32,6 +36,8 @@ class LogTranslate extends AppTranslate
             'log_delete_file_loading' => $this->translator->trans('log.delete.file.loading', domain: 'log'),
             'log_delete_file_btn_close' => $this->translator->trans('log.delete.file.btn_close', domain: 'log'),
             'log_btn_reload' => $this->translator->trans('log.btn.reload', domain: 'log'),
+            'log_btn_delete_ok' => $this->translator->trans('log.btn.delete.ok', domain: 'log'),
+            'log_btn_delete_ko' => $this->translator->trans('log.btn.delete.ko', domain: 'log'),
             'toast_title_success' => $this->translator->trans('log.toast.title.success', domain: 'log'),
             'toast_time' => $this->translator->trans('log.toast.time', domain: 'log'),
             'toast_title_error' => $this->translator->trans('log.toast.title.error', domain: 'log'),
