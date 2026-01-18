@@ -1,10 +1,9 @@
 <script>
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Permet d'afficher la pagination pour le grid
  */
-
 export default {
   name: 'GridPaginate',
   props: {
@@ -22,13 +21,51 @@ export default {
       cLimit: this.nbElements,
     };
   },
-  methods: {
-    getNbPage() {
+  computed: {
+    nbPages() {
       return Math.ceil(this.nbElementsTotal / this.cLimit);
     },
 
+    /**
+     * Génère le tableau d'affichage de la pagination
+     * @returns {[]}
+     */
+    visiblePages() {
+      const pages = [];
+      const total = this.nbPages;
+      const current = this.cPage;
+
+      pages.push(1);
+
+      const startPage = Math.max(2, current - 1);
+      const endPage = Math.min(total - 1, current + 1);
+
+      if (startPage > 2) {
+        pages.push('...');
+      }
+
+      for (let i = startPage; i <= endPage; i++) {
+        if (i !== 1 && i !== total) {
+          pages.push(i);
+        }
+      }
+
+      if (endPage < total - 1) {
+        pages.push('...');
+      }
+
+      if (total > 1) {
+        pages.push(total);
+      }
+
+      return pages;
+    },
+  },
+  methods: {
     updateCurrentPage(page) {
-      this.cPage = page;
+      if (typeof page === 'number') {
+        this.cPage = page;
+      }
     },
   },
 };
@@ -37,19 +74,19 @@ export default {
 <template>
   <nav class="flex items-center justify-between mt-6">
     <div class="text-sm text-[var(--text-secondary)]">
-      {{ translate.page }} <strong>{{ cPage }}</strong> {{ translate.on }} <strong>{{ this.getNbPage() }}</strong> -
-      {{ this.nbElementsTotal }} {{ translate.row }}
+      {{ translate.page }} <strong>{{ cPage }}</strong> {{ translate.on }} <strong>{{ nbPages }}</strong> -
+      {{ nbElementsTotal }} {{ translate.row }}
     </div>
 
     <ul class="flex items-center -space-x-px h-8 text-sm">
       <li>
         <a
           href="#"
-          @click="[$emit('change-page-event', 1, cLimit), updateCurrentPage(1)]"
-          class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-[var(--primary)] bg-white border border-e-0 border-[var(--primary-hover)] rounded-s-lg hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
-          :class="cPage === 1 ? 'disabled' : ''"
+          @click.prevent="[$emit('change-page-event', 1, cLimit), updateCurrentPage(1)]"
+          class="no-control flex items-center justify-center px-3 h-8 ms-0 leading-tight text-[var(--primary)] bg-white border border-e-0 border-[var(--primary-hover)] rounded-s-lg hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
+          :class="{ 'opacity-50 pointer-events-none': cPage === 1 }"
         >
-          <span class="sr-only">Previous</span>
+          <span class="sr-only">First</span>
           <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <path
               stroke="currentColor"
@@ -61,12 +98,14 @@ export default {
           </svg>
         </a>
       </li>
+
+      <!-- Page précédente -->
       <li>
         <a
           href="#"
-          @click="[$emit('change-page-event', cPage - 1, cLimit), updateCurrentPage(cPage - 1)]"
+          @click.prevent="[$emit('change-page-event', cPage - 1, cLimit), updateCurrentPage(cPage - 1)]"
           class="no-control flex items-center justify-center px-3 h-8 leading-tight text-[var(--primary)] bg-white border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
-          :class="cPage === 1 ? 'disabled' : ''"
+          :class="{ 'opacity-50 pointer-events-none': cPage === 1 }"
         >
           <span class="sr-only">Previous</span>
           <svg
@@ -86,29 +125,35 @@ export default {
           </svg>
         </a>
       </li>
-      <li v-for="(n, i) in this.getNbPage()">
+
+      <!-- Numéros de page -->
+      <li v-for="(page, index) in visiblePages" :key="index">
         <a
-          v-if="n === cPage - 1 || n === cPage + 1 || n === cPage || n <= 2 || n >= this.getNbPage() - 1"
+          v-if="page === '...'"
           href="#"
-          @click="[$emit('change-page-event', n, cLimit), updateCurrentPage(n)]"
-          class="no-control flex items-center justify-center px-3 h-8 leading-tight border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
-          :class="cPage === n ? 'bg-[var(--primary-hover)] text-white' : 'bg-white text-[var(--primary)]'"
-          >{{ n }}</a
-        >
-        <a
-          href="#"
-          v-else-if="n === cPage - 2 || n === cPage + 2"
-          class="flex items-center justify-center px-3 h-8 leading-tight text-[var(--primary)] bg-white border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
+          class="no-control flex items-center justify-center px-3 h-8 leading-tight text-[var(--primary)] bg-white border border-[var(--primary-hover)] cursor-default dark:bg-[var(--btn-dark)]"
         >
           ...
         </a>
+
+        <a
+          v-else
+          href="#"
+          @click.prevent="[$emit('change-page-event', page, cLimit), updateCurrentPage(page)]"
+          class="no-control flex items-center justify-center px-3 h-8 leading-tight border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
+          :class="cPage === page ? 'bg-[var(--primary-hover)] text-white' : 'bg-white text-[var(--primary)]'"
+        >
+          {{ page }}
+        </a>
       </li>
+
+      <!-- Page suivante -->
       <li>
         <a
           href="#"
-          @click="[$emit('change-page-event', cPage + 1, cLimit), updateCurrentPage(cPage + 1)]"
+          @click.prevent="[$emit('change-page-event', cPage + 1, cLimit), updateCurrentPage(cPage + 1)]"
           class="no-control flex items-center justify-center px-3 h-8 leading-tight text-[var(--primary)] bg-white border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
-          :class="cPage === this.getNbPage() ? 'disabled' : ''"
+          :class="{ 'opacity-50 pointer-events-none': cPage === nbPages }"
         >
           <span class="sr-only">Next</span>
           <svg
@@ -128,14 +173,16 @@ export default {
           </svg>
         </a>
       </li>
+
+      <!-- Aller à la dernière page -->
       <li>
         <a
           href="#"
-          @click="[$emit('change-page-event', this.getNbPage(), cLimit), updateCurrentPage(this.getNbPage())]"
+          @click.prevent="[$emit('change-page-event', nbPages, cLimit), updateCurrentPage(nbPages)]"
           class="no-control flex items-center justify-center px-3 h-8 leading-tight rounded-e-lg text-[var(--primary)] bg-white border border-[var(--primary-hover)] hover:bg-[var(--primary-hover)] hover:text-white dark:bg-[var(--btn-dark)]"
-          :class="cPage === this.getNbPage() ? 'disabled' : ''"
+          :class="{ 'opacity-50 pointer-events-none': cPage === nbPages }"
         >
-          <span class="sr-only">Next</span>
+          <span class="sr-only">Last</span>
           <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <path
               stroke="currentColor"
@@ -150,8 +197,12 @@ export default {
     </ul>
 
     <div>
-      <select class="form-input form-input-sm" v-model="cLimit" @change="$emit('change-page-event', 1, cLimit)">
-        <option v-for="i in this.listLimit" :value="i">{{ i }}</option>
+      <select
+        class="no-control form-input form-input-sm"
+        v-model="cLimit"
+        @change="$emit('change-page-event', 1, cLimit)"
+      >
+        <option v-for="i in listLimit" :key="i" :value="i">{{ i }}</option>
       </select>
     </div>
   </nav>
