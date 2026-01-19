@@ -9,7 +9,6 @@ info.server.software.version: Serveur
 info.php.version: 'Version PHP'
 info.memory.limit: 'Limite mémoire'
 info.upload.max.file: 'Taille max upload'
-info.php.version.moreinfo: "plus d'informations"
 info.website.version: Version
 info.website.url: Url
 info.database.type: Type
