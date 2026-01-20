@@ -1,15 +1,14 @@
 info.page.title: Information
 info.page.title.h1: Information
-info.description: 'Information du CMS'
-info.serveur.title: 'Information du serveur'
+info.description: "Informations sur l'environnement web de votre application"
+info.serveur.title: 'Le serveur'
 info.cms.title: 'Mon site'
-info.database.title: 'Information base de données'
-info.info.title: 'Information navigateur'
+info.database.title: 'La base de données'
+info.info.title: 'Mon navigateur'
 info.server.software.version: Serveur
 info.php.version: 'Version PHP'
 info.memory.limit: 'Limite mémoire'
 info.upload.max.file: 'Taille max upload'
-info.php.version.moreinfo: "plus d'informations"
 info.website.version: Version
 info.website.url: Url
 info.database.type: Type
