@@ -15,7 +15,7 @@
 
     <p class="text-sm text-[var(--text-secondary)] mb-3">{{ 'info.description' | trans({}, 'info') }}</p>
 
-    <div class="flex flex-col gap-4">
+    <div class="space-y-6">
         <div class="card rounded-lg p-6 mb-4 mt-4">
             <div class="border-b-1 border-b-[var(--border-color)] mb-3">
                 <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)] mb-3">
@@ -57,7 +57,7 @@
                     <span class="text-sm">
                         <a href="{{ path('admin_info_phpinfo') }}"
                            target="_blank"
-                           class="text-sm hover:underline ml-1 text-[var(--primary)]"> {{ tabInfo.serveur.php_version }}</a>
+                           class="text-sm hover:underline text-[var(--primary)]"> {{ tabInfo.serveur.php_version }}</a>
                     </span>
                 </div>
 
@@ -81,62 +81,159 @@
             </div>
 
         </div>
-    </div>
 
-    <div class="row" data-masonry='{"percentPosition": true }'>
-        <div class="col-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="bi bi-server"></i> {{ 'info.serveur.title' | trans({}, 'info') }}
-                </div>
-                <div class="card-body">
-                    {{ 'info.server.software.version' | trans({}, 'info') }}
-                    : {{ tabInfo.serveur.server_software_version }} <br />
-                    {{ 'info.php.version' | trans({}, 'info') }} : {{ tabInfo.serveur.php_version }}
-                    (<a href="{{ path('admin_info_phpinfo') }}"
-                        target="_blank">{{ 'info.php.version.moreinfo' | trans({}, 'info') }} <i
-                            class="bi bi-box-arrow-in-up-right"></i>
-                    </a>) <br />
-                    {{ 'info.memory.limit' | trans({}, 'info') }} : {{ tabInfo.serveur.memory_limit }} <br />
-                    {{ 'info.upload.max.file' | trans({}, 'info') }} : {{ tabInfo.serveur.upload_max_file_size }} <br />
-                </div>
+        <div class="card rounded-lg p-6 mb-4 mt-4">
+            <div class="border-b-1 border-b-[var(--border-color)] mb-3">
+                <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)] mb-3">
+                    <svg
+                        class="icon-lg"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+                        />
+                    </svg>
+
+                    {{ 'info.cms.title' | trans({}, 'info') }}
+                </h2>
             </div>
+
+            <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-[var(--border-color)]">
+                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-[var(--text-secondary)]">
+                         {{ 'info.website.version' | trans({}, 'info') }}
+                    </span>
+                <span class="text-sm text-[var(--text-primary)]">
+                        {{ tabInfo.website.website_version }}
+                    </span>
+            </div>
+
+            <div class="flex flex-col sm:flex-row sm:items-center py-3">
+                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-[var(--text-secondary)]">
+                         {{ 'info.website.url' | trans({}, 'info') }}
+                    </span>
+                <span class="text-sm text-[var(--text-primary)]">
+                       <a target="_blank"
+                          class="text-sm hover:underline text-[var(--primary)]"
+                          href="{{ tabInfo.website.website_url }}">{{ tabInfo.website.website_url }}</a>
+                    </span>
+            </div>
+
         </div>
-        <div class="col-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="bi bi-info-circle-fill"></i> {{ 'info.cms.title' | trans({}, 'info') }}
+
+        <div class="card rounded-lg p-6 mb-4 mt-4">
+            <div class="border-b-1 border-b-[var(--border-color)] mb-3">
+                <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)] mb-3">
+                    <svg
+                        class="icon-lg"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+                        />
+                    </svg>
+
+                    {{ 'info.database.title' | trans({}, 'info') }}
+                </h2>
+            </div>
+
+            <div class="space-y-3">
+
+                <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-[var(--border-color)]">
+                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-[var(--text-secondary)]">
+                        {{ 'info.database.type' | trans({}, 'info') }}
+                    </span>
+                    <span class="text-sm text-[var(--text-primary)]">
+                        {{ tabInfo.database.database_type | raw }}
+                    </span>
                 </div>
-                <div class="card-body">
-                    {{ 'info.website.version' | trans({}, 'info') }} : {{ tabInfo.website.website_version }} <br />
-                    {{ 'info.website.url' | trans({}, 'info') }} : {{ tabInfo.website.website_url }} <br />
+
+                <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-[var(--border-color)]">
+                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-[var(--text-secondary)]">
+                         {{ 'info.database.server' | trans({}, 'info') }}
+                    </span>
+                    <span class="text-sm font-mono text-[var(--text-primary)]">
+                       {{ tabInfo.database.database_server | raw }}
+                    </span>
+                </div>
+
+                <div class="flex flex-col sm:flex-row sm:items-center py-3 border-b border-b-[var(--border-color)]">
+                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-[var(--text-secondary)]">
+                         {{ 'info.database.user' | trans({}, 'info') }}
+                    </span>
+                    <span class="text-sm text-[var(--text-primary)]">
+                        {{ tabInfo.database.database_user | raw }}
+                    </span>
+                </div>
+
+                <div class="flex flex-col sm:flex-row sm:items-center py-3">
+                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-[var(--text-secondary)]">
+                          {{ 'info.database.name' | trans({}, 'info') }}
+                    </span>
+                    <span class="text-sm text-[var(--text-primary)]">
+                        {{ tabInfo.database.database_name | raw }}
+                    </span>
                 </div>
             </div>
+
         </div>
-        <div class="col-6">
-            <div class="card">
-                <div class="card-header">
-                    <i class="bi bi-database-fill"></i> {{ 'info.database.title' | trans({}, 'info') }}
-                </div>
-                <div class="card-body">
-                    {{ 'info.database.type' | trans({}, 'info') }} : {{ tabInfo.database.database_type | raw }} <br />
-                    {{ 'info.database.server' | trans({}, 'info') }} : {{ tabInfo.database.database_server | raw }}
-                    <br />
-                    {{ 'info.database.user' | trans({}, 'info') }} : {{ tabInfo.database.database_user | raw }} <br />
-                    {{ 'info.database.name' | trans({}, 'info') }} : {{ tabInfo.database.database_name | raw }} <br />
-                </div>
+
+        <div class="card rounded-lg p-6 mb-4 mt-4">
+            <div class="border-b-1 border-b-[var(--border-color)] mb-3">
+                <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)] mb-3">
+                    <svg
+                        class="icon-lg"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                        />
+                    </svg>
+
+                    {{ 'info.info.title' | trans({}, 'info') }}
+                </h2>
             </div>
-        </div>
-        <div class="col-6">
-            <div class="card">
-                <div class="card-header">
-                    <i class="bi bi-database-fill"></i> {{ 'info.info.title' | trans({}, 'info') }}
+
+            <div class="space-y-3">
+
+
+                <div class="flex flex-col sm:flex-row sm:items-center py-3">
+                    <span class="text-sm font-semibold mb-1 sm:mb-0 sm:w-48 text-[var(--text-secondary)]">
+                         {{ 'info.navigateur.info' | trans({}, 'info') }}
+                    </span>
+                    <span class="text-sm font-mono text-[var(--text-primary)]">
+                       {{ tabInfo.navigateur.navigateur_info | raw }}
+                    </span>
                 </div>
-                <div class="card-body">
-                    {{ 'info.navigateur.info' | trans({}, 'info') }} : {{ tabInfo.navigateur.navigateur_info | raw }}
-                    <br />
-                </div>
+
             </div>
+
         </div>
     </div>
 
