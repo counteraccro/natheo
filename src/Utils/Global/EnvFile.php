@@ -135,10 +135,11 @@ class EnvFile
     {
         $parameterBag = $this->handlers->get('parameterBag');
         $env = $parameterBag->get('kernel.environment');
+
         if ($env === self::ENV_DEV) {
-            $value = self::KEY_APP_ENV . '=' . self::ENV_DEV;
-        } else {
             $value = self::KEY_APP_ENV . '=' . self::ENV_PROD;
+        } else {
+            $value = self::KEY_APP_ENV . '=' . self::ENV_DEV;
         }
         $this->updateValueByKey(self::KEY_APP_ENV, $value);
     }
