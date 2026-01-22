@@ -10,10 +10,14 @@ import Modal from '../../../../Components/Global/Modal.vue';
 import SchemaDatabase from '../../../../Components/DatabaseManager/SchemaDatabse.vue';
 import SchemaTable from '../../../../Components/DatabaseManager/SchemaTable.vue';
 import ListDump from '../../../../Components/DatabaseManager/ListDump.vue';
+import AlertWarning from '@/vue/Components/Alert/Warning.vue';
+import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 
 export default {
   name: 'AdvancedOptions',
   components: {
+    SkeletonText,
+    AlertWarning,
     Modal,
     Toast,
   },
@@ -222,45 +226,91 @@ export default {
 </script>
 
 <template>
-  <div class="card rounded-lg p-6 mb-4 mt-4">
-    <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-      <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
-        <svg
-          class="icon-lg"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M10 3v4a1 1 0 0 1-1 1H5m8 7.5 2.5 2.5M19 4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Zm-5 9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"
-          ></path>
-        </svg>
-        {{ this.translate.switch_env_title }}
-      </h2>
-      <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">bla bla bla</p>
+  <div v-if="this.loading">
+    <div class="card rounded-lg p-6 mb-4 mt-4">
+      <skeleton-text />
     </div>
+  </div>
+  <div v-else>
+    <div class="card rounded-lg p-6 mb-4 mt-4">
+      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+        <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
+          <svg
+            class="icon-lg"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 3v4a1 1 0 0 1-1 1H5m8 7.5 2.5 2.5M19 4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Zm-5 9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"
+            ></path>
+          </svg>
+          {{ this.translate.switch_env_title }}
+        </h2>
+        <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+          <span v-if="this.isDevEnv()">{{ this.translate.switch_env_subtitle_dev }}</span>
+          <span v-else>{{ this.translate.switch_env_subtitle_prod }}</span>
+        </p>
+      </div>
 
-    <span v-if="this.isDevEnv()">{{ this.translate.switch_env_subtitle_dev }}</span>
-    <span v-else>{{ this.translate.switch_env_subtitle_prod }}</span>
+      <div class="text-sm text-[var(--text-secondary)]">
+        <div v-if="this.isDevEnv()">
+          <p class="mb-2">{{ this.translate.switch_env_define_dev }}</p>
+          <ul class="list-disc list-inside space-y-1 ml-2">
+            <li>{{ this.translate.switch_env_define_dev_1 }}</li>
+            <li>{{ this.translate.switch_env_define_dev_2 }}</li>
+            <li>{{ this.translate.switch_env_define_dev_3 }}</li>
+            <li>{{ this.translate.switch_env_define_dev_4 }}</li>
+          </ul>
 
-    <div v-if="this.isDevEnv()">
-      <span class="card-text">{{ this.translate.switch_env_define_dev }}</span>
-      <ul>
-        <li>{{ this.translate.switch_env_define_dev_1 }}</li>
-        <li>{{ this.translate.switch_env_define_dev_2 }}</li>
-        <li>{{ this.translate.switch_env_define_dev_3 }}</li>
-        <li>{{ this.translate.switch_env_define_dev_4 }}</li>
-      </ul>
+          <alert-warning type="alert-warning-light" :text="this.translate.switch_env_define_dev_warning" class="mt-5" />
+        </div>
+        <div v-else>
+          <p class="mb-2">{{ this.translate.switch_env_define_prod }}</p>
+          <ul class="list-disc list-inside space-y-1 ml-2">
+            <li>{{ this.translate.switch_env_define_prod_1 }}</li>
+            <li>{{ this.translate.switch_env_define_prod_2 }}</li>
+            <li>{{ this.translate.switch_env_define_prod_3 }}</li>
+          </ul>
 
-      <div class="alert alert-danger">
-        <i>{{ this.translate.switch_env_define_dev_warning }}</i>
+          <alert-warning
+            type="alert-warning-light"
+            :text="this.translate.switch_env_define_prod_warning"
+            class="mt-5"
+          />
+        </div>
+      </div>
+
+      <div class="flex flex-row-reverse">
+        <div @click="this.openConfirmModale('switchEnv', false)" class="btn btn-sm btn-primary mt-5">
+          <svg
+            class="icon"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m16 10 3-3m0 0-3-3m3 3H5v3m3 4-3 3m0 0 3 3m-3-3h14v-3"
+            />
+          </svg>
+
+          <span v-if="!this.isDevEnv()"> {{ this.translate.switch_env_btn_dev }} </span>
+          <span v-else> {{ this.translate.switch_env_btn_prod }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -384,18 +434,57 @@ export default {
   >
     <template #title> <i class="bi bi-exclamation-circle-fill"></i> {{ this.modalConfirm.title }} </template>
     <template #body>
-      <p class="text-black">{{ this.modalConfirm.text_1 }}</p>
-      <p>
+      <p class="text-sm text-[var(--text-secondary)]">{{ this.modalConfirm.text_1 }}</p>
+      <p class="text-sm text-[var(--text-secondary)]">
         <i>{{ this.modalConfirm.text_2 }}</i>
       </p>
     </template>
     <template #footer>
-      <div class="btn btn-secondary float-end" @click="this.closeModal('modaleConfirm')">
-        <i class="bi bi-x-circle-fill"></i> {{ this.modalConfirm.btn_undo }}
-      </div>
-      <div class="btn btn-secondary float-end" @click="this.openConfirmModale(this.currentConfirmAction, true)">
-        <i class="bi bi-check-circle-fill"></i> {{ this.modalConfirm.btn_go }}
-      </div>
+      <button
+        type="button"
+        class="btn btn-primary btn-sm me-2"
+        @click="this.openConfirmModale(this.currentConfirmAction, true)"
+      >
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ this.modalConfirm.btn_go }}
+      </button>
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="this.closeModal('modaleConfirm')">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+
+        {{ this.modalConfirm.btn_undo }}
+      </button>
     </template>
   </modal>
   <!-- fin modale confirmation suppression -->
@@ -407,11 +496,6 @@ export default {
       :show="this.toasts.toastSuccess.show"
       @close-toast="this.closeToast"
     >
-      <template #header>
-        <i class="bi bi-check-circle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.translate.toast_title_success }}</strong>
-        <small class="text-black-50">{{ this.translate.toast_time }}</small>
-      </template>
       <template #body>
         <div v-html="this.toasts.toastSuccess.msg"></div>
       </template>
@@ -423,11 +507,6 @@ export default {
       :show="this.toasts.toastError.show"
       @close-toast="this.closeToast"
     >
-      <template #header>
-        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.translate.toast_title_error }}</strong>
-        <small class="text-black-50">{{ this.translate.toast_time }}</small>
-      </template>
       <template #body>
         <div v-html="this.toasts.toastError.msg"></div>
       </template>
