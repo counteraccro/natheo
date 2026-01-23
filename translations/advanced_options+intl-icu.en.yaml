@@ -55,3 +55,4 @@ advanced_options.success.reset.data: __advanced_options.success.reset.data
 advanced_options.success.reset.database: __advanced_options.success.reset.database
 advanced_options.reset.database.msg.info.reset: __advanced_options.reset.database.msg.info.reset
 advanced_options.reset.database.msg.info.reset.end: __advanced_options.reset.database.msg.info.reset.end
+advanced_options.sub.title.danger.zone: __advanced_options.sub.title.danger.zone
