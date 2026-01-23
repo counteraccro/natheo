@@ -12,10 +12,12 @@ import SchemaTable from '../../../../Components/DatabaseManager/SchemaTable.vue'
 import ListDump from '../../../../Components/DatabaseManager/ListDump.vue';
 import AlertWarning from '@/vue/Components/Alert/Warning.vue';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
+import AlertDanger from '@/vue/Components/Alert/Danger.vue';
 
 export default {
   name: 'AdvancedOptions',
   components: {
+    AlertDanger,
     SkeletonText,
     AlertWarning,
     Modal,
@@ -241,17 +243,14 @@ export default {
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
-            fill="none"
+            fill="currentColor"
             viewBox="0 0 24 24"
           >
             <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M10 3v4a1 1 0 0 1-1 1H5m8 7.5 2.5 2.5M19 4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Zm-5 9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"
-            ></path>
+              d="M12.356 3.066a1 1 0 0 0-.712 0l-7 2.666A1 1 0 0 0 4 6.68a17.695 17.695 0 0 0 2.022 7.98 17.405 17.405 0 0 0 5.403 6.158 1 1 0 0 0 1.15 0 17.406 17.406 0 0 0 5.402-6.157A17.694 17.694 0 0 0 20 6.68a1 1 0 0 0-.644-.949l-7-2.666Z"
+            />
           </svg>
+
           {{ this.translate.switch_env_title }}
         </h2>
         <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
@@ -315,111 +314,110 @@ export default {
     </div>
   </div>
 
-  <div id="block-advanced-options" :class="this.loading === true ? 'block-grid' : ''">
-    <div v-if="this.msgInfo !== ''" class="card border-secondary mb-3">
-      <div class="card-header text-bg-secondary">
-        {{ this.translate.msg_info.title }}
-      </div>
-      <div class="card-body">
-        <div class="spinner-border text-secondary spinner-border-sm" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-        {{ this.msgInfo }}
+  <div v-if="this.isDevEnv()">
+    <div v-if="this.loading">
+      <div class="card rounded-lg p-6 mb-4 mt-4">
+        <skeleton-text />
       </div>
     </div>
+    <div v-else>
+      <div class="card rounded-lg p-6 mb-4 mt-4" style="border: 2px solid var(--btn-danger)">
+        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+          <h2 class="flex gap-2 text-lg font-bold text-[var(--btn-danger)]">
+            <svg
+              class="icon-lg"
+              style="color: var(--btn-danger)"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
 
-    <div v-if="this.loading" class="overlay">
-      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000">
-        <div class="spinner-border text-primary" role="status"></div>
-        <span class="txt-overlay">{{ this.translate.loading }}</span>
-      </div>
-    </div>
-
-    <div class="card border-secondary">
-      <div class="card-header text-bg-secondary">
-        <i class="bi bi-arrow-left-right"></i> {{ this.translate.switch_env_title }}
-      </div>
-      <div class="card-body">
-        <h5 class="card-title">
-          <span v-if="this.isDevEnv()">{{ this.translate.switch_env_subtitle_dev }}</span>
-          <span v-else>{{ this.translate.switch_env_subtitle_prod }}</span>
-        </h5>
-        <div v-if="this.isDevEnv()">
-          <span class="card-text">{{ this.translate.switch_env_define_dev }}</span>
-          <ul>
-            <li>{{ this.translate.switch_env_define_dev_1 }}</li>
-            <li>{{ this.translate.switch_env_define_dev_2 }}</li>
-            <li>{{ this.translate.switch_env_define_dev_3 }}</li>
-            <li>{{ this.translate.switch_env_define_dev_4 }}</li>
-          </ul>
-
-          <div class="alert alert-danger">
-            <i>{{ this.translate.switch_env_define_dev_warning }}</i>
-          </div>
+            {{ this.translate.title_danger_zone }}
+          </h2>
+          <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">{{ this.translate.subtitle_danger_zone }}</p>
         </div>
-        <div v-else>
-          <span class="card-text"> {{ this.translate.switch_env_define_prod }}</span>
-          <ul>
-            <li>{{ this.translate.switch_env_define_prod_1 }}</li>
-            <li>{{ this.translate.switch_env_define_prod_2 }}</li>
-            <li>{{ this.translate.switch_env_define_prod_3 }}</li>
-          </ul>
-          <div class="alert alert-danger">
-            <i>{{ this.translate.switch_env_define_prod_warning }}</i>
-          </div>
-        </div>
-        <div @click="this.openConfirmModale('switchEnv', false)" class="btn btn-secondary float-end">
-          <span v-if="!this.isDevEnv()"> {{ this.translate.switch_env_btn_dev }} </span>
-          <span v-else> {{ this.translate.switch_env_btn_prod }}</span>
-        </div>
-      </div>
-    </div>
 
-    <div v-if="this.isDevEnv()">
-      <fieldset class="border-1 border-danger mt-3 p-3">
-        <legend class="text-danger">
-          <i class="bi bi-exclamation-octagon-fill"></i> {{ this.translate.title_danger_zone }}
-        </legend>
+        <alert-danger type="alert-danger-light" :text="this.translate.warning_danger_zone" />
 
-        <p class="text-danger">
-          <b>{{ this.translate.warning_danger_zone }}</b>
-        </p>
+        <div class="mb-6 pb-6 border-b-1 border-b-[var(--border-color)]">
+          <h4 class="text-base font-semibold mb-2 mt-4 text-[var(--text-primary)]">
+            {{ this.translate.reload_data.title }}
+          </h4>
+          <p class="text-sm mb-2 text-[var(--text-secondary)]">{{ this.translate.reload_data.text_1 }}</p>
+          <p class="text-sm mb-2 text-[var(--text-secondary)]">
+            <i>{{ this.translate.reload_data.warning }}</i>
+          </p>
 
-        <div class="row">
-          <div class="col-6">
-            <div class="card border-secondary">
-              <div class="card-header text-bg-secondary">
-                <i class="bi bi-database-fill-down"></i> {{ this.translate.reload_data.title }}
-              </div>
-              <div class="card-body">
-                <p class="text-black">{{ this.translate.reload_data.text_1 }}</p>
-                <p class="text-danger">
-                  <i>{{ this.translate.reload_data.warning }}</i>
-                </p>
-                <div class="btn btn-secondary float-end" @click="this.openConfirmModale('resetData', false)">
-                  {{ this.translate.reload_data.btn }}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="card border-secondary">
-              <div class="card-header text-bg-secondary">
-                <i class="bi bi-database-fill-x"></i> {{ this.translate.reset_database.title }}
-              </div>
-              <div class="card-body">
-                <p class="text-black">{{ this.translate.reset_database.text_1 }}</p>
-                <p class="text-danger">
-                  <i>{{ this.translate.reset_database.warning }}</i>
-                </p>
-                <div class="btn btn-secondary float-end" @click="this.openConfirmModale('resetDatabase', false)">
-                  {{ this.translate.reset_database.btn }}
-                </div>
-              </div>
+          <div class="flex flex-row-reverse">
+            <div class="btn btn-primary btn-sm" @click="this.openConfirmModale('resetData', false)">
+              <svg
+                class="icon"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"
+                />
+              </svg>
+
+              {{ this.translate.reload_data.btn }}
             </div>
           </div>
         </div>
-      </fieldset>
+
+        <div>
+          <h4 class="text-base font-semibold mb-2 mt-4 text-[var(--text-primary)]">
+            {{ this.translate.reset_database.title }}
+          </h4>
+          <p class="text-sm mb-2 text-[var(--text-secondary)]">{{ this.translate.reset_database.text_1 }}</p>
+          <p class="text-sm mb-2 text-[var(--text-secondary)]">
+            <i>{{ this.translate.reset_database.warning }}</i>
+          </p>
+
+          <div class="flex flex-row-reverse">
+            <div class="btn btn-primary btn-sm" @click="this.openConfirmModale('resetDatabase', false)">
+              <svg
+                class="icon"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"
+                />
+              </svg>
+
+              {{ this.translate.reset_database.btn }}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
