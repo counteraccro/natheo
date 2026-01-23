@@ -42,9 +42,10 @@ class LoggerServiceTest extends AppWebTestCase
         $this->loggerService->logAuthAdmin($user->getLogin(), 'ip-test', true);
         $result = $this->loggerService->loadLogFile($logFile, 1, 1);
         $data = $result['data'];
+
         $this->assertStringContainsString($user->getLogin(), $data[0]['Message']);
         $this->assertStringContainsString('ip-test', $data[0]['Message']);
-        $this->assertStringContainsString(LogLevel::INFO, $data[0]['Niveau']);
+        $this->assertStringContainsString(strtoupper(LogLevel::INFO), $data[0]['Niveau']);
 
         $result = $this->loggerService->deleteLog($logFile);
         $this->assertTrue($result);
@@ -53,7 +54,7 @@ class LoggerServiceTest extends AppWebTestCase
         $data = $result['data'];
         $this->assertStringContainsString($user->getLogin(), $data[0]['Message']);
         $this->assertStringContainsString('ip-test', $data[0]['Message']);
-        $this->assertStringContainsString(LogLevel::WARNING, $data[0]['Niveau']);
+        $this->assertStringContainsString(strtoupper(LogLevel::WARNING), $data[0]['Niveau']);
     }
 
     /**
@@ -75,7 +76,7 @@ class LoggerServiceTest extends AppWebTestCase
         $data = $result['data'];
         $this->assertStringContainsString($user1->getLogin(), $data[0]['Message']);
         $this->assertStringContainsString($user2->getLogin(), $data[0]['Message']);
-        $this->assertStringContainsString(LogLevel::WARNING, $data[0]['Niveau']);
+        $this->assertStringContainsString(strtoupper(LogLevel::WARNING), $data[0]['Niveau']);
     }
 
     /**

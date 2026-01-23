@@ -3,11 +3,17 @@
 {% block title %}{{ 'advanced_options.index.page_title' | trans({}, 'advanced_options') }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'advanced_options.index.page_title_h1' | trans({}, 'advanced_options') }}</h1>
 
     {{ breadcrumb(breadcrumb) }}
 
-    <p>
+    <h1 class="head-title">
+        <svg class="w-7 h-7 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="m8 8-4 4 4 4m8 0 4-4-4-4m-2-3-4 14"></path>
+        </svg>
+        {{ 'advanced_options.index.page_title_h1' | trans({}, 'advanced_options') }}</h1>
+
+    <p class="text-sm text-[var(--text-secondary)] mb-3">
         {{ 'advanced_options.index.description' | trans({}, 'advanced_options') }} <br/>
         {#  {{ 'tag.index.description2' | trans({'icon' : '<i class="bi-eye-slash-fill"></i>'}, 'tag') | raw }} #}<br/>
     </p>

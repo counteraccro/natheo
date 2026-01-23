@@ -94,6 +94,10 @@ class AdvancedOptionsTranslate extends AppTranslate
                 'advanced_options.title.danger.zone',
                 domain: 'advanced_options',
             ),
+            'subtitle_danger_zone' => $this->translator->trans(
+                'advanced_options.sub.title.danger.zone',
+                domain: 'advanced_options',
+            ),
             'warning_danger_zone' => $this->translator->trans(
                 'advanced_options.warning.danger.zone',
                 domain: 'advanced_options',
