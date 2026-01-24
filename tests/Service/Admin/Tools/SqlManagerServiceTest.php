@@ -42,7 +42,7 @@ class SqlManagerServiceTest extends AppWebTestCase
             $sqlManager = $this->createSqlManager();
         }
 
-        $result = $this->sqlManagerService->getAllFormatToGrid(1, 5);
+        $result = $this->sqlManagerService->getAllFormatToGrid(1, 5, []);
 
         $this->assertArrayHasKey('nb', $result);
         $this->assertArrayHasKey('data', $result);
@@ -52,7 +52,7 @@ class SqlManagerServiceTest extends AppWebTestCase
         $this->assertEquals(10, $result['nb']);
         $this->assertCount(5, $result['data']);
 
-        $result = $this->sqlManagerService->getAllFormatToGrid(1, 10, $sqlManager->getName());
+        $result = $this->sqlManagerService->getAllFormatToGrid(1, 10, ['search' => $sqlManager->getName()]);
         $this->assertCount(1, $result['data']);
     }
 
@@ -68,12 +68,12 @@ class SqlManagerServiceTest extends AppWebTestCase
             $sqlManager = $this->createSqlManager();
         }
 
-        $result = $this->sqlManagerService->getAllPaginate(1, 7);
+        $result = $this->sqlManagerService->getAllPaginate(1, 7, []);
         $this->assertInstanceOf(Paginator::class, $result);
         $this->assertEquals(7, $result->getIterator()->count());
         $this->assertEquals(10, $result->count());
 
-        $result = $this->sqlManagerService->getAllPaginate(1, 7, $sqlManager->getName());
+        $result = $this->sqlManagerService->getAllPaginate(1, 7, ['search' => $sqlManager->getName()]);
         $this->assertEquals(1, $result->getIterator()->count());
     }
 
