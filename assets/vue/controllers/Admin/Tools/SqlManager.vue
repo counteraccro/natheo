@@ -2,10 +2,14 @@
 import axios from 'axios';
 import Toast from '../../../Components/Global/Toast.vue';
 import { emitter } from '../../../../utils/useEvent';
+import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
+import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
+import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
+import SkeletonSearchResult from '@/vue/Components/Skeleton/SearchResult.vue';
 
 export default {
   name: 'SqlManager',
-  components: { Toast },
+  components: { SkeletonSearchResult, SkeletonTabs, SkeletonText, Toast },
   props: {
     urls: Object,
     translate: Object,
@@ -100,7 +104,6 @@ export default {
           this.loading = false;
 
           if (this.isExecute) {
-            console.log('ici');
             //this.isExecute = false;
             this.execute();
           }
@@ -284,6 +287,32 @@ export default {
 </script>
 
 <template>
+  <div v-if="this.loading">
+    <div class="card rounded-lg p-6 mb-4">
+      <skeleton-text :nb-paragraphe="3" />
+    </div>
+    <div class="card rounded-lg p-6 mb-4">
+      <skeleton-text :nb-paragraphe="3" />
+    </div>
+    <div class="card rounded-lg p-6 mb-4">
+      <skeleton-search-result :rows="2" />
+    </div>
+  </div>
+
+  <div v-else>
+    <div class="card rounded-lg p-6 mb-4">
+      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+        <h2 class="text-lg font-bold text-[var(--text-primary)]">
+          {{ this.translate.title_my_query }}
+        </h2>
+        <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+          {{ this.translate.sub_title_my_query }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- end -->
   <div id="block-sql-manager" :class="this.loading === true ? 'block-grid' : ''">
     <div v-if="this.loading" class="overlay">
       <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000">
