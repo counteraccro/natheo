@@ -20,6 +20,8 @@ class SqlManagerTranslate extends AppTranslate
                 'sql_manager.label.textarea.query',
                 domain: 'sql_manager',
             ),
+            'title_my_query' => $this->translator->trans('sql_manager.title.my_query', domain: 'sql_manager'),
+            'sub_title_my_query' => $this->translator->trans('sql_manager.sub.title.my_query', domain: 'sql_manager'),
             'btn_execute_query' => $this->translator->trans('sql_manager.btn.execute.query', domain: 'sql_manager'),
             'btn_save_query' => $this->translator->trans('sql_manager.btn.save.query', domain: 'sql_manager'),
             'btn_disabled_query' => $this->translator->trans('sql_manager.btn.disabled.query', domain: 'sql_manager'),

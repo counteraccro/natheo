@@ -63,3 +63,5 @@ sql_manager.error.name.empty: 'Le nom ne peux pas être vide'
 sql_manager.index.popin.help.execute: Executer
 sql_manager.name.generic.query.success: '-- Requête générique --'
 sql_manager.save.generic.query.success: 'Requête sauvegardée avec succès'
+sql_manager.title.my_query: "Ma requête SQL"
+sql_manager.sub.title.my_query: "Construisez votre requête SQL en fonction de vos besoins"

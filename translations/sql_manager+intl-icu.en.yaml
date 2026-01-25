@@ -63,3 +63,5 @@ sql_manager.error.name.empty: __sql_manager.error.name.empty
 sql_manager.index.popin.help.execute: __sql_manager.index.popin.help.execute
 sql_manager.name.generic.query.success: __sql_manager.name.generic.query.success
 sql_manager.save.generic.query.success: __sql_manager.save.generic.query.success
+sql_manager.title.my_query: __sql_manager.title.my_query
+sql_manager.sub.title.my_query: __sql_manager.sub.title.my_query
