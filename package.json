@@ -21,12 +21,10 @@
         "prettier-plugin-twig-melody": "^0.4.6",
         "sass": "^1.70.0",
         "tailwindcss": "^4.1.10",
-        "ts-loader": "^9.0.0",
         "typescript": "^5.8.3",
         "vite": "^7.0.0",
         "vite-plugin-symfony": "^8",
-        "vue": "^3.4.0",
-        "vue-loader": "^17.0.1"
+        "vue": "^3.4.0"
     },
     "dependencies": {
         "@popperjs/core": "^2.11.6",
@@ -38,5 +36,10 @@
         "lodash-es": "^4.17.21",
         "marked": "^4.3.0",
         "vue-axios": "^3.5.2"
+    },
+    "resolutions": {
+        "core-js": "^3.39",
+        "babel-types": "npm:@babel/types@^7.23.6",
+        "@babel/traverse": "^7.23.2"
     }
 }
