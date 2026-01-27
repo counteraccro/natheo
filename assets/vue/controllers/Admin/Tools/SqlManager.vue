@@ -6,10 +6,11 @@ import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
 import SkeletonSearchResult from '@/vue/Components/Skeleton/SearchResult.vue';
+import AlertPrimary from '@/vue/Components/Alert/Primary.vue';
 
 export default {
   name: 'SqlManager',
-  components: { SkeletonSearchResult, SkeletonTabs, SkeletonText, Toast },
+  components: { AlertPrimary, SkeletonSearchResult, SkeletonTabs, SkeletonText, Toast },
   props: {
     urls: Object,
     translate: Object,
@@ -302,13 +303,85 @@ export default {
   <div v-else>
     <div class="card rounded-lg p-6 mb-4">
       <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-        <h2 class="text-lg font-bold text-[var(--text-primary)]">
-          {{ this.translate.title_my_query }}
-        </h2>
+        <div class="flex justify-between">
+          <h2 class="text-lg font-bold text-[var(--text-primary)]">
+            {{ this.translate.title_my_query }}
+          </h2>
+          <div>
+            <div class="btn btn-success btn-sm me-2" @click="this.execute()">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"
+                ></path>
+              </svg>
+              {{ this.translate.btn_execute_query }}
+            </div>
+            <div class="btn btn-primary btn-sm me-2" @click="this.save">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+                ></path>
+              </svg>
+              {{ this.translate.btn_save_query }}
+            </div>
+          </div>
+        </div>
         <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
           {{ this.translate.sub_title_my_query }}
         </div>
       </div>
+
+      <div class="form-control mb-3">
+        <label for="name-query" class="form-label">{{ this.translate.label_name }} *</label>
+        <input
+          type="text"
+          class="form-input"
+          :class="this.isErrorValidateName ? 'is-invalid' : ''"
+          id="name-query"
+          :placeholder="this.translate.label_name_placeholder"
+          v-model="this.sqlManager.name"
+        />
+        <div v-if="this.isErrorValidateName" class="form-text text-error">
+          {{ this.translate.error_name_empty }}
+        </div>
+      </div>
+
+      <div class="form-control mb-3">
+        <label for="sql-textarea" class="form-label">{{ this.translate.label_textarea_query }}</label>
+        <textarea
+          class="form-input code-editor"
+          :class="this.isErrorValidateQuery ? 'is-invalid' : ''"
+          id="sql-textarea"
+          rows="10"
+          v-model="this.sqlManager.query"
+        ></textarea>
+        <div v-if="this.isErrorValidateQuery" class="form-text text-error">
+          {{ this.translate.error_query_empty }}
+        </div>
+      </div>
+
+      <alert-primary type="alert-primary-solid" :text="this.translate.help_text_1" />
+    </div>
+
+    <div class="card rounded-lg p-6 mb-4">
+      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+        <div class="flex justify-between">
+          <h2 class="text-lg font-bold text-[var(--text-primary)]">
+            {{ this.translate.title_my_query }}
+          </h2>
+        </div>
+        <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+          {{ this.translate.sub_title_my_query }}
+        </div>
+      </div>
+
+      aaa
     </div>
   </div>
 
@@ -354,7 +427,7 @@ export default {
     </div>
 
     <div class="btn btn-sm btn-secondary float-end mb-1" @click="this.showHelp = true">
-      <i class="bi bi-question-circle"></i>
+      <i class="bi bi-question-circle"></i>aaaa
     </div>
 
     <div class="mb-3">
@@ -495,3 +568,24 @@ export default {
     </toast>
   </div>
 </template>
+
+<style>
+.code-editor {
+  background-color: #1e293b;
+  color: #e2e8f0;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  min-height: 200px;
+  resize: vertical;
+  border: 1px solid var(--border-dark);
+}
+
+.code-editor:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+</style>
