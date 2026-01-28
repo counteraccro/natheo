@@ -7,10 +7,11 @@ import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
 import SkeletonSearchResult from '@/vue/Components/Skeleton/SearchResult.vue';
 import AlertPrimary from '@/vue/Components/Alert/Primary.vue';
+import AlertDanger from '@/vue/Components/Alert/Danger.vue';
 
 export default {
   name: 'SqlManager',
-  components: { AlertPrimary, SkeletonSearchResult, SkeletonTabs, SkeletonText, Toast },
+  components: { AlertDanger, AlertPrimary, SkeletonSearchResult, SkeletonTabs, SkeletonText, Toast },
   props: {
     urls: Object,
     translate: Object,
@@ -366,6 +367,7 @@ export default {
         </div>
       </div>
 
+      <alert-danger v-if="this.error !== ''" type="alert-danger-solid mb-3" :text="this.error" />
       <alert-primary type="alert-primary-solid" :text="this.translate.help_text_1" />
     </div>
 
@@ -373,15 +375,154 @@ export default {
       <div class="border-b-1 border-b-[var(--border-color)] mb-4">
         <div class="flex justify-between">
           <h2 class="text-lg font-bold text-[var(--text-primary)]">
-            {{ this.translate.title_my_query }}
+            {{ this.translate.bloc_query }}
           </h2>
+          <div>
+            <div class="btn btn-success btn-sm me-2" @click="this.execute()">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"
+                ></path>
+              </svg>
+              {{ this.translate.btn_execute_query }}
+            </div>
+            <div class="btn btn-primary btn-sm me-2" @click="this.save">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+                ></path>
+              </svg>
+              {{ this.translate.btn_save_query }}
+            </div>
+          </div>
         </div>
         <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
-          {{ this.translate.sub_title_my_query }}
+          {{ this.translate.bloc_query_sub_title }}
         </div>
       </div>
 
-      aaa
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div>
+          <h3 class="text-sm font-semibold mb-3 text-[var(--text-primary)]">{{ this.translate.label_list_table }}</h3>
+          <div class="form-control mb-3">
+            <input
+              type="text"
+              class="form-input"
+              v-model="this.searchTable"
+              :placeholder="this.translate.placeholder_table"
+            />
+          </div>
+          <div class="form-control mb-3">
+            <select class="form-input" multiple id="sql-table" size="8" v-model="this.selectTable">
+              <option v-for="table in filteredTable" @click="this.loadColumn(table.name)">
+                {{ table.name }}
+              </option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <div
+              class="btn btn-secondary btn-sm w-full"
+              @click="this.addElement(this.schema + this.selectTable, 0, false)"
+            >
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+              {{ this.translate.btn_add_table }}
+            </div>
+          </div>
+          <p class="text-xs text-[var(--text-secondary)]">{{ this.translate.help_select_table }}</p>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-semibold mb-3 text-[var(--text-primary)]">{{ this.selectLabelTable }}</h3>
+          <div class="form-control mb-3">
+            <input
+              type="text"
+              class="form-input"
+              v-model="this.searchField"
+              :placeholder="this.translate.placeholder_field"
+            />
+          </div>
+          <div class="form-control mb-3">
+            <select class="form-input" multiple id="sql-field" size="8" v-model="this.selectField">
+              <option v-for="column in filteredFieldName">
+                {{ column }}
+              </option>
+            </select>
+          </div>
+          <div class="form-control mb-3">
+            <div class="btn btn-secondary btn-sm w-full" @click="this.addElement(this.selectField, 0, false)">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+              {{ this.translate.btn_add_table }}
+            </div>
+          </div>
+          <p class="text-xs text-[var(--text-secondary)]">
+            {{ this.translate.help_select_field }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card rounded-lg p-6 mb-4">
+      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+        <div class="flex justify-between">
+          <h2 class="text-lg font-bold text-[var(--text-primary)]">
+            {{ this.translate.bloc_result }}
+          </h2>
+        </div>
+        <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+          {{ this.translate.bloc_result_sub_title }}
+        </div>
+      </div>
+
+      <div v-if="!Object.keys(result).length" class="text-center py-12 text-[var(--text-secondary)]">
+        <svg
+          class="w-16 h-16 mx-auto mb-4 text-[var(-text-light)]"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+          ></path>
+        </svg>
+        <p class="text-sm font-medium">{{ this.translate.no_result_query }}</p>
+        <p class="text-xs mt-1">{{ this.translate.no_result_query_help }}</p>
+      </div>
+
+      <!-- Example Results Table (Hidden by default) -->
+      <div class="overflow-x-auto">
+        <table class="w-full" aria-describedby="table">
+          <thead class="bg-[var(--bg-main)]">
+            <tr>
+              <th
+                v-for="header in this.resultHeader"
+                class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]"
+              >
+                {{ header }}
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[var(--border-color)]">
+            <tr v-for="row in this.result" class="bg-[var(--bg-card)] hover:bg-[var(--bg-hover)]">
+              <td v-for="header in this.resultHeader" class="px-3 py-1 text-sm text-[var(--text-secondary)] text-left">
+                {{ row[header] }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -427,7 +568,7 @@ export default {
     </div>
 
     <div class="btn btn-sm btn-secondary float-end mb-1" @click="this.showHelp = true">
-      <i class="bi bi-question-circle"></i>aaaa
+      <i class="bi bi-question-circle"></i>
     </div>
 
     <div class="mb-3">
@@ -541,11 +682,6 @@ export default {
       :show="this.toasts.toastSuccess.show"
       @close-toast="this.closeToast"
     >
-      <template #header>
-        <i class="bi bi-check-circle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.translate.toast_title_success }}</strong>
-        <small class="text-black-50">{{ this.translate.toast_time }}</small>
-      </template>
       <template #body>
         <div v-html="this.toasts.toastSuccess.msg"></div>
       </template>
@@ -557,11 +693,6 @@ export default {
       :show="this.toasts.toastError.show"
       @close-toast="this.closeToast"
     >
-      <template #header>
-        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.translate.toast_title_error }}</strong>
-        <small class="text-black-50">{{ this.translate.toast_time }}</small>
-      </template>
       <template #body>
         <div v-html="this.toasts.toastError.msg"></div>
       </template>
