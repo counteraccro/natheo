@@ -20,7 +20,7 @@
 - [À propos](#-à-propos)
 - [Prérequis](#-prérequis)
 - [Installation](#-installation)
-- [Configuration](#️-configuration)
+- [Configuration](#-configuration)
 - [Utilisation](#-utilisation)
 - [Commandes disponibles](#-commandes-disponibles)
 - [Tests](#-tests)
