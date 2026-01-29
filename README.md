@@ -100,8 +100,8 @@ Modifiez les variables suivantes dans `.env.local` :
 ```env
 APP_ENV=dev
 APP_DEBUG=1
-NATHEO_SCHEMA=natheo_dev
-DATABASE_URL="mysql://user:password@127.0.0.1:3306/natheo_dev?serverVersion=8.2"
+NATHEO_SCHEMA=natheo
+DATABASE_URL="mysql://user:password@127.0.0.1:3306/natheo?serverVersion=8.2"
 ```
 
 #### 4. Installation automatique du CMS
@@ -136,7 +136,7 @@ php bin/console doctrine:fixtures:load
 #### 8. Compiler les assets
 ```bash
 yarn install
-yarn encore dev --watch
+yarn dev
 ```
 
 ---
@@ -151,7 +151,8 @@ Pour accéder au CMS en développement :
 2. Exemple de configuration Apache :
 ```apache
 <VirtualHost *:80>
-    ServerName natheo.local
+    ServerName www.local.natheo
+    ServerAlias  local.natheo
     DocumentRoot "[chemin-vers-natheo]/public"
     
     <Directory "[chemin-vers-natheo]/public">
@@ -176,8 +177,8 @@ Une fois l'installation terminée :
 
 1. Accédez à : `http://natheo.local/admin/fr/dashboard/index`
 2. Connectez-vous avec les identifiants par défaut :
-  - **Email** : `superadmin@natheo.com`
-  - **Mot de passe** : `superadmin@natheo.com`
+  - **Email** : `user.demo@mail.fr`
+  - **Mot de passe** : `user.demo@mail.fr`
 
 > **🔐 Important** : Changez immédiatement ces identifiants en production !
 
@@ -210,13 +211,10 @@ php bin/console translation:extract --force --format=yaml es
 ### Compilation des assets
 ```bash
 # Mode développement avec watch
-yarn encore dev --watch
-
-# Mode développement (compilation unique)
-yarn encore dev
+yarn dev
 
 # Mode production
-yarn encore production
+vite build
 ```
 
 ---
@@ -227,8 +225,6 @@ Lancer la suite de tests unitaires :
 ```bash
 bin/phpunit
 ```
-
-Pour plus d'informations sur les tests, consultez la [documentation des tests](https://counteraccro.github.io/natheo.doc/Docs/Tests/).
 
 ---
 
