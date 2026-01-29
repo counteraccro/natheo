@@ -52,12 +52,12 @@ Nathéo est un système de gestion de contenu (CMS) moderne développé avec Sym
 
 Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
-| Composant      | Version requise | Notes                           |
-|----------------|----------------|---------------------------------|
-| **PHP**        | 8.3 ou supérieur | Extensions recommandées ci-dessous |
-| **Composer**   | 2.7.7 ou supérieur | Gestionnaire de dépendances PHP |
-| **Yarn**       | 1.22.19 ou supérieur | Gestionnaire de paquets JavaScript |
-| **Base de données** | Voir ci-dessous | MySQL ou PostgreSQL |
+| Composant      | Version requise      | Notes                           |
+|----------------|----------------------|---------------------------------|
+| **PHP**        | 8.4 ou supérieur     | Extensions recommandées ci-dessous |
+| **Composer**   | 2.8.9 ou supérieur   | Gestionnaire de dépendances PHP |
+| **Yarn**       | 1.22.22 ou supérieur | Gestionnaire de paquets JavaScript |
+| **Base de données** | Voir ci-dessous      | MySQL ou PostgreSQL |
 
 ### Base de données supportées
 
