@@ -1,8 +1,13 @@
 <script>
+/**
+ * @author Gourdon Aymeric
+ * @version 2.0
+ * Gestionnaire de requete SQL
+ */
+
 import axios from 'axios';
 import Toast from '../../../Components/Global/Toast.vue';
-import { emitter } from '../../../../utils/useEvent';
-import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
+import { emitter } from '@/utils/useEvent';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
 import SkeletonSearchResult from '@/vue/Components/Skeleton/SearchResult.vue';
@@ -35,7 +40,6 @@ export default {
       error: '',
       isErrorValidateName: false,
       isErrorValidateQuery: false,
-      showHelp: false,
       showQueryBuilder: true,
       toasts: {
         toastSuccess: {
@@ -207,7 +211,7 @@ export default {
      * @param selectTable
      */
     loadColumn(selectTable) {
-      this.selectLabelTable = this.translate.label_list_field_2 + ' ' + '<b>' + selectTable + '</b>';
+      this.selectLabelTable = this.translate.label_list_field_2 + ' ' + selectTable;
       this.dataBaseData.forEach((table) => {
         if (table.name === selectTable) {
           this.selectColumns = table.columns;
@@ -245,11 +249,10 @@ export default {
     /**
      * Ajoute un élément dans l'input
      * @param balise
-     * @param position
      * @param separate
      * @returns {boolean}
      */
-    addElement(balise, position, separate) {
+    addElement(balise, separate) {
       let input = document.getElementById('sql-textarea');
       let start = input.selectionStart;
       let end = input.selectionEnd;
@@ -262,7 +265,7 @@ export default {
         input.value = this.sqlManager.query;
         let caretPos = start + balise.length;
         input.focus();
-        input.setSelectionRange(caretPos - position, caretPos - position);
+        //input.setSelectionRange(caretPos - position, caretPos - position);
       } else {
         let before = value.slice(0, start);
         let after = value.slice(end);
@@ -280,7 +283,6 @@ export default {
 
         let caretPos = start + replace.length;
         input.focus();
-        input.setSelectionRange(caretPos, caretPos);
       }
       return false;
     },
@@ -289,7 +291,7 @@ export default {
 </script>
 
 <template>
-  <div v-if="this.loading">
+  <div v-if="loading">
     <div class="card rounded-lg p-6 mb-4">
       <skeleton-text :nb-paragraphe="3" />
     </div>
@@ -306,7 +308,7 @@ export default {
       <div class="border-b-1 border-b-[var(--border-color)] mb-4">
         <div class="flex justify-between">
           <h2 class="text-lg font-bold text-[var(--text-primary)]">
-            {{ this.translate.title_my_query }}
+            {{ translate.title_my_query }}
           </h2>
           <div>
             <div class="btn btn-success btn-sm me-2" @click="this.execute()">
@@ -318,7 +320,7 @@ export default {
                   d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"
                 ></path>
               </svg>
-              {{ this.translate.btn_execute_query }}
+              {{ translate.btn_execute_query }}
             </div>
             <div class="btn btn-primary btn-sm me-2" @click="this.save">
               <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -329,56 +331,56 @@ export default {
                   d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
                 ></path>
               </svg>
-              {{ this.translate.btn_save_query }}
+              {{ translate.btn_save_query }}
             </div>
           </div>
         </div>
         <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
-          {{ this.translate.sub_title_my_query }}
+          {{ translate.sub_title_my_query }}
         </div>
       </div>
 
       <div class="form-control mb-3">
-        <label for="name-query" class="form-label">{{ this.translate.label_name }} *</label>
+        <label for="name-query" class="form-label">{{ translate.label_name }} *</label>
         <input
           type="text"
           class="form-input"
-          :class="this.isErrorValidateName ? 'is-invalid' : ''"
+          :class="isErrorValidateName ? 'is-invalid' : ''"
           id="name-query"
-          :placeholder="this.translate.label_name_placeholder"
-          v-model="this.sqlManager.name"
+          :placeholder="translate.label_name_placeholder"
+          v-model="sqlManager.name"
         />
-        <div v-if="this.isErrorValidateName" class="form-text text-error">
-          {{ this.translate.error_name_empty }}
+        <div v-if="isErrorValidateName" class="form-text text-error">
+          {{ translate.error_name_empty }}
         </div>
       </div>
 
       <div class="form-control mb-3">
-        <label for="sql-textarea" class="form-label">{{ this.translate.label_textarea_query }}</label>
+        <label for="sql-textarea" class="form-label">{{ translate.label_textarea_query }}</label>
         <textarea
           class="form-input code-editor"
-          :class="this.isErrorValidateQuery ? 'is-invalid' : ''"
+          :class="isErrorValidateQuery ? 'is-invalid' : ''"
           id="sql-textarea"
           rows="10"
-          v-model="this.sqlManager.query"
+          v-model="sqlManager.query"
         ></textarea>
-        <div v-if="this.isErrorValidateQuery" class="form-text text-error">
-          {{ this.translate.error_query_empty }}
+        <div v-if="isErrorValidateQuery" class="form-text text-error">
+          {{ translate.error_query_empty }}
         </div>
       </div>
 
-      <alert-danger v-if="this.error !== ''" type="alert-danger-solid mb-3" :text="this.error" />
-      <alert-primary type="alert-primary-solid" :text="this.translate.help_text_1" />
+      <alert-danger v-if="error !== ''" type="alert-danger-solid mb-3" :text="error" />
+      <alert-primary type="alert-primary-solid" :text="translate.help_text_1" />
     </div>
 
     <div class="card rounded-lg p-6 mb-4">
       <div class="border-b-1 border-b-[var(--border-color)] mb-4">
         <div class="flex justify-between">
           <h2 class="text-lg font-bold text-[var(--text-primary)]">
-            {{ this.translate.bloc_query }}
+            {{ translate.bloc_query }}
           </h2>
           <div>
-            <div class="btn btn-success btn-sm me-2" @click="this.execute()">
+            <div class="btn btn-success btn-sm me-2" @click="execute()">
               <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
@@ -387,9 +389,9 @@ export default {
                   d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"
                 ></path>
               </svg>
-              {{ this.translate.btn_execute_query }}
+              {{ translate.btn_execute_query }}
             </div>
-            <div class="btn btn-primary btn-sm me-2" @click="this.save">
+            <div class="btn btn-primary btn-sm me-2" @click="save">
               <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
@@ -398,74 +400,78 @@ export default {
                   d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
                 ></path>
               </svg>
-              {{ this.translate.btn_save_query }}
+              {{ translate.btn_save_query }}
             </div>
           </div>
         </div>
         <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
-          {{ this.translate.bloc_query_sub_title }}
+          {{ translate.bloc_query_sub_title }}
         </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
-          <h3 class="text-sm font-semibold mb-3 text-[var(--text-primary)]">{{ this.translate.label_list_table }}</h3>
+          <h3 class="text-sm font-semibold mb-3 text-[var(--text-primary)]">{{ translate.label_list_table }}</h3>
           <div class="form-control mb-3">
-            <input
-              type="text"
-              class="form-input"
-              v-model="this.searchTable"
-              :placeholder="this.translate.placeholder_table"
-            />
+            <input type="text" class="form-input" v-model="searchTable" :placeholder="translate.placeholder_table" />
           </div>
           <div class="form-control mb-3">
-            <select class="form-input" multiple id="sql-table" size="8" v-model="this.selectTable">
-              <option v-for="table in filteredTable" @click="this.loadColumn(table.name)">
+            <select class="form-input" multiple id="sql-table" size="8" v-model="selectTable">
+              <option v-for="table in filteredTable" @click="loadColumn(table.name)">
                 {{ table.name }}
               </option>
             </select>
           </div>
           <div class="mb-3">
-            <div
-              class="btn btn-secondary btn-sm w-full"
-              @click="this.addElement(this.schema + this.selectTable, 0, false)"
-            >
+            <div class="btn btn-secondary btn-sm w-full" @click="addElement(schema + '.' + selectTable, false)">
               <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
               </svg>
-              {{ this.translate.btn_add_table }}
+              {{ translate.btn_add_table }}
             </div>
           </div>
-          <p class="text-xs text-[var(--text-secondary)]">{{ this.translate.help_select_table }}</p>
+          <p class="text-xs text-[var(--text-secondary)]">{{ translate.help_select_table }}</p>
         </div>
 
         <div>
-          <h3 class="text-sm font-semibold mb-3 text-[var(--text-primary)]">{{ this.selectLabelTable }}</h3>
+          <h3 class="text-sm font-semibold mb-3 text-[var(--text-primary)]">{{ selectLabelTable }}</h3>
           <div class="form-control mb-3">
             <input
               type="text"
               class="form-input"
-              v-model="this.searchField"
-              :placeholder="this.translate.placeholder_field"
+              v-model="searchField"
+              :placeholder="translate.placeholder_field"
+              :disabled="selectColumns.length === 0"
             />
           </div>
           <div class="form-control mb-3">
-            <select class="form-input" multiple id="sql-field" size="8" v-model="this.selectField">
+            <select
+              class="form-input"
+              multiple
+              id="sql-field"
+              size="8"
+              v-model="selectField"
+              :disabled="selectColumns.length === 0"
+            >
               <option v-for="column in filteredFieldName">
                 {{ column }}
               </option>
             </select>
           </div>
           <div class="form-control mb-3">
-            <div class="btn btn-secondary btn-sm w-full" @click="this.addElement(this.selectField, 0, false)">
+            <button
+              :disabled="selectColumns.length === 0"
+              class="btn btn-secondary btn-sm w-full"
+              @click="addElement(selectField, false)"
+            >
               <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
               </svg>
-              {{ this.translate.btn_add_table }}
-            </div>
+              {{ translate.btn_add_table }}
+            </button>
           </div>
           <p class="text-xs text-[var(--text-secondary)]">
-            {{ this.translate.help_select_field }}
+            {{ translate.help_select_field }}
           </p>
         </div>
       </div>
@@ -475,11 +481,11 @@ export default {
       <div class="border-b-1 border-b-[var(--border-color)] mb-4">
         <div class="flex justify-between">
           <h2 class="text-lg font-bold text-[var(--text-primary)]">
-            {{ this.translate.bloc_result }}
+            {{ translate.bloc_result }}
           </h2>
         </div>
         <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
-          {{ this.translate.bloc_result_sub_title }}
+          {{ translate.bloc_result_sub_title }}
         </div>
       </div>
 
@@ -497,26 +503,25 @@ export default {
             d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
           ></path>
         </svg>
-        <p class="text-sm font-medium">{{ this.translate.no_result_query }}</p>
-        <p class="text-xs mt-1">{{ this.translate.no_result_query_help }}</p>
+        <p class="text-sm font-medium">{{ translate.no_result_query }}</p>
+        <p class="text-xs mt-1">{{ translate.no_result_query_help }}</p>
       </div>
 
-      <!-- Example Results Table (Hidden by default) -->
       <div class="overflow-x-auto">
         <table class="w-full" aria-describedby="table">
           <thead class="bg-[var(--bg-main)]">
             <tr>
               <th
-                v-for="header in this.resultHeader"
-                class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]"
+                v-for="header in resultHeader"
+                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)]"
               >
                 {{ header }}
               </th>
             </tr>
           </thead>
           <tbody class="divide-y divide-[var(--border-color)]">
-            <tr v-for="row in this.result" class="bg-[var(--bg-card)] hover:bg-[var(--bg-hover)]">
-              <td v-for="header in this.resultHeader" class="px-3 py-1 text-sm text-[var(--text-secondary)] text-left">
+            <tr v-for="row in result" class="bg-[var(--bg-card)] hover:bg-[var(--bg-hover)]">
+              <td v-for="header in resultHeader" class="px-3 py-1 text-sm text-[var(--text-secondary)] text-left">
                 {{ row[header] }}
               </td>
             </tr>
@@ -526,175 +531,26 @@ export default {
     </div>
   </div>
 
-  <!-- end -->
-  <div id="block-sql-manager" :class="this.loading === true ? 'block-grid' : ''">
-    <div v-if="this.loading" class="overlay">
-      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000">
-        <div class="spinner-border text-primary" role="status"></div>
-        <span class="txt-overlay">{{ this.translate.loading }}</span>
-      </div>
-    </div>
-
-    <div class="card mb-3" v-if="this.showHelp">
-      <div class="card-header">
-        <i class="bi bi-question-circle"></i> {{ this.translate.help_title }}
-        <button type="button" class="btn-close float-end" aria-label="Close" @click="this.showHelp = false"></button>
-      </div>
-      <div class="card-body">
-        <h5 class="card-title"><i class="bi bi-exclamation-circle-fill"></i> {{ this.translate.help_sub_title_1 }}</h5>
-        <p class="card-text">{{ this.translate.help_text_1 }}</p>
-        <h5 class="card-title"><i class="bi bi-question-circle-fill"></i> {{ this.translate.help_sub_title_2 }}</h5>
-        <p class="card-text"><i class="bi bi-arrow-right"></i> {{ this.translate.help_text_2 }}</p>
-      </div>
-    </div>
-
-    <div v-if="this.error !== ''" class="alert alert-danger">
-      {{ this.error }}
-    </div>
-
-    <div class="mb-3">
-      <label for="name-query" class="form-label">{{ this.translate.label_name }}</label>
-      <input
-        type="text"
-        class="form-control"
-        :class="this.isErrorValidateName ? 'is-invalid' : ''"
-        id="name-query"
-        :placeholder="this.translate.label_name_placeholder"
-        v-model="this.sqlManager.name"
-      />
-      <div class="invalid-feedback">
-        {{ this.translate.error_name_empty }}
-      </div>
-    </div>
-
-    <div class="btn btn-sm btn-secondary float-end mb-1" @click="this.showHelp = true">
-      <i class="bi bi-question-circle"></i>
-    </div>
-
-    <div class="mb-3">
-      <label for="sql-textarea" class="form-label">{{ this.translate.label_textarea_query }}</label>
-      <textarea
-        class="form-control"
-        :class="this.isErrorValidateQuery ? 'is-invalid' : ''"
-        id="sql-textarea"
-        rows="10"
-        v-model="this.sqlManager.query"
-      ></textarea>
-      <div class="invalid-feedback">
-        {{ this.translate.error_query_empty }}
-      </div>
-      <div class="float-end mt-2">
-        <div class="btn btn-secondary me-2" @click="this.execute()">
-          <i class="bi bi-terminal"></i> {{ this.translate.btn_execute_query }}
-        </div>
-        <div class="btn btn-secondary me-2" @click="this.save">
-          <i class="bi bi-floppy"></i> {{ this.translate.btn_save_query }}
-        </div>
-      </div>
-    </div>
-
-    <div class="clearfix"></div>
-
-    <div class="card mt-4">
-      <div class="card-header">
-        {{ this.translate.bloc_query }}
-        <div class="float-end btn btn-secondary btn-sm">
-          <i class="bi bi-chevron-up" v-if="this.showQueryBuilder" @click="this.renderQueryBuilder()"></i>
-          <i class="bi bi-chevron-down" v-if="!this.showQueryBuilder" @click="this.renderQueryBuilder()"></i>
-        </div>
-      </div>
-      <div class="card-body" v-if="this.showQueryBuilder">
-        <div class="row">
-          <div class="col-6">
-            <label for="sql-table" class="form-label">{{ this.translate.label_list_table }}</label>
-            <input
-              type="text"
-              class="form-control"
-              v-model="this.searchTable"
-              :placeholder="this.translate.placeholder_table"
-            />
-            <select class="form-select" multiple id="sql-table" size="8" v-model="this.selectTable">
-              <option v-for="table in filteredTable" @click="this.loadColumn(table.name)">
-                {{ table.name }}
-              </option>
-            </select>
-            <div
-              class="btn btn-secondary btn-sm mt-1 float-end"
-              @click="this.addElement(this.schema + this.selectTable, 0, false)"
-            >
-              {{ this.translate.btn_add_table }}
-            </div>
-            <div class="form-text">{{ this.translate.help_select_table }}</div>
-          </div>
-          <div class="col-6">
-            <label for="sql-field" class="form-label" v-html="this.selectLabelTable"></label>
-            <input
-              type="text"
-              class="form-control"
-              v-model="this.searchField"
-              :placeholder="this.translate.placeholder_field"
-            />
-            <select class="form-select" multiple id="sql-field" size="8" v-model="this.selectField">
-              <option v-for="column in filteredFieldName">
-                {{ column }}
-              </option>
-            </select>
-            <div class="btn btn-secondary btn-sm mt-1 float-end" @click="this.addElement(this.selectField, 0, false)">
-              {{ this.translate.btn_add_table }}
-            </div>
-            <div class="form-text">{{ this.translate.help_select_field }}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card mt-4">
-      <div class="card-header">
-        {{ this.translate.bloc_result }}
-      </div>
-      <div class="card-body overflow-x-auto">
-        <div class="table-responsive">
-          <table class="table table-sm table-striped table-hover" aria-describedby="table">
-            <thead>
-              <tr>
-                <th v-for="header in this.resultHeader">
-                  {{ header }}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="row in this.result">
-                <td v-for="header in this.resultHeader">
-                  {{ row[header] }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <div class="toast-container position-fixed top-0 end-0 p-2">
     <toast
       :id="'toastSuccess'"
       :option-class-header="'text-success'"
-      :show="this.toasts.toastSuccess.show"
-      @close-toast="this.closeToast"
+      :show="toasts.toastSuccess.show"
+      @close-toast="closeToast"
     >
       <template #body>
-        <div v-html="this.toasts.toastSuccess.msg"></div>
+        <div v-html="toasts.toastSuccess.msg"></div>
       </template>
     </toast>
 
     <toast
       :id="'toastError'"
       :option-class-header="'text-danger'"
-      :show="this.toasts.toastError.show"
-      @close-toast="this.closeToast"
+      :show="toasts.toastError.show"
+      @close-toast="closeToast"
     >
       <template #body>
-        <div v-html="this.toasts.toastError.msg"></div>
+        <div v-html="toasts.toastError.msg"></div>
       </template>
     </toast>
   </div>

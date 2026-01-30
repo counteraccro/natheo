@@ -11,7 +11,7 @@
     {% set description = 'sql_manager.execute.description' | trans({}, 'sql_manager') %}
 {% else %}
     {% set title = 'sql_manager.update.page_title' | trans({'id' : id}, 'sql_manager') %}
-    {% set titleH1 = 'sql_manager.update.page_title_h1' | trans({}, 'sql_manager') %}
+    {% set titleH1 = 'sql_manager.update.page_title_h1' | trans({}, 'sql_manager') ~ ' #' ~ id %}
     {% set description = 'sql_manager.update.description' | trans({}, 'sql_manager') %}
 {% endif %}
 
