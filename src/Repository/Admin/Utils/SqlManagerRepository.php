@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 2.0
+ * Repository pour SQLManager
+ */
 namespace App\Repository\Admin\Utils;
 
 use App\Entity\Admin\Tools\SqlManager;
@@ -53,21 +57,34 @@ class SqlManagerRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne une liste de user Paginé
+     * Retourne une liste de sqlManager Paginé
      * @param int $page
      * @param int $limit
-     * @param string|null $search
+     * @param array $queryParams
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, ?string $search = null): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
     {
-        $query = $this->createQueryBuilder('sm')->orderBy('sm.id', 'ASC');
+        $orderField = 'id';
+        $order = 'DESC';
+        if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
+            $orderField = $queryParams['orderField'];
+        }
 
-        if ($search !== null) {
+        if (isset($queryParams['order']) && $queryParams['order'] !== '') {
+            $order = $queryParams['order'];
+        }
+
+        $query = $this->createQueryBuilder(SqlManager::DEFAULT_ALIAS)->orderBy(
+            SqlManager::DEFAULT_ALIAS . '.' . $orderField,
+            $order,
+        );
+
+        if (isset($queryParams['search']) && $queryParams['search'] !== '') {
             $query
-                ->where('sm.name like :search')
-                ->orWhere('sm.query like :search')
-                ->setParameter('search', '%' . $search . '%');
+                ->where(SqlManager::DEFAULT_ALIAS . '.name like :search')
+                ->orWhere(SqlManager::DEFAULT_ALIAS . '.query like :search')
+                ->setParameter('search', '%' . $queryParams['search'] . '%');
         }
 
         $paginator = new Paginator($query->getQuery(), true);

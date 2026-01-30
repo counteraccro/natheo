@@ -2,7 +2,7 @@
 /**
  * @author Gourdon Aymeric
  * @version 1.0
- * Formulaire de création / édition d'une FAQ
+ * Gestionnaire de base de données
  */
 import axios from 'axios';
 import Toast from '../../../../Components/Global/Toast.vue';

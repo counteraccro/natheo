@@ -3,14 +3,49 @@ sql_manager:
         user: User
         disabled: 0
         name: 'Liste des utilisateurs'
-        query: 'SELECT email, login, firstname, lastname from natheo.user'
+        query: | 
+                SELECT email, login, firstname, lastname 
+                FROM natheo.user
     sql-manager1-2:
         user: User
         disabled: 0
         name: 'Liste des requêtes SQL'
-        query: 'SELECT name, query from natheo.sql_manager'
+        query: | 
+                SELECT name, query 
+                FROM natheo.sql_manager
     sql-manager1-3:
         user: User
         disabled: 0
         name: 'Liste des FAQs avec nombres de categories et questions'
-        query: 'SELECT nf.id, ft.title, ft.locale, count(fc.id) as categories, count(fq.id) as questions FROM natheo.faq AS nf LEFT JOIN natheo.faq_translation AS ft on nf.id = ft.faq_id LEFT JOIN natheo.faq_category AS fc on nf.id = fc.faq_id LEFT JOIN natheo.faq_question fq on fc.id = fq.faq_category_id GROUP BY nf.id, ft.title, ft.locale'
+        query: | 
+                SELECT nf.id, ft.title, ft.locale, count(fc.id) as categories, count(fq.id) as questions 
+                FROM natheo.faq AS nf 
+                LEFT JOIN natheo.faq_translation AS ft on nf.id = ft.faq_id 
+                LEFT JOIN natheo.faq_category AS fc on nf.id = fc.faq_id 
+                LEFT JOIN natheo.faq_question fq on fc.id = fq.faq_category_id 
+                GROUP BY nf.id, ft.title, ft.locale
+    sql-manager1-4:
+        user: User
+        disabled: 0
+        name: 'Statistique du nombres de pages et vues par utilisateur'
+        query: | 
+                SELECT u.login,  count(p.id) as nbPage, SUM(ps.value) as nbVue 
+                FROM page as p 
+                LEFT JOIN natheo.page_statistique ps ON (p.id = ps.page_id)
+                JOIN natheo.user u ON (u.id = p.user_id)
+                AND ps.`key` = 'PAGE_NB_READ' 
+                GROUP BY u.login
+    sql-manager1-5:
+        user: User
+        disabled: 0
+        name: 'Liste des tables et nombre de colonnes par table'
+        query: | 
+                SELECT t.TABLE_NAME as table_nom,
+                COUNT(c.COLUMN_NAME) as nombre_colonnes
+                FROM INFORMATION_SCHEMA.TABLES t
+                         LEFT JOIN INFORMATION_SCHEMA.COLUMNS c
+                                   ON t.TABLE_NAME = c.TABLE_NAME
+                                       AND t.TABLE_SCHEMA = c.TABLE_SCHEMA
+                WHERE t.TABLE_SCHEMA = 'natheo'
+                GROUP BY t.TABLE_NAME
+                ORDER BY t.TABLE_NAME;

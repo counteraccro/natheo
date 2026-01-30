@@ -415,7 +415,7 @@ export default {
               </div>
               <input
                 type="search"
-                class="form-input input-icon-left"
+                class="form-input input-icon-left no-control"
                 :placeholder="this.searchPlaceholder"
                 v-model="searchQuery"
               />
