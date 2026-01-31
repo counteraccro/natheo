@@ -370,7 +370,7 @@ export default {
         >
           {{ this.translate.ongletFaq.noResult }}
         </div>
-        <div v-if="this.results.faq !== null">
+        <div v-if="this.results.faq !== null" class="mt-2">
           <tab-search-result
             key="4"
             :result="this.results.faq"
@@ -405,7 +405,7 @@ export default {
           {{ this.translate.ongletTag.noResult }}
         </div>
 
-        <div v-if="this.results.tag !== null">
+        <div v-if="this.results.tag !== null" class="mt-2">
           <tab-search-result
             key="5"
             :result="this.results.tag"
@@ -440,7 +440,7 @@ export default {
           {{ this.translate.ongletUser.noResult }}
         </div>
 
-        <div v-if="this.results.user !== null">
+        <div v-if="this.results.user !== null" class="mt-2">
           <tab-search-result
             key="6"
             :result="this.results.user"
