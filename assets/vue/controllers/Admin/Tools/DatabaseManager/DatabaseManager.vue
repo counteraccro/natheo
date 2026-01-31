@@ -10,10 +10,14 @@ import Modal from '../../../../Components/Global/Modal.vue';
 import SchemaDatabase from '../../../../Components/DatabaseManager/SchemaDatabse.vue';
 import SchemaTable from '../../../../Components/DatabaseManager/SchemaTable.vue';
 import ListDump from '../../../../Components/DatabaseManager/ListDump.vue';
+import SkeletonCardStat from '@/vue/Components/Skeleton/CardStat.vue';
+import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
 
 export default {
   name: 'DatabaseManager',
   components: {
+    SkeletonTabs,
+    SkeletonCardStat,
     ListDump,
     SchemaTable,
     SchemaDatabase,
@@ -198,6 +202,104 @@ export default {
 </script>
 
 <template>
+  <div v-if="loading">
+    <skeleton-card-stat />
+    <skeleton-tabs />
+  </div>
+
+  <div v-else>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div
+        class="card rounded-lg p-6 text-white"
+        style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%)"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-3xl font-bold">156</p>
+            <p class="text-sm font-medium mt-1">Total Tables</p>
+          </div>
+          <div class="p-3 rounded-lg bg-[var(--primary)] opacity-60">
+            <svg
+              class="w-8 h-8 text-white opacity-100"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 6c0 1.657-3.134 3-7 3S5 7.657 5 6m14 0c0-1.657-3.134-3-7-3S5 4.343 5 6m14 0v6M5 6v6m0 0c0 1.657 3.134 3 7 3s7-1.343 7-3M5 12v6c0 1.657 3.134 3 7 3s7-1.343 7-3v-6"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div
+        class="card rounded-lg p-6 text-white"
+        style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%)"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-3xl font-bold">623</p>
+            <p class="text-sm font-medium mt-1">Eléments au total</p>
+          </div>
+          <div class="p-3 rounded-lg bg-[var(--primary)] opacity-60">
+            <svg
+              class="w-8 h-8 text-white opacity-100"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-width="2"
+                d="M3 11h18M3 15h18m-9-4v8m-8 0h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div
+        class="card rounded-lg p-6 text-white"
+        style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%)"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-3xl font-bold">1.22 Mo</p>
+            <p class="text-sm font-medium mt-1">Taille de la base de données</p>
+          </div>
+          <div class="p-3 rounded-lg bg-[var(--primary)] opacity-60">
+            <svg
+              class="w-8 h-8 text-white opacity-100"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 3v4a1 1 0 0 1-1 1H5m14-4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!----   end -->
   <div id="block-sql-manager" :class="this.loading === true ? 'block-grid' : ''">
     <div v-if="this.loading" class="overlay">
       <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000">
