@@ -30,11 +30,12 @@ export default {
   },
   data() {
     return {
-      loading: false,
+      loading: true,
       result: Object,
       tables: Object,
       disabledListeTales: true,
       schemaTable: Object,
+      schemaTableName: ' - ',
       listDump: Object,
       show: 'schemaDatabase',
       optionData: {
@@ -93,12 +94,14 @@ export default {
      */
     loadSchemaTable(table) {
       this.schemaTable = Object;
+      this.schemaTableName = ' - ';
       this.show = 'schemaTable';
       this.loading = true;
       axios
         .get(this.urls.load_schema_table + '/' + table)
         .then((response) => {
           this.schemaTable = response.data.result;
+          this.schemaTableName = response.data.result.table;
         })
         .catch((error) => {
           console.error(error);
@@ -215,8 +218,8 @@ export default {
       >
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-3xl font-bold">156</p>
-            <p class="text-sm font-medium mt-1">Total Tables</p>
+            <p class="text-3xl font-bold">{{ result.stat.nbTable }}</p>
+            <p class="text-sm font-medium mt-1">{{ translate.stat_nb_table }}</p>
           </div>
           <div class="p-3 rounded-lg bg-[var(--primary)] opacity-60">
             <svg
@@ -245,8 +248,8 @@ export default {
       >
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-3xl font-bold">623</p>
-            <p class="text-sm font-medium mt-1">Eléments au total</p>
+            <p class="text-3xl font-bold">{{ result.stat.nbElement }}</p>
+            <p class="text-sm font-medium mt-1">{{ translate.stat_nb_row }}</p>
           </div>
           <div class="p-3 rounded-lg bg-[var(--primary)] opacity-60">
             <svg
@@ -273,8 +276,8 @@ export default {
       >
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-3xl font-bold">1.22 Mo</p>
-            <p class="text-sm font-medium mt-1">Taille de la base de données</p>
+            <p class="text-3xl font-bold">{{ result.stat.sizeBite }}</p>
+            <p class="text-sm font-medium mt-1">{{ translate.stat_size }}</p>
           </div>
           <div class="p-3 rounded-lg bg-[var(--primary)] opacity-60">
             <svg
@@ -296,6 +299,133 @@ export default {
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="card rounded-lg mb-6 mt-6">
+    <div class="border-b border-default" style="border-color: var(--border-color)">
+      <ul
+        class="flex flex-wrap -mb-px text-sm font-medium text-center"
+        id="default-styled-tab"
+        data-tabs-toggle="#nav-tab-database-manager"
+        data-tabs-active-classes="text-[var(--primary)] border-[var(--primary)]"
+        role="tablist"
+      >
+        <li class="me-2" role="presentation">
+          <button
+            class="inline-block p-3 border-b-2 rounded-t-base text-[var(--primary)] border-[var(--primary)] cursor-pointer"
+            id="nav-0-tab"
+            data-tabs-target="#tab-0"
+            type="button"
+            role="tab"
+            aria-controls="Site web"
+            aria-selected="true"
+          >
+            <span class="flex items-center gap-2">
+              <svg
+                class="w-5 h-5"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 6c0 1.657-3.134 3-7 3S5 7.657 5 6m14 0c0-1.657-3.134-3-7-3S5 4.343 5 6m14 0v6M5 6v6m0 0c0 1.657 3.134 3 7 3s7-1.343 7-3M5 12v6c0 1.657 3.134 3 7 3s7-1.343 7-3v-6"
+                />
+              </svg>
+              {{ translate.btn_schema_bdd }}
+            </span>
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button
+            class="inline-block p-3 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
+            :class="show !== 'schemaTable' ? 'opacity-40 cursor-not-allowed' : 'opacity-100 cursor-pointer'"
+            id="nav-1-tab"
+            data-tabs-target="#tab-1"
+            type="button"
+            role="tab"
+            aria-controls="SEO"
+            aria-selected="false"
+            :disabled="show !== 'schemaTable'"
+          >
+            <span class="flex items-center gap-2">
+              <svg
+                class="w-5 h-5"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 11h18M3 15h18m-9-4v8m-8 0h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"
+                />
+              </svg>
+              {{ translate.btn_schema_table + ' ' + schemaTableName }}
+            </span>
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button
+            class="inline-block p-3 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300 cursor-pointer"
+            id="nav-2-tab"
+            data-tabs-target="#tab-2"
+            type="button"
+            role="tab"
+            aria-controls="Administration"
+            aria-selected="false"
+          >
+            <span class="flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+              {{ translate.btn_generate_dump }}
+            </span>
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button
+            class="inline-block p-3 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300 cursor-pointer"
+            id="nav-3-tab"
+            data-tabs-target="#tab-3"
+            type="button"
+            role="tab"
+            aria-controls="Logs"
+            aria-selected="false"
+          >
+            <span class="flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                ></path>
+              </svg>
+              {{ translate.btn_liste_dump }}
+            </span>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div id="nav-tab-database-manager">
+      <div class="" id="tab-0" role="tabpanel" aria-labelledby="profile-tab">Tab 0</div>
+      <div class="hidden" id="tab-1" role="tabpanel" aria-labelledby="profile-tab">Tab 1</div>
+      <div class="hidden" id="tab-2" role="tabpanel" aria-labelledby="profile-tab">Tab 2</div>
+      <div class="hidden" id="tab-3" role="tabpanel" aria-labelledby="profile-tab">Tab 3</div>
     </div>
   </div>
 
@@ -457,11 +587,6 @@ export default {
       :show="this.toasts.toastSuccess.show"
       @close-toast="this.closeToast"
     >
-      <template #header>
-        <i class="bi bi-check-circle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.translate.toast_title_success }}</strong>
-        <small class="text-black-50">{{ this.translate.toast_time }}</small>
-      </template>
       <template #body>
         <div v-html="this.toasts.toastSuccess.msg"></div>
       </template>
@@ -473,11 +598,6 @@ export default {
       :show="this.toasts.toastError.show"
       @close-toast="this.closeToast"
     >
-      <template #header>
-        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.translate.toast_title_error }}</strong>
-        <small class="text-black-50">{{ this.translate.toast_time }}</small>
-      </template>
       <template #body>
         <div v-html="this.toasts.toastError.msg"></div>
       </template>
