@@ -100,7 +100,8 @@ export default {
     >
       <li class="me-2" role="presentation">
         <button
-          class="inline-block ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm text-[var(--primary)] hover:text-[var(--primary-hover)] border-[var(--primary)] bg-[var(--primary-lighter)]"
+          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm text-[var(--primary)] hover:text-[var(--primary-hover)] border-[var(--primary)] bg-[var(--primary-lighter)] cursor-pointer"
+          :class="this.results.page === null ? 'pb-3' : 'pb-2'"
           id="nav-0-tab"
           data-tabs-target="#tab-page"
           type="button"
@@ -136,7 +137,8 @@ export default {
       </li>
       <li class="me-2" role="presentation">
         <button
-          class="inline-block ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
+          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300 cursor-pointer"
+          :class="this.results.menu === null ? 'pb-3' : 'pb-2'"
           id="nav-1-tab"
           data-tabs-target="#tab-menu"
           type="button"
@@ -172,7 +174,8 @@ export default {
       </li>
       <li class="me-2" role="presentation">
         <button
-          class="inline-block ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
+          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300 cursor-pointer"
+          :class="this.results.faq === null ? 'pb-3' : 'pb-2'"
           id="nav-2-tab"
           data-tabs-target="#tab-faq"
           type="button"
@@ -208,7 +211,8 @@ export default {
       </li>
       <li class="me-2" role="presentation">
         <button
-          class="inline-block ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
+          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300 cursor-pointer"
+          :class="this.results.tag === null ? 'pb-3' : 'pb-2'"
           id="nav-3-tab"
           data-tabs-target="#tab-tag"
           type="button"
@@ -244,7 +248,8 @@ export default {
       </li>
       <li class="me-2" role="presentation">
         <button
-          class="inline-block ps-4 pt-2 pe-4 pb-2 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
+          class="inline-block ps-4 pt-2 pe-4 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300 cursor-pointer"
+          :class="this.results.user === null ? 'pb-3' : 'pb-2'"
           id="nav-4-tab"
           data-tabs-target="#tab-user"
           type="button"
