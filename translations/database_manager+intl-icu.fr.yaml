@@ -7,7 +7,6 @@ database_manager.schema.all.bdd.row.row: "Nombre d'éléments"
 database_manager.schema.all.bdd.row.size: Taille
 database_manager.schema.all.bdd.error_row.: 'données indisponible'
 database_manager.loading: Chargement
-database_manager.nb.row.total: Statistique
 database_manager.modale.dump.title: "Génération d'un dump SQL"
 database_manager.modale.dump.sub_title_1: 'Choix des tables'
 database_manager.modale.dump.sub_title_2: 'Option sur les données'
@@ -22,7 +21,6 @@ database_manager.btn_generate_dump: 'Nouvelle sauvegarde'
 database_manager.btn_schema_bdd: 'Schema de la base de données'
 database_manager.btn_liste_dump: 'Liste des sauvegardes'
 database_manager.modale.dump.btn.generate: 'Générer la sauvegarde'
-database_manager.schema.database.title: 'Schema de la base de données'
 database_manager.schema.table.row.column_name: Nom
 database_manager.schema.table.row.data_type: Type
 database_manager.schema.table.row.character_maximum_length: 'Taille maximum'
@@ -40,3 +38,4 @@ database_manager.stat.nb.table: 'Tables au total'
 database_manager.stat.nb.row: 'Eléments au total'
 database_manager.stat.size: 'Taille de la base'
 database_manager.btn_schema_table: 'Schéma de la table'
+database_manager.action: Action

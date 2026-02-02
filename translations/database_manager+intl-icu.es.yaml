@@ -7,7 +7,6 @@ database_manager.schema.all.bdd.row.row: _Elements
 database_manager.schema.all.bdd.row.size: _Taille
 database_manager.schema.all.bdd.error_row.: __database_manager.schema.all.bdd.error_row.
 database_manager.loading: __database_manager.loading
-database_manager.nb.row.total: __database_manager.nb.row.total
 database_manager.modale.dump.title: __database_manager.modale.dump.title
 database_manager.modale.dump.sub_title_1: __database_manager.modale.dump.sub_title_1
 database_manager.modale.dump.sub_title_2: __database_manager.modale.dump.sub_title_2
@@ -22,7 +21,6 @@ database_manager.btn_generate_dump: __database_manager.btn_generate_dump
 database_manager.btn_schema_bdd: __database_manager.btn_schema_bdd
 database_manager.btn_liste_dump: __database_manager.btn_liste_dump
 database_manager.modale.dump.btn.generate: __database_manager.modale.dump.btn.generate
-database_manager.schema.database.title: __database_manager.schema.database.title
 database_manager.schema.table.row.column_name: _Nom
 database_manager.schema.table.row.data_type: _Type
 database_manager.schema.table.row.character_maximum_length: '_Taille maximum'
@@ -40,3 +38,4 @@ database_manager.stat.nb.table: __database_manager.stat.nb.table
 database_manager.stat.nb.row: __database_manager.stat.nb.row
 database_manager.stat.size: __database_manager.stat.size
 database_manager.btn_schema_table: __database_manager.btn_schema_table
+database_manager.action: __database_manager.action
