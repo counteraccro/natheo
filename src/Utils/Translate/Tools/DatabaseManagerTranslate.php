@@ -31,7 +31,7 @@ class DatabaseManagerTranslate extends AppTranslate
             'stat_nb_table' => $this->translator->trans('database_manager.stat.nb.table', domain: 'database_manager'),
             'stat_nb_row' => $this->translator->trans('database_manager.stat.nb.row', domain: 'database_manager'),
             'stat_size' => $this->translator->trans('database_manager.stat.size', domain: 'database_manager'),
-            'schema_database' => $this->getTranslateSchemaDatabase(),
+            'action' => $this->translator->trans('database_manager.action', domain: 'database_manager'),
             'schema_table' => $this->getTranslateSchemaTable(),
             'modale_dump_option' => $this->getTranslateModaleDumpOption(),
             'list_dump' => $this->getTranslateListDump(),
@@ -94,18 +94,6 @@ class DatabaseManagerTranslate extends AppTranslate
                 'database_manager.modale.dump.btn.generate',
                 domain: 'database_manager',
             ),
-        ];
-    }
-
-    /**
-     * Retourne les traductions du tableau du schema de la base de données
-     * @return array
-     */
-    private function getTranslateSchemaDatabase(): array
-    {
-        return [
-            'nb_row_total' => $this->translator->trans('database_manager.nb.row.total', domain: 'database_manager'),
-            'title' => $this->translator->trans('database_manager.schema.database.title', domain: 'database_manager'),
         ];
     }
 
