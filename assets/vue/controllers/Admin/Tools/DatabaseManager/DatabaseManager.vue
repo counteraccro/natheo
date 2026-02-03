@@ -1,7 +1,7 @@
 <script>
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Gestionnaire de base de données
  */
 import axios from 'axios';
@@ -31,13 +31,13 @@ export default {
   data() {
     return {
       loading: true,
-      result: Object,
+      result: {},
       tables: Object,
       disabledListeTales: true,
       schemaTable: Object,
-      schemaTableName: ' - ',
+      schemaTableName: '',
       listDump: Object,
-      show: 'schemaDatabase',
+      show: '',
       optionData: {
         all: true,
         tables: [],
@@ -59,6 +59,7 @@ export default {
     };
   },
   mounted() {
+    this.loadDataDump();
     this.loadSchemaDataBase();
   },
   methods: {
@@ -66,12 +67,13 @@ export default {
      * Chargement du schema de la base de donnée
      */
     loadSchemaDataBase() {
-      this.show = 'schemaDatabase';
       this.loading = true;
       axios
         .get(this.urls.load_schema_database)
         .then((response) => {
           this.result = response.data.query;
+          this.result.header['action'] = this.translate.action;
+          console.log(this.result);
         })
         .catch((error) => {
           console.error(error);
@@ -82,20 +84,12 @@ export default {
     },
 
     /**
-     * Affiche le schema de la base de donnée
-     */
-    showSchemaDatabase() {
-      this.show = 'schemaDatabase';
-    },
-
-    /**
      * Charge le schema de la table
      * @param table
      */
     loadSchemaTable(table) {
       this.schemaTable = Object;
-      this.schemaTableName = ' - ';
-      this.show = 'schemaTable';
+      this.schemaTableName = '';
       this.loading = true;
       axios
         .get(this.urls.load_schema_table + '/' + table)
@@ -131,9 +125,9 @@ export default {
     },
 
     /**
-     * Ouverture de la modale pour la génération du dump SQL
+     * Chargement des données pour le dump SQL
      */
-    openModalDumpSQL() {
+    loadDataDump() {
       this.loading = true;
       axios
         .get(this.urls.load_tables_database)
@@ -145,12 +139,11 @@ export default {
         })
         .finally(() => {
           this.loading = false;
-          this.updateModale('modaleDumpOption', true);
         });
     },
 
     /**
-     * Créer une nouvelle FAQ
+     * Créer une nouvelle sauvegarde
      */
     dumpSQL() {
       this.loading = true;
@@ -346,14 +339,14 @@ export default {
         <li class="me-2" role="presentation">
           <button
             class="inline-block p-3 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
-            :class="show !== 'schemaTable' ? 'opacity-40 cursor-not-allowed' : 'opacity-100 cursor-pointer'"
+            :class="schemaTableName === '' ? 'opacity-40 cursor-not-allowed' : 'opacity-100 cursor-pointer'"
             id="nav-1-tab"
             data-tabs-target="#tab-1"
             type="button"
             role="tab"
             aria-controls="SEO"
             aria-selected="false"
-            :disabled="show !== 'schemaTable'"
+            :disabled="schemaTableName === ''"
           >
             <span class="flex items-center gap-2">
               <svg
@@ -422,14 +415,119 @@ export default {
     </div>
 
     <div id="nav-tab-database-manager">
-      <div class="" id="tab-0" role="tabpanel" aria-labelledby="profile-tab">Tab 0</div>
-      <div class="hidden" id="tab-1" role="tabpanel" aria-labelledby="profile-tab">Tab 1</div>
-      <div class="hidden" id="tab-2" role="tabpanel" aria-labelledby="profile-tab">Tab 2</div>
-      <div class="hidden" id="tab-3" role="tabpanel" aria-labelledby="profile-tab">Tab 3</div>
+      <div class="" id="tab-0" role="tabpanel" aria-labelledby="profile-tab">
+        <SchemaDatabase
+          :data="result"
+          :table-name="schemaTableName"
+          @load-schema-table="loadSchemaTable"
+        ></SchemaDatabase>
+      </div>
+      <div class="hidden" id="tab-1" role="tabpanel" aria-labelledby="profile-tab">
+        <SchemaTable :data="schemaTable" />
+      </div>
+      <div class="hidden" id="tab-2" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="row">
+          <div class="col-6">
+            <h5>{{ this.translate.modale_dump_option.sub_title_1 }}</h5>
+            <div class="mb-2">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault"
+                  v-model="this.optionData.all"
+                  @click="
+                    this.optionData.all === false ? (this.disabledListeTales = true) : (this.disabledListeTales = false)
+                  "
+                />
+                <label class="form-check-label" for="flexCheckDefault">
+                  {{ this.translate.modale_dump_option.select_all }}
+                </label>
+              </div>
+            </div>
+            <div class="mb-2">
+              <label for="select-multi-table" class="form-label">{{
+                this.translate.modale_dump_option.select_tables
+              }}</label>
+              <select
+                id="select-multi-table"
+                class="form-select"
+                size="18"
+                :disabled="this.disabledListeTales"
+                multiple
+                v-model="this.optionData.tables"
+              >
+                <option v-for="table in this.tables" :value="table.name">
+                  {{ table.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-6">
+            <h5>{{ this.translate.modale_dump_option.sub_title_2 }}</h5>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="option-dump-data"
+                id="option-dump-data-1"
+                value="table"
+                v-model="this.optionData.data"
+                checked
+              />
+              <label class="form-check-label" for="option-dump-data-1">
+                {{ this.translate.modale_dump_option.option_table }}
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="option-dump-data"
+                id="option-dump-data-2"
+                value="data"
+                v-model="this.optionData.data"
+              />
+              <label class="form-check-label" for="option-dump-data-2">
+                {{ this.translate.modale_dump_option.option_data }}
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="option-dump-data"
+                id="option-dump-data-3"
+                value="table_data"
+                v-model="this.optionData.data"
+              />
+              <label class="form-check-label" for="option-dump-data-3">
+                {{ this.translate.modale_dump_option.option_table_data }}
+              </label>
+            </div>
+
+            <div class="alert alert-secondary mt-2">
+              <h6><i class="bi bi-info-circle-fill"></i> {{ this.translate.modale_dump_option.help_title }}</h6>
+              <div v-html="this.translate.modale_dump_option.help_body"></div>
+            </div>
+
+            <div class="alert alert-danger mt-2">
+              <h6>
+                <i class="bi bi-exclamation-circle-fill"></i> {{ this.translate.modale_dump_option.warning_title }}
+              </h6>
+              <div v-html="this.translate.modale_dump_option.warning_body"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hidden" id="tab-3" role="tabpanel" aria-labelledby="profile-tab">
+        <ListDump :data="listDump" :translate="translate.list_dump"></ListDump>
+      </div>
     </div>
   </div>
 
-  <!----   end -->
+  <!----   end
   <div id="block-sql-manager" :class="this.loading === true ? 'block-grid' : ''">
     <div v-if="this.loading" class="overlay">
       <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000">
@@ -464,7 +562,7 @@ export default {
       </div>
     </div>
 
-    <!-- modale confirmation suppression -->
+     modale confirmation suppression
     <modal
       :id="'modaleDumpOption'"
       :show="this.modalTab.modaleDumpOption"
@@ -576,8 +674,8 @@ export default {
         <div class="btn btn-secondary" @click="this.dumpSQL">{{ this.translate.modale_dump_option.btn_generate }}</div>
       </template>
     </modal>
-    <!-- fin modale nouvelle categogie -->
-  </div>
+    fin modale nouvelle categogie
+  </div> -->
 
   <!-- toast -->
   <div class="toast-container position-fixed top-0 end-0 p-2">
