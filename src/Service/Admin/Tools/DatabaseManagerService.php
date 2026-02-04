@@ -10,6 +10,7 @@ namespace App\Service\Admin\Tools;
 use App\Service\Admin\AppAdminService;
 use App\Utils\Global\Database\DataBase;
 use App\Utils\Tools\DatabaseManager\DatabaseManagerConst;
+use App\Utils\Utils;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Finder\Finder;
@@ -67,6 +68,7 @@ class DatabaseManagerService extends AppAdminService
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws \DateMalformedStringException
      */
     public function getAllDump(): array
     {
@@ -79,7 +81,10 @@ class DatabaseManagerService extends AppAdminService
         foreach ($finder as $file) {
             $return[] = [
                 'name' => $file->getFilename(),
+                'date' => (new \DateTime('@' . $file->getFileInfo()->getCTime()))->format('d F Y, H:i'),
                 'url' => '/' . DatabaseManagerConst::FOLDER_NAME . '/' . $file->getFilename(),
+                'size' => Utils::getSizeName($file->getSize()),
+                'extension' => strtoupper($file->getExtension()),
             ];
         }
         return array_reverse($return);
