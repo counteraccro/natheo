@@ -34,9 +34,9 @@ export default {
       result: {},
       tables: Object,
       disabledListeTales: true,
-      schemaTable: Object,
+      schemaTable: {},
       schemaTableName: '',
-      listDump: Object,
+      listDump: {},
       show: '',
       optionData: {
         all: true,
@@ -59,8 +59,9 @@ export default {
     };
   },
   mounted() {
-    this.loadDataDump();
     this.loadSchemaDataBase();
+    this.loadListeDump();
+    this.loadDataDump();
   },
   methods: {
     /**
@@ -109,7 +110,6 @@ export default {
      * Charge les listes des sauvegardes, faites
      */
     loadListeDump() {
-      this.show = 'dumps';
       this.loading = true;
       axios
         .get(this.urls.all_dump_file)
@@ -519,10 +519,14 @@ export default {
               <div v-html="this.translate.modale_dump_option.warning_body"></div>
             </div>
           </div>
+
+          <div class="btn btn-secondary" @click="this.dumpSQL">
+            {{ this.translate.modale_dump_option.btn_generate }}
+          </div>
         </div>
       </div>
       <div class="hidden" id="tab-3" role="tabpanel" aria-labelledby="profile-tab">
-        <ListDump :data="listDump" :translate="translate.list_dump"></ListDump>
+        <ListDump :data="listDump" :translate="translate.list_dump" @refresh-dump="loadListeDump"></ListDump>
       </div>
     </div>
   </div>
