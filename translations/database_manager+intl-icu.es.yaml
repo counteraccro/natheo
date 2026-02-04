@@ -30,11 +30,11 @@ database_manager.success.dump: __database_manager.success.dump
 database_manager.modale.dump.warning.title: __database_manager.modale.dump.warning.title
 database_manager.modale.dump.warning.body: __database_manager.modale.dump.warning.body
 database_manager.list.dump.title: __database_manager.list.dump.title
-database_manager.list.dump.file.name: __database_manager.list.dump.file.name
-database_manager.list.dump.action: __database_manager.list.dump.action
 database_manager.list.dump.no.data: __database_manager.list.dump.no.data
 database_manager.stat.nb.table: __database_manager.stat.nb.table
 database_manager.stat.nb.row: __database_manager.stat.nb.row
 database_manager.stat.size: __database_manager.stat.size
 database_manager.btn_schema_table: __database_manager.btn_schema_table
 database_manager.action: __database_manager.action
+database_manager.list.dump.btn.refresh: __database_manager.list.dump.btn.refresh
+database_manager.list.dump.btn.download: __database_manager.list.dump.btn.download
