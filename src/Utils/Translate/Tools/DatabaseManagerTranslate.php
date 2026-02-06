@@ -32,7 +32,7 @@ class DatabaseManagerTranslate extends AppTranslate
             'stat_nb_row' => $this->translator->trans('database_manager.stat.nb.row', domain: 'database_manager'),
             'stat_size' => $this->translator->trans('database_manager.stat.size', domain: 'database_manager'),
             'action' => $this->translator->trans('database_manager.action', domain: 'database_manager'),
-            'modale_dump_option' => $this->getTranslateModaleDumpOption(),
+            'dump_option' => $this->getTranslateDumpOption(),
             'list_dump' => $this->getTranslateListDump(),
         ];
     }
@@ -41,56 +41,46 @@ class DatabaseManagerTranslate extends AppTranslate
      * Retourne les traductions de la modal pour générer les dumps
      * @return array
      */
-    private function getTranslateModaleDumpOption(): array
+    private function getTranslateDumpOption(): array
     {
         return [
-            'title' => $this->translator->trans('database_manager.modale.dump.title', domain: 'database_manager'),
-            'sub_title_1' => $this->translator->trans(
-                'database_manager.modale.dump.sub_title_1',
+            'title' => $this->translator->trans('database_manager.dump.title', domain: 'database_manager'),
+            'sub_title_1' => $this->translator->trans('database_manager.dump.sub_title_1', domain: 'database_manager'),
+            'sub_title_2' => $this->translator->trans('database_manager.dump.sub_title_2', domain: 'database_manager'),
+            'select_all' => $this->translator->trans('database_manager.dump.select_all', domain: 'database_manager'),
+            'filename_label' => $this->translator->trans(
+                'database_manager.dump.filename.label',
                 domain: 'database_manager',
             ),
-            'sub_title_2' => $this->translator->trans(
-                'database_manager.modale.dump.sub_title_2',
-                domain: 'database_manager',
-            ),
-            'select_all' => $this->translator->trans(
-                'database_manager.modale.dump.select_all',
+            'filename_help' => $this->translator->trans(
+                'database_manager.dump.filename.help',
                 domain: 'database_manager',
             ),
             'select_tables' => $this->translator->trans(
-                'database_manager.modale.dump.select_tables',
+                'database_manager.dump.select_tables',
                 domain: 'database_manager',
             ),
-            'option_data' => $this->translator->trans(
-                'database_manager.modale.dump.option_data',
-                domain: 'database_manager',
-            ),
+            'option_data' => $this->translator->trans('database_manager.dump.option_data', domain: 'database_manager'),
             'option_table' => $this->translator->trans(
-                'database_manager.modale.dump.option_table',
+                'database_manager.dump.option_table',
                 domain: 'database_manager',
             ),
             'option_table_data' => $this->translator->trans(
-                'database_manager.modale.dump.option_table_data',
+                'database_manager.dump.option_table_data',
                 domain: 'database_manager',
             ),
-            'help_title' => $this->translator->trans(
-                'database_manager.modale.dump.help.title',
-                domain: 'database_manager',
-            ),
-            'help_body' => $this->translator->trans(
-                'database_manager.modale.dump.help.body',
-                domain: 'database_manager',
-            ),
+            'help_title' => $this->translator->trans('database_manager.dump.help.title', domain: 'database_manager'),
+            'help_body' => $this->translator->trans('database_manager.dump.help.body', domain: 'database_manager'),
             'warning_title' => $this->translator->trans(
-                'database_manager.modale.dump.warning.title',
+                'database_manager.dump.warning.title',
                 domain: 'database_manager',
             ),
             'warning_body' => $this->translator->trans(
-                'database_manager.modale.dump.warning.body',
+                'database_manager.dump.warning.body',
                 domain: 'database_manager',
             ),
             'btn_generate' => $this->translator->trans(
-                'database_manager.modale.dump.btn.generate',
+                'database_manager.dump.btn.generate',
                 domain: 'database_manager',
             ),
         ];

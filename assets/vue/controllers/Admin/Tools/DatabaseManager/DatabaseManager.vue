@@ -39,7 +39,8 @@ export default {
       listDump: {},
       show: '',
       optionData: {
-        all: true,
+        filename: '',
+        all: 1,
         tables: [],
         data: 'table',
       },
@@ -59,6 +60,20 @@ export default {
     };
   },
   mounted() {
+    let now = new Date();
+    this.optionData.filename =
+      'dump-bdd-' +
+      now.getDate() +
+      '-' +
+      now.getMonth() +
+      '-' +
+      now.getFullYear() +
+      '-' +
+      now.getHours() +
+      '-' +
+      now.getMinutes() +
+      '-' +
+      now.getSeconds();
     this.loadSchemaDataBase();
     this.loadListeDump();
     this.loadDataDump();
@@ -426,6 +441,81 @@ export default {
         <SchemaTable :data="schemaTable" />
       </div>
       <div class="hidden" id="tab-2" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="max-w-2xl mx-auto mt-6 mb-6">
+          <div class="mb-6">
+            <h3 class="text-lg font-semibold mb-2 text-[var(--text-primary)]">
+              {{ translate.dump_option.title }}
+            </h3>
+            <p class="text-sm text-[var(--text-secondary)]">{{ translate.dump_option.sub_title_1 }}</p>
+          </div>
+
+          <div class="form-control">
+            <label class="form-label">{{ translate.dump_option.filename_label }}</label>
+            <input class="form-input" v-model="optionData.filename" />
+            <span class="form-text">{{ translate.dump_option.filename_help }}</span>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2 mt-6" style="color: var(--text-primary)">{{
+              translate.dump_option.sub_title_2
+            }}</label>
+            <div
+              class="space-y-2 p-4 rounded-lg border"
+              style="border-color: var(--border-color); background-color: var(--bg-hover)"
+            >
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  style="color: var(--primary)"
+                  type="radio"
+                  value="1"
+                  id="all-data"
+                  v-model="optionData.all"
+                  @click="disabledListeTales = true"
+                />
+                <label class="form-check-label" for="all-data">
+                  {{ translate.dump_option.select_all }}
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  style="color: var(--primary)"
+                  type="radio"
+                  value="0"
+                  id="select-data"
+                  v-model="optionData.all"
+                  @click="disabledListeTales = false"
+                />
+                <label class="form-check-label" for="select-data">
+                  {{ translate.dump_option.select_tables }}
+                </label>
+              </div>
+
+              <div class="form-control">
+                <select
+                  id="select-multi-table"
+                  class="form-input"
+                  size="18"
+                  :disabled="disabledListeTales"
+                  multiple
+                  v-model="optionData.tables"
+                >
+                  <option v-for="table in tables" :value="table.name">
+                    {{ table.name }}
+                  </option>
+                </select>
+              </div>
+
+              <label class="flex items-center">
+                <input type="checkbox" class="w-4 h-4 rounded" style="color: var(--primary)" />
+                <span class="ml-2 text-sm" style="color: var(--text-primary)">Sélectionner manuellement</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!--
         <div class="row">
           <div class="col-6">
             <h5>{{ this.translate.modale_dump_option.sub_title_1 }}</h5>
@@ -523,7 +613,7 @@ export default {
           <div class="btn btn-secondary" @click="this.dumpSQL">
             {{ this.translate.modale_dump_option.btn_generate }}
           </div>
-        </div>
+        </div>-->
       </div>
       <div class="hidden" id="tab-3" role="tabpanel" aria-labelledby="profile-tab">
         <ListDump :data="listDump" :translate="translate.list_dump" @refresh-dump="loadListeDump"></ListDump>
