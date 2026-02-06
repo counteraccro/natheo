@@ -7,28 +7,28 @@ database_manager.schema.all.bdd.row.row: "Nombre d'éléments"
 database_manager.schema.all.bdd.row.size: Taille
 database_manager.schema.all.bdd.error_row.: 'données indisponible'
 database_manager.loading: Chargement
-database_manager.modale.dump.title: "Génération d'un dump SQL"
-database_manager.modale.dump.sub_title_1: 'Choix des tables'
-database_manager.modale.dump.sub_title_2: 'Option sur les données'
-database_manager.modale.dump.select_all: 'Toutes les tables'
-database_manager.modale.dump.select_tables: 'Ou uniquement les tables'
-database_manager.modale.dump.option_data: 'Uniquement les données'
-database_manager.modale.dump.option_table: 'Uniquement les schemas SQL'
-database_manager.modale.dump.option_table_data: 'Schema SQL et données'
-database_manager.modale.dump.help.title: Information
-database_manager.modale.dump.help.body: "La génération d'un dump SQL peut prendre du temps, cette action va être réalisée en arrière plan. <br />Une notification vous sera envoyée une fois celle-ci terminée"
+database_manager.dump.title: 'Créer une nouvelle sauvegarde'
+database_manager.dump.sub_title_1: 'Générez une sauvegarde complète de votre base de données'
+database_manager.dump.sub_title_2: 'Option sur les données'
+database_manager.dump.select_all: 'Toutes les tables'
+database_manager.dump.select_tables: 'Ou uniquement les tables'
+database_manager.dump.option_data: 'Uniquement les données'
+database_manager.dump.option_table: 'Uniquement les schemas SQL'
+database_manager.dump.option_table_data: 'Schema SQL et données'
+database_manager.dump.help.title: Information
+database_manager.dump.help.body: "La génération d'un dump SQL peut prendre du temps, cette action va être réalisée en arrière plan. <br />Une notification vous sera envoyée une fois celle-ci terminée"
 database_manager.btn_generate_dump: 'Nouvelle sauvegarde'
 database_manager.btn_schema_bdd: 'Schema de la base de données'
 database_manager.btn_liste_dump: 'Liste des sauvegardes'
-database_manager.modale.dump.btn.generate: 'Générer la sauvegarde'
+database_manager.dump.btn.generate: 'Générer la sauvegarde'
 database_manager.schema.table.row.column_name: Nom
 database_manager.schema.table.row.data_type: Type
 database_manager.schema.table.row.character_maximum_length: 'Taille maximum'
 database_manager.schema.table.row.is_nullable: 'Null possible'
 database_manager.schema.table.row.column_default: 'Valeur par défaut'
 database_manager.success.dump: 'Génération de la sauvegarde prise en compte'
-database_manager.modale.dump.warning.title: 'Attention !'
-database_manager.modale.dump.warning.body: 'Utilisez des outils adaptés dès que votre site grandi. Une sauvegarde sur une base de donnée trop grande peut provoquer des crash de votre application voir de votre serveur !'
+database_manager.dump.warning.title: 'Attention !'
+database_manager.dump.warning.body: 'Utilisez des outils adaptés dès que votre site grandi. Une sauvegarde sur une base de donnée trop grande peut provoquer des crash de votre application voir de votre serveur !'
 database_manager.list.dump.title: 'Liste de vos sauvegardes disponible'
 database_manager.list.dump.no.data: 'Aucune sauvegarde pour le moment'
 database_manager.stat.nb.table: 'Tables au total'
@@ -36,5 +36,7 @@ database_manager.stat.nb.row: 'Eléments au total'
 database_manager.stat.size: 'Taille de la base'
 database_manager.btn_schema_table: 'Schéma de la table'
 database_manager.action: Action
-database_manager.list.dump.btn.refresh: 'Rafraichir'
-database_manager.list.dump.btn.download: 'Télécharger'
+database_manager.list.dump.btn.refresh: Rafraichir
+database_manager.list.dump.btn.download: Télécharger
+database_manager.dump.filename.label: 'Nom de la sauvegarde'
+database_manager.dump.filename.help: 'Laissez vide ou la valeur par défaut pour générer automatiquement avec la date'
