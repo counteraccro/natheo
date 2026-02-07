@@ -60,6 +60,10 @@ class DatabaseManagerTranslate extends AppTranslate
                 'database_manager.dump.select_tables',
                 domain: 'database_manager',
             ),
+            'option_data_label' => $this->translator->trans(
+                'database_manager.dump.option_data.label',
+                domain: 'database_manager',
+            ),
             'option_data' => $this->translator->trans('database_manager.dump.option_data', domain: 'database_manager'),
             'option_table' => $this->translator->trans(
                 'database_manager.dump.option_table',

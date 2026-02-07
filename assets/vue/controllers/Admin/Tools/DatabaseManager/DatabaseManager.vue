@@ -12,10 +12,14 @@ import SchemaTable from '../../../../Components/DatabaseManager/SchemaTable.vue'
 import ListDump from '../../../../Components/DatabaseManager/ListDump.vue';
 import SkeletonCardStat from '@/vue/Components/Skeleton/CardStat.vue';
 import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
+import AlertWarning from '@/vue/Components/Alert/Warning.vue';
+import AlertDanger from '@/vue/Components/Alert/Danger.vue';
 
 export default {
   name: 'DatabaseManager',
   components: {
+    AlertDanger,
+    AlertWarning,
     SkeletonTabs,
     SkeletonCardStat,
     ListDump,
@@ -506,114 +510,33 @@ export default {
                   </option>
                 </select>
               </div>
-
-              <label class="flex items-center">
-                <input type="checkbox" class="w-4 h-4 rounded" style="color: var(--primary)" />
-                <span class="ml-2 text-sm" style="color: var(--text-primary)">Sélectionner manuellement</span>
-              </label>
             </div>
           </div>
+
+          <div class="form-control mt-6">
+            <label class="form-label">{{ translate.dump_option.option_data_label }}</label>
+            <select class="form-input" v-model="optionData.data">
+              <option value="table">{{ translate.dump_option.option_table }}</option>
+              <option value="data">{{ translate.dump_option.option_data }}</option>
+              <option value="data_table">{{ translate.dump_option.option_table_data }}</option>
+            </select>
+          </div>
+
+          <alert-warning type="alert-primary-solid mt-6" :text="translate.dump_option.help_body" />
+          <alert-danger type="alert-danger-solid mt-6" :text="translate.dump_option.warning_body" />
+
+          <button class="btn btn-sm btn-primary w-full mt-6 no-control" @click="this.dumpSQL">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+              ></path>
+            </svg>
+            {{ translate.dump_option.btn_generate }}
+          </button>
         </div>
-
-        <!--
-        <div class="row">
-          <div class="col-6">
-            <h5>{{ this.translate.modale_dump_option.sub_title_1 }}</h5>
-            <div class="mb-2">
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="flexCheckDefault"
-                  v-model="this.optionData.all"
-                  @click="
-                    this.optionData.all === false ? (this.disabledListeTales = true) : (this.disabledListeTales = false)
-                  "
-                />
-                <label class="form-check-label" for="flexCheckDefault">
-                  {{ this.translate.modale_dump_option.select_all }}
-                </label>
-              </div>
-            </div>
-            <div class="mb-2">
-              <label for="select-multi-table" class="form-label">{{
-                this.translate.modale_dump_option.select_tables
-              }}</label>
-              <select
-                id="select-multi-table"
-                class="form-select"
-                size="18"
-                :disabled="this.disabledListeTales"
-                multiple
-                v-model="this.optionData.tables"
-              >
-                <option v-for="table in this.tables" :value="table.name">
-                  {{ table.name }}
-                </option>
-              </select>
-            </div>
-          </div>
-          <div class="col-6">
-            <h5>{{ this.translate.modale_dump_option.sub_title_2 }}</h5>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="option-dump-data"
-                id="option-dump-data-1"
-                value="table"
-                v-model="this.optionData.data"
-                checked
-              />
-              <label class="form-check-label" for="option-dump-data-1">
-                {{ this.translate.modale_dump_option.option_table }}
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="option-dump-data"
-                id="option-dump-data-2"
-                value="data"
-                v-model="this.optionData.data"
-              />
-              <label class="form-check-label" for="option-dump-data-2">
-                {{ this.translate.modale_dump_option.option_data }}
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="option-dump-data"
-                id="option-dump-data-3"
-                value="table_data"
-                v-model="this.optionData.data"
-              />
-              <label class="form-check-label" for="option-dump-data-3">
-                {{ this.translate.modale_dump_option.option_table_data }}
-              </label>
-            </div>
-
-            <div class="alert alert-secondary mt-2">
-              <h6><i class="bi bi-info-circle-fill"></i> {{ this.translate.modale_dump_option.help_title }}</h6>
-              <div v-html="this.translate.modale_dump_option.help_body"></div>
-            </div>
-
-            <div class="alert alert-danger mt-2">
-              <h6>
-                <i class="bi bi-exclamation-circle-fill"></i> {{ this.translate.modale_dump_option.warning_title }}
-              </h6>
-              <div v-html="this.translate.modale_dump_option.warning_body"></div>
-            </div>
-          </div>
-
-          <div class="btn btn-secondary" @click="this.dumpSQL">
-            {{ this.translate.modale_dump_option.btn_generate }}
-          </div>
-        </div>-->
       </div>
       <div class="hidden" id="tab-3" role="tabpanel" aria-labelledby="profile-tab">
         <ListDump :data="listDump" :translate="translate.list_dump" @refresh-dump="loadListeDump"></ListDump>
