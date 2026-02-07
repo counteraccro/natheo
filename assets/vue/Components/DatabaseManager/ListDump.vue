@@ -45,7 +45,7 @@ export default {
       <div
         v-if="this.data.length"
         v-for="row in this.data"
-        class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+        class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 hover:bg-[var(--bg-hover)]"
       >
         <div class="flex items-start gap-4">
           <div class="p-3 rounded-lg" style="background-color: var(--primary-lighter)">
