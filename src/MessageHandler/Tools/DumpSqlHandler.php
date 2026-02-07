@@ -43,8 +43,13 @@ class DumpSqlHandler
     {
         $filesystem = new Filesystem();
         $options = $dumpSql->getOptions();
+
         $fileName =
             DatabaseManagerConst::FILE_NAME_DUMP . date('d-m-Y-H-i-s') . DatabaseManagerConst::FILE_DUMP_EXTENSION;
+        if ($options['filename'] !== null) {
+            $fileName = $options['filename'] . DatabaseManagerConst::FILE_DUMP_EXTENSION;
+        }
+
         $path = $this->kernel->getProjectDir() . DatabaseManagerConst::ROOT_FOLDER_NAME . $fileName;
         $url = '/' . DatabaseManagerConst::FOLDER_NAME . '/' . $fileName;
 
@@ -89,7 +94,10 @@ class DumpSqlHandler
         if (!$options['all']) {
             foreach ($tablesTmp as $table) {
                 foreach ($options['tables'] as $tDump) {
-                    if ($schemaParam . $tDump === $table->getName() || $tDump === $table->getName()) {
+                    if (
+                        $schemaParam . $tDump === $table->getObjectName()->toString() ||
+                        $tDump === $table->getObjectName()->toString()
+                    ) {
                         $tables[] = $table;
                     }
                 }
@@ -109,14 +117,14 @@ class DumpSqlHandler
      */
     private function generateInsertQuery(Table $table): ?string
     {
-        $query = 'SELECT * from ' . $table->getName();
+        $query = 'SELECT * from ' . $table->getObjectName()->toString();
         $result = $this->entityManager->getConnection()->prepare($query)->executeQuery()->fetchAllAssociative();
 
         if (empty($result)) {
             return null;
         }
 
-        $query = 'INSERT INTO ' . $table->getName() . ' (';
+        $query = 'INSERT INTO ' . $table->getObjectName()->toString() . ' (';
         $keys = array_keys($result[0]);
         foreach ($keys as $key) {
             $query .= $key . ', ';
