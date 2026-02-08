@@ -9,9 +9,9 @@ namespace App\MessageHandler\Tools;
 
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Global\Notification\Notification;
+use App\Enum\Admin\Tools\DatabaseManager\DatabaseManagerData;
 use App\Message\Tools\DumpSql;
 use App\Service\Admin\NotificationService;
-use App\Utils\Tools\DatabaseManager\DatabaseManagerConst;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\ORM\EntityManagerInterface;
@@ -45,13 +45,15 @@ class DumpSqlHandler
         $options = $dumpSql->getOptions();
 
         $fileName =
-            DatabaseManagerConst::FILE_NAME_DUMP . date('d-m-Y-H-i-s') . DatabaseManagerConst::FILE_DUMP_EXTENSION;
+            DatabaseManagerData::FILE_NAME_DUMP->value .
+            date('d-m-Y-H-i-s') .
+            DatabaseManagerData::FILE_DUMP_EXTENSION->value;
         if ($options['filename'] !== null) {
-            $fileName = $options['filename'] . DatabaseManagerConst::FILE_DUMP_EXTENSION;
+            $fileName = $options['filename'] . DatabaseManagerData::FILE_DUMP_EXTENSION->value;
         }
 
-        $path = $this->kernel->getProjectDir() . DatabaseManagerConst::ROOT_FOLDER_NAME . $fileName;
-        $url = '/' . DatabaseManagerConst::FOLDER_NAME . '/' . $fileName;
+        $path = $this->kernel->getProjectDir() . DatabaseManagerData::getRootPath() . $fileName;
+        $url = '/' . DatabaseManagerData::FOLDER_NAME->value . '/' . $fileName;
 
         $tables = $this->getListeTable($options);
 

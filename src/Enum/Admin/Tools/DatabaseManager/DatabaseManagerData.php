@@ -19,7 +19,7 @@ enum DatabaseManagerData: string
      * Path du stockage des dumps
      * @return string
      */
-    public function getRootPath(): string
+    static function getRootPath(): string
     {
         return DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . self::FOLDER_NAME->value . DIRECTORY_SEPARATOR;
     }

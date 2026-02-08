@@ -7,9 +7,9 @@
 
 namespace App\Service\Admin\Tools;
 
+use App\Enum\Admin\Tools\DatabaseManager\DatabaseManagerData;
 use App\Service\Admin\AppAdminService;
 use App\Utils\Global\Database\DataBase;
-use App\Utils\Tools\DatabaseManager\DatabaseManagerConst;
 use App\Utils\Utils;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -75,14 +75,14 @@ class DatabaseManagerService extends AppAdminService
         $kernel = $this->getKernel();
 
         $finder = new Finder();
-        $finder->files()->in($kernel->getProjectDir() . DatabaseManagerConst::ROOT_FOLDER_NAME);
+        $finder->files()->in($kernel->getProjectDir() . DatabaseManagerData::getRootPath());
 
         $return = [];
         foreach ($finder as $file) {
             $return[] = [
                 'name' => $file->getFilename(),
                 'date' => (new \DateTime('@' . $file->getFileInfo()->getCTime()))->format('d F Y, H:i'),
-                'url' => '/' . DatabaseManagerConst::FOLDER_NAME . '/' . $file->getFilename(),
+                'url' => '/' . DatabaseManagerData::FOLDER_NAME->name . '/' . $file->getFilename(),
                 'size' => Utils::getSizeName($file->getSize()),
                 'extension' => strtoupper($file->getExtension()),
             ];
