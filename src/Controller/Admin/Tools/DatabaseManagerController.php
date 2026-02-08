@@ -58,6 +58,7 @@ class DatabaseManagerController extends AbstractController
                 'load_tables_database' => $this->generateUrl('admin_database_manager_load_tables_database'),
                 'save_database' => $this->generateUrl('admin_database_manager_save_database'),
                 'all_dump_file' => $this->generateUrl('admin_database_manager_all_dump_file'),
+                'delete_dump_file' => $this->generateUrl('admin_database_manager_delete_dump_file'),
             ],
         ]);
     }
@@ -129,5 +130,13 @@ class DatabaseManagerController extends AbstractController
     public function getAllFileDump(DatabaseManagerService $databaseManagerService): JsonResponse
     {
         return $this->json(['result' => $databaseManagerService->getAllDump()]);
+    }
+
+    #[Route('/ajax/delete-dump-file/{filename}', name: 'delete_dump_file', methods: ['DELETE'])]
+    public function deleteDumpFile(DatabaseManagerService $databaseManagerService, string $filename = ''): JsonResponse
+    {
+        die('TODO à faire ' . $filename);
+
+        return $this->json(['result' => '']);
     }
 }
