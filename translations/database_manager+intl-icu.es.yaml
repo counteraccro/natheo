@@ -44,3 +44,8 @@ database_manager.index.popin.help.title: __database_manager.index.popin.help.tit
 database_manager.index.popin.help.delete: __database_manager.index.popin.help.delete
 database_manager.index.popin.help.enable: __database_manager.index.popin.help.enable
 database_manager.index.popin.help.download: __database_manager.index.popin.help.download
+database_manager.dump.option_data.label: __database_manager.dump.option_data.label
+database_manager.list.dump.confirm.delete.title: __database_manager.list.dump.confirm.delete.title
+database_manager.list.dump.confirm.delete.texte: __database_manager.list.dump.confirm.delete.texte
+database_manager.list.dump.confirm.btn.ok: __database_manager.list.dump.confirm.btn.ok
+database_manager.list.dump.confirm.btn.ko: __database_manager.list.dump.confirm.btn.ko

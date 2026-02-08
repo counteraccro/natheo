@@ -107,6 +107,22 @@ class DatabaseManagerTranslate extends AppTranslate
                 'database_manager.list.dump.btn.download',
                 domain: 'database_manager',
             ),
+            'title_modale_confirm' => $this->translator->trans(
+                'database_manager.list.dump.confirm.delete.title',
+                domain: 'database_manager',
+            ),
+            'text_modale_confirm' => $this->translator->trans(
+                'database_manager.list.dump.confirm.delete.texte',
+                domain: 'database_manager',
+            ),
+            'btn_go' => $this->translator->trans(
+                'database_manager.list.dump.confirm.btn.ok',
+                domain: 'database_manager',
+            ),
+            'btn_undo' => $this->translator->trans(
+                'database_manager.list.dump.confirm.btn.ko',
+                domain: 'database_manager',
+            ),
         ];
     }
 }
