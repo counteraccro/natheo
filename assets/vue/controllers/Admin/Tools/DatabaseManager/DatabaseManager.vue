@@ -42,6 +42,7 @@ export default {
       schemaTableName: '',
       listDump: {},
       show: '',
+      deleteFileName: '',
       optionData: {
         filename: '',
         all: 1,
@@ -49,7 +50,7 @@ export default {
         data: 'table',
       },
       modalTab: {
-        modaleDumpOption: false,
+        modaleConfirmDeleteDump: false,
       },
       toasts: {
         toastSuccess: {
@@ -184,7 +185,42 @@ export default {
         })
         .finally(() => {
           this.loading = false;
-          this.closeModal('modaleDumpOption');
+          this.loadListeDump();
+        });
+    },
+
+    /**
+     * Supprime un dump
+     * @param filename
+     * @param confirm
+     */
+    deleteDumpFile(filename, confirm) {
+      if (!confirm) {
+        this.deleteFileName = filename;
+        this.modalTab.modaleConfirmDeleteDump = true;
+        return;
+      }
+
+      this.loading = true;
+      axios
+        .delete(this.urls.delete_dump_file + '/' + filename, {})
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccess.msg = response.data.msg;
+            this.toasts.toastSuccess.show = true;
+          } else {
+            this.toasts.toastError.msg = response.data.msg;
+            this.toasts.toastError.show = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+          this.deleteFileName = '';
+          this.closeModal('modaleConfirmDeleteDump');
+          this.loadListeDump();
         });
     },
 
@@ -539,7 +575,12 @@ export default {
         </div>
       </div>
       <div class="hidden" id="tab-3" role="tabpanel" aria-labelledby="profile-tab">
-        <ListDump :data="listDump" :translate="translate.list_dump" @refresh-dump="loadListeDump"></ListDump>
+        <ListDump
+          :data="listDump"
+          :translate="translate.list_dump"
+          @refresh-dump="loadListeDump"
+          @confirm-delete="deleteDumpFile"
+        ></ListDump>
       </div>
     </div>
   </div>
@@ -693,6 +734,63 @@ export default {
     </modal>
     fin modale nouvelle categogie
   </div> -->
+
+  <modal
+    :id="'modaleConfirm'"
+    :show="modalTab.modaleConfirmDeleteDump"
+    @close-modal="closeModal"
+    :optionModalSize="'modal-lg'"
+    :option-modal-backdrop="'static'"
+    :option-show-close-btn="false"
+  >
+    <template #title> {{ translate.list_dump.title_modale_confirm }} </template>
+    <template #body>
+      <p class="text-sm text-[var(--text-secondary)]">{{ translate.list_dump.text_modale_confirm }}</p>
+    </template>
+    <template #footer>
+      <button type="button" class="btn btn-primary btn-sm me-2" @click="deleteDumpFile(deleteFileName, true)">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ this.translate.list_dump.btn_go }}
+      </button>
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="this.closeModal('modaleConfirmDeleteDump')">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+
+        {{ this.translate.list_dump.btn_undo }}
+      </button>
+    </template>
+  </modal>
 
   <!-- toast -->
   <div class="toast-container position-fixed top-0 end-0 p-2">

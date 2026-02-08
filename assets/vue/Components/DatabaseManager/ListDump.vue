@@ -12,7 +12,7 @@ export default {
     data: Object,
     translate: Object,
   },
-  emits: ['refresh-dump'],
+  emits: ['refresh-dump', 'confirm-delete'],
   data() {
     return {};
   },
@@ -103,7 +103,7 @@ export default {
             </svg>
             {{ translate.btn_download }}
           </a>
-          <button class="btn btn-icon btn-xs btn-ghost-danger">
+          <button class="btn btn-icon btn-xs btn-ghost-danger" @click="$emit('confirm-delete', row.name, false)">
             <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <path
                 stroke="currentColor"
