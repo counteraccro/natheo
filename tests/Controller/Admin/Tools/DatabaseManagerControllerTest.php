@@ -149,4 +149,30 @@ class DatabaseManagerControllerTest extends AppWebTestCase
 
         $fileSystem->remove(self::$kernel->getProjectDir() . DatabaseManagerData::getRootPath() . 'demo.sql');
     }
+
+    /**
+     * Test de la méthode deleteDumpFile
+     * @return void
+     */
+    public function testDeleteDumpFile(): void
+    {
+        $fileSystem = new Filesystem();
+        $fileSystem->dumpFile(self::$kernel->getProjectDir() . DatabaseManagerData::getRootPath() . 'demo.sql', 'dump');
+
+        $this->checkNoAccess('admin_database_manager_delete_dump_file', methode: 'DELETE');
+
+        $userSuperAdm = $this->createUserSuperAdmin();
+        $this->client->loginUser($userSuperAdm, 'admin');
+
+        $this->client->request(
+            'DELETE',
+            $this->router->generate('admin_database_manager_delete_dump_file', ['filename' => 'demo.sql']),
+        );
+        $this->assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        $this->assertJson($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        $this->assertIsArray($content);
+        $this->assertTrue($content['success']);
+    }
 }
