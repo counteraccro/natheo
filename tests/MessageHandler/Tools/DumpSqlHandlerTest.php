@@ -54,7 +54,7 @@ class DumpSqlHandlerTest extends AppWebTestCase
                 'filename' => 'test',
                 'all' => false,
                 'tables' => ['api_token', 'user'],
-                'data' => 'table_data',
+                'data' => 'data_table',
             ],
         ];
 
