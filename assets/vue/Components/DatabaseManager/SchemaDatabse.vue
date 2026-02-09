@@ -2,7 +2,7 @@
 /**
  * Retourne le schema de la base de données
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  */
 
 export default {
@@ -10,7 +10,7 @@ export default {
   components: {},
   props: {
     data: Object,
-    translate: Object,
+    tableName: String,
   },
   emits: ['load-schema-table'],
   data() {
@@ -23,38 +23,52 @@ export default {
 </script>
 
 <template>
-  <h3 class="mt-4 mb-2">{{ this.translate.title }}</h3>
-  <div class="table-responsive">
-    <table class="table table-sm table-striped table-hover" aria-describedby="table">
-      <thead>
+  <div class="overflow-x-auto">
+    <table class="w-full" aria-describedby="table">
+      <thead class="bg-[var(--bg-main)]">
         <tr>
-          <th v-for="(header, key) in this.data.header">
+          <th
+            v-for="(header, key) in data.header"
+            class="px-6 py-3 text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)] text-center"
+          >
             {{ header }}
           </th>
         </tr>
       </thead>
-      <tbody>
-        <tr v-for="row in this.data.result">
-          <td v-for="(header, key) in this.data.header">
-            <a
-              v-if="key === 'table_name'"
-              class="link-underline-primary"
-              style="cursor: pointer"
-              @click="this.$emit('load-schema-table', row[key])"
-              >{{ row[key] }}</a
+      <tbody class="divide-y divide-[var(--border-color)]">
+        <tr
+          v-for="row in data.result"
+          class="hover:bg-[var(--bg-hover)]"
+          :style="row['table_name'] === tableName ? 'background : var(--primary-lighter)' : ''"
+        >
+          <td v-for="(header, key) in data.header" class="px-3 py-1 text-sm text-[var(--text-secondary)] text-center">
+            <button
+              v-if="key === 'action'"
+              class="btn btn-icon m-1 btn-xs btn-ghost-primary"
+              @click="$emit('load-schema-table', row['table_name'])"
             >
+              <svg
+                class="icon-sm"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-width="2"
+                  d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"
+                ></path>
+                <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+              </svg>
+            </button>
+
             <span v-else>{{ row[key] }}</span>
           </td>
+          <td></td>
         </tr>
+        <tr></tr>
       </tbody>
-      <tfoot>
-        <tr class="table-secondary" v-if="!this.data.length">
-          <th>{{ this.translate.nb_row_total }} :</th>
-          <th>{{ this.data.stat.nbTable }}</th>
-          <th>{{ this.data.stat.nbElement }}</th>
-          <th>{{ this.data.stat.sizeBite }}</th>
-        </tr>
-      </tfoot>
     </table>
   </div>
 </template>

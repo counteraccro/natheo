@@ -1,7 +1,7 @@
 <script>
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Gestionnaire de base de données
  */
 import axios from 'axios';
@@ -10,10 +10,18 @@ import Modal from '../../../../Components/Global/Modal.vue';
 import SchemaDatabase from '../../../../Components/DatabaseManager/SchemaDatabse.vue';
 import SchemaTable from '../../../../Components/DatabaseManager/SchemaTable.vue';
 import ListDump from '../../../../Components/DatabaseManager/ListDump.vue';
+import SkeletonCardStat from '@/vue/Components/Skeleton/CardStat.vue';
+import SkeletonTabs from '@/vue/Components/Skeleton/Tabs.vue';
+import AlertWarning from '@/vue/Components/Alert/Warning.vue';
+import AlertDanger from '@/vue/Components/Alert/Danger.vue';
 
 export default {
   name: 'DatabaseManager',
   components: {
+    AlertDanger,
+    AlertWarning,
+    SkeletonTabs,
+    SkeletonCardStat,
     ListDump,
     SchemaTable,
     SchemaDatabase,
@@ -26,20 +34,23 @@ export default {
   },
   data() {
     return {
-      loading: false,
-      result: Object,
+      loading: true,
+      result: {},
       tables: Object,
       disabledListeTales: true,
-      schemaTable: Object,
-      listDump: Object,
-      show: 'schemaDatabase',
+      schemaTable: {},
+      schemaTableName: '',
+      listDump: {},
+      show: '',
+      deleteFileName: '',
       optionData: {
-        all: true,
+        filename: '',
+        all: 1,
         tables: [],
         data: 'table',
       },
       modalTab: {
-        modaleDumpOption: false,
+        modaleConfirmDeleteDump: false,
       },
       toasts: {
         toastSuccess: {
@@ -54,19 +65,36 @@ export default {
     };
   },
   mounted() {
+    let now = new Date();
+    this.optionData.filename =
+      'dump-bdd-' +
+      now.getDate() +
+      '-' +
+      now.getMonth() +
+      '-' +
+      now.getFullYear() +
+      '-' +
+      now.getHours() +
+      '-' +
+      now.getMinutes() +
+      '-' +
+      now.getSeconds();
     this.loadSchemaDataBase();
+    this.loadListeDump();
+    this.loadDataDump();
   },
   methods: {
     /**
      * Chargement du schema de la base de donnée
      */
     loadSchemaDataBase() {
-      this.show = 'schemaDatabase';
       this.loading = true;
       axios
         .get(this.urls.load_schema_database)
         .then((response) => {
           this.result = response.data.query;
+          this.result.header['action'] = this.translate.action;
+          console.log(this.result);
         })
         .catch((error) => {
           console.error(error);
@@ -77,24 +105,18 @@ export default {
     },
 
     /**
-     * Affiche le schema de la base de donnée
-     */
-    showSchemaDatabase() {
-      this.show = 'schemaDatabase';
-    },
-
-    /**
      * Charge le schema de la table
      * @param table
      */
     loadSchemaTable(table) {
       this.schemaTable = Object;
-      this.show = 'schemaTable';
+      this.schemaTableName = '';
       this.loading = true;
       axios
         .get(this.urls.load_schema_table + '/' + table)
         .then((response) => {
           this.schemaTable = response.data.result;
+          this.schemaTableName = response.data.result.table;
         })
         .catch((error) => {
           console.error(error);
@@ -108,7 +130,6 @@ export default {
      * Charge les listes des sauvegardes, faites
      */
     loadListeDump() {
-      this.show = 'dumps';
       this.loading = true;
       axios
         .get(this.urls.all_dump_file)
@@ -124,9 +145,9 @@ export default {
     },
 
     /**
-     * Ouverture de la modale pour la génération du dump SQL
+     * Chargement des données pour le dump SQL
      */
-    openModalDumpSQL() {
+    loadDataDump() {
       this.loading = true;
       axios
         .get(this.urls.load_tables_database)
@@ -138,12 +159,11 @@ export default {
         })
         .finally(() => {
           this.loading = false;
-          this.updateModale('modaleDumpOption', true);
         });
     },
 
     /**
-     * Créer une nouvelle FAQ
+     * Créer une nouvelle sauvegarde
      */
     dumpSQL() {
       this.loading = true;
@@ -165,7 +185,42 @@ export default {
         })
         .finally(() => {
           this.loading = false;
-          this.closeModal('modaleDumpOption');
+          this.loadListeDump();
+        });
+    },
+
+    /**
+     * Supprime un dump
+     * @param filename
+     * @param confirm
+     */
+    deleteDumpFile(filename, confirm) {
+      if (!confirm) {
+        this.deleteFileName = filename;
+        this.modalTab.modaleConfirmDeleteDump = true;
+        return;
+      }
+
+      this.loading = true;
+      axios
+        .delete(this.urls.delete_dump_file + '/' + filename, {})
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.toastSuccess.msg = response.data.msg;
+            this.toasts.toastSuccess.show = true;
+          } else {
+            this.toasts.toastError.msg = response.data.msg;
+            this.toasts.toastError.show = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+          this.deleteFileName = '';
+          this.closeModal('modaleConfirmDeleteDump');
+          this.loadListeDump();
         });
     },
 
@@ -198,6 +253,339 @@ export default {
 </script>
 
 <template>
+  <div v-if="loading">
+    <skeleton-card-stat />
+    <skeleton-tabs />
+  </div>
+
+  <div v-else>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div
+        class="card rounded-lg p-6 text-white"
+        style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%)"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-3xl font-bold">{{ result.stat.nbTable }}</p>
+            <p class="text-sm font-medium mt-1">{{ translate.stat_nb_table }}</p>
+          </div>
+          <div class="p-3 rounded-lg bg-[var(--primary)] opacity-60">
+            <svg
+              class="w-8 h-8 text-white opacity-100"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 6c0 1.657-3.134 3-7 3S5 7.657 5 6m14 0c0-1.657-3.134-3-7-3S5 4.343 5 6m14 0v6M5 6v6m0 0c0 1.657 3.134 3 7 3s7-1.343 7-3M5 12v6c0 1.657 3.134 3 7 3s7-1.343 7-3v-6"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div
+        class="card rounded-lg p-6 text-white"
+        style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%)"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-3xl font-bold">{{ result.stat.nbElement }}</p>
+            <p class="text-sm font-medium mt-1">{{ translate.stat_nb_row }}</p>
+          </div>
+          <div class="p-3 rounded-lg bg-[var(--primary)] opacity-60">
+            <svg
+              class="w-8 h-8 text-white opacity-100"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-width="2"
+                d="M3 11h18M3 15h18m-9-4v8m-8 0h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div
+        class="card rounded-lg p-6 text-white"
+        style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%)"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-3xl font-bold">{{ result.stat.sizeBite }}</p>
+            <p class="text-sm font-medium mt-1">{{ translate.stat_size }}</p>
+          </div>
+          <div class="p-3 rounded-lg bg-[var(--primary)] opacity-60">
+            <svg
+              class="w-8 h-8 text-white opacity-100"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 3v4a1 1 0 0 1-1 1H5m14-4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card rounded-lg mb-6 mt-6">
+    <div class="border-b border-default" style="border-color: var(--border-color)">
+      <ul
+        class="flex flex-wrap -mb-px text-sm font-medium text-center"
+        id="default-styled-tab"
+        data-tabs-toggle="#nav-tab-database-manager"
+        data-tabs-active-classes="text-[var(--primary)] border-[var(--primary)]"
+        role="tablist"
+      >
+        <li class="me-2" role="presentation">
+          <button
+            class="inline-block p-3 border-b-2 rounded-t-base text-[var(--primary)] border-[var(--primary)] cursor-pointer"
+            id="nav-0-tab"
+            data-tabs-target="#tab-0"
+            type="button"
+            role="tab"
+            aria-controls="Site web"
+            aria-selected="true"
+          >
+            <span class="flex items-center gap-2">
+              <svg
+                class="w-5 h-5"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 6c0 1.657-3.134 3-7 3S5 7.657 5 6m14 0c0-1.657-3.134-3-7-3S5 4.343 5 6m14 0v6M5 6v6m0 0c0 1.657 3.134 3 7 3s7-1.343 7-3M5 12v6c0 1.657 3.134 3 7 3s7-1.343 7-3v-6"
+                />
+              </svg>
+              {{ translate.btn_schema_bdd }}
+            </span>
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button
+            class="inline-block p-3 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
+            :class="schemaTableName === '' ? 'opacity-40 cursor-not-allowed' : 'opacity-100 cursor-pointer'"
+            id="nav-1-tab"
+            data-tabs-target="#tab-1"
+            type="button"
+            role="tab"
+            aria-controls="SEO"
+            aria-selected="false"
+            :disabled="schemaTableName === ''"
+          >
+            <span class="flex items-center gap-2">
+              <svg
+                class="w-5 h-5"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 11h18M3 15h18m-9-4v8m-8 0h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"
+                />
+              </svg>
+              {{ translate.btn_schema_table + ' ' + schemaTableName }}
+            </span>
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button
+            class="inline-block p-3 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300 cursor-pointer"
+            id="nav-2-tab"
+            data-tabs-target="#tab-2"
+            type="button"
+            role="tab"
+            aria-controls="Administration"
+            aria-selected="false"
+          >
+            <span class="flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+              {{ translate.btn_generate_dump }}
+            </span>
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button
+            class="inline-block p-3 border-b-2 rounded-t-sm text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300 cursor-pointer"
+            id="nav-3-tab"
+            data-tabs-target="#tab-3"
+            type="button"
+            role="tab"
+            aria-controls="Logs"
+            aria-selected="false"
+          >
+            <span class="flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                ></path>
+              </svg>
+              {{ translate.btn_liste_dump }}
+            </span>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div id="nav-tab-database-manager">
+      <div class="" id="tab-0" role="tabpanel" aria-labelledby="profile-tab">
+        <SchemaDatabase
+          :data="result"
+          :table-name="schemaTableName"
+          @load-schema-table="loadSchemaTable"
+        ></SchemaDatabase>
+      </div>
+      <div class="hidden" id="tab-1" role="tabpanel" aria-labelledby="profile-tab">
+        <SchemaTable :data="schemaTable" />
+      </div>
+      <div class="hidden" id="tab-2" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="max-w-2xl mx-auto mt-6 mb-6">
+          <div class="mb-6">
+            <h3 class="text-lg font-semibold mb-2 text-[var(--text-primary)]">
+              {{ translate.dump_option.title }}
+            </h3>
+            <p class="text-sm text-[var(--text-secondary)]">{{ translate.dump_option.sub_title_1 }}</p>
+          </div>
+
+          <div class="form-control">
+            <label class="form-label">{{ translate.dump_option.filename_label }}</label>
+            <input class="form-input" v-model="optionData.filename" />
+            <span class="form-text">{{ translate.dump_option.filename_help }}</span>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2 mt-6" style="color: var(--text-primary)">{{
+              translate.dump_option.sub_title_2
+            }}</label>
+            <div
+              class="space-y-2 p-4 rounded-lg border"
+              style="border-color: var(--border-color); background-color: var(--bg-hover)"
+            >
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  style="color: var(--primary)"
+                  type="radio"
+                  value="1"
+                  id="all-data"
+                  v-model="optionData.all"
+                  @click="disabledListeTales = true"
+                />
+                <label class="form-check-label" for="all-data">
+                  {{ translate.dump_option.select_all }}
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  style="color: var(--primary)"
+                  type="radio"
+                  value="0"
+                  id="select-data"
+                  v-model="optionData.all"
+                  @click="disabledListeTales = false"
+                />
+                <label class="form-check-label" for="select-data">
+                  {{ translate.dump_option.select_tables }}
+                </label>
+              </div>
+
+              <div class="form-control">
+                <select
+                  id="select-multi-table"
+                  class="form-input"
+                  size="18"
+                  :disabled="disabledListeTales"
+                  multiple
+                  v-model="optionData.tables"
+                >
+                  <option v-for="table in tables" :value="table.name">
+                    {{ table.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-control mt-6">
+            <label class="form-label">{{ translate.dump_option.option_data_label }}</label>
+            <select class="form-input" v-model="optionData.data">
+              <option value="table">{{ translate.dump_option.option_table }}</option>
+              <option value="data">{{ translate.dump_option.option_data }}</option>
+              <option value="data_table">{{ translate.dump_option.option_table_data }}</option>
+            </select>
+          </div>
+
+          <alert-warning type="alert-primary-solid mt-6" :text="translate.dump_option.help_body" />
+          <alert-danger type="alert-danger-solid mt-6" :text="translate.dump_option.warning_body" />
+
+          <button class="btn btn-sm btn-primary w-full mt-6 no-control" @click="this.dumpSQL">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+              ></path>
+            </svg>
+            {{ translate.dump_option.btn_generate }}
+          </button>
+        </div>
+      </div>
+      <div class="hidden" id="tab-3" role="tabpanel" aria-labelledby="profile-tab">
+        <ListDump
+          :data="listDump"
+          :translate="translate.list_dump"
+          @refresh-dump="loadListeDump"
+          @confirm-delete="deleteDumpFile"
+        ></ListDump>
+      </div>
+    </div>
+  </div>
+
+  <!----   end
   <div id="block-sql-manager" :class="this.loading === true ? 'block-grid' : ''">
     <div v-if="this.loading" class="overlay">
       <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000">
@@ -232,7 +620,7 @@ export default {
       </div>
     </div>
 
-    <!-- modale confirmation suppression -->
+     modale confirmation suppression
     <modal
       :id="'modaleDumpOption'"
       :show="this.modalTab.modaleDumpOption"
@@ -344,8 +732,65 @@ export default {
         <div class="btn btn-secondary" @click="this.dumpSQL">{{ this.translate.modale_dump_option.btn_generate }}</div>
       </template>
     </modal>
-    <!-- fin modale nouvelle categogie -->
-  </div>
+    fin modale nouvelle categogie
+  </div> -->
+
+  <modal
+    :id="'modaleConfirm'"
+    :show="modalTab.modaleConfirmDeleteDump"
+    @close-modal="closeModal"
+    :optionModalSize="'modal-lg'"
+    :option-modal-backdrop="'static'"
+    :option-show-close-btn="false"
+  >
+    <template #title> {{ translate.list_dump.title_modale_confirm }} </template>
+    <template #body>
+      <p class="text-sm text-[var(--text-secondary)]">{{ translate.list_dump.text_modale_confirm }}</p>
+    </template>
+    <template #footer>
+      <button type="button" class="btn btn-primary btn-sm me-2" @click="deleteDumpFile(deleteFileName, true)">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ this.translate.list_dump.btn_go }}
+      </button>
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="this.closeModal('modaleConfirmDeleteDump')">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+
+        {{ this.translate.list_dump.btn_undo }}
+      </button>
+    </template>
+  </modal>
 
   <!-- toast -->
   <div class="toast-container position-fixed top-0 end-0 p-2">
@@ -355,11 +800,6 @@ export default {
       :show="this.toasts.toastSuccess.show"
       @close-toast="this.closeToast"
     >
-      <template #header>
-        <i class="bi bi-check-circle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.translate.toast_title_success }}</strong>
-        <small class="text-black-50">{{ this.translate.toast_time }}</small>
-      </template>
       <template #body>
         <div v-html="this.toasts.toastSuccess.msg"></div>
       </template>
@@ -371,11 +811,6 @@ export default {
       :show="this.toasts.toastError.show"
       @close-toast="this.closeToast"
     >
-      <template #header>
-        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.translate.toast_title_error }}</strong>
-        <small class="text-black-50">{{ this.translate.toast_time }}</small>
-      </template>
       <template #body>
         <div v-html="this.toasts.toastError.msg"></div>
       </template>

@@ -3,13 +3,12 @@
 namespace App\Tests\MessageHandler\Tools;
 
 use App\Entity\Admin\Notification;
+use App\Enum\Admin\Tools\DatabaseManager\DatabaseManagerData;
 use App\Message\Tools\DumpSql;
 use App\MessageHandler\Tools\DumpSqlHandler;
 use App\Repository\Admin\NotificationRepository;
 use App\Service\Admin\Tools\DatabaseManagerService;
 use App\Tests\AppWebTestCase;
-use App\Utils\Tools\DatabaseManager\DatabaseManagerConst;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
 
 class DumpSqlHandlerTest extends AppWebTestCase
@@ -52,9 +51,10 @@ class DumpSqlHandlerTest extends AppWebTestCase
 
         $data = [
             'options' => [
+                'filename' => 'test',
                 'all' => false,
                 'tables' => ['api_token', 'user'],
-                'data' => 'table_data',
+                'data' => 'data_table',
             ],
         ];
 
@@ -94,7 +94,7 @@ class DumpSqlHandlerTest extends AppWebTestCase
      */
     private function deleteFile(string $fileName): void
     {
-        $this->fileSystem->remove(self::$kernel->getProjectDir() . DatabaseManagerConst::ROOT_FOLDER_NAME . $fileName);
+        $this->fileSystem->remove(self::$kernel->getProjectDir() . DatabaseManagerData::getRootPath() . $fileName);
     }
 
     /**
@@ -104,7 +104,7 @@ class DumpSqlHandlerTest extends AppWebTestCase
     private function readFile(string $fileName): string
     {
         return $this->fileSystem->readFile(
-            self::$kernel->getProjectDir() . DatabaseManagerConst::ROOT_FOLDER_NAME . $fileName,
+            self::$kernel->getProjectDir() . DatabaseManagerData::getRootPath() . $fileName,
         );
     }
 }

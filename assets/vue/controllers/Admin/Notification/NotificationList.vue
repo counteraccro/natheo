@@ -550,7 +550,7 @@ export default {
             @change="this.checkedAllNotification"
           />
           <button
-            class="inline-block p-3 border-b-2 rounded-t-base border-[var(--primary)]"
+            class="inline-block p-3 border-b-2 rounded-t-base border-[var(--primary)] cursor-pointer"
             id="all-tab"
             data-tabs-target="#all"
             type="button"
@@ -563,7 +563,7 @@ export default {
         </li>
         <li class="me-2" role="presentation">
           <button
-            class="inline-block border-b-2 rounded-t-base hover:text-fg-brand hover:border-brand border-[var(--primary)]"
+            class="inline-block border-b-2 rounded-t-base hover:text-fg-brand hover:border-brand border-[var(--primary)] cursor-pointer"
             :class="this.stats.nb_noRead ? 'p-[0.67em]' : 'p-3'"
             id="not-read-tab"
             data-tabs-target="#not-read"
@@ -578,7 +578,7 @@ export default {
         </li>
         <li v-for="category in this.categories" role="presentation">
           <button
-            class="inline-block p-3 border-b-2 rounded-t-base hover:text-fg-brand hover:border-brand"
+            class="inline-block p-3 border-b-2 rounded-t-base hover:text-fg-brand hover:border-brand cursor-pointer"
             :id="category.id + '-tab'"
             :data-tabs-target="'#' + category.id"
             type="button"

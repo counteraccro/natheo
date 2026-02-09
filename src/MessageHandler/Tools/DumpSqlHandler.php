@@ -9,15 +9,16 @@ namespace App\MessageHandler\Tools;
 
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Global\Notification\Notification;
+use App\Enum\Admin\Tools\DatabaseManager\DatabaseManagerData;
 use App\Message\Tools\DumpSql;
 use App\Service\Admin\NotificationService;
-use App\Utils\Tools\DatabaseManager\DatabaseManagerConst;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -43,26 +44,42 @@ class DumpSqlHandler
     {
         $filesystem = new Filesystem();
         $options = $dumpSql->getOptions();
+
         $fileName =
-            DatabaseManagerConst::FILE_NAME_DUMP . date('d-m-Y-H-i-s') . DatabaseManagerConst::FILE_DUMP_EXTENSION;
-        $path = $this->kernel->getProjectDir() . DatabaseManagerConst::ROOT_FOLDER_NAME . $fileName;
-        $url = '/' . DatabaseManagerConst::FOLDER_NAME . '/' . $fileName;
+            DatabaseManagerData::FILE_NAME_DUMP->value .
+            date('d-m-Y-H-i-s') .
+            DatabaseManagerData::FILE_DUMP_EXTENSION->value;
+        if ($options['filename'] !== null) {
+            $fileName = $options['filename'] . DatabaseManagerData::FILE_DUMP_EXTENSION->value;
+        }
+
+        $path = $this->kernel->getProjectDir() . DatabaseManagerData::getRootPath() . $fileName;
+        $url = '/' . DatabaseManagerData::FOLDER_NAME->value . '/' . $fileName;
 
         $tables = $this->getListeTable($options);
 
-        if ($options['data'] === 'table' || $options['data'] === 'table_data') {
+        if ($options['data'] === 'table' || $options['data'] === 'data_table') {
             $abstractPlatform = $this->entityManager->getConnection()->getDatabasePlatform();
             $tableQuery = $abstractPlatform->getCreateTablesSQL($tables);
             foreach ($tableQuery as $query) {
-                $filesystem->appendToFile($path, $query . "\n");
+                try {
+                    $filesystem->appendToFile($path, $query . "\n");
+                } catch (IOException $e) {
+                    dd($e->getMessage());
+                }
             }
         }
 
         $filesystem->appendToFile($path, "/* DATA GENERATION */\n");
-        if ($options['data'] === 'data' || $options['data'] === 'table_data') {
+        if ($options['data'] === 'data' || $options['data'] === 'data_table') {
             foreach ($tables as $table) {
                 $query = $this->generateInsertQuery($table);
-                $filesystem->appendToFile($path, $query . "\n");
+
+                try {
+                    $filesystem->appendToFile($path, $query . "\n");
+                } catch (IOException $e) {
+                    dd($e->getMessage());
+                }
             }
         }
 
@@ -89,7 +106,10 @@ class DumpSqlHandler
         if (!$options['all']) {
             foreach ($tablesTmp as $table) {
                 foreach ($options['tables'] as $tDump) {
-                    if ($schemaParam . $tDump === $table->getName() || $tDump === $table->getName()) {
+                    if (
+                        $schemaParam . $tDump === $table->getObjectName()->toString() ||
+                        $tDump === $table->getObjectName()->toString()
+                    ) {
                         $tables[] = $table;
                     }
                 }
@@ -109,14 +129,14 @@ class DumpSqlHandler
      */
     private function generateInsertQuery(Table $table): ?string
     {
-        $query = 'SELECT * from ' . $table->getName();
+        $query = 'SELECT * from ' . $table->getObjectName()->toString();
         $result = $this->entityManager->getConnection()->prepare($query)->executeQuery()->fetchAllAssociative();
 
         if (empty($result)) {
             return null;
         }
 
-        $query = 'INSERT INTO ' . $table->getName() . ' (';
+        $query = 'INSERT INTO ' . $table->getObjectName()->toString() . ' (';
         $keys = array_keys($result[0]);
         foreach ($keys as $key) {
             $query .= $key . ', ';

@@ -10,7 +10,6 @@ export default {
   components: {},
   props: {
     data: Object,
-    translate: Object,
   },
   emits: [],
   data() {
@@ -23,21 +22,24 @@ export default {
 </script>
 
 <template>
-  <h3 class="mt-4 mb-2">
-    {{ this.translate.title }} : <b>{{ this.data.table }}</b>
-  </h3>
-  <div class="table-responsive">
-    <table class="table table-sm table-striped table-hover" aria-describedby="table">
-      <thead>
+  <div class="overflow-x-auto">
+    <table class="w-full" aria-describedby="table">
+      <thead class="bg-[var(--bg-main)]">
         <tr>
-          <th v-for="(header, key) in this.data.header">
+          <th
+            v-for="(header, key) in this.data.header"
+            class="px-6 py-3 text-xs font-medium uppercase tracking-wider text-[var(--text-secondary)] text-center"
+          >
             {{ header }}
           </th>
         </tr>
       </thead>
-      <tbody>
-        <tr v-for="row in this.data.result">
-          <td v-for="(header, key) in this.data.header">
+      <tbody class="divide-y divide-[var(--border-color)]">
+        <tr v-for="row in this.data.result" class="hover:bg-[var(--bg-hover)]">
+          <td
+            v-for="(header, key) in this.data.header"
+            class="px-3 py-1 text-sm text-[var(--text-secondary)] text-center h-[3.4rem]"
+          >
             {{ row[key] }}
           </td>
         </tr>

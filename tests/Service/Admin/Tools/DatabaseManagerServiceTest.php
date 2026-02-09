@@ -7,9 +7,9 @@
 
 namespace App\Tests\Service\Admin\Tools;
 
+use App\Enum\Admin\Tools\DatabaseManager\DatabaseManagerData;
 use App\Service\Admin\Tools\DatabaseManagerService;
 use App\Tests\AppWebTestCase;
-use App\Utils\Tools\DatabaseManager\DatabaseManagerConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -67,20 +67,38 @@ class DatabaseManagerServiceTest extends AppWebTestCase
     /**
      * test méthode getAllDump()
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws \DateMalformedStringException
      */
     public function testGetAllDump(): void
     {
         $fileSystem = new Filesystem();
-        $fileSystem->dumpFile(
-            self::$kernel->getProjectDir() . DatabaseManagerConst::ROOT_FOLDER_NAME . 'demo.sql',
-            'dump',
-        );
+        $fileSystem->dumpFile(self::$kernel->getProjectDir() . DatabaseManagerData::getRootPath() . 'demo.sql', 'dump');
         $result = $this->databaseManagerService->getAllDump();
 
         $this->assertIsArray($result);
         $this->assertNotEmpty($result);
         $this->assertArrayHasKey('name', $result[0]);
         $this->assertArrayHasKey('url', $result[0]);
-        $fileSystem->remove(self::$kernel->getProjectDir() . DatabaseManagerConst::ROOT_FOLDER_NAME . 'demo.sql');
+        $fileSystem->remove(self::$kernel->getProjectDir() . DatabaseManagerData::getRootPath() . 'demo.sql');
+    }
+
+    /**
+     * Test de la méthode deleteDumpFile())
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws \DateMalformedStringException
+     */
+    public function testDeleteDumpFile(): void
+    {
+        $fileSystem = new Filesystem();
+        $fileSystem->dumpFile(self::$kernel->getProjectDir() . DatabaseManagerData::getRootPath() . 'demo.sql', 'dump');
+        $result = $this->databaseManagerService->deleteDumpFile('demo.sql');
+        $this->assertEquals('', $result);
+
+        $result = $this->databaseManagerService->getAllDump();
+        $this->assertEmpty($result);
     }
 }
