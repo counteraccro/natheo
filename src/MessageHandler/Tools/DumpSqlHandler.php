@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -57,19 +58,28 @@ class DumpSqlHandler
 
         $tables = $this->getListeTable($options);
 
-        if ($options['data'] === 'table' || $options['data'] === 'table_data') {
+        if ($options['data'] === 'table' || $options['data'] === 'data_table') {
             $abstractPlatform = $this->entityManager->getConnection()->getDatabasePlatform();
             $tableQuery = $abstractPlatform->getCreateTablesSQL($tables);
             foreach ($tableQuery as $query) {
-                $filesystem->appendToFile($path, $query . "\n");
+                try {
+                    $filesystem->appendToFile($path, $query . "\n");
+                } catch (IOException $e) {
+                    dd($e->getMessage());
+                }
             }
         }
 
         $filesystem->appendToFile($path, "/* DATA GENERATION */\n");
-        if ($options['data'] === 'data' || $options['data'] === 'table_data') {
+        if ($options['data'] === 'data' || $options['data'] === 'data_table') {
             foreach ($tables as $table) {
                 $query = $this->generateInsertQuery($table);
-                $filesystem->appendToFile($path, $query . "\n");
+
+                try {
+                    $filesystem->appendToFile($path, $query . "\n");
+                } catch (IOException $e) {
+                    dd($e->getMessage());
+                }
             }
         }
 
