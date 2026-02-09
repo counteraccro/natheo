@@ -49,3 +49,4 @@ database_manager.list.dump.confirm.delete.title: __database_manager.list.dump.co
 database_manager.list.dump.confirm.delete.texte: __database_manager.list.dump.confirm.delete.texte
 database_manager.list.dump.confirm.btn.ok: __database_manager.list.dump.confirm.btn.ok
 database_manager.list.dump.confirm.btn.ko: __database_manager.list.dump.confirm.btn.ko
+database_manager.success.delete.file.dump: __database_manager.success.delete.file.dump

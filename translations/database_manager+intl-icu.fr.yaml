@@ -44,8 +44,9 @@ database_manager.index.popin.help.title: Aide
 database_manager.index.popin.help.delete: 'Supprimer une sauvegarde'
 database_manager.index.popin.help.enable: "Voir le schema d'une table"
 database_manager.index.popin.help.download: 'Télécharger une sauvegarde'
-database_manager.dump.option_data.label: __database_manager.dump.option_data.label
+database_manager.dump.option_data.label: 'Données à sauvegarder'
 database_manager.list.dump.confirm.delete.title: 'Confirmation suppression sauvegarde SQL'
 database_manager.list.dump.confirm.delete.texte: 'Confirmez vous la suppression de la sauvegarde SQL ? Cette action est définitive et sans possibilité de retour'
 database_manager.list.dump.confirm.btn.ok: Oui
 database_manager.list.dump.confirm.btn.ko: Non
+database_manager.success.delete.file.dump: 'Fichier {fichier} supprimé avec succès'
