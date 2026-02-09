@@ -132,11 +132,34 @@ class DatabaseManagerController extends AbstractController
         return $this->json(['result' => $databaseManagerService->getAllDump()]);
     }
 
+    /**
+     * Supprime un fichier dump
+     * @param DatabaseManagerService $databaseManagerService
+     * @param TranslatorInterface $translator
+     * @param string $filename
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     #[Route('/ajax/delete-dump-file/{filename}', name: 'delete_dump_file', methods: ['DELETE'])]
-    public function deleteDumpFile(DatabaseManagerService $databaseManagerService, string $filename = ''): JsonResponse
-    {
-        die('TODO à faire ' . $filename);
+    public function deleteDumpFile(
+        DatabaseManagerService $databaseManagerService,
+        TranslatorInterface $translator,
+        string $filename = '',
+    ): JsonResponse {
+        $result = $databaseManagerService->deleteDumpFile($filename);
 
-        return $this->json(['result' => '']);
+        $return['msg'] = $translator->trans(
+            'database_manager.success.delete.file.dump',
+            ['fichier' => $filename],
+            domain: 'database_manager',
+        );
+        $return['success'] = true;
+        if ($result !== '') {
+            $return['msg'] = $result;
+            $return['success'] = false;
+        }
+
+        return $this->json($return);
     }
 }

@@ -13,6 +13,8 @@ use App\Utils\Global\Database\DataBase;
 use App\Utils\Utils;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 class DatabaseManagerService extends AppAdminService
@@ -82,11 +84,31 @@ class DatabaseManagerService extends AppAdminService
             $return[] = [
                 'name' => $file->getFilename(),
                 'date' => (new \DateTime('@' . $file->getFileInfo()->getCTime()))->format('d F Y, H:i'),
-                'url' => '/' . DatabaseManagerData::FOLDER_NAME->name . '/' . $file->getFilename(),
+                'url' => '/' . DatabaseManagerData::FOLDER_NAME->value . '/' . $file->getFilename(),
                 'size' => Utils::getSizeName($file->getSize()),
                 'extension' => strtoupper($file->getExtension()),
             ];
         }
         return array_reverse($return);
+    }
+
+    /**
+     * Supprime un fichier dump en fonction de son nom
+     * @param string $filename
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function deleteDumpFile(string $filename): string
+    {
+        $kernel = $this->getKernel();
+        $fileSystem = new Filesystem();
+
+        try {
+            $fileSystem->remove($kernel->getProjectDir() . DatabaseManagerData::getRootPath() . $filename);
+        } catch (IOExceptionInterface $exception) {
+            return $exception->getMessage();
+        }
+        return '';
     }
 }
