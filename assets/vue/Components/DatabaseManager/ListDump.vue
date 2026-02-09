@@ -92,7 +92,7 @@ export default {
           </div>
         </div>
         <div class="flex gap-2">
-          <a :href="row.url" class="btn btn-xs btn-primary" style="background-color: var(--primary)">
+          <a :href="row.url" class="btn btn-xs btn-primary no-control" style="background-color: var(--primary)">
             <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -103,7 +103,10 @@ export default {
             </svg>
             {{ translate.btn_download }}
           </a>
-          <button class="btn btn-icon btn-xs btn-ghost-danger" @click="$emit('confirm-delete', row.name, false)">
+          <button
+            class="btn btn-icon btn-xs btn-ghost-danger no-control"
+            @click="$emit('confirm-delete', row.name, false)"
+          >
             <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <path
                 stroke="currentColor"
