@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 1.1
  * Listener qui va surcharger un controller en fonction de ce qui est défini dans overwrite.yaml
  */
 
@@ -10,8 +10,6 @@ namespace App\EventListener;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\Routing\RouterInterface;
@@ -19,10 +17,6 @@ use Symfony\Component\Yaml\Yaml;
 
 class OverwriteListener
 {
-    /**
-     * @var ServiceLocator
-     */
-    private ServiceLocator $serviceLocator;
 
     /**
      * @var RouterInterface
@@ -38,44 +32,42 @@ class OverwriteListener
      * Path fichier de config
      * @var string
      */
-    private const CONFIG_OVERWRITE_FILE = DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'cms' . DIRECTORY_SEPARATOR . 'overwrite.yaml';
+    private const string CONFIG_OVERWRITE_FILE = DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'cms' . DIRECTORY_SEPARATOR . 'overwrite.yaml';
 
     /**
      * Clé du fichier de config
      * @var string
      */
-    private const KEY_CONTROLLER = 'controller';
+    private const string KEY_CONTROLLER = 'controller';
 
     /**
      * Clé du fichier de config
      * @var string
      */
-    private const KEY_ROUTE = 'route';
+    private const string KEY_ROUTE = 'route';
 
     /**
      * Clé du fichier de config
      * @var string
      */
-    private const KEY_OVERWRITE = 'overwrite';
+    private const string KEY_OVERWRITE = 'overwrite';
 
     /**
      * Clé du fichier de config
      * @var string
      */
-    private const KEY_PARAMETERS = 'parameters';
+    private const string KEY_PARAMETERS = 'parameters';
 
 
     /**
-     * @param ServiceLocator $serviceLocator
      * @param RouterInterface $router
+     * @param ContainerBagInterface $containerBag
      */
     public function __construct(
-        ServiceLocator  $serviceLocator,
         RouterInterface $router,
         ContainerBagInterface $containerBag
     )
     {
-        $this->serviceLocator = $serviceLocator;
         $this->router = $router;
         $this->containerBag = $containerBag;
     }
@@ -84,6 +76,8 @@ class OverwriteListener
      * Permet overwrite un controller en fonction de la config
      * @param ControllerEvent $event
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function __invoke(ControllerEvent $event): void
     {
