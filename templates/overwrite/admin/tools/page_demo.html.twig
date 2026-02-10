@@ -4,234 +4,71 @@
 
 {% block body %}
 
-    <h1>{{ 'pagedemo.page_title_h1' | trans }}</h1>
-
     {{ breadcrumb(breadcrumb) }}
 
-    <p>Retrouver sur cette page l'ensemble des éléments HTML disponible sur le site - méthode overwride id : {{ id }}</p>
+    <h1 class="head-title">
+        <svg class="w-7 h-7 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15.041 13.862A4.999 4.999 0 0 1 17 17.831V21M7 3v3.169a5 5 0 0 0 1.891 3.916M17 3v3.169a5 5 0 0 1-2.428 4.288l-5.144 3.086A5 5 0 0 0 7 17.831V21M7 5h10M7.399 8h9.252M8 16h8.652M7 19h10"></path>
+        </svg>
+        {{ 'demo_overwrite.page_title_h1' | trans({}, 'demo_overwrite') }}</h1>
 
-    <div class="border border-1 border-light p-4 rounded-1">
-        <div class="d-flex align-items-start">
-            <div class="nav flex-column nav-pills me-2 w-auto" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <button class="nav-link active" id="breadcrumb-tab" data-bs-toggle="pill" data-bs-target="#breadcrumb" type="button" role="tab">Breadcrumb</button>
-                <button class="nav-link" id="alert-tab" data-bs-toggle="pill" data-bs-target="#alert" type="button" role="tab">Alerte</button>
-                <button class="nav-link" id="badge-tab" data-bs-toggle="pill" data-bs-target="#badge" type="button" role="tab">Badge</button>
-                <button class="nav-link" id="progress-bar-tab" data-bs-toggle="pill" data-bs-target="#progress-bar" type="button" role="tab">Progress bar</button>
-                <button class="nav-link" id="spinner-tab" data-bs-toggle="pill" data-bs-target="#spinner" type="button" role="tab">Spinner</button>
-                <button class="nav-link" id="text-tab" data-bs-toggle="pill" data-bs-target="#text" type="button" role="tab">Textes</button>
-                <button class="nav-link" id="background-tab" data-bs-toggle="pill" data-bs-target="#background" type="button" role="tab">Background</button>
-                <button class="nav-link" id="vue-tab" data-bs-toggle="pill" data-bs-target="#vue" type="button" role="tab">VueJs</button>
-            </div>
-            <div class="tab-content w-75" id="v-pills-tabContent">
-                <div class="tab-pane fade show active" id="breadcrumb" role="tabpanel" aria-labelledby="breadcrumb-tab">
-                    <h3> Fil d'arianne</h3>
-                    <p>Exemple de fils d'ariannes disponible</p>
+    <p class="text-sm text-[var(--text-secondary)] mb-3">
+        {{ 'demo_overwrite.description' | trans({}, 'demo_overwrite') }}
+    </p>
 
-                    <div id="adm-breadcrumb">
+    <h2 class="text-3xl font-semibold mt-3 mb-3 pb-3 border-b-2 border-b-[var(--border-color)] text-[var(--primary)]"> {{ 'demo_overwrite.guide.introduction.title' | trans({}, 'demo_overwrite') }}</h2>
 
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb breadcrumb-arrow p-0 bg-light">
-                                <li class="breadcrumb-item last-link"><a href="#" class="text-uppercase">Home</a></li>
-                                <li class="breadcrumb-item pl-0 active text-uppercase pl-4">Data</li>
-                            </ol>
-                        </nav>
+    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3"> {{ 'demo_overwrite.guide.introduction.text-1' | trans({}, 'demo_overwrite') | raw }}</p>
 
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb breadcrumb-arrow p-0 bg-light">
-                                <li class="breadcrumb-item"><a href="#" class="text-uppercase pl-3">Home</a></li>
-                                <li class="breadcrumb-item pl-0 last-link">
-                                    <a href="#" class="text-uppercase">Library</a></li>
-                                <li class="breadcrumb-item pl-0 active text-uppercase pl-4">Data</li>
-                            </ol>
-                        </nav>
+    <h3 class="text-xl font-medium mb-3"> {{ 'demo_overwrite.guide.introduction.sub-title-1' | trans({}, 'demo_overwrite') | raw }}</h3>
 
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb breadcrumb-arrow p-0 bg-light">
-                                <li class="breadcrumb-item"><a href="#" class="text-uppercase pl-3">Home</a></li>
-                                <li class="breadcrumb-item pl-0"><a href="#" class="text-uppercase">Library</a></li>
-                                <li class="breadcrumb-item pl-0 last-link">
-                                    <a href="#" class="text-uppercase">Library</a></li>
-                                <li class="breadcrumb-item pl-0 active text-uppercase pl-4">Data</li>
-                            </ol>
-                        </nav>
+    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3"> {{ 'demo_overwrite.guide.introduction.text-2' | trans({
+            'controller' : '<code>App\\Controller\\Admin\\DashboardController::pageDemo</code>',
+            'vue' : '<code>templates/admin/dashboard/page_demo.html.twig</code>',
+            'controller2' : '<code>App\\Overwrite\\Controller\\Admin\\Tools\\DemoOverwriteController::pageDemo</code>',
+            'vue2' : '<code>templates/overwrite/admin/tools/page_demo.html.twig</code>'
+        }, 'demo_overwrite') | raw }}</p>
+    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3"> {{ 'demo_overwrite.guide.introduction.text-3' | trans({
+            'url' : '<code>/admin/fr/dashboard/page-demo</code>',
+            'url2' : '<code>/admin/fr/overwrite/action-surcharge/5</code>'
+        }, 'demo_overwrite') | raw }}</p>
 
-                        <pre><code style="margin-left: -30px;">
-  &lt;?php
-  // Le premier lien est généré automatiquement (home)
-  $breadcrumb = [
-    'key.translate.Library' => 'route',
-    'key.translate.Library' => 'route',
-    'key.translate.Library' => 'route',
-    'key.data' => '#'
-    ];
-  ?&gt;
+    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3"> {{ 'demo_overwrite.guide.introduction.text-4' | trans({
+            'url' : path('admin_dashboard_page_demo'),
+            'url2' : path('admin_overwrite_page_demo', {'id' : 100})
+        }, 'demo_overwrite') | raw }}</p>
 
-  twig
-  &#123;&#123; breadcrumb(breadcrumb) &#125;&#125;
-                            </code></pre>
 
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb breadcrumb-arrow p-0 bg-light">
-                                <li class="breadcrumb-item"><a href="#" class="text-uppercase pl-3">Home</a></li>
-                                <li class="breadcrumb-item pl-0"><a href="#" class="text-uppercase">Library</a></li>
-                                <li class="breadcrumb-item pl-0"><a href="#" class="text-uppercase">Library</a></li>
-                                <li class="breadcrumb-item pl-0 last-link">
-                                    <a href="#" class="text-uppercase">Library</a></li>
-                                <li class="breadcrumb-item pl-0 active text-uppercase pl-4">Data</li>
-                            </ol>
-                        </nav>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="alert" role="tabpanel" aria-labelledby="alert-tab">
+    <h2 class="text-3xl font-semibold mt-3 mb-3 pb-3 border-b-2 border-b-[var(--border-color)] text-[var(--primary)]"> {{ 'demo_overwrite.guide.presrequis.title' | trans({}, 'demo_overwrite') }}</h2>
+    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+        {{ 'demo_overwrite.guide.presrequis.text-1' | trans({}, 'demo_overwrite') }}
+    </p>
+    <ul>
+        <li>
+            {{ 'demo_overwrite.guide.presrequis.requis-1' | trans({}, 'demo_overwrite') }}
+        </li>
+    </ul>
 
-                    <h3>Alertes</h3>
 
-                    <p>Exemple d'alertes avec les différents types possible</p>
-
-                    <div class="alert alert-primary" role="alert">
-                        A simple primary alert—check it out!
-                    </div>
-                    <div class="alert alert-secondary" role="alert">
-                        A simple secondary alert—check it out!
-                    </div>
-                    <div class="alert alert-success" role="alert">
-                        A simple success alert—check it out!
-                    </div>
-                    <div class="alert alert-danger" role="alert">
-                        A simple danger alert—check it out!
-                    </div>
-                    <div class="alert alert-warning" role="alert">
-                        A simple warning alert—check it out!
-                    </div>
-                    <div class="alert alert-info" role="alert">
-                        A simple info alert—check it out!
-                    </div>
-                    <div class="alert alert-light" role="alert">
-                        A simple light alert—check it out!
-                    </div>
-                    <div class="alert alert-dark" role="alert">
-                        A simple dark alert—check it out!
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="badge" role="tabpanel" aria-labelledby="badge-tab">
-                    <h3>Badge</h3>
-                    <p> Exemple de badges avec les couleurs de bases</p>
-                    <span class="badge text-bg-primary">Primary</span>
-                    <span class="badge text-bg-secondary">Secondary</span>
-                    <span class="badge text-bg-success">Success</span>
-                    <span class="badge text-bg-danger">Danger</span>
-                    <span class="badge text-bg-warning">Warning</span>
-                    <span class="badge text-bg-info">Info</span>
-                    <span class="badge text-bg-light">Light</span>
-                    <span class="badge text-bg-dark">Dark</span>
-                </div>
-                <div class="tab-pane fade" id="progress-bar" role="tabpanel" aria-labelledby="progress-bar-tab">
-                    <h3>Progress bar</h3>
-                    <p> Exemple de barres de progression avec les couleurs de bases</p>
-                    <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar" aria-label="Success example" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <hr />
-                    <div class="progress">
-                        <div class="progress-bar bg-info" role="progressbar" aria-label="Info example" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <hr />
-                    <div class="progress">
-                        <div class="progress-bar bg-warning" role="progressbar" aria-label="Warning example" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <hr />
-                    <div class="progress">
-                        <div class="progress-bar bg-danger" role="progressbar" aria-label="Danger example" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="spinner" role="tabpanel" aria-labelledby="spinner-tab">
-                    <h3>Spinner</h3>
-                    <p> Exemple de spinner avec les couleurs de bases</p>
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <div class="spinner-border text-secondary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <div class="spinner-border text-success" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <div class="spinner-border text-danger" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <div class="spinner-border text-warning" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <div class="spinner-border text-info" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <div class="spinner-border text-light" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <div class="spinner-border text-dark" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="text" role="tabpanel" aria-labelledby="text-tab">
-
-                    <h3>Formatage du texte</h3>
-                    <p> Exemple de formatage du texte avec les couleurs de bases</p>
-
-                    <a href="#">Link</a> <br />
-
-                    <a href="#" class="link-primary">Primary link</a>
-                    <a href="#" class="link-secondary">Secondary link</a>
-                    <a href="#" class="link-success">Success link</a>
-                    <a href="#" class="link-danger">Danger link</a>
-                    <a href="#" class="link-warning">Warning link</a>
-                    <a href="#" class="link-info">Info link</a>
-                    <a href="#" class="link-light">Light link</a>
-                    <a href="#" class="link-dark">Dark link</a>
-
-                    <hr />
-
-                    <p class="text-primary">.text-primary</p>
-                    <p class="text-secondary">.text-secondary</p>
-                    <p class="text-success">.text-success</p>
-                    <p class="text-danger">.text-danger</p>
-                    <p class="text-warning bg-dark">.text-warning</p>
-                    <p class="text-info bg-dark">.text-info</p>
-                    <p class="text-light bg-dark">.text-light</p>
-                    <p class="text-dark">.text-dark</p>
-                    <p class="text-body">.text-body</p>
-                    <p class="text-muted">.text-muted</p>
-                    <p class="text-white bg-dark">.text-white</p>
-                    <p class="text-black-50">.text-black-50</p>
-                    <p class="text-white-50 bg-dark">.text-white-50</p>
-                </div>
-                <div class="tab-pane fade" id="background" role="tabpanel" aria-labelledby="background-tab">
-                    <h3>Background</h3>
-                    <p> Exemple de couleurs de fond avec les couleurs de bases</p>
-
-                    <div class="p-3 mb-2 bg-primary text-white">.bg-primary</div>
-                    <div class="p-3 mb-2 bg-secondary text-white">.bg-secondary</div>
-                    <div class="p-3 mb-2 bg-success text-white">.bg-success</div>
-                    <div class="p-3 mb-2 bg-danger text-white">.bg-danger</div>
-                    <div class="p-3 mb-2 bg-warning text-dark">.bg-warning</div>
-                    <div class="p-3 mb-2 bg-info text-dark">.bg-info</div>
-                    <div class="p-3 mb-2 bg-light text-dark">.bg-light</div>
-                    <div class="p-3 mb-2 bg-dark text-white">.bg-dark</div>
-                    <div class="p-3 mb-2 bg-body text-dark">.bg-body</div>
-                    <div class="p-3 mb-2 bg-white text-dark">.bg-white</div>
-                    <div class="p-3 mb-2 bg-transparent text-dark">.bg-transparent</div>
-                </div>
-                <div class="tab-pane fade" id="vue" role="tabpanel" aria-labelledby="vue-tab">
-                    <h3>Vue JS</h3>
-                    <p> Exemple d'un appel Vue JS</p>
-
-                    <div id="test-click-vue-js" class="btn btn-primary" data-id="12" data-name="NAME">Click btn hors vue js</div>
-
-                    <div {{ vue_component('Demo', { 'name': 'Mon nom' }) }}></div>
-
-                </div>
-                <div class="tab-pane fade" id="demo" role="tabpanel" aria-labelledby="demo-tab"></div>
-            </div>
+    <div class="code-block">
+        <div class="code-header">
+            <span class="code-filename">config/cms/overwrite.yaml</span>
+            <span class="code-lang">YAML</span>
         </div>
+        <pre><code># Ce fichier permet de définir la surcharge d'un controller par un autre
+
+overwrite:
+    - controller: App\Controller\Admin\DashboardController
+      route: admin_dashboard_page_demo
+      overwrite:
+          route: admin_overwrite_page_demo
+          parameters:
+              param: id
+
+            </code></pre>
     </div>
+
+    <p>Retrouver sur cette page l'ensemble des éléments HTML disponible sur le site - méthode overwride id : {{ id }}</p>
 
 {% endblock %}
