@@ -8,7 +8,7 @@ global.devtools: Tools
 global.dev_options: 'Options avancées'
 global.database: 'Base de données'
 global.translate: Traduction
-global.html_element: 'Exemple HTML'
+global.html_element: 'Exemple Surcharge'
 global.logs: Logs
 global.mail: Emails
 global.oui: Oui

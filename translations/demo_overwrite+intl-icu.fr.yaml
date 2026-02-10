@@ -1,0 +1,9 @@
+demo_overwrite.page_title_h1: 'La surcharge des pages du back-office'
+demo_overwrite.description: 'Guide pour surcharger des pages du back-office'
+demo_overwrite.guide.presrequis.title: Prérequis
+demo_overwrite.guide.introduction.title: Introduction
+demo_overwrite.guide.introduction.text-1: "Vous visualisez actuellement une page personnalisée qui surcharge une page existante du CMS. <br />Natheo CMS offre la possibilité de surcharger n'importe quelle page du CMS pour y apporter votre propre logique de code, de manière très simple"
+demo_overwrite.guide.introduction.text-2: "La page d'origine est appelée depuis le controller {controller} et est rendue via la vue Twig {vue}. Cependant, celle-ci est surchargée et est donc appelée depuis le controller {controller2} avec la vue associée {vue2}"
+demo_overwrite.guide.introduction.text-3: "De la même façon, l'URL {url} est transformée en {url2} afin de rediriger l'utilisateur vers la page surchargée."
+demo_overwrite.guide.introduction.text-4: 'Exemple : <a class="link" href="{url}">la page non surchargée</a> et <a class="link" href="{url2}">la page surchargée</a> pointent toutes deux vers la même page, celle que vous consultez actuellement.'
+demo_overwrite.guide.introduction.sub-title-1: 'Comment cela marche ?'
