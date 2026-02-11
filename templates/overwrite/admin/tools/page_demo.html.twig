@@ -40,15 +40,139 @@
         }, 'demo_overwrite') | raw }}</p>
 
 
-    <h2 class="text-3xl font-semibold mt-3 mb-3 pb-3 border-b-2 border-b-[var(--border-color)] text-[var(--primary)]"> {{ 'demo_overwrite.guide.presrequis.title' | trans({}, 'demo_overwrite') }}</h2>
-    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
-        {{ 'demo_overwrite.guide.presrequis.text-1' | trans({}, 'demo_overwrite') }}
+    <h2 class="text-3xl font-semibold mt-3 mb-3 pb-3 border-b-2 border-b-[var(--border-color)] text-[var(--primary)]"> {{ 'demo_overwrite.guide.prerequis.title' | trans({}, 'demo_overwrite') }}</h2>
+    <p class="text-[var(--text-secondary)] text-base text-wrap">
+        {{ 'demo_overwrite.guide.prerequis.text-1' | trans({}, 'demo_overwrite') }}
     </p>
-    <ul>
+    <ul class="text-[var(--text-secondary)] text-base text-wrap list-disc list-inside mb-6">
         <li>
-            {{ 'demo_overwrite.guide.presrequis.requis-1' | trans({}, 'demo_overwrite') }}
+            {{ 'demo_overwrite.guide.prerequis.requis-1' | trans({}, 'demo_overwrite') }}
+        </li>
+        <li>
+            {{ 'demo_overwrite.guide.prerequis.requis-2' | trans({}, 'demo_overwrite') }}
+        </li>
+        <li>
+            {{ 'demo_overwrite.guide.prerequis.requis-3' | trans({}, 'demo_overwrite') }}
         </li>
     </ul>
+
+    <div class="alert alert-info-light alert-lg mb-3">
+        <svg class="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <div class="alert-content">
+            <div class="alert-title">{{ 'demo_overwrite.guide.prerequis.alert.info.titre' | trans({}, 'demo_overwrite') }}</div>
+            <div class="alert-message">
+                {{ 'demo_overwrite.guide.prerequis.alert.info.text-1' | trans({}, 'demo_overwrite') }} <br />
+                {{ 'demo_overwrite.guide.prerequis.alert.info.text-2' | trans({}, 'demo_overwrite') }}
+            </div>
+        </div>
+    </div>
+
+    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+        {{ 'demo_overwrite.guide.prerequis.requis-4' | trans({}, 'demo_overwrite') }}
+    </p>
+
+    <h2 class="text-3xl font-semibold mt-3 mb-3 pb-3 border-b-2 border-b-[var(--border-color)] text-[var(--primary)]"> {{ 'demo_overwrite.guide.step-1.title' | trans({}, 'demo_overwrite') }}</h2>
+
+    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+        {{ 'demo_overwrite.guide.step-1.text-1' | trans({}, 'demo_overwrite') }}
+    </p>
+    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+        {{ 'demo_overwrite.guide.step-1.text-2' | trans({
+            'controller' : '<code>src/Overwrite/Controller/Admin/Tools/DemoOverwriteController.php</code>'
+        }, 'demo_overwrite') | raw }}
+    </p>
+    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+        {{ 'demo_overwrite.guide.step-1.text-3' | trans({}, 'demo_overwrite') }}
+    </p>
+
+    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+        {{ 'demo_overwrite.guide.step-1.text-4' | trans({}, 'demo_overwrite') | raw }}
+    </p>
+
+    <div class="code-block">
+        <div class="code-header">
+            <span class="code-filename">src/Overwrite/Controller/Admin/Tools/DemoOverwriteController.php</span>
+            <span class="code-lang">PHP</span>
+        </div>
+        <pre><code>&lsaquo;?php
+namespace App\Overwrite\Controller\Admin\Tools;
+
+use App\Controller\Admin\AppAdminController;
+use App\Enum\Admin\Global\Breadcrumb;
+use App\Service\Admin\System\OptionSystemService;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
+#[Route('/admin/{_locale}/overwrite', name: 'admin_overwrite_', requirements: ['_locale' => '%app.supported_locales%'])]
+#[IsGranted('ROLE_USER')]
+class DemoOverwriteController extends AppAdminController
+{
+    /**
+     * Page Démo pour les elements html
+     * @param OptionSystemService $optionSystemService
+     * @param $id
+     * @return Response
+     */
+    #[IsGranted('ROLE_SUPER_ADMIN')]
+    #[Route('/action-surcharge/{id}', name: 'page_demo')]
+    public function pageDemo(OptionSystemService $optionSystemService, $id): Response
+    {
+        $breadcrumb = [
+            Breadcrumb::DOMAIN->value => 'demo_overwrite',
+            Breadcrumb::BREADCRUMB->value => [
+                'demo_overwrite.page_title_h1' => '#',
+            ],
+        ];
+
+        return $this->render('overwrite/admin/tools/page_demo.html.twig', ['breadcrumb' => $breadcrumb, 'id' => $id]);
+    }
+}
+            </code></pre>
+    </div>
+
+    <div class="alert alert-warning-light alert-lg mb-3">
+        <svg class="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+        </svg>
+        <div class="alert-content">
+            <div class="alert-title">{{ 'demo_overwrite.guide.step-1.alert.info.titre' | trans({}, 'demo_overwrite') }}</div>
+            <div class="alert-message">
+                {{ 'demo_overwrite.guide.step-1.alert.info.text-1' | trans({}, 'demo_overwrite') | raw }} <br />
+                {{ 'demo_overwrite.guide.step-2.alert.info.text-2' | trans({}, 'demo_overwrite') | raw }}
+            </div>
+        </div>
+    </div>
+
+    <h2 class="text-3xl font-semibold mt-3 mb-3 pb-3 border-b-2 border-b-[var(--border-color)] text-[var(--primary)]"> {{ 'demo_overwrite.guide.step-2.title' | trans({}, 'demo_overwrite') }}</h2>
+
+    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+        {{ 'demo_overwrite.guide.step-2.text-1' | trans({'dossier' : '<code>templates/overwrite</code>'}, 'demo_overwrite') | raw }}
+    </p>
+
+    <div class="code-block">
+        <div class="code-header">
+            <span class="code-filename">templates/overwrite/admin/tools/page_demo.html.twig</span>
+            <span class="code-lang">TWIG</span>
+        </div>
+        <pre>
+            <code>&#123;% extends 'admin/admin_base.html.twig' %&#125;<br />&#123;% block title %}Elements HTML disponibles&#123;% endblock %&#125;<br />&#123;% block body %&#125;<br />&#123;&#123; breadcrumb(breadcrumb) &#125;&#125;
+
+    &lsaquo;h1 class="head-title">
+        &lsaquo;svg class="w-7 h-7 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            &lsaquo;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15.041 13.862A4.999 4.999 0 0 1 17 17.831V21M7 3v3.169a5 5 0 0 0 1.891 3.916M17 3v3.169a5 5 0 0 1-2.428 4.288l-5.144 3.086A5 5 0 0 0 7 17.831V21M7 5h10M7.399 8h9.252M8 16h8.652M7 19h10">&lsaquo;/path>
+        &lsaquo;/svg>
+        &#123;&#123; 'demo_overwrite.page_title_h1' | trans({}, 'demo_overwrite') &#125;&#125;&lsaquo;/h1>
+
+    &lsaquo;p class="text-sm text-[var(--text-secondary)] mb-3">
+        &#123;&#123; 'demo_overwrite.description' | trans({}, 'demo_overwrite') &#125;
+    &lsaquo;/p><br />&#123;% endblock %&#125;
+            </code></pre>
+    </div>
+
 
 
     <div class="code-block">
