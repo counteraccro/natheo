@@ -1,9 +1,27 @@
 demo_overwrite.page_title_h1: 'La surcharge des pages du back-office'
 demo_overwrite.description: 'Guide pour surcharger des pages du back-office'
-demo_overwrite.guide.presrequis.title: Prérequis
+demo_overwrite.guide.prerequis.title: Prérequis
 demo_overwrite.guide.introduction.title: Introduction
 demo_overwrite.guide.introduction.text-1: "Vous visualisez actuellement une page personnalisée qui surcharge une page existante du CMS. <br />Natheo CMS offre la possibilité de surcharger n'importe quelle page du CMS pour y apporter votre propre logique de code, de manière très simple"
 demo_overwrite.guide.introduction.text-2: "La page d'origine est appelée depuis le controller {controller} et est rendue via la vue Twig {vue}. Cependant, celle-ci est surchargée et est donc appelée depuis le controller {controller2} avec la vue associée {vue2}"
 demo_overwrite.guide.introduction.text-3: "De la même façon, l'URL {url} est transformée en {url2} afin de rediriger l'utilisateur vers la page surchargée."
 demo_overwrite.guide.introduction.text-4: 'Exemple : <a class="link" href="{url}">la page non surchargée</a> et <a class="link" href="{url2}">la page surchargée</a> pointent toutes deux vers la même page, celle que vous consultez actuellement.'
-demo_overwrite.guide.introduction.sub-title-1: 'Comment cela marche ?'
+demo_overwrite.guide.introduction.sub-title-1: 'Comment cela fonctionne-t-il ?'
+demo_overwrite.guide.prerequis.text-1: 'Voici les prérequis nécessaires pour créer une nouvelle page personnalisée.'
+demo_overwrite.guide.prerequis.requis-1: 'Avoir un minimum de connaissances en PHP et Symfony.'
+demo_overwrite.guide.prerequis.requis-2: "Disposer d'un environnement de développement complet."
+demo_overwrite.guide.prerequis.requis-3: 'Connaître les conventions Symfony.'
+demo_overwrite.guide.prerequis.requis-4: "Tout au long de ce tutoriel, nous nous appuierons sur le code qui permet d'afficher cette page comme exemple."
+demo_overwrite.guide.prerequis.alert.info.titre: 'Bon à savoir !'
+demo_overwrite.guide.prerequis.alert.info.text-1: 'Ne créez une surcharge que pour ajouter une nouvelle logique de code ou pour modifier en profondeur la logique existante.'
+demo_overwrite.guide.prerequis.alert.info.text-2: 'Si vous souhaitez uniquement modifier le design, utilisez les APIs (à venir) du back-office.'
+demo_overwrite.guide.step-1.title: 'Étape 1 - Création du controller personnalisé'
+demo_overwrite.guide.step-1.text-1: "La première étape consiste à créer un controller personnalisé qui sera appelé à la place du controller d'origine. C'est ici que vous placerez l'ensemble de votre logique métier."
+demo_overwrite.guide.step-1.text-2: 'Créez votre controller dans le dossier <code>Overwrite</code> : {controller}'
+demo_overwrite.guide.step-1.text-3: "Depuis ce fichier, vous aurez accès à l'ensemble des fonctionnalités du CMS (ENUM, Service, Repository etc...)"
+demo_overwrite.guide.step-1.text-4: 'Exemple de code avec le controller <code>DemoOverwriteController.php</code>'
+demo_overwrite.guide.step-1.alert.info.titre: Attention
+demo_overwrite.guide.step-1.alert.info.text-1: 'Pourquoi placer mon code dans le dossier <code>Overwrite</code> plutôt que dans le dossier <code>Controller</code> ?'
+demo_overwrite.guide.step-2.alert.info.text-2: "Le CMS étant en constante évolution, placer son code personnalisé dans le dossier <code>Controller</code> risque de faire perdre son travail lors d'une mise à jour. Le dossier <code>Overwrite</code> étant réservé au code personnalisé, son contenu ne sera jamais modifié lors des futures mises à jour du CMS."
+demo_overwrite.guide.step-2.title: 'Etape 2 - Création de la vue twig'
+demo_overwrite.guide.step-2.text-1: 'Ajouter la vue qui servira de rendu, placer la dans le dossier {dossier}'
