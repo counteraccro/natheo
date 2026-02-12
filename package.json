@@ -3,8 +3,9 @@
     "private": true,
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
-        "preview": "vite preview"
+        "build": "vue-tsc && vite build",
+        "preview": "vite preview",
+        "type-check": "vue-tsc --noEmit"
     },
     "devDependencies": {
         "@hotwired/stimulus": "^3.0.0",
@@ -13,17 +14,20 @@
         "@symfony/stimulus-bundle": "file:vendor/symfony/stimulus-bundle/assets",
         "@symfony/ux-vue": "file:vendor/symfony/ux-vue/assets",
         "@tailwindcss/postcss": "^4.1.10",
+        "@types/node": "^25.2.3",
         "@vitejs/plugin-vue": "^6.0.1",
+        "@vue/language-server": "^3.2.4",
         "autoprefixer": "^10.4.0",
         "postcss": "^8.5.6",
         "postcss-loader": "^8.1.1",
         "prettier": "^3.6.2",
         "sass": "^1.70.0",
         "tailwindcss": "^4.1.10",
-        "typescript": "^5.8.3",
+        "typescript": "^5.9.3",
         "vite": "^7.0.0",
         "vite-plugin-symfony": "^8",
-        "vue": "^3.4.0"
+        "vue": "^3.4.0",
+        "vue-tsc": "^3.2.4"
     },
     "dependencies": {
         "@babel/traverse": "^7.23.2",

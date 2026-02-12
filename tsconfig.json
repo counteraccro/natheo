@@ -1,1 +1,30 @@
-{}
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "moduleResolution": "bundler",
+    "allowJs": true,
+    "checkJs": false,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["assets/*"]
+    }
+  },
+  "include": [
+    "assets/**/*.ts",
+    "assets/**/*.d.ts",
+    "assets/**/*.tsx",
+    "assets/**/*.vue",
+    "assets/**/*.js"
+  ],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
