@@ -23,5 +23,17 @@ demo_overwrite.guide.step-1.text-4: 'Exemple de code avec le controller <code>De
 demo_overwrite.guide.step-1.alert.info.titre: Attention
 demo_overwrite.guide.step-1.alert.info.text-1: 'Pourquoi placer mon code dans le dossier <code>Overwrite</code> plutôt que dans le dossier <code>Controller</code> ?'
 demo_overwrite.guide.step-2.alert.info.text-2: "Le CMS étant en constante évolution, placer son code personnalisé dans le dossier <code>Controller</code> risque de faire perdre son travail lors d'une mise à jour. Le dossier <code>Overwrite</code> étant réservé au code personnalisé, son contenu ne sera jamais modifié lors des futures mises à jour du CMS."
-demo_overwrite.guide.step-2.title: 'Etape 2 - Création de la vue twig'
-demo_overwrite.guide.step-2.text-1: 'Ajouter la vue qui servira de rendu, placer la dans le dossier {dossier}'
+demo_overwrite.guide.step-2.title: 'Étape 2 - Création de la vue Twig'
+demo_overwrite.guide.step-2.text-1: 'Ajoutez la vue qui servira au rendu et placez-la dans le dossier {dossier}.'
+demo_overwrite.guide.step-2.text-2: "Tout comme pour le controller, il est recommandé de placer votre code dans le dossier {dossier} afin d'éviter tout risque de perte lors d'une mise à jour."
+demo_overwrite.guide.step-3.title: 'Étape 3 - Configuration'
+demo_overwrite.guide.step-3.text-1: "Une fois votre controller et sa vue créés, il ne reste plus qu'à indiquer au CMS quelle route doit être surchargée par votre nouvelle route. Pour cela, rien de plus simple : ouvrez le fichier {dossier}."
+demo_overwrite.guide.step-3.text-2: 'Voici la configuration pour la surcharge de cette page.'
+demo_overwrite.guide.step-3.text-3: 'Explication rapide de cette configuration.'
+demo_overwrite.guide.step-3.text-4: "<b>controller</b> : Le controller que l'on souhaite surcharger, dans notre exemple {controller}."
+demo_overwrite.guide.step-3.text-5: "<b>route</b> : La route que l'on souhaite surcharger, dans notre exemple <code>admin_dashboard_page_demo</code>."
+demo_overwrite.guide.step-3.text-6: '<b>overwrite</b> : La configuration de la surcharge.'
+demo_overwrite.guide.step-3.text-7: '<b>route</b> : La nouvelle route, dans notre exemple <code>admin_overwrite_page_demo</code>.'
+demo_overwrite.guide.step-3.text-8: '<b>parameters</b> : Si votre route comporte des paramètres, renseignez-les ici sous la forme clé : valeur, où clé correspond au nom du paramètre et valeur à son type de donnée.'
+demo_overwrite.guide.step-4.title: "Étape 4 - C'est terminé !"
+demo_overwrite.guide.step-4.text-1: "Félicitations, vous venez de surcharger une URL interne du CMS avec votre propre code. Bravo !"
