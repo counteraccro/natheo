@@ -26,8 +26,10 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
+        "@babel/traverse": "^7.23.2",
         "@popperjs/core": "^2.11.6",
         "axios": "^1.8.4",
+        "babel-types": "npm:@babel/types@^7.23.6",
         "bootstrap": "5.3.1",
         "bootstrap-icons": "^1.10.5",
         "emittery": "^1.0.1",
