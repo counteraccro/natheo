@@ -17,7 +17,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin/{_locale}/overwrite', name: 'admin_overwrite_', requirements: ['_locale' => '%app.supported_locales%'])]
 #[IsGranted('ROLE_USER')]
-class TestOverwriteController extends AppAdminController
+class DemoOverwriteController extends AppAdminController
 {
     /**
      * Page Démo pour les elements html
@@ -26,13 +26,13 @@ class TestOverwriteController extends AppAdminController
      * @return Response
      */
     #[IsGranted('ROLE_SUPER_ADMIN')]
-    #[Route('/page-demo/{id}', name: 'page_demo')]
+    #[Route('/action-surcharge/{id}', name: 'page_demo')]
     public function pageDemo(OptionSystemService $optionSystemService, $id): Response
     {
         $breadcrumb = [
-            Breadcrumb::DOMAIN->value => 'message',
+            Breadcrumb::DOMAIN->value => 'demo_overwrite',
             Breadcrumb::BREADCRUMB->value => [
-                'pagedemo.element.html' => '#',
+                'demo_overwrite.page_title_h1' => '#',
             ],
         ];
 
