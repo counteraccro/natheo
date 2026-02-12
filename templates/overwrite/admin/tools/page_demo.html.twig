@@ -111,7 +111,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class DemoOverwriteController extends AppAdminController
 {
     /**
-     * Page Démo pour les elements html
+     * Page Démo la surcharge
      * @param OptionSystemService $optionSystemService
      * @param $id
      * @return Response
@@ -133,7 +133,7 @@ class DemoOverwriteController extends AppAdminController
             </code></pre>
     </div>
 
-    <div class="alert alert-warning-light alert-lg mb-3">
+    <div class="alert alert-warning-light alert-lg mb-5">
         <svg class="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
         </svg>
@@ -173,7 +173,19 @@ class DemoOverwriteController extends AppAdminController
             </code></pre>
     </div>
 
+    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+        {{ 'demo_overwrite.guide.step-2.text-2' | trans({'dossier' : '<code>templates/overwrite</code>'}, 'demo_overwrite') | raw }}
+    </p>
 
+    <h2 class="text-3xl font-semibold mt-3 mb-3 pb-3 border-b-2 border-b-[var(--border-color)] text-[var(--primary)]"> {{ 'demo_overwrite.guide.step-3.title' | trans({}, 'demo_overwrite') }}</h2>
+
+    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+        {{ 'demo_overwrite.guide.step-3.text-1' | trans({'dossier' : '<code>config/cms/overwrite.yaml</code>'}, 'demo_overwrite') | raw }}
+    </p>
+
+    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+        {{ 'demo_overwrite.guide.step-3.text-2' | trans({}, 'demo_overwrite') | raw }}
+    </p>
 
     <div class="code-block">
         <div class="code-header">
@@ -188,11 +200,39 @@ overwrite:
       overwrite:
           route: admin_overwrite_page_demo
           parameters:
-              param: id
-
-            </code></pre>
+              param: id</code></pre>
     </div>
 
-    <p>Retrouver sur cette page l'ensemble des éléments HTML disponible sur le site - méthode overwride id : {{ id }}</p>
+    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+        {{ 'demo_overwrite.guide.step-3.text-3' | trans({}, 'demo_overwrite') | raw }}
+    </p>
+
+    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+        <ul class="text-[var(--text-secondary)] text-base text-wrap list-disc list-inside mb-6">
+            <li>
+                {{ 'demo_overwrite.guide.step-3.text-4' | trans({'controller' : '<code>App\Controller\Admin\DashboardController</code>'}, 'demo_overwrite') | raw }}
+            </li>
+            <li>
+                {{ 'demo_overwrite.guide.step-3.text-5' | trans({}, 'demo_overwrite') | raw }}
+            </li>
+            <li>
+                {{ 'demo_overwrite.guide.step-3.text-6' | trans({}, 'demo_overwrite') | raw }}
+                <ul class="text-[var(--text-secondary)] text-base text-wrap list-disc list-inside mb-6 ms-6">
+                    <li>
+                        {{ 'demo_overwrite.guide.step-3.text-7' | trans({}, 'demo_overwrite') | raw }}
+                    </li>
+                    <li>
+                        {{ 'demo_overwrite.guide.step-3.text-8' | trans({}, 'demo_overwrite') | raw }}
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </p>
+
+    <h2 class="text-3xl font-semibold mt-3 mb-3 pb-3 border-b-2 border-b-[var(--border-color)] text-[var(--primary)]"> {{ 'demo_overwrite.guide.step-4.title' | trans({}, 'demo_overwrite') }}</h2>
+
+    <p class="text-[var(--text-secondary)] text-base text-wrap mb-3">
+        {{ 'demo_overwrite.guide.step-4.text-1' | trans({'dossier' : '<code>templates/overwrite</code>'}, 'demo_overwrite') | raw }}
+    </p>
 
 {% endblock %}
