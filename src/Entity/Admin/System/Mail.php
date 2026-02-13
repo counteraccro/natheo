@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 class Mail
 {
+    public const string DEFAULT_ALIAS = 'mail';
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]
