@@ -61,7 +61,14 @@ class MailServiceTest extends AppWebTestCase
     {
         $this->generateDefaultMails();
 
-        $result = $this->mailService->getAllFormatToGrid(1, 5);
+        $queryParams = [
+            'search' => '',
+            'orderField' => 'id',
+            'order' => 'DESC',
+            'locale' => 'fr',
+        ];
+
+        $result = $this->mailService->getAllFormatToGrid(1, 5, $queryParams);
         $this->assertArrayHasKey('nb', $result);
         $this->assertArrayHasKey('data', $result);
         $this->assertArrayHasKey('column', $result);
