@@ -60,6 +60,7 @@ class MailController extends AppAdminController
 
     /**
      * Charge le tableau grid de mail en ajax
+     * @param Request $request
      * @param MailService $mailService
      * @param int $page
      * @param int $limit
@@ -68,9 +69,20 @@ class MailController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
-    public function loadGridData(MailService $mailService, int $page = 1, int $limit = 20): JsonResponse
-    {
-        $grid = $mailService->getAllFormatToGrid($page, $limit);
+    public function loadGridData(
+        Request $request,
+        MailService $mailService,
+        int $page = 1,
+        int $limit = 20,
+    ): JsonResponse {
+        $queryParams = [
+            'search' => $request->query->get('search'),
+            'orderField' => $request->query->get('orderField'),
+            'order' => $request->query->get('order'),
+            'locale' => $request->getLocale(),
+        ];
+
+        $grid = $mailService->getAllFormatToGrid($page, $limit, $queryParams);
         return $this->json($grid);
     }
 
