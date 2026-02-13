@@ -1,717 +1,387 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.6
- * Editeur Markdown
+ * @version 2.0
+ * Editeur Markdown version TypeScript
  */
-
-import { marked } from 'marked';
-import { debounce } from 'lodash-es';
-import { Modal } from 'bootstrap';
-import MediaModalMarkdown from '../Mediatheque/MediaModalMarkdown.vue';
-import axios from 'axios';
-import ModalNat from './Modal.vue';
 
 export default {
   name: 'MarkdownEditor',
-  components: {
-    ModalNat,
-    MediaModalMarkdown,
-  },
   props: {
-    meId: String,
-    meValue: String,
-    meRows: Number,
-    meTranslate: Object,
-    meKeyWords: Object,
-    meSave: Boolean,
-    mePreview: Boolean,
-  },
-  emits: ['editor-value', 'editor-value-change'],
-  data() {
-    return {
-      loading: false,
-      value: this.meValue,
-      valueRef: this.meValue,
-      id: this.meId,
-      modaleMedia: '',
-      titleModal: '',
-      linkModal: '',
-      textModal: '',
-      linkLabelModal: '',
-      isImage: false,
-      isValide: '',
-      dataMedia: [],
-      listePageInternalLink: [],
-      searchPageInternalLink: '',
-      selectInternalLink: '',
-      textInternalLink: '',
-      changeTextInternalLink: false,
-      tabModal: {
-        modalMarkdownEditor: false,
-        modalInternalLink: false,
-      },
-      urls: {
-        urlMedia: '',
-        urlPreview: '',
-        urlSetPreview: '',
-        urlInternalLink: '',
-        urlLoadData: '/admin/fr/markdown/ajax/load-datas',
-      },
-      currentFolder: [],
-      loadingMedia: false,
-      cookieNamePreview: 'natheo-preview',
-    };
-  },
-  mounted() {
-    this.modaleMedia = new Modal(document.getElementById(this.getNameModale('modal-markdown-mediatheque')), {});
-    this.loadData();
-  },
-  computed: {
-    output() {
-      return marked(this.value);
+    /*type: {
+      type: String,
+      default: 'alert-danger-solid',
     },
-
-    /**
-     * Filtre sur les pages
-     * @returns {ObjectConstructor}
-     */
-    filteredPage() {
-      const searchPage = this.searchPageInternalLink && this.searchPageInternalLink.toLowerCase();
-      let data = this.listePageInternalLink;
-      if (searchPage) {
-        data = data.filter((row) => {
-          return Object.keys(row).some((key) => {
-            return String(row.title).toLowerCase().indexOf(searchPage) > -1;
-          });
-        });
-      }
-      return data;
-    },
-  },
-  methods: {
-    update: debounce(function (e) {
-      this.value = e.target.value;
-    }, 50),
-
-    /** Charge les données nécessaires au fonctionnement de l'éditeur **/
-    loadData() {
-      axios
-        .get(this.urls.urlLoadData)
-        .then((response) => {
-          this.urls.urlMedia = response.data.media;
-          this.urls.urlPreview = response.data.preview;
-          this.urls.urlSetPreview = response.data.initPreview;
-          this.urls.urlInternalLink = response.data.internalLinks;
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-
-    randomIntFromInterval(min, max) {
-      return Math.floor(Math.random() * (max - min + 1) + min);
-    },
-
-    /**
-     * Retourne le nom de la modale fusionné avec un identifiant
-     * @param name
-     * @returns {string}
-     */
-    getNameModale(name) {
-      return name + '-' + this.id;
-    },
-
-    /**
-     * Ajoute la balise table
-     */
-    addTable() {
-      let balise =
-        '| Column 1 | Column 2 | Column 3 |\n' +
-        '| -------- | -------- | -------- |\n' +
-        '| Text     | Text     | Text     |';
-      this.addElement(balise, 0, false);
-    },
-
-    /**
-     * Ajoute la balise code
-     */
-    addCode() {
-      let balise = '```\n' + '\n' + '```';
-      this.addElement(balise, 4, false);
-    },
-
-    /**
-     * Ajoute un lien ou une image
-     * @param modal
-     * @param image
-     */
-    addLink(modal, image) {
-      if (modal) {
-        this.textModal = window.getSelection().toString();
-        this.linkModal = 'https://';
-        if (image) {
-          this.titleModal = this.meTranslate.modalTitreImage;
-          this.linkLabelModal = this.meTranslate.modalInputUrlImage;
-        } else {
-          this.titleModal = this.meTranslate.modalTitreLink;
-          this.linkLabelModal = this.meTranslate.modalInputUrlLink;
-        }
-
-        this.isImage = image;
-        this.updateModale('modalMarkdownEditor', true);
-      } else {
-        let balise = '';
-        if (image) {
-          balise = '![' + this.textModal + '](' + this.linkModal + ')';
-        } else {
-          balise = '[' + this.textModal + '](' + this.linkModal + ')';
-        }
-        this.addElement(balise, 0, false);
-        this.textModal = this.linkModal = '';
-        this.closeModal('modalMarkdownEditor');
-      }
-
-      return false;
-    },
-
-    /*closeModal() {
-      this.modal.hide();
+    text: {
+      type: String,
+      required: true,
     },*/
-
-    /**
-     * Ouvre la modale de la médiathèque
-     */
-    openModalMediatheque() {
-      this.loadMedia(0, 'asc', 'created_at');
-      this.modaleMedia.show();
-    },
-
-    loadMedia(folderId, order, filter) {
-      this.loadingMedia = true;
-      axios
-        .get(this.urls.urlMedia + '/' + folderId + '/' + order + '/' + filter, {})
-        .then((response) => {
-          this.dataMedia = response.data.medias;
-          this.currentFolder = response.data.currentFolder;
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          this.loadingMedia = false;
-        });
-    },
-
-    /**
-     * Ferme la modale de la médiathèque
-     */
-    closeModalMediatheque() {
-      this.modaleMedia.hide();
-      this.dataMedia = [];
-    },
-
-    /**
-     * Met à jour le status d'une modale défini par son id et son état
-     * @param nameModale
-     * @param state true|false
-     */
-    updateModale(nameModale, state) {
-      this.tabModal[nameModale] = state;
-    },
-
-    /**
-     * Ferme une modale
-     * @param nameModale
-     */
-    closeModal(nameModale) {
-      this.updateModale(nameModale, false);
-    },
-
-    /**
-     * Ajoute le média sélectionné
-     * @param name
-     * @param url
-     * @param size
-     */
-    selectMedia(name, url, size) {
-      let balise = '';
-      let patt1 = /\.[0-9a-z]+$/i;
-      let extensionImg = ['.jpeg', '.jpg', '.gif', '.tif', '.psd', '.svg', '.png'];
-
-      if (extensionImg.includes(name.match(patt1)[0])) {
-        let sizeHtml = '';
-        switch (size) {
-          case 'fluid':
-            sizeHtml = 'class="img-fluid"';
-            break;
-          case 'max':
-            sizeHtml = '';
-            break;
-          default:
-            sizeHtml = 'width="' + size + 'px" height="' + size + 'px"';
-        }
-
-        balise = '<img src="' + url + '" alt="' + name + '" ' + sizeHtml + '>';
-      } else {
-        balise = '<a href="' + url + '" target="_blank">' + name + '</a>';
-      }
-
-      this.addElement(balise, 0, false);
-      this.closeModalMediatheque();
-    },
-
-    /**
-     * Ajoute un élément dans l'input
-     * @param balise
-     * @param position
-     * @param separate
-     * @returns {boolean}
-     */
-    addElement(balise, position, separate) {
-      let input = document.getElementById('editor-' + this.id);
-      let start = input.selectionStart;
-      let end = input.selectionEnd;
-      let value = this.value;
-
-      let select = window.getSelection().toString();
-
-      if (select === '') {
-        this.value = value.slice(0, start) + balise + value.slice(end);
-        input.value = this.value;
-        let caretPos = start + balise.length;
-        input.focus();
-        input.setSelectionRange(caretPos - position, caretPos - position);
-      } else {
-        let before = value.slice(0, start);
-        let after = value.slice(end);
-        let replace = '';
-
-        if (separate) {
-          let b = balise.slice(balise.length / 2);
-          replace = b + select.toString() + b;
-        } else {
-          replace = balise + select.toString();
-        }
-
-        this.value = before + replace + after;
-        input.value = this.value;
-
-        let caretPos = start + replace.length;
-        input.focus();
-        input.setSelectionRange(caretPos, caretPos);
-      }
-      return false;
-    },
-
-    isValideInput(event) {
-      this.isValide = '';
-      let value = event.target.value;
-      if (value === '') {
-        this.isValide = 'is-invalid';
-      }
-      this.$emit('editor-value-change', this.meId, value);
-    },
-
-    /**
-     * Affiche la préview
-     */
-    openPreview() {
-      this.loading = true;
-      axios
-        .post(this.urls.urlSetPreview, {
-          value: this.value,
-        })
-        .then((response) => {})
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          window.open(this.urls.urlPreview, '_blank');
-          this.loading = false;
-        });
-    },
-
-    /**
-     * Ouvre la modale pour les liens internes et charge les données
-     */
-    openModalInternalLink() {
-      this.loading = true;
-      this.changeTextInternalLink = false;
-      this.textInternalLink = '';
-      this.listePageInternalLink = [];
-      axios
-        .get(this.urls.urlInternalLink, {})
-        .then((response) => {
-          for (const page in response.data.pages) {
-            this.listePageInternalLink.push({
-              title: response.data.pages[page].title,
-              id: response.data.pages[page].id,
-            });
-          }
-          this.textInternalLink = window.getSelection().toString();
-          if (this.textInternalLink === '' || this.textInternalLink === null) {
-            this.changeTextInternalLink = true;
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          this.updateModale('modalInternalLink', true);
-          this.loading = false;
-        });
-    },
-
-    /**
-     * Ajoute un lien interne
-     * @param IdInternalLink
-     * @param textInternalLink
-     */
-    addInternalLink(IdInternalLink, textInternalLink) {
-      let balise = '[' + textInternalLink + '](P#' + IdInternalLink + ')';
-      this.addElement(balise, 0, false);
-      this.closeModal('modalInternalLink');
-    },
-
-    /**
-     * Met à jour le texte du lien interne si vide
-     */
-    updateTextInternalLink(event) {
-      if (this.changeTextInternalLink || this.textInternalLink === '' || this.textInternalLink === null) {
-        let page = this.listePageInternalLink.find((element) => element.id === this.selectInternalLink);
-        this.textInternalLink = page.title;
-      }
-    },
-
-    /**
-     * Check si on est dans le cas de données éditées non sauvegardées ou non
-     * @returns {boolean}
-     */
-    checkNoSaveData() {
-      return this.meSave && this.valueRef !== this.value;
-    },
-    /**
-     * Condition pour les class du textarea
-     * @returns {string}
-     */
-    classInputTextArea() {
-      if (this.isValide !== '') {
-        return this.isValide;
-      }
-
-      if (this.checkNoSaveData()) {
-        return 'border-3 border-warning';
-      }
-    },
-    /**
-     * Event sur le bouton save
-     */
-    eventBtnSave() {
-      this.valueRef = this.value;
-      this.$emit('editor-value', this.meId, this.value);
-    },
   },
+  emits: [] as string[],
+  data() {
+    return {};
+  },
+  mounted() {},
+  methods: {},
 };
 </script>
 
 <template>
-  <div id="block-faq" :class="this.loading === true ? 'block-grid' : ''">
-    <div v-if="this.loading" class="overlay">
-      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000">
-        <div class="spinner-border text-primary" role="status"></div>
-        <span class="txt-overlay">{{ this.meTranslate.loading }}</span>
-      </div>
+  <div class="md-editor-wrap">
+    <!-- ── TOOLBAR ──────────────────────────────────── -->
+    <div class="md-toolbar">
+      <!-- Titres dropdown -->
+      <details class="tb-dropdown" id="ddHeading">
+        <summary class="tb-btn" style="padding: 0 0.625rem">
+          H1
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M6 9l6 6 6-6"></path>
+          </svg>
+        </summary>
+        <div class="tb-dropdown-menu" style="min-width: 12rem">
+          <a href="#" class="tb-dropdown-item">
+            <span class="item-badge">H1</span>
+            <span class="item-label h-preview-1">Titre 1</span>
+            <span class="item-shortcut"># </span>
+          </a>
+          <a href="#" class="tb-dropdown-item">
+            <span class="item-badge">H2</span>
+            <span class="item-label h-preview-2">Titre 2</span>
+            <span class="item-shortcut">## </span>
+          </a>
+          <a href="#" class="tb-dropdown-item">
+            <span class="item-badge">H3</span>
+            <span class="item-label h-preview-3">Titre 3</span>
+            <span class="item-shortcut">### </span>
+          </a>
+          <a href="#" class="tb-dropdown-item">
+            <span class="item-badge">H4</span>
+            <span class="item-label h-preview-4">Titre 4</span>
+            <span class="item-shortcut">#### </span>
+          </a>
+          <a href="#" class="tb-dropdown-item">
+            <span class="item-badge">H5</span>
+            <span class="item-label h-preview-5">Titre 5</span>
+            <span class="item-shortcut">##### </span>
+          </a>
+          <a href="#" class="tb-dropdown-item">
+            <span class="item-badge">H6</span>
+            <span class="item-label h-preview-6">Titre 6</span>
+            <span class="item-shortcut">###### </span>
+          </a>
+        </div>
+      </details>
+
+      <!-- Mots clés dropdown -->
+      <details class="tb-dropdown" id="ddKeywords">
+        <summary class="tb-btn" style="padding: 0 0.75rem">
+          <svg
+            class="tb-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"
+            ></path>
+          </svg>
+          Mots clés
+          <svg
+            class="tb-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M6 9l6 6 6-6"></path>
+          </svg>
+        </summary>
+        <div class="tb-dropdown-menu" style="min-width: 13rem">
+          <a href="#" class="tb-dropdown-item">
+            <span class="item-badge">@</span>
+            <span class="item-label">Adresse email</span>
+            <span class="item-shortcut">[[user.email]]</span>
+          </a>
+          <a href="#" class="tb-dropdown-item">
+            <span class="item-badge">@</span>
+            <span class="item-label">Login</span>
+            <span class="item-shortcut">[[user.login]]</span>
+          </a>
+          <a href="#" class="tb-dropdown-item">
+            <span class="item-badge">@</span>
+            <span class="item-label">Prénom</span>
+            <span class="item-shortcut">[[user.first]]</span>
+          </a>
+          <a href="#" class="tb-dropdown-item">
+            <span class="item-badge">@</span>
+            <span class="item-label">Nom</span>
+            <span class="item-shortcut">[[user.last]]</span>
+          </a>
+          <a href="#" class="tb-dropdown-item">
+            <span class="item-badge">@</span>
+            <span class="item-label">Url du site</span>
+            <span class="item-shortcut">[[site.url]]</span>
+          </a>
+          <a href="#" class="tb-dropdown-item">
+            <span class="item-badge">@</span>
+            <span class="item-label">Nom du site</span>
+            <span class="item-shortcut">[[site.name]]</span>
+          </a>
+        </div>
+      </details>
+
+      <div class="tb-sep"></div>
+
+      <!-- Gras -->
+      <button class="tb-btn" title="Gras (Ctrl+B)">
+        <svg class="tb-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.26-1.75-4-4-4H7v14h7.04c2.09 0 3.71-1.7 3.71-3.79 0-1.52-.86-2.82-2.15-3.42zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"
+          ></path>
+        </svg>
+      </button>
+
+      <!-- Italique -->
+      <button class="tb-btn" title="Italique (Ctrl+I)">
+        <svg class="tb-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10 4v3h2.21l-3.42 8H6v3h8v-3h-2.21l3.42-8H18V4z"></path>
+        </svg>
+      </button>
+
+      <!-- Barré -->
+      <button class="tb-btn" title="Barré">
+        <svg
+          class="tb-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M16 4H9a3 3 0 000 6h6a3 3 0 010 6H6"></path>
+          <line x1="4" y1="12" x2="20" y2="12"></line>
+        </svg>
+      </button>
+
+      <!-- Citation -->
+      <button class="tb-btn" title="Citation">
+        <svg class="tb-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"></path>
+        </svg>
+      </button>
+
+      <div class="tb-sep"></div>
+
+      <!-- Liste non ordonnée -->
+      <button class="tb-btn" title="Liste à puces">
+        <svg
+          class="tb-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="9" y1="6" x2="20" y2="6"></line>
+          <line x1="9" y1="12" x2="20" y2="12"></line>
+          <line x1="9" y1="18" x2="20" y2="18"></line>
+          <circle cx="4" cy="6" r="1.5" fill="currentColor" stroke="none"></circle>
+          <circle cx="4" cy="12" r="1.5" fill="currentColor" stroke="none"></circle>
+          <circle cx="4" cy="18" r="1.5" fill="currentColor" stroke="none"></circle>
+        </svg>
+      </button>
+
+      <!-- Liste ordonnée -->
+      <button class="tb-btn" title="Liste numérotée">
+        <svg class="tb-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M2 17h2v.5H3v1h1v.5H2v1h3v-4H2v1zm1-9h1V4H2v1h1v3zm-1 3h1.8L2 13.1v.9h3v-1H3.2L5 10.9V10H2v1zm5-6v2h14V5H7zm0 14h14v-2H7v2zm0-6h14v-2H7v2z"
+          ></path>
+        </svg>
+      </button>
+
+      <!-- Table -->
+      <button class="tb-btn" title="Tableau">
+        <svg
+          class="tb-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+          <line x1="3" y1="9" x2="21" y2="9"></line>
+          <line x1="3" y1="15" x2="21" y2="15"></line>
+          <line x1="12" y1="3" x2="12" y2="21"></line>
+        </svg>
+      </button>
+
+      <div class="tb-sep"></div>
+
+      <!-- Lien -->
+      <button class="tb-btn" title="Lien">
+        <svg
+          class="tb-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"></path>
+          <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"></path>
+        </svg>
+      </button>
+
+      <!-- Image -->
+      <button class="tb-btn" title="Image">
+        <svg
+          class="tb-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+          <circle cx="8.5" cy="8.5" r="1.5"></circle>
+          <polyline points="21 15 16 10 5 21"></polyline>
+        </svg>
+      </button>
+
+      <!-- Code inline -->
+      <button class="tb-btn" title="Code">
+        <svg
+          class="tb-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="16 18 22 12 16 6"></polyline>
+          <polyline points="8 6 2 12 8 18"></polyline>
+        </svg>
+      </button>
+    </div>
+    <!-- /.md-toolbar -->
+
+    <!-- ── TEXTAREA ──────────────────────────────────── -->
+    <textarea class="md-textarea" id="mdInput" placeholder="Rédigez votre contenu en Markdown…">
+# Editeur Markdown
+
+Ceci est un éditeur qui prend en charge le markdown
+
+Ceci est un [Lien Google](https://www.google.fr) et ceci une image ![Image](https://lh3.googleusercontent.com/ogw/AOLn63EBcXl7rZYf06N2bijCt_itpKuVkmD8mr0RGrJUVA=s32-c-mo)
+
+| Fonction | Code | Rendu |
+| -------- | -------- | -------- |
+| Italic | `*text*` | *text*|
+| Gras| `**text**` | **text**|
+| barré| `~~text~~` | ~~text~~|
+
+&gt;   Une citation</textarea
+    >
+
+    <!-- ── FOOTER HINT ────────────────────────────────── -->
+    <div class="md-footer-hint">
+      <svg
+        style="width: 0.875rem; height: 0.875rem; color: var(--text-light); flex-shrink: 0"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      La mise en forme de votre contenu se fait avec le langage de balisage
+      <a href="https://www.markdownguide.org" target="_blank" rel="noopener">Markdown</a>
+    </div>
+  </div>
+
+  <div class="md-preview-wrap">
+    <div class="md-preview-header">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+        <circle cx="12" cy="12" r="3"></circle>
+      </svg>
+      <span>Prévisualisation</span>
     </div>
 
-    <ModalNat
-      :id="this.getNameModale('modalMarkdownEditor')"
-      :show="this.tabModal.modalMarkdownEditor"
-      @close-modal="this.closeModal"
-      :optionModalSize="'modal-lg'"
-      :option-show-close-btn="false"
-    >
-      <template #title> <i class="bi bi-plus-circle-fill"></i> {{ this.titleModal }} </template>
-      <template #body>
-        <div>
-          <div class="mb-3">
-            <label :for="'link-modal-' + this.id" class="form-label">{{ this.linkLabelModal }}</label>
-            <input type="text" class="form-control" :id="'link-modal-' + this.id" placeholder="" v-model="linkModal" />
-          </div>
-          <div class="mb-3">
-            <label :for="'text-modal-' + this.id" class="form-label">Texte</label>
-            <input type="text" class="form-control" :id="'text-modal-' + this.id" placeholder="" v-model="textModal" />
-          </div>
-        </div>
-      </template>
-      <template #footer>
-        <button type="button" class="btn btn-primary" @click="addLink(false, this.isImage)">
-          <i class="bi bi-check2-circle"></i> {{ this.meTranslate.modalBtnValide }}
-        </button>
-      </template>
-    </ModalNat>
+    <div class="md-preview-body">
+      <h1>Editeur Markdown</h1>
 
-    <ModalNat
-      :id="this.getNameModale('modalInternalLink')"
-      :show="this.tabModal.modalInternalLink"
-      @close-modal="this.closeModal"
-      :optionModalSize="'modal-lg'"
-      :option-show-close-btn="false"
-    >
-      <template #title> <i class="bi bi-link-45deg"></i> {{ this.meTranslate.modaleInternalLink.title }} </template>
-      <template #body>
-        <label for="liste-column-row" class="form-label">{{ this.meTranslate.modaleInternalLink.labelSearch }}</label>
-        <div class="input-group mb-3">
-          <input
-            type="text"
-            class="form-control"
-            id="search-page"
-            v-model="this.searchPageInternalLink"
-            :placeholder="this.meTranslate.modaleInternalLink.placeHolderSearch"
-          />
-          <select
-            class="form-select"
-            id="id-list-page"
-            size="1"
-            style="width: 40%"
-            v-model="selectInternalLink"
-            @change="this.updateTextInternalLink"
-          >
-            <option v-for="page in this.filteredPage" :value="page.id" :data-title="page.title">
-              {{ page.title }}
-            </option>
-          </select>
-        </div>
-        <label for="liste-column-row" class="form-label">{{ this.meTranslate.modaleInternalLink.labelText }}</label>
-        <input
-          type="text"
-          class="form-control"
-          id="text-external-link"
-          v-model="this.textInternalLink"
-          :placeholder="this.meTranslate.modaleInternalLink.placeHolderTxt"
+      <p>Ceci est un éditeur qui prend en charge le markdown</p>
+
+      <p>
+        Ceci est un <a href="https://www.google.fr" target="_blank">Lien Google</a>
+        et ceci une image
+        <img
+          src="https://lh3.googleusercontent.com/ogw/AOLn63EBcXl7rZYf06N2bijCt_itpKuVkmD8mr0RGrJUVA=s32-c-mo"
+          alt="Image"
         />
-      </template>
-      <template #footer>
-        <button
-          type="button"
-          class="btn btn-primary"
-          @click="this.addInternalLink(this.selectInternalLink, this.textInternalLink)"
-        >
-          <i class="bi bi-check2-circle"></i> {{ this.meTranslate.modalBtnValide }}
-        </button>
-      </template>
-    </ModalNat>
+      </p>
 
-    <div
-      class="modal fade"
-      :id="this.getNameModale('modal-markdown-mediatheque')"
-      data-bs-backdrop="static"
-      data-bs-keyboard="false"
-      tabindex="-1"
-    >
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-          <MediaModalMarkdown
-            :medias="this.dataMedia"
-            :translate="this.meTranslate.mediathequeMarkdown"
-            :current-folder="this.currentFolder"
-            :loading="this.loadingMedia"
-            @close-modale="this.closeModalMediatheque"
-            @select-media="this.selectMedia"
-            @load-media="this.loadMedia"
-          >
-          </MediaModalMarkdown>
-        </div>
-      </div>
-    </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Fonction</th>
+            <th>Code</th>
+            <th>Rendu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Italic</td>
+            <td><code>*text*</code></td>
+            <td><em>text</em></td>
+          </tr>
+          <tr>
+            <td>Gras</td>
+            <td><code>**text**</code></td>
+            <td><strong>text</strong></td>
+          </tr>
+          <tr>
+            <td>barré</td>
+            <td><code>~~text~~</code></td>
+            <td><s>text</s></td>
+          </tr>
+        </tbody>
+      </table>
 
-    <div class="editor">
-      <div class="header mb-2">
-        <div
-          class="btn btn-secondary btn-sm me-1"
-          @click="this.addElement('****', '2', true)"
-          :title="this.meTranslate.btnBold"
-        >
-          <i class="bi bi-type-bold"></i>
-        </div>
-        <div
-          class="btn btn-secondary btn-sm me-1"
-          @click="this.addElement('**', '1', true)"
-          :title="this.meTranslate.btnItalic"
-        >
-          <i class="bi bi-type-italic"></i>
-        </div>
-        <div
-          class="btn btn-secondary btn-sm me-1"
-          @click="this.addElement('~~~~', '2', true)"
-          :title="this.meTranslate.btnStrike"
-        >
-          <i class="bi bi-type-strikethrough"></i>
-        </div>
-        <div
-          class="btn btn-secondary btn-sm me-1"
-          @click="this.addElement('> ', '0', false)"
-          :title="this.meTranslate.btnQuote"
-        >
-          <i class="bi bi-quote"></i>
-        </div>
-        <div
-          class="btn btn-secondary btn-sm me-1"
-          @click="this.addElement('- ', '0', false)"
-          :title="this.meTranslate.btnList"
-        >
-          <i class="bi bi-list-ul"></i>
-        </div>
-        <div
-          class="btn btn-secondary btn-sm me-1"
-          @click="this.addElement('1. ', '0', false)"
-          :title="this.meTranslate.btnListNumber"
-        >
-          <i class="bi bi-list-ol"></i>
-        </div>
-        <div class="btn btn-secondary btn-sm me-1" @click="this.addTable" :title="this.meTranslate.btnTable">
-          <i class="bi bi-table"></i>
-        </div>
-        <div class="btn btn-secondary btn-sm me-1" @click="this.addLink(true, false)" :title="this.meTranslate.btnLink">
-          <i class="bi bi-link"></i>
-        </div>
-        <div
-          class="btn btn-secondary btn-sm me-1"
-          @click="this.openModalInternalLink"
-          :title="this.meTranslate.btnLinkInterne"
-        >
-          <i class="bi bi-link-45deg"></i>
-        </div>
-        <div class="btn btn-secondary btn-sm me-1" @click="this.addLink(true, true)" :title="this.meTranslate.btnImage">
-          <i class="bi bi-image"></i>
-        </div>
-        <div class="btn btn-secondary btn-sm me-1" @click="this.addCode" :title="this.meTranslate.btnCode">
-          <i class="bi bi-code"></i>
-        </div>
-        <div
-          class="btn btn-secondary btn-sm me-1"
-          @click="this.openModalMediatheque"
-          :title="this.meTranslate.btnMediatheque"
-        >
-          <i class="bi bi-images"></i>
-        </div>
-
-        <div class="dropdown float-start me-1">
-          <button
-            class="btn btn-secondary btn-sm dropdown-toggle"
-            :title="this.meTranslate.titreLabel"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <i class="bi bi-type-h1"></i>
-          </button>
-          <ul class="dropdown-menu">
-            <li>
-              <a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('# ', '0', false)">
-                {{ this.meTranslate.titreH1 }}</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('## ', '0', false)">
-                {{ this.meTranslate.titreH2 }}</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('### ', '0', false)">
-                {{ this.meTranslate.titreH3 }}</a
-              >
-            </li>
-            <li>
-              <a class="dropdown-item no-control" style="cursor: pointer" @click="this.addElement('#### ', '0', false)">
-                {{ this.meTranslate.titreH4 }}</a
-              >
-            </li>
-            <li>
-              <a
-                class="dropdown-item no-control"
-                style="cursor: pointer"
-                @click="this.addElement('##### ', '0', false)"
-              >
-                {{ this.meTranslate.titreH5 }}</a
-              >
-            </li>
-            <li>
-              <a
-                class="dropdown-item no-control"
-                style="cursor: pointer"
-                @click="this.addElement('###### ', '0', false)"
-              >
-                {{ this.meTranslate.titreH6 }}</a
-              >
-            </li>
-          </ul>
-        </div>
-        <div class="dropdown float-start me-1" v-if="this.meKeyWords.length !== 0">
-          <button
-            class="btn btn-secondary btn-sm dropdown-toggle"
-            :title="this.meTranslate.btnKeyWord"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            {{ this.meTranslate.btnKeyWord }} <i class="bi bi-key-fill"></i>
-          </button>
-          <ul class="dropdown-menu">
-            <li v-for="(label, key) in this.meKeyWords">
-              <a class="dropdown-item" style="cursor: pointer" @click="this.addElement('[[' + key + ']]', '0', false)">
-                {{ label }}</a
-              >
-            </li>
-          </ul>
-        </div>
-        <div class="float-end">
-          <div class="btn btn-secondary btn-sm me-1" :title="this.meTranslate.preview" @click="this.openPreview()">
-            <i class="bi bi-box-arrow-in-up-right"></i>
-          </div>
-          <div
-            v-if="this.meSave"
-            class="btn btn-secondary btn-sm me-1"
-            @click="this.eventBtnSave"
-            :title="this.meTranslate.btnSave"
-          >
-            <i class="bi bi-save"></i>
-          </div>
-        </div>
-      </div>
-
-      <textarea
-        :id="'editor-' + this.id"
-        class="form-control"
-        :class="this.classInputTextArea()"
-        :value="this.value"
-        @input="update"
-        :rows="this.meRows"
-        @change="this.isValideInput"
-        @keyup="this.isValideInput"
-      ></textarea>
-      <div class="invalid-feedback">
-        {{ this.meTranslate.msgEmptyContent }}
-      </div>
-      <div :id="'emailHelp-' + this.id" class="form-text">
-        <div v-html="this.meTranslate.help"></div>
-        <div v-if="this.checkNoSaveData()">
-          <b
-            ><i
-              ><span class="text-warning"
-                ><i class="bi bi-exclamation-triangle-fill"></i>
-                <span v-html="this.meTranslate.warning_edit"></span></span></i
-          ></b>
-        </div>
-      </div>
-
-      <fieldset class="mt-3" v-if="this.mePreview">
-        <legend>{{ this.meTranslate.render }}</legend>
-        <div class="markdown-editor-output" v-html="output"></div>
-      </fieldset>
+      <blockquote>
+        <p>Une citation</p>
+      </blockquote>
     </div>
   </div>
 </template>
