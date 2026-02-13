@@ -3,32 +3,59 @@
 {% block title %}{{ 'mail.page_title' | trans({}, 'mail') }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'mail.page_title_h1' | trans({}, 'mail') }}</h1>
 
     {{ breadcrumb(breadcrumb) }}
 
-    <button type="button" class="btn btn-secondary float-end ms-2" data-bs-toggle="modal" data-bs-target="#help-grid-mail">
-        <i class="bi bi-question-circle"></i>
-    </button>
+    <h1 class="head-title">
+        <svg class="w-7 h-7 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="m3.5 5.5 7.893 6.036a1 1 0 0 0 1.214 0L20.5 5.5M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"></path>
+        </svg>
+        {{ 'mail.page_title_h1' | trans({}, 'mail') }}</h1>
 
-    <p>{{ 'mail.description' | trans({}, 'mail') }} <br />
-        <i class="bi bi-info-circle"></i> {{ 'mail.info' | trans({'icon': '<i class="bi bi-send-check"></i>'}, 'mail') | raw }}
+    <div class="float-end">
+        <button type="button" class="btn btn-primary btn-icon ms-2" data-modal-target="help-grid-mail"
+                data-modal-toggle="help-grid-mail">
+            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                 fill="none"
+                 viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+        </button>
+    </div>
+
+    <p class="text-sm text-[var(--text-secondary)] mb-3">{{ 'mail.description' | trans({}, 'mail') }} <br />
+        {{ 'mail.info' | trans({'icon': '<i class="bi bi-send-check"></i>'}, 'mail') | raw }}
     </p>
 
 
-    <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_mail_load_grid_data', {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit}) }}></div>
+
+
+    <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_mail_load_grid_data', {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true}) }}></div>
 
     <twig:Admin:ModaleComponent id="help-grid-mail" bgColor="bg-secondary">
-        <twig:block name="header">
-            <i class="bi bi-question-circle"></i> {{ 'mail.index.popin.help.title' | trans({}, 'mail') }}
+        <twig:block name="header"> {{ 'mail.index.popin.help.title' | trans({}, 'mail') }}
         </twig:block>
 
-        <div class="row">
-            <div class="col">
-                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-send-check-fill"></i></button> {{ 'mail.index.popin.help.send' | trans({}, 'mail') }}
+        <div class="flex flex-row gap-10">
+            <div class="flex items-center gap-3 w-75">
+                <button type="button" class="btn btn-icon btn-xs btn-ghost-primary">
+                    <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                         viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-width="2"
+                              d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"></path>
+                    </svg>
+                </button> {{ 'mail.index.popin.help.edit' | trans({}, 'mail') }}
             </div>
-            <div class="col">
-                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-pencil-fill"></i></button> {{ 'mail.index.popin.help.edit' | trans({}, 'mail') }}
+            <div class="flex items-center gap-3">
+                <button type="button" class="btn btn-icon btn-xs btn-ghost-success">
+                    <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                         viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-width="2"
+                              d="m3.5 5.5 7.893 6.036a1 1 0 0 0 1.214 0L20.5 5.5M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"></path>
+                    </svg>
+                </button> {{ 'mail.index.popin.help.send' | trans({}, 'mail') }}
             </div>
         </div>
     </twig:Admin:ModaleComponent>
