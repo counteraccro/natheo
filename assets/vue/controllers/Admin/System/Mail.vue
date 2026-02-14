@@ -1,14 +1,14 @@
 <script>
 /**
  * @author Gourdon Aymeric
- * @version 2.0
- * Formulaire pour la création / édition d'un email
+ * @version 3.0
+ * Formulaire pour édition d'un email
  */
 
 import MarkdownEditor from '../../../Components/Global/MarkdownEditor.vue';
 import axios from 'axios';
 import { Toast } from 'bootstrap';
-import { emitter } from '../../../../utils/useEvent';
+import { emitter } from '@/utils/useEvent';
 
 export default {
   name: 'Mail',
@@ -193,6 +193,94 @@ export default {
 </script>
 
 <template>
+  <div v-if="loading"></div>
+  <div v-else>
+    <div class="card rounded-lg p-5 mb-5 flex flex-wrap gap-4">
+      <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center bg-[var(--primary-lighter)]">
+        <svg class="w-5 h-5 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+          ></path>
+        </svg>
+      </div>
+
+      <div class="flex-1 min-w-0">
+        <p class="font-semibold text-sm text-[var(--text-primary)]">{{ mail.title }}</p>
+        <p class="text-sm mt-0.5 text-[var(--text-secondary)]">
+          {{ mail.description }}
+        </p>
+      </div>
+
+      <div class="basis-full lg:basis-auto lg:ml-auto flex items-end gap-2">
+        <div>
+          <select
+            class="form-input form-input-sm no-control"
+            id="select-file"
+            @change="selectLanguage($event)"
+            v-model="currentLanguage"
+          >
+            <option value="">{{ translate.listLanguage }}</option>
+            <option v-for="(language, key) in languages" v-bind:value="key">{{ language }}</option>
+          </select>
+        </div>
+        <div>
+          <button class="btn btn-sm btn-primary" @click="save">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+              ></path>
+            </svg>
+            {{ translate.link_save }}
+          </button>
+        </div>
+        <div>
+          <button class="btn btn-sm btn-success" @click="sendDemoMail">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+              />
+            </svg>
+            {{ translate.link_send }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card rounded-lg p-6 mb-4">
+      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+        <h2 class="text-lg font-bold text-[var(--text-primary)]">{{ translate.mailContentTitle }}</h2>
+        <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+          {{ translate.mailContentSubtitle }}
+        </div>
+      </div>
+
+      <markdown-editor
+        :key="mail.key"
+        :me-id="String(mail.id)"
+        :me-value="mail.contentTrans"
+        :me-rows="10"
+        :me-translate="translateEditor"
+        :me-key-words="mail.keyWords"
+        :me-save="false"
+        :me-preview="true"
+        @editor-value=""
+        @editor-value-change="saveContent"
+      >
+      </markdown-editor>
+    </div>
+  </div>
+
+  <!-- old
+
   <div>
     <select
       class="form-select no-control"
@@ -309,7 +397,7 @@ export default {
       </div>
       <div class="toast-body" v-html="this.toasts.error.msg"></div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <style scoped></style>
