@@ -36,4 +36,4 @@ demo_overwrite.guide.step-3.text-6: '<b>overwrite</b> : La configuration de la s
 demo_overwrite.guide.step-3.text-7: '<b>route</b> : La nouvelle route, dans notre exemple <code>admin_overwrite_page_demo</code>.'
 demo_overwrite.guide.step-3.text-8: '<b>parameters</b> : Si votre route comporte des paramètres, renseignez-les ici sous la forme clé : valeur, où clé correspond au nom du paramètre et valeur à son type de donnée.'
 demo_overwrite.guide.step-4.title: "Étape 4 - C'est terminé !"
-demo_overwrite.guide.step-4.text-1: "Félicitations, vous venez de surcharger une URL interne du CMS avec votre propre code. Bravo !"
+demo_overwrite.guide.step-4.text-1: 'Félicitations, vous venez de surcharger une URL interne du CMS avec votre propre code. Bravo !'

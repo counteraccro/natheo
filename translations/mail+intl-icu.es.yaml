@@ -24,3 +24,5 @@ mail.toast.time: __mail.toast.time
 mail.link.save: __mail.link.save
 mail.link.send: __mail.link.send
 mail.link.cant.save: __mail.link.cant.save
+mail.content.title: __mail.content.title
+mail.content.subtitle: __mail.content.subtitle

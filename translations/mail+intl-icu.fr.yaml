@@ -24,3 +24,5 @@ mail.toast.time: "A l'instant"
 mail.link.save: Sauvegarder
 mail.link.send: "Tester l'email"
 mail.link.cant.save: "La sauvegarde n'est pas possible pour le moment"
+mail.content.title: "Contenu de l'email"
+mail.content.subtitle: "N'oubliez pas que vous pouvez éditer l'email dans toutes les langues géré par le CMS"
