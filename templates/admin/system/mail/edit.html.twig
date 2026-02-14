@@ -3,12 +3,18 @@
 {% block title %}{{ 'mail.edit_page_title' | trans({}, 'mail') }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'mail.edit_page_title_h1' | trans({}, 'mail') }}</h1>
 
     {{ breadcrumb(breadcrumb) }}
 
+    <h1 class="head-title">
+        <svg class="w-7 h-7 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="m3.5 5.5 7.893 6.036a1 1 0 0 0 1.214 0L20.5 5.5M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"></path>
+        </svg>
+        {{ 'mail.edit_page_title_h1' | trans({}, 'mail') }}</h1>
+
     {% set title =  mail.title | trans({}) %}
-    <p>{{ 'mail.edit_page_description' | trans({'email' : title}, 'mail') | raw }}</p>
+    <p class="text-sm text-[var(--text-secondary)] mb-3">{{ 'mail.edit_page_description' | trans({'email' : title}, 'mail') | raw }}</p>
 
 
     <div {{ vue_component('Admin/System/Mail', {'url_data' : path('admin_mail_load_data', {'id' : mail.id})}) }}></div>
