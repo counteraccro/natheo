@@ -89,9 +89,8 @@ class MailService extends AppAdminService
     {
         $translator = $this->getTranslator();
 
-        $return = [];
         $mailTranslation = $mail->geMailTranslationByLocale($locale);
-        $return[$mail->getId()] = [
+        return [
             'id' => $mail->getId(),
             'key' => rand(1, 9) . rand(1, 9) . rand(1, 9) . rand(1, 9),
             'title' => $translator->trans($mail->getTitle()),
@@ -100,7 +99,6 @@ class MailService extends AppAdminService
             'titleTrans' => $mailTranslation->getTitle(),
             'contentTrans' => $mailTranslation->getContent(),
         ];
-        return $return;
     }
 
     /**
