@@ -48,7 +48,7 @@ class MailServiceTest extends AppWebTestCase
         $mail = $this->mailRepository->findOneBy(['key' => MailKey::MAIL_CHANGE_PASSWORD]);
         $result = $this->mailService->getMailFormat('fr', $mail);
         $this->assertNotEmpty($result);
-        $this->assertEquals($this->translator->trans($mail->getTitle()), $result[$mail->getId()]['title']);
+        $this->assertEquals($this->translator->trans($mail->getTitle()), $result['title']);
     }
 
     /**
