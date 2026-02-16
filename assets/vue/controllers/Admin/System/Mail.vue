@@ -1,18 +1,24 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
  * @version 3.0
  * Formulaire pour édition d'un email
  */
 
-import MarkdownEditor from '../../../Components/Global/MarkdownEditor.vue';
+import { defineComponent, ref } from 'vue';
+import MarkdownEditor from '../../../Components/Global/MarkdownEditor/MarkdownEditor.vue';
 import axios from 'axios';
-import { Toast } from 'bootstrap';
 import { emitter } from '@/utils/useEvent';
+import Toast from '@/vue/Components/Global/Toast.vue';
+import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
+import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
+import { InternalLinkModule } from '@/ts/MarkdownEditor/modules/internalLink';
+import { EditorModule } from '@/ts/MarkdownEditor/MarkdownEditor.types';
+import InternalLink from '@/vue/Components/Global/MarkdownEditor/InternalLink.vue';
 
 export default {
   name: 'Mail',
-  components: { MarkdownEditor },
+  components: { InternalLink, SkeletonText, SkeletonForm, Toast, MarkdownEditor },
   props: {
     url_data: String,
   },
@@ -26,29 +32,31 @@ export default {
       loading: false,
       url_save: '',
       url_demo: '',
-      isValideTitle: '',
-      content: '',
-      title: '',
+      isValideTitle: true,
       canSave: true,
       toasts: {
-        success: {
-          toast: [],
+        toastSuccess: {
+          show: false,
           msg: '',
         },
-        error: {
-          toast: [],
+        toastError: {
+          show: false,
           msg: '',
         },
       },
     };
   },
+
+  setup() {
+    const editorModules: EditorModule[] = [InternalLinkModule];
+
+    return {
+      editorModules,
+      // ... reste de tes variables
+    };
+  },
+
   mounted() {
-    let toastSuccess = document.getElementById('live-toast-success');
-    this.toasts.success.toast = Toast.getOrCreateInstance(toastSuccess);
-
-    let toastError = document.getElementById('live-toast-error');
-    this.toasts.error.toast = Toast.getOrCreateInstance(toastError);
-
     this.loadData();
   },
 
@@ -93,7 +101,7 @@ export default {
      * Vérifie si on peut sauvegarder ou non
      */
     checkCanSave() {
-      this.canSave = this.content !== '' && this.title !== '';
+      this.canSave = this.mail.contentTrans !== '' && this.mail.titleTrans !== '';
     },
 
     /**
@@ -101,10 +109,10 @@ export default {
      * @param event
      */
     checkTitle(event) {
-      this.isValideTitle = '';
+      this.isValideTitle = true;
       let value = event.target.value;
       if (value === '') {
-        this.isValideTitle = 'is-invalid';
+        this.isValideTitle = false;
       }
       this.checkCanSave();
     },
@@ -115,27 +123,19 @@ export default {
      * @param id
      */
     saveContent(id, value) {
-      this.content = value;
+      console.log(value);
+      this.mail.contentTrans = value;
       this.checkCanSave();
-    },
-
-    /**
-     * Mis à jour du titre et contenu
-     * @param title
-     * @param content
-     */
-    updateTitleContent(title, content) {
-      this.content = content;
-      this.title = title;
     },
 
     /**
      * Permet de sauvegarder le content
      */
     save() {
+      this.checkCanSave();
       if (!this.canSave) {
-        this.toasts.error.msg = this.translate.msg_cant_save;
-        this.toasts.error.toast.show();
+        this.toasts.toastError.msg = this.translate.msg_cant_save;
+        this.toasts.toastError.show = true;
         return false;
       }
 
@@ -143,16 +143,16 @@ export default {
       axios
         .post(this.url_save, {
           locale: this.currentLanguage,
-          content: this.content,
-          title: this.title,
+          content: this.mail.contentTrans,
+          title: this.mail.titleTrans,
         })
         .then((response) => {
           if (response.data.success === true) {
-            this.toasts.success.msg = response.data.msg;
-            this.toasts.success.toast.show();
+            this.toasts.toastSuccess.msg = response.data.msg;
+            this.toasts.toastSuccess.show = true;
           } else {
-            this.toasts.error.msg = response.data.msg;
-            this.toasts.error.toast.show();
+            this.toasts.toastError.msg = response.data.msg;
+            this.toasts.toastError.show = true;
           }
         })
         .catch((error) => {
@@ -173,11 +173,11 @@ export default {
         .get(this.url_demo)
         .then((response) => {
           if (response.data.success === true) {
-            this.toasts.success.msg = response.data.msg;
-            this.toasts.success.toast.show();
+            this.toasts.toastSuccess.msg = response.data.msg;
+            this.toasts.toastSuccess.show = true;
           } else {
-            this.toasts.error.msg = response.data.msg;
-            this.toasts.error.toast.show();
+            this.toasts.toastError.msg = response.data.msg;
+            this.toasts.toastError.show = true;
           }
         })
         .catch((error) => {
@@ -188,12 +188,27 @@ export default {
           this.loading = false;
         });
     },
+
+    /**
+     * Ferme un toast en fonction de son id
+     * @param nameToast
+     */
+    closeToast(nameToast) {
+      this.toasts[nameToast].show = false;
+    },
   },
 };
 </script>
 
 <template>
-  <div v-if="loading"></div>
+  <div v-if="loading">
+    <div class="card rounded-lg p-6 mb-4">
+      <skeleton-text nb-paragraphe="1" />
+    </div>
+    <div class="card rounded-lg p-6 mb-4">
+      <skeleton-form />
+    </div>
+  </div>
   <div v-else>
     <div class="card rounded-lg p-5 mb-5 flex flex-wrap gap-4">
       <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center bg-[var(--primary-lighter)]">
@@ -263,20 +278,66 @@ export default {
         </div>
       </div>
 
-      <markdown-editor
-        :key="mail.key"
-        :me-id="String(mail.id)"
-        :me-value="mail.contentTrans"
-        :me-rows="10"
-        :me-translate="translateEditor"
-        :me-key-words="mail.keyWords"
-        :me-save="false"
-        :me-preview="true"
-        @editor-value=""
-        @editor-value-change="saveContent"
-      >
-      </markdown-editor>
+      <div class="mb-3">
+        <label for="titleTrans" class="form-label">{{ translate.titleTrans }}</label>
+        <input
+          type="text"
+          class="form-input"
+          :class="isValideTitle ? '' : 'is-invalid'"
+          id="titleTrans"
+          v-model="mail.titleTrans"
+          @change="checkTitle"
+        />
+        <div v-if="!isValideTitle" class="form-text text-error">
+          {{ translate.msgEmptyTitle }}
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <markdown-editor
+          :key="mail.key"
+          :me-id="String(mail.id)"
+          :me-value="mail.contentTrans"
+          :me-rows="10"
+          :me-translate="translateEditor"
+          :me-key-words="[
+            { label: 'Prénom', keyword: '[[user.firstname]]' },
+            { label: 'Nom du site', keyword: '[[site.name]]' },
+          ]"
+          :me-modules="editorModules"
+          :me-save="true"
+          :me-preview="true"
+          @editor-value="saveContent"
+          @editor-value-change="saveContent"
+        >
+        </markdown-editor>
+      </div>
     </div>
+  </div>
+
+  <div class="toast-container position-fixed top-0 end-0 p-2">
+    <toast
+      :id="'toastSuccess'"
+      :option-class-header="'text-success'"
+      :show="this.toasts.toastSuccess.show"
+      @close-toast="this.closeToast"
+    >
+      <template #body>
+        <div v-html="this.toasts.toastSuccess.msg"></div>
+      </template>
+    </toast>
+
+    <toast
+      :id="'toastError'"
+      :option-class-header="'text-danger'"
+      :show="this.toasts.toastError.show"
+      :type="'danger'"
+      @close-toast="this.closeToast"
+    >
+      <template #body>
+        <div v-html="this.toasts.toastError.msg"></div>
+      </template>
+    </toast>
   </div>
 
   <!-- old
@@ -364,39 +425,6 @@ export default {
       </div>
     </div>
   </div>
-
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <div
-      id="live-toast-success"
-      class="toast border border-secondary bg-white"
-      role="alert"
-      aria-live="assertive"
-      aria-atomic="true"
-    >
-      <div class="toast-header text-success">
-        <i class="bi bi-check-circle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.translate.toast_title_success }}</strong>
-        <small class="text-black-50">{{ this.translate.toast_time }}</small>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-      <div class="toast-body" v-html="this.toasts.success.msg"></div>
-    </div>
-
-    <div
-      id="live-toast-error"
-      class="toast border border-secondary bg-white"
-      role="alert"
-      aria-live="assertive"
-      aria-atomic="true"
-    >
-      <div class="toast-header text-danger">
-        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ this.translate.toast_title_error }}</strong>
-        <small class="text-black-50">{{ this.translate.toast_time }}</small>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-      <div class="toast-body" v-html="this.toasts.error.msg"></div>
-    </div>
   </div> -->
 </template>
 
