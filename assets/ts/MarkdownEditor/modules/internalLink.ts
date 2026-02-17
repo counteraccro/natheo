@@ -1,11 +1,8 @@
 /**
- * internalLinkModule.ts
+ * @author Gourdon Aymeric
+ * @version 2.0
  *
  * Module "lien interne" pour la toolbar du MarkdownEditor.
- * Utilise le pattern CustomEvent de Nathéo :
- *   - le module dispatch un événement sur window
- *   - le composant parent écoute et ouvre sa propre modale
- *   - la modale appelle onSelect() avec la page choisie
  */
 
 import type { EditorModule, EditorApi } from '@/ts/MarkdownEditor/MarkdownEditor.types';
@@ -15,8 +12,6 @@ import type { EditorModule, EditorApi } from '@/ts/MarkdownEditor/MarkdownEditor
 export interface InternalPage {
   id: number;
   title: string;
-  url: string;
-  locale?: string;
 }
 
 export interface NatheoInternalLinkEvent extends CustomEvent {
@@ -52,7 +47,7 @@ export const InternalLinkModule: EditorModule = {
           // Récupère le texte sélectionné dans l'éditeur
           // si rien n'est sélectionné, on utilise le titre de la page
           const { text } = api.getSelection();
-          api.wrapSelection('[', `](${page.url})`, text || page.title);
+          api.wrapSelection('[', `](P#${page.id})`, text || page.title);
         },
       },
     }) as NatheoInternalLinkEvent;

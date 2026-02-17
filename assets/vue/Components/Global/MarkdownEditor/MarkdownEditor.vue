@@ -95,6 +95,7 @@ const BUTTON_DEFS: Record<string, ButtonDef> = {
 
 export default defineComponent({
   name: 'MarkdownEditor',
+  computed: {},
   components: { InternalLink },
 
   props: {
@@ -549,7 +550,7 @@ export default defineComponent({
     />
   </div>
 
-  <InternalLink :url="urls.urlInternalLink" />
+  <InternalLink :url="urls.urlInternalLink" :translate="meTranslate.modaleInternalLink" />
 </template>
 
 <style scoped>
