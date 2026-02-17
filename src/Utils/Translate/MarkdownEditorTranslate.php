@@ -67,18 +67,8 @@ class MarkdownEditorTranslate extends AppTranslate
                 'editor.modale.internal.link.label.search',
                 domain: 'editor_markdown',
             ),
-            'labelText' => $this->translator->trans(
-                'editor.modale.internal.link.label.text',
-                domain: 'editor_markdown',
-            ),
-            'placeHolderSearch' => $this->translator->trans(
-                'editor.modale.internal.link.place.holder.search',
-                domain: 'editor_markdown',
-            ),
-            'placeHolderTxt' => $this->translator->trans(
-                'editor.modale.internal.link.place.holder.text',
-                domain: 'editor_markdown',
-            ),
+            'noResult' => $this->translator->trans('editor.modale.internal.link.noResult', domain: 'editor_markdown'),
+            'statistique' => $this->translator->trans('editor.modale.internal.link.stats', domain: 'editor_markdown'),
         ];
     }
 
