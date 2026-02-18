@@ -23,7 +23,7 @@ editor.titre.h4: 'Titre H4'
 editor.titre.h5: 'Titre H5'
 editor.titre.h6: 'Titre H6'
 editor.button.save: Sauvegarder
-editor.help: 'La mise en forme de votre contenu se fait avec langage de balisage <a href="https://www.ionos.fr/digitalguide/sites-internet/developpement-web/markdown/">Markdown</a>'
+editor.help: 'La mise en forme de votre contenu se fait avec le langage de balisage '
 editor.render: Prévisualisation
 editor.button.keyword: 'Mots clés'
 editor.input.empty: 'Le champ ne peut pas être vide'
@@ -51,3 +51,4 @@ editor.modale.internal.link.title: 'Ajouter un lien interne'
 editor.modale.internal.link.label.search: 'Rechercher une page'
 editor.modale.internal.link.noResult: 'Aucune page trouvée'
 editor.modale.internal.link.stats: 'pages disponibles'
+editor.textarea.placeholder: 'Rédigez votre contenu en Markdown…'
