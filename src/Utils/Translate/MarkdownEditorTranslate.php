@@ -50,6 +50,7 @@ class MarkdownEditorTranslate extends AppTranslate
             'msgEmptyContent' => $this->translator->trans('editor.input.empty', domain: 'editor_markdown'),
             'btnMediatheque' => $this->translator->trans('editor.btn.mediatheque', domain: 'editor_markdown'),
             'warning_edit' => $this->translator->trans('editor.warning.edit', domain: 'editor_markdown'),
+            'textareaPlaceholder' => $this->translator->trans('editor.textarea.placeholder', domain: 'editor_markdown'),
             'mediathequeMarkdown' => $this->getTranslateMediateque(),
             'modaleInternalLink' => $this->getTranslateModaleInternalLink(),
         ];

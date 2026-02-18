@@ -5,7 +5,6 @@
  * Formulaire pour édition d'un email
  */
 
-import { defineComponent, ref } from 'vue';
 import MarkdownEditor from '../../../Components/Global/MarkdownEditor/MarkdownEditor.vue';
 import axios from 'axios';
 import { emitter } from '@/utils/useEvent';
@@ -34,6 +33,7 @@ export default {
       url_demo: '',
       isValideTitle: true,
       canSave: true,
+      KeyWords: {},
       toasts: {
         toastSuccess: {
           show: false,
@@ -83,6 +83,7 @@ export default {
         })
         .finally(() => {
           this.loading = false;
+          this.KeyWords = this.convertKeywords(this.mail.keyWords);
         });
     },
 
@@ -95,6 +96,13 @@ export default {
       if (this.currentLanguage !== '') {
         this.loadData();
       }
+    },
+
+    convertKeywords(raw: Record<string, string>): KeyWord[] {
+      return Object.entries(raw).map(([key, label]) => ({
+        label,
+        keyword: `[[${key}]]`,
+      }));
     },
 
     /**
@@ -203,7 +211,7 @@ export default {
 <template>
   <div v-if="loading">
     <div class="card rounded-lg p-6 mb-4">
-      <skeleton-text nb-paragraphe="1" />
+      <skeleton-text :nb-paragraphe="1" />
     </div>
     <div class="card rounded-lg p-6 mb-4">
       <skeleton-form />
@@ -298,12 +306,9 @@ export default {
           :key="mail.key"
           :me-id="String(mail.id)"
           :me-value="mail.contentTrans"
-          :me-rows="10"
+          :me-rows="15"
           :me-translate="translateEditor"
-          :me-key-words="[
-            { label: 'Prénom', keyword: '[[user.firstname]]' },
-            { label: 'Nom du site', keyword: '[[site.name]]' },
-          ]"
+          :me-key-words="KeyWords"
           :me-modules="editorModules"
           :me-save="true"
           :me-preview="true"
@@ -319,113 +324,26 @@ export default {
     <toast
       :id="'toastSuccess'"
       :option-class-header="'text-success'"
-      :show="this.toasts.toastSuccess.show"
-      @close-toast="this.closeToast"
+      :show="toasts.toastSuccess.show"
+      @close-toast="closeToast"
     >
       <template #body>
-        <div v-html="this.toasts.toastSuccess.msg"></div>
+        <div v-html="toasts.toastSuccess.msg"></div>
       </template>
     </toast>
 
     <toast
       :id="'toastError'"
       :option-class-header="'text-danger'"
-      :show="this.toasts.toastError.show"
+      :show="toasts.toastError.show"
       :type="'danger'"
-      @close-toast="this.closeToast"
+      @close-toast="closeToast"
     >
       <template #body>
-        <div v-html="this.toasts.toastError.msg"></div>
+        <div v-html="toasts.toastError.msg"></div>
       </template>
     </toast>
   </div>
-
-  <!-- old
-
-  <div>
-    <select
-      class="form-select no-control"
-      id="select-file"
-      @change="selectLanguage($event)"
-      v-model="this.currentLanguage"
-    >
-      <option value="">{{ this.translate.listLanguage }}</option>
-      <option v-for="(language, key) in this.languages" v-bind:value="key">{{ language }}</option>
-    </select>
-  </div>
-
-  <div :class="this.loading === true ? 'block-grid' : ''">
-    <div v-if="this.loading" class="overlay">
-      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000">
-        <div class="spinner-border text-primary" role="status"></div>
-        <span class="txt-overlay">{{ this.translate.loading }}</span>
-      </div>
-    </div>
-    <div v-for="mail in this.mail">
-      {{ this.updateTitleContent(mail.titleTrans, mail.contentTrans) }}
-      <div class="card mt-2">
-        <div class="card-header text-bg-secondary">
-          <div class="mt-1 float-start">{{ mail.title }}</div>
-
-          <div class="dropdown">
-            <button
-              class="btn btn-secondary btn-sm dropdown-toggle float-end"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <i class="bi bi-list"></i>
-            </button>
-            <ul class="dropdown-menu">
-              <li>
-                <a class="dropdown-item no-control" href="#" @click="this.save"
-                  ><i class="bi bi-save"></i> {{ this.translate.link_save }}</a
-                >
-              </li>
-              <li>
-                <a class="dropdown-item no-control" href="#" @click="this.sendDemoMail"
-                  ><i class="bi bi-send-check-fill"></i> {{ this.translate.link_send }}</a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="card-body">
-          <p>{{ mail.description }}</p>
-
-          <div class="mb-3">
-            <label for="titleTrans" class="form-label">{{ this.translate.titleTrans }}</label>
-            <input
-              type="text"
-              class="form-control"
-              :class="this.isValideTitle"
-              id="titleTrans"
-              v-model="mail.titleTrans"
-              @change="this.checkTitle"
-            />
-            <div id="titleTransError" class="invalid-feedback">
-              {{ this.translate.msgEmptyTitle }}
-            </div>
-          </div>
-
-          <markdown-editor
-            :key="mail.key"
-            :me-id="String(mail.id)"
-            :me-value="mail.contentTrans"
-            :me-rows="10"
-            :me-translate="translateEditor"
-            :me-key-words="mail.keyWords"
-            :me-save="false"
-            :me-preview="true"
-            @editor-value=""
-            @editor-value-change="saveContent"
-          >
-          </markdown-editor>
-        </div>
-      </div>
-    </div>
-  </div>
-  </div> -->
 </template>
 
 <style scoped></style>
