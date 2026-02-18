@@ -5,7 +5,7 @@
  * Éditeur Markdown — Vue 3 Composition API (defineComponent + setup)
  */
 
-import { defineComponent, ref, computed, watch, type PropType } from 'vue';
+import { computed, defineComponent, type PropType, ref, watch } from 'vue';
 import { useEditor } from '@/ts/MarkdownEditor/markdownEditorCore';
 import type {
   EditorModule,
@@ -14,6 +14,7 @@ import type {
 } from '@/ts/MarkdownEditor/MarkdownEditor.types';
 import axios from 'axios';
 import InternalLink from '@/vue/Components/Global/MarkdownEditor/InternalLink.vue';
+import { Dropdown, initDropdowns } from 'flowbite';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -147,6 +148,7 @@ export default defineComponent({
 
   data() {
     return {
+      loading: false,
       urls: {
         urlMedia: '',
         urlPreview: '',
@@ -154,11 +156,15 @@ export default defineComponent({
         urlInternalLink: '',
         urlLoadData: '/admin/fr/markdown/ajax/load-datas',
       },
+      dropdown: {
+        header: {} as InstanceType<typeof Dropdown>,
+      },
     };
   },
 
   mounted() {
     this.loadData();
+    initDropdowns();
   },
 
   setup(props, { emit }) {
@@ -170,6 +176,10 @@ export default defineComponent({
     const markdown = editor.markdown;
     const html = editor.html;
     const wordCount = editor.wordCount;
+
+    watch(markdown, (val) => {
+      emit('editor-value-change', props.meId, val);
+    });
 
     // ── Toolbar résolue ──────────────────────────────────────────────────────
     // 'save' est exclu ici — il est rendu séparément en fin de toolbar,
@@ -193,10 +203,6 @@ export default defineComponent({
 
     const ddHeadingRef = ref<HTMLDetailsElement | null>(null);
     const ddKeywordsRef = ref<HTMLDetailsElement | null>(null);
-
-    function closeDropdown(el: HTMLDetailsElement | null): void {
-      if (el) el.removeAttribute('open');
-    }
 
     // ── Actions toolbar ──────────────────────────────────────────────────────
 
@@ -241,18 +247,16 @@ export default defineComponent({
 
     function insertHeading(level: number): void {
       editor.insertLinePrefix('#'.repeat(level) + ' ');
-      closeDropdown(ddHeadingRef.value);
+      document.getElementById('heading-dropdown')?.classList.add('hidden');
     }
 
     function insertKeyword(keyword: string): void {
       editor.insertText(keyword);
-      closeDropdown(ddKeywordsRef.value);
+      document.getElementById('keywords-dropdown')?.classList.add('hidden');
     }
 
     function onInput(e: Event): void {
-      const val = (e.target as HTMLTextAreaElement).value;
-      markdown.value = val;
-      emit('editor-value-change', props.meId, val);
+      markdown.value = (e.target as HTMLTextAreaElement).value;
     }
 
     function onSave(): void {
@@ -299,7 +303,7 @@ export default defineComponent({
     }
 
     function onBlur(): void {
-      emit('editor-value', markdown.value);
+      emit('editor-value', props.meId, markdown.value);
     }
 
     // ── Utilitaires ──────────────────────────────────────────────────────────
@@ -374,8 +378,15 @@ export default defineComponent({
 
         <template v-for="name in group" :key="name">
           <!-- Dropdown Titres -->
-          <details v-if="name === 'heading'" class="tb-dropdown" ref="ddHeadingRef">
-            <summary class="tb-btn" style="padding: 0 0.625rem">
+          <div v-if="name === 'heading'" class="relative">
+            <button
+              type="button"
+              class="tb-btn no-control"
+              style="padding: 0 0.625rem"
+              data-dropdown-toggle="heading-dropdown"
+              data-dropdown-placement="bottom-start"
+              data-dropdown-offset-distance="4"
+            >
               H
               <svg
                 viewBox="0 0 24 24"
@@ -387,27 +398,38 @@ export default defineComponent({
               >
                 <path d="M6 9l6 6 6-6" />
               </svg>
-            </summary>
-            <div class="tb-dropdown-menu" style="min-width: 12rem">
-              <a
-                v-for="level in [1, 2, 3, 4, 5, 6]"
-                :key="level"
-                href="#"
-                class="tb-dropdown-item"
-                @click.prevent="insertHeading(level)"
-              >
-                <span class="item-badge">H{{ level }}</span>
-                <span class="item-label" :class="`h-preview-${level}`">{{
-                  t(`heading${level}`, `Titre ${level}`)
-                }}</span>
-                <span class="item-shortcut">{{ '#'.repeat(level) + ' ' }}</span>
-              </a>
+            </button>
+
+            <div
+              id="heading-dropdown"
+              class="tb-dropdown-menu z-10 hidden"
+              style="min-width: 12rem"
+              ref="headingDropdownRef"
+            >
+              <ul class="py-1" aria-labelledby="heading-dropdown">
+                <li v-for="level in [1, 2, 3, 4, 5, 6]" :key="level">
+                  <a href="#" class="tb-dropdown-item no-control" @click.prevent="insertHeading(level)">
+                    <span class="item-badge">H{{ level }}</span>
+                    <span class="item-label" :class="`h-preview-${level}`">{{
+                      t(`titreH${level}`, `Titre ${level}`)
+                    }}</span>
+                    <span class="item-shortcut">{{ '#'.repeat(level) + ' ' }}</span>
+                  </a>
+                </li>
+              </ul>
             </div>
-          </details>
+          </div>
 
           <!-- Dropdown Mots-clés -->
-          <details v-else-if="name === 'keywords'" class="tb-dropdown" ref="ddKeywordsRef">
-            <summary class="tb-btn" style="padding: 0 0.75rem">
+          <div v-else-if="name === 'keywords'" class="relative" ref="ddKeywordsRef">
+            <button
+              type="button"
+              class="tb-btn no-control"
+              style="padding: 0 0.75rem"
+              data-dropdown-toggle="keywords-dropdown"
+              data-dropdown-placement="bottom-start"
+              data-dropdown-offset-distance="4"
+            >
               <svg
                 class="tb-icon"
                 viewBox="0 0 24 24"
@@ -421,7 +443,7 @@ export default defineComponent({
                   d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"
                 />
               </svg>
-              {{ t('keywords', 'Mots clés') }}
+              {{ meTranslate.btnKeyWord }}
               <svg
                 class="tb-icon"
                 viewBox="0 0 24 24"
@@ -433,21 +455,20 @@ export default defineComponent({
               >
                 <path d="M6 9l6 6 6-6" />
               </svg>
-            </summary>
-            <div class="tb-dropdown-menu" style="min-width: 13rem">
-              <a
-                v-for="kw in meKeyWords"
-                :key="kw.keyword"
-                href="#"
-                class="tb-dropdown-item"
-                @click.prevent="insertKeyword(kw.keyword)"
-              >
-                <span class="item-badge">@</span>
-                <span class="item-label">{{ kw.label }}</span>
-                <span class="item-shortcut">{{ kw.keyword }}</span>
-              </a>
+            </button>
+
+            <div id="keywords-dropdown" class="tb-dropdown-menu z-10 hidden w-max" style="min-width: 13rem">
+              <ul class="py-1">
+                <li v-for="kw in meKeyWords" :key="kw.keyword">
+                  <a href="#" class="tb-dropdown-item no-control" @click.prevent="insertKeyword(kw.keyword)">
+                    <span class="item-badge">@</span>
+                    <span class="item-label">{{ kw.label }}</span>
+                    <span class="item-shortcut">{{ kw.keyword }}</span>
+                  </a>
+                </li>
+              </ul>
             </div>
-          </details>
+          </div>
 
           <!-- Boutons simples -->
           <button
@@ -474,7 +495,7 @@ export default defineComponent({
       </template>
 
       <!-- 3. Save — toujours en dernier grâce à margin-left: auto -->
-      <button v-if="hasSave" class="tb-btn tb-btn-save" :title="t('save', 'Sauvegarder')" @click="onSave">
+      <button v-if="hasSave" class="tb-btn tb-btn-save" :title="meTranslate.btnSave" @click="onSave">
         <svg
           class="tb-icon"
           viewBox="0 0 24 24"
@@ -488,7 +509,7 @@ export default defineComponent({
           <polyline points="17 21 17 13 7 13 7 21" />
           <polyline points="7 3 7 8 15 8" />
         </svg>
-        {{ t('save', 'Sauvegarder') }}
+        {{ meTranslate.btnSave }}
       </button>
     </div>
 
@@ -498,7 +519,7 @@ export default defineComponent({
       ref="textareaRef"
       :value="markdown"
       class="md-textarea form-input"
-      :placeholder="t('placeholder', 'Rédigez votre contenu en Markdown…')"
+      :placeholder="meTranslate.textareaPlaceholder"
       :style="textareaStyle"
       @input="onInput"
       @keydown="handleKeydown"
@@ -520,7 +541,7 @@ export default defineComponent({
         <line x1="12" y1="8" x2="12" y2="12" />
         <line x1="12" y1="16" x2="12.01" y2="16" />
       </svg>
-      {{ t('hint', 'La mise en forme de votre contenu se fait avec le langage de balisage') }}
+      {{ meTranslate.help }}
       <a href="https://www.markdownguide.org" target="_blank" rel="noopener">Markdown</a>
       <span class="md-footer-counts">
         {{ wordCount }} {{ t('words', 'mots') }} · {{ markdown.length }} {{ t('chars', 'car.') }}
