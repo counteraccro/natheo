@@ -1,7 +1,13 @@
 <script lang="ts">
+/**
+ * @author Gourdon Aymeric
+ * @version 3.0
+ * Module pour l'editeur Markdown, Lien internet
+ */
+
 import { defineComponent, ref, computed, watch, nextTick, onMounted, onUnmounted, type PropType } from 'vue';
 import axios from 'axios';
-import type { InternalPage, NatheoInternalLinkEvent } from '@/ts/MarkdownEditor/internalLinkModule';
+import type { InternalPage, NatheoInternalLinkEvent } from '@/ts/MarkdownEditor/modules/internalLink';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import { props } from '@vue/language-core/lib/codegen/names'; // adapte le chemin
 
@@ -43,8 +49,6 @@ export default defineComponent({
     async function loadPages(): Promise<void> {
       if (!props.url || pages.value.length > 0) return;
       const { data } = await axios.get(props.url);
-      console.log('internalLinks response:', data);
-      console.log('type:', typeof data, Array.isArray(data));
       pages.value = Object.values(data.pages ?? {}) as InternalPage[];
     }
 
