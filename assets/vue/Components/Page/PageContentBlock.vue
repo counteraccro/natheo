@@ -6,7 +6,7 @@
  */
 
 import { marked } from 'marked';
-import MarkdownEditor from '../Global/MarkdownEditor.vue';
+import MarkdownEditor from '../Global/MarkdownEditor/MarkdownEditor.vue';
 import { Modal } from 'bootstrap';
 import axios from 'axios';
 

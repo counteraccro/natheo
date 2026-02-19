@@ -6,7 +6,7 @@
  */
 import axios from 'axios';
 import FieldEditor from '../../../../Components/Global/FieldEditor.vue';
-import MarkdownEditor from '../../../../Components/Global/MarkdownEditor.vue';
+import MarkdownEditor from '../../../../Components/Global/MarkdownEditor/MarkdownEditor.vue';
 import Modal from '../../../../Components/Global/Modal.vue';
 import Toast from '../../../../Components/Global/Toast.vue';
 import OptionSystem from '../../System/Option.vue';

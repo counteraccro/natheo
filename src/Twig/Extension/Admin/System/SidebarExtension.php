@@ -192,7 +192,7 @@ class SidebarExtension extends AppAdminExtension
      */
     private function getHTMLNotification(int $nb): string
     {
-        return '<span class="ml-auto inline-flex items-center justify-center px-2 py-1 text-xs font-bold text-white bg-red-500 rounded-full">' .
+        return '<span class="ml-auto inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold text-white bg-red-500 rounded-full">' .
             $nb .
             '</span>';
     }

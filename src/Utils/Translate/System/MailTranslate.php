@@ -18,6 +18,8 @@ class MailTranslate extends AppTranslate
     {
         return [
             'listLanguage' => $this->translator->trans('mail.list.language', domain: 'mail'),
+            'mailContentTitle' => $this->translator->trans('mail.content.title', domain: 'mail'),
+            'mailContentSubtitle' => $this->translator->trans('mail.content.subtitle', domain: 'mail'),
             'loading' => $this->translator->trans('mail.loading', domain: 'mail'),
             'titleTrans' => $this->translator->trans('mail.input.trans.title', domain: 'mail'),
             'msgEmptyTitle' => $this->translator->trans('mail.input.trans.title.empty', domain: 'mail'),

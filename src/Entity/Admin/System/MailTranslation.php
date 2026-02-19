@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: MailTranslationRepository::class)]
 class MailTranslation
 {
+    public const string DEFAULT_ALIAS = 'mail_translation';
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]

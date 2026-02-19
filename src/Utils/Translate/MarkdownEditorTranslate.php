@@ -50,6 +50,7 @@ class MarkdownEditorTranslate extends AppTranslate
             'msgEmptyContent' => $this->translator->trans('editor.input.empty', domain: 'editor_markdown'),
             'btnMediatheque' => $this->translator->trans('editor.btn.mediatheque', domain: 'editor_markdown'),
             'warning_edit' => $this->translator->trans('editor.warning.edit', domain: 'editor_markdown'),
+            'textareaPlaceholder' => $this->translator->trans('editor.textarea.placeholder', domain: 'editor_markdown'),
             'mediathequeMarkdown' => $this->getTranslateMediateque(),
             'modaleInternalLink' => $this->getTranslateModaleInternalLink(),
         ];
@@ -67,18 +68,8 @@ class MarkdownEditorTranslate extends AppTranslate
                 'editor.modale.internal.link.label.search',
                 domain: 'editor_markdown',
             ),
-            'labelText' => $this->translator->trans(
-                'editor.modale.internal.link.label.text',
-                domain: 'editor_markdown',
-            ),
-            'placeHolderSearch' => $this->translator->trans(
-                'editor.modale.internal.link.place.holder.search',
-                domain: 'editor_markdown',
-            ),
-            'placeHolderTxt' => $this->translator->trans(
-                'editor.modale.internal.link.place.holder.text',
-                domain: 'editor_markdown',
-            ),
+            'noResult' => $this->translator->trans('editor.modale.internal.link.noResult', domain: 'editor_markdown'),
+            'statistique' => $this->translator->trans('editor.modale.internal.link.stats', domain: 'editor_markdown'),
         ];
     }
 

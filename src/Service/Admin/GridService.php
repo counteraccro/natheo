@@ -82,21 +82,20 @@ class GridService extends AppAdminService
     public function getFormatedSQLQuery(Paginator $paginator): array|string
     {
         $sql = $paginator->getQuery()->getSQL();
-        $parameters = $paginator->getQuery()->getParameters();
+        $parameters = $paginator->getQuery()->getParameters()->toArray();
 
-        $tmp = '';
-        foreach ($parameters as $parameter) {
-            if ($parameter->getName() == 'userId') {
-                $search = u($parameter->getName())->snake() . " = '" . $tmp . "'";
-                $replace = u($parameter->getName())->snake() . ' = ' . $parameter->getValue();
-                $sql = str_replace($search, $replace, $sql, $count);
-            } else {
-                $sql = str_replace('?', "'" . $parameter->getValue() . "'", $sql, $count);
-            }
+        $values = array_map(fn($p) => $p->getValue(), $parameters);
 
-            $tmp = $parameter->getValue();
-        }
-        return $sql;
+        $i = 0;
+        return preg_replace_callback(
+            '/\?/',
+            function () use (&$i, $values) {
+                $value = $values[$i] ?? '?';
+                $i++;
+                return "'" . addslashes($value) . "'";
+            },
+            $sql,
+        );
     }
 
     /**

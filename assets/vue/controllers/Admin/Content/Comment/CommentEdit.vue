@@ -5,7 +5,7 @@
  * @version 1.0
  */
 import axios from 'axios';
-import MarkdownEditor from '../../../../Components/Global/MarkdownEditor.vue';
+import MarkdownEditor from '../../../../Components/Global/MarkdownEditor/MarkdownEditor.vue';
 import Toast from '../../../../Components/Global/Toast.vue';
 import { emitter } from '../../../../../utils/useEvent';
 
