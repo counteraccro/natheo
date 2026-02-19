@@ -131,7 +131,6 @@ export default {
      * @param id
      */
     saveContent(id, value) {
-      console.log(value);
       this.mail.contentTrans = value;
       this.checkCanSave();
     },
@@ -250,7 +249,7 @@ export default {
           </select>
         </div>
         <div>
-          <button class="btn btn-sm btn-primary" @click="save">
+          <button class="btn btn-sm btn-primary" @click="save" :disabled="!canSave">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -312,6 +311,7 @@ export default {
           :me-modules="editorModules"
           :me-save="true"
           :me-preview="true"
+          :me-required="true"
           @editor-value="saveContent"
           @editor-value-change="saveContent"
         >
