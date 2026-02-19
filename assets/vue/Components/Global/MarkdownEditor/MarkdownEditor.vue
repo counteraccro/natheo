@@ -142,6 +142,10 @@ export default defineComponent({
         ['save'],
       ],
     },
+    meRequired: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   emits: ['editor-value', 'editor-value-change'],
@@ -369,7 +373,12 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="md-editor-wrap">
+  <div
+    class="md-editor-wrap"
+    :class="
+      meRequired && markdown === '' ? 'border-2 border-[var(--input-invalid)]' : 'border-1 border-[var(--border-color)]'
+    "
+  >
     <!-- ── TOOLBAR ─────────────────────────────────────── -->
     <div class="md-toolbar">
       <!-- 1. Groupes de boutons (save exclu) -->
@@ -409,11 +418,11 @@ export default defineComponent({
               <ul class="py-1" aria-labelledby="heading-dropdown">
                 <li v-for="level in [1, 2, 3, 4, 5, 6]" :key="level">
                   <a href="#" class="tb-dropdown-item no-control" @click.prevent="insertHeading(level)">
-                    <span class="item-badge">H{{ level }}</span>
-                    <span class="item-label" :class="`h-preview-${level}`">{{
+                    <span class="item-badge no-control">H{{ level }}</span>
+                    <span class="item-label no-control" :class="`h-preview-${level}`">{{
                       t(`titreH${level}`, `Titre ${level}`)
                     }}</span>
-                    <span class="item-shortcut">{{ '#'.repeat(level) + ' ' }}</span>
+                    <span class="item-shortcut no-control">{{ '#'.repeat(level) + ' ' }}</span>
                   </a>
                 </li>
               </ul>
@@ -461,9 +470,9 @@ export default defineComponent({
               <ul class="py-1">
                 <li v-for="kw in meKeyWords" :key="kw.keyword">
                   <a href="#" class="tb-dropdown-item no-control" @click.prevent="insertKeyword(kw.keyword)">
-                    <span class="item-badge">@</span>
-                    <span class="item-label">{{ kw.label }}</span>
-                    <span class="item-shortcut">{{ kw.keyword }}</span>
+                    <span class="item-badge no-control">@</span>
+                    <span class="item-label no-control">{{ kw.label }}</span>
+                    <span class="item-shortcut no-control">{{ kw.keyword }}</span>
                   </a>
                 </li>
               </ul>
@@ -527,9 +536,10 @@ export default defineComponent({
     />
 
     <!-- ── FOOTER ─────────────────────────────────────── -->
-    <div class="md-footer-hint">
+    <div class="md-footer-hint rounded-b-lg" :class="meRequired && markdown === '' ? 'bg-[var(--error-bg)]' : ''">
       <svg
-        style="width: 0.875rem; height: 0.875rem; color: var(--text-light); flex-shrink: 0"
+        style="width: 0.875rem; height: 0.875rem; flex-shrink: 0"
+        :class="meRequired && markdown === '' ? 'text-[var(--error-text)]' : 'text-[var(--text-light)]'"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -541,8 +551,14 @@ export default defineComponent({
         <line x1="12" y1="8" x2="12" y2="12" />
         <line x1="12" y1="16" x2="12.01" y2="16" />
       </svg>
-      {{ meTranslate.help }}
-      <a href="https://www.markdownguide.org" target="_blank" rel="noopener">Markdown</a>
+      <span v-if="meRequired && markdown === ''" class="text-[var(--error-text)]">
+        {{ meTranslate.msgEmptyContent }}
+      </span>
+      <span v-else>
+        {{ meTranslate.help }}
+        <a href="https://www.markdownguide.org" target="_blank" rel="noopener">Markdown</a>
+      </span>
+
       <span class="md-footer-counts">
         {{ wordCount }} {{ t('words', 'mots') }} · {{ markdown.length }} {{ t('chars', 'car.') }}
       </span>
