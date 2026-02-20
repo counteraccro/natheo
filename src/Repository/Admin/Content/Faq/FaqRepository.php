@@ -3,7 +3,12 @@
 namespace App\Repository\Admin\Content\Faq;
 
 use App\Entity\Admin\Content\Faq\Faq;
+use App\Entity\Admin\Content\Faq\FaqCategory;
+use App\Entity\Admin\Content\Faq\FaqCategoryTranslation;
+use App\Entity\Admin\Content\Faq\FaqQuestion;
+use App\Entity\Admin\Content\Faq\FaqQuestionTranslation;
 use App\Entity\Admin\Content\Faq\FaqTranslation;
+use App\Entity\Admin\System\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\AST\Join;
 use Doctrine\ORM\Query\Expr;
@@ -59,26 +64,36 @@ class FaqRepository extends ServiceEntityRepository
      * Retourne une liste de user Paginé
      * @param int $page
      * @param int $limit
-     * @param string|null $search
-     * @param int|null $userId
+     * @param array $queryParams
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, ?string $search = null, ?int $userId = null): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
     {
-        $query = $this->createQueryBuilder('f')->orderBy('f.id', 'ASC');
+        $orderField = 'id';
+        $order = 'DESC';
+        if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
+            $orderField = $queryParams['orderField'];
+        }
 
-        if ($search !== null) {
+        if (isset($queryParams['order']) && $queryParams['order'] !== '') {
+            $order = $queryParams['order'];
+        }
+
+        $query = $this->createQueryBuilder(Faq::DEFAULT_ALIAS)->orderBy(Faq::DEFAULT_ALIAS . '.' . $orderField, $order);
+
+        if (isset($queryParams['search']) && $queryParams['search'] !== '') {
             $query
-                ->join('f.faqTranslations', 'ft')
-                ->where('ft.title like :search')
-                ->setParameter('search', '%' . $search . '%');
+                ->join(Faq::DEFAULT_ALIAS . '.faqTranslations', FaqTranslation::DEFAULT_ALIAS)
+                ->andWhere(FaqTranslation::DEFAULT_ALIAS . '.locale = :locale')
+                ->andWhere(FaqTranslation::DEFAULT_ALIAS . '.title like :search')
+                ->setParameter('search', '%' . $queryParams['search'] . '%')
+                ->setParameter('locale', $queryParams['locale']);
         }
 
-        if ($userId !== null) {
-            $query->andWhere('f.user = :userId');
-            $query->setParameter('userId', $userId);
+        if (isset($queryParams['userId']) && $queryParams['userId'] !== '') {
+            $query->andWhere(Faq::DEFAULT_ALIAS . '.user = :userId');
+            $query->setParameter('userId', $queryParams['userId']);
         }
-
         $paginator = new Paginator($query->getQuery(), true);
         $paginator
             ->getQuery()
@@ -95,11 +110,11 @@ class FaqRepository extends ServiceEntityRepository
      */
     public function getListeFaq(string $locale = 'fr', bool $disabled = false): array
     {
-        $result = $this->createQueryBuilder('f')
-            ->select('f.id', 'ft.title')
-            ->leftJoin('f.faqTranslations', 'ft')
-            ->where('f.disabled = :disabled')
-            ->andWhere('ft.locale = :locale')
+        $result = $this->createQueryBuilder(Faq::DEFAULT_ALIAS)
+            ->select(Faq::DEFAULT_ALIAS . '.id', FaqTranslation::DEFAULT_ALIAS . '.title')
+            ->leftJoin(Faq::DEFAULT_ALIAS . '.faqTranslations', FaqTranslation::DEFAULT_ALIAS)
+            ->where(Faq::DEFAULT_ALIAS . '.disabled = :disabled')
+            ->andWhere(FaqTranslation::DEFAULT_ALIAS . '.locale = :locale')
             ->setParameter('locale', $locale)
             ->setParameter('disabled', $disabled)
             ->getQuery()
@@ -122,20 +137,40 @@ class FaqRepository extends ServiceEntityRepository
      */
     public function search(string $search, string $locale, int $page, int $limit): Paginator
     {
-        $query = $this->createQueryBuilder('f');
+        $query = $this->createQueryBuilder(Faq::DEFAULT_ALIAS);
 
         $query
-            ->join('f.faqTranslations', 'ft')
-            ->leftJoin('f.faqCategories', 'fc')
-            ->leftJoin('fc.faqCategoryTranslations', 'fct')
-            ->leftJoin('fc.faqQuestions', 'fq')
-            ->leftJoin('fq.faqQuestionTranslations', 'fqt')
-            ->join('f.user', 'u')
-            ->orWhere('ft.title like :search AND ft.locale = :locale')
-            ->orWhere('fct.title like :search AND fct.locale = :locale')
-            ->orWhere('fqt.title like :search AND fct.locale = :locale')
-            ->orWhere('fqt.answer like :search AND fct.locale = :locale')
-            ->orWhere('u.login like :search')
+            ->join(Faq::DEFAULT_ALIAS . '.faqTranslations', FaqTranslation::DEFAULT_ALIAS)
+            ->leftJoin(Faq::DEFAULT_ALIAS . '.faqCategories', FaqCategory::DEFAULT_ALIAS)
+            ->leftJoin(FaqCategory::DEFAULT_ALIAS . '.faqCategoryTranslations', FaqCategoryTranslation::DEFAULT_ALIAS)
+            ->leftJoin(FaqCategory::DEFAULT_ALIAS . '.faqQuestions', FaqQuestion::DEFAULT_ALIAS)
+            ->leftJoin(FaqQuestion::DEFAULT_ALIAS . '.faqQuestionTranslations', FaqQuestionTranslation::DEFAULT_ALIAS)
+            ->join(Faq::DEFAULT_ALIAS . '.user', User::DEFAULT_ALIAS)
+            ->orWhere(
+                FaqTranslation::DEFAULT_ALIAS .
+                    '.title like :search AND ' .
+                    FaqTranslation::DEFAULT_ALIAS .
+                    '.locale = :locale',
+            )
+            ->orWhere(
+                FaqCategoryTranslation::DEFAULT_ALIAS .
+                    '.title like :search AND ' .
+                    FaqCategoryTranslation::DEFAULT_ALIAS .
+                    '.locale = :locale',
+            )
+            ->orWhere(
+                FaqQuestionTranslation::DEFAULT_ALIAS .
+                    '.title like :search AND ' .
+                    FaqQuestionTranslation::DEFAULT_ALIAS .
+                    '.locale = :locale',
+            )
+            ->orWhere(
+                FaqQuestionTranslation::DEFAULT_ALIAS .
+                    '.answer like :search AND ' .
+                    FaqQuestionTranslation::DEFAULT_ALIAS .
+                    '.locale = :locale',
+            )
+            ->orWhere(User::DEFAULT_ALIAS . '.login like :search')
             ->setParameter('search', '%' . $search . '%')
             ->setParameter('locale', $locale);
 

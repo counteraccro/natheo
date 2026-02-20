@@ -29,13 +29,12 @@ class FaqService extends AppAdminService
      * Construit le tableau de donnée à envoyé au tableau GRID
      * @param int $page
      * @param int $limit
-     * @param string|null $search
-     * @param int|null $userId
+     * @param array $queryParams
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllFormatToGrid(int $page, int $limit, ?string $search = null, ?int $userId = null): array
+    public function getAllFormatToGrid(int $page, int $limit, array $queryParams): array
     {
         $translator = $this->getTranslator();
         $requestStack = $this->getRequestStack();
@@ -50,7 +49,7 @@ class FaqService extends AppAdminService
             GridService::KEY_ACTION,
         ];
 
-        $dataPaginate = $this->getAllPaginate($page, $limit, $search, $userId);
+        $dataPaginate = $this->getAllPaginate($page, $limit, $queryParams);
 
         $nb = $dataPaginate->count();
         $data = [];
@@ -58,11 +57,6 @@ class FaqService extends AppAdminService
             /* @var Faq $element */
 
             $action = $this->generateTabAction($element);
-
-            $isDisabled = '';
-            if ($element->isDisabled()) {
-                $isDisabled = '<i class="bi bi-eye-slash"></i>';
-            }
 
             $optionSystemService = $this->getOptionSystemService();
 
@@ -73,7 +67,7 @@ class FaqService extends AppAdminService
             $titre = $element->getFaqTranslationByLocale($locale)->getTitle();
 
             $data[] = [
-                $translator->trans('faq.grid.id', domain: 'faq') => $element->getId() . ' ' . $isDisabled,
+                $translator->trans('faq.grid.id', domain: 'faq') => $element->getId(),
                 $translator->trans('faq.grid.title', domain: 'faq') => $titre,
                 $translator->trans('faq.grid.nb_categories', domain: 'faq') => $element
                     ->getFaqStatistiqueByKey(FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES)
@@ -83,6 +77,7 @@ class FaqService extends AppAdminService
                     ->getValue(),
                 $translator->trans('faq.grid.update_at', domain: 'faq') => $element->getUpdateAt()->format('d/m/y H:i'),
                 GridService::KEY_ACTION => $action,
+                'isDisabled' => $element->isDisabled(),
             ];
         }
 
@@ -91,6 +86,11 @@ class FaqService extends AppAdminService
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
             GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate),
+            GridService::KEY_LIST_ORDER_FIELD => [
+                'id' => $translator->trans('faq.grid.id', domain: 'faq'),
+                'title' => $translator->trans('faq.grid.title', domain: 'faq'),
+                'updateAt' => $translator->trans('faq.grid.update_at', domain: 'faq'),
+            ],
         ];
         return $gridService->addAllDataRequiredGrid($tabReturn);
     }
@@ -99,16 +99,15 @@ class FaqService extends AppAdminService
      * Retourne une liste de tag paginé
      * @param int $page
      * @param int $limit
-     * @param string|null $search
-     * @param int|null $userId
+     * @param array $queryParams
      * @return Paginator
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllPaginate(int $page, int $limit, ?string $search = null, ?int $userId = null): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
     {
         $repo = $this->getRepository(Faq::class);
-        return $repo->getAllPaginate($page, $limit, $search, $userId);
+        return $repo->getAllPaginate($page, $limit, $queryParams);
     }
 
     /**
@@ -132,8 +131,11 @@ class FaqService extends AppAdminService
         $label = $faq->getFaqTranslationByLocale($locale)->getTitle();
 
         $actionDisabled = [
-            'label' => '<i class="bi bi-eye-slash-fill"></i>',
+            'label' => [
+                'M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
+            ],
             'type' => 'put',
+            'color' => 'primary',
             'url' => $router->generate('admin_faq_disabled', ['id' => $faq->getId()]),
             'ajax' => true,
             'confirm' => true,
@@ -141,7 +143,11 @@ class FaqService extends AppAdminService
         ];
         if ($faq->isDisabled()) {
             $actionDisabled = [
-                'label' => '<i class="bi bi-eye-fill"></i>',
+                'label' => [
+                    'M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z',
+                    'M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
+                ],
+                'color' => 'primary',
                 'type' => 'put',
                 'url' => $router->generate('admin_faq_disabled', ['id' => $faq->getId()]),
                 'ajax' => true,
@@ -151,7 +157,10 @@ class FaqService extends AppAdminService
         $actionDelete = '';
         if ($optionSystemService->canDelete()) {
             $actionDelete = [
-                'label' => '<i class="bi bi-trash"></i>',
+                'label' => [
+                    'M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z',
+                ],
+                'color' => 'danger',
                 'type' => 'delete',
                 'url' => $router->generate('admin_faq_delete', ['id' => $faq->getId()]),
                 'ajax' => true,
@@ -168,7 +177,10 @@ class FaqService extends AppAdminService
 
         // Bouton edit
         $actions[] = [
-            'label' => '<i class="bi bi-pencil-fill"></i>',
+            'label' => [
+                'M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28',
+            ],
+            'color' => 'primary',
             'id' => $faq->getId(),
             'url' => $router->generate('admin_faq_update', ['id' => $faq->getId()]),
             'ajax' => false,

@@ -68,14 +68,20 @@ class FaqController extends AppAdminController
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     public function loadGridData(FaqService $faqService, Request $request, int $page = 1, int $limit = 20): JsonResponse
     {
-        $search = $request->query->get('search');
         $filter = $request->query->get('filter');
 
-        $userId = null;
+        $queryParams = [
+            'search' => $request->query->get('search'),
+            'orderField' => $request->query->get('orderField'),
+            'order' => $request->query->get('order'),
+            'locale' => $request->getLocale(),
+        ];
+
         if ($filter === self::FILTER_ME) {
-            $userId = $this->getUser()->getId();
+            $queryParams['userId'] = $this->getUser()->getId();
         }
-        $grid = $faqService->getAllFormatToGrid($page, $limit, $search, $userId);
+
+        $grid = $faqService->getAllFormatToGrid($page, $limit, $queryParams);
         return $this->json($grid);
     }
 
