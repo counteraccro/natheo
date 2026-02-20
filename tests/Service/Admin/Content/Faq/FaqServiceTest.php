@@ -43,7 +43,14 @@ class FaqServiceTest extends AppWebTestCase
             $faq = $this->createFaqAllDataDefault();
         }
 
-        $result = $this->faqService->getAllFormatToGrid(1, 4);
+        $queryParams = [
+            'search' => '',
+            'orderField' => 'id',
+            'order' => 'DESC',
+            'locale' => 'fr',
+        ];
+
+        $result = $this->faqService->getAllFormatToGrid(1, 4, $queryParams);
         $this->assertArrayHasKey('nb', $result);
         $this->assertArrayHasKey('data', $result);
         $this->assertArrayHasKey('column', $result);
@@ -53,18 +60,43 @@ class FaqServiceTest extends AppWebTestCase
         $this->assertCount(4, $result['data']);
 
         $search = $faq->getFaqTranslationByLocale('fr')->getTitle();
-        $result = $this->faqService->getAllFormatToGrid(1, 5, $search);
+
+        $queryParams = [
+            'search' => $search,
+            'orderField' => 'id',
+            'order' => 'DESC',
+            'locale' => 'fr',
+        ];
+
+        $result = $this->faqService->getAllFormatToGrid(1, 5, $queryParams);
         $this->assertEquals(1, $result['nb']);
         $this->assertCount(1, $result['data']);
 
         $userId = $faq->getUser()->getId();
-        $result = $this->faqService->getAllFormatToGrid(1, 5, $search, $userId);
+
+        $queryParams = [
+            'search' => $search,
+            'orderField' => 'id',
+            'order' => 'DESC',
+            'locale' => 'fr',
+            'userId' => $userId,
+        ];
+
+        $result = $this->faqService->getAllFormatToGrid(1, 5, $queryParams);
         $this->assertEquals(1, $result['nb']);
         $this->assertCount(1, $result['data']);
+
+        $queryParams = [
+            'search' => '',
+            'orderField' => 'id',
+            'order' => 'DESC',
+            'locale' => 'fr',
+            'userId' => $userId,
+        ];
 
         $faq = $this->createFaqAllDataDefault();
         $userId = $faq->getUser()->getId();
-        $result = $this->faqService->getAllFormatToGrid(1, 5, null, $userId);
+        $result = $this->faqService->getAllFormatToGrid(1, 5, $queryParams);
         $this->assertEquals(1, $result['nb']);
         $this->assertCount(1, $result['data']);
     }
@@ -80,23 +112,56 @@ class FaqServiceTest extends AppWebTestCase
         for ($i = 0; $i < 5; $i++) {
             $faq = $this->createFaqAllDataDefault();
         }
-        $result = $this->faqService->getAllPaginate(1, 4);
+
+        $queryParams = [
+            'search' => '',
+            'orderField' => 'id',
+            'order' => 'DESC',
+            'locale' => 'fr',
+        ];
+
+        $result = $this->faqService->getAllPaginate(1, 4, $queryParams);
         $this->assertEquals(4, $result->getIterator()->count());
         $this->assertEquals(5, $result->count());
 
         $search = $faq->getFaqTranslationByLocale('fr')->getTitle();
-        $result = $this->faqService->getAllPaginate(1, 4, $search);
+
+        $queryParams = [
+            'search' => $search,
+            'orderField' => 'id',
+            'order' => 'DESC',
+            'locale' => 'fr',
+        ];
+        $result = $this->faqService->getAllPaginate(1, 4, $queryParams);
         $this->assertEquals(1, $result->getIterator()->count());
         $this->assertEquals(1, $result->count());
 
         $userId = $faq->getUser()->getId();
-        $result = $this->faqService->getAllPaginate(1, 4, $search, $userId);
+
+        $queryParams = [
+            'search' => $search,
+            'orderField' => 'id',
+            'order' => 'DESC',
+            'locale' => 'fr',
+            'userId' => $userId,
+        ];
+
+        $result = $this->faqService->getAllPaginate(1, 4, $queryParams);
         $this->assertEquals(1, $result->getIterator()->count());
         $this->assertEquals(1, $result->count());
 
         $faq = $this->createFaqAllDataDefault();
         $userId = $faq->getUser()->getId();
-        $result = $this->faqService->getAllPaginate(1, 4, null, $userId);
+
+        $queryParams = [
+            'search' => '',
+            'orderField' => 'id',
+            'order' => 'DESC',
+            'locale' => 'fr',
+            'userId' => $userId,
+        ];
+
+        $result = $this->faqService->getAllPaginate(1, 4, $queryParams);
         $this->assertEquals(1, $result->getIterator()->count());
         $this->assertEquals(1, $result->count());
     }
