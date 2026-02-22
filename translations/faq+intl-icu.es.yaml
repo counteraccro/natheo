@@ -83,3 +83,5 @@ faq.category.delete.titre.confirm: __faq.category.delete.titre.confirm
 faq.category.delete.body.confirm: __faq.category.delete.body.confirm
 faq.category.remove.success: __faq.category.remove.success
 faq.question.remove.success: __faq.question.remove.success
+faq.new.sub_title: __faq.new.sub_title
+faq.new.btn.cancel: __faq.new.btn.cancel
