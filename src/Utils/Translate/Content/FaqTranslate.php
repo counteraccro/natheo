@@ -22,10 +22,6 @@ class FaqTranslate extends AppTranslate
             'error_empty_value' => $this->translator->trans('faq.error.empty.value', domain: 'faq'),
             'msg_no_save' => $this->translator->trans('faq.msg.no.save', domain: 'faq'),
             'save' => $this->translator->trans('faq.save', domain: 'faq'),
-            'new_faq' => $this->translator->trans('faq.new.title', domain: 'faq'),
-            'new_faq_input_title' => $this->translator->trans('faq.new.input.title', domain: 'faq'),
-            'new_faq_help' => $this->translator->trans('faq.new.help', domain: 'faq'),
-            'new_faq_btn' => $this->translator->trans('faq.new.btn', domain: 'faq'),
             'new_category_btn' => $this->translator->trans('faq.new.category.btn', domain: 'faq'),
             'new_faq_error_empty' => $this->translator->trans('faq.new.input.error.empty', domain: 'faq'),
             'toast_title_success' => $this->translator->trans('faq.toast.title.success', domain: 'faq'),
@@ -77,6 +73,19 @@ class FaqTranslate extends AppTranslate
                 'faq.category.delete.body.confirm',
                 domain: 'faq',
             ),
+            'newFaq' => $this->getNewFaqTranslate(),
+        ];
+    }
+
+    private function getNewFaqTranslate()
+    {
+        return [
+            'new_faq' => $this->translator->trans('faq.new.title', domain: 'faq'),
+            'new_faq_sub_title' => $this->translator->trans('faq.new.sub_title', domain: 'faq'),
+            'new_faq_input_title' => $this->translator->trans('faq.new.input.title', domain: 'faq'),
+            'new_faq_help' => $this->translator->trans('faq.new.help', domain: 'faq'),
+            'new_faq_btn' => $this->translator->trans('faq.new.btn', domain: 'faq'),
+            'new_faq_btn_cancel' => $this->translator->trans('faq.new.btn.cancel', domain: 'faq'),
         ];
     }
 }

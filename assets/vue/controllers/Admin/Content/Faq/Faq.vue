@@ -1,14 +1,16 @@
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue';
-import SkeletonFaq from '@/vue/Components/Skeleton/Faq.vue';
+import NewFaq from '@/vue/Components/FAQ/NewFaq.vue';
+
+type TranslateRecord = { [key: string]: string | TranslateRecord };
 
 export default defineComponent({
   name: 'Faq',
-  components: { SkeletonFaq },
+  components: { NewFaq },
   props: {
-    urls: Object as PropType<Array<string, string>>,
-    translate: Object as PropType<Array<string, string>>,
-    locales: Object as PropType<Array<string, string>>,
+    urls: { type: Object as PropType<Record<string, string>>, required: true },
+    translate: { type: Object as PropType<TranslateRecord>, required: true },
+    locales: { type: Object as PropType<Record<string, string>>, required: true },
     id: Number,
   },
   data() {
@@ -17,16 +19,17 @@ export default defineComponent({
     };
   },
   mounted(): any {},
-  methods: {},
+  methods: {
+    getSubTranslate(key: string): TranslateRecord {
+      return this.translate[key] as TranslateRecord;
+    },
+  },
 });
 </script>
 
 <template>
-  <div v-if="loading" class="mt-5">
-    <SkeletonFaq :is-new="id === null" />
-  </div>
-
-  <div class="card rounded-lg p-6 mb-4 mt-4"></div>
+  <!-- Nouvelle FAQ -->
+  <new-faq v-if="id === null" :translate="getSubTranslate('newFaq')" :urls="urls" />
 </template>
 
 <style scoped></style>
