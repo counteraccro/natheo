@@ -13,7 +13,10 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="rounded-xl p-5 mb-7 animate-pulse" style="background: linear-gradient(135deg, #c4b5fd 0%, #ddd6fe 100%)">
+  <div
+    class="rounded-xl p-5 mb-7 animate-pulse"
+    style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%)"
+  >
     <div class="h-2.5 w-24 rounded bg-white/40 mb-3"></div>
     <div class="h-11 w-full rounded-lg bg-white/30"></div>
     <div class="h-2.5 w-64 rounded bg-white/30 mt-3"></div>
