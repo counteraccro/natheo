@@ -23,7 +23,6 @@ class FaqTranslate extends AppTranslate
             'msg_no_save' => $this->translator->trans('faq.msg.no.save', domain: 'faq'),
             'save' => $this->translator->trans('faq.save', domain: 'faq'),
             'new_category_btn' => $this->translator->trans('faq.new.category.btn', domain: 'faq'),
-            'new_faq_error_empty' => $this->translator->trans('faq.new.input.error.empty', domain: 'faq'),
             'toast_title_success' => $this->translator->trans('faq.toast.title.success', domain: 'faq'),
             'toast_time' => $this->translator->trans('faq.toast.time', domain: 'faq'),
             'toast_title_error' => $this->translator->trans('faq.toast.title.error', domain: 'faq'),
@@ -86,6 +85,7 @@ class FaqTranslate extends AppTranslate
             'new_faq_help' => $this->translator->trans('faq.new.help', domain: 'faq'),
             'new_faq_btn' => $this->translator->trans('faq.new.btn', domain: 'faq'),
             'new_faq_btn_cancel' => $this->translator->trans('faq.new.btn.cancel', domain: 'faq'),
+            'new_faq_error_empty' => $this->translator->trans('faq.new.input.error.empty', domain: 'faq'),
         ];
     }
 }
