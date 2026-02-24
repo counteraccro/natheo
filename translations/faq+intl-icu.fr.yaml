@@ -33,55 +33,21 @@ faq.new.help: "A la création de la Faq, le titre sera dans la langue par défau
 faq.new.btn: 'Créer la Faq'
 faq.new.input.error.empty: 'Vous devez saisir un titre pour votre nouvelle Faq'
 faq.create.success: "Votre Faq à été créée avec succès, vous aller être redirigé vers l'édition"
-faq.toast.title.success: 'Succès !'
-faq.toast.time: "A l'instant"
-faq.toast.title.error: 'Erreur !'
-faq.new.category.btn: 'Nouvelle catégorie'
-faq.question.disabled: 'Cette question est invisible'
-faq.category.disabled: 'Cette catégorie est invisible ainsi que ses questions'
-faq.category.disabled.title: 'Masquer une catégorie'
-faq.category.disabled.message: 'Vous êtes sur le point de masquer la catégorie <b>{categorie}</b>, cette action entrainement la désactivation des questions liées, confirmez-vous ?'
-faq.disabled_btn_ok: Oui
-faq.disabled_btn_ko: Non
-faq.question.disabled.title: 'Masquer une question'
-faq.question.disabled.message: 'Vous êtes sur le point de masquer la question <b>{question}</b>, confirmez-vous cette action ?'
-faq.category.enabled.title: 'Afficher la catégorie'
-faq.category.enabled.message: 'Vous êtes sur le point de rendre visible la catégorie <b>{categorie}</b>, confirmez-vous cette action ?'
-faq.question.enabled.title: 'Afficher la question'
-faq.question.enabled.message: 'Vous êtes sur le point de rendre visible la question <b>{question}</b>, confirmez-vous cette action ?'
-faq.category.enabled.message.2: "Rendre visible l'ensemble des question associées"
 faq.question.disabled.ok: 'La question <b>{question}</b> à été masquée avec succès'
 faq.question.enabled.ok: 'La question <b>{question}</b> à été rendu visible avec succès'
 faq.category.disabled.ok: 'La catégorie <b>{category}</b> à été masquée avec succès ainsi que toutes ses questions associées'
 faq.category.enabled.all.questions.ok: 'La catégorie <b>{category}</b> à été rendu visible avec succès ainsi que toutes ses questions associées'
 faq.category.enabled.ok: 'La catégorie <b>{category}</b> à été rendu visible avec succès'
-faq.category.new.title: 'Nouvelle catégorie'
-faq.category.new.liste.cat: 'Liste des catégories'
-faq.category.new.after: Après
-faq.category.new.before: Avant
-faq.category.new.help: 'Choisissez la catégorie ou sera intercalé la nouvelle catégorie ainsi que si elle sera avant ou après la catégorie sélectionnée'
 faq.generique.error: 'Une erreur est survenue lors de la récupération de données pour la FAQ'
 faq.position: Position
-faq.category.new.btn.validate: 'Nouvelle catégorie'
-faq.category.new.btn.cancel: Annuler
-faq.question.new.title: 'Nouvelle question'
-faq.question.new.liste.cat: 'Liste des questions'
-faq.question.new.after: Après
-faq.question.new.before: Avant
-faq.question.new.help: 'Choisissez la question ou sera intercalé la nouvelle question ainsi que si elle sera avant ou après la question sélectionnée'
-faq.question.new.btn.validate: 'Nouvelle question'
-faq.question.new.btn.cancel: Annuler
 faq.category.new.success: 'La nouvelle catégorie à été ajoutée avec succès'
 faq.question.new.success: 'La nouvelle question à été ajoutée avec succès'
 faq.grid.nb_categories: 'Nombre de catégories'
-faq.msg.no.save: 'Les derniers changements fait non pas été sauvegardés'
 faq.category.update.order: 'La catégorie à été déplacée avec succès'
 faq.question.update.order: 'La question à été déplacée avec succès'
-faq.question.delete.titre.confirm: 'Confirmer la suppression de la question'
-faq.question.delete.body.confirm: 'Cette action est définitive et sans possibilité de retour'
-faq.category.delete.titre.confirm: 'Confirmer la suppression de la catégorie'
-faq.category.delete.body.confirm: "La suppression de cette catégorie entrainera la suppression de l'ensemble des questions associées <br /> Cette action est définitive et sans possibilité de retour"
 faq.category.remove.success: 'La catégorie à été supprimée avec succès'
 faq.question.remove.success: 'La question à été supprimée avec succès'
 faq.new.sub_title: 'Saisissez juste un titre pour créer votre Faq'
 faq.new.btn.cancel: Annuler
+faq.edit.title: Données globales
+faq.edit.sub_title: Les données globales de la FAQ
