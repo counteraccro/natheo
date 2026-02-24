@@ -51,9 +51,6 @@ export default defineComponent({
   },
   mounted(): any {},
   computed: {
-    success() {
-      return success;
-    },
     /**
      * Vérifie si le champ nouveau titre est vide ou non
      * @return boolean
@@ -96,7 +93,9 @@ export default defineComponent({
             this.toasts.success.msg = response.data.msg;
             this.toasts.success.show = true;
             emitter.emit('reset-check-confirm');
-            window.location.replace(response.data.url_redirect);
+            setTimeout(function () {
+              window.location.replace(response.data.url_redirect);
+            }, 2000);
           } else {
             this.toasts.error.msg = response.data.msg;
             this.toasts.error.show = true;
