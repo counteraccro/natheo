@@ -1,12 +1,13 @@
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue';
-import NewFaq from '@/vue/Components/FAQ/NewFaq.vue';
+import NewFaq from '@/vue/Components/Faq/NewFaq.vue';
+import EditFaq from '@/vue/Components/Faq/EditFaq.vue';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
 
 export default defineComponent({
   name: 'Faq',
-  components: { NewFaq },
+  components: { EditFaq, NewFaq },
   props: {
     urls: { type: Object as PropType<Record<string, string>>, required: true },
     translate: { type: Object as PropType<TranslateRecord>, required: true },
@@ -30,6 +31,7 @@ export default defineComponent({
 <template>
   <!-- Nouvelle FAQ -->
   <new-faq v-if="id === null" :translate="getSubTranslate('newFaq')" :urls="urls" />
+  <edit-faq v-else :translate="getSubTranslate('editFaq')" :locales="locales" :urls="urls" :id="id" />
 </template>
 
 <style scoped></style>
