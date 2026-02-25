@@ -29,6 +29,7 @@ export default defineComponent({
   data() {
     return {
       loading: false,
+      updateNoSave: false,
       currentLocale: this.locales.current as string,
       faq: {} as Faq,
       toasts: {
@@ -46,7 +47,17 @@ export default defineComponent({
   mounted(): any {
     this.loadFaq();
   },
-  computed: {},
+  computed: {
+    /**
+     * check si les champs ne sont pas vide avant sauvegarde
+     */
+    checkIsNotEmpty(): boolean {
+      if (this.getValueByLocale(this.faq.faqTranslations, 'title') === '') {
+        return false;
+      }
+      return true;
+    },
+  },
   methods: {
     /**
      * Chargement des données FAQ
@@ -93,7 +104,7 @@ export default defineComponent({
     updateValueByLocale(value: string, id: string): void {
       const tmp = id.split('-');
       const itemId = parseInt(tmp[0]);
-      //this.updateNoSave = true;
+      this.updateNoSave = true;
 
       switch (tmp[1]) {
         case 'faqTranslations':
@@ -141,6 +152,113 @@ export default defineComponent({
 </script>
 
 <template>
+  <div
+    v-if="!loading"
+    class="card rounded-lg p-3 mb-4 mt-4 flex justify-between items-center sticky top-0 z-10"
+    :style="
+      !checkIsNotEmpty
+        ? 'background-color: var(--alert-danger-bg); color: var(--alert-danger-text);border: 2px solid var(--alert-danger-border);'
+        : updateNoSave
+          ? 'background-color: var(--alert-warning-bg); color: var(--alert-warning-text); border: 2px solid var(--alert-warning-border);'
+          : ''
+    "
+  >
+    <div class="pl-4">
+      <span v-if="!checkIsNotEmpty" class="text-sm italic flex items-center gap-1">
+        <svg
+          class="w-5 h-5"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+
+        {{ translate.text_error }}
+      </span>
+      <span v-else-if="updateNoSave" class="text-sm italic flex items-center gap-1">
+        <svg
+          class="w-5 h-5"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+
+        {{ translate.text_change_no_save }}</span
+      >
+      <span class="text-sm text-[var(--text-secondary)] italic flex items-center gap-1" v-else>
+        <svg
+          class="w-5 h-5"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+
+        {{ translate.text_no_change }}</span
+      >
+    </div>
+
+    <div class="flex justify-end gap-2">
+      <button type="button" class="btn btn-outline-dark btn-sm" onclick="window.history.back()">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          ></path>
+        </svg>
+        {{ translate.btn_cancel }}
+      </button>
+      <button class="btn btn-sm btn-primary" :disabled="!checkIsNotEmpty">
+        <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+        </svg>
+        {{ translate.btn_save }}
+      </button>
+    </div>
+  </div>
+
   <div v-if="loading" class="mt-5">
     <SkeletonFaq :is-new="false" />
   </div>
@@ -184,20 +302,29 @@ export default defineComponent({
       </div>
 
       <div class="form-group">
-        <label class="form-label">{{ translate.new_faq_input_title }}</label>
+        <label class="form-label">{{ translate.input_faq_title }}</label>
         <input
           type="text"
           class="form-input"
+          :class="getValueByLocale(faq.faqTranslations, 'title') === '' ? 'is-invalid' : ''"
           :value="getValueByLocale(faq.faqTranslations, 'title')"
           @change="
             updateValueByLocale($event.target.value, getValueByLocale(faq.faqTranslations, 'id', 'faqTranslations'))
           "
         />
-        <span class="form-text text-error">✗ {{ translate.new_faq_error_empty }}</span>
-        <span class="form-text">{{ translate.new_faq_help }}</span>
+        <span v-if="getValueByLocale(faq.faqTranslations, 'title') === ''" class="form-text text-error"
+          >✗ {{ translate.input_faq_title_error }}</span
+        >
+        <span v-else class="form-text">{{ translate.input_faq_title_help }}</span>
       </div>
     </div>
   </div>
+
+  <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+  <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+  <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+  <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+  <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 
   <div class="toast-container position-fixed top-0 end-0 p-2">
     <toast :id="'toastSuccess'" :type="'success'" :show="toasts.success.show" @close-toast="closeToast('success')">

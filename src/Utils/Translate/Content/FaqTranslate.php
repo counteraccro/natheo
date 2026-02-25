@@ -40,7 +40,15 @@ class FaqTranslate extends AppTranslate
         return [
             'edit_faq' => $this->translator->trans('faq.edit.title', domain: 'faq'),
             'edit_faq_sub_title' => $this->translator->trans('faq.edit.sub_title', domain: 'faq'),
+            'input_faq_title' => $this->translator->trans('faq.edit.input.title', domain: 'faq'),
+            'input_faq_title_help' => $this->translator->trans('faq.edit.input.title.help', domain: 'faq'),
+            'input_faq_title_error' => $this->translator->trans('faq.edit.input.title.error', domain: 'faq'),
             'select_locale' => $this->translator->trans('faq.select.locale', domain: 'faq'),
+            'btn_save' => $this->translator->trans('faq.edit.btn.save', domain: 'faq'),
+            'btn_cancel' => $this->translator->trans('faq.edit.btn.cancel', domain: 'faq'),
+            'text_no_change' => $this->translator->trans('faq.edit.text.no_change', domain: 'faq'),
+            'text_change_no_save' => $this->translator->trans('faq.edit.text.change_no_save', domain: 'faq'),
+            'text_error' => $this->translator->trans('faq.edit.text.error', domain: 'faq'),
         ];
     }
 }
