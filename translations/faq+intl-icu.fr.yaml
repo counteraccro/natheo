@@ -49,5 +49,13 @@ faq.category.remove.success: 'La catégorie à été supprimée avec succès'
 faq.question.remove.success: 'La question à été supprimée avec succès'
 faq.new.sub_title: 'Saisissez juste un titre pour créer votre Faq'
 faq.new.btn.cancel: Annuler
-faq.edit.title: Données globales
-faq.edit.sub_title: Les données globales de la FAQ
+faq.edit.title: 'Données globales'
+faq.edit.sub_title: 'Les données globales de la FAQ'
+faq.edit.input.title: 'Titre de la FAQ'
+faq.edit.input.title.help: 'Texte qui apparaitra en haut de votre FAQ'
+faq.edit.input.title.error: 'Ce champ ne peux pas être vide'
+faq.edit.btn.save: Sauvegarder
+faq.edit.btn.cancel: Annuler
+faq.edit.text.no_change: 'Aucun changement pour le moment'
+faq.edit.text.change_no_save: 'Dés changements ont été effectués mais pas encore sauvegardé'
+faq.edit.text.error: 'Une ou plusieurs erreurs de validation ont été détectées'

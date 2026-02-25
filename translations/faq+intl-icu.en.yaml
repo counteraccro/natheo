@@ -87,3 +87,11 @@ faq.new.sub_title: __faq.new.sub_title
 faq.new.btn.cancel: __faq.new.btn.cancel
 faq.edit.title: __faq.edit.title
 faq.edit.sub_title: __faq.edit.sub_title
+faq.edit.input.title: __faq.edit.input.title
+faq.edit.input.title.help: __faq.edit.input.title.help
+faq.edit.input.title.error: __faq.edit.input.title.error
+faq.edit.btn.save: __faq.edit.btn.save
+faq.edit.btn.cancel: __faq.edit.btn.cancel
+faq.edit.text.no_change: __faq.edit.text.no_change
+faq.edit.text.change_no_save: __faq.edit.text.change_no_save
+faq.edit.text.error: __faq.edit.text.error
