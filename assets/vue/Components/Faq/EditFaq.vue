@@ -4,7 +4,14 @@ import axios from 'axios';
 import { emitter } from '@/utils/useEvent';
 import SkeletonFaq from '@/vue/Components/Skeleton/Faq.vue';
 import Toast from '@/vue/Components/Global/Toast.vue';
-import type { Faq, FaqCategory, FaqCategoryTranslation, FaqQuestion, FaqTranslation } from '@/ts/Faq/type';
+import type {
+  Faq,
+  FaqCategory,
+  FaqCategoryTranslation,
+  FaqQuestion,
+  FaqQuestionTranslation,
+  FaqTranslation,
+} from '@/ts/Faq/type';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
 
@@ -55,7 +62,15 @@ export default defineComponent({
       if (this.getValueByLocale(this.faq.faqTranslations, 'title') === '') {
         return false;
       }
-      return true;
+
+      let valReturn = true;
+      this.faq.faqCategories.forEach((category) => {
+        if (this.getValueByLocale(category.faqCategoryTranslations, 'title') === '') {
+          valReturn = false;
+        }
+      });
+
+      return valReturn;
     },
   },
   methods: {
@@ -85,7 +100,11 @@ export default defineComponent({
      * Retourne la valeur traduite en fonction de la locale pour le tableau d'élément
      * Ajoute concatValue au debut de la string avec un séparateur "-"
      */
-    getValueByLocale(elements: FaqTranslation[] | undefined, property: string, concatValue: string = ''): string {
+    getValueByLocale(
+      elements: FaqTranslation[] | FaqCategoryTranslation[] | FaqQuestionTranslation[] | undefined,
+      property: string,
+      concatValue: string = ''
+    ): string {
       if (!elements) {
         return '';
       }
@@ -129,6 +148,22 @@ export default defineComponent({
             });
           });
           break;
+      }
+    },
+
+    /**
+     * Affiche le bon nombre de questions
+     * @param questions
+     */
+    getNbQuestion(questions: FaqQuestion[]): string {
+      const nbQuestions = questions.length;
+      switch (nbQuestions) {
+        case 0:
+          return this.translate.no_questions.toString();
+        case 1:
+          return this.translate.one_question.toString();
+        default:
+          return nbQuestions + ' ' + this.translate.multiple_questions.toString();
       }
     },
 
@@ -289,7 +324,13 @@ export default defineComponent({
               />
             </svg>
           </span>
-          <select id="select-language" class="form-input" @change="switchLocale($event)" style="width: 120px">
+          <select
+            id="select-language"
+            class="form-input"
+            @change="switchLocale($event)"
+            style="width: 120px"
+            :disabled="!checkIsNotEmpty"
+          >
             <option
               v-for="(language, key) in locales.localesTranslate"
               :value="key"
@@ -320,11 +361,58 @@ export default defineComponent({
     </div>
   </div>
 
-  <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-  <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-  <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-  <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-  <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+  <div v-for="category in faq.faqCategories" class="card rounded-lg mb-4 mt-4" style="box-shadow: var(--shadow-sm)">
+    <div
+      class="flex items-center gap-3 px-4 py-3 border-b border-[var(--border-color)]"
+      style="background: linear-gradient(90deg, var(--primary-lighter) 0%, transparent 60%)"
+    >
+      <button class="text-[var(--text-light)] hover:text-[var(--primary)] cursor-grab p-0.5 rounded">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 12h16M4 16h16"></path>
+        </svg>
+      </button>
+
+      <span class="w-2 h-2 rounded-full flex-shrink-0 bg-[var(--primary)]"></span>
+
+      <input
+        type="text"
+        :class="
+          getValueByLocale(category.faqCategoryTranslations, 'title') === ''
+            ? 'border border-[var(--error)] placeholder:text-[var(--error)] focus:border-[var(--error)]'
+            : 'border-b border-transparent focus:border-[var(--primary)]'
+        "
+        class="flex-1 bg-transparent outline-none py-0.5 min-w-0 text-sm font-bold text-[var(--text-primary)]"
+        :value="getValueByLocale(category.faqCategoryTranslations, 'title')"
+        :placeholder="translate.input_faq_title_error.toString()"
+        @change="
+          updateValueByLocale(
+            $event.target.value,
+            getValueByLocale(category.faqCategoryTranslations, 'id', 'faqCategoryTranslations')
+          )
+        "
+      />
+
+      <span
+        class="text-[0.65rem] font-bold font-mono rounded-full px-2.5 py-0.5 flex-shrink-0"
+        style="background: var(--primary-lighter); color: var(--primary)"
+        v-html="getNbQuestion(category.faqQuestions)"
+      ></span>
+
+      <button class="p-1.5 rounded-md text-[var(--text-light)] hover:text-red-500 hover:bg-red-50">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+          ></path>
+        </svg>
+      </button>
+    </div>
+
+    <div v-for="question in category.faqQuestions">
+      | -- {{ getValueByLocale(question.faqQuestionTranslations, 'title') }}
+    </div>
+  </div>
 
   <div class="toast-container position-fixed top-0 end-0 p-2">
     <toast :id="'toastSuccess'" :type="'success'" :show="toasts.success.show" @close-toast="closeToast('success')">
