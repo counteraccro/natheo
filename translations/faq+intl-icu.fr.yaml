@@ -57,5 +57,8 @@ faq.edit.input.title.error: 'Ce champ ne peux pas être vide'
 faq.edit.btn.save: Sauvegarder
 faq.edit.btn.cancel: Annuler
 faq.edit.text.no_change: 'Aucun changement pour le moment'
-faq.edit.text.change_no_save: 'Dés changements ont été effectués mais pas encore sauvegardé'
+faq.edit.text.change_no_save: 'Des changements ont été effectués mais pas encore sauvegardé'
 faq.edit.text.error: 'Une ou plusieurs erreurs de validation ont été détectées'
+faq.edit.no.questions: 'Aucune question'
+faq.edit.one.question: '1 question'
+faq.edit.multiple.questions: questions
