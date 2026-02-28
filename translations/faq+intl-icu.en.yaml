@@ -59,3 +59,6 @@ faq.index.page_title: __faq.index.page_title
 faq.index.page_title_h1: __faq.index.page_title_h1
 faq.index.btn.new: __faq.index.btn.new
 faq.index.description: __faq.index.description
+faq.edit.question.label: __faq.edit.question.label
+faq.edit.question.error: __faq.edit.question.error
+faq.edit.answer.label: __faq.edit.answer.label

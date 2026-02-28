@@ -62,3 +62,6 @@ faq.edit.text.error: 'Une ou plusieurs erreurs de validation ont été détecté
 faq.edit.no.questions: 'Aucune question'
 faq.edit.one.question: '1 question'
 faq.edit.multiple.questions: questions
+faq.edit.question.label: Question
+faq.edit.question.error: 'Cette question est invalide'
+faq.edit.answer.label: Réponse
