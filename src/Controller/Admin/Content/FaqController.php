@@ -117,7 +117,7 @@ class FaqController extends AppAdminController
         ];
 
         $translate = $faqTranslate->getTranslate();
-        $translate['markdown'] = $markdownEditorTranslate->getTranslate();
+        $translate['editFaq']['markdown'] = $markdownEditorTranslate->getTranslate();
         $locales = $faqService->getLocales();
 
         return $this->render('admin/content/faq/add_update.html.twig', [

@@ -13,6 +13,10 @@ import type {
   FaqTranslation,
 } from '@/ts/Faq/type';
 import Sortable from 'sortablejs';
+import FieldEditor from '@/vue/Components/Global/FieldEditor.vue';
+import MarkdownEditor from '@/vue/Components/Global/MarkdownEditor/MarkdownEditor.vue';
+import { EditorModule } from '@/ts/MarkdownEditor/MarkdownEditor.types';
+import { InternalLinkModule } from '@/ts/MarkdownEditor/modules/internalLink';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
 
@@ -27,7 +31,7 @@ type Toasts = {
 
 export default defineComponent({
   name: 'EditFaq',
-  components: { Toast, SkeletonFaq },
+  components: { MarkdownEditor, Toast, SkeletonFaq },
   props: {
     urls: { type: Object as PropType<Record<string, string>>, required: true },
     translate: { type: Object as PropType<TranslateRecord>, required: true },
@@ -39,6 +43,8 @@ export default defineComponent({
       loading: false,
       updateNoSave: false,
       currentLocale: this.locales.current as string,
+      openQuestions: new Set() as Set<number>,
+      keyMarkdownEditor: 0 as number,
       faq: {} as Faq,
       toasts: {
         success: {
@@ -52,6 +58,14 @@ export default defineComponent({
       } as Toasts,
     };
   },
+
+  setup(): any {
+    const editorModules: EditorModule[] = [InternalLinkModule];
+    return {
+      editorModules,
+    };
+  },
+
   mounted(): any {
     this.loadFaq();
   },
@@ -69,6 +83,18 @@ export default defineComponent({
         if (this.getValueByLocale(category.faqCategoryTranslations, 'title') === '') {
           valReturn = false;
         }
+      });
+
+      this.faq.faqCategories.forEach((category) => {
+        category.faqQuestions.forEach((question) => {
+          if (this.getValueByLocale(question.faqQuestionTranslations, 'title') === '') {
+            valReturn = false;
+          }
+
+          if (this.getValueByLocale(question.faqQuestionTranslations, 'answer') === '') {
+            valReturn = false;
+          }
+        });
       });
 
       return valReturn;
@@ -89,6 +115,7 @@ export default defineComponent({
           //this.keyVal += 1;
           emitter.emit('reset-check-confirm');
           this.loadDraggableCategories();
+          this.keyMarkdownEditor += 1;
         })
         .catch((error) => {
           console.error(error);
@@ -235,12 +262,32 @@ export default defineComponent({
       }
     },
 
+    toggleQuestion(id: number): void {
+      if (this.openQuestions.has(id)) {
+        this.openQuestions.delete(id);
+      } else {
+        this.openQuestions.add(id);
+      }
+      // Force la réactivité car Set n'est pas nativement réactif
+      this.openQuestions = new Set(this.openQuestions);
+    },
+
+    /**
+     * Event depuis la sauvegarde du markdown
+     * @param id
+     * @param value
+     */
+    updateAnswer(id, value) {
+      this.updateValueByLocale(value, id);
+    },
+
     /**
      * Permet de changer la locale pour la création/édition d'une page
      * @param event
      */
     switchLocale(event: any): void {
       this.currentLocale = event.target.value;
+      this.keyMarkdownEditor += 1;
     },
 
     /**
@@ -436,7 +483,7 @@ export default defineComponent({
     <div ref="categoriesListRef" class="space-y-4">
       <div
         v-for="category in faq.faqCategories"
-        :key="category.renderOrder"
+        :key="category.id"
         class="card rounded-lg mb-4 mt-4"
         style="box-shadow: var(--shadow-sm)"
       >
@@ -487,10 +534,127 @@ export default defineComponent({
           </button>
         </div>
 
-        <div class="questions-list" :data-cat-id="category.id">
+        <!--<div class="questions-list" :data-cat-id="category.id">
           <div v-for="question in category.faqQuestions" :key="question.id">
             <span class="handle-question">Move</span> | --
             {{ getValueByLocale(question.faqQuestionTranslations, 'title') }}
+          </div>
+        </div>-->
+
+        <div class="questions-list p-3 space-y-2" :data-cat-id="category.id">
+          <div
+            v-for="question in category.faqQuestions"
+            :key="question.id"
+            class="border rounded-lg mb-2 overflow-hidden"
+            :class="
+              getValueByLocale(question.faqQuestionTranslations, 'title') === '' ||
+              getValueByLocale(question.faqQuestionTranslations, 'answer') === ''
+                ? 'border-2 border-[var(--alert-danger-border)]'
+                : 'border-[var(--border-color)]'
+            "
+          >
+            <div
+              class="flex items-center gap-2.5 px-3 py-2.5"
+              :class="
+                getValueByLocale(question.faqQuestionTranslations, 'title') === '' ||
+                getValueByLocale(question.faqQuestionTranslations, 'answer') === ''
+                  ? 'bg-[var(--alert-danger-bg)]'
+                  : 'bg-[var(--bg-card)]'
+              "
+            >
+              <span
+                class="handle-question cursor-grab text-[var(--text-light)] hover:text-[var(--primary)] flex-shrink-0"
+                @click.stop
+              >
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 12h16M4 16h16" />
+                </svg>
+              </span>
+
+              <span
+                class="text-[0.65rem] font-mono text-[var(--text-light)] w-5 flex-shrink-0"
+                v-html="question.renderOrder > 9 ? question.renderOrder : '0' + question.renderOrder"
+              ></span>
+
+              <!-- Titre cliquable pour le toggle -->
+              <div class="flex flex-1 items-center justify-between cursor-pointer" @click="toggleQuestion(question.id)">
+                <span
+                  class="text-sm font-medium truncate"
+                  :class="
+                    getValueByLocale(question.faqQuestionTranslations, 'title') === '' ||
+                    getValueByLocale(question.faqQuestionTranslations, 'answer') === ''
+                      ? 'text-[var(--alert-danger-text)]'
+                      : 'text-[var(--text-primary)]'
+                  "
+                  v-html="
+                    getValueByLocale(question.faqQuestionTranslations, 'title') === '' ||
+                    getValueByLocale(question.faqQuestionTranslations, 'answer') === ''
+                      ? translate.question_error
+                      : getValueByLocale(question.faqQuestionTranslations, 'title')
+                  "
+                >
+                </span>
+
+                <!-- Chevron -->
+                <svg
+                  class="w-4 h-4 flex-shrink-0 text-[var(--text-light)] transition-transform duration-200"
+                  :class="openQuestions.has(question.id) ? 'rotate-180' : ''"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Contenu accordéon -->
+            <div
+              v-if="openQuestions.has(question.id)"
+              class="border-t border-[var(--border-color)] bg-[var(--bg-hover)] px-4 py-4 space-y-3"
+            >
+              <div>
+                <label
+                  class="block text-[0.65rem] font-bold uppercase tracking-widest text-[var(--text-secondary)] mb-1.5"
+                >
+                  {{ translate.question_label }}
+                </label>
+                <input
+                  type="text"
+                  class="form-input"
+                  :class="getValueByLocale(question.faqQuestionTranslations, 'title') === '' ? 'is-invalid' : ''"
+                  :value="getValueByLocale(question.faqQuestionTranslations, 'title')"
+                  @change="
+                    updateValueByLocale(
+                      ($event.target as HTMLInputElement).value,
+                      getValueByLocale(question.faqQuestionTranslations, 'id', 'faqQuestionTranslations-title')
+                    )
+                  "
+                />
+              </div>
+              <div>
+                <label
+                  class="block text-[0.65rem] font-bold uppercase tracking-widest text-[var(--text-secondary)] mb-1.5"
+                >
+                  {{ translate.answer_label }}
+                </label>
+                <markdown-editor
+                  :key="keyMarkdownEditor"
+                  :me-id="getValueByLocale(question.faqQuestionTranslations, 'id', 'faqQuestionTranslations-answer')"
+                  :me-value="getValueByLocale(question.faqQuestionTranslations, 'answer')"
+                  :me-rows="14"
+                  :me-translate="translate.markdown"
+                  :me-modules="editorModules"
+                  :me-key-words="[]"
+                  :me-save="true"
+                  :me-preview="false"
+                  :me-required="true"
+                  @editor-value="updateAnswer"
+                  @editor-value-change=""
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
