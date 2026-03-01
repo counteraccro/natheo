@@ -62,3 +62,5 @@ faq.index.description: __faq.index.description
 faq.edit.question.label: __faq.edit.question.label
 faq.edit.question.error: __faq.edit.question.error
 faq.edit.answer.label: __faq.edit.answer.label
+faq.edit.text.save.success: __faq.edit.text.save.success
+faq.edit.text.error.not.question: __faq.edit.text.error.not.question

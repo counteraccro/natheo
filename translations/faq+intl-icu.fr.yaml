@@ -65,3 +65,5 @@ faq.edit.multiple.questions: questions
 faq.edit.question.label: Question
 faq.edit.question.error: 'Cette question est invalide'
 faq.edit.answer.label: Réponse
+faq.edit.text.save.success: 'Vos données ont correctement été sauvegardées'
+faq.edit.text.error.not.question: 'Aucune question — ajoutez ou déposez-en une ici depuis une autre catégorie.'
