@@ -86,6 +86,10 @@ export default defineComponent({
       });
 
       this.faq.faqCategories.forEach((category) => {
+        if (category.faqQuestions.length === 0) {
+          valReturn = false;
+        }
+
         category.faqQuestions.forEach((question) => {
           if (this.getValueByLocale(question.faqQuestionTranslations, 'title') === '') {
             valReturn = false;
@@ -114,7 +118,6 @@ export default defineComponent({
           //this.loadData = true;
           //this.keyVal += 1;
           emitter.emit('reset-check-confirm');
-          this.loadDraggableCategories();
           this.keyMarkdownEditor += 1;
         })
         .catch((error) => {
@@ -122,6 +125,7 @@ export default defineComponent({
         })
         .finally(() => {
           this.loading = false;
+          this.loadDraggableCategories();
         });
     },
 
@@ -277,8 +281,35 @@ export default defineComponent({
      * @param id
      * @param value
      */
-    updateAnswer(id, value) {
+    updateAnswer(id: string, value: string): void {
       this.updateValueByLocale(value, id);
+    },
+
+    /**
+     * Permet de sauvegarder une FAQ
+     */
+    save(): void {
+      this.loading = true;
+      axios
+        .put(this.urls.save, {
+          faq: this.faq,
+        })
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.success.msg = response.data.msg;
+            this.toasts.success.show = true;
+            this.updateNoSave = false;
+          } else {
+            this.toasts.error.msg = response.data.msg;
+            this.toasts.error.show = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loadFaq();
+        });
     },
 
     /**
@@ -401,7 +432,7 @@ export default defineComponent({
           </svg>
           {{ translate.btn_cancel }}
         </button>
-        <button class="btn btn-sm btn-primary" :disabled="!checkIsNotEmpty">
+        <button class="btn btn-sm btn-primary" :disabled="!checkIsNotEmpty" @click="save()">
           <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
           </svg>
@@ -478,181 +509,235 @@ export default defineComponent({
           <span v-else class="form-text">{{ translate.input_faq_title_help }}</span>
         </div>
       </div>
-    </div>
-
-    <div ref="categoriesListRef" class="space-y-4">
-      <div
-        v-for="category in faq.faqCategories"
-        :key="category.id"
-        class="card rounded-lg mb-4 mt-4"
-        style="box-shadow: var(--shadow-sm)"
-      >
+      <div ref="categoriesListRef" class="space-y-4">
         <div
-          class="flex items-center gap-3 px-4 py-3 border-b border-[var(--border-color)]"
-          style="background: linear-gradient(90deg, var(--primary-lighter) 0%, transparent 60%)"
+          v-for="category in faq.faqCategories"
+          :key="category.id"
+          class="border rounded-lg mb-4 mt-4"
+          :class="
+            category.faqQuestions.length === 0
+              ? 'border-2 border-[var(--alert-danger-border)]'
+              : 'border-[var(--border-color)]'
+          "
+          style="box-shadow: var(--shadow-sm)"
         >
-          <span class="handle text-[var(--text-light)] hover:text-[var(--primary)] cursor-grab p-0.5 rounded">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 12h16M4 16h16"></path>
-            </svg>
-          </span>
-
-          <span class="w-2 h-2 rounded-full flex-shrink-0 bg-[var(--primary)]"></span>
-
-          <input
-            type="text"
-            :class="
-              getValueByLocale(category.faqCategoryTranslations, 'title') === ''
-                ? 'border border-[var(--error)] placeholder:text-[var(--error)] focus:border-[var(--error)]'
-                : 'border-b border-transparent focus:border-[var(--primary)]'
-            "
-            class="flex-1 bg-transparent outline-none py-0.5 min-w-0 text-sm font-bold text-[var(--text-primary)]"
-            :value="getValueByLocale(category.faqCategoryTranslations, 'title')"
-            :placeholder="translate.input_faq_title_error.toString()"
-            @change="
-              updateValueByLocale(
-                ($event.target as HTMLInputElement).value,
-                getValueByLocale(category.faqCategoryTranslations, 'id', 'faqCategoryTranslations')
-              )
-            "
-          />
-
-          <span
-            class="text-[0.65rem] font-bold font-mono rounded-full px-2.5 py-0.5 flex-shrink-0"
-            style="background: var(--primary-lighter); color: var(--primary)"
-            v-html="getNbQuestion(category.faqQuestions)"
-          ></span>
-
-          <button class="p-1.5 rounded-md text-[var(--text-light)] hover:text-red-500 hover:bg-red-50">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-              ></path>
-            </svg>
-          </button>
-        </div>
-
-        <!--<div class="questions-list" :data-cat-id="category.id">
-          <div v-for="question in category.faqQuestions" :key="question.id">
-            <span class="handle-question">Move</span> | --
-            {{ getValueByLocale(question.faqQuestionTranslations, 'title') }}
-          </div>
-        </div>-->
-
-        <div class="questions-list p-3 space-y-2" :data-cat-id="category.id">
           <div
-            v-for="question in category.faqQuestions"
-            :key="question.id"
-            class="border rounded-lg mb-2 overflow-hidden"
-            :class="
-              getValueByLocale(question.faqQuestionTranslations, 'title') === '' ||
-              getValueByLocale(question.faqQuestionTranslations, 'answer') === ''
-                ? 'border-2 border-[var(--alert-danger-border)]'
-                : 'border-[var(--border-color)]'
+            class="flex items-center gap-2 px-4 py-3 border-b border-[var(--border-color)] rounded-t-lg"
+            :style="
+              category.faqQuestions.length === 0
+                ? 'background: linear-gradient(90deg, var(--alert-danger-bg) 0%, transparent 60%)'
+                : 'background: linear-gradient(90deg, var(--primary-lighter) 0%, transparent 60%)'
             "
           >
-            <div
-              class="flex items-center gap-2.5 px-3 py-2.5"
+            <span class="handle text-[var(--text-light)] hover:text-[var(--primary)] cursor-grab p-0.5 rounded">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 12h16M4 16h16"></path>
+              </svg>
+            </span>
+
+            <span
+              class="text-[0.65rem] font-mono text-[var(--text-light)] w-5 flex-shrink-0"
+              v-html="category.renderOrder > 9 ? category.renderOrder : '0' + category.renderOrder"
+            ></span>
+
+            <input
+              type="text"
               :class="
-                getValueByLocale(question.faqQuestionTranslations, 'title') === '' ||
-                getValueByLocale(question.faqQuestionTranslations, 'answer') === ''
-                  ? 'bg-[var(--alert-danger-bg)]'
-                  : 'bg-[var(--bg-card)]'
+                getValueByLocale(category.faqCategoryTranslations, 'title') === ''
+                  ? 'border border-[var(--error)] placeholder:text-[var(--error)] focus:border-[var(--error)]'
+                  : 'border-b border-transparent focus:border-[var(--primary)]'
               "
-            >
-              <span
-                class="handle-question cursor-grab text-[var(--text-light)] hover:text-[var(--primary)] flex-shrink-0"
-                @click.stop
-              >
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 12h16M4 16h16" />
-                </svg>
-              </span>
+              class="flex-1 bg-transparent outline-none py-0.5 min-w-0 text-sm font-bold text-[var(--text-primary)]"
+              :value="getValueByLocale(category.faqCategoryTranslations, 'title')"
+              :placeholder="translate.input_faq_title_error.toString()"
+              @change="
+                updateValueByLocale(
+                  ($event.target as HTMLInputElement).value,
+                  getValueByLocale(category.faqCategoryTranslations, 'id', 'faqCategoryTranslations')
+                )
+              "
+            />
 
-              <span
-                class="text-[0.65rem] font-mono text-[var(--text-light)] w-5 flex-shrink-0"
-                v-html="question.renderOrder > 9 ? question.renderOrder : '0' + question.renderOrder"
-              ></span>
+            <span
+              class="text-[0.65rem] font-bold font-mono rounded-full px-2.5 py-0.5 flex-shrink-0"
+              style="background: var(--primary-lighter); color: var(--primary)"
+              v-html="getNbQuestion(category.faqQuestions)"
+            ></span>
 
-              <!-- Titre cliquable pour le toggle -->
-              <div class="flex flex-1 items-center justify-between cursor-pointer" @click="toggleQuestion(question.id)">
-                <span
-                  class="text-sm font-medium truncate"
-                  :class="
-                    getValueByLocale(question.faqQuestionTranslations, 'title') === '' ||
-                    getValueByLocale(question.faqQuestionTranslations, 'answer') === ''
-                      ? 'text-[var(--alert-danger-text)]'
-                      : 'text-[var(--text-primary)]'
-                  "
-                  v-html="
-                    getValueByLocale(question.faqQuestionTranslations, 'title') === '' ||
-                    getValueByLocale(question.faqQuestionTranslations, 'answer') === ''
-                      ? translate.question_error
-                      : getValueByLocale(question.faqQuestionTranslations, 'title')
-                  "
-                >
-                </span>
+            <button class="p-1.5 rounded-md text-[var(--text-light)] hover:text-red-500 hover:bg-red-50">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                ></path>
+              </svg>
+            </button>
+          </div>
 
-                <!-- Chevron -->
+          <div class="questions-list p-3 space-y-2" :data-cat-id="category.id">
+            <div v-if="category.faqQuestions.length === 0">
+              <div class="text-center py-2 text-[var(--text-light)]">
                 <svg
-                  class="w-4 h-4 flex-shrink-0 text-[var(--text-light)] transition-transform duration-200"
-                  :class="openQuestions.has(question.id) ? 'rotate-180' : ''"
+                  class="w-8 h-8 mx-auto mb-2 opacity-30"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2.5"
+                  stroke-width="1.5"
                   viewBox="0 0 24 24"
                 >
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
                 </svg>
+                <p class="text-xs">{{ translate.text_error_not_question }}</p>
               </div>
             </div>
 
-            <!-- Contenu accordéon -->
             <div
-              v-if="openQuestions.has(question.id)"
-              class="border-t border-[var(--border-color)] bg-[var(--bg-hover)] px-4 py-4 space-y-3"
+              v-for="question in category.faqQuestions"
+              :key="question.id"
+              class="border rounded-lg mb-2 overflow-hidden"
+              :class="
+                getValueByLocale(question.faqQuestionTranslations, 'title') === '' ||
+                getValueByLocale(question.faqQuestionTranslations, 'answer') === ''
+                  ? 'border-2 border-[var(--alert-danger-border)]'
+                  : 'border-[var(--border-color)]'
+              "
             >
-              <div>
-                <label
-                  class="block text-[0.65rem] font-bold uppercase tracking-widest text-[var(--text-secondary)] mb-1.5"
+              <div
+                class="flex items-center gap-2.5 px-3 py-2.5"
+                :class="
+                  getValueByLocale(question.faqQuestionTranslations, 'title') === '' ||
+                  getValueByLocale(question.faqQuestionTranslations, 'answer') === ''
+                    ? 'bg-[var(--alert-danger-bg)]'
+                    : 'bg-[var(--bg-card)]'
+                "
+              >
+                <span
+                  class="handle-question cursor-grab text-[var(--text-light)] hover:text-[var(--primary)] flex-shrink-0"
+                  @click.stop
                 >
-                  {{ translate.question_label }}
-                </label>
-                <input
-                  type="text"
-                  class="form-input"
-                  :class="getValueByLocale(question.faqQuestionTranslations, 'title') === '' ? 'is-invalid' : ''"
-                  :value="getValueByLocale(question.faqQuestionTranslations, 'title')"
-                  @change="
-                    updateValueByLocale(
-                      ($event.target as HTMLInputElement).value,
-                      getValueByLocale(question.faqQuestionTranslations, 'id', 'faqQuestionTranslations-title')
-                    )
-                  "
-                />
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 8h16M4 12h16M4 16h16" />
+                  </svg>
+                </span>
+
+                <span
+                  class="text-[0.65rem] font-mono text-[var(--text-light)] w-5 flex-shrink-0"
+                  v-html="question.renderOrder > 9 ? question.renderOrder : '0' + question.renderOrder"
+                ></span>
+
+                <!-- Titre cliquable pour le toggle -->
+                <div
+                  class="flex flex-1 items-center justify-between cursor-pointer"
+                  @click="toggleQuestion(question.id)"
+                >
+                  <span
+                    class="text-sm font-medium truncate"
+                    :class="
+                      getValueByLocale(question.faqQuestionTranslations, 'title') === '' ||
+                      getValueByLocale(question.faqQuestionTranslations, 'answer') === ''
+                        ? 'text-[var(--alert-danger-text)]'
+                        : 'text-[var(--text-primary)]'
+                    "
+                    v-html="
+                      getValueByLocale(question.faqQuestionTranslations, 'title') === '' ||
+                      getValueByLocale(question.faqQuestionTranslations, 'answer') === ''
+                        ? translate.question_error
+                        : getValueByLocale(question.faqQuestionTranslations, 'title')
+                    "
+                  >
+                  </span>
+
+                  <!-- Chevron -->
+                  <svg
+                    class="w-4 h-4 flex-shrink-0 text-[var(--text-light)] transition-transform duration-200"
+                    :class="openQuestions.has(question.id) ? 'rotate-180' : ''"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    viewBox="0 0 24 24"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
               </div>
-              <div>
-                <label
-                  class="block text-[0.65rem] font-bold uppercase tracking-widest text-[var(--text-secondary)] mb-1.5"
-                >
-                  {{ translate.answer_label }}
-                </label>
-                <markdown-editor
-                  :key="keyMarkdownEditor"
-                  :me-id="getValueByLocale(question.faqQuestionTranslations, 'id', 'faqQuestionTranslations-answer')"
-                  :me-value="getValueByLocale(question.faqQuestionTranslations, 'answer')"
-                  :me-rows="14"
-                  :me-translate="translate.markdown"
-                  :me-modules="editorModules"
-                  :me-key-words="[]"
-                  :me-save="true"
-                  :me-preview="false"
-                  :me-required="true"
-                  @editor-value="updateAnswer"
-                  @editor-value-change=""
-                />
+
+              <!-- Contenu accordéon -->
+              <div
+                v-if="openQuestions.has(question.id)"
+                class="border-t border-[var(--border-color)] bg-[var(--bg-hover)] px-4 py-4 space-y-3"
+              >
+                <div>
+                  <label
+                    class="flex items-center gap-1.5 text-[0.65rem] font-bold uppercase tracking-widest text-[var(--text-secondary)] mb-1.5"
+                  >
+                    <svg
+                      class="w-3 h-3"
+                      style="color: var(--primary)"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      ></path>
+                    </svg>
+                    {{ translate.question_label }}
+                  </label>
+                  <input
+                    type="text"
+                    class="form-input"
+                    :class="getValueByLocale(question.faqQuestionTranslations, 'title') === '' ? 'is-invalid' : ''"
+                    :value="getValueByLocale(question.faqQuestionTranslations, 'title')"
+                    @change="
+                      updateValueByLocale(
+                        ($event.target as HTMLInputElement).value,
+                        getValueByLocale(question.faqQuestionTranslations, 'id', 'faqQuestionTranslations-title')
+                      )
+                    "
+                  />
+                </div>
+                <div>
+                  <label
+                    class="flex items-center gap-1.5 text-[0.65rem] font-bold uppercase tracking-widest text-[var(--text-secondary)] mb-1.5"
+                  >
+                    <svg
+                      class="w-3 h-3"
+                      style="color: var(--primary)"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                      ></path>
+                    </svg>
+                    {{ translate.answer_label }}
+                  </label>
+                  <markdown-editor
+                    :key="keyMarkdownEditor"
+                    :me-id="getValueByLocale(question.faqQuestionTranslations, 'id', 'faqQuestionTranslations-answer')"
+                    :me-value="getValueByLocale(question.faqQuestionTranslations, 'answer')"
+                    :me-rows="14"
+                    :me-translate="translate.markdown"
+                    :me-modules="editorModules"
+                    :me-key-words="[]"
+                    :me-save="true"
+                    :me-preview="false"
+                    :me-required="true"
+                    @editor-value="updateAnswer"
+                    @editor-value-change=""
+                  />
+                </div>
               </div>
             </div>
           </div>
