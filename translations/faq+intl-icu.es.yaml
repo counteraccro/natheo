@@ -64,3 +64,11 @@ faq.edit.question.error: __faq.edit.question.error
 faq.edit.answer.label: __faq.edit.answer.label
 faq.edit.text.save.success: __faq.edit.text.save.success
 faq.edit.text.error.not.question: __faq.edit.text.error.not.question
+faq.edit.btn.new.question: __faq.edit.btn.new.question
+faq.edit.btn.new.category: __faq.edit.btn.new.category
+faq.edit.new.question.fr: __faq.edit.new.question.fr
+faq.edit.new.question.es: __faq.edit.new.question.es
+faq.edit.new.question.en: __faq.edit.new.question.en
+faq.edit.new.answer.fr: __faq.edit.new.answer.fr
+faq.edit.new.answer.en: __faq.edit.new.answer.en
+faq.edit.new.answer.es: __faq.edit.new.answer.es
