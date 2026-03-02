@@ -323,6 +323,7 @@ class FaqService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
+    #[\Deprecated(message: 'addNewCategory() est devenu obsolète et sera supprimé prochainement', since: '2.0')]
     public function addNewCategory(int $idFaq, int $idCatOrder, string $orderPosition): void
     {
         /** @var Faq $faq */
@@ -351,6 +352,7 @@ class FaqService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
+    #[\Deprecated(message: 'addNewQuestion() est devenu obsolète et sera supprimé prochainement', since: '2.0')]
     public function addNewQuestion(int $idCategory, int $idQuestionOrder, string $orderPosition): void
     {
         $faqCategory = $this->findOneById(FaqCategory::class, $idCategory);
@@ -376,6 +378,7 @@ class FaqService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
+    #[\Deprecated(message: 'updateOrderCategory() est devenu obsolète et sera supprimé prochainement', since: '2.0')]
     public function updateOrderCategory(int $idFaq, int $idCategory, string $orderPosition): void
     {
         /** @var Faq $faq */
@@ -394,6 +397,7 @@ class FaqService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
+    #[\Deprecated(message: 'updateOrderQuestion() est devenu obsolète et sera supprimé prochainement', since: '2.0')]
     public function updateOrderQuestion(int $idFaqCategory, int $idQuestion, string $orderPosition): void
     {
         /** @var FaqCategory $faqCategory */
