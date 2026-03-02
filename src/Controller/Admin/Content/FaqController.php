@@ -14,6 +14,7 @@ use App\Service\Admin\Content\Faq\FaqService;
 use App\Utils\Content\Faq\FaqConst;
 use App\Utils\Content\Faq\FaqFactory;
 use App\Utils\Content\Faq\FaqPopulate;
+use App\Utils\Content\Faq\FaqStatistiqueKey;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Content\FaqTranslate;
 use App\Utils\Translate\MarkdownEditorTranslate;
@@ -248,6 +249,23 @@ class FaqController extends AppAdminController
 
         $faqPopulate = new FaqPopulate($faq, $data['faq']);
         $faq = $faqPopulate->populate()->getFaq();
+        $faqService->updateFaqStatistique(
+            $faq,
+            FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES,
+            FaqConst::STATISTIQUE_ACTION_OVERWRITE,
+            $faq->getFaqCategories()->count(),
+        );
+
+        $nbQuestions = 0;
+        foreach ($faq->getFaqCategories() as $faqCategory) {
+            $nbQuestions += $faqCategory->getFaqQuestions()->count();
+        }
+        $faqService->updateFaqStatistique(
+            $faq,
+            FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
+            FaqConst::STATISTIQUE_ACTION_OVERWRITE,
+            $nbQuestions,
+        );
 
         $msg = $translator->trans('faq.save.success', domain: 'faq');
         $faqService->save($faq);
@@ -323,6 +341,7 @@ class FaqController extends AppAdminController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
+    #[\Deprecated(message: 'orderListeByEntity() est devenu obsolète et sera supprimé prochainement', since: '2.0')]
     #[Route('/ajax/order-by/{id}/{type}', name: 'order_by_type', methods: 'GET')]
     public function orderListeByEntity(
         FaqService $faqService,
@@ -358,6 +377,7 @@ class FaqController extends AppAdminController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
+    #[\Deprecated(message: 'newCatQuestion() est devenu obsolète et sera supprimé prochainement', since: '2.0')]
     #[Route('/ajax/new/', name: 'new_cat_question', methods: 'POST')]
     public function newCatQuestion(
         FaqService $faqService,
@@ -392,6 +412,7 @@ class FaqController extends AppAdminController
      * @throws NotFoundExceptionInterface
      * @throws Exception
      */
+    #[\Deprecated(message: 'changeOrderRender() est devenu obsolète et sera supprimé prochainement', since: '2.0')]
     #[Route('/ajax/update-order/', name: 'update_order', methods: 'PUT')]
     public function changeOrderRender(
         FaqService $faqService,
