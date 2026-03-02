@@ -13,7 +13,6 @@ import type {
   FaqTranslation,
 } from '@/ts/Faq/type';
 import Sortable from 'sortablejs';
-import FieldEditor from '@/vue/Components/Global/FieldEditor.vue';
 import MarkdownEditor from '@/vue/Components/Global/MarkdownEditor/MarkdownEditor.vue';
 import { EditorModule } from '@/ts/MarkdownEditor/MarkdownEditor.types';
 import { InternalLinkModule } from '@/ts/MarkdownEditor/modules/internalLink';
@@ -45,6 +44,7 @@ export default defineComponent({
       currentLocale: this.locales.current as string,
       openQuestions: new Set() as Set<number>,
       keyMarkdownEditor: 0 as number,
+      tempIdCounter: -1 as number,
       faq: {} as Faq,
       toasts: {
         success: {
@@ -310,6 +310,36 @@ export default defineComponent({
         .finally(() => {
           this.loadFaq();
         });
+    },
+
+    addQuestion(categoryId: number): void {
+      const category = this.faq.faqCategories.find((c) => c.id === categoryId);
+      if (!category) return;
+
+      // Crée une traduction vide pour chaque locale disponible
+      const translations: FaqQuestionTranslation[] = Object.keys(this.locales.localesTranslate).map((locale) => ({
+        id: this.tempIdCounter--, // ID temporaire négatif
+        FaqQuestion: this.tempIdCounter,
+        locale: locale,
+        title: this.translate[`new_question_${locale}`],
+        answer: this.translate[`new_answer_${locale}`],
+      }));
+
+      const newQuestion: FaqQuestion = {
+        id: this.tempIdCounter--,
+        faqCategory: categoryId,
+        disabled: false,
+        renderOrder: category.faqQuestions.length + 1,
+        faqQuestionTranslations: translations,
+      };
+
+      category.faqQuestions.push(newQuestion);
+
+      // Ouvre automatiquement l'accordéon de la nouvelle question
+      this.openQuestions.add(newQuestion.id);
+      this.openQuestions = new Set(this.openQuestions);
+
+      this.updateNoSave = true;
     },
 
     /**
@@ -741,8 +771,28 @@ export default defineComponent({
               </div>
             </div>
           </div>
+
+          <div class="p-3 pt-0 space-y-2">
+            <button
+              @click="addQuestion(category.id)"
+              class="w-full flex items-center gap-2 px-3 py-2 border-2 border-dashed border-[var(--border-color)] rounded-lg text-xs font-medium text-[var(--text-light)] hover:border-[var(--primary)] hover:text-[var(--primary)] hover:bg-[var(--primary-lighter)] cursor-pointer"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
+              </svg>
+              {{ translate.btn_new_question }}
+            </button>
+          </div>
         </div>
       </div>
+      <button
+        class="w-full flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-[var(--border-color)] rounded-xl text-sm font-semibold text-[var(--text-secondary)] hover:border-[var(--primary)] hover:text-[var(--primary)] hover:bg-[var(--primary-lighter)]"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
+        </svg>
+        {{ translate.btn_new_category }}
+      </button>
     </div>
 
     <div class="toast-container position-fixed top-0 end-0 p-2">
