@@ -25,6 +25,7 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
@@ -121,11 +122,20 @@ class FaqController extends AppAdminController
         $translate['editFaq']['markdown'] = $markdownEditorTranslate->getTranslate();
         $locales = $faqService->getLocales();
 
+        $notFound = false;
+        if ($id !== null) {
+            $faq = $faqService->findOneById(Faq::class, $id);
+            if ($faq === null) {
+                $notFound = true;
+            }
+        }
+
         return $this->render('admin/content/faq/add_update.html.twig', [
             'breadcrumb' => $breadcrumb,
             'translate' => $translate,
             'locales' => $locales,
             'id' => $id,
+            'notFound' => $notFound,
             'datas' => [],
             'urls' => [
                 'load_faq' => $this->generateUrl('admin_faq_load_faq'),
@@ -212,6 +222,9 @@ class FaqController extends AppAdminController
             $faq = $faqFactory->create()->getFaq();
         } else {
             $faq = $faqService->findOneById(Faq::class, $id);
+            if ($faq === null) {
+                throw new NotFoundHttpException('FAQ not found');
+            }
         }
         $faqArray = $faqService->convertEntityToArray($faq, [
             'createdAt',
