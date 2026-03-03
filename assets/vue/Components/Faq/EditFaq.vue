@@ -114,19 +114,15 @@ export default defineComponent({
         .get(this.urls.load_faq + '/' + this.id)
         .then((response) => {
           this.faq = response.data.faq;
-          //this.tabMaxRenderOrder = response.data.max_render_order;
-          //this.loadData = true;
-          //this.keyVal += 1;
           emitter.emit('reset-check-confirm');
           this.keyMarkdownEditor += 1;
+          this.loading = false;
+          this.loadDraggableCategories();
         })
         .catch((error) => {
           console.error(error);
         })
-        .finally(() => {
-          this.loading = false;
-          this.loadDraggableCategories();
-        });
+        .finally(() => {});
     },
 
     /**
@@ -211,7 +207,7 @@ export default defineComponent({
       const item = elements.find((item) => item.locale === this.currentLocale);
       const str = item ? item[property] : '';
 
-      return concatValue !== '' ? `${str}-${concatValue}` : str;
+      return concatValue !== '' ? `${str}|${concatValue}` : str;
     },
 
     /**
@@ -220,7 +216,7 @@ export default defineComponent({
      * @param id
      */
     updateValueByLocale(value: string, id: string): void {
-      const tmp = id.split('-');
+      const tmp = id.split('|');
       const itemId = parseInt(tmp[0]);
       this.updateNoSave = true;
 
@@ -312,13 +308,16 @@ export default defineComponent({
         });
     },
 
+    /**
+     * Ajoute une nouvelle question
+     * @param categoryId
+     */
     addQuestion(categoryId: number): void {
       const category = this.faq.faqCategories.find((c) => c.id === categoryId);
       if (!category) return;
 
-      // Crée une traduction vide pour chaque locale disponible
       const translations: FaqQuestionTranslation[] = Object.keys(this.locales.localesTranslate).map((locale) => ({
-        id: this.tempIdCounter--, // ID temporaire négatif
+        id: this.tempIdCounter--,
         FaqQuestion: this.tempIdCounter,
         locale: locale,
         title: this.translate[`new_question_${locale}`],
@@ -335,11 +334,38 @@ export default defineComponent({
 
       category.faqQuestions.push(newQuestion);
 
-      // Ouvre automatiquement l'accordéon de la nouvelle question
       this.openQuestions.add(newQuestion.id);
       this.openQuestions = new Set(this.openQuestions);
 
       this.updateNoSave = true;
+    },
+
+    /**
+     * Ajoute une nouvelle catégorie
+     */
+    addCategory(): void {
+      const translations: FaqCategoryTranslation[] = Object.keys(this.locales.localesTranslate).map((locale) => ({
+        id: this.tempIdCounter--,
+        faqCategory: this.tempIdCounter,
+        locale: locale,
+        title: this.translate[`new_category_${locale}`],
+      }));
+
+      const newCategory: FaqCategory = {
+        id: this.tempIdCounter--,
+        faq: this.faq.id,
+        disabled: false,
+        renderOrder: this.faq.faqCategories.length + 1,
+        faqCategoryTranslations: translations,
+        faqQuestions: [],
+      };
+
+      this.faq.faqCategories.push(newCategory);
+      this.updateNoSave = true;
+
+      this.$nextTick(() => {
+        this.loadDraggableCategories();
+      });
     },
 
     /**
@@ -594,12 +620,35 @@ export default defineComponent({
               v-html="getNbQuestion(category.faqQuestions)"
             ></span>
 
-            <button class="p-1.5 rounded-md text-[var(--text-light)] hover:text-red-500 hover:bg-red-50">
+            <button class="p-1.5 rounded-md text-[var(--text-light)] hover:text-[var(--btn-danger)] hover:bg-red-50">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                ></path>
+              </svg>
+            </button>
+            <button
+              class="p-1 rounded text-[var(--text-light)] hover:text-[var(--primary)] hover:bg-[var(--primary-lighter)]"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path
+                  stroke="currentColor"
+                  stroke-width="2"
+                  d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"
+                ></path>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+              </svg>
+            </button>
+            <button
+              class="p-1 rounded text-[var(--text-light)] hover:text-[var(--primary)] hover:bg-[var(--primary-lighter)]"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
                 ></path>
               </svg>
             </button>
@@ -693,6 +742,38 @@ export default defineComponent({
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
+                <button class="p-1 rounded text-[var(--text-light)] hover:text-[var(--btn-danger)] hover:bg-red-50">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    ></path>
+                  </svg>
+                </button>
+                <button
+                  class="p-1 rounded text-[var(--text-light)] hover:text-[var(--primary)] hover:bg-[var(--primary-lighter)]"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path
+                      stroke="currentColor"
+                      stroke-width="2"
+                      d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"
+                    ></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                  </svg>
+                </button>
+                <button
+                  class="p-1 rounded text-[var(--text-light)] hover:text-[var(--primary)] hover:bg-[var(--primary-lighter)]"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                    ></path>
+                  </svg>
+                </button>
               </div>
 
               <!-- Contenu accordéon -->
@@ -728,7 +809,7 @@ export default defineComponent({
                     @change="
                       updateValueByLocale(
                         ($event.target as HTMLInputElement).value,
-                        getValueByLocale(question.faqQuestionTranslations, 'id', 'faqQuestionTranslations-title')
+                        getValueByLocale(question.faqQuestionTranslations, 'id', 'faqQuestionTranslations|title')
                       )
                     "
                   />
@@ -755,7 +836,7 @@ export default defineComponent({
                   </label>
                   <markdown-editor
                     :key="keyMarkdownEditor"
-                    :me-id="getValueByLocale(question.faqQuestionTranslations, 'id', 'faqQuestionTranslations-answer')"
+                    :me-id="getValueByLocale(question.faqQuestionTranslations, 'id', 'faqQuestionTranslations|answer')"
                     :me-value="getValueByLocale(question.faqQuestionTranslations, 'answer')"
                     :me-rows="14"
                     :me-translate="translate.markdown"
@@ -786,6 +867,7 @@ export default defineComponent({
         </div>
       </div>
       <button
+        @click="addCategory()"
         class="w-full flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-[var(--border-color)] rounded-xl text-sm font-semibold text-[var(--text-secondary)] hover:border-[var(--primary)] hover:text-[var(--primary)] hover:bg-[var(--primary-lighter)]"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

@@ -65,6 +65,9 @@ class FaqTranslate extends AppTranslate
             'new_answer_fr' => $this->translator->trans('faq.edit.new.answer.fr', domain: 'faq'),
             'new_answer_en' => $this->translator->trans('faq.edit.new.answer.en', domain: 'faq'),
             'new_answer_es' => $this->translator->trans('faq.edit.new.answer.es', domain: 'faq'),
+            'new_category_fr' => $this->translator->trans('faq.edit.new.category.fr', domain: 'faq'),
+            'new_category_en' => $this->translator->trans('faq.edit.new.category.en', domain: 'faq'),
+            'new_category_es' => $this->translator->trans('faq.edit.new.category.es', domain: 'faq'),
         ];
     }
 }
