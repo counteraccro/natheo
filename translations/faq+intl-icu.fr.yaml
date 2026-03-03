@@ -75,3 +75,10 @@ faq.edit.new.question.en: 'New question'
 faq.edit.new.answer.fr: 'Nouvelle réponse'
 faq.edit.new.answer.en: 'New answer'
 faq.edit.new.answer.es: 'Nueva respuesta'
+faq.edit.new.category.fr: 'Nouvelle catégorie'
+faq.edit.new.category.en: 'New Category'
+faq.edit.new.category.es: 'Nueva Categoy'
+faq.update.not.found.faq.title: 'Aucune FAQ trouvée'
+faq.update.not.found.faq.description: "Cette FAQ n'existe pas ou a été supprimée. Vous pouvez retourner à la liste ou en créer une nouvelle."
+faq.update.not.found.btn.return: "Retour"
+faq.update.not.found.btn.new_faq: "Créer une FAQ"
