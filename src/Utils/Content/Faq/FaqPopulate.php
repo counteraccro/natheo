@@ -73,6 +73,7 @@ class FaqPopulate
      */
     public function populate(): static
     {
+        $this->faq->setDisabled($this->populate['disabled']);
         $this->populateFAQTranslation();
         $this->populateFAQCategory();
 

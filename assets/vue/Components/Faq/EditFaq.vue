@@ -327,7 +327,7 @@ export default defineComponent({
       const newQuestion: FaqQuestion = {
         id: this.tempIdCounter--,
         faqCategory: categoryId,
-        disabled: false,
+        disabled: category.disabled,
         renderOrder: category.faqQuestions.length + 1,
         faqQuestionTranslations: translations,
       };
@@ -366,6 +366,38 @@ export default defineComponent({
       this.$nextTick(() => {
         this.loadDraggableCategories();
       });
+    },
+
+    /**
+     * Désactive une question / faq / catégorie en fonction du type
+     * @param type
+     * @param id
+     */
+    disabled(type: string, id: number) {
+      switch (type) {
+        case 'category':
+          const item = this.faq.faqCategories.find((item) => item.id === id);
+          if (item) {
+            item.disabled = !item.disabled;
+
+            if (item.disabled) {
+              item.faqQuestions.forEach((question) => {
+                question.disabled = true;
+              });
+            }
+            this.updateNoSave = true;
+          }
+          break;
+        case 'question':
+          this.faq.faqCategories.forEach((faqC) => {
+            const item = faqC.faqQuestions.find((item) => item.id === id);
+            if (item) {
+              item.disabled = !item.disabled;
+              this.updateNoSave = true;
+            }
+          });
+          break;
+      }
     },
 
     /**
@@ -501,7 +533,10 @@ export default defineComponent({
       <SkeletonFaq :is-new="false" />
     </div>
     <div v-else>
-      <div class="card rounded-lg p-6 mb-4 mt-4">
+      <div
+        class="border rounded-lg p-6 mb-4 mt-4"
+        :class="faq.disabled ? 'border-2 border-[var(--alert-warning-border)]' : 'border-[var(--border-color)]'"
+      >
         <div class="border-b-1 border-b-[var(--border-color)] mb-4 flex justify-between items-start">
           <div>
             <h2 class="text-lg font-bold text-[var(--text-primary)]">{{ translate.edit_faq }}</h2>
@@ -545,6 +580,40 @@ export default defineComponent({
           </div>
         </div>
 
+        <div class="form-group mb-3">
+          <div class="form-switch form-switch-inline">
+            <input
+              class="switch-input no-control event-input"
+              type="checkbox"
+              role="switch"
+              id="disabled_faq"
+              :checked="!faq.disabled"
+              @change="
+                faq.disabled = !($event.target as HTMLInputElement).checked;
+                updateNoSave = true;
+              "
+            />
+            <label class="switch-toggle" for="disabled_faq"></label>
+            <label class="swith-label" for="disabled_faq"
+              ><span class="switch-label-text"> {{ translate.input_disabled_faq_label }} </span></label
+            >
+          </div>
+          <span v-if="faq.disabled" class="form-text text-warning"
+            >⚠ {{ translate.input_disabled_faq_help_disabled }}</span
+          >
+          <span v-else class="form-text">
+            <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+            {{ translate.input_disabled_faq_help }}
+          </span>
+        </div>
+
         <div class="form-group">
           <label class="form-label">{{ translate.input_faq_title }}</label>
           <input
@@ -562,7 +631,17 @@ export default defineComponent({
           <span v-if="getValueByLocale(faq.faqTranslations, 'title') === ''" class="form-text text-error"
             >✗ {{ translate.input_faq_title_error }}</span
           >
-          <span v-else class="form-text">{{ translate.input_faq_title_help }}</span>
+          <span v-else class="form-text">
+            <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+            {{ translate.input_faq_title_help }}</span
+          >
         </div>
       </div>
       <div ref="categoriesListRef" class="space-y-4">
@@ -573,7 +652,9 @@ export default defineComponent({
           :class="
             category.faqQuestions.length === 0
               ? 'border-2 border-[var(--alert-danger-border)]'
-              : 'border-[var(--border-color)]'
+              : category.disabled
+                ? 'border-2 border-[var(--alert-warning-border)]'
+                : 'border-[var(--border-color)]'
           "
           style="box-shadow: var(--shadow-sm)"
         >
@@ -582,7 +663,9 @@ export default defineComponent({
             :style="
               category.faqQuestions.length === 0
                 ? 'background: linear-gradient(90deg, var(--alert-danger-bg) 0%, transparent 60%)'
-                : 'background: linear-gradient(90deg, var(--primary-lighter) 0%, transparent 60%)'
+                : category.disabled
+                  ? 'background: linear-gradient(90deg, var(--alert-warning-bg) 0%, transparent 60%)'
+                  : 'background: linear-gradient(90deg, var(--primary-lighter) 0%, transparent 60%)'
             "
           >
             <span class="handle text-[var(--text-light)] hover:text-[var(--primary)] cursor-grab p-0.5 rounded">
@@ -595,6 +678,21 @@ export default defineComponent({
               class="text-[0.65rem] font-mono text-[var(--text-light)] w-5 flex-shrink-0"
               v-html="category.renderOrder > 9 ? category.renderOrder : '0' + category.renderOrder"
             ></span>
+
+            <span
+              v-if="category.disabled"
+              class="inline-flex items-center gap-1 text-[0.6rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full flex-shrink-0"
+              style="background-color: var(--btn-warning); color: white"
+            >
+              <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
+                ></path>
+              </svg>
+              {{ translate.disabled_label }}
+            </span>
 
             <input
               type="text"
@@ -630,6 +728,8 @@ export default defineComponent({
               </svg>
             </button>
             <button
+              v-if="category.disabled"
+              @click="disabled('category', category.id)"
               class="p-1 rounded text-[var(--text-light)] hover:text-[var(--primary)] hover:bg-[var(--primary-lighter)]"
             >
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -642,6 +742,8 @@ export default defineComponent({
               </svg>
             </button>
             <button
+              v-else
+              @click="disabled('category', category.id)"
               class="p-1 rounded text-[var(--text-light)] hover:text-[var(--primary)] hover:bg-[var(--primary-lighter)]"
             >
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -682,7 +784,9 @@ export default defineComponent({
                 getValueByLocale(question.faqQuestionTranslations, 'title') === '' ||
                 getValueByLocale(question.faqQuestionTranslations, 'answer') === ''
                   ? 'border-2 border-[var(--alert-danger-border)]'
-                  : 'border-[var(--border-color)]'
+                  : question.disabled
+                    ? 'border-2 border-[var(--alert-warning-border)]'
+                    : 'border-[var(--border-color)]'
               "
             >
               <div
@@ -691,7 +795,9 @@ export default defineComponent({
                   getValueByLocale(question.faqQuestionTranslations, 'title') === '' ||
                   getValueByLocale(question.faqQuestionTranslations, 'answer') === ''
                     ? 'bg-[var(--alert-danger-bg)]'
-                    : 'bg-[var(--bg-card)]'
+                    : question.disabled
+                      ? 'bg-[var(--alert-warning-bg)]'
+                      : 'bg-[var(--bg-card)]'
                 "
               >
                 <span
@@ -707,6 +813,21 @@ export default defineComponent({
                   class="text-[0.65rem] font-mono text-[var(--text-light)] w-5 flex-shrink-0"
                   v-html="question.renderOrder > 9 ? question.renderOrder : '0' + question.renderOrder"
                 ></span>
+
+                <span
+                  v-if="question.disabled"
+                  class="inline-flex items-center gap-1 text-[0.6rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full flex-shrink-0"
+                  style="background-color: var(--btn-warning); color: white"
+                >
+                  <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
+                    ></path>
+                  </svg>
+                  {{ translate.disabled_label }}
+                </span>
 
                 <!-- Titre cliquable pour le toggle -->
                 <div
@@ -752,6 +873,8 @@ export default defineComponent({
                   </svg>
                 </button>
                 <button
+                  v-if="question.disabled"
+                  @click="disabled('question', question.id)"
                   class="p-1 rounded text-[var(--text-light)] hover:text-[var(--primary)] hover:bg-[var(--primary-lighter)]"
                 >
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -764,6 +887,8 @@ export default defineComponent({
                   </svg>
                 </button>
                 <button
+                  v-else
+                  @click="disabled('question', question.id)"
                   class="p-1 rounded text-[var(--text-light)] hover:text-[var(--primary)] hover:bg-[var(--primary-lighter)]"
                 >
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
