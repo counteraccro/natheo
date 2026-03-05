@@ -79,3 +79,7 @@ faq.index.page_title: __faq.index.page_title
 faq.index.page_title_h1: __faq.index.page_title_h1
 faq.index.btn.new: __faq.index.btn.new
 faq.index.description: __faq.index.description
+faq.edit.disabled.label: __faq.edit.disabled.label
+faq.edit.input.disabled.label: __faq.edit.input.disabled.label
+faq.edit.input.disabled.help: __faq.edit.input.disabled.help
+faq.edit.input.disabled.help.disabled: __faq.edit.input.disabled.help.disabled
