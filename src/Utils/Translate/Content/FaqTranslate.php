@@ -75,6 +75,24 @@ class FaqTranslate extends AppTranslate
                 'faq.edit.input.disabled.help.disabled',
                 domain: 'faq',
             ),
+            'btn_confirm_ok' => $this->translator->trans('faq.edit.btn.confirm_ok', domain: 'faq'),
+            'btn_confirm_ko' => $this->translator->trans('faq.edit.btn.confirm_ko', domain: 'faq'),
+            'modale_confirm_delete_category_title' => $this->translator->trans(
+                'faq.edit.confirm.delete.category.title',
+                domain: 'faq',
+            ),
+            'modale_confirm_delete_category_body' => $this->translator->trans(
+                'faq.edit.confirm.delete.category.body',
+                domain: 'faq',
+            ),
+            'modale_confirm_delete_question_title' => $this->translator->trans(
+                'faq.edit.confirm.delete.question.title',
+                domain: 'faq',
+            ),
+            'modale_confirm_delete_question_body' => $this->translator->trans(
+                'faq.edit.confirm.delete.question.body',
+                domain: 'faq',
+            ),
         ];
     }
 }

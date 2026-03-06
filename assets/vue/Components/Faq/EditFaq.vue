@@ -16,6 +16,7 @@ import Sortable from 'sortablejs';
 import MarkdownEditor from '@/vue/Components/Global/MarkdownEditor/MarkdownEditor.vue';
 import { EditorModule } from '@/ts/MarkdownEditor/MarkdownEditor.types';
 import { InternalLinkModule } from '@/ts/MarkdownEditor/modules/internalLink';
+import Modal from '@/vue/Components/Global/Modal.vue';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
 
@@ -30,7 +31,7 @@ type Toasts = {
 
 export default defineComponent({
   name: 'EditFaq',
-  components: { MarkdownEditor, Toast, SkeletonFaq },
+  components: { Modal, MarkdownEditor, Toast, SkeletonFaq },
   props: {
     urls: { type: Object as PropType<Record<string, string>>, required: true },
     translate: { type: Object as PropType<TranslateRecord>, required: true },
@@ -41,10 +42,20 @@ export default defineComponent({
     return {
       loading: false,
       updateNoSave: false,
+      showModalConfirmDelete: false,
       currentLocale: this.locales.current as string,
       openQuestions: new Set() as Set<number>,
       keyMarkdownEditor: 0 as number,
       tempIdCounter: -1 as number,
+      modale: {
+        title: null,
+        body: null,
+        params: {
+          type: '',
+          id: 0,
+          isConfirm: false,
+        },
+      },
       faq: {} as Faq,
       toasts: {
         success: {
@@ -79,6 +90,11 @@ export default defineComponent({
       }
 
       let valReturn = true;
+
+      if (this.faq.faqCategories.length === 0) {
+        valReturn = false;
+      }
+
       this.faq.faqCategories.forEach((category) => {
         if (this.getValueByLocale(category.faqCategoryTranslations, 'title') === '') {
           valReturn = false;
@@ -400,6 +416,53 @@ export default defineComponent({
       }
     },
 
+    deleteElement(type: string, id: number, isConfirm: boolean) {
+      this.showModalConfirmDelete = false;
+      if (!isConfirm) {
+        switch (type) {
+          case 'category':
+            this.modale.title = this.translate.modale_confirm_delete_category_title;
+            this.modale.body = this.translate.modale_confirm_delete_category_body;
+            break;
+          case 'question':
+            this.modale.title = this.translate.modale_confirm_delete_question_title;
+            this.modale.body = this.translate.modale_confirm_delete_question_body;
+            break;
+        }
+
+        this.modale.params.type = type;
+        this.modale.params.id = id;
+        this.modale.params.isConfirm = true;
+
+        this.showModalConfirmDelete = true;
+        return;
+      }
+
+      switch (type) {
+        case 'category':
+          this.faq.faqCategories = this.faq.faqCategories.filter((c) => c.id !== id);
+          this.faq.faqCategories.forEach((c, i) => {
+            c.renderOrder = i + 1;
+          });
+          break;
+        case 'question':
+          this.faq.faqCategories.forEach((faqC) => {
+            faqC.faqQuestions = faqC.faqQuestions.filter((q) => q.id !== id);
+            faqC.faqQuestions.forEach((q, i) => {
+              q.renderOrder = i + 1;
+            });
+          });
+
+          this.openQuestions.delete(id);
+          this.openQuestions = new Set(this.openQuestions);
+          break;
+        default:
+          return;
+      }
+
+      this.updateNoSave = true;
+    },
+
     /**
      * Permet de changer la locale pour la création/édition d'une page
      * @param event
@@ -415,6 +478,13 @@ export default defineComponent({
      */
     closeToast(nameToast: string): void {
       this.toasts[nameToast].show = false;
+    },
+
+    /**
+     * Ferme la modale
+     */
+    hideModal() {
+      this.showModalConfirmDelete = false;
     },
   },
 });
@@ -718,7 +788,10 @@ export default defineComponent({
               v-html="getNbQuestion(category.faqQuestions)"
             ></span>
 
-            <button class="p-1.5 rounded-md text-[var(--text-light)] hover:text-[var(--btn-danger)] hover:bg-red-50">
+            <button
+              @click="deleteElement('category', category.id, false)"
+              class="p-1.5 rounded-md text-[var(--text-light)] hover:text-[var(--btn-danger)] hover:bg-red-50"
+            >
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
@@ -863,7 +936,10 @@ export default defineComponent({
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
-                <button class="p-1 rounded text-[var(--text-light)] hover:text-[var(--btn-danger)] hover:bg-red-50">
+                <button
+                  @click="deleteElement('question', question.id, false)"
+                  class="p-1 rounded text-[var(--text-light)] hover:text-[var(--btn-danger)] hover:bg-red-50"
+                >
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path
                       stroke-linecap="round"
@@ -993,7 +1069,12 @@ export default defineComponent({
       </div>
       <button
         @click="addCategory()"
-        class="w-full flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed border-[var(--border-color)] rounded-xl text-sm font-semibold text-[var(--text-secondary)] hover:border-[var(--primary)] hover:text-[var(--primary)] hover:bg-[var(--primary-lighter)]"
+        :class="
+          !faq.faqCategories || faq.faqCategories.length === 0
+            ? 'border-[var(--alert-danger-border)] text-[var(--alert-danger-text)] bg-[var(--alert-danger-bg)]'
+            : 'border-[var(--border-color)] text-[var(--text-secondary)] hover:border-[var(--primary)] hover:text-[var(--primary)] hover:bg-[var(--primary-lighter)]'
+        "
+        class="w-full flex items-center justify-center gap-2 px-4 py-4 border-2 border-dashed rounded-xl text-sm font-semibold cursor-pointer"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
@@ -1001,6 +1082,65 @@ export default defineComponent({
         {{ translate.btn_new_category }}
       </button>
     </div>
+
+    <modal
+      :id="'confirm-delete-element'"
+      :show="showModalConfirmDelete"
+      @close-modal="hideModal"
+      :option-show-close-btn="false"
+    >
+      <template #title> {{ modale.title }}</template>
+      <template #body>
+        <div v-html="modale.body"></div>
+      </template>
+      <template #footer>
+        <button
+          type="button"
+          class="btn btn-primary btn-sm me-2"
+          @click="deleteElement(modale.params.type, modale.params.id, modale.params.isConfirm)"
+        >
+          <svg
+            class="icon"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+          {{ translate.btn_confirm_ok }}
+        </button>
+        <button type="button" class="btn btn-outline-dark btn-sm" @click="hideModal()">
+          <svg
+            class="icon"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+
+          {{ translate.btn_confirm_ko }}
+        </button>
+      </template>
+    </modal>
 
     <div class="toast-container position-fixed top-0 end-0 p-2">
       <toast :id="'toastSuccess'" :type="'success'" :show="toasts.success.show" @close-toast="closeToast('success')">
