@@ -86,3 +86,9 @@ faq.edit.disabled.label: Désactivée
 faq.edit.input.disabled.label: 'Faq visible sur le site'
 faq.edit.input.disabled.help: 'Votre FAQ est visible pour tout le monde'
 faq.edit.input.disabled.help.disabled: 'Votre FAQ est actuellement désactivée'
+faq.edit.btn.confirm_ok: 'Oui je confirme'
+faq.edit.btn.confirm_ko: 'Non'
+faq.edit.confirm.delete.category.title: "Suppression d'une catégorie"
+faq.edit.confirm.delete.category.body: "Vous êtes sur le point de supprimer cette catégorie ainsi que l'ensemble des questions associées, êtes-vous sur ?"
+faq.edit.confirm.delete.question.title: "Suppression d'une question"
+faq.edit.confirm.delete.question.body: "Vous êtes sur le point de supprimer cette question, êtes-vous sur ?"

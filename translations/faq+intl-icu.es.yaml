@@ -83,3 +83,9 @@ faq.edit.disabled.label: __faq.edit.disabled.label
 faq.edit.input.disabled.label: __faq.edit.input.disabled.label
 faq.edit.input.disabled.help: __faq.edit.input.disabled.help
 faq.edit.input.disabled.help.disabled: __faq.edit.input.disabled.help.disabled
+faq.edit.btn.confirm_ok: __faq.edit.btn.confirm_ok
+faq.edit.btn.confirm_ko: __faq.edit.btn.confirm_ko
+faq.edit.confirm.delete.category.title: __faq.edit.confirm.delete.category.title
+faq.edit.confirm.delete.category.body: __faq.edit.confirm.delete.category.body
+faq.edit.confirm.delete.question.title: __faq.edit.confirm.delete.question.title
+faq.edit.confirm.delete.question.body: __faq.edit.confirm.delete.question.body
