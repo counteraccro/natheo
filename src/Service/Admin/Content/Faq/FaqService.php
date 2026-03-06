@@ -197,6 +197,7 @@ class FaqService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
+    #[\Deprecated(message: 'updateDisabledQuestion() est devenu obsolète et sera supprimé prochainement', since: '2.0')]
     public function updateDisabledQuestion(int $id, bool $value): string
     {
         $translator = $this->getTranslator();
@@ -224,6 +225,7 @@ class FaqService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
+    #[\Deprecated(message: 'updateDisabledCategory() est devenu obsolète et sera supprimé prochainement', since: '2.0')]
     public function updateDisabledCategory(int $id, bool $allQuestion, bool $value): string
     {
         $translator = $this->getTranslator();
@@ -261,6 +263,12 @@ class FaqService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
+    #[
+        \Deprecated(
+            message: 'getListeCategoryOrderByFaq() est devenu obsolète et sera supprimé prochainement',
+            since: '2.0',
+        ),
+    ]
     public function getListeCategoryOrderByFaq(int $id): array
     {
         $translator = $this->getTranslator();
@@ -291,6 +299,12 @@ class FaqService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
+    #[
+        \Deprecated(
+            message: 'getListeQuestionOrderByCategory() est devenu obsolète et sera supprimé prochainement',
+            since: '2.0',
+        ),
+    ]
     public function getListeQuestionOrderByCategory(int $id): array
     {
         $translator = $this->getTranslator();
@@ -452,6 +466,8 @@ class FaqService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
+
+    #[\Deprecated(message: 'deleteCategory() est devenu obsolète et sera supprimé prochainement', since: '2.0')]
     public function deleteCategory(int $id): void
     {
         /** @var FaqCategory $faqCategory */
@@ -480,6 +496,7 @@ class FaqService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
+    #[\Deprecated(message: 'deleteQuestion() est devenu obsolète et sera supprimé prochainement', since: '2.0')]
     public function deleteQuestion(int $id): void
     {
         /** @var FaqQuestion $faqQuestion */

@@ -326,6 +326,12 @@ class FaqController extends AppAdminController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
+    #[
+        \Deprecated(
+            message: 'updateDisabledCatQuestion() est devenu obsolète et sera supprimé prochainement',
+            since: '2.0',
+        ),
+    ]
     #[Route('/ajax/update-disabled', name: 'update_disabled', methods: 'PUT')]
     public function updateDisabledCatQuestion(Request $request, FaqService $faqService): JsonResponse
     {
@@ -460,6 +466,7 @@ class FaqController extends AppAdminController
      * @throws NotFoundExceptionInterface
      * @throws Exception
      */
+    #[\Deprecated(message: 'deleteCategoryQuestion() est devenu obsolète et sera supprimé prochainement', since: '2.0')]
     #[Route('/ajax/delete-q-r/{id}/{type}', name: 'delete_category_question', methods: 'DELETE')]
     public function deleteCategoryQuestion(
         FaqService $faqService,
