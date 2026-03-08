@@ -545,13 +545,14 @@ export default {
         <li class="me-2" role="presentation">
           <input
             type="checkbox"
-            class="form-check-input me-1 no-control"
+            class="form-check-input ms-3 no-control"
             id="check-all"
             @change="this.checkedAllNotification"
           />
           <button
-            class="inline-block p-3 border-b-2 rounded-t-base border-[var(--primary)] cursor-pointer"
+            class="inline-block p-3 border-b-2 hover:text-fg-brand hover:border-brand border-[var(--primary)] cursor-pointer"
             id="all-tab"
+            style="margin-bottom: -1px"
             data-tabs-target="#all"
             type="button"
             role="tab"
@@ -563,9 +564,10 @@ export default {
         </li>
         <li class="me-2" role="presentation">
           <button
-            class="inline-block border-b-2 rounded-t-base hover:text-fg-brand hover:border-brand border-[var(--primary)] cursor-pointer"
+            class="inline-block border-b-2 hover:text-fg-brand hover:border-brand border-[var(--primary)] cursor-pointer"
             :class="this.stats.nb_noRead ? 'p-[0.67em]' : 'p-3'"
             id="not-read-tab"
+            style="margin-bottom: -1px"
             data-tabs-target="#not-read"
             type="button"
             role="tab"
@@ -576,10 +578,11 @@ export default {
             <span v-if="this.stats.nb_noRead > 0" class="ms-3 badge badge-primary"> {{ this.stats.nb_noRead }} </span>
           </button>
         </li>
-        <li v-for="category in this.categories" role="presentation">
+        <li v-for="category in this.categories" role="presentation" class="me-2">
           <button
-            class="inline-block p-3 border-b-2 rounded-t-base hover:text-fg-brand hover:border-brand cursor-pointer"
+            class="inline-block p-3 border-b-2 hover:text-fg-brand hover:border-brand cursor-pointer"
             :id="category.id + '-tab'"
+            style="margin-bottom: -1px"
             :data-tabs-target="'#' + category.id"
             type="button"
             role="tab"

@@ -5,7 +5,7 @@
  * Éditeur Markdown — Vue 3 Composition API (defineComponent + setup)
  */
 
-import { computed, defineComponent, type PropType, ref, watch } from 'vue';
+import { computed, defineComponent, type PropType, ref, useId, watch } from 'vue';
 import { useEditor } from '@/ts/MarkdownEditor/markdownEditorCore';
 import type {
   EditorModule,
@@ -174,6 +174,7 @@ export default defineComponent({
   setup(props, { emit }) {
     // ── Composable éditeur ───────────────────────────────────────────────────
     const editor = useEditor(props.meValue);
+    const uid = useId();
 
     // Alias pour le template
     const textareaRef = editor.textareaRef;
@@ -251,12 +252,12 @@ export default defineComponent({
 
     function insertHeading(level: number): void {
       editor.insertLinePrefix('#'.repeat(level) + ' ');
-      document.getElementById('heading-dropdown')?.classList.add('hidden');
+      document.getElementById('heading-dropdown-' + uid)?.classList.add('hidden');
     }
 
     function insertKeyword(keyword: string): void {
       editor.insertText(keyword);
-      document.getElementById('keywords-dropdown')?.classList.add('hidden');
+      document.getElementById('keywords-dropdown-' + uid)?.classList.add('hidden');
     }
 
     function onInput(e: Event): void {
@@ -329,6 +330,7 @@ export default defineComponent({
       ddKeywordsRef,
       // État réactif
       markdown,
+      uid,
       html,
       wordCount,
       // Constantes
@@ -392,7 +394,7 @@ export default defineComponent({
               type="button"
               class="tb-btn no-control"
               style="padding: 0 0.625rem"
-              data-dropdown-toggle="heading-dropdown"
+              :data-dropdown-toggle="'heading-dropdown-' + uid"
               data-dropdown-placement="bottom-start"
               data-dropdown-offset-distance="4"
             >
@@ -410,7 +412,7 @@ export default defineComponent({
             </button>
 
             <div
-              id="heading-dropdown"
+              :id="'heading-dropdown-' + uid"
               class="tb-dropdown-menu z-10 hidden"
               style="min-width: 12rem"
               ref="headingDropdownRef"
@@ -435,7 +437,7 @@ export default defineComponent({
               type="button"
               class="tb-btn no-control"
               style="padding: 0 0.75rem"
-              data-dropdown-toggle="keywords-dropdown"
+              :data-dropdown-toggle="'keywords-dropdown-' + uid"
               data-dropdown-placement="bottom-start"
               data-dropdown-offset-distance="4"
             >
@@ -466,7 +468,7 @@ export default defineComponent({
               </svg>
             </button>
 
-            <div id="keywords-dropdown" class="tb-dropdown-menu z-10 hidden w-max" style="min-width: 13rem">
+            <div :id="'keywords-dropdown-' + uid" class="tb-dropdown-menu z-10 hidden w-max" style="min-width: 13rem">
               <ul class="py-1">
                 <li v-for="kw in meKeyWords" :key="kw.keyword">
                   <a href="#" class="tb-dropdown-item no-control" @click.prevent="insertKeyword(kw.keyword)">

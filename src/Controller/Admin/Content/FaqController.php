@@ -14,6 +14,7 @@ use App\Service\Admin\Content\Faq\FaqService;
 use App\Utils\Content\Faq\FaqConst;
 use App\Utils\Content\Faq\FaqFactory;
 use App\Utils\Content\Faq\FaqPopulate;
+use App\Utils\Content\Faq\FaqStatistiqueKey;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\Translate\Content\FaqTranslate;
 use App\Utils\Translate\MarkdownEditorTranslate;
@@ -24,6 +25,7 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
@@ -68,14 +70,20 @@ class FaqController extends AppAdminController
     #[Route('/ajax/load-grid-data/{page}/{limit}', name: 'load_grid_data', methods: ['GET'])]
     public function loadGridData(FaqService $faqService, Request $request, int $page = 1, int $limit = 20): JsonResponse
     {
-        $search = $request->query->get('search');
         $filter = $request->query->get('filter');
 
-        $userId = null;
+        $queryParams = [
+            'search' => $request->query->get('search'),
+            'orderField' => $request->query->get('orderField'),
+            'order' => $request->query->get('order'),
+            'locale' => $request->getLocale(),
+        ];
+
         if ($filter === self::FILTER_ME) {
-            $userId = $this->getUser()->getId();
+            $queryParams['userId'] = $this->getUser()->getId();
         }
-        $grid = $faqService->getAllFormatToGrid($page, $limit, $search, $userId);
+
+        $grid = $faqService->getAllFormatToGrid($page, $limit, $queryParams);
         return $this->json($grid);
     }
 
@@ -111,24 +119,28 @@ class FaqController extends AppAdminController
         ];
 
         $translate = $faqTranslate->getTranslate();
-        $translate['markdown'] = $markdownEditorTranslate->getTranslate();
+        $translate['editFaq']['markdown'] = $markdownEditorTranslate->getTranslate();
         $locales = $faqService->getLocales();
+
+        $notFound = false;
+        if ($id !== null) {
+            $faq = $faqService->findOneById(Faq::class, $id);
+            if ($faq === null) {
+                $notFound = true;
+            }
+        }
 
         return $this->render('admin/content/faq/add_update.html.twig', [
             'breadcrumb' => $breadcrumb,
             'translate' => $translate,
             'locales' => $locales,
             'id' => $id,
+            'notFound' => $notFound,
             'datas' => [],
             'urls' => [
                 'load_faq' => $this->generateUrl('admin_faq_load_faq'),
                 'save' => $this->generateUrl('admin_faq_save'),
                 'new_faq' => $this->generateUrl('admin_faq_new_faq'),
-                'update_disabled' => $this->generateUrl('admin_faq_update_disabled'),
-                'order_by_type' => $this->generateUrl('admin_faq_order_by_type'),
-                'new_cat_question' => $this->generateUrl('admin_faq_new_cat_question'),
-                'update_order' => $this->generateUrl('admin_faq_update_order'),
-                'delete_category_question' => $this->generateUrl('admin_faq_delete_category_question'),
             ],
         ]);
     }
@@ -205,6 +217,9 @@ class FaqController extends AppAdminController
             $faq = $faqFactory->create()->getFaq();
         } else {
             $faq = $faqService->findOneById(Faq::class, $id);
+            if ($faq === null) {
+                throw new NotFoundHttpException('FAQ not found');
+            }
         }
         $faqArray = $faqService->convertEntityToArray($faq, [
             'createdAt',
@@ -242,6 +257,23 @@ class FaqController extends AppAdminController
 
         $faqPopulate = new FaqPopulate($faq, $data['faq']);
         $faq = $faqPopulate->populate()->getFaq();
+        $faqService->updateFaqStatistique(
+            $faq,
+            FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES,
+            FaqConst::STATISTIQUE_ACTION_OVERWRITE,
+            $faq->getFaqCategories()->count(),
+        );
+
+        $nbQuestions = 0;
+        foreach ($faq->getFaqCategories() as $faqCategory) {
+            $nbQuestions += $faqCategory->getFaqQuestions()->count();
+        }
+        $faqService->updateFaqStatistique(
+            $faq,
+            FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
+            FaqConst::STATISTIQUE_ACTION_OVERWRITE,
+            $nbQuestions,
+        );
 
         $msg = $translator->trans('faq.save.success', domain: 'faq');
         $faqService->save($faq);
@@ -279,166 +311,5 @@ class FaqController extends AppAdminController
         $jsonTab = $faqService->getResponseAjax($msg);
         $jsonTab['url_redirect'] = $this->generateUrl('admin_faq_update', ['id' => $faq->getId()]);
         return $this->json($jsonTab);
-    }
-
-    /**
-     * @param Request $request
-     * @param FaqService $faqService
-     * @return JsonResponse
-     * Active ou désactive une catégorie ou question d'une FAQ
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    #[Route('/ajax/update-disabled', name: 'update_disabled', methods: 'PUT')]
-    public function updateDisabledCatQuestion(Request $request, FaqService $faqService): JsonResponse
-    {
-        $data = json_decode($request->getContent(), true);
-
-        $msg = match ($data['type']) {
-            FaqConst::TYPE_QUESTION => $faqService->updateDisabledQuestion($data['id'], $data['value']),
-            FaqConst::TYPE_CATEGORY => $faqService->updateDisabledCategory(
-                $data['id'],
-                $data['allQuestion'],
-                $data['value'],
-            ),
-            default => 'Erreur type',
-        };
-
-        return $this->json($faqService->getResponseAjax($msg));
-    }
-
-    /**
-     * Retourne une liste de Category ou question dans l'order orderRender en fonction de son type
-     * @param FaqService $faqService
-     * @param TranslatorInterface $translator
-     * @param int $id
-     * @param string $type
-     * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    #[Route('/ajax/order-by/{id}/{type}', name: 'order_by_type', methods: 'GET')]
-    public function orderListeByEntity(
-        FaqService $faqService,
-        TranslatorInterface $translator,
-        int $id = 0,
-        string $type = 'category',
-    ): JsonResponse {
-        $msg = '';
-        $data = [];
-        $success = false;
-        switch ($type) {
-            case FaqConst::TYPE_QUESTION:
-                $data = $faqService->getListeQuestionOrderByCategory($id);
-                $success = true;
-                break;
-            case FaqConst::TYPE_CATEGORY:
-                $data = $faqService->getListeCategoryOrderByFaq($id);
-                $success = true;
-                break;
-            default:
-                $msg = $translator->trans('faq.generique.error', domain: 'faq');
-        }
-
-        return $this->json(['list' => $data, 'success' => $success, 'msg' => $msg]);
-    }
-
-    /**
-     * Créer une nouvelle question ou catégorie
-     * @param FaqService $faqService
-     * @param Request $request
-     * @param TranslatorInterface $translator
-     * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    #[Route('/ajax/new/', name: 'new_cat_question', methods: 'POST')]
-    public function newCatQuestion(
-        FaqService $faqService,
-        Request $request,
-        TranslatorInterface $translator,
-    ): JsonResponse {
-        $data = json_decode($request->getContent(), true);
-
-        switch ($data['type']) {
-            case FaqConst::TYPE_CATEGORY:
-                $faqService->addNewCategory($data['id'], $data['idOrder'], $data['orderType']);
-                $msg = $translator->trans('faq.category.new.success', domain: 'faq');
-                break;
-            case FaqConst::TYPE_QUESTION:
-                $faqService->addNewQuestion($data['id'], $data['idOrder'], $data['orderType']);
-                $msg = $translator->trans('faq.question.new.success', domain: 'faq');
-                break;
-            default:
-                $msg = $translator->trans('faq.generique.error', domain: 'faq');
-        }
-
-        return $this->json($faqService->getResponseAjax($msg));
-    }
-
-    /**
-     * Change l'ordre d'une catégorie ou question
-     * @param FaqService $faqService
-     * @param Request $request
-     * @param TranslatorInterface $translator
-     * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws Exception
-     */
-    #[Route('/ajax/update-order/', name: 'update_order', methods: 'PUT')]
-    public function changeOrderRender(
-        FaqService $faqService,
-        Request $request,
-        TranslatorInterface $translator,
-    ): JsonResponse {
-        $data = json_decode($request->getContent(), true);
-
-        switch ($data['type']) {
-            case FaqConst::TYPE_CATEGORY:
-                $faqService->updateOrderCategory($data['id'], $data['idOrder'], $data['orderType']);
-                $msg = $translator->trans('faq.category.update.order', domain: 'faq');
-                break;
-            case FaqConst::TYPE_QUESTION:
-                $faqService->updateOrderQuestion($data['id'], $data['idOrder'], $data['orderType']);
-                $msg = $translator->trans('faq.question.update.order', domain: 'faq');
-                break;
-            default:
-                $msg = $translator->trans('faq.generique.error', domain: 'faq');
-        }
-        return $this->json($faqService->getResponseAjax($msg));
-    }
-
-    /**
-     * Supprime une question ou une réponse
-     * @param FaqService $faqService
-     * @param TranslatorInterface $translator
-     * @param int $id
-     * @param string $type
-     * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws Exception
-     */
-    #[Route('/ajax/delete-q-r/{id}/{type}', name: 'delete_category_question', methods: 'DELETE')]
-    public function deleteCategoryQuestion(
-        FaqService $faqService,
-        TranslatorInterface $translator,
-        int $id = 0,
-        string $type = 'category',
-    ): JsonResponse {
-        switch ($type) {
-            case FaqConst::TYPE_CATEGORY:
-                $faqService->deleteCategory($id);
-                $msg = $translator->trans('faq.category.remove.success', domain: 'faq');
-                break;
-            case FaqConst::TYPE_QUESTION:
-                $faqService->deleteQuestion($id);
-                $msg = $translator->trans('faq.question.remove.success', domain: 'faq');
-                break;
-            default:
-                $msg = $translator->trans('faq.generique.error', domain: 'faq');
-        }
-        return $this->json($faqService->getResponseAjax($msg));
     }
 }

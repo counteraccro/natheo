@@ -33,53 +33,62 @@ faq.new.help: "A la création de la Faq, le titre sera dans la langue par défau
 faq.new.btn: 'Créer la Faq'
 faq.new.input.error.empty: 'Vous devez saisir un titre pour votre nouvelle Faq'
 faq.create.success: "Votre Faq à été créée avec succès, vous aller être redirigé vers l'édition"
-faq.toast.title.success: 'Succès !'
-faq.toast.time: "A l'instant"
-faq.toast.title.error: 'Erreur !'
-faq.new.category.btn: 'Nouvelle catégorie'
-faq.question.disabled: 'Cette question est invisible'
-faq.category.disabled: 'Cette catégorie est invisible ainsi que ses questions'
-faq.category.disabled.title: 'Masquer une catégorie'
-faq.category.disabled.message: 'Vous êtes sur le point de masquer la catégorie <b>{categorie}</b>, cette action entrainement la désactivation des questions liées, confirmez-vous ?'
-faq.disabled_btn_ok: Oui
-faq.disabled_btn_ko: Non
-faq.question.disabled.title: 'Masquer une question'
-faq.question.disabled.message: 'Vous êtes sur le point de masquer la question <b>{question}</b>, confirmez-vous cette action ?'
-faq.category.enabled.title: 'Afficher la catégorie'
-faq.category.enabled.message: 'Vous êtes sur le point de rendre visible la catégorie <b>{categorie}</b>, confirmez-vous cette action ?'
-faq.question.enabled.title: 'Afficher la question'
-faq.question.enabled.message: 'Vous êtes sur le point de rendre visible la question <b>{question}</b>, confirmez-vous cette action ?'
-faq.category.enabled.message.2: "Rendre visible l'ensemble des question associées"
 faq.question.disabled.ok: 'La question <b>{question}</b> à été masquée avec succès'
 faq.question.enabled.ok: 'La question <b>{question}</b> à été rendu visible avec succès'
 faq.category.disabled.ok: 'La catégorie <b>{category}</b> à été masquée avec succès ainsi que toutes ses questions associées'
 faq.category.enabled.all.questions.ok: 'La catégorie <b>{category}</b> à été rendu visible avec succès ainsi que toutes ses questions associées'
 faq.category.enabled.ok: 'La catégorie <b>{category}</b> à été rendu visible avec succès'
-faq.category.new.title: 'Nouvelle catégorie'
-faq.category.new.liste.cat: 'Liste des catégories'
-faq.category.new.after: Après
-faq.category.new.before: Avant
-faq.category.new.help: 'Choisissez la catégorie ou sera intercalé la nouvelle catégorie ainsi que si elle sera avant ou après la catégorie sélectionnée'
 faq.generique.error: 'Une erreur est survenue lors de la récupération de données pour la FAQ'
 faq.position: Position
-faq.category.new.btn.validate: 'Nouvelle catégorie'
-faq.category.new.btn.cancel: Annuler
-faq.question.new.title: 'Nouvelle question'
-faq.question.new.liste.cat: 'Liste des questions'
-faq.question.new.after: Après
-faq.question.new.before: Avant
-faq.question.new.help: 'Choisissez la question ou sera intercalé la nouvelle question ainsi que si elle sera avant ou après la question sélectionnée'
-faq.question.new.btn.validate: 'Nouvelle question'
-faq.question.new.btn.cancel: Annuler
 faq.category.new.success: 'La nouvelle catégorie à été ajoutée avec succès'
 faq.question.new.success: 'La nouvelle question à été ajoutée avec succès'
 faq.grid.nb_categories: 'Nombre de catégories'
-faq.msg.no.save: 'Les derniers changements fait non pas été sauvegardés'
 faq.category.update.order: 'La catégorie à été déplacée avec succès'
 faq.question.update.order: 'La question à été déplacée avec succès'
-faq.question.delete.titre.confirm: 'Confirmer la suppression de la question'
-faq.question.delete.body.confirm: 'Cette action est définitive et sans possibilité de retour'
-faq.category.delete.titre.confirm: 'Confirmer la suppression de la catégorie'
-faq.category.delete.body.confirm: "La suppression de cette catégorie entrainera la suppression de l'ensemble des questions associées <br /> Cette action est définitive et sans possibilité de retour"
 faq.category.remove.success: 'La catégorie à été supprimée avec succès'
 faq.question.remove.success: 'La question à été supprimée avec succès'
+faq.new.sub_title: 'Saisissez juste un titre pour créer votre Faq'
+faq.new.btn.cancel: Annuler
+faq.edit.title: 'Données globales'
+faq.edit.sub_title: 'Les données globales de la FAQ'
+faq.edit.input.title: 'Titre de la FAQ'
+faq.edit.input.title.help: 'Texte qui apparaitra en haut de votre FAQ'
+faq.edit.input.title.error: 'Ce champ ne peux pas être vide'
+faq.edit.btn.save: Sauvegarder
+faq.edit.btn.cancel: Annuler
+faq.edit.text.no_change: 'Aucun changement pour le moment'
+faq.edit.text.change_no_save: 'Des changements ont été effectués mais pas encore sauvegardé'
+faq.edit.text.error: 'Une ou plusieurs erreurs de validation ont été détectées'
+faq.edit.no.questions: 'Aucune question'
+faq.edit.one.question: '1 question'
+faq.edit.multiple.questions: questions
+faq.edit.question.label: Question
+faq.edit.question.error: 'Cette question est invalide'
+faq.edit.answer.label: Réponse
+faq.edit.text.save.success: 'Vos données ont correctement été sauvegardées'
+faq.edit.text.error.not.question: 'Aucune question — ajoutez ou déposez-en une ici depuis une autre catégorie.'
+faq.edit.btn.new.question: 'Ajouter une question'
+faq.edit.btn.new.category: 'Ajouter une catégorie'
+faq.edit.new.question.fr: 'Nouvelle question'
+faq.edit.new.question.es: 'Nueva pregunta'
+faq.edit.new.question.en: 'New question'
+faq.edit.new.answer.fr: 'Nouvelle réponse'
+faq.edit.new.answer.en: 'New answer'
+faq.edit.new.answer.es: 'Nueva respuesta'
+faq.edit.new.category.fr: 'Nouvelle catégorie'
+faq.edit.new.category.en: 'New Category'
+faq.edit.new.category.es: 'Nueva Categoy'
+faq.update.not.found.faq.title: 'Aucune FAQ trouvée'
+faq.update.not.found.faq.description: "Cette FAQ n'existe pas ou a été supprimée. Vous pouvez retourner à la liste ou en créer une nouvelle."
+faq.update.not.found.btn.return: Retour
+faq.update.not.found.btn.new_faq: 'Créer une FAQ'
+faq.edit.disabled.label: Désactivée
+faq.edit.input.disabled.label: 'Faq visible sur le site'
+faq.edit.input.disabled.help: 'Votre FAQ est visible pour tout le monde'
+faq.edit.input.disabled.help.disabled: 'Votre FAQ est actuellement désactivée'
+faq.edit.btn.confirm_ok: 'Oui je confirme'
+faq.edit.btn.confirm_ko: 'Non'
+faq.edit.confirm.delete.category.title: "Suppression d'une catégorie"
+faq.edit.confirm.delete.category.body: "Vous êtes sur le point de supprimer cette catégorie ainsi que l'ensemble des questions associées, êtes-vous sur ?"
+faq.edit.confirm.delete.question.title: "Suppression d'une question"
+faq.edit.confirm.delete.question.body: "Vous êtes sur le point de supprimer cette question, êtes-vous sur ?"

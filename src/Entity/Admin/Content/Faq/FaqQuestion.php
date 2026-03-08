@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'faq_question')]
 class FaqQuestion
 {
+    public const string DEFAULT_ALIAS = 'faq_question';
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]

@@ -17,64 +17,80 @@ class FaqTranslate extends AppTranslate
     public function getTranslate(): array
     {
         return [
-            'select_locale' => $this->translator->trans('faq.select.locale', domain: 'faq'),
-            'loading' => $this->translator->trans('faq.select.loading', domain: 'faq'),
-            'error_empty_value' => $this->translator->trans('faq.error.empty.value', domain: 'faq'),
-            'msg_no_save' => $this->translator->trans('faq.msg.no.save', domain: 'faq'),
-            'save' => $this->translator->trans('faq.save', domain: 'faq'),
+            'newFaq' => $this->getNewFaqTranslate(),
+            'editFaq' => $this->getEditFaqTranslate(),
+        ];
+    }
+
+    private function getNewFaqTranslate()
+    {
+        return [
             'new_faq' => $this->translator->trans('faq.new.title', domain: 'faq'),
+            'new_faq_sub_title' => $this->translator->trans('faq.new.sub_title', domain: 'faq'),
             'new_faq_input_title' => $this->translator->trans('faq.new.input.title', domain: 'faq'),
             'new_faq_help' => $this->translator->trans('faq.new.help', domain: 'faq'),
             'new_faq_btn' => $this->translator->trans('faq.new.btn', domain: 'faq'),
-            'new_category_btn' => $this->translator->trans('faq.new.category.btn', domain: 'faq'),
+            'new_faq_btn_cancel' => $this->translator->trans('faq.new.btn.cancel', domain: 'faq'),
             'new_faq_error_empty' => $this->translator->trans('faq.new.input.error.empty', domain: 'faq'),
-            'toast_title_success' => $this->translator->trans('faq.toast.title.success', domain: 'faq'),
-            'toast_time' => $this->translator->trans('faq.toast.time', domain: 'faq'),
-            'toast_title_error' => $this->translator->trans('faq.toast.title.error', domain: 'faq'),
-            'faq_disabled_btn_ok' => $this->translator->trans('faq.disabled_btn_ok', domain: 'faq'),
-            'faq_disabled_btn_ko' => $this->translator->trans('faq.disabled_btn_ko', domain: 'faq'),
-            'faq_question_disabled' => $this->translator->trans('faq.question.disabled', domain: 'faq'),
-            'faq_category_disabled' => $this->translator->trans('faq.category.disabled', domain: 'faq'),
-            'faq_category_disabled_title' => $this->translator->trans('faq.category.disabled.title', domain: 'faq'),
-            'faq_category_disabled_message' => $this->translator->trans('faq.category.disabled.message', domain: 'faq'),
-            'faq_question_disabled_title' => $this->translator->trans('faq.question.disabled.title', domain: 'faq'),
-            'faq_question_disabled_message' => $this->translator->trans('faq.question.disabled.message', domain: 'faq'),
-            'faq_category_enabled_title' => $this->translator->trans('faq.category.enabled.title', domain: 'faq'),
-            'faq_category_enabled_message' => $this->translator->trans('faq.category.enabled.message', domain: 'faq'),
-            'faq_category_enabled_message_2' => $this->translator->trans(
-                'faq.category.enabled.message.2',
+        ];
+    }
+
+    private function getEditFaqTranslate(): array
+    {
+        return [
+            'edit_faq' => $this->translator->trans('faq.edit.title', domain: 'faq'),
+            'edit_faq_sub_title' => $this->translator->trans('faq.edit.sub_title', domain: 'faq'),
+            'input_faq_title' => $this->translator->trans('faq.edit.input.title', domain: 'faq'),
+            'input_faq_title_help' => $this->translator->trans('faq.edit.input.title.help', domain: 'faq'),
+            'input_faq_title_error' => $this->translator->trans('faq.edit.input.title.error', domain: 'faq'),
+            'select_locale' => $this->translator->trans('faq.select.locale', domain: 'faq'),
+            'btn_save' => $this->translator->trans('faq.edit.btn.save', domain: 'faq'),
+            'btn_cancel' => $this->translator->trans('faq.edit.btn.cancel', domain: 'faq'),
+            'text_no_change' => $this->translator->trans('faq.edit.text.no_change', domain: 'faq'),
+            'text_change_no_save' => $this->translator->trans('faq.edit.text.change_no_save', domain: 'faq'),
+            'text_error' => $this->translator->trans('faq.edit.text.error', domain: 'faq'),
+            'text_save_success' => $this->translator->trans('faq.edit.text.save.success', domain: 'faq'),
+            'no_questions' => $this->translator->trans('faq.edit.no.questions', domain: 'faq'),
+            'one_question' => $this->translator->trans('faq.edit.one.question', domain: 'faq'),
+            'multiple_questions' => $this->translator->trans('faq.edit.multiple.questions', domain: 'faq'),
+            'question_label' => $this->translator->trans('faq.edit.question.label', domain: 'faq'),
+            'answer_label' => $this->translator->trans('faq.edit.answer.label', domain: 'faq'),
+            'question_error' => $this->translator->trans('faq.edit.question.error', domain: 'faq'),
+            'text_error_not_question' => $this->translator->trans('faq.edit.text.error.not.question', domain: 'faq'),
+            'btn_new_question' => $this->translator->trans('faq.edit.btn.new.question', domain: 'faq'),
+            'btn_new_category' => $this->translator->trans('faq.edit.btn.new.category', domain: 'faq'),
+            'new_question_fr' => $this->translator->trans('faq.edit.new.question.fr', domain: 'faq'),
+            'new_question_es' => $this->translator->trans('faq.edit.new.question.es', domain: 'faq'),
+            'new_question_en' => $this->translator->trans('faq.edit.new.question.en', domain: 'faq'),
+            'new_answer_fr' => $this->translator->trans('faq.edit.new.answer.fr', domain: 'faq'),
+            'new_answer_en' => $this->translator->trans('faq.edit.new.answer.en', domain: 'faq'),
+            'new_answer_es' => $this->translator->trans('faq.edit.new.answer.es', domain: 'faq'),
+            'new_category_fr' => $this->translator->trans('faq.edit.new.category.fr', domain: 'faq'),
+            'new_category_en' => $this->translator->trans('faq.edit.new.category.en', domain: 'faq'),
+            'new_category_es' => $this->translator->trans('faq.edit.new.category.es', domain: 'faq'),
+            'disabled_label' => $this->translator->trans('faq.edit.disabled.label', domain: 'faq'),
+            'input_disabled_faq_label' => $this->translator->trans('faq.edit.input.disabled.label', domain: 'faq'),
+            'input_disabled_faq_help' => $this->translator->trans('faq.edit.input.disabled.help', domain: 'faq'),
+            'input_disabled_faq_help_disabled' => $this->translator->trans(
+                'faq.edit.input.disabled.help.disabled',
                 domain: 'faq',
             ),
-            'faq_question_enabled_title' => $this->translator->trans('faq.question.enabled.title', domain: 'faq'),
-            'faq_question_enabled_message' => $this->translator->trans('faq.question.enabled.message', domain: 'faq'),
-            'faq_category_new_title' => $this->translator->trans('faq.category.new.title', domain: 'faq'),
-            'faq_category_new_liste_cat' => $this->translator->trans('faq.category.new.liste.cat', domain: 'faq'),
-            'faq_category_new_after' => $this->translator->trans('faq.category.new.after', domain: 'faq'),
-            'faq_category_new_before' => $this->translator->trans('faq.category.new.before', domain: 'faq'),
-            'faq_category_new_help' => $this->translator->trans('faq.category.new.help', domain: 'faq'),
-            'faq_category_new_btn_validate' => $this->translator->trans('faq.category.new.btn.validate', domain: 'faq'),
-            'faq_category_new_btn_cancel' => $this->translator->trans('faq.category.new.btn.cancel', domain: 'faq'),
-            'faq_question_new_title' => $this->translator->trans('faq.question.new.title', domain: 'faq'),
-            'faq_question_new_liste_cat' => $this->translator->trans('faq.question.new.liste.cat', domain: 'faq'),
-            'faq_question_new_after' => $this->translator->trans('faq.question.new.after', domain: 'faq'),
-            'faq_question_new_before' => $this->translator->trans('faq.question.new.before', domain: 'faq'),
-            'faq_question_new_help' => $this->translator->trans('faq.question.new.help', domain: 'faq'),
-            'faq_question_new_btn_validate' => $this->translator->trans('faq.question.new.btn.validate', domain: 'faq'),
-            'faq_question_new_btn_cancel' => $this->translator->trans('faq.question.new.btn.cancel', domain: 'faq'),
-            'faq_question_delete_titre_confirm' => $this->translator->trans(
-                'faq.question.delete.titre.confirm',
+            'btn_confirm_ok' => $this->translator->trans('faq.edit.btn.confirm_ok', domain: 'faq'),
+            'btn_confirm_ko' => $this->translator->trans('faq.edit.btn.confirm_ko', domain: 'faq'),
+            'modale_confirm_delete_category_title' => $this->translator->trans(
+                'faq.edit.confirm.delete.category.title',
                 domain: 'faq',
             ),
-            'faq_question_delete_body_confirm' => $this->translator->trans(
-                'faq.question.delete.body.confirm',
+            'modale_confirm_delete_category_body' => $this->translator->trans(
+                'faq.edit.confirm.delete.category.body',
                 domain: 'faq',
             ),
-            'faq_category_delete_titre_confirm' => $this->translator->trans(
-                'faq.category.delete.titre.confirm',
+            'modale_confirm_delete_question_title' => $this->translator->trans(
+                'faq.edit.confirm.delete.question.title',
                 domain: 'faq',
             ),
-            'faq_category_delete_body_confirm' => $this->translator->trans(
-                'faq.category.delete.body.confirm',
+            'modale_confirm_delete_question_body' => $this->translator->trans(
+                'faq.edit.confirm.delete.question.body',
                 domain: 'faq',
             ),
         ];

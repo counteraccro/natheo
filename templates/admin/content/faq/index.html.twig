@@ -3,18 +3,38 @@
 {% block title %}{{ 'faq.index.page_title' | trans({}, 'faq') }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'faq.index.page_title_h1' | trans({}, 'faq') }}</h1>
 
     {{ breadcrumb(breadcrumb) }}
 
-    <button type="button" class="btn btn-secondary float-end ms-2" data-bs-toggle="modal" data-bs-target="#help-grid-faq">
-        <i class="bi bi-question-circle"></i>
-    </button>
-    <a href="{{ path('admin_faq_add') }}" class="float-end btn btn-secondary"><i class="bi bi-question-circle-fill"></i> {{ 'faq.index.btn.new' | trans({}, 'faq') }}</a>
+    <h1 class="head-title">
+        <svg class="w-7 h-7 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+        </svg>
+        {{ 'faq.index.page_title_h1' | trans({}, 'faq') }}</h1>
 
-    <p>
-        {{ 'faq.index.description' | trans({}, 'faq') }} <br/>
-        {#  {{ 'tag.index.description2' | trans({'icon' : '<i class="bi-eye-slash-fill"></i>'}, 'tag') | raw }} #}<br/>
+    <div class="float-end">
+
+        <a href="{{ path('admin_faq_add') }}" class="btn btn-primary btn-sm">
+            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            {{ 'faq.index.btn.new' | trans({}, 'faq') }}</a>
+
+        <button data-modal-target="help-grid-faq" data-modal-toggle="help-grid-faq"
+                class="btn btn-primary btn-icon ms-2">
+            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                 fill="none"
+                 viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+        </button>
+    </div>
+
+    <p class="text-sm" style="color: var(--text-secondary);">
+        {{ 'faq.index.description' | trans({}, 'faq') }}
     </p>
 
 
@@ -22,23 +42,43 @@
 
     <twig:Admin:ModaleComponent id="help-grid-faq" bgColor="bg-secondary">
         <twig:block name="header">
-            <i class="bi bi-question-circle"></i> {{ 'faq.index.popin.help.title' | trans({}, 'faq') }}
+            {{ 'faq.index.popin.help.title' | trans({}, 'faq') }}
         </twig:block>
 
-        <div class="row">
-            <div class="col">
-                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-eye-slash-fill"></i></button> {{ 'faq.index.popin.help.disabled' | trans({}, 'faq') }}
+        <div class="flex flex-row gap-10">
+            <div class="flex items-center gap-3 w-75">
+                <button type="button" class="btn btn-icon btn-xs btn-ghost-primary">
+                    <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                    </svg>
+                </button> {{ 'faq.index.popin.help.disabled' | trans({}, 'faq') }}
             </div>
-            <div class="col">
-                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-eye-fill"></i></button> {{ 'faq.index.popin.help.enable' | trans({}, 'faq') }}
+            <div class="flex items-center gap-3">
+                <button type="button" class="btn btn-icon btn-xs btn-ghost-primary">
+                    <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                         viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-width="2"
+                              d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                        <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                </button> {{ 'faq.index.popin.help.enable' | trans({}, 'faq') }}
             </div>
         </div>
-        <div class="row">
-            <div class="col">
-                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-trash"></i></button> {{ 'faq.index.popin.help.delete' | trans({}, 'faq') }}
+
+        <div class="flex flex-row gap-10">
+            <div class="flex items-center gap-3 w-75">
+                <button class="btn btn-icon btn-xs btn-ghost-danger">
+                    <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"></path>
+                    </svg>
+                </button>{{ 'faq.index.popin.help.delete' | trans({}, 'faq') }}
             </div>
-            <div class="col">
-                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-pencil-fill"></i></button> {{ 'faq.index.popin.help.edit' | trans({}, 'faq') }}
+            <div class="flex items-center gap-3">
+                <button type="button" class="btn btn-icon btn-xs btn-ghost-primary">
+                    <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"/>
+                    </svg>
+
+                </button> {{ 'faq.index.popin.help.edit' | trans({}, 'faq') }}
             </div>
         </div>
     </twig:Admin:ModaleComponent>
