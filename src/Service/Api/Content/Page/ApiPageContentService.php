@@ -166,7 +166,10 @@ class ApiPageContentService extends AppApiService
     private function formatContentFAq(int $idFaq, string $locale): array
     {
         /** @var Faq $faq */
-        $faq = $this->findOneById(Faq::class, $idFaq);
+        $faq = $this->findOneByCriteria(Faq::class, ['id' => $idFaq, 'disabled' => false]);
+        if (!$faq) {
+            return [];
+        }
 
         $return = [
             'title' => $faq->getFaqTranslationByLocale($locale)->getTitle(),
@@ -191,7 +194,9 @@ class ApiPageContentService extends AppApiService
 
                 $category['questions'][] = [
                     'title' => $faqQuestion->getFaqQuestionTranslationByLocale($locale)->getTitle(),
-                    'answer' => $faqQuestion->getFaqQuestionTranslationByLocale($locale)->getAnswer(),
+                    'answer' => $this->getMarkdownEditorService()->parseMarkdown(
+                        $faqQuestion->getFaqQuestionTranslationByLocale($locale)->getAnswer(),
+                    ),
                 ];
             }
             $return['categories'][] = $category;
