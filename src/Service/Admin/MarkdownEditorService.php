@@ -41,12 +41,13 @@ class MarkdownEditorService extends AppAdminService
         $url = $this->getOptionSystemService()->getByKey(OptionSystemKey::OS_ADRESSE_SITE)->getValue();
         $tabCategories = $this->getPageService()->getAllCategories();
 
-        $re = '/(P#(\d))/m';
+        $re = '/(P#(\d+))/m';
         preg_match_all($re, $text, $matches, PREG_SET_ORDER, 0);
 
         foreach ($matches as $match) {
             /** @var Page $page */
             $page = $this->findOneById(Page::class, $match[2]);
+
             $pageTrans = $page->getPageTranslationByLocale($locale);
             $urlGenerate =
                 $url .
@@ -56,7 +57,8 @@ class MarkdownEditorService extends AppAdminService
                 strtolower($tabCategories[$page->getCategory()]) .
                 '/' .
                 $pageTrans->getUrl();
-            $text = str_replace($match[0], $urlGenerate, $text);
+            $pattern = '/' . preg_quote($match[0], '/') . '(?!\d)/';
+            $text = preg_replace($pattern, $urlGenerate, $text);
         }
         return $text;
     }
