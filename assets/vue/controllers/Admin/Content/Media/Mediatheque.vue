@@ -2,12 +2,14 @@
 import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
 import SkeletonMediatheque from '@/vue/Components/Skeleton/Mediatheque.vue';
+import MediasBreadcrumb from '@/vue/Components/Mediatheque/MediasBreadcrumb.vue';
+import MediasGrid from '@/vue/Components/Mediatheque/MediasGrid.vue';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
 
 export default defineComponent({
   name: 'Mediatheque',
-  components: { SkeletonMediatheque },
+  components: { MediasGrid, MediasBreadcrumb, SkeletonMediatheque },
   props: {
     url: String,
     translate: { type: Object as PropType<TranslateRecord>, required: true },
@@ -17,6 +19,7 @@ export default defineComponent({
       loading: false,
       folderId: 0,
       filter: 'created_at',
+      render: 'grid',
       order: 'asc',
       medias: [],
       currentFolder: [],
@@ -65,6 +68,15 @@ export default defineComponent({
         })
         .finally(() => {});
     },
+
+    /**
+     * Charge les données du dossier en id
+     * @param id
+     */
+    loadDataInFolder(id: number): void {
+      this.folderId = id;
+      this.loadMedia();
+    },
   },
 });
 </script>
@@ -77,29 +89,8 @@ export default defineComponent({
       class="flex items-center justify-between px-4 py-3 border-b"
       style="border-color: var(--border-color); background-color: var(--bg-main)"
     >
-      <!-- Breadcrumb path -->
-      <div class="flex items-center gap-1 text-sm">
-        <button
-          class="flex items-center gap-1.5 px-2 py-1 rounded-md font-medium transition"
-          style="color: var(--primary); background-color: var(--primary-lighter)"
-        >
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-            <path
-              d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
-            ></path>
-          </svg>
-          Accueil
-        </button>
-        <svg class="w-3.5 h-3.5" style="color: var(--text-light)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-        </svg>
-        <button
-          class="px-2 py-1 rounded-md font-medium hover:underline transition"
-          style="color: var(--text-secondary)"
-        >
-          médias
-        </button>
-      </div>
+      <MediasBreadcrumb :paths="currentFolder.root" @load-folder="loadDataInFolder" />
+
       <!-- Storage info -->
       <div class="flex items-center gap-2">
         <div
@@ -115,9 +106,28 @@ export default defineComponent({
             ></path>
           </svg>
           <span class="font-semibold"> {{ currentFolder.size }}</span>
-          <span style="color: var(--text-light)">utilisés</span>
+          <span style="color: var(--text-light)">{{ translate.disque_size }}</span>
         </div>
       </div>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-[var(--border-color)]">
+      toolbar
+    </div>
+
+    <div class="p-4">
+      <medias-grid
+        :render="this.render"
+        :medias="this.medias"
+        :translate="this.translate.media"
+        @load-data-folder="this.loadDataInFolder"
+        @edit-folder="this.editFolder"
+        @show-info="this.loadDataInformation"
+        @edit-media="this.editMedia"
+        @move="this.loadListFolderMove"
+        @trash="this.confirmTrash"
+      >
+      </medias-grid>
     </div>
   </div>
 </template>
