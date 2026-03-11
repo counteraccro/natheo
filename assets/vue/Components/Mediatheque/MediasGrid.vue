@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -29,7 +29,21 @@ export default {
 </script>
 
 <template>
-  <div id="block-media-grid" class="mt-5 row" v-if="this.render === 'grid'">
+  <div
+    id="block-media-grid"
+    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3"
+    v-if="this.render === 'grid'"
+  >
+    <div
+      v-if="this.medias.length > 0"
+      class="media-card"
+      v-for="media in this.medias"
+      @click="media.type === 'media' ? this.openMedia(media.webPath) : $emit('load-data-folder', media.id)"
+    >
+      <div v-if="media.type === 'media'">Media</div>
+      <div v-else>folder</div>
+    </div>
+
     <div v-if="this.medias.length > 0" class="media col-auto mb-4" v-for="media in this.medias">
       <img
         v-if="media.type === 'media'"
