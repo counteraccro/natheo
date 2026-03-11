@@ -1,0 +1,116 @@
+.media-card {
+  background-color: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+.media-card:hover {
+  border-color: var(--primary-light);
+  box-shadow: 0 6px 20px -4px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
+}
+.media-card.selected {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-lighter), 0 4px 12px -2px rgba(0,0,0,0.1);
+}
+
+/* Thumbnail zone */
+.media-thumb {
+  position: relative;
+  width: 100%;
+  padding-top: 66.66%; /* 3:2 ratio */
+  overflow: hidden;
+  background-color: var(--bg-hover);
+}
+.media-thumb img,
+.media-thumb .thumb-placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Folder placeholder */
+.folder-thumb {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-lighter);
+}
+.folder-thumb svg { color: var(--primary); }
+
+/* Checkbox (top-left, visible on hover or selected) */
+.media-check {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 10;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 0.375rem;
+  border: 1.5px solid rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.media-card:hover .media-check,
+.media-card.selected .media-check { opacity: 1; }
+.media-card.selected .media-check {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+/* Type badge (top-right corner of thumb) */
+.type-badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 10;
+  padding: 0.15rem 0.45rem;
+  border-radius: 0.3rem;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(4px);
+  color: white;
+}
+.type-badge.folder {
+  background-color: var(--primary);
+  backdrop-filter: none;
+}
+
+/* Card footer (always visible) */
+.media-meta {
+  padding: 0.6rem 0.75rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.media-meta-info { min-width: 0; flex: 1; }
+.media-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-primary);
+}
+.media-size {
+  font-size: 0.65rem;
+  color: var(--text-light);
+  margin-top: 0.1rem;
+}
