@@ -116,3 +116,5 @@ media.mediatheque.media.table.size: Taille
 media.mediatheque.media.table.action: Actions
 media.mediatheque.media.table.caption: "Plus d'éléments...(Soon™..)"
 media.mediatheque.media.table.date: Date
+media.mediatheque.disque_size: utilisés
+media.index.description: 'Gérer vos médias internes de votre site pour ensuite pouvoir les afficher directement dans vos pages'
