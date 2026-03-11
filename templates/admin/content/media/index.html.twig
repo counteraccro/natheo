@@ -12,6 +12,10 @@
         </svg>
         {{ 'media.index.page_title_h1' | trans({}, 'media') }}</h1>
 
+    <p class="text-sm mb-5" style="color: var(--text-secondary);">
+        {{ 'media.index.description' | trans({}, 'media') }}
+    </p>
+
     <div {{ vue_component('Admin/Content/Media/Mediatheque', {
         'url' : path('admin_media_load_medias'),
         'translate' : translate
