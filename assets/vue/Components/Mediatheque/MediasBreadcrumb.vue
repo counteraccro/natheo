@@ -4,18 +4,27 @@
  * @version 1.0
  * Affichage de la navBar des médias
  */
-export default {
+import { defineComponent, PropType } from 'vue';
+
+type BreadcrumbItem = {
+  id: number;
+  name: string;
+};
+
+type Paths = {
+  root: BreadcrumbItem[];
+};
+
+export default defineComponent({
   name: 'MediasBreadcrum',
   props: {
-    paths: Object,
+    paths: {
+      type: Object as PropType<Paths>,
+      default: () => ({}),
+    },
   },
   emits: ['load-folder'],
-  data() {
-    return {};
-  },
-  computed: {},
-  methods: {},
-};
+});
 </script>
 
 <style></style>
