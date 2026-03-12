@@ -118,3 +118,6 @@ media.mediatheque.media.table.caption: "Plus d'éléments...(Soon™..)"
 media.mediatheque.media.table.date: Date
 media.mediatheque.disque_size: utilisés
 media.index.description: 'Gérer vos médias internes de votre site pour ensuite pouvoir les afficher directement dans vos pages'
+media.mediatheque.media.folder_element: élément
+media.mediatheque.media.folder_elements: éléments
+media.mediatheque.media.other_img: 'document'

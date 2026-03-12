@@ -118,3 +118,6 @@ media.mediatheque.media.table.caption: __media.mediatheque.media.table.caption
 media.mediatheque.media.table.date: __media.mediatheque.media.table.date
 media.mediatheque.disque_size: __media.mediatheque.disque_size
 media.index.description: __media.index.description
+media.mediatheque.media.folder_element: __media.mediatheque.media.folder_element
+media.mediatheque.media.folder_elements: __media.mediatheque.media.folder_elements
+media.mediatheque.media.other_img: __media.mediatheque.media.other_img

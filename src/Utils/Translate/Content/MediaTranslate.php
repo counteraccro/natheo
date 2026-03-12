@@ -118,6 +118,12 @@ class MediaTranslate extends AppTranslate
             'table_action' => $this->translator->trans('media.mediatheque.media.table.action', domain: 'media'),
             'table_caption' => $this->translator->trans('media.mediatheque.media.table.caption', domain: 'media'),
             'table_date' => $this->translator->trans('media.mediatheque.media.table.date', domain: 'media'),
+            'folder_nb_element' => $this->translator->trans('media.mediatheque.media.folder_element', domain: 'media'),
+            'folder_nb_elements' => $this->translator->trans(
+                'media.mediatheque.media.folder_elements',
+                domain: 'media',
+            ),
+            'media_other_img' => $this->translator->trans('media.mediatheque.media.other_img', domain: 'media'),
         ];
     }
 
