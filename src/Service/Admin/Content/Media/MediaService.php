@@ -167,6 +167,7 @@ class MediaService extends MediaFolderService
 
         /** @var Media $media */
         foreach ($medias as $media) {
+            $info = getimagesize($this->getRootPathMedia() . $media->getPath());
             $return[] = [
                 'type' => 'media',
                 'id' => $media->getId(),
@@ -177,17 +178,26 @@ class MediaService extends MediaFolderService
                 'thumbnail' => $this->getThumbnail($media),
                 'created_at' => $media->getCreatedAt()->getTimestamp(),
                 'date' => $media->getCreatedAt()->format('d-m-Y H:i:s'),
+                'extension' => $media->getExtension(),
+                'img_size' => !empty($info) ? $info[0] . 'x' . $info[1] : '--',
             ];
         }
 
         /** @var MediaFolder $folder */
         foreach ($folders as $folder) {
+            $finder = new Finder();
+            $path = $this->getRootPathMedia() . $folder->getPath() . DIRECTORY_SEPARATOR . $folder->getName();
+            $path = rtrim(str_replace('\\', DIRECTORY_SEPARATOR, $path), '/');
+            $finder->in($path);
+
             $return[] = [
                 'type' => 'folder',
                 'id' => $folder->getId(),
                 'name' => $folder->getName(),
                 'created_at' => $folder->getCreatedAt()->getTimestamp(),
                 'date' => $folder->getCreatedAt()->format('d-m-Y H:i:s'),
+                'size' => Utils::getSizeName($this->getFolderSize($folder)),
+                'nb_element' => $finder->count(),
             ];
         }
 
