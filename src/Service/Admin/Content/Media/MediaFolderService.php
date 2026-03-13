@@ -414,7 +414,9 @@ class MediaFolderService extends AppAdminService
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     *
      */
+    #[\Deprecated(message: 'Méthode getInfoFolder() dépréciée, elle sera supprimé prochainement', since: '2.0')]
     public function getInfoFolder(int $idFolderMedia): array
     {
         $translator = $this->getTranslator();
@@ -423,7 +425,7 @@ class MediaFolderService extends AppAdminService
         $mediaFolder = $this->findOneById(MediaFolder::class, $idFolderMedia);
         $content = $this->getContentFolder($mediaFolder);
 
-        return [
+        /*return [
             $translator->trans('media.mediatheque.info.folder.name', domain: 'media') => $mediaFolder->getName(),
             $translator->trans('media.mediatheque.info.folder.emplacement', domain: 'media') => $mediaFolder->getPath(),
             $translator->trans('media.mediatheque.info.folder.taille.disque', domain: 'media') => Utils::getSizeName(
@@ -443,7 +445,9 @@ class MediaFolderService extends AppAdminService
             $translator->trans('media.mediatheque.info.folder.date_update', domain: 'media') => $mediaFolder
                 ->getUpdateAt()
                 ->format('d/m/y H:i'),
-        ];
+        ];*/
+
+        return [];
     }
 
     /**

@@ -16,6 +16,7 @@ use App\Utils\Content\Media\Thumbnail;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\PersonalData;
 use App\Utils\Utils;
+use Deprecated;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -233,6 +234,7 @@ class MediaService extends MediaFolderService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
+    #[Deprecated(message: 'Méthode getInfoMedia() dépréciée, elle sera supprimé prochainement', since: '2.0')]
     public function getInfoMedia(int $idMedia): array
     {
         $translator = $this->getTranslator();
@@ -243,7 +245,7 @@ class MediaService extends MediaFolderService
         $personalDataRender = $user->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER);
         $personalData = new PersonalData($user, $personalDataRender->getValue());
 
-        return [
+        /*return [
             'data' => [
                 $translator->trans('media.mediatheque.info.media.name', domain: 'media') => $media->getName(),
                 $translator->trans('media.mediatheque.info.media.titre', domain: 'media') => $media->getTitle(),
@@ -270,7 +272,8 @@ class MediaService extends MediaFolderService
             'thumbnail' => $this->getThumbnail($media),
             'web_path' => $media->getWebPath(),
             'media_type' => $media->getType(),
-        ];
+        ];*/
+        return [];
     }
 
     /**
