@@ -26,25 +26,6 @@ media.mediatheque.folder.success: 'Le dossier {name} à été créé avec succè
 media.mediatheque.folder.msg.wait.create: 'Création du dossier en cours...'
 media.mediatheque.folder.msg.wait.edit: 'Edition du dossier en cours...'
 media.mediatheque.folder.edit.success: 'Le dossier {name} renommé en {new_name} à été fait avec succès, cette fenêtre va ce fermer automatiquement dans 3 secondes...'
-media.mediatheque.info.title: Information
-media.mediatheque.info.btn.close: Fermer
-media.mediatheque.info.folder.name: Nom
-media.mediatheque.info.folder.emplacement: Emplacement
-media.mediatheque.info.folder.taille.disque: 'Taille (disque)'
-media.mediatheque.info.folder.contenu: Contenu
-media.mediatheque.info.folder.date_creation: 'Créer le'
-media.mediatheque.info.folder.files: Fichiers
-media.mediatheque.info.folder.date_update: 'Dernière modification le'
-media.mediatheque.info.folder.folder: Dossiers
-media.mediatheque.info.media.name: Nom
-media.mediatheque.info.media.description: Description
-media.mediatheque.info.media.extension: Extension
-media.mediatheque.info.media.user: Utilisateur
-media.mediatheque.info.media.size: 'Taille (disque)'
-media.mediatheque.info.media.date_created: 'Créer le'
-media.mediatheque.info.media.date_update: 'Dernière modification le'
-media.mediatheque.info.media.emplacement: Emplacement
-media.mediatheque.info.link.size: 'Taille réelle'
 media.mediatheque.upload.title: 'Nouveau média'
 media.mediatheque.upload.help: 'Télécharger un nouveau média (images / PDF / documents)'
 media.mediatheque.upload.input.upload: 'Sélectionner le média'
@@ -62,7 +43,6 @@ media.mediatheque.upload.no_preview: 'Pas de prévisualisation disponible pour l
 media.mediatheque.upload.preview: Prévisualisation
 media.mediatheque.upload.loading.msg: 'Upload de votre média en cours...'
 media.mediatheque.upload.loading.msg.success: 'Média ajouté avec succès, cette fenêtre ce fermera toute seule dans 3 secondes...'
-media.mediatheque.info.link.download: Télécharger
 media.mediatheque.upload.preview.help: 'Passez votre souris dessus pour un meilleur aperçu'
 media.mediatheque.upload.btn.close: Fermer
 media.mediatheque.media.link.edit.media: Editer
@@ -76,7 +56,6 @@ media.mediatheque.edit.media.cancel: Annuler
 media.mediatheque.edit.media.legend: Informations
 media.mediatheque.edit.media.loading: 'Mise à jour du média en cours...'
 media.mediatheque.edit.media.success: 'Votre média à été correctement mis à jour, cette fenêtre va se fermer automatiquement dans 3 secondes'
-media.mediatheque.info.media.titre: Titre
 media.mediatheque.move.title: 'Déplacer un élément'
 media.mediatheque.move.btn.close: Annuler
 media.mediatheque.move.btn.validate: Déplacer
@@ -120,4 +99,4 @@ media.mediatheque.disque_size: utilisés
 media.index.description: 'Gérer vos médias internes de votre site pour ensuite pouvoir les afficher directement dans vos pages'
 media.mediatheque.media.folder_element: élément
 media.mediatheque.media.folder_elements: éléments
-media.mediatheque.media.other_img: 'document'
+media.mediatheque.media.other_img: document

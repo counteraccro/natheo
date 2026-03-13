@@ -159,12 +159,7 @@ class MediaTranslate extends AppTranslate
      */
     private function getInfoTranslate(): array
     {
-        return [
-            'title' => $this->translator->trans('media.mediatheque.info.title', domain: 'media'),
-            'btn_close' => $this->translator->trans('media.mediatheque.info.btn.close', domain: 'media'),
-            'link_size' => $this->translator->trans('media.mediatheque.info.link.size', domain: 'media'),
-            'link_download' => $this->translator->trans('media.mediatheque.info.link.download', domain: 'media'),
-        ];
+        return [];
     }
 
     /**
