@@ -4,47 +4,243 @@
  * @version 1.0
  * Affichage au format GRID et listing des médias
  */
-export default {
+
+import { defineComponent, type PropType } from 'vue';
+import * as events from 'node:events';
+
+type TranslateRecord = { [key: string]: string | TranslateRecord };
+
+type MediaFolder = {
+  type: 'folder';
+  id: number;
+  name: string;
+  created_at: number;
+  date: string;
+  size: string;
+  nb_element: number;
+};
+
+type MediaFile = {
+  type: 'media';
+  id: number;
+  name: string;
+  description: string;
+  size: string;
+  webPath: string;
+  thumbnail: string;
+  created_at: number;
+  date: string;
+  extension: string;
+  img_size: string;
+};
+
+type MediaItem = MediaFolder | MediaFile;
+
+type MediaList = MediaItem[];
+
+export default defineComponent({
   name: 'MediasGrid',
   props: {
-    medias: Object,
-    translate: Object,
+    medias: Array as PropType<MediaItem[]>,
+    translate: { type: Object as PropType<TranslateRecord>, required: true },
     render: String,
   },
   emits: ['load-data-folder', 'edit-folder', 'show-info', 'edit-media', 'move', 'trash'],
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    events() {
+      return events;
+    },
+  },
   methods: {
     /**
      * Permet d'ouvrir un média
      * @param path
      */
-    openMedia(path) {
+    openMedia(path: string): void {
       window.open(path, '_blank');
     },
+
+    selectItem(el: HTMLElement) {
+      el.classList.toggle('selected');
+      const icon = el.querySelector('.check-icon');
+      if (icon) icon.classList.toggle('hidden', !el.classList.contains('selected'));
+      const card = el.closest('.media-card');
+      card?.classList.toggle('selected');
+    },
   },
-};
+});
 </script>
 
 <template>
   <div
     id="block-media-grid"
     class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3"
-    v-if="this.render === 'grid'"
+    v-if="render === 'grid'"
   >
     <div
-      v-if="this.medias.length > 0"
+      v-if="medias.length > 0"
       class="media-card"
-      v-for="media in this.medias"
-      @click="media.type === 'media' ? this.openMedia(media.webPath) : $emit('load-data-folder', media.id)"
+      v-for="media in medias"
+      @click="media.type === 'media' ? openMedia(media.webPath) : $emit('load-data-folder', media.id)"
     >
-      <div v-if="media.type === 'media'">Media</div>
-      <div v-else>folder</div>
-    </div>
+      <div class="media-thumb">
+        <img v-if="media.type === 'media'" class="absolute inset-0 w-full h-full object-cover" :src="media.thumbnail" />
+        <div
+          class="media-check"
+          @click="
+            $event.stopPropagation();
+            selectItem($event.currentTarget as HTMLElement);
+          "
+        >
+          <svg class="w-3 h-3 text-white hidden check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+          </svg>
+        </div>
+        <span
+          class="type-badge"
+          :class="media.type === 'folder' ? 'folder' : ''"
+          v-html="media.type === 'media' ? media.extension : 'folder trad'"
+        ></span>
+      </div>
+      <div class="media-meta">
+        <div class="media-meta-info">
+          <div class="media-name">{{ media.name }}</div>
+          <div class="media-size">
+            <span v-if="media.type === 'media'"
+              >{{ media.size }} · {{ media.img_size === '--' ? translate.media_other_img : media.img_size }}</span
+            >
+            <span v-if="media.type === 'folder'"
+              >{{ media.size }} · {{ media.nb_element }}
+              {{ media.nb_element === 0 ? translate.folder_nb_element : translate.folder_nb_elements }}</span
+            >
+          </div>
+        </div>
+        <button
+          :id="`dropdownBtn-${media.id}`"
+          :data-dropdown-toggle="`dropdown-${media.id}`"
+          @click="$event.stopPropagation()"
+          class="ctx-footer-btn"
+          type="button"
+        >
+          ...
+        </button>
 
-    <div v-if="this.medias.length > 0" class="media col-auto mb-4" v-for="media in this.medias">
+        <Teleport to="body">
+          <div
+            :id="`dropdown-${media.id}`"
+            class="z-50 hidden rounded-xl shadow-xl w-44 py-0 text-sm overflow-hidden"
+            style="
+              background-color: var(--bg-card);
+              border: 1px solid var(--border-color);
+              box-shadow: var(--shadow-md);
+            "
+          >
+            <ul :aria-labelledby="`dropdownBtn-${media.id}`">
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150"
+                  style="color: var(--text-primary)"
+                  @click="$emit('show-info', media)"
+                  @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
+                  @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+                >
+                  <svg
+                    class="w-4 h-4 flex-shrink-0"
+                    style="color: var(--primary)"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  Information - tr
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150"
+                  style="color: var(--text-primary)"
+                  @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
+                  @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+                >
+                  <svg
+                    class="w-4 h-4 flex-shrink-0"
+                    style="color: var(--text-secondary)"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                    />
+                  </svg>
+                  Renommer - tr
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150"
+                  style="color: var(--text-primary)"
+                  @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
+                  @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+                >
+                  <svg
+                    class="w-4 h-4 flex-shrink-0"
+                    style="color: var(--text-secondary)"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                    />
+                  </svg>
+                  Déplacer -tr
+                </a>
+              </li>
+              <li style="border-top: 1px solid var(--border-color)" class="mt-1 pt-1">
+                <a
+                  href="#"
+                  class="flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-red-500"
+                  @mouseover="$event.target.closest('a').style.backgroundColor = '#fef2f2'"
+                  @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+                >
+                  <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
+                  </svg>
+                  Corbeille - tr
+                </a>
+              </li>
+            </ul>
+          </div>
+        </Teleport>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div v-if="this.medias.length > 0" class="media col-auto mb-4" v-for="media in this.medias">
       <img
         v-if="media.type === 'media'"
         height="200"
@@ -69,13 +265,13 @@ export default {
           </button>
           <ul class="dropdown-menu">
             <li>
-              <!-- lien information -->
+              <!-- lien information --
               <a class="dropdown-item" @click="$emit('show-info', media.type, media.id)">
                 <i class="bi bi-info-circle-fill"></i> {{ this.translate.link_info }}
               </a>
             </li>
             <li>
-              <!-- lien éditer -->
+              <!-- lien éditer --
               <a v-if="media.type === 'media'" class="dropdown-item" @click="$emit('edit-media', media.id)">
                 <i class="bi bi-pencil-square"></i> {{ this.translate.link_edit_media }}
               </a>
@@ -153,12 +349,12 @@ export default {
                 <i class="bi" :class="media.type === 'media' ? 'bi-eye' : 'bi-folder2-open'"></i>
               </a>
 
-              <!-- lien information -->
+              <!-- lien information --
               <a class="btn btn-sm btn-secondary me-1 mt-1" @click="$emit('show-info', media.type, media.id)">
                 <i class="bi bi-info-circle"></i>
               </a>
 
-              <!-- lien éditer -->
+              <!-- lien éditer --
               <a
                 class="btn btn-sm btn-secondary me-1 mt-1"
                 @click="media.type === 'media' ? $emit('edit-media', media.id) : $emit('edit-folder', media.id)"
@@ -166,12 +362,12 @@ export default {
                 <i class="bi bi-pencil-square"></i>
               </a>
 
-              <!-- lien move -->
+              <!-- lien move --
               <a class="btn btn-sm btn-secondary me-1 mt-1" @click="$emit('move', media.type, media.id)">
                 <i class="bi bi-arrow-right-circle"></i>
               </a>
 
-              <!-- lien corbeille -->
+              <!-- lien corbeille --
               <a class="btn btn-sm btn-secondary mt-1" @click="$emit('trash', media.type, media.id, media.name, false)">
                 <i class="bi bi-trash"></i>
               </a>
@@ -185,7 +381,7 @@ export default {
         </tbody>
       </table>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <style scoped></style>

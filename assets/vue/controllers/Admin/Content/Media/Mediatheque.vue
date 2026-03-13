@@ -4,12 +4,14 @@ import axios from 'axios';
 import SkeletonMediatheque from '@/vue/Components/Skeleton/Mediatheque.vue';
 import MediasBreadcrumb from '@/vue/Components/Mediatheque/MediasBreadcrumb.vue';
 import MediasGrid from '@/vue/Components/Mediatheque/MediasGrid.vue';
+import { initFlowbite } from 'flowbite';
+import MediaInfo from '@/vue/Components/Mediatheque/MediaInfo.vue';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
 
 export default defineComponent({
   name: 'Mediatheque',
-  components: { MediasGrid, MediasBreadcrumb, SkeletonMediatheque },
+  components: { MediaInfo, MediasGrid, MediasBreadcrumb, SkeletonMediatheque },
   props: {
     url: String,
     translate: { type: Object as PropType<TranslateRecord>, required: true },
@@ -21,6 +23,8 @@ export default defineComponent({
       filter: 'created_at',
       render: 'grid',
       order: 'asc',
+      selectedMedia: {},
+      drawerOpen: false,
       medias: [],
       currentFolder: [],
       urlActions: Object as PropType<Record<string, string>>,
@@ -51,6 +55,7 @@ export default defineComponent({
         .finally(() => {
           this.getNbTrash();
           this.loading = false;
+          this.$nextTick(() => initFlowbite());
         });
     },
 
@@ -77,6 +82,21 @@ export default defineComponent({
       this.folderId = id;
       this.loadMedia();
     },
+
+    openInfoDrawer(media) {
+      document.querySelectorAll('[data-dropdown-toggle]').forEach((btn) => {
+        const id = btn.getAttribute('data-dropdown-toggle');
+        const dropdown = FlowbiteInstances.getInstance('Dropdown', id);
+        if (dropdown) dropdown.hide();
+      });
+
+      this.selectedMedia = media;
+      this.drawerOpen = true;
+    },
+
+    closeInfoDrawer(): void {
+      this.drawerOpen = false;
+    },
   },
 });
 </script>
@@ -84,7 +104,7 @@ export default defineComponent({
 <template>
   <skeleton-mediatheque v-if="loading" />
 
-  <div v-else class="card rounded-xl overflow-hidden">
+  <div v-else id="block-mediatheque" class="card rounded-xl overflow-hidden">
     <div
       class="flex items-center justify-between px-4 py-3 border-b"
       style="border-color: var(--border-color); background-color: var(--bg-main)"
@@ -115,19 +135,26 @@ export default defineComponent({
       toolbar
     </div>
 
-    <div class="p-4">
-      <medias-grid
-        :render="this.render"
-        :medias="this.medias"
-        :translate="this.translate.media"
-        @load-data-folder="this.loadDataInFolder"
-        @edit-folder="this.editFolder"
-        @show-info="this.loadDataInformation"
-        @edit-media="this.editMedia"
-        @move="this.loadListFolderMove"
-        @trash="this.confirmTrash"
-      >
-      </medias-grid>
+    <div class="browser-inner">
+      <div class="browser-content">
+        <div class="p-4">
+          <medias-grid
+            :render="render"
+            :medias="medias"
+            :translate="translate.media as TranslateRecord"
+            @load-data-folder="loadDataInFolder"
+            @edit-folder="editFolder"
+            @show-info="openInfoDrawer"
+            @edit-media="editMedia"
+            @move="loadListFolderMove"
+            @trash="confirmTrash"
+          >
+          </medias-grid>
+        </div>
+      </div>
+      <div class="info-drawer" id="infoDrawer" :class="drawerOpen ? 'open' : ''">
+        <media-info :translate="translate.info" :data="selectedMedia" @close-info="closeInfoDrawer" />
+      </div>
     </div>
   </div>
 </template>
