@@ -136,7 +136,8 @@
 
   .ctx-footer-btn {
     flex-shrink: 0;
-    padding: 0.25rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
     border-radius: 0.375rem;
     color: var(--text-light);
     transition: background-color 0.15s ease, color 0.15s ease;
