@@ -169,6 +169,13 @@ class MediaService extends MediaFolderService
         /** @var Media $media */
         foreach ($medias as $media) {
             $info = getimagesize($this->getRootPathMedia() . $media->getPath());
+
+            $folder = 'root';
+            if ($media->getMediaFolder() != null) {
+                $folder .= $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $mediaFolder->getName();
+                $folder = rtrim(str_replace('\\', DIRECTORY_SEPARATOR, $folder), '/');
+            }
+
             $return[] = [
                 'type' => 'media',
                 'id' => $media->getId(),
@@ -181,6 +188,7 @@ class MediaService extends MediaFolderService
                 'date' => $media->getCreatedAt()->format('d-m-Y H:i:s'),
                 'extension' => $media->getExtension(),
                 'img_size' => !empty($info) ? $info[0] . 'x' . $info[1] : '--',
+                'folder' => $folder,
             ];
         }
 
