@@ -7,36 +7,7 @@
 
 import { defineComponent, type PropType } from 'vue';
 import * as events from 'node:events';
-
-type TranslateRecord = { [key: string]: string | TranslateRecord };
-
-type MediaFolder = {
-  type: 'folder';
-  id: number;
-  name: string;
-  created_at: number;
-  date: string;
-  size: string;
-  nb_element: number;
-};
-
-type MediaFile = {
-  type: 'media';
-  id: number;
-  name: string;
-  description: string;
-  size: string;
-  webPath: string;
-  thumbnail: string;
-  created_at: number;
-  date: string;
-  extension: string;
-  img_size: string;
-};
-
-type MediaItem = MediaFolder | MediaFile;
-
-type MediaList = MediaItem[];
+import { MediaItem, TranslateRecord } from '@/ts/Mediatheque/type';
 
 export default defineComponent({
   name: 'MediasGrid',
@@ -162,7 +133,7 @@ export default defineComponent({
                       d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
-                  Information - tr
+                  {{ translate.link_info }}
                 </a>
               </li>
               <li>
@@ -187,7 +158,7 @@ export default defineComponent({
                       d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
                     />
                   </svg>
-                  Renommer - tr
+                  {{ translate.link_edit }}
                 </a>
               </li>
               <li>
@@ -212,10 +183,10 @@ export default defineComponent({
                       d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
                     />
                   </svg>
-                  Déplacer -tr
+                  {{ translate.link_move }}
                 </a>
               </li>
-              <li style="border-top: 1px solid var(--border-color)" class="mt-1 pt-1">
+              <li style="border-top: 1px solid var(--border-color)">
                 <a
                   href="#"
                   class="flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-red-500"
@@ -230,7 +201,7 @@ export default defineComponent({
                       d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                     />
                   </svg>
-                  Corbeille - tr
+                  {{ translate.link_remove }}
                 </a>
               </li>
             </ul>

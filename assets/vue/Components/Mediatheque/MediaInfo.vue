@@ -1,18 +1,46 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, type PropType } from 'vue';
+import { MediaItem } from '@/ts/Mediatheque/type';
+
+type TranslateRecord = { [key: string]: string | TranslateRecord };
 
 export default defineComponent({
   name: 'MediaInfo',
   props: {
-    data: Object,
-    translate: Object,
+    data: { type: Object as PropType<MediaItem>, required: true },
+    translate: { type: Object as PropType<TranslateRecord>, required: true },
   },
   emits: ['close-info'],
   data() {
-    return {};
+    return {
+      copied: false,
+    };
   },
   computed: {},
-  methods: {},
+  methods: {
+    async copyToClipboard() {
+      if (this.data.type === 'media') {
+        let path = `${window.location.origin}${this.data.webPath}`;
+
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(path);
+        } else {
+          // Fallback pour HTTP / anciens navigateurs
+          const textarea = document.createElement('textarea');
+          textarea.value = path;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.focus();
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+        }
+        this.copied = true;
+        setTimeout(() => (this.copied = false), 2000);
+      }
+    },
+  },
 });
 </script>
 
@@ -20,7 +48,7 @@ export default defineComponent({
   <div class="info-drawer-inner">
     <!-- Header du panneau -->
     <div class="flex items-center justify-between mb-4">
-      <h3 class="font-semibold text-sm" style="color: var(--text-primary)">Information</h3>
+      <h3 class="font-semibold text-sm" style="color: var(--text-primary)">{{ translate.title }}</h3>
       <button
         @click="$emit('close-info')"
         class="p-1.5 rounded-lg transition"
@@ -36,49 +64,57 @@ export default defineComponent({
 
     <!-- Aperçu miniature -->
     <div id="drawerPreview" class="rounded-xl overflow-hidden mb-4" style="border: 1px solid var(--border-color)">
-      <img src="" alt="" class="w-full object-cover" style="max-height: 130px" />
+      <img
+        v-if="data.type === 'media'"
+        :src="data.thumbnail"
+        alt=""
+        class="w-full object-cover"
+        style="max-height: 130px"
+      />
     </div>
 
     <!-- Nom + type -->
-    <p id="drawerName" class="font-semibold text-sm mb-1" style="color: var(--text-primary)"></p>
-    <p id="drawerType" class="text-xs mb-4" style="color: var(--text-light)"></p>
+    <p id="drawerName" class="font-semibold text-sm mb-1" style="color: var(--text-primary)">{{ data.name }}</p>
+    <p id="drawerType" class="text-xs mb-4" style="color: var(--text-light)">
+      <span v-if="data.type === 'media'">{{ data.extension }}</span>
+    </p>
 
     <!-- Lignes d'info -->
     <div class="mb-4">
       <div class="info-row">
-        <span class="info-label">Taille</span>
-        <span id="drawerSize" class="info-value"></span>
+        <span class="info-label">{{ translate.taille }}</span>
+        <span id="drawerSize" class="info-value"> {{ data.size }} </span>
+      </div>
+      <div v-if="data.type === 'media'" class="info-row">
+        <span class="info-label">{{ translate.dimension }}</span>
+        <span id="drawerDimensions" class="info-value"> {{ data.img_size }}</span>
       </div>
       <div class="info-row">
-        <span class="info-label">Dimensions</span>
-        <span id="drawerDimensions" class="info-value"></span>
+        <span class="info-label">{{ translate.created_at }}</span>
+        <span id="drawerDate" class="info-value">{{ data.date }}</span>
       </div>
-      <div class="info-row">
-        <span class="info-label">Ajouté le</span>
-        <span id="drawerDate" class="info-value"></span>
+      <div v-if="data.type === 'media'" class="info-row">
+        <span class="info-label">{{ translate.folder }}</span>
+        <span id="drawerFolder" class="info-value" style="color: var(--primary)"> {{ data.folder }} </span>
       </div>
-      <div class="info-row">
-        <span class="info-label">Dossier</span>
-        <span id="drawerFolder" class="info-value" style="color: var(--primary)"></span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">URL</span>
-        <span id="drawerUrl" class="info-value text-xs" style="color: var(--primary); word-break: break-all"></span>
+      <div v-if="data.type === 'media'" class="info-row">
+        <span class="info-label">{{ translate.url }}</span>
+        <span id="drawerUrl" class="info-value text-xs" style="color: var(--primary); word-break: break-all">
+          {{ data.webPath }}
+        </span>
       </div>
     </div>
 
     <!-- Actions -->
     <div class="flex flex-col gap-2">
       <button
-        class="btn-primary w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold"
-      >
-        Copier l'URL
-      </button>
-      <button
-        class="btn-outline w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold"
-      >
-        Télécharger
-      </button>
+        v-if="data.type === 'media'"
+        @click="copyToClipboard()"
+        class="btn btn-sm"
+        :disabled="copied"
+        :class="!copied ? 'btn-primary' : 'btn-success'"
+        v-html="!copied ? translate.btn_copy : '✓ ' + translate.copy_ok"
+      ></button>
     </div>
   </div>
 </template>

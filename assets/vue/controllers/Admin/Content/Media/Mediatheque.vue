@@ -41,6 +41,7 @@ export default defineComponent({
     /** Charge les medias **/
     loadMedia(): void {
       this.loading = true;
+      this.closeInfoDrawer();
       axios
         .get(this.url + '/' + this.folderId + '/' + this.order + '/' + this.filter)
         .then((response) => {
@@ -83,12 +84,14 @@ export default defineComponent({
       this.loadMedia();
     },
 
-    openInfoDrawer(media) {
+    openInfoDrawer(media: any): void {
       document.querySelectorAll('[data-dropdown-toggle]').forEach((btn) => {
         const id = btn.getAttribute('data-dropdown-toggle');
         const dropdown = FlowbiteInstances.getInstance('Dropdown', id);
         if (dropdown) dropdown.hide();
       });
+
+      console.log(media);
 
       this.selectedMedia = media;
       this.drawerOpen = true;
@@ -153,7 +156,11 @@ export default defineComponent({
         </div>
       </div>
       <div class="info-drawer" id="infoDrawer" :class="drawerOpen ? 'open' : ''">
-        <media-info :translate="translate.info" :data="selectedMedia" @close-info="closeInfoDrawer" />
+        <media-info
+          :translate="translate.info as TranslateRecord"
+          :data="selectedMedia"
+          @close-info="closeInfoDrawer"
+        />
       </div>
     </div>
   </div>
