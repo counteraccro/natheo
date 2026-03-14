@@ -100,3 +100,11 @@ media.index.description: 'Gérer vos médias internes de votre site pour ensuite
 media.mediatheque.media.folder_element: élément
 media.mediatheque.media.folder_elements: éléments
 media.mediatheque.media.other_img: document
+media.mediatheque.info.title: Information
+media.mediatheque.info.taille: Taille
+media.mediatheque.info.dimension: Dimension
+media.mediatheque.info.created_at: 'Ajouté le'
+media.mediatheque.info.folder: Dossier
+media.mediatheque.info.url: URL
+media.mediatheque.info.btn.copy: "Copier l'URL"
+media.mediatheque.info.copy_ok: "Copier"

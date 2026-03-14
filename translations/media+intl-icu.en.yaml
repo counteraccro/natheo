@@ -100,3 +100,11 @@ media.mediatheque.move.label.folder: __media.mediatheque.move.label.folder
 media.index.page_title: __media.index.page_title
 media.index.page_title_h1: __media.index.page_title_h1
 media.index.description: __media.index.description
+media.mediatheque.info.title: __media.mediatheque.info.title
+media.mediatheque.info.taille: __media.mediatheque.info.taille
+media.mediatheque.info.dimension: __media.mediatheque.info.dimension
+media.mediatheque.info.created_at: __media.mediatheque.info.created_at
+media.mediatheque.info.folder: __media.mediatheque.info.folder
+media.mediatheque.info.url: __media.mediatheque.info.url
+media.mediatheque.info.btn.copy: __media.mediatheque.info.btn.copy
+media.mediatheque.info.copy_ok: __media.mediatheque.info.copy_ok
