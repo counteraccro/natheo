@@ -29,8 +29,8 @@
     background-color: var(--bg-hover);
   }
 
-  .media-thumb img,
-  .media-thumb .thumb-placeholder {
+  .media-thumb > img,
+  .media-thumb .thumb-placeholder > img {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -152,7 +152,7 @@
   .folder-pattern {
     position: absolute;
     inset: 0;
-    background-color: var(--primary-lighter);
+    /*background-color: var(--primary-lighter);*/
     display: flex;
     align-items: center;
     justify-content: center;
