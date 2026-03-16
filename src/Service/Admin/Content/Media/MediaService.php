@@ -197,7 +197,48 @@ class MediaService extends MediaFolderService
             $finder = new Finder();
             $path = $this->getRootPathMedia() . $folder->getPath() . DIRECTORY_SEPARATOR . $folder->getName();
             $path = rtrim(str_replace('\\', DIRECTORY_SEPARATOR, $path), '/');
-            $finder->in($path);
+            $nb_elements = $finder->in($path)->count();
+
+            $children = [];
+            $i = 0;
+            foreach ($folder->getChildren() as $child) {
+                if ($i >= 2) {
+                    break;
+                }
+
+                /** @var MediaFolder $child */
+                $children[] = [
+                    'type' => 'folder',
+                ];
+                $i++;
+            }
+
+            if ($folder->getMedias()->count() > 0) {
+                if (empty($children)) {
+                    $i = 0;
+                    foreach ($folder->getMedias() as $media) {
+                        if ($i >= 2) {
+                            break;
+                        }
+
+                        $children[] = [
+                            'type' => 'media',
+                            'thumbnail' => $this->getThumbnail($media),
+                        ];
+                        $i++;
+                    }
+                } elseif (sizeof($children) === 1) {
+                    $children[] = [
+                        'type' => 'media',
+                        'thumbnail' => $this->getThumbnail($folder->getMedias()->first()),
+                    ];
+                }
+            }
+
+            if (sizeof($children) === 1) {
+                $children[] = [];
+                $children = array_reverse($children);
+            }
 
             $return[] = [
                 'type' => 'folder',
@@ -206,7 +247,9 @@ class MediaService extends MediaFolderService
                 'created_at' => $folder->getCreatedAt()->getTimestamp(),
                 'date' => $folder->getCreatedAt()->format('d-m-Y H:i:s'),
                 'size' => Utils::getSizeName($this->getFolderSize($folder)),
-                'nb_element' => $finder->count(),
+                'nb_elements' => $nb_elements,
+                'children' => $children,
+                'thumbnail' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'folder.svg',
             ];
         }
 
@@ -333,11 +376,11 @@ class MediaService extends MediaFolderService
         }
 
         return match ($media->getExtension()) {
-            'pdf' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_pdf.png',
-            'xls', 'xlsx' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_xls.png',
-            'csv' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_csv.png',
-            'doc', 'docx' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_doc.png',
-            default => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file.png',
+            'pdf' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_pdf.svg',
+            'xls', 'xlsx' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_xls.svg',
+            'csv' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_csv.svg',
+            'doc', 'docx' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_doc.svg',
+            default => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file.svg',
         };
     }
 

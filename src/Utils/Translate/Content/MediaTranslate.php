@@ -124,6 +124,8 @@ class MediaTranslate extends AppTranslate
                 domain: 'media',
             ),
             'media_other_img' => $this->translator->trans('media.mediatheque.media.other_img', domain: 'media'),
+            'folder_tag' => $this->translator->trans('media.mediatheque.media.folder.tag', domain: 'media'),
+            'folder_empty' => $this->translator->trans('media.mediatheque.media.folder.empty', domain: 'media'),
         ];
     }
 
