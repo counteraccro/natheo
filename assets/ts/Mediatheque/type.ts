@@ -7,7 +7,9 @@ export type MediaFolder = {
   created_at: number;
   date: string;
   size: string;
-  nb_element: number;
+  nb_elements: number;
+  nb_files: number;
+  children: [];
 };
 
 export type MediaFile = {

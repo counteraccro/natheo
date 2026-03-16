@@ -58,7 +58,44 @@ export default defineComponent({
       @click="media.type === 'media' ? openMedia(media.webPath) : $emit('load-data-folder', media.id)"
     >
       <div class="media-thumb">
-        <img v-if="media.type === 'media'" class="absolute inset-0 w-full h-full object-cover" :src="media.thumbnail" />
+        <img class="absolute inset-0 w-full h-full object-cover" :src="media.thumbnail" />
+        <div v-if="media.type === 'folder'" class="folder-pattern">
+          <div
+            class="w-full h-full flex flex-col"
+            :class="media.nb_elements > 0 ? 'p-3 justify-end gap-1.5' : 'items-center justify-center gap-2'"
+          >
+            <span
+              v-if="media.nb_elements === 0"
+              class="text-sm font-semibold mt-5"
+              style="color: var(--primary); opacity: 0.9"
+              >{{ translate.folder_empty }}</span
+            >
+            <div
+              v-if="media.nb_elements > 0"
+              class="flex justify-end gap-1 rounded-md overflow-hidden flex-shrink-0"
+              style="height: 28px"
+            >
+              <span v-for="subMedia in media.children" class="block w-full h-full overflow-hidden">
+                <img
+                  v-if="subMedia.type === 'media'"
+                  :src="subMedia.thumbnail"
+                  class="w-full h-full object-cover"
+                  style="width: 100%"
+                  alt="aa"
+                />
+              </span>
+              <div
+                class="flex items-center justify-center text-xs font-bold"
+                style="background-color: var(--primary); color: white; width: 100%"
+                v-html="
+                  media.nb_elements > 2
+                    ? '+' + (media.nb_elements - media.children.filter((child) => child.type === 'media').length)
+                    : media.nb_elements
+                "
+              ></div>
+            </div>
+          </div>
+        </div>
         <div
           class="media-check"
           @click="
@@ -73,7 +110,7 @@ export default defineComponent({
         <span
           class="type-badge"
           :class="media.type === 'folder' ? 'folder' : ''"
-          v-html="media.type === 'media' ? media.extension : 'folder trad'"
+          v-html="media.type === 'media' ? media.extension : translate.folder_tag"
         ></span>
       </div>
       <div class="media-meta">
@@ -84,8 +121,8 @@ export default defineComponent({
               >{{ media.size }} · {{ media.img_size === '--' ? translate.media_other_img : media.img_size }}</span
             >
             <span v-if="media.type === 'folder'"
-              >{{ media.size }} · {{ media.nb_element }}
-              {{ media.nb_element === 0 ? translate.folder_nb_element : translate.folder_nb_elements }}</span
+              >{{ media.size }} · {{ media.nb_elements }}
+              {{ media.nb_elements === 0 ? translate.folder_nb_element : translate.folder_nb_elements }}</span
             >
           </div>
         </div>

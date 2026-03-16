@@ -99,7 +99,12 @@ export default defineComponent({
       </div>
       <div v-if="data.type === 'media'" class="info-row">
         <span class="info-label">{{ translate.url }}</span>
-        <span id="drawerUrl" class="info-value text-xs" style="color: var(--primary); word-break: break-all">
+        <span
+          id="drawerUrl"
+          class="info-value text-xs truncate block max-w-[55%]"
+          style="color: var(--primary)"
+          :title="data.webPath"
+        >
           {{ data.webPath }}
         </span>
       </div>
