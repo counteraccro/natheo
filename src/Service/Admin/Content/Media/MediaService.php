@@ -198,6 +198,8 @@ class MediaService extends MediaFolderService
             $path = $this->getRootPathMedia() . $folder->getPath() . DIRECTORY_SEPARATOR . $folder->getName();
             $path = rtrim(str_replace('\\', DIRECTORY_SEPARATOR, $path), '/');
             $nb_elements = $finder->in($path)->count();
+            $finder = new Finder();
+            $nb_files = $finder->files()->in($path)->count();
 
             $children = [];
             $i = 0;
@@ -248,6 +250,7 @@ class MediaService extends MediaFolderService
                 'date' => $folder->getCreatedAt()->format('d-m-Y H:i:s'),
                 'size' => Utils::getSizeName($this->getFolderSize($folder)),
                 'nb_elements' => $nb_elements,
+                'nb_files' => $nb_files,
                 'children' => $children,
                 'thumbnail' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'folder.svg',
             ];

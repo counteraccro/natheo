@@ -6,12 +6,12 @@ import MediasBreadcrumb from '@/vue/Components/Mediatheque/MediasBreadcrumb.vue'
 import MediasGrid from '@/vue/Components/Mediatheque/MediasGrid.vue';
 import { initFlowbite } from 'flowbite';
 import MediaInfo from '@/vue/Components/Mediatheque/MediaInfo.vue';
-
-type TranslateRecord = { [key: string]: string | TranslateRecord };
+import { MediaItem, TranslateRecord } from '@/ts/Mediatheque/type';
+import MediaEdit from '@/vue/Components/Mediatheque/MediaEdit.vue';
 
 export default defineComponent({
   name: 'Mediatheque',
-  components: { MediaInfo, MediasGrid, MediasBreadcrumb, SkeletonMediatheque },
+  components: { MediaEdit, MediaInfo, MediasGrid, MediasBreadcrumb, SkeletonMediatheque },
   props: {
     url: String,
     translate: { type: Object as PropType<TranslateRecord>, required: true },
@@ -24,6 +24,7 @@ export default defineComponent({
       render: 'grid',
       order: 'asc',
       selectedMedia: {},
+      selectedAction: '',
       drawerOpen: false,
       medias: [],
       currentFolder: [],
@@ -41,7 +42,7 @@ export default defineComponent({
     /** Charge les medias **/
     loadMedia(): void {
       this.loading = true;
-      this.closeInfoDrawer();
+      this.closeDrawer();
       axios
         .get(this.url + '/' + this.folderId + '/' + this.order + '/' + this.filter)
         .then((response) => {
@@ -84,20 +85,18 @@ export default defineComponent({
       this.loadMedia();
     },
 
-    openInfoDrawer(media: any): void {
+    openBlockDrawer(media: any, action: string): void {
       document.querySelectorAll('[data-dropdown-toggle]').forEach((btn) => {
         const id = btn.getAttribute('data-dropdown-toggle');
         const dropdown = FlowbiteInstances.getInstance('Dropdown', id);
         if (dropdown) dropdown.hide();
       });
-
-      console.log(media);
-
       this.selectedMedia = media;
+      this.selectedAction = action;
       this.drawerOpen = true;
     },
 
-    closeInfoDrawer(): void {
+    closeDrawer(): void {
       this.drawerOpen = false;
     },
   },
@@ -146,9 +145,8 @@ export default defineComponent({
             :medias="medias"
             :translate="translate.media as TranslateRecord"
             @load-data-folder="loadDataInFolder"
-            @edit-folder="editFolder"
-            @show-info="openInfoDrawer"
-            @edit-media="editMedia"
+            @show-info="openBlockDrawer"
+            @edit="openBlockDrawer"
             @move="loadListFolderMove"
             @trash="confirmTrash"
           >
@@ -157,9 +155,17 @@ export default defineComponent({
       </div>
       <div class="info-drawer" id="infoDrawer" :class="drawerOpen ? 'open' : ''">
         <media-info
+          v-if="selectedAction === 'show'"
           :translate="translate.info as TranslateRecord"
-          :data="selectedMedia"
-          @close-info="closeInfoDrawer"
+          :data="selectedMedia as MediaItem"
+          @close="closeDrawer"
+        />
+
+        <media-edit
+          v-if="selectedAction === 'edit'"
+          :translate="translate.edit as TranslateRecord"
+          :data="selectedMedia as MediaItem"
+          @close="closeDrawer"
         />
       </div>
     </div>

@@ -16,7 +16,7 @@ export default defineComponent({
     translate: { type: Object as PropType<TranslateRecord>, required: true },
     render: String,
   },
-  emits: ['load-data-folder', 'edit-folder', 'show-info', 'edit-media', 'move', 'trash'],
+  emits: ['load-data-folder', 'edit', 'show-info', 'move', 'trash'],
   data() {
     return {};
   },
@@ -152,7 +152,7 @@ export default defineComponent({
                   href="#"
                   class="flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150"
                   style="color: var(--text-primary)"
-                  @click="$emit('show-info', media)"
+                  @click="$emit('show-info', media, 'show')"
                   @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
                   @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
                 >
@@ -178,6 +178,7 @@ export default defineComponent({
                   href="#"
                   class="flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150"
                   style="color: var(--text-primary)"
+                  @click="$emit('edit', media, 'edit')"
                   @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
                   @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
                 >

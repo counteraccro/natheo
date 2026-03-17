@@ -10,7 +10,7 @@ export default defineComponent({
     data: { type: Object as PropType<MediaItem>, required: true },
     translate: { type: Object as PropType<TranslateRecord>, required: true },
   },
-  emits: ['close-info'],
+  emits: ['close'],
   data() {
     return {
       copied: false,
@@ -48,9 +48,25 @@ export default defineComponent({
   <div class="info-drawer-inner">
     <!-- Header du panneau -->
     <div class="flex items-center justify-between mb-4">
-      <h3 class="font-semibold text-sm" style="color: var(--text-primary)">{{ translate.title }}</h3>
+      <h3 class="flex gap-1 items-center font-semibold text-sm" style="color: var(--text-primary)">
+        <svg
+          class="w-4 h-4 flex-shrink-0"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          style="color: var(--primary)"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          ></path>
+        </svg>
+        {{ translate.title }}
+      </h3>
       <button
-        @click="$emit('close-info')"
+        @click="$emit('close')"
         class="p-1.5 rounded-lg transition"
         style="color: var(--text-secondary)"
         onmouseover="this.style.backgroundColor = 'var(--bg-hover)'"
@@ -64,13 +80,7 @@ export default defineComponent({
 
     <!-- Aperçu miniature -->
     <div id="drawerPreview" class="rounded-xl overflow-hidden mb-4" style="border: 1px solid var(--border-color)">
-      <img
-        v-if="data.type === 'media'"
-        :src="data.thumbnail"
-        alt=""
-        class="w-full object-cover"
-        style="max-height: 130px"
-      />
+      <img :src="data.thumbnail" alt="" class="w-full object-cover" style="max-height: 130px" />
     </div>
 
     <!-- Nom + type -->
@@ -107,6 +117,13 @@ export default defineComponent({
         >
           {{ data.webPath }}
         </span>
+      </div>
+      <div v-if="data.type === 'folder'" class="info-row">
+        <span class="info-label">{{ translate.content }}</span>
+        <span class="info-value"
+          >{{ data.nb_elements }} [{{ data.nb_elements - data.nb_files }} {{ translate.content_folder }} -
+          {{ data.nb_files }} {{ translate.content_file }}]</span
+        >
       </div>
     </div>
 
