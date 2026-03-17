@@ -46,16 +46,6 @@ media.mediatheque.upload.loading.msg.success: 'Média ajouté avec succès, cett
 media.mediatheque.upload.preview.help: 'Passez votre souris dessus pour un meilleur aperçu'
 media.mediatheque.upload.btn.close: Fermer
 media.mediatheque.media.link.edit.media: Editer
-media.mediatheque.edit.media.title: "Edition d'un media"
-media.mediatheque.edit.media.name: 'Nom du média'
-media.mediatheque.edit.media.name.placeholder: 'Le nom du media'
-media.mediatheque.edit.media.description: 'Description du média'
-media.mediatheque.edit.media.description.placeholder: 'Sa description'
-media.mediatheque.edit.media.submit: Valider
-media.mediatheque.edit.media.cancel: Annuler
-media.mediatheque.edit.media.legend: Informations
-media.mediatheque.edit.media.loading: 'Mise à jour du média en cours...'
-media.mediatheque.edit.media.success: 'Votre média à été correctement mis à jour, cette fenêtre va se fermer automatiquement dans 3 secondes'
 media.mediatheque.move.title: 'Déplacer un élément'
 media.mediatheque.move.btn.close: Annuler
 media.mediatheque.move.btn.validate: Déplacer
@@ -110,3 +100,12 @@ media.mediatheque.info.btn.copy: "Copier l'URL"
 media.mediatheque.info.copy_ok: Copier
 media.mediatheque.media.folder.tag: Dossier
 media.mediatheque.media.folder.empty: Vide
+media.mediatheque.info.content: Contenu
+media.mediatheque.info.content.file: fichier(s)
+media.mediatheque.info.content.folder: dossier(s)
+media.mediatheque.edit.title: Edition
+media.mediatheque.edit.input.label: 'Nouveau nom'
+media.mediatheque.edit.input.placeholder: 'Le nouveau nom de votre fichier'
+media.mediatheque.edit.input.info: "Changer le nom impacte le rendu de l'image"
+media.mediatheque.edit.btn.save: 'Modifier'
+media.mediatheque.edit.btn.save.ok: 'Modification faite !'

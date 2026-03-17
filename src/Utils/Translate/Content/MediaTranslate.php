@@ -33,7 +33,7 @@ class MediaTranslate extends AppTranslate
             'folder' => $this->getFolderTranslate(),
             'info' => $this->getInfoTranslate(),
             'upload' => $this->getUploadTranslate(),
-            'edit_media' => $this->getEditMediaTranslate(),
+            'edit' => $this->getEditTranslate(),
             'move' => $this->getMoveTranslate(),
             'trash' => $this->getTrashTranslate(),
             'remove' => $this->getRemoveTranslate(),
@@ -170,6 +170,9 @@ class MediaTranslate extends AppTranslate
             'url' => $this->translator->trans('media.mediatheque.info.url', domain: 'media'),
             'btn_copy' => $this->translator->trans('media.mediatheque.info.btn.copy', domain: 'media'),
             'copy_ok' => $this->translator->trans('media.mediatheque.info.copy_ok', domain: 'media'),
+            'content' => $this->translator->trans('media.mediatheque.info.content', domain: 'media'),
+            'content_file' => $this->translator->trans('media.mediatheque.info.content.file', domain: 'media'),
+            'content_folder' => $this->translator->trans('media.mediatheque.info.content.folder', domain: 'media'),
         ];
     }
 
@@ -218,28 +221,18 @@ class MediaTranslate extends AppTranslate
      * Retourne les traductions pour l'édition d'un média
      * @return array
      */
-    private function getEditMediaTranslate(): array
+    private function getEditTranslate(): array
     {
         return [
-            'title' => $this->translator->trans('media.mediatheque.edit.media.title', domain: 'media'),
-            'legend' => $this->translator->trans('media.mediatheque.edit.media.legend', domain: 'media'),
-            'media_name' => $this->translator->trans('media.mediatheque.edit.media.name', domain: 'media'),
-            'media_name_placeholder' => $this->translator->trans(
-                'media.mediatheque.edit.media.name.placeholder',
+            'title' => $this->translator->trans('media.mediatheque.edit.title', domain: 'media'),
+            'input_label' => $this->translator->trans('media.mediatheque.edit.input.label', domain: 'media'),
+            'input_placeholder' => $this->translator->trans(
+                'media.mediatheque.edit.input.placeholder',
                 domain: 'media',
             ),
-            'media_description' => $this->translator->trans(
-                'media.mediatheque.edit.media.description',
-                domain: 'media',
-            ),
-            'media_description_placeholder' => $this->translator->trans(
-                'media.mediatheque.edit.media.description.placeholder',
-                domain: 'media',
-            ),
-            'submit' => $this->translator->trans('media.mediatheque.edit.media.submit', domain: 'media'),
-            'cancel' => $this->translator->trans('media.mediatheque.edit.media.cancel', domain: 'media'),
-            'loading' => $this->translator->trans('media.mediatheque.edit.media.loading', domain: 'media'),
-            'success' => $this->translator->trans('media.mediatheque.edit.media.success', domain: 'media'),
+            'input_info' => $this->translator->trans('media.mediatheque.edit.input.info', domain: 'media'),
+            'btn_save' => $this->translator->trans('media.mediatheque.edit.btn.save', domain: 'media'),
+            'save_ok' => $this->translator->trans('media.mediatheque.edit.btn.save.ok', domain: 'media'),
         ];
     }
 }
