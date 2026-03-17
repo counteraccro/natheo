@@ -9,7 +9,7 @@ import MediasGrid from '../../../Components/Mediatheque/MediasGrid.vue';
 import MediasBreadcrumb from '../../../Components/Mediatheque/MediasBreadcrumb.vue';
 import MediaModalInfo from '../../../Components/Mediatheque/MediaModalInfo_old.vue';
 import FileUpload from '../../../Components/Global/FileUpload.vue';
-import MediaMove from '../../../Components/Mediatheque/MediaMove.vue';
+import MediaMove from '../../../Components/Mediatheque/MediaMove_old.vue';
 import MediasTrash from '../../../Components/Mediatheque/MediasTrash.vue';
 import axios from 'axios';
 import { Modal } from 'bootstrap';
