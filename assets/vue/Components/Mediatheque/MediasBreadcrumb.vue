@@ -1,7 +1,7 @@
 <script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Affichage de la navBar des médias
  */
 import { defineComponent, PropType } from 'vue';
