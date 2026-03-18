@@ -1,25 +1,99 @@
 <script lang="ts">
+/**
+ * @author Gourdon Aymeric
+ * @version 2.0
+ * Edition d'un média ou dossier
+ */
 import { defineComponent, type PropType } from 'vue';
 import { MediaItem } from '@/ts/Mediatheque/type';
 import AlertWarning from '@/vue/Components/Alert/Warning.vue';
+import { Toasts } from '@/ts/Toast/type';
+import Toast from '@/vue/Components/Global/Toast.vue';
+import axios from 'axios';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
 
 export default defineComponent({
   name: 'MediaEdit',
-  components: { AlertWarning },
+  components: { Toast, AlertWarning },
   props: {
     data: { type: Object as PropType<MediaItem>, required: true },
     translate: { type: Object as PropType<TranslateRecord>, required: true },
+    url: { type: String, required: true },
   },
-  emits: ['close'],
+  emits: ['close', 'reload'],
   data() {
     return {
       save: false,
+      isError: false,
+      media: {
+        id: 0,
+        name: '',
+        description: '',
+      },
+      toasts: {
+        success: {
+          show: false,
+          msg: '',
+        },
+        error: {
+          show: false,
+          msg: '',
+        },
+      } as Toasts,
     };
   },
-  computed: {},
-  methods: {},
+  mounted(): any {
+    if (this.data.type === 'media') {
+      this.media.id = this.data.id;
+      this.media.name = this.data.title;
+      this.media.description = this.data.description;
+    }
+  },
+  computed: {
+    /**
+     * Vérification des données
+     */
+    checkData(): void {
+      this.isError = false;
+      this.media.name = this.media.name.replace(/[^a-zA-Z0-9-]/g, '');
+      if (this.media.name === '') {
+        this.isError = true;
+      }
+      if (this.media.description === '') {
+        this.isError = true;
+      }
+    },
+  },
+  methods: {
+    saveMedia(): void {
+      axios
+        .post(this.url, {
+          media: this.media,
+        })
+        .then((response) => {
+          this.toasts.success.show = true;
+          this.toasts.success.msg = this.translate.save_media_msg_ok as string;
+          this.save = true;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          setTimeout(() => {
+            this.$emit('reload', this.data.folder_id, true, this.media);
+          }, 2000);
+        });
+    },
+
+    /**
+     * Ferme le toast défini par nameToast
+     * @param nameToast
+     */
+    closeToast(nameToast: string): void {
+      this.toasts[nameToast].show = false;
+    },
+  },
 });
 </script>
 
@@ -58,29 +132,55 @@ export default defineComponent({
     </div>
 
     <!-- Aperçu miniature -->
-    <div id="drawerPreview" class="rounded-xl overflow-hidden mb-4" style="border: 1px solid var(--border-color)">
+    <div class="relative rounded-xl overflow-hidden mb-4" style="border: 1px solid var(--border-color)">
       <img :src="data.thumbnail" alt="" class="w-full object-cover" style="max-height: 130px" />
+      <span class="type-badge" :class="data.type === 'folder' ? 'folder' : ''">
+        {{ data.type === 'folder' ? translate.folder_tag : data.extension }}
+      </span>
     </div>
 
-    <!-- Nom + type -->
-    <p id="drawerName" class="font-semibold text-sm mb-1" style="color: var(--text-primary)">{{ data.name }}</p>
+    <div v-if="data.type === 'media'">
+      <div class="form-group mt-4">
+        <label class="form-label">{{ translate.input_label_file }}</label>
+        <input
+          class="form-input"
+          :class="isError ? 'is-invalid' : ''"
+          type="text"
+          @change="checkData"
+          :placeholder="translate.input_placeholder as string"
+          v-model="media.name"
+        />
+      </div>
 
-    <div class="form-group mt-4">
-      <label class="form-label">{{ translate.input_label }}</label>
-      <input class="form-input" type="text" :placeholder="translate.input_placeholder" />
-      <span class="form-text"></span>
+      <div class="form-group mt-4">
+        <label class="form-label">{{ translate.input_description }}</label>
+        <textarea class="form-input" v-model="media.description" @change="checkData"></textarea>
+      </div>
+
+      <div class="flex flex-col gap-2 mt-3">
+        <button
+          @click="data.type === 'media' ? saveMedia() : ''"
+          class="btn btn-sm"
+          :disabled="save || isError"
+          :class="isError ? 'btn-danger' : !save ? 'btn-primary' : 'btn-success'"
+          v-html="isError ? '✘ ' + translate.btn_error : !save ? translate.btn_save : '✓ ' + translate.save_ok"
+        ></button>
+      </div>
     </div>
+  </div>
 
-    <alert-warning :text="translate.input_info" type="alert-warning-bordered" />
+  <div class="toast-container position-fixed top-0 end-0 p-2">
+    <toast :id="'toastSuccess'" :type="'success'" :show="toasts.success.show" @close-toast="closeToast('success')">
+      <template #body>
+        <div v-html="toasts.success.msg"></div>
+      </template>
+    </toast>
 
-    <div class="flex flex-col gap-2 mt-3">
-      <button
-        class="btn btn-sm"
-        :disabled="save"
-        :class="!save ? 'btn-primary' : 'btn-success'"
-        v-html="!save ? translate.btn_save : '✓ ' + translate.save_ok"
-      ></button>
-    </div>
+    <toast :id="'toastError'" :type="'danger'" :show="toasts.error.show" @close-toast="closeToast('error')">
+      <template #body>
+        <div v-html="toasts.error.msg"></div>
+      </template>
+    </toast>
   </div>
 </template>
 

@@ -115,7 +115,10 @@ export default defineComponent({
       </div>
       <div class="media-meta">
         <div class="media-meta-info">
-          <div class="media-name">{{ media.name }}</div>
+          <div
+            class="media-name"
+            v-html="media.type === 'media' ? media.title + '.' + media.extension : media.name"
+          ></div>
           <div class="media-size">
             <span v-if="media.type === 'media'"
               >{{ media.size }} · {{ media.img_size === '--' ? translate.media_other_img : media.img_size }}</span
@@ -150,7 +153,7 @@ export default defineComponent({
               <li>
                 <a
                   href="#"
-                  class="flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150"
+                  class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150"
                   style="color: var(--text-primary)"
                   @click="$emit('show-info', media, 'show')"
                   @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
@@ -176,7 +179,7 @@ export default defineComponent({
               <li>
                 <a
                   href="#"
-                  class="flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150"
+                  class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150"
                   style="color: var(--text-primary)"
                   @click="$emit('edit', media, 'edit')"
                   @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
@@ -202,7 +205,7 @@ export default defineComponent({
               <li>
                 <a
                   href="#"
-                  class="flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150"
+                  class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150"
                   style="color: var(--text-primary)"
                   @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
                   @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
@@ -227,7 +230,7 @@ export default defineComponent({
               <li style="border-top: 1px solid var(--border-color)">
                 <a
                   href="#"
-                  class="flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-red-500"
+                  class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-red-500"
                   @mouseover="$event.target.closest('a').style.backgroundColor = '#fef2f2'"
                   @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
                 >

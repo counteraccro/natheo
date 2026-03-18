@@ -171,9 +171,11 @@ class MediaService extends MediaFolderService
             $info = getimagesize($this->getRootPathMedia() . $media->getPath());
 
             $folder = 'root';
+            $folderId = 0;
             if ($media->getMediaFolder() != null) {
                 $folder .= $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $mediaFolder->getName();
                 $folder = rtrim(str_replace('\\', DIRECTORY_SEPARATOR, $folder), '/');
+                $folderId = $mediaFolder->getId();
             }
 
             $return[] = [
@@ -189,6 +191,8 @@ class MediaService extends MediaFolderService
                 'extension' => $media->getExtension(),
                 'img_size' => !empty($info) ? $info[0] . 'x' . $info[1] : '--',
                 'folder' => $folder,
+                'folder_id' => $folderId,
+                'title' => $media->getTitle(),
             ];
         }
 

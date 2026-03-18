@@ -31,6 +31,7 @@ export default defineComponent({
       urlActions: Object as PropType<Record<string, string>>,
       canDelete: false,
       nbTrash: 0,
+      key: 0,
     };
   },
 
@@ -40,9 +41,13 @@ export default defineComponent({
 
   methods: {
     /** Charge les medias **/
-    loadMedia(): void {
+    loadMedia(isOpenDrawer = false): void {
       this.loading = true;
-      this.closeDrawer();
+      this.key++;
+
+      if (!isOpenDrawer) {
+        this.closeDrawer();
+      }
       axios
         .get(this.url + '/' + this.folderId + '/' + this.order + '/' + this.filter)
         .then((response) => {
@@ -79,10 +84,11 @@ export default defineComponent({
     /**
      * Charge les données du dossier en id
      * @param id
+     * @param isOpenDrawer
      */
-    loadDataInFolder(id: number): void {
+    loadDataInFolder(id: number, isOpenDrawer = false): void {
       this.folderId = id;
-      this.loadMedia();
+      this.loadMedia(isOpenDrawer);
     },
 
     openBlockDrawer(media: any, action: string): void {
@@ -94,10 +100,20 @@ export default defineComponent({
       this.selectedMedia = media;
       this.selectedAction = action;
       this.drawerOpen = true;
+      this.key++;
     },
 
     closeDrawer(): void {
       this.drawerOpen = false;
+    },
+
+    reload(id: number, isOpenDrawer: boolean, data: any) {
+      if (this.selectedMedia.type === 'media') {
+        this.selectedMedia.title = data.name;
+        this.selectedMedia.description = data.description;
+      }
+
+      this.loadDataInFolder(id, isOpenDrawer);
     },
   },
 });
@@ -155,6 +171,7 @@ export default defineComponent({
       </div>
       <div class="info-drawer" id="infoDrawer" :class="drawerOpen ? 'open' : ''">
         <media-info
+          :key="'MI-' + key"
           v-if="selectedAction === 'show'"
           :translate="translate.info as TranslateRecord"
           :data="selectedMedia as MediaItem"
@@ -162,10 +179,13 @@ export default defineComponent({
         />
 
         <media-edit
+          :key="'ME-' + key"
           v-if="selectedAction === 'edit'"
           :translate="translate.edit as TranslateRecord"
           :data="selectedMedia as MediaItem"
+          :url="selectedMedia.type === 'media' ? urlActions.saveMediaEdit : urlActions.saveFolder"
           @close="closeDrawer"
+          @reload="reload"
         />
       </div>
     </div>

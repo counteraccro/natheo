@@ -1,4 +1,10 @@
 <script lang="ts">
+/**
+ * @author Gourdon Aymeric
+ * @version 2.0
+ * Affichage des information du média
+ */
+
 import { defineComponent, type PropType } from 'vue';
 import { MediaItem } from '@/ts/Mediatheque/type';
 
@@ -79,14 +85,20 @@ export default defineComponent({
     </div>
 
     <!-- Aperçu miniature -->
-    <div id="drawerPreview" class="rounded-xl overflow-hidden mb-4" style="border: 1px solid var(--border-color)">
+    <div class="relative rounded-xl overflow-hidden mb-4" style="border: 1px solid var(--border-color)">
       <img :src="data.thumbnail" alt="" class="w-full object-cover" style="max-height: 130px" />
+      <span class="type-badge" :class="data.type === 'folder' ? 'folder' : ''">
+        {{ data.type === 'folder' ? translate.folder_tag : data.extension }}
+      </span>
     </div>
 
-    <!-- Nom + type -->
-    <p id="drawerName" class="font-semibold text-sm mb-1" style="color: var(--text-primary)">{{ data.name }}</p>
-    <p id="drawerType" class="text-xs mb-4" style="color: var(--text-light)">
-      <span v-if="data.type === 'media'">{{ data.extension }}</span>
+    <p
+      class="font-semibold text-sm mb-1"
+      style="color: var(--text-primary)"
+      v-html="data.type === 'media' ? data.title + '.' + data.extension : data.name"
+    ></p>
+    <p class="text-xs mb-4" style="color: var(--text-light)">
+      <span v-if="data.type === 'media'">{{ data.description }}</span>
     </p>
 
     <!-- Lignes d'info -->
