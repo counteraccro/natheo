@@ -25,6 +25,8 @@ export type MediaFile = {
   extension: string;
   img_size: string;
   folder: string;
+  folder_id: string;
+  title: string;
 };
 
 export type MediaItem = MediaFolder | MediaFile;
