@@ -10,7 +10,7 @@ media.mediatheque.filtre.type: Type
 media.mediatheque.order.asc: Croissant
 media.mediatheque.order.desc: Décroissant
 media.mediatheque.media.link.info: Information
-media.mediatheque.media.link.edit: Renommer
+media.mediatheque.media.link.edit: Editer
 media.mediatheque.media.link.move: Déplacer
 media.mediatheque.media.link.remove: Corbeille
 media.mediatheque.folder.new: 'Nouveau dossier'
@@ -104,8 +104,11 @@ media.mediatheque.info.content: Contenu
 media.mediatheque.info.content.file: fichier(s)
 media.mediatheque.info.content.folder: dossier(s)
 media.mediatheque.edit.title: Edition
-media.mediatheque.edit.input.label: 'Nouveau nom'
+media.mediatheque.edit.input.label.file: 'Nom du fichier *'
 media.mediatheque.edit.input.placeholder: 'Le nouveau nom de votre fichier'
-media.mediatheque.edit.input.info: "Changer le nom impacte le rendu de l'image"
-media.mediatheque.edit.btn.save: 'Modifier'
-media.mediatheque.edit.btn.save.ok: 'Modification faite !'
+media.mediatheque.edit.btn.save: Modifier
+media.mediatheque.edit.btn.save.ok: 'Succès ! - Rechargement...'
+media.mediatheque.edit.input.label.folder: 'Nom du dossier *'
+media.mediatheque.edit.input.description: Description
+media.mediatheque.edit.btn.error: 'Erreur de validation'
+media.mediatheque.edit.save.media.msg.ok: 'Média édité avec succès !'

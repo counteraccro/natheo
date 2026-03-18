@@ -173,6 +173,7 @@ class MediaTranslate extends AppTranslate
             'content' => $this->translator->trans('media.mediatheque.info.content', domain: 'media'),
             'content_file' => $this->translator->trans('media.mediatheque.info.content.file', domain: 'media'),
             'content_folder' => $this->translator->trans('media.mediatheque.info.content.folder', domain: 'media'),
+            'folder_tag' => $this->translator->trans('media.mediatheque.media.folder.tag', domain: 'media'),
         ];
     }
 
@@ -225,14 +226,27 @@ class MediaTranslate extends AppTranslate
     {
         return [
             'title' => $this->translator->trans('media.mediatheque.edit.title', domain: 'media'),
-            'input_label' => $this->translator->trans('media.mediatheque.edit.input.label', domain: 'media'),
+            'input_label_file' => $this->translator->trans('media.mediatheque.edit.input.label.file', domain: 'media'),
+            'input_label_folder' => $this->translator->trans(
+                'media.mediatheque.edit.input.label.folder',
+                domain: 'media',
+            ),
+            'input_description' => $this->translator->trans(
+                'media.mediatheque.edit.input.description',
+                domain: 'media',
+            ),
             'input_placeholder' => $this->translator->trans(
                 'media.mediatheque.edit.input.placeholder',
                 domain: 'media',
             ),
-            'input_info' => $this->translator->trans('media.mediatheque.edit.input.info', domain: 'media'),
             'btn_save' => $this->translator->trans('media.mediatheque.edit.btn.save', domain: 'media'),
+            'btn_error' => $this->translator->trans('media.mediatheque.edit.btn.error', domain: 'media'),
             'save_ok' => $this->translator->trans('media.mediatheque.edit.btn.save.ok', domain: 'media'),
+            'save_media_msg_ok' => $this->translator->trans(
+                'media.mediatheque.edit.save.media.msg.ok',
+                domain: 'media',
+            ),
+            'folder_tag' => $this->translator->trans('media.mediatheque.media.folder.tag', domain: 'media'),
         ];
     }
 }

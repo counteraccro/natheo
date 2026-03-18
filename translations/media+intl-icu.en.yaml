@@ -104,3 +104,11 @@ media.mediatheque.move.label.folder: __media.mediatheque.move.label.folder
 media.index.page_title: __media.index.page_title
 media.index.page_title_h1: __media.index.page_title_h1
 media.index.description: __media.index.description
+media.mediatheque.edit.input.label.file: __media.mediatheque.edit.input.label.file
+media.mediatheque.edit.input.label.folder: __media.mediatheque.edit.input.label.folder
+media.mediatheque.edit.input.description: __media.mediatheque.edit.input.description
+media.mediatheque.edit.input.placeholder: __media.mediatheque.edit.input.placeholder
+media.mediatheque.edit.btn.save: __media.mediatheque.edit.btn.save
+media.mediatheque.edit.btn.error: __media.mediatheque.edit.btn.error
+media.mediatheque.edit.btn.save.ok: __media.mediatheque.edit.btn.save.ok
+media.mediatheque.edit.save.media.msg.ok: __media.mediatheque.edit.save.media.msg.ok
