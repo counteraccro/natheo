@@ -17,17 +17,9 @@ import MarkdownEditor from '@/vue/Components/Global/MarkdownEditor/MarkdownEdito
 import { EditorModule } from '@/ts/MarkdownEditor/MarkdownEditor.types';
 import { InternalLinkModule } from '@/ts/MarkdownEditor/modules/internalLink';
 import Modal from '@/vue/Components/Global/Modal.vue';
+import { Toasts } from '@/ts/Toast/type';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
-
-type Toast = {
-  show: boolean;
-  msg: string;
-};
-
-type Toasts = {
-  [key: string]: Toast;
-};
 
 export default defineComponent({
   name: 'EditFaq',
