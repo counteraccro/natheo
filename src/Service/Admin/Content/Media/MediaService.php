@@ -32,8 +32,12 @@ class MediaService extends MediaFolderService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function moveMediaFixture(string $file, Media $media): void
+    public function moveMediaFixture(string $file, Media $media, ?string $copyFileName = null): void
     {
+        if ($copyFileName === null) {
+            $copyFileName = $file;
+        }
+
         $containerBag = $this->getContainerBag();
 
         $rootPath = $containerBag->get('kernel.project_dir');
@@ -43,9 +47,9 @@ class MediaService extends MediaFolderService
         $fileSystem = new Filesystem();
 
         $urlOrigin = $fixturesPath . $file;
-        $urlCopy = $this->rootPathMedia . DIRECTORY_SEPARATOR . $file;
+        $urlCopy = $this->rootPathMedia . DIRECTORY_SEPARATOR . $copyFileName;
         if ($this->canCreatePhysicalFolder && $media->getMediaFolder() != null) {
-            $urlCopy = $this->getPathFolder($media->getMediaFolder()) . $file;
+            $urlCopy = $this->getPathFolder($media->getMediaFolder()) . $copyFileName;
         }
         $urlCopy = str_replace(['\/', '\\'], DIRECTORY_SEPARATOR, $urlCopy);
 
@@ -201,6 +205,7 @@ class MediaService extends MediaFolderService
             $finder = new Finder();
             $path = $this->getRootPathMedia() . $folder->getPath() . DIRECTORY_SEPARATOR . $folder->getName();
             $path = rtrim(str_replace('\\', DIRECTORY_SEPARATOR, $path), '/');
+
             $nb_elements = $finder->in($path)->count();
             $finder = new Finder();
             $nb_files = $finder->files()->in($path)->count();
@@ -246,9 +251,15 @@ class MediaService extends MediaFolderService
                 $children = array_reverse($children);
             }
 
+            $parent = 0;
+            if ($folder->getParent()) {
+                $parent = $folder->getParent()->getId();
+            }
+
             $return[] = [
                 'type' => 'folder',
                 'id' => $folder->getId(),
+                'parent' => $parent,
                 'name' => $folder->getName(),
                 'created_at' => $folder->getCreatedAt()->getTimestamp(),
                 'date' => $folder->getCreatedAt()->format('d-m-Y H:i:s'),
@@ -283,55 +294,6 @@ class MediaService extends MediaFolderService
         /** @var MediaRepository $repo */
         $repo = $this->getRepository(Media::class);
         return $repo->findByMediaFolder($mediaFolder);
-    }
-
-    /**
-     * Retourne les informations d'un média
-     * @param int $idMedia
-     * @return array
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    #[Deprecated(message: 'Méthode getInfoMedia() dépréciée, elle sera supprimé prochainement', since: '2.0')]
-    public function getInfoMedia(int $idMedia): array
-    {
-        $translator = $this->getTranslator();
-
-        /** @var Media $media */
-        $media = $this->findOneById(Media::class, $idMedia);
-        $user = $media->getUser();
-        $personalDataRender = $user->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER);
-        $personalData = new PersonalData($user, $personalDataRender->getValue());
-
-        /*return [
-            'data' => [
-                $translator->trans('media.mediatheque.info.media.name', domain: 'media') => $media->getName(),
-                $translator->trans('media.mediatheque.info.media.titre', domain: 'media') => $media->getTitle(),
-                $translator->trans(
-                    'media.mediatheque.info.media.description',
-                    domain: 'media',
-                ) => $media->getDescription(),
-                $translator->trans('media.mediatheque.info.media.extension', domain: 'media') => $media->getExtension(),
-                $translator->trans(
-                    'media.mediatheque.info.media.user',
-                    domain: 'media',
-                ) => $personalData->getPersonalData(),
-                $translator->trans('media.mediatheque.info.media.emplacement', domain: 'media') => $media->getPath(),
-                $translator->trans('media.mediatheque.info.media.size', domain: 'media') => Utils::getSizeName(
-                    $media->getSize(),
-                ),
-                $translator->trans('media.mediatheque.info.media.date_created', domain: 'media') => $media
-                    ->getCreatedAt()
-                    ->format('d/m/y H:i'),
-                $translator->trans('media.mediatheque.info.media.date_update', domain: 'media') => $media
-                    ->getUpdateAt()
-                    ->format('d/m/y H:i'),
-            ],
-            'thumbnail' => $this->getThumbnail($media),
-            'web_path' => $media->getWebPath(),
-            'media_type' => $media->getType(),
-        ];*/
-        return [];
     }
 
     /**
