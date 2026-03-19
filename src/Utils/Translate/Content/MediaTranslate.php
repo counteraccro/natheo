@@ -239,6 +239,10 @@ class MediaTranslate extends AppTranslate
                 'media.mediatheque.edit.input.placeholder',
                 domain: 'media',
             ),
+            'input_placeholder_folder' => $this->translator->trans(
+                'media.mediatheque.edit.input.placeholder.folder',
+                domain: 'media',
+            ),
             'btn_save' => $this->translator->trans('media.mediatheque.edit.btn.save', domain: 'media'),
             'btn_error' => $this->translator->trans('media.mediatheque.edit.btn.error', domain: 'media'),
             'save_ok' => $this->translator->trans('media.mediatheque.edit.btn.save.ok', domain: 'media'),
