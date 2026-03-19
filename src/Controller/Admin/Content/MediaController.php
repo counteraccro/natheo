@@ -71,6 +71,7 @@ class MediaController extends AppAdminController
         string $filter = 'created_at',
     ): JsonResponse {
         /** @var MediaFolder $mediaFolder */
+
         $mediaFolder = $mediaService->findOneById(MediaFolder::class, $folder);
 
         $medias = $mediaService->getALlMediaAndMediaFolderByMediaFolder($mediaFolder, $filter, $order);
@@ -83,7 +84,6 @@ class MediaController extends AppAdminController
             'url' => [
                 'loadFolder' => $this->generateUrl('admin_media_load_folder'),
                 'saveFolder' => $this->generateUrl('admin_media_save_folder'),
-                'loadInfo' => $this->generateUrl('admin_media_load_info'),
                 'upload' => $this->generateUrl('admin_media_upload'),
                 'loadMediaEdit' => $this->generateUrl('admin_media_load_media_edit'),
                 'saveMediaEdit' => $this->generateUrl('admin_media_save_media_edit'),
@@ -167,27 +167,6 @@ class MediaController extends AppAdminController
             'result' => $result,
             'msg' => $msg,
         ]);
-    }
-
-    /**
-     * Charge les informations pour le média ou le dossier sélectionné
-     * @param MediaService $mediaService
-     * @param int $id
-     * @param string $type
-     * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    #[Route('/ajax/load-info/{id}/{type}', name: 'load_info', methods: ['GET'])]
-    public function loadInfo(MediaService $mediaService, int $id = 0, string $type = 'folder'): JsonResponse
-    {
-        if ($type === 'folder') {
-            $json['data'] = $mediaService->getInfoFolder($id);
-        } else {
-            $json = $mediaService->getInfoMedia($id);
-        }
-        $json['type'] = $type;
-        return $this->json($json);
     }
 
     /**
