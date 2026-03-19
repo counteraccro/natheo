@@ -111,6 +111,8 @@ export default defineComponent({
       if (this.selectedMedia.type === 'media') {
         this.selectedMedia.title = data.name;
         this.selectedMedia.description = data.description;
+      } else {
+        this.selectedMedia.name = data.name;
       }
 
       this.loadDataInFolder(id, isOpenDrawer);

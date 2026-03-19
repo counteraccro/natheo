@@ -31,6 +31,11 @@ export default defineComponent({
         name: '',
         description: '',
       },
+      folder: {
+        name: '',
+        currentFolder: 0,
+        editFolder: 0,
+      },
       toasts: {
         success: {
           show: false,
@@ -49,6 +54,12 @@ export default defineComponent({
       this.media.name = this.data.title;
       this.media.description = this.data.description;
     }
+
+    if (this.data.type === 'folder') {
+      this.folder.name = this.data.name;
+      this.folder.currentFolder = this.data.parent;
+      this.folder.editFolder = this.data.id;
+    }
   },
   computed: {
     /**
@@ -56,12 +67,22 @@ export default defineComponent({
      */
     checkData(): void {
       this.isError = false;
-      this.media.name = this.media.name.replace(/[^a-zA-Z0-9-]/g, '');
-      if (this.media.name === '') {
-        this.isError = true;
+
+      if (this.data.type === 'media') {
+        this.media.name = this.media.name.replace(/[^a-zA-Z0-9-]/g, '');
+        if (this.media.name === '') {
+          this.isError = true;
+        }
+        if (this.media.description === '') {
+          this.isError = true;
+        }
       }
-      if (this.media.description === '') {
-        this.isError = true;
+
+      if (this.data.type === 'folder') {
+        this.folder.name = this.folder.name.replace(/[^a-zA-Z0-9-]/g, '');
+        if (this.folder.name === '') {
+          this.isError = true;
+        }
       }
     },
   },
@@ -82,6 +103,29 @@ export default defineComponent({
         .finally(() => {
           setTimeout(() => {
             this.$emit('reload', this.data.folder_id, true, this.media);
+          }, 2000);
+        });
+    },
+
+    saveFolder(): void {
+      axios
+        .post(this.url, this.folder)
+        .then((response) => {
+          if (response.data.result === 'error') {
+            this.toasts.error.show = true;
+            this.toasts.error.msg = response.data.msg as string;
+          } else {
+            this.toasts.success.show = true;
+            this.toasts.success.msg = response.data.msg as string;
+            this.save = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          setTimeout(() => {
+            this.$emit('reload', this.data.parent, true, this.folder);
           }, 2000);
         });
     },
@@ -156,16 +200,29 @@ export default defineComponent({
         <label class="form-label">{{ translate.input_description }}</label>
         <textarea class="form-input" v-model="media.description" @change="checkData"></textarea>
       </div>
-
-      <div class="flex flex-col gap-2 mt-3">
-        <button
-          @click="data.type === 'media' ? saveMedia() : ''"
-          class="btn btn-sm"
-          :disabled="save || isError"
-          :class="isError ? 'btn-danger' : !save ? 'btn-primary' : 'btn-success'"
-          v-html="isError ? '✘ ' + translate.btn_error : !save ? translate.btn_save : '✓ ' + translate.save_ok"
-        ></button>
+    </div>
+    <div v-if="data.type === 'folder'">
+      <div class="form-group mt-4">
+        <label class="form-label">{{ translate.input_label_folder }}</label>
+        <input
+          class="form-input"
+          :class="isError ? 'is-invalid' : ''"
+          type="text"
+          @change="checkData"
+          :placeholder="translate.input_placeholder_folder as string"
+          v-model="folder.name"
+        />
       </div>
+    </div>
+
+    <div class="flex flex-col gap-2 mt-3">
+      <button
+        @click="data.type === 'media' ? saveMedia() : saveFolder()"
+        class="btn btn-sm"
+        :disabled="save || isError"
+        :class="isError ? 'btn-danger' : !save ? 'btn-primary' : 'btn-success'"
+        v-html="isError ? '✘ ' + translate.btn_error : !save ? translate.btn_save : '✓ ' + translate.save_ok"
+      ></button>
     </div>
   </div>
 

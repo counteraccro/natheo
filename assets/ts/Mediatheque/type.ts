@@ -3,6 +3,7 @@ export type TranslateRecord = { [key: string]: string | TranslateRecord };
 export type MediaFolder = {
   type: 'folder';
   id: number;
+  parent: number;
   name: string;
   created_at: number;
   date: string;
