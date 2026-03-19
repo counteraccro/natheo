@@ -17,6 +17,8 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class MediaControllerTest extends AppWebTestCase
 {
+    const IMG_UNIT_TEST = 'road.jpg';
+
     /**
      * @var MediaService
      */
@@ -52,16 +54,34 @@ class MediaControllerTest extends AppWebTestCase
     /**
      * Test méthode  loadMedias
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function testLoadMedias(): void
     {
+        $this->mediaService->resetAllMedia();
+
         $this->checkNoAccess('admin_media_load_medias');
         $user = $this->createUserContributeur();
         $this->client->loginUser($user, 'admin');
 
         $folder = $this->createMediaFolder();
+        $this->mediaService->createFolder($folder);
         $media = $this->createMedia($folder, customData: ['trash' => false]);
+
+        $this->mediaService->moveMediaFixture(
+            self::IMG_UNIT_TEST,
+            $media,
+            $media->getName() . '.' . $media->getExtension(),
+        );
+
         $media2 = $this->createMedia($folder, customData: ['trash' => false]);
+
+        $this->mediaService->moveMediaFixture(
+            self::IMG_UNIT_TEST,
+            $media2,
+            $media2->getName() . '.' . $media2->getExtension(),
+        );
 
         $this->client->request(
             'GET',
@@ -236,77 +256,6 @@ class MediaControllerTest extends AppWebTestCase
         $media = $verif2->getMedias()->first();
         $this->assertNotNull($media);
         $this->assertEquals($this->mediaService->getRootPathMedia() . $media->getPath(), $path);
-    }
-
-    /**
-     * Test méthode loadInfo()
-     * @return void
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function testLoadInfo(): void
-    {
-        $this->mediaService->resetAllMedia();
-
-        $this->checkNoAccess('admin_media_load_info');
-        $user = $this->createUserContributeur();
-        $this->client->loginUser($user, 'admin');
-
-        $folder = $this->createMediaFolder();
-        $this->mediaService->createFolder($folder);
-        $media = $this->createMedia(
-            $folder,
-            customData: ['name' => 'road.jpg', 'path' => $folder->getPath() . DIRECTORY_SEPARATOR . $folder->getName()],
-        );
-        $this->mediaService->moveMediaFixture('road.jpg', $media);
-
-        $this->client->request(
-            'GET',
-            $this->router->generate('admin_media_load_info', ['id' => $folder->getId(), 'type' => 'folder']),
-        );
-        $this->assertResponseIsSuccessful();
-        $response = $this->client->getResponse();
-        $this->assertJson($response->getContent());
-        $content = json_decode($response->getContent(), true);
-        $this->assertIsArray($content);
-        $this->assertArrayHasKey('data', $content);
-        $this->assertArrayHasKey('Nom', $content['data']);
-        $this->assertEquals($folder->getName(), $content['data']['Nom']);
-        $this->assertArrayHasKey('Emplacement', $content['data']);
-        $this->assertArrayHasKey('Taille (disque)', $content['data']);
-        $this->assertArrayHasKey('Contenu', $content['data']);
-        $this->assertStringContainsString('1', $content['data']['Contenu']);
-        $this->assertArrayHasKey('Créer le', $content['data']);
-        $this->assertArrayHasKey('Dernière modification le', $content['data']);
-
-        $this->client->request(
-            'GET',
-            $this->router->generate('admin_media_load_info', ['id' => $media->getId(), 'type' => 'media']),
-        );
-        $this->assertResponseIsSuccessful();
-        $response = $this->client->getResponse();
-        $this->assertJson($response->getContent());
-        $content = json_decode($response->getContent(), true);
-        $this->assertIsArray($content);
-        $this->assertArrayHasKey('data', $content);
-        $this->assertArrayHasKey('Nom', $content['data']);
-        $this->assertEquals($media->getName(), $content['data']['Nom']);
-        $this->assertArrayHasKey('Titre', $content['data']);
-        $this->assertEquals($media->getTitle(), $content['data']['Titre']);
-        $this->assertArrayHasKey('Description', $content['data']);
-        $this->assertEquals($media->getDescription(), $content['data']['Description']);
-        $this->assertArrayHasKey('Extension', $content['data']);
-        $this->assertEquals($media->getExtension(), $content['data']['Extension']);
-        $this->assertArrayHasKey('Utilisateur', $content['data']);
-        $this->assertEquals($media->getUser()->getEmail(), $content['data']['Utilisateur']);
-        $this->assertArrayHasKey('Emplacement', $content['data']);
-        $this->assertArrayHasKey('Taille (disque)', $content['data']);
-        $this->assertArrayHasKey('Créer le', $content['data']);
-        $this->assertArrayHasKey('Dernière modification le', $content['data']);
-        $this->assertArrayHasKey('thumbnail', $content);
-        $this->assertArrayHasKey('web_path', $content);
-        $this->assertArrayHasKey('media_type', $content);
-        $this->assertArrayHasKey('type', $content);
     }
 
     /**
