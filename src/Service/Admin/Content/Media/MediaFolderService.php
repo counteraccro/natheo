@@ -343,6 +343,7 @@ class MediaFolderService extends AppAdminService
         if ($this->canCreatePhysicalFolder) {
             $fileSystem = new Filesystem();
             $origin = $this->rootPathMedia . $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $oldName;
+            $origin = str_replace(['\/', '\\'], DIRECTORY_SEPARATOR, $origin);
             $target = $this->getPathFolder($mediaFolder);
             $fileSystem->rename($origin, $target);
         }
@@ -354,6 +355,8 @@ class MediaFolderService extends AppAdminService
      * @param string $old
      * @param string $new
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function updateAllPathChildren(string $old, string $new): void
     {
@@ -402,52 +405,10 @@ class MediaFolderService extends AppAdminService
             if ($i === $nb) {
                 $flush = true;
             }
-            $media->setPath(preg_replace($patternPath, preg_quote($new), $media->getPath()));
+            $media->setPath(preg_replace($patternPath, $new, $media->getPath()));
             $media->setWebPath(preg_replace($patternWebPath, $newWebPath, $media->getWebPath()));
             $repoM->save($media, $flush);
         }
-    }
-
-    /**
-     * Retourne les informations d'un dossier
-     * @param int $idFolderMedia
-     * @return array
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     *
-     */
-    #[\Deprecated(message: 'Méthode getInfoFolder() dépréciée, elle sera supprimé prochainement', since: '2.0')]
-    public function getInfoFolder(int $idFolderMedia): array
-    {
-        $translator = $this->getTranslator();
-
-        /** @var MediaFolder $mediaFolder */
-        $mediaFolder = $this->findOneById(MediaFolder::class, $idFolderMedia);
-        $content = $this->getContentFolder($mediaFolder);
-
-        /*return [
-            $translator->trans('media.mediatheque.info.folder.name', domain: 'media') => $mediaFolder->getName(),
-            $translator->trans('media.mediatheque.info.folder.emplacement', domain: 'media') => $mediaFolder->getPath(),
-            $translator->trans('media.mediatheque.info.folder.taille.disque', domain: 'media') => Utils::getSizeName(
-                $this->getFolderSize($mediaFolder),
-            ),
-            $translator->trans('media.mediatheque.info.folder.contenu', domain: 'media') =>
-                $content['files'] .
-                ' ' .
-                $translator->trans('media.mediatheque.info.folder.files', domain: 'media') .
-                ', ' .
-                $content['directory'] .
-                ' ' .
-                $translator->trans('media.mediatheque.info.folder.folder', domain: 'media'),
-            $translator->trans('media.mediatheque.info.folder.date_creation', domain: 'media') => $mediaFolder
-                ->getCreatedAt()
-                ->format('d/m/y H:i'),
-            $translator->trans('media.mediatheque.info.folder.date_update', domain: 'media') => $mediaFolder
-                ->getUpdateAt()
-                ->format('d/m/y H:i'),
-        ];*/
-
-        return [];
     }
 
     /**
