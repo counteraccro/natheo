@@ -207,6 +207,7 @@ export default defineComponent({
                   href="#"
                   class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150"
                   style="color: var(--text-primary)"
+                  @click="$emit('move', media, 'move')"
                   @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
                   @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
                 >

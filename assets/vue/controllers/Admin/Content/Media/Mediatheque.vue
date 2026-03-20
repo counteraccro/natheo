@@ -8,10 +8,17 @@ import { initFlowbite } from 'flowbite';
 import MediaInfo from '@/vue/Components/Mediatheque/MediaInfo.vue';
 import { MediaItem, TranslateRecord } from '@/ts/Mediatheque/type';
 import MediaEdit from '@/vue/Components/Mediatheque/MediaEdit.vue';
+import MediaMove from '@/vue/Components/Mediatheque/MediaMove.vue';
+import * as url from 'node:url';
 
 export default defineComponent({
   name: 'Mediatheque',
-  components: { MediaEdit, MediaInfo, MediasGrid, MediasBreadcrumb, SkeletonMediatheque },
+  computed: {
+    url() {
+      return url;
+    },
+  },
+  components: { MediaMove, MediaEdit, MediaInfo, MediasGrid, MediasBreadcrumb, SkeletonMediatheque },
   props: {
     url: String,
     translate: { type: Object as PropType<TranslateRecord>, required: true },
@@ -165,7 +172,7 @@ export default defineComponent({
             @load-data-folder="loadDataInFolder"
             @show-info="openBlockDrawer"
             @edit="openBlockDrawer"
-            @move="loadListFolderMove"
+            @move="openBlockDrawer"
             @trash="confirmTrash"
           >
           </medias-grid>
@@ -188,6 +195,18 @@ export default defineComponent({
           :url="selectedMedia.type === 'media' ? urlActions.saveMediaEdit : urlActions.saveFolder"
           @close="closeDrawer"
           @reload="reload"
+        />
+
+        <media-move
+          :key="'ME-' + key"
+          v-if="selectedAction === 'move'"
+          :translate="translate.move as TranslateRecord"
+          :data="selectedMedia as MediaItem"
+          :urls="{
+            move: urlActions.move,
+            listeMove: urlActions.listeMove,
+          }"
+          @close="closeDrawer"
         />
       </div>
     </div>
