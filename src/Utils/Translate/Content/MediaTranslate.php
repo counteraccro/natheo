@@ -91,12 +91,18 @@ class MediaTranslate extends AppTranslate
     {
         return [
             'title' => $this->translator->trans('media.mediatheque.move.title', domain: 'media'),
-            'btn_close' => $this->translator->trans('media.mediatheque.move.btn.close', domain: 'media'),
-            'btn_validate' => $this->translator->trans('media.mediatheque.move.btn.validate', domain: 'media'),
-            'input_label' => $this->translator->trans('media.mediatheque.move.input.label', domain: 'media'),
-            'input_info' => $this->translator->trans('media.mediatheque.move.input.info', domain: 'media'),
-            'loading' => $this->translator->trans('media.mediatheque.move.loading', domain: 'media'),
-            'success' => $this->translator->trans('media.mediatheque.move.success', domain: 'media'),
+            'btn_move' => $this->translator->trans('media.mediatheque.move.btn', domain: 'media'),
+            'move_ok' => $this->translator->trans('media.mediatheque.move.success', domain: 'media'),
+            'btn_error' => $this->translator->trans('media.mediatheque.move.btn.error', domain: 'media'),
+            'search_placeholder' => $this->translator->trans(
+                'media.mediatheque.move.search.placeholder',
+                domain: 'media',
+            ),
+            'msg_no_search' => $this->translator->trans('media.mediatheque.move.search.empty.msg', domain: 'media'),
+            'msg_no_search_sub' => $this->translator->trans(
+                'media.mediatheque.move.search.empty.msg.sub',
+                domain: 'media',
+            ),
         ];
     }
 

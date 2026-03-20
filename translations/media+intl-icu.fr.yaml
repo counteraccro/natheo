@@ -46,15 +46,6 @@ media.mediatheque.upload.loading.msg.success: 'Média ajouté avec succès, cett
 media.mediatheque.upload.preview.help: 'Passez votre souris dessus pour un meilleur aperçu'
 media.mediatheque.upload.btn.close: Fermer
 media.mediatheque.media.link.edit.media: Editer
-media.mediatheque.move.title: 'Déplacer un élément'
-media.mediatheque.move.btn.close: Annuler
-media.mediatheque.move.btn.validate: Déplacer
-media.mediatheque.move.input.label: 'Sélectionner le dossier à déplacer'
-media.mediatheque.move.input.info: 'Toutes les données (dossiers et/ou médias) associés seront aussi déplacées'
-media.mediatheque.move.label.media: 'Déplacer le média <b>{name}</b> vers '
-media.mediatheque.move.label.folder: 'Déplacer le dossier <b>{name}</b> vers '
-media.mediatheque.move.loading: "Déplacement de l'élément en cours"
-media.mediatheque.move.success: 'Votre élément à été déplacé avec succès, cette fenêtre va se fermer automatiquement dans 3 secondes'
 media.mediatheque.search.placeholder: 'Rechercher (Soon™..)'
 media.mediatheque.media.no.media: 'Ce dossier est vide pour le moment'
 media.mediatheque.trash.title: 'Confirmation mise à la corbeille'
@@ -113,3 +104,12 @@ media.mediatheque.edit.input.description: Description
 media.mediatheque.edit.btn.error: 'Erreur de validation'
 media.mediatheque.edit.save.media.msg.ok: 'Média édité avec succès !'
 media.mediatheque.edit.input.placeholder.folder: 'Le nouveau nom de votre dossier'
+media.mediatheque.move.title: 'Déplacer vers...'
+media.mediatheque.move.btn: Déplacer
+media.mediatheque.move.success: 'Déplacement validé !'
+media.mediatheque.move.label.media: __media.mediatheque.move.label.media
+media.mediatheque.move.label.folder: __media.mediatheque.move.label.folder
+media.mediatheque.move.btn.error: 'Erreur de validation'
+media.mediatheque.move.search.placeholder: 'Filtrer les dossier'
+media.mediatheque.move.search.empty.msg: 'Aucun dossier trouvé'
+media.mediatheque.move.search.empty.msg.sub: 'Essayez un autre terme de recherche'

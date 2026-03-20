@@ -113,3 +113,8 @@ media.mediatheque.edit.btn.error: __media.mediatheque.edit.btn.error
 media.mediatheque.edit.btn.save.ok: __media.mediatheque.edit.btn.save.ok
 media.mediatheque.edit.save.media.msg.ok: __media.mediatheque.edit.save.media.msg.ok
 media.mediatheque.edit.input.placeholder.folder: __media.mediatheque.edit.input.placeholder.folder
+media.mediatheque.move.btn: __media.mediatheque.move.btn
+media.mediatheque.move.btn.error: __media.mediatheque.move.btn.error
+media.mediatheque.move.search.placeholder: __media.mediatheque.move.search.placeholder
+media.mediatheque.move.search.empty.msg: __media.mediatheque.move.search.empty.msg
+media.mediatheque.move.search.empty.msg.sub: __media.mediatheque.move.search.empty.msg.sub
