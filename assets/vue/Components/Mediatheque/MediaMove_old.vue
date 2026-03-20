@@ -6,7 +6,7 @@
  */
 
 export default {
-  name: 'MediaMove',
+  name: 'MediaMoveOld',
   props: {
     dataMove: Object,
     translate: Object,
