@@ -135,9 +135,14 @@ class MediaService extends MediaFolderService
         $mediaFolder = $media->getMediaFolder();
         $path = DIRECTORY_SEPARATOR . $media->getName();
         if ($mediaFolder != null) {
-            $path = $mediaFolder->getPath() . $mediaFolder->getName() . DIRECTORY_SEPARATOR . $media->getName();
+            $path =
+                $mediaFolder->getPath() .
+                DIRECTORY_SEPARATOR .
+                $mediaFolder->getName() .
+                DIRECTORY_SEPARATOR .
+                $media->getName();
         }
-        return str_replace('//', '/', $path);
+        return rtrim(str_replace('\\', DIRECTORY_SEPARATOR, $path), '/');
     }
 
     /**
@@ -172,7 +177,16 @@ class MediaService extends MediaFolderService
 
         /** @var Media $media */
         foreach ($medias as $media) {
-            $info = getimagesize($this->getRootPathMedia() . $media->getPath());
+            $path = rtrim(
+                str_replace(
+                    '\\',
+                    DIRECTORY_SEPARATOR,
+                    DIRECTORY_SEPARATOR . $this->getRootPathMedia() . $media->getPath(),
+                ),
+                '/',
+            );
+            $path = preg_replace('#/{2,}#', '/', $path);
+            $info = getimagesize($path);
 
             $folder = 'root';
             $folderId = 0;
@@ -205,6 +219,7 @@ class MediaService extends MediaFolderService
             $finder = new Finder();
             $path = $this->getRootPathMedia() . $folder->getPath() . DIRECTORY_SEPARATOR . $folder->getName();
             $path = rtrim(str_replace('\\', DIRECTORY_SEPARATOR, $path), '/');
+            $path = preg_replace('#/{2,}#', '/', $path);
 
             $nb_elements = $finder->in($path)->count();
             $finder = new Finder();
@@ -405,7 +420,6 @@ class MediaService extends MediaFolderService
             if ($media->getMediaFolder() !== null) {
                 $newPath = $this->getPathFolder($media->getMediaFolder()) . $media->getName();
             }
-
             $fileSystem = new Filesystem();
             $fileSystem->rename($oldPath, $newPath, true);
         }
