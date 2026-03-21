@@ -207,6 +207,7 @@ export default defineComponent({
             listeMove: urlActions.listeMove,
           }"
           @close="closeDrawer"
+          @reload="reload"
         />
       </div>
     </div>

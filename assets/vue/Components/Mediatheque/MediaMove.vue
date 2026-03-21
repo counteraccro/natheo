@@ -1,18 +1,25 @@
 <script lang="ts">
+/**
+ * @author Gourdon Aymeric
+ * @version 2.0
+ * Permet de déplacer un média ou une image
+ */
 import { defineComponent, type PropType } from 'vue';
 import { MediaItem, TranslateRecord } from '@/ts/Mediatheque/type';
 import SkeletonMediathequeMove from '@/vue/Components/Skeleton/MediathequeMove.vue';
 import axios from 'axios';
+import { Toasts } from '@/ts/Toast/type';
+import Toast from '@/vue/Components/Global/Toast.vue';
 
 export default defineComponent({
   name: 'MediaMove',
-  components: { SkeletonMediathequeMove },
+  components: { Toast, SkeletonMediathequeMove },
   props: {
     data: { type: Object as PropType<MediaItem>, required: true },
     translate: { type: Object as PropType<TranslateRecord>, required: true },
     urls: Object,
   },
-  emits: ['close'],
+  emits: ['close', 'reload'],
   data() {
     return {
       move: false,
@@ -21,6 +28,16 @@ export default defineComponent({
       dataMove: {},
       selectedId: -10,
       search: '',
+      toasts: {
+        success: {
+          show: false,
+          msg: '',
+        },
+        error: {
+          show: false,
+          msg: '',
+        },
+      } as Toasts,
     };
   },
 
@@ -28,6 +45,9 @@ export default defineComponent({
     this.loadListFolderMove(this.data.type, this.data.id);
   },
   computed: {
+    /**
+     * Construction de l'arborescence des dossiers
+     */
     parsedFolders() {
       return this.dataMove.listeFolder.map((folder) => {
         const match = folder.name.match(/^(\|[-]*)(.+)$/);
@@ -50,6 +70,11 @@ export default defineComponent({
     },
   },
   methods: {
+    /**
+     * Récupération de la liste des dossiers
+     * @param type
+     * @param id
+     */
     loadListFolderMove(type: string, id: number): void {
       this.loading = true;
       axios
@@ -62,12 +87,50 @@ export default defineComponent({
         })
         .finally(() => {
           this.loading = false;
-          //this.openModalMove();
         });
     },
 
-    selectFolder(folder) {
+    /**
+     * Déplace un média
+     */
+    moveMedia() {
+      this.loading = true;
+      axios
+        .post(this.urls.move, {
+          idToMove: this.selectedId,
+          id: this.data.id,
+          type: this.data.type,
+        })
+        .then((response) => {
+          this.loading = false;
+          this.toasts.success.show = true;
+          this.toasts.success.msg = this.translate.move_success as string;
+          this.move = true;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          setTimeout(() => {
+            this.$emit('reload', this.selectedId, false, this.data);
+          }, 2000);
+        });
+    },
+
+    /**
+     * Dossier sélectionné
+     * @param folder
+     */
+    selectFolder(folder: any) {
       this.selectedId = folder.id;
+    },
+
+    /**
+     * Ferme le toast défini par nameToast
+     * @param nameToast
+     */
+    closeToast(nameToast: string): void {
+      this.toasts[nameToast].show = false;
     },
   },
 });
@@ -103,6 +166,17 @@ export default defineComponent({
           </svg>
         </button>
       </div>
+
+      <p class="text-xs mb-3" style="color: var(--text-secondary)">
+        <span v-if="data.type === 'media'">
+          {{ translate.sub_title_media }}
+        </span>
+        <span v-else>
+          {{ translate.sub_title_folder }}
+        </span>
+        <b> {{ data.name }} </b>
+        {{ translate.sub_title_end }}
+      </p>
 
       <div class="input-group mb-5">
         <svg class="icon icon-left" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -177,6 +251,7 @@ export default defineComponent({
       <!-- Actions -->
       <div class="flex flex-col gap-2">
         <button
+          @click="moveMedia"
           class="btn btn-sm"
           :disabled="move || selectedId === -10"
           :class="isError ? 'btn-danger' : !move ? 'btn-primary' : 'btn-success'"
@@ -184,6 +259,20 @@ export default defineComponent({
         ></button>
       </div>
     </div>
+  </div>
+
+  <div class="toast-container position-fixed top-0 end-0 p-2">
+    <toast :id="'toastSuccess'" :type="'success'" :show="toasts.success.show" @close-toast="closeToast('success')">
+      <template #body>
+        <div v-html="toasts.success.msg"></div>
+      </template>
+    </toast>
+
+    <toast :id="'toastError'" :type="'danger'" :show="toasts.error.show" @close-toast="closeToast('error')">
+      <template #body>
+        <div v-html="toasts.error.msg"></div>
+      </template>
+    </toast>
   </div>
 </template>
 
