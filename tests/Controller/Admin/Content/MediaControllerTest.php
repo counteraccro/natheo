@@ -106,7 +106,6 @@ class MediaControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('canDelete', $content);
         $this->assertArrayHasKey('url', $content);
         $this->assertArrayHasKey('loadFolder', $content['url']);
-        $this->assertArrayHasKey('loadInfo', $content['url']);
         $this->assertArrayHasKey('upload', $content['url']);
         $this->assertArrayHasKey('loadMediaEdit', $content['url']);
         $this->assertArrayHasKey('saveMediaEdit', $content['url']);

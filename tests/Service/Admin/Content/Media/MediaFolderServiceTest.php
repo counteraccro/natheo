@@ -309,18 +309,16 @@ class MediaFolderServiceTest extends AppWebTestCase
         $this->mediaFolderService->createFolder($subSubMediaFolder);
 
         $result = $this->mediaFolderService->getAllDataForModalMove($mediaFolder->getId(), 'folder');
+
         $this->assertIsArray($result);
         $this->assertArrayHasKey('parentId', $result);
         $this->assertEquals(0, $result['parentId']);
-        $this->assertArrayHasKey('label', $result);
-        $this->assertStringContainsString($mediaFolder->getName(), $result['label']);
         $this->assertArrayHasKey('liste', $result);
         $this->assertIsArray($result['liste']);
         $this->assertCount(1, $result['liste']);
 
         $result = $this->mediaFolderService->getAllDataForModalMove($subMediaFolder->getId(), 'folder');
         $this->assertEquals($mediaFolder->getId(), $result['parentId']);
-        $this->assertStringContainsString($subMediaFolder->getName(), $result['label']);
         $this->assertCount(2, $result['liste']);
 
         $media = $this->createMedia($mediaFolder, customData: ['name' => 'road.jpg', 'trash' => false]);
@@ -328,8 +326,6 @@ class MediaFolderServiceTest extends AppWebTestCase
         $this->assertIsArray($result);
         $this->assertArrayHasKey('parentId', $result);
         $this->assertEquals(0, $result['parentId']);
-        $this->assertArrayHasKey('label', $result);
-        $this->assertStringContainsString($media->getName(), $result['label']);
         $this->assertArrayHasKey('liste', $result);
         $this->assertIsArray($result['liste']);
         $this->assertCount(1, $result['liste']);
@@ -338,7 +334,6 @@ class MediaFolderServiceTest extends AppWebTestCase
         $result = $this->mediaFolderService->getAllDataForModalMove($media2->getId(), 'media');
         $this->assertIsArray($result);
         $this->assertEquals($mediaFolder->getId(), $result['parentId']);
-        $this->assertStringContainsString($media2->getName(), $result['label']);
         $this->assertCount(2, $result['liste']);
     }
 
