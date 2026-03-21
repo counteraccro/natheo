@@ -103,6 +103,10 @@ class MediaTranslate extends AppTranslate
                 'media.mediatheque.move.search.empty.msg.sub',
                 domain: 'media',
             ),
+            'move_success' => $this->translator->trans('media.mediatheque.move.toast.success', domain: 'media'),
+            'sub_title_media' => $this->translator->trans('media.mediatheque.move.sub.title.media', domain: 'media'),
+            'sub_title_folder' => $this->translator->trans('media.mediatheque.move.sub.title.folder', domain: 'media'),
+            'sub_title_end' => $this->translator->trans('media.mediatheque.move.sub.title.end', domain: 'media'),
         ];
     }
 
