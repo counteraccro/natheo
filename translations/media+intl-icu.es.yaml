@@ -122,3 +122,5 @@ media.mediatheque.move.toast.success: __media.mediatheque.move.toast.success
 media.mediatheque.move.sub.title.media: __media.mediatheque.move.sub.title.media
 media.mediatheque.move.sub.title.folder: __media.mediatheque.move.sub.title.folder
 media.mediatheque.move.sub.title.end: __media.mediatheque.move.sub.title.end
+media.mediatheque.success.add.trash: __media.mediatheque.success.add.trash
+media.mediatheque.success.remove.trash: __media.mediatheque.success.remove.trash

@@ -29,6 +29,11 @@ class MediaTranslate extends AppTranslate
             'order_desc' => $this->translator->trans('media.mediatheque.order.desc', domain: 'media'),
             'search_placeholder' => $this->translator->trans('media.mediatheque.search.placeholder', domain: 'media'),
             'disque_size' => $this->translator->trans('media.mediatheque.disque_size', domain: 'media'),
+            'success_add_trash' => $this->translator->trans('media.mediatheque.success.add.trash', domain: 'media'),
+            'success_remove_trash' => $this->translator->trans(
+                'media.mediatheque.success.remove.trash',
+                domain: 'media',
+            ),
             'media' => $this->getMediaTranslate(),
             'folder' => $this->getFolderTranslate(),
             'info' => $this->getInfoTranslate(),
