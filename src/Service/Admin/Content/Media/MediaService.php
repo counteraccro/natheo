@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 2.0
  * Service qui gère les médias
  */
 
