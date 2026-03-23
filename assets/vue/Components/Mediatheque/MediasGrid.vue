@@ -1,7 +1,7 @@
 <script lang="ts">
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Affichage au format GRID et listing des médias
  */
 
@@ -231,6 +231,7 @@ export default defineComponent({
               <li style="border-top: 1px solid var(--border-color)">
                 <a
                   href="#"
+                  @click="$emit('trash', true, media.id, media.type)"
                   class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-red-500"
                   @mouseover="$event.target.closest('a').style.backgroundColor = '#fef2f2'"
                   @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
