@@ -143,6 +143,20 @@ export default defineComponent({
     },
 
     /**
+     * Nouveau dossier
+     */
+    newFolder() {
+      let tmp = {
+        name: '',
+        type: 'folder',
+        thumbnail: '/assets/natheo/mediatheque/folder.svg',
+        id: 0,
+        parent: this.currentFolder.id,
+      };
+      this.openBlockDrawer(tmp, 'new-folder');
+    },
+
+    /**
      * OUvre le panneau de droite
      * @param media
      * @param action
@@ -174,10 +188,13 @@ export default defineComponent({
      */
     reload(id: number, isOpenDrawer: boolean, data: any) {
       if (this.selectedMedia.type === 'media') {
+        this.selectedMedia.id = data.id;
         this.selectedMedia.title = data.name;
         this.selectedMedia.description = data.description;
       } else {
         this.selectedMedia.name = data.name;
+        this.selectedMedia.currentFolder = data.currentFolder;
+        this.selectedMedia.editFolder = data.editFolder;
       }
 
       this.loadDataInFolder(id, isOpenDrawer);
@@ -226,7 +243,7 @@ export default defineComponent({
 
     <div class="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-[var(--border-color)]">
       <div class="flex items-center gap-2">
-        <button class="btn btn-xs btn-primary inline-flex items-center gap-2 px-3 py-2">
+        <button class="btn btn-xs btn-primary inline-flex items-center gap-2 px-3 py-2" @click="newFolder">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -235,7 +252,7 @@ export default defineComponent({
               d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
             ></path>
           </svg>
-          Nouveau dossier trad
+          {{ translate.btn_new_folder }}
         </button>
         <button class="btn btn-xs btn-outline-dark inline-flex items-center gap-2 px-3 py-2">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -246,7 +263,7 @@ export default defineComponent({
               d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
             ></path>
           </svg>
-          Nouveau média trad
+          {{ translate.btn_new_media }}
         </button>
       </div>
 
@@ -426,7 +443,7 @@ export default defineComponent({
 
         <media-edit
           :key="'ME-' + key"
-          v-if="selectedAction === 'edit'"
+          v-if="selectedAction === 'edit' || selectedAction === 'new-folder'"
           :translate="translate.edit as TranslateRecord"
           :data="selectedMedia as MediaItem"
           :url="selectedMedia.type === 'media' ? urlActions.saveMediaEdit : urlActions.saveFolder"

@@ -10,6 +10,7 @@ import AlertWarning from '@/vue/Components/Alert/Warning.vue';
 import { Toasts } from '@/ts/Toast/type';
 import Toast from '@/vue/Components/Global/Toast.vue';
 import axios from 'axios';
+import translate from '@/vue/controllers/Admin/System/Translate.vue';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
 
@@ -108,6 +109,12 @@ export default defineComponent({
     },
 
     saveFolder(): void {
+      this.folder.name = this.folder.name.replace(/[^a-zA-Z0-9-]/g, '');
+      if (this.folder.name === '') {
+        this.isError = true;
+        return;
+      }
+
       axios
         .post(this.url, this.folder)
         .then((response) => {
@@ -125,7 +132,7 @@ export default defineComponent({
         })
         .finally(() => {
           setTimeout(() => {
-            this.$emit('reload', this.data.parent, true, this.folder);
+            this.$emit('reload', this.data.parent, this.data.id !== 0, this.folder);
           }, 2000);
         });
     },
@@ -137,6 +144,13 @@ export default defineComponent({
     closeToast(nameToast: string): void {
       this.toasts[nameToast].show = false;
     },
+
+    labelBtnSave(): string {
+      if (this.data.id === 0) {
+        return this.translate.btn_save_new_folder as string;
+      }
+      return this.translate.btn_save as string;
+    },
   },
 });
 </script>
@@ -145,22 +159,41 @@ export default defineComponent({
   <div class="info-drawer-inner">
     <!-- Header du panneau -->
     <div class="flex items-center justify-between mb-4">
-      <h3 class="flex gap-1 items-center font-semibold text-sm" style="color: var(--text-primary)">
-        <svg
-          class="w-4 h-4 flex-shrink-0"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          style="color: var(--text-secondary)"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-          ></path>
-        </svg>
-        {{ translate.title }}
+      <h3 class="font-semibold text-sm" style="color: var(--text-primary)">
+        <span class="flex gap-1 items-center" v-if="data.id !== 0">
+          <svg
+            class="w-4 h-4 flex-shrink-0"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            style="color: var(--text-secondary)"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+            ></path>
+          </svg>
+          {{ translate.title }}
+        </span>
+        <span class="flex gap-1 items-center" v-else>
+          <svg
+            class="w-4 h-4 flex-shrink-0"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            style="color: var(--text-secondary)"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+            ></path>
+          </svg>
+          {{ translate.title_new_folder }}
+        </span>
       </h3>
       <button
         @click="$emit('close')"
@@ -221,7 +254,7 @@ export default defineComponent({
         class="btn btn-sm"
         :disabled="save || isError"
         :class="isError ? 'btn-danger' : !save ? 'btn-primary' : 'btn-success'"
-        v-html="isError ? '✘ ' + translate.btn_error : !save ? translate.btn_save : '✓ ' + translate.save_ok"
+        v-html="isError ? '✘ ' + translate.btn_error : !save ? labelBtnSave() : '✓ ' + translate.save_ok"
       ></button>
     </div>
   </div>
