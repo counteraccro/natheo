@@ -124,3 +124,5 @@ media.mediatheque.move.sub.title.folder: __media.mediatheque.move.sub.title.fold
 media.mediatheque.move.sub.title.end: __media.mediatheque.move.sub.title.end
 media.mediatheque.success.add.trash: __media.mediatheque.success.add.trash
 media.mediatheque.success.remove.trash: __media.mediatheque.success.remove.trash
+media.mediatheque.edit.title.new.folder: __media.mediatheque.edit.title.new.folder
+media.mediatheque.edit.btn.save_new.folder: __media.mediatheque.edit.btn.save_new.folder

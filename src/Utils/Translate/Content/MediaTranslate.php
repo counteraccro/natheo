@@ -241,6 +241,7 @@ class MediaTranslate extends AppTranslate
     {
         return [
             'title' => $this->translator->trans('media.mediatheque.edit.title', domain: 'media'),
+            'title_new_folder' => $this->translator->trans('media.mediatheque.edit.title.new.folder', domain: 'media'),
             'input_label_file' => $this->translator->trans('media.mediatheque.edit.input.label.file', domain: 'media'),
             'input_label_folder' => $this->translator->trans(
                 'media.mediatheque.edit.input.label.folder',
@@ -259,6 +260,10 @@ class MediaTranslate extends AppTranslate
                 domain: 'media',
             ),
             'btn_save' => $this->translator->trans('media.mediatheque.edit.btn.save', domain: 'media'),
+            'btn_save_new_folder' => $this->translator->trans(
+                'media.mediatheque.edit.btn.save_new.folder',
+                domain: 'media',
+            ),
             'btn_error' => $this->translator->trans('media.mediatheque.edit.btn.error', domain: 'media'),
             'save_ok' => $this->translator->trans('media.mediatheque.edit.btn.save.ok', domain: 'media'),
             'save_media_msg_ok' => $this->translator->trans(
