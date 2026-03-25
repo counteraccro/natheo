@@ -18,6 +18,7 @@ import MediaMove from '@/vue/Components/Mediatheque/MediaMove.vue';
 import * as url from 'node:url';
 import Toast from '@/vue/Components/Global/Toast.vue';
 import { Toasts } from '@/ts/Toast/type';
+import MediaNew from '@/vue/Components/Mediatheque/MediaNew.vue';
 
 export default defineComponent({
   name: 'Mediatheque',
@@ -26,7 +27,7 @@ export default defineComponent({
       return url;
     },
   },
-  components: { Toast, MediaMove, MediaEdit, MediaInfo, MediasGrid, MediasBreadcrumb, SkeletonMediatheque },
+  components: { MediaNew, Toast, MediaMove, MediaEdit, MediaInfo, MediasGrid, MediasBreadcrumb, SkeletonMediatheque },
   props: {
     url: String,
     translate: { type: Object as PropType<TranslateRecord>, required: true },
@@ -145,7 +146,7 @@ export default defineComponent({
     /**
      * Nouveau dossier
      */
-    newFolder() {
+    newFolder(): void {
       let tmp = {
         name: '',
         type: 'folder',
@@ -154,6 +155,13 @@ export default defineComponent({
         parent: this.currentFolder.id,
       };
       this.openBlockDrawer(tmp, 'new-folder');
+    },
+
+    /**
+     * Nouveau média
+     */
+    newMedia(): void {
+      this.openBlockDrawer({}, 'new-media');
     },
 
     /**
@@ -254,7 +262,7 @@ export default defineComponent({
           </svg>
           {{ translate.btn_new_folder }}
         </button>
-        <button class="btn btn-xs btn-outline-dark inline-flex items-center gap-2 px-3 py-2">
+        <button class="btn btn-xs btn-outline-dark inline-flex items-center gap-2 px-3 py-2" @click="newMedia">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -462,6 +470,13 @@ export default defineComponent({
           }"
           @close="closeDrawer"
           @reload="reload"
+        />
+
+        <media-new
+          :key="'ME-' + key"
+          v-if="selectedAction === 'new-media'"
+          :translate="translate.upload as TranslateRecord"
+          @close="closeDrawer"
         />
       </div>
     </div>
