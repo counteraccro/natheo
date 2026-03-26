@@ -6,7 +6,7 @@
  */
 
 import { defineComponent, type PropType } from 'vue';
-import { TranslateRecord } from '@/ts/Mediatheque/type';
+import { FileData, TranslateRecord } from '@/ts/Mediatheque/type';
 import FileUpload from '@/vue/Components/Global/FileUpload.vue';
 
 export default defineComponent({
@@ -22,7 +22,11 @@ export default defineComponent({
     };
   },
   computed: {},
-  methods: {},
+  methods: {
+    saveMedia(file: FileData) {
+      console.log(file);
+    },
+  },
 });
 </script>
 
@@ -60,7 +64,7 @@ export default defineComponent({
       </button>
     </div>
 
-    <file-upload :max-size="20" :translate="translate" />
+    <file-upload :max-size="20" :translate="translate" @file-uploaded="saveMedia" />
   </div>
 </template>
 

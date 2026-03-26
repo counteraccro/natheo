@@ -30,6 +30,18 @@ export type MediaFile = {
   title: string;
 };
 
+export interface FileData {
+  name: string;
+  size: number;
+  type: string;
+  fileExtention: string;
+  url: string;
+  isImage: boolean;
+  isUploaded: boolean;
+  title: string;
+  description: string;
+}
+
 export type MediaItem = MediaFolder | MediaFile;
 
 export type MediaList = MediaItem[];

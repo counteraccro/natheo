@@ -1,23 +1,39 @@
-<script>
+<script lang="ts">
 /**
  * @author Gourdon Aymeric
  * @version 2.0
  * Permet d'uploader un fichier
  */
-export default {
+import { defineComponent, type PropType } from 'vue';
+import { FileData, TranslateRecord } from '@/ts/Mediatheque/type';
+
+export default defineComponent({
   name: 'FileUpload',
+
   emits: ['file-uploaded', 'close-modale-upload'],
+
   props: {
-    maxSize: { type: Number, default: 5, required: true },
-    accept: { type: String, default: 'image/*' },
-    translate: Object,
+    maxSize: {
+      type: Number,
+      default: 5,
+      required: true,
+    },
+    accept: {
+      type: String,
+      default: 'image/*',
+    },
+    translate: {
+      type: Object as () => PropType<TranslateRecord>,
+      required: true,
+    },
   },
+
   data() {
     return {
-      errors: [],
-      isLoading: false,
-      uploadReady: true,
-      isDragging: false,
+      errors: [] as string[],
+      isLoading: false as boolean,
+      uploadReady: true as boolean,
+      isDragging: false as boolean,
       file: {
         name: '',
         size: 0,
@@ -28,34 +44,46 @@ export default {
         isUploaded: false,
         title: '',
         description: '',
-      },
+      } as FileData,
     };
   },
+
   methods: {
-    handleFileChange(e) {
+    /**
+     * Gère la sélection via l'input file
+     */
+    handleFileChange(e: Event): void {
       this.errors = [];
-      if (e.target.files && e.target.files[0]) {
-        if (this.isFileValid(e.target.files[0])) {
-          this.processFile(e.target.files[0]);
+      const input = e.target as HTMLInputElement;
+      if (input.files && input.files[0]) {
+        if (this.isFileValid(input.files[0])) {
+          this.processFile(input.files[0]);
         }
       }
     },
 
-    handleDrop(e) {
+    /**
+     * Gère le dépôt par drag & drop
+     */
+    handleDrop(e: DragEvent): void {
       this.isDragging = false;
       this.errors = [];
-      const dropped = e.dataTransfer.files[0];
+      const dropped = e.dataTransfer?.files[0];
       if (dropped && this.isFileValid(dropped)) {
         this.processFile(dropped);
       }
     },
 
-    processFile(file) {
-      const fileSize = Math.round((file.size / 1024 / 1024) * 100) / 100;
-      const fileExtention = file.name.split('.').pop();
-      const fileName = file.name.split('.').shift();
-      const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtention.toLowerCase());
-      const reader = new FileReader();
+    /**
+     * Lit le fichier et remplit les données
+     */
+    processFile(file: File): void {
+      const fileSize: number = Math.round((file.size / 1024 / 1024) * 100) / 100;
+      const fileExtention: string = file.name.split('.').pop() ?? '';
+      const fileName: string = file.name.split('.').shift() ?? '';
+      const isImage: boolean = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtention.toLowerCase());
+      const reader: FileReader = new FileReader();
+
       reader.addEventListener(
         'load',
         () => {
@@ -65,7 +93,7 @@ export default {
             type: file.type,
             fileExtention,
             isImage,
-            url: reader.result,
+            url: reader.result as string,
             isUploaded: true,
             title: fileName,
             description: '',
@@ -73,32 +101,35 @@ export default {
         },
         false
       );
+
       reader.readAsDataURL(file);
     },
 
-    isFileSizeValid(fileSize) {
+    /**
+     * Contrôle la taille du fichier
+     */
+    isFileSizeValid(fileSize: number): void {
       if (fileSize > this.maxSize) {
         this.errors.push(this.translate.error_size + ' ' + this.maxSize + 'MB');
       }
     },
 
-    isFileTypeValid(file) {
-      const extension = file.name.split('.').pop().toLowerCase();
-      const mimeType = file.type; // ex: "image/jpeg"
+    /**
+     * Contrôle le type MIME et l'extension
+     */
+    isFileTypeValid(file: File): void {
+      const extension: string = file.name.split('.').pop()?.toLowerCase() ?? '';
+      const mimeType: string = file.type;
+      const accepted: string[] = this.accept.split(',').map((a) => a.trim());
 
-      const accepted = this.accept.split(',').map((a) => a.trim());
-
-      const isValid = accepted.some((a) => {
+      const isValid: boolean = accepted.some((a) => {
         if (a.endsWith('/*')) {
-          // ex: "image/*" → vérifie le début du MIME type
           const mimeGroup = a.split('/')[0];
           return mimeType.startsWith(mimeGroup + '/');
         }
         if (a.startsWith('.')) {
-          // ex: ".jpg" → vérifie l'extension
           return '.' + extension === a;
         }
-        // ex: "image/jpeg" → vérifie le MIME exact
         return mimeType === a;
       });
 
@@ -107,21 +138,27 @@ export default {
       }
     },
 
-    isFileValid(file) {
+    /**
+     * Validation complète du fichier
+     */
+    isFileValid(file: File): boolean {
       this.isFileSizeValid(Math.round((file.size / 1024 / 1024) * 100) / 100);
-      this.isFileTypeValid(file); // ← fichier complet, plus juste l'extension
+      this.isFileTypeValid(file);
       return this.errors.length === 0;
     },
 
-    resetFileInput() {
+    /**
+     * Réinitialise tous les champs
+     */
+    resetFileInput(): void {
       this.uploadReady = false;
       this.$nextTick(() => {
         this.uploadReady = true;
+        this.errors = [];
         this.file = {
           name: '',
           size: 0,
           type: '',
-          data: '',
           fileExtention: '',
           url: '',
           isImage: false,
@@ -129,27 +166,22 @@ export default {
           title: '',
           description: '',
         };
-        this.errors = [];
       });
     },
 
-    closeModale() {
-      this.resetFileInput();
-      this.$emit('close-modale-upload');
-    },
-
-    sendDataToParent() {
+    /**
+     * Envoie les données au composant parent
+     */
+    sendDataToParent(): void {
       this.$emit('file-uploaded', this.file);
       this.resetFileInput();
     },
   },
-};
+});
 </script>
 
 <template>
-  <!-- ── ÉTAPE 1 : Zone de dépôt ── -->
   <template v-if="!file.isUploaded">
-    <!-- Drop zone -->
     <div
       v-if="uploadReady"
       class="relative flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed transition-colors cursor-pointer mb-4"
@@ -161,7 +193,7 @@ export default {
       @dragover.prevent="isDragging = true"
       @dragleave.prevent="isDragging = false"
       @drop.prevent="handleDrop"
-      @click="$refs.fileInput.click()"
+      @click="($refs.fileInput as HTMLInputElement).click()"
     >
       <div
         class="w-10 h-10 rounded-full flex items-center justify-center"
@@ -186,7 +218,6 @@ export default {
       <input ref="fileInput" type="file" class="hidden" :accept="accept" @change="handleFileChange" />
     </div>
 
-    <!-- Erreurs -->
     <div
       v-if="errors.length > 0"
       class="rounded-lg p-3 mb-4"
@@ -199,13 +230,9 @@ export default {
     </div>
   </template>
 
-  <!-- ── ÉTAPE 2 : Prévisualisation + formulaire ── -->
   <template v-if="file.isUploaded">
-    <!-- Aperçu -->
     <div class="relative rounded-xl overflow-hidden mb-4" style="border: 1px solid var(--border-color)">
-      <!-- Image -->
       <img v-if="file.isImage" :src="file.url" class="w-full object-cover" style="max-height: 130px" alt="" />
-      <!-- Fichier non-image -->
       <div
         v-else
         class="flex flex-col items-center justify-center gap-2"
@@ -219,15 +246,11 @@ export default {
             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
           />
         </svg>
-        <p class="text-xs font-bold uppercase" style="color: var(--text-secondary)">
-          {{ file.fileExtention }}
-        </p>
+        <p class="text-xs font-bold uppercase" style="color: var(--text-secondary)">{{ file.fileExtention }}</p>
       </div>
-      <!-- Badge extension -->
       <span class="type-badge">{{ file.fileExtention }}</span>
     </div>
 
-    <!-- Infos du fichier -->
     <div class="info-row">
       <span class="info-label">Taille</span>
       <span class="info-value">{{ file.size }} Mo</span>
@@ -237,7 +260,6 @@ export default {
       <span class="info-value">{{ file.type }}</span>
     </div>
 
-    <!-- Champ titre -->
     <div class="mb-3">
       <label class="block text-xs font-semibold mb-1" style="color: var(--text-secondary)">
         {{ translate.input_title }}
@@ -247,19 +269,18 @@ export default {
         v-model="file.title"
         class="w-full text-sm px-3 py-2 rounded-lg outline-none transition"
         style="background-color: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-primary)"
-        onfocus="
-          this.style.borderColor = 'var(--primary)';
-          this.style.boxShadow = '0 0 0 3px var(--primary-lighter)';
+        @focus="
+          ($event.target as HTMLInputElement).style.borderColor = 'var(--primary)';
+          ($event.target as HTMLInputElement).style.boxShadow = '0 0 0 3px var(--primary-lighter)';
         "
-        onblur="
-          this.style.borderColor = 'var(--border-color)';
-          this.style.boxShadow = 'none';
+        @blur="
+          ($event.target as HTMLInputElement).style.borderColor = 'var(--border-color)';
+          ($event.target as HTMLInputElement).style.boxShadow = 'none';
         "
       />
       <p class="text-xs mt-1" style="color: var(--text-light)">{{ translate.input_title_help }}</p>
     </div>
 
-    <!-- Champ description -->
     <div class="mb-4">
       <label class="block text-xs font-semibold mb-1" style="color: var(--text-secondary)">
         {{ translate.input_description }}
@@ -269,13 +290,13 @@ export default {
         v-model="file.description"
         class="w-full text-sm px-3 py-2 rounded-lg outline-none transition"
         style="background-color: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-primary)"
-        onfocus="
-          this.style.borderColor = 'var(--primary)';
-          this.style.boxShadow = '0 0 0 3px var(--primary-lighter)';
+        @focus="
+          ($event.target as HTMLInputElement).style.borderColor = 'var(--primary)';
+          ($event.target as HTMLInputElement).style.boxShadow = '0 0 0 3px var(--primary-lighter)';
         "
-        onblur="
-          this.style.borderColor = 'var(--border-color)';
-          this.style.boxShadow = 'none';
+        @blur="
+          ($event.target as HTMLInputElement).style.borderColor = 'var(--border-color)';
+          ($event.target as HTMLInputElement).style.boxShadow = 'none';
         "
       />
       <p class="text-xs mt-1" style="color: var(--text-light)">{{ translate.input_description_help }}</p>
@@ -287,7 +308,7 @@ export default {
     <button
       v-if="file.isUploaded"
       @click="sendDataToParent"
-      class="btn-primary w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold"
+      class="btn btn-sm btn-primary w-full flex items-center justify-center gap-2 px-3 py-2"
     >
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path
@@ -302,7 +323,7 @@ export default {
     <button
       v-if="file.isUploaded"
       @click="resetFileInput"
-      class="btn-outline w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold"
+      class="btn btn-sm btn-outline-dark w-full flex items-center justify-center gap-2 px-3 py-2"
     >
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
