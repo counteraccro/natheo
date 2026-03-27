@@ -8,23 +8,69 @@
 import { defineComponent, type PropType } from 'vue';
 import { FileData, TranslateRecord } from '@/ts/Mediatheque/type';
 import FileUpload from '@/vue/Components/Global/FileUpload.vue';
+import axios from 'axios';
+import { Toasts } from '@/ts/Toast/type';
+import Toast from '@/vue/Components/Global/Toast.vue';
+import SkeletonMediathequeUpload from '@/vue/Components/Skeleton/MediathequeUpload.vue';
 
 export default defineComponent({
   name: 'MediaNew',
-  components: { FileUpload },
+  components: { SkeletonMediathequeUpload, Toast, FileUpload },
   props: {
     translate: { type: Object as PropType<TranslateRecord>, required: true },
+    currentFolder: { type: Number, required: true },
+    url: { type: String, required: true },
   },
   emits: ['close'],
   data() {
     return {
-      copied: false,
+      loading: false,
+      toasts: {
+        success: {
+          show: false,
+          msg: '',
+        },
+        error: {
+          show: false,
+          msg: '',
+        },
+      } as Toasts,
     };
   },
   computed: {},
   methods: {
+    /**
+     * Télécharge un fichier sur le serveur
+     * @param file
+     */
     saveMedia(file: FileData) {
-      console.log(file);
+      this.loading = true;
+
+      axios
+        .post(this.url, {
+          file: file,
+          folder: this.currentFolder,
+        })
+        .then((response) => {
+          this.toasts.success.show = true;
+          this.toasts.success.msg = this.translate.loading_msg_success;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          setTimeout(() => {
+            this.$emit('reload', this.currentFolder, false, {});
+          }, 2000);
+        });
+    },
+
+    /**
+     * Ferme le toast défini par nameToast
+     * @param nameToast
+     */
+    closeToast(nameToast: string): void {
+      this.toasts[nameToast].show = false;
     },
   },
 });
@@ -64,7 +110,22 @@ export default defineComponent({
       </button>
     </div>
 
-    <file-upload :max-size="20" :translate="translate" @file-uploaded="saveMedia" />
+    <skeleton-mediatheque-upload v-if="loading" />
+    <file-upload v-else :max-size="20" :translate="translate" @file-uploaded="saveMedia" />
+  </div>
+
+  <div class="toast-container position-fixed top-0 end-0 p-2">
+    <toast :id="'toastSuccess'" :type="'success'" :show="toasts.success.show" @close-toast="closeToast('success')">
+      <template #body>
+        <div v-html="toasts.success.msg"></div>
+      </template>
+    </toast>
+
+    <toast :id="'toastError'" :type="'danger'" :show="toasts.error.show" @close-toast="closeToast('error')">
+      <template #body>
+        <div v-html="toasts.error.msg"></div>
+      </template>
+    </toast>
   </div>
 </template>
 

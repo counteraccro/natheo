@@ -476,6 +476,9 @@ export default defineComponent({
           :key="'ME-' + key"
           v-if="selectedAction === 'new-media'"
           :translate="translate.upload as TranslateRecord"
+          :url="urlActions.upload"
+          :current-folder="currentFolder.id"
+          @reload="reload"
           @close="closeDrawer"
         />
       </div>
