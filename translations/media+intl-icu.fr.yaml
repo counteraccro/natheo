@@ -120,4 +120,5 @@ media.mediatheque.move.sub.title.end: ' vers...'
 media.mediatheque.success.add.trash: 'Ajouté à la corbeille avec succès'
 media.mediatheque.success.remove.trash: 'Retiré de la corbeille avec succès'
 media.mediatheque.edit.title.new.folder: 'Nouveau dossier'
-media.mediatheque.edit.btn.save_new.folder: 'Créer'
+media.mediatheque.edit.btn.save_new.folder: Créer
+media.mediatheque.media.table.type: 'Type'
