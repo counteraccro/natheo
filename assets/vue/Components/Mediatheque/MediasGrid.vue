@@ -48,7 +48,7 @@ export default defineComponent({
 <template>
   <div
     id="block-media-grid"
-    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3"
+    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 p-4"
     v-if="render === 'grid'"
   >
     <div
@@ -252,6 +252,51 @@ export default defineComponent({
         </Teleport>
       </div>
     </div>
+  </div>
+
+  <div v-if="render === 'list'">
+    <table class="w-full text-sm">
+      <thead style="background-color: var(--bg-main)">
+        <tr>
+          <th
+            class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider w-8"
+            style="color: var(--text-secondary)"
+          >
+            #
+          </th>
+          <th
+            class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider"
+            style="color: var(--text-secondary)"
+          >
+            {{ translate.table_name }}
+          </th>
+          <th
+            class="hidden sm:table-cell px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider"
+            style="color: var(--text-secondary)"
+          >
+            {{ translate.table_type }}
+          </th>
+          <th
+            class="hidden md:table-cell px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider"
+            style="color: var(--text-secondary)"
+          >
+            {{ translate.table_size }}
+          </th>
+          <th
+            class="hidden lg:table-cell px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider"
+            style="color: var(--text-secondary)"
+          >
+            {{ translate.table_date }}
+          </th>
+          <th
+            class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider"
+            style="color: var(--text-secondary)"
+          >
+            {{ translate.table_action }}
+          </th>
+        </tr>
+      </thead>
+    </table>
   </div>
 
   <!-- <div v-if="this.medias.length > 0" class="media col-auto mb-4" v-for="media in this.medias">

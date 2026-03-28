@@ -93,6 +93,32 @@ export default defineComponent({
     },
 
     /**
+     * Change le filtre
+     * @param filter
+     */
+    changeFilter(filter: string) {
+      this.filter = filter;
+      this.loadMedia();
+    },
+
+    /**
+     * Change l'ordre du tri
+     * @param order
+     */
+    changeOrder(order: string) {
+      this.order = order;
+      this.loadMedia();
+    },
+
+    /**
+     * Permet de switcher le mode d'affichage des médias
+     * @param render
+     */
+    switchRender(render: string) {
+      this.render = render;
+    },
+
+    /**
      * Retourne le nombre d'éléments dans la corbeille
      */
     getNbTrash(): void {
@@ -276,8 +302,8 @@ export default defineComponent({
       </div>
 
       <div class="flex items-center gap-2">
-        <!-- Search (mobile) -->
-        <div class="relative md:hidden">
+        <!-- Search -->
+        <!--<div class="relative md:hidden">
           <input
             type="search"
             class="search-input pl-8 pr-3 py-2 rounded-lg border text-sm w-40"
@@ -298,7 +324,7 @@ export default defineComponent({
               d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
             ></path>
           </svg>
-        </div>
+        </div> -->
 
         <div class="relative">
           <button
@@ -335,54 +361,80 @@ export default defineComponent({
           >
             <a
               href="#"
+              @click="this.changeFilter('created_at')"
               class="dropdown-item flex items-center gap-2 px-4 py-2 text-sm"
               @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
               @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
             >
-              <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                v-if="filter === 'created_at'"
+                class="w-4 h-4"
+                style="color: var(--primary)"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
               </svg>
-              Date (récent) trad
+              {{ translate.filtre_date }}
             </a>
             <a
               href="#"
+              @click="this.changeFilter('name')"
               class="dropdown-item flex items-center gap-2 px-4 py-2 text-sm"
               @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
               @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
-              >Date (ancien) trad</a
             >
+              <svg
+                v-if="filter === 'name'"
+                class="w-4 h-4"
+                style="color: var(--primary)"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              {{ translate.filtre_nom }}
+            </a>
             <a
+              @click="this.changeFilter('type')"
               href="#"
               class="dropdown-item flex items-center gap-2 px-4 py-2 text-sm"
               @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
               @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
-              >Nom (A-Z) trad</a
             >
-            <a
-              href="#"
-              class="dropdown-item flex items-center gap-2 px-4 py-2 text-sm"
-              @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
-              @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
-              >Nom (Z-A) trad</a
-            >
-            <a
-              href="#"
-              class="dropdown-item flex items-center gap-2 px-4 py-2 text-sm"
-              @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
-              @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
-              >Taille< trad</a
+              <svg
+                v-if="filter === 'type'"
+                class="w-4 h-4"
+                style="color: var(--primary)"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              {{ translate.filtre_type }}</a
             >
           </div>
         </div>
 
         <!-- Sort direction -->
-        <button class="btn btn-xs btn-outline-dark p-2" title="Inverser l'ordre">
+        <button
+          class="btn btn-xs btn-outline-dark p-2"
+          title="Inverser l'ordre"
+          @click="this.changeOrder(order === 'asc' ? 'desc' : 'asc')"
+        >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"
+              :d="
+                order === 'desc'
+                  ? 'M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12'
+                  : 'M3 4h13M3 8h9m-9 4h6m8-4v12m0 0l-4-4m4 4l4-4'
+              "
             ></path>
           </svg>
         </button>
@@ -400,7 +452,15 @@ export default defineComponent({
         </button>
 
         <div class="btn-group">
-          <button class="btn btn-outline-dark btn-xs">
+          <button
+            class="btn btn-outline-dark btn-xs"
+            @click="switchRender('grid')"
+            :style="
+              render === 'grid'
+                ? 'background-color: var(--btn-dark); border-color: var(--btn-dark); color: #ffffff'
+                : ''
+            "
+          >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -410,7 +470,15 @@ export default defineComponent({
               ></path>
             </svg>
           </button>
-          <button class="btn btn-outline-dark btn-xs">
+          <button
+            class="btn btn-outline-dark btn-xs"
+            @click="switchRender('list')"
+            :style="
+              render === 'list'
+                ? 'background-color: var(--btn-dark); border-color: var(--btn-dark); color: #ffffff'
+                : ''
+            "
+          >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -426,19 +494,17 @@ export default defineComponent({
 
     <div class="browser-inner">
       <div class="browser-content">
-        <div class="p-4">
-          <medias-grid
-            :render="render"
-            :medias="medias"
-            :translate="translate.media as TranslateRecord"
-            @load-data-folder="loadDataInFolder"
-            @show-info="openBlockDrawer"
-            @edit="openBlockDrawer"
-            @move="openBlockDrawer"
-            @trash="updateTrash"
-          >
-          </medias-grid>
-        </div>
+        <medias-grid
+          :render="render"
+          :medias="medias"
+          :translate="translate.media as TranslateRecord"
+          @load-data-folder="loadDataInFolder"
+          @show-info="openBlockDrawer"
+          @edit="openBlockDrawer"
+          @move="openBlockDrawer"
+          @trash="updateTrash"
+        >
+        </medias-grid>
       </div>
       <div class="info-drawer" id="infoDrawer" :class="drawerOpen ? 'open' : ''">
         <media-info

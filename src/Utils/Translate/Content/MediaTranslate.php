@@ -129,6 +129,7 @@ class MediaTranslate extends AppTranslate
             'link_remove' => $this->translator->trans('media.mediatheque.media.link.remove', domain: 'media'),
             'no_media' => $this->translator->trans('media.mediatheque.media.no.media', domain: 'media'),
             'table_name' => $this->translator->trans('media.mediatheque.media.table.name', domain: 'media'),
+            'table_type' => $this->translator->trans('media.mediatheque.media.table.type', domain: 'media'),
             'table_size' => $this->translator->trans('media.mediatheque.media.table.size', domain: 'media'),
             'table_action' => $this->translator->trans('media.mediatheque.media.table.action', domain: 'media'),
             'table_caption' => $this->translator->trans('media.mediatheque.media.table.caption', domain: 'media'),
