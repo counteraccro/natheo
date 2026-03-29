@@ -261,9 +261,7 @@ export default defineComponent({
           <th
             class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider w-8"
             style="color: var(--text-secondary)"
-          >
-            #
-          </th>
+          ></th>
           <th
             class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider"
             style="color: var(--text-secondary)"
@@ -296,6 +294,121 @@ export default defineComponent({
           </th>
         </tr>
       </thead>
+      <tbody>
+        <tr class="list-row" v-if="this.medias.length > 0" v-for="media in this.medias">
+          <td class="pl-4 py-3">
+            <div v-if="media.type === 'folder'" class="w-8 h-8 rounded-lg folder-bg flex items-center justify-center">
+              <svg class="folder-icon w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.097.903 2 2 2h16c1.097 0 2-.903 2-2V8c0-1.11-.9-2-2-2h-8l-2-2z"
+                ></path>
+              </svg>
+            </div>
+            <div v-else class="w-8 h-8 rounded-lg overflow-hidden">
+              <img :src="media.thumbnail" class="w-full h-full object-cover" alt="" />
+            </div>
+          </td>
+          <td class="px-4 py-3 font-medium text-[var(--text-primary)]">
+            <a
+              class="link text-sm"
+              style="cursor: pointer"
+              @click.stop="media.type === 'media' ? this.openMedia(media.webPath) : $emit('load-data-folder', media.id)"
+              >{{ media.name }}</a
+            >
+          </td>
+          <td class="hidden sm:table-cell px-4 py-3 text-[var(--text-secondary)]">{{ media.type }}</td>
+          <td class="hidden sm:table-cell px-4 py-3 text-[var(--text-secondary)]">{{ media.size }}</td>
+          <td class="hidden sm:table-cell px-4 py-3 text-[var(--text-secondary)]">{{ media.date }}</td>
+          <td class="px-4 py-3 text-right">
+            <button
+              class="no-control no-control btn btn-ghost-primary btn-icon"
+              style="color: var(--text-primary)"
+              @click="$emit('show-info', media, 'show')"
+              @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
+              @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+            >
+              <svg
+                class="w-4 h-4 flex-shrink-0"
+                style="color: var(--primary)"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </button>
+
+            <button
+              class="no-control no-control btn btn-ghost-primary btn-icon"
+              style="color: var(--text-primary)"
+              @click="$emit('edit', media, 'edit')"
+              @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
+              @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+            >
+              <svg
+                class="w-4 h-4 flex-shrink-0"
+                style="color: var(--text-secondary)"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                />
+              </svg>
+            </button>
+
+            <button
+              href="#"
+              class="no-control no-control btn btn-ghost-primary btn-icon"
+              style="color: var(--text-primary)"
+              @click="$emit('move', media, 'move')"
+              @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
+              @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+            >
+              <svg
+                class="w-4 h-4 flex-shrink-0"
+                style="color: var(--text-secondary)"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                />
+              </svg>
+            </button>
+
+            <button
+              href="#"
+              @click="$emit('trash', true, media.id, media.type)"
+              class="no-control btn btn-ghost-danger btn-icon"
+              @mouseover="$event.target.closest('a').style.backgroundColor = '#fef2f2'"
+              @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+            >
+              <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+            </button>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
 
@@ -443,4 +556,16 @@ export default defineComponent({
   </div> -->
 </template>
 
-<style scoped></style>
+<style scoped>
+.list-row {
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.15s ease;
+}
+.list-row:hover {
+  background-color: var(--bg-hover);
+}
+.list-row:last-child {
+  border-bottom: none;
+}
+</style>
