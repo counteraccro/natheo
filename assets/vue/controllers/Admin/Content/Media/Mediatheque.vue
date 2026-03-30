@@ -19,15 +19,22 @@ import * as url from 'node:url';
 import Toast from '@/vue/Components/Global/Toast.vue';
 import { Toasts } from '@/ts/Toast/type';
 import MediaNew from '@/vue/Components/Mediatheque/MediaNew.vue';
+import MediasTrash from '@/vue/Components/Mediatheque/MediasTrash.vue';
 
 export default defineComponent({
   name: 'Mediatheque',
-  computed: {
-    url() {
-      return url;
-    },
+  computed: {},
+  components: {
+    MediasTrash,
+    MediaNew,
+    Toast,
+    MediaMove,
+    MediaEdit,
+    MediaInfo,
+    MediasGrid,
+    MediasBreadcrumb,
+    SkeletonMediatheque,
   },
-  components: { MediaNew, Toast, MediaMove, MediaEdit, MediaInfo, MediasGrid, MediasBreadcrumb, SkeletonMediatheque },
   props: {
     url: String,
     translate: { type: Object as PropType<TranslateRecord>, required: true },
@@ -47,6 +54,7 @@ export default defineComponent({
       urlActions: Object as PropType<Record<string, string>>,
       canDelete: false,
       nbTrash: 0,
+      mediasTrash: [],
       key: 0,
       toasts: {
         success: {
@@ -232,6 +240,24 @@ export default defineComponent({
       }
 
       this.loadDataInFolder(id, isOpenDrawer);
+    },
+
+    /**
+     * Charge le contenu de la corbeille
+     */
+    loadInTrash() {
+      this.loading = true;
+      axios
+        .get(this.urlActions.listTrash)
+        .then((response) => {
+          this.mediasTrash = response.data.mediasTrash;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
 
     /**
@@ -440,7 +466,14 @@ export default defineComponent({
         </button>
 
         <!-- Delete selected -->
-        <button class="btn btn-xs btn-outline-danger p-2" title="Supprimer la sélection">
+        <button
+          class="btn btn-xs btn-outline-danger p-2 relative"
+          title="Supprimer la sélection"
+          @click="
+            switchRender('trash');
+            loadInTrash();
+          "
+        >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -449,6 +482,13 @@ export default defineComponent({
               d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
             ></path>
           </svg>
+          <span
+            v-if="nbTrash > 0"
+            class="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full text-white font-bold px-1"
+            style="font-size: 0.6rem; background-color: var(--btn-danger)"
+          >
+            {{ nbTrash > 99 ? '99+' : nbTrash }}
+          </span>
         </button>
 
         <div class="btn-group">
@@ -495,6 +535,7 @@ export default defineComponent({
     <div class="browser-inner">
       <div class="browser-content">
         <medias-grid
+          v-if="render !== 'trash'"
           :render="render"
           :medias="medias"
           :translate="translate.media as TranslateRecord"
@@ -505,6 +546,15 @@ export default defineComponent({
           @trash="updateTrash"
         >
         </medias-grid>
+
+        <MediasTrash
+          v-else
+          :translate="this.translate.trash"
+          :medias="this.mediasTrash"
+          @revert-trash="this.revertTrash"
+          @delete="this.confirmRemove"
+        >
+        </MediasTrash>
       </div>
       <div class="info-drawer" id="infoDrawer" :class="drawerOpen ? 'open' : ''">
         <media-info
