@@ -29,7 +29,8 @@
         <sub>Dashboard</sub>
       </td>
       <td align="center">
-        <img src="screenshot3.png" width="280" alt="Médiathèque"/>
+        <img width="280" alt="Médiathèque" src="https://github.com/user-attachments/assets/607f475a-bae4-4114-a881-0de482aef588" />
+
         <br/>
         <sub>Médiathèque</sub>
       </td>
