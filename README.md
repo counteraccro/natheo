@@ -21,6 +21,7 @@
 
 - [À propos](#-à-propos)
 - [Prérequis](#-prérequis)
+- [Aperçu](#-aperçu)
 - [Installation](#-installation)
 - [Configuration](#-configuration)
 - [Utilisation](#-utilisation)
@@ -74,6 +75,7 @@ ext-ctype, ext-iconv, ext-pdo, ext-pdo_mysql, ext-json, ext-mbstring
 ---
 
 ## 🖼️ Aperçu
+> Un aperçu de l'interface en quelques écrans.
 <div align="center">
   <table>
     <tr>
