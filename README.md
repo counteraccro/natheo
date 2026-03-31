@@ -19,17 +19,17 @@
   <table>
     <tr>
       <td align="center">
-        <img width="280" alt="Authentification" src="https://github.com/user-attachments/assets/93232a83-c482-4ff0-8143-f658c4c168d9"/>
+        <img height="400" alt="Authentification" src="https://github.com/user-attachments/assets/93232a83-c482-4ff0-8143-f658c4c168d9"/>
         <br/>
         <sub>Authentification</sub>
       </td>
       <td align="center">
-        <img width="280" alt="Mon compte" src="https://github.com/user-attachments/assets/76f5ec36-5558-481e-8668-dd9339264b6b"/>
+        <img height="400" alt="Mon compte" src="https://github.com/user-attachments/assets/76f5ec36-5558-481e-8668-dd9339264b6b"/>
         <br/>
         <sub>Mon compte</sub>
       </td>
       <td align="center">
-        <img width="280" alt="FAQ" src="https://github.com/user-attachments/assets/607f475a-bae4-4114-a881-0de482aef588"/>
+        <img height="400" alt="FAQ" src="https://github.com/user-attachments/assets/607f475a-bae4-4114-a881-0de482aef588"/>
         <br/>
         <sub>Une FAQ</sub>
       </td>
