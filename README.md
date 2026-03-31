@@ -15,6 +15,28 @@
 
 </div>
 
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="screenshot1.png" width="280" alt="Page d'accueil"/>
+        <br/>
+        <sub>Page d'accueil</sub>
+      </td>
+      <td align="center">
+        <img src="screenshot2.png" width="280" alt="Dashboard"/>
+        <br/>
+        <sub>Dashboard</sub>
+      </td>
+      <td align="center">
+        <img src="screenshot3.png" width="280" alt="Médiathèque"/>
+        <br/>
+        <sub>Médiathèque</sub>
+      </td>
+    </tr>
+  </table>
+</div>
+
 ---
 
 ## 📋 Table des matières
