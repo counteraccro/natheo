@@ -480,6 +480,7 @@ class MediaService extends MediaFolderService
                 'id' => $folder->getId(),
                 'name' => $folder->getName(),
                 'created_at' => $folder->getCreatedAt()->getTimestamp(),
+                'thumbnail' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'folder.svg',
             ];
         }
 

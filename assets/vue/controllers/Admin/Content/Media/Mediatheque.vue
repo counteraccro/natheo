@@ -257,6 +257,7 @@ export default defineComponent({
         })
         .finally(() => {
           this.loading = false;
+          this.$nextTick(() => initFlowbite());
         });
     },
 
@@ -279,7 +280,32 @@ export default defineComponent({
       class="flex items-center justify-between px-4 py-3 border-b"
       style="border-color: var(--border-color); background-color: var(--bg-main)"
     >
-      <MediasBreadcrumb :paths="currentFolder.root" @load-folder="loadDataInFolder" />
+      <MediasBreadcrumb v-if="render !== 'trash'" :paths="currentFolder.root" @load-folder="loadDataInFolder" />
+      <div v-else class="flex items-center gap-0 text-sm">
+        <button
+          class="flex items-center gap-1.5 px-2 py-1 rounded-md font-medium transition text-[var(--primary)] bg-[var(--primary-lighter)] cursor-pointer"
+        >
+          <svg
+            class="w-4 h-4"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+            />
+          </svg>
+
+          {{ translate.header_trash }}
+        </button>
+      </div>
 
       <!-- Storage info -->
       <div class="flex items-center gap-2">
@@ -295,13 +321,19 @@ export default defineComponent({
               d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"
             ></path>
           </svg>
-          <span class="font-semibold"> {{ currentFolder.size }}</span>
-          <span style="color: var(--text-light)">{{ translate.disque_size }}</span>
+          <span class="font-semibold" v-html="render === 'trash' ? nbTrash : currentFolder.size"> </span>
+          <span
+            style="color: var(--text-light)"
+            v-html="render === 'trash' ? translate.nb_file_trash : translate.disque_size"
+          ></span>
         </div>
       </div>
     </div>
 
-    <div class="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-[var(--border-color)]">
+    <div
+      v-if="render !== 'trash'"
+      class="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-[var(--border-color)]"
+    >
       <div class="flex items-center gap-2">
         <button class="btn btn-xs btn-primary inline-flex items-center gap-2 px-3 py-2" @click="newFolder">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -529,6 +561,39 @@ export default defineComponent({
             </svg>
           </button>
         </div>
+      </div>
+    </div>
+    <div
+      v-else
+      class="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-[var(--border-color)]"
+    >
+      <div class="flex items-center gap-2"></div>
+      <div class="flex items-center gap-2"></div>
+      <div class="relative">
+        <button
+          class="btn btn-xs btn-outline-dark p-2"
+          title="Inverser l'ordre"
+          @click="
+            switchRender('grid');
+            loadMedia();
+          "
+        >
+          <svg
+            class="w-4 h-4"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M4 4a2 2 0 0 0-2 2v12a2 2 0 0 0 .087.586l2.977-7.937A1 1 0 0 1 6 10h12V9a2 2 0 0 0-2-2h-4.532l-1.9-2.28A2 2 0 0 0 8.032 4H4Zm2.693 8H6.5l-3 8H18l3-8H6.693Z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </button>
       </div>
     </div>
 
