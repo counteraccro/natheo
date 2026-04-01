@@ -60,7 +60,7 @@ media.mediatheque.trash.success.no.trash: 'Restauration effectuée avec succès'
 media.mediatheque.trash.breadcrumb: Corbeille
 media.mediatheque.trash.btn.close: 'Retour médiathèque'
 media.mediatheque.trash.link.revert: Restaurer
-media.mediatheque.trash.link.delete: 'Supprimer définitivement'
+media.mediatheque.trash.link.delete: 'Supprimer'
 media.mediatheque.trash.empty.media: 'La corbeille est vide'
 media.mediatheque.remove.title: 'Suppression définitive'
 media.mediatheque.remove.text.folder: 'Confirmez vous la suppression du dossier'
@@ -121,4 +121,6 @@ media.mediatheque.success.add.trash: 'Ajouté à la corbeille avec succès'
 media.mediatheque.success.remove.trash: 'Retiré de la corbeille avec succès'
 media.mediatheque.edit.title.new.folder: 'Nouveau dossier'
 media.mediatheque.edit.btn.save_new.folder: Créer
-media.mediatheque.media.table.type: 'Type'
+media.mediatheque.media.table.type: Type
+media.mediatheque.header.trash: 'Corbeille'
+media.mediatheque.nb.files.trash: 'élément(s) dans la corbeille'

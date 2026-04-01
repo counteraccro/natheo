@@ -21,6 +21,8 @@ class MediaTranslate extends AppTranslate
             'loading' => $this->translator->trans('media.mediatheque.loading', domain: 'media'),
             'btn_new_folder' => $this->translator->trans('media.mediatheque.btn.new.folder', domain: 'media'),
             'btn_new_media' => $this->translator->trans('media.mediatheque.btn.new.media', domain: 'media'),
+            'header_trash' => $this->translator->trans('media.mediatheque.header.trash', domain: 'media'),
+            'nb_file_trash' => $this->translator->trans('media.mediatheque.nb.files.trash', domain: 'media'),
             'btn_filtre' => $this->translator->trans('media.mediatheque.btn.filtre', domain: 'media'),
             'filtre_date' => $this->translator->trans('media.mediatheque.filtre.date', domain: 'media'),
             'filtre_nom' => $this->translator->trans('media.mediatheque.filtre.nom', domain: 'media'),
@@ -85,6 +87,8 @@ class MediaTranslate extends AppTranslate
             'link_revert' => $this->translator->trans('media.mediatheque.trash.link.revert', domain: 'media'),
             'link_delete' => $this->translator->trans('media.mediatheque.trash.link.delete', domain: 'media'),
             'no_media' => $this->translator->trans('media.mediatheque.trash.empty.media', domain: 'media'),
+            'folder_tag' => $this->translator->trans('media.mediatheque.media.folder.tag', domain: 'media'),
+            'folder_empty' => $this->translator->trans('media.mediatheque.media.folder.empty', domain: 'media'),
         ];
     }
 
