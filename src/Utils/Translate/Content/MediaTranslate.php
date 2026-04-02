@@ -78,8 +78,12 @@ class MediaTranslate extends AppTranslate
             'text_media' => $this->translator->trans('media.mediatheque.trash.text.media', domain: 'media'),
             'text_info' => $this->translator->trans('media.mediatheque.trash.text.info', domain: 'media'),
             'loading' => $this->translator->trans('media.mediatheque.trash.loading', domain: 'media'),
-            'btn_confirm' => $this->translator->trans('media.mediatheque.trash.btn.confirm', domain: 'media'),
-            'btn_cancel' => $this->translator->trans('media.mediatheque.trash.btn.cancel', domain: 'media'),
+            'confirm_trash_title' => $this->translator->trans(
+                'media.mediatheque.delete.confirm.title',
+                domain: 'media',
+            ),
+            'confirm_trash_yes' => $this->translator->trans('media.mediatheque.delete.btn.confirm', domain: 'media'),
+            'confirm_trash_no' => $this->translator->trans('media.mediatheque.delete.btn.cancel', domain: 'media'),
             'success_trash' => $this->translator->trans('media.mediatheque.trash.success.trash', domain: 'media'),
             'success_no_trash' => $this->translator->trans('media.mediatheque.trash.success.no.trash', domain: 'media'),
             'breadcrumb_trash' => $this->translator->trans('media.mediatheque.trash.breadcrumb', domain: 'media'),
@@ -146,6 +150,9 @@ class MediaTranslate extends AppTranslate
             'media_other_img' => $this->translator->trans('media.mediatheque.media.other_img', domain: 'media'),
             'folder_tag' => $this->translator->trans('media.mediatheque.media.folder.tag', domain: 'media'),
             'folder_empty' => $this->translator->trans('media.mediatheque.media.folder.empty', domain: 'media'),
+            'confirm_trash_title' => $this->translator->trans('media.mediatheque.trash.confirm.title', domain: 'media'),
+            'confirm_trash_yes' => $this->translator->trans('media.mediatheque.trash.btn.confirm', domain: 'media'),
+            'confirm_trash_no' => $this->translator->trans('media.mediatheque.trash.btn.cancel', domain: 'media'),
         ];
     }
 

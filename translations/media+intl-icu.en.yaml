@@ -127,3 +127,9 @@ media.mediatheque.success.remove.trash: __media.mediatheque.success.remove.trash
 media.mediatheque.edit.title.new.folder: __media.mediatheque.edit.title.new.folder
 media.mediatheque.edit.btn.save_new.folder: __media.mediatheque.edit.btn.save_new.folder
 media.mediatheque.media.table.type: __media.mediatheque.media.table.type
+media.mediatheque.header.trash: __media.mediatheque.header.trash
+media.mediatheque.nb.files.trash: __media.mediatheque.nb.files.trash
+media.mediatheque.delete.confirm.title: __media.mediatheque.delete.confirm.title
+media.mediatheque.delete.btn.confirm: __media.mediatheque.delete.btn.confirm
+media.mediatheque.delete.btn.cancel: __media.mediatheque.delete.btn.cancel
+media.mediatheque.trash.confirm.title: __media.mediatheque.trash.confirm.title

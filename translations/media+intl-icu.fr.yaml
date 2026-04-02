@@ -53,14 +53,14 @@ media.mediatheque.trash.text.folder: 'Confirmez vous la mise à la corbeille du 
 media.mediatheque.trash.text.media: 'Confirmez vous la mise à la corbeille du média'
 media.mediatheque.trash.text.info: 'Attention, tous les dossiers et médias présent dans ce dossier seront aussi poussés dans la corbeille'
 media.mediatheque.trash.loading: 'Déplacement vers la corbeille'
-media.mediatheque.trash.btn.confirm: 'Mettre dans la corbeille'
-media.mediatheque.trash.btn.cancel: Annuler
+media.mediatheque.trash.btn.confirm: Oui
+media.mediatheque.trash.btn.cancel: Non
 media.mediatheque.trash.success.trash: 'Mise en corbeille fait avec succès. La fenêtre ce fermera automatiquement dans 3 secondes'
 media.mediatheque.trash.success.no.trash: 'Restauration effectuée avec succès'
 media.mediatheque.trash.breadcrumb: Corbeille
 media.mediatheque.trash.btn.close: 'Retour médiathèque'
 media.mediatheque.trash.link.revert: Restaurer
-media.mediatheque.trash.link.delete: 'Supprimer'
+media.mediatheque.trash.link.delete: Supprimer
 media.mediatheque.trash.empty.media: 'La corbeille est vide'
 media.mediatheque.remove.title: 'Suppression définitive'
 media.mediatheque.remove.text.folder: 'Confirmez vous la suppression du dossier'
@@ -122,5 +122,9 @@ media.mediatheque.success.remove.trash: 'Retiré de la corbeille avec succès'
 media.mediatheque.edit.title.new.folder: 'Nouveau dossier'
 media.mediatheque.edit.btn.save_new.folder: Créer
 media.mediatheque.media.table.type: Type
-media.mediatheque.header.trash: 'Corbeille'
+media.mediatheque.header.trash: Corbeille
 media.mediatheque.nb.files.trash: 'élément(s) dans la corbeille'
+media.mediatheque.trash.confirm.title: 'Mettre en corbeille'
+media.mediatheque.delete.confirm.title: 'Supprimer définitivement'
+media.mediatheque.delete.btn.confirm: Oui
+media.mediatheque.delete.btn.cancel: Non
