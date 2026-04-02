@@ -163,7 +163,11 @@ export default defineComponent({
           console.error(error);
         })
         .finally(() => {
-          this.loadMedia(false);
+          if (trash) {
+            this.loadMedia(false);
+          } else {
+            this.loadInTrash();
+          }
         });
     },
 
@@ -616,7 +620,7 @@ export default defineComponent({
           v-else
           :translate="this.translate.trash"
           :medias="this.mediasTrash"
-          @revert-trash="this.revertTrash"
+          @revert-trash="updateTrash"
           @delete="this.confirmRemove"
         >
         </MediasTrash>
