@@ -123,6 +123,10 @@ export default defineComponent({
      * @param render
      */
     switchRender(render: string) {
+      if (render === 'trash') {
+        this.drawerOpen = false;
+      }
+
       this.render = render;
     },
 
@@ -262,6 +266,29 @@ export default defineComponent({
         .finally(() => {
           this.loading = false;
           this.$nextTick(() => initFlowbite());
+        });
+    },
+
+    /**
+     * Supprime un média ou un folder de façon définitive
+     */
+    remove(id: number, type: string) {
+      this.loading = true;
+      axios
+        .post(this.urlActions.remove, {
+          id: id,
+          type: type,
+        })
+        .then((response) => {
+          this.toasts.success.show = true;
+          this.toasts.success.msg = this.translate.remove.success as string;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loadInTrash();
+          this.getNbTrash();
         });
     },
 
@@ -618,10 +645,10 @@ export default defineComponent({
 
         <MediasTrash
           v-else
-          :translate="this.translate.trash"
-          :medias="this.mediasTrash"
+          :translate="translate.trash as TranslateRecord"
+          :medias="mediasTrash"
           @revert-trash="updateTrash"
-          @delete="this.confirmRemove"
+          @delete="remove"
         >
         </MediasTrash>
       </div>

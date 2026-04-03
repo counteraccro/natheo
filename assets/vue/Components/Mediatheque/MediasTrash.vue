@@ -24,7 +24,7 @@ export default {
      * Permet d'ouvrir un média
      * @param path
      */
-    openMedia(path) {
+    openMedia(path: string) {
       window.open(path, '_blank');
     },
 
@@ -50,7 +50,7 @@ export default {
      * @param type
      */
     confirmDelete(id: number, type: string): void {
-      this.$emit('trash', true, id, type);
+      this.$emit('delete', id, type);
       this.confirmDeleteId = null;
     },
   },
@@ -225,6 +225,24 @@ export default {
         </div>
       </template>
     </div>
+  </div>
+
+  <div v-if="medias.length === 0" class="flex flex-col items-center justify-center gap-3 py-16 text-center">
+    <div
+      class="w-14 h-14 rounded-2xl flex items-center justify-center"
+      style="background-color: var(--bg-hover); border: 1px solid var(--border-color)"
+    >
+      <svg class="w-6 h-6" style="color: var(--text-light)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.5"
+          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+        />
+      </svg>
+    </div>
+    <p class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.empty_trash_title }}</p>
+    <p class="text-xs" style="color: var(--text-secondary)">{{ translate.empty_trash_sub }}</p>
   </div>
 
   <!--<div v-if="this.medias.length > 0" class="media col-auto mb-4" v-for="media in this.medias">
