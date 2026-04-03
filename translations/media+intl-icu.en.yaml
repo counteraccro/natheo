@@ -133,3 +133,7 @@ media.mediatheque.delete.confirm.title: __media.mediatheque.delete.confirm.title
 media.mediatheque.delete.btn.confirm: __media.mediatheque.delete.btn.confirm
 media.mediatheque.delete.btn.cancel: __media.mediatheque.delete.btn.cancel
 media.mediatheque.trash.confirm.title: __media.mediatheque.trash.confirm.title
+media.mediatheque.trash.empty.title: __media.mediatheque.trash.empty.title
+media.mediatheque.trash.empty.title_sub: __media.mediatheque.trash.empty.title_sub
+media.mediatheque.folder.empty.title: __media.mediatheque.folder.empty.title
+media.mediatheque.folder.empty.sub: __media.mediatheque.folder.empty.sub

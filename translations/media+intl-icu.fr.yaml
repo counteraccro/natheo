@@ -128,3 +128,7 @@ media.mediatheque.trash.confirm.title: 'Mettre en corbeille'
 media.mediatheque.delete.confirm.title: 'Supprimer définitivement'
 media.mediatheque.delete.btn.confirm: Oui
 media.mediatheque.delete.btn.cancel: Non
+media.mediatheque.trash.empty.title: 'La corbeille est vide'
+media.mediatheque.trash.empty.title_sub: 'Les éléments supprimés apparaîtront ici.'
+media.mediatheque.folder.empty.title: 'Ce dossier est vide'
+media.mediatheque.folder.empty.sub: 'Ajoutez des médias ou créez un sous-dossier pour commencer.'
