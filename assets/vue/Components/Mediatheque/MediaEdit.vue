@@ -62,7 +62,8 @@ export default defineComponent({
       this.folder.editFolder = this.data.id;
     }
   },
-  computed: {
+  computed: {},
+  methods: {
     /**
      * Vérification des données
      */
@@ -86,14 +87,13 @@ export default defineComponent({
         }
       }
     },
-  },
-  methods: {
+
     saveMedia(): void {
       axios
         .post(this.url, {
           media: this.media,
         })
-        .then((response) => {
+        .then(() => {
           this.toasts.success.show = true;
           this.toasts.success.msg = this.translate.save_media_msg_ok as string;
           this.save = true;
@@ -103,7 +103,9 @@ export default defineComponent({
         })
         .finally(() => {
           setTimeout(() => {
-            this.$emit('reload', this.data.folder_id, true, this.media);
+            if (this.data.type === 'media') {
+              this.$emit('reload', this.data.folder_id, true, this.media);
+            }
           }, 2000);
         });
     },
@@ -132,7 +134,9 @@ export default defineComponent({
         })
         .finally(() => {
           setTimeout(() => {
-            this.$emit('reload', this.data.parent, this.data.id !== 0, this.folder);
+            if (this.data.type === 'folder') {
+              this.$emit('reload', this.data.parent, this.data.id !== 0, this.folder);
+            }
           }, 2000);
         });
     },
