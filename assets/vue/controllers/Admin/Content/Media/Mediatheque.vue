@@ -15,7 +15,6 @@ import MediaInfo from '@/vue/Components/Mediatheque/MediaInfo.vue';
 import { MediaItem, TranslateRecord } from '@/ts/Mediatheque/type';
 import MediaEdit from '@/vue/Components/Mediatheque/MediaEdit.vue';
 import MediaMove from '@/vue/Components/Mediatheque/MediaMove.vue';
-import * as url from 'node:url';
 import Toast from '@/vue/Components/Global/Toast.vue';
 import { Toasts } from '@/ts/Toast/type';
 import MediaNew from '@/vue/Components/Mediatheque/MediaNew.vue';
@@ -46,12 +45,34 @@ export default defineComponent({
       filter: 'created_at',
       render: 'grid',
       order: 'asc',
-      selectedMedia: {},
+      selectedMedia: {
+        type: '',
+        id: '',
+        title: '',
+        description: '',
+        name: '',
+        currentFolder: '',
+        editFolder: '',
+      },
       selectedAction: '',
       drawerOpen: false,
       medias: [],
-      currentFolder: [],
-      urlActions: Object as PropType<Record<string, string>>,
+      currentFolder: {
+        id: 0,
+        root: null,
+        size: 0,
+      },
+      urlActions: {
+        nbTrash: '',
+        updateTrash: '',
+        listTrash: '',
+        remove: '',
+        saveMediaEdit: '',
+        listeMove: '',
+        move: '',
+        upload: '',
+        saveFolder: '',
+      },
       canDelete: false,
       nbTrash: 0,
       mediasTrash: [],
@@ -155,7 +176,7 @@ export default defineComponent({
           id: id,
           type: type,
         })
-        .then((response) => {
+        .then(() => {
           this.toasts.success.show = true;
           if (trash) {
             this.toasts.success.msg = this.translate.success_add_trash as string;
@@ -214,6 +235,7 @@ export default defineComponent({
     openBlockDrawer(media: any, action: string): void {
       document.querySelectorAll('[data-dropdown-toggle]').forEach((btn) => {
         const id = btn.getAttribute('data-dropdown-toggle');
+        // @ts-expect-error
         const dropdown = FlowbiteInstances.getInstance('Dropdown', id);
         if (dropdown) dropdown.hide();
       });
@@ -279,8 +301,9 @@ export default defineComponent({
           id: id,
           type: type,
         })
-        .then((response) => {
+        .then(() => {
           this.toasts.success.show = true;
+          // @ts-expect-error
           this.toasts.success.msg = this.translate.remove.success as string;
         })
         .catch((error) => {
@@ -290,6 +313,18 @@ export default defineComponent({
           this.loadInTrash();
           this.getNbTrash();
         });
+    },
+
+    /**
+     * Event de la sourie
+     * @param event
+     * @param color
+     */
+    onMenuHover(event: MouseEvent, color: string) {
+      const link = (event.target as HTMLElement)?.closest('a') as HTMLElement | null;
+      if (link) {
+        link.style.backgroundColor = color;
+      }
     },
 
     /**
@@ -450,10 +485,10 @@ export default defineComponent({
           >
             <a
               href="#"
-              @click="this.changeFilter('created_at')"
+              @click="changeFilter('created_at')"
               class="dropdown-item flex items-center gap-2 px-4 py-2 text-sm"
-              @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
-              @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+              @mouseover="onMenuHover($event, 'var(--bg-hover)')"
+              @mouseleave="onMenuHover($event, '')"
             >
               <svg
                 v-if="filter === 'created_at'"
@@ -469,10 +504,10 @@ export default defineComponent({
             </a>
             <a
               href="#"
-              @click="this.changeFilter('name')"
+              @click="changeFilter('name')"
               class="dropdown-item flex items-center gap-2 px-4 py-2 text-sm"
-              @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
-              @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+              @mouseover="onMenuHover($event, 'var(--bg-hover)')"
+              @mouseleave="onMenuHover($event, '')"
             >
               <svg
                 v-if="filter === 'name'"
@@ -487,11 +522,11 @@ export default defineComponent({
               {{ translate.filtre_nom }}
             </a>
             <a
-              @click="this.changeFilter('type')"
+              @click="changeFilter('type')"
               href="#"
               class="dropdown-item flex items-center gap-2 px-4 py-2 text-sm"
-              @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
-              @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+              @mouseover="onMenuHover($event, 'var(--bg-hover)')"
+              @mouseleave="onMenuHover($event, '')"
             >
               <svg
                 v-if="filter === 'type'"
@@ -512,7 +547,7 @@ export default defineComponent({
         <button
           class="btn btn-xs btn-outline-dark p-2"
           title="Inverser l'ordre"
-          @click="this.changeOrder(order === 'asc' ? 'desc' : 'asc')"
+          @click="changeOrder(order === 'asc' ? 'desc' : 'asc')"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -547,7 +582,7 @@ export default defineComponent({
           </svg>
           <span
             v-if="nbTrash > 0"
-            class="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full text-white font-bold px-1"
+            class="absolute -top-1.5 -right-1.5 min-w-4.5 h-4.5 flex items-center justify-center rounded-full text-white font-bold px-1"
             style="font-size: 0.6rem; background-color: var(--btn-danger)"
           >
             {{ nbTrash > 99 ? '99+' : nbTrash }}
@@ -657,7 +692,7 @@ export default defineComponent({
           :key="'MI-' + key"
           v-if="selectedAction === 'show'"
           :translate="translate.info as TranslateRecord"
-          :data="selectedMedia as MediaItem"
+          :data="selectedMedia as unknown as MediaItem"
           @close="closeDrawer"
         />
 
@@ -665,7 +700,7 @@ export default defineComponent({
           :key="'ME-' + key"
           v-if="selectedAction === 'edit' || selectedAction === 'new-folder'"
           :translate="translate.edit as TranslateRecord"
-          :data="selectedMedia as MediaItem"
+          :data="selectedMedia as unknown as MediaItem"
           :url="selectedMedia.type === 'media' ? urlActions.saveMediaEdit : urlActions.saveFolder"
           @close="closeDrawer"
           @reload="reload"
@@ -675,7 +710,7 @@ export default defineComponent({
           :key="'ME-' + key"
           v-if="selectedAction === 'move'"
           :translate="translate.move as TranslateRecord"
-          :data="selectedMedia as MediaItem"
+          :data="selectedMedia as unknown as MediaItem"
           :urls="{
             move: urlActions.move,
             listeMove: urlActions.listeMove,
@@ -694,6 +729,20 @@ export default defineComponent({
           @close="closeDrawer"
         />
       </div>
+    </div>
+    <div
+      class="px-4 py-3 border-t flex items-center justify-between text-xs border-[var(--border-color)] text-[var(--text-secondary)] bg-[var(--bg-main)]"
+    >
+      <div>
+        <span v-html="render === 'trash' ? translate.header_trash : ''"></span>
+      </div>
+      <span
+        v-html="
+          render === 'trash'
+            ? nbTrash + ' ' + translate.nb_file_trash
+            : currentFolder.size + ' ' + translate.disque_size
+        "
+      ></span>
     </div>
   </div>
 
