@@ -19,9 +19,7 @@ import type { EditorModule, EditorApi } from '@/ts/MarkdownEditor/MarkdownEditor
 export interface MediaFile {
   name: string;
   url: string;
-  /** 'image' | 'file' — détermine si on insère ![...] ou [...] */
   type: 'image' | 'file';
-  /** Texte alternatif suggéré (nom du fichier sans extension) */
   alt?: string;
 }
 
@@ -41,12 +39,12 @@ declare global {
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.avif'];
+//const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.avif'];
 
-function isImage(filename: string): boolean {
+/*function isImage(filename: string): boolean {
   const ext = filename.match(/\.[a-z0-9]+$/i)?.[0]?.toLowerCase() ?? '';
   return IMAGE_EXTENSIONS.includes(ext);
-}
+}*/
 
 function buildMarkdown(media: MediaFile): string {
   if (media.type === 'image') {
