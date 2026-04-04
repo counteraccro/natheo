@@ -1,5 +1,7 @@
 <script lang="ts">
 import { initFlowbite } from 'flowbite';
+import type { PropType } from 'vue';
+import { MediaItem, TranslateRecord } from '@/ts/Mediatheque/type';
 
 /**
  * @author Gourdon Aymeric
@@ -9,13 +11,13 @@ import { initFlowbite } from 'flowbite';
 export default {
   name: 'MediaTrash',
   props: {
-    medias: Object,
-    translate: Object,
+    medias: { type: Array as PropType<MediaItem[]>, required: true },
+    translate: { type: Object as PropType<TranslateRecord>, required: true },
   },
   emits: ['revert-trash', 'delete'],
   data() {
     return {
-      confirmDeleteId: null,
+      confirmDeleteId: null as number | null,
     };
   },
   computed: {},
@@ -52,6 +54,18 @@ export default {
     confirmDelete(id: number, type: string): void {
       this.$emit('delete', id, type);
       this.confirmDeleteId = null;
+    },
+
+    /**
+     * Event de la sourie
+     * @param event
+     * @param color
+     */
+    onMenuHover(event: MouseEvent, color: string) {
+      const link = (event.target as HTMLElement)?.closest('a') as HTMLElement | null;
+      if (link) {
+        link.style.backgroundColor = color;
+      }
     },
   },
 };
@@ -177,11 +191,11 @@ export default {
                 <li>
                   <a
                     href="#"
-                    @click="this.$emit('revert-trash', false, media.id, media.type)"
+                    @click="$emit('revert-trash', false, media.id, media.type)"
                     class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150"
                     style="color: var(--text-primary)"
-                    @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
-                    @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+                    @mouseover="onMenuHover($event, 'var(--bg-hover)')"
+                    @mouseleave="onMenuHover($event, '')"
                   >
                     <svg
                       class="w-4 h-4 flex-shrink-0"
@@ -205,8 +219,8 @@ export default {
                     href="#"
                     @click="askDelete(media.id)"
                     class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-red-500"
-                    @mouseover="$event.target.closest('a').style.backgroundColor = '#fef2f2'"
-                    @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+                    @mouseover="onMenuHover($event, '#fef2f2')"
+                    @mouseleave="onMenuHover($event, '')"
                   >
                     <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
