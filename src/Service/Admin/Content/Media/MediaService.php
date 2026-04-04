@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 2.0
  * Service qui gère les médias
  */
 
@@ -16,6 +16,7 @@ use App\Utils\Content\Media\Thumbnail;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\PersonalData;
 use App\Utils\Utils;
+use Deprecated;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -31,8 +32,12 @@ class MediaService extends MediaFolderService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function moveMediaFixture(string $file, Media $media): void
+    public function moveMediaFixture(string $file, Media $media, ?string $copyFileName = null): void
     {
+        if ($copyFileName === null) {
+            $copyFileName = $file;
+        }
+
         $containerBag = $this->getContainerBag();
 
         $rootPath = $containerBag->get('kernel.project_dir');
@@ -42,9 +47,9 @@ class MediaService extends MediaFolderService
         $fileSystem = new Filesystem();
 
         $urlOrigin = $fixturesPath . $file;
-        $urlCopy = $this->rootPathMedia . DIRECTORY_SEPARATOR . $file;
+        $urlCopy = $this->rootPathMedia . DIRECTORY_SEPARATOR . $copyFileName;
         if ($this->canCreatePhysicalFolder && $media->getMediaFolder() != null) {
-            $urlCopy = $this->getPathFolder($media->getMediaFolder()) . $file;
+            $urlCopy = $this->getPathFolder($media->getMediaFolder()) . $copyFileName;
         }
         $urlCopy = str_replace(['\/', '\\'], DIRECTORY_SEPARATOR, $urlCopy);
 
@@ -130,9 +135,14 @@ class MediaService extends MediaFolderService
         $mediaFolder = $media->getMediaFolder();
         $path = DIRECTORY_SEPARATOR . $media->getName();
         if ($mediaFolder != null) {
-            $path = $mediaFolder->getPath() . $mediaFolder->getName() . DIRECTORY_SEPARATOR . $media->getName();
+            $path =
+                $mediaFolder->getPath() .
+                DIRECTORY_SEPARATOR .
+                $mediaFolder->getName() .
+                DIRECTORY_SEPARATOR .
+                $media->getName();
         }
-        return str_replace('//', '/', $path);
+        return rtrim(str_replace('\\', DIRECTORY_SEPARATOR, $path), '/');
     }
 
     /**
@@ -167,6 +177,25 @@ class MediaService extends MediaFolderService
 
         /** @var Media $media */
         foreach ($medias as $media) {
+            $path = rtrim(
+                str_replace(
+                    '\\',
+                    DIRECTORY_SEPARATOR,
+                    DIRECTORY_SEPARATOR . $this->getRootPathMedia() . $media->getPath(),
+                ),
+                '/',
+            );
+            $path = preg_replace('#/{2,}#', '/', $path);
+            $info = getimagesize($path);
+
+            $folder = 'root';
+            $folderId = 0;
+            if ($media->getMediaFolder() != null) {
+                $folder .= $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $mediaFolder->getName();
+                $folder = rtrim(str_replace('\\', DIRECTORY_SEPARATOR, $folder), '/');
+                $folderId = $mediaFolder->getId();
+            }
+
             $return[] = [
                 'type' => 'media',
                 'id' => $media->getId(),
@@ -177,17 +206,83 @@ class MediaService extends MediaFolderService
                 'thumbnail' => $this->getThumbnail($media),
                 'created_at' => $media->getCreatedAt()->getTimestamp(),
                 'date' => $media->getCreatedAt()->format('d-m-Y H:i:s'),
+                'extension' => $media->getExtension(),
+                'img_size' => !empty($info) ? $info[0] . 'x' . $info[1] : '--',
+                'folder' => $folder,
+                'folder_id' => $folderId,
+                'title' => $media->getTitle(),
             ];
         }
 
         /** @var MediaFolder $folder */
         foreach ($folders as $folder) {
+            $finder = new Finder();
+            $path = $this->getRootPathMedia() . $folder->getPath() . DIRECTORY_SEPARATOR . $folder->getName();
+            $path = rtrim(str_replace('\\', DIRECTORY_SEPARATOR, $path), '/');
+            $path = preg_replace('#/{2,}#', '/', $path);
+
+            $nb_elements = $finder->in($path)->count();
+            $finder = new Finder();
+            $nb_files = $finder->files()->in($path)->count();
+
+            $children = [];
+            $i = 0;
+            foreach ($folder->getChildren() as $child) {
+                if ($i >= 2) {
+                    break;
+                }
+
+                /** @var MediaFolder $child */
+                $children[] = [
+                    'type' => 'folder',
+                ];
+                $i++;
+            }
+
+            if ($folder->getMedias()->count() > 0) {
+                if (empty($children)) {
+                    $i = 0;
+                    foreach ($folder->getMedias() as $media) {
+                        if ($i >= 2) {
+                            break;
+                        }
+
+                        $children[] = [
+                            'type' => 'media',
+                            'thumbnail' => $this->getThumbnail($media),
+                        ];
+                        $i++;
+                    }
+                } elseif (sizeof($children) === 1) {
+                    $children[] = [
+                        'type' => 'media',
+                        'thumbnail' => $this->getThumbnail($folder->getMedias()->first()),
+                    ];
+                }
+            }
+
+            if (sizeof($children) === 1) {
+                $children[] = [];
+                $children = array_reverse($children);
+            }
+
+            $parent = 0;
+            if ($folder->getParent()) {
+                $parent = $folder->getParent()->getId();
+            }
+
             $return[] = [
                 'type' => 'folder',
                 'id' => $folder->getId(),
+                'parent' => $parent,
                 'name' => $folder->getName(),
                 'created_at' => $folder->getCreatedAt()->getTimestamp(),
                 'date' => $folder->getCreatedAt()->format('d-m-Y H:i:s'),
+                'size' => Utils::getSizeName($this->getFolderSize($folder)),
+                'nb_elements' => $nb_elements,
+                'nb_files' => $nb_files,
+                'children' => $children,
+                'thumbnail' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'folder.svg',
             ];
         }
 
@@ -214,53 +309,6 @@ class MediaService extends MediaFolderService
         /** @var MediaRepository $repo */
         $repo = $this->getRepository(Media::class);
         return $repo->findByMediaFolder($mediaFolder);
-    }
-
-    /**
-     * Retourne les informations d'un média
-     * @param int $idMedia
-     * @return array
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function getInfoMedia(int $idMedia): array
-    {
-        $translator = $this->getTranslator();
-
-        /** @var Media $media */
-        $media = $this->findOneById(Media::class, $idMedia);
-        $user = $media->getUser();
-        $personalDataRender = $user->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER);
-        $personalData = new PersonalData($user, $personalDataRender->getValue());
-
-        return [
-            'data' => [
-                $translator->trans('media.mediatheque.info.media.name', domain: 'media') => $media->getName(),
-                $translator->trans('media.mediatheque.info.media.titre', domain: 'media') => $media->getTitle(),
-                $translator->trans(
-                    'media.mediatheque.info.media.description',
-                    domain: 'media',
-                ) => $media->getDescription(),
-                $translator->trans('media.mediatheque.info.media.extension', domain: 'media') => $media->getExtension(),
-                $translator->trans(
-                    'media.mediatheque.info.media.user',
-                    domain: 'media',
-                ) => $personalData->getPersonalData(),
-                $translator->trans('media.mediatheque.info.media.emplacement', domain: 'media') => $media->getPath(),
-                $translator->trans('media.mediatheque.info.media.size', domain: 'media') => Utils::getSizeName(
-                    $media->getSize(),
-                ),
-                $translator->trans('media.mediatheque.info.media.date_created', domain: 'media') => $media
-                    ->getCreatedAt()
-                    ->format('d/m/y H:i'),
-                $translator->trans('media.mediatheque.info.media.date_update', domain: 'media') => $media
-                    ->getUpdateAt()
-                    ->format('d/m/y H:i'),
-            ],
-            'thumbnail' => $this->getThumbnail($media),
-            'web_path' => $media->getWebPath(),
-            'media_type' => $media->getType(),
-        ];
     }
 
     /**
@@ -312,11 +360,11 @@ class MediaService extends MediaFolderService
         }
 
         return match ($media->getExtension()) {
-            'pdf' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_pdf.png',
-            'xls', 'xlsx' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_xls.png',
-            'csv' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_csv.png',
-            'doc', 'docx' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_doc.png',
-            default => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file.png',
+            'pdf' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_pdf.svg',
+            'xls', 'xlsx' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_xls.svg',
+            'csv' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_csv.svg',
+            'doc', 'docx' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_doc.svg',
+            default => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file.svg',
         };
     }
 
@@ -372,7 +420,6 @@ class MediaService extends MediaFolderService
             if ($media->getMediaFolder() !== null) {
                 $newPath = $this->getPathFolder($media->getMediaFolder()) . $media->getName();
             }
-
             $fileSystem = new Filesystem();
             $fileSystem->rename($oldPath, $newPath, true);
         }
@@ -433,6 +480,7 @@ class MediaService extends MediaFolderService
                 'id' => $folder->getId(),
                 'name' => $folder->getName(),
                 'created_at' => $folder->getCreatedAt()->getTimestamp(),
+                'thumbnail' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'folder.svg',
             ];
         }
 

@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.1
+ * @version 2.0
  * Service qui gère les médiaFolder
  */
 
@@ -343,6 +343,7 @@ class MediaFolderService extends AppAdminService
         if ($this->canCreatePhysicalFolder) {
             $fileSystem = new Filesystem();
             $origin = $this->rootPathMedia . $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $oldName;
+            $origin = str_replace(['\/', '\\'], DIRECTORY_SEPARATOR, $origin);
             $target = $this->getPathFolder($mediaFolder);
             $fileSystem->rename($origin, $target);
         }
@@ -354,96 +355,37 @@ class MediaFolderService extends AppAdminService
      * @param string $old
      * @param string $new
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     private function updateAllPathChildren(string $old, string $new): void
     {
-        $patternPath = '/\b' . preg_quote($old) . '\b/';
-        if (stristr($old, '\/') === false) {
-            $patternPath = '/' . preg_quote($old, '/') . '/';
-        }
+        $oldNormalized = preg_replace('#/{2,}#', '/', str_replace('\\', '/', $old));
+        $newNormalized = preg_replace('#/{2,}#', '/', str_replace('\\', '/', $new));
 
-        $newWebPath = $new;
-        $patternWebPath = '/\b' . preg_quote($old) . '\b/';
-        if (stristr($old, '/') === false) {
-            $replace = str_replace('\\', '\/', $old);
-            $patternWebPath = '/' . $replace . '/';
-            $newWebPath = str_replace('\\', '/', $new);
-        }
+        $patternPath = '#' . preg_quote($oldNormalized, '#') . '#';
+        $patternWebPath = '#' . preg_quote($oldNormalized, '#') . '#';
 
         /** @var MediaFolderRepository $repo */
         $repo = $this->getRepository(MediaFolder::class);
-        $listMediaFolder = $repo->getAllByLikePath($old);
+        $listMediaFolder = $repo->getAllByLikePath($oldNormalized);
 
-        /** @var MediaFolder $mediaFolderChildren */
         $nb = count($listMediaFolder);
-        $i = 0;
-        $flush = false;
-        foreach ($listMediaFolder as $mediaFolderChildren) {
-            $i++;
-            if ($i === $nb) {
-                $flush = true;
-            }
-
-            $mediaFolderChildren->setPath(preg_replace($patternPath, $new, $mediaFolderChildren->getPath()));
-            $repo->save($mediaFolderChildren, $flush);
+        foreach ($listMediaFolder as $i => $mediaFolderChildren) {
+            $mediaFolderChildren->setPath(preg_replace($patternPath, $newNormalized, $mediaFolderChildren->getPath()));
+            $repo->save($mediaFolderChildren, $i === $nb - 1);
         }
 
         /** @var MediaRepository $repoM */
         $repoM = $this->getRepository(Media::class);
-        $listeMedia = $repoM->getAllByLikePath($old);
+        $listeMedia = $repoM->getAllByLikePath($oldNormalized);
 
-        /** @var Media $media */
         $nb = count($listeMedia);
-
-        $i = 0;
-        $flush = false;
-        foreach ($listeMedia as $media) {
-            $i++;
-            if ($i === $nb) {
-                $flush = true;
-            }
-            $media->setPath(preg_replace($patternPath, preg_quote($new), $media->getPath()));
-            $media->setWebPath(preg_replace($patternWebPath, $newWebPath, $media->getWebPath()));
-            $repoM->save($media, $flush);
+        foreach ($listeMedia as $i => $media) {
+            $media->setPath(preg_replace($patternPath, $newNormalized, $media->getPath()));
+            $media->setWebPath(preg_replace($patternWebPath, $newNormalized, $media->getWebPath()));
+            $repoM->save($media, $i === $nb - 1);
         }
-    }
-
-    /**
-     * Retourne les informations d'un dossier
-     * @param int $idFolderMedia
-     * @return array
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function getInfoFolder(int $idFolderMedia): array
-    {
-        $translator = $this->getTranslator();
-
-        /** @var MediaFolder $mediaFolder */
-        $mediaFolder = $this->findOneById(MediaFolder::class, $idFolderMedia);
-        $content = $this->getContentFolder($mediaFolder);
-
-        return [
-            $translator->trans('media.mediatheque.info.folder.name', domain: 'media') => $mediaFolder->getName(),
-            $translator->trans('media.mediatheque.info.folder.emplacement', domain: 'media') => $mediaFolder->getPath(),
-            $translator->trans('media.mediatheque.info.folder.taille.disque', domain: 'media') => Utils::getSizeName(
-                $this->getFolderSize($mediaFolder),
-            ),
-            $translator->trans('media.mediatheque.info.folder.contenu', domain: 'media') =>
-                $content['files'] .
-                ' ' .
-                $translator->trans('media.mediatheque.info.folder.files', domain: 'media') .
-                ', ' .
-                $content['directory'] .
-                ' ' .
-                $translator->trans('media.mediatheque.info.folder.folder', domain: 'media'),
-            $translator->trans('media.mediatheque.info.folder.date_creation', domain: 'media') => $mediaFolder
-                ->getCreatedAt()
-                ->format('d/m/y H:i'),
-            $translator->trans('media.mediatheque.info.folder.date_update', domain: 'media') => $mediaFolder
-                ->getUpdateAt()
-                ->format('d/m/y H:i'),
-        ];
     }
 
     /**
@@ -620,7 +562,9 @@ class MediaFolderService extends AppAdminService
 
         $mediaFolder->setPath($path);
         $mediaFolder->setParent($newParent);
-        $newParent->addChild($mediaFolder);
+        if ($newParent !== null) {
+            $newParent->addChild($mediaFolder);
+        }
         $this->save($mediaFolder);
 
         $this->updateAllPathChildren($old, $new);
@@ -628,6 +572,7 @@ class MediaFolderService extends AppAdminService
         if ($this->canCreatePhysicalFolder) {
             $fileSystem = new Filesystem();
             $origin = $this->rootPathMedia . $oldPath . DIRECTORY_SEPARATOR . $mediaFolder->getName();
+            $origin = rtrim(str_replace('\\', DIRECTORY_SEPARATOR, $origin), '/');
             $target = $this->getPathFolder($mediaFolder);
             $fileSystem->rename($origin, $target);
         }

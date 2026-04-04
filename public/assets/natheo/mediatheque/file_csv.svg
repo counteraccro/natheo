@@ -1,0 +1,22 @@
+<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+  <rect width="300" height="200" fill="#f0fdf4"/>
+  <rect x="90" y="18" width="120" height="155" rx="8" fill="white" stroke="#bbf7d0" stroke-width="1.5"/>
+  <path d="M178 18 L210 50 L178 50 Z" fill="#d1fae5"/>
+  <path d="M178 18 L210 50" fill="none" stroke="#6ee7b7" stroke-width="1.5"/>
+  <!-- Bande verte CSV -->
+  <rect x="90" y="62" width="120" height="42" fill="#059669"/>
+  <text x="150" y="90" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="white" text-anchor="middle" letter-spacing="1">CSV</text>
+  <!-- Grille tableau avec séparateurs virgule -->
+  <rect x="108" y="114" width="84" height="42" rx="3" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+  <line x1="136" y1="114" x2="136" y2="156" stroke="#bbf7d0" stroke-width="1"/>
+  <line x1="164" y1="114" x2="164" y2="156" stroke="#bbf7d0" stroke-width="1"/>
+  <line x1="108" y1="128" x2="192" y2="128" stroke="#bbf7d0" stroke-width="1"/>
+  <line x1="108" y1="142" x2="192" y2="142" stroke="#bbf7d0" stroke-width="1"/>
+  <!-- Points virgule dans les cellules -->
+  <text x="122" y="126" font-family="system-ui" font-size="9" fill="#059669" text-anchor="middle" font-weight="700">a,</text>
+  <text x="150" y="126" font-family="system-ui" font-size="9" fill="#059669" text-anchor="middle" font-weight="700">b,</text>
+  <text x="178" y="126" font-family="system-ui" font-size="9" fill="#059669" text-anchor="middle" font-weight="700">c</text>
+  <text x="122" y="140" font-family="system-ui" font-size="9" fill="#6ee7b7" text-anchor="middle">1,</text>
+  <text x="150" y="140" font-family="system-ui" font-size="9" fill="#6ee7b7" text-anchor="middle">2,</text>
+  <text x="178" y="140" font-family="system-ui" font-size="9" fill="#6ee7b7" text-anchor="middle">3</text>
+</svg>

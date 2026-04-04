@@ -1,0 +1,17 @@
+<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+  <!-- Fond -->
+  <rect width="300" height="200" fill="#f3f4f6"/>
+  <!-- Dos du dossier (derrière) -->
+  <rect x="75" y="72" width="150" height="100" rx="8" fill="#d1d5db"/>
+  <!-- Onglet -->
+  <path d="M75 82 L75 72 Q75 66 81 66 L126 66 Q132 66 135 72 L142 82 Z" fill="#d1d5db"/>
+  <!-- Corps principal du dossier -->
+  <rect x="75" y="82" width="150" height="90" rx="8" fill="#e5e7eb"/>
+  <!-- Séparation onglet / corps -->
+  <line x1="75" y1="82" x2="225" y2="82" stroke="#d1d5db" stroke-width="2"/>
+  <!-- Lignes de contenu -->
+  <rect x="95" y="105" width="55" height="5" rx="2.5" fill="#d1d5db"/>
+  <rect x="95" y="118" width="90" height="5" rx="2.5" fill="#d1d5db"/>
+  <rect x="95" y="131" width="70" height="5" rx="2.5" fill="#d1d5db"/>
+  <rect x="95" y="144" width="45" height="5" rx="2.5" fill="#d1d5db"/>
+</svg>

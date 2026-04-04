@@ -1,0 +1,11 @@
+<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+  <rect width="300" height="200" fill="#eff6ff"/>
+  <rect x="90" y="18" width="120" height="155" rx="8" fill="white" stroke="#bfdbfe" stroke-width="1.5"/>
+  <path d="M178 18 L210 50 L178 50 Z" fill="#dbeafe"/>
+  <path d="M178 18 L210 50" fill="none" stroke="#93c5fd" stroke-width="1.5"/>
+  <rect x="90" y="62" width="120" height="42" fill="#2563eb"/>
+  <text x="150" y="93" font-family="system-ui, sans-serif" font-size="26" font-weight="700" fill="white" text-anchor="middle">W</text>
+  <rect x="108" y="115" width="84" height="5" rx="2.5" fill="#bfdbfe"/>
+  <rect x="108" y="126" width="60" height="5" rx="2.5" fill="#bfdbfe"/>
+  <rect x="108" y="137" width="74" height="5" rx="2.5" fill="#bfdbfe"/>
+</svg>

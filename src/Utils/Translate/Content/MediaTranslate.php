@@ -21,6 +21,8 @@ class MediaTranslate extends AppTranslate
             'loading' => $this->translator->trans('media.mediatheque.loading', domain: 'media'),
             'btn_new_folder' => $this->translator->trans('media.mediatheque.btn.new.folder', domain: 'media'),
             'btn_new_media' => $this->translator->trans('media.mediatheque.btn.new.media', domain: 'media'),
+            'header_trash' => $this->translator->trans('media.mediatheque.header.trash', domain: 'media'),
+            'nb_file_trash' => $this->translator->trans('media.mediatheque.nb.files.trash', domain: 'media'),
             'btn_filtre' => $this->translator->trans('media.mediatheque.btn.filtre', domain: 'media'),
             'filtre_date' => $this->translator->trans('media.mediatheque.filtre.date', domain: 'media'),
             'filtre_nom' => $this->translator->trans('media.mediatheque.filtre.nom', domain: 'media'),
@@ -28,11 +30,17 @@ class MediaTranslate extends AppTranslate
             'order_asc' => $this->translator->trans('media.mediatheque.order.asc', domain: 'media'),
             'order_desc' => $this->translator->trans('media.mediatheque.order.desc', domain: 'media'),
             'search_placeholder' => $this->translator->trans('media.mediatheque.search.placeholder', domain: 'media'),
+            'disque_size' => $this->translator->trans('media.mediatheque.disque_size', domain: 'media'),
+            'success_add_trash' => $this->translator->trans('media.mediatheque.success.add.trash', domain: 'media'),
+            'success_remove_trash' => $this->translator->trans(
+                'media.mediatheque.success.remove.trash',
+                domain: 'media',
+            ),
             'media' => $this->getMediaTranslate(),
             'folder' => $this->getFolderTranslate(),
             'info' => $this->getInfoTranslate(),
             'upload' => $this->getUploadTranslate(),
-            'edit_media' => $this->getEditMediaTranslate(),
+            'edit' => $this->getEditTranslate(),
             'move' => $this->getMoveTranslate(),
             'trash' => $this->getTrashTranslate(),
             'remove' => $this->getRemoveTranslate(),
@@ -70,8 +78,12 @@ class MediaTranslate extends AppTranslate
             'text_media' => $this->translator->trans('media.mediatheque.trash.text.media', domain: 'media'),
             'text_info' => $this->translator->trans('media.mediatheque.trash.text.info', domain: 'media'),
             'loading' => $this->translator->trans('media.mediatheque.trash.loading', domain: 'media'),
-            'btn_confirm' => $this->translator->trans('media.mediatheque.trash.btn.confirm', domain: 'media'),
-            'btn_cancel' => $this->translator->trans('media.mediatheque.trash.btn.cancel', domain: 'media'),
+            'confirm_trash_title' => $this->translator->trans(
+                'media.mediatheque.delete.confirm.title',
+                domain: 'media',
+            ),
+            'confirm_trash_yes' => $this->translator->trans('media.mediatheque.delete.btn.confirm', domain: 'media'),
+            'confirm_trash_no' => $this->translator->trans('media.mediatheque.delete.btn.cancel', domain: 'media'),
             'success_trash' => $this->translator->trans('media.mediatheque.trash.success.trash', domain: 'media'),
             'success_no_trash' => $this->translator->trans('media.mediatheque.trash.success.no.trash', domain: 'media'),
             'breadcrumb_trash' => $this->translator->trans('media.mediatheque.trash.breadcrumb', domain: 'media'),
@@ -79,6 +91,10 @@ class MediaTranslate extends AppTranslate
             'link_revert' => $this->translator->trans('media.mediatheque.trash.link.revert', domain: 'media'),
             'link_delete' => $this->translator->trans('media.mediatheque.trash.link.delete', domain: 'media'),
             'no_media' => $this->translator->trans('media.mediatheque.trash.empty.media', domain: 'media'),
+            'folder_tag' => $this->translator->trans('media.mediatheque.media.folder.tag', domain: 'media'),
+            'folder_empty' => $this->translator->trans('media.mediatheque.media.folder.empty', domain: 'media'),
+            'empty_trash_title' => $this->translator->trans('media.mediatheque.trash.empty.title', domain: 'media'),
+            'empty_trash_sub' => $this->translator->trans('media.mediatheque.trash.empty.title_sub', domain: 'media'),
         ];
     }
 
@@ -90,12 +106,22 @@ class MediaTranslate extends AppTranslate
     {
         return [
             'title' => $this->translator->trans('media.mediatheque.move.title', domain: 'media'),
-            'btn_close' => $this->translator->trans('media.mediatheque.move.btn.close', domain: 'media'),
-            'btn_validate' => $this->translator->trans('media.mediatheque.move.btn.validate', domain: 'media'),
-            'input_label' => $this->translator->trans('media.mediatheque.move.input.label', domain: 'media'),
-            'input_info' => $this->translator->trans('media.mediatheque.move.input.info', domain: 'media'),
-            'loading' => $this->translator->trans('media.mediatheque.move.loading', domain: 'media'),
-            'success' => $this->translator->trans('media.mediatheque.move.success', domain: 'media'),
+            'btn_move' => $this->translator->trans('media.mediatheque.move.btn', domain: 'media'),
+            'move_ok' => $this->translator->trans('media.mediatheque.move.success', domain: 'media'),
+            'btn_error' => $this->translator->trans('media.mediatheque.move.btn.error', domain: 'media'),
+            'search_placeholder' => $this->translator->trans(
+                'media.mediatheque.move.search.placeholder',
+                domain: 'media',
+            ),
+            'msg_no_search' => $this->translator->trans('media.mediatheque.move.search.empty.msg', domain: 'media'),
+            'msg_no_search_sub' => $this->translator->trans(
+                'media.mediatheque.move.search.empty.msg.sub',
+                domain: 'media',
+            ),
+            'move_success' => $this->translator->trans('media.mediatheque.move.toast.success', domain: 'media'),
+            'sub_title_media' => $this->translator->trans('media.mediatheque.move.sub.title.media', domain: 'media'),
+            'sub_title_folder' => $this->translator->trans('media.mediatheque.move.sub.title.folder', domain: 'media'),
+            'sub_title_end' => $this->translator->trans('media.mediatheque.move.sub.title.end', domain: 'media'),
         ];
     }
 
@@ -113,10 +139,24 @@ class MediaTranslate extends AppTranslate
             'link_remove' => $this->translator->trans('media.mediatheque.media.link.remove', domain: 'media'),
             'no_media' => $this->translator->trans('media.mediatheque.media.no.media', domain: 'media'),
             'table_name' => $this->translator->trans('media.mediatheque.media.table.name', domain: 'media'),
+            'table_type' => $this->translator->trans('media.mediatheque.media.table.type', domain: 'media'),
             'table_size' => $this->translator->trans('media.mediatheque.media.table.size', domain: 'media'),
             'table_action' => $this->translator->trans('media.mediatheque.media.table.action', domain: 'media'),
             'table_caption' => $this->translator->trans('media.mediatheque.media.table.caption', domain: 'media'),
             'table_date' => $this->translator->trans('media.mediatheque.media.table.date', domain: 'media'),
+            'folder_nb_element' => $this->translator->trans('media.mediatheque.media.folder_element', domain: 'media'),
+            'folder_nb_elements' => $this->translator->trans(
+                'media.mediatheque.media.folder_elements',
+                domain: 'media',
+            ),
+            'media_other_img' => $this->translator->trans('media.mediatheque.media.other_img', domain: 'media'),
+            'folder_tag' => $this->translator->trans('media.mediatheque.media.folder.tag', domain: 'media'),
+            'folder_empty' => $this->translator->trans('media.mediatheque.media.folder.empty', domain: 'media'),
+            'confirm_trash_title' => $this->translator->trans('media.mediatheque.trash.confirm.title', domain: 'media'),
+            'confirm_trash_yes' => $this->translator->trans('media.mediatheque.trash.btn.confirm', domain: 'media'),
+            'confirm_trash_no' => $this->translator->trans('media.mediatheque.trash.btn.cancel', domain: 'media'),
+            'empty_folder_title' => $this->translator->trans('media.mediatheque.folder.empty.title', domain: 'media'),
+            'empty_folder_sub' => $this->translator->trans('media.mediatheque.folder.empty.sub', domain: 'media'),
         ];
     }
 
@@ -154,9 +194,17 @@ class MediaTranslate extends AppTranslate
     {
         return [
             'title' => $this->translator->trans('media.mediatheque.info.title', domain: 'media'),
-            'btn_close' => $this->translator->trans('media.mediatheque.info.btn.close', domain: 'media'),
-            'link_size' => $this->translator->trans('media.mediatheque.info.link.size', domain: 'media'),
-            'link_download' => $this->translator->trans('media.mediatheque.info.link.download', domain: 'media'),
+            'taille' => $this->translator->trans('media.mediatheque.info.taille', domain: 'media'),
+            'dimension' => $this->translator->trans('media.mediatheque.info.dimension', domain: 'media'),
+            'created_at' => $this->translator->trans('media.mediatheque.info.created_at', domain: 'media'),
+            'folder' => $this->translator->trans('media.mediatheque.info.folder', domain: 'media'),
+            'url' => $this->translator->trans('media.mediatheque.info.url', domain: 'media'),
+            'btn_copy' => $this->translator->trans('media.mediatheque.info.btn.copy', domain: 'media'),
+            'copy_ok' => $this->translator->trans('media.mediatheque.info.copy_ok', domain: 'media'),
+            'content' => $this->translator->trans('media.mediatheque.info.content', domain: 'media'),
+            'content_file' => $this->translator->trans('media.mediatheque.info.content.file', domain: 'media'),
+            'content_folder' => $this->translator->trans('media.mediatheque.info.content.folder', domain: 'media'),
+            'folder_tag' => $this->translator->trans('media.mediatheque.media.folder.tag', domain: 'media'),
         ];
     }
 
@@ -205,28 +253,40 @@ class MediaTranslate extends AppTranslate
      * Retourne les traductions pour l'édition d'un média
      * @return array
      */
-    private function getEditMediaTranslate(): array
+    private function getEditTranslate(): array
     {
         return [
-            'title' => $this->translator->trans('media.mediatheque.edit.media.title', domain: 'media'),
-            'legend' => $this->translator->trans('media.mediatheque.edit.media.legend', domain: 'media'),
-            'media_name' => $this->translator->trans('media.mediatheque.edit.media.name', domain: 'media'),
-            'media_name_placeholder' => $this->translator->trans(
-                'media.mediatheque.edit.media.name.placeholder',
+            'title' => $this->translator->trans('media.mediatheque.edit.title', domain: 'media'),
+            'title_new_folder' => $this->translator->trans('media.mediatheque.edit.title.new.folder', domain: 'media'),
+            'input_label_file' => $this->translator->trans('media.mediatheque.edit.input.label.file', domain: 'media'),
+            'input_label_folder' => $this->translator->trans(
+                'media.mediatheque.edit.input.label.folder',
                 domain: 'media',
             ),
-            'media_description' => $this->translator->trans(
-                'media.mediatheque.edit.media.description',
+            'input_description' => $this->translator->trans(
+                'media.mediatheque.edit.input.description',
                 domain: 'media',
             ),
-            'media_description_placeholder' => $this->translator->trans(
-                'media.mediatheque.edit.media.description.placeholder',
+            'input_placeholder' => $this->translator->trans(
+                'media.mediatheque.edit.input.placeholder',
                 domain: 'media',
             ),
-            'submit' => $this->translator->trans('media.mediatheque.edit.media.submit', domain: 'media'),
-            'cancel' => $this->translator->trans('media.mediatheque.edit.media.cancel', domain: 'media'),
-            'loading' => $this->translator->trans('media.mediatheque.edit.media.loading', domain: 'media'),
-            'success' => $this->translator->trans('media.mediatheque.edit.media.success', domain: 'media'),
+            'input_placeholder_folder' => $this->translator->trans(
+                'media.mediatheque.edit.input.placeholder.folder',
+                domain: 'media',
+            ),
+            'btn_save' => $this->translator->trans('media.mediatheque.edit.btn.save', domain: 'media'),
+            'btn_save_new_folder' => $this->translator->trans(
+                'media.mediatheque.edit.btn.save_new.folder',
+                domain: 'media',
+            ),
+            'btn_error' => $this->translator->trans('media.mediatheque.edit.btn.error', domain: 'media'),
+            'save_ok' => $this->translator->trans('media.mediatheque.edit.btn.save.ok', domain: 'media'),
+            'save_media_msg_ok' => $this->translator->trans(
+                'media.mediatheque.edit.save.media.msg.ok',
+                domain: 'media',
+            ),
+            'folder_tag' => $this->translator->trans('media.mediatheque.media.folder.tag', domain: 'media'),
         ];
     }
 }

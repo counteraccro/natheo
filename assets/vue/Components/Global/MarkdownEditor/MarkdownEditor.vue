@@ -15,6 +15,7 @@ import type {
 import axios from 'axios';
 import InternalLink from '@/vue/Components/Global/MarkdownEditor/InternalLink.vue';
 import { Dropdown, initDropdowns } from 'flowbite';
+import MediathequeModale from '@/vue/Components/Global/MarkdownEditor/Mediatheque.vue';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -97,7 +98,7 @@ const BUTTON_DEFS: Record<string, ButtonDef> = {
 export default defineComponent({
   name: 'MarkdownEditor',
   computed: {},
-  components: { InternalLink },
+  components: { InternalLink, MediathequeModale },
 
   props: {
     meId: {
@@ -121,7 +122,7 @@ export default defineComponent({
       default: true,
     },
     meTranslate: {
-      type: Object as PropType<Record<string, string>>,
+      type: Object as PropType<Record<string, Record<string, string>>>,
       default: () => ({}),
     },
     meKeyWords: {
@@ -318,7 +319,7 @@ export default defineComponent({
     }));
 
     function t(key: string, fallback: string): string {
-      return props.meTranslate?.[key] ?? fallback;
+      return (props.meTranslate?.[key] as unknown as string) ?? fallback;
     }
 
     // ── Exposition au template ────────────────────────────────────────────────
@@ -506,7 +507,12 @@ export default defineComponent({
       </template>
 
       <!-- 3. Save — toujours en dernier grâce à margin-left: auto -->
-      <button v-if="hasSave" class="tb-btn tb-btn-save" :title="meTranslate.btnSave" @click="onSave">
+      <button
+        v-if="hasSave"
+        class="tb-btn tb-btn-save"
+        :title="meTranslate.btnSave as unknown as string"
+        @click="onSave"
+      >
         <svg
           class="tb-icon"
           viewBox="0 0 24 24"
@@ -530,7 +536,7 @@ export default defineComponent({
       ref="textareaRef"
       :value="markdown"
       class="md-textarea form-input"
-      :placeholder="meTranslate.textareaPlaceholder"
+      :placeholder="meTranslate.textareaPlaceholder as unknown as string"
       :style="textareaStyle"
       @input="onInput"
       @keydown="handleKeydown"
@@ -562,7 +568,7 @@ export default defineComponent({
       </span>
 
       <span class="md-footer-counts">
-        {{ wordCount }} {{ t('words', 'mots') }} · {{ markdown.length }} {{ t('chars', 'car.') }}
+        {{ wordCount }} {{ meTranslate.words }} · {{ markdown.length }} {{ meTranslate.caracteres }}
       </span>
     </div>
   </div>
@@ -581,15 +587,13 @@ export default defineComponent({
         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
         <circle cx="12" cy="12" r="3" />
       </svg>
-      <span>{{ t('preview', 'Prévisualisation') }}</span>
+      <span>{{ meTranslate.preview }}</span>
     </div>
-    <div
-      class="md-preview-body"
-      v-html="html || `<p class='md-preview-empty'>${t('previewEmpty', 'Commencez à écrire…')}</p>`"
-    />
+    <div class="md-preview-body" v-html="html || `<p class='md-preview-empty'>${meTranslate.emptyPreview}</p>`" />
   </div>
 
   <InternalLink :url="urls.urlInternalLink" :translate="meTranslate.modaleInternalLink" />
+  <MediathequeModale :url-media="urls.urlMedia" :translate="meTranslate.modaleMediatheque" />
 </template>
 
 <style scoped>

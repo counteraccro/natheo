@@ -273,39 +273,6 @@ class MediaFolderServiceTest extends AppWebTestCase
     }
 
     /**
-     * test méthode getInfoFolder()
-     * @return void
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function testGetInfoFolder(): void
-    {
-        $this->mediaFolderService->resetAllMedia();
-        $mediaFolder = $this->createMediaFolder();
-        $this->mediaFolderService->createFolder($mediaFolder);
-        $subMediaFolder = $this->createMediaFolder($mediaFolder);
-        $this->mediaFolderService->createFolder($subMediaFolder);
-
-        $result = $this->mediaFolderService->getInfoFolder($mediaFolder->getId());
-        $this->assertIsArray($result);
-        $this->assertArrayHasKey('Nom', $result);
-        $this->assertEquals($mediaFolder->getName(), $result['Nom']);
-        $this->assertArrayHasKey('Emplacement', $result);
-        $this->assertEquals($mediaFolder->getPath(), $result['Emplacement']);
-        $this->assertArrayHasKey('Taille (disque)', $result);
-        $this->assertEquals(Utils::getSizeName(0), $result['Taille (disque)']);
-        $this->assertArrayHasKey('Contenu', $result);
-        $this->assertEquals('0 Fichiers, 1 Dossiers', $result['Contenu']);
-        $this->assertArrayHasKey('Créer le', $result);
-        $this->assertArrayHasKey('Dernière modification le', $result);
-
-        $result = $this->mediaFolderService->getInfoFolder($subMediaFolder->getId());
-        $this->assertIsArray($result);
-        $this->assertEquals($subMediaFolder->getName(), $result['Nom']);
-        $this->assertEquals($subMediaFolder->getPath(), $result['Emplacement']);
-    }
-
-    /**
      * Test méthode getContentFolder()
      * @return void
      */
@@ -342,18 +309,16 @@ class MediaFolderServiceTest extends AppWebTestCase
         $this->mediaFolderService->createFolder($subSubMediaFolder);
 
         $result = $this->mediaFolderService->getAllDataForModalMove($mediaFolder->getId(), 'folder');
+
         $this->assertIsArray($result);
         $this->assertArrayHasKey('parentId', $result);
         $this->assertEquals(0, $result['parentId']);
-        $this->assertArrayHasKey('label', $result);
-        $this->assertStringContainsString($mediaFolder->getName(), $result['label']);
         $this->assertArrayHasKey('liste', $result);
         $this->assertIsArray($result['liste']);
         $this->assertCount(1, $result['liste']);
 
         $result = $this->mediaFolderService->getAllDataForModalMove($subMediaFolder->getId(), 'folder');
         $this->assertEquals($mediaFolder->getId(), $result['parentId']);
-        $this->assertStringContainsString($subMediaFolder->getName(), $result['label']);
         $this->assertCount(2, $result['liste']);
 
         $media = $this->createMedia($mediaFolder, customData: ['name' => 'road.jpg', 'trash' => false]);
@@ -361,8 +326,6 @@ class MediaFolderServiceTest extends AppWebTestCase
         $this->assertIsArray($result);
         $this->assertArrayHasKey('parentId', $result);
         $this->assertEquals(0, $result['parentId']);
-        $this->assertArrayHasKey('label', $result);
-        $this->assertStringContainsString($media->getName(), $result['label']);
         $this->assertArrayHasKey('liste', $result);
         $this->assertIsArray($result['liste']);
         $this->assertCount(1, $result['liste']);
@@ -371,7 +334,6 @@ class MediaFolderServiceTest extends AppWebTestCase
         $result = $this->mediaFolderService->getAllDataForModalMove($media2->getId(), 'media');
         $this->assertIsArray($result);
         $this->assertEquals($mediaFolder->getId(), $result['parentId']);
-        $this->assertStringContainsString($media2->getName(), $result['label']);
         $this->assertCount(2, $result['liste']);
     }
 

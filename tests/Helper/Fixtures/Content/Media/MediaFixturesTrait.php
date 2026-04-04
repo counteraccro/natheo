@@ -38,7 +38,8 @@ trait MediaFixturesTrait
             if ($mediaFolder->getParent() !== null) {
                 $path = $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $name . '.' . $extension;
             } else {
-                $path = $mediaFolder->getPath() . $name . '.' . $extension;
+                $path =
+                    $mediaFolder->getPath() . $mediaFolder->getName() . DIRECTORY_SEPARATOR . $name . '.' . $extension;
             }
         }
 

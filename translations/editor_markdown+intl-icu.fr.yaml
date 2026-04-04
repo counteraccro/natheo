@@ -29,17 +29,7 @@ editor.button.keyword: 'Mots clés'
 editor.input.empty: 'Le champ ne peut pas être vide'
 editor.btn.mediatheque: Médiathèque
 editor.mediatheque.title: Médiathèque
-editor.mediatheque.btn.close: Fermer
-editor.mediatheque.loading: 'Chargement des médias...'
-editor.mediatheque.no_media: 'Le dossier est vide'
-editor.mediatheque.btn.size: 'Taille retournée : '
-editor.mediatheque.size.fluide: 'Image fluide'
-editor.mediatheque.size_max: 'Taille normale'
-editor.mediatheque.size_100: 100x100
-editor.mediatheque.size_200: 200x200
-editor.mediatheque.size_300: 300x300
-editor.mediatheque.size_400: 400x400
-editor.mediatheque.size_500: 500x500
+editor.mediatheque.no_media: 'Ce dossier est vide'
 editor.warning.edit: "Vos modifications n'ont pas encore été enregistrées !, cliquez sur le bouton <i class='bi bi-save'></i> pour les sauvegarder."
 editor.button.link.interne: 'Lien interne'
 editor.button.preview: Preview
@@ -52,3 +42,11 @@ editor.modale.internal.link.label.search: 'Rechercher une page'
 editor.modale.internal.link.noResult: 'Aucune page trouvée'
 editor.modale.internal.link.stats: 'pages disponibles'
 editor.textarea.placeholder: 'Rédigez votre contenu en Markdown…'
+editor.words: mots
+editor.caracteres: car.
+editor.emptyPreview: 'Commencez à écrire...'
+editor.mediatheque.no_search: 'Aucun résultat pour'
+editor.mediatheque.search.placeholder: Rechercher
+editor.mediatheque.folder: dossier
+editor.mediatheque.img: images
+editor.mediatheque.file: fichier

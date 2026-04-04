@@ -38,6 +38,7 @@ class MarkdownEditorTranslate extends AppTranslate
             'titreH5' => $this->translator->trans('editor.titre.h5', domain: 'editor_markdown'),
             'titreH6' => $this->translator->trans('editor.titre.h6', domain: 'editor_markdown'),
             'preview' => $this->translator->trans('editor.button.preview', domain: 'editor_markdown'),
+            'emptyPreview' => $this->translator->trans('editor.emptyPreview', domain: 'editor_markdown'),
             'help' => $this->translator->trans('editor.help', domain: 'editor_markdown'),
             'render' => $this->translator->trans('editor.render', domain: 'editor_markdown'),
             'modalTitreLink' => $this->translator->trans('editor.modal.titre.link', domain: 'editor_markdown'),
@@ -51,7 +52,9 @@ class MarkdownEditorTranslate extends AppTranslate
             'btnMediatheque' => $this->translator->trans('editor.btn.mediatheque', domain: 'editor_markdown'),
             'warning_edit' => $this->translator->trans('editor.warning.edit', domain: 'editor_markdown'),
             'textareaPlaceholder' => $this->translator->trans('editor.textarea.placeholder', domain: 'editor_markdown'),
-            'mediathequeMarkdown' => $this->getTranslateMediateque(),
+            'words' => $this->translator->trans('editor.words', domain: 'editor_markdown'),
+            'caracteres' => $this->translator->trans('editor.caracteres', domain: 'editor_markdown'),
+            'modaleMediatheque' => $this->getTranslateMediateque(),
             'modaleInternalLink' => $this->getTranslateModaleInternalLink(),
         ];
     }
@@ -81,17 +84,15 @@ class MarkdownEditorTranslate extends AppTranslate
     {
         return [
             'title' => $this->translator->trans('editor.mediatheque.title', domain: 'editor_markdown'),
-            'btn_close' => $this->translator->trans('editor.mediatheque.btn.close', domain: 'editor_markdown'),
-            'loading' => $this->translator->trans('editor.mediatheque.loading', domain: 'editor_markdown'),
             'no_media' => $this->translator->trans('editor.mediatheque.no_media', domain: 'editor_markdown'),
-            'btn_size' => $this->translator->trans('editor.mediatheque.btn.size', domain: 'editor_markdown'),
-            'size_fluide' => $this->translator->trans('editor.mediatheque.size.fluide', domain: 'editor_markdown'),
-            'size_max' => $this->translator->trans('editor.mediatheque.size_max', domain: 'editor_markdown'),
-            'size_100' => $this->translator->trans('editor.mediatheque.size_100', domain: 'editor_markdown'),
-            'size_200' => $this->translator->trans('editor.mediatheque.size_200', domain: 'editor_markdown'),
-            'size_300' => $this->translator->trans('editor.mediatheque.size_300', domain: 'editor_markdown'),
-            'size_400' => $this->translator->trans('editor.mediatheque.size_400', domain: 'editor_markdown'),
-            'size_500' => $this->translator->trans('editor.mediatheque.size_500', domain: 'editor_markdown'),
+            'no_search' => $this->translator->trans('editor.mediatheque.no_search', domain: 'editor_markdown'),
+            'search_placeholder' => $this->translator->trans(
+                'editor.mediatheque.search.placeholder',
+                domain: 'editor_markdown',
+            ),
+            'folder' => $this->translator->trans('editor.mediatheque.folder', domain: 'editor_markdown'),
+            'img' => $this->translator->trans('editor.mediatheque.img', domain: 'editor_markdown'),
+            'file' => $this->translator->trans('editor.mediatheque.file', domain: 'editor_markdown'),
         ];
     }
 }

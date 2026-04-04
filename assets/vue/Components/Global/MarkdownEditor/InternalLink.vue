@@ -2,7 +2,7 @@
 /**
  * @author Gourdon Aymeric
  * @version 3.0
- * Module pour l'editeur Markdown, Lien internet
+ * Module pour l'éditeur Markdown, Lien internet
  */
 
 import { defineComponent, ref, computed, watch, nextTick, onMounted, onUnmounted, type PropType } from 'vue';
