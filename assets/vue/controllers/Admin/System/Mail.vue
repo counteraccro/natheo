@@ -5,6 +5,7 @@
  * Formulaire pour édition d'un email
  */
 
+import { defineComponent } from 'vue';
 import MarkdownEditor from '../../../Components/Global/MarkdownEditor/MarkdownEditor.vue';
 import axios from 'axios';
 import { emitter } from '@/utils/useEvent';
@@ -17,44 +18,57 @@ import InternalLink from '@/vue/Components/Global/MarkdownEditor/InternalLink.vu
 import MediathequeModale from '@/vue/Components/Global/MarkdownEditor/Mediatheque.vue';
 import { MediaModule } from '@/ts/MarkdownEditor/modules/Mediatheque';
 
-export default {
+// Types locaux
+type KeyWord = {
+  label: string;
+  keyword: string;
+};
+
+type Mail = {
+  id: number;
+  key: number;
+  title: string;
+  description: string;
+  titleTrans: string;
+  contentTrans: string;
+  keyWords: Record<string, string>;
+};
+
+type Toast = {
+  show: boolean;
+  msg: string;
+};
+
+export default defineComponent({
   name: 'Mail',
   components: { InternalLink, SkeletonText, SkeletonForm, Toast, MarkdownEditor, MediathequeModale },
+
   props: {
-    url_data: String,
-  },
-  data() {
-    return {
-      translateEditor: {},
-      translate: {},
-      languages: {},
-      currentLanguage: 'fr',
-      mail: [],
-      loading: false,
-      url_save: '',
-      url_demo: '',
-      isValideTitle: true,
-      canSave: true,
-      KeyWords: {},
-      toasts: {
-        toastSuccess: {
-          show: false,
-          msg: '',
-        },
-        toastError: {
-          show: false,
-          msg: '',
-        },
-      },
-    };
+    url_data: { type: String, required: true },
   },
 
   setup() {
     const editorModules: EditorModule[] = [InternalLinkModule, MediaModule];
+    return { editorModules };
+  },
 
+  data() {
     return {
-      editorModules,
-      // ... reste de tes variables
+      translateEditor: {} as Record<string, Record<string, string>>,
+      translate: {} as Record<string, string>,
+      languages: {} as Record<string, string>,
+      currentLanguage: 'fr' as string,
+      mail: {} as Mail,
+      loading: false as boolean,
+      url_save: '' as string,
+      url_demo: '' as string,
+      isValideTitle: true as boolean,
+      canSave: true as boolean,
+      KeyWords: [] as KeyWord[],
+      toasts: {
+        toastSuccess: { show: false, msg: '' } as Toast,
+        toastError: { show: false, msg: '' } as Toast,
+      },
     };
   },
 
@@ -63,10 +77,7 @@ export default {
   },
 
   methods: {
-    /**
-     * Récupère les données liées à la gestion des emails
-     */
-    loadData() {
+    loadData(): void {
       this.loading = true;
 
       axios
@@ -89,12 +100,9 @@ export default {
         });
     },
 
-    /**
-     * Event de choix de la langue
-     * @param event
-     */
-    selectLanguage(event) {
-      this.currentLanguage = event.target.value;
+    selectLanguage(event: Event): void {
+      const target = event.target as HTMLSelectElement;
+      this.currentLanguage = target.value;
       if (this.currentLanguage !== '') {
         this.loadData();
       }
@@ -107,45 +115,30 @@ export default {
       }));
     },
 
-    /**
-     * Vérifie si on peut sauvegarder ou non
-     */
-    checkCanSave() {
+    checkCanSave(): void {
       this.canSave = this.mail.contentTrans !== '' && this.mail.titleTrans !== '';
     },
 
-    /**
-     * Vérifie si le titre a été saisi ou non
-     * @param event
-     */
-    checkTitle(event) {
+    checkTitle(event: Event): void {
       this.isValideTitle = true;
-      let value = event.target.value;
+      const value = (event.target as HTMLInputElement).value;
       if (value === '') {
         this.isValideTitle = false;
       }
       this.checkCanSave();
     },
 
-    /**
-     * Event venant de markdownEditor pour récupérer la valeur saisie
-     * @param value
-     * @param id
-     */
-    saveContent(id, value) {
+    saveContent(_id: string, value: string): void {
       this.mail.contentTrans = value;
       this.checkCanSave();
     },
 
-    /**
-     * Permet de sauvegarder le content
-     */
-    save() {
+    save(): void {
       this.checkCanSave();
       if (!this.canSave) {
         this.toasts.toastError.msg = this.translate.msg_cant_save;
         this.toasts.toastError.show = true;
-        return false;
+        return;
       }
 
       this.loading = true;
@@ -173,10 +166,7 @@ export default {
         });
     },
 
-    /**
-     * Permet d'envoyer un email de démo
-     */
-    sendDemoMail() {
+    sendDemoMail(): void {
       this.loading = true;
       axios
         .get(this.url_demo)
@@ -193,20 +183,15 @@ export default {
           console.error(error);
         })
         .finally(() => {
-          setTimeout(this.removeMsg, 3000);
           this.loading = false;
         });
     },
 
-    /**
-     * Ferme un toast en fonction de son id
-     * @param nameToast
-     */
-    closeToast(nameToast) {
+    closeToast(nameToast: keyof typeof this.toasts): void {
       this.toasts[nameToast].show = false;
     },
   },
-};
+});
 </script>
 
 <template>
