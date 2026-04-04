@@ -21,7 +21,7 @@ export default defineComponent({
     currentFolder: { type: Number, required: true },
     url: { type: String, required: true },
   },
-  emits: ['close'],
+  emits: ['close', 'reload'],
   data() {
     return {
       loading: false,
@@ -51,9 +51,9 @@ export default defineComponent({
           file: file,
           folder: this.currentFolder,
         })
-        .then((response) => {
+        .then(() => {
           this.toasts.success.show = true;
-          this.toasts.success.msg = this.translate.loading_msg_success;
+          this.toasts.success.msg = this.translate.loading_msg_success as string;
         })
         .catch((error) => {
           console.error(error);
