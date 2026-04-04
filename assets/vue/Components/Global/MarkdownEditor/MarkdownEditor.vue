@@ -15,6 +15,7 @@ import type {
 import axios from 'axios';
 import InternalLink from '@/vue/Components/Global/MarkdownEditor/InternalLink.vue';
 import { Dropdown, initDropdowns } from 'flowbite';
+import MediathequeModale from '@/vue/Components/Global/MarkdownEditor/Mediatheque.vue';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -97,7 +98,7 @@ const BUTTON_DEFS: Record<string, ButtonDef> = {
 export default defineComponent({
   name: 'MarkdownEditor',
   computed: {},
-  components: { InternalLink },
+  components: { InternalLink, MediathequeModale },
 
   props: {
     meId: {
@@ -121,7 +122,7 @@ export default defineComponent({
       default: true,
     },
     meTranslate: {
-      type: Object as PropType<Record<string, string>>,
+      type: Object as PropType<Record<string, Record<string, string>>>,
       default: () => ({}),
     },
     meKeyWords: {
@@ -318,7 +319,7 @@ export default defineComponent({
     }));
 
     function t(key: string, fallback: string): string {
-      return props.meTranslate?.[key] ?? fallback;
+      return (props.meTranslate?.[key] as unknown as string) ?? fallback;
     }
 
     // ── Exposition au template ────────────────────────────────────────────────
@@ -590,6 +591,7 @@ export default defineComponent({
   </div>
 
   <InternalLink :url="urls.urlInternalLink" :translate="meTranslate.modaleInternalLink" />
+  <MediathequeModale :url-media="urls.urlMedia" />
 </template>
 
 <style scoped>
