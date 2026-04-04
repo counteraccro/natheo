@@ -17,7 +17,7 @@ export default defineComponent({
   props: {
     data: { type: Object as PropType<MediaItem>, required: true },
     translate: { type: Object as PropType<TranslateRecord>, required: true },
-    urls: Object,
+    urls: { type: Object, required: true },
   },
   emits: ['close', 'reload'],
   data() {
@@ -25,7 +25,9 @@ export default defineComponent({
       move: false,
       isError: false,
       loading: true,
-      dataMove: {},
+      dataMove: {
+        listeFolder: [] as { id: number; name: string }[],
+      },
       selectedId: -10,
       search: '',
       toasts: {
@@ -49,7 +51,7 @@ export default defineComponent({
      * Construction de l'arborescence des dossiers
      */
     parsedFolders() {
-      return this.dataMove.listeFolder.map((folder) => {
+      return this.dataMove.listeFolder.map((folder: { name: string }) => {
         const match = folder.name.match(/^(\|[-]*)(.+)$/);
         if (!match) {
           return { ...folder, depth: 0, label: folder.name };
@@ -63,10 +65,10 @@ export default defineComponent({
     /**
      * Filtre les dossiers selon la recherche
      */
-    filteredFolders() {
+    filteredFolders(): any {
       if (!this.search.trim()) return this.parsedFolders;
       const q = this.search.toLowerCase();
-      return this.parsedFolders.filter((f) => f.label.toLowerCase().includes(q));
+      return this.parsedFolders.filter((f: { label: string }) => f.label.toLowerCase().includes(q));
     },
   },
   methods: {
@@ -101,7 +103,7 @@ export default defineComponent({
           id: this.data.id,
           type: this.data.type,
         })
-        .then((response) => {
+        .then(() => {
           this.loading = false;
           this.toasts.success.show = true;
           this.toasts.success.msg = this.translate.move_success as string;
@@ -190,7 +192,7 @@ export default defineComponent({
         <input
           type="search"
           class="form-input input-icon-left"
-          :placeholder="translate.search_placeholder"
+          :placeholder="translate.search_placeholder as string"
           v-model="search"
         />
       </div>
