@@ -10,7 +10,13 @@ export type MediaFolder = {
   size: string;
   nb_elements: number;
   nb_files: number;
-  children: [];
+  thumbnail: string;
+  children: [
+    {
+      type: string;
+      thumbnail: string;
+    },
+  ];
 };
 
 export type MediaFile = {
@@ -26,7 +32,7 @@ export type MediaFile = {
   extension: string;
   img_size: string;
   folder: string;
-  folder_id: string;
+  folder_id: number;
   title: string;
 };
 
@@ -41,6 +47,9 @@ export interface FileData {
   title: string;
   description: string;
 }
+
+export type Path = { id: number; name: string };
+export type Paths = Path[];
 
 export type MediaItem = MediaFolder | MediaFile;
 
