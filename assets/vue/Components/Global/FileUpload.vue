@@ -23,7 +23,7 @@ export default defineComponent({
       default: 'image/*',
     },
     translate: {
-      type: Object as () => PropType<TranslateRecord>,
+      type: Object as PropType<TranslateRecord>,
       required: true,
     },
   },
