@@ -1,20 +1,15 @@
 <script lang="ts">
 /**
- * MediaPickerModal.vue
- *
- * Modale de sélection d'un média depuis la médiathèque Nathéo.
- * S'ouvre via le CustomEvent `natheo:open-media` dispatché par MediaModule.
- *
- * Intégration dans le composant parent (ex. EditPage.vue) :
- *   <MediaPickerModal :url-media="urls.media" />
  *
  * @author Gourdon Aymeric
  * @version 1.0
+ * Modale médiathèque pour l'éditeur markdown
  */
 
 import axios from 'axios';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import type { MediaFile, NatheoMediaEvent } from '@/ts/MarkdownEditor/modules/Mediatheque';
+import type { PropType } from 'vue';
 
 interface MediaItem {
   id: number;
@@ -37,18 +32,15 @@ function checkIsImage(filename: string): boolean {
 }
 
 export default {
-  name: 'MediaPickerModal',
+  name: 'MediathequeModale',
 
   components: {
     Modal,
   },
 
   props: {
-    /** URL Symfony pour charger les médias : /admin/fr/media/ajax/{folderId}/{order}/{filter} */
-    urlMedia: {
-      type: String,
-      required: true,
-    },
+    urlMedia: { type: String, required: true },
+    translate: { type: Object as PropType<Record<string, string>>, default: () => ({}) },
   },
 
   data() {
@@ -220,7 +212,7 @@ export default {
     </template>
 
     <!-- Titre -->
-    <template #title>Médiathèque</template>
+    <template #title>{{ translate.title }}</template>
 
     <!-- Corps -->
     <template #body>
@@ -277,7 +269,7 @@ export default {
           <input
             v-model="search"
             type="search"
-            placeholder="Rechercher..."
+            :placeholder="translate.search_placeholder"
             class="w-full pl-9 pr-4 py-2 text-sm rounded-lg border focus:outline-none focus:ring-2 transition-all"
             style="background-color: var(--bg-card); color: var(--text-primary); border-color: var(--border-color)"
           />
@@ -299,7 +291,9 @@ export default {
       <template v-else>
         <!-- Dossiers -->
         <div v-if="folders.length > 0" class="mb-6">
-          <h4 class="text-xs font-semibold uppercase tracking-wider mb-3" style="color: var(--text-light)">Dossiers</h4>
+          <h4 class="text-xs font-semibold uppercase tracking-wider mb-3" style="color: var(--text-light)">
+            {{ translate.folder }}
+          </h4>
           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
             <button
               v-for="folder in folders"
@@ -329,7 +323,9 @@ export default {
 
         <!-- Images -->
         <div v-if="imageMedias.length > 0" class="mb-6">
-          <h4 class="text-xs font-semibold uppercase tracking-wider mb-3" style="color: var(--text-light)">Images</h4>
+          <h4 class="text-xs font-semibold uppercase tracking-wider mb-3" style="color: var(--text-light)">
+            {{ translate.img }}
+          </h4>
           <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
             <button
               v-for="media in imageMedias"
@@ -357,7 +353,9 @@ export default {
 
         <!-- Fichiers (non-images) -->
         <div v-if="fileMedias.length > 0">
-          <h4 class="text-xs font-semibold uppercase tracking-wider mb-3" style="color: var(--text-light)">Fichiers</h4>
+          <h4 class="text-xs font-semibold uppercase tracking-wider mb-3" style="color: var(--text-light)">
+            {{ translate.file }}
+          </h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <button
               v-for="media in fileMedias"
@@ -411,7 +409,7 @@ export default {
             <polyline points="21 15 16 10 5 21" stroke-width="1.5" />
           </svg>
           <p class="text-sm font-medium" style="color: var(--text-secondary)">
-            {{ search ? 'Aucun résultat pour « ' + search + ' »' : 'Ce dossier est vide' }}
+            {{ search ? translate.no_search + ' « ' + search + ' »' : translate.no_media }}
           </p>
         </div>
       </template>
@@ -420,7 +418,7 @@ export default {
     <!-- Footer -->
     <template #footer>
       <span class="text-sm" style="color: var(--text-secondary)">
-        {{ filteredMedias.length }} fichier{{ filteredMedias.length > 1 ? 's' : '' }}
+        {{ filteredMedias.length }} {{ translate.file }}{{ filteredMedias.length > 1 ? 's' : '' }}
       </span>
     </template>
   </modal>
