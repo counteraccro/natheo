@@ -5,23 +5,12 @@
  * Affichage de la navBar des médias
  */
 import { defineComponent, PropType } from 'vue';
-
-type BreadcrumbItem = {
-  id: number;
-  name: string;
-};
-
-type Paths = {
-  root: BreadcrumbItem[];
-};
+import { Paths } from '@/ts/Mediatheque/type';
 
 export default defineComponent({
   name: 'MediasBreadcrum',
   props: {
-    paths: {
-      type: Object as PropType<Paths>,
-      default: () => ({}),
-    },
+    paths: { type: Array as PropType<Paths | null>, default: null },
   },
   emits: ['load-folder'],
 });
@@ -53,7 +42,7 @@ export default defineComponent({
     >
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
     </svg>
-    <div v-for="item in paths" class="flex items-center gap-1">
+    <div v-if="paths !== null" v-for="item in paths" class="flex items-center gap-1">
       <button
         @click="paths.indexOf(item) !== Object.keys(paths).length - 1 ? $emit('load-folder', item.id) : ''"
         class="flex items-center gap-1.5 px-2 py-1 rounded-md font-medium transition hover:text-[var(--primary)]"
