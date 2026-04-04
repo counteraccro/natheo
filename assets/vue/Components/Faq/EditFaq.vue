@@ -1,4 +1,10 @@
 <script lang="ts">
+/**
+ * @author Gourdon Aymeric
+ * @version 2.0
+ * Formulaire pour édition d'une FAQ
+ */
+
 import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
 import { emitter } from '@/utils/useEvent';
@@ -139,12 +145,13 @@ export default defineComponent({
      */
     loadDraggableCategories(): void {
       this.$nextTick(() => {
-        Sortable.create(this.$refs.categoriesListRef, {
+        Sortable.create(this.$refs.categoriesListRef as HTMLElement, {
           handle: '.handle',
           animation: 200,
           ghostClass: 'opacity-40',
           chosenClass: 'ring-2',
           onEnd: ({ item, from, oldIndex, newIndex }) => {
+            if (oldIndex === undefined || newIndex === undefined) return;
             from.insertBefore(item, from.children[oldIndex] || null);
             const items = [...this.faq.faqCategories];
             const [moved] = items.splice(oldIndex, 1);
@@ -164,29 +171,29 @@ export default defineComponent({
     },
 
     loadDraggableQuestions(): void {
-      const questionLists = this.$refs.rootRef.querySelectorAll('.questions-list');
+      const questionLists = (this.$refs.rootRef as HTMLElement).querySelectorAll('.questions-list');
       questionLists.forEach((list) => {
-        Sortable.create(list, {
+        Sortable.create(list as HTMLElement, {
           group: 'questions',
           handle: '.handle-question',
           animation: 200,
           ghostClass: 'opacity-40',
           onEnd: ({ item, from, to, oldIndex, newIndex }) => {
-            const fromCatId = parseInt(from.dataset.catId);
-            const toCatId = parseInt(to.dataset.catId);
+            if (oldIndex === undefined || newIndex === undefined) return;
+
+            const fromCatId = parseInt((from as HTMLElement).dataset.catId ?? '0');
+            const toCatId = parseInt((to as HTMLElement).dataset.catId ?? '0');
 
             const fromCat = this.faq.faqCategories.find((c) => c.id === fromCatId);
             const toCat = this.faq.faqCategories.find((c) => c.id === toCatId);
 
-            // SortableJS a déjà déplacé le nœud DOM,
-            // on annule ce mouvement et on laisse Vue gérer
+            if (!fromCat || !toCat) return;
+
             from.insertBefore(item, from.children[oldIndex] || null);
 
-            // Déplace la question dans le tableau
             const [moved] = fromCat.faqQuestions.splice(oldIndex, 1);
             toCat.faqQuestions.splice(newIndex, 0, moved);
 
-            // Réassigne renderOrder dans les deux catégories impactées
             fromCat.faqQuestions.forEach((q, i) => {
               q.renderOrder = i + 1;
             });
@@ -214,7 +221,7 @@ export default defineComponent({
       }
 
       const item = elements.find((item) => item.locale === this.currentLocale);
-      const str = item ? item[property] : '';
+      const str = item ? ((item as Record<string, string>)[property] ?? '') : '';
 
       return concatValue !== '' ? `${str}|${concatValue}` : str;
     },
