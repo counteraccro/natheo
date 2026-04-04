@@ -13,14 +13,14 @@ import { initFlowbite } from 'flowbite';
 export default defineComponent({
   name: 'MediasGrid',
   props: {
-    medias: Array as PropType<MediaItem[]>,
+    medias: { type: Array as PropType<MediaItem[]>, required: true },
     translate: { type: Object as PropType<TranslateRecord>, required: true },
     render: String,
   },
   emits: ['load-data-folder', 'edit', 'show-info', 'move', 'trash'],
   data() {
     return {
-      confirmTrashId: null,
+      confirmTrashId: null as number | null,
     };
   },
   computed: {
@@ -68,6 +68,18 @@ export default defineComponent({
      */
     confirmTrash(id: number, type: string): void {
       this.$emit('trash', true, id, type);
+    },
+
+    /**
+     * Event de la sourie
+     * @param event
+     * @param color
+     */
+    onMenuHover(event: MouseEvent, color: string) {
+      const link = (event.target as HTMLElement)?.closest('a') as HTMLElement | null;
+      if (link) {
+        link.style.backgroundColor = color;
+      }
     },
   },
 });
@@ -241,8 +253,8 @@ export default defineComponent({
                     class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150"
                     style="color: var(--text-primary)"
                     @click="$emit('show-info', media, 'show')"
-                    @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
-                    @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+                    @mouseover="onMenuHover($event, 'var(--bg-hover)')"
+                    @mouseleave="onMenuHover($event, '')"
                   >
                     <svg
                       class="w-4 h-4 flex-shrink-0"
@@ -267,8 +279,8 @@ export default defineComponent({
                     class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150"
                     style="color: var(--text-primary)"
                     @click="$emit('edit', media, 'edit')"
-                    @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
-                    @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+                    @mouseover="onMenuHover($event, 'var(--bg-hover)')"
+                    @mouseleave="onMenuHover($event, '')"
                   >
                     <svg
                       class="w-4 h-4 flex-shrink-0"
@@ -293,8 +305,8 @@ export default defineComponent({
                     class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150"
                     style="color: var(--text-primary)"
                     @click="$emit('move', media, 'move')"
-                    @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
-                    @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+                    @mouseover="onMenuHover($event, 'var(--bg-hover)')"
+                    @mouseleave="onMenuHover($event, '')"
                   >
                     <svg
                       class="w-4 h-4 flex-shrink-0"
@@ -318,8 +330,8 @@ export default defineComponent({
                     href="#"
                     @click="askTrash(media.id)"
                     class="no-control flex items-center gap-2.5 px-3 py-2.5 transition-colors duration-150 text-red-500"
-                    @mouseover="$event.target.closest('a').style.backgroundColor = '#fef2f2'"
-                    @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+                    @mouseover="onMenuHover($event, '#fef2f2')"
+                    @mouseleave="onMenuHover($event, '')"
                   >
                     <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
@@ -398,7 +410,7 @@ export default defineComponent({
             <a
               class="link text-sm"
               style="cursor: pointer"
-              @click.stop="media.type === 'media' ? this.openMedia(media.webPath) : $emit('load-data-folder', media.id)"
+              @click.stop="media.type === 'media' ? openMedia(media.webPath) : $emit('load-data-folder', media.id)"
               >{{ media.name }}</a
             >
           </td>
@@ -410,8 +422,8 @@ export default defineComponent({
               class="no-control no-control btn btn-ghost-primary btn-icon"
               style="color: var(--text-primary)"
               @click="$emit('show-info', media, 'show')"
-              @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
-              @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+              @mouseover="onMenuHover($event, 'var(--bg-hover)')"
+              @mouseleave="onMenuHover($event, '')"
             >
               <svg
                 class="w-4 h-4 flex-shrink-0"
@@ -433,8 +445,8 @@ export default defineComponent({
               class="no-control no-control btn btn-ghost-primary btn-icon"
               style="color: var(--text-primary)"
               @click="$emit('edit', media, 'edit')"
-              @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
-              @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+              @mouseover="onMenuHover($event, 'var(--bg-hover)')"
+              @mouseleave="onMenuHover($event, '')"
             >
               <svg
                 class="w-4 h-4 flex-shrink-0"
@@ -456,8 +468,8 @@ export default defineComponent({
               class="no-control no-control btn btn-ghost-primary btn-icon"
               style="color: var(--text-primary)"
               @click="$emit('move', media, 'move')"
-              @mouseover="$event.target.closest('a').style.backgroundColor = 'var(--bg-hover)'"
-              @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+              @mouseover="onMenuHover($event, 'var(--bg-hover)')"
+              @mouseleave="onMenuHover($event, '')"
             >
               <svg
                 class="w-4 h-4 flex-shrink-0"
@@ -478,8 +490,8 @@ export default defineComponent({
             <button
               @click="$emit('trash', true, media.id, media.type)"
               class="no-control btn btn-ghost-danger btn-icon"
-              @mouseover="$event.target.closest('a').style.backgroundColor = '#fef2f2'"
-              @mouseleave="$event.target.closest('a').style.backgroundColor = ''"
+              @mouseover="onMenuHover($event, '#fef2f2')"
+              @mouseleave="onMenuHover($event, '')"
             >
               <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
