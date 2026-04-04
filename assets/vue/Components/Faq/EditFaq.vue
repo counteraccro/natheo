@@ -18,6 +18,7 @@ import { EditorModule } from '@/ts/MarkdownEditor/MarkdownEditor.types';
 import { InternalLinkModule } from '@/ts/MarkdownEditor/modules/internalLink';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import { Toasts } from '@/ts/Toast/type';
+import { MediaModule } from '@/ts/MarkdownEditor/modules/Mediatheque';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
 
@@ -63,7 +64,7 @@ export default defineComponent({
   },
 
   setup(): any {
-    const editorModules: EditorModule[] = [InternalLinkModule];
+    const editorModules: EditorModule[] = [InternalLinkModule, MediaModule];
     return {
       editorModules,
     };

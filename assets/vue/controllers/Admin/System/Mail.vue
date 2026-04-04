@@ -14,10 +14,12 @@ import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import { InternalLinkModule } from '@/ts/MarkdownEditor/modules/internalLink';
 import { EditorModule } from '@/ts/MarkdownEditor/MarkdownEditor.types';
 import InternalLink from '@/vue/Components/Global/MarkdownEditor/InternalLink.vue';
+import MediathequeModale from '@/vue/Components/Global/MarkdownEditor/Mediatheque.vue';
+import { MediaModule } from '@/ts/MarkdownEditor/modules/Mediatheque';
 
 export default {
   name: 'Mail',
-  components: { InternalLink, SkeletonText, SkeletonForm, Toast, MarkdownEditor },
+  components: { InternalLink, SkeletonText, SkeletonForm, Toast, MarkdownEditor, MediathequeModale },
   props: {
     url_data: String,
   },
@@ -48,7 +50,7 @@ export default {
   },
 
   setup() {
-    const editorModules: EditorModule[] = [InternalLinkModule];
+    const editorModules: EditorModule[] = [InternalLinkModule, MediaModule];
 
     return {
       editorModules,
