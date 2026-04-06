@@ -287,6 +287,11 @@ La documentation complète est disponible en ligne :
 
 ---
 
+## :end: Divers
+Au 06 avril 2026 le projet comporte **162250 lignes** de code
+
+---
+
 ## 🤝 Contribution
 
 Les contributions sont les bienvenues ! N'hésitez pas à :
