@@ -38,6 +38,7 @@
         "babel-types": "npm:@babel/types@^7.23.6",
         "bootstrap": "5.3.1",
         "bootstrap-icons": "^1.10.5",
+        "core-js": "^3.39",
         "emittery": "^1.0.1",
         "flowbite": "^3.1.2",
         "lodash-es": "^4.17.21",
