@@ -15,6 +15,9 @@
 
 </div>
 
+> [!WARNING]  
+> La documentation actuelle est basé sur la V1 du CMS, elle sera mise à jour plus tard pour correspondre à la V2
+
 ---
 
 ## 📋 Table des matières
