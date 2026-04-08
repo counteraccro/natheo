@@ -3,38 +3,81 @@
 {% block title %}{{ 'comment.index.page_title' | trans({}, 'comment') }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'comment.index.page_title_h1' | trans({}, 'comment') }}</h1>
 
     {{ breadcrumb(breadcrumb) }}
 
-    <fieldset class="mb-3">
-        <legend><i class="bi bi-info-circle"></i> {{ 'comment.index.info' | trans({}, 'comment') }}</legend>
-    {% if isOpenComment is same as("1") %}
-        {{ 'comment.index.info.comment.open' | trans({}, 'comment') }}
-        {% if isModerate is same as('1') %}
-            {{ 'comment.index.info.comment.moderate' | trans({}, 'comment') }}
-        {% endif %}
-    {% else %}
-        {{ 'comment.index.info.comment.close' | trans({}, 'comment') }}
-    {% endif %}
+    <h1 class="head-title">
+        <svg class="w-7 h-7 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 17h6l3 3v-3h2V9h-2M4 4h11v8H9l-3 3v-3H4V4Z"></path>
+        </svg>{{ 'comment.index.page_title_h1' | trans({}, 'comment') }}</h1>
 
-        <a href="{{ path('admin_option-system_change') }}" class="btn btn-secondary btn-sm float-end">{{ 'comment.index.info.change.option' | trans({}, 'comment') }}</a>
-    </fieldset>
+    <div class="float-end">
 
-    <button type="button" class="btn btn-secondary float-end ms-2" data-bs-toggle="modal" data-bs-target="#help-grid-comment">
-        <i class="bi bi-question-circle"></i>
-    </button>
-    <a href="{{ path('admin_comment_moderate_comments') }}" class="float-end btn btn-secondary">
-        <i class="bi bi-chat-dots-fill"></i> {{ 'comment.index.btn.moderate' | trans({}, 'comment') }}
+        <a href="{{ path('admin_comment_moderate_comments') }}" class="btn btn-primary btn-sm">
+            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 9h5m3 0h2M7 12h2m3 0h5M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-6.616a1 1 0 0 0-.67.257l-2.88 2.592A.5.5 0 0 1 8 18.477V17a1 1 0 0 0-1-1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/>
+            </svg>
+            {{ 'comment.index.btn.moderate' | trans({}, 'comment') }}
+        </a>
 
-    </a>
+        <button data-modal-target="help-grid-comment" data-modal-toggle="help-grid-comment"
+                class="btn btn-primary btn-icon ms-2">
+            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                 fill="none"
+                 viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+        </button>
+    </div>
 
-    <p>
-        {{ 'comment.index.description' | trans({}, 'comment') }} <br/>
-        {% if nbCommentWaitValidation > 0  %}
-            {{ 'comment.index.btn.moderate.nb.wait.validation.1' | trans({}, 'comment') }} <span class="badge rounded-pill text-bg-danger">{{ nbCommentWaitValidation }}</span> {{ 'comment.index.btn.moderate.nb.wait.validation.2' | trans({}, 'comment') }} <br/>
-        {% endif %}
+    <p class="text-sm" style="color: var(--text-secondary);">
+        {{ 'comment.index.description' | trans({}, 'comment') }}
     </p>
+
+    <div class="flex gap-3 mt-10 mb-3">
+
+        <div class="alert alert-primary-solid w-full">
+            <svg class="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <div class="alert-content">
+
+                <div class="alert-title"> {{ 'comment.index.info' | trans({}, 'comment') }}</div>
+                <div class="alert-message">
+                    {% if isOpenComment is same as("1") %}
+                        {{ 'comment.index.info.comment.open' | trans({}, 'comment') }}
+                        {% if isModerate is same as('1') %}
+                            {{ 'comment.index.info.comment.moderate' | trans({}, 'comment') }}
+                        {% endif %}
+                    {% else %}
+                        {{ 'comment.index.info.comment.close' | trans({}, 'comment') }}
+                    {% endif %}
+                </div>
+                <div class="alert-actions">
+                    <a href="{{ path('admin_option-system_change') }}" class="alert-btn alert-btn-primary">{{ 'comment.index.info.change.option' | trans({}, 'comment') }}</a>
+                </div>
+            </div>
+        </div>
+
+            <div class="card rounded-lg p-6 text-white" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);">
+                <div class="flex items-center justify-between"><div>
+                        <p class="text-3xl font-bold">{{ nbCommentWaitValidation }}</p>
+                        <p class="text-sm font-medium mt-1">{{ 'comment.index.btn.moderate.nb.wait.validation.2' | trans({}, 'comment') }}</p>
+                    </div>
+                    <div class="p-3 rounded-lg bg-[var(--primary)] opacity-60">
+                        <svg class="w-8 h-8 text-white opacity-100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 10.5h.01m-4.01 0h.01M8 10.5h.01M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-6.6a1 1 0 0 0-.69.275l-2.866 2.723A.5.5 0 0 1 8 18.635V17a1 1 0 0 0-1-1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/>
+                        </svg>
+
+                    </div>
+                </div>
+            </div>
+
+    </div>
+
+
 
 
     <div {{ vue_component('Admin/GenericGrid', {'url' : path('admin_comment_load_grid_data',  {'page' : page, 'limit' : limit}), 'page' : page, 'limit' : limit, 'activeSearchData' : true, 'showFilter' : true}) }}></div>
@@ -44,17 +87,14 @@
             <i class="bi bi-question-circle"></i> {{ 'comment.index.popin.help.title' | trans({}, 'comment') }}
         </twig:block>
 
-        <div class="row">
-            <div class="col">
-                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi-eye-slash-fill"></i></button> {{ 'comment.index.popin.help.disabled' | trans({}, 'comment') }}
-            </div>
-            <div class="col">
-                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-eye-fill"></i></button> {{ 'comment.index.popin.help.enable' | trans({}, 'comment') }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <button type="button" class="btn btn-secondary btn-sm mb-1"><i class="bi bi bi-pencil-fill"></i></button> {{ 'comment.index.popin.help.edit' | trans({}, 'comment') }}
+        <div class="flex flex-row gap-10">
+            <div class="flex items-center gap-3">
+                <button type="button" class="btn btn-icon btn-xs btn-ghost-primary">
+                    <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"/>
+                    </svg>
+
+                </button> {{ 'comment.index.popin.help.edit' | trans({}, 'comment') }}
             </div>
         </div>
     </twig:Admin:ModaleComponent>
