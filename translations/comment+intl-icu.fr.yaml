@@ -51,7 +51,7 @@ comment.moderation.pages.default: 'Toutes les pages'
 comment.moderation.selection.title: 'Action de modération'
 comment.moderation.status.default: 'Tous les status'
 comment.index.btn.moderate.nb.wait.validation.1: "Il y'a"
-comment.index.btn.moderate.nb.wait.validation.2: 'Commentaire(s) en attente de validation'
+comment.index.btn.moderate.nb.wait.validation.2: ' en attente de validation'
 comment.moderation.paginate.page: page
 comment.moderation.paginate.on: sur
 comment.moderation.paginate.row: commentaire(s)
