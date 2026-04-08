@@ -40,22 +40,27 @@ class CommentServiceTest extends AppWebTestCase
 
         $commentModerate = $this->createComment(userModeration: $this->createUserContributeur());
 
-        $result = $this->commentService->getAllPaginate(1, 4);
+        $result = $this->commentService->getAllPaginate(1, 4, []);
         $this->assertEquals(4, $result->getIterator()->count());
         $this->assertEquals(6, $result->count());
 
-        $result = $this->commentService->getAllPaginate(1, 4, $comment->getComment());
-        $this->assertEquals(1, $result->getIterator()->count());
-        $this->assertEquals(1, $result->count());
-
-        $result = $this->commentService->getAllPaginate(1, 4, userId: $commentModerate->getUserModeration()->getId());
+        $result = $this->commentService->getAllPaginate(1, 4, ['search' => $comment->getComment()]);
         $this->assertEquals(1, $result->getIterator()->count());
         $this->assertEquals(1, $result->count());
 
         $result = $this->commentService->getAllPaginate(
             1,
             4,
-            $comment->getComment(),
+            [],
+            userId: $commentModerate->getUserModeration()->getId(),
+        );
+        $this->assertEquals(1, $result->getIterator()->count());
+        $this->assertEquals(1, $result->count());
+
+        $result = $this->commentService->getAllPaginate(
+            1,
+            4,
+            ['search' => $comment->getComment()],
             $commentModerate->getUserModeration()->getId(),
         );
         $this->assertEquals(0, $result->count());
