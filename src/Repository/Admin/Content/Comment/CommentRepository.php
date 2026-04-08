@@ -37,22 +37,42 @@ class CommentRepository extends ServiceEntityRepository
      * Retourne une liste de commentaires Paginé
      * @param int $page
      * @param int $limit
-     * @param string|null $search
+     * @param array $queryParams
      * @param null $userId
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, ?string $search = null, $userId = null): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams, $userId = null): Paginator
     {
-        $query = $this->createQueryBuilder('c')->orderBy('c.id', 'DESC');
-
-        if ($userId !== null) {
-            $query->andwhere('c.userModeration = :userId')->setParameter('userId', $userId);
+        $orderField = 'id';
+        $order = 'DESC';
+        if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
+            $orderField = $queryParams['orderField'];
         }
 
-        if ($search !== null) {
+        if (isset($queryParams['order']) && $queryParams['order'] !== '') {
+            $order = $queryParams['order'];
+        }
+
+        $query = $this->createQueryBuilder(Comment::DEFAULT_ALIAS)->orderBy(
+            Comment::DEFAULT_ALIAS . '.' . $orderField,
+            $order,
+        );
+
+        if ($userId !== null) {
+            $query->andwhere(Comment::DEFAULT_ALIAS . '.userModeration = :userId')->setParameter('userId', $userId);
+        }
+
+        if (isset($queryParams['search']) && $queryParams['search'] !== '') {
             $query
-                ->andWhere('c.comment like :search OR c.author like :search OR c.email like :search')
-                ->setParameter('search', '%' . $search . '%');
+                ->andWhere(
+                    Comment::DEFAULT_ALIAS .
+                        '.comment like :search OR ' .
+                        Comment::DEFAULT_ALIAS .
+                        '.author like :search OR ' .
+                        Comment::DEFAULT_ALIAS .
+                        '.email like :search',
+                )
+                ->setParameter('search', '%' . $queryParams['search'] . '%');
         }
 
         $paginator = new Paginator($query->getQuery(), true);

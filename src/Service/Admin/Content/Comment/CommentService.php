@@ -21,14 +21,14 @@ class CommentService extends AppAdminService
      * Construit le tableau de donnée à envoyé au tableau GRID
      * @param int $page
      * @param int $limit
-     * @param string|null $search
+     * @param array $queryParams
      * @param int|null $userId
      * @return array
+     * @throws CommonMarkException
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws CommonMarkException
      */
-    public function getAllFormatToGrid(int $page, int $limit, ?string $search = null, ?int $userId = null): array
+    public function getAllFormatToGrid(int $page, int $limit, array $queryParams, ?int $userId = null): array
     {
         $translator = $this->getTranslator();
         $gridService = $this->getGridService();
@@ -45,7 +45,7 @@ class CommentService extends AppAdminService
             GridService::KEY_ACTION,
         ];
 
-        $dataPaginate = $this->getAllPaginate($page, $limit, $search, $userId);
+        $dataPaginate = $this->getAllPaginate($page, $limit, $queryParams, $userId);
 
         $nb = $dataPaginate->count();
         $data = [];
@@ -58,13 +58,8 @@ class CommentService extends AppAdminService
             $markdown = new Markdown();
             $comment = $markdown->convertMarkdownToHtml($element->getComment());
 
-            $isDisabled = '';
-            if ($element->isDisabled()) {
-                $isDisabled = '<i class="bi bi-eye-slash"></i>';
-            }
-
             $data[] = [
-                $translator->trans('comment.grid.id', domain: 'comment') => $element->getId() . $isDisabled,
+                $translator->trans('comment.grid.id', domain: 'comment') => $element->getId(),
                 $translator->trans('comment.grid.comment', domain: 'comment') => u($comment)->truncate(100, '…'),
                 $translator->trans('comment.grid.author', domain: 'comment') => $element->getAuthor(),
                 $translator->trans('comment.grid.page', domain: 'comment') =>
@@ -80,6 +75,7 @@ class CommentService extends AppAdminService
                     ->getCreatedAt()
                     ->format('d/m/y H:i'),
                 GridService::KEY_ACTION => $action,
+                'isDisabled' => $element->isDisabled(),
             ];
         }
 
@@ -88,6 +84,13 @@ class CommentService extends AppAdminService
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
             GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate),
+            GridService::KEY_LIST_ORDER_FIELD => [
+                'id' => $translator->trans('comment.grid.id', domain: 'comment'),
+                'author' => $translator->trans('comment.grid.author', domain: 'comment'),
+                'page_id' => $translator->trans('comment.grid.page', domain: 'comment'),
+                'status' => $translator->trans('comment.grid.status', domain: 'comment'),
+                'created_at' => $translator->trans('comment.grid.created_at', domain: 'comment'),
+            ],
         ];
         return $gridService->addAllDataRequiredGrid($tabReturn);
     }
@@ -96,16 +99,16 @@ class CommentService extends AppAdminService
      * Retourne une liste de commentaires paginé
      * @param int $page
      * @param int $limit
-     * @param string|null $search
+     * @param array $queryParams
      * @param int|null $userId
      * @return Paginator
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllPaginate(int $page, int $limit, ?string $search = null, ?int $userId = null): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams, ?int $userId = null): Paginator
     {
         $repo = $this->getRepository(Comment::class);
-        return $repo->getAllPaginate($page, $limit, $search, $userId);
+        return $repo->getAllPaginate($page, $limit, $queryParams, $userId);
     }
 
     /**
@@ -123,7 +126,11 @@ class CommentService extends AppAdminService
 
         // Bouton edit
         $actions[] = [
-            'label' => '<i class="bi bi-chat-dots-fill"></i>',
+            'label' => [
+                'M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28',
+            ],
+            'color' => 'primary',
+            'type' => 'post',
             'id' => $comment->getId(),
             'url' => $router->generate('admin_comment_see', ['id' => $comment->getId()]),
             'ajax' => false,

@@ -81,14 +81,19 @@ class CommentController extends AppAdminController
         int $page = 1,
         int $limit = 20,
     ): JsonResponse {
-        $search = $request->query->get('search');
+        $queryParams = [
+            'search' => $request->query->get('search'),
+            'orderField' => $request->query->get('orderField'),
+            'order' => $request->query->get('order'),
+            'locale' => $request->getLocale(),
+        ];
         $filter = $request->query->get('filter');
 
         $userId = null;
         if ($filter === self::FILTER_ME) {
             $userId = $this->getUser()->getId();
         }
-        $grid = $commentService->getAllFormatToGrid($page, $limit, $search, $userId);
+        $grid = $commentService->getAllFormatToGrid($page, $limit, $queryParams, $userId);
         return $this->json($grid);
     }
 
