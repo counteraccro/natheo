@@ -3,10 +3,16 @@
 {% block title %}{{ 'comment.see.page_title' | trans({'%id%' : datas.id}, 'comment') }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'comment.see.page_title_h1' | trans({'%id%' : datas.id}, 'comment') }}</h1>
 
     {{ breadcrumb(breadcrumb) }}
 
+    <h1 class="head-title">
+        <svg class="w-7 h-7 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
+        </svg>{{ 'comment.see.page_title_h1' | trans({'%id%' : datas.id}, 'comment') }}</h1>
 
-    <div {{ vue_component('Admin/Content/Comment/CommentEdit', {'urls' : urls, 'translate' : translate, 'datas' : datas}) }}></div>
+
+
+    <div class="mt-5" {{ vue_component('Admin/Content/Comment/CommentEdit', {'urls' : urls, 'translate' : translate, 'datas' : datas}) }}></div>
 {% endblock %}

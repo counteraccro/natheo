@@ -202,6 +202,7 @@ class CommentController extends AppAdminController
             'breadcrumb' => $breadcrumb,
             'translate' => $translate,
             'urls' => [
+                'index' => $this->generateUrl('admin_comment_index'),
                 'load_comment' => $this->generateUrl('admin_comment_load'),
                 'save' => $this->generateUrl('admin_comment_save'),
             ],
