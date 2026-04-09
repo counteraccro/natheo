@@ -72,3 +72,5 @@ comment.moderation.selection.submit: 'Mettre à jour'
 comment.moderation.update.success: 'commentaire(s) édité(s) avec succès'
 comment.moderation.btn.reset: 'Tout désélectionner'
 comment.moderation.noResult: 'Aucun commentaire trouvé pour le status sélectionné'
+comment.see.cancel: Annuler
+comment.see.comment.title: 'Contenu du commentaire'

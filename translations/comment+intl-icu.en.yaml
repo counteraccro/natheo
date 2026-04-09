@@ -72,3 +72,5 @@ comment.moderation.selection.submit: __comment.moderation.selection.submit
 comment.moderation.update.success: __comment.moderation.update.success
 comment.moderation.btn.reset: __comment.moderation.btn.reset
 comment.moderation.noResult: __comment.moderation.noResult
+comment.see.cancel: __comment.see.cancel
+comment.see.comment.title: __comment.see.comment.title

@@ -25,6 +25,8 @@ class CommentTranslate extends AppTranslate
             'toast_title_success' => $this->translator->trans('comment.see.toast.title.success', domain: 'comment'),
             'toast_title_error' => $this->translator->trans('comment.see.toast.title.error', domain: 'comment'),
             'toast_time' => $this->translator->trans('comment.see.toast.time', domain: 'comment'),
+            'cancel' => $this->translator->trans('comment.see.cancel', domain: 'comment'),
+            'commentTitle' => $this->translator->trans('comment.see.comment.title', domain: 'comment'),
         ];
     }
 
