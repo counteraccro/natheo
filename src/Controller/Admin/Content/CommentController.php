@@ -224,8 +224,12 @@ class CommentController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load/{id}', name: 'load', methods: ['GET'])]
-    public function getComment(CommentService $commentService, ?int $id = null): Response
-    {
+    public function getComment(
+        CommentService $commentService,
+        OptionSystemService $optionSystemService,
+        PageService $pageService,
+        ?int $id = null,
+    ): Response {
         /** @var Comment $comment */
         $comment = $commentService->findOneById(Comment::class, $id);
 
@@ -242,7 +246,8 @@ class CommentController extends AppAdminController
 
         $commentArray['page'] = [
             'title' => $title,
-            'url' => $this->generateUrl('admin_page_update', ['id' => $page->getId()]),
+            'createdAt' => $page->getCreatedAt()->format('d/m/Y H:i'),
+            'url' => $pageService->getFrontUrl($page),
         ];
         $commentArray['createdAt'] = $comment->getCreatedAt()->format('d/m/y H:i');
         $commentArray['updateAt'] = $comment->getUpdateAt()->format('d/m/y H:i');

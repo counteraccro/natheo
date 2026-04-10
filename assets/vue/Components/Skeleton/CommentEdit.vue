@@ -23,7 +23,7 @@ export default {
     <div class="xl:col-span-2 flex flex-col gap-6">
       <!-- Carte éditeur -->
       <div
-        class="rounded-2xl overflow-hidden animate-pulse"
+        class="rounded-lg overflow-hidden animate-pulse"
         style="background-color: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm)"
       >
         <!-- Header carte -->
@@ -79,7 +79,7 @@ export default {
 
       <!-- Barre d'actions skeleton -->
       <div
-        class="flex items-center justify-between px-6 py-4 rounded-2xl animate-pulse"
+        class="flex items-center justify-between px-6 py-4 rounded-lg animate-pulse"
         style="background-color: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm)"
       >
         <div class="h-9 w-28 rounded-lg bg-gray-200 dark:bg-gray-700"></div>
@@ -91,7 +91,7 @@ export default {
     <div class="flex flex-col gap-6">
       <!-- Carte Statut skeleton -->
       <div
-        class="rounded-2xl overflow-hidden animate-pulse"
+        class="rounded-lg overflow-hidden animate-pulse"
         style="background-color: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm)"
       >
         <div class="px-5 py-4" style="border-bottom: 1px solid var(--border-color)">
@@ -109,14 +109,14 @@ export default {
 
       <!-- Carte Informations skeleton -->
       <div
-        class="rounded-2xl overflow-hidden animate-pulse"
+        class="rounded-lg overflow-hidden animate-pulse"
         style="background-color: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm)"
       >
         <div class="px-5 py-4" style="border-bottom: 1px solid var(--border-color)">
           <div class="h-4 w-28 rounded-md bg-gray-200 dark:bg-gray-700"></div>
         </div>
         <!-- 4 lignes d'info -->
-        <div class="divide-y" style="divide-color: var(--border-color)">
+        <div class="divide-y divide-[var(--border-color)]">
           <div v-for="i in 4" class="flex items-center gap-3 px-5 py-4">
             <div class="w-8 h-8 rounded-lg flex-shrink-0 bg-gray-200 dark:bg-gray-700"></div>
             <div class="flex flex-col gap-1.5 flex-1">
@@ -157,7 +157,7 @@ export default {
 
       <!-- Carte Article associé skeleton -->
       <div
-        class="rounded-2xl overflow-hidden animate-pulse"
+        class="rounded-lg overflow-hidden animate-pulse"
         style="background-color: var(--bg-card); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm)"
       >
         <div class="px-5 py-4" style="border-bottom: 1px solid var(--border-color)">

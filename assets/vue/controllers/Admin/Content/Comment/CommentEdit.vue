@@ -136,7 +136,7 @@ export default defineComponent({
   <div v-if="comment">
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
       <div class="xl:col-span-2 flex flex-col gap-6">
-        <div class="card rounded-2xl overflow-hidden">
+        <div class="card rounded-lg overflow-hidden">
           <div class="flex items-center justify-between px-6 py-4">
             <div class="flex items-center gap-2">
               <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -167,7 +167,7 @@ export default defineComponent({
           />
         </div>
 
-        <div class="flex items-center justify-between px-6 py-4 rounded-2xl card">
+        <div class="flex items-center justify-between px-6 py-4 rounded-lg card">
           <a :href="urls.index" class="inline-flex items-center gap-2 btn btn-sm btn-outline-dark">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -191,7 +191,220 @@ export default defineComponent({
           </button>
         </div>
       </div>
-      <div class="flex flex-col gap-6"></div>
+      <div class="flex flex-col gap-6">
+        <div class="card rounded-lg overflow-hidden">
+          <div class="px-5 py-4" style="border-bottom: 1px solid var(--border-color)">
+            <h3 class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.status }}</h3>
+          </div>
+          <div class="p-5">
+            <div class="flex items-center gap-2 mb-4">
+              <span v-html="comment.statusStr"></span>
+              <span class="text-xs" style="color: var(--text-light)">{{ translate.status_actuel }}</span>
+            </div>
+
+            <div v-if="comment.status == datas.statusModerate" class="mt-2 form-group">
+              <label
+                class="form-label"
+                style="color: var(--text-secondary); font-size: var(--text-xs); font-weight: normal"
+                >{{ translate.moderationComment }}</label
+              >
+              <textarea
+                class="form-input"
+                id="moderation-content"
+                rows="3"
+                v-model="comment.moderationComment"
+              ></textarea>
+              <div v-if="comment.userModeration" class="float-end text-xs mt-1" style="color: var(--text-secondary)">
+                {{ translate.moderationAuthor }} : {{ comment.userModeration.login }}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label
+                class="form-label"
+                style="color: var(--text-secondary); font-size: var(--text-xs); font-weight: normal"
+                >{{ translate.status_label }}</label
+              >
+              <select class="form-input form-input-sm" v-model="comment.status">
+                <option
+                  v-for="(key, status) in datas.status"
+                  :key="status"
+                  :value="status"
+                  :selected="status === comment.status"
+                >
+                  {{ key }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="card rounded-lg overflow-hidden">
+          <div class="px-5 py-4" style="border-bottom: 1px solid var(--border-color)">
+            <h3 class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.titleInfo }}</h3>
+          </div>
+          <ul class="divide-y divide-[var(--border-color)]">
+            <!-- Auteur -->
+            <li class="flex items-center gap-3 px-5 py-4">
+              <div
+                class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
+                style="background-color: var(--primary-lighter)"
+              >
+                <svg
+                  class="w-4 h-4"
+                  style="color: var(--primary)"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  ></path>
+                </svg>
+              </div>
+              <div class="min-w-0">
+                <p class="text-xs font-medium mb-0.5" style="color: var(--text-secondary)">{{ translate.author }}</p>
+                <p class="text-xs font-semibold truncate" style="color: var(--text-primary)">{{ comment.author }}</p>
+                <p class="text-xs truncate" style="color: var(--text-light)">{{ comment.email }}</p>
+              </div>
+            </li>
+            <!-- Date -->
+            <li class="flex items-center gap-3 px-5 py-4">
+              <div
+                class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
+                style="background-color: var(--primary-lighter)"
+              >
+                <svg
+                  class="w-4 h-4"
+                  style="color: var(--primary)"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  ></path>
+                </svg>
+              </div>
+              <div>
+                <p class="text-xs font-medium mb-0.5" style="color: var(--text-secondary)">{{ translate.created }}</p>
+                <p class="text-xs font-semibold" style="color: var(--text-primary)">{{ comment.createdAt }}</p>
+              </div>
+            </li>
+            <!-- IP -->
+            <li class="flex items-center gap-3 px-5 py-4">
+              <div
+                class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
+                style="background-color: var(--primary-lighter)"
+              >
+                <svg
+                  class="w-4 h-4"
+                  style="color: var(--primary)"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+                  ></path>
+                </svg>
+              </div>
+              <div>
+                <p class="text-xs font-medium mb-0.5" style="color: var(--text-secondary)">{{ translate.ip }}</p>
+                <p class="text-xs font-semibold font-mono" style="color: var(--text-primary)">{{ comment.ip }}</p>
+              </div>
+            </li>
+            <!-- Autres infos -->
+            <li class="flex items-center gap-3 px-5 py-4">
+              <div
+                class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
+                style="background-color: var(--primary-lighter)"
+              >
+                <svg
+                  class="w-4 h-4"
+                  style="color: var(--primary)"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H4a2 2 0 01-2-2V5a2 2 0 012-2h16a2 2 0 012 2v10a2 2 0 01-2 2h-1"
+                  ></path>
+                </svg>
+              </div>
+              <div>
+                <p class="text-xs font-medium mb-0.5" style="color: var(--text-secondary)">{{ translate.userAgent }}</p>
+                <p class="text-xs font-semibold capitalize" style="color: var(--text-primary)">
+                  {{ comment.userAgent }}
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card rounded-lg overflow-hidden">
+          <div class="px-5 py-4" style="border-bottom: 1px solid var(--border-color)">
+            <h3 class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.page_associated }}</h3>
+          </div>
+          <div class="p-5">
+            <div class="flex items-start gap-3">
+              <div
+                class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center mt-0.5"
+                style="background-color: var(--primary-lighter)"
+              >
+                <svg
+                  class="w-4 h-4"
+                  style="color: var(--primary)"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  ></path>
+                </svg>
+              </div>
+              <div class="min-w-0">
+                <p class="text-xs font-semibold leading-snug" style="color: var(--text-primary)">
+                  {{ comment.page.title }}
+                </p>
+                <p class="text-xs mt-1" style="color: var(--text-light)">
+                  {{ translate.page_created }} {{ comment.createdAt }}
+                </p>
+                <a
+                  :href="comment.page.url"
+                  class="inline-flex items-center gap-1 text-xs font-medium mt-2 hover:underline"
+                  style="color: var(--primary)"
+                >
+                  {{ translate.page_link }}
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    ></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
