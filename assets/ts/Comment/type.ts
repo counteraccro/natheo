@@ -9,6 +9,12 @@ export interface UserModeration {
   login: string;
 }
 
+export interface Page {
+  title: string;
+  url: string;
+  createdAt: string;
+}
+
 /** Représente un commentaire */
 export interface Comment {
   id: number;
@@ -22,6 +28,7 @@ export interface Comment {
   createdAt: string;
   ip: string;
   userAgent: string;
+  page: Page;
 }
 
 /** Réponse de l'API pour le chargement d'un commentaire */
@@ -78,4 +85,10 @@ export interface Translate {
   markdown: Record<string, Record<string, string>>;
   commentTitle: string;
   cancel: string;
+  status: string;
+  status_actuel: string;
+  status_label: string;
+  page_associated: string;
+  page_created: string;
+  page_link: string;
 }
