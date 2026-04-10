@@ -18,6 +18,7 @@ use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageHistory;
 use App\Utils\Content\Page\PageStatistiqueKey;
 use App\Utils\Content\Tag\TagRender;
+use App\Utils\System\Options\OptionSystemKey;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -549,5 +550,28 @@ class PageService extends AppAdminService
             $return[$page['id']] = $page['titre'];
         }
         return $return;
+    }
+
+    /**
+     * Génère une URL front
+     * @param Page $page
+     * @return string
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getFrontUrl(Page $page): string
+    {
+        $locale = $this->getLocales()['current'];
+        $url = $this->getOptionSystemService()->getByKey(OptionSystemKey::OS_ADRESSE_SITE)->getValue();
+        $tabCategories = $this->getPageService()->getAllCategories();
+
+        $pageTrans = $page->getPageTranslationByLocale($locale);
+        return $url .
+            '/' .
+            $locale .
+            '/' .
+            strtolower($tabCategories[$page->getCategory()]) .
+            '/' .
+            $pageTrans->getUrl();
     }
 }
