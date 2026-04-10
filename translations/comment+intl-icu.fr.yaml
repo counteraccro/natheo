@@ -74,3 +74,9 @@ comment.moderation.btn.reset: 'Tout désélectionner'
 comment.moderation.noResult: 'Aucun commentaire trouvé pour le status sélectionné'
 comment.see.cancel: Annuler
 comment.see.comment.title: 'Contenu du commentaire'
+comment.see.comment.status: Status
+comment.see.comment.status.actuel: 'Status actuel'
+comment.see.comment.status.label: 'Modifier le statut'
+comment.see.comment.page.associated: 'Page associée'
+comment.see.comment.page.created: 'Créée le '
+comment.see.comment.page.link: 'Voir la page'

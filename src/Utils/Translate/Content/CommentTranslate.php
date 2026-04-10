@@ -27,6 +27,12 @@ class CommentTranslate extends AppTranslate
             'toast_time' => $this->translator->trans('comment.see.toast.time', domain: 'comment'),
             'cancel' => $this->translator->trans('comment.see.cancel', domain: 'comment'),
             'commentTitle' => $this->translator->trans('comment.see.comment.title', domain: 'comment'),
+            'status' => $this->translator->trans('comment.see.comment.status', domain: 'comment'),
+            'status_actuel' => $this->translator->trans('comment.see.comment.status.actuel', domain: 'comment'),
+            'status_label' => $this->translator->trans('comment.see.comment.status.label', domain: 'comment'),
+            'page_associated' => $this->translator->trans('comment.see.comment.page.associated', domain: 'comment'),
+            'page_created' => $this->translator->trans('comment.see.comment.page.created', domain: 'comment'),
+            'page_link' => $this->translator->trans('comment.see.comment.page.link', domain: 'comment'),
         ];
     }
 

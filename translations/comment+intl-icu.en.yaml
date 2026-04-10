@@ -74,3 +74,8 @@ comment.moderation.btn.reset: __comment.moderation.btn.reset
 comment.moderation.noResult: __comment.moderation.noResult
 comment.see.cancel: __comment.see.cancel
 comment.see.comment.title: __comment.see.comment.title
+comment.see.comment.status: __comment.see.comment.status
+comment.see.comment.status.actuel: __comment.see.comment.status.actuel
+comment.see.comment.status.label: __comment.see.comment.status.label
+comment.see.comment.page.associated: __comment.see.comment.page.associated
+comment.see.comment.page.created: __comment.see.comment.page.created
