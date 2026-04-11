@@ -80,11 +80,21 @@ class SidebarElementService extends AppAdminService
             $parent = '---';
             if ($element->getParent() !== null) {
                 $parent =
-                    '<i class="bi ' .
+                    '<span class="flex items-center"> <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="' .
                     $element->getParent()->getIcon() .
-                    '"></i> ' .
-                    $translator->trans($element->getParent()->getLabel());
+                    '"></path></svg>' .
+                    $translator->trans($element->getParent()->getLabel()) .
+                    '</span>';
             }
+
+            $icon =
+                '<span class="flex items-center"> <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="' .
+                $element->getIcon() .
+                '"></path></svg>' .
+                $translator->trans($element->getLabel()) .
+                '</span>';
 
             $action = $this->generateTabAction($element);
 
@@ -101,8 +111,7 @@ class SidebarElementService extends AppAdminService
                 $translator->trans('sidebar.grid.id', domain: 'sidebar') =>
                     $element->getId() . ' ' . $isLock . ' ' . $isDisabled,
                 $translator->trans('sidebar.grid.parent', domain: 'sidebar') => $parent,
-                $translator->trans('sidebar.grid.label', domain: 'sidebar') =>
-                    '<i class="bi ' . $element->getIcon() . '"></i> ' . $translator->trans($element->getLabel()),
+                $translator->trans('sidebar.grid.label', domain: 'sidebar') => $icon,
                 $translator->trans('sidebar.grid.role', domain: 'sidebar') => $gridService->renderRole(
                     $element->getRole(),
                 ),
