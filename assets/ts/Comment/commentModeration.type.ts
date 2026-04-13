@@ -37,6 +37,8 @@ export interface CommentModerationTranslate {
   toast_title_error: string;
   toast_time: string;
   paginate: Record<string, string>;
+  comment_unselect_all: string;
+  comment_select_all: string;
 }
 
 export interface CommentModerationDatas {
