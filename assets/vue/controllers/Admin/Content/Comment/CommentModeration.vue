@@ -20,11 +20,12 @@ import type {
   ToastsState,
   UpdateModerationResponse,
 } from '@/ts/Comment/commentModeration.type';
+import SkeletonCommentModeration from '@/vue/Components/Skeleton/CommentModeration.vue';
 
 export default defineComponent({
   name: 'CommentModeration',
 
-  components: { SearchPaginate, Toast },
+  components: { SkeletonCommentModeration, SearchPaginate, Toast },
 
   props: {
     urls: {
@@ -186,6 +187,35 @@ export default defineComponent({
 </script>
 
 <template>
+  <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+    <div class="xl:col-span-2 flex flex-col gap-4">
+      <div class="card flex items-center justify-between px-5 py-3 rounded-lg">
+        <div class="form-check" style="margin-bottom: 0">
+          <input type="checkbox" class="form-check-input" id="check-all" />
+          <label class="form-check-label font-medium" for="check-all">{{ translate.comment_select_all }}</label>
+        </div>
+        <div class="flex items-center gap-3">
+          <span
+            id="selectionCount"
+            class="text-sm font-semibold px-2.5 py-1 rounded-full"
+            style="background-color: var(--primary-lighter); color: var(--primary)"
+            >0 {{ translate.selection_comment }}</span
+          >
+          <button
+            class="text-sm font-medium hover:underline transition-colors cursor-pointer"
+            style="color: var(--text-secondary)"
+          >
+            {{ translate.comment_unselect_all }}
+          </button>
+        </div>
+      </div>
+      <skeleton-comment-moderation v-if="loading" />
+      <div v-else>Bloc comment</div>
+    </div>
+    <div class="flex flex-col gap-6">Bloc 2</div>
+  </div>
+
+  <!--
   <div id="block-moderation" :class="loading === true ? 'block-grid' : ''">
     <div v-if="loading" class="overlay">
       <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000">
@@ -342,5 +372,5 @@ export default defineComponent({
         <div v-html="toasts.toastError.msg"></div>
       </template>
     </toast>
-  </div>
+  </div>-->
 </template>
