@@ -79,3 +79,6 @@ comment.see.comment.status.actuel: __comment.see.comment.status.actuel
 comment.see.comment.status.label: __comment.see.comment.status.label
 comment.see.comment.page.associated: __comment.see.comment.page.associated
 comment.see.comment.page.created: __comment.see.comment.page.created
+comment.see.comment.page.link: __comment.see.comment.page.link
+comment.moderation.comment.select.all: __comment.moderation.comment.select.all
+comment.moderation.comment.unselect.all: __comment.moderation.comment.unselect.all
