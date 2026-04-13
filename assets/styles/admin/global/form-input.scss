@@ -214,6 +214,10 @@ select.form-input {
   border-color: var(--primary);
 }
 
+.form-check-input[type="checkbox"] {
+  border-radius: 0.25rem;
+}
+
 .form-check-input:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
