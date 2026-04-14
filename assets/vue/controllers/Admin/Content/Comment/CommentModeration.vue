@@ -143,11 +143,14 @@ export default defineComponent({
      * @param id
      */
     updateSelected(id: number): void {
+      console.log(id);
       if (this.moderation.selected.find((element) => element === id)) {
         this.moderation.selected = this.moderation.selected.filter((item) => item !== id);
       } else {
         this.moderation.selected.push(id);
       }
+
+      console.log(this.moderation.selected);
     },
 
     /**
@@ -210,7 +213,139 @@ export default defineComponent({
         </div>
       </div>
       <skeleton-comment-moderation v-if="loading" />
-      <div v-else>Bloc comment</div>
+      <div v-else-if="result !== null">
+        <div
+          v-for="comment in result.data"
+          :key="comment.id"
+          class="card rounded-lg overflow-hidden transition-all"
+          :data-id="comment.id"
+        >
+          <!-- Header -->
+          <div class="flex items-center gap-3 px-5 py-3.5" style="border-bottom: 1px solid var(--border-color)">
+            <div class="form-check" style="margin-bottom: 0">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                :id="'comment-' + comment.id"
+                @change="updateSelected(comment.id)"
+                :checked="isChecked(comment.id)"
+              />
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold truncate" style="color: var(--text-primary)">
+                Commentaire <span style="color: var(--primary)">#{{ comment.id }}</span>
+                <span class="font-normal" style="color: var(--text-secondary)">
+                  — {{ translate.comment_date }} {{ comment.date }} {{ translate.comment_author }}
+                </span>
+                {{ comment.author }}
+                <span class="font-normal" style="color: var(--text-secondary)"> ({{ comment.email }})</span>
+              </p>
+            </div>
+            <div v-html="comment.status"></div>
+          </div>
+          <!-- Body -->
+          <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-(--border-color)">
+            <!-- Contenu -->
+            <div class="p-5">
+              <p class="text-xs font-semibold uppercase tracking-wider mb-3" style="color: var(--text-light)">
+                {{ translate.comment_comment }}
+              </p>
+              <p class="text-xs mb-3 flex items-center gap-1.5" style="color: var(--text-secondary)">
+                <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  ></path>
+                </svg>
+                <span class="italic"
+                  >{{ translate.comment_page }} <strong>{{ comment.page }}</strong></span
+                >
+              </p>
+              <p
+                class="text-sm leading-relaxed"
+                style="color: var(--text-primary)"
+                v-html="renderHtml(comment.comment)"
+              ></p>
+            </div>
+            <!-- Informations -->
+
+            <div class="p-5">
+              <p class="text-xs font-semibold uppercase tracking-wider mb-3" style="color: var(--text-light)">
+                {{ translate.comment_info }}
+              </p>
+              <ul class="space-y-2 text-xs mb-4">
+                <li class="flex items-center gap-2" style="color: var(--text-secondary)">
+                  <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+                    ></path>
+                  </svg>
+                  <span class="font-medium text-xs" style="color: var(--text-primary)"
+                    >{{ translate.comment_ip }} :</span
+                  >
+                  <span class="font-mono">{{ comment.ip }}</span>
+                </li>
+                <li class="flex items-center gap-2" style="color: var(--text-secondary)">
+                  <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H4a2 2 0 01-2-2V5a2 2 0 012-2h16a2 2 0 012 2v10a2 2 0 01-2 2h-1"
+                    ></path>
+                  </svg>
+                  <span class="font-medium text-xs" style="color: var(--text-primary)"
+                    >{{ translate.comment_user_agent }} :</span
+                  >
+                  {{ comment.userAgent }}
+                </li>
+              </ul>
+              <!-- Bloc modération -->
+              <div
+                v-if="comment.moderator !== null"
+                class="rounded-lg p-3 mt-3"
+                style="border: 1px solid var(--border-color); background-color: var(--bg-hover)"
+              >
+                <p class="text-xs font-semibold mb-1.5 flex items-center gap-1.5" style="color: var(--text-secondary)">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    ></path>
+                  </svg>
+                  {{ translate.comment_moderator }} : <span class="font-normal">{{ comment.moderator }}</span>
+                </p>
+                <p class="text-xs leading-relaxed" style="color: var(--text-secondary)">
+                  <span class="font-medium" style="color: var(--text-primary)"
+                    >{{ translate.comment_update }} {{ comment.update }}</span
+                  >
+                  <br />
+                  {{ comment.commentModeration }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-if="(result !== null && result.nb) === 0" class="mb-3">
+        <i class="text-center">{{ translate.no_result }}</i>
+      </div>
+
+      <search-paginate
+        v-if="result !== null"
+        :nb-elements="Number(datas.limit)"
+        :current-page="datas.page"
+        :nb-elements-total="result.nb"
+        :translate="translate.paginate"
+        @change-page-event="changePageEvent"
+      ></search-paginate>
     </div>
     <div class="flex flex-col gap-6">Bloc 2</div>
   </div>
