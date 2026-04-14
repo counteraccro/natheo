@@ -231,7 +231,8 @@ class CommentService extends AppAdminService
             $data[] = [
                 'id' => $comment->getId(),
                 'comment' => $comment->getComment(),
-                'author' => $comment->getAuthor() . ' (' . $comment->getEmail() . ')',
+                'author' => $comment->getAuthor(),
+                'email' => $comment->getEmail(),
                 'page' => $pageTitle,
                 'ip' => $comment->getIp(),
                 'userAgent' => $comment->getUserAgent(),
