@@ -46,7 +46,7 @@ export interface CommentModerationDatas {
   status: Record<string, string>;
   pages: Record<string, string>;
   page: number;
-  limit: number;
+  limit: string | number;;
 }
 
 export interface Comment {
@@ -61,6 +61,7 @@ export interface Comment {
   moderator: string | null;
   update: string;
   commentModeration: string;
+  email: string;
 }
 
 export interface CommentListResult {
