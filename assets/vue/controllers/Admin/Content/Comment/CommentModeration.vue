@@ -55,7 +55,7 @@ export default defineComponent({
       } as ModerationState,
       filters: {
         status: this.datas.defaultStatus,
-        pages: 0,
+        pages: '0',
       } as FiltersState,
       toasts: {
         toastSuccess: {
@@ -347,7 +347,49 @@ export default defineComponent({
         @change-page-event="changePageEvent"
       ></search-paginate>
     </div>
-    <div class="flex flex-col gap-6">Bloc 2</div>
+    <div class="flex flex-col gap-6">
+      <div class="card rounded-lg overflow-hidden">
+        <div class="flex items-center gap-2 px-5 py-4" style="border-bottom: 1px solid var(--border-color)">
+          <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+            ></path>
+          </svg>
+          <h3 class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.legend_search }}</h3>
+        </div>
+        <div class="p-5 flex flex-col gap-4">
+          <div class="form-group">
+            <label
+              class="form-label"
+              style="color: var(--text-secondary); font-weight: var(--font-weight-medium); font-size: var(--text-xs)"
+              >{{ translate.status_label }}</label
+            >
+            <select v-model="filters.status" id="list-status" @change="load()" class="form-input">
+              <option value="0">{{ translate.status_default }}</option>
+              <option v-for="(key, status) in datas.status" :value="status" :selected="status === filters.status">
+                {{ key }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label
+              class="form-label"
+              style="color: var(--text-secondary); font-weight: var(--font-weight-medium); font-size: var(--text-xs)"
+              >{{ translate.pages_label }}</label
+            >
+            <select class="form-input" v-model="filters.pages" id="list-pages" @change="load()">
+              <option value="0">{{ translate.pages_default }}</option>
+              <option v-for="(key, page) in datas.pages" :value="page" :selected="page === filters.pages">
+                {{ key }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!--
