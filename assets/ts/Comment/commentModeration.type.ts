@@ -46,7 +46,7 @@ export interface CommentModerationDatas {
   status: Record<string, string>;
   pages: Record<string, string>;
   page: number;
-  limit: string | number;;
+  limit: string | number;
 }
 
 export interface Comment {
@@ -77,7 +77,7 @@ export interface ModerationState {
 
 export interface FiltersState {
   status: string;
-  pages: number;
+  pages: string;
 }
 
 export interface ToastState {
