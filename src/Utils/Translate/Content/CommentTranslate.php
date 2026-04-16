@@ -83,7 +83,20 @@ class CommentTranslate extends AppTranslate
                 'comment.moderation.comment.unselect.all',
                 domain: 'comment',
             ),
+            'statistiques' => $this->translator->trans('comment.moderation.statistiques', domain: 'comment'),
             'paginate' => $this->getTranslatePaginate(),
+            'status_short_validate' => $this->translator->trans(
+                'comment.moderation.status.short.validate',
+                domain: 'comment',
+            ),
+            'status_short_moderate' => $this->translator->trans(
+                'comment.moderation.status.short.moderate',
+                domain: 'comment',
+            ),
+            'status_short_waiting' => $this->translator->trans(
+                'comment.moderation.status.short.waiting',
+                domain: 'comment',
+            ),
         ];
     }
 
