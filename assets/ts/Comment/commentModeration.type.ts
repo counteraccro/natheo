@@ -39,6 +39,10 @@ export interface CommentModerationTranslate {
   paginate: Record<string, string>;
   comment_unselect_all: string;
   comment_select_all: string;
+  statistiques: string;
+  status_short_validate: string;
+  status_short_moderate: string;
+  status_short_waiting: string;
 }
 
 export interface CommentModerationDatas {
