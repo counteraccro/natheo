@@ -48,6 +48,7 @@ export default defineComponent({
     return {
       loading: false as boolean,
       result: null as CommentListResult | null,
+      allSelected: false,
       moderation: {
         selected: [],
         status: this.datas.defaultStatus,
@@ -115,6 +116,8 @@ export default defineComponent({
             this.toasts.toastSuccess.msg = response.data.msg;
             this.toasts.toastSuccess.show = true;
             emitter.emit('reset-check-confirm');
+            this.allSelected = false;
+            this.resetSelected();
             this.load();
           } else {
             this.toasts.toastError.msg = response.data.msg;
@@ -143,21 +146,36 @@ export default defineComponent({
      * @param id
      */
     updateSelected(id: number): void {
-      console.log(id);
       if (this.moderation.selected.find((element) => element === id)) {
         this.moderation.selected = this.moderation.selected.filter((item) => item !== id);
       } else {
         this.moderation.selected.push(id);
       }
-
-      console.log(this.moderation.selected);
     },
 
     /**
      * Reset les commentaires sélectionnés
      */
     resetSelected(): void {
+      this.allSelected = false;
       this.moderation.selected = [];
+    },
+
+    /**
+     * Sélectionne tous les commentaires affichés
+     */
+    selectAll(): void {
+      if (this.result?.data.length === 0) {
+        return;
+      }
+
+      if (this.allSelected) {
+        this.result?.data.forEach((comment) => {
+          this.moderation.selected.push(comment.id);
+        });
+      } else {
+        this.resetSelected();
+      }
     },
 
     /**
@@ -194,7 +212,7 @@ export default defineComponent({
     <div class="xl:col-span-2 flex flex-col gap-4">
       <div class="card flex items-center justify-between px-5 py-3 rounded-lg">
         <div class="form-check" style="margin-bottom: 0">
-          <input type="checkbox" class="form-check-input" id="check-all" />
+          <input type="checkbox" class="form-check-input" id="check-all" @change="selectAll" v-model="allSelected" />
           <label class="form-check-label font-medium" for="check-all">{{ translate.comment_select_all }}</label>
         </div>
         <div class="flex items-center gap-3">
@@ -202,9 +220,11 @@ export default defineComponent({
             id="selectionCount"
             class="text-sm font-semibold px-2.5 py-1 rounded-full"
             style="background-color: var(--primary-lighter); color: var(--primary)"
-            >0 {{ translate.selection_comment }}</span
+          >
+            {{ moderation.selected.length }} {{ translate.selection_comment }}</span
           >
           <button
+            @click="resetSelected"
             class="text-sm font-medium hover:underline transition-colors cursor-pointer"
             style="color: var(--text-secondary)"
           >
@@ -217,7 +237,7 @@ export default defineComponent({
         <div
           v-for="comment in result.data"
           :key="comment.id"
-          class="card rounded-lg overflow-hidden transition-all"
+          class="card rounded-lg overflow-hidden transition-all mb-4"
           :data-id="comment.id"
         >
           <!-- Header -->
@@ -349,6 +369,41 @@ export default defineComponent({
     </div>
     <div class="flex flex-col gap-6">
       <div class="card rounded-lg overflow-hidden">
+        <div class="px-5 py-4" style="border-bottom: 1px solid var(--border-color)">
+          <h3 class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.statistiques }}</h3>
+        </div>
+        <div class="p-5 grid grid-cols-3 gap-3">
+          <div
+            class="flex flex-col items-center justify-center py-3 rounded-xl"
+            style="background-color: var(--bg-hover)"
+          >
+            <span class="text-xl font-bold" style="color: var(--status-validated)">1</span>
+            <span class="text-xs mt-0.5 text-center" style="color: var(--text-secondary)">{{
+              translate.status_short_validate
+            }}</span>
+          </div>
+          <div
+            class="flex flex-col items-center justify-center py-3 rounded-xl"
+            style="background-color: var(--bg-hover)"
+          >
+            <span class="text-xl font-bold" style="color: var(--status-pending)">1</span>
+            <span class="text-xs mt-0.5 text-center" style="color: var(--text-secondary)">{{
+              translate.status_short_moderate
+            }}</span>
+          </div>
+          <div
+            class="flex flex-col items-center justify-center py-3 rounded-xl"
+            style="background-color: var(--bg-hover)"
+          >
+            <span class="text-xl font-bold" style="color: var(--status-moderated)">1</span>
+            <span class="text-xs mt-0.5 text-center" style="color: var(--text-secondary)">{{
+              translate.status_short_waiting
+            }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card rounded-lg overflow-hidden">
         <div class="flex items-center gap-2 px-5 py-4" style="border-bottom: 1px solid var(--border-color)">
           <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -361,7 +416,7 @@ export default defineComponent({
           <h3 class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.legend_search }}</h3>
         </div>
         <div class="p-5 flex flex-col gap-4">
-          <div class="form-group">
+          <div class="form-group" style="margin-bottom: 0">
             <label
               class="form-label"
               style="color: var(--text-secondary); font-weight: var(--font-weight-medium); font-size: var(--text-xs)"
@@ -389,7 +444,95 @@ export default defineComponent({
           </div>
         </div>
       </div>
+      <div class="card rounded-lg overflow-hidden">
+        <div class="flex items-center gap-2 px-5 py-4" style="border-bottom: 1px solid var(--border-color)">
+          <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+          <h3 class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.selection_title }}</h3>
+        </div>
+        <div class="p-5 flex flex-col gap-4">
+          <div
+            class="rounded-lg p-3.5"
+            style="background-color: var(--primary-lighter); border: 1px solid var(--primary-light)"
+          >
+            <p class="text-xs font-semibold mb-1" style="color: var(--primary)">Commentaires sélectionnés</p>
+            <p id="selectedList" class="text-sm font-bold" style="color: var(--text-primary)">
+              <span v-if="moderation.selected.length === 0">---</span>
+              <span v-else v-for="id in moderation.selected"> #{{ id }},</span>
+            </p>
+            <p id="selectedSummary" class="text-xs mt-0.5" style="color: var(--text-secondary)">
+              {{ moderation.selected.length }} {{ translate.selection_comment }}
+            </p>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0">
+            <label
+              for="list-status"
+              class="form-label"
+              style="color: var(--text-secondary); font-weight: var(--font-weight-medium); font-size: var(--text-xs)"
+              >{{ translate.selection_status }}</label
+            >
+            <select class="form-input" v-model="moderation.status" id="list-status">
+              <option v-for="(key, status) in datas.status" :value="status" :selected="status === filters.status">
+                {{ key }}
+              </option>
+            </select>
+          </div>
+
+          <div class="from-group" v-if="moderation.status === '3'">
+            <label
+              for="moderation-comment"
+              class="form-label"
+              style="color: var(--text-secondary); font-weight: var(--font-weight-medium); font-size: var(--text-xs)"
+              >{{ translate.selection_comment_moderation }}</label
+            >
+            <textarea
+              class="form-input"
+              id="moderation-comment"
+              rows="2"
+              v-model="moderation.moderateComment"
+            ></textarea>
+          </div>
+
+          <button
+            @click="moderateComment()"
+            :disabled="moderation.selected.length === 0"
+            class="w-full inline-flex items-center justify-center gap-2 btn btn-success btn-sm"
+            style="background-color: var(--btn-success)"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+              ></path>
+            </svg>
+            {{ translate.selection_submit }}
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <div class="toast-container position-fixed top-0 end-0 p-2">
+    <toast :id="'toastSuccess'" :type="'success'" :show="toasts.toastSuccess.show" @close-toast="closeToast">
+      <template #body>
+        <div v-html="toasts.toastSuccess.msg"></div>
+      </template>
+    </toast>
+
+    <toast :id="'toastError'" :type="'danger'" :show="toasts.toastError.show" @close-toast="closeToast">
+      <template #body>
+        <div v-html="toasts.toastError.msg"></div>
+      </template>
+    </toast>
   </div>
 
   <!--
