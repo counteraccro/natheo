@@ -93,14 +93,14 @@ class CommentRepository extends ServiceEntityRepository
      */
     public function getListCommentsByFilter(int $status, int $idPage, int $page, int $limit): Paginator
     {
-        $query = $this->createQueryBuilder('c');
+        $query = $this->createQueryBuilder(Comment::DEFAULT_ALIAS)->addOrderBy(Comment::DEFAULT_ALIAS . '.id', 'DESC');
 
         if ($status !== 0) {
-            $query->andWhere('c.status = :status')->setParameter('status', $status);
+            $query->andWhere(Comment::DEFAULT_ALIAS . '.status = :status')->setParameter('status', $status);
         }
 
         if ($idPage !== 0) {
-            $query->andWhere('c.page = :page')->setParameter('page', $idPage);
+            $query->andWhere(Comment::DEFAULT_ALIAS . '.page = :page')->setParameter('page', $idPage);
         }
 
         $paginator = new Paginator($query->getQuery(), true);
