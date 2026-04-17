@@ -13,11 +13,11 @@ use App\Dto\Api\Content\Comment\ApiModerateCommentDto;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Comment\Status;
 use App\Enum\Admin\Global\Notification\Notification;
 use App\Repository\Admin\Content\Comment\CommentRepository;
 use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
-use App\Utils\Content\Comment\CommentConst;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\Notification\NotificationFactory;
 use App\Utils\System\Options\OptionSystemKey;
@@ -55,12 +55,12 @@ class ApiCommentService extends AppApiService
 
             $com = $comment->getComment();
             if (
-                $comment->getStatus() === CommentConst::WAIT_VALIDATION &&
+                $comment->getStatus() === Status::WAIT_VALIDATION->value &&
                 !$this->isGranted(['ROLE_CONTRIBUTEUR'], $user)
             ) {
                 $com = $translator->trans('api_errors.comment.wait.validation', domain: 'api_errors');
             } elseif (
-                $comment->getStatus() === CommentConst::MODERATE &&
+                $comment->getStatus() === Status::MODERATE->value &&
                 !$this->isGranted(['ROLE_CONTRIBUTEUR'], $user)
             ) {
                 $com = $translator->trans('api_errors.comment.moderate', domain: 'api_errors');
@@ -75,7 +75,7 @@ class ApiCommentService extends AppApiService
                 'comment' => $com,
             ];
 
-            if ($comment->getStatus() === CommentConst::MODERATE && $this->isGranted(['ROLE_CONTRIBUTEUR'], $user)) {
+            if ($comment->getStatus() === Status::MODERATE->value && $this->isGranted(['ROLE_CONTRIBUTEUR'], $user)) {
                 $return['comments'][$key]['moderate'] = $comment->getModerationComment();
             }
         }
@@ -125,16 +125,16 @@ class ApiCommentService extends AppApiService
             $this->getOptionSystemService()->getValueByKey(OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION),
         );
         if (
-            $page->getRuleComment() === CommentConst::WAIT_VALIDATION ||
-            $page->getRuleComment() === CommentConst::MODERATE
+            $page->getRuleComment() === Status::WAIT_VALIDATION->value ||
+            $page->getRuleComment() === Status::MODERATE->value
         ) {
             $isMustValidate = true;
         }
 
-        $status = CommentConst::VALIDATE;
+        $status = Status::VALIDATE->value;
         $statusStr = $translator->trans('comment.status.validate', domain: 'comment');
         if ($isMustValidate) {
-            $status = CommentConst::WAIT_VALIDATION;
+            $status = Status::WAIT_VALIDATION->value;
             $statusStr = $translator->trans('comment.status.wait.validation', domain: 'comment');
         }
 

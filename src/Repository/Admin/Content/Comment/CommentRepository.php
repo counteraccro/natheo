@@ -112,19 +112,15 @@ class CommentRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne le nombre de commentaire en fonction du type
-     * @param int $status
-     * @return int
+     * Retourne le nombre de commentaire en fonction du status
+     * @return array
      */
-    public function getNbByType(int $status): int
+    public function getNbGroupByStatus(): array
     {
-        $query = $this->createQueryBuilder('c')
-            ->select('COUNT(c.id) as nb')
-            ->where('c.status = :status')
-            ->setParameter('status', $status);
-
-        $result = $query->getQuery()->getArrayResult();
-        return $result[0]['nb'];
+        $query = $this->createQueryBuilder(Comment::DEFAULT_ALIAS)
+            ->select('COUNT(' . Comment::DEFAULT_ALIAS . '.id) as nb', Comment::DEFAULT_ALIAS . '.status')
+            ->groupBy(Comment::DEFAULT_ALIAS . '.status');
+        return $query->getQuery()->getArrayResult();
     }
 
     /**

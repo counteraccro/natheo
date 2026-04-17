@@ -7,8 +7,6 @@
 
 namespace App\Utils\Api\Parameters\Content\Comment;
 
-use App\Utils\Content\Comment\CommentConst;
-
 class ApiParametersModerateCommentRef
 {
     /**

@@ -7,7 +7,6 @@ use App\Entity\Admin\System\User;
 use App\Enum\Admin\Comment\Status;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
-use App\Utils\Content\Comment\CommentConst;
 use App\Utils\Markdown;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use League\CommonMark\Exception\CommonMarkException;
@@ -218,6 +217,8 @@ class CommentService extends AppAdminService
         $result = $repository->getListCommentsByFilter($status, $idPage, $page, $limit);
         $locale = $this->getLocales()['current'];
 
+        $statStatus = $this->getNbCommentByStatus();
+
         $data = [];
         foreach ($result as $comment) {
             /** @var Comment $comment */
@@ -246,21 +247,46 @@ class CommentService extends AppAdminService
 
         return [
             'nb' => $result->count(),
+            'statStatus' => $statStatus,
             'data' => $data,
         ];
     }
 
     /**
-     * Retourne le nombre de commentaire en fonction tu type
-     * @param int $status
-     * @return int
+     * Retourne le nombre de commentaire en fonction du status
+     * Si status est vide, renvoi un tableau de statistiques avec comme clé le code du status et value le nombre de commentaires associés
+     * @param int|null $status
+     * @return int|array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getNbCommentByStatus(int $status): int
+    public function getNbCommentByStatus(?int $status = null): int|array
     {
         $repository = $this->getRepository(Comment::class);
-        return $repository->getNbByType($status);
+        $result = $repository->getNbGroupByStatus();
+
+        if ($status === null) {
+            $return = [];
+            foreach (Status::cases() as $status) {
+                foreach ($result as $row) {
+                    if ($row['status'] === $status->value) {
+                        $return[$status->value] = $row['nb'];
+                    }
+                }
+                if (!isset($return[$status->value])) {
+                    $return[$status->value] = 0;
+                }
+            }
+            return $return;
+        }
+
+        $return = 0;
+        foreach ($result as $row) {
+            if ($row['status'] === $status) {
+                $return = $row['nb'];
+            }
+        }
+        return $return;
     }
 
     /**

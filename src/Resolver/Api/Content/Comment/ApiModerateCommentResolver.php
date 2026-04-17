@@ -8,9 +8,9 @@
 namespace App\Resolver\Api\Content\Comment;
 
 use App\Dto\Api\Content\Comment\ApiModerateCommentDto;
+use App\Enum\Admin\Comment\Status;
 use App\Resolver\Api\AppApiResolver;
 use App\Utils\Api\Parameters\Content\Comment\ApiParametersModerateCommentRef;
-use App\Utils\Content\Comment\CommentConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,7 +81,7 @@ class ApiModerateCommentResolver extends AppApiResolver implements ValueResolver
         /** @var TranslatorInterface $translator */
         $translator = $this->handlers->get('translator');
 
-        $tabStatus = [CommentConst::MODERATE, CommentConst::VALIDATE, CommentConst::WAIT_VALIDATION];
+        $tabStatus = [Status::MODERATE->value, Status::VALIDATE->value, Status::WAIT_VALIDATION->value];
         if (!in_array($parameters[ApiParametersModerateCommentRef::PARAM_STATUS], $tabStatus, true)) {
             throw new HttpException(
                 Response::HTTP_FORBIDDEN,
