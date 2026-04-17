@@ -15,6 +15,7 @@
         "@symfony/ux-vue": "file:vendor/symfony/ux-vue/assets",
         "@tailwindcss/postcss": "^4.1.10",
         "@types/dompurify": "^3.2.0",
+        "@types/marked": "^6.0.0",
         "@types/node": "^25.2.3",
         "@types/sortablejs": "^1.15.9",
         "@vitejs/plugin-vue": "^6.0.1",
