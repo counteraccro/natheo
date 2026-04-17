@@ -10,8 +10,8 @@ namespace App\Tests\Helper\Fixtures\Content;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Comment\Status;
 use App\Tests\Helper\FakerTrait;
-use App\Utils\Content\Comment\CommentConst;
 
 trait CommentFixturesTrait
 {
@@ -34,7 +34,7 @@ trait CommentFixturesTrait
             'author' => self::getFaker()->name(),
             'email' => self::getFaker()->email(),
             'comment' => self::getFaker()->text(),
-            'status' => CommentConst::WAIT_VALIDATION,
+            'status' => Status::WAIT_VALIDATION->value,
             'disabled' => false,
             'moderationComment' => '',
             'ip' => self::getFaker()->ipv4(),

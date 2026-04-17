@@ -8,8 +8,8 @@
 namespace App\Tests\Controller\Admin\Content;
 
 use App\Entity\Admin\Content\Comment\Comment;
+use App\Enum\Admin\Comment\Status;
 use App\Tests\AppWebTestCase;
-use App\Utils\Content\Comment\CommentConst;
 
 class CommentControllerTest extends AppWebTestCase
 {
@@ -57,8 +57,8 @@ class CommentControllerTest extends AppWebTestCase
      */
     public function testFilterCommentsModeration(): void
     {
-        $comment1 = $this->createComment(customData: ['status' => CommentConst::WAIT_VALIDATION]);
-        $comment2 = $this->createComment(customData: ['status' => CommentConst::WAIT_VALIDATION]);
+        $comment1 = $this->createComment(customData: ['status' => Status::WAIT_VALIDATION->value]);
+        $comment2 = $this->createComment(customData: ['status' => Status::WAIT_VALIDATION->value]);
 
         $this->checkNoAccess('admin_comment_moderate_comments_filter');
         $user = $this->createUserContributeur();
@@ -76,16 +76,16 @@ class CommentControllerTest extends AppWebTestCase
         $this->assertCount(2, $content['data']);
         $commentVerif = $content['data'][0];
         $this->assertArrayHasKey('id', $commentVerif);
-        $this->assertEquals($comment1->getId(), $commentVerif['id']);
+        $this->assertEquals($comment2->getId(), $commentVerif['id']);
         $this->assertArrayHasKey('comment', $commentVerif);
-        $this->assertEquals($comment1->getComment(), $commentVerif['comment']);
+        $this->assertEquals($comment2->getComment(), $commentVerif['comment']);
 
-        $this->createComment(customData: ['status' => CommentConst::MODERATE]);
-        $this->createComment(customData: ['status' => CommentConst::VALIDATE]);
+        $this->createComment(customData: ['status' => Status::MODERATE->value]);
+        $this->createComment(customData: ['status' => Status::VALIDATE->value]);
 
         $this->client->request(
             'GET',
-            $this->router->generate('admin_comment_moderate_comments_filter', ['status' => CommentConst::MODERATE]),
+            $this->router->generate('admin_comment_moderate_comments_filter', ['status' => Status::MODERATE->value]),
         );
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -175,7 +175,7 @@ class CommentControllerTest extends AppWebTestCase
                 'author' => 'John Doe',
                 'email' => 'john-doe@monemail.com',
                 'comment' => 'Je suis un commentaire **en attente de validation**',
-                'status' => CommentConst::VALIDATE,
+                'status' => Status::VALIDATE->value,
                 'ip' => '1.1.1',
                 'userAgent' => 'windows',
                 'createdAt' => '16/04/25 13 37',
@@ -207,7 +207,7 @@ class CommentControllerTest extends AppWebTestCase
 
         $commentRepo = $this->em->getRepository(Comment::class);
         $comment = $commentRepo->find($comment->getId());
-        $this->assertEquals(CommentConst::VALIDATE, $comment->getStatus());
+        $this->assertEquals(Status::VALIDATE->value, $comment->getStatus());
         $this->assertEquals('Je suis un commentaire **en attente de validation**', $comment->getComment());
     }
 
@@ -223,7 +223,7 @@ class CommentControllerTest extends AppWebTestCase
 
         $data = [
             'selected' => [$comment1->getId(), $comment2->getId(), $comment3->getId()],
-            'status' => CommentConst::MODERATE,
+            'status' => Status::MODERATE->value,
             'moderateComment' => 'Commentaire modéré en test unitaire',
         ];
 
@@ -250,7 +250,7 @@ class CommentControllerTest extends AppWebTestCase
         $comments = $commentRepo->findAll();
 
         foreach ($comments as $comment) {
-            $this->assertEquals(CommentConst::MODERATE, $comment->getStatus());
+            $this->assertEquals(Status::MODERATE->value, $comment->getStatus());
             $this->assertEquals('Commentaire modéré en test unitaire', $comment->getModerationComment());
         }
     }

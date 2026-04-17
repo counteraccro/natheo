@@ -17,8 +17,8 @@ use App\Entity\Admin\Content\Page\PageStatistique;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Comment\Status;
 use App\Tests\Helper\FakerTrait;
-use App\Utils\Content\Comment\CommentConst;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageStatistiqueKey;
 
@@ -48,7 +48,7 @@ trait PageFixturesTrait
             'landingPage' => false,
             'isOpenComment' => self::getFaker()->boolean(),
             'nbComment' => self::getFaker()->randomNumber(2),
-            'ruleComment' => CommentConst::WAIT_VALIDATION,
+            'ruleComment' => Status::WAIT_VALIDATION->value,
             'headerImg' => self::getFaker()->filePath(),
         ];
 

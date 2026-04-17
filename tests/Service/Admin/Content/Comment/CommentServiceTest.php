@@ -11,7 +11,6 @@ use App\Entity\Admin\Content\Comment\Comment;
 use App\Enum\Admin\Comment\Status;
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Tests\AppWebTestCase;
-use App\Utils\Content\Comment\CommentConst;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -204,7 +203,7 @@ class CommentServiceTest extends AppWebTestCase
     {
         $user = $this->createUserContributeur();
         $comment1 = $this->createComment(
-            customData: ['status' => CommentConst::WAIT_VALIDATION, 'moderationComment' => 'toto'],
+            customData: ['status' => Status::WAIT_VALIDATION->value, 'moderationComment' => 'toto'],
         );
         $comment2 = $this->createComment(customData: ['status' => Status::WAIT_VALIDATION->value]);
 
