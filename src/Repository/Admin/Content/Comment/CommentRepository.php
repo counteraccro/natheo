@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 2.0
+ * Repository pour les commentaires
+ */
 namespace App\Repository\Admin\Content\Comment;
 
 use App\Dto\Api\Content\Comment\ApiCommentByPageDto;
