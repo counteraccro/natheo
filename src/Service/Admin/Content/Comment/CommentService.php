@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author Gourdon Aymeric
+ * @version 2.0
+ * Service pour la gestion des commentaires
+ */
 
 namespace App\Service\Admin\Content\Comment;
 
