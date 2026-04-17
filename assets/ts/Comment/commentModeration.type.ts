@@ -71,6 +71,7 @@ export interface Comment {
 export interface CommentListResult {
   data: Comment[];
   nb: number;
+  statStatus: number[];
 }
 
 export interface ModerationState {
