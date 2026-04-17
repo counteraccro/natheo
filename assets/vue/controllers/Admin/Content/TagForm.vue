@@ -6,7 +6,7 @@
  */
 
 import axios from 'axios';
-import { emitter } from '../../../../utils/useEvent';
+import { emitter } from '@/utils/useEvent';
 import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
 import Toast from '@/vue/Components/Global/Toast.vue';
 import Modal from '@/vue/Components/Global/Modal.vue';
@@ -349,7 +349,7 @@ export default {
                 class="form-input"
                 :id="'label-' + translation.locale"
                 :placeholder="this.translate.formInputLabelPlaceholder"
-                @blur="if (!translation.label) showErrors = true;"
+                @blur="!translation.label ? (showErrors = true) : ''"
                 :disabled="this.isDisabled(translation.locale)"
                 v-model="translation.label"
                 v-on="

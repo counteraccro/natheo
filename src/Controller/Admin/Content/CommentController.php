@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Gourdon Aymeric
- * @version 1.0
+ * @version 2.0
  * Controller pour la gestion des commentaires
  */
 
@@ -10,11 +10,11 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\Content\Page\Page;
+use App\Enum\Admin\Comment\Status;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
-use App\Utils\Content\Comment\CommentConst;
 use App\Utils\Content\Comment\CommentPopulate;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
@@ -59,7 +59,7 @@ class CommentController extends AppAdminController
             'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
             'isOpenComment' => $optionSystemService->getValueByKey(OptionSystemKey::OS_OPEN_COMMENT),
             'isModerate' => $optionSystemService->getValueByKey(OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION),
-            'nbCommentWaitValidation' => $commentService->getNbCommentByStatus(CommentConst::WAIT_VALIDATION),
+            'nbCommentWaitValidation' => $commentService->getNbCommentByStatus(Status::WAIT_VALIDATION->value),
         ]);
     }
 
@@ -81,14 +81,19 @@ class CommentController extends AppAdminController
         int $page = 1,
         int $limit = 20,
     ): JsonResponse {
-        $search = $request->query->get('search');
+        $queryParams = [
+            'search' => $request->query->get('search'),
+            'orderField' => $request->query->get('orderField'),
+            'order' => $request->query->get('order'),
+            'locale' => $request->getLocale(),
+        ];
         $filter = $request->query->get('filter');
 
         $userId = null;
         if ($filter === self::FILTER_ME) {
             $userId = $this->getUser()->getId();
         }
-        $grid = $commentService->getAllFormatToGrid($page, $limit, $search, $userId);
+        $grid = $commentService->getAllFormatToGrid($page, $limit, $queryParams, $userId);
         return $this->json($grid);
     }
 
@@ -127,7 +132,7 @@ class CommentController extends AppAdminController
             'datas' => [
                 'status' => $commentService->getAllStatus(),
                 'pages' => $pageService->getListeTitlePageByLocale($commentService->getLocales()['current']),
-                'defaultStatus' => CommentConst::WAIT_VALIDATION,
+                'defaultStatus' => Status::WAIT_VALIDATION->value,
                 'page' => 1,
                 'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
             ],
@@ -154,7 +159,7 @@ class CommentController extends AppAdminController
     ]
     public function filterCommentsModeration(
         CommentService $commentService,
-        int $status = CommentConst::WAIT_VALIDATION,
+        int $status = Status::WAIT_VALIDATION->value,
         int $idPage = 0,
         int $page = 1,
         int $limit = 20,
@@ -197,13 +202,14 @@ class CommentController extends AppAdminController
             'breadcrumb' => $breadcrumb,
             'translate' => $translate,
             'urls' => [
+                'index' => $this->generateUrl('admin_comment_index'),
                 'load_comment' => $this->generateUrl('admin_comment_load'),
                 'save' => $this->generateUrl('admin_comment_save'),
             ],
             'datas' => [
                 'id' => $id,
                 'status' => $commentService->getAllStatus(),
-                'statusModerate' => CommentConst::MODERATE,
+                'statusModerate' => Status::MODERATE->value,
             ],
         ]);
     }
@@ -211,6 +217,8 @@ class CommentController extends AppAdminController
     /**
      * Retourne un commentaire en fonction de son id
      * @param CommentService $commentService
+     * @param OptionSystemService $optionSystemService
+     * @param PageService $pageService
      * @param int|null $id
      * @return Response
      * @throws ContainerExceptionInterface
@@ -218,8 +226,12 @@ class CommentController extends AppAdminController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/ajax/load/{id}', name: 'load', methods: ['GET'])]
-    public function getComment(CommentService $commentService, ?int $id = null): Response
-    {
+    public function getComment(
+        CommentService $commentService,
+        OptionSystemService $optionSystemService,
+        PageService $pageService,
+        ?int $id = null,
+    ): Response {
         /** @var Comment $comment */
         $comment = $commentService->findOneById(Comment::class, $id);
 
@@ -236,7 +248,8 @@ class CommentController extends AppAdminController
 
         $commentArray['page'] = [
             'title' => $title,
-            'url' => $this->generateUrl('admin_page_update', ['id' => $page->getId()]),
+            'createdAt' => $page->getCreatedAt()->format('d/m/Y H:i'),
+            'url' => $pageService->getFrontUrl($page),
         ];
         $commentArray['createdAt'] = $comment->getCreatedAt()->format('d/m/y H:i');
         $commentArray['updateAt'] = $comment->getUpdateAt()->format('d/m/y H:i');
@@ -268,7 +281,7 @@ class CommentController extends AppAdminController
         $commentPopulate = new CommentPopulate($comment, $data['comment']);
         $comment = $commentPopulate->populate()->getComment();
 
-        if ($comment->getStatus() === CommentConst::MODERATE) {
+        if ($comment->getStatus() === Status::MODERATE) {
             $comment->setUserModeration($this->getUser());
         } else {
             $comment->setUserModeration(null);

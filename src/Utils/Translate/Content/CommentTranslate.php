@@ -25,6 +25,14 @@ class CommentTranslate extends AppTranslate
             'toast_title_success' => $this->translator->trans('comment.see.toast.title.success', domain: 'comment'),
             'toast_title_error' => $this->translator->trans('comment.see.toast.title.error', domain: 'comment'),
             'toast_time' => $this->translator->trans('comment.see.toast.time', domain: 'comment'),
+            'cancel' => $this->translator->trans('comment.see.cancel', domain: 'comment'),
+            'commentTitle' => $this->translator->trans('comment.see.comment.title', domain: 'comment'),
+            'status' => $this->translator->trans('comment.see.comment.status', domain: 'comment'),
+            'status_actuel' => $this->translator->trans('comment.see.comment.status.actuel', domain: 'comment'),
+            'status_label' => $this->translator->trans('comment.see.comment.status.label', domain: 'comment'),
+            'page_associated' => $this->translator->trans('comment.see.comment.page.associated', domain: 'comment'),
+            'page_created' => $this->translator->trans('comment.see.comment.page.created', domain: 'comment'),
+            'page_link' => $this->translator->trans('comment.see.comment.page.link', domain: 'comment'),
         ];
     }
 
@@ -67,7 +75,28 @@ class CommentTranslate extends AppTranslate
             'comment_moderator' => $this->translator->trans('comment.moderation.comment.moderator', domain: 'comment'),
             'btn_reset' => $this->translator->trans('comment.moderation.btn.reset', domain: 'comment'),
             'no_result' => $this->translator->trans('comment.moderation.noResult', domain: 'comment'),
+            'comment_select_all' => $this->translator->trans(
+                'comment.moderation.comment.select.all',
+                domain: 'comment',
+            ),
+            'comment_unselect_all' => $this->translator->trans(
+                'comment.moderation.comment.unselect.all',
+                domain: 'comment',
+            ),
+            'statistiques' => $this->translator->trans('comment.moderation.statistiques', domain: 'comment'),
             'paginate' => $this->getTranslatePaginate(),
+            'status_short_validate' => $this->translator->trans(
+                'comment.moderation.status.short.validate',
+                domain: 'comment',
+            ),
+            'status_short_moderate' => $this->translator->trans(
+                'comment.moderation.status.short.moderate',
+                domain: 'comment',
+            ),
+            'status_short_waiting' => $this->translator->trans(
+                'comment.moderation.status.short.waiting',
+                domain: 'comment',
+            ),
         ];
     }
 

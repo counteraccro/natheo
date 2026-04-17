@@ -8,8 +8,8 @@
 namespace Controller\Api\v1\Content;
 
 use App\Entity\Admin\Content\Comment\Comment;
+use App\Enum\Admin\Comment\Status;
 use App\Tests\Controller\Api\AppApiTestCase;
-use App\Utils\Content\Comment\CommentConst;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ApiCommentControllerTest extends AppApiTestCase
@@ -24,13 +24,13 @@ class ApiCommentControllerTest extends AppApiTestCase
 
         $page = $this->createPageAllDataDefault();
         for ($i = 0; $i < 3; $i++) {
-            $this->createComment($page, customData: ['status' => CommentConst::VALIDATE]);
+            $this->createComment($page, customData: ['status' => Status::VALIDATE->value]);
         }
 
-        $this->createComment($page, customData: ['status' => CommentConst::WAIT_VALIDATION]);
+        $this->createComment($page, customData: ['status' => Status::WAIT_VALIDATION->value]);
         $comment = $this->createComment(
             $page,
-            customData: ['status' => CommentConst::MODERATE, 'moderationComment' => self::getFaker()->text(40)],
+            customData: ['status' => Status::MODERATE->value, 'moderationComment' => self::getFaker()->text(40)],
         );
 
         // Erreur id et slug non présent
@@ -378,7 +378,7 @@ class ApiCommentControllerTest extends AppApiTestCase
                 'HTTP_User-token' => self::getFaker()->randomKey(),
             ]),
             content: json_encode([
-                'status' => CommentConst::MODERATE,
+                'status' => Status::MODERATE->value,
                 'moderation_comment' => self::getFaker()->text(),
             ]),
         );
@@ -401,7 +401,7 @@ class ApiCommentControllerTest extends AppApiTestCase
             ]),
             server: $this->getCustomHeaders(self::HEADER_READ),
             content: json_encode([
-                'status' => CommentConst::MODERATE,
+                'status' => Status::MODERATE->value,
                 'moderation_comment' => self::getFaker()->text(),
             ]),
         );
@@ -423,7 +423,7 @@ class ApiCommentControllerTest extends AppApiTestCase
                 'HTTP_User-token' => self::getFaker()->randomKey(),
             ]),
             content: json_encode([
-                'status' => CommentConst::MODERATE,
+                'status' => Status::MODERATE->value,
                 'moderation_comment' => self::getFaker()->text(),
             ]),
         );
@@ -444,7 +444,7 @@ class ApiCommentControllerTest extends AppApiTestCase
             ]),
             server: array_merge($this->getCustomHeaders(self::HEADER_READ), ['HTTP_User-token' => $token]),
             content: json_encode([
-                'status' => CommentConst::MODERATE,
+                'status' => Status::MODERATE->value,
                 'moderation_comment' => self::getFaker()->text(),
             ]),
         );

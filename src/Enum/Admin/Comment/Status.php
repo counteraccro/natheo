@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * Status des commentaires
  * @author Gourdon Aymeric
  * @version 1.0
  */

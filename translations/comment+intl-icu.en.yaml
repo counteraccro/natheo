@@ -72,3 +72,17 @@ comment.moderation.selection.submit: __comment.moderation.selection.submit
 comment.moderation.update.success: __comment.moderation.update.success
 comment.moderation.btn.reset: __comment.moderation.btn.reset
 comment.moderation.noResult: __comment.moderation.noResult
+comment.see.cancel: __comment.see.cancel
+comment.see.comment.title: __comment.see.comment.title
+comment.see.comment.status: __comment.see.comment.status
+comment.see.comment.status.actuel: __comment.see.comment.status.actuel
+comment.see.comment.status.label: __comment.see.comment.status.label
+comment.see.comment.page.associated: __comment.see.comment.page.associated
+comment.see.comment.page.created: __comment.see.comment.page.created
+comment.see.comment.page.link: __comment.see.comment.page.link
+comment.moderation.comment.select.all: __comment.moderation.comment.select.all
+comment.moderation.comment.unselect.all: __comment.moderation.comment.unselect.all
+comment.moderation.statistiques: __comment.moderation.statistiques
+comment.moderation.status.short.validate: __comment.moderation.status.short.validate
+comment.moderation.status.short.moderate: __comment.moderation.status.short.moderate
+comment.moderation.status.short.waiting: __comment.moderation.status.short.waiting

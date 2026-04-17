@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @author Gourdon Aymeric
+ * @version 2.0
+ * Repository pour les commentaires
+ */
 namespace App\Repository\Admin\Content\Comment;
 
 use App\Dto\Api\Content\Comment\ApiCommentByPageDto;
@@ -37,22 +41,42 @@ class CommentRepository extends ServiceEntityRepository
      * Retourne une liste de commentaires Paginé
      * @param int $page
      * @param int $limit
-     * @param string|null $search
+     * @param array $queryParams
      * @param null $userId
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, ?string $search = null, $userId = null): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams, $userId = null): Paginator
     {
-        $query = $this->createQueryBuilder('c')->orderBy('c.id', 'DESC');
-
-        if ($userId !== null) {
-            $query->andwhere('c.userModeration = :userId')->setParameter('userId', $userId);
+        $orderField = 'id';
+        $order = 'DESC';
+        if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
+            $orderField = $queryParams['orderField'];
         }
 
-        if ($search !== null) {
+        if (isset($queryParams['order']) && $queryParams['order'] !== '') {
+            $order = $queryParams['order'];
+        }
+
+        $query = $this->createQueryBuilder(Comment::DEFAULT_ALIAS)->orderBy(
+            Comment::DEFAULT_ALIAS . '.' . $orderField,
+            $order,
+        );
+
+        if ($userId !== null) {
+            $query->andwhere(Comment::DEFAULT_ALIAS . '.userModeration = :userId')->setParameter('userId', $userId);
+        }
+
+        if (isset($queryParams['search']) && $queryParams['search'] !== '') {
             $query
-                ->andWhere('c.comment like :search OR c.author like :search OR c.email like :search')
-                ->setParameter('search', '%' . $search . '%');
+                ->andWhere(
+                    Comment::DEFAULT_ALIAS .
+                        '.comment like :search OR ' .
+                        Comment::DEFAULT_ALIAS .
+                        '.author like :search OR ' .
+                        Comment::DEFAULT_ALIAS .
+                        '.email like :search',
+                )
+                ->setParameter('search', '%' . $queryParams['search'] . '%');
         }
 
         $paginator = new Paginator($query->getQuery(), true);
@@ -73,14 +97,14 @@ class CommentRepository extends ServiceEntityRepository
      */
     public function getListCommentsByFilter(int $status, int $idPage, int $page, int $limit): Paginator
     {
-        $query = $this->createQueryBuilder('c');
+        $query = $this->createQueryBuilder(Comment::DEFAULT_ALIAS)->addOrderBy(Comment::DEFAULT_ALIAS . '.id', 'DESC');
 
         if ($status !== 0) {
-            $query->andWhere('c.status = :status')->setParameter('status', $status);
+            $query->andWhere(Comment::DEFAULT_ALIAS . '.status = :status')->setParameter('status', $status);
         }
 
         if ($idPage !== 0) {
-            $query->andWhere('c.page = :page')->setParameter('page', $idPage);
+            $query->andWhere(Comment::DEFAULT_ALIAS . '.page = :page')->setParameter('page', $idPage);
         }
 
         $paginator = new Paginator($query->getQuery(), true);
@@ -92,19 +116,15 @@ class CommentRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne le nombre de commentaire en fonction du type
-     * @param int $status
-     * @return int
+     * Retourne le nombre de commentaire en fonction du status
+     * @return array
      */
-    public function getNbByType(int $status): int
+    public function getNbGroupByStatus(): array
     {
-        $query = $this->createQueryBuilder('c')
-            ->select('COUNT(c.id) as nb')
-            ->where('c.status = :status')
-            ->setParameter('status', $status);
-
-        $result = $query->getQuery()->getArrayResult();
-        return $result[0]['nb'];
+        $query = $this->createQueryBuilder(Comment::DEFAULT_ALIAS)
+            ->select('COUNT(' . Comment::DEFAULT_ALIAS . '.id) as nb', Comment::DEFAULT_ALIAS . '.status')
+            ->groupBy(Comment::DEFAULT_ALIAS . '.status');
+        return $query->getQuery()->getArrayResult();
     }
 
     /**
