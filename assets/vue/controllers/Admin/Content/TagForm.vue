@@ -6,7 +6,7 @@
  */
 
 import axios from 'axios';
-import { emitter } from '../../../../utils/useEvent';
+import { emitter } from '@/utils/useEvent';
 import SkeletonForm from '@/vue/Components/Skeleton/Form.vue';
 import Toast from '@/vue/Components/Global/Toast.vue';
 import Modal from '@/vue/Components/Global/Modal.vue';
