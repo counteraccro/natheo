@@ -4,6 +4,7 @@
  * @author Gourdon Aymeric
  * @version 2.0
  */
+
 import { defineComponent, type PropType } from 'vue';
 import axios from 'axios';
 import Toast from '../../../../Components/Global/Toast.vue';
@@ -212,7 +213,13 @@ export default defineComponent({
     <div class="xl:col-span-2 flex flex-col gap-4">
       <div class="card flex items-center justify-between px-5 py-3 rounded-lg">
         <div class="form-check" style="margin-bottom: 0">
-          <input type="checkbox" class="form-check-input" id="check-all" @change="selectAll" v-model="allSelected" />
+          <input
+            type="checkbox"
+            class="form-check-input no-control"
+            id="check-all"
+            @change="selectAll"
+            v-model="allSelected"
+          />
           <label class="form-check-label font-medium" for="check-all">{{ translate.comment_select_all }}</label>
         </div>
         <div class="flex items-center gap-3">
@@ -245,7 +252,7 @@ export default defineComponent({
             <div class="form-check" style="margin-bottom: 0">
               <input
                 type="checkbox"
-                class="form-check-input"
+                class="form-check-input no-control"
                 :id="'comment-' + comment.id"
                 @change="updateSelected(comment.id)"
                 :checked="isChecked(comment.id)"
@@ -354,12 +361,16 @@ export default defineComponent({
           </div>
         </div>
       </div>
-      <div v-if="(result !== null && result.nb) === 0" class="mb-3">
-        <i class="text-center">{{ translate.no_result }}</i>
+      <div v-if="result !== null && result.nb === 0" class="mb-2">
+        <div class="card rounded-lg overflow-hidden">
+          <div class="text-sm text-center p-2 italic">
+            {{ translate.no_result }}
+          </div>
+        </div>
       </div>
 
       <search-paginate
-        v-if="result !== null"
+        v-if="result !== null && result.nb !== 0"
         :nb-elements="Number(datas.limit)"
         :current-page="datas.page"
         :nb-elements-total="result.nb"
@@ -377,7 +388,7 @@ export default defineComponent({
             class="flex flex-col items-center justify-center py-3 rounded-xl"
             style="background-color: var(--bg-hover)"
           >
-            <span class="text-xl font-bold" style="color: var(--status-validated)">1</span>
+            <span class="text-xl font-bold" style="color: var(--status-validated)">{{ result?.statStatus[2] }}</span>
             <span class="text-xs mt-0.5 text-center" style="color: var(--text-secondary)">{{
               translate.status_short_validate
             }}</span>
@@ -386,18 +397,18 @@ export default defineComponent({
             class="flex flex-col items-center justify-center py-3 rounded-xl"
             style="background-color: var(--bg-hover)"
           >
-            <span class="text-xl font-bold" style="color: var(--status-pending)">1</span>
+            <span class="text-xl font-bold" style="color: var(--status-pending)">{{ result?.statStatus[1] }}</span>
             <span class="text-xs mt-0.5 text-center" style="color: var(--text-secondary)">{{
-              translate.status_short_moderate
+              translate.status_short_waiting
             }}</span>
           </div>
           <div
             class="flex flex-col items-center justify-center py-3 rounded-xl"
             style="background-color: var(--bg-hover)"
           >
-            <span class="text-xl font-bold" style="color: var(--status-moderated)">1</span>
+            <span class="text-xl font-bold" style="color: var(--status-moderated)">{{ result?.statStatus[3] }}</span>
             <span class="text-xs mt-0.5 text-center" style="color: var(--text-secondary)">{{
-              translate.status_short_waiting
+              translate.status_short_moderate
             }}</span>
           </div>
         </div>
@@ -422,7 +433,7 @@ export default defineComponent({
               style="color: var(--text-secondary); font-weight: var(--font-weight-medium); font-size: var(--text-xs)"
               >{{ translate.status_label }}</label
             >
-            <select v-model="filters.status" id="list-status" @change="load()" class="form-input">
+            <select v-model="filters.status" id="list-status" @change="load()" class="form-input no-control">
               <option value="0">{{ translate.status_default }}</option>
               <option v-for="(key, status) in datas.status" :value="status" :selected="status === filters.status">
                 {{ key }}
@@ -435,7 +446,7 @@ export default defineComponent({
               style="color: var(--text-secondary); font-weight: var(--font-weight-medium); font-size: var(--text-xs)"
               >{{ translate.pages_label }}</label
             >
-            <select class="form-input" v-model="filters.pages" id="list-pages" @change="load()">
+            <select class="form-input no-control" v-model="filters.pages" id="list-pages" @change="load()">
               <option value="0">{{ translate.pages_default }}</option>
               <option v-for="(key, page) in datas.pages" :value="page" :selected="page === filters.pages">
                 {{ key }}
@@ -534,163 +545,4 @@ export default defineComponent({
       </template>
     </toast>
   </div>
-
-  <!--
-  <div id="block-moderation" :class="loading === true ? 'block-grid' : ''">
-    <div v-if="loading" class="overlay">
-      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000">
-        <div class="spinner-border text-primary" role="status"></div>
-        <span class="txt-overlay">{{ translate.loading }}</span>
-      </div>
-    </div>
-    <fieldset class="mb-3">
-      <legend>{{ translate.legend_search }}</legend>
-      <div class="row">
-        <div class="col-4">
-          <label for="list-status" class="form-label">{{ translate.status_label }}</label>
-          <select class="form-select" v-model="filters.status" id="list-status" @change="load()">
-            <option value="0">{{ translate.status_default }}</option>
-            <option v-for="(key, status) in datas.status" :value="status" :selected="status === filters.status">
-              {{ key }}
-            </option>
-          </select>
-        </div>
-        <div class="col-4">
-          <label for="list-pages" class="form-label">{{ translate.pages_label }}</label>
-          <select class="form-select" v-model="filters.pages" id="list-pages" @change="load()">
-            <option value="0">{{ translate.pages_default }}</option>
-            <option v-for="(key, status) in datas.pages" :value="status" :selected="status === filters.pages">
-              {{ key }}
-            </option>
-          </select>
-        </div>
-        <div class="col">
-          <div class="btn btn-secondary float-end mt-3 me-3" @click="resetSelected()">
-            {{ translate.btn_reset }}
-          </div>
-        </div>
-      </div>
-    </fieldset>
-
-    <fieldset class="mb-3" v-if="moderation.selected.length > 0">
-      <legend>{{ translate.selection_title }}</legend>
-      {{ moderation.selected.length }} {{ translate.selection_comment }} :<span v-for="id in moderation.selected">
-        #{{ id }},</span
-      >
-
-      <div class="row mt-3 mb-3">
-        <div class="col">
-          <label for="list-status" class="form-label">{{ translate.selection_status }}</label>
-          <select class="form-select" v-model="moderation.status" id="list-status">
-            <option v-for="(key, status) in datas.status" :value="status" :selected="status === filters.status">
-              {{ key }}
-            </option>
-          </select>
-        </div>
-        <div class="col">
-          <div v-if="moderation.status === '3'">
-            <label for="moderation-comment" class="form-label">{{ translate.selection_comment_moderation }}</label>
-            <textarea
-              class="form-control"
-              id="moderation-comment"
-              rows="2"
-              v-model="moderation.moderateComment"
-            ></textarea>
-          </div>
-        </div>
-      </div>
-      <div class="btn btn-secondary float-end" @click="moderateComment()">
-        {{ translate.selection_submit }}
-      </div>
-    </fieldset>
-
-    <div v-if="result !== null">
-      <div v-for="comment in result.data" :key="comment.id">
-        <div class="card mb-3" :class="isChecked(comment.id) ? 'border-2 border-secondary' : ''">
-          <div class="card-header">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              :id="'comment-' + comment.id"
-              @change="updateSelected(comment.id)"
-              :checked="isChecked(comment.id)"
-            />
-            <label class="form-check-label" :for="'comment-' + comment.id"
-              >&nbsp; {{ translate.comment_id }} #{{ comment.id }} {{ translate.comment_date }} {{ comment.date }}
-              {{ translate.comment_author }} {{ comment.author }}</label
-            >
-            <div class="float-end" v-html="comment.status"></div>
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-7">
-                <h5 class="card-title">{{ translate.comment_comment }}</h5>
-                <i>{{ translate.comment_page }} {{ comment.page }}</i>
-                <p class="card-text" v-html="renderHtml(comment.comment)"></p>
-              </div>
-              <div class="col">
-                <h5 class="card-title">{{ translate.comment_info }}</h5>
-                {{ translate.comment_ip }} : {{ comment.ip }}<br />
-                {{ translate.comment_user_agent }} : {{ comment.userAgent }}<br />
-
-                <div v-if="comment.moderator !== null">
-                  <fieldset>
-                    <legend>{{ translate.comment_moderator }} : {{ comment.moderator }}</legend>
-                    <i>{{ translate.comment_update }} {{ comment.update }}</i>
-                    {{ comment.commentModeration }}
-                  </fieldset>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div v-if="result.nb === 0" class="mb-3">
-        <i class="text-center">{{ translate.no_result }}</i>
-      </div>
-
-      <search-paginate
-        :nb-elements="datas.limit"
-        :current-page="datas.page"
-        :nb-elements-total="result.nb"
-        :translate="translate.paginate"
-        @change-page-event="changePageEvent"
-      ></search-paginate>
-    </div>
-  </div>
-
-  <div class="toast-container position-fixed top-0 end-0 p-2">
-    <toast
-      :id="'toastSuccess'"
-      :option-class-header="'text-success'"
-      :show="toasts.toastSuccess.show"
-      @close-toast="closeToast"
-    >
-      <template #header>
-        <i class="bi bi-check-circle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ translate.toast_title_success }}</strong>
-        <small class="text-black-50">{{ translate.toast_time }}</small>
-      </template>
-      <template #body>
-        <div v-html="toasts.toastSuccess.msg"></div>
-      </template>
-    </toast>
-
-    <toast
-      :id="'toastError'"
-      :option-class-header="'text-danger'"
-      :show="toasts.toastError.show"
-      @close-toast="closeToast"
-    >
-      <template #header>
-        <i class="bi bi-exclamation-triangle-fill"></i> &nbsp;
-        <strong class="me-auto"> {{ translate.toast_title_error }}</strong>
-        <small class="text-black-50">{{ translate.toast_time }}</small>
-      </template>
-      <template #body>
-        <div v-html="toasts.toastError.msg"></div>
-      </template>
-    </toast>
-  </div>-->
 </template>

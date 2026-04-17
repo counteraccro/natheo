@@ -349,7 +349,7 @@ export default {
                 class="form-input"
                 :id="'label-' + translation.locale"
                 :placeholder="this.translate.formInputLabelPlaceholder"
-                @blur="if (!translation.label) showErrors = true;"
+                @blur="!translation.label ? (showErrors = true) : ''"
                 :disabled="this.isDisabled(translation.locale)"
                 v-model="translation.label"
                 v-on="
