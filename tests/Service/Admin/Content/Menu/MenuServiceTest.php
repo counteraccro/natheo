@@ -45,19 +45,19 @@ class MenuServiceTest extends AppWebTestCase
         $this->createMenu($user2);
 
         /** @var Paginator $result */
-        $result = $this->menuService->getAllPaginate(1, 20);
+        $result = $this->menuService->getAllPaginate(1, 20, []);
         $this->assertInstanceOf(Paginator::class, $result);
         $this->assertEquals(3, $result->count());
 
-        $result = $this->menuService->getAllPaginate(1, 20, userId: $user2->getId());
+        $result = $this->menuService->getAllPaginate(1, 20, [], userId: $user2->getId());
         $this->assertInstanceOf(Paginator::class, $result);
         $this->assertEquals(1, $result->count());
 
-        $result = $this->menuService->getAllPaginate(1, 20, $menu->getName(), $user2->getId());
+        $result = $this->menuService->getAllPaginate(1, 20, ['search' => $menu->getName()], $user2->getId());
         $this->assertInstanceOf(Paginator::class, $result);
         $this->assertEquals(0, $result->count());
 
-        $result = $this->menuService->getAllPaginate(1, 20, $menu->getName(), $user->getId());
+        $result = $this->menuService->getAllPaginate(1, 20, ['search' => $menu->getName()], $user->getId());
         $this->assertInstanceOf(Paginator::class, $result);
         $this->assertEquals(1, $result->count());
     }
@@ -70,11 +70,15 @@ class MenuServiceTest extends AppWebTestCase
      */
     public function testGetAllFormatToGrid(): void
     {
+        $menu = null;
         for ($i = 0; $i < 10; $i++) {
-            $menu = $this->createMenu();
+            $tmp = $this->createMenu();
+            if ($i === 0) {
+                $menu = $tmp;
+            }
         }
 
-        $result = $this->menuService->getAllFormatToGrid(2, 5);
+        $result = $this->menuService->getAllFormatToGrid(2, 5, []);
         $this->assertIsArray($result);
         $this->assertArrayHasKey('nb', $result);
         $this->assertEquals(10, $result['nb']);
@@ -85,6 +89,8 @@ class MenuServiceTest extends AppWebTestCase
         $this->assertArrayHasKey('urlSaveSql', $result);
         $this->assertArrayHasKey('listLimit', $result);
         $this->assertArrayHasKey('translate', $result);
+
+        //dd($result);
 
         $last = $result['data'][4];
         $this->assertEquals($menu->getName(), $last['Nom']);
