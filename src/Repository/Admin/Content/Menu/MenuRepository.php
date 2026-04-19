@@ -52,21 +52,34 @@ class MenuRepository extends ServiceEntityRepository
      * Retourne une liste de menu Paginé
      * @param int $page
      * @param int $limit
-     * @param string|null $search
+     * @param array $queryParams
      * @param int|null $userId
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, ?string $search = null, ?int $userId = null): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams, ?int $userId = null): Paginator
     {
-        $query = $this->createQueryBuilder('m')->orderBy('m.id', 'ASC');
+        $orderField = 'id';
+        $order = 'DESC';
+        if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
+            $orderField = $queryParams['orderField'];
+        }
 
-        if ($search !== null) {
-            $query->where('m.name like :search');
-            $query->setParameter('search', '%' . $search . '%');
+        if (isset($queryParams['order']) && $queryParams['order'] !== '') {
+            $order = $queryParams['order'];
+        }
+
+        $query = $this->createQueryBuilder(Menu::DEFAULT_ALIAS)->orderBy(
+            Menu::DEFAULT_ALIAS . '.' . $orderField,
+            $order,
+        );
+
+        if (isset($queryParams['search']) && $queryParams['search'] !== '') {
+            $query->where(Menu::DEFAULT_ALIAS . '.name like :search');
+            $query->setParameter('search', '%' . $queryParams['search'] . '%');
         }
 
         if ($userId !== null) {
-            $query->andWhere('m.user = :userId');
+            $query->andWhere(Menu::DEFAULT_ALIAS . '.user = :userId');
             $query->setParameter('userId', $userId);
         }
 
