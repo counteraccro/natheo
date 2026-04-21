@@ -36,10 +36,12 @@ export default defineComponent({
       loading: false,
       menu: {} as Menu,
       dataMenu: {} as MenuDatas,
+      currentLocale: '',
     };
   },
   mounted() {
     this.loadMenu();
+    this.currentLocale = this.locales.current;
   },
   methods: {
     loadMenu() {
@@ -72,6 +74,14 @@ export default defineComponent({
           this.loading = false;
         });
     },
+
+    /**
+     * Permet de changer la locale pour la création/édition d'une page
+     * @param event
+     */
+    switchLocale(event) {
+      this.currentLocale = event.target.value;
+    },
   },
 });
 </script>
@@ -80,6 +90,230 @@ export default defineComponent({
   <skeleton-render-menu v-if="loading" />
   <skeleton-form-menu v-if="loading" />
   <skeleton-architecture-menu v-if="loading" />
+
+  <div class="card rounded-lg overflow-hidden mb-5">
+    <div class="px-5 py-4 border-b flex items-center gap-2" style="border-color: var(--border-color)">
+      <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 10l4.553-2.069A1 1 0 0121 8.82V15.18a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"
+        ></path>
+      </svg>
+      <span class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.title_demo }}</span>
+    </div>
+    <div class="p-4">-- Rendu demo --</div>
+  </div>
+
+  <div class="card rounded-lg overflow-hidden mb-5">
+    <div class="px-5 py-4 border-b flex items-center gap-2" style="border-color: var(--border-color)">
+      <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+        ></path>
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+        ></path>
+      </svg>
+      <span class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.title_global_form }}</span>
+      <div class="ml-auto flex items-center gap-3">
+        <div class="input-addon-group">
+          <span class="input-addon input-addon-left"
+            ><svg
+              class="icon-sm"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m13 19 3.5-9 3.5 9m-6.125-2h5.25M3 7h7m0 0h2m-2 0c0 1.63-.793 3.926-2.239 5.655M7.5 6.818V5m.261 7.655C6.79 13.82 5.521 14.725 4 15m3.761-2.345L5 10m2.761 2.655L10.2 15"
+              ></path></svg></span
+          ><select id="select-language" class="form-input form-input-sm" style="width: 120px" v-model="currentLocale">
+            <option value="" selected>{{ translate.select_locale }}</option>
+            <option v-for="(language, key) in locales.localesTranslate" :value="key">
+              {{ language }}
+            </option>
+          </select>
+        </div>
+        <button class="btn btn-sm btn-primary flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+            ></path>
+          </svg>
+          {{ translate.btn_save }}
+        </button>
+      </div>
+    </div>
+    <div class="p-4">-- Rendu demo --</div>
+  </div>
+
+  <div class="card rounded-lg overflow-hidden mb-5">
+    <div class="px-5 py-4 border-b flex items-center gap-2" style="border-color: var(--border-color)">
+      <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+      <span class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.title_architecture }}</span>
+    </div>
+    <div class="p-4">
+      <div class="grid grid-cols-1 xl:grid-cols-5 gap-4">
+        <div class="xl:col-span-2">
+          <div class="card rounded-lg overflow-hidden">
+            <div class="section-header rounded-t-lg">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                ></path>
+              </svg>
+              <span class="section-header-title">{{ translate.title_architecture }}</span>
+              <span class="ml-auto text-xs text-white/70 font-normal">3 éléments racine</span>
+            </div>
+            <div class="p-3 tree-scroll">contenu tree</div>
+          </div>
+        </div>
+        <div class="xl:col-span-3">
+          <div class="edition-panel">
+            <div class="section-header rounded-t-lg">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                ></path>
+              </svg>
+              <span class="section-header-title">Édition du menuElement</span>
+              <span class="ml-2 text-xs text-white/50">#-</span>
+            </div>
+            <div class="edition-empty">
+              <svg class="edition-empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
+                ></path>
+              </svg>
+              <p class="font-semibold" style="color: var(--text-secondary)">Sélectionnez un élément</p>
+              <p class="text-sm mt-1" style="color: var(--text-light)">Cliquez sur un élément du menu pour l'éditer</p>
+              <div class="help-list">
+                <div class="help-item">
+                  <span class="help-icon" style="background-color: #d1fae5; color: #059669">+</span>
+                  Ajouter un menuElement enfant
+                </div>
+                <div class="help-item">
+                  <span class="help-icon" style="background-color: var(--primary-lighter); color: var(--primary)"
+                    >✎</span
+                  >
+                  Éditer un menuElement
+                </div>
+                <div class="help-item">
+                  <span class="help-icon" style="background-color: #fef3c7; color: #d97706">◎</span>
+                  Masquer / afficher un menuElement
+                </div>
+                <div class="help-item">
+                  <span class="help-icon" style="background-color: #fee2e2; color: #dc2626">✕</span>
+                  Supprimer un menuElement
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.875rem 1.25rem;
+  border-radius: 0.625rem 0.625rem 0 0;
+  background-color: var(--primary);
+  color: white;
+}
+
+.section-header-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.tree-scroll {
+  max-height: calc(100vh - 420px);
+  min-height: 200px;
+  overflow-y: auto;
+}
+
+.edition-panel {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.edition-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+}
+
+.edition-empty-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+
+.help-list {
+  text-align: left;
+  margin-top: 1rem;
+  display: inline-block;
+}
+
+.help-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.375rem;
+}
+
+.help-icon {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  flex-shrink: 0;
+  font-size: 0.65rem;
+}
+</style>
