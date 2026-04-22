@@ -52,6 +52,11 @@ export interface Translate {
   btn_new: string;
   no_select_menu_form: string;
   no_select_menu_form_msg: string;
+  no_select_menu_form_msg_2: string;
+  no_select_menu_form_msg_3: string;
+  no_select_menu_form_msg_4: string;
+  no_select_menu_form_msg_5: string;
+  no_select_menu_form_msg_6: string;
   help_title: string;
   help_edition: string;
   help_delete: string;
