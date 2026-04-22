@@ -79,7 +79,7 @@ export default defineComponent({
      * Permet de changer la locale pour la création/édition d'une page
      * @param event
      */
-    switchLocale(event) {
+    switchLocale(event): void {
       this.currentLocale = event.target.value;
     },
   },
@@ -162,81 +162,98 @@ export default defineComponent({
         </button>
       </div>
     </div>
-    <div class="p-4">-- Rendu demo --</div>
+    <div class="p-4">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-5">
+        <div class="space-y-4">
+          <div class="form-group">
+            <label for="menu-title" class="form-label">{{ translate.input_name_label }}</label>
+            <input
+              type="text"
+              class="form-input"
+              id="menu-title"
+              v-model="menu.name"
+              :placeholder="translate.input_name_placeholder"
+            />
+          </div>
+
+          <div class="form-switch form-switch-inline">
+            <input
+              class="switch-input no-control event-input"
+              type="checkbox"
+              role="switch"
+              id="default_menu"
+              v-model="menu.defaultMenu"
+            />
+            <label class="switch-toggle" for="default_menu"></label>
+            <label class="swith-label" for="default_menu"
+              ><span class="switch-label-text"> {{ translate.checkbox_default_menu_true_label }} </span></label
+            >
+          </div>
+          <span
+            class="form-text"
+            v-html="
+              menu.defaultMenu
+                ? translate.checkbox_default_menu_false_label_msg
+                : translate.checkbox_default_menu_true_label_msg
+            "
+          ></span>
+        </div>
+        <div class="space-y-4">bbb</div>
+      </div>
+    </div>
   </div>
 
-  <div class="card rounded-lg overflow-hidden mb-5">
-    <div class="px-5 py-4 border-b flex items-center gap-2" style="border-color: var(--border-color)">
-      <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-      </svg>
-      <span class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.title_architecture }}</span>
+  <div class="grid grid-cols-1 xl:grid-cols-5 gap-6">
+    <div class="card rounded-lg overflow-hidden xl:col-span-2">
+      <div class="px-5 py-4 border-b flex items-center gap-2" style="border-color: var(--border-color)">
+        <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+        <span class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.title_architecture }}</span>
+      </div>
     </div>
-    <div class="p-4">
-      <div class="grid grid-cols-1 xl:grid-cols-5 gap-4">
-        <div class="xl:col-span-2">
-          <div class="card rounded-lg overflow-hidden">
-            <div class="section-header rounded-t-lg">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                ></path>
-              </svg>
-              <span class="section-header-title">{{ translate.title_architecture }}</span>
-              <span class="ml-auto text-xs text-white/70 font-normal">3 éléments racine</span>
-            </div>
-            <div class="p-3 tree-scroll">contenu tree</div>
+    <div class="card rounded-lg overflow-hidden xl:col-span-3">
+      <div class="px-5 py-4 border-b flex items-center gap-2" style="border-color: var(--border-color)">
+        <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+          ></path>
+        </svg>
+        <span class="text-sm font-semibold" style="color: var(--text-primary)">{{
+          translate.no_select_menu_form
+        }}</span>
+      </div>
+
+      <div class="edition-empty">
+        <svg class="edition-empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
+          ></path>
+        </svg>
+        <p class="font-semibold" style="color: var(--text-secondary)">{{ translate.no_select_menu_form_msg }}</p>
+        <p class="text-sm mt-1" style="color: var(--text-light)">{{ translate.no_select_menu_form_msg_2 }}</p>
+        <div class="help-list">
+          <div class="help-item">
+            <span class="help-icon" style="background-color: #d1fae5; color: #059669">+</span>
+            {{ translate.no_select_menu_form_msg_3 }}
           </div>
-        </div>
-        <div class="xl:col-span-3">
-          <div class="edition-panel">
-            <div class="section-header rounded-t-lg">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                ></path>
-              </svg>
-              <span class="section-header-title">Édition du menuElement</span>
-              <span class="ml-2 text-xs text-white/50">#-</span>
-            </div>
-            <div class="edition-empty">
-              <svg class="edition-empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.5"
-                  d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
-                ></path>
-              </svg>
-              <p class="font-semibold" style="color: var(--text-secondary)">Sélectionnez un élément</p>
-              <p class="text-sm mt-1" style="color: var(--text-light)">Cliquez sur un élément du menu pour l'éditer</p>
-              <div class="help-list">
-                <div class="help-item">
-                  <span class="help-icon" style="background-color: #d1fae5; color: #059669">+</span>
-                  Ajouter un menuElement enfant
-                </div>
-                <div class="help-item">
-                  <span class="help-icon" style="background-color: var(--primary-lighter); color: var(--primary)"
-                    >✎</span
-                  >
-                  Éditer un menuElement
-                </div>
-                <div class="help-item">
-                  <span class="help-icon" style="background-color: #fef3c7; color: #d97706">◎</span>
-                  Masquer / afficher un menuElement
-                </div>
-                <div class="help-item">
-                  <span class="help-icon" style="background-color: #fee2e2; color: #dc2626">✕</span>
-                  Supprimer un menuElement
-                </div>
-              </div>
-            </div>
+          <div class="help-item">
+            <span class="help-icon" style="background-color: var(--primary-lighter); color: var(--primary)">✎</span>
+            {{ translate.no_select_menu_form_msg_4 }}
+          </div>
+          <div class="help-item">
+            <span class="help-icon" style="background-color: #fef3c7; color: #d97706">◎</span>
+            {{ translate.no_select_menu_form_msg_5 }}
+          </div>
+          <div class="help-item">
+            <span class="help-icon" style="background-color: #fee2e2; color: #dc2626">✕</span>
+            {{ translate.no_select_menu_form_msg_6 }}
           </div>
         </div>
       </div>
@@ -245,36 +262,6 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.section-header {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  padding: 0.875rem 1.25rem;
-  border-radius: 0.625rem 0.625rem 0 0;
-  background-color: var(--primary);
-  color: white;
-}
-
-.section-header-title {
-  font-size: 0.875rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-}
-
-.tree-scroll {
-  max-height: calc(100vh - 420px);
-  min-height: 200px;
-  overflow-y: auto;
-}
-
-.edition-panel {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 0.75rem;
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-}
-
 .edition-empty {
   display: flex;
   flex-direction: column;
