@@ -94,13 +94,13 @@ export default defineComponent({
         valReturn = false;
       }
 
-      this.faq.faqCategories.forEach((category) => {
+      this.faq.faqCategories.forEach((category: FaqCategory) => {
         if (this.getValueByLocale(category.faqCategoryTranslations, 'title') === '') {
           valReturn = false;
         }
       });
 
-      this.faq.faqCategories.forEach((category) => {
+      this.faq.faqCategories.forEach((category: FaqCategory) => {
         if (category.faqQuestions.length === 0) {
           valReturn = false;
         }
@@ -184,8 +184,8 @@ export default defineComponent({
             const fromCatId = parseInt((from as HTMLElement).dataset.catId ?? '0');
             const toCatId = parseInt((to as HTMLElement).dataset.catId ?? '0');
 
-            const fromCat = this.faq.faqCategories.find((c) => c.id === fromCatId);
-            const toCat = this.faq.faqCategories.find((c) => c.id === toCatId);
+            const fromCat = this.faq.faqCategories.find((c: FaqCategory) => c.id === fromCatId);
+            const toCat = this.faq.faqCategories.find((c: FaqCategory) => c.id === toCatId);
 
             if (!fromCat || !toCat) return;
 
@@ -194,10 +194,10 @@ export default defineComponent({
             const [moved] = fromCat.faqQuestions.splice(oldIndex, 1);
             toCat.faqQuestions.splice(newIndex, 0, moved);
 
-            fromCat.faqQuestions.forEach((q, i) => {
+            fromCat.faqQuestions.forEach((q: FaqQuestion, i: number) => {
               q.renderOrder = i + 1;
             });
-            toCat.faqQuestions.forEach((q, i) => {
+            toCat.faqQuestions.forEach((q: FaqQuestion, i: number) => {
               q.renderOrder = i + 1;
             });
 
@@ -238,19 +238,19 @@ export default defineComponent({
 
       switch (tmp[1]) {
         case 'faqTranslations':
-          const faqTranslation = this.faq.faqTranslations.find((item) => item.id === itemId);
+          const faqTranslation = this.faq.faqTranslations.find((item: FaqTranslation) => item.id === itemId);
           if (faqTranslation) faqTranslation.title = value;
           break;
 
         case 'faqCategoryTranslations':
-          this.faq.faqCategories.forEach((faqC) => {
+          this.faq.faqCategories.forEach((faqC: FaqCategory) => {
             const faqCategoryTranslation = faqC.faqCategoryTranslations.find((item) => item.id === itemId);
             if (faqCategoryTranslation) faqCategoryTranslation.title = value;
           });
           break;
 
         case 'faqQuestionTranslations':
-          this.faq.faqCategories.forEach((faqC) => {
+          this.faq.faqCategories.forEach((faqC: FaqCategory) => {
             faqC.faqQuestions.forEach((faqQ) => {
               const item = faqQ.faqQuestionTranslations.find((item) => item.id === itemId);
               if (item) {
@@ -329,7 +329,7 @@ export default defineComponent({
      * @param categoryId
      */
     addQuestion(categoryId: number): void {
-      const category = this.faq.faqCategories.find((c) => c.id === categoryId);
+      const category = this.faq.faqCategories.find((c: FaqCategory) => c.id === categoryId);
       if (!category) return;
 
       const translations: FaqQuestionTranslation[] = Object.keys(this.locales.localesTranslate).map((locale) => ({
@@ -392,12 +392,12 @@ export default defineComponent({
     disabled(type: string, id: number) {
       switch (type) {
         case 'category':
-          const item = this.faq.faqCategories.find((item) => item.id === id);
+          const item = this.faq.faqCategories.find((item: FaqCategory) => item.id === id);
           if (item) {
             item.disabled = !item.disabled;
 
             if (item.disabled) {
-              item.faqQuestions.forEach((question) => {
+              item.faqQuestions.forEach((question: FaqQuestion) => {
                 question.disabled = true;
               });
             }
@@ -405,7 +405,7 @@ export default defineComponent({
           }
           break;
         case 'question':
-          this.faq.faqCategories.forEach((faqC) => {
+          this.faq.faqCategories.forEach((faqC: FaqCategory) => {
             const item = faqC.faqQuestions.find((item) => item.id === id);
             if (item) {
               item.disabled = !item.disabled;
@@ -440,13 +440,13 @@ export default defineComponent({
 
       switch (type) {
         case 'category':
-          this.faq.faqCategories = this.faq.faqCategories.filter((c) => c.id !== id);
-          this.faq.faqCategories.forEach((c, i) => {
+          this.faq.faqCategories = this.faq.faqCategories.filter((c: FaqCategory) => c.id !== id);
+          this.faq.faqCategories.forEach((c: FaqCategory, i: number) => {
             c.renderOrder = i + 1;
           });
           break;
         case 'question':
-          this.faq.faqCategories.forEach((faqC) => {
+          this.faq.faqCategories.forEach((faqC: FaqCategory) => {
             faqC.faqQuestions = faqC.faqQuestions.filter((q) => q.id !== id);
             faqC.faqQuestions.forEach((q, i) => {
               q.renderOrder = i + 1;
