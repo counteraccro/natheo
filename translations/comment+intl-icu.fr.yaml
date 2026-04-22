@@ -83,6 +83,6 @@ comment.see.comment.page.link: 'Voir la page'
 comment.moderation.comment.select.all: 'Tout sélectionner'
 comment.moderation.comment.unselect.all: 'Tout désélectionner'
 comment.moderation.statistiques: 'Statistiques globales'
-comment.moderation.status.short.validate: 'Validé'
-comment.moderation.status.short.moderate: 'Modéré'
+comment.moderation.status.short.validate: Validé
+comment.moderation.status.short.moderate: Modéré
 comment.moderation.status.short.waiting: 'En attente'

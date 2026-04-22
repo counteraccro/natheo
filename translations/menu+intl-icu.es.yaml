@@ -123,3 +123,8 @@ menu.success.switch.default: __menu.success.switch.default
 menu.confirm.switch.default.msg: __menu.confirm.switch.default.msg
 menu.index.popin.help.default: __menu.index.popin.help.default
 menu.grid.author: __menu.grid.author
+menu.no_select.menu.form.msg.2: __menu.no_select.menu.form.msg.2
+menu.no_select.menu.form.msg.3: __menu.no_select.menu.form.msg.3
+menu.no_select.menu.form.msg.4: __menu.no_select.menu.form.msg.4
+menu.no_select.menu.form.msg.5: __menu.no_select.menu.form.msg.5
+menu.no_select.menu.form.msg.6: __menu.no_select.menu.form.msg.6
