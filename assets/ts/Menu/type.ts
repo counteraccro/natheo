@@ -101,14 +101,9 @@ export interface Urls {
 }
 
 /** Entrée générique pour les selects (list_position, list_type, etc.) */
-export interface SelectOption {
-  value: string | number;
-  label: string;
-}
-
 export interface MenuDatas {
-  list_position: SelectOption[];
-  list_type: SelectOption[];
+  list_position: Record<string, string>;
+  list_type: Record<string, Record<string, string>>;
 }
 
 export interface MenuElementTranslation {
