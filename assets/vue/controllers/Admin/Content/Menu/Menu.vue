@@ -37,6 +37,7 @@ export default defineComponent({
       menu: {} as Menu,
       dataMenu: {} as MenuDatas,
       currentLocale: '',
+      listTypeByPosition: {} as Record<string, string>,
     };
   },
   mounted() {
@@ -55,11 +56,9 @@ export default defineComponent({
         .then((response) => {
           this.menu = response.data.menu;
           this.dataMenu = response.data.data;
-          /*this.selectListTypeByPosition(this.menu.position);
-          this.renderLabelDisabled();
-          this.renderLabelDefaultMenu();
+          this.selectListTypeByPosition(this.menu.position);
 
-          if (this.menu.id === '') {
+          /*if (this.menu.id === '') {
             this.canSave = false;
           }
 
@@ -73,6 +72,32 @@ export default defineComponent({
         .finally(() => {
           this.loading = false;
         });
+    },
+
+    /**
+     * Sélectionne la liste de type en fonction de la position
+     * @param position
+     */
+    selectListTypeByPosition(position: string | number): void {
+      let isFirstLoad = false;
+      if (Object.keys(this.listTypeByPosition).length === 0) {
+        isFirstLoad = true;
+      }
+
+      this.listTypeByPosition = {};
+
+      for (const key in this.menu_datas.list_type) {
+        if (!Object.prototype.hasOwnProperty.call(this.menu_datas.list_position, key)) continue;
+        if (key === position.toString()) {
+          this.listTypeByPosition = this.menu_datas.list_type[key];
+          break;
+        }
+      }
+
+      if (!isFirstLoad && !(this.menu.type in this.listTypeByPosition)) {
+        const first = Object.entries(this.listTypeByPosition)[0];
+        this.menu.type = Number(first[0]);
+      }
     },
 
     /**
@@ -176,29 +201,72 @@ export default defineComponent({
             />
           </div>
 
-          <div class="form-switch form-switch-inline">
-            <input
-              class="switch-input no-control event-input"
-              type="checkbox"
-              role="switch"
-              id="default_menu"
-              v-model="menu.defaultMenu"
-            />
-            <label class="switch-toggle" for="default_menu"></label>
-            <label class="swith-label" for="default_menu"
-              ><span class="switch-label-text"> {{ translate.checkbox_default_menu_true_label }} </span></label
-            >
+          <div>
+            <div class="form-switch form-switch-inline">
+              <input
+                class="switch-input no-control event-input"
+                type="checkbox"
+                role="switch"
+                id="default_menu"
+                v-model="menu.defaultMenu"
+              />
+              <label class="switch-toggle" for="default_menu"></label>
+              <label class="swith-label" for="default_menu"
+                ><span class="switch-label-text"> {{ translate.checkbox_default_menu_true_label }} </span></label
+              >
+            </div>
+            <span
+              class="form-text"
+              v-html="
+                menu.defaultMenu
+                  ? translate.checkbox_default_menu_false_label_msg
+                  : translate.checkbox_default_menu_true_label_msg
+              "
+            ></span>
           </div>
-          <span
-            class="form-text"
-            v-html="
-              menu.defaultMenu
-                ? translate.checkbox_default_menu_false_label_msg
-                : translate.checkbox_default_menu_true_label_msg
-            "
-          ></span>
+
+          <div>
+            <div class="form-switch form-switch-inline">
+              <input
+                class="switch-input no-control event-input"
+                type="checkbox"
+                role="switch"
+                id="disabled_menu"
+                v-model="menu.disabled"
+              />
+              <label class="switch-toggle" for="disabled_menu"></label>
+              <label class="swith-label" for="disabled_menu"
+                ><span class="switch-label-text"> {{ translate.checkbox_disabled_label }} </span></label
+              >
+            </div>
+            <span
+              class="form-text"
+              v-html="menu.disabled ? translate.checkbox_disabled_label_msg : translate.checkbox_enabled_label_msg"
+            ></span>
+          </div>
         </div>
-        <div class="space-y-4">bbb</div>
+        <div class="space-y-4">
+          <div class="form-group">
+            <label class="form-label" for="menu-position">{{ translate.select_position_label }}</label>
+            <select
+              id="menu-position"
+              class="form-input"
+              v-model="menu.position"
+              @change="selectListTypeByPosition(menu.position)"
+            >
+              <option v-for="(position, key) in menu_datas.list_position" :value="key">
+                {{ position }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="menu-title">{{ translate.select_type_label }}</label>
+            <select id="menu-type" class="form-input" v-model="menu.type">
+              <option v-for="(position, key) in listTypeByPosition" :value="key">{{ position }}</option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -211,6 +279,8 @@ export default defineComponent({
         </svg>
         <span class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.title_architecture }}</span>
       </div>
+
+      aaaa
     </div>
     <div class="card rounded-lg overflow-hidden xl:col-span-3">
       <div class="px-5 py-4 border-b flex items-center gap-2" style="border-color: var(--border-color)">
