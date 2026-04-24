@@ -5,7 +5,7 @@
  * @version 1.0
  */
 import axios from 'axios';
-import MenuHeader from '../../../../Components/Menu/MenuHeader.vue';
+import MenuHeader from '@/vue/Components/Menu-old/MenuHeader.vue';
 import PreviewContent from '../../../../Components/Page/Preview/PreviewContent.vue';
 import Mail from '../../System/Mail.vue';
 import PreviewFooter from '../../../../Components/Page/Preview/Menu/PreviewFooter.vue';
