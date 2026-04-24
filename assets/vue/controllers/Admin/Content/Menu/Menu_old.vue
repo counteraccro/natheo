@@ -7,13 +7,13 @@
 import axios from 'axios';
 import Toast from '../../../../Components/Global/Toast.vue';
 import Modal from '../../../../Components/Global/Modal.vue';
-import MenuFooter from '../../../../Components/Menu/MenuFooter.vue';
-import MenuHeader from '../../../../Components/Menu/MenuHeader.vue';
-import MenuLeftRight from '../../../../Components/Menu/MenuLeftRight.vue';
-import MenuTree from '../../../../Components/Menu/MenuTree.vue';
+import MenuFooter from '@/vue/Components/Menu-old/MenuFooter.vue';
+import MenuHeader from '@/vue/Components/Menu-old/MenuHeader.vue';
+import MenuLeftRight from '@/vue/Components/Menu-old/MenuLeftRight.vue';
+import MenuTree from '@/vue/Components/Menu-old/MenuTree.vue';
 import FieldEditor from '../../../../Components/Global/FieldEditor.vue';
 import { emitter } from '../../../../../utils/useEvent';
-import MenuForm from '../../../../Components/Menu/MenuForm.vue';
+import MenuForm from '@/vue/Components/Menu-old/MenuForm.vue';
 import { MenuElementTools } from '../../../../../utils/Admin/Content/Menu/MenuElementsTools';
 
 export default {
