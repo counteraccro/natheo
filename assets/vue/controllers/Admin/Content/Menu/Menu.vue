@@ -5,10 +5,11 @@ import axios from 'axios';
 import SkeletonRenderMenu from '@/vue/Components/Skeleton/Menu/MenuRender.vue';
 import SkeletonFormMenu from '@/vue/Components/Skeleton/Menu/MenuForm.vue';
 import SkeletonArchitectureMenu from '@/vue/Components/Skeleton/Menu/MenuArchitecture.vue';
+import MenuTree from '@/vue/Components/Menu/MenuTree.vue';
 
 export default defineComponent({
   name: 'Menu',
-  components: { SkeletonArchitectureMenu, SkeletonFormMenu, SkeletonRenderMenu },
+  components: { MenuTree, SkeletonArchitectureMenu, SkeletonFormMenu, SkeletonRenderMenu },
   props: {
     urls: {
       type: Object as PropType<Urls>,
@@ -280,7 +281,16 @@ export default defineComponent({
         <span class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.title_architecture }}</span>
       </div>
 
-      aaaa
+      <div class="p-3 tree-scroll">
+        <menu-tree
+          v-for="menuElement in menu.menuElements"
+          :menu-element="menuElement"
+          :translate="translate.menu_tree"
+          :locale="currentLocale"
+          :id-selected="0"
+          :deep="0"
+        />
+      </div>
     </div>
     <div class="card rounded-lg overflow-hidden xl:col-span-3">
       <div class="px-5 py-4 border-b flex items-center gap-2" style="border-color: var(--border-color)">
@@ -332,6 +342,12 @@ export default defineComponent({
 </template>
 
 <style scoped>
+.tree-scroll {
+  max-height: calc(100vh - 420px);
+  min-height: 200px;
+  overflow-y: auto;
+}
+
 .edition-empty {
   display: flex;
   flex-direction: column;
