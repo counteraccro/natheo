@@ -34,6 +34,8 @@ export interface MenuFormTranslate {
 
 export interface MenuTreeTranslate {
   btn_new_menu_element: string;
+  tag_page: string;
+  tag_link: string;
 }
 
 export interface Translate {
