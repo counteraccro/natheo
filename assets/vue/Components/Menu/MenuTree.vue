@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { MenuElement, MenuTreeTranslate } from '@/ts/Menu/type';
+import { MenuElement, MenuElementTranslation, MenuTreeTranslate } from '@/ts/Menu/type';
 
 export default defineComponent({
   name: 'MenuTree',
@@ -25,6 +25,21 @@ export default defineComponent({
       type: Number,
     },
   },
+
+  methods: {
+    /**
+     * Retourne la valeur d'une traduction en fonction de la locale et d'une clé
+     * @param tabMenuElementTranslation
+     * @param key
+     */
+    getTranslationValueByKeyAndByLocale(
+      tabMenuElementTranslation: MenuElementTranslation[],
+      key: keyof MenuElementTranslation
+    ): string {
+      const translation = tabMenuElementTranslation.find(({ locale }) => locale === this.locale);
+      return String(translation?.[key] ?? '');
+    },
+  },
 });
 </script>
 
@@ -43,10 +58,12 @@ export default defineComponent({
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
         </svg>
       </button>
-      <span class="tree-node-label">{{ menuElement.id }}</span>
-      <span class="node-type-badge badge-page">Page T</span>
+      <span class="tree-node-label">{{
+        getTranslationValueByKeyAndByLocale(menuElement.menuElementTranslations, 'textLink')
+      }}</span>
+      <span class="node-type-badge badge-page">{{ translate.tag_page }}</span>
       <div class="tree-node-actions">
-        <button class="tree-action-btn add" data-tooltip="Ajouter un enfant" onclick="addChild(event, 1)">
+        <button class="tree-action-btn add" data-tooltip="Ajouter un enfant">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
           </svg>
@@ -92,191 +109,4 @@ export default defineComponent({
   </div>
 </template>
 
-<style scoped>
-.tree-container {
-  padding: 0.75rem;
-}
-.tree-node {
-  position: relative;
-  margin-bottom: 2px;
-}
-
-/* Ligne verticale de connexion */
-.tree-node-children {
-  position: relative;
-  margin-left: 1.25rem;
-  padding-left: 0.75rem;
-  border-left: 2px dashed var(--border-color);
-  margin-top: 2px;
-}
-
-.tree-node-row {
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.5rem 0.625rem;
-  border-radius: 0.5rem;
-  border: 1px solid var(--border-color);
-  background-color: var(--bg-card);
-  transition: all 0.15s ease;
-  cursor: pointer;
-  user-select: none;
-}
-.tree-node-row:hover {
-  border-color: var(--primary-light);
-  background-color: var(--primary-lighter);
-  box-shadow: 0 0 0 1px var(--primary-lighter);
-}
-.tree-node-row.selected {
-  border-color: var(--primary);
-  background-color: var(--primary-lighter);
-  box-shadow: 0 0 0 2px var(--primary-lighter);
-}
-.tree-node-row.hidden-node {
-  opacity: 0.5;
-}
-
-/* Drag handle */
-.drag-handle {
-  color: var(--text-light);
-  cursor: grab;
-  padding: 2px;
-  flex-shrink: 0;
-}
-.drag-handle:active {
-  cursor: grabbing;
-}
-.drag-handle:hover {
-  color: var(--primary);
-}
-
-/* Toggle expand */
-.tree-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  border: 1px solid var(--border-color);
-  background-color: var(--bg-main);
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: all 0.15s ease;
-  color: var(--text-secondary);
-}
-.tree-toggle:hover {
-  border-color: var(--primary);
-  color: var(--primary);
-  background-color: var(--primary-lighter);
-}
-.tree-toggle svg {
-  transition: transform 0.2s ease;
-}
-.tree-toggle.open svg {
-  transform: rotate(90deg);
-}
-.tree-toggle.leaf {
-  visibility: hidden;
-  pointer-events: none;
-}
-
-/* Node label */
-.tree-node-label {
-  flex: 1;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Node type badge */
-.node-type-badge {
-  font-size: 0.65rem;
-  font-weight: 600;
-  padding: 1px 6px;
-  border-radius: 4px;
-  flex-shrink: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-.badge-page {
-  background-color: var(--primary-lighter);
-  color: var(--primary);
-}
-.badge-url {
-  background-color: #dbeafe;
-  color: #1d4ed8;
-}
-.badge-anchor {
-  background-color: #d1fae5;
-  color: #065f46;
-}
-
-/* Node actions */
-.tree-node-actions {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  flex-shrink: 0;
-}
-.tree-action-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  color: var(--text-light);
-}
-.tree-action-btn:hover {
-  background-color: var(--bg-hover);
-}
-.tree-action-btn.add:hover {
-  color: var(--btn-success);
-  background-color: #d1fae5;
-}
-.tree-action-btn.edit:hover {
-  color: var(--primary);
-  background-color: var(--primary-lighter);
-}
-.tree-action-btn.hide:hover {
-  color: var(--btn-warning);
-  background-color: #fef3c7;
-}
-.tree-action-btn.delete:hover {
-  color: var(--btn-danger);
-  background-color: #fee2e2;
-}
-.tree-action-btn.hidden-active {
-  color: var(--btn-warning);
-}
-
-/* Add root element */
-.btn-add-root {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.875rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--primary);
-  border: 1.5px dashed var(--primary);
-  border-radius: 0.5rem;
-  background-color: transparent;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  width: 100%;
-  justify-content: center;
-}
-.btn-add-root:hover {
-  background-color: var(--primary-lighter);
-  border-style: solid;
-}
-</style>
+<style scoped></style>
