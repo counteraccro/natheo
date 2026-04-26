@@ -1,11 +1,12 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Locales, MenuDatas, Translate, Urls, Menu } from '@/ts/Menu/type';
+import { Locales, MenuDatas, Translate, Urls, Menu, MenuElement } from '@/ts/Menu/type';
 import axios from 'axios';
 import SkeletonRenderMenu from '@/vue/Components/Skeleton/Menu/MenuRender.vue';
 import SkeletonFormMenu from '@/vue/Components/Skeleton/Menu/MenuForm.vue';
 import SkeletonArchitectureMenu from '@/vue/Components/Skeleton/Menu/MenuArchitecture.vue';
 import MenuTree from '@/vue/Components/Menu/MenuTree.vue';
+import Sortable from 'sortablejs';
 
 export default defineComponent({
   name: 'Menu',
@@ -39,6 +40,7 @@ export default defineComponent({
       dataMenu: {} as MenuDatas,
       currentLocale: '',
       listTypeByPosition: {} as Record<string, string>,
+      updateNoSave: false,
     };
   },
   mounted() {
@@ -72,6 +74,7 @@ export default defineComponent({
         })
         .finally(() => {
           this.loading = false;
+          this.loadDraggable();
         });
     },
 
@@ -99,6 +102,68 @@ export default defineComponent({
         const first = Object.entries(this.listTypeByPosition)[0];
         this.menu.type = Number(first[0]);
       }
+    },
+
+    /**
+     * Chargement du dragandDrop
+     */
+    loadDraggable(): void {
+      this.$nextTick(() => {
+        const container = this.$refs.rootListRef as HTMLElement;
+        if (!container) return;
+
+        Sortable.create(container, {
+          handle: '.drag-handle',
+          animation: 200,
+          ghostClass: 'opacity-40',
+          chosenClass: 'ring-2',
+          onEnd: ({ oldIndex, newIndex, item, from }) => {
+            if (oldIndex === undefined || newIndex === undefined) return;
+            if (oldIndex === newIndex) return;
+
+            from.insertBefore(item, from.children[oldIndex] ?? null);
+
+            this.onReorder({ parentId: null, oldIndex, newIndex });
+          },
+        });
+      });
+    },
+
+    /**
+     * Réordonne les menus
+     * @param payload
+     */
+    onReorder(payload: { parentId: number | null; oldIndex: number; newIndex: number }): void {
+      // Niveau racine si parentId est null
+      const siblings =
+        payload.parentId === null
+          ? this.menu.menuElements
+          : this.findChildren(this.menu.menuElements, payload.parentId);
+
+      if (!siblings) return;
+
+      const [moved] = siblings.splice(payload.oldIndex, 1);
+      siblings.splice(payload.newIndex, 0, moved);
+
+      siblings.forEach((el, index) => {
+        el.columnPosition = index + 1;
+      });
+
+      this.updateNoSave = true;
+    },
+
+    /**
+     * Trouve récursivement le tableau children d'un élément par son id
+     */
+    findChildren(elements: MenuElement[], parentId: number): MenuElement[] | null {
+      for (const el of elements) {
+        if (el.id === parentId) return el.children ?? null;
+        if (el.children) {
+          const found = this.findChildren(el.children, parentId);
+          if (found) return found;
+        }
+      }
+      return null;
     },
 
     /**
@@ -281,7 +346,7 @@ export default defineComponent({
         <span class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.title_architecture }}</span>
       </div>
 
-      <div class="p-3 tree-scroll">
+      <div class="p-3 tree-scroll" ref="rootListRef">
         <menu-tree
           v-for="menuElement in menu.menuElements"
           :menu-element="menuElement"
@@ -289,6 +354,7 @@ export default defineComponent({
           :locale="currentLocale"
           :id-selected="0"
           :deep="0"
+          @reorder="onReorder"
         />
       </div>
     </div>
