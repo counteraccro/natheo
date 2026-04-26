@@ -241,6 +241,8 @@ Une fois l'installation terminée :
 | `php bin/console natheo:install` | Installation complète du CMS |
 | `php bin/console messenger:consume async -vv` | Traitement des tâches asynchrones |
 | `php bin/console doctrine:fixtures:load` | Chargement des données de test |
+| `php bin/phpunit --display-deprecations` | Lancement tests unitaires |
+| `php bin/phpunit --filter=testLoadMedias  --display-deprecation` | Lancement d'un test unitaire en particulié |
 
 ### Gestion des traductions
 
