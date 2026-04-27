@@ -357,6 +357,16 @@ export default defineComponent({
           @reorder="onReorder"
         />
       </div>
+      <div class="p-3">
+        <div class="mt-3">
+          <button class="btn-add-root">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            {{ translate.btn_new_menu_element }}
+          </button>
+        </div>
+      </div>
     </div>
     <div class="card rounded-lg overflow-hidden xl:col-span-3">
       <div class="px-5 py-4 border-b flex items-center gap-2" style="border-color: var(--border-color)">
