@@ -80,7 +80,7 @@ class MenuTranslate extends AppTranslate
                 'menu.element.confirm.delete.body',
                 domain: 'menu',
             ),
-            'menu_element_confirm_delete_body.2' => $this->translator->trans(
+            'menu_element_confirm_delete_body_2' => $this->translator->trans(
                 'menu.element.confirm.delete.body.2',
                 domain: 'menu',
             ),
