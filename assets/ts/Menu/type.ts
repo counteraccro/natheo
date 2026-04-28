@@ -81,6 +81,7 @@ export interface Translate {
   error_no_element: string;
   menu_element_confirm_delete_title: string;
   menu_element_confirm_delete_body: string;
+  menu_element_confirm_delete_body_2: string;
   menu_element_confirm_delete_btn_ok: string;
   menu_element_confirm_delete_btn_ko: string;
   btn_new_menu_element: string;
@@ -125,7 +126,7 @@ export interface MenuElement {
   parent: number | '';
   page: number;
   menuElementTranslations: MenuElementTranslation[];
-  children?: MenuElement[];
+  children: MenuElement[];
 }
 
 export interface Menu {
