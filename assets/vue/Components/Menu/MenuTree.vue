@@ -31,18 +31,31 @@ export default defineComponent({
     idSelected: {
       type: Number,
     },
+    forceOpen: {
+      type: Number,
+      default: 0,
+    },
   },
 
   emits: ['reorder', 'select', 'add-child', 'delete', 'toggle-visibility'],
 
   data() {
     return {
-      isOpen: true as boolean,
+      isOpen: false as boolean,
+      sortableInstance: null as Sortable | null,
     };
   },
 
   mounted() {
     this.initSortable();
+  },
+
+  watch: {
+    forceOpen(id: number) {
+      if (id === this.menuElement.id) {
+        this.isOpen = true;
+      }
+    },
   },
 
   methods: {
@@ -55,6 +68,11 @@ export default defineComponent({
       this.$nextTick(() => {
         const container = this.$refs.childrenListRef as HTMLElement;
         if (!container) return;
+
+        if (this.sortableInstance) {
+          this.sortableInstance.destroy();
+          this.sortableInstance = null;
+        }
 
         Sortable.create(container, {
           handle: '.drag-handle',
@@ -219,6 +237,7 @@ export default defineComponent({
         :locale="locale"
         :deep="deep + 1"
         :id-selected="idSelected"
+        :force-open="forceOpen"
         @reorder="onChildReorder"
         @select="$emit('select', $event)"
         @add-child="$emit('add-child', $event)"

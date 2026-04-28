@@ -7,10 +7,11 @@ import SkeletonFormMenu from '@/vue/Components/Skeleton/Menu/MenuForm.vue';
 import SkeletonArchitectureMenu from '@/vue/Components/Skeleton/Menu/MenuArchitecture.vue';
 import MenuTree from '@/vue/Components/Menu/MenuTree.vue';
 import Sortable from 'sortablejs';
+import Modal from '@/vue/Components/Global/Modal.vue';
 
 export default defineComponent({
   name: 'Menu',
-  components: { MenuTree, SkeletonArchitectureMenu, SkeletonFormMenu, SkeletonRenderMenu },
+  components: { Modal, MenuTree, SkeletonArchitectureMenu, SkeletonFormMenu, SkeletonRenderMenu },
   props: {
     urls: {
       type: Object as PropType<Urls>,
@@ -38,9 +39,21 @@ export default defineComponent({
       loading: false,
       menu: {} as Menu,
       dataMenu: {} as MenuDatas,
+      sortableRoot: null as Sortable | null,
       currentLocale: '',
       listTypeByPosition: {} as Record<string, string>,
       updateNoSave: false,
+      idSelected: 0,
+      nodeToOpen: 0,
+      showModalConfirmDelete: false,
+      modaleConfirmDelete: {
+        title: '',
+        body: '',
+        params: {
+          id: 0,
+          isConfirm: false,
+        },
+      },
     };
   },
   mounted() {
@@ -58,6 +71,7 @@ export default defineComponent({
         .get(url, {})
         .then((response) => {
           this.menu = response.data.menu;
+          this.normalizeElements(this.menu.menuElements);
           this.dataMenu = response.data.data;
           this.selectListTypeByPosition(this.menu.position);
 
@@ -76,6 +90,16 @@ export default defineComponent({
           this.loading = false;
           this.loadDraggable();
         });
+    },
+
+    /**
+     * Normalise récursivement les children undefined → []
+     */
+    normalizeElements(elements: MenuElement[]): void {
+      elements.forEach((el) => {
+        if (!el.children) el.children = [];
+        this.normalizeElements(el.children);
+      });
     },
 
     /**
@@ -112,18 +136,30 @@ export default defineComponent({
         const container = this.$refs.rootListRef as HTMLElement;
         if (!container) return;
 
-        Sortable.create(container, {
+        if (this.sortableRoot) {
+          this.sortableRoot.destroy();
+          this.sortableRoot = null;
+        }
+
+        this.sortableRoot = Sortable.create(container, {
           handle: '.drag-handle',
           animation: 200,
           ghostClass: 'opacity-40',
           chosenClass: 'ring-2',
-          onEnd: ({ oldIndex, newIndex, item, from }) => {
+          onEnd: ({ oldIndex, newIndex }) => {
             if (oldIndex === undefined || newIndex === undefined) return;
             if (oldIndex === newIndex) return;
 
-            from.insertBefore(item, from.children[oldIndex] ?? null);
+            const items = [...this.menu.menuElements];
+            const [moved] = items.splice(oldIndex, 1);
+            items.splice(newIndex, 0, moved);
 
-            this.onReorder({ parentId: null, oldIndex, newIndex });
+            items.forEach((el, index) => {
+              el.rowPosition = index + 1;
+            });
+
+            this.menu.menuElements = items;
+            this.updateNoSave = true;
           },
         });
       });
@@ -157,13 +193,133 @@ export default defineComponent({
      */
     findChildren(elements: MenuElement[], parentId: number): MenuElement[] | null {
       for (const el of elements) {
-        if (el.id === parentId) return el.children ?? null;
+        if (el.id === parentId) {
+          // Initialise children si absent (éléments venant de l'API)
+          if (!el.children) el.children = [];
+          return el.children;
+        }
         if (el.children) {
           const found = this.findChildren(el.children, parentId);
           if (found) return found;
         }
       }
       return null;
+    },
+
+    /**
+     * Génère un nouvel élément avec un id temporaire négatif
+     * pour le distinguer des éléments existants côté serveur
+     */
+    newEmptyMenuElement(parentId: number | null = null): MenuElement {
+      return {
+        id: -Date.now(), // id temporaire négatif
+        columnPosition: 1,
+        rowPosition: 1,
+        linkTarget: '_self',
+        disabled: false,
+        parent: parentId ?? '',
+        page: 0,
+        menuElementTranslations: this.locales.locales.map((locale) => ({
+          id: 0,
+          locale,
+          textLink: locale + '-' + -Date.now(),
+          externalLink: '',
+          link: '',
+        })),
+        children: [],
+      };
+    },
+
+    /**
+     * Ajout un nouvel menuElement
+     * @param parentId
+     */
+    newMenuElement(parentId: number | null = null): void {
+      const newElement = this.newEmptyMenuElement(parentId);
+
+      if (parentId === null) {
+        newElement.rowPosition = this.menu.menuElements.length + 1;
+        this.menu.menuElements.push(newElement);
+      } else {
+        const children = this.findChildren(this.menu.menuElements, parentId);
+        if (children !== null) {
+          newElement.rowPosition = children.length + 1;
+          children.push(newElement);
+        }
+      }
+
+      this.idSelected = newElement.id;
+      this.nodeToOpen = parentId ?? 0;
+      this.updateNoSave = true;
+
+      this.$nextTick(() => {
+        this.loadDraggable();
+      });
+    },
+
+    /**
+     * Supprime récursivement un élément par son id
+     * @param elements
+     * @param id
+     */
+    removeElement(elements: MenuElement[], id: number): boolean {
+      const index = elements.findIndex((el) => el.id === id);
+
+      if (index !== -1) {
+        elements.splice(index, 1);
+        // Réassigne rowPosition après suppression
+        elements.forEach((el, i) => {
+          el.rowPosition = i + 1;
+        });
+        return true;
+      }
+
+      // Pas trouvé à ce niveau, on cherche dans les enfants
+      for (const el of elements) {
+        if (el.children && this.removeElement(el.children, id)) {
+          return true;
+        }
+      }
+
+      return false;
+    },
+
+    /**
+     * Supprime un menuElement
+     * @param id
+     * @param isConfirm
+     */
+    onDelete(id: number, isConfirm: boolean = false): void {
+      this.showModalConfirmDelete = false;
+      if (!isConfirm) {
+        this.modaleConfirmDelete.title = this.translate.menu_element_confirm_delete_title;
+        this.modaleConfirmDelete.body =
+          this.translate.menu_element_confirm_delete_body +
+          '<br />' +
+          this.translate.menu_element_confirm_delete_body_2;
+
+        this.modaleConfirmDelete.params.id = id;
+        this.modaleConfirmDelete.params.isConfirm = true;
+
+        this.showModalConfirmDelete = true;
+        return;
+      }
+
+      this.removeElement(this.menu.menuElements, id);
+
+      // Si l'élément supprimé était sélectionné, on désélectionne
+      if (this.idSelected === id) {
+        this.idSelected = 0;
+      }
+
+      this.updateNoSave = true;
+    },
+
+    /**
+     * Ferme la modale de confirmation
+     */
+    hideModalConfirmDelete() {
+      this.showModalConfirmDelete = false;
     },
 
     /**
@@ -349,17 +505,21 @@ export default defineComponent({
       <div class="p-3 tree-scroll" ref="rootListRef">
         <menu-tree
           v-for="menuElement in menu.menuElements"
+          :key="menuElement.id"
           :menu-element="menuElement"
           :translate="translate.menu_tree"
           :locale="currentLocale"
           :id-selected="0"
           :deep="0"
+          :force-open="nodeToOpen"
           @reorder="onReorder"
+          @add-child="newMenuElement($event)"
+          @delete="onDelete($event)"
         />
       </div>
       <div class="p-3">
         <div class="mt-3">
-          <button class="btn-add-root">
+          <button class="btn-add-root" @click="newMenuElement(null)">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
             </svg>
@@ -415,6 +575,65 @@ export default defineComponent({
       </div>
     </div>
   </div>
+
+  <modal
+    :id="'confirm-delete-element'"
+    :show="showModalConfirmDelete"
+    @close-modal="hideModalConfirmDelete"
+    :option-show-close-btn="false"
+  >
+    <template #title> {{ modaleConfirmDelete.title }}</template>
+    <template #body>
+      <div v-html="modaleConfirmDelete.body"></div>
+    </template>
+    <template #footer>
+      <button
+        type="button"
+        class="btn btn-primary btn-sm me-2"
+        @click="onDelete(modaleConfirmDelete.params.id, modaleConfirmDelete.params.isConfirm)"
+      >
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+        {{ translate.menu_element_confirm_delete_btn_ok }}
+      </button>
+      <button type="button" class="btn btn-outline-dark btn-sm" @click="hideModalConfirmDelete()">
+        <svg
+          class="icon"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+
+        {{ translate.menu_element_confirm_delete_btn_ko }}
+      </button>
+    </template>
+  </modal>
 </template>
 
 <style scoped></style>
