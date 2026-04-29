@@ -168,6 +168,7 @@ class MenuTranslate extends AppTranslate
             'btn_new_menu_element' => $this->translator->trans('menu.tree.btn.new.menu.element', domain: 'menu'),
             'tag_page' => $this->translator->trans('menu.tree.tag.page', domain: 'menu'),
             'tag_link' => $this->translator->trans('menu.tree.tag.link', domain: 'menu'),
+            'menu_element_disabled' => $this->translator->trans('menu.tree.element.disabled', domain: 'menu'),
         ];
     }
 }
