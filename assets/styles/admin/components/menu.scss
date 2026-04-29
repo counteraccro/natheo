@@ -49,9 +49,10 @@
 .tree-container {
   padding: 0.75rem;
 }
+
 .tree-node {
   position: relative;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 /* Ligne verticale de connexion */
@@ -60,7 +61,7 @@
   margin-left: 1.25rem;
   padding-left: 0.75rem;
   border-left: 2px dashed var(--border-color);
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 .tree-node-row {
@@ -75,18 +76,24 @@
   cursor: pointer;
   user-select: none;
 }
+
 .tree-node-row:hover {
   border-color: var(--primary-light);
   background-color: var(--primary-lighter);
   box-shadow: 0 0 0 1px var(--primary-lighter);
 }
+
 .tree-node-row.selected {
   border-color: var(--primary);
   background-color: var(--primary-lighter);
   box-shadow: 0 0 0 2px var(--primary-lighter);
 }
+
 .tree-node-row.hidden-node {
-  opacity: 0.5;
+  border-style: solid;
+  border-width: 2px;
+  border-color: var(--alert-warning-border);
+  background-color: var(--alert-warning-bg);
 }
 
 /* Drag handle */
@@ -96,9 +103,11 @@
   padding: 2px;
   flex-shrink: 0;
 }
+
 .drag-handle:active {
   cursor: grabbing;
 }
+
 .drag-handle:hover {
   color: var(--primary);
 }
@@ -118,17 +127,21 @@
   transition: all 0.15s ease;
   color: var(--text-secondary);
 }
+
 .tree-toggle:hover {
   border-color: var(--primary);
   color: var(--primary);
   background-color: var(--primary-lighter);
 }
+
 .tree-toggle svg {
   transition: transform 0.2s ease;
 }
+
 .tree-toggle.open svg {
   transform: rotate(90deg);
 }
+
 .tree-toggle.leaf {
   visibility: hidden;
   pointer-events: none;
@@ -155,14 +168,17 @@
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
+
 .badge-page {
   background-color: var(--primary-lighter);
   color: var(--primary);
 }
+
 .badge-url {
   background-color: #dbeafe;
   color: #1d4ed8;
 }
+
 .badge-anchor {
   background-color: #d1fae5;
   color: #065f46;
@@ -175,6 +191,7 @@
   gap: 2px;
   flex-shrink: 0;
 }
+
 .tree-action-btn {
   display: flex;
   align-items: center;
@@ -188,25 +205,31 @@
   transition: all 0.15s ease;
   color: var(--text-light);
 }
+
 .tree-action-btn:hover {
   background-color: var(--bg-hover);
 }
+
 .tree-action-btn.add:hover {
   color: var(--btn-success);
   background-color: var(--alert-success-bg);
 }
+
 .tree-action-btn.edit:hover {
   color: var(--primary);
   background-color: var(--primary-lighter);
 }
+
 .tree-action-btn.hide:hover {
   color: var(--btn-warning);
   background-color: var(--alert-warning-bg);
 }
+
 .tree-action-btn.delete:hover {
   color: var(--btn-danger);
   background-color: var(--alert-danger-bg);
 }
+
 .tree-action-btn.hidden-active {
   color: var(--btn-warning);
 }
@@ -228,6 +251,7 @@
   width: 100%;
   justify-content: center;
 }
+
 .btn-add-root:hover {
   background-color: var(--primary-lighter);
   border-style: solid;
