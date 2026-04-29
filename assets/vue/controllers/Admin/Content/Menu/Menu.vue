@@ -189,6 +189,22 @@ export default defineComponent({
     },
 
     /**
+     * Trouve récursivement un menuElement par son id
+     * @param elements
+     * @param id
+     */
+    findElement(elements: MenuElement[], id: number): MenuElement | null {
+      for (const el of elements) {
+        if (el.id === id) return el;
+        if (el.children) {
+          const found = this.findElement(el.children, id);
+          if (found) return found;
+        }
+      }
+      return null;
+    },
+
+    /**
      * Trouve récursivement le tableau children d'un élément par son id
      */
     findChildren(elements: MenuElement[], parentId: number): MenuElement[] | null {
@@ -267,7 +283,6 @@ export default defineComponent({
 
       if (index !== -1) {
         elements.splice(index, 1);
-        // Réassigne rowPosition après suppression
         elements.forEach((el, i) => {
           el.rowPosition = i + 1;
         });
@@ -313,6 +328,32 @@ export default defineComponent({
       }
 
       this.updateNoSave = true;
+    },
+
+    /**
+     * Active ou désactive récursivement un élément et tous ses enfants
+     * @param element
+     * @param disabled
+     */
+    toggleVisibilityRecursive(element: MenuElement, disabled: boolean): void {
+      element.disabled = disabled;
+      if (element.children) {
+        element.children.forEach((child) => {
+          this.toggleVisibilityRecursive(child, disabled);
+        });
+      }
+    },
+
+    /**
+     * Active ou désactive un menuElement et tous ses enfants
+     * @param id
+     */
+    toggleVisibility(id: number): void {
+      const element = this.findElement(this.menu.menuElements, id);
+      if (element !== null) {
+        this.toggleVisibilityRecursive(element, !element.disabled);
+        this.updateNoSave = true;
+      }
     },
 
     /**
@@ -515,6 +556,7 @@ export default defineComponent({
           @reorder="onReorder"
           @add-child="newMenuElement($event)"
           @delete="onDelete($event)"
+          @toggle-visibility="toggleVisibility($event)"
         />
       </div>
       <div class="p-3">

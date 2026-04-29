@@ -159,6 +159,20 @@ export default defineComponent({
         </svg>
       </button>
 
+      <span
+        v-if="menuElement.disabled"
+        class="inline-flex items-center gap-1 text-[0.5rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full flex-shrink-0"
+        style="background-color: var(--btn-warning); color: white"
+        ><svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
+          ></path>
+        </svg>
+        {{ translate.menu_element_disabled }}</span
+      >
+
       <!-- Label -->
       <span class="tree-node-label">
         {{ getTranslationValueByKeyAndByLocale(menuElement.menuElementTranslations, 'textLink') }}
@@ -196,12 +210,21 @@ export default defineComponent({
         >
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
+              v-if="!menuElement.disabled"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+            ></path>
+            <path
+              v-if="menuElement.disabled"
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
               d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
             />
             <path
+              v-if="menuElement.disabled"
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
