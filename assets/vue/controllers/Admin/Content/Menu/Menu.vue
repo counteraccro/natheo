@@ -8,10 +8,11 @@ import SkeletonArchitectureMenu from '@/vue/Components/Skeleton/Menu/MenuArchite
 import MenuTree from '@/vue/Components/Menu/MenuTree.vue';
 import Sortable from 'sortablejs';
 import Modal from '@/vue/Components/Global/Modal.vue';
+import MenuElementForm from '@/vue/Components/Menu/MenuElementForm.vue';
 
 export default defineComponent({
   name: 'Menu',
-  components: { Modal, MenuTree, SkeletonArchitectureMenu, SkeletonFormMenu, SkeletonRenderMenu },
+  components: { MenuElementForm, Modal, MenuTree, SkeletonArchitectureMenu, SkeletonFormMenu, SkeletonRenderMenu },
   props: {
     urls: {
       type: Object as PropType<Urls>,
@@ -44,6 +45,7 @@ export default defineComponent({
       listTypeByPosition: {} as Record<string, string>,
       updateNoSave: false,
       idSelected: 0,
+      menuElementSelected: null as MenuElement | null,
       nodeToOpen: 0,
       showModalConfirmDelete: false,
       modaleConfirmDelete: {
@@ -321,6 +323,7 @@ export default defineComponent({
       }
 
       this.removeElement(this.menu.menuElements, id);
+      this.menuElementSelected = null;
 
       // Si l'élément supprimé était sélectionné, on désélectionne
       if (this.idSelected === id) {
@@ -353,6 +356,26 @@ export default defineComponent({
       if (element !== null) {
         this.toggleVisibilityRecursive(element, !element.disabled);
         this.updateNoSave = true;
+      }
+    },
+
+    select(id: number): void {
+      const element = this.findElement(this.menu.menuElements, id);
+      if (element !== null) {
+        this.menuElementSelected = element;
+      }
+    },
+
+    /**
+     * Sauvegarde un menuElement
+     * @param menuElement
+     */
+    saveMenuElement(menuElement: MenuElement) {
+      const element = this.findElement(this.menu.menuElements, menuElement.id);
+      if (element !== null) {
+        Object.assign(element, menuElement);
+        this.updateNoSave = true;
+        this.menuElementSelected = null;
       }
     },
 
@@ -557,6 +580,7 @@ export default defineComponent({
           @add-child="newMenuElement($event)"
           @delete="onDelete($event)"
           @toggle-visibility="toggleVisibility($event)"
+          @select="select($event)"
         />
       </div>
       <div class="p-3">
@@ -580,12 +604,18 @@ export default defineComponent({
             d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
           ></path>
         </svg>
-        <span class="text-sm font-semibold" style="color: var(--text-primary)">{{
-          translate.no_select_menu_form
-        }}</span>
+        <span
+          class="text-sm font-semibold"
+          style="color: var(--text-primary)"
+          v-html="
+            menuElementSelected === null
+              ? translate.no_select_menu_form
+              : translate.no_select_menu_form + ' #' + menuElementSelected.id
+          "
+        ></span>
       </div>
 
-      <div class="edition-empty">
+      <div class="edition-empty" v-if="menuElementSelected === null">
         <svg class="edition-empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
@@ -615,6 +645,15 @@ export default defineComponent({
           </div>
         </div>
       </div>
+      <menu-element-form
+        v-else
+        :translate="translate.menu_form"
+        :locale="currentLocale"
+        :menu-element="menuElementSelected"
+        @delete="onDelete($event)"
+        @save="saveMenuElement($event)"
+        @cancel="saveMenuElement($event)"
+      />
     </div>
   </div>
 
