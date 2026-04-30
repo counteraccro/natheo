@@ -131,3 +131,6 @@ menu.no_select.menu.form.msg.6: 'Supprimer un menuElement'
 menu.tree.tag.page: Page
 menu.tree.tag.link: Lien
 menu.tree.element.disabled: Désactivé
+menu.form.btn.save: Sauvegarder
+menu.form.btn.cancel: Annuler
+menu.form.btn.delete: Supprimer

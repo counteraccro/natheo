@@ -131,3 +131,6 @@ menu.no_select.menu.form.msg.6: __menu.no_select.menu.form.msg.6
 menu.tree.tag.page: __menu.tree.tag.page
 menu.tree.tag.link: __menu.tree.tag.link
 menu.tree.element.disabled: __menu.tree.element.disabled
+menu.form.btn.save: __menu.form.btn.save
+menu.form.btn.cancel: __menu.form.btn.cancel
+menu.form.btn.delete: __menu.form.btn.delete

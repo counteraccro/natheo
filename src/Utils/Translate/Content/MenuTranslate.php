@@ -155,6 +155,9 @@ class MenuTranslate extends AppTranslate
                 'menu.form.link.target.label.blank',
                 domain: 'menu',
             ),
+            'btn_save' => $this->translator->trans('menu.form.btn.save', domain: 'menu'),
+            'btn_cancel' => $this->translator->trans('menu.form.btn.cancel', domain: 'menu'),
+            'btn_delete' => $this->translator->trans('menu.form.btn.delete', domain: 'menu'),
         ];
     }
 
