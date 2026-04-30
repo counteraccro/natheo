@@ -30,6 +30,9 @@ export interface MenuFormTranslate {
   element_link_target_label: string;
   element_link_target_label_self: string;
   element_link_target_label_blank: string;
+  btn_save: string;
+  btn_cancel: string;
+  btn_delete: string;
 }
 
 export interface MenuTreeTranslate {
