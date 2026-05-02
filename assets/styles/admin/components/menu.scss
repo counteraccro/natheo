@@ -256,3 +256,30 @@
   background-color: var(--primary-lighter);
   border-style: solid;
 }
+
+.link-tabs {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: var(--bg-main);
+}
+.link-tab {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: var(--text-secondary);
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+.link-tab:not(:last-child) { border-right: 1px solid var(--border-color); }
+.link-tab.active {
+  background-color: var(--primary);
+  color: white;
+}
