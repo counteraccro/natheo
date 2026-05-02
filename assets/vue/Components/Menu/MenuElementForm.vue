@@ -56,6 +56,10 @@ export default defineComponent({
         (translation[key] as string) = value;
       }
     },
+
+    changeLinkType(type: '' | number) {
+      this.menuElement.page = type;
+    },
   },
 });
 </script>
@@ -77,6 +81,18 @@ export default defineComponent({
           )
         "
       />
+    </div>
+
+    <div>
+      <label class="form-label">{{ translate.url_type_label }}</label>
+      <div class="link-tabs" id="linkTypeTabs">
+        <button class="link-tab" :class="menuElement.page !== '' ? 'active' : ''" @click="changeLinkType(0)">
+          {{ translate.radio_label_url_interne }}
+        </button>
+        <button class="link-tab" :class="menuElement.page === '' ? 'active' : ''" @click="changeLinkType('')">
+          {{ translate.radio_label_url_externe }}
+        </button>
+      </div>
     </div>
 
     <div class="flex items-center justify-between pt-3 border-t" style="border-color: var(--border-color)">
