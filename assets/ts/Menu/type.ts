@@ -128,7 +128,7 @@ export interface MenuElement {
   linkTarget: '_self' | '_blank';
   disabled: boolean;
   parent: number | '';
-  page: number;
+  page: number | '';
   menuElementTranslations: MenuElementTranslation[];
   children: MenuElement[];
 }
