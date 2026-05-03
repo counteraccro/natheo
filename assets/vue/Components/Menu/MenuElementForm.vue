@@ -1,9 +1,11 @@
 <script lang="ts">
 import { defineComponent, PropType, toRaw } from 'vue';
-import { MenuElement, MenuElementTranslation, MenuFormTranslate } from '@/ts/Menu/type';
+import { LoadMenuData, MenuDatas, MenuElement, MenuElementTranslation, MenuFormTranslate } from '@/ts/Menu/type';
+import Autocomplete, { AutocompleteOption } from '@/vue/Components/Global/AutoComplete.vue';
 
 export default defineComponent({
   name: 'MenuElementForm',
+  components: { Autocomplete },
   emit: ['cancel', 'save', 'delete'],
   props: {
     translate: {
@@ -12,6 +14,10 @@ export default defineComponent({
     },
     menuElement: {
       type: Object as PropType<MenuElement>,
+      required: true,
+    },
+    menuData: {
+      type: Object as PropType<LoadMenuData>,
       required: true,
     },
     locale: {
@@ -24,6 +30,18 @@ export default defineComponent({
     return {
       menuElementNoEdit: structuredClone(toRaw(this.menuElement)) as MenuElement,
     };
+  },
+
+  computed: {
+    pageOptions(): AutocompleteOption[] {
+      if (!this.menuData.pages) return [];
+
+      return Object.entries(this.menuData.pages).map(([id, locales]) => ({
+        value: Number(id),
+        label: locales[this.locale]?.title ?? '',
+        hint: locales[this.locale]?.url ?? '',
+      }));
+    },
   },
 
   methods: {
@@ -93,6 +111,52 @@ export default defineComponent({
           {{ translate.radio_label_url_externe }}
         </button>
       </div>
+    </div>
+
+    <div v-if="menuElement.page !== ''">
+      <autocomplete
+        v-model="menuElement.page"
+        ref="searchInput"
+        :options="pageOptions"
+        :placeholder="translate.input_search_page_placeholder"
+        :empty-label="translate.input_search_page_placeholder_no_result"
+      >
+        <template #option="{ option }">
+          <div class="flex items-center gap-3 w-full min-w-0">
+            <!-- Icône -->
+            <div
+              class="shrink-0 w-7 h-7 rounded-md flex items-center justify-center"
+              style="background-color: var(--primary-lighter)"
+            >
+              <svg
+                class="w-3.5 h-3.5"
+                style="color: var(--primary)"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+            <!-- Label + URL -->
+            <div class="flex flex-col min-w-0 flex-1">
+              <span class="text-sm font-medium truncate" style="color: var(--text-primary)">{{ option.label }}</span>
+              <span class="text-xs truncate" style="color: var(--text-light)">{{ option.hint }}</span>
+            </div>
+            <!-- ID badge -->
+            <span
+              class="shrink-0 text-xs font-semibold px-1.5 py-0.5 rounded"
+              style="background-color: var(--primary-lighter); color: var(--primary)"
+              >#{{ option.value }}</span
+            >
+          </div>
+        </template>
+      </autocomplete>
     </div>
 
     <div class="flex items-center justify-between pt-3 border-t" style="border-color: var(--border-color)">

@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Locales, MenuDatas, Translate, Urls, Menu, MenuElement } from '@/ts/Menu/type';
+import { Locales, MenuDatas, Translate, Urls, Menu, MenuElement, LoadMenuData } from '@/ts/Menu/type';
 import axios from 'axios';
 import SkeletonRenderMenu from '@/vue/Components/Skeleton/Menu/MenuRender.vue';
 import SkeletonFormMenu from '@/vue/Components/Skeleton/Menu/MenuForm.vue';
@@ -39,7 +39,7 @@ export default defineComponent({
     return {
       loading: false,
       menu: {} as Menu,
-      dataMenu: {} as MenuDatas,
+      dataMenu: {} as LoadMenuData,
       sortableRoot: null as Sortable | null,
       currentLocale: '',
       listTypeByPosition: {} as Record<string, string>,
@@ -650,6 +650,7 @@ export default defineComponent({
         :translate="translate.menu_form"
         :locale="currentLocale"
         :menu-element="menuElementSelected"
+        :menu-data="dataMenu"
         @delete="onDelete($event)"
         @save="saveMenuElement($event)"
         @cancel="saveMenuElement($event)"
