@@ -116,6 +116,10 @@ class MenuTranslate extends AppTranslate
                 'menu.form.input.search.page.placeholder',
                 domain: 'menu',
             ),
+            'input_search_page_placeholder_no_result' => $this->translator->trans(
+                'menu.form.input.search.page.placeholder.no.result',
+                domain: 'menu',
+            ),
             'block_fr' => $this->translator->trans('menu.form.block.fr', domain: 'menu'),
             'block_es' => $this->translator->trans('menu.form.block.es', domain: 'menu'),
             'block_en' => $this->translator->trans('menu.form.block.en', domain: 'menu'),
