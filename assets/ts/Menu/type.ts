@@ -9,6 +9,7 @@ export interface MenuFormTranslate {
   title_new: string;
   input_search_page: string;
   input_search_page_placeholder: string;
+  input_search_page_placeholder_no_result: string;
   block_fr: string;
   block_es: string;
   block_en: string;
