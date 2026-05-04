@@ -129,7 +129,7 @@ menu.no_select.menu.form.msg.4: 'Éditer un menuElement'
 menu.no_select.menu.form.msg.5: 'Masquer / afficher un menuElement'
 menu.no_select.menu.form.msg.6: 'Supprimer un menuElement'
 menu.tree.tag.page: Page
-menu.tree.tag.link: Lien
+menu.tree.tag.link: URL
 menu.tree.element.disabled: Désactivé
 menu.form.btn.save: Sauvegarder
 menu.form.btn.cancel: Annuler
