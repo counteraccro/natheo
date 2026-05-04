@@ -267,6 +267,7 @@ export default defineComponent({
       }
 
       this.idSelected = newElement.id;
+      this.menuElementSelected = newElement;
       this.nodeToOpen = parentId ?? 0;
       this.updateNoSave = true;
 
@@ -363,6 +364,7 @@ export default defineComponent({
       const element = this.findElement(this.menu.menuElements, id);
       if (element !== null) {
         this.menuElementSelected = element;
+        this.idSelected = element.id;
       }
     },
 
@@ -384,14 +386,6 @@ export default defineComponent({
      */
     hideModalConfirmDelete() {
       this.showModalConfirmDelete = false;
-    },
-
-    /**
-     * Permet de changer la locale pour la création/édition d'une page
-     * @param event
-     */
-    switchLocale(event): void {
-      this.currentLocale = event.target.value;
     },
   },
 });
@@ -573,7 +567,7 @@ export default defineComponent({
           :menu-element="menuElement"
           :translate="translate.menu_tree"
           :locale="currentLocale"
-          :id-selected="0"
+          :id-selected="idSelected"
           :deep="0"
           :force-open="nodeToOpen"
           @reorder="onReorder"

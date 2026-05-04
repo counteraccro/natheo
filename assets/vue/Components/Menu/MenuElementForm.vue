@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType, toRaw } from 'vue';
-import { LoadMenuData, MenuDatas, MenuElement, MenuElementTranslation, MenuFormTranslate } from '@/ts/Menu/type';
+import { LoadMenuData, MenuElement, MenuElementTranslation, MenuFormTranslate } from '@/ts/Menu/type';
 import Autocomplete, { AutocompleteOption } from '@/vue/Components/Global/AutoComplete.vue';
 
 export default defineComponent({
@@ -29,6 +29,10 @@ export default defineComponent({
   data() {
     return {
       menuElementNoEdit: structuredClone(toRaw(this.menuElement)) as MenuElement,
+      errors: {
+        textLink: false,
+        link: false,
+      } as Record<string, boolean>,
     };
   },
 
@@ -75,9 +79,59 @@ export default defineComponent({
       }
     },
 
+    /**
+     * On met à jour le lien en fonction de la page choisi
+     * @param option
+     */
+    onPageSelect(option: AutocompleteOption): void {
+      const translation = this.menuElement.menuElementTranslations.find(({ locale }) => locale === this.locale);
+      if (translation) {
+        translation.link = String(option.hint);
+      }
+    },
+
+    /**
+     * Change le type de lien
+     * @param type
+     */
     changeLinkType(type: '' | number) {
       this.menuElement.page = type;
+      this.setTranslationValueByKeyAndByLocale(this.menuElement.menuElementTranslations, 'link', '');
+      this.setTranslationValueByKeyAndByLocale(this.menuElement.menuElementTranslations, 'externalLink', '');
     },
+
+    /**
+     * Valide le formulaire avant sauvegarde
+     */
+    validate(): boolean {
+      this.resetErrors();
+
+      const translation = this.menuElement.menuElementTranslations.find(({ locale }) => locale === this.locale);
+
+      if (!translation?.textLink?.trim()) {
+        this.errors.textLink = true;
+      }
+
+      const hasPage = this.menuElement.page !== '';
+      const hasExternalUrl = translation?.externalLink?.trim() !== '' && translation?.externalLink !== '#';
+
+      if (!hasPage && !hasExternalUrl) {
+        this.errors.link = true;
+      }
+
+      return !Object.values(this.errors).some(Boolean);
+    },
+
+    /**
+     * Réinitialise les erreurs
+     */
+    resetErrors(): void {
+      Object.keys(this.errors).forEach((key) => {
+        this.errors[key] = false;
+      });
+    },
+
+    onSave(): void {},
   },
 });
 </script>
@@ -120,6 +174,7 @@ export default defineComponent({
         :options="pageOptions"
         :placeholder="translate.input_search_page_placeholder"
         :empty-label="translate.input_search_page_placeholder_no_result"
+        @select="onPageSelect"
       >
         <template #option="{ option }">
           <div class="flex items-center gap-3 w-full min-w-0">
@@ -157,6 +212,61 @@ export default defineComponent({
           </div>
         </template>
       </autocomplete>
+      <div class="form-group mt-3">
+        <label class="form-label">{{ translate.input_link_url }}</label>
+        <input
+          type="text"
+          class="form-input"
+          :value="getTranslationValueByKeyAndByLocale(menuElement.menuElementTranslations, 'link')"
+          disabled
+        />
+      </div>
+    </div>
+    <div v-else>
+      <div class="form-group mt-3">
+        <label class="form-label">{{ translate.input_link_external_url }}</label>
+        <input
+          type="text"
+          class="form-input"
+          :value="getTranslationValueByKeyAndByLocale(menuElement.menuElementTranslations, 'externalLink')"
+        />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="liste-target" class="form-label">{{ translate.element_link_target_label }}</label>
+      <select class="form-input" id="liste-target" v-model="menuElement.linkTarget">
+        <option value="_self">{{ translate.element_link_target_label_self }}</option>
+        <option value="_blank">{{ translate.element_link_target_label_blank }}</option>
+      </select>
+    </div>
+
+    <div class="pt-2 border-t border-(--border-color)">
+      <div class="form-switch form-switch-inline">
+        <input
+          class="switch-input no-control event-input"
+          type="checkbox"
+          role="switch"
+          id="menuElement_disabled"
+          :checked="!menuElement.disabled"
+          @change="menuElement.disabled = !($event.target as HTMLInputElement).checked"
+        />
+        <label class="switch-toggle" for="menuElement_disabled"></label>
+        <label class="swith-label" for="menuElement_disabled"
+          ><span
+            class="switch-label-text"
+            v-html="
+              menuElement.disabled ? translate.radio_label_disabled_element : translate.radio_label_enabled_element
+            "
+          ></span
+        ></label>
+      </div>
+
+      <div class="text-end mb-5 text-sm text-(--text-secondary) italic">
+        <span
+          v-html="menuElement.disabled ? translate.text_info_disabled_element : translate.text_info_enabled_element"
+        ></span>
+      </div>
     </div>
 
     <div class="flex items-center justify-between pt-3 border-t" style="border-color: var(--border-color)">
@@ -175,7 +285,7 @@ export default defineComponent({
         <button @click="$emit('cancel', menuElementNoEdit)" class="btn btn-sm btn-outline-dark">
           {{ translate.btn_cancel }}
         </button>
-        <button class="btn btn-sm btn-primary" @click="$emit('save', menuElement)">
+        <button class="btn btn-sm btn-primary" @click="">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
           </svg>

@@ -179,7 +179,8 @@ export default defineComponent({
       </span>
 
       <!-- Badge type -->
-      <span class="node-type-badge badge-page">{{ translate.tag_page }}</span>
+      <span v-if="menuElement.page !== ''" class="node-type-badge badge-page">{{ translate.tag_page }}</span>
+      <span v-if="menuElement.page === ''" class="node-type-badge badge-url">{{ translate.tag_link }}</span>
 
       <!-- Actions -->
       <div class="tree-node-actions">
