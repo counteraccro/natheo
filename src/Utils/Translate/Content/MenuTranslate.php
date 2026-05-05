@@ -162,6 +162,11 @@ class MenuTranslate extends AppTranslate
             'btn_save' => $this->translator->trans('menu.form.btn.save', domain: 'menu'),
             'btn_cancel' => $this->translator->trans('menu.form.btn.cancel', domain: 'menu'),
             'btn_delete' => $this->translator->trans('menu.form.btn.delete', domain: 'menu'),
+            'empty_text_link_error' => $this->translator->trans('menu.form.empty.text.link.error', domain: 'menu'),
+            'empty_internal_link_error' => $this->translator->trans(
+                'menu.form.empty.internal.link.error',
+                domain: 'menu',
+            ),
         ];
     }
 

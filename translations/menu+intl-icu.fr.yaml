@@ -135,3 +135,5 @@ menu.form.btn.save: Sauvegarder
 menu.form.btn.cancel: Annuler
 menu.form.btn.delete: Supprimer
 menu.form.input.search.page.placeholder.no.result: 'Aucune page trouvée'
+menu.form.empty.text.link.error: 'Ce champ ne peux pas être vide'
+menu.form.empty.internal.link.error: 'Vous devez choisir une page'
