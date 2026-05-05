@@ -1,12 +1,12 @@
 <script lang="ts">
 import { defineComponent, PropType, toRaw } from 'vue';
-import { LoadMenuData, MenuElement, MenuElementTranslation, MenuFormTranslate } from '@/ts/Menu/type';
+import { LoadMenuData, Locales, MenuElement, MenuElementTranslation, MenuFormTranslate } from '@/ts/Menu/type';
 import Autocomplete, { AutocompleteOption } from '@/vue/Components/Global/AutoComplete.vue';
 
 export default defineComponent({
   name: 'MenuElementForm',
   components: { Autocomplete },
-  emit: ['cancel', 'save', 'delete'],
+  emit: ['cancel', 'save', 'delete', 'locale-validation'],
   props: {
     translate: {
       type: Object as PropType<MenuFormTranslate>,
@@ -24,6 +24,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    locales: {
+      type: Object as PropType<Locales>,
+      required: true,
+    },
   },
 
   data() {
@@ -36,7 +40,23 @@ export default defineComponent({
     };
   },
 
+  watch: {
+    localeValidation: {
+      immediate: true,
+      deep: true,
+      handler(val: Record<string, boolean>) {
+        this.$emit('locale-validation', val);
+      },
+    },
+    locale() {
+      this.validate();
+    },
+  },
+
   computed: {
+    /**
+     * Retourne un objet autoCompleteOption
+     */
     pageOptions(): AutocompleteOption[] {
       if (!this.menuData.pages) return [];
 
@@ -45,6 +65,38 @@ export default defineComponent({
         label: locales[this.locale]?.title ?? '',
         hint: locales[this.locale]?.url ?? '',
       }));
+    },
+
+    /**
+     * Vérifie si la validation est bonne ou non
+     */
+    isValid(): boolean {
+      const translation = this.menuElement.menuElementTranslations.find(({ locale }) => locale === this.locale);
+
+      const hasTextLink = !!translation?.textLink?.trim();
+      const hasPage = Number(this.menuElement.page) > 0;
+      const hasExternalUrl = translation?.externalLink?.trim() !== '' && translation?.externalLink !== '#';
+
+      return hasTextLink && (hasPage || hasExternalUrl);
+    },
+
+    /**
+     * Retourne l'état de validation pour chaque locale
+     */
+    localeValidation(): Record<string, boolean> {
+      const result: Record<string, boolean> = {};
+
+      this.locales.locales.forEach((locale) => {
+        const translation = this.menuElement.menuElementTranslations.find((t) => t.locale === locale);
+
+        const hasTextLink = !!translation?.textLink?.trim();
+        const hasPage = Number(this.menuElement.page) > 0;
+        const hasExternalUrl = translation?.externalLink?.trim() !== '' && translation?.externalLink !== '#';
+
+        result[locale] = hasTextLink && (hasPage || hasExternalUrl);
+      });
+
+      return result;
     },
   },
 
@@ -96,8 +148,8 @@ export default defineComponent({
      */
     changeLinkType(type: '' | number) {
       this.menuElement.page = type;
-      this.setTranslationValueByKeyAndByLocale(this.menuElement.menuElementTranslations, 'link', '');
-      this.setTranslationValueByKeyAndByLocale(this.menuElement.menuElementTranslations, 'externalLink', '');
+      this.setTranslationValueByKeyAndByLocale(this.menuElement.menuElementTranslations, 'link', '0');
+      this.setTranslationValueByKeyAndByLocale(this.menuElement.menuElementTranslations, 'externalLink', '#');
     },
 
     /**
@@ -112,7 +164,12 @@ export default defineComponent({
         this.errors.textLink = true;
       }
 
-      const hasPage = this.menuElement.page !== '';
+      console.log(this.menuElement.page);
+
+      const hasPage = Number(this.menuElement.page) > 0;
+
+      console.log(hasPage);
+
       const hasExternalUrl = translation?.externalLink?.trim() !== '' && translation?.externalLink !== '#';
 
       if (!hasPage && !hasExternalUrl) {
@@ -131,7 +188,10 @@ export default defineComponent({
       });
     },
 
-    onSave(): void {},
+    onSave(): void {
+      if (!this.validate()) return;
+      this.$emit('save', this.menuElement);
+    },
   },
 });
 </script>
@@ -144,6 +204,7 @@ export default defineComponent({
         type="text"
         id="label-form-element"
         class="form-input"
+        :class="errors.textLink ? 'is-invalid' : ''"
         :value="getTranslationValueByKeyAndByLocale(menuElement.menuElementTranslations, 'textLink')"
         @input="
           setTranslationValueByKeyAndByLocale(
@@ -152,28 +213,33 @@ export default defineComponent({
             ($event.target as HTMLInputElement).value
           )
         "
+        @change="validate"
       />
+      <span v-if="errors.textLink" class="form-text text-error">✗ {{ translate.empty_text_link_error }}</span>
     </div>
 
     <div>
       <label class="form-label">{{ translate.url_type_label }}</label>
       <div class="link-tabs" id="linkTypeTabs">
-        <button class="link-tab" :class="menuElement.page !== '' ? 'active' : ''" @click="changeLinkType(0)">
+        <button class="link-tab" :class="Number(menuElement.page) >= 0 ? 'active' : ''" @click="changeLinkType(0)">
           {{ translate.radio_label_url_interne }}
         </button>
-        <button class="link-tab" :class="menuElement.page === '' ? 'active' : ''" @click="changeLinkType('')">
+        <button class="link-tab" :class="Number(menuElement.page) < -1 ? 'active' : ''" @click="changeLinkType(-10)">
           {{ translate.radio_label_url_externe }}
         </button>
       </div>
     </div>
 
-    <div v-if="menuElement.page !== ''">
+    <div v-if="Number(menuElement.page) > -1">
       <autocomplete
         v-model="menuElement.page"
         ref="searchInput"
         :options="pageOptions"
         :placeholder="translate.input_search_page_placeholder"
+        :error-validate="translate.empty_internal_link_error"
         :empty-label="translate.input_search_page_placeholder_no_result"
+        :has-error="errors.link"
+        @change="validate"
         @select="onPageSelect"
       >
         <template #option="{ option }">
@@ -228,8 +294,18 @@ export default defineComponent({
         <input
           type="text"
           class="form-input"
+          :class="errors.link ? 'is-invalid' : ''"
           :value="getTranslationValueByKeyAndByLocale(menuElement.menuElementTranslations, 'externalLink')"
+          @input="
+            setTranslationValueByKeyAndByLocale(
+              menuElement.menuElementTranslations,
+              'externalLink',
+              ($event.target as HTMLInputElement).value
+            )
+          "
+          @change="validate"
         />
+        <span v-if="errors.link" class="form-text text-error">✗ {{ translate.empty_text_link_error }}</span>
       </div>
     </div>
 
@@ -285,7 +361,7 @@ export default defineComponent({
         <button @click="$emit('cancel', menuElementNoEdit)" class="btn btn-sm btn-outline-dark">
           {{ translate.btn_cancel }}
         </button>
-        <button class="btn btn-sm btn-primary" @click="">
+        <button class="btn btn-sm btn-primary" @click="onSave" :disabled="!isValid">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
           </svg>

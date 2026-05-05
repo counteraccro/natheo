@@ -48,6 +48,7 @@ export default defineComponent({
       menuElementSelected: null as MenuElement | null,
       nodeToOpen: 0,
       showModalConfirmDelete: false,
+      localeValidationState: {} as Record<string, boolean>,
       modaleConfirmDelete: {
         title: '',
         body: '',
@@ -62,6 +63,7 @@ export default defineComponent({
     this.loadMenu();
     this.currentLocale = this.locales.current;
   },
+
   methods: {
     loadMenu() {
       let url = this.urls.load_menu + '/' + this.id;
@@ -607,6 +609,37 @@ export default defineComponent({
               : translate.no_select_menu_form + ' #' + menuElementSelected.id
           "
         ></span>
+
+        <div v-if="idSelected !== 0" class="ml-auto flex items-center gap-1.5">
+          <template v-for="(localeLabel, key) in locales.localesTranslate" :key="key">
+            <div
+              @click="currentLocale = key"
+              class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold transition-colors cursor-pointer"
+              :class="[
+                localeValidationState[key]
+                  ? 'bg-(--alert-success-bg) text-(--alert-success-text)'
+                  : 'bg-(--alert-danger-bg) text-(--alert-danger-text)',
+                currentLocale === key ? 'ring-2 ring-offset-1 ring-(--primary)' : '',
+              ]"
+            >
+              <!-- Valide -->
+              <svg
+                v-if="localeValidationState[key]"
+                class="w-3 h-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+              </svg>
+              <!-- Invalide -->
+              <svg v-else class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              {{ key.toUpperCase() }}
+            </div>
+          </template>
+        </div>
       </div>
 
       <div class="edition-empty" v-if="menuElementSelected === null">
@@ -643,11 +676,13 @@ export default defineComponent({
         v-else
         :translate="translate.menu_form"
         :locale="currentLocale"
+        :locales="locales"
         :menu-element="menuElementSelected"
         :menu-data="dataMenu"
         @delete="onDelete($event)"
         @save="saveMenuElement($event)"
         @cancel="saveMenuElement($event)"
+        @locale-validation="localeValidationState = $event"
       />
     </div>
   </div>
