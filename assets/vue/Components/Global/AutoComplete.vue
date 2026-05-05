@@ -5,7 +5,7 @@
  * Module d'autoCompletion
  */
 
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, h, PropType } from 'vue';
 
 export interface AutocompleteOption {
   value: string | number;
@@ -33,9 +33,17 @@ export default defineComponent({
       type: String,
       default: 'Aucun résultat',
     },
+    errorValidate: {
+      type: String,
+      default: 'Ce champ ne peut pas être vide',
+    },
+    hasError: {
+      type: Boolean,
+      default: false,
+    },
   },
 
-  emits: ['update:modelValue', 'select', 'reset'],
+  emits: ['update:modelValue', 'select', 'reset', 'change'],
 
   data() {
     return {
@@ -66,6 +74,7 @@ export default defineComponent({
   },
 
   methods: {
+    h,
     /**
      * Pré-remplit le label si une valeur est déjà sélectionnée
      */
@@ -82,6 +91,7 @@ export default defineComponent({
       this.isOpen = false;
       this.$emit('update:modelValue', option.value);
       this.$emit('select', option);
+      this.$emit('change');
     },
 
     /**
@@ -90,11 +100,15 @@ export default defineComponent({
     reset(): void {
       this.searchQuery = '';
       this.isOpen = true;
-      this.$emit('update:modelValue', '-1');
+      this.$emit('update:modelValue', '0');
       this.$emit('reset');
+      this.$emit('change');
       // Remet le focus sur l'input pour continuer la recherche
       this.$nextTick(() => {
-        (this.$refs.searchInput as HTMLInputElement).focus();
+        const input = this.$refs.searchInput as HTMLInputElement | undefined;
+        if (input) {
+          input.focus();
+        }
       });
     },
 
@@ -125,6 +139,7 @@ export default defineComponent({
       <input
         type="text"
         class="form-input"
+        :class="hasError ? 'is-invalid' : ''"
         style="padding-left: calc(var(--spacing) * 9)"
         v-model="searchQuery"
         :placeholder="placeholder"
@@ -142,6 +157,7 @@ export default defineComponent({
         </svg>
       </button>
     </div>
+    <span v-if="hasError" class="form-text text-error">✗ {{ errorValidate }}</span>
 
     <!-- Dropdown résultats -->
     <div
