@@ -34,6 +34,8 @@ export interface MenuFormTranslate {
   btn_save: string;
   btn_cancel: string;
   btn_delete: string;
+  empty_text_link_error: string;
+  empty_internal_link_error: string;
 }
 
 export interface MenuTreeTranslate {
