@@ -35,6 +35,10 @@ export default defineComponent({
       type: Number,
       default: 0,
     },
+    invalidIds: {
+      type: Array as PropType<number[]>,
+      default: () => [],
+    },
   },
 
   emits: ['reorder', 'select', 'add-child', 'delete', 'toggle-visibility'],
@@ -135,6 +139,11 @@ export default defineComponent({
         selected: idSelected === menuElement.id,
         'hidden-node': menuElement.disabled,
       }"
+      :style="
+        invalidIds.includes(menuElement.id)
+          ? 'border-color: var(--alert-danger-border); background-color: var(--alert-danger-bg);'
+          : ''
+      "
     >
       <!-- Drag handle -->
       <span class="drag-handle">
@@ -262,6 +271,7 @@ export default defineComponent({
         :deep="deep + 1"
         :id-selected="idSelected"
         :force-open="forceOpen"
+        :invalid-ids="invalidIds"
         @reorder="onChildReorder"
         @select="$emit('select', $event)"
         @add-child="$emit('add-child', $event)"

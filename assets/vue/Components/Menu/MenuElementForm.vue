@@ -41,6 +41,12 @@ export default defineComponent({
   },
 
   watch: {
+    'menuElement.id'() {
+      this.resetErrors();
+      this.validate();
+      this.menuElementNoEdit = structuredClone(toRaw(this.menuElement));
+    },
+
     localeValidation: {
       immediate: true,
       deep: true,

@@ -64,6 +64,17 @@ export default defineComponent({
     this.currentLocale = this.locales.current;
   },
 
+  computed: {
+    /**
+     * Retourne les ids des éléments invalides (toutes locales confondues)
+     */
+    invalidElementIds(): number[] {
+      const ids: number[] = [];
+      this.collectInvalidIds(this.menu.menuElements ?? [], ids);
+      return ids;
+    },
+  },
+
   methods: {
     loadMenu() {
       let url = this.urls.load_menu + '/' + this.id;
@@ -384,6 +395,28 @@ export default defineComponent({
     },
 
     /**
+     * Parcourt récursivement les éléments et collecte les ids invalides
+     */
+    collectInvalidIds(elements: MenuElement[], ids: number[]): void {
+      elements.forEach((el) => {
+        const isInvalid = this.locales.locales.some((locale) => {
+          const translation = el.menuElementTranslations.find((t) => t.locale === locale);
+          const hasTextLink = !!translation?.textLink?.trim();
+          const hasPage = Number(el.page) > 0;
+          const hasExternalUrl = translation?.externalLink?.trim() !== '' && translation?.externalLink !== '#';
+
+          return !hasTextLink || (!hasPage && !hasExternalUrl);
+        });
+
+        if (isInvalid) ids.push(el.id);
+
+        if (el.children) {
+          this.collectInvalidIds(el.children, ids);
+        }
+      });
+    },
+
+    /**
      * Ferme la modale de confirmation
      */
     hideModalConfirmDelete() {
@@ -572,6 +605,7 @@ export default defineComponent({
           :id-selected="idSelected"
           :deep="0"
           :force-open="nodeToOpen"
+          :invalid-ids="invalidElementIds"
           @reorder="onReorder"
           @add-child="newMenuElement($event)"
           @delete="onDelete($event)"
