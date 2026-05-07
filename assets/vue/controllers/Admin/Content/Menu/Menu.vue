@@ -337,11 +337,11 @@ export default defineComponent({
       }
 
       this.removeElement(this.menu.menuElements, id);
-      this.menuElementSelected = null;
 
       // Si l'élément supprimé était sélectionné, on désélectionne
       if (this.idSelected === id) {
         this.idSelected = 0;
+        this.menuElementSelected = null;
       }
 
       this.updateNoSave = true;
@@ -586,16 +586,28 @@ export default defineComponent({
     </div>
   </div>
 
-  <div class="grid grid-cols-1 xl:grid-cols-5 gap-6">
-    <div class="card rounded-lg overflow-hidden xl:col-span-2">
-      <div class="px-5 py-4 border-b flex items-center gap-2" style="border-color: var(--border-color)">
+  <div class="grid grid-cols-1 xl:grid-cols-5 gap-6 items-stretch">
+    <div class="card rounded-lg overflow-hidden xl:col-span-2 flex flex-col" style="max-height: 680px">
+      <div class="px-5 py-4 border-b flex items-center gap-2 shrink-0" style="border-color: var(--border-color)">
         <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
         <span class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.title_architecture }}</span>
+        <div class="ml-auto flex items-center gap-1.5">
+          <div
+            v-if="invalidElementIds.length > 0"
+            class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold transition-colors cursor-pointer bg-(--alert-danger-bg) text-(--alert-danger-text)"
+          >
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+            {{ invalidElementIds.length }}
+            {{ translate.error }}
+          </div>
+        </div>
       </div>
 
-      <div class="p-3 tree-scroll" ref="rootListRef">
+      <div class="p-3 flex-1 overflow-y-auto min-h-0" ref="rootListRef">
         <menu-tree
           v-for="menuElement in menu.menuElements"
           :key="menuElement.id"
@@ -614,7 +626,7 @@ export default defineComponent({
         />
       </div>
       <div class="p-3">
-        <div class="mt-3">
+        <div class="mt-3 shrink-0">
           <button class="btn-add-root" @click="newMenuElement(null)">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
