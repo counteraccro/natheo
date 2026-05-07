@@ -137,3 +137,4 @@ menu.form.btn.delete: __menu.form.btn.delete
 menu.form.input.search.page.placeholder.no.result: __menu.form.input.search.page.placeholder.no.result
 menu.form.empty.text.link.error: __menu.form.empty.text.link.error
 menu.form.empty.internal.link.error: __menu.form.empty.internal.link.error
+menu.label.error: __menu.label.error
