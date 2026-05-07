@@ -207,11 +207,7 @@ class MenuController extends AppAdminController
             'urls' => [
                 'load_menu' => $this->generateUrl('admin_menu_load_menu'),
                 'save_menu' => $this->generateUrl('admin_menu_save_menu'),
-                'delete_menu_element' => $this->generateUrl('admin_menu_delete_menu_element'),
-                'new_menu_element' => $this->generateUrl('admin_menu_new_menu_element'),
-                'update_parent_menu_element' => $this->generateUrl('admin_menu_update_parent_menu_element'),
                 'list_parent_menu_element' => $this->generateUrl('admin_menu_list_parent_menu_element'),
-                'reorder_menu_element' => $this->generateUrl('admin_menu_reorder_menu_element'),
             ],
         ]);
     }
@@ -288,79 +284,6 @@ class MenuController extends AppAdminController
     }
 
     /**
-     * Supprime un menuElement
-     * @param MenuService $menuService
-     * @param TranslatorInterface $translator
-     * @param int|null $id
-     * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    #[Route('/ajax/delete-menu-element/{id}', name: 'delete_menu_element', methods: ['DELETE'])]
-    public function deleteMenuElement(
-        MenuService $menuService,
-        TranslatorInterface $translator,
-        ?int $id = null,
-    ): JsonResponse {
-        if ($id === null) {
-            return $this->json($menuService->getResponseAjax());
-        }
-
-        $menuElement = $menuService->findOneById(MenuElement::class, $id);
-        $menuService->remove($menuElement);
-        return $this->json(
-            $menuService->getResponseAjax($translator->trans('menu.element.remove.success', [], 'menu')),
-        );
-    }
-
-    /**
-     * Créer un nouveau menuElement
-     * @param MenuService $menuService
-     * @param TranslatorInterface $translator
-     * @param Request $request
-     * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    #[Route('/ajax/new-menu-element', name: 'new_menu_element', methods: ['POST'])]
-    public function newMenuElement(
-        MenuService $menuService,
-        TranslatorInterface $translator,
-        Request $request,
-    ): JsonResponse {
-        $data = json_decode($request->getContent(), true);
-        $id = $menuService->addMenuElement($data['idMenu'], $data['columP'], $data['rowP'], $data['idParent']);
-        $response = $menuService->getResponseAjax($translator->trans('menu.element.new.success', domain: 'menu'));
-        $response['id'] = $id;
-        return $this->json($response);
-    }
-
-    /**
-     * Change le parent d'un menuElement
-     * @param MenuService $menuService
-     * @param TranslatorInterface $translator
-     * @param Request $request
-     * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    #[Route('/ajax/update-parent', name: 'update_parent_menu_element', methods: ['PATCH'])]
-    public function changeParent(
-        MenuService $menuService,
-        TranslatorInterface $translator,
-        Request $request,
-    ): JsonResponse {
-        $data = json_decode($request->getContent(), true);
-        $menuService->updateParent($data['id'], $data['columP'], $data['rowP'], $data['idParent']);
-
-        $response = $menuService->getResponseAjax(
-            $translator->trans('menu.element.change.parent.success', domain: 'menu'),
-        );
-        $response['id'] = $data['id'];
-        return $this->json($response);
-    }
-
-    /**
      * Retourne la liste des parents disponible
      * @param MenuService $menuService
      * @param int|null $menuId
@@ -375,27 +298,5 @@ class MenuController extends AppAdminController
         $listeParent = $menuService->getListeParentByMenuElement($menuId, $elementId);
 
         return $this->json(['listParent' => $listeParent]);
-    }
-
-    /**
-     * Réordonne les colonnes ou row des menus elements
-     * @param Request $request
-     * @param MenuService $menuService
-     * @param TranslatorInterface $translator
-     * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    #[Route('/ajax/reorder-menu-element', name: 'reorder_menu_element', methods: ['PATCH'])]
-    public function reorderMenuElement(
-        Request $request,
-        MenuService $menuService,
-        TranslatorInterface $translator,
-    ): JsonResponse {
-        $data = json_decode($request->getContent(), true);
-        $menuService->reorderMenuElement($data['data']);
-        $return = $menuService->getResponseAjax($translator->trans('menu.element.reorder.success', domain: 'menu'));
-        $return['id'] = $data['data']['id'];
-        return $this->json($return);
     }
 }
