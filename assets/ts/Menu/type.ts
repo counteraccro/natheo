@@ -96,6 +96,7 @@ export interface Translate {
   select_page_label: string;
   select_page_no_page: string;
   select_page_info: string;
+  error: string;
   menu_form: MenuFormTranslate;
   menu_tree: MenuTreeTranslate;
 }
