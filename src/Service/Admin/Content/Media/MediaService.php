@@ -186,7 +186,14 @@ class MediaService extends MediaFolderService
                 '/',
             );
             $path = preg_replace('#/{2,}#', '/', $path);
-            $info = getimagesize($path);
+
+            $realRoot = realpath($this->rootPathMedia);
+            $realPath = realpath($path);
+
+            $info = [];
+            if ($realPath !== false && str_starts_with($realPath, $realRoot . DIRECTORY_SEPARATOR)) {
+                $info = @getimagesize($realPath) ?: [];
+            }
 
             $folder = 'root';
             $folderId = 0;
@@ -326,18 +333,79 @@ class MediaService extends MediaFolderService
         /** @var MediaFolder $folder */
         $folder = $this->findOneById(MediaFolder::class, $idFolder);
         $path = $this->rootPathMedia . DIRECTORY_SEPARATOR;
-        if ($folder != null && $this->canCreatePhysicalFolder) {
+        if ($folder !== null && $this->canCreatePhysicalFolder) {
             $path = $this->getPathFolder($folder);
         }
 
-        $path = str_replace(['\/', '\\'], DIRECTORY_SEPARATOR, $path);
+        $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
 
-        [, $data] = explode(';', $file['url']);
-        [, $data] = explode(',', $data);
-        $data = base64_decode($data);
+        $allowedExtensions = [
+            // Images
+            'jpg',
+            'jpeg',
+            'png',
+            'gif',
+            'webp',
+            // PDF
+            'pdf',
+            // Word
+            'doc',
+            'docx',
+            // Excel
+            'xls',
+            'xlsx',
+            // PowerPoint
+            'ppt',
+            'pptx',
+        ];
+        $ext = strtolower($file['fileExtention']);
+        if (!in_array($ext, $allowedExtensions, true)) {
+            throw new \RuntimeException('File extension not allowed.');
+        }
 
-        $name = str_replace(' ', '-', $file['name']) . '-' . time() . '.' . $file['fileExtention'];
-        file_put_contents($path . $name, $data);
+        [, $rawData] = explode(';', $file['url']);
+        [, $rawData] = explode(',', $rawData);
+        $data = base64_decode($rawData, strict: true);
+        if ($data === false) {
+            throw new \RuntimeException('Invalid base64 data.');
+        }
+
+        $allowedMimes = [
+            // Images
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+            'image/webp',
+            // PDF
+            'application/pdf',
+            // Word
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            // Excel
+            'application/vnd.ms-excel',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            // PowerPoint
+            'application/vnd.ms-powerpoint',
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+            // Générique pour les formats Office anciens (.docx, .xlsx, .pptx)
+            'application/zip',
+            'application/octet-stream',
+        ];
+        $mimeType = (new \finfo(FILEINFO_MIME_TYPE))->buffer($data);
+        if (!in_array($mimeType, $allowedMimes, true)) {
+            throw new \RuntimeException('File type not allowed: ' . $mimeType);
+        }
+
+        $safeName = basename(str_replace(' ', '-', $file['name']));
+        $name = $safeName . '-' . bin2hex(random_bytes(8)) . '.' . $ext;
+
+        $realRoot = realpath($this->rootPathMedia);
+        $realPath = realpath($path) . DIRECTORY_SEPARATOR . $name;
+        if (!str_starts_with($realPath, $realRoot . DIRECTORY_SEPARATOR)) {
+            throw new \RuntimeException('Invalid path: attempt to escape the allowed directory.');
+        }
+
+        file_put_contents($realPath, $data);
 
         $media = new Media();
         $media->setMediaFolder($folder);
@@ -364,6 +432,7 @@ class MediaService extends MediaFolderService
             'xls', 'xlsx' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_xls.svg',
             'csv' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_csv.svg',
             'doc', 'docx' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_doc.svg',
+            'ppt', 'pptx' => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file_ppt.svg',
             default => MediaFolderConst::PATH_WEB_NATHEO_MEDIA . 'file.svg',
         };
     }
@@ -420,8 +489,21 @@ class MediaService extends MediaFolderService
             if ($media->getMediaFolder() !== null) {
                 $newPath = $this->getPathFolder($media->getMediaFolder()) . $media->getName();
             }
+
+            $realRoot = realpath($this->rootPathMedia);
+            $realOldPath = realpath($oldPath);
+            $realNewPath = realpath(dirname($newPath)) . DIRECTORY_SEPARATOR . basename($newPath);
+
+            if ($realOldPath === false || !str_starts_with($realOldPath, $realRoot . DIRECTORY_SEPARATOR)) {
+                throw new \RuntimeException('Invalid source path: attempt to escape the allowed directory.');
+            }
+
+            if (!str_starts_with($realNewPath, $realRoot . DIRECTORY_SEPARATOR)) {
+                throw new \RuntimeException('Invalid destination path: attempt to escape the allowed directory.');
+            }
+
             $fileSystem = new Filesystem();
-            $fileSystem->rename($oldPath, $newPath, true);
+            $fileSystem->rename($realOldPath, $realNewPath, true);
         }
     }
 
@@ -533,8 +615,15 @@ class MediaService extends MediaFolderService
         }
 
         if ($this->canCreatePhysicalFolder) {
+            $realRoot = realpath($this->rootPathMedia);
+            $realPath = realpath($path);
+
+            if ($realPath === false || !str_starts_with($realPath, $realRoot . DIRECTORY_SEPARATOR)) {
+                throw new \RuntimeException('Invalid path: attempt to escape the allowed directory.');
+            }
+
             $fileSystem = new Filesystem();
-            $fileSystem->remove($path);
+            $fileSystem->remove($realPath);
         }
         $this->remove($entity);
     }

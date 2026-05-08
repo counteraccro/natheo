@@ -146,9 +146,16 @@ class MediaFolderService extends AppAdminService
      * Recréer le dossier racine
      * Appeler uniquement pour les fixtures
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function resetAllMedia(): void
     {
+        $containerBag = $this->getContainerBag();
+        if ($containerBag->get('kernel.environment') === 'prod') {
+            throw new \RuntimeException('resetAllMedia() cannot be called in production environment.');
+        }
+
         $filesystem = new Filesystem();
         if ($filesystem->exists($this->rootPathMedia)) {
             $filesystem->remove($this->rootPathMedia);
@@ -181,6 +188,13 @@ class MediaFolderService extends AppAdminService
 
         $path = $this->rootPathMedia . $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $mediaFolder->getName();
         $path = str_replace(['\/', '\\'], DIRECTORY_SEPARATOR, $path);
+
+        $realRoot = realpath($this->rootPathMedia);
+        $realPath = realpath(dirname($path)) . DIRECTORY_SEPARATOR . basename($path);
+
+        if (!str_starts_with($realPath, $realRoot . DIRECTORY_SEPARATOR)) {
+            throw new \RuntimeException('Invalid path: attempt to exit the authorized directory.');
+        }
 
         $filesystem->mkdir($path);
         return true;
@@ -283,6 +297,13 @@ class MediaFolderService extends AppAdminService
      */
     private function folderSize(string $dir): int
     {
+        $realRoot = realpath($this->rootPathMedia);
+        $realDir = realpath($dir);
+
+        if ($realDir === false || !str_starts_with($realDir, $realRoot)) {
+            throw new \RuntimeException('Invalid path: attempt to escape the allowed directory.');
+        }
+
         $size = 0;
         foreach (glob(rtrim($dir, '/') . '/*', GLOB_NOSORT) as $each) {
             $size += is_file($each) ? filesize($each) : $this->folderSize($each);
@@ -341,11 +362,26 @@ class MediaFolderService extends AppAdminService
         $this->save($mediaFolder);
 
         if ($this->canCreatePhysicalFolder) {
-            $fileSystem = new Filesystem();
+            $realRoot = realpath($this->rootPathMedia);
             $origin = $this->rootPathMedia . $mediaFolder->getPath() . DIRECTORY_SEPARATOR . $oldName;
             $origin = str_replace(['\/', '\\'], DIRECTORY_SEPARATOR, $origin);
+            $realOrigin = realpath($origin);
+
             $target = $this->getPathFolder($mediaFolder);
-            $fileSystem->rename($origin, $target);
+            $realTarget =
+                realpath(dirname(rtrim($target, DIRECTORY_SEPARATOR))) .
+                DIRECTORY_SEPARATOR .
+                basename(rtrim($target, DIRECTORY_SEPARATOR));
+
+            if ($realOrigin === false || !str_starts_with($realOrigin, $realRoot . DIRECTORY_SEPARATOR)) {
+                throw new \RuntimeException('Invalid source path: attempt to escape the allowed directory.');
+            }
+            if (!str_starts_with($realTarget, $realRoot . DIRECTORY_SEPARATOR)) {
+                throw new \RuntimeException('Invalid target path: attempt to escape the allowed directory.');
+            }
+
+            $fileSystem = new Filesystem();
+            $fileSystem->rename($realOrigin, $realTarget);
         }
     }
 
@@ -570,11 +606,31 @@ class MediaFolderService extends AppAdminService
         $this->updateAllPathChildren($old, $new);
 
         if ($this->canCreatePhysicalFolder) {
-            $fileSystem = new Filesystem();
-            $origin = $this->rootPathMedia . $oldPath . DIRECTORY_SEPARATOR . $mediaFolder->getName();
-            $origin = rtrim(str_replace('\\', DIRECTORY_SEPARATOR, $origin), '/');
+            $realRoot = realpath($this->rootPathMedia);
+            $origin = rtrim(
+                str_replace(
+                    '\\',
+                    DIRECTORY_SEPARATOR,
+                    $this->rootPathMedia . $oldPath . DIRECTORY_SEPARATOR . $mediaFolder->getName(),
+                ),
+                '/',
+            );
+            $realOrigin = realpath($origin);
             $target = $this->getPathFolder($mediaFolder);
-            $fileSystem->rename($origin, $target);
+            $realTarget =
+                realpath(dirname(rtrim($target, DIRECTORY_SEPARATOR))) .
+                DIRECTORY_SEPARATOR .
+                basename(rtrim($target, DIRECTORY_SEPARATOR));
+
+            if ($realOrigin === false || !str_starts_with($realOrigin, $realRoot . DIRECTORY_SEPARATOR)) {
+                throw new \RuntimeException('Invalid source path: attempt to escape the allowed directory.');
+            }
+            if (!str_starts_with($realTarget, $realRoot . DIRECTORY_SEPARATOR)) {
+                throw new \RuntimeException('Invalid target path: attempt to escape the allowed directory.');
+            }
+
+            $fileSystem = new Filesystem();
+            $fileSystem->rename($realOrigin, $realTarget);
         }
     }
 
