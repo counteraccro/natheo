@@ -139,6 +139,7 @@ class MediaController extends AppAdminController
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
+        /** @var MediaFolder $editFolder */
         $editFolder = $mediaFolderService->findOneById(MediaFolder::class, $data['editFolder']);
         $currentFolder = $mediaFolderService->findOneById(MediaFolder::class, $data['currentFolder']);
 

@@ -1,0 +1,22 @@
+<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+  <!-- Fond -->
+  <rect width="300" height="200" fill="#fff7ed"/>
+  <!-- Feuille -->
+  <rect x="90" y="18" width="120" height="155" rx="8" fill="white" stroke="#fed7aa" stroke-width="1.5"/>
+  <!-- Coin plié -->
+  <path d="M178 18 L210 50 L178 50 Z" fill="#ffedd5"/>
+  <path d="M178 18 L210 50" fill="none" stroke="#fdba74" stroke-width="1.5"/>
+  <!-- Bandeau couleur PowerPoint -->
+  <rect x="90" y="62" width="120" height="42" fill="#ea580c"/>
+  <!-- Lettre P -->
+  <text x="150" y="93" font-family="system-ui, sans-serif" font-size="26" font-weight="700" fill="white" text-anchor="middle">P</text>
+  <!-- Diapositive miniature -->
+  <rect x="108" y="114" width="84" height="42" rx="3" fill="#fff7ed" stroke="#fed7aa" stroke-width="1"/>
+  <!-- Lignes de diapo (titre + contenu) -->
+  <rect x="116" y="120" width="50" height="6" rx="2" fill="#fdba74"/>
+  <rect x="116" y="131" width="35" height="4" rx="2" fill="#fdba74" opacity="0.6"/>
+  <rect x="116" y="139" width="42" height="4" rx="2" fill="#fdba74" opacity="0.4"/>
+  <!-- Icône image diapo -->
+  <rect x="168" y="120" width="16" height="12" rx="2" fill="#fed7aa"/>
+  <path d="M168 130 L172 124 L176 128 L179 125 L184 132 L168 132 Z" fill="#fb923c" opacity="0.7"/>
+</svg>
