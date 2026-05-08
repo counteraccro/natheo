@@ -56,3 +56,5 @@ advanced_options.success.reset.database: 'Base de données supprimée avec succ�
 advanced_options.reset.database.msg.info.reset: 'Suppression de la base de données en cours....'
 advanced_options.reset.database.msg.info.reset.end: "Base de données supprimée, redirection vers l'installation..."
 advanced_options.sub.title.danger.zone: 'Attention aux conséquences de vos actions'
+advanced_options.error.reset.data.not.allowed: 'Action disponible uniquement en mode dev.'
+advanced_options.error.reset.database.not.allowed: 'Action disponible uniquement en mode dev.'

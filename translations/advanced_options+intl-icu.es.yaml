@@ -56,3 +56,5 @@ advanced_options.success.reset.database: __advanced_options.success.reset.databa
 advanced_options.reset.database.msg.info.reset: __advanced_options.reset.database.msg.info.reset
 advanced_options.reset.database.msg.info.reset.end: __advanced_options.reset.database.msg.info.reset.end
 advanced_options.sub.title.danger.zone: __advanced_options.sub.title.danger.zone
+advanced_options.error.reset.data.not.allowed: __advanced_options.error.reset.data.not.allowed
+advanced_options.error.reset.database.not.allowed: __advanced_options.error.reset.database.not.allowed
