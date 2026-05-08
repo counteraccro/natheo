@@ -16,7 +16,9 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -95,10 +97,23 @@ class AdvancedOptionsController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/reset-data', name: 'reset_data', methods: ['GET'])]
-    public function resetData(TranslatorInterface $translator, CommandService $commandService): JsonResponse
-    {
-        set_time_limit(0);
+    #[Route('/ajax/reset-data', name: 'reset_data', methods: ['POST'])]
+    public function resetData(
+        Request $request,
+        TranslatorInterface $translator,
+        CommandService $commandService,
+        KernelInterface $kernel,
+    ): JsonResponse {
+        if (!$kernel->isDebug()) {
+            throw $this->createAccessDeniedException(
+                $translator->trans('advanced_options.error.reset.data.not.allowed', domain: 'advanced_options'),
+            );
+        }
+
+        $token = $request->headers->get('X-CSRF-TOKEN') ?? $request->request->get('_token');
+        if (!$this->isCsrfTokenValid('reset_data', $token)) {
+            return $this->json(['success' => false, 'msg' => 'Token CSRF invalide.'], Response::HTTP_FORBIDDEN);
+        }
 
         $commandService->dropDatabase();
         $commandService->createDatabase();
@@ -119,10 +134,23 @@ class AdvancedOptionsController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/reset-database', name: 'reset_database', methods: ['GET'])]
-    public function resetDatabase(TranslatorInterface $translator, CommandService $commandService): JsonResponse
-    {
-        set_time_limit(0);
+    #[Route('/ajax/reset-database', name: 'reset_database', methods: ['POST'])]
+    public function resetDatabase(
+        Request $request,
+        TranslatorInterface $translator,
+        CommandService $commandService,
+        KernelInterface $kernel,
+    ): JsonResponse {
+        if (!$kernel->isDebug()) {
+            throw $this->createAccessDeniedException(
+                $translator->trans('advanced_options.error.reset.database.not.allowed', domain: 'advanced_options'),
+            );
+        }
+
+        $token = $request->headers->get('X-CSRF-TOKEN') ?? $request->request->get('_token');
+        if (!$this->isCsrfTokenValid('reset_data', $token)) {
+            return $this->json(['success' => false, 'msg' => 'Token CSRF invalide.'], Response::HTTP_FORBIDDEN);
+        }
 
         $commandService->dropDatabase();
 
