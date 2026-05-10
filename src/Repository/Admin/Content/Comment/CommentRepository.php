@@ -8,6 +8,9 @@ namespace App\Repository\Admin\Content\Comment;
 
 use App\Dto\Api\Content\Comment\ApiCommentByPageDto;
 use App\Entity\Admin\Content\Comment\Comment;
+use App\Entity\Admin\Content\Page\Page;
+use App\Entity\Admin\Content\Page\PageTranslation;
+use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,6 +20,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CommentRepository extends ServiceEntityRepository
 {
+    use OrderedQueryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Comment::class);
@@ -48,19 +53,20 @@ class CommentRepository extends ServiceEntityRepository
     public function getAllPaginate(int $page, int $limit, array $queryParams, $userId = null): Paginator
     {
         $orderField = 'id';
-        $order = 'DESC';
         if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
             $orderField = $queryParams['orderField'];
         }
 
-        if (isset($queryParams['order']) && $queryParams['order'] !== '') {
-            $order = $queryParams['order'];
-        }
+        $query = $this->createQueryBuilder(Comment::DEFAULT_ALIAS);
 
-        $query = $this->createQueryBuilder(Comment::DEFAULT_ALIAS)->orderBy(
-            Comment::DEFAULT_ALIAS . '.' . $orderField,
-            $order,
-        );
+        if ($orderField === 'page') {
+            $query->join(Comment::DEFAULT_ALIAS . '.page', Page::DEFAULT_ALIAS);
+            $query->join(Page::DEFAULT_ALIAS . '.pageTranslations', PageTranslation::DEFAULT_ALIAS);
+            $queryParams['orderField'] = 'titre';
+            $this->applyOrdering($query, PageTranslation::class, $queryParams);
+        } else {
+            $this->applyOrdering($query, Comment::class, $queryParams);
+        }
 
         if ($userId !== null) {
             $query->andwhere(Comment::DEFAULT_ALIAS . '.userModeration = :userId')->setParameter('userId', $userId);

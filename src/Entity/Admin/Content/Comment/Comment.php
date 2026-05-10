@@ -16,6 +16,8 @@ class Comment
 {
     public const string DEFAULT_ALIAS = 'comment';
 
+    public const array ALLOWED_ORDER_FIELDS = ['author', 'page', 'status', 'createdAt'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]
