@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 class FaqTranslation
 {
     public const string DEFAULT_ALIAS = 'faq_translation';
+
+    public const array ALLOWED_ORDER_FIELDS = ['title'];
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]

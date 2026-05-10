@@ -7,6 +7,7 @@
 namespace App\Repository\Admin\System;
 
 use App\Entity\Admin\System\SidebarElement;
+use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -21,6 +22,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SidebarElementRepository extends ServiceEntityRepository
 {
+    use OrderedQueryTrait;
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, SidebarElement::class);
@@ -69,19 +71,12 @@ class SidebarElementRepository extends ServiceEntityRepository
      */
     public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
     {
-        $orderField = 'id';
-        $order = 'DESC';
-        if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
-            $orderField = $queryParams['orderField'];
-        }
+        $query = $this->createQueryBuilder(SidebarElement::DEFAULT_ALIAS)->orderBy(
+            SidebarElement::DEFAULT_ALIAS . 'parent',
+            'DESC',
+        );
 
-        if (isset($queryParams['order']) && $queryParams['order'] !== '') {
-            $order = $queryParams['order'];
-        }
-
-        $query = $this->createQueryBuilder(SidebarElement::DEFAULT_ALIAS)
-            ->orderBy(SidebarElement::DEFAULT_ALIAS . 'parent', 'DESC')
-            ->orderBy(SidebarElement::DEFAULT_ALIAS . '.' . $orderField, $order);
+        $this->applyOrdering($query, SidebarElement::class, $queryParams);
 
         $paginator = new Paginator($query->getQuery(), true);
         $paginator

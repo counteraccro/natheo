@@ -19,6 +19,8 @@ class SqlManager
 {
     public const string DEFAULT_ALIAS = 'sql_manager';
 
+    public const array ALLOWED_ORDER_FIELDS = ['id', 'name', 'createdAt', 'updateAt'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]

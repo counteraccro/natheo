@@ -13,6 +13,7 @@ import ListDump from '../../../../Components/DatabaseManager/ListDump.vue';
 import AlertWarning from '@/vue/Components/Alert/Warning.vue';
 import SkeletonText from '@/vue/Components/Skeleton/Text.vue';
 import AlertDanger from '@/vue/Components/Alert/Danger.vue';
+import strict from 'node:assert/strict';
 
 export default {
   name: 'AdvancedOptions',
@@ -27,6 +28,7 @@ export default {
     urls: Object,
     translate: Object,
     data: Object,
+    csrfToken: String,
   },
   data() {
     return {
@@ -135,7 +137,15 @@ export default {
       this.loading = true;
       this.msgInfo = this.translate.msg_info.reset_database;
       axios
-        .get(this.urls.reset_database)
+        .post(
+          this.urls.reset_database,
+          {},
+          {
+            headers: {
+              'X-CSRF-TOKEN': this.csrfToken, // à injecter depuis Twig
+            },
+          }
+        )
         .then((response) => {
           this.urlRedirect = response.data.redirect;
           if (response.data.success === true) {
@@ -172,7 +182,15 @@ export default {
       this.loading = true;
       this.msgInfo = this.translate.msg_info.reset_data;
       axios
-        .get(this.urls.reset_data)
+        .post(
+          this.urls.reset_database,
+          {},
+          {
+            headers: {
+              'X-CSRF-TOKEN': this.csrfToken, // à injecter depuis Twig
+            },
+          }
+        )
         .then((response) => {
           if (response.data.success === true) {
             this.toasts.toastSuccess.msg = response.data.msg;

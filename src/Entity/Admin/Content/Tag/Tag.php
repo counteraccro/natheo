@@ -17,6 +17,8 @@ class Tag
 {
     public const string DEFAULT_ALIAS = 'tag';
 
+    public const array ALLOWED_ORDER_FIELDS = ['id', 'color', 'createdAt', 'updateAt'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]

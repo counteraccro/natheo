@@ -9,6 +9,7 @@ use App\Entity\Admin\Content\Faq\FaqQuestion;
 use App\Entity\Admin\Content\Faq\FaqQuestionTranslation;
 use App\Entity\Admin\Content\Faq\FaqTranslation;
 use App\Entity\Admin\System\User;
+use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\AST\Join;
 use Doctrine\ORM\Query\Expr;
@@ -25,6 +26,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class FaqRepository extends ServiceEntityRepository
 {
+    use OrderedQueryTrait;
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Faq::class);
@@ -70,20 +72,21 @@ class FaqRepository extends ServiceEntityRepository
     public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
     {
         $orderField = 'id';
-        $order = 'DESC';
         if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
             $orderField = $queryParams['orderField'];
         }
 
-        if (isset($queryParams['order']) && $queryParams['order'] !== '') {
-            $order = $queryParams['order'];
-        }
+        $query = $this->createQueryBuilder(Faq::DEFAULT_ALIAS);
+        $query->join(Faq::DEFAULT_ALIAS . '.faqTranslations', FaqTranslation::DEFAULT_ALIAS);
 
-        $query = $this->createQueryBuilder(Faq::DEFAULT_ALIAS)->orderBy(Faq::DEFAULT_ALIAS . '.' . $orderField, $order);
+        if ($orderField === 'title') {
+            $this->applyOrdering($query, FaqTranslation::class, $queryParams);
+        } else {
+            $this->applyOrdering($query, Faq::class, $queryParams);
+        }
 
         if (isset($queryParams['search']) && $queryParams['search'] !== '') {
             $query
-                ->join(Faq::DEFAULT_ALIAS . '.faqTranslations', FaqTranslation::DEFAULT_ALIAS)
                 ->andWhere(FaqTranslation::DEFAULT_ALIAS . '.locale = :locale')
                 ->andWhere(FaqTranslation::DEFAULT_ALIAS . '.title like :search')
                 ->setParameter('search', '%' . $queryParams['search'] . '%')

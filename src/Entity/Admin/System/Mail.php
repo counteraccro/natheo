@@ -16,6 +16,8 @@ class Mail
 {
     public const string DEFAULT_ALIAS = 'mail';
 
+    public const array ALLOWED_ORDER_FIELDS = ['id', 'title', 'description', 'createdAt', 'updateAt'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]

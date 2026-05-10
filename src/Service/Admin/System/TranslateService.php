@@ -73,6 +73,16 @@ class TranslateService extends AppAdminService
 
         $kernel = $containerBag->get('kernel.project_dir');
         $pathLog = $kernel . DIRECTORY_SEPARATOR . 'translations' . DIRECTORY_SEPARATOR;
+
+        $safeFileName = basename($fileName);
+
+        $realRoot = realpath($pathLog);
+        $realFilePath = realpath($pathLog . $safeFileName);
+
+        if ($realFilePath === false || !str_starts_with($realFilePath, $realRoot . DIRECTORY_SEPARATOR)) {
+            throw new \RuntimeException('Invalid file path: attempt to escape the translations directory.');
+        }
+
         $finder = new Finder();
         $finder->files()->in($pathLog)->name($fileName);
 
@@ -100,6 +110,16 @@ class TranslateService extends AppAdminService
         $containerBag = $this->getContainerBag();
         $kernel = $containerBag->get('kernel.project_dir');
         $pathLog = $kernel . DIRECTORY_SEPARATOR . 'translations' . DIRECTORY_SEPARATOR;
+
+        $safeFileName = basename($fileName);
+
+        $realRoot = realpath($pathLog);
+        $realFilePath = realpath($pathLog . $safeFileName);
+
+        if ($realFilePath === false || !str_starts_with($realFilePath, $realRoot . DIRECTORY_SEPARATOR)) {
+            throw new \RuntimeException('Invalid file path: attempt to escape the translations directory.');
+        }
+
         $finder = new Finder();
         $finder->files()->in($pathLog)->name($fileName);
 
@@ -112,6 +132,10 @@ class TranslateService extends AppAdminService
 
             foreach ($tab as $key => $value) {
                 foreach ($updateContent as $update) {
+                    if (!isset($update['key'], $update['value']) && array_key_exists($key, $tab)) {
+                        continue;
+                    }
+
                     if ($key === $update['key']) {
                         $tab[$key] = $update['value'];
                     }

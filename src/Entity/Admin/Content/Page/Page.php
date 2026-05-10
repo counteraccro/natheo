@@ -20,6 +20,7 @@ use Doctrine\ORM\Mapping\JoinTable;
 #[ORM\HasLifecycleCallbacks]
 class Page
 {
+    public const DEFAULT_ALIAS = 'page';
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]

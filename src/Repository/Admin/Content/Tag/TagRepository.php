@@ -9,6 +9,7 @@ namespace App\Repository\Admin\Content\Tag;
 
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
+use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -23,6 +24,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TagRepository extends ServiceEntityRepository
 {
+    use OrderedQueryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Tag::class);
@@ -56,13 +59,8 @@ class TagRepository extends ServiceEntityRepository
     public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
     {
         $orderField = 'id';
-        $order = 'DESC';
         if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
             $orderField = $queryParams['orderField'];
-        }
-
-        if (isset($queryParams['order']) && $queryParams['order'] !== '') {
-            $order = $queryParams['order'];
         }
 
         $query = $this->createQueryBuilder(Tag::DEFAULT_ALIAS);
@@ -71,11 +69,9 @@ class TagRepository extends ServiceEntityRepository
         }
 
         if ($orderField !== 'label') {
-            $query->orderBy(Tag::DEFAULT_ALIAS . '.' . $orderField, $order);
+            $this->applyOrdering($query, TAG::class, $queryParams);
         } else {
-            //$query->andWhere(TagTranslation::DEFAULT_ALIAS . '.locale = :locale');
-            //$query->setParameter('locale', $queryParams['locale']);
-            $query->orderBy(TagTranslation::DEFAULT_ALIAS . '.' . $orderField, $order);
+            $this->applyOrdering($query, TagTranslation::class, $queryParams);
         }
 
         if (isset($queryParams['search']) && $queryParams['search'] !== '') {

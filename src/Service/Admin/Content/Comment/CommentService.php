@@ -91,9 +91,9 @@ class CommentService extends AppAdminService
             GridService::KEY_LIST_ORDER_FIELD => [
                 'id' => $translator->trans('comment.grid.id', domain: 'comment'),
                 'author' => $translator->trans('comment.grid.author', domain: 'comment'),
-                'page_id' => $translator->trans('comment.grid.page', domain: 'comment'),
+                'page' => $translator->trans('comment.grid.page', domain: 'comment'),
                 'status' => $translator->trans('comment.grid.status', domain: 'comment'),
-                'created_at' => $translator->trans('comment.grid.created_at', domain: 'comment'),
+                'createdAt' => $translator->trans('comment.grid.created_at', domain: 'comment'),
             ],
         ];
         return $gridService->addAllDataRequiredGrid($tabReturn);
