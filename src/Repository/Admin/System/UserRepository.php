@@ -3,6 +3,7 @@
 namespace App\Repository\Admin\System;
 
 use App\Entity\Admin\System\User;
+use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -22,6 +23,8 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class UserRepository extends ServiceEntityRepository implements UserLoaderInterface, PasswordUpgraderInterface
 {
+    use OrderedQueryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
@@ -71,20 +74,8 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
      */
     public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
     {
-        $orderField = 'id';
-        $order = 'DESC';
-        if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
-            $orderField = $queryParams['orderField'];
-        }
-
-        if (isset($queryParams['order']) && $queryParams['order'] !== '') {
-            $order = $queryParams['order'];
-        }
-
-        $query = $this->createQueryBuilder(User::DEFAULT_ALIAS)->orderBy(
-            User::DEFAULT_ALIAS . '.' . $orderField,
-            $order,
-        );
+        $query = $this->createQueryBuilder(User::DEFAULT_ALIAS);
+        $this->applyOrdering($query, User::class, $queryParams);
 
         if (isset($queryParams['search']) && $queryParams['search'] !== '') {
             $query->where(User::DEFAULT_ALIAS . '.email like :search');
@@ -129,7 +120,7 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
-        if (!$user instanceof User) {
+        if (!($user instanceof User)) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
         }
 
