@@ -21,6 +21,8 @@ class SidebarElement
 {
     public const DEFAULT_ALIAS = 'sidebar_element';
 
+    public const array ALLOWED_ORDER_FIELDS = ['id', 'label', 'createdAt', 'updateAt'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]
