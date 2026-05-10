@@ -18,6 +18,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Faq
 {
     public const string DEFAULT_ALIAS = 'faq';
+
+    public const array ALLOWED_ORDER_FIELDS = ['color', 'createdAt', 'updateAt'];
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]

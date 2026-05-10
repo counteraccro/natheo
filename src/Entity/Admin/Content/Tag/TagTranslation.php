@@ -12,6 +12,8 @@ class TagTranslation
 {
     public const DEFAULT_ALIAS = 'tagTranslation';
 
+    public const array ALLOWED_ORDER_FIELDS = ['label'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]

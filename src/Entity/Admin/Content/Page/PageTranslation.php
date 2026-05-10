@@ -12,6 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 class PageTranslation
 {
+    public const string DEFAULT_ALIAS = 'page_translation';
+
+    public const array ALLOWED_ORDER_FIELDS = ['id', 'titre'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]

@@ -122,7 +122,6 @@ class UserService extends AppAdminService
                 'login' => $translator->trans('user.grid.login', domain: 'user'),
                 'email' => $translator->trans('user.grid.email', domain: 'user'),
                 'firstname' => $translator->trans('user.grid.name', domain: 'user'),
-                'roles' => $translator->trans('user.grid.role', domain: 'user'),
                 'createdAt' => $translator->trans('user.grid.created_at', domain: 'user'),
                 'updateAt' => $translator->trans('user.grid.update_at', domain: 'user'),
             ],

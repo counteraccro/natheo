@@ -32,6 +32,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public const string DEFAULT_ALIAS = 'user';
 
+    public const array ALLOWED_ORDER_FIELDS = ['id', 'login', 'email', 'createdAt', 'updateAt', 'firstname'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]
@@ -332,7 +334,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $result = $this->getOptionsUser()->filter(function (OptionUser $optionUser) use ($key) {
             return $optionUser->getKey() === $key;
         });
-        if (!$result->first() instanceof OptionUser) {
+        if (!($result->first() instanceof OptionUser)) {
             return null;
         }
         return $result->first();
@@ -447,7 +449,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $result = $this->getUserData()->filter(function (UserData $userData) use ($key) {
             return $userData->getKey() === $key;
         });
-        if (!$result->first() instanceof UserData) {
+        if (!($result->first() instanceof UserData)) {
             return null;
         }
         return $result->first();

@@ -7,6 +7,7 @@
 namespace App\Repository\Admin\Utils;
 
 use App\Entity\Admin\Tools\SqlManager;
+use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -21,6 +22,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SqlManagerRepository extends ServiceEntityRepository
 {
+    use OrderedQueryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, SqlManager::class);
@@ -65,20 +68,8 @@ class SqlManagerRepository extends ServiceEntityRepository
      */
     public function getAllPaginate(int $page, int $limit, array $queryParams): Paginator
     {
-        $orderField = 'id';
-        $order = 'DESC';
-        if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
-            $orderField = $queryParams['orderField'];
-        }
-
-        if (isset($queryParams['order']) && $queryParams['order'] !== '') {
-            $order = $queryParams['order'];
-        }
-
-        $query = $this->createQueryBuilder(SqlManager::DEFAULT_ALIAS)->orderBy(
-            SqlManager::DEFAULT_ALIAS . '.' . $orderField,
-            $order,
-        );
+        $query = $this->createQueryBuilder(SqlManager::DEFAULT_ALIAS);
+        $this->applyOrdering($query, SqlManager::class, $queryParams);
 
         if (isset($queryParams['search']) && $queryParams['search'] !== '') {
             $query

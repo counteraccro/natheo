@@ -14,6 +14,8 @@ class ApiToken
 {
     public const string DEFAULT_ALIAS = 'api_token';
 
+    public const array ALLOWED_ORDER_FIELDS = ['id', 'name', 'createdAt', 'updateAt'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]
