@@ -43,6 +43,7 @@ export interface MenuTreeTranslate {
   tag_page: string;
   tag_link: string;
   menu_element_disabled: string;
+  menu_element_no_save: string;
 }
 
 export interface Translate {
