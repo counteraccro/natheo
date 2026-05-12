@@ -39,6 +39,10 @@ export default defineComponent({
       type: Array as PropType<number[]>,
       default: () => [],
     },
+    noSaveIds: {
+      type: Array as PropType<number[]>,
+      default: () => [],
+    },
   },
 
   emits: ['reorder', 'select', 'add-child', 'delete', 'toggle-visibility'],
@@ -182,14 +186,25 @@ export default defineComponent({
         {{ translate.menu_element_disabled }}</span
       >
 
+      <span
+        v-if="noSaveIds.includes(menuElement.id)"
+        class="inline-flex items-center gap-1 text-[0.5rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full flex-shrink-0"
+        style="background-color: var(--alert-warning); color: white"
+      >
+        <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        {{ translate.menu_element_no_save }}
+      </span>
+
       <!-- Label -->
       <span class="tree-node-label">
         {{ getTranslationValueByKeyAndByLocale(menuElement.menuElementTranslations, 'textLink') }}
       </span>
 
       <!-- Badge type -->
-      <span v-if="menuElement.page !== ''" class="node-type-badge badge-page">{{ translate.tag_page }}</span>
-      <span v-if="menuElement.page === ''" class="node-type-badge badge-url">{{ translate.tag_link }}</span>
+      <span v-if="Number(menuElement.page) >= 0" class="node-type-badge badge-page">{{ translate.tag_page }}</span>
+      <span v-if="Number(menuElement.page) < -1" class="node-type-badge badge-url">{{ translate.tag_link }}</span>
 
       <!-- Actions -->
       <div class="tree-node-actions">
@@ -272,6 +287,7 @@ export default defineComponent({
         :id-selected="idSelected"
         :force-open="forceOpen"
         :invalid-ids="invalidIds"
+        :no-save-ids="noSaveIds"
         @reorder="onChildReorder"
         @select="$emit('select', $event)"
         @add-child="$emit('add-child', $event)"

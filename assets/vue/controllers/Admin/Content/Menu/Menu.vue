@@ -49,6 +49,10 @@ export default defineComponent({
       nodeToOpen: 0,
       showModalConfirmDelete: false,
       localeValidationState: {} as Record<string, boolean>,
+      noSaveElementIds: [] as number[],
+      errors: {
+        name: false,
+      } as Record<string, boolean>,
       modaleConfirmDelete: {
         title: '',
         body: '',
@@ -112,6 +116,9 @@ export default defineComponent({
      */
     normalizeElements(elements: MenuElement[]): void {
       elements.forEach((el) => {
+        if (el.page === '' || el.page === null) {
+          el.page = -10;
+        }
         if (!el.children) el.children = [];
         this.normalizeElements(el.children);
       });
@@ -337,6 +344,7 @@ export default defineComponent({
       }
 
       this.removeElement(this.menu.menuElements, id);
+      this.noSaveElementIds = this.noSaveElementIds.filter((el) => el !== id);
 
       // Si l'élément supprimé était sélectionné, on désélectionne
       if (this.idSelected === id) {
@@ -384,12 +392,19 @@ export default defineComponent({
     /**
      * Sauvegarde un menuElement
      * @param menuElement
+     * @param action
      */
-    saveMenuElement(menuElement: MenuElement) {
+    saveMenuElement(menuElement: MenuElement, action: String) {
       const element = this.findElement(this.menu.menuElements, menuElement.id);
       if (element !== null) {
         Object.assign(element, menuElement);
-        this.updateNoSave = true;
+
+        if (action !== 'cancel') {
+          this.updateNoSave = true;
+        } else {
+          this.noSaveElementIds = this.noSaveElementIds.filter((el) => el !== menuElement.id);
+        }
+
         this.menuElementSelected = null;
       }
     },
@@ -414,6 +429,28 @@ export default defineComponent({
           this.collectInvalidIds(el.children, ids);
         }
       });
+    },
+
+    /**
+     * Changement d'un menuElement
+     * @param id
+     */
+    onMenuElementChange(id: number): void {
+      if (!this.noSaveElementIds.includes(id)) {
+        this.noSaveElementIds.push(id);
+      }
+    },
+
+    /**
+     * Sauvegarde du menu
+     */
+    saveMenu(): void {
+      this.errors.name = !this.menu.name?.trim();
+      if (Object.values(this.errors).some(Boolean)) return;
+
+      if (this.invalidElementIds.length > 0) return;
+
+      alert('Sauvegarde');
     },
 
     /**
@@ -489,7 +526,11 @@ export default defineComponent({
             </option>
           </select>
         </div>
-        <button class="btn btn-sm btn-primary flex items-center gap-2">
+        <button
+          class="btn btn-sm btn-primary flex items-center gap-2"
+          :disabled="invalidElementIds.length > 0 || errors.name"
+          @click="saveMenu"
+        >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -510,10 +551,13 @@ export default defineComponent({
             <input
               type="text"
               class="form-input"
+              :class="errors.name ? 'is-invalid' : ''"
               id="menu-title"
               v-model="menu.name"
               :placeholder="translate.input_name_placeholder"
+              @input="errors.name = !menu.name.trim()"
             />
+            <span v-if="errors.name" class="form-text text-error">✗ {{ translate.input_name_error }}</span>
           </div>
 
           <div>
@@ -618,6 +662,7 @@ export default defineComponent({
           :deep="0"
           :force-open="nodeToOpen"
           :invalid-ids="invalidElementIds"
+          :no-save-ids="noSaveElementIds"
           @reorder="onReorder"
           @add-child="newMenuElement($event)"
           @delete="onDelete($event)"
@@ -726,9 +771,10 @@ export default defineComponent({
         :menu-element="menuElementSelected"
         :menu-data="dataMenu"
         @delete="onDelete($event)"
-        @save="saveMenuElement($event)"
-        @cancel="saveMenuElement($event)"
+        @save="saveMenuElement"
+        @cancel="saveMenuElement"
         @locale-validation="localeValidationState = $event"
+        @on-change="onMenuElementChange($event)"
       />
     </div>
   </div>

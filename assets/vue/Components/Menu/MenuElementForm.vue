@@ -6,7 +6,7 @@ import Autocomplete, { AutocompleteOption } from '@/vue/Components/Global/AutoCo
 export default defineComponent({
   name: 'MenuElementForm',
   components: { Autocomplete },
-  emit: ['cancel', 'save', 'delete', 'locale-validation'],
+  emit: ['cancel', 'save', 'delete', 'locale-validation', 'on-change'],
   props: {
     translate: {
       type: Object as PropType<MenuFormTranslate>,
@@ -41,6 +41,12 @@ export default defineComponent({
   },
 
   watch: {
+    menuElement: {
+      deep: true,
+      handler() {
+        this.$emit('on-change', this.menuElement.id);
+      },
+    },
     'menuElement.id'() {
       this.resetErrors();
       this.validate();
@@ -196,7 +202,7 @@ export default defineComponent({
 
     onSave(): void {
       if (!this.validate()) return;
-      this.$emit('save', this.menuElement);
+      this.$emit('save', this.menuElement, 'save');
     },
   },
 });
@@ -236,7 +242,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <div v-if="Number(menuElement.page) > -1">
+    <div v-if="Number(menuElement.page) > -1 || menuElement.page === null">
       <autocomplete
         v-model="menuElement.page"
         ref="searchInput"
@@ -364,7 +370,7 @@ export default defineComponent({
         {{ translate.btn_delete }}
       </button>
       <div class="flex gap-2">
-        <button @click="$emit('cancel', menuElementNoEdit)" class="btn btn-sm btn-outline-dark">
+        <button @click="$emit('cancel', menuElementNoEdit, 'cancel')" class="btn btn-sm btn-outline-dark">
           {{ translate.btn_cancel }}
         </button>
         <button class="btn btn-sm btn-primary" @click="onSave" :disabled="!isValid">
