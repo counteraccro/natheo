@@ -138,3 +138,4 @@ menu.form.input.search.page.placeholder.no.result: __menu.form.input.search.page
 menu.form.empty.text.link.error: __menu.form.empty.text.link.error
 menu.form.empty.internal.link.error: __menu.form.empty.internal.link.error
 menu.label.error: __menu.label.error
+menu.tree.element.no.save: __menu.tree.element.no.save
