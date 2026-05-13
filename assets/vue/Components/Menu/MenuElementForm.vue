@@ -41,12 +41,12 @@ export default defineComponent({
   },
 
   watch: {
-    menuElement: {
+    /*menuElement: {
       deep: true,
       handler() {
         this.$emit('on-change', this.menuElement.id);
       },
-    },
+    },*/
     'menuElement.id'() {
       this.resetErrors();
       this.validate();
@@ -140,6 +140,7 @@ export default defineComponent({
       const translation = tabMenuElementTranslation.find(({ locale }) => locale === this.locale);
       if (translation) {
         (translation[key] as string) = value;
+        this.$emit('on-change', this.menuElement.id);
       }
     },
 
@@ -151,6 +152,7 @@ export default defineComponent({
       const translation = this.menuElement.menuElementTranslations.find(({ locale }) => locale === this.locale);
       if (translation) {
         translation.link = String(option.hint);
+        this.$emit('on-change', this.menuElement.id);
       }
     },
 
@@ -175,13 +177,7 @@ export default defineComponent({
       if (!translation?.textLink?.trim()) {
         this.errors.textLink = true;
       }
-
-      console.log(this.menuElement.page);
-
       const hasPage = Number(this.menuElement.page) > 0;
-
-      console.log(hasPage);
-
       const hasExternalUrl = translation?.externalLink?.trim() !== '' && translation?.externalLink !== '#';
 
       if (!hasPage && !hasExternalUrl) {
@@ -323,7 +319,12 @@ export default defineComponent({
 
     <div class="form-group">
       <label for="liste-target" class="form-label">{{ translate.element_link_target_label }}</label>
-      <select class="form-input" id="liste-target" v-model="menuElement.linkTarget">
+      <select
+        class="form-input"
+        id="liste-target"
+        v-model="menuElement.linkTarget"
+        @change="$emit('on-change', menuElement.id)"
+      >
         <option value="_self">{{ translate.element_link_target_label_self }}</option>
         <option value="_blank">{{ translate.element_link_target_label_blank }}</option>
       </select>
@@ -337,7 +338,10 @@ export default defineComponent({
           role="switch"
           id="menuElement_disabled"
           :checked="!menuElement.disabled"
-          @change="menuElement.disabled = !($event.target as HTMLInputElement).checked"
+          @change="
+            menuElement.disabled = !($event.target as HTMLInputElement).checked;
+            $emit('on-change', menuElement.id);
+          "
         />
         <label class="switch-toggle" for="menuElement_disabled"></label>
         <label class="swith-label" for="menuElement_disabled"

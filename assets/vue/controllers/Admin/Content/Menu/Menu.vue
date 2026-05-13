@@ -399,12 +399,11 @@ export default defineComponent({
       if (element !== null) {
         Object.assign(element, menuElement);
 
-        if (action !== 'cancel') {
-          this.updateNoSave = true;
-        } else {
+        if (action === 'cancel') {
           this.noSaveElementIds = this.noSaveElementIds.filter((el) => el !== menuElement.id);
         }
 
+        this.updateNoSave = this.noSaveElementIds.length > 0;
         this.menuElementSelected = null;
       }
     },
@@ -436,9 +435,11 @@ export default defineComponent({
      * @param id
      */
     onMenuElementChange(id: number): void {
+      console.log('ici');
       if (!this.noSaveElementIds.includes(id)) {
         this.noSaveElementIds.push(id);
       }
+      this.updateNoSave = true;
     },
 
     /**
@@ -481,6 +482,67 @@ export default defineComponent({
       <span class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.title_demo }}</span>
     </div>
     <div class="p-4">-- Rendu demo --</div>
+  </div>
+
+  <!-- Bloc de statut -->
+  <div
+    v-if="updateNoSave || invalidElementIds.length > 0"
+    class="rounded-xl mb-5 px-4 py-3 flex items-center gap-3"
+    :style="
+      invalidElementIds.length > 0
+        ? 'background-color: var(--alert-danger-bg); border: 1px solid var(--alert-danger-border);'
+        : 'background-color: var(--alert-warning-bg); border: 1px solid var(--alert-warning-border);'
+    "
+  >
+    <div
+      class="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
+      :style="
+        invalidElementIds.length > 0
+          ? 'background-color: var(--alert-danger-border);'
+          : 'background-color: var(--alert-warning-border);'
+      "
+    >
+      <svg
+        v-if="invalidElementIds.length > 0"
+        class="w-4 h-4 text-white"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2.5"
+          d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+      <svg v-else class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2.5"
+          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+        />
+      </svg>
+    </div>
+    <div class="flex-1 min-w-0">
+      <p
+        class="text-sm font-semibold"
+        :style="invalidElementIds.length > 0 ? 'color: var(--alert-danger-text);' : 'color: var(--alert-warning-text);'"
+      >
+        <span v-if="invalidElementIds.length > 0">
+          {{ invalidElementIds.length }} {{ translate.error_info_label }}
+        </span>
+        <span v-else> {{ translate.no_save_label }} </span>
+      </p>
+      <p
+        class="text-xs mt-0.5"
+        :style="invalidElementIds.length > 0 ? 'color: var(--alert-danger-text);' : 'color: var(--alert-warning-text);'"
+      >
+        <span v-if="invalidElementIds.length > 0"> {{ translate.error_info_sub_label }} </span>
+        <span v-else> {{ translate.no_save_sub_label }} </span>
+      </p>
+    </div>
   </div>
 
   <div class="card rounded-lg overflow-hidden mb-5">
@@ -705,6 +767,7 @@ export default defineComponent({
           <template v-for="(localeLabel, key) in locales.localesTranslate" :key="key">
             <div
               @click="currentLocale = key"
+              :id="localeLabel + '-key'"
               class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold transition-colors cursor-pointer"
               :class="[
                 localeValidationState[key]
