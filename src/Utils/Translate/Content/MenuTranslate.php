@@ -98,6 +98,10 @@ class MenuTranslate extends AppTranslate
             'select_page_no_page' => $this->translator->trans('menu.select.page.no.page', domain: 'menu'),
             'select_page_info' => $this->translator->trans('menu.select.page.info', domain: 'menu'),
             'error' => $this->translator->trans('menu.label.error', domain: 'menu'),
+            'error_info_label' => $this->translator->trans('menu.label.error.info.label', domain: 'menu'),
+            'error_info_sub_label' => $this->translator->trans('menu.label.error.info.sub.label', domain: 'menu'),
+            'no_save_label' => $this->translator->trans('menu.no.save.label', domain: 'menu'),
+            'no_save_sub_label' => $this->translator->trans('menu.no.save.sub.label', domain: 'menu'),
             'menu_form' => $this->getMenuFormTranslate(),
             'menu_tree' => $this->getMenuTreeTranslate(),
         ];

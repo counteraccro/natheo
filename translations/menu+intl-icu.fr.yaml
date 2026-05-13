@@ -138,4 +138,8 @@ menu.form.input.search.page.placeholder.no.result: 'Aucune page trouvée'
 menu.form.empty.text.link.error: 'Ce champ ne peux pas être vide'
 menu.form.empty.internal.link.error: 'Vous devez choisir une page'
 menu.label.error: erreur(s)
-menu.tree.element.no.save: 'tmp'
+menu.tree.element.no.save: update
+menu.label.error.info.label: 'élément(s) possède au moins 1 erreur de validation'
+menu.label.error.info.sub.label: 'Veuillez corriger les erreurs avant de sauvegarder'
+menu.no.save.label: 'Modifications non sauvegardées'
+menu.no.save.sub.label: "N'oubliez pas de sauvegarder vos modifications"

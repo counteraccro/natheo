@@ -139,3 +139,7 @@ menu.form.empty.text.link.error: __menu.form.empty.text.link.error
 menu.form.empty.internal.link.error: __menu.form.empty.internal.link.error
 menu.label.error: __menu.label.error
 menu.tree.element.no.save: __menu.tree.element.no.save
+menu.label.error.info.label: __menu.label.error.info.label
+menu.label.error.info.sub.label: __menu.label.error.info.sub.label
+menu.no.save.label: __menu.no.save.label
+menu.no.save.sub.label: __menu.no.save.sub.label
