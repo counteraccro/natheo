@@ -98,6 +98,10 @@ export interface Translate {
   select_page_no_page: string;
   select_page_info: string;
   error: string;
+  error_info_label: string;
+  error_info_sub_label: string;
+  no_save_label: string;
+  no_save_sub_label: string;
   menu_form: MenuFormTranslate;
   menu_tree: MenuTreeTranslate;
 }
