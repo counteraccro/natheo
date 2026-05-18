@@ -52,6 +52,10 @@ class MenuPopulate
         private readonly MenuService $menuService,
     ) {}
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function populate(): static
     {
         $this->populateMenu();
