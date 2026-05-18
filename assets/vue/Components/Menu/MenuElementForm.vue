@@ -41,12 +41,6 @@ export default defineComponent({
   },
 
   watch: {
-    /*menuElement: {
-      deep: true,
-      handler() {
-        this.$emit('on-change', this.menuElement.id);
-      },
-    },*/
     'menuElement.id'() {
       this.resetErrors();
       this.validate();
