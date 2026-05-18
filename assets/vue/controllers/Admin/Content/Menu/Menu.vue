@@ -486,10 +486,10 @@ export default defineComponent({
 
   <!-- Bloc de statut -->
   <div
-    v-if="updateNoSave || invalidElementIds.length > 0"
+    v-if="updateNoSave || invalidElementIds.length > 0 || menu.menuElements?.length === 0"
     class="rounded-xl mb-5 px-4 py-3 flex items-center gap-3"
     :style="
-      invalidElementIds.length > 0
+      invalidElementIds.length > 0 || menu.menuElements?.length === 0
         ? 'background-color: var(--alert-danger-bg); border: 1px solid var(--alert-danger-border);'
         : 'background-color: var(--alert-warning-bg); border: 1px solid var(--alert-warning-border);'
     "
@@ -497,13 +497,13 @@ export default defineComponent({
     <div
       class="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
       :style="
-        invalidElementIds.length > 0
+        invalidElementIds.length > 0 || menu.menuElements?.length === 0
           ? 'background-color: var(--alert-danger-border);'
           : 'background-color: var(--alert-warning-border);'
       "
     >
       <svg
-        v-if="invalidElementIds.length > 0"
+        v-if="invalidElementIds.length > 0 || menu.menuElements?.length === 0"
         class="w-4 h-4 text-white"
         fill="none"
         stroke="currentColor"
@@ -528,18 +528,32 @@ export default defineComponent({
     <div class="flex-1 min-w-0">
       <p
         class="text-sm font-semibold"
-        :style="invalidElementIds.length > 0 ? 'color: var(--alert-danger-text);' : 'color: var(--alert-warning-text);'"
+        :style="
+          invalidElementIds.length > 0 || menu.menuElements?.length === 0
+            ? 'color: var(--alert-danger-text);'
+            : 'color: var(--alert-warning-text);'
+        "
       >
-        <span v-if="invalidElementIds.length > 0">
+        <span v-if="menu.menuElements?.length === 0">
+          {{ translate.error_no_menu_element_label }}
+        </span>
+        <span v-else-if="invalidElementIds.length > 0">
           {{ invalidElementIds.length }} {{ translate.error_info_label }}
         </span>
         <span v-else> {{ translate.no_save_label }} </span>
       </p>
       <p
         class="text-xs mt-0.5"
-        :style="invalidElementIds.length > 0 ? 'color: var(--alert-danger-text);' : 'color: var(--alert-warning-text);'"
+        :style="
+          invalidElementIds.length > 0 || menu.menuElements?.length === 0
+            ? 'color: var(--alert-danger-text);'
+            : 'color: var(--alert-warning-text);'
+        "
       >
-        <span v-if="invalidElementIds.length > 0"> {{ translate.error_info_sub_label }} </span>
+        <span v-if="menu.menuElements?.length === 0">
+          {{ translate.error_no_menu_element_sub_label }}
+        </span>
+        <span v-else-if="invalidElementIds.length > 0"> {{ translate.error_info_sub_label }} </span>
         <span v-else> {{ translate.no_save_sub_label }} </span>
       </p>
     </div>
@@ -590,7 +604,7 @@ export default defineComponent({
         </div>
         <button
           class="btn btn-sm btn-primary flex items-center gap-2"
-          :disabled="invalidElementIds.length > 0 || errors.name"
+          :disabled="invalidElementIds.length > 0 || errors.name || menu.menuElements?.length === 0 || menu.name === ''"
           @click="saveMenu"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
