@@ -102,6 +102,8 @@ export interface Translate {
   error_info_sub_label: string;
   no_save_label: string;
   no_save_sub_label: string;
+  error_no_menu_element_label: string;
+  error_no_menu_element_sub_label: string;
   menu_form: MenuFormTranslate;
   menu_tree: MenuTreeTranslate;
 }
