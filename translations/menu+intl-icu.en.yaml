@@ -143,3 +143,5 @@ menu.label.error.info.label: __menu.label.error.info.label
 menu.label.error.info.sub.label: __menu.label.error.info.sub.label
 menu.no.save.label: __menu.no.save.label
 menu.no.save.sub.label: __menu.no.save.sub.label
+menu.label.error.no.menu.element.label: __menu.label.error.no.menu.element.label
+menu.label.error.no.menu.element.sub.label: __menu.label.error.no.menu.element.sub.label

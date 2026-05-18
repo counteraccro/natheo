@@ -100,6 +100,14 @@ class MenuTranslate extends AppTranslate
             'error' => $this->translator->trans('menu.label.error', domain: 'menu'),
             'error_info_label' => $this->translator->trans('menu.label.error.info.label', domain: 'menu'),
             'error_info_sub_label' => $this->translator->trans('menu.label.error.info.sub.label', domain: 'menu'),
+            'error_no_menu_element_label' => $this->translator->trans(
+                'menu.label.error.no.menu.element.label',
+                domain: 'menu',
+            ),
+            'error_no_menu_element_sub_label' => $this->translator->trans(
+                'menu.label.error.no.menu.element.sub.label',
+                domain: 'menu',
+            ),
             'no_save_label' => $this->translator->trans('menu.no.save.label', domain: 'menu'),
             'no_save_sub_label' => $this->translator->trans('menu.no.save.sub.label', domain: 'menu'),
             'menu_form' => $this->getMenuFormTranslate(),
