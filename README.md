@@ -271,6 +271,31 @@ vite build
 
 ## 🧪 Tests
 
+Créez une copie du fichier `.env.test` en `.env.test.local` :
+```bash
+cp .env.test .env.local.local
+```
+
+Modifiez les variables suivantes dans `.env.test.local` :
+```env
+APP_ENV=prod
+APP_DEBUG=1
+NATHEO_SCHEMA=natheo
+DATABASE_URL="mysql://user:password@127.0.0.1:3306/natheo?serverVersion=8.2"
+```
+
+Installation de la base de données de test
+```bash
+
+# Création de la base de données
+php bin/console --env=test doctrine:database:create
+
+# Création des tables/colonnes
+php bin/console --env=test doctrine:schema:create
+
+```
+
+
 Lancer la suite de tests unitaires :
 ```bash
 bin/phpunit
@@ -316,14 +341,6 @@ Les contributions sont les bienvenues ! N'hésitez pas à :
         <sub><b>Counteraccro</b></sub>
       </a><br />
       <sub>Fondateur & Lead Developer</sub>
-    </td>
-    <td align="center">
-      <a href="https://github.com/MaxenceMahieux">
-        <img src="https://avatars.githubusercontent.com/u/139382475?v=4" width="100px;" alt="MaxenceMahieux"/><br />
-        <sub><b>Maxence Mahieux</b></sub>
-      </a><br />
-      <sub>Co-fondateur & Admin Système</sub><br />
-      <sub><a href="https://github.com/MaxenceMahieux/flaase-cli-rust">Projet : Flaase CLI</a></sub>
     </td>
   </tr>
 </table>
