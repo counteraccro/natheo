@@ -263,6 +263,21 @@ class MenuController extends AppAdminController
     public function save(Request $request, MenuService $menuService, TranslatorInterface $translator): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+
+        if (empty($data['menu']['name'])) {
+            return $this->json([
+                'success' => false,
+                'msg' => $translator->trans('menu.new.error.no.name', domain: 'menu'),
+            ]);
+        }
+
+        if (empty($data['menu']['menuElements'])) {
+            return $this->json([
+                'success' => false,
+                'msg' => $translator->trans('menu.new.error.no.menu.element', domain: 'menu'),
+            ]);
+        }
+
         $menu = new Menu();
         $menu->setUser($this->getUser());
         $redirect = true;
