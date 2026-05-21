@@ -145,3 +145,5 @@ menu.no.save.label: 'Modifications non sauvegardées'
 menu.no.save.sub.label: "N'oubliez pas de sauvegarder vos modifications"
 menu.label.error.no.menu.element.label: 'Aucun élément dans le menu'
 menu.label.error.no.menu.element.sub.label: 'Le menu doit comporter au moins 1 élément pour être valide'
+menu.new.error.no.name: 'Le menu doit avoir un nom'
+menu.new.error.no.menu.element: 'Le menu doit comporter au moins 1 élément pour être valide'

@@ -145,3 +145,5 @@ menu.no.save.label: __menu.no.save.label
 menu.no.save.sub.label: __menu.no.save.sub.label
 menu.label.error.no.menu.element.label: __menu.label.error.no.menu.element.label
 menu.label.error.no.menu.element.sub.label: __menu.label.error.no.menu.element.sub.label
+menu.new.error.no.name: __menu.new.error.no.name
+menu.new.error.no.menu.element: __menu.new.error.no.menu.element
