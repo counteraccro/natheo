@@ -9,10 +9,21 @@ import MenuTree from '@/vue/Components/Menu/MenuTree.vue';
 import Sortable from 'sortablejs';
 import Modal from '@/vue/Components/Global/Modal.vue';
 import MenuElementForm from '@/vue/Components/Menu/MenuElementForm.vue';
+import { emitter } from '@/utils/useEvent';
+import Toast from '@/vue/Components/Global/Toast.vue';
+import { Toasts } from '@/ts/Toast/type';
 
 export default defineComponent({
   name: 'Menu',
-  components: { MenuElementForm, Modal, MenuTree, SkeletonArchitectureMenu, SkeletonFormMenu, SkeletonRenderMenu },
+  components: {
+    Toast,
+    MenuElementForm,
+    Modal,
+    MenuTree,
+    SkeletonArchitectureMenu,
+    SkeletonFormMenu,
+    SkeletonRenderMenu,
+  },
   props: {
     urls: {
       type: Object as PropType<Urls>,
@@ -61,6 +72,16 @@ export default defineComponent({
           isConfirm: false,
         },
       },
+      toasts: {
+        success: {
+          show: false,
+          msg: '',
+        },
+        error: {
+          show: false,
+          msg: '',
+        },
+      } as Toasts,
     };
   },
   mounted() {
@@ -435,7 +456,6 @@ export default defineComponent({
      * @param id
      */
     onMenuElementChange(id: number): void {
-      console.log('ici');
       if (!this.noSaveElementIds.includes(id)) {
         this.noSaveElementIds.push(id);
       }
@@ -450,8 +470,33 @@ export default defineComponent({
       if (Object.values(this.errors).some(Boolean)) return;
 
       if (this.invalidElementIds.length > 0) return;
+      if (this.menu.name === '') return;
 
-      alert('Sauvegarde');
+      this.loading = true;
+      axios
+        .post(this.urls.save_menu, {
+          menu: this.menu,
+        })
+        .then((response) => {
+          if (response.data.success === true) {
+            this.toasts.success.msg = response.data.msg;
+            this.toasts.success.show = true;
+            // Cas première page, on force la redirection pour passer en mode édition
+            if (response.data.redirect === true) {
+              window.location.replace(response.data.url);
+            }
+          } else {
+            this.toasts.error.msg = response.data.msg;
+            this.toasts.error.show = true;
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.loading = false;
+          emitter.emit('reset-check-confirm');
+        });
     },
 
     /**
@@ -459,6 +504,14 @@ export default defineComponent({
      */
     hideModalConfirmDelete() {
       this.showModalConfirmDelete = false;
+    },
+
+    /**
+     * Ferme le toast défini par nameToast
+     * @param nameToast
+     */
+    closeToast(nameToast: string) {
+      this.toasts[nameToast].show = false;
     },
   },
 });
@@ -914,6 +967,20 @@ export default defineComponent({
       </button>
     </template>
   </modal>
+
+  <div class="toast-container position-fixed top-0 end-0 p-2">
+    <toast :id="'toastSuccess'" :type="'success'" :show="toasts.success.show" @close-toast="closeToast('success')">
+      <template #body>
+        <div v-html="toasts.success.msg"></div>
+      </template>
+    </toast>
+
+    <toast :id="'toastError'" :type="'danger'" :show="toasts.error.show" @close-toast="closeToast('error')">
+      <template #body>
+        <div v-html="toasts.error.msg"></div>
+      </template>
+    </toast>
+  </div>
 </template>
 
 <style scoped></style>
