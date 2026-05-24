@@ -26,6 +26,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    type: {
+      type: Number as PropType<number>,
+      required: true,
+    },
   },
 
   data() {
@@ -82,7 +86,7 @@ export default defineComponent({
 <template>
   <li v-show="!element.disabled" class="border-b last:border-b-0" style="border-color: var(--border-color)">
     <!-- Élément avec enfants -->
-    <template v-if="hasChildren">
+    <template v-if="hasChildren && type === 12">
       <button
         class="w-full flex items-center justify-between gap-2 py-2.5 transition-colors"
         :class="[textSize, isRight ? 'flex-row-reverse' : '']"
@@ -111,6 +115,7 @@ export default defineComponent({
           :locale="locale"
           :depth="depth + 1"
           :is-right="isRight"
+          :type="type"
         />
       </ul>
     </template>

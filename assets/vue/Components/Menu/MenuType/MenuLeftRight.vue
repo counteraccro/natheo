@@ -46,6 +46,7 @@ export default defineComponent({
         :locale="locale"
         :depth="0"
         :is-right="isRight"
+        :type="type"
       />
     </ul>
   </nav>
