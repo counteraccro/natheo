@@ -564,7 +564,14 @@ export default defineComponent({
         <span class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.title_demo }}</span>
       </div>
       <div class="p-4">
-        <Component :is="selectComponent" :menu="menu" :type="menu.type" :locale="currentLocale" :data="dataMenu" />
+        <Component
+          v-if="selectComponent"
+          :is="selectComponent"
+          :menu="menu"
+          :type="Number(menu.type)"
+          :locale="currentLocale"
+          :data="dataMenu"
+        />
         <p class="text-xs mt-2 flex items-center gap-1.5" style="color: var(--text-light)">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
