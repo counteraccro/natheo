@@ -1,9 +1,13 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { LoadMenuData, Menu } from '@/ts/Menu/type';
+import { Menu, LoadMenuData } from '@/ts/Menu/type';
+import MenuFooterColumn from './MenuFooterColumn.vue';
+import MenuFooterRight from './MenuFooterRight.vue';
+import MenuFooterCenter from './MenuFooterCenter.vue';
 
 export default defineComponent({
   name: 'MenuFooter',
+  components: { MenuFooterColumn, MenuFooterRight, MenuFooterCenter },
   props: {
     menu: {
       type: Object as PropType<Menu>,
@@ -25,6 +29,10 @@ export default defineComponent({
 });
 </script>
 
-<template>MenuFooter</template>
+<template>
+  <MenuFooterColumn v-if="type === 16" :menu="menu" :locale="locale" :data="data" />
+  <MenuFooterRight v-else-if="type === 17" :menu="menu" :locale="locale" :data="data" />
+  <MenuFooterCenter v-else-if="type === 18" :menu="menu" :locale="locale" :data="data" />
+</template>
 
 <style scoped></style>
