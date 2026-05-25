@@ -27,7 +27,7 @@ class EnvFile
      * Nom fichier .env.local de l'application
      * @var string
      */
-    public const NAME_FILE_ENV_LOCAL = '..env.local';
+    public const NAME_FILE_ENV_LOCAL = '.env.local';
 
     /**
      * Dev mode
@@ -80,7 +80,7 @@ class EnvFile
 
     /**
      * Retourne le Path du fichier env
-     * Si ..env.local existe, retour le ..env.local
+     * Si .env.local existe, retour le .env.local
      * @return string
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
