@@ -18,7 +18,7 @@ use Symfony\Component\Yaml\Yaml;
 class CommentFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
     const COMMENT_FIXTURES_DATA_FILE =
-        'content' . DIRECTORY_SEPARATOR . 'Comment' . DIRECTORY_SEPARATOR . 'comment_fixtures_data.yaml';
+        'content' . DIRECTORY_SEPARATOR . 'comment' . DIRECTORY_SEPARATOR . 'comment_fixtures_data.yaml';
 
     /**
      * @param ObjectManager $manager
