@@ -11,6 +11,8 @@
         </div>
 
         <!-- Center: Search bar (hidden on mobile) -->
+
+        {% if is_granted('ROLE_CONTRIBUTEUR') %}
         <div class="hidden md:flex flex-1 max-w-xl mx-8">
             <div class="relative w-full">
                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -23,6 +25,7 @@
                 </form>
             </div>
         </div>
+        {% endif %}
 
         <!-- Right: Actions -->
         <div class="flex items-center space-x-2 sm:space-x-4">
@@ -80,6 +83,7 @@
            {% endif %}
 
             <!-- New Content Dropdown -->
+            {% if is_granted('ROLE_CONTRIBUTEUR') %}
             <div class="hidden sm:block">
                 <button id="newContentButton" data-dropdown-toggle="newContentDropdown" class="btn btn-sm btn-primary flex items-center px-4 py-2 rounded-lg font-medium" type="button">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,6 +134,7 @@
                     </ul>
                 </div>
             </div>
+            {% endif %}
 
             <!-- User Menu Dropdown -->
             <div class="relative">
