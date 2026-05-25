@@ -11,6 +11,8 @@
         </div>
 
         <!-- Center: Search bar (hidden on mobile) -->
+
+        {% if is_granted('ROLE_CONTRIBUTEUR') %}
         <div class="hidden md:flex flex-1 max-w-xl mx-8">
             <div class="relative w-full">
                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -23,6 +25,7 @@
                 </form>
             </div>
         </div>
+        {% endif %}
 
         <!-- Right: Actions -->
         <div class="flex items-center space-x-2 sm:space-x-4">
