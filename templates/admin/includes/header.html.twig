@@ -80,6 +80,7 @@
            {% endif %}
 
             <!-- New Content Dropdown -->
+            {% if is_granted('ROLE_CONTRIBUTEUR') %}
             <div class="hidden sm:block">
                 <button id="newContentButton" data-dropdown-toggle="newContentDropdown" class="btn btn-sm btn-primary flex items-center px-4 py-2 rounded-lg font-medium" type="button">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,6 +131,7 @@
                     </ul>
                 </div>
             </div>
+            {% endif %}
 
             <!-- User Menu Dropdown -->
             <div class="relative">
