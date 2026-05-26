@@ -16,6 +16,7 @@ export default {
     urls: Object,
     translate: Object,
     datas: Object,
+    roles: Object,
   },
   data() {
     return {
@@ -56,11 +57,13 @@ export default {
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
       <block-last-comment
-        :translate="this.translate.dashboard_last_comments"
-        :urls="this.urls.dashboard_last_comments"
-        @reload-grid="this.reloadGrid"
+        v-if="this.roles.isContributeur"
+        :translate="translate.dashboard_last_comments"
+        :urls="urls.dashboard_last_comments"
+        @reload-grid="reloadGrid"
       />
       <block-last-page
+        v-if="this.roles.isContributeur"
         :translate="this.translate.dashboard_last_pages"
         :urls="this.urls.dashboard_last_pages"
         @reload-grid="this.reloadGrid"
@@ -69,6 +72,7 @@ export default {
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
       <block-last-comment
+        v-if="this.roles.isContributeur"
         :translate="this.translate.dashboard_last_comments"
         :urls="this.urls.dashboard_last_comments"
         @reload-grid="this.reloadGrid"
