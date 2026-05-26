@@ -551,7 +551,7 @@ export default defineComponent({
   </div>
 
   <div v-else>
-    <div class="card rounded-lg overflow-hidden mb-5">
+    <div class="card rounded-lg relative overflow-visible mb-5">
       <div class="px-5 py-4 border-b flex items-center gap-2" style="border-color: var(--border-color)">
         <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
