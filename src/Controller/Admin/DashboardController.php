@@ -64,6 +64,12 @@ class DashboardController extends AppAdminController
                     'user_data_key_first_connexion' => UserDataKey::KEY_HELP_FIRST_CONNEXION,
                 ],
             ],
+            'roles' => [
+                'isUser' => $this->isGranted('ROLE_USER'),
+                'isContributeur' => $this->isGranted('ROLE_CONTRIBUTEUR'),
+                'isAdmin' => $this->isGranted('ROLE_ADMIN'),
+                'isSuperAdmin' => $this->isGranted('ROLE_SUPER_ADMIN'),
+            ],
         ]);
     }
 
