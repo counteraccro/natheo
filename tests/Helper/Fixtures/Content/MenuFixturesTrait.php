@@ -12,6 +12,7 @@ use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Menu\MenuElementTranslation;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Content\Menu\MenuPosition;
 use App\Tests\Helper\FakerTrait;
 use App\Utils\Content\Menu\MenuConst;
 
@@ -36,7 +37,7 @@ trait MenuFixturesTrait
             'user' => $user,
             'name' => self::getFaker()->text(),
             'type' => MenuConst::TYPE_HEADER_SIDE_BAR,
-            'position' => MenuConst::POSITION_HEADER,
+            'position' => MenuPosition::POSITION_HEADER->value,
             'renderOrder' => 1,
             'defaultMenu' => false,
             'disabled' => self::getFaker()->boolean(),

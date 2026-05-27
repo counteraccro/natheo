@@ -9,6 +9,7 @@ namespace App\Tests\Service\Admin\Content\Menu;
 
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
+use App\Enum\Admin\Content\Menu\MenuPosition;
 use App\Repository\Admin\Content\Menu\MenuRepository;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Tests\AppWebTestCase;
@@ -106,10 +107,10 @@ class MenuServiceTest extends AppWebTestCase
     {
         $result = $this->menuService->getListPosition();
         $this->assertIsArray($result);
-        $this->assertArrayHasKey(MenuConst::POSITION_HEADER, $result);
-        $this->assertArrayHasKey(MenuConst::POSITION_RIGHT, $result);
-        $this->assertArrayHasKey(MenuConst::POSITION_FOOTER, $result);
-        $this->assertArrayHasKey(MenuConst::POSITION_LEFT, $result);
+        $this->assertArrayHasKey(MenuPosition::POSITION_HEADER->value, $result);
+        $this->assertArrayHasKey(MenuPosition::POSITION_RIGHT->value, $result);
+        $this->assertArrayHasKey(MenuPosition::POSITION_FOOTER->value, $result);
+        $this->assertArrayHasKey(MenuPosition::POSITION_LEFT->value, $result);
     }
 
     /**
@@ -122,10 +123,10 @@ class MenuServiceTest extends AppWebTestCase
     {
         $result = $this->menuService->getListType();
         $this->assertIsArray($result);
-        $this->assertArrayHasKey(MenuConst::POSITION_HEADER, $result);
-        $this->assertArrayHasKey(MenuConst::POSITION_RIGHT, $result);
-        $this->assertArrayHasKey(MenuConst::POSITION_FOOTER, $result);
-        $this->assertArrayHasKey(MenuConst::POSITION_LEFT, $result);
+        $this->assertArrayHasKey(MenuPosition::POSITION_HEADER->value, $result);
+        $this->assertArrayHasKey(MenuPosition::POSITION_RIGHT->value, $result);
+        $this->assertArrayHasKey(MenuPosition::POSITION_FOOTER->value, $result);
+        $this->assertArrayHasKey(MenuPosition::POSITION_LEFT->value, $result);
     }
 
     /**
@@ -425,23 +426,29 @@ class MenuServiceTest extends AppWebTestCase
     public function testSwitchDefaultMenuToFalse(): void
     {
         for ($i = 0; $i < 3; $i++) {
-            $this->createMenu(customData: ['position' => MenuConst::POSITION_HEADER, 'defaultMenu' => 0]);
+            $this->createMenu(customData: ['position' => MenuPosition::POSITION_HEADER->value, 'defaultMenu' => 0]);
         }
-        $menuH = $this->createMenu(customData: ['position' => MenuConst::POSITION_HEADER, 'defaultMenu' => 1]);
+        $menuH = $this->createMenu(
+            customData: ['position' => MenuPosition::POSITION_HEADER->value, 'defaultMenu' => 1],
+        );
 
         for ($i = 0; $i < 3; $i++) {
-            $rMenuF = $this->createMenu(customData: ['position' => MenuConst::POSITION_FOOTER, 'defaultMenu' => 0]);
+            $rMenuF = $this->createMenu(
+                customData: ['position' => MenuPosition::POSITION_FOOTER->value, 'defaultMenu' => 0],
+            );
         }
-        $menuF = $this->createMenu(customData: ['position' => MenuConst::POSITION_FOOTER, 'defaultMenu' => 1]);
+        $menuF = $this->createMenu(
+            customData: ['position' => MenuPosition::POSITION_FOOTER->value, 'defaultMenu' => 1],
+        );
 
-        $this->menuService->switchDefaultMenuToFalse($rMenuF->getId(), MenuConst::POSITION_FOOTER);
+        $this->menuService->switchDefaultMenuToFalse($rMenuF->getId(), MenuPosition::POSITION_FOOTER->value);
 
         /** @var MenuRepository $menuRepo */
         $menuRepo = $this->em->getRepository(Menu::class);
         $result = $menuRepo->findAll();
         foreach ($result as $menu) {
             /** @var Menu $menu */
-            if ($menu->getPosition() === MenuConst::POSITION_FOOTER) {
+            if ($menu->getPosition() === MenuPosition::POSITION_FOOTER->value) {
                 $this->assertFalse($menu->isDefaultMenu());
             } else {
                 if ($menu->getId() === $menuH->getId()) {
