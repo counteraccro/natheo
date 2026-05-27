@@ -7,7 +7,7 @@
 namespace App\Dto\Api\Content\Menu;
 
 use App\Dto\Api\AppApiDto;
-use App\Utils\Content\Menu\MenuConst;
+use App\Enum\Admin\Content\Menu\MenuPosition;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ApiFindMenuDto extends AppApiDto
@@ -16,10 +16,10 @@ class ApiFindMenuDto extends AppApiDto
      * Tableau de positions
      */
     private const MENU_POSITIONS = [
-        MenuConst::POSITION_HEADER,
-        MenuConst::POSITION_RIGHT,
-        MenuConst::POSITION_FOOTER,
-        MenuConst::POSITION_LEFT,
+        MenuPosition::POSITION_HEADER->value,
+        MenuPosition::POSITION_RIGHT->value,
+        MenuPosition::POSITION_FOOTER->value,
+        MenuPosition::POSITION_LEFT->value,
     ];
 
     /**

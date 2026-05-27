@@ -9,6 +9,7 @@ namespace App\Service\Admin\Content\Menu;
 
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
+use App\Enum\Admin\Content\Menu\MenuPosition;
 use App\Repository\Admin\Content\Menu\MenuElementRepository;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
@@ -228,10 +229,10 @@ class MenuService extends AppAdminService
         $translator = $this->getTranslator();
 
         return [
-            MenuConst::POSITION_HEADER => $translator->trans('menu.position.header', domain: 'menu'),
-            MenuConst::POSITION_RIGHT => $translator->trans('menu.position.right', domain: 'menu'),
-            MenuConst::POSITION_FOOTER => $translator->trans('menu.position.footer', domain: 'menu'),
-            MenuConst::POSITION_LEFT => $translator->trans('menu.position.left', domain: 'menu'),
+            MenuPosition::POSITION_HEADER->value => $translator->trans('menu.position.header', domain: 'menu'),
+            MenuPosition::POSITION_RIGHT->value => $translator->trans('menu.position.right', domain: 'menu'),
+            MenuPosition::POSITION_FOOTER->value => $translator->trans('menu.position.footer', domain: 'menu'),
+            MenuPosition::POSITION_LEFT->value => $translator->trans('menu.position.left', domain: 'menu'),
         ];
     }
 
@@ -245,7 +246,7 @@ class MenuService extends AppAdminService
     {
         $translator = $this->getTranslator();
         return [
-            MenuConst::POSITION_HEADER => [
+            MenuPosition::POSITION_HEADER->value => [
                 MenuConst::TYPE_HEADER_SIDE_BAR => $translator->trans('menu.header.type.side-bar', domain: 'menu'),
                 MenuConst::TYPE_HEADER_MENU_DEROULANT => $translator->trans(
                     'menu.header.type.deroulant',
@@ -268,7 +269,7 @@ class MenuService extends AppAdminService
                     domain: 'menu',
                 ),
             ],
-            MenuConst::POSITION_LEFT => [
+            MenuPosition::POSITION_LEFT->value => [
                 MenuConst::TYPE_LEFT_RIGHT_SIDE_BAR => $translator->trans(
                     'menu.left.right.type.side-bar',
                     domain: 'menu',
@@ -278,7 +279,7 @@ class MenuService extends AppAdminService
                     domain: 'menu',
                 ),
             ],
-            MenuConst::POSITION_RIGHT => [
+            MenuPosition::POSITION_RIGHT->value => [
                 MenuConst::TYPE_LEFT_RIGHT_SIDE_BAR => $translator->trans(
                     'menu.left.right.type.side-bar',
                     domain: 'menu',
@@ -288,7 +289,7 @@ class MenuService extends AppAdminService
                     domain: 'menu',
                 ),
             ],
-            MenuConst::POSITION_FOOTER => [
+            MenuPosition::POSITION_FOOTER->value => [
                 MenuConst::TYPE_FOOTER_1_ROW_RIGHT => $translator->trans('menu.footer.type.row1.right', domain: 'menu'),
                 MenuConst::TYPE_FOOTER_1_ROW_CENTER => $translator->trans(
                     'menu.footer.type.row1.center',

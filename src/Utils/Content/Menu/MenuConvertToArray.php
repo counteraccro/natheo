@@ -11,6 +11,7 @@ use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Menu\MenuElementTranslation;
 use App\Entity\Admin\Content\Page\Page;
+use App\Enum\Admin\Content\Menu\MenuPosition;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Utils\Global\Database\DataBase;
@@ -44,15 +45,18 @@ class MenuConvertToArray
     public function convertToArray(?int $id = null): array
     {
         $return = $this->createStructure(Menu::class, ['createdAt', 'updateAt', 'userId']);
-        $return['position'] = MenuConst::POSITION_HEADER;
+        $return['position'] = MenuPosition::POSITION_HEADER->value;
         $return['type'] = MenuConst::TYPE_HEADER_SIDE_BAR;
         $return['defaultMenu'] = false;
         $return['renderOrder'] = 1;
         $return['disabled'] = true;
         $return['name'] = '';
         if ($id !== null) {
+            /** @var Menu $menu */
             $menu = $this->menuService->findOneById(Menu::class, $id);
-            $return = $this->mergeData($return, $menu);
+            if ($menu !== null) {
+                $return = $this->mergeData($return, $menu);
+            }
         } else {
             $return['menuElements'] = [];
         }
