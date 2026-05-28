@@ -10,6 +10,7 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
+use App\Enum\Admin\Content\Menu\MenuLinkTarget;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
@@ -203,6 +204,10 @@ class MenuController extends AppAdminController
             'datas' => [
                 'list_position' => $menuService->getListPosition(),
                 'list_type' => $menuService->getListType(),
+                'list_target_value' => [
+                    'blank' => MenuLinkTarget::LINK_TARGET_BLANK->value,
+                    'self' => MenuLinkTarget::LINK_TARGET_SELF->value,
+                ],
             ],
             'urls' => [
                 'load_menu' => $this->generateUrl('admin_menu_load_menu'),
