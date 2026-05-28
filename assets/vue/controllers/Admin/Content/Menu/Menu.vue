@@ -120,6 +120,7 @@ export default defineComponent({
           this.menu = response.data.menu;
           this.normalizeElements(this.menu.menuElements);
           this.dataMenu = response.data.data;
+          this.dataMenu.list_target_value = this.menu_datas.list_target_value;
           this.selectListTypeByPosition(this.menu.position);
         })
         .catch((error) => {

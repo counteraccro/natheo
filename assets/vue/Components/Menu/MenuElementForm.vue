@@ -319,8 +319,8 @@ export default defineComponent({
         v-model="menuElement.linkTarget"
         @change="$emit('on-change', menuElement.id)"
       >
-        <option value="_self">{{ translate.element_link_target_label_self }}</option>
-        <option value="_blank">{{ translate.element_link_target_label_blank }}</option>
+        <option :value="menuData.list_target_value.self">{{ translate.element_link_target_label_self }}</option>
+        <option :value="menuData.list_target_value.blank">{{ translate.element_link_target_label_blank }}</option>
       </select>
     </div>
 
