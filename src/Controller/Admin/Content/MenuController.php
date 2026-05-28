@@ -185,6 +185,11 @@ class MenuController extends AppAdminController
             $breadcrumbTitle = 'menu.add.menu_title_h1';
         }
 
+        $menu = $menuService->findOneById(Menu::class, $id);
+        if ($menu === null) {
+            return $this->redirectToRoute('admin_menu_index');
+        }
+
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'menu',
             Breadcrumb::BREADCRUMB->value => [
