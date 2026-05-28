@@ -8,12 +8,10 @@
 namespace App\Tests\Controller\Admin\Content;
 
 use App\Entity\Admin\Content\Menu\Menu;
-use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Enum\Admin\Content\Menu\MenuPosition;
-use App\Repository\Admin\Content\Menu\MenuElementRepository;
+use App\Enum\Admin\Content\Menu\MenuType;
 use App\Repository\Admin\Content\Menu\MenuRepository;
 use App\Tests\AppWebTestCase;
-use App\Utils\Content\Menu\MenuConst;
 
 class MenuControllerTest extends AppWebTestCase
 {
@@ -207,7 +205,7 @@ class MenuControllerTest extends AppWebTestCase
         $data['menu'] = [
             'id' => $menu->getId(),
             'name' => 'Unit-test',
-            'type' => MenuConst::TYPE_FOOTER_1_ROW_CENTER,
+            'type' => MenuType::FOOTER_1_ROW_CENTER->value,
             'position' => MenuPosition::POSITION_FOOTER->value,
             'renderOrder' => 1,
             'defaultMenu' => false,
@@ -277,7 +275,7 @@ class MenuControllerTest extends AppWebTestCase
         $data['menu'] = [
             'id' => 0,
             'name' => 'Unit-test',
-            'type' => MenuConst::TYPE_FOOTER_1_ROW_CENTER,
+            'type' => MenuType::FOOTER_1_ROW_CENTER->value,
             'position' => MenuPosition::POSITION_FOOTER->value,
             'renderOrder' => 1,
             'defaultMenu' => false,
