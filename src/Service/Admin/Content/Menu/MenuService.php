@@ -9,11 +9,12 @@ namespace App\Service\Admin\Content\Menu;
 
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
+use App\Enum\Admin\Content\Menu\MenuLinkTarget;
 use App\Enum\Admin\Content\Menu\MenuPosition;
+use App\Enum\Admin\Content\Menu\MenuType;
 use App\Repository\Admin\Content\Menu\MenuElementRepository;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
-use App\Utils\Content\Menu\MenuConst;
 use App\Utils\Content\Menu\MenuFactory;
 use App\Utils\Global\OrderEntity;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -247,55 +248,58 @@ class MenuService extends AppAdminService
         $translator = $this->getTranslator();
         return [
             MenuPosition::POSITION_HEADER->value => [
-                MenuConst::TYPE_HEADER_SIDE_BAR => $translator->trans('menu.header.type.side-bar', domain: 'menu'),
-                MenuConst::TYPE_HEADER_MENU_DEROULANT => $translator->trans(
+                MenuType::HEADER_SIDE_BAR->value => $translator->trans('menu.header.type.side-bar', domain: 'menu'),
+                MenuType::HEADER_MENU_DEROULANT->value => $translator->trans(
                     'menu.header.type.deroulant',
                     domain: 'menu',
                 ),
-                MenuConst::TYPE_HEADER_MENU_DEROULANT_BIG_MENU => $translator->trans(
+                MenuType::HEADER_MENU_DEROULANT_BIG_MENU->value => $translator->trans(
                     'menu.header.type.deroulant.big.menu',
                     domain: 'menu',
                 ),
-                MenuConst::TYPE_HEADER_MENU_DEROULANT_BIG_MENU_2_COLONNES => $translator->trans(
+                MenuType::HEADER_MENU_DEROULANT_BIG_MENU_2_COLONNES->value => $translator->trans(
                     'menu.header.type.deroulant.big.menu.2col',
                     domain: 'menu',
                 ),
-                MenuConst::TYPE_HEADER_MENU_DEROULANT_BIG_MENU_3_COLONNES => $translator->trans(
+                MenuType::HEADER_MENU_DEROULANT_BIG_MENU_3_COLONNES->value => $translator->trans(
                     'menu.header.type.deroulant.big.menu.3col',
                     domain: 'menu',
                 ),
-                MenuConst::TYPE_HEADER_MENU_DEROULANT_BIG_MENU_4_COLONNES => $translator->trans(
+                MenuType::HEADER_MENU_DEROULANT_BIG_MENU_4_COLONNES->value => $translator->trans(
                     'menu.header.type.deroulant.big.menu.4col',
                     domain: 'menu',
                 ),
             ],
             MenuPosition::POSITION_LEFT->value => [
-                MenuConst::TYPE_LEFT_RIGHT_SIDE_BAR => $translator->trans(
+                MenuType::LEFT_RIGHT_SIDE_BAR->value => $translator->trans(
                     'menu.left.right.type.side-bar',
                     domain: 'menu',
                 ),
-                MenuConst::TYPE_LEFT_RIGHT_SIDE_BAR_ACCORDEON => $translator->trans(
+                MenuType::LEFT_RIGHT_SIDE_BAR_ACCORDEON->value => $translator->trans(
                     'menu.left.right.type.side-bar.accordeon',
                     domain: 'menu',
                 ),
             ],
             MenuPosition::POSITION_RIGHT->value => [
-                MenuConst::TYPE_LEFT_RIGHT_SIDE_BAR => $translator->trans(
+                MenuType::LEFT_RIGHT_SIDE_BAR->value => $translator->trans(
                     'menu.left.right.type.side-bar',
                     domain: 'menu',
                 ),
-                MenuConst::TYPE_LEFT_RIGHT_SIDE_BAR_ACCORDEON => $translator->trans(
+                MenuType::LEFT_RIGHT_SIDE_BAR_ACCORDEON->value => $translator->trans(
                     'menu.left.right.type.side-bar.accordeon',
                     domain: 'menu',
                 ),
             ],
             MenuPosition::POSITION_FOOTER->value => [
-                MenuConst::TYPE_FOOTER_1_ROW_RIGHT => $translator->trans('menu.footer.type.row1.right', domain: 'menu'),
-                MenuConst::TYPE_FOOTER_1_ROW_CENTER => $translator->trans(
+                MenuType::FOOTER_1_ROW_RIGHT->value => $translator->trans(
+                    'menu.footer.type.row1.right',
+                    domain: 'menu',
+                ),
+                MenuType::FOOTER_1_ROW_CENTER->value => $translator->trans(
                     'menu.footer.type.row1.center',
                     domain: 'menu',
                 ),
-                MenuConst::TYPE_FOOTER_COLONNES => $translator->trans('menu.footer.type.col', domain: 'menu'),
+                MenuType::FOOTER_COLONNES->value => $translator->trans('menu.footer.type.col', domain: 'menu'),
             ],
         ];
     }
@@ -316,7 +320,7 @@ class MenuService extends AppAdminService
         $menuElement = $menuFactory->createMenuElement();
         $menuElement->setColumnPosition($columnP);
         $menuElement->setRowPosition($rowP);
-        $menuElement->setLinkTarget(MenuConst::LINK_TARGET_SELF);
+        $menuElement->setLinkTarget(MenuLinkTarget::LINK_TARGET_SELF->value);
 
         /** @var Menu $menu */
         $menu = $this->findOneById(Menu::class, $idMenu);

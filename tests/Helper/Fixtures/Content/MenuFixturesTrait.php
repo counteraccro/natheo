@@ -12,9 +12,10 @@ use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Menu\MenuElementTranslation;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Content\Menu\MenuLinkTarget;
 use App\Enum\Admin\Content\Menu\MenuPosition;
+use App\Enum\Admin\Content\Menu\MenuType;
 use App\Tests\Helper\FakerTrait;
-use App\Utils\Content\Menu\MenuConst;
 
 trait MenuFixturesTrait
 {
@@ -36,7 +37,7 @@ trait MenuFixturesTrait
         $data = [
             'user' => $user,
             'name' => self::getFaker()->text(),
-            'type' => MenuConst::TYPE_HEADER_SIDE_BAR,
+            'type' => MenuType::HEADER_SIDE_BAR->value,
             'position' => MenuPosition::POSITION_HEADER->value,
             'renderOrder' => 1,
             'defaultMenu' => false,
@@ -71,7 +72,7 @@ trait MenuFixturesTrait
             $menu = $this->createMenu();
         }
 
-        $linkTargetArray = [MenuConst::LINK_TARGET_SELF, MenuConst::LINK_TARGET_BLANK];
+        $linkTargetArray = [MenuLinkTarget::LINK_TARGET_SELF->value, MenuLinkTarget::LINK_TARGET_BLANK->value];
         $linkTarget = $linkTargetArray[array_rand($linkTargetArray)];
 
         $data = [

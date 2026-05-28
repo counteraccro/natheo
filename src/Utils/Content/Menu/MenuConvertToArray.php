@@ -12,13 +12,13 @@ use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Menu\MenuElementTranslation;
 use App\Entity\Admin\Content\Page\Page;
 use App\Enum\Admin\Content\Menu\MenuPosition;
+use App\Enum\Admin\Content\Menu\MenuType;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Utils\Global\Database\DataBase;
 use Doctrine\Common\Collections\Collection;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MenuConvertToArray
 {
@@ -26,13 +26,11 @@ class MenuConvertToArray
      * @param MenuService $menuService
      * @param DataBase $dataBase
      * @param PageService $pageService
-     * @param TranslatorInterface $translator
      */
     public function __construct(
         private readonly MenuService $menuService,
         private readonly DataBase $dataBase,
         private readonly PageService $pageService,
-        private readonly TranslatorInterface $translator,
     ) {}
 
     /**
@@ -46,7 +44,7 @@ class MenuConvertToArray
     {
         $return = $this->createStructure(Menu::class, ['createdAt', 'updateAt', 'userId']);
         $return['position'] = MenuPosition::POSITION_HEADER->value;
-        $return['type'] = MenuConst::TYPE_HEADER_SIDE_BAR;
+        $return['type'] = MenuType::HEADER_SIDE_BAR->value;
         $return['defaultMenu'] = false;
         $return['renderOrder'] = 1;
         $return['disabled'] = true;
