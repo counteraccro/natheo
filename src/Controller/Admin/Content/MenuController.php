@@ -183,11 +183,11 @@ class MenuController extends AppAdminController
         $breadcrumbTitle = 'menu.update.menu_title_h1';
         if ($id === null) {
             $breadcrumbTitle = 'menu.add.menu_title_h1';
-        }
-
-        $menu = $menuService->findOneById(Menu::class, $id);
-        if ($menu === null) {
-            return $this->redirectToRoute('admin_menu_index');
+        } else {
+            $menu = $menuService->findOneById(Menu::class, $id);
+            if ($menu === null) {
+                return $this->redirectToRoute('admin_menu_index');
+            }
         }
 
         $breadcrumb = [
