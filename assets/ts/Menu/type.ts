@@ -122,6 +122,7 @@ export interface Urls {
 export interface MenuDatas {
   list_position: Record<string, string>;
   list_type: Record<string, Record<string, string>>;
+  list_target_value: Record<string, string>;
 }
 
 export interface MenuElementTranslation {
@@ -169,6 +170,7 @@ export interface LoadMenuData {
   logo: string | null;
   url_site: string;
   pages: Record<string, PageLocales>;
+  list_target_value: Record<string, string>;
 }
 
 export interface LoadMenuResponse {
