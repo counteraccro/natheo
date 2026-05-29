@@ -122,6 +122,7 @@ export default {
   <div v-if="this.isLoad.optionsSystem && this.isLoad.page">
     <header>
       <Nav
+        v-if="this.page.menus?.HEADER"
         :options-system="this.optionsSystem"
         :utils-front="this.utilsFront"
         :data="this.page.menus.HEADER"
@@ -144,6 +145,7 @@ export default {
 
     <footer class="tracking-wide bg-white px-2 pt-6 pb-6 border-0 rounded-2xl mt-3">
       <Footer
+        v-if="this.page.menus?.FOOTER"
         :options-system="this.optionsSystem"
         :translate="this.translate.footer"
         :urls="this.urls"
