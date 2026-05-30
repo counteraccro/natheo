@@ -36,12 +36,13 @@ class MenuController extends AppAdminController
 {
     /**
      * Index listing des tags
+     * @param MenuService $menuService
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     #[Route('/', name: 'index')]
-    public function index(): Response
+    public function index(MenuService $menuService): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'menu',
@@ -50,10 +51,13 @@ class MenuController extends AppAdminController
             ],
         ];
 
+        $errorDefault = $menuService->getErrorDefaultTypeMenu();
+
         return $this->render('admin/content/menu/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
             'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
+            'errorDefault' => $errorDefault,
         ]);
     }
 
@@ -82,13 +86,6 @@ class MenuController extends AppAdminController
         ];
 
         $filter = $request->query->get('filter');
-        $userId = null;
-        if ($filter === self::FILTER_ME) {
-            $userId = $this->getUser()->getId();
-        }
-
-        $filter = $request->query->get('filter');
-
         $userId = null;
         if ($filter === self::FILTER_ME) {
             $userId = $this->getUser()->getId();

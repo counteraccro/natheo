@@ -661,4 +661,55 @@ class MenuService extends AppAdminService
             $this->save($menu, true);
         }
     }
+
+    /**
+     * Retourne les positions de menus qui n'ont pas de menu défini par défaut
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getErrorDefaultTypeMenu(): array
+    {
+        $positions = [
+            MenuPosition::POSITION_HEADER->value => [
+                'label' => MenuPosition::getStringByPosition(MenuPosition::POSITION_HEADER->value),
+                'nb' => 0,
+            ],
+            MenuPosition::POSITION_FOOTER->value => [
+                'label' => MenuPosition::getStringByPosition(MenuPosition::POSITION_FOOTER->value),
+                'nb' => 0,
+            ],
+            MenuPosition::POSITION_LEFT->value => [
+                'label' => MenuPosition::getStringByPosition(MenuPosition::POSITION_LEFT->value),
+                'nb' => 0,
+            ],
+        ];
+
+        $result = $this->findBy(Menu::class, ['defaultMenu' => true]);
+        foreach ($result as $menu) {
+            /** @var Menu $menu */
+            if (isset($positions[$menu->getPosition()])) {
+                $positions[$menu->getPosition()]['nb'] = $positions[$menu->getPosition()]['nb'] + 1;
+            }
+        }
+
+        $translator = $this->getTranslator();
+
+        $return = [];
+        foreach ($positions as $position) {
+            if ($position['nb'] === 0) {
+                $return[] = $translator->trans(
+                    'menu.error.no.default.' . strtolower($position['label']),
+                    domain: 'menu',
+                );
+            }
+            if ($position['nb'] > 1) {
+                $return[] = $translator->trans(
+                    'menu.error.more.one.default.' . strtolower($position['label']),
+                    domain: 'menu',
+                );
+            }
+        }
+        return $return;
+    }
 }
