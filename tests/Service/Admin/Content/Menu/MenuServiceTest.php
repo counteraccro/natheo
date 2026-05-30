@@ -459,4 +459,24 @@ class MenuServiceTest extends AppWebTestCase
             }
         }
     }
+
+    /**
+     * Test méthode getErrorDefaultTypeMenu())
+     * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    function testGetErrorDefaultTypeMenu(): void
+    {
+        $this->createMenu(customData: ['position' => MenuPosition::POSITION_HEADER->value, 'defaultMenu' => 0]);
+        $this->createMenu(customData: ['position' => MenuPosition::POSITION_LEFT->value, 'defaultMenu' => 1]);
+        $this->createMenu(customData: ['position' => MenuPosition::POSITION_FOOTER->value, 'defaultMenu' => 0]);
+
+        $result = $this->menuService->getErrorDefaultTypeMenu();
+        $this->assertCount(2, $result);
+
+        $this->createMenu(customData: ['position' => MenuPosition::POSITION_LEFT->value, 'defaultMenu' => 1]);
+        $result = $this->menuService->getErrorDefaultTypeMenu();
+        $this->assertCount(3, $result);
+    }
 }
