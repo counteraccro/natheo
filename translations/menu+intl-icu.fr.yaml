@@ -147,3 +147,11 @@ menu.label.error.no.menu.element.label: 'Aucun élément dans le menu'
 menu.label.error.no.menu.element.sub.label: 'Le menu doit comporter au moins 1 élément pour être valide'
 menu.new.error.no.name: 'Le menu doit avoir un nom'
 menu.new.error.no.menu.element: 'Le menu doit comporter au moins 1 élément pour être valide'
+menu.error.no.default.footer: "Aucun pied de page n'est défini par défaut"
+menu.error.no.default.header: "Aucun haut de page n'est défini par défaut"
+menu.error.no.default.left: "Aucun menu n'est défini par défaut"
+menu.error.more.one.default.footer: "Vous avez plus de 1 pied de page par défaut, cela n'est pas normal !"
+menu.error.more.one.default.header: "Vous avez plus de 1 haut de page par défaut, cela n'est pas normal !"
+menu.error.more.one.default.left: "Vous avez plus de 1 menu par défaut, cela n'est pas normal !"
+menu.index.page_title.error.default.title: "Une ou plusieurs alertes sont remontées"
+menu.index.page_title.error.default.info: "Cette alerte sera mise à jour au prochain rafraîchissement de cette page"

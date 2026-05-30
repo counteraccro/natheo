@@ -147,3 +147,11 @@ menu.label.error.no.menu.element.label: __menu.label.error.no.menu.element.label
 menu.label.error.no.menu.element.sub.label: __menu.label.error.no.menu.element.sub.label
 menu.new.error.no.name: __menu.new.error.no.name
 menu.new.error.no.menu.element: __menu.new.error.no.menu.element
+menu.error.no.default.footer: __menu.error.no.default.footer
+menu.error.no.default.header: __menu.error.no.default.header
+menu.error.no.default.left: __menu.error.no.default.left
+menu.error.more.one.default.footer: __menu.error.more.one.default.footer
+menu.error.more.one.default.header: __menu.error.more.one.default.header
+menu.error.more.one.default.left: __menu.error.more.one.default.left
+menu.index.page_title.error.default.title: __menu.index.page_title.error.default.title
+menu.index.page_title.error.default.info: __menu.index.page_title.error.default.info
