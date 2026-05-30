@@ -736,7 +736,10 @@ export default defineComponent({
                 id="menu-title"
                 v-model="menu.name"
                 :placeholder="translate.input_name_placeholder"
-                @input="errors.name = !menu.name.trim()"
+                @input="
+                  errors.name = !menu.name.trim();
+                  errors.name ? '' : (updateNoSave = true);
+                "
               />
               <span v-if="errors.name" class="form-text text-error">✗ {{ translate.input_name_error }}</span>
             </div>
@@ -749,6 +752,7 @@ export default defineComponent({
                   role="switch"
                   id="default_menu"
                   v-model="menu.defaultMenu"
+                  @input="updateNoSave = true"
                 />
                 <label class="switch-toggle" for="default_menu"></label>
                 <label class="swith-label" for="default_menu"
@@ -773,6 +777,7 @@ export default defineComponent({
                   role="switch"
                   id="disabled_menu"
                   v-model="menu.disabled"
+                  @input="updateNoSave = true"
                 />
                 <label class="switch-toggle" for="disabled_menu"></label>
                 <label class="swith-label" for="disabled_menu"
@@ -793,6 +798,7 @@ export default defineComponent({
                 class="form-input"
                 v-model="menu.position"
                 @change="selectListTypeByPosition(menu.position)"
+                @input="updateNoSave = true"
               >
                 <option v-for="(position, key) in menu_datas.list_position" :value="key">
                   {{ position }}
@@ -802,7 +808,7 @@ export default defineComponent({
 
             <div class="form-group">
               <label class="form-label" for="menu-title">{{ translate.select_type_label }}</label>
-              <select id="menu-type" class="form-input" v-model="menu.type">
+              <select id="menu-type" class="form-input" v-model="menu.type" @input="updateNoSave = true">
                 <option v-for="(position, key) in listTypeByPosition" :value="key">{{ position }}</option>
               </select>
             </div>
