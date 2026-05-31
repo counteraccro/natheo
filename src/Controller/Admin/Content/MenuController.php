@@ -297,7 +297,10 @@ class MenuController extends AppAdminController
         $menuPopulate = new MenuPopulate($menu, $data['menu'], $menuService);
         $menu = $menuPopulate->populate()->getMenu();
         $menuService->save($menu);
-        $menuService->switchDefaultMenuToFalse($menu->getId(), $menu->getPosition());
+
+        if ($menu->isDefaultMenu()) {
+            $menuService->switchDefaultMenuToFalse($menu->getId(), $menu->getPosition());
+        }
 
         $response = $menuService->getResponseAjax($msgSuccess);
         $response['redirect'] = $redirect;
