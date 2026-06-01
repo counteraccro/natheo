@@ -314,8 +314,14 @@ La documentation complète est disponible en ligne :
 
 ---
 
-## :end: Divers
-* Au ***06 avril 2026*** le projet comporte **162250 lignes** de code
+## :end: Statistiques diverses
+
+Évolution du nombre de lignes de code du projet, valeur prise à des dates aléatoires en fonction de l'avancement du projet
+
+| Date | Lignes de code | Diff | Évolution |
+|---|---|---|---|
+| 06 avril 2026 | 162 250 | — | — |
+| 31 mai 2026 | 164 965 | +2 715 | +1,67 % |
 
 ---
 
