@@ -54,6 +54,8 @@ class MenuConvertToArray
             $menu = $this->menuService->findOneById(Menu::class, $id);
             if ($menu !== null) {
                 $return = $this->mergeData($return, $menu);
+            } else {
+                return [];
             }
         } else {
             $return['menuElements'] = [];

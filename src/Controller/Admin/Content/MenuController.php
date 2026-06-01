@@ -180,11 +180,6 @@ class MenuController extends AppAdminController
         $breadcrumbTitle = 'menu.update.menu_title_h1';
         if ($id === null) {
             $breadcrumbTitle = 'menu.add.menu_title_h1';
-        } else {
-            $menu = $menuService->findOneById(Menu::class, $id);
-            if ($menu === null) {
-                return $this->redirectToRoute('admin_menu_index');
-            }
         }
 
         $breadcrumb = [
@@ -215,6 +210,8 @@ class MenuController extends AppAdminController
                 'load_menu' => $this->generateUrl('admin_menu_load_menu'),
                 'save_menu' => $this->generateUrl('admin_menu_save_menu'),
                 'list_parent_menu_element' => $this->generateUrl('admin_menu_list_parent_menu_element'),
+                'new_menu' => $this->generateUrl('admin_menu_add'),
+                'listing' => $this->generateUrl('admin_menu_index'),
             ],
         ]);
     }
@@ -237,6 +234,11 @@ class MenuController extends AppAdminController
         ?int $id = null,
     ): JsonResponse {
         $menu = $menuJson->convertToArray($id);
+
+        if (empty($menu)) {
+            return $this->json(['menu' => []]);
+        }
+
         $name = $optionSystemService->getValueByKey(OptionSystemKey::OS_SITE_NAME);
         $logo = $optionSystemService->getValueByKey(OptionSystemKey::OS_LOGO_SITE);
         $urlSite = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
