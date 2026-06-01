@@ -118,10 +118,12 @@ export default defineComponent({
         .get(url, {})
         .then((response) => {
           this.menu = response.data.menu;
-          this.normalizeElements(this.menu.menuElements);
-          this.dataMenu = response.data.data;
-          this.dataMenu.list_target_value = this.menu_datas.list_target_value;
-          this.selectListTypeByPosition(this.menu.position);
+          if (Object.keys(this.menu).length !== 0) {
+            this.normalizeElements(this.menu.menuElements);
+            this.dataMenu = response.data.data;
+            this.dataMenu.list_target_value = this.menu_datas.list_target_value;
+            this.selectListTypeByPosition(this.menu.position);
+          }
         })
         .catch((error) => {
           console.error(error);
@@ -549,6 +551,46 @@ export default defineComponent({
     <skeleton-render-menu />
     <skeleton-form-menu />
     <skeleton-architecture-menu />
+  </div>
+
+  <div v-else-if="Object.keys(menu).length === 0">
+    <div class="flex flex-col items-center justify-center py-16 px-6 text-center">
+      <!-- Icône -->
+      <div
+        class="w-16 h-16 rounded-2xl flex items-center justify-center mb-5"
+        style="background-color: var(--primary-lighter)"
+      >
+        <svg class="w-8 h-8" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 7h14M5 12h14M5 17h14" />
+        </svg>
+      </div>
+
+      <!-- Titre -->
+      <p class="text-lg font-bold mb-2" style="color: var(--text-primary)">
+        {{ translate.menu_no_exist_title }}
+      </p>
+
+      <!-- Description -->
+      <p class="text-sm max-w-xs mb-6" style="color: var(--text-secondary)">
+        {{ translate.menu_no_exist_text }}
+      </p>
+
+      <!-- Boutons -->
+      <div class="flex items-center gap-3">
+        <a :href="urls.listing" class="btn btn-sm btn-outline-dark flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          {{ translate.btn_back }}
+        </a>
+        <a :href="urls.new_menu" class="btn btn-sm btn-primary flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          {{ translate.btn_new }}
+        </a>
+      </div>
+    </div>
   </div>
 
   <div v-else>
