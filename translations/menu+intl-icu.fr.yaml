@@ -153,5 +153,8 @@ menu.error.no.default.left: "Aucun menu n'est défini par défaut"
 menu.error.more.one.default.footer: "Vous avez plus de 1 pied de page par défaut, cela n'est pas normal !"
 menu.error.more.one.default.header: "Vous avez plus de 1 haut de page par défaut, cela n'est pas normal !"
 menu.error.more.one.default.left: "Vous avez plus de 1 menu par défaut, cela n'est pas normal !"
-menu.index.page_title.error.default.title: "Une ou plusieurs alertes sont remontées"
-menu.index.page_title.error.default.info: "Cette alerte sera mise à jour au prochain rafraîchissement de cette page"
+menu.index.page_title.error.default.title: 'Une ou plusieurs alertes sont remontées'
+menu.index.page_title.error.default.info: 'Cette alerte sera mise à jour au prochain rafraîchissement de cette page'
+menu.no.exist.title: 'Aucun menu trouvé'
+menu.no.exist.text: "Ce menu n'existe pas ou à été supprimé. Vous pouvez retourner à la liste ou en créer un nouveau"
+menu.btn.back: "Retour"

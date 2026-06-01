@@ -30,6 +30,7 @@ class MenuTranslate extends AppTranslate
             'msg_wait_loading' => $this->translator->trans('menu.msg.wait.loading', domain: 'menu'),
             'btn_save' => $this->translator->trans('menu.btn.save', domain: 'menu'),
             'btn_new' => $this->translator->trans('menu.btn.new', domain: 'menu'),
+            'btn_back' => $this->translator->trans('menu.btn.back', domain: 'menu'),
             'no_select_menu_form' => $this->translator->trans('menu.no_select.menu.form', domain: 'menu'),
             'no_select_menu_form_msg' => $this->translator->trans('menu.no_select.menu.form.msg', domain: 'menu'),
             'no_select_menu_form_msg_2' => $this->translator->trans('menu.no_select.menu.form.msg.2', domain: 'menu'),
@@ -110,6 +111,8 @@ class MenuTranslate extends AppTranslate
             ),
             'no_save_label' => $this->translator->trans('menu.no.save.label', domain: 'menu'),
             'no_save_sub_label' => $this->translator->trans('menu.no.save.sub.label', domain: 'menu'),
+            'menu_no_exist_title' => $this->translator->trans('menu.no.exist.title', domain: 'menu'),
+            'menu_no_exist_text' => $this->translator->trans('menu.no.exist.text', domain: 'menu'),
             'menu_form' => $this->getMenuFormTranslate(),
             'menu_tree' => $this->getMenuTreeTranslate(),
         ];

@@ -155,3 +155,6 @@ menu.error.more.one.default.header: __menu.error.more.one.default.header
 menu.error.more.one.default.left: __menu.error.more.one.default.left
 menu.index.page_title.error.default.title: __menu.index.page_title.error.default.title
 menu.index.page_title.error.default.info: __menu.index.page_title.error.default.info
+menu.btn.back: __menu.btn.back
+menu.no.exist.title: __menu.no.exist.title
+menu.no.exist.text: __menu.no.exist.text
