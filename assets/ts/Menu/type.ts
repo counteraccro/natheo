@@ -60,6 +60,7 @@ export interface Translate {
   msg_wait_loading: string;
   btn_save: string;
   btn_new: string;
+  btn_back: string;
   no_select_menu_form: string;
   no_select_menu_form_msg: string;
   no_select_menu_form_msg_2: string;
@@ -104,6 +105,8 @@ export interface Translate {
   no_save_sub_label: string;
   error_no_menu_element_label: string;
   error_no_menu_element_sub_label: string;
+  menu_no_exist_title: string;
+  menu_no_exist_text: string;
   menu_form: MenuFormTranslate;
   menu_tree: MenuTreeTranslate;
 }
@@ -111,6 +114,8 @@ export interface Translate {
 export interface Urls {
   load_menu: string;
   save_menu: string;
+  new_menu: string;
+  listing: string;
   delete_menu_element: string;
   new_menu_element: string;
   update_parent_menu_element: string;
