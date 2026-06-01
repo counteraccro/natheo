@@ -10,7 +10,6 @@ import SkeletonFaq from '@/vue/Components/Skeleton/Faq.vue';
 import axios from 'axios';
 import { emitter } from '@/utils/useEvent';
 import Toast from '@/vue/Components/Global/Toast.vue';
-import success from '@/vue/Components/Alert/Success.vue';
 
 type TranslateRecord = { [key: string]: string | TranslateRecord };
 

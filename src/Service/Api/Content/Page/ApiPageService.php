@@ -14,17 +14,16 @@ use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Content\Menu\MenuPosition;
 use App\Repository\Admin\Content\Menu\MenuRepository;
 use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
 use App\Service\Api\Content\ApiMenuService;
 use App\Utils\Api\Content\ApiPageFormater;
-use App\Utils\Content\Menu\MenuConst;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageStatistiqueKey;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\PersonalData;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
@@ -71,11 +70,11 @@ class ApiPageService extends AppApiService
         $isRightMenu = $isLeftMenu = false;
         foreach ($page->getMenus() as $menu) {
             unset($tabDefault[$menu->getPosition()]);
-            if ($menu->getPosition() === MenuConst::POSITION_RIGHT) {
+            if ($menu->getPosition() === MenuPosition::POSITION_RIGHT->value) {
                 $isRightMenu = true;
             }
 
-            if ($menu->getPosition() === MenuConst::POSITION_LEFT) {
+            if ($menu->getPosition() === MenuPosition::POSITION_LEFT->value) {
                 $isLeftMenu = true;
             }
 
@@ -84,11 +83,11 @@ class ApiPageService extends AppApiService
 
         if (!empty($tabDefault)) {
             foreach ($tabDefault as $position => $id) {
-                if ($position === MenuConst::POSITION_LEFT && $isRightMenu) {
+                if ($position === MenuPosition::POSITION_LEFT->value && $isRightMenu) {
                     continue;
                 }
 
-                if ($position === MenuConst::POSITION_RIGHT && $isLeftMenu) {
+                if ($position === MenuPosition::POSITION_RIGHT->value && $isLeftMenu) {
                     continue;
                 }
                 $pageApi = $this->getFormatedMenu($id, $dto->getLocale(), $pageApi, $apiMenuService, $menuRepo);

@@ -9,10 +9,12 @@ namespace App\Service\Admin\Content\Menu;
 
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
+use App\Enum\Admin\Content\Menu\MenuLinkTarget;
+use App\Enum\Admin\Content\Menu\MenuPosition;
+use App\Enum\Admin\Content\Menu\MenuType;
 use App\Repository\Admin\Content\Menu\MenuElementRepository;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
-use App\Utils\Content\Menu\MenuConst;
 use App\Utils\Content\Menu\MenuFactory;
 use App\Utils\Global\OrderEntity;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -27,29 +29,29 @@ class MenuService extends AppAdminService
      * Retourne une liste de menu paginé
      * @param int $page
      * @param int $limit
-     * @param string|null $search
+     * @param array $queryParams
      * @param int|null $userId
      * @return Paginator
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllPaginate(int $page, int $limit, ?string $search = null, ?int $userId = null): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams, ?int $userId = null): Paginator
     {
         $repo = $this->getRepository(Menu::class);
-        return $repo->getAllPaginate($page, $limit, $search, $userId);
+        return $repo->getAllPaginate($page, $limit, $queryParams, $userId);
     }
 
     /**
      * Construit le tableau de donnée à envoyé au tableau GRID
      * @param int $page
      * @param int $limit
-     * @param string|null $search
+     * @param array $queryParams
      * @param int|null $userId
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAllFormatToGrid(int $page, int $limit, ?string $search = null, ?int $userId = null): array
+    public function getAllFormatToGrid(int $page, int $limit, array $queryParams, ?int $userId = null): array
     {
         $translator = $this->getTranslator();
         $gridService = $this->getGridService();
@@ -65,7 +67,7 @@ class MenuService extends AppAdminService
             GridService::KEY_ACTION,
         ];
 
-        $dataPaginate = $this->getAllPaginate($page, $limit, $search, $userId);
+        $dataPaginate = $this->getAllPaginate($page, $limit, $queryParams, $userId);
 
         $nb = $dataPaginate->count();
         $data = [];
@@ -74,11 +76,7 @@ class MenuService extends AppAdminService
 
             $action = $this->generateTabAction($element);
 
-            $isDisabled = '';
             $isDefault = '';
-            if ($element->isDisabled()) {
-                $isDisabled = '<i class="bi bi-eye-slash"></i>';
-            }
             if ($element->isDefaultMenu()) {
                 $isDefault = '<i class="bi bi-menu-button-fill"></i>';
             }
@@ -97,8 +95,7 @@ class MenuService extends AppAdminService
             }
 
             $data[] = [
-                $translator->trans('menu.grid.id', domain: 'menu') =>
-                    $element->getId() . ' ' . $isDisabled . ' ' . $isDefault,
+                $translator->trans('menu.grid.id', domain: 'menu') => $element->getId() . ' ' . $isDefault,
                 $translator->trans('menu.grid.name', domain: 'menu') => $name,
                 $translator->trans('menu.grid.type', domain: 'menu') => $strType,
                 $translator->trans('menu.grid.default', domain: 'menu') => $strDefault,
@@ -110,6 +107,7 @@ class MenuService extends AppAdminService
                     ->format('d/m/y H:i'),
                 $translator->trans('menu.grid.author', domain: 'menu') => $element->getUser()->getLogin(),
                 GridService::KEY_ACTION => $action,
+                'isDisabled' => $element->isDisabled(),
             ];
         }
         $tabReturn = [
@@ -117,6 +115,14 @@ class MenuService extends AppAdminService
             GridService::KEY_DATA => $data,
             GridService::KEY_COLUMN => $column,
             GridService::KEY_RAW_SQL => $gridService->getFormatedSQLQuery($dataPaginate),
+            GridService::KEY_LIST_ORDER_FIELD => [
+                'id' => $translator->trans('menu.grid.id', domain: 'menu'),
+                'name' => $translator->trans('menu.grid.name', domain: 'menu'),
+                'type' => $translator->trans('menu.grid.type', domain: 'menu'),
+                'defaultMenu' => $translator->trans('menu.grid.default', domain: 'menu'),
+                'createdAt' => $translator->trans('menu.grid.create_at', domain: 'menu'),
+                'updateAt' => $translator->trans('menu.grid.update_at', domain: 'menu'),
+            ],
         ];
         return $gridService->addAllDataRequiredGrid($tabReturn);
     }
@@ -137,7 +143,10 @@ class MenuService extends AppAdminService
         $label = $menu->getName();
 
         $actionDisabled = [
-            'label' => '<i class="bi bi-eye-slash-fill"></i>',
+            'label' => [
+                'M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
+            ],
+            'color' => 'primary',
             'url' => $router->generate('admin_menu_update_disabled', ['id' => $menu->getId()]),
             'type' => 'put',
             'ajax' => true,
@@ -146,7 +155,11 @@ class MenuService extends AppAdminService
         ];
         if ($menu->isDisabled()) {
             $actionDisabled = [
-                'label' => '<i class="bi bi-eye-fill"></i>',
+                'label' => [
+                    'M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z',
+                    'M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z',
+                ],
+                'color' => 'primary',
                 'type' => 'put',
                 'url' => $router->generate('admin_menu_update_disabled', ['id' => $menu->getId()]),
                 'ajax' => true,
@@ -156,7 +169,10 @@ class MenuService extends AppAdminService
         $actionDelete = '';
         if ($optionSystemService->canDelete()) {
             $actionDelete = [
-                'label' => '<i class="bi bi-trash"></i>',
+                'label' => [
+                    'M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z',
+                ],
+                'color' => 'danger',
                 'type' => 'delete',
                 'url' => $router->generate('admin_menu_delete', ['id' => $menu->getId()]),
                 'ajax' => true,
@@ -173,7 +189,10 @@ class MenuService extends AppAdminService
 
         // Bouton edit
         $actions[] = [
-            'label' => '<i class="bi bi-pencil-fill"></i>',
+            'label' => [
+                'M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28',
+            ],
+            'color' => 'primary',
             'id' => $menu->getId(),
             'url' => $router->generate('admin_menu_update', ['id' => $menu->getId()]),
             'ajax' => false,
@@ -181,7 +200,10 @@ class MenuService extends AppAdminService
 
         if (!$menu->isDefaultMenu()) {
             $actions[] = [
-                'label' => '<i class="bi bi-menu-button-fill"></i>',
+                'label' => [
+                    'M3 10h18M6 14h2m3 0h5M3 7v10a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1Z',
+                ],
+                'color' => 'success',
                 'url' => $router->generate('admin_menu_switch_default', ['id' => $menu->getId()]),
                 'type' => 'put',
                 'ajax' => true,
@@ -208,10 +230,10 @@ class MenuService extends AppAdminService
         $translator = $this->getTranslator();
 
         return [
-            MenuConst::POSITION_HEADER => $translator->trans('menu.position.header', domain: 'menu'),
-            MenuConst::POSITION_RIGHT => $translator->trans('menu.position.right', domain: 'menu'),
-            MenuConst::POSITION_FOOTER => $translator->trans('menu.position.footer', domain: 'menu'),
-            MenuConst::POSITION_LEFT => $translator->trans('menu.position.left', domain: 'menu'),
+            MenuPosition::POSITION_HEADER->value => $translator->trans('menu.position.header', domain: 'menu'),
+            MenuPosition::POSITION_RIGHT->value => $translator->trans('menu.position.right', domain: 'menu'),
+            MenuPosition::POSITION_FOOTER->value => $translator->trans('menu.position.footer', domain: 'menu'),
+            MenuPosition::POSITION_LEFT->value => $translator->trans('menu.position.left', domain: 'menu'),
         ];
     }
 
@@ -225,157 +247,61 @@ class MenuService extends AppAdminService
     {
         $translator = $this->getTranslator();
         return [
-            MenuConst::POSITION_HEADER => [
-                MenuConst::TYPE_HEADER_SIDE_BAR => $translator->trans('menu.header.type.side-bar', domain: 'menu'),
-                MenuConst::TYPE_HEADER_MENU_DEROULANT => $translator->trans(
+            MenuPosition::POSITION_HEADER->value => [
+                MenuType::HEADER_SIDE_BAR->value => $translator->trans('menu.header.type.side-bar', domain: 'menu'),
+                MenuType::HEADER_MENU_DEROULANT->value => $translator->trans(
                     'menu.header.type.deroulant',
                     domain: 'menu',
                 ),
-                MenuConst::TYPE_HEADER_MENU_DEROULANT_BIG_MENU => $translator->trans(
+                MenuType::HEADER_MENU_DEROULANT_BIG_MENU->value => $translator->trans(
                     'menu.header.type.deroulant.big.menu',
                     domain: 'menu',
                 ),
-                MenuConst::TYPE_HEADER_MENU_DEROULANT_BIG_MENU_2_COLONNES => $translator->trans(
+                MenuType::HEADER_MENU_DEROULANT_BIG_MENU_2_COLONNES->value => $translator->trans(
                     'menu.header.type.deroulant.big.menu.2col',
                     domain: 'menu',
                 ),
-                MenuConst::TYPE_HEADER_MENU_DEROULANT_BIG_MENU_3_COLONNES => $translator->trans(
+                MenuType::HEADER_MENU_DEROULANT_BIG_MENU_3_COLONNES->value => $translator->trans(
                     'menu.header.type.deroulant.big.menu.3col',
                     domain: 'menu',
                 ),
-                MenuConst::TYPE_HEADER_MENU_DEROULANT_BIG_MENU_4_COLONNES => $translator->trans(
+                MenuType::HEADER_MENU_DEROULANT_BIG_MENU_4_COLONNES->value => $translator->trans(
                     'menu.header.type.deroulant.big.menu.4col',
                     domain: 'menu',
                 ),
             ],
-            MenuConst::POSITION_LEFT => [
-                MenuConst::TYPE_LEFT_RIGHT_SIDE_BAR => $translator->trans(
+            MenuPosition::POSITION_LEFT->value => [
+                MenuType::LEFT_RIGHT_SIDE_BAR->value => $translator->trans(
                     'menu.left.right.type.side-bar',
                     domain: 'menu',
                 ),
-                MenuConst::TYPE_LEFT_RIGHT_SIDE_BAR_ACCORDEON => $translator->trans(
+                MenuType::LEFT_RIGHT_SIDE_BAR_ACCORDEON->value => $translator->trans(
                     'menu.left.right.type.side-bar.accordeon',
                     domain: 'menu',
                 ),
             ],
-            MenuConst::POSITION_RIGHT => [
-                MenuConst::TYPE_LEFT_RIGHT_SIDE_BAR => $translator->trans(
+            MenuPosition::POSITION_RIGHT->value => [
+                MenuType::LEFT_RIGHT_SIDE_BAR->value => $translator->trans(
                     'menu.left.right.type.side-bar',
                     domain: 'menu',
                 ),
-                MenuConst::TYPE_LEFT_RIGHT_SIDE_BAR_ACCORDEON => $translator->trans(
+                MenuType::LEFT_RIGHT_SIDE_BAR_ACCORDEON->value => $translator->trans(
                     'menu.left.right.type.side-bar.accordeon',
                     domain: 'menu',
                 ),
             ],
-            MenuConst::POSITION_FOOTER => [
-                MenuConst::TYPE_FOOTER_1_ROW_RIGHT => $translator->trans('menu.footer.type.row1.right', domain: 'menu'),
-                MenuConst::TYPE_FOOTER_1_ROW_CENTER => $translator->trans(
+            MenuPosition::POSITION_FOOTER->value => [
+                MenuType::FOOTER_1_ROW_RIGHT->value => $translator->trans(
+                    'menu.footer.type.row1.right',
+                    domain: 'menu',
+                ),
+                MenuType::FOOTER_1_ROW_CENTER->value => $translator->trans(
                     'menu.footer.type.row1.center',
                     domain: 'menu',
                 ),
-                MenuConst::TYPE_FOOTER_COLONNES => $translator->trans('menu.footer.type.col', domain: 'menu'),
+                MenuType::FOOTER_COLONNES->value => $translator->trans('menu.footer.type.col', domain: 'menu'),
             ],
         ];
-    }
-
-    /**
-     * Ajoute un menuElement au menu et le sauvegarde, retourne son id
-     * @param int $idMenu
-     * @param int $columnP
-     * @param int $rowP
-     * @param int|null $idParent
-     * @return int
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function addMenuElement(int $idMenu, int $columnP, int $rowP, ?int $idParent = null): int
-    {
-        $menuFactory = new MenuFactory($this->getLocales()['locales']);
-        $menuElement = $menuFactory->createMenuElement();
-        $menuElement->setColumnPosition($columnP);
-        $menuElement->setRowPosition($rowP);
-        $menuElement->setLinkTarget(MenuConst::LINK_TARGET_SELF);
-
-        /** @var Menu $menu */
-        $menu = $this->findOneById(Menu::class, $idMenu);
-        $menuElement->setMenu($menu);
-
-        if ($idParent === null || $idParent === 0) {
-            $menu->addMenuElement($menuElement);
-            $this->save($menu);
-        } else {
-            /** @var MenuElement $parent */
-            $parent = $this->findOneById(MenuElement::class, $idParent);
-            $parent->addChild($menuElement);
-            $this->save($menuElement);
-        }
-
-        return $menuElement->getId();
-    }
-
-    /**
-     * Met à jour le parent d'un menuElement
-     * @param int $idElement
-     * @param int $columnP
-     * @param int $rowP
-     * @param int $newIdParent
-     * @return void
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function updateParent(int $idElement, int $columnP, int $rowP, int $newIdParent = 0): void
-    {
-        $menuElement = $this->findOneById(MenuElement::class, $idElement);
-        if ($newIdParent === 0) {
-            $menuElement->setParent(null);
-        } else {
-            $parent = $this->findOneById(MenuElement::class, $newIdParent);
-            $menuElement->setParent($parent);
-        }
-        $menuElement->setColumnPosition($columnP);
-        $menuElement->setRowPosition($rowP);
-
-        $this->save($menuElement);
-        $elements = $this->getMenuElementByMenuAndParent($menuElement->getMenu()->getId());
-        $this->regenerateColumnAndRowPosition($elements);
-    }
-
-    /**
-     * Reconstruit les positions de column et row en fonction du menu
-     * @param array $menuElements
-     * @param bool $isSub true si 2ème appel
-     * @return void
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function regenerateColumnAndRowPosition(array $menuElements, $isSub = false): void
-    {
-        $columnRef = null;
-        $beforeColumnRef = null;
-        $rowRef = 0;
-        foreach ($menuElements as $menuElement) {
-            /** @var MenuElement $menuElement */
-            if ($menuElement->getParent() !== null && !$isSub) {
-                continue;
-            }
-
-            if (
-                ($columnRef === null || $columnRef != $menuElement->getColumnPosition()) &&
-                ($beforeColumnRef === null || $beforeColumnRef != $menuElement->getColumnPosition())
-            ) {
-                $beforeColumnRef = $menuElement->getColumnPosition();
-                $columnRef++;
-                $rowRef = 1;
-            }
-
-            $menuElement->setColumnPosition($columnRef);
-            $menuElement->setRowPosition($rowRef++);
-            if (!$menuElement->getChildren()->isEmpty()) {
-                $this->regenerateColumnAndRowPosition($menuElement->getChildren()->toArray(), true);
-            }
-            $this->save($menuElement);
-        }
     }
 
     /**
@@ -443,95 +369,6 @@ class MenuService extends AppAdminService
     }
 
     /**
-     * Met à jour l'ordre de la colum ou row d'une liste de menuElement en fonction de parent
-     * @param array $data
-     * @return void
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws Exception
-     */
-    public function reorderMenuElement(array $data): void
-    {
-        $parent = $data['parent'];
-        if ($parent === '') {
-            $parent = null;
-        }
-        $listeMenuElements = $this->getMenuElementByMenuAndParent($data['menu'], $parent);
-
-        // trie de la ligne
-        if ($data['reorderType'] === 'row') {
-            $this->reorderMenuElementRow($listeMenuElements, $data);
-        }
-        // trie par la colonne
-        else {
-            $this->reorderMenuElementColumn($listeMenuElements, $data);
-        }
-    }
-
-    /**
-     * Réordonne la propriété columnPosition de la liste de menuElement passé en paramètre en fonction de $data
-     * @param array $listeMenuElements
-     * @param array $data
-     * @return void
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws Exception
-     */
-    private function reorderMenuElementColumn(array $listeMenuElements, array $data): void
-    {
-        $nbMax = count($listeMenuElements);
-        if ($data['newColumn'] > $nbMax) {
-            $data['newColumn'] = $nbMax;
-        }
-        $tabColumnRowMax = $this->getTabColumnAndRowMax($listeMenuElements, [$data['id']]);
-
-        // Etape 1 on met à jour newColumn et rowPosition
-        foreach ($listeMenuElements as $menuElement) {
-            /** @var MenuElement $menuElement */
-            if ($menuElement->getId() === $data['id']) {
-                $menuElement->setColumnPosition($data['newColumn']);
-                if (isset($tabColumnRowMax[$data['newColumn']])) {
-                    $menuElement->setRowPosition($tabColumnRowMax[$data['newColumn']]['row'] + 1);
-                } else {
-                    $menuElement->setRowPosition(1);
-                }
-            }
-        }
-
-        // On re-tri le tableau
-        $orderEntity = new OrderEntity(new ArrayCollection($listeMenuElements), 'columnPosition');
-        $listeMenuElements = $orderEntity->sortByProperty()->getCollection();
-
-        // Etape 2, on ré-ordonne correctement columnPosition (supression ecart etc...) + rassemblement par columnPosition
-        $columnRef = '';
-        $newColumn = 1;
-        $tabTmp = [];
-        foreach ($listeMenuElements as $menuElement) {
-            if ($columnRef === '') {
-                $columnRef = $menuElement->getColumnPosition();
-                $menuElement->setColumnPosition($newColumn);
-            } elseif ($columnRef === $menuElement->getColumnPosition()) {
-                $menuElement->setColumnPosition($newColumn);
-            } else {
-                $columnRef = $menuElement->getColumnPosition();
-                $newColumn++;
-                $menuElement->setColumnPosition($newColumn);
-            }
-
-            $tabTmp[$columnRef][] = $menuElement;
-        }
-
-        // Etape 3 on re-tri les rowPosition + sauvegarde globale des élements
-        foreach ($tabTmp as $columnRef => $menuElements) {
-            $orderEntity = new OrderEntity(new ArrayCollection($menuElements), 'rowPosition');
-            $tab = $orderEntity->sortByProperty()->reOrderList()->getCollection();
-            foreach ($tab as $menuElement) {
-                $this->save($menuElement);
-            }
-        }
-    }
-
-    /**
      * Retourne le nombre de column et rowMax par column pour la liste en paramètre
      * @param array $menuElements
      * @param array $exclude
@@ -559,42 +396,6 @@ class MenuService extends AppAdminService
             }
         }
         return $return;
-    }
-
-    /**
-     * Réordonne la propriété rowPosition de la liste de menuElement passé en paramètre en fonction de $data
-     * @param array $listeMenuElements
-     * @param array $data
-     * @return void
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws Exception
-     */
-    private function reorderMenuElementRow(array $listeMenuElements, array $data): void
-    {
-        $tabElement = [];
-        foreach ($listeMenuElements as $menuElement) {
-            if ($data['oldColumn'] === $menuElement->getColumnPosition()) {
-                $tabElement[] = $menuElement;
-            }
-        }
-
-        $action = OrderEntity::ACTION_AFTER;
-        if ($data['oldRow'] > $data['newRow']) {
-            $action = OrderEntity::ACTION_BEFORE;
-        }
-
-        $orderEntity = new OrderEntity(new ArrayCollection($tabElement), 'rowPosition');
-        $idRowReplace = $orderEntity->getIdByOrder($data['newRow']);
-        $listeMenuElements = $orderEntity
-            ->orderByIdByAction($idRowReplace, $data['id'], $action)
-            ->sortByProperty()
-            ->reOrderList()
-            ->getCollection();
-
-        foreach ($listeMenuElements as $menuElement) {
-            $this->save($menuElement);
-        }
     }
 
     /**
@@ -635,5 +436,56 @@ class MenuService extends AppAdminService
             $menu->setDefaultMenu(false);
             $this->save($menu, true);
         }
+    }
+
+    /**
+     * Retourne les positions de menus qui n'ont pas de menu défini par défaut
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getErrorDefaultTypeMenu(): array
+    {
+        $positions = [
+            MenuPosition::POSITION_HEADER->value => [
+                'label' => MenuPosition::getStringByPosition(MenuPosition::POSITION_HEADER->value),
+                'nb' => 0,
+            ],
+            MenuPosition::POSITION_FOOTER->value => [
+                'label' => MenuPosition::getStringByPosition(MenuPosition::POSITION_FOOTER->value),
+                'nb' => 0,
+            ],
+            MenuPosition::POSITION_LEFT->value => [
+                'label' => MenuPosition::getStringByPosition(MenuPosition::POSITION_LEFT->value),
+                'nb' => 0,
+            ],
+        ];
+
+        $result = $this->findBy(Menu::class, ['defaultMenu' => true]);
+        foreach ($result as $menu) {
+            /** @var Menu $menu */
+            if (isset($positions[$menu->getPosition()])) {
+                $positions[$menu->getPosition()]['nb'] = $positions[$menu->getPosition()]['nb'] + 1;
+            }
+        }
+
+        $translator = $this->getTranslator();
+
+        $return = [];
+        foreach ($positions as $position) {
+            if ($position['nb'] === 0) {
+                $return[] = $translator->trans(
+                    'menu.error.no.default.' . strtolower($position['label']),
+                    domain: 'menu',
+                );
+            }
+            if ($position['nb'] > 1) {
+                $return[] = $translator->trans(
+                    'menu.error.more.one.default.' . strtolower($position['label']),
+                    domain: 'menu',
+                );
+            }
+        }
+        return $return;
     }
 }

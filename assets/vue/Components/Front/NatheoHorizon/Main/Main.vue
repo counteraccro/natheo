@@ -41,9 +41,10 @@ export default {
 </script>
 
 <template>
-  <div v-if="this.page.menus.LEFT && this.page.menus.RIGHT" class="grid grid-cols-12 gap-2 mt-2">
+  <div v-if="this.page.menus?.LEFT && this.page.menus?.RIGHT" class="grid grid-cols-12 gap-2 mt-2">
     <div class="col-span-12 lg:col-span-2 lg:order-1 rounded-2xl mr-1">
       <VerticalMenu
+        v-if="this.page.menu?.LEFT"
         :utils-front="this.utilsFront"
         :type="this.page.menus.LEFT.type"
         :slug="this.page.slug"
@@ -62,6 +63,7 @@ export default {
     </div>
     <div class="col-span-12 lg:col-span-2 lg:order-3 order-2 rounded-2xl ml-1">
       <VerticalMenu
+        v-if="this.page.menu?.RIGHT"
         :utils-front="this.utilsFront"
         :type="this.page.menus.RIGHT.type"
         :slug="this.page.slug"
@@ -70,9 +72,10 @@ export default {
     </div>
   </div>
 
-  <div v-else-if="this.page.menus.LEFT" class="grid grid-cols-12 gap-2 mt-2">
+  <div v-else-if="this.page.menus?.LEFT" class="grid grid-cols-12 gap-2 mt-2">
     <div class="col-span-12 lg:col-span-2 rounded-2xl mr-1">
       <VerticalMenu
+        v-if="this.page.menus?.LEFT"
         :utils-front="this.utilsFront"
         :type="this.page.menus.LEFT.type"
         :slug="this.page.slug"
@@ -104,6 +107,7 @@ export default {
     </div>
     <div class="col-span-12 lg:col-span-2 lg:order-2 order-1 rounded-2xl ml-1">
       <VerticalMenu
+        v-if="this.page.menu?.RIGHT"
         :utils-front="this.utilsFront"
         :type="this.page.menus.RIGHT.type"
         :slug="this.page.slug"

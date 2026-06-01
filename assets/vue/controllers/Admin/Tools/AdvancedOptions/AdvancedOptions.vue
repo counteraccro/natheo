@@ -142,7 +142,7 @@ export default {
           {},
           {
             headers: {
-              'X-CSRF-TOKEN': this.csrfToken, // à injecter depuis Twig
+              'X-CSRF-TOKEN': this.csrfToken,
             },
           }
         )
@@ -187,7 +187,7 @@ export default {
           {},
           {
             headers: {
-              'X-CSRF-TOKEN': this.csrfToken, // à injecter depuis Twig
+              'X-CSRF-TOKEN': this.csrfToken,
             },
           }
         )

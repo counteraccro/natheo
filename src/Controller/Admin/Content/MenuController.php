@@ -10,6 +10,7 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
+use App\Enum\Admin\Content\Menu\MenuLinkTarget;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
@@ -35,12 +36,13 @@ class MenuController extends AppAdminController
 {
     /**
      * Index listing des tags
+     * @param MenuService $menuService
      * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     #[Route('/', name: 'index')]
-    public function index(): Response
+    public function index(MenuService $menuService): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'menu',
@@ -49,10 +51,13 @@ class MenuController extends AppAdminController
             ],
         ];
 
+        $errorDefault = $menuService->getErrorDefaultTypeMenu();
+
         return $this->render('admin/content/menu/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'page' => 1,
             'limit' => $this->optionUserService->getValueByKey(OptionUserKey::OU_NB_ELEMENT),
+            'errorDefault' => $errorDefault,
         ]);
     }
 
@@ -73,15 +78,20 @@ class MenuController extends AppAdminController
         int $page = 1,
         int $limit = 20,
     ): JsonResponse {
-        $search = $request->query->get('search');
-        $filter = $request->query->get('filter');
+        $queryParams = [
+            'search' => $request->query->get('search'),
+            'orderField' => $request->query->get('orderField'),
+            'order' => $request->query->get('order'),
+            'locale' => $request->getLocale(),
+        ];
 
+        $filter = $request->query->get('filter');
         $userId = null;
         if ($filter === self::FILTER_ME) {
             $userId = $this->getUser()->getId();
         }
 
-        $grid = $menuService->getAllFormatToGrid($page, $limit, $search, $userId);
+        $grid = $menuService->getAllFormatToGrid($page, $limit, $queryParams, $userId);
         return $this->json($grid);
     }
 
@@ -191,15 +201,17 @@ class MenuController extends AppAdminController
             'datas' => [
                 'list_position' => $menuService->getListPosition(),
                 'list_type' => $menuService->getListType(),
+                'list_target_value' => [
+                    'blank' => MenuLinkTarget::LINK_TARGET_BLANK->value,
+                    'self' => MenuLinkTarget::LINK_TARGET_SELF->value,
+                ],
             ],
             'urls' => [
                 'load_menu' => $this->generateUrl('admin_menu_load_menu'),
                 'save_menu' => $this->generateUrl('admin_menu_save_menu'),
-                'delete_menu_element' => $this->generateUrl('admin_menu_delete_menu_element'),
-                'new_menu_element' => $this->generateUrl('admin_menu_new_menu_element'),
-                'update_parent_menu_element' => $this->generateUrl('admin_menu_update_parent_menu_element'),
                 'list_parent_menu_element' => $this->generateUrl('admin_menu_list_parent_menu_element'),
-                'reorder_menu_element' => $this->generateUrl('admin_menu_reorder_menu_element'),
+                'new_menu' => $this->generateUrl('admin_menu_add'),
+                'listing' => $this->generateUrl('admin_menu_index'),
             ],
         ]);
     }
@@ -222,6 +234,11 @@ class MenuController extends AppAdminController
         ?int $id = null,
     ): JsonResponse {
         $menu = $menuJson->convertToArray($id);
+
+        if (empty($menu)) {
+            return $this->json(['menu' => []]);
+        }
+
         $name = $optionSystemService->getValueByKey(OptionSystemKey::OS_SITE_NAME);
         $logo = $optionSystemService->getValueByKey(OptionSystemKey::OS_LOGO_SITE);
         $urlSite = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
@@ -255,6 +272,21 @@ class MenuController extends AppAdminController
     public function save(Request $request, MenuService $menuService, TranslatorInterface $translator): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+
+        if (empty($data['menu']['name'])) {
+            return $this->json([
+                'success' => false,
+                'msg' => $translator->trans('menu.new.error.no.name', domain: 'menu'),
+            ]);
+        }
+
+        if (empty($data['menu']['menuElements'])) {
+            return $this->json([
+                'success' => false,
+                'msg' => $translator->trans('menu.new.error.no.menu.element', domain: 'menu'),
+            ]);
+        }
+
         $menu = new Menu();
         $menu->setUser($this->getUser());
         $redirect = true;
@@ -267,84 +299,14 @@ class MenuController extends AppAdminController
         $menuPopulate = new MenuPopulate($menu, $data['menu'], $menuService);
         $menu = $menuPopulate->populate()->getMenu();
         $menuService->save($menu);
-        $menuService->switchDefaultMenuToFalse($menu->getId(), $menu->getPosition());
+
+        if ($menu->isDefaultMenu()) {
+            $menuService->switchDefaultMenuToFalse($menu->getId(), $menu->getPosition());
+        }
 
         $response = $menuService->getResponseAjax($msgSuccess);
         $response['redirect'] = $redirect;
         $response['url'] = $this->generateUrl('admin_menu_update', ['id' => $menu->getId()]);
-        return $this->json($response);
-    }
-
-    /**
-     * Supprime un menuElement
-     * @param MenuService $menuService
-     * @param TranslatorInterface $translator
-     * @param int|null $id
-     * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    #[Route('/ajax/delete-menu-element/{id}', name: 'delete_menu_element', methods: ['DELETE'])]
-    public function deleteMenuElement(
-        MenuService $menuService,
-        TranslatorInterface $translator,
-        ?int $id = null,
-    ): JsonResponse {
-        if ($id === null) {
-            return $this->json($menuService->getResponseAjax());
-        }
-
-        $menuElement = $menuService->findOneById(MenuElement::class, $id);
-        $menuService->remove($menuElement);
-        return $this->json(
-            $menuService->getResponseAjax($translator->trans('menu.element.remove.success', [], 'menu')),
-        );
-    }
-
-    /**
-     * Créer un nouveau menuElement
-     * @param MenuService $menuService
-     * @param TranslatorInterface $translator
-     * @param Request $request
-     * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    #[Route('/ajax/new-menu-element', name: 'new_menu_element', methods: ['POST'])]
-    public function newMenuElement(
-        MenuService $menuService,
-        TranslatorInterface $translator,
-        Request $request,
-    ): JsonResponse {
-        $data = json_decode($request->getContent(), true);
-        $id = $menuService->addMenuElement($data['idMenu'], $data['columP'], $data['rowP'], $data['idParent']);
-        $response = $menuService->getResponseAjax($translator->trans('menu.element.new.success', domain: 'menu'));
-        $response['id'] = $id;
-        return $this->json($response);
-    }
-
-    /**
-     * Change le parent d'un menuElement
-     * @param MenuService $menuService
-     * @param TranslatorInterface $translator
-     * @param Request $request
-     * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    #[Route('/ajax/update-parent', name: 'update_parent_menu_element', methods: ['PATCH'])]
-    public function changeParent(
-        MenuService $menuService,
-        TranslatorInterface $translator,
-        Request $request,
-    ): JsonResponse {
-        $data = json_decode($request->getContent(), true);
-        $menuService->updateParent($data['id'], $data['columP'], $data['rowP'], $data['idParent']);
-
-        $response = $menuService->getResponseAjax(
-            $translator->trans('menu.element.change.parent.success', domain: 'menu'),
-        );
-        $response['id'] = $data['id'];
         return $this->json($response);
     }
 
@@ -363,27 +325,5 @@ class MenuController extends AppAdminController
         $listeParent = $menuService->getListeParentByMenuElement($menuId, $elementId);
 
         return $this->json(['listParent' => $listeParent]);
-    }
-
-    /**
-     * Réordonne les colonnes ou row des menus elements
-     * @param Request $request
-     * @param MenuService $menuService
-     * @param TranslatorInterface $translator
-     * @return JsonResponse
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    #[Route('/ajax/reorder-menu-element', name: 'reorder_menu_element', methods: ['PATCH'])]
-    public function reorderMenuElement(
-        Request $request,
-        MenuService $menuService,
-        TranslatorInterface $translator,
-    ): JsonResponse {
-        $data = json_decode($request->getContent(), true);
-        $menuService->reorderMenuElement($data['data']);
-        $return = $menuService->getResponseAjax($translator->trans('menu.element.reorder.success', domain: 'menu'));
-        $return['id'] = $data['data']['id'];
-        return $this->json($return);
     }
 }

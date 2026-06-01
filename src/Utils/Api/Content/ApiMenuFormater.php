@@ -8,8 +8,7 @@
 namespace App\Utils\Api\Content;
 
 use App\Entity\Admin\Content\Menu\MenuElement;
-use App\Utils\Content\Menu\MenuConst;
-use App\Utils\System\Options\OptionSystemKey;
+use App\Enum\Admin\Content\Menu\MenuPosition;
 
 class ApiMenuFormater
 {
@@ -31,7 +30,7 @@ class ApiMenuFormater
     public function convertMenu(): static
     {
         $this->return['id'] = $this->menu['id'];
-        $this->return['position'] = $this->getStringPosition($this->menu['position']);
+        $this->return['position'] = MenuPosition::getStringByPosition($this->menu['position']);
         $this->return['type'] = $this->menu['type'];
         $this->return['elements'] = $this->getElements($this->menu['menuElements']);
         return $this;
@@ -83,22 +82,6 @@ class ApiMenuFormater
         }
 
         return $return;
-    }
-
-    /**
-     * Converti une position en string
-     * @param int $position
-     * @return string
-     */
-    private function getStringPosition(int $position): string
-    {
-        return match ($position) {
-            MenuConst::POSITION_HEADER => 'HEADER',
-            MenuConst::POSITION_RIGHT => 'RIGHT',
-            MenuConst::POSITION_FOOTER => 'FOOTER',
-            MenuConst::POSITION_LEFT => 'LEFT',
-            default => 'NONE',
-        };
     }
 
     /**

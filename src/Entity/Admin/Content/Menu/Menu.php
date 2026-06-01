@@ -16,6 +16,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 class Menu
 {
+    public const string DEFAULT_ALIAS = 'menu';
+
+    public const array ALLOWED_ORDER_FIELDS = ['id', 'name', 'type', 'defaultMenu', 'createdAt', 'updateAt'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: InstallationConst::STRATEGY)]
     #[ORM\Column]

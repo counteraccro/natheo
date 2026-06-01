@@ -1,178 +1,299 @@
-<script>
-/**
- * @author Gourdon Aymeric
- * @version 1.0
- * Composant pour gérer l'arbre du menu
- */
-import { emitter } from '../../../utils/useEvent';
+<script lang="ts">
+import { defineComponent, PropType } from 'vue';
+import { MenuElement, MenuElementTranslation, MenuTreeTranslate } from '@/ts/Menu/type';
+import Sortable from 'sortablejs';
 
-export default {
+export default defineComponent({
   name: 'MenuTree',
-  components: {},
-  emit: [],
-  props: {
-    translate: Object,
-    menuElement: Object,
-    locale: String,
-    idSelect: Number,
-    deep: Number,
+
+  // Composant récursif — il s'appelle lui-même
+  components: {
+    MenuTree: () => import('./MenuTree.vue') as any,
   },
+
+  props: {
+    translate: {
+      type: Object as PropType<MenuTreeTranslate>,
+      required: true,
+    },
+    menuElement: {
+      type: Object as PropType<MenuElement>,
+      required: true,
+    },
+    locale: {
+      type: String,
+      required: true,
+    },
+    deep: {
+      type: Number,
+      required: true,
+    },
+    idSelected: {
+      type: Number,
+    },
+    forceOpen: {
+      type: Number,
+      default: 0,
+    },
+    invalidIds: {
+      type: Array as PropType<number[]>,
+      default: () => [],
+    },
+    noSaveIds: {
+      type: Array as PropType<number[]>,
+      default: () => [],
+    },
+  },
+
+  emits: ['reorder', 'select', 'add-child', 'delete', 'toggle-visibility'],
+
   data() {
     return {
-      isOpen: false,
+      isOpen: false as boolean,
+      sortableInstance: null as Sortable | null,
     };
   },
-  mounted() {},
-  updated() {
-    this.forceOpen();
+
+  mounted() {
+    this.initSortable();
   },
 
-  computed: {
-    /**
-     * Test si des enfants existent
-     * @returns {boolean}
-     */
-    haveChildren() {
-      return this.menuElement.hasOwnProperty('children') && this.menuElement.children.length;
-    },
-
-    /**
-     * Test si l'élément possède un parent
-     * @returns {boolean}
-     */
-    haveParent() {
-      return this.menuElement.hasOwnProperty('parent') && this.menuElement.parent !== '';
-    },
-
-    /**
-     * Test si le menuElement est désactivé ou non
-     * @returns {boolean}
-     */
-    isDisabled() {
-      return this.menuElement.disabled;
-    },
-
-    /**
-     * Si l'élément est sélectionné
-     * @returns {string}
-     */
-    isSelected() {
-      if (this.menuElement.id === this.idSelect) {
-        return 'selected';
-      } else {
-        return '';
+  watch: {
+    forceOpen(id: number) {
+      if (id === this.menuElement.id) {
+        this.isOpen = true;
       }
     },
   },
 
   methods: {
     /**
-     * Force l'ouverture d'un noeud dans le cas d'une création
+     * Initialise SortableJS sur la liste des enfants directs
      */
-    forceOpen() {
-      if (this.menuElement.hasOwnProperty('children')) {
-        Object.entries(this.menuElement.children).forEach((value) => {
-          let obj = value[1];
-          if (obj.id === this.idSelect) {
-            this.isOpen = true;
-          }
+    initSortable(): void {
+      if (!this.menuElement.children || this.menuElement.children.length === 0) return;
+
+      this.$nextTick(() => {
+        const container = this.$refs.childrenListRef as HTMLElement;
+        if (!container) return;
+
+        if (this.sortableInstance) {
+          this.sortableInstance.destroy();
+          this.sortableInstance = null;
+        }
+
+        Sortable.create(container, {
+          handle: '.drag-handle',
+          animation: 200,
+          ghostClass: 'opacity-40',
+          chosenClass: 'ring-2',
+          onEnd: ({ oldIndex, newIndex, item, from }) => {
+            if (oldIndex === undefined || newIndex === undefined) return;
+            if (oldIndex === newIndex) return;
+
+            // Annule le déplacement DOM — Vue re-rend depuis les données
+            from.insertBefore(item, from.children[oldIndex] ?? null);
+
+            // Émet vers le parent pour mettre à jour les données
+            this.$emit('reorder', {
+              parentId: this.menuElement.id,
+              oldIndex,
+              newIndex,
+            });
+          },
         });
-      }
+      });
     },
 
     /**
-     * Edit un élément au menu
-     */
-    updateElement() {
-      console.log(this.deep);
-      emitter.emit('update-menu-element', { id: this.menuElement.id, deep: this.deep });
-    },
-
-    /**
-     * Créer un nouvel élément au menu
-     */
-    newElement() {
-      emitter.emit('new-menu-element', { id: this.menuElement.id, deep: this.deep + 1 });
-    },
-
-    /**
-     * CRéer un nouvel élément enfant autre que celui par défaut
-     * @param id
-     */
-    newChildren(id) {
-      emitter.emit('new-menu-element', { id: this.menuElement.id, deep: this.deep + 1 });
-    },
-
-    /**
-     * supprime un nouvel élément
-     */
-    deleteElement() {
-      emitter.emit('delete-menu-element', this.menuElement.id);
-    },
-
-    /**
-     * Ouvre ou ferme un nœud
-     */
-    toggle() {
-      if (this.haveChildren) {
-        this.isOpen = !this.isOpen;
-      }
-    },
-
-    /**
-     * Retourne le lien avec la traduction en fonction de la locale
+     * Retourne la valeur d'une traduction en fonction de la locale et d'une clé
      * @param tabMenuElementTranslation
      * @param key
      */
-    getTranslationValueByKeyAndByLocale(tabMenuElementTranslation, key) {
-      let str = '';
-      tabMenuElementTranslation.forEach((menuElementTranslation) => {
-        if (menuElementTranslation.locale === this.locale) {
-          str = menuElementTranslation[key];
-        }
-      });
-      return str;
+    getTranslationValueByKeyAndByLocale(
+      tabMenuElementTranslation: MenuElementTranslation[],
+      key: keyof MenuElementTranslation
+    ): string {
+      const translation = tabMenuElementTranslation.find(({ locale }) => locale === this.locale);
+      return String(translation?.[key] ?? '');
+    },
+
+    /**
+     * Ouvre / ferme le nœud
+     */
+    toggleOpen(): void {
+      this.isOpen = !this.isOpen;
+    },
+
+    /**
+     * Propage les événements remontés par les enfants
+     */
+    onChildReorder(payload: { parentId: number | null; oldIndex: number; newIndex: number }): void {
+      this.$emit('reorder', payload);
     },
   },
-};
+});
 </script>
 
 <template>
-  <li>
-    <div class="li-hover" :class="this.isSelected">
-      <span class="no-control" @click="this.toggle">
-        <i v-if="this.haveParent" class="bi bi-arrow-return-right"></i>
-        <i v-else class="bi bi-arrow-right-square"></i>
-        &nbsp;<i v-if="this.isDisabled" class="bi bi-eye-slash-fill"></i>
-        {{ this.getTranslationValueByKeyAndByLocale(this.menuElement.menuElementTranslations, 'textLink') }}
-        <span v-if="this.haveChildren">
-          <i class="bi" :class="this.isOpen ? 'bi-chevron-down' : 'bi-chevron-right'"></i>
-        </span>
+  <div class="tree-node">
+    <div
+      class="tree-node-row"
+      :class="{
+        selected: idSelected === menuElement.id,
+        'hidden-node': menuElement.disabled,
+      }"
+      :style="
+        invalidIds.includes(menuElement.id)
+          ? 'border-color: var(--alert-danger-border); background-color: var(--alert-danger-bg);'
+          : ''
+      "
+    >
+      <!-- Drag handle -->
+      <span class="drag-handle">
+        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+          <path
+            d="M8 6a2 2 0 100-4 2 2 0 000 4zM16 6a2 2 0 100-4 2 2 0 000 4zM8 14a2 2 0 100-4 2 2 0 000 4zM16 14a2 2 0 100-4 2 2 0 000 4zM8 22a2 2 0 100-4 2 2 0 000 4zM16 22a2 2 0 100-4 2 2 0 000 4z"
+          />
+        </svg>
       </span>
-      <span class="float-end">
-        <i v-if="!this.haveChildren" class="bi bi-plus-square" @click="this.newElement"></i>&nbsp;
-        <i class="bi bi-pencil-fill" @click="this.updateElement"></i>&nbsp;
-        <i class="bi bi-x-lg" @click="this.deleteElement"></i>
-      </span>
-    </div>
-    <ul class="tree-menu" v-show="this.isOpen" v-if="this.haveChildren">
-      <menu-tree
-        v-for="menuElement in this.menuElement.children"
-        :menu-element="menuElement"
-        :translate="this.translate"
-        :locale="this.locale"
-        :id-select="this.idSelect"
-        :deep="this.deep + 1"
+
+      <!-- Toggle expand/collapse -->
+      <button
+        class="tree-toggle"
+        :class="{
+          open: isOpen,
+          leaf: !menuElement.children || menuElement.children.length === 0,
+        }"
+        @click.stop="toggleOpen"
       >
-      </menu-tree>
-      <li>
-        <div>
-          <span class="btn btn-outline-secondary btn-sm" @click="this.newElement"
-            ><i class="bi bi-plus-square"></i>
-            {{ this.translate.btn_new_menu_element }}
-          </span>
-        </div>
-      </li>
-    </ul>
-  </li>
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+
+      <span
+        v-if="menuElement.disabled"
+        class="inline-flex items-center gap-1 text-[0.5rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full flex-shrink-0"
+        style="background-color: var(--btn-warning); color: white"
+        ><svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
+          ></path>
+        </svg>
+        {{ translate.menu_element_disabled }}</span
+      >
+
+      <span
+        v-if="noSaveIds.includes(menuElement.id)"
+        class="inline-flex items-center gap-1 text-[0.5rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full flex-shrink-0"
+        style="background-color: var(--alert-warning); color: white"
+      >
+        <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        {{ translate.menu_element_no_save }}
+      </span>
+
+      <!-- Label -->
+      <span class="tree-node-label">
+        {{ getTranslationValueByKeyAndByLocale(menuElement.menuElementTranslations, 'textLink') }}
+      </span>
+
+      <!-- Badge type -->
+      <span v-if="Number(menuElement.page) >= 0" class="node-type-badge badge-page">{{ translate.tag_page }}</span>
+      <span v-if="Number(menuElement.page) < -1" class="node-type-badge badge-url">{{ translate.tag_link }}</span>
+
+      <!-- Actions -->
+      <div class="tree-node-actions">
+        <button
+          class="tree-action-btn add"
+          data-tooltip="Ajouter un enfant"
+          @click.stop="$emit('add-child', menuElement.id)"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+        </button>
+        <button class="tree-action-btn edit" data-tooltip="Éditer" @click.stop="$emit('select', menuElement.id)">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+            />
+          </svg>
+        </button>
+        <button
+          class="tree-action-btn hide"
+          :class="{ 'hidden-active': menuElement.disabled }"
+          data-tooltip="Masquer"
+          @click.stop="$emit('toggle-visibility', menuElement.id)"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              v-if="!menuElement.disabled"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+            ></path>
+            <path
+              v-if="menuElement.disabled"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+            <path
+              v-if="menuElement.disabled"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+            />
+          </svg>
+        </button>
+        <button class="tree-action-btn delete" data-tooltip="Supprimer" @click.stop="$emit('delete', menuElement.id)">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Enfants (récursif) -->
+    <div
+      v-if="menuElement.children && menuElement.children.length > 0"
+      v-show="isOpen"
+      ref="childrenListRef"
+      class="tree-node-children"
+    >
+      <MenuTree
+        v-for="child in menuElement.children"
+        :key="child.id"
+        :menu-element="child"
+        :translate="translate"
+        :locale="locale"
+        :deep="deep + 1"
+        :id-selected="idSelected"
+        :force-open="forceOpen"
+        :invalid-ids="invalidIds"
+        :no-save-ids="noSaveIds"
+        @reorder="onChildReorder"
+        @select="$emit('select', $event)"
+        @add-child="$emit('add-child', $event)"
+        @delete="$emit('delete', $event)"
+        @toggle-visibility="$emit('toggle-visibility', $event)"
+      />
+    </div>
+  </div>
 </template>

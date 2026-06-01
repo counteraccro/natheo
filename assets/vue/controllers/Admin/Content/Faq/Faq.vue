@@ -1,4 +1,10 @@
 <script lang="ts">
+/**
+ * @author Gourdon Aymeric
+ * @version 2.0
+ * Gestion FAQ
+ */
+
 import { defineComponent, type PropType } from 'vue';
 import NewFaq from '@/vue/Components/Faq/NewFaq.vue';
 import EditFaq from '@/vue/Components/Faq/EditFaq.vue';
