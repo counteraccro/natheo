@@ -349,6 +349,15 @@ Les contributions sont les bienvenues ! N'hésitez pas à :
       <sub>Fondateur & Lead Developer</sub>
     </td>
   </tr>
+ <tr>
+    <td align="center">
+      <a href="https://github.com/BroGuillaume">
+        <img src="https://avatars.githubusercontent.com/u/72014851?v=4" width="100px;" alt="BroGuillaume"/><br />
+        <sub><b>BroGuillaume</b></sub>
+      </a><br />
+      <sub>Développeur</sub>
+    </td>
+  </tr>
 </table>
 
 ---
