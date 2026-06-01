@@ -273,7 +273,7 @@ vite build
 
 Créez une copie du fichier `.env.test` en `.env.test.local` :
 ```bash
-cp .env.test .env.local.local
+cp .env.test .env.test.local
 ```
 
 Modifiez les variables suivantes dans `.env.test.local` :
