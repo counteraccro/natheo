@@ -213,7 +213,7 @@ Pour accéder au CMS en développement :
 3. Ajoutez l'entrée dans votre fichier `hosts` :
 ```
 127.0.0.1    natheo.local
-```
+``````
 
 ---
 
@@ -225,8 +225,8 @@ Une fois l'installation terminée :
 
 1. Accédez à : `http://natheo.local/admin/fr/dashboard/index`
 2. Connectez-vous avec les identifiants par défaut :
-  - **Email** : `user.demo@mail.fr`
-  - **Mot de passe** : `user.demo@mail.fr`
+- **Email** : `user.demo@mail.fr`
+- **Mot de passe** : `user.demo@mail.fr`
 
 > **🔐 Important** : Changez immédiatement ces identifiants en production !
 
@@ -270,35 +270,53 @@ vite build
 ---
 
 ## 🧪 Tests
-
+#### 1. Création de l'environnement de test
 Créez une copie du fichier `.env.test` en `.env.test.local` :
 ```bash
-cp .env.test .env.local.local
+cp .env.test .env.test.local
 ```
 
+#### 2. Setup l'environnement de test
 Modifiez les variables suivantes dans `.env.test.local` :
 ```env
-APP_ENV=prod
+APP_ENV=test
 APP_DEBUG=1
-NATHEO_SCHEMA=natheo
+NATHEO_SCHEMA=natheo_test
 DATABASE_URL="mysql://user:password@127.0.0.1:3306/natheo?serverVersion=8.2"
 ```
 
-Installation de la base de données de test
+#### 3. Installation / Réinitialisation automatique de la DB de test
+Cette commande exécute automatiquement les étapes 4, 5 et 6 :
 ```bash
-
-# Création de la base de données
-php bin/console --env=test doctrine:database:create
-
-# Création des tables/colonnes
-php bin/console --env=test doctrine:schema:create
-
+php bin/console --env=test natheo:install-bdd-test
 ```
 
+<details>
+<summary><strong>Installation manuelle (optionnel)</strong></summary>
+Installation de la base de données de test
 
-Lancer la suite de tests unitaires :
+#### 4. Réinitialiser de la base de données de test
 ```bash
-bin/phpunit
+# Création de la base de données
+php bin/console --env=test doctrine:database:drop --force
+```
+
+#### 5. Créer la base de données de test
+```bash
+# Création de la base de données
+php bin/console --env=test doctrine:database:create
+```
+
+#### 6. Créer le schéma de base de données de test
+```bash
+# Création des tables/colonnes
+php bin/console --env=test doctrine:schema:create
+```
+</details>
+
+#### 7. Lancement des tests unitaires
+```bash
+php bin/phpunit
 ```
 
 ---
@@ -314,8 +332,14 @@ La documentation complète est disponible en ligne :
 
 ---
 
-## :end: Divers
-* Au ***06 avril 2026*** le projet comporte **162250 lignes** de code
+## :end: Statistiques diverses
+
+Évolution du nombre de lignes de code du projet, valeur prise à des dates aléatoires en fonction de l'avancement du projet
+
+| Date | Lignes de code | Diff | Évolution |
+|---|---|---|---|
+| 06 avril 2026 | 162 250 | — | — |
+| 31 mai 2026 | 164 965 | +2 715 | +1,67 % |
 
 ---
 
