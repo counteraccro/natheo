@@ -213,7 +213,7 @@ Pour accéder au CMS en développement :
 3. Ajoutez l'entrée dans votre fichier `hosts` :
 ```
 127.0.0.1    natheo.local
-``````
+```
 
 ---
 
