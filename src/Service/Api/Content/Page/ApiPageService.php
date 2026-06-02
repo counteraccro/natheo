@@ -69,6 +69,9 @@ class ApiPageService extends AppApiService
 
         $isRightMenu = $isLeftMenu = false;
         foreach ($page->getMenus() as $menu) {
+            if ($menu->isDisabled()) {
+                continue;
+            }
             unset($tabDefault[$menu->getPosition()]);
             if ($menu->getPosition() === MenuPosition::POSITION_RIGHT->value) {
                 $isRightMenu = true;
