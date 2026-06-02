@@ -69,3 +69,7 @@ sql_manager.bloc.query.sub.title: __sql_manager.bloc.query.sub.title
 sql_manager.bloc.result.sub.title: __sql_manager.bloc.result.sub.title
 sql_manager.no_result.query: __sql_manager.no_result.query
 sql_manager.no_result.help: __sql_manager.no_result.help
+sql_manager.no.query.manager.title: __sql_manager.no.query.manager.title
+sql_manager.no.query.manager.text: __sql_manager.no.query.manager.text
+sql_manager.btn.back: __sql_manager.btn.back
+sql_manager.btn.new: __sql_manager.btn.new

@@ -77,6 +77,16 @@ class SqlManagerTranslate extends AppTranslate
             'error_name_empty' => $this->translator->trans('sql_manager.error.name.empty', domain: 'sql_manager'),
             'no_result_query' => $this->translator->trans('sql_manager.no_result.query', domain: 'sql_manager'),
             'no_result_query_help' => $this->translator->trans('sql_manager.no_result.help', domain: 'sql_manager'),
+            'no_query_manager_title' => $this->translator->trans(
+                'sql_manager.no.query.manager.title',
+                domain: 'sql_manager',
+            ),
+            'no_query_manager_text' => $this->translator->trans(
+                'sql_manager.no.query.manager.text',
+                domain: 'sql_manager',
+            ),
+            'btn_back' => $this->translator->trans('sql_manager.btn.back', domain: 'sql_manager'),
+            'btn_new' => $this->translator->trans('sql_manager.btn.new', domain: 'sql_manager'),
         ];
     }
 }
