@@ -1,7 +1,10 @@
 {% extends 'admin/admin_base.html.twig' %}
 
-
-{% if apiToken.id is same as null %}
+{%  if not apiToken %}
+    {% set title = 'api_token.update.page_title' | trans({'id' : '-'}, 'api_token') %}
+    {% set titleH1 = 'api_token.update.page_title_h1' | trans({}, 'api_token') %}
+    {% set description = 'api_token.update.description' | trans({}, 'api_token') %}
+{% elseif apiToken.id is same as null %}
     {% set title = 'api_token.add.page_title' | trans({}, 'api_token') %}
     {% set titleH1 = 'api_token.add.page_title_h1' | trans({}, 'api_token') %}
     {% set description = 'api_token.add.description' | trans({}, 'api_token') %}
@@ -20,16 +23,17 @@
     {{ breadcrumb(breadcrumb) }}
 
     <h1 class="head-title">
-        <svg class="w-7 h-7 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-7 h-7 text-(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
         </svg>
         {{ titleH1 }}
     </h1>
 
-    <p class="text-sm text-[var(--text-secondary)] mb-3">
+    <p class="text-sm text-(--text-secondary) mb-3">
         {{ description }}
     </p>
 
+    {%  if apiToken %}
     <div  {{ vue_component('Admin/System/ApiToken', {
         'pApiToken' : apiToken,
         'translate' : translate,
@@ -37,4 +41,43 @@
         'datas' : datas
     }) }}>
     </div >
+    {% else  %}
+        <div class="flex flex-col items-center justify-center py-16 px-6 text-center">
+            <!-- Icône -->
+            <div
+                class="w-16 h-16 rounded-2xl flex items-center justify-center mb-5"
+                style="background-color: var(--primary-lighter);"
+            >
+                <svg class="w-8 h-8" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+                </svg>
+            </div>
+
+            <!-- Titre -->
+            <p class="text-lg font-bold mb-2" style="color: var(--text-primary);">
+                {{ 'api_token.update.no.mail.title' | trans({}, 'api_token') }}</h1>
+            </p>
+
+            <!-- Description -->
+            <p class="text-sm max-w-xs mb-6" style="color: var(--text-secondary);">
+                {{ 'api_token.update.no.mail.text' | trans({}, 'api_token') }}</h1>
+            </p>
+
+            <!-- Boutons -->
+            <div class="flex items-center gap-3">
+                <a href="{{ path('admin_api_token_index') }}" class="btn btn-sm btn-outline-dark flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    {{ 'api_token.update.no.mail.back' | trans({}, 'api_token') }}</h1>
+                </a>
+                <a href="{{ path('admin_api_token_add') }}" class="btn btn-sm btn-primary flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    {{ 'api_token.update.no.mail.new' | trans({}, 'api_token') }}</h1>
+                </a>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
