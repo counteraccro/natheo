@@ -26,3 +26,6 @@ mail.link.send: __mail.link.send
 mail.link.cant.save: __mail.link.cant.save
 mail.content.title: __mail.content.title
 mail.content.subtitle: __mail.content.subtitle
+mail.edit_page.no.mail.title: __mail.edit_page.no.mail.title
+mail.edit_page.no.mail.text: __mail.edit_page.no.mail.text
+mail.edit_page.no.mail.back: __mail.edit_page.no.mail.back

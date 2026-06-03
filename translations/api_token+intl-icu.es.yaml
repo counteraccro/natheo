@@ -65,3 +65,7 @@ api_token.card.btn.cancel.token.api: __api_token.card.btn.cancel.token.api
 api_token.card.btn.delete.token.api: __api_token.card.btn.delete.token.api
 api_token.modale.confirm.delete.title: __api_token.modale.confirm.delete.title
 api_token.modale.confirm.delete.text: __api_token.modale.confirm.delete.text
+api_token.update.no.mail.title: __api_token.update.no.mail.title
+api_token.update.no.mail.text: __api_token.update.no.mail.text
+api_token.update.no.mail.back: __api_token.update.no.mail.back
+api_token.update.no.mail.new: __api_token.update.no.mail.new

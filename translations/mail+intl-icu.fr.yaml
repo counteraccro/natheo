@@ -26,3 +26,6 @@ mail.link.send: "Tester l'email"
 mail.link.cant.save: "La sauvegarde n'est pas possible pour le moment"
 mail.content.title: "Contenu de l'email"
 mail.content.subtitle: "N'oubliez pas que vous pouvez éditer l'email dans toutes les langues géré par le CMS"
+mail.edit_page.no.mail.title: 'Aucun mail trouvé'
+mail.edit_page.no.mail.text: "Ce mail n'existe pas ou à été supprimé. Vous pouvez retourner à la liste ou en créer une nouvelle"
+mail.edit_page.no.mail.back: Retour

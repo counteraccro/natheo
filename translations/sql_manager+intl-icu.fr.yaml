@@ -71,5 +71,5 @@ sql_manager.no_result.query: 'Aucun résultat pour le moment'
 sql_manager.no_result.help: 'Exécutez une requête pour voir les résultats ici'
 sql_manager.no.query.manager.title: 'Aucune requête trouvée'
 sql_manager.no.query.manager.text: "Cette requête n'existe pas ou à été supprimée. Vous pouvez retourner à la liste ou en créer une nouvelle"
-sql_manager.btn.back: 'Retour'
+sql_manager.btn.back: Retour
 sql_manager.btn.new: 'Créer une requête SQL'
