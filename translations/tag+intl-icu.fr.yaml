@@ -59,3 +59,7 @@ tag.form.style.title: 'Style du tag'
 tag.form.style.description: 'Définition de la couleur'
 tag.form.text.title: 'Autres informations'
 tag.form.text.description: 'Définition du label'
+tag.update.page.no.tag.title: 'Aucun tag trouvé'
+tag.update.page.no.tag.text: "Ce tag n'existe pas ou à été supprimé. Vous pouvez retourner à la liste ou en créer un nouveau"
+tag.update.page.back: Retour
+tag.update.page.new: 'Nouveau tag'

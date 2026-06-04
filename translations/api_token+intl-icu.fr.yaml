@@ -67,5 +67,5 @@ api_token.modale.confirm.delete.title: 'Confirmer la suppression du token'
 api_token.modale.confirm.delete.text: "La suppression du token est définitive et sans possibilité de retour. <br /> Toutes applications l'utilisant verra ses accès instantanément coupés."
 api_token.update.no.mail.title: 'Aucun token trouvé'
 api_token.update.no.mail.text: "Ce token n'existe pas ou à été supprimé. Vous pouvez retourner à la liste ou en créer une nouvelle"
-api_token.update.no.mail.back: "Retour"
-api_token.update.no.mail.new: "Nouveau token"
+api_token.update.no.mail.back: Retour
+api_token.update.no.mail.new: 'Nouveau token'
