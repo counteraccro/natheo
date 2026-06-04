@@ -86,3 +86,6 @@ comment.moderation.statistiques: __comment.moderation.statistiques
 comment.moderation.status.short.validate: __comment.moderation.status.short.validate
 comment.moderation.status.short.moderate: __comment.moderation.status.short.moderate
 comment.moderation.status.short.waiting: __comment.moderation.status.short.waiting
+comment.see.comment.error.no.comment.title: __comment.see.comment.error.no.comment.title
+comment.see.comment.error.no.comment.text: __comment.see.comment.error.no.comment.text
+comment.see.comment.btn.back: __comment.see.comment.btn.back

@@ -33,6 +33,15 @@ class CommentTranslate extends AppTranslate
             'page_associated' => $this->translator->trans('comment.see.comment.page.associated', domain: 'comment'),
             'page_created' => $this->translator->trans('comment.see.comment.page.created', domain: 'comment'),
             'page_link' => $this->translator->trans('comment.see.comment.page.link', domain: 'comment'),
+            'error_no_comment_title' => $this->translator->trans(
+                'comment.see.comment.error.no.comment.title',
+                domain: 'comment',
+            ),
+            'error_no_comment_text' => $this->translator->trans(
+                'comment.see.comment.error.no.comment.text',
+                domain: 'comment',
+            ),
+            'btn_back' => $this->translator->trans('comment.see.comment.btn.back', domain: 'comment'),
         ];
     }
 

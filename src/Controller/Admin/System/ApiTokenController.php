@@ -132,12 +132,14 @@ class ApiTokenController extends AppAdminController
     #[Route('/add', name: 'add', methods: ['GET'])]
     #[Route('/update/{id}', name: 'update', methods: ['GET'])]
     public function add(
+        Request $request,
         ApiTokenService $apiTokenService,
         ApiTokenTranslate $apiTokenTranslate,
         #[MapEntity(id: 'id')] ?ApiToken $apiToken = null,
+        ?int $id = null,
     ): Response {
         $breadcrumbTitle = 'api_token.update.page_title_h1';
-        if ($apiToken === null) {
+        if ($apiToken === null && $id === null) {
             $apiToken = new ApiToken();
             $breadcrumbTitle = 'api_token.add.page_title_h1';
         }
@@ -151,7 +153,9 @@ class ApiTokenController extends AppAdminController
         ];
 
         $translate = $apiTokenTranslate->getTranslate();
-        $apiToken = $apiTokenService->convertEntityToArray($apiToken, ['createdAt', 'updateAt']);
+        if ($apiToken) {
+            $apiToken = $apiTokenService->convertEntityToArray($apiToken, ['createdAt', 'updateAt']);
+        }
 
         return $this->render('admin/system/api_token/add_update.html.twig', [
             'breadcrumb' => $breadcrumb,

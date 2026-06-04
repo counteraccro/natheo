@@ -57,3 +57,7 @@ tag.form.style.title: __tag.form.style.title
 tag.form.style.description: __tag.form.style.description
 tag.form.text.title: __tag.form.text.title
 tag.form.text.description: __tag.form.text.description
+tag.update.page.no.tag.title: __tag.update.page.no.tag.title
+tag.update.page.no.tag.text: __tag.update.page.no.tag.text
+tag.update.page.back: __tag.update.page.back
+tag.update.page.new: __tag.update.page.new

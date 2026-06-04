@@ -86,3 +86,6 @@ comment.moderation.statistiques: 'Statistiques globales'
 comment.moderation.status.short.validate: Validé
 comment.moderation.status.short.moderate: Modéré
 comment.moderation.status.short.waiting: 'En attente'
+comment.see.comment.error.no.comment.title: 'Aucun commentaire trouvé'
+comment.see.comment.error.no.comment.text: "Ce commentaire n'existe pas ou à été supprimé. Vous pouvez retourner à la liste ou en créer un nouveau"
+comment.see.comment.btn.back: 'Retour'

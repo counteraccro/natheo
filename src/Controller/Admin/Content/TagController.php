@@ -147,6 +147,7 @@ class TagController extends AppAdminController
         TagService $tagService,
         TagTranslate $tagTranslate,
         Request $request,
+        ?int $id = null,
         #[MapEntity(id: 'id')] ?Tag $tag = null,
     ): Response {
         $breadcrumbTitle = 'tag.update.page_title_h1';
@@ -166,7 +167,7 @@ class TagController extends AppAdminController
         $locales = $tagService->getLocales();
         $locales['current'] = $request->getLocale();
 
-        if ($tag === null) {
+        if ($tag === null && $id === null) {
             $tag = new Tag();
             foreach ($locales['locales'] as $locale) {
                 $tagTranslation = new TagTranslation();
@@ -174,7 +175,9 @@ class TagController extends AppAdminController
                 $tag->addTagTranslation($tagTranslation);
             }
         }
-        $tag = $tagService->convertEntityToArray($tag, ['createdAt', 'updateAt', 'pages']);
+        if ($tag) {
+            $tag = $tagService->convertEntityToArray($tag, ['createdAt', 'updateAt', 'pages']);
+        }
 
         return $this->render('admin/content/tag/add_update.html.twig', [
             'breadcrumb' => $breadcrumb,

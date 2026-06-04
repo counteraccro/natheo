@@ -92,7 +92,7 @@ class MailController extends AppAdminController
      * @return Response
      */
     #[Route('/edit/{id}', name: 'edit')]
-    public function edit(#[MapEntity(id: 'id')] Mail $mail): Response
+    public function edit(#[MapEntity(id: 'id')] ?Mail $mail = null): Response
     {
         $breadcrumb = [
             Breadcrumb::DOMAIN->value => 'mail',

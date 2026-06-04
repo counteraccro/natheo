@@ -303,6 +303,51 @@ export default {
     </div>
   </div>
 
+  <div v-else-if="Object.keys(sqlManager).length === 0">
+    <div class="flex flex-col items-center justify-center py-16 px-6 text-center">
+      <!-- Icône -->
+      <div
+        class="w-16 h-16 rounded-2xl flex items-center justify-center mb-5"
+        style="background-color: var(--primary-lighter)"
+      >
+        <svg class="w-8 h-8" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="m8 9 3 3-3 3m5 0h3M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"
+          />
+        </svg>
+      </div>
+
+      <!-- Titre -->
+      <p class="text-lg font-bold mb-2" style="color: var(--text-primary)">
+        {{ translate.no_query_manager_title }}
+      </p>
+
+      <!-- Description -->
+      <p class="text-sm max-w-xs mb-6" style="color: var(--text-secondary)">
+        {{ translate.no_query_manager_text }}
+      </p>
+
+      <!-- Boutons -->
+      <div class="flex items-center gap-3">
+        <a :href="urls.index" class="btn btn-sm btn-outline-dark flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          {{ translate.btn_back }}
+        </a>
+        <a :href="urls.new" class="btn btn-sm btn-primary flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          {{ translate.btn_new }}
+        </a>
+      </div>
+    </div>
+  </div>
+
   <div v-else>
     <div class="card rounded-lg p-6 mb-4">
       <div class="border-b-1 border-b-[var(--border-color)] mb-4">

@@ -166,7 +166,7 @@ class SqlManagerController extends AppAdminController
         if ($id !== null) {
             /** @var SqlManager $sqlManager */
             $sqlManager = $sqlManagerService->findOneById(SqlManager::class, $id);
-            if ($sqlManager->isDisabled()) {
+            if ($sqlManager && $sqlManager->isDisabled()) {
                 return $this->redirect($this->generateUrl('admin_sql_manager_index'));
             }
         }
@@ -191,6 +191,8 @@ class SqlManagerController extends AppAdminController
                 'load_data_database' => $this->generateUrl('admin_sql_manager_load_data_database'),
                 'execute_sql' => $this->generateUrl('admin_sql_manager_execute_sql'),
                 'save' => $this->generateUrl('admin_sql_manager_save'),
+                'index' => $this->generateUrl('admin_sql_manager_index'),
+                'new' => $this->generateUrl('admin_sql_manager_add'),
             ],
         ]);
     }
@@ -209,6 +211,9 @@ class SqlManagerController extends AppAdminController
             $sqlManager = new SqlManager();
         } else {
             $sqlManager = $sqlManagerService->findOneById(SqlManager::class, $id);
+            if (!$sqlManager) {
+                return $this->json(['sqlManager' => []]);
+            }
         }
         $sqlManagerArray = $sqlManagerService->convertEntityToArray($sqlManager, ['user']);
         return $this->json(['sqlManager' => $sqlManagerArray]);
