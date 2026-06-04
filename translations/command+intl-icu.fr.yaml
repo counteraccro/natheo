@@ -19,3 +19,20 @@ install.fixture.load.success: 'Fixtures installées avec succès'
 install.clear.cache: 'Suppression du cache'
 install.clear.cache.success: 'Cache supprimé avec succès'
 install.success: 'Installation de Natheo CMS réalisée avec succès'
+install.test.title: "Installation de l'environnement de test"
+install.test.note: 'Vérifiez que votre fichier .env.test ou .env.test.local est correctement configuré'
+install.test.confirm: 'Cette opération va recréer la base de données de test. Continuer ?'
+install.test.confirm.cancel: "Installation de l'environnement de test annulée"
+install.test.summary.drop_database: 'Suppression de la base de données de test existante'
+install.test.summary.create_database: 'Création de la base de données de test'
+install.test.summary.create_schema: 'Création du schéma de la base de données de test'
+install.test.step.drop_database: 'Suppression de la base de données de test'
+install.test.drop_database.success: 'Base de données de test supprimée avec succès'
+install.test.error: "Une erreur est survenue durant l'installation de l'environnement de test."
+install.test.step.create_database: 'Création de la base de données de test'
+install.test.create_database.success: 'Base de données de test créée avec succès'
+install.test.step.create_schema: 'Création du schéma de la base de données de test'
+install.test.create_schema.success: 'Schéma de la base de données créé avec succès'
+install.test.success: "Installation de l'environnement de test terminée avec succès"
+install.test.help.phpunit: 'Vous pouvez maintenant exécuter les tests avec la commande suivante :'
+install.test.environment.restart: "Cette commande nécessite l'environnement de test. Relancement de la commande en environnement de test..."
