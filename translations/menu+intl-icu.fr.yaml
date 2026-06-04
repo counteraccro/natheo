@@ -157,4 +157,4 @@ menu.index.page_title.error.default.title: 'Une ou plusieurs alertes sont remont
 menu.index.page_title.error.default.info: 'Cette alerte sera mise à jour au prochain rafraîchissement de cette page'
 menu.no.exist.title: 'Aucun menu trouvé'
 menu.no.exist.text: "Ce menu n'existe pas ou à été supprimé. Vous pouvez retourner à la liste ou en créer un nouveau"
-menu.btn.back: "Retour"
+menu.btn.back: Retour
