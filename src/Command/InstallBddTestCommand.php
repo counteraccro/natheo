@@ -29,7 +29,6 @@ class InstallBddTestCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         if ($this->getApplication()->getKernel()->getEnvironment() !== 'test') {
-            $io->note($this->translator->trans('install.test.environment.restart', domain: 'command'));
             passthru('APP_ENV=test php bin/console natheo:install-bdd-test', $code);
             return $code === 0 ? Command::SUCCESS : Command::FAILURE;
         }
