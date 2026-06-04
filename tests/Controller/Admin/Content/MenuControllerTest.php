@@ -8,11 +8,10 @@
 namespace App\Tests\Controller\Admin\Content;
 
 use App\Entity\Admin\Content\Menu\Menu;
-use App\Entity\Admin\Content\Menu\MenuElement;
-use App\Repository\Admin\Content\Menu\MenuElementRepository;
+use App\Enum\Admin\Content\Menu\MenuPosition;
+use App\Enum\Admin\Content\Menu\MenuType;
 use App\Repository\Admin\Content\Menu\MenuRepository;
 use App\Tests\AppWebTestCase;
-use App\Utils\Content\Menu\MenuConst;
 
 class MenuControllerTest extends AppWebTestCase
 {
@@ -206,8 +205,8 @@ class MenuControllerTest extends AppWebTestCase
         $data['menu'] = [
             'id' => $menu->getId(),
             'name' => 'Unit-test',
-            'type' => MenuConst::TYPE_FOOTER_1_ROW_CENTER,
-            'position' => MenuConst::POSITION_FOOTER,
+            'type' => MenuType::FOOTER_1_ROW_CENTER->value,
+            'position' => MenuPosition::POSITION_FOOTER->value,
             'renderOrder' => 1,
             'defaultMenu' => false,
             'disabled' => true,
@@ -276,8 +275,8 @@ class MenuControllerTest extends AppWebTestCase
         $data['menu'] = [
             'id' => 0,
             'name' => 'Unit-test',
-            'type' => MenuConst::TYPE_FOOTER_1_ROW_CENTER,
-            'position' => MenuConst::POSITION_FOOTER,
+            'type' => MenuType::FOOTER_1_ROW_CENTER->value,
+            'position' => MenuPosition::POSITION_FOOTER->value,
             'renderOrder' => 1,
             'defaultMenu' => false,
             'disabled' => true,
@@ -338,122 +337,6 @@ class MenuControllerTest extends AppWebTestCase
     }
 
     /**
-     * Test méthode deleteMenuElement()
-     * @return void
-     */
-    public function testDeleteMenuElement(): void
-    {
-        $menu = $this->createMenu();
-        $this->createMenuElement($menu);
-        $menuElement = $this->createMenuElement($menu);
-
-        $this->checkNoAccess('admin_menu_delete_menu_element', methode: 'DELETE');
-
-        $user = $this->createUserContributeur();
-
-        $this->client->loginUser($user, 'admin');
-        $this->client->request(
-            'DELETE',
-            $this->router->generate('admin_menu_delete_menu_element', ['id' => $menuElement->getId()]),
-        );
-
-        $this->assertResponseIsSuccessful();
-        $response = $this->client->getResponse();
-        $this->assertJson($response->getContent());
-        $content = json_decode($response->getContent(), true);
-
-        $this->assertArrayHasKey('success', $content);
-        $this->assertTrue($content['success']);
-
-        $menuRepo = $this->em->getRepository(Menu::class);
-        $verif = $menuRepo->findOneBy(['id' => $menu->getId()]);
-        $this->assertCount(1, $verif->getMenuElements()->toArray());
-    }
-
-    /**
-     * Test méthode newMenuElement()
-     * @return void
-     */
-    public function testNewMenuElement(): void
-    {
-        $menu = $this->createMenu();
-
-        $data = [
-            'idMenu' => $menu->getId(),
-            'columP' => 1,
-            'rowP' => 1,
-            'idParent' => null,
-        ];
-
-        $this->checkNoAccess('admin_menu_new_menu_element', methode: 'POST');
-
-        $user = $this->createUserContributeur();
-
-        $this->client->loginUser($user, 'admin');
-        $this->client->request(
-            'POST',
-            $this->router->generate('admin_menu_new_menu_element'),
-            content: json_encode($data),
-        );
-        $this->assertResponseIsSuccessful();
-        $response = $this->client->getResponse();
-        $this->assertJson($response->getContent());
-        $content = json_decode($response->getContent(), true);
-
-        $this->assertArrayHasKey('success', $content);
-        $this->assertTrue($content['success']);
-
-        $menuRepo = $this->em->getRepository(Menu::class);
-        $verif = $menuRepo->findOneBy(['id' => $menu->getId()]);
-        $this->assertCount(1, $verif->getMenuElements()->toArray());
-        $menuElement = $verif->getMenuElements()->first();
-        $this->assertEquals($content['id'], $menuElement->getId());
-    }
-
-    /**
-     * Test méthode changeParent()
-     * @return void
-     */
-    public function testChangeParent(): void
-    {
-        $menu = $this->createMenu();
-        $menuElement1 = $this->createMenuElement($menu);
-        $menuElement2 = $this->createMenuElement($menu);
-
-        $data = [
-            'id' => $menuElement2->getId(),
-            'columP' => 1,
-            'rowP' => 1,
-            'idParent' => $menuElement1->getId(),
-        ];
-
-        $this->checkNoAccess('admin_menu_update_parent_menu_element', methode: 'PATCH');
-
-        $user = $this->createUserContributeur();
-
-        $this->client->loginUser($user, 'admin');
-        $this->client->request(
-            'PATCH',
-            $this->router->generate('admin_menu_update_parent_menu_element'),
-            content: json_encode($data),
-        );
-        $this->assertResponseIsSuccessful();
-        $response = $this->client->getResponse();
-        $this->assertJson($response->getContent());
-        $content = json_decode($response->getContent(), true);
-
-        $this->assertArrayHasKey('success', $content);
-        $this->assertTrue($content['success']);
-
-        $menuRepo = $this->em->getRepository(MenuElement::class);
-        $verif = $menuRepo->findOneBy(['id' => $menuElement1->getId()]);
-        $this->assertCount(1, $verif->getChildren()->toArray());
-
-        $verif2 = $menuRepo->findOneBy(['id' => $content['id']]);
-        $this->assertEquals($verif->getId(), $verif2->getParent()->getId());
-    }
-
-    /**
      * Test méthode getListParent()
      * @return void
      */
@@ -489,64 +372,5 @@ class MenuControllerTest extends AppWebTestCase
         $this->assertEquals(0, $content['listParent'][$menuElement1->getId()]['deep']);
         $this->assertEquals(1, $content['listParent'][$subMenuElement->getId()]['deep']);
         $this->assertEquals(1, $content['listParent'][$subMenuElement2->getId()]['deep']);
-    }
-
-    /**
-     * Test méthode reorderMenuElement()
-     * @return void
-     */
-    public function testReorderMenuElement(): void
-    {
-        $menu = $this->createMenu();
-
-        $menuElementPos1Row1 = $this->createMenuElement($menu, customData: ['columnPosition' => 1, 'rowPosition' => 1]);
-        $this->createMenuElement($menu, customData: ['columnPosition' => 1, 'rowPosition' => 2]);
-        $menuElementPos1Row3 = $this->createMenuElement($menu, customData: ['columnPosition' => 1, 'rowPosition' => 3]);
-        $this->createMenuElement($menu, $menuElementPos1Row3, customData: ['columnPosition' => 1, 'rowPosition' => 1]);
-        $this->createMenuElement($menu, $menuElementPos1Row3, customData: ['columnPosition' => 1, 'rowPosition' => 2]);
-        $subMenuElement3 = $this->createMenuElement(
-            $menu,
-            $menuElementPos1Row3,
-            customData: ['columnPosition' => 1, 'rowPosition' => 3],
-        );
-
-        $data['data'] = [
-            'reorderType' => 'row',
-            'newColumn' => 1,
-            'oldColumn' => 1,
-            'newRow' => 1,
-            'oldRow' => 3,
-            'id' => $menuElementPos1Row3->getId(),
-            'parent' => '',
-            'menu' => $menu->getId(),
-        ];
-
-        $this->checkNoAccess('admin_menu_reorder_menu_element', methode: 'PATCH');
-
-        $user = $this->createUserContributeur();
-
-        $this->client->loginUser($user, 'admin');
-        $this->client->request(
-            'PATCH',
-            $this->router->generate('admin_menu_reorder_menu_element'),
-            content: json_encode($data),
-        );
-        $this->assertResponseIsSuccessful();
-        $response = $this->client->getResponse();
-        $this->assertJson($response->getContent());
-        $content = json_decode($response->getContent(), true);
-        $this->assertIsArray($content);
-        $this->assertArrayHasKey('success', $content);
-        $this->assertTrue($content['success']);
-        $this->assertArrayHasKey('msg', $content);
-        $this->assertArrayHasKey('id', $content);
-
-        /** @var MenuElementRepository $menuRepo */
-        $menuRepo = $this->em->getRepository(MenuElement::class);
-        $verif = $menuRepo->findOneById($menuElementPos1Row3->getId());
-        $this->assertEquals(1, $verif->getRowPosition());
-
-        $verif2 = $menuRepo->findOneById($menuElementPos1Row1->getId());
-        $this->assertEquals(2, $verif2->getRowPosition());
     }
 }

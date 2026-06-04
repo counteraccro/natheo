@@ -8,16 +8,21 @@
 namespace App\Tests\Utils\Content\Menu;
 
 use App\Entity\Admin\Content\Menu\Menu;
+use App\Enum\Admin\Content\Menu\MenuPosition;
+use App\Enum\Admin\Content\Menu\MenuType;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Tests\AppWebTestCase;
-use App\Utils\Content\Menu\MenuConst;
 use App\Utils\Content\Menu\MenuPopulate;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class MenuPopulateTest extends AppWebTestCase
 {
     /**
      * Test méthode populate()
      * @return void
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function testPopulate(): void
     {
@@ -26,8 +31,8 @@ class MenuPopulateTest extends AppWebTestCase
         $data = [
             'id' => $menu->getId(),
             'name' => 'Unit-test',
-            'type' => MenuConst::TYPE_FOOTER_1_ROW_CENTER,
-            'position' => MenuConst::POSITION_FOOTER,
+            'type' => MenuType::FOOTER_1_ROW_CENTER->value,
+            'position' => MenuPosition::POSITION_FOOTER->value,
             'renderOrder' => 1,
             'defaultMenu' => false,
             'disabled' => true,

@@ -3,6 +3,7 @@
 namespace App\Repository\Admin\Content\Menu;
 
 use App\Entity\Admin\Content\Menu\Menu;
+use App\Repository\Trait\OrderedQueryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\NonUniqueResultException;
@@ -15,6 +16,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MenuRepository extends ServiceEntityRepository
 {
+    use OrderedQueryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Menu::class);
@@ -52,21 +55,22 @@ class MenuRepository extends ServiceEntityRepository
      * Retourne une liste de menu Paginé
      * @param int $page
      * @param int $limit
-     * @param string|null $search
+     * @param array $queryParams
      * @param int|null $userId
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, ?string $search = null, ?int $userId = null): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams, ?int $userId = null): Paginator
     {
-        $query = $this->createQueryBuilder('m')->orderBy('m.id', 'ASC');
+        $query = $this->createQueryBuilder(Menu::DEFAULT_ALIAS);
+        $this->applyOrdering($query, Menu::class, $queryParams);
 
-        if ($search !== null) {
-            $query->where('m.name like :search');
-            $query->setParameter('search', '%' . $search . '%');
+        if (isset($queryParams['search']) && $queryParams['search'] !== '') {
+            $query->where(Menu::DEFAULT_ALIAS . '.name like :search');
+            $query->setParameter('search', '%' . $queryParams['search'] . '%');
         }
 
         if ($userId !== null) {
-            $query->andWhere('m.user = :userId');
+            $query->andWhere(Menu::DEFAULT_ALIAS . '.user = :userId');
             $query->setParameter('userId', $userId);
         }
 

@@ -30,8 +30,14 @@ class MenuTranslate extends AppTranslate
             'msg_wait_loading' => $this->translator->trans('menu.msg.wait.loading', domain: 'menu'),
             'btn_save' => $this->translator->trans('menu.btn.save', domain: 'menu'),
             'btn_new' => $this->translator->trans('menu.btn.new', domain: 'menu'),
+            'btn_back' => $this->translator->trans('menu.btn.back', domain: 'menu'),
             'no_select_menu_form' => $this->translator->trans('menu.no_select.menu.form', domain: 'menu'),
             'no_select_menu_form_msg' => $this->translator->trans('menu.no_select.menu.form.msg', domain: 'menu'),
+            'no_select_menu_form_msg_2' => $this->translator->trans('menu.no_select.menu.form.msg.2', domain: 'menu'),
+            'no_select_menu_form_msg_3' => $this->translator->trans('menu.no_select.menu.form.msg.3', domain: 'menu'),
+            'no_select_menu_form_msg_4' => $this->translator->trans('menu.no_select.menu.form.msg.4', domain: 'menu'),
+            'no_select_menu_form_msg_5' => $this->translator->trans('menu.no_select.menu.form.msg.5', domain: 'menu'),
+            'no_select_menu_form_msg_6' => $this->translator->trans('menu.no_select.menu.form.msg.6', domain: 'menu'),
             'help_title' => $this->translator->trans('menu.help.title', domain: 'menu'),
             'help_edition' => $this->translator->trans('menu.help.edition', domain: 'menu'),
             'help_delete' => $this->translator->trans('menu.help.delete', domain: 'menu'),
@@ -75,7 +81,7 @@ class MenuTranslate extends AppTranslate
                 'menu.element.confirm.delete.body',
                 domain: 'menu',
             ),
-            'menu_element_confirm_delete_body.2' => $this->translator->trans(
+            'menu_element_confirm_delete_body_2' => $this->translator->trans(
                 'menu.element.confirm.delete.body.2',
                 domain: 'menu',
             ),
@@ -92,6 +98,21 @@ class MenuTranslate extends AppTranslate
             'select_page_label' => $this->translator->trans('menu.select.page.label', domain: 'menu'),
             'select_page_no_page' => $this->translator->trans('menu.select.page.no.page', domain: 'menu'),
             'select_page_info' => $this->translator->trans('menu.select.page.info', domain: 'menu'),
+            'error' => $this->translator->trans('menu.label.error', domain: 'menu'),
+            'error_info_label' => $this->translator->trans('menu.label.error.info.label', domain: 'menu'),
+            'error_info_sub_label' => $this->translator->trans('menu.label.error.info.sub.label', domain: 'menu'),
+            'error_no_menu_element_label' => $this->translator->trans(
+                'menu.label.error.no.menu.element.label',
+                domain: 'menu',
+            ),
+            'error_no_menu_element_sub_label' => $this->translator->trans(
+                'menu.label.error.no.menu.element.sub.label',
+                domain: 'menu',
+            ),
+            'no_save_label' => $this->translator->trans('menu.no.save.label', domain: 'menu'),
+            'no_save_sub_label' => $this->translator->trans('menu.no.save.sub.label', domain: 'menu'),
+            'menu_no_exist_title' => $this->translator->trans('menu.no.exist.title', domain: 'menu'),
+            'menu_no_exist_text' => $this->translator->trans('menu.no.exist.text', domain: 'menu'),
             'menu_form' => $this->getMenuFormTranslate(),
             'menu_tree' => $this->getMenuTreeTranslate(),
         ];
@@ -109,6 +130,10 @@ class MenuTranslate extends AppTranslate
             'input_search_page' => $this->translator->trans('menu.form.input.search.page', domain: 'menu'),
             'input_search_page_placeholder' => $this->translator->trans(
                 'menu.form.input.search.page.placeholder',
+                domain: 'menu',
+            ),
+            'input_search_page_placeholder_no_result' => $this->translator->trans(
+                'menu.form.input.search.page.placeholder.no.result',
                 domain: 'menu',
             ),
             'block_fr' => $this->translator->trans('menu.form.block.fr', domain: 'menu'),
@@ -150,6 +175,14 @@ class MenuTranslate extends AppTranslate
                 'menu.form.link.target.label.blank',
                 domain: 'menu',
             ),
+            'btn_save' => $this->translator->trans('menu.form.btn.save', domain: 'menu'),
+            'btn_cancel' => $this->translator->trans('menu.form.btn.cancel', domain: 'menu'),
+            'btn_delete' => $this->translator->trans('menu.form.btn.delete', domain: 'menu'),
+            'empty_text_link_error' => $this->translator->trans('menu.form.empty.text.link.error', domain: 'menu'),
+            'empty_internal_link_error' => $this->translator->trans(
+                'menu.form.empty.internal.link.error',
+                domain: 'menu',
+            ),
         ];
     }
 
@@ -161,6 +194,10 @@ class MenuTranslate extends AppTranslate
     {
         return [
             'btn_new_menu_element' => $this->translator->trans('menu.tree.btn.new.menu.element', domain: 'menu'),
+            'tag_page' => $this->translator->trans('menu.tree.tag.page', domain: 'menu'),
+            'tag_link' => $this->translator->trans('menu.tree.tag.link', domain: 'menu'),
+            'menu_element_disabled' => $this->translator->trans('menu.tree.element.disabled', domain: 'menu'),
+            'menu_element_no_save' => $this->translator->trans('menu.tree.element.no.save', domain: 'menu'),
         ];
     }
 }
