@@ -235,6 +235,10 @@ class CommentController extends AppAdminController
         /** @var Comment $comment */
         $comment = $commentService->findOneById(Comment::class, $id);
 
+        if (!$comment) {
+            return $this->json(['comment' => null]);
+        }
+
         /** @var Page $page */
         $page = $commentService->findOneById(Page::class, $comment->getPage()->getId());
         $title = $page->getPageTranslationByLocale($commentService->getLocales()['current'])->getTitre();

@@ -133,7 +133,45 @@ export default defineComponent({
 
 <template>
   <skeleton-comment-edit v-if="loading" />
-  <div v-if="comment">
+  <div v-if="!comment">
+    <div class="flex flex-col items-center justify-center py-16 px-6 text-center">
+      <!-- Icône -->
+      <div
+        class="w-16 h-16 rounded-2xl flex items-center justify-center mb-5"
+        style="background-color: var(--primary-lighter)"
+      >
+        <svg class="w-8 h-8" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+          />
+        </svg>
+      </div>
+
+      <!-- Titre -->
+      <p class="text-lg font-bold mb-2" style="color: var(--text-primary)">
+        {{ translate.error_no_comment_title }}
+      </p>
+
+      <!-- Description -->
+      <p class="text-sm max-w-xs mb-6" style="color: var(--text-secondary)">
+        {{ translate.error_no_comment_text }}
+      </p>
+
+      <!-- Boutons -->
+      <div class="flex items-center gap-3">
+        <a :href="urls.index" class="btn btn-sm btn-outline-dark flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          {{ translate.btn_back }}
+        </a>
+      </div>
+    </div>
+  </div>
+  <div v-else>
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
       <div class="xl:col-span-2 flex flex-col gap-6">
         <div class="card rounded-lg overflow-hidden">
@@ -407,79 +445,6 @@ export default defineComponent({
       </div>
     </div>
   </div>
-
-  <!--<div id="block-faq" class="h-50" :class="loading === true ? 'block-grid' : ''">
-    <div v-if="loading" class="overlay">
-      <div class="position-absolute top-50 start-50 translate-middle" style="z-index: 1000">
-        <div class="spinner-border text-primary" role="status"></div>
-        <span class="txt-overlay">{{ translate.loading }}</span>
-      </div>
-    </div>
-
-    <div v-if="comment" class="comment">
-      <fieldset class="mb-4">
-        <legend>{{ translate.titleInfo }}</legend>
-        <div class="row">
-          <div class="col-6">
-            <div>
-              <span v-html="comment.statusStr"></span>
-            </div>
-            <div v-if="comment.status === datas.statusModerate" class="mt-2">
-              <b>{{ translate.moderationComment }}</b> : <br />
-              <textarea
-                class="form-control"
-                id="moderation-content"
-                rows="3"
-                v-model="comment.moderationComment"
-              ></textarea>
-              <div v-if="comment.userModeration">
-                {{ translate.moderationAuthor }} : {{ comment.userModeration.login }}
-              </div>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="float-end">
-              {{ translate.author }} : {{ comment.author }} ({{ comment.email }})<br />
-              {{ translate.created }} {{ comment.createdAt }}<br />
-              {{ translate.ip }} : {{ comment.ip }}<br />
-              {{ translate.userAgent }} : {{ comment.userAgent }}<br />
-            </div>
-          </div>
-        </div>
-      </fieldset>
-
-      <div class="row mb-4">
-        <div class="col-8"></div>
-        <div class="col-4">
-          <select class="form-select" v-model="comment.status">
-            <option
-              v-for="(key, status) in datas.status"
-              :key="status"
-              :value="status"
-              :selected="status === comment.status"
-            >
-              {{ key }}
-            </option>
-          </select>
-        </div>
-      </div>
-
-      <MarkdownEditor
-        :me-id="String(comment.id)"
-        :me-value="comment.comment"
-        :me-translate="translate.markdown"
-        :me-key-words="[]"
-        :me-rows="16"
-        :me-save="true"
-        :me-preview="false"
-        @editor-value="updateValue"
-      />
-
-      <div class="btn btn-secondary float-end" :class="loading ? 'disabled' : ''" @click="save">
-        {{ translate.btnEdit }}
-      </div>
-    </div>
-  </div>-->
 
   <div class="toast-container position-fixed top-0 end-0 p-2">
     <toast id="success" option-class-header="text-success" :show="toasts.success.show" @close-toast="closeToast">

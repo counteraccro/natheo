@@ -91,4 +91,7 @@ export interface Translate {
   page_associated: string;
   page_created: string;
   page_link: string;
+  error_no_comment_title: string;
+  error_no_comment_text: string;
+  btn_back: string;
 }
