@@ -5,8 +5,7 @@ framework:
     http_method_override: false
     handle_all_throwables: true
 
-    profiler:
-        collect_serializer_data: true
+    profiler: ~
 
     # Enables session support. Note that the session will ONLY be started if you read or write from it.
     # Remove or comment this section to explicitly disable session support.
