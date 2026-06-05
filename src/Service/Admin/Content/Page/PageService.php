@@ -566,12 +566,11 @@ class PageService extends AppAdminService
         $tabCategories = $this->getPageService()->getAllCategories();
 
         $pageTrans = $page->getPageTranslationByLocale($locale);
-        return $url .
-            '/' .
-            $locale .
-            '/' .
-            strtolower($tabCategories[$page->getCategory()]) .
-            '/' .
-            $pageTrans->getUrl();
+        $category = '';
+        if (isset($tabCategories[$page->getCategory()])) {
+            $category = strtolower($tabCategories[$page->getCategory()]);
+        }
+
+        return $url . '/' . $locale . '/' . $category . '/' . $pageTrans->getUrl();
     }
 }
