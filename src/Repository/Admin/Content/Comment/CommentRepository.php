@@ -47,10 +47,10 @@ class CommentRepository extends ServiceEntityRepository
      * @param int $page
      * @param int $limit
      * @param array $queryParams
-     * @param null $userId
+     * @param int|null $userId
      * @return Paginator
      */
-    public function getAllPaginate(int $page, int $limit, array $queryParams, $userId = null): Paginator
+    public function getAllPaginate(int $page, int $limit, array $queryParams, ?int $userId = null): Paginator
     {
         $orderField = 'id';
         if (isset($queryParams['orderField']) && $queryParams['orderField'] !== '') {
