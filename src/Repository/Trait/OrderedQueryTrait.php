@@ -39,6 +39,9 @@ trait OrderedQueryTrait
         ) {
             $order = strtoupper($queryParams['order']);
         }
-        return $qb->orderBy($entity::DEFAULT_ALIAS . '.' . $orderField, $order);
+
+        $orderField = str_contains($orderField, '.') ? $orderField : $entity::DEFAULT_ALIAS . '.' . $orderField;
+
+        return $qb->orderBy($orderField, $order);
     }
 }
