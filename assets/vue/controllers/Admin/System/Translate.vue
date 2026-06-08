@@ -318,6 +318,7 @@ export default {
             height="24"
             fill="none"
             viewBox="0 0 24 24"
+            style="color: var(--primary)"
           >
             <path
               stroke="currentColor"
@@ -378,6 +379,7 @@ export default {
               height="24"
               fill="none"
               viewBox="0 0 24 24"
+              style="color: var(--primary)"
             >
               <path
                 stroke="currentColor"
