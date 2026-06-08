@@ -378,7 +378,25 @@ export default {
     <div class="card rounded-lg p-6 mb-4">
       <div class="border-b-1 border-b-[var(--border-color)] mb-4">
         <div class="flex justify-between">
-          <h2 class="text-lg font-bold text-[var(--text-primary)]">
+          <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
+            <svg
+              class="icon-lg"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+              style="color: var(--primary)"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 6c0 1.657-3.134 3-7 3S5 7.657 5 6m14 0c0-1.657-3.134-3-7-3S5 4.343 5 6m14 0v6M5 6v6m0 0c0 1.657 3.134 3 7 3s7-1.343 7-3M5 12v6c0 1.657 3.134 3 7 3s7-1.343 7-3v-6"
+              />
+            </svg>
             {{ translate.title_my_query }}
           </h2>
           <div>
@@ -447,8 +465,20 @@ export default {
     <div class="card rounded-lg p-6 mb-4">
       <div class="border-b-1 border-b-[var(--border-color)] mb-4">
         <div class="flex justify-between">
-          <h2 class="text-lg font-bold text-[var(--text-primary)]">
-            {{ translate.bloc_query }}
+          <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
+            <svg
+              class="icon-lg"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+              style="color: var(--primary)"
+            >
+              <path stroke="currentColor" stroke-width="2" d="m21 21-4.35-4.35M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z" />
+            </svg>
+            {{ ' translate.bloc_query ' }}
           </h2>
           <div>
             <div class="btn btn-success btn-sm me-2" @click="execute()">
@@ -551,7 +581,24 @@ export default {
     <div class="card rounded-lg p-6 mb-4">
       <div class="border-b-1 border-b-[var(--border-color)] mb-4">
         <div class="flex justify-between">
-          <h2 class="text-lg font-bold text-[var(--text-primary)]">
+          <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
+            <svg
+              class="icon-lg"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+              style="color: var(--primary)"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-width="2"
+                d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"
+              />
+            </svg>
             {{ translate.bloc_result }}
           </h2>
         </div>
