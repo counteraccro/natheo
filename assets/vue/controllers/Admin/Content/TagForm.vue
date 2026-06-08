@@ -279,7 +279,27 @@ export default {
   <div v-else>
     <div class="card rounded-lg p-6 mb-4 mt-4">
       <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-        <h2 class="text-lg font-bold text-[var(--text-primary)]">{{ this.translate.styleTitle }}</h2>
+        <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
+          <svg
+            class="icon-lg"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+            style="color: var(--primary)"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M18.045 3.007 12.31 3a1.965 1.965 0 0 0-1.4.585l-7.33 7.394a2 2 0 0 0 0 2.805l6.573 6.631a1.957 1.957 0 0 0 1.4.585 1.965 1.965 0 0 0 1.4-.585l7.409-7.477A2 2 0 0 0 21 11.479v-5.5a2.972 2.972 0 0 0-2.955-2.972Zm-2.452 6.438a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"
+            />
+          </svg>
+          {{ this.translate.styleTitle }}
+        </h2>
         <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">{{ this.translate.styleDescription }}</p>
       </div>
 
@@ -332,7 +352,27 @@ export default {
 
     <div class="card rounded-lg p-6">
       <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-        <h2 class="text-lg font-bold text-[var(--text-primary)]">{{ this.translate.textTitle }}</h2>
+        <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
+          <svg
+            class="icon-lg"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+            style="color: var(--primary)"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+          {{ this.translate.textTitle }}
+        </h2>
         <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">{{ this.translate.textDescription }}</p>
       </div>
 
