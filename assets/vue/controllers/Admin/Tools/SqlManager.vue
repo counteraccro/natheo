@@ -27,16 +27,16 @@ export default {
   data() {
     return {
       loading: false,
-      sqlManager: {},
-      dataBaseData: {},
-      selectTable: [],
+      sqlManager: Object,
+      dataBaseData: Object,
+      selectTable: '',
       selectLabelTable: '',
-      selectField: [],
+      selectField: '',
       selectColumns: [],
       searchTable: '',
       searchField: '',
-      result: {},
-      resultHeader: {},
+      result: Object,
+      resultHeader: Object,
       error: '',
       isErrorValidateName: false,
       isErrorValidateQuery: false,
@@ -247,32 +247,6 @@ export default {
     },
 
     /**
-     * Ajoute les tables sélectionnées (schema.table1, schema.table2, ...) dans l'input
-     */
-    addTableElement() {
-      if (this.selectTable.length === 0) {
-        return false;
-      }
-
-      const balise = this.selectTable.map((table) => this.schema + '.' + table).join(', ');
-      this.addElement(balise, false);
-      return false;
-    },
-
-    /**
-     * Ajoute les champs sélectionnés (col1, col2, ...) dans l'input
-     */
-    addFieldElement() {
-      if (this.selectField.length === 0) {
-        return false;
-      }
-
-      const balise = this.selectField.join(', ');
-      this.addElement(balise, false);
-      return false;
-    },
-
-    /**
      * Ajoute un élément dans l'input
      * @param balise
      * @param separate
@@ -331,6 +305,7 @@ export default {
 
   <div v-else-if="Object.keys(sqlManager).length === 0">
     <div class="flex flex-col items-center justify-center py-16 px-6 text-center">
+      <!-- Icône -->
       <div
         class="w-16 h-16 rounded-2xl flex items-center justify-center mb-5"
         style="background-color: var(--primary-lighter)"
@@ -345,10 +320,12 @@ export default {
         </svg>
       </div>
 
+      <!-- Titre -->
       <p class="text-lg font-bold mb-2" style="color: var(--text-primary)">
         {{ translate.no_query_manager_title }}
       </p>
 
+      <!-- Description -->
       <p class="text-sm max-w-xs mb-6" style="color: var(--text-secondary)">
         {{ translate.no_query_manager_text }}
       </p>
@@ -372,65 +349,43 @@ export default {
   </div>
 
   <div v-else>
-    <div class="card mb-4">
-      <div class="card-header">
-        <div>
-          <div class="card-title">
-            <svg
-              class="card-icon"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              viewBox="0 0 24 24"
-              style="color: var(--primary)"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 6c0 1.657-3.134 3-7 3S5 7.657 5 6m14 0c0-1.657-3.134-3-7-3S5 4.343 5 6m14 0v6M5 6v6m0 0c0 1.657 3.134 3 7 3s7-1.343 7-3M5 12v6c0 1.657 3.134 3 7 3s7-1.343 7-3v-6"
-              />
-            </svg>
-
+    <div class="card rounded-lg p-6 mb-4">
+      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+        <div class="flex justify-between">
+          <h2 class="text-lg font-bold text-[var(--text-primary)]">
             {{ translate.title_my_query }}
+          </h2>
+          <div>
+            <div class="btn btn-success btn-sm me-2" @click="this.execute()">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"
+                ></path>
+              </svg>
+              {{ translate.btn_execute_query }}
+            </div>
+            <div class="btn btn-primary btn-sm me-2" @click="this.save">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+                ></path>
+              </svg>
+              {{ translate.btn_save_query }}
+            </div>
           </div>
-
-          <p class="card-subtitle">
-            {{ translate.sub_title_my_query }}
-          </p>
         </div>
-
-        <div class="card-actions">
-          <div class="btn btn-success btn-sm me-2" @click="execute()">
-            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"
-              ></path>
-            </svg>
-            {{ translate.btn_execute_query }}
-          </div>
-
-          <div class="btn btn-primary btn-sm me-2" @click="save">
-            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
-              ></path>
-            </svg>
-            {{ translate.btn_save_query }}
-          </div>
+        <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+          {{ translate.sub_title_my_query }}
         </div>
       </div>
 
-      <div class="form-control mb-3 gap-6 p-5">
+      <div class="form-control mb-3">
         <label for="name-query" class="form-label">{{ translate.label_name }} *</label>
         <input
           type="text"
@@ -445,7 +400,7 @@ export default {
         </div>
       </div>
 
-      <div class="form-control mb-3 gap-6 px-5">
+      <div class="form-control mb-3">
         <label for="sql-textarea" class="form-label">{{ translate.label_textarea_query }}</label>
         <textarea
           class="form-input code-editor"
@@ -463,45 +418,43 @@ export default {
       <alert-primary type="alert-primary-solid" :text="translate.help_text_1" />
     </div>
 
-    <!-- Assistant query builder -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <div>
-          <div class="card-title">
-            <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-width="2" d="m21 21-4.35-4.35M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z" />
-            </svg>
+    <div class="card rounded-lg p-6 mb-4">
+      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+        <div class="flex justify-between">
+          <h2 class="text-lg font-bold text-[var(--text-primary)]">
             {{ translate.bloc_query }}
+          </h2>
+          <div>
+            <div class="btn btn-success btn-sm me-2" @click="execute()">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"
+                ></path>
+              </svg>
+              {{ translate.btn_execute_query }}
+            </div>
+            <div class="btn btn-primary btn-sm me-2" @click="save">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+                ></path>
+              </svg>
+              {{ translate.btn_save_query }}
+            </div>
           </div>
-          <p class="card-subtitle">{{ translate.bloc_query_sub_title }}</p>
         </div>
-
-        <div class="card-actions">
-          <div class="btn btn-success btn-sm" @click="execute()">
-            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"
-              />
-            </svg>
-            {{ translate.btn_execute_query }}
-          </div>
-          <div class="btn btn-primary btn-sm" @click="save">
-            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
-              />
-            </svg>
-            {{ translate.btn_save_query }}
-          </div>
+        <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+          {{ translate.bloc_query_sub_title }}
         </div>
       </div>
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 p-5">
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
           <h3 class="text-sm font-semibold mb-3 text-[var(--text-primary)]">{{ translate.label_list_table }}</h3>
           <div class="form-control mb-3">
@@ -509,13 +462,13 @@ export default {
           </div>
           <div class="form-control mb-3">
             <select class="form-input" multiple id="sql-table" size="8" v-model="selectTable">
-              <option v-for="table in filteredTable" :value="table.name" @click="loadColumn(table.name)">
+              <option v-for="table in filteredTable" @click="loadColumn(table.name)">
                 {{ table.name }}
               </option>
             </select>
           </div>
           <div class="mb-3">
-            <div class="btn btn-secondary btn-sm w-full" @click="addTableElement()">
+            <div class="btn btn-secondary btn-sm w-full" @click="addElement(schema + '.' + selectTable, false)">
               <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
               </svg>
@@ -545,7 +498,7 @@ export default {
               v-model="selectField"
               :disabled="selectColumns.length === 0"
             >
-              <option v-for="column in filteredFieldName" :value="column">
+              <option v-for="column in filteredFieldName">
                 {{ column }}
               </option>
             </select>
@@ -554,7 +507,7 @@ export default {
             <button
               :disabled="selectColumns.length === 0"
               class="btn btn-secondary btn-sm w-full"
-              @click="addFieldElement()"
+              @click="addElement(selectField, false)"
             >
               <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
@@ -569,22 +522,15 @@ export default {
       </div>
     </div>
 
-    <!-- Resultat -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <div>
-          <div class="card-title">
-            <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-width="2"
-                d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"
-              />
-            </svg>
+    <div class="card rounded-lg p-6 mb-4">
+      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+        <div class="flex justify-between">
+          <h2 class="text-lg font-bold text-[var(--text-primary)]">
             {{ translate.bloc_result }}
-          </div>
-          <p class="card-subtitle">{{ translate.bloc_result_sub_title }}</p>
+          </h2>
+        </div>
+        <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+          {{ translate.bloc_result_sub_title }}
         </div>
       </div>
 
