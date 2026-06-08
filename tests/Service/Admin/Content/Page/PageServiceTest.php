@@ -48,14 +48,27 @@ class PageServiceTest extends AppWebTestCase
         foreach ($this->locales as $locale) {
             $this->createPageTranslation($page, ['locale' => $locale]);
         }
-        $this->createPage($user);
-        $this->createPage($user2);
+        $page2 = $this->createPage($user);
+        foreach ($this->locales as $locale) {
+            $this->createPageTranslation($page2, ['locale' => $locale]);
+        }
+        $page3 = $this->createPage($user2);
+        foreach ($this->locales as $locale) {
+            $this->createPageTranslation($page3, ['locale' => $locale]);
+        }
 
-        $result = $this->pageService->getAllPaginate(1, 20);
+        $queryParams = [
+            'search' => '',
+            'orderField' => 'id',
+            'order' => 'DESC',
+            'locale' => 'fr',
+        ];
+
+        $result = $this->pageService->getAllPaginate(1, 20, $queryParams);
         $this->assertInstanceOf(Paginator::class, $result);
         $this->assertEquals(3, $result->count());
 
-        $result = $this->pageService->getAllPaginate(1, 20, userId: $user->getId());
+        $result = $this->pageService->getAllPaginate(1, 20, $queryParams, userId: $user->getId());
         $this->assertInstanceOf(Paginator::class, $result);
         $this->assertEquals(2, $result->count());
     }

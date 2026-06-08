@@ -500,7 +500,12 @@ class PageService extends AppAdminService
     public function getAllTitleAndUrlPage(): array
     {
         $return = [];
-        $tab = $this->getAllPaginate(1, 100000);
+        $tab = $this->getAllPaginate(1, 100000, [
+            'search' => '',
+            'orderField' => 'id',
+            'order' => 'DESC',
+            'locale' => 'fr',
+        ]);
 
         foreach ($tab as $page) {
             /** @var Page $page */
