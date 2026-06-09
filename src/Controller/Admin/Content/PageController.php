@@ -192,6 +192,7 @@ class PageController extends AppAdminController
      * Création / édition d'une page
      * @param PageService $pageService
      * @param PageTranslate $pageTranslate
+     * @param MarkdownEditorTranslate $markdownEditorTranslate
      * @param CommentService $commentService
      * @param OptionSystemService $optionSystemService
      * @param int|null $id
