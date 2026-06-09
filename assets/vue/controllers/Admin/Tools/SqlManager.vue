@@ -553,30 +553,22 @@ export default {
     </div>
 
     <div class="card rounded-lg p-6 mb-4">
-      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-        <div class="flex justify-between">
-          <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
-            <svg
-              class="icon-lg"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              viewBox="0 0 24 24"
-              style="color: var(--primary)"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-width="2"
-                d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"
-              />
-            </svg>
+      <div class="border-b-[1px] border-b-[var(--border-color)] mb-4">
+        <div class="px-5 py-3 flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--primary)">
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-width="2"
+              d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"
+            />
+          </svg>
+          <span class="text-base font-semibold" style="color: var(--text-primary)">
             {{ translate.bloc_result }}
-          </h2>
+          </span>
         </div>
-        <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+
+        <div class="text-sm mt-0 mb-2 px-5 text-[var(--text-secondary)]">
           {{ translate.bloc_result_sub_title }}
         </div>
       </div>
