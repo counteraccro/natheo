@@ -4,10 +4,9 @@
  * @version 1.0
  * Génération du tableau GRID
  */
-import Page from '@/vue/controllers/Admin/Content/Page_old/Page.vue';
 
 export default {
-  components: { Page },
+  components: {},
   props: {
     data: Array,
     columns: Array,
