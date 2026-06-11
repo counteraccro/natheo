@@ -58,18 +58,6 @@ class PageConst
     const RENDER_2_2_BLOCK = 8;
 
     /**
-     * Status publié pour un article
-     * @var integer
-     */
-    const STATUS_PUBLISH = 1;
-
-    /**
-     * Status brouillon pour un article
-     * @var integer
-     */
-    const STATUS_DRAFT = 2;
-
-    /**
      * Type texte pour les pages contents
      * @var integer
      */
