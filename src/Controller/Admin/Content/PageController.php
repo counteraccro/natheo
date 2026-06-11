@@ -11,6 +11,7 @@ use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageMeta;
+use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Menu\MenuService;
@@ -287,7 +288,7 @@ class PageController extends AppAdminController
             $pageFactory = new PageFactory($locales['locales']);
             $page = $pageFactory->create()->getPage();
             $page->setRender(PageConst::RENDER_1_BLOCK);
-            $page->setStatus(PageConst::STATUS_DRAFT);
+            $page->setStatus(PageStatus::DRAFT->value);
             $page->setCategory(PageConst::PAGE_CATEGORY_PAGE);
             $page->setLandingPage(PageConst::DEFAULT_LANDING_PAGE);
             $page->getPageContents()->clear();

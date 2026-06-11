@@ -6,6 +6,7 @@ use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
+use App\Enum\Admin\Content\Page\PageStatus;
 use App\Repository\Trait\OrderedQueryTrait;
 use App\Utils\Content\Page\PageConst;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -104,7 +105,7 @@ class PageRepository extends ServiceEntityRepository
             ->where('p.disabled = :disabled')
             ->setParameter('disabled', false)
             ->andWhere('p.status = :status')
-            ->setParameter('status', PageConst::STATUS_PUBLISH)
+            ->setParameter('status', PageStatus::PUBLISH->value)
             ->orderBy('p.updateAt', 'DESC');
 
         if ($categoryId !== 0) {
@@ -136,7 +137,7 @@ class PageRepository extends ServiceEntityRepository
             ->andWhere('p.disabled = :disabled')
             ->setParameter('disabled', false)
             ->andWhere('p.status = :status')
-            ->setParameter('status', PageConst::STATUS_PUBLISH)
+            ->setParameter('status', PageStatus::PUBLISH->value)
             ->orderBy('p.updateAt', 'DESC');
 
         $paginator = new Paginator($query->getQuery(), true);
@@ -169,7 +170,7 @@ class PageRepository extends ServiceEntityRepository
      * @param array $status
      * @return Page|null
      */
-    public function getBySlug(string $slug, array $status = [PageConst::STATUS_PUBLISH]): ?Page
+    public function getBySlug(string $slug, array $status = [PageStatus::PUBLISH->value]): ?Page
     {
         $query = $this->createQueryBuilder('p');
 

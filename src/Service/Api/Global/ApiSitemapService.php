@@ -8,6 +8,7 @@
 namespace App\Service\Api\Global;
 
 use App\Entity\Admin\Content\Page\Page;
+use App\Enum\Admin\Content\Page\PageStatus;
 use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
 use App\Utils\Content\Page\PageConst;
@@ -27,7 +28,7 @@ class ApiSitemapService extends AppApiService
     {
         /** @var PageRepository $pageRepo */
         $pageRepo = $this->getRepository(Page::class);
-        $pages = $pageRepo->findBy(['status' => PageConst::STATUS_PUBLISH], ['updateAt' => 'DESC']);
+        $pages = $pageRepo->findBy(['status' => PageStatus::PUBLISH->value], ['updateAt' => 'DESC']);
         $pageService = $this->getPageService();
 
         $return = [];

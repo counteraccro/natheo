@@ -11,6 +11,7 @@ use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Content\Page\PageStatus;
 use App\Repository\Admin\Content\Page\PageTranslationRepository;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
@@ -229,8 +230,8 @@ class PageService extends AppAdminService
         $translator = $this->getTranslator();
 
         return match ($status) {
-            PageConst::STATUS_DRAFT => $translator->trans('page.status.draft', domain: 'page'),
-            PageConst::STATUS_PUBLISH => $translator->trans('page.status.publish', domain: 'page'),
+            PageStatus::DRAFT->value => $translator->trans('page.status.draft', domain: 'page'),
+            PageStatus::PUBLISH->value => $translator->trans('page.status.publish', domain: 'page'),
             default => $translator->trans('page.status.inconnu', domain: 'page'),
         };
     }
@@ -246,8 +247,8 @@ class PageService extends AppAdminService
         $translator = $this->getTranslator();
 
         return [
-            PageConst::STATUS_DRAFT => $translator->trans('page.status.draft', domain: 'page'),
-            PageConst::STATUS_PUBLISH => $translator->trans('page.status.publish', domain: 'page'),
+            PageStatus::DRAFT->value => $translator->trans('page.status.draft', domain: 'page'),
+            PageStatus::PUBLISH->value => $translator->trans('page.status.publish', domain: 'page'),
         ];
     }
 
@@ -548,7 +549,7 @@ class PageService extends AppAdminService
      */
     public function getFormatedListePageForInternalLink(string $locale): array
     {
-        $listePages = $this->findBy(Page::class, ['disabled' => false, 'status' => PageConst::STATUS_PUBLISH]);
+        $listePages = $this->findBy(Page::class, ['disabled' => false, 'status' => PageStatus::PUBLISH->value]);
 
         $return = [];
         foreach ($listePages as $page) {
