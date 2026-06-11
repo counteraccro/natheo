@@ -436,10 +436,10 @@ export default {
       <alert-primary type="alert-primary-solid" :text="translate.help_text_1" />
     </div>
 
-    <div class="card p-3 mb-4">
+    <div class="card mb-4">
       <div class="card-section">
         <div class="card-header--actions">
-          <div class="card-header">
+          <div class="card-section-header">
             <svg
               class="icon-lg"
               aria-hidden="true"
@@ -456,7 +456,7 @@ export default {
               {{ translate.bloc_query }}
             </span>
           </div>
-          <div>
+          <div class="p-3 align-middle h-max">
             <div class="btn btn-success btn-sm me-2" @click="execute()">
               <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -480,13 +480,13 @@ export default {
               {{ translate.btn_save_query }}
             </div>
           </div>
-        </div>
-        <div class="card-subtitle">
-          {{ translate.bloc_query_sub_title }}
+          <div class="card-subtitle">
+            {{ translate.bloc_query_sub_title }}
+          </div>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 px-5">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 p-5">
         <div>
           <h3 class="text-sm font-semibold mb-3 text-[var(--text-primary)]">{{ translate.label_list_table }}</h3>
           <div class="form-control mb-3">
@@ -554,9 +554,9 @@ export default {
       </div>
     </div>
 
-    <div class="card p-3 mb-4">
-      <div class="card-section">
-        <div class="card-header">
+    <div class="card mb-4">
+      <div class="card-header">
+        <div class="card-section-header">
           <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke="currentColor"
