@@ -18,6 +18,7 @@ use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Comment\Status;
+use App\Enum\Admin\Content\Page\PageStatus;
 use App\Tests\Helper\FakerTrait;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageStatistiqueKey;
@@ -42,7 +43,7 @@ trait PageFixturesTrait
         $data = [
             'user' => $user,
             'render' => PageConst::RENDER_2_2_BLOCK,
-            'status' => PageConst::STATUS_PUBLISH,
+            'status' => PageStatus::PUBLISH->value,
             'disabled' => self::getFaker()->boolean(),
             'category' => self::getFaker()->randomDigit(),
             'landingPage' => false,
