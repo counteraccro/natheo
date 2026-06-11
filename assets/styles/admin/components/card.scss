@@ -3,13 +3,46 @@
    ============================================ */
 
 .card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+
+  &-section {
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1rem;
+  }
 
   &-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px 4px 20px;
+  }
+
+  &-header--actions {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--primary);
+    flex-shrink: 0;
   }
 
   &-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
   }
 
   &-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin: 0 0 8px 0;
+    padding: 0 20px;
   }
 }
