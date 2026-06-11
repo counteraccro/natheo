@@ -8,6 +8,7 @@
 namespace App\Tests\Service\Admin\Content\Page;
 
 use App\Entity\Admin\Content\Page\Page;
+use App\Enum\Admin\Content\Page\PageStatus;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\TranslateService;
 use App\Tests\AppWebTestCase;
@@ -83,11 +84,11 @@ class PageServiceTest extends AppWebTestCase
     {
         $translator = $this->container->get(TranslatorInterface::class);
 
-        $result = $this->pageService->getStatusStr(PageConst::STATUS_DRAFT);
+        $result = $this->pageService->getStatusStr(PageStatus::DRAFT->value);
         $this->assertIsString($result);
         $this->assertEquals($translator->trans('page.status.draft', domain: 'page'), $result);
 
-        $result = $this->pageService->getStatusStr(PageConst::STATUS_PUBLISH);
+        $result = $this->pageService->getStatusStr(PageStatus::PUBLISH->value);
         $this->assertIsString($result);
         $this->assertEquals($translator->trans('page.status.publish', domain: 'page'), $result);
 
