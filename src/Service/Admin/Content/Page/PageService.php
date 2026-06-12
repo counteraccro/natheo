@@ -11,6 +11,7 @@ use App\Entity\Admin\Content\Faq\Faq;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Repository\Admin\Content\Page\PageTranslationRepository;
 use App\Service\Admin\AppAdminService;
@@ -301,15 +302,15 @@ class PageService extends AppAdminService
     {
         $translator = $this->getTranslator();
         return [
-            PageConst::PAGE_CATEGORY_PAGE => $translator->trans('page.category.page', domain: 'page'),
-            PageConst::PAGE_CATEGORY_PROJET => $translator->trans('page.category.projet', domain: 'page'),
-            PageConst::PAGE_CATEGORY_ARTICLE => $translator->trans('page.category.article', domain: 'page'),
-            PageConst::PAGE_CATEGORY_BLOG => $translator->trans('page.category.blog', domain: 'page'),
-            PageConst::PAGE_CATEGORY_EVENEMEMT => $translator->trans('page.category.evenement', domain: 'page'),
-            PageConst::PAGE_CATEGORY_NEWS => $translator->trans('page.category.news', domain: 'page'),
-            PageConst::PAGE_CATEGORY_EVOLUTION => $translator->trans('page.category.evolution', domain: 'page'),
-            PageConst::PAGE_CATEGORY_DOCUMENTATION => $translator->trans('page.category.documentation', domain: 'page'),
-            PageConst::PAGE_CATEGORY_FAQ => $translator->trans('page.category.faq', domain: 'page'),
+            PageCategory::PAGE->value => $translator->trans('page.category.page', domain: 'page'),
+            PageCategory::PROJET->value => $translator->trans('page.category.projet', domain: 'page'),
+            PageCategory::ARTICLE->value => $translator->trans('page.category.article', domain: 'page'),
+            PageCategory::BLOG->value => $translator->trans('page.category.blog', domain: 'page'),
+            PageCategory::EVENEMENT->value => $translator->trans('page.category.evenement', domain: 'page'),
+            PageCategory::NEWS->value => $translator->trans('page.category.news', domain: 'page'),
+            PageCategory::EVOLUTION->value => $translator->trans('page.category.evolution', domain: 'page'),
+            PageCategory::DOCUMENTATION->value => $translator->trans('page.category.documentation', domain: 'page'),
+            PageCategory::FAQ->value => $translator->trans('page.category.faq', domain: 'page'),
         ];
     }
 

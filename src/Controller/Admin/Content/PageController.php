@@ -10,6 +10,7 @@ namespace App\Controller\Admin\Content;
 use App\Controller\Admin\AppAdminController;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageMeta;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\Global\Breadcrumb;
@@ -289,7 +290,7 @@ class PageController extends AppAdminController
             $page = $pageFactory->create()->getPage();
             $page->setRender(PageConst::RENDER_1_BLOCK);
             $page->setStatus(PageStatus::DRAFT->value);
-            $page->setCategory(PageConst::PAGE_CATEGORY_PAGE);
+            $page->setCategory(PageCategory::PAGE->value);
             $page->setLandingPage(PageConst::DEFAULT_LANDING_PAGE);
             $page->getPageContents()->clear();
 
