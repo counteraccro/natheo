@@ -9,6 +9,7 @@ namespace Service\Api\Content\Page;
 
 use App\Dto\Api\Content\Page\ApiFindPageContentDto;
 use App\Entity\Admin\Content\Page\PageContent;
+use App\Enum\Admin\Content\Page\PageCategory;
 use App\Service\Api\Content\Page\ApiPageContentService;
 use App\Tests\AppWebTestCase;
 use App\Utils\Content\Page\PageConst;
@@ -81,7 +82,7 @@ class ApiPageContentServiceTest extends AppWebTestCase
         $this->createPageAllDataDefault();
 
         $pageContent = $this->createPageContent(
-            customData: ['type' => PageConst::CONTENT_TYPE_LISTING, 'typeId' => PageConst::PAGE_CATEGORY_PAGE],
+            customData: ['type' => PageConst::CONTENT_TYPE_LISTING, 'typeId' => PageCategory::PAGE->value],
         );
         $dto = new ApiFindPageContentDto($pageContent->getId(), 'fr', 1, 20, '');
         $result = $this->apiPageContentService->getFormatContent($pageContent, $dto);

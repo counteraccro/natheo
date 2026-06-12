@@ -8,6 +8,7 @@
 namespace App\Tests\Service\Admin\Content\Page;
 
 use App\Entity\Admin\Content\Page\Page;
+use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\TranslateService;
@@ -154,11 +155,11 @@ class PageServiceTest extends AppWebTestCase
     public function testGetCategoryById(): void
     {
         $translator = $this->container->get(TranslatorInterface::class);
-        $result = $this->pageService->getCategoryById(PageConst::PAGE_CATEGORY_PAGE);
+        $result = $this->pageService->getCategoryById(PageCategory::PAGE->value);
         $this->assertIsString($result);
         $this->assertEquals($translator->trans('page.category.page', domain: 'page'), $result);
 
-        $result = $this->pageService->getCategoryById(PageConst::PAGE_CATEGORY_FAQ);
+        $result = $this->pageService->getCategoryById(PageCategory::FAQ->value);
         $this->assertIsString($result);
         $this->assertEquals($translator->trans('page.category.faq', domain: 'page'), $result);
     }

@@ -18,6 +18,7 @@ use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Comment\Status;
+use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Tests\Helper\FakerTrait;
 use App\Utils\Content\Page\PageConst;
@@ -311,7 +312,7 @@ trait PageFixturesTrait
             customData: [
                 'render' => PageConst::RENDER_2_BLOCK_BOTTOM,
                 'disabled' => false,
-                'category' => PageConst::PAGE_CATEGORY_PAGE,
+                'category' => PageCategory::PAGE->value,
                 'isOpenComment' => true,
             ],
         );
