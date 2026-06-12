@@ -76,60 +76,6 @@ class PageConst
     const CONTENT_TYPE_LISTING = 3;
 
     /**
-     * Catégorie page
-     * @var integer
-     */
-    const PAGE_CATEGORY_PAGE = 1;
-
-    /**
-     * Catégorie article
-     * @var integer
-     */
-    const PAGE_CATEGORY_ARTICLE = 2;
-
-    /**
-     * Catégorie projet
-     * @var integer
-     */
-    const PAGE_CATEGORY_PROJET = 3;
-
-    /**
-     * Catégorie blog
-     * @var integer
-     */
-    const PAGE_CATEGORY_BLOG = 4;
-
-    /**
-     * Catégorie évènement
-     * @var integer
-     */
-    const PAGE_CATEGORY_EVENEMEMT = 5;
-
-    /**
-     * Catégorie news
-     * @var integer
-     */
-    const PAGE_CATEGORY_NEWS = 6;
-
-    /**
-     * Catégorie évolution
-     * @var integer
-     */
-    const PAGE_CATEGORY_EVOLUTION = 7;
-
-    /**
-     * Catégorie documentation
-     * @var integer
-     */
-    const PAGE_CATEGORY_DOCUMENTATION = 8;
-
-    /**
-     * Catégorie faq
-     * @var integer
-     */
-    const PAGE_CATEGORY_FAQ = 9;
-
-    /**
      * Valeur par défaut pour la landing page
      * @var boolean
      */
