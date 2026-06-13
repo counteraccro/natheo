@@ -12,6 +12,7 @@ use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageCategory;
+use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Repository\Admin\Content\Page\PageTranslationRepository;
 use App\Service\Admin\AppAdminService;
@@ -286,9 +287,9 @@ class PageService extends AppAdminService
         $translator = $this->getTranslator();
 
         return [
-            PageConst::CONTENT_TYPE_TEXT => $translator->trans('page.content.text', domain: 'page'),
-            PageConst::CONTENT_TYPE_FAQ => $translator->trans('page.content.type.faq', domain: 'page'),
-            PageConst::CONTENT_TYPE_LISTING => $translator->trans('page.content.type.listing', domain: 'page'),
+            PageContentType::TEXT->value => $translator->trans('page.content.text', domain: 'page'),
+            PageContentType::FAQ->value => $translator->trans('page.content.type.faq', domain: 'page'),
+            PageContentType::LISTING->value => $translator->trans('page.content.type.listing', domain: 'page'),
         ];
     }
 
@@ -429,14 +430,14 @@ class PageService extends AppAdminService
         $label = $help = '';
 
         switch ($type) {
-            case PageConst::CONTENT_TYPE_FAQ:
+            case PageContentType::FAQ->value:
                 $repo = $this->getRepository(Faq::class);
                 $list = $repo->getListeFaq($locale);
                 $selected = array_key_first($list);
                 $label = $translator->trans('page.content.faq.list', domain: 'page');
                 $help = $translator->trans('page.content.faq.list.help', domain: 'page');
                 break;
-            case PageConst::CONTENT_TYPE_LISTING:
+            case PageContentType::LISTING->value:
                 $list = $this->getAllCategories();
                 $selected = array_key_first($list);
                 $label = $translator->trans('page.content.listing.list', domain: 'page');
@@ -469,13 +470,13 @@ class PageService extends AppAdminService
         $typeStr = $translator->trans('page.content.type', domain: 'page') . ' : ';
 
         switch ($type) {
-            case PageConst::CONTENT_TYPE_FAQ:
+            case PageContentType::FAQ->value:
                 /** @var Faq $faq */
                 $faq = $this->findOneById(Faq::class, $typeId);
                 $typeStr .= $translator->trans('page.content.type.faq', domain: 'page');
                 $info = $faq->getFaqTranslationByLocale($this->getLocales()['current'])->getTitle();
                 break;
-            case PageConst::CONTENT_TYPE_LISTING:
+            case PageContentType::LISTING->value:
                 $typeStr .= $translator->trans('page.content.type.listing', domain: 'page');
                 $info = $translator->trans(
                     'page.content.type.listing.info',

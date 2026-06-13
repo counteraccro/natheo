@@ -6,12 +6,11 @@ use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\Content\Tag\TagTranslation;
+use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Repository\Trait\OrderedQueryTrait;
-use App\Utils\Content\Page\PageConst;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -211,7 +210,7 @@ class PageRepository extends ServiceEntityRepository
             ->orWhere('pc.type = :type AND pct.text like :search AND pct.locale = :locale')
             ->orWhere('u.login like :search')
             ->setParameter('search', '%' . $search . '%')
-            ->setParameter('type', PageConst::CONTENT_TYPE_TEXT)
+            ->setParameter('type', PageContentType::TEXT->value)
             ->setParameter('locale', $locale);
 
         $paginator = new Paginator($query->getQuery(), true);

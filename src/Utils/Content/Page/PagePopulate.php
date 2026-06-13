@@ -14,6 +14,7 @@ use App\Entity\Admin\Content\Page\PageContentTranslation;
 use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\Content\Page\PageMetaTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
+use App\Enum\Admin\Content\Page\PageContentType;
 use App\Service\Admin\Content\Page\PageService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -197,7 +198,7 @@ class PagePopulate
                         ]);
 
                         switch ($content['type']) {
-                            case PageConst::CONTENT_TYPE_TEXT:
+                            case PageContentType::TEXT->value:
                                 foreach ($content['pageContentTranslations'] as $pageContentT) {
                                     $pageContentTranslation = new PageContentTranslation();
                                     /** @var PageContentTranslation $pageContentTranslation */

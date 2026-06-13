@@ -13,9 +13,9 @@ use App\Entity\Admin\Content\Faq\FaqCategory;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Page\PageContent;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\Content\Page\PageContentType;
 use App\Repository\Admin\Content\Page\PageRepository;
 use App\Service\Api\AppApiService;
-use App\Utils\Content\Page\PageConst;
 use App\Utils\Markdown;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\PersonalData;
@@ -61,15 +61,15 @@ class ApiPageContentService extends AppApiService
         $return = ['id' => $pageContent->getId()];
 
         switch ($pageContent->getType()) {
-            case PageConst::CONTENT_TYPE_TEXT:
+            case PageContentType::TEXT->value:
                 $return['content'] = $this->formatContentText(
                     $pageContent->getPageContentTranslationByLocale($dto->getLocale())->getText(),
                 );
                 break;
-            case PageConst::CONTENT_TYPE_FAQ:
+            case PageContentType::FAQ->value:
                 $return['content'] = $this->formatContentFAq($pageContent->getTypeId(), $dto->getLocale());
                 break;
-            case PageConst::CONTENT_TYPE_LISTING:
+            case PageContentType::LISTING->value:
                 $return['content'] = $this->formatContentListing(
                     $pageContent->getTypeId(),
                     $dto->getLocale(),

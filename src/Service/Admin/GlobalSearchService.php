@@ -13,7 +13,7 @@ use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
-use App\Utils\Content\Page\PageConst;
+use App\Enum\Admin\Content\Page\PageContentType;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
 use App\Utils\System\User\PersonalData;
@@ -289,7 +289,7 @@ class GlobalSearchService extends AppAdminService
 
         $content = [];
         foreach ($page->getPageContents() as $pageContent) {
-            if ($pageContent->getType() === PageConst::CONTENT_TYPE_TEXT) {
+            if ($pageContent->getType() === PageContentType::TEXT->value) {
                 $text = $pageContent->getPageContentTranslationByLocale($locale)->getText();
                 $re = '/(\B||\b)((?-i:\w+[^\w\n]+){0,10}' . $search . '(\B||\b)(?-i:[^\w\n]+\w+){0,10})/mu';
                 preg_match_all($re, $text, $matches, PREG_SET_ORDER, 0);

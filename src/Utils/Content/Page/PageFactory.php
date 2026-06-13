@@ -15,6 +15,7 @@ use App\Entity\Admin\Content\Page\PageMetaTranslation;
 use App\Entity\Admin\Content\Page\PageStatistique;
 use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Enum\Admin\Comment\Status;
+use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageMeta as PageMetaEnum;
 
 class PageFactory
@@ -92,11 +93,11 @@ class PageFactory
      * @return PageContent
      */
     private function createPageContent(
-        int $type = PageConst::CONTENT_TYPE_TEXT,
+        int $type = PageContentType::TEXT->value,
         ?int $type_id = null,
         int $renderBlock = 1,
     ): PageContent {
-        if ($type === PageConst::CONTENT_TYPE_TEXT) {
+        if ($type === PageContentType::TEXT->value) {
             $type_id = null;
         }
 
@@ -106,7 +107,7 @@ class PageFactory
         $pageContent->setRenderBlock($renderBlock);
         $pageContent->setRenderOrder(1);
 
-        if ($type === PageConst::CONTENT_TYPE_TEXT) {
+        if ($type === PageContentType::TEXT->value) {
             foreach ($this->locales as $locale) {
                 $pageContentTranslation = new PageContentTranslation();
                 $pageContentTranslation->setLocale($locale);
