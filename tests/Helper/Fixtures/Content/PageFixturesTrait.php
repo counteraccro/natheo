@@ -19,6 +19,7 @@ use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Comment\Status;
 use App\Enum\Admin\Content\Page\PageCategory;
+use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Tests\Helper\FakerTrait;
 use App\Utils\Content\Page\PageConst;
@@ -112,7 +113,7 @@ trait PageFixturesTrait
             'page' => $page,
             'renderBlock' => 1,
             'renderOrder' => 1,
-            'type' => PageConst::CONTENT_TYPE_TEXT,
+            'type' => PageContentType::TEXT->value,
             'typeId' => null,
         ];
 
@@ -325,7 +326,7 @@ trait PageFixturesTrait
         $this->createPageContent($page, [
             'renderBlock' => 1,
             'renderOrder' => 1,
-            'type' => PageConst::CONTENT_TYPE_FAQ,
+            'type' => PageContentType::FAQ->value,
             'typeId' => $faq->getId(),
         ]);
         $pageContent = $this->createPageContent($page, ['renderBlock' => 2, 'renderOrder' => 1]);
