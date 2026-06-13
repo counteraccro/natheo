@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Admin\Content\Page;
 
 use App\Repository\Admin\Content\Page\PageMetaTranslationRepository;
