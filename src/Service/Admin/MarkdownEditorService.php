@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Service pour la génération de l'éditeur Markdown du site
  * @author Gourdon Aymeric
