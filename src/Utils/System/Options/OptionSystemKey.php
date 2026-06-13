@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Liste des clés pour les options Systèmes
  * @author Gourdon Aymeric

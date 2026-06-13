@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Class pour la génération des traductions pour les scripts vue pour MarkdownEditor
  * @author Gourdon Aymeric

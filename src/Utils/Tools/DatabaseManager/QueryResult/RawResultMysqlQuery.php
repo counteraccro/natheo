@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Traitement des résultats des reqyêtes Mysql
  * @author Gourdon Aymeric

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Permet de créer une page ainsi que l'ensemble de ses données associées
  * @author Gourdon Aymeric
