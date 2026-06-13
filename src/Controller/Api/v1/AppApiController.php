@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Controller global pour l'API
  * @author Gourdon Aymeric
