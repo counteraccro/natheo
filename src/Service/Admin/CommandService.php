@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Service qui permet d'exécuter une commande console
  * @author Gourdon Aymeric
