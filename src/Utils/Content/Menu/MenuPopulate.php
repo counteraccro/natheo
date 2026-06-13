@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Permet de merger les données venant d'un tableau à un objet menu
  * @author Gourdon Aymeric
