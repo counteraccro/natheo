@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\MessageHandler\Tools;
 
 use App\Entity\Admin\Notification;
