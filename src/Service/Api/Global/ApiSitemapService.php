@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Service pour générer la sitemap API
  * @author Gourdon Aymeric
