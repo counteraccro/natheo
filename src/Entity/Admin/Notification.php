@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Admin;
 
 use App\Entity\Admin\System\User;
