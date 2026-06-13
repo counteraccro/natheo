@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Clés de config pour le tableau de notification
  * @author Gourdon Aymeric

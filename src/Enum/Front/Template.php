@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Enum des template de natheoCMS
  * @author Gourdon Aymeric
