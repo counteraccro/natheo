@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Controller de test pour la surcharge
  * @author Gourdon Aymeric
