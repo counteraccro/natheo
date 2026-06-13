@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Translation service, traitement des données liés au traductions
  * @author Gourdon Aymeric
