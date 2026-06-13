@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -241,11 +243,11 @@ trait FaqFixturesTrait
 
         $this->createFaqStatistique($faq, [
             'key' => FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES,
-            'value' => self::getFaker()->numberBetween(1, 1000),
+            'value' => strval(self::getFaker()->numberBetween(1, 1000)),
         ]);
         $this->createFaqStatistique($faq, [
             'key' => FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
-            'value' => self::getFaker()->numberBetween(1, 5),
+            'value' => strval(self::getFaker()->numberBetween(1, 5)),
         ]);
 
         foreach ($this->locales as $locale) {
