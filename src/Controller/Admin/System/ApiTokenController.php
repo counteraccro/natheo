@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin\System;
 
 use App\Controller\Admin\AppAdminController;
