@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Index, point d'entrée sur le site
  * @author Gourdon Aymeric
