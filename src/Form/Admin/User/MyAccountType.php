@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Formulaire pour mon compte
  * @author Gourdon Aymeric
