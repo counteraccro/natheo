@@ -9,11 +9,10 @@ namespace App\Tests\Service\Admin\Content\Page;
 
 use App\Entity\Admin\Content\Page\Page;
 use App\Enum\Admin\Content\Page\PageCategory;
+use App\Enum\Admin\Content\Page\PageContentType;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Service\Admin\Content\Page\PageService;
-use App\Service\Admin\System\TranslateService;
 use App\Tests\AppWebTestCase;
-use App\Utils\Content\Page\PageConst;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -215,7 +214,7 @@ class PageServiceTest extends AppWebTestCase
             $this->createFaqTranslation($faq, $data);
         }
 
-        $result = $this->pageService->getListeContentByType(PageConst::CONTENT_TYPE_FAQ);
+        $result = $this->pageService->getListeContentByType(PageContentType::FAQ->value);
         $this->assertIsArray($result);
         $this->assertArrayHasKey('list', $result);
         $this->assertCount(2, $result['list']);
@@ -223,7 +222,7 @@ class PageServiceTest extends AppWebTestCase
         $this->assertArrayHasKey('label', $result);
         $this->assertArrayHasKey('help', $result);
 
-        $result = $this->pageService->getListeContentByType(PageConst::CONTENT_TYPE_LISTING);
+        $result = $this->pageService->getListeContentByType(PageContentType::LISTING->value);
         $this->assertIsArray($result);
         $this->assertArrayHasKey('list', $result);
         $this->assertArrayHasKey('selected', $result);
@@ -242,7 +241,7 @@ class PageServiceTest extends AppWebTestCase
         $page = $this->createPageAllDataDefault();
 
         foreach ($page->getPageContents() as $content) {
-            if ($content->getType() === PageConst::CONTENT_TYPE_FAQ) {
+            if ($content->getType() === PageContentType::FAQ->value) {
                 $result = $this->pageService->getInfoContentByTypeAndTypeId($content->getType(), $content->getTypeId());
                 $this->assertIsArray($result);
                 $this->assertArrayHasKey('type', $result);

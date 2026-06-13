@@ -8,8 +8,8 @@
 namespace App\Tests\Utils\Content\Page;
 
 use App\Entity\Admin\Content\Page\Page;
+use App\Enum\Admin\Content\Page\PageContentType;
 use App\Tests\AppWebTestCase;
-use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageFactory;
 use App\Utils\Content\Page\PageStatistiqueKey;
 
@@ -35,7 +35,7 @@ class PageFactoryTest extends AppWebTestCase
         $this->assertCount(1, $page->getPageContents());
         $pageContent = $page->getPageContents()->first();
         $this->assertNotNull($pageContent);
-        $this->assertEquals(PageConst::CONTENT_TYPE_TEXT, $pageContent->getType());
+        $this->assertEquals(PageContentType::TEXT->value, $pageContent->getType());
         $this->assertNull($pageContent->getId());
         $this->assertCount(count($this->locales), $pageContent->getPageContentTranslations());
         foreach ($this->locales as $locale) {
