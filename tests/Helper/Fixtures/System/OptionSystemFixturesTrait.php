@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -72,19 +74,19 @@ trait OptionSystemFixturesTrait
 
         $data = [
             'key' => OptionSystemKey::OS_REPLACE_DELETE_USER,
-            'value' => 1,
+            'value' => '1',
         ];
         $this->createOptionSystem($data);
 
         $data = [
             'key' => OptionSystemKey::OS_CONFIRM_LEAVE_FORM,
-            'value' => 1,
+            'value' => '1',
         ];
         $this->createOptionSystem($data);
 
         $data = [
             'key' => OptionSystemKey::OS_ALLOW_DELETE_DATA,
-            'value' => 1,
+            'value' => '1',
         ];
         $this->createOptionSystem($data);
 
@@ -108,13 +110,13 @@ trait OptionSystemFixturesTrait
 
         $data = [
             'key' => OptionSystemKey::OS_NB_ELEMENT,
-            'value' => 20,
+            'value' => '20',
         ];
         $this->createOptionSystem($data);
 
         $data = [
             'key' => OptionSystemKey::OS_LOG_DOCTRINE,
-            'value' => 1,
+            'value' => '1',
         ];
         $this->createOptionSystem($data);
 
@@ -144,25 +146,25 @@ trait OptionSystemFixturesTrait
 
         $data = [
             'key' => OptionSystemKey::OS_MAIL_NOTIFICATION,
-            'value' => 1,
+            'value' => '1',
         ];
         $this->createOptionSystem($data);
 
         $data = [
             'key' => OptionSystemKey::OS_PURGE_NOTIFICATION,
-            'value' => 30,
+            'value' => '30',
         ];
         $this->createOptionSystem($data);
 
         $data = [
             'key' => OptionSystemKey::OS_MAIL_RESET_PASSWORD_TIME,
-            'value' => 20,
+            'value' => '20',
         ];
         $this->createOptionSystem($data);
 
         $data = [
             'key' => OptionSystemKey::OS_MEDIA_CREATE_PHYSICAL_FOLDER,
-            'value' => 1,
+            'value' => '1',
         ];
         $this->createOptionSystem($data);
 
@@ -180,24 +182,24 @@ trait OptionSystemFixturesTrait
 
         $data = [
             'key' => OptionSystemKey::OS_API_TIME_VALIDATE_USER_TOKEN,
-            'value' => 60,
+            'value' => '60',
         ];
         $this->createOptionSystem($data);
 
         $data = [
             'key' => OptionSystemKey::OS_OPEN_COMMENT,
-            'value' => 1,
+            'value' => '1',
         ];
         $this->createOptionSystem($data);
 
         $data = [
             'key' => OptionSystemKey::OS_NEW_COMMENT_WAIT_VALIDATION,
-            'value' => 1,
+            'value' => '1',
         ];
 
         $data = [
             'key' => OptionSystemKey::OS_NOTIFICATION,
-            'value' => 1,
+            'value' => '1',
         ];
         $this->createOptionSystem($data);
 
