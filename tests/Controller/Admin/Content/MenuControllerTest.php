@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -266,7 +268,7 @@ class MenuControllerTest extends AppWebTestCase
         $this->assertArrayHasKey('redirect', $content);
         $this->assertFalse($content['redirect']);
         $this->assertArrayHasKey('url', $content);
-        $this->assertStringContainsString($menu->getId(), $content['url']);
+        $this->assertStringContainsString(strval($menu->getId()), $content['url']);
 
         $menuRepo = $this->em->getRepository(Menu::class);
         $verif = $menuRepo->findOneBy(['id' => $menu->getId()]);
