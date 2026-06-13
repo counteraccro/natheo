@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Authentification sur le site
  * @author Gourdon Aymeric
