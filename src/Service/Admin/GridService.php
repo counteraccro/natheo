@@ -94,7 +94,7 @@ class GridService extends AppAdminService
             function () use (&$i, $values) {
                 $value = $values[$i] ?? '?';
                 $i++;
-                return "'" . addslashes($value) . "'";
+                return "'" . addslashes(strval($value)) . "'";
             },
             $sql,
         );
