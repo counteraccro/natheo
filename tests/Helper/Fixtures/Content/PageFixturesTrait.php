@@ -344,11 +344,11 @@ trait PageFixturesTrait
 
         $this->createPageStatistique($page, [
             'key' => PageStatistiqueKey::KEY_PAGE_NB_READ,
-            'value' => self::getFaker()->randomNumber(3),
+            'value' => strval(self::getFaker()->randomNumber(3)),
         ]);
         $this->createPageStatistique($page, [
             'key' => PageStatistiqueKey::KEY_PAGE_NB_VISITEUR,
-            'value' => self::getFaker()->randomNumber(3),
+            'value' => strval(self::getFaker()->randomNumber(3)),
         ]);
         return $page;
     }
