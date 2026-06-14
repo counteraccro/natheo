@@ -81,7 +81,7 @@ class UserDataServiceTest extends AppWebTestCase
         $user = $this->createUser();
         $this->createUserData($user, ['key' => UserDataKey::KEY_LAST_CONNEXION]);
         $time = time();
-        $this->userDataService->update(UserDataKey::KEY_LAST_CONNEXION, $time, $user);
+        $this->userDataService->update(UserDataKey::KEY_LAST_CONNEXION, strval($time), $user);
         $dateTime = $this->userDataService->getLastConnexion($user);
         $this->assertEquals($time, $dateTime->getTimestamp());
     }
@@ -96,10 +96,10 @@ class UserDataServiceTest extends AppWebTestCase
     {
         $user = $this->createUser();
         $this->createUserData($user, ['key' => UserDataKey::KEY_HELP_FIRST_CONNEXION]);
-        $this->userDataService->update(UserDataKey::KEY_HELP_FIRST_CONNEXION, 1, $user);
+        $this->userDataService->update(UserDataKey::KEY_HELP_FIRST_CONNEXION, '1', $user);
         $this->assertTrue($this->userDataService->getHelpFirstConnexion($user));
 
-        $this->userDataService->update(UserDataKey::KEY_HELP_FIRST_CONNEXION, 0, $user);
+        $this->userDataService->update(UserDataKey::KEY_HELP_FIRST_CONNEXION, '0', $user);
         $this->assertFalse($this->userDataService->getHelpFirstConnexion($user));
     }
 
