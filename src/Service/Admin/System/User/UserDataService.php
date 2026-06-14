@@ -31,7 +31,7 @@ class UserDataService extends AppAdminService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function update(string $key, mixed $value, User $user): void
+    public function update(string $key, string $value, User $user): void
     {
         $userData = $this->findKeyAndUser($key, $user);
         if ($userData === null) {
@@ -86,7 +86,7 @@ class UserDataService extends AppAdminService
         }
 
         $lastConnexion = new DateTime();
-        $lastConnexion->setTimestamp($userData->getValue());
+        $lastConnexion->setTimestamp(intval($userData->getValue()));
         return $lastConnexion;
     }
 
@@ -133,7 +133,7 @@ class UserDataService extends AppAdminService
         }
 
         $dt = new \DateTime($dateTimeStr);
-        $this->update(UserDataKey::TIME_VALIDATE_TOKEN, $dt->getTimestamp(), $user);
+        $this->update(UserDataKey::TIME_VALIDATE_TOKEN, strval($dt->getTimestamp()), $user);
 
         return $token;
     }
