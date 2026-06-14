@@ -177,7 +177,7 @@ class ApiCommentService extends AppApiService
     public function moderateComment(ApiModerateCommentDto $dto, Comment $comment, User $user): void
     {
         $comment->setModerationComment($dto->getModerationComment());
-        $comment->setStatus($dto->getStatus());
+        $comment->setStatus(intval($dto->getStatus()));
         $comment->setUserModeration($user);
         $this->save($comment);
     }
