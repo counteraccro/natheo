@@ -121,7 +121,7 @@ class PageFixtures extends AppFixtures implements FixtureGroupInterface, Ordered
                 }
             } elseif ($key === 'typeId') {
                 // Possible que la référence soit un id en dur
-                if ($this->hasReference($value, Faq::class)) {
+                if ($this->hasReference(strval($value), Faq::class)) {
                     $pageContent->setTypeId($this->getReference($value, Faq::class)->getId());
                 } else {
                     $pageContent->setTypeId($value);
