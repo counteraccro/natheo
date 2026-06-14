@@ -1,8 +1,8 @@
 user:
   User:
-    email: mbegue@raynaud.fr
-    password: $2y$04$Rzq2yOB1qWfSyXVz1S5AreaRJvlv6kcMkmwq5bkJ9he1vY7PLcFC6
-    login: hdelaunay
+    email: rcaron@tele2.fr
+    password: $2y$04$QwahcM5A9riB9EwHVjKlR.ilBCEiChthHyJL7IlnANvri5l/WbD5y
+    login: schneider.emile
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN
