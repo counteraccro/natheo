@@ -50,7 +50,7 @@ class ApiPageService extends AppApiService
         }
 
         $pageStatistiqueNbPageRead = $page->getPageStatistiqueByKey(PageStatistiqueKey::KEY_PAGE_NB_READ);
-        $pageStatistiqueNbPageRead->setValue($pageStatistiqueNbPageRead->getValue() + 1);
+        $pageStatistiqueNbPageRead->setValue(strval($pageStatistiqueNbPageRead->getValue() + 1));
         $this->save($pageStatistiqueNbPageRead);
 
         $apiPageFormater = new ApiPageFormater($page, $dto);
