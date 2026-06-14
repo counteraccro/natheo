@@ -40,7 +40,7 @@ class Thumbnail
 
         $orgWidth = imagesx($sourceImage);
         $orgHeight = imagesy($sourceImage);
-        $thumbHeight = floor($orgHeight * ($thumbWidth / $orgWidth));
+        $thumbHeight = intval(floor($orgHeight * ($thumbWidth / $orgWidth)));
         $destImage = imagecreatetruecolor($thumbWidth, $thumbHeight);
 
         imagecopyresampled($destImage, $sourceImage, 0, 0, 0, 0, $thumbWidth, $thumbHeight, $orgWidth, $orgHeight);
