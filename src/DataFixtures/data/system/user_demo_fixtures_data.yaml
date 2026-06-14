@@ -6,9 +6,9 @@ user:
         firstname: user-demo
         lastname: the-demo
         roles: ROLE_USER
-        disabled: 0
-        anonymous: 0
-        founder: 0
+        disabled: false
+        anonymous: false
+        founder: false
         avatar: 'avatar-1.png'
         description: "Je suis un compte de démonstration généré à l'installation du CMS"
     R-Contributeur:
@@ -18,9 +18,9 @@ user:
         firstname: contributeur-demo
         lastname: the-demo
         roles: ROLE_CONTRIBUTEUR
-        disabled: 0
-        anonymous: 0
-        founder: 0
+        disabled: false
+        anonymous: false
+        founder: false
         avatar: 'avatar-3.png'
         description: "Je suis un compte de démonstration généré à l'installation du CMS"
     R-Admin:
@@ -30,9 +30,9 @@ user:
         firstname: admin-demo
         lastname: the-demo
         roles: ROLE_ADMIN
-        disabled: 0
-        anonymous: 0
-        founder: 0
+        disabled: false
+        anonymous: false
+        founder: false
         avatar: 'avatar-4.png'
         description: "Je suis un compte de démonstration généré à l'installation du CMS"
     R-SuperAdmin:
@@ -42,9 +42,9 @@ user:
         firstname: super-admin-demo
         lastname: the-demo
         roles: ROLE_SUPER_ADMIN
-        disabled: 0
-        anonymous: 0
-        founder: 0
+        disabled: false
+        anonymous: false
+        founder: false
         avatar: 'avatar-5.png'
         description: "Je suis un compte de démonstration généré à l'installation du CMS"
     User:
@@ -54,8 +54,8 @@ user:
         firstname: User
         lastname: Demo
         roles: ROLE_SUPER_ADMIN
-        disabled: 0
-        anonymous: 0
-        founder: 1
+        disabled: false
+        anonymous: false
+        founder: true
         avatar: 'avatar-2.png'
         description: "Je suis un compte de démonstration généré à l'installation du CMS"

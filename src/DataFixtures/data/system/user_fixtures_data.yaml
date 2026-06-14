@@ -1,13 +1,13 @@
 user:
   User:
-    email: rcaron@tele2.fr
-    password: $2y$04$QwahcM5A9riB9EwHVjKlR.ilBCEiChthHyJL7IlnANvri5l/WbD5y
-    login: schneider.emile
+    email: lmillet@yahoo.fr
+    password: $2y$04$UEIlsAvQn.nw/DqCpxRcbuLpvYLTr122xBxY.DtLcetZJeXgO9a6u
+    login: mlaine
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN
-    disabled: 0
-    anonymous: 0
-    founder: 1
+    disabled: false
+    anonymous: false
+    founder: true
     avatar: avatar-2.png
     description: "N'oubliez pas de mettre à jour cette description"

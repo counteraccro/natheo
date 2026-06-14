@@ -20,6 +20,6 @@ media_folder:
         path: /medias
         parent: Folder_media
     Folder_2023:
-        name: 2023
+        name: '2023'
         path: /medias/articles
         parent: Folder_article
