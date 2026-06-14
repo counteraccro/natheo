@@ -282,6 +282,7 @@ class CommentController extends AppAdminController
         $data = json_decode($request->getContent(), true);
         unset($data['comment']['statusStr']);
 
+        $data['comment']['status'] = intval($data['comment']['status']);
         $comment = $commentService->findOneById(Comment::class, $data['comment']['id']);
 
         $commentPopulate = new CommentPopulate($comment, $data['comment']);
