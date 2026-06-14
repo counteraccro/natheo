@@ -112,7 +112,7 @@ class UserController extends AppAdminController
     public function updateMyOption(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $this->optionUserService->saveValueByKee($data['key'], $data['value']);
+        $this->optionUserService->saveValueByKee($data['key'], strval($data['value']));
         return $this->json(['success' => 'true']);
     }
 
