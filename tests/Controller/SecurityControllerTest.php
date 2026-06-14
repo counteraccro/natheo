@@ -47,13 +47,13 @@ class SecurityControllerTest extends AppWebTestCase
             'GET',
             $this->router->generate('auth_change_password_user', ['key' => self::getFaker()->text()]),
         );
-        $this->assertResponseStatusCodeSame('404');
+        $this->assertResponseStatusCodeSame(404);
 
         $this->client->request(
             'GET',
             $this->router->generate('auth_change_new_password_user', ['key' => self::getFaker()->text()]),
         );
-        $this->assertResponseStatusCodeSame('404');
+        $this->assertResponseStatusCodeSame(404);
 
         $user = $this->createUser();
         $optionUser = $this->createUserData($user, [
