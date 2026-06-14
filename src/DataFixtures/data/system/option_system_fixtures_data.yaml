@@ -4,7 +4,7 @@ option_system:
         value: 'Nathéo CMS'
     OS_OPEN_SITE:
         key: 'OS_OPEN_SITE'
-        value: 1
+        value: '1'
     OS_FRONT_SCRIPT_TOP:
         key: 'OS_FRONT_SCRIPT_TOP'
         value: ''
@@ -16,22 +16,22 @@ option_system:
         value: ''
     OS_REPLACE_DELETE_USER:
         key: 'OS_REPLACE_DELETE_USER'
-        value: 1
+        value: '1'
     OS_CONFIRM_LEAVE_FORM:
         key: 'OS_CONFIRM_LEAVE_FORM'
-        value: 1
+        value: '1'
     OS_ALLOW_DELETE_DATA:
         key: 'OS_ALLOW_DELETE_DATA'
-        value: 1
+        value: '1'
     OS_DEFAULT_LANGUAGE:
         key: 'OS_DEFAULT_LANGUAGE'
         value: 'fr'
     OS_NB_ELEMENT:
         key: 'OS_NB_ELEMENT'
-        value: 20
+        value: '20'
     OS_LOG_DOCTRINE:
         key: 'OS_LOG_DOCTRINE'
-        value: 1
+        value: '1'
     OS_MAIL_FROM:
         key: 'OS_MAIL_FROM'
         value: 'support@natheo.fr'
@@ -46,34 +46,34 @@ option_system:
         value: "<hr />Cordialement, <br />L'équipe de Natheo CMS"
     OS_MAIL_NOTIFICATION:
         key: 'OS_MAIL_NOTIFICATION'
-        value: 1
+        value: '1'
     OS_NOTIFICATION:
         key: 'OS_NOTIFICATION'
-        value: 1
+        value: '1'
     OS_PURGE_NOTIFICATION:
         key: 'OS_PURGE_NOTIFICATION'
-        value: 30
+        value: '30'
     OS_MAIL_RESET_PASSWORD_TIME:
         key: 'OS_MAIL_RESET_PASSWORD_TIME'
-        value: 20
+        value: '20'
     OS_MEDIA_CREATE_PHYSICAL_FOLDER:
         key: 'OS_MEDIA_CREATE_PHYSICAL_FOLDER'
-        value: 1
+        value: '1'
     OS_MEDIA_PATH:
         key: 'OS_MEDIA_PATH'
-        value: natheotheque
+        value: 'natheotheque'
     OS_MEDIA_URL:
         key: 'OS_MEDIA_URL'
         value: 'http://dev.natheo:8888'
     OS_API_TIME_VALIDATE_USER_TOKEN:
         key: 'OS_API_TIME_VALIDATE_USER_TOKEN'
-        value: 60
+        value: '60'
     OS_OPEN_COMMENT:
         key: 'OS_OPEN_COMMENT'
-        value: 1
+        value: '1'
     OS_NEW_COMMENT_WAIT_VALIDATION:
         key: 'OS_NEW_COMMENT_WAIT_VALIDATION'
-        value: 1
+        value: '1'
     OS_THEME_FRONT_SITE:
         key: 'OS_THEME_FRONT_SITE'
         value: 'natheo_horizon'
@@ -103,7 +103,7 @@ option_system:
         value: ''
     OS_FRONT_ROBOT_NO_INDEX:
         key: 'OS_FRONT_ROBOT_NO_INDEX'
-        value: 0
+        value: '0'
     OS_FRONT_ROBOT_NO_FOLLOW:
         key: 'OS_FRONT_ROBOT_NO_FOLLOW'
-        value: 0
+        value: '0'

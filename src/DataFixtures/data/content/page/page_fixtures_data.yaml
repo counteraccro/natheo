@@ -6,7 +6,7 @@ pages:
         status: 1
         category: 1
         landingPage: true
-        isOpenComment: 1
+        isOpenComment: true
         nbComment: 0
         ruleComment: 2
         headerImg: media-7
@@ -179,10 +179,10 @@ pages:
         pageStatistique:
             PAGE_NB_VISITEUR:
                 key: PAGE_NB_VISITEUR
-                value: 1
+                value: '1'
             PAGE_NB_READ:
                 key: PAGE_NB_READ
-                value: 1
+                value: '1'
         pageMeta:
             meta1:
                 name: 'description'
@@ -239,7 +239,7 @@ pages:
         status: 1
         category: 4
         landingPage: false
-        isOpenComment: 1
+        isOpenComment: true
         nbComment: 0
         ruleComment: 2
         headerImg: media-5
@@ -336,10 +336,10 @@ pages:
         pageStatistique:
             PAGE_NB_VISITEUR:
                 key: PAGE_NB_VISITEUR
-                value: 0
+                value: '0'
             PAGE_NB_READ:
                 key: PAGE_NB_READ
-                value: 0
+                value: '0'
         pageMeta:
             meta1:
                 name: 'description'
@@ -396,7 +396,7 @@ pages:
         status: 1
         category: 4
         landingPage: false
-        isOpenComment: 1
+        isOpenComment: true
         nbComment: 0
         ruleComment: 2
         headerImg: media-1
@@ -566,10 +566,10 @@ pages:
         pageStatistique:
             PAGE_NB_VISITEUR:
                 key: PAGE_NB_VISITEUR
-                value: 0
+                value: '0'
             PAGE_NB_READ:
                 key: PAGE_NB_READ
-                value: 0
+                value: '0'
         pageMeta:
             meta1:
                 name: 'description'
@@ -626,7 +626,7 @@ pages:
         status: 1
         category: 4
         landingPage: false
-        isOpenComment: 1
+        isOpenComment: true
         nbComment: 0
         ruleComment: 2
         headerImg: media-2
@@ -906,10 +906,10 @@ pages:
         pageStatistique:
             PAGE_NB_VISITEUR:
                 key: PAGE_NB_VISITEUR
-                value: 0
+                value: '0'
             PAGE_NB_READ:
                 key: PAGE_NB_READ
-                value: 0
+                value: '0'
         pageMeta:
             meta1:
                 name: 'description'
@@ -966,7 +966,7 @@ pages:
         status: 1
         category: 4
         landingPage: false
-        isOpenComment: 1
+        isOpenComment: true
         nbComment: 0
         ruleComment: 2
         headerImg: media-3
@@ -1353,10 +1353,10 @@ pages:
         pageStatistique:
             PAGE_NB_VISITEUR:
                 key: PAGE_NB_VISITEUR
-                value: 0
+                value: '0'
             PAGE_NB_READ:
                 key: PAGE_NB_READ
-                value: 0
+                value: '0'
         pageMeta:
             meta1:
                 name: 'description'
@@ -1413,7 +1413,7 @@ pages:
         status: 1
         category: 2
         landingPage: false
-        isOpenComment: 1
+        isOpenComment: true
         nbComment: 0
         ruleComment: 2
         headerImg: media-6
@@ -1474,10 +1474,10 @@ pages:
         pageStatistique:
             PAGE_NB_VISITEUR:
                 key: PAGE_NB_VISITEUR
-                value: 0
+                value: '0'
             PAGE_NB_READ:
                 key: PAGE_NB_READ
-                value: 0
+                value: '0'
         pageMeta:
             meta1:
                 name: 'description'
@@ -1534,7 +1534,7 @@ pages:
         status: 1
         category: 2
         landingPage: false
-        isOpenComment: 1
+        isOpenComment: true
         nbComment: 0
         ruleComment: 2
         headerImg: media-4
@@ -1727,10 +1727,10 @@ pages:
         pageStatistique:
             PAGE_NB_VISITEUR:
                 key: PAGE_NB_VISITEUR
-                value: 0
+                value: '0'
             PAGE_NB_READ:
                 key: PAGE_NB_READ
-                value: 0
+                value: '0'
         pageMeta:
             meta1:
                 name: 'description'
@@ -1787,7 +1787,7 @@ pages:
         status: 1
         category: 2
         landingPage: false
-        isOpenComment: 1
+        isOpenComment: true
         nbComment: 0
         ruleComment: 2
         headerImg: media-2
@@ -1991,10 +1991,10 @@ pages:
         pageStatistique:
             PAGE_NB_VISITEUR:
                 key: PAGE_NB_VISITEUR
-                value: 0
+                value: '0'
             PAGE_NB_READ:
                 key: PAGE_NB_READ
-                value: 0
+                value: '0'
         pageMeta:
             meta1:
                 name: 'description'
@@ -2051,7 +2051,7 @@ pages:
         status: 1
         category: 2
         landingPage: false
-        isOpenComment: 1
+        isOpenComment: true
         nbComment: 0
         ruleComment: 2
         headerImg: media-1
@@ -2312,10 +2312,10 @@ pages:
         pageStatistique:
             PAGE_NB_VISITEUR:
                 key: PAGE_NB_VISITEUR
-                value: 0
+                value: '0'
             PAGE_NB_READ:
                 key: PAGE_NB_READ
-                value: 0
+                value: '0'
         pageMeta:
             meta1:
                 name: 'description'
@@ -2372,7 +2372,7 @@ pages:
         status: 1
         category: 2
         landingPage: false
-        isOpenComment: 1
+        isOpenComment: true
         nbComment: 0
         ruleComment: 2
         headerImg: media-6
@@ -2666,10 +2666,10 @@ pages:
         pageStatistique:
             PAGE_NB_VISITEUR:
                 key: PAGE_NB_VISITEUR
-                value: 0
+                value: '0'
             PAGE_NB_READ:
                 key: PAGE_NB_READ
-                value: 0
+                value: '0'
         pageMeta:
             meta1:
                 name: 'description'
@@ -2726,7 +2726,7 @@ pages:
         status: 1
         category: 2
         landingPage: false
-        isOpenComment: 1
+        isOpenComment: true
         nbComment: 0
         ruleComment: 2
         headerImg: media-3
@@ -2935,10 +2935,10 @@ pages:
         pageStatistique:
             PAGE_NB_VISITEUR:
                 key: PAGE_NB_VISITEUR
-                value: 0
+                value: '0'
             PAGE_NB_READ:
                 key: PAGE_NB_READ
-                value: 0
+                value: '0'
         pageMeta:
             meta1:
                 name: 'description'
@@ -2995,7 +2995,7 @@ pages:
         status: 1
         category: 9
         landingPage: false
-        isOpenComment: 1
+        isOpenComment: true
         nbComment: 0
         ruleComment: 2
         headerImg: media-6
@@ -3142,10 +3142,10 @@ pages:
         pageStatistique:
             PAGE_NB_VISITEUR:
                 key: PAGE_NB_VISITEUR
-                value: 0
+                value: '0'
             PAGE_NB_READ:
                 key: PAGE_NB_READ
-                value: 0
+                value: '0'
         pageMeta:
             meta1:
                 name: 'description'
@@ -3202,7 +3202,7 @@ pages:
         status: 1
         category: 1
         landingPage: false
-        isOpenComment: 1
+        isOpenComment: true
         nbComment: 0
         ruleComment: 2
         headerImg: media-6
@@ -3457,10 +3457,10 @@ pages:
         pageStatistique:
             PAGE_NB_VISITEUR:
                 key: PAGE_NB_VISITEUR
-                value: 0
+                value: '0'
             PAGE_NB_READ:
                 key: PAGE_NB_READ
-                value: 0
+                value: '0'
         pageMeta:
             meta1:
                 name: 'description'
