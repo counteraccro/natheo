@@ -135,7 +135,7 @@ class PageFactory
         foreach (PageStatistiqueKey::getConstants() as $constant) {
             $pageStatistique = new PageStatistique();
             $pageStatistique->setKey($constant);
-            $pageStatistique->setValue(0);
+            $pageStatistique->setValue('0');
             $pageStatistique->setPage($this->page);
             $this->page->addPageStatistique($pageStatistique);
         }
