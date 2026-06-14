@@ -81,7 +81,8 @@ class MenuPopulate
      */
     private function populateMenu(): void
     {
-        $this->menu = $this->mergeData($this->menu, $this->populate, [self::KEY_MENU_ELEMENTS, 'refChilds', 'id']);
+        $populate = $this->castValuesToInt($this->populate, ['type', 'position']);
+        $this->menu = $this->mergeData($this->menu, $populate, [self::KEY_MENU_ELEMENTS, 'refChilds', 'id']);
     }
 
     /**
@@ -249,5 +250,15 @@ class MenuPopulate
             $object->$func($value);
         }
         return $object;
+    }
+
+    private function castValuesToInt(array $data, array $keys): array
+    {
+        foreach ($keys as $key) {
+            if (array_key_exists($key, $data)) {
+                $data[$key] = (int) $data[$key];
+            }
+        }
+        return $data;
     }
 }
