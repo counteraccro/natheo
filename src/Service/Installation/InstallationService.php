@@ -199,7 +199,7 @@ class InstallationService extends AppAdminService
     private function createDataUser(User $user): void
     {
         $userDataService = $this->getUserData();
-        $userDataService->update(UserDataKey::KEY_HELP_FIRST_CONNEXION, 1, $user);
+        $userDataService->update(UserDataKey::KEY_HELP_FIRST_CONNEXION, '1', $user);
     }
 
     /**
