@@ -368,7 +368,7 @@ class LoggerService extends AppService
         if ($finder->hasResults()) {
             foreach ($finder as $file) {
                 $filesystem = new Filesystem();
-                $filesystem->remove($file);
+                $filesystem->remove($file->getRealPath());
             }
             return true;
         }
