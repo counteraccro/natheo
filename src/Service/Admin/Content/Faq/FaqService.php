@@ -226,7 +226,7 @@ class FaqService extends AppAdminService
                 break;
             default:
         }
-        $faqStat->setValue($val);
+        $faqStat->setValue(strval($val));
         $this->save($faqStat);
     }
 }
