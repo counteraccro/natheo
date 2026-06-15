@@ -707,26 +707,32 @@ export default defineComponent({
     </div>
 
     <div class="card rounded-lg overflow-hidden mb-5">
-      <div class="px-5 py-4 border-b flex items-center gap-2" style="border-color: var(--border-color)">
-        <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-          ></path>
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-          ></path>
-        </svg>
-        <span class="text-sm font-semibold" style="color: var(--text-primary)">{{ translate.title_global_form }}</span>
-        <div class="ml-auto flex items-center gap-3">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <svg class="w-4 h-4" style="color: var(--primary)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+              ></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              ></path>
+            </svg>
+
+            {{ translate.title_global_form }}
+          </div>
+        </div>
+
+        <div class="card-actions">
           <div class="input-addon-group">
-            <span class="input-addon input-addon-left"
-              ><svg
+            <span class="input-addon input-addon-left">
+              <svg
                 class="icon-sm"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
@@ -741,14 +747,18 @@ export default defineComponent({
                   stroke-linejoin="round"
                   stroke-width="2"
                   d="m13 19 3.5-9 3.5 9m-6.125-2h5.25M3 7h7m0 0h2m-2 0c0 1.63-.793 3.926-2.239 5.655M7.5 6.818V5m.261 7.655C6.79 13.82 5.521 14.725 4 15m3.761-2.345L5 10m2.761 2.655L10.2 15"
-                ></path></svg></span
-            ><select id="select-language" class="form-input form-input-sm" style="width: 120px" v-model="currentLocale">
+                ></path>
+              </svg>
+            </span>
+
+            <select id="select-language" class="form-input form-input-sm" style="width: 120px" v-model="currentLocale">
               <option value="" selected>{{ translate.select_locale }}</option>
               <option v-for="(language, key) in locales.localesTranslate" :value="key">
                 {{ language }}
               </option>
             </select>
           </div>
+
           <button
             class="btn btn-sm btn-primary flex items-center gap-2"
             :disabled="
