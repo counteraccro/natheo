@@ -27,8 +27,8 @@ use Symfony\Component\Yaml\Yaml;
 
 class UserFixtures extends AppFixtures implements FixtureGroupInterface, OrderedFixtureInterface
 {
-    const USER_FIXTURES_DATA_FILE = 'system' . DIRECTORY_SEPARATOR . 'user_fixtures_data.yaml';
-    const USER_FIXTURES_DATA_FILE_DEMO = 'system' . DIRECTORY_SEPARATOR . 'user_demo_fixtures_data.yaml';
+    const string USER_FIXTURES_DATA_FILE = 'system' . DIRECTORY_SEPARATOR . 'user_fixtures_data.yaml';
+    const string USER_FIXTURES_DATA_FILE_DEMO = 'system' . DIRECTORY_SEPARATOR . 'user_demo_fixtures_data.yaml';
 
     /**
      * @var UserPasswordHasherInterface
