@@ -9,21 +9,15 @@
   border-radius: 0.5rem;
   transition: background-color 0.3s ease, border-color 0.3s ease;
 
-  &-section {
+  &-header {
     border-bottom: 1px solid var(--border-color);
-    margin-bottom: 1rem;
   }
 
-  &-header {
+  &-section-header {
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 12px 20px 4px 20px;
-  }
-
-  &-header--actions {
-    display: flex;
-    justify-content: space-between;
   }
 
   &-icon {
@@ -46,3 +40,17 @@
     padding: 0 20px;
   }
 }
+
+.card-header--actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px 4px 20px;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
