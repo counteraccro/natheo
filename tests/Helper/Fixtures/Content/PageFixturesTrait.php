@@ -20,6 +20,7 @@ use App\Entity\Admin\System\User;
 use App\Enum\Admin\Comment\Status;
 use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageContentType;
+use App\Enum\Admin\Content\Page\PageRender;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Tests\Helper\FakerTrait;
 use App\Utils\Content\Page\PageConst;
@@ -44,7 +45,7 @@ trait PageFixturesTrait
 
         $data = [
             'user' => $user,
-            'render' => PageConst::RENDER_2_2_BLOCK,
+            'render' => PageRender::TWO_TWO_BLOCK->value,
             'status' => PageStatus::PUBLISH->value,
             'disabled' => self::getFaker()->boolean(),
             'category' => self::getFaker()->randomDigit(),
@@ -311,7 +312,7 @@ trait PageFixturesTrait
     {
         $page = $this->createPage(
             customData: [
-                'render' => PageConst::RENDER_2_BLOCK_BOTTOM,
+                'render' => PageRender::TWO_BLOCK_BOTTOM->value,
                 'disabled' => false,
                 'category' => PageCategory::PAGE->value,
                 'isOpenComment' => true,
