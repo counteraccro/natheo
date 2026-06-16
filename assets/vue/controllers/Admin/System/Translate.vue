@@ -302,38 +302,42 @@ export default {
 </script>
 
 <template>
-  <div class="card rounded-lg p-6 mb-4 mt-4">
+  <div class="card mb-4">
     <div v-if="this.loading">
       <SkeletonText :nb-paragraphe="2" />
     </div>
 
     <div v-else>
-      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-        <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
-          <svg
-            class="icon-lg"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-            style="color: var(--primary)"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M10 3v4a1 1 0 0 1-1 1H5m8 7.5 2.5 2.5M19 4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Zm-5 9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"
-            />
-          </svg>
-
-          {{ this.trans.translate_block_search_title }}
-        </h2>
-        <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">{{ this.trans.translate_block_search_sub_title }}</p>
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <svg
+              class="icon-lg"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+              style="color: var(--primary)"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 3v4a1 1 0 0 1-1 1H5m8 7.5 2.5 2.5M19 4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Zm-5 9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"
+              />
+            </svg>
+            {{ this.trans.translate_block_search_title }}
+          </div>
+          <p class="card-subtitle">
+            {{ this.trans.translate_block_search_sub_title }}
+          </p>
+        </div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 p-5">
         <div class="form-group">
           <label class="form-label" for="select-file">{{ this.trans.translate_select_language_label }}</label>
           <select
