@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Enum sur les meta tags par défaut de la page
  * @author Gourdon Aymeric

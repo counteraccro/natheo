@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Service\Admin\System;
 
 use App\Entity\Admin\System\Mail;

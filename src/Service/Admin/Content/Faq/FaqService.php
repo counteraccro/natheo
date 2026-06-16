@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.1
@@ -224,7 +226,7 @@ class FaqService extends AppAdminService
                 break;
             default:
         }
-        $faqStat->setValue($val);
+        $faqStat->setValue(strval($val));
         $this->save($faqStat);
     }
 }

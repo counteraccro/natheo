@@ -5,12 +5,12 @@ menu:
         type: 2
         position: 1
         renderOrder: 1
-        disabled: 0
+        disabled: false
         defaultMenu: true
         menuElement:
             default_header_page_landing:
                 page: 'Page_landing'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 1
                 linkTarget: '_self'
@@ -29,7 +29,7 @@ menu:
                         externalLink: '#'
             default_header_index_blog:
                 page: 'page_list_blog'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 2
                 linkTarget: '_self'
@@ -48,7 +48,7 @@ menu:
                         externalLink: '#'
             default_header_index_articles:
                 page: 'page_list_articles'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 3
                 linkTarget: '_self'
@@ -67,7 +67,7 @@ menu:
                         externalLink: '#'
             default_header_faq:
                 page: 'page_faq'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 4
                 linkTarget: '_self'
@@ -86,7 +86,7 @@ menu:
                         externalLink: '#'
             default_header_a_propos:
                 page: 'page_a_propos'
-                disabled: 0
+                disabled: false
                 columnPosition: 4
                 rowPosition: 1
                 linkTarget: '_self'
@@ -111,12 +111,12 @@ menu:
         type: 12
         position: 4
         renderOrder: 1
-        disabled: 0
+        disabled: false
         defaultMenu: true
         menuElement:
             default_menu_left_page_landing:
                 page: 'Page_landing'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 1
                 linkTarget: '_self'
@@ -135,7 +135,7 @@ menu:
                         externalLink: '#'
             default_menu_left_blog_listing_titre:
                 page: 'page_list_blog'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 1
                 linkTarget: '_self'
@@ -155,7 +155,7 @@ menu:
             default_menu_left_blog_listing:
                 parent: default_menu_left_blog_listing_titre
                 page: 'page_list_blog'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 2
                 linkTarget: '_self'
@@ -175,7 +175,7 @@ menu:
             default_menu_left_blog_1_bloc:
                 parent: default_menu_left_blog_listing_titre
                 page: 'page_blog_1_bloc'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 3
                 linkTarget: '_self'
@@ -195,7 +195,7 @@ menu:
             default_menu_left_blog_2_block_together:
                 parent: default_menu_left_blog_listing_titre
                 page: 'page_blog_2_bloc_together'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 4
                 linkTarget: '_self'
@@ -215,7 +215,7 @@ menu:
             default_menu_left_blog_3_block_together:
                 parent: default_menu_left_blog_listing_titre
                 page: 'page_blog_3_blocs_together'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 5
                 linkTarget: '_self'
@@ -234,7 +234,7 @@ menu:
                         externalLink: '#'
             default_menu_left_index_article:
                 page: 'page_list_articles'
-                disabled: 0
+                disabled: false
                 columnPosition: 2
                 rowPosition: 1
                 linkTarget: '_self'
@@ -254,7 +254,7 @@ menu:
             default_menu_left_article_listing:
                 parent: default_menu_left_index_article
                 page: 'page_list_articles'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 1
                 linkTarget: '_self'
@@ -274,7 +274,7 @@ menu:
             default_menu_left_article_2_blocs_up_down:
                 parent: default_menu_left_index_article
                 page: 'page_articles_2_blocs_up_down'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 2
                 linkTarget: '_self'
@@ -294,7 +294,7 @@ menu:
             default_menu_left_article_3_blocs_up_down:
                 parent: default_menu_left_index_article
                 page: 'page_articles_3_blocs_up_down'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 3
                 linkTarget: '_self'
@@ -314,7 +314,7 @@ menu:
             default_menu_left_articles_1_blocs_up_2_blocs_down:
                 parent: default_menu_left_index_article
                 page: 'page_articles_1_blocs_up_2_blocs_down'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 4
                 linkTarget: '_self'
@@ -334,7 +334,7 @@ menu:
             default_menu_left_articles_2_blocs_up_1_blocs_down:
                 parent: default_menu_left_index_article
                 page: 'page_articles_2_blocs_up_1_bloc_down'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 5
                 linkTarget: '_self'
@@ -354,7 +354,7 @@ menu:
             default_menu_left_articles_2_blocs_up_2_blocs_down:
                 parent: default_menu_left_index_article
                 page: 'page_articles_2_blocs_up_2_bloc_down'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 6
                 linkTarget: '_self'
@@ -373,7 +373,7 @@ menu:
                         externalLink: '#'
             default_menu_left_faq:
                 page: 'page_faq'
-                disabled: 0
+                disabled: false
                 columnPosition: 3
                 rowPosition: 1
                 linkTarget: '_self'
@@ -392,7 +392,7 @@ menu:
                         externalLink: '#'
             default_menu_left_a_propos:
                 page: 'page_a_propos'
-                disabled: 0
+                disabled: false
                 columnPosition: 4
                 rowPosition: 1
                 linkTarget: '_self'
@@ -418,12 +418,12 @@ menu:
         type: 16
         position: 3
         renderOrder: 1
-        disabled: 0
+        disabled: false
         defaultMenu: true
         menuElement:
             default_footer_index_blog:
                 page: 'Page_landing'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 1
                 linkTarget: '_self'
@@ -443,7 +443,7 @@ menu:
             default_footer_blog_listing:
                 parent: default_footer_index_blog
                 page: 'page_list_blog'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 1
                 linkTarget: '_self'
@@ -463,7 +463,7 @@ menu:
             default_footer_blog_1_bloc:
                 parent: default_footer_index_blog
                 page: 'page_blog_1_bloc'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 2
                 linkTarget: '_self'
@@ -483,7 +483,7 @@ menu:
             default_footer_blog_2_block_together:
                 parent: default_footer_index_blog
                 page: 'page_blog_2_bloc_together'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 3
                 linkTarget: '_self'
@@ -503,7 +503,7 @@ menu:
             default_footer_blog_3_block_together:
                 parent: default_footer_index_blog
                 page: 'page_blog_3_blocs_together'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 4
                 linkTarget: '_self'
@@ -522,7 +522,7 @@ menu:
                         externalLink: '#'
             default_footer_index_article:
                 page: 'page_list_articles'
-                disabled: 0
+                disabled: false
                 columnPosition: 2
                 rowPosition: 1
                 linkTarget: '_self'
@@ -542,7 +542,7 @@ menu:
             default_footer_article_listing:
                 parent: default_footer_index_article
                 page: 'page_list_articles'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 1
                 linkTarget: '_self'
@@ -562,7 +562,7 @@ menu:
             default_footer_article_2_blocs_up_down:
                 parent: default_footer_index_article
                 page: 'page_articles_2_blocs_up_down'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 2
                 linkTarget: '_self'
@@ -582,7 +582,7 @@ menu:
             default_footer_article_3_blocs_up_down:
                 parent: default_footer_index_article
                 page: 'page_articles_3_blocs_up_down'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 3
                 linkTarget: '_self'
@@ -602,7 +602,7 @@ menu:
             default_footer_article_right_articles_1_blocs_up_2_blocs_down:
                 parent: default_footer_index_article
                 page: 'page_articles_1_blocs_up_2_blocs_down'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 4
                 linkTarget: '_self'
@@ -622,7 +622,7 @@ menu:
             default_footer_articles_2_blocs_up_1_blocs_down:
                 parent: default_footer_index_article
                 page: 'page_articles_2_blocs_up_1_bloc_down'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 5
                 linkTarget: '_self'
@@ -642,7 +642,7 @@ menu:
             default_footer_articles_2_blocs_up_2_blocs_down:
                 parent: default_footer_index_article
                 page: 'page_articles_2_blocs_up_2_bloc_down'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 6
                 linkTarget: '_self'
@@ -661,7 +661,7 @@ menu:
                         externalLink: '#'
             default_footer_index_divert:
                 page: 'page_list_articles'
-                disabled: 0
+                disabled: false
                 columnPosition: 2
                 rowPosition: 1
                 linkTarget: '_self'
@@ -681,7 +681,7 @@ menu:
             default_footer_faq:
                 parent: default_footer_index_divert
                 page: 'page_faq'
-                disabled: 0
+                disabled: false
                 columnPosition: 3
                 rowPosition: 1
                 linkTarget: '_self'
@@ -701,7 +701,7 @@ menu:
             default_footer_a_propos:
                 parent: default_footer_index_divert
                 page: 'page_a_propos'
-                disabled: 0
+                disabled: false
                 columnPosition: 4
                 rowPosition: 1
                 linkTarget: '_self'
@@ -720,7 +720,7 @@ menu:
                         externalLink: '#'
             default_footer_doc:
                 parent: default_footer_index_divert
-                disabled: 0
+                disabled: false
                 columnPosition: 4
                 rowPosition: 1
                 linkTarget: '_blank'
@@ -739,7 +739,7 @@ menu:
                         externalLink: 'https://counteraccro.github.io/natheo.doc/'
             default_footer_git:
                 parent: default_footer_index_divert
-                disabled: 0
+                disabled: false
                 columnPosition: 4
                 rowPosition: 1
                 linkTarget: '_blank'
@@ -758,7 +758,7 @@ menu:
                         externalLink: 'https://github.com/counteraccro/natheo'
             default_footer_realise:
                 parent: default_footer_index_divert
-                disabled: 0
+                disabled: false
                 columnPosition: 4
                 rowPosition: 1
                 linkTarget: '_blank'
@@ -783,12 +783,12 @@ menu:
         type: 12
         position: 2
         renderOrder: 1
-        disabled: 0
+        disabled: false
         defaultMenu: false
         menuElement:
             menu_blog_right_listing_titre:
                 page: 'page_list_blog'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 1
                 linkTarget: '_self'
@@ -808,7 +808,7 @@ menu:
             menu_blog_right_blog_listing:
                 parent: menu_blog_right_listing_titre
                 page: 'page_list_blog'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 1
                 linkTarget: '_self'
@@ -828,7 +828,7 @@ menu:
             menu_blog_right_blog_1_bloc:
                 parent: menu_blog_right_listing_titre
                 page: 'page_blog_1_bloc'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 2
                 linkTarget: '_self'
@@ -848,7 +848,7 @@ menu:
             menu_blog_right_blog_2_block_together:
                 parent: menu_blog_right_listing_titre
                 page: 'page_blog_2_bloc_together'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 3
                 linkTarget: '_self'
@@ -868,7 +868,7 @@ menu:
             menu_blog_right_blog_3_block_together:
                 parent: menu_blog_right_listing_titre
                 page: 'page_blog_3_blocs_together'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 4
                 linkTarget: '_self'
@@ -893,12 +893,12 @@ menu:
         type: 12
         position: 2
         renderOrder: 1
-        disabled: 0
+        disabled: false
         defaultMenu: false
         menuElement:
             menu_article_right_index_article:
                 page: 'page_list_articles'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 1
                 linkTarget: '_self'
@@ -918,7 +918,7 @@ menu:
             menu_article_right_article_listing:
                 parent: menu_article_right_index_article
                 page: 'page_list_articles'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 1
                 linkTarget: '_self'
@@ -938,7 +938,7 @@ menu:
             menu_article_right_article_2_blocs_up_down:
                 parent: menu_article_right_index_article
                 page: 'page_articles_2_blocs_up_down'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 2
                 linkTarget: '_self'
@@ -958,7 +958,7 @@ menu:
             menu_article_right_article_3_blocs_up_down:
                 parent: menu_article_right_index_article
                 page: 'page_articles_3_blocs_up_down'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 3
                 linkTarget: '_self'
@@ -978,7 +978,7 @@ menu:
             menu_article_right_articles_1_blocs_up_2_blocs_down:
                 parent: menu_article_right_index_article
                 page: 'page_articles_1_blocs_up_2_blocs_down'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 4
                 linkTarget: '_self'
@@ -998,7 +998,7 @@ menu:
             menu_article_right_articles_2_blocs_up_1_blocs_down:
                 parent: menu_article_right_index_article
                 page: 'page_articles_2_blocs_up_1_bloc_down'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 5
                 linkTarget: '_self'
@@ -1018,7 +1018,7 @@ menu:
             menu_article_right_articles_2_blocs_up_2_blocs_down:
                 parent: menu_article_right_index_article
                 page: 'page_articles_2_blocs_up_2_bloc_down'
-                disabled: 0
+                disabled: false
                 columnPosition: 1
                 rowPosition: 6
                 linkTarget: '_self'

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -45,12 +47,12 @@ class NotificationControllerTest extends AppWebTestCase
         $user = $this->createUser();
 
         for ($i = 0; $i < 10; $i++) {
-            $data = ['read' => 0];
+            $data = ['read' => false];
             $this->createNotification($user, $data);
         }
 
         for ($i = 0; $i < 5; $i++) {
-            $data = ['read' => 1];
+            $data = ['read' => true];
             $this->createNotification($user, $data);
         }
 
@@ -73,12 +75,12 @@ class NotificationControllerTest extends AppWebTestCase
         $user = $this->createUser();
 
         for ($i = 0; $i < 10; $i++) {
-            $data = ['read' => 0];
+            $data = ['read' => false];
             $this->createNotification($user, $data);
         }
 
         for ($i = 0; $i < 5; $i++) {
-            $data = ['read' => 1];
+            $data = ['read' => true];
             $this->createNotification($user, $data);
         }
 
@@ -114,7 +116,7 @@ class NotificationControllerTest extends AppWebTestCase
     public function testUpdateNotification(): void
     {
         $user = $this->createUser();
-        $data = ['read' => 0];
+        $data = ['read' => false];
         $notification = $this->createNotification($user, $data);
 
         $tab = [
@@ -149,7 +151,7 @@ class NotificationControllerTest extends AppWebTestCase
         $user = $this->createUser();
         $tab = [];
         for ($i = 0; $i < 10; $i++) {
-            $data = ['read' => 0];
+            $data = ['read' => false];
             $notification = $this->createNotification($user, $data);
             $tab[] = [
                 'id' => $notification->getId(),
@@ -183,12 +185,12 @@ class NotificationControllerTest extends AppWebTestCase
     {
         $user = $this->createUser();
         for ($i = 0; $i < 10; $i++) {
-            $data = ['read' => 0];
+            $data = ['read' => false];
             $this->createNotification($user, $data);
         }
 
         for ($i = 0; $i < 5; $i++) {
-            $data = ['read' => 1];
+            $data = ['read' => true];
             $notification = $this->createNotification($user, $data);
             $date = new \DateTime();
             $notification->setCreatedAt($date->sub(new \DateInterval('P6M')));
@@ -210,7 +212,7 @@ class NotificationControllerTest extends AppWebTestCase
     {
         $user = $this->createUser();
         for ($i = 0; $i < 5; $i++) {
-            $data = ['read' => 0];
+            $data = ['read' => false];
             $this->createNotification($user, $data);
         }
 
@@ -238,7 +240,7 @@ class NotificationControllerTest extends AppWebTestCase
     {
         $user = $this->createUser();
         for ($i = 0; $i < 10; $i++) {
-            $data = ['read' => $i % 2];
+            $data = ['read' => $i % 2 === 0];
             $this->createNotification($user, $data);
         }
 

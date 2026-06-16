@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Service pour le dashboard
  * @author Gourdon Aymeric

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Service pour gérer l'installation du site
  * @author Gourdon Aymeric
@@ -197,7 +199,7 @@ class InstallationService extends AppAdminService
     private function createDataUser(User $user): void
     {
         $userDataService = $this->getUserData();
-        $userDataService->update(UserDataKey::KEY_HELP_FIRST_CONNEXION, 1, $user);
+        $userDataService->update(UserDataKey::KEY_HELP_FIRST_CONNEXION, '1', $user);
     }
 
     /**
@@ -221,9 +223,9 @@ class InstallationService extends AppAdminService
                     'firstname' => '',
                     'lastname' => '',
                     'roles' => 'ROLE_SUPER_ADMIN',
-                    'disabled' => 0,
-                    'anonymous' => 0,
-                    'founder' => 1,
+                    'disabled' => false,
+                    'anonymous' => false,
+                    'founder' => true,
                     'avatar' => 'avatar-2.png',
                     'description' => "N'oubliez pas de mettre à jour cette description",
                 ],

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Enum sur les types de menu
  * @author Gourdon Aymeric

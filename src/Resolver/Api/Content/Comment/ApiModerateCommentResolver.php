@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -61,7 +63,7 @@ class ApiModerateCommentResolver extends AppApiResolver implements ValueResolver
         $this->checkParameters($tabParameters);
 
         $dto = new ApiModerateCommentDto(
-            $tabParameters[ApiParametersModerateCommentRef::PARAM_STATUS],
+            strval($tabParameters[ApiParametersModerateCommentRef::PARAM_STATUS]),
             $tabParameters[ApiParametersModerateCommentRef::PARAM_MODERATION_COMMENT],
             $tabParameters[ApiParametersModerateCommentRef::PARAM_USER_TOKEN],
         );

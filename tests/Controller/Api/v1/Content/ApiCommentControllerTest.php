@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -383,6 +385,7 @@ class ApiCommentControllerTest extends AppApiTestCase
             ]),
         );
         $response = $this->client->getResponse();
+
         $this->assertEquals(403, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $content = json_decode($response->getContent(), true);

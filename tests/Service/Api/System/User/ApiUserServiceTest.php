@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -43,7 +45,7 @@ class ApiUserServiceTest extends AppWebTestCase
         ]);
         $this->createUserData($user, [
             'key' => UserDataKey::TIME_VALIDATE_TOKEN,
-            'value' => (new \DateTime())->add(new \DateInterval('P10D'))->getTimestamp(),
+            'value' => strval((new \DateTime())->add(new \DateInterval('P10D'))->getTimestamp()),
         ]);
         $user = $this->apiUserService->getUserByUserToken($userData->getValue());
         $this->assertInstanceOf(User::class, $user);
@@ -55,7 +57,7 @@ class ApiUserServiceTest extends AppWebTestCase
         ]);
         $this->createUserData($user, [
             'key' => UserDataKey::TIME_VALIDATE_TOKEN,
-            'value' => (new \DateTime())->sub(new \DateInterval('P10D'))->getTimestamp(),
+            'value' => strval((new \DateTime())->sub(new \DateInterval('P10D'))->getTimestamp()),
         ]);
         $user = $this->apiUserService->getUserByUserToken($userData->getValue());
         $this->assertNull($user);

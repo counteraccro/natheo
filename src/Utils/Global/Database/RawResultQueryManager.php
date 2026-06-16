@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Manager qui permet d'interpréter le résultat des RawQuery en fonction du SGBD
  * @author Gourdon Aymeric

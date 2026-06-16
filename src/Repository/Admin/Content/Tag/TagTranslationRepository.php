@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository\Admin\Content\Tag;
 
 use App\Entity\Admin\Content\Tag\TagTranslation;

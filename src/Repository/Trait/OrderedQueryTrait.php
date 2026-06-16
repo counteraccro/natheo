@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Trait pour gérer l'ordre et le trie des query
  * @author Gourdon Aymeric

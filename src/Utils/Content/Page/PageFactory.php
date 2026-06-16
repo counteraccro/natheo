@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Permet de créer une page ainsi que l'ensemble de ses données associées
  * @author Gourdon Aymeric
@@ -133,7 +135,7 @@ class PageFactory
         foreach (PageStatistiqueKey::getConstants() as $constant) {
             $pageStatistique = new PageStatistique();
             $pageStatistique->setKey($constant);
-            $pageStatistique->setValue(0);
+            $pageStatistique->setValue('0');
             $pageStatistique->setPage($this->page);
             $this->page->addPageStatistique($pageStatistique);
         }

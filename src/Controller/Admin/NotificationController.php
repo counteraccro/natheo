@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Gestionnaire des notifications
  * @author Gourdon Aymeric
@@ -208,7 +210,7 @@ class NotificationController extends AppAdminController
     public function purge(OptionSystemService $optionSystemService, NotificationService $notificationService): Response
     {
         $nbDay = $optionSystemService->getValueByKey(OptionSystemKey::OS_PURGE_NOTIFICATION);
-        $notificationService->purge($nbDay, $this->getUser()->getId());
+        $notificationService->purge(intval($nbDay), $this->getUser()->getId());
         return $this->json(['success' => true]);
     }
 

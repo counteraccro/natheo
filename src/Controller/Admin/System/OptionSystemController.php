@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Option système
  * @author Gourdon Aymeric
@@ -59,7 +61,7 @@ class OptionSystemController extends AppAdminController
     public function update(Request $request, OptionSystemService $optionSystemService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $optionSystemService->saveValueByKee($data['key'], $data['value']);
+        $optionSystemService->saveValueByKee($data['key'], strval($data['value']));
         return $this->json($optionSystemService->getResponseAjax());
     }
 }

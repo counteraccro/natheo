@@ -1,21 +1,21 @@
 sql_manager:
     sql-manager-1:
         user: User
-        disabled: 0
+        disabled: false
         name: 'Liste des utilisateurs'
         query: | 
                 SELECT email, login, firstname, lastname 
                 FROM natheo.user
     sql-manager1-2:
         user: User
-        disabled: 0
+        disabled: false
         name: 'Liste des requêtes SQL'
         query: | 
                 SELECT name, query 
                 FROM natheo.sql_manager
     sql-manager1-3:
         user: User
-        disabled: 0
+        disabled: false
         name: 'Liste des FAQs avec nombres de categories et questions'
         query: | 
                 SELECT nf.id, ft.title, ft.locale, count(fc.id) as categories, count(fq.id) as questions 
@@ -26,7 +26,7 @@ sql_manager:
                 GROUP BY nf.id, ft.title, ft.locale
     sql-manager1-4:
         user: User
-        disabled: 0
+        disabled: false
         name: 'Statistique du nombres de pages et vues par utilisateur'
         query: | 
                 SELECT u.login,  count(p.id) as nbPage, SUM(ps.value) as nbVue 
@@ -37,7 +37,7 @@ sql_manager:
                 GROUP BY u.login
     sql-manager1-5:
         user: User
-        disabled: 0
+        disabled: false
         name: 'Liste des tables et nombre de colonnes par table'
         query: | 
                 SELECT t.TABLE_NAME as table_nom,

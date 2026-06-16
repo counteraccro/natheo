@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Translation controller, gestion des traductions
  * @author Gourdon Aymeric

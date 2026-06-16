@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Gourdon Aymeric
  * @version 1.1
@@ -92,7 +94,7 @@ class GridService extends AppAdminService
             function () use (&$i, $values) {
                 $value = $values[$i] ?? '?';
                 $i++;
-                return "'" . addslashes($value) . "'";
+                return "'" . addslashes(strval($value)) . "'";
             },
             $sql,
         );

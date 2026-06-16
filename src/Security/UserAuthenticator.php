@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Security;
 
 use App\Entity\Admin\System\User;
@@ -68,7 +70,7 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         $this->loggerService->logAuthAdmin($user->getEmail(), $ip);
 
         $date = new \DateTime();
-        $this->userDataService->update(UserDataKey::KEY_LAST_CONNEXION, $date->getTimestamp(), $user);
+        $this->userDataService->update(UserDataKey::KEY_LAST_CONNEXION, strval($date->getTimestamp()), $user);
 
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
@@ -85,6 +87,8 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
      * @param Request $request
      * @param AuthenticationException $exception
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {

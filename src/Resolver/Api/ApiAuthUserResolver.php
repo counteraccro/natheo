@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -46,7 +48,7 @@ class ApiAuthUserResolver extends AppApiResolver implements ValueResolverInterfa
             throw new HttpException(Response::HTTP_FORBIDDEN, implode(',', $return));
         }
 
-        $dto = new ApiAuthUserDto($data['username'], $data['password']);
+        $dto = new ApiAuthUserDto(strval($data['username']), strval($data['password']));
 
         $this->validateDto($dto);
         return [$dto];
