@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Permet de générer l'affichage d'un Tag en fonction de la locale
  * @author Gourdon Aymeric

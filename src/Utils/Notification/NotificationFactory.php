@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Création de notifications
  * @author Gourdon Aymeric

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -158,7 +160,7 @@ class ApiAuthenticationControllerTest extends AppApiTestCase
     {
         $translator = $this->container->get(TranslatorInterface::class);
         $optionSystemService = $this->container->get(OptionSystemService::class);
-        $optionSystemService->saveValueByKee(OptionSystemKey::OS_OPEN_SITE, 0);
+        $optionSystemService->saveValueByKee(OptionSystemKey::OS_OPEN_SITE, '0');
 
         $this->client->request(
             'GET',

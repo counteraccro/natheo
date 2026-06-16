@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Interface du traitement des résultats de RawQuery en fonction du SGBD
  * @author Gourdon Aymeric

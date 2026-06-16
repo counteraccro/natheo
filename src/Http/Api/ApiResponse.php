@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Créer une réponse d'API en cas d'erreur
  * @author Gourdon Aymeric

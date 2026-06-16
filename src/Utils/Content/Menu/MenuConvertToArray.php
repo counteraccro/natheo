@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Permet de convertir une entité Menu en array adapté pour vueJS
  * @author Gourdon Aymeric

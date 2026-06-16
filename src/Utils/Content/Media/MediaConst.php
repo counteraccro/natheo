@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Constantes pour les médias
  * @author Gourdon Aymeric

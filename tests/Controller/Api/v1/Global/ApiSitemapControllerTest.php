@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Test unitaire API sitemap
  * @author Gourdon Aymeric

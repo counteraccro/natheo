@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @author Gourdon Aymeric
  * @version 1.1
@@ -366,7 +368,7 @@ class LoggerService extends AppService
         if ($finder->hasResults()) {
             foreach ($finder as $file) {
                 $filesystem = new Filesystem();
-                $filesystem->remove($file);
+                $filesystem->remove($file->getRealPath());
             }
             return true;
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Utils\Api\Content;
 
 use App\Dto\Api\Content\Page\ApiFindPageDto;

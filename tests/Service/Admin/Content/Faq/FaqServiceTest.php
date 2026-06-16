@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -177,15 +179,15 @@ class FaqServiceTest extends AppWebTestCase
         $faq = $this->createFaq();
         $faqStat1 = $this->createFaqStatistique($faq, [
             'key' => FaqStatistiqueKey::KEY_STAT_NB_CATEGORIES,
-            'value' => self::getFaker()->numberBetween(1, 10),
+            'value' => strval(self::getFaker()->numberBetween(1, 10)),
         ]);
         $faqStat2 = $this->createFaqStatistique($faq, [
             'key' => FaqStatistiqueKey::KEY_STAT_NB_QUESTIONS,
-            'value' => self::getFaker()->numberBetween(12, 40),
+            'value' => strval(self::getFaker()->numberBetween(12, 40)),
         ]);
         $faqStat3 = $this->createFaqStatistique($faq, [
             'key' => 'key-3',
-            'value' => self::getFaker()->numberBetween(12, 40),
+            'value' => strval(self::getFaker()->numberBetween(12, 40)),
         ]);
 
         $this->faqService->updateFaqStatistique(

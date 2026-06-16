@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Gestion des mots clés des emails
  * @author Gourdon Aymeric

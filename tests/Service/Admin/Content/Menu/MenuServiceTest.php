@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -215,19 +217,19 @@ class MenuServiceTest extends AppWebTestCase
     public function testSwitchDefaultMenuToFalse(): void
     {
         for ($i = 0; $i < 3; $i++) {
-            $this->createMenu(customData: ['position' => MenuPosition::POSITION_HEADER->value, 'defaultMenu' => 0]);
+            $this->createMenu(customData: ['position' => MenuPosition::POSITION_HEADER->value, 'defaultMenu' => false]);
         }
         $menuH = $this->createMenu(
-            customData: ['position' => MenuPosition::POSITION_HEADER->value, 'defaultMenu' => 1],
+            customData: ['position' => MenuPosition::POSITION_HEADER->value, 'defaultMenu' => true],
         );
 
         for ($i = 0; $i < 3; $i++) {
             $rMenuF = $this->createMenu(
-                customData: ['position' => MenuPosition::POSITION_FOOTER->value, 'defaultMenu' => 0],
+                customData: ['position' => MenuPosition::POSITION_FOOTER->value, 'defaultMenu' => false],
             );
         }
         $menuF = $this->createMenu(
-            customData: ['position' => MenuPosition::POSITION_FOOTER->value, 'defaultMenu' => 1],
+            customData: ['position' => MenuPosition::POSITION_FOOTER->value, 'defaultMenu' => true],
         );
 
         $this->menuService->switchDefaultMenuToFalse($rMenuF->getId(), MenuPosition::POSITION_FOOTER->value);
@@ -257,14 +259,14 @@ class MenuServiceTest extends AppWebTestCase
      */
     function testGetErrorDefaultTypeMenu(): void
     {
-        $this->createMenu(customData: ['position' => MenuPosition::POSITION_HEADER->value, 'defaultMenu' => 0]);
-        $this->createMenu(customData: ['position' => MenuPosition::POSITION_LEFT->value, 'defaultMenu' => 1]);
-        $this->createMenu(customData: ['position' => MenuPosition::POSITION_FOOTER->value, 'defaultMenu' => 0]);
+        $this->createMenu(customData: ['position' => MenuPosition::POSITION_HEADER->value, 'defaultMenu' => false]);
+        $this->createMenu(customData: ['position' => MenuPosition::POSITION_LEFT->value, 'defaultMenu' => true]);
+        $this->createMenu(customData: ['position' => MenuPosition::POSITION_FOOTER->value, 'defaultMenu' => false]);
 
         $result = $this->menuService->getErrorDefaultTypeMenu();
         $this->assertCount(2, $result);
 
-        $this->createMenu(customData: ['position' => MenuPosition::POSITION_LEFT->value, 'defaultMenu' => 1]);
+        $this->createMenu(customData: ['position' => MenuPosition::POSITION_LEFT->value, 'defaultMenu' => true]);
         $result = $this->menuService->getErrorDefaultTypeMenu();
         $this->assertCount(3, $result);
     }

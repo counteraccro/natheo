@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Class Qui permet d'obtenir des requêtes SQL venant de postgres
  * @author Gourdon Aymeric

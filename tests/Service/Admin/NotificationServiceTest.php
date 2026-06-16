@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @author Gourdon Aymeric
  * @version 1.0
@@ -113,7 +115,7 @@ class NotificationServiceTest extends AppWebTestCase
         $user = $this->createUser();
 
         for ($i = 0; $i < 10; $i++) {
-            $data = ['read' => 0];
+            $data = ['read' => false];
             $this->createNotification($user, $data);
         }
         $nb = $this->notificationService->getNbByUser($user);
@@ -160,7 +162,7 @@ class NotificationServiceTest extends AppWebTestCase
         );
 
         for ($i = 0; $i < 5; $i++) {
-            $data = ['read' => 1];
+            $data = ['read' => true];
             $this->createNotification($user, $data);
         }
 
@@ -183,7 +185,7 @@ class NotificationServiceTest extends AppWebTestCase
     {
         $user = $this->createUser();
         for ($i = 0; $i < 5; $i++) {
-            $data = ['read' => 1];
+            $data = ['read' => true];
             $this->createNotification($user, $data);
         }
         $this->notificationService->purge(0, $user->getId());
@@ -192,11 +194,11 @@ class NotificationServiceTest extends AppWebTestCase
         $this->assertEquals(0, $nb);
 
         for ($i = 0; $i < 5; $i++) {
-            $data = ['read' => 0];
+            $data = ['read' => false];
             $this->createNotification($user, $data);
         }
         for ($i = 0; $i < 2; $i++) {
-            $data = ['read' => 1];
+            $data = ['read' => true];
             $this->createNotification($user, $data);
         }
 
@@ -215,11 +217,11 @@ class NotificationServiceTest extends AppWebTestCase
     {
         $user = $this->createUser();
         for ($i = 0; $i < 5; $i++) {
-            $data = ['read' => 0];
+            $data = ['read' => false];
             $this->createNotification($user, $data);
         }
         $this->notificationService->readAll($user);
-        $result = $this->notificationService->findBy(Notification::class, ['read' => 1]);
+        $result = $this->notificationService->findBy(Notification::class, ['read' => true]);
         $this->assertCount(5, $result);
     }
 
@@ -233,7 +235,7 @@ class NotificationServiceTest extends AppWebTestCase
     {
         $user = $this->createUser();
         for ($i = 0; $i < 10; $i++) {
-            $data = ['read' => $i % 2];
+            $data = ['read' => $i % 2 === 0];
             $this->createNotification($user, $data);
         }
 
@@ -257,7 +259,7 @@ class NotificationServiceTest extends AppWebTestCase
         $user = $this->createUser();
         $tab = [];
         for ($i = 0; $i < 10; $i++) {
-            $data = ['read' => 0];
+            $data = ['read' => false];
             $notification = $this->createNotification($user, $data);
             $tab[] = [
                 'id' => $notification->getId(),
@@ -279,7 +281,7 @@ class NotificationServiceTest extends AppWebTestCase
     public function testUpdateRead(): void
     {
         $user = $this->createUser();
-        $data = ['read' => 0];
+        $data = ['read' => false];
         $notification = $this->createNotification($user, $data);
 
         $tab = [

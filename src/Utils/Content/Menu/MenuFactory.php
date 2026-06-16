@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Permet de créer un menu et l'ensemble des données associées
  * @author Gourdon Aymeric

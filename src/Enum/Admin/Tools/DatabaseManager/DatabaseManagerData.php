@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Enum DatabaseManager, données sur les dumps
  * @author Gourdon Aymeric
