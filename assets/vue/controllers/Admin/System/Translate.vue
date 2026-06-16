@@ -363,14 +363,15 @@ export default {
     </div>
   </div>
 
-  <div class="card rounded-lg mb-4 mt-4">
+  <div class="card mb-4">
     <div v-if="this.loading">
       <SkeletonTable :full="true" />
     </div>
     <div v-else>
-      <div class="sticky p-6 top-0 z-10 bg-white border-b-1 border-b-[var(--border-color)]">
-        <div class="md:flex md:justify-between">
-          <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
+      <div class="card-header sticky top-0 z-10 bg-white p-6 border-b-1 border-b-[var(--border-color)]">
+        <div>
+          <!-- Titre -->
+          <div class="card-title">
             <svg
               class="icon-lg"
               aria-hidden="true"
@@ -390,41 +391,48 @@ export default {
               />
             </svg>
 
-            <span v-if="this.file.length !== 0">{{ this.currentFile }}</span>
-            <span v-else> --- </span>
-          </h2>
-          <div v-if="this.file.length !== 0">
-            <button class="btn btn-primary btn-sm" @click="this.saveTranslate">
-              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
-                ></path>
-              </svg>
-              {{ this.trans.translate_btn_save }}
-            </button>
-            <button class="btn btn-dark btn-sm ms-2" @click="this.reloadCache(true)">
-              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                ></path>
-              </svg>
-              {{ this.trans.translate_btn_cache }}
-            </button>
+            <template v-if="this.file.length !== 0">
+              {{ this.currentFile }}
+            </template>
+            <template v-else> --- </template>
           </div>
-        </div>
-        <div class="md:flex md:justify-between">
-          <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+
+          <!-- Sous-titre 1 -->
+          <p class="card-subtitle">
             {{ this.trans.translate_block_edit_sub_title }}
           </p>
-          <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]" v-if="tabTmpTranslate.length > 0">
+
+          <!-- Sous-titre 2 -->
+          <p class="card-subtitle" v-if="tabTmpTranslate.length > 0">
             <b>{{ tabTmpTranslate.length }}</b> {{ this.trans.translate_nb_edit }}
           </p>
+        </div>
+
+        <!-- Actions -->
+        <div class="card-actions" v-if="this.file.length !== 0">
+          <button class="btn btn-primary btn-sm" @click="this.saveTranslate">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+              ></path>
+            </svg>
+            {{ this.trans.translate_btn_save }}
+          </button>
+
+          <button class="btn btn-dark btn-sm ms-2" @click="this.reloadCache(true)">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+              ></path>
+            </svg>
+            {{ this.trans.translate_btn_cache }}
+          </button>
         </div>
       </div>
 
@@ -454,7 +462,7 @@ export default {
       <div v-else>
         <div
           v-for="(translate, key) in this.file"
-          class="grid grid-cols-1 lg:grid-cols-[30%_1fr] gap-4 p-4 hover:bg-[var(--bg-hover)] transition border-b-1 border-b-[var(--border-color)]"
+          class="grid grid-cols-1 lg:grid-cols-[30%_1fr] gap-6 p-5 hover:bg-[var(--bg-hover)] transition border-b-1 border-b-[var(--border-color)]"
         >
           <div class="flex items-center">
             <label :for="key" class="font-monospace text-[var(--text-secondary)] text-sm font-medium">{{ key }}</label>
