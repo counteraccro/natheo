@@ -13,11 +13,11 @@ use App\Entity\Admin\Content\Page\PageTranslation;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageContentType;
+use App\Enum\Admin\Content\Page\PageRender;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Repository\Admin\Content\Page\PageTranslationRepository;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
-use App\Utils\Content\Page\PageConst;
 use App\Utils\Content\Page\PageHistory;
 use App\Utils\Content\Page\PageStatistiqueKey;
 use App\Utils\Content\Tag\TagRender;
@@ -265,14 +265,14 @@ class PageService extends AppAdminService
         $translator = $this->getTranslator();
 
         return [
-            PageConst::RENDER_1_BLOCK => $translator->trans('page.render.1.block', domain: 'page'),
-            PageConst::RENDER_2_BLOCK => $translator->trans('page.render.2.block', domain: 'page'),
-            PageConst::RENDER_3_BLOCK => $translator->trans('page.render.3.block', domain: 'page'),
-            PageConst::RENDER_2_BLOCK_BOTTOM => $translator->trans('page.render.2.block.bottom', domain: 'page'),
-            PageConst::RENDER_3_BLOCK_BOTTOM => $translator->trans('page.render.3.block.bottom', domain: 'page'),
-            PageConst::RENDER_1_2_BLOCK => $translator->trans('page.render.1.2.block', domain: 'page'),
-            PageConst::RENDER_2_1_BLOCK => $translator->trans('page.render.2.1.block', domain: 'page'),
-            PageConst::RENDER_2_2_BLOCK => $translator->trans('page.render.2.2.block', domain: 'page'),
+            PageRender::ONE_BLOCK->value => $translator->trans('page.render.1.block', domain: 'page'),
+            PageRender::TWO_BLOCK->value => $translator->trans('page.render.2.block', domain: 'page'),
+            PageRender::THREE_BLOCK->value => $translator->trans('page.render.3.block', domain: 'page'),
+            PageRender::TWO_BLOCK_BOTTOM->value => $translator->trans('page.render.2.block.bottom', domain: 'page'),
+            PageRender::THREE_BLOCK_BOTTOM->value => $translator->trans('page.render.3.block.bottom', domain: 'page'),
+            PageRender::ONE_TWO_BLOCK->value => $translator->trans('page.render.1.2.block', domain: 'page'),
+            PageRender::TWO_ONE_BLOCK->value => $translator->trans('page.render.2.1.block', domain: 'page'),
+            PageRender::TWO_TWO_BLOCK->value => $translator->trans('page.render.2.2.block', domain: 'page'),
         ];
     }
 

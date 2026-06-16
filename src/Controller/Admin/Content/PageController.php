@@ -12,6 +12,7 @@ use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageCategory;
 use App\Enum\Admin\Content\Page\PageMeta;
+use App\Enum\Admin\Content\Page\PageRender;
 use App\Enum\Admin\Content\Page\PageStatus;
 use App\Enum\Admin\Global\Breadcrumb;
 use App\Service\Admin\Content\Comment\CommentService;
@@ -288,7 +289,7 @@ class PageController extends AppAdminController
         if ($id === null) {
             $pageFactory = new PageFactory($locales['locales']);
             $page = $pageFactory->create()->getPage();
-            $page->setRender(PageConst::RENDER_1_BLOCK);
+            $page->setRender(PageRender::ONE_BLOCK->value);
             $page->setStatus(PageStatus::DRAFT->value);
             $page->setCategory(PageCategory::PAGE->value);
             $page->setLandingPage(PageConst::DEFAULT_LANDING_PAGE);

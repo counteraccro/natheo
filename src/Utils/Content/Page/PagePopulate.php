@@ -15,6 +15,7 @@ use App\Entity\Admin\Content\Page\PageMeta;
 use App\Entity\Admin\Content\Page\PageMetaTranslation;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Enum\Admin\Content\Page\PageContentType;
+use App\Enum\Admin\Content\Page\PageRender;
 use App\Service\Admin\Content\Page\PageService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -273,20 +274,20 @@ class PagePopulate
 
     /**
      * Retourne le nombre de PageContent en fonction de render
-     * @param $render
+     * @param int $render
      * @return int
      */
-    private function getNbContentByRender($render): int
+    private function getNbContentByRender(int $render): int
     {
         return match ($render) {
-            PageConst::RENDER_1_BLOCK => 1,
-            PageConst::RENDER_2_BLOCK, PageConst::RENDER_2_BLOCK_BOTTOM => 2,
-            PageConst::RENDER_3_BLOCK_BOTTOM,
-            PageConst::RENDER_1_2_BLOCK,
-            PageConst::RENDER_2_1_BLOCK,
-            PageConst::RENDER_3_BLOCK
+            PageRender::ONE_BLOCK->value => 1,
+            PageRender::TWO_BLOCK->value, PageRender::TWO_BLOCK_BOTTOM->value => 2,
+            PageRender::THREE_BLOCK_BOTTOM->value,
+            PageRender::ONE_TWO_BLOCK->value,
+            PageRender::TWO_ONE_BLOCK->value,
+            PageRender::THREE_BLOCK->value
                 => 3,
-            PageConst::RENDER_2_2_BLOCK => 4,
+            PageRender::TWO_TWO_BLOCK->value => 4,
             default => 0,
         };
     }
