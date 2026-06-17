@@ -252,7 +252,7 @@ class PageController extends AppAdminController
                 ],
             ],
             'urls' => [
-                'load_tab_content' => $this->generateUrl('admin_page_load_tab_content'),
+                'load_page' => $this->generateUrl('admin_page_load_page'),
                 'load_tab_history' => $this->generateUrl('admin_page_load_tab_history'),
                 'auto_save' => $this->generateUrl('admin_page_auto_save'),
                 'reload_page_history' => $this->generateUrl('admin_page_reload_page_history'),
@@ -265,6 +265,8 @@ class PageController extends AppAdminController
                 'info_render_block' => $this->generateUrl('admin_page_info_render_block'),
                 'page_preview' => $this->generateUrl('admin_page_preview'),
                 'load_media' => $this->generateUrl('admin_media_load_medias'),
+                'listing' => $this->generateUrl('admin_page_index'),
+                'new_page' => $this->generateUrl('admin_page_add'),
             ],
         ]);
     }
@@ -280,7 +282,7 @@ class PageController extends AppAdminController
      * @throws ExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/ajax/load-tab-content/{id}', name: 'load_tab_content', methods: ['GET'])]
+    #[Route('/ajax/load-page/{id}', name: 'load_page', methods: ['GET'])]
     public function loadTabContent(
         PageService $pageService,
         MenuService $menuService,
@@ -318,6 +320,9 @@ class PageController extends AppAdminController
             }
         } else {
             $page = $pageService->findOneById(Page::class, $id);
+            if (!$page) {
+                return $this->json(['page' => []]);
+            }
         }
         $pageArray = $pageService->convertEntityToArray($page, [
             'createdAt',
