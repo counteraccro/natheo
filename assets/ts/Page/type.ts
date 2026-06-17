@@ -106,6 +106,10 @@ export interface PageTranslations {
   toast_time: string;
   tag_title: string;
   tag_sub_title: string;
+  page_no_exist_title: string;
+  page_no_exist_text: string;
+  btn_back: string;
+  btn_new: string;
   page_content_form: PageContentFormTranslate;
   page_content: PageContentTranslate;
   page_history: PageHistoryTranslate;
@@ -113,4 +117,43 @@ export interface PageTranslations {
   auto_complete: AutoCompleteTranslate;
   page_comment: PageCommentTranslate;
   page_seo: PageSeoTranslate;
+}
+
+export interface Urls {
+  load_page: string;
+  load_tab_history: string;
+  auto_save: string;
+  reload_page_history: string;
+  auto_complete_tag: string;
+  tag_by_name: string;
+  save: string;
+  new_content: string;
+  liste_content_by_id: string;
+  is_unique_url_page: string;
+  info_render_block: string;
+  page_preview: string;
+  load_media: string;
+  listing: string;
+  new_page: string;
+}
+
+export interface Locales {
+  locales: string[];
+  localesTranslate: Record<string, string>;
+  current: string;
+}
+
+export interface PageOptionsCommentaire {
+  open: string;
+  new_comment: string;
+}
+
+export interface PageData {
+  list_status: Record<string, string>;
+  list_render: Record<string, string>;
+  list_content: Record<string, string>;
+  list_categories: Record<string, string>;
+  list_comments_status: Record<string, string>;
+  url_front: string;
+  options_commentaire: PageOptionsCommentaire;
 }
