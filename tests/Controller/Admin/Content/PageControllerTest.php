@@ -178,12 +178,12 @@ class PageControllerTest extends AppWebTestCase
      */
     public function testLoadTabContent(): void
     {
-        $this->checkNoAccess('admin_page_load_tab_content');
+        $this->checkNoAccess('admin_page_load_page');
 
         $user = $this->createUserContributeur();
 
         $this->client->loginUser($user, 'admin');
-        $this->client->request('GET', $this->router->generate('admin_page_load_tab_content'));
+        $this->client->request('GET', $this->router->generate('admin_page_load_page'));
 
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -194,7 +194,7 @@ class PageControllerTest extends AppWebTestCase
         $this->assertNull($content['page']['id']);
 
         $page = $this->createPageAllDataDefault();
-        $this->client->request('GET', $this->router->generate('admin_page_load_tab_content', ['id' => $page->getId()]));
+        $this->client->request('GET', $this->router->generate('admin_page_load_page', ['id' => $page->getId()]));
         $this->assertResponseIsSuccessful();
         $response = $this->client->getResponse();
         $this->assertJson($response->getContent());
