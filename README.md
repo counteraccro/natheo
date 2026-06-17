@@ -3,7 +3,7 @@
 # Nathéo CMS
 
 [![PHP Version](https://img.shields.io/badge/PHP-8.4%2B-777BB4?style=flat-square&logo=php)](https://www.php.net/)
-[![Symfony](https://img.shields.io/badge/Symfony-8.0-000000?style=flat-square&logo=symfony)](https://symfony.com/)
+[![Symfony](https://img.shields.io/badge/Symfony-8.1-000000?style=flat-square&logo=symfony)](https://symfony.com/)
 [![VueJS](https://img.shields.io/badge/VueJS-3.X-347F5C?style=flat-square&logo=Vue)](https://vuejs.org/)
 [![Tailwindcss](https://img.shields.io/badge/Tailwindcss-4.1-00BCFF?style=flat-square&logo=Tailwindcss)](https://tailwindcss.com/)
 [![License](https://img.shields.io/badge/License-GNU-green?style=flat-square)](LICENSE)
