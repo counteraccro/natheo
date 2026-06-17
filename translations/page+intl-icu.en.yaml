@@ -176,3 +176,7 @@ page.page_content.header_img.no.img: __page.page_content.header_img.no.img
 page.page_content.header_img.remove: __page.page_content.header_img.remove
 page.page_content.header_img.change: __page.page_content.header_img.change
 page.content.listing.title: __page.content.listing.title
+page.page.no.exist.title: __page.page.no.exist.title
+page.page.no.exist.text: __page.page.no.exist.text
+page.btn.back: __page.btn.back
+page.btn.new: __page.btn.new
