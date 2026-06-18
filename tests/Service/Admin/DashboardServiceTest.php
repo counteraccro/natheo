@@ -8,6 +8,7 @@ declare(strict_types=1);
  */
 namespace App\Tests\Service\Admin;
 
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\DashboardService;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
@@ -60,12 +61,12 @@ class DashboardServiceTest extends AppWebTestCase
         $body = $result['body'];
         $this->assertIsArray($body);
 
-        $this->checkValidFormatErrorReturnBlockHelpConfig(OptionSystemKey::OS_SITE_NAME, $body);
+        $this->checkValidFormatErrorReturnBlockHelpConfig(OptionSystem::OS_SITE_NAME->value, $body);
         $this->checkValidFormatErrorReturnBlockHelpConfig(OptionSystemKey::OS_ADRESSE_SITE, $body);
         $this->checkValidFormatErrorReturnBlockHelpConfig(OptionSystemKey::OS_OPEN_SITE, $body);
         $this->checkValidFormatErrorReturnBlockHelpConfig('API_TOKEN_STATUS', $body);
 
-        $this->optionSystemService->saveValueByKee(OptionSystemKey::OS_SITE_NAME, 'unit-test');
+        $this->optionSystemService->saveValueByKee(OptionSystem::OS_SITE_NAME->value, 'unit-test');
         $this->optionSystemService->saveValueByKee(OptionSystemKey::OS_ADRESSE_SITE, 'www.unit-test.com');
         $this->optionSystemService->saveValueByKee(OptionSystemKey::OS_OPEN_SITE, '1');
 
@@ -82,7 +83,7 @@ class DashboardServiceTest extends AppWebTestCase
         $body = $result['body'];
         $this->assertIsArray($body);
 
-        $this->checkValidFormatSuccessReturnBlockHelpConfig(OptionSystemKey::OS_SITE_NAME, $body);
+        $this->checkValidFormatSuccessReturnBlockHelpConfig(OptionSystem::OS_SITE_NAME->value, $body);
         $this->checkValidFormatSuccessReturnBlockHelpConfig(OptionSystemKey::OS_ADRESSE_SITE, $body);
         $this->checkValidFormatSuccessReturnBlockHelpConfig(OptionSystemKey::OS_OPEN_SITE, $body);
         $this->checkValidFormatSuccessReturnBlockHelpConfig('API_TOKEN_STATUS', $body);

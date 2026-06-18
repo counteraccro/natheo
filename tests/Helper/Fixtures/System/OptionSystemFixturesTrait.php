@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Tests\Helper\Fixtures\System;
 
 use App\Entity\Admin\System\OptionSystem;
+use App\Enum\Admin\System\Options\OptionSystem as OptionSystemEnum;
 use App\Tests\Helper\FakerTrait;
 use App\Utils\System\Options\OptionSystemKey;
 
@@ -43,7 +44,7 @@ trait OptionSystemFixturesTrait
     public function generateDefaultOptionSystem(): void
     {
         $data = [
-            'key' => OptionSystemKey::OS_SITE_NAME,
+            'key' => OptionSystemEnum::OS_SITE_NAME->value,
             'value' => 'Nathéo CMS',
         ];
         $this->createOptionSystem($data);

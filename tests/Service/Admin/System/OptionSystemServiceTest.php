@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Tests\Service\Admin\System;
 
 use App\Entity\Admin\System\OptionSystem;
+use App\Enum\Admin\System\Options\OptionSystem as OptionSystemEnum;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
 use App\Utils\System\Options\OptionSystemKey;
@@ -50,9 +51,9 @@ class OptionSystemServiceTest extends AppWebTestCase
      */
     public function testGetByKey(): void
     {
-        $result = $this->optionSystemService->getByKey(OptionSystemKey::OS_SITE_NAME);
+        $result = $this->optionSystemService->getByKey(OptionSystemEnum::OS_SITE_NAME->value);
         $this->assertInstanceOf(OptionSystem::class, $result);
-        $this->assertEquals(OptionSystemKey::OS_SITE_NAME, $result->getKey());
+        $this->assertEquals(OptionSystemEnum::OS_SITE_NAME->value, $result->getKey());
         $this->assertEquals('Nathéo CMS', $result->getValue());
 
         $result = $this->optionSystemService->getByKey(OptionSystemKey::OS_OPEN_SITE);
@@ -74,7 +75,7 @@ class OptionSystemServiceTest extends AppWebTestCase
      */
     public function testGetValueByKey(): void
     {
-        $result = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_SITE_NAME);
+        $result = $this->optionSystemService->getValueByKey(OptionSystemEnum::OS_SITE_NAME->value);
         $this->assertNotNull($result);
         $this->assertEquals('Nathéo CMS', $result);
 
