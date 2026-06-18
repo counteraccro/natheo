@@ -9,16 +9,9 @@ import { defineComponent, ref, computed, watch, nextTick, onMounted, onUnmounted
 import axios from 'axios';
 import type { InternalPage, NatheoInternalLinkEvent } from '@/ts/MarkdownEditor/modules/internalLink';
 import Modal from '@/vue/Components/Global/Modal.vue';
-import { props } from '@vue/language-core/lib/codegen/names'; // adapte le chemin
 
 export default defineComponent({
   name: 'InternalLink',
-  methods: {
-    props() {
-      return props;
-    },
-  },
-
   components: { Modal },
 
   props: {
