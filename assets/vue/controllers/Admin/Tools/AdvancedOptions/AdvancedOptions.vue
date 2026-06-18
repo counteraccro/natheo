@@ -247,105 +247,75 @@ export default {
 
 <template>
   <div v-if="this.loading">
-    <div class="card rounded-lg p-6 mb-4 mt-4">
+    <div class="card mb-4">
       <skeleton-text />
     </div>
   </div>
   <div v-else>
-    <div class="card rounded-lg p-6 mb-4 mt-4">
-      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-        <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
-          <svg
-            class="icon-lg"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-            style="color: var(--primary)"
-          >
-            <path
-              d="M12.356 3.066a1 1 0 0 0-.712 0l-7 2.666A1 1 0 0 0 4 6.68a17.695 17.695 0 0 0 2.022 7.98 17.405 17.405 0 0 0 5.403 6.158 1 1 0 0 0 1.15 0 17.406 17.406 0 0 0 5.402-6.157A17.694 17.694 0 0 0 20 6.68a1 1 0 0 0-.644-.949l-7-2.666Z"
-            />
-          </svg>
-
-          {{ this.translate.switch_env_title }}
-        </h2>
-        <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
-          <span v-if="this.isDevEnv()">{{ this.translate.switch_env_subtitle_dev }}</span>
-          <span v-else>{{ this.translate.switch_env_subtitle_prod }}</span>
-        </p>
-      </div>
-
-      <div class="text-sm text-[var(--text-secondary)]">
-        <div v-if="this.isDevEnv()">
-          <p class="mb-2">{{ this.translate.switch_env_define_dev }}</p>
-          <ul class="list-disc list-inside space-y-1 ml-2">
-            <li>{{ this.translate.switch_env_define_dev_1 }}</li>
-            <li>{{ this.translate.switch_env_define_dev_2 }}</li>
-            <li>{{ this.translate.switch_env_define_dev_3 }}</li>
-            <li>{{ this.translate.switch_env_define_dev_4 }}</li>
-          </ul>
-
-          <alert-warning type="alert-warning-light" :text="this.translate.switch_env_define_dev_warning" class="mt-5" />
-        </div>
-        <div v-else>
-          <p class="mb-2">{{ this.translate.switch_env_define_prod }}</p>
-          <ul class="list-disc list-inside space-y-1 ml-2">
-            <li>{{ this.translate.switch_env_define_prod_1 }}</li>
-            <li>{{ this.translate.switch_env_define_prod_2 }}</li>
-            <li>{{ this.translate.switch_env_define_prod_3 }}</li>
-          </ul>
-
-          <alert-warning
-            type="alert-warning-light"
-            :text="this.translate.switch_env_define_prod_warning"
-            class="mt-5"
-          />
-        </div>
-      </div>
-
-      <div class="flex flex-row-reverse">
-        <div @click="this.openConfirmModale('switchEnv', false)" class="btn btn-sm btn-primary mt-5">
-          <svg
-            class="icon"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m16 10 3-3m0 0-3-3m3 3H5v3m3 4-3 3m0 0 3 3m-3-3h14v-3"
-            />
-          </svg>
-
-          <span v-if="!this.isDevEnv()"> {{ this.translate.switch_env_btn_dev }} </span>
-          <span v-else> {{ this.translate.switch_env_btn_prod }}</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div v-if="this.isDevEnv()">
-    <div v-if="this.loading">
-      <div class="card rounded-lg p-6 mb-4 mt-4">
-        <skeleton-text />
-      </div>
-    </div>
-    <div v-else>
-      <div class="card rounded-lg p-6 mb-4 mt-4" style="border: 2px solid var(--btn-danger)">
-        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-          <h2 class="flex gap-2 text-lg font-bold text-[var(--btn-danger)]">
+    <div class="card mb-4">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
             <svg
               class="icon-lg"
-              style="color: var(--btn-danger)"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              style="color: var(--primary)"
+            >
+              <path
+                d="M12.356 3.066a1 1 0 0 0-.712 0l-7 2.666A1 1 0 0 0 4 6.68a17.695 17.695 0 0 0 2.022 7.98 17.405 17.405 0 0 0 5.403 6.158 1 1 0 0 0 1.15 0 17.406 17.406 0 0 0 5.402-6.157A17.694 17.694 0 0 0 20 6.68a1 1 0 0 0-.644-.949l-7-2.666Z"
+              />
+            </svg>
+
+            {{ this.translate.switch_env_title }}
+          </div>
+          <p class="card-subtitle">
+            <span v-if="this.isDevEnv()">{{ this.translate.switch_env_subtitle_dev }}</span>
+            <span v-else>{{ this.translate.switch_env_subtitle_prod }}</span>
+          </p>
+        </div>
+      </div>
+      <div class="p-6">
+        <div class="text-sm text-[var(--text-secondary)]">
+          <div v-if="this.isDevEnv()">
+            <p class="mb-2">{{ this.translate.switch_env_define_dev }}</p>
+            <ul class="list-disc list-inside space-y-1 ml-2">
+              <li>{{ this.translate.switch_env_define_dev_1 }}</li>
+              <li>{{ this.translate.switch_env_define_dev_2 }}</li>
+              <li>{{ this.translate.switch_env_define_dev_3 }}</li>
+              <li>{{ this.translate.switch_env_define_dev_4 }}</li>
+            </ul>
+
+            <alert-warning
+              type="alert-warning-light"
+              :text="this.translate.switch_env_define_dev_warning"
+              class="mt-5"
+            />
+          </div>
+          <div v-else>
+            <p class="mb-2">{{ this.translate.switch_env_define_prod }}</p>
+            <ul class="list-disc list-inside space-y-1 ml-2">
+              <li>{{ this.translate.switch_env_define_prod_1 }}</li>
+              <li>{{ this.translate.switch_env_define_prod_2 }}</li>
+              <li>{{ this.translate.switch_env_define_prod_3 }}</li>
+            </ul>
+
+            <alert-warning
+              type="alert-warning-light"
+              :text="this.translate.switch_env_define_prod_warning"
+              class="mt-5"
+            />
+          </div>
+        </div>
+
+        <div class="flex flex-row-reverse">
+          <div @click="this.openConfirmModale('switchEnv', false)" class="btn btn-sm btn-primary mt-5">
+            <svg
+              class="card-icon"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -358,64 +328,32 @@ export default {
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
-                d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                d="m16 10 3-3m0 0-3-3m3 3H5v3m3 4-3 3m0 0 3 3m-3-3h14v-3"
               />
             </svg>
 
-            {{ this.translate.title_danger_zone }}
-          </h2>
-          <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">{{ this.translate.subtitle_danger_zone }}</p>
-        </div>
-
-        <alert-danger type="alert-danger-light" :text="this.translate.warning_danger_zone" />
-
-        <div class="mb-6 pb-6 border-b-1 border-b-[var(--border-color)]">
-          <h4 class="text-base font-semibold mb-2 mt-4 text-[var(--text-primary)]">
-            {{ this.translate.reload_data.title }}
-          </h4>
-          <p class="text-sm mb-2 text-[var(--text-secondary)]">{{ this.translate.reload_data.text_1 }}</p>
-          <p class="text-sm mb-2 text-[var(--text-secondary)]">
-            <i>{{ this.translate.reload_data.warning }}</i>
-          </p>
-
-          <div class="flex flex-row-reverse">
-            <div class="btn btn-primary btn-sm" @click="this.openConfirmModale('resetData', false)">
-              <svg
-                class="icon"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"
-                />
-              </svg>
-
-              {{ this.translate.reload_data.btn }}
-            </div>
+            <span v-if="!this.isDevEnv()"> {{ this.translate.switch_env_btn_dev }} </span>
+            <span v-else> {{ this.translate.switch_env_btn_prod }}</span>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
 
-        <div>
-          <h4 class="text-base font-semibold mb-2 mt-4 text-[var(--text-primary)]">
-            {{ this.translate.reset_database.title }}
-          </h4>
-          <p class="text-sm mb-2 text-[var(--text-secondary)]">{{ this.translate.reset_database.text_1 }}</p>
-          <p class="text-sm mb-2 text-[var(--text-secondary)]">
-            <i>{{ this.translate.reset_database.warning }}</i>
-          </p>
-
-          <div class="flex flex-row-reverse">
-            <div class="btn btn-primary btn-sm" @click="this.openConfirmModale('resetDatabase', false)">
+  <div v-if="this.isDevEnv()">
+    <div v-if="this.loading">
+      <div class="card mb-4">
+        <skeleton-text />
+      </div>
+    </div>
+    <div v-else>
+      <div class="card mb-4" style="border: 2px solid var(--btn-danger)">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
               <svg
-                class="icon"
+                class="card-icon"
+                style="color: var(--btn-danger)"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -428,11 +366,86 @@ export default {
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"
+                  d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                 />
               </svg>
+              <span style="color: var(--btn-danger)">
+                {{ this.translate.title_danger_zone }}
+              </span>
+            </div>
+            <p class="card-subtitle">
+              {{ this.translate.subtitle_danger_zone }}
+            </p>
+          </div>
+        </div>
+        <div class="p-6">
+          <alert-danger type="alert-danger-light" :text="this.translate.warning_danger_zone" />
 
-              {{ this.translate.reset_database.btn }}
+          <div class="mb-6 pb-6 border-b-1 border-b-[var(--border-color)]">
+            <h4 class="text-base font-semibold mb-2 mt-4 text-[var(--text-primary)]">
+              {{ this.translate.reload_data.title }}
+            </h4>
+            <p class="text-sm mb-2 text-[var(--text-secondary)]">{{ this.translate.reload_data.text_1 }}</p>
+            <p class="text-sm mb-2 text-[var(--text-secondary)]">
+              <i>{{ this.translate.reload_data.warning }}</i>
+            </p>
+
+            <div class="flex flex-row-reverse">
+              <div class="btn btn-primary btn-sm" @click="this.openConfirmModale('resetData', false)">
+                <svg
+                  class="icon"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"
+                  />
+                </svg>
+
+                {{ this.translate.reload_data.btn }}
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="text-base font-semibold mb-2 mt-4 text-[var(--text-primary)]">
+              {{ this.translate.reset_database.title }}
+            </h4>
+            <p class="text-sm mb-2 text-[var(--text-secondary)]">{{ this.translate.reset_database.text_1 }}</p>
+            <p class="text-sm mb-2 text-[var(--text-secondary)]">
+              <i>{{ this.translate.reset_database.warning }}</i>
+            </p>
+
+            <div class="flex flex-row-reverse">
+              <div class="btn btn-primary btn-sm" @click="this.openConfirmModale('resetDatabase', false)">
+                <svg
+                  class="icon"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"
+                  />
+                </svg>
+
+                {{ this.translate.reset_database.btn }}
+              </div>
             </div>
           </div>
         </div>
