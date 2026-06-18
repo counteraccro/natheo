@@ -20,7 +20,7 @@ export default defineConfig(({ command }) => ({
     emptyOutDir: true,
     outDir: 'public/build',
     assetsDir: '',
-    rollupOptions: {
+    rolldownOptions: {
       input: {
         admin_css: './assets/styles/app_admin.scss',
         install_css: './assets/styles/app_install.scss',
