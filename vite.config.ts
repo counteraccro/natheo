@@ -40,7 +40,6 @@ export default defineConfig(({ command }) => ({
     cors: true,
     strictPort: false,
     port: 5173,
-    https: false,
     origin: 'http://dev.natheo:5173',
     // Optionnel : watch des fichiers twig pour le HMR
     watch: {
