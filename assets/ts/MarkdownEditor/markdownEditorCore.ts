@@ -4,7 +4,7 @@
  * Composable cœur de l'éditeur Markdown
  */
 
-import { ref, computed, type Ref, type ComputedRef } from 'vue';
+import { ref, computed, type ComputedRef } from 'vue';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import type { UseEditorReturn, EditorSelection } from '@/ts/MarkdownEditor/MarkdownEditor.types';
@@ -54,7 +54,7 @@ renderer.list = (body: string, ordered: boolean): string => {
 
 renderer.listitem = (text: string): string => `<li class="leading-relaxed">${text}</li>`;
 
-renderer.link = (href: string, _title: string | null, text: string): string =>
+renderer.link = (href: string, _title: string | null | undefined, text: string): string =>
   `<a href="${href}" class="underline underline-offset-2" style="color:var(--primary)"
     target="_blank" rel="noopener noreferrer">${text}</a>`;
 
@@ -93,10 +93,9 @@ export function useEditor(initialValue: string = ''): UseEditorReturn {
   const textareaRef = ref<HTMLTextAreaElement | null>(null);
   const markdown = ref<string>(initialValue);
 
-  // ── Rendu ─────────────────────────────────────────────────────────────────
   const html: ComputedRef<string> = computed(() => {
     if (!markdown.value.trim()) return '';
-    return DOMPurify.sanitize(marked.parse(markdown.value) as string, {
+    return DOMPurify.sanitize(marked.parse(markdown.value, { async: false }), {
       ADD_ATTR: ['target', 'rel', 'class', 'style'],
     });
   });
@@ -105,7 +104,6 @@ export function useEditor(initialValue: string = ''): UseEditorReturn {
     markdown.value.trim() ? markdown.value.trim().split(/\s+/).length : 0
   );
 
-  // ── Helpers curseur ────────────────────────────────────────────────────────
   function focus(): void {
     textareaRef.value?.focus();
   }
@@ -120,7 +118,6 @@ export function useEditor(initialValue: string = ''): UseEditorReturn {
     };
   }
 
-  // ── API publique ──────────────────────────────────────────────────────────
   function insertText(text: string): void {
     const el = textareaRef.value;
     if (!el) return;
