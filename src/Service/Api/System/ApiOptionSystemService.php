@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Service\Api\System;
 
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Api\AppApiService;
 use App\Utils\System\Options\OptionSystemKey;
 use Psr\Container\ContainerExceptionInterface;
@@ -23,7 +24,7 @@ class ApiOptionSystemService extends AppApiService
     public function getWhiteListeOptionSystem(): array
     {
         return [
-            OptionSystemKey::OS_SITE_NAME,
+            OptionSystem::OS_SITE_NAME->value,
             OptionSystemKey::OS_FRONT_SCRIPT_TOP,
             OptionSystemKey::OS_FRONT_SCRIPT_START_BODY,
             OptionSystemKey::OS_FRONT_SCRIPT_END_BODY,

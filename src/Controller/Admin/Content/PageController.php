@@ -14,6 +14,7 @@ use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\System\User;
 use App\Enum\Admin\Content\Page\PageMeta;
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\Content\Comment\CommentService;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
@@ -297,7 +298,7 @@ class PageController extends AppAdminController
                     $value = $personalData->getPersonalData();
                 }
                 if ($meta->getName() === PageMeta::COPYRIGHT->value) {
-                    $value = $optionSystemService->getValueByKey(OptionSystemKey::OS_SITE_NAME) . ' ' . date('Y');
+                    $value = $optionSystemService->getValueByKey(OptionSystem::OS_SITE_NAME->value) . ' ' . date('Y');
                 }
 
                 if ($value !== null) {
@@ -619,7 +620,7 @@ class PageController extends AppAdminController
             }
         }
 
-        $siteName = $optionSystemService->getValueByKey(OptionSystemKey::OS_SITE_NAME);
+        $siteName = $optionSystemService->getValueByKey(OptionSystem::OS_SITE_NAME->value);
         $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
         $logo = $optionSystemService->getValueByKey(OptionSystemKey::OS_LOGO_SITE);
 

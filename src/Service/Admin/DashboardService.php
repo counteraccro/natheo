@@ -10,6 +10,7 @@ namespace App\Service\Admin;
 
 use App\Entity\Admin\Content\Comment\Comment;
 use App\Entity\Admin\System\ApiToken;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Repository\Admin\Content\Comment\CommentRepository;
 use App\Utils\System\ApiToken\ApiTokenConst;
 use App\Utils\System\Options\OptionSystemKey;
@@ -28,7 +29,7 @@ class DashboardService extends AppAdminService
     {
         $translator = $this->getTranslator();
         $optionSystem = $this->getOptionSystemService();
-        $siteName = $optionSystem->getValueByKey(OptionSystemKey::OS_SITE_NAME);
+        $siteName = $optionSystem->getValueByKey(OptionSystem::OS_SITE_NAME->value);
         $adresseSite = $optionSystem->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
         $openSite = $optionSystem->getValueByKey(OptionSystemKey::OS_OPEN_SITE);
         $apiTokensDefault = $this->findBy(ApiToken::class, [
@@ -38,7 +39,7 @@ class DashboardService extends AppAdminService
 
         $configComplete = true;
         $body = [
-            OptionSystemKey::OS_SITE_NAME => [
+            OptionSystem::OS_SITE_NAME->value => [
                 'success' => true,
                 'msg' => $translator->trans(
                     'dashboard.block.help.first.connexion.site.name.success',
@@ -67,8 +68,8 @@ class DashboardService extends AppAdminService
                 ),
             ],
         ];
-        if ($siteName === OptionSystemKey::OS_SITE_NAME_DEFAULT_VALUE) {
-            $body[OptionSystemKey::OS_SITE_NAME] = [
+        if ($siteName === OptionSystem::OS_SITE_NAME->getDefault()) {
+            $body[OptionSystem::OS_SITE_NAME->value] = [
                 'success' => false,
                 'msg' => $translator->trans(
                     'dashboard.block.help.first.connexion.site.name.warning',

@@ -14,6 +14,7 @@ use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Menu\MenuElement;
 use App\Enum\Admin\Content\Menu\MenuLinkTarget;
 use App\Enum\Admin\Global\Breadcrumb;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\Content\Menu\MenuService;
 use App\Service\Admin\Content\Page\PageService;
 use App\Service\Admin\System\OptionSystemService;
@@ -241,7 +242,7 @@ class MenuController extends AppAdminController
             return $this->json(['menu' => []]);
         }
 
-        $name = $optionSystemService->getValueByKey(OptionSystemKey::OS_SITE_NAME);
+        $name = $optionSystemService->getValueByKey(OptionSystem::OS_SITE_NAME->value);
         $logo = $optionSystemService->getValueByKey(OptionSystemKey::OS_LOGO_SITE);
         $urlSite = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
         $allElement = [];

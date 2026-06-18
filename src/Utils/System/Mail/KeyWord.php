@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Utils\System\Mail;
 
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
 use App\Utils\System\Options\OptionSystemKey;
 use Psr\Container\ContainerExceptionInterface;
@@ -163,7 +164,7 @@ class KeyWord
     private function getGlobalKeyWord(User $user, OptionSystemService $optionSystemService): array
     {
         $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
-        $siteName = $optionSystemService->getValueByKey(OptionSystemKey::OS_SITE_NAME);
+        $siteName = $optionSystemService->getValueByKey(OptionSystem::OS_SITE_NAME->value);
 
         return [
             '[[' . self::USER_LOGIN . ']]' => $user->getLogin(),
