@@ -14,13 +14,13 @@ class OptionSystemKey
      * Clé option nom du site
      * @var string
      */
-    const string OS_SITE_NAME = 'OS_SITE_NAME';
+    //const string OS_SITE_NAME = 'OS_SITE_NAME';
 
     /**
      * Valeur par défaut défini pour OS_SITE_NAME
      * @var string
      */
-    const string OS_SITE_NAME_DEFAULT_VALUE = 'Nathéo CMS';
+    //const string OS_SITE_NAME_DEFAULT_VALUE = 'Nathéo CMS';
 
     /**
      * Clé option theme du site
