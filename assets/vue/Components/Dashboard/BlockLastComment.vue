@@ -59,14 +59,30 @@ export default {
 </script>
 
 <template>
-  <div class="card rounded-lg overflow-hidden">
-    <div class="px-4 sm:px-6 py-4 border-b flex items-center justify-between" style="border-color: var(--border-color)">
-      <h3 class="text-lg font-semibold">{{ this.translate.title }}</h3>
-      <a :href="this.urls.url_comments" class="text-sm font-medium hover:underline" style="color: var(--primary)">{{
-        this.translate.link_comment
-      }}</a>
+  <div class="card mb-4">
+    <div class="card-header">
+      <div>
+        <div class="card-title">
+          <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-width="2"
+              d="M7 9h5m3 0h2M7 12h2m3 0h5M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-6.616a1 1 0 0 0-.67.257l-2.88 2.592A.5.5 0 0 1 8 18.477V17a1 1 0 0 0-1-1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"
+            />
+          </svg>
+          {{ this.translate.title }}
+        </div>
+      </div>
+      <a
+        :href="this.urls.url_comments"
+        class="text-sm font-medium hover:underline flex items-center gap-1"
+        style="color: var(--primary)"
+      >
+        {{ this.translate.link_comment }}
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-width="2" d="M13 5h6m0 0v6m0-6L10 14m-4 5h8a2 2 0 0 0 2-2v-3" />
+        </svg>
+      </a>
     </div>
-
     <AlertDanger v-if="this.errorMessage !== null" :text="this.errorMessage" />
 
     <div class="overflow-x-auto" v-if="this.result !== null">
