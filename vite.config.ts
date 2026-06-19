@@ -20,7 +20,7 @@ export default defineConfig(({ command }) => ({
     emptyOutDir: true,
     outDir: 'public/build',
     assetsDir: '',
-    rollupOptions: {
+    rolldownOptions: {
       input: {
         admin_css: './assets/styles/app_admin.scss',
         install_css: './assets/styles/app_install.scss',
@@ -40,7 +40,6 @@ export default defineConfig(({ command }) => ({
     cors: true,
     strictPort: false,
     port: 5173,
-    https: false,
     origin: 'http://dev.natheo:5173',
     // Optionnel : watch des fichiers twig pour le HMR
     watch: {
