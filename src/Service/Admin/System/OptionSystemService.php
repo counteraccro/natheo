@@ -109,6 +109,9 @@ class OptionSystemService extends AppAdminService
     {
         /* @var OptionSystem $optionSystem */
         $optionSystem = $this->getByKey($key);
+        if ($optionSystem === null) {
+            return;
+        }
         $optionSystem->setValue($value);
         $this->save($optionSystem);
     }
