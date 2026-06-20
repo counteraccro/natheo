@@ -79,28 +79,25 @@ export default {
       now.getMinutes() +
       '-' +
       now.getSeconds();
-    this.loadSchemaDataBase();
-    this.loadListeDump();
-    this.loadDataDump();
+
+    this.loading = true;
+    Promise.all([this.loadSchemaDataBase(), this.loadListeDump(), this.loadDataDump()]).finally(() => {
+      this.loading = false;
+    });
   },
   methods: {
     /**
      * Chargement du schema de la base de donnée
      */
     loadSchemaDataBase() {
-      this.loading = true;
-      axios
+      return axios
         .get(this.urls.load_schema_database)
         .then((response) => {
           this.result = response.data.query;
           this.result.header['action'] = this.translate.action;
-          console.log(this.result);
         })
         .catch((error) => {
           console.error(error);
-        })
-        .finally(() => {
-          this.loading = false;
         });
     },
 
@@ -109,10 +106,10 @@ export default {
      * @param table
      */
     loadSchemaTable(table) {
-      this.schemaTable = Object;
+      this.schemaTable = {};
       this.schemaTableName = '';
       this.loading = true;
-      axios
+      return axios
         .get(this.urls.load_schema_table + '/' + table)
         .then((response) => {
           this.schemaTable = response.data.result;
@@ -130,17 +127,13 @@ export default {
      * Charge les listes des sauvegardes, faites
      */
     loadListeDump() {
-      this.loading = true;
-      axios
+      return axios
         .get(this.urls.all_dump_file)
         .then((response) => {
           this.listDump = response.data.result;
         })
         .catch((error) => {
           console.error(error);
-        })
-        .finally(() => {
-          this.loading = false;
         });
     },
 
@@ -148,17 +141,13 @@ export default {
      * Chargement des données pour le dump SQL
      */
     loadDataDump() {
-      this.loading = true;
-      axios
+      return axios
         .get(this.urls.load_tables_database)
         .then((response) => {
           this.tables = response.data.tables;
         })
         .catch((error) => {
           console.error(error);
-        })
-        .finally(() => {
-          this.loading = false;
         });
     },
 
@@ -184,8 +173,9 @@ export default {
           console.error(error);
         })
         .finally(() => {
-          this.loading = false;
-          this.loadListeDump();
+          Promise.all([this.loadListeDump()]).finally(() => {
+            this.loading = false;
+          });
         });
     },
 
@@ -217,10 +207,11 @@ export default {
           console.error(error);
         })
         .finally(() => {
-          this.loading = false;
           this.deleteFileName = '';
           this.closeModal('modaleConfirmDeleteDump');
-          this.loadListeDump();
+          Promise.all([this.loadListeDump()]).finally(() => {
+            this.loading = false;
+          });
         });
     },
 
