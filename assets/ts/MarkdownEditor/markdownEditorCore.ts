@@ -95,7 +95,7 @@ export function useEditor(initialValue: string = ''): UseEditorReturn {
 
   const html: ComputedRef<string> = computed(() => {
     if (!markdown.value.trim()) return '';
-    return DOMPurify.sanitize(marked.parse(markdown.value, { async: false }), {
+    return DOMPurify.sanitize(marked.parse(markdown.value, { async: false, mangle: false, headerIds: false }), {
       ADD_ATTR: ['target', 'rel', 'class', 'style'],
     });
   });
