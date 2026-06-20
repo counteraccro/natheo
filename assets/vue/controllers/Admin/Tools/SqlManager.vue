@@ -27,16 +27,16 @@ export default {
   data() {
     return {
       loading: false,
-      sqlManager: Object,
-      dataBaseData: Object,
-      selectTable: '',
+      sqlManager: {},
+      dataBaseData: {},
+      selectTable: [],
       selectLabelTable: '',
-      selectField: '',
+      selectField: [],
       selectColumns: [],
       searchTable: '',
       searchField: '',
-      result: Object,
-      resultHeader: Object,
+      result: {},
+      resultHeader: {},
       error: '',
       isErrorValidateName: false,
       isErrorValidateQuery: false,
@@ -244,6 +244,32 @@ export default {
       this.isErrorValidateName = this.sqlManager.name === null || this.sqlManager.name === '';
 
       return !(this.isErrorValidateName || this.isErrorValidateQuery);
+    },
+
+    /**
+     * Ajoute les tables sélectionnées (schema.table1, schema.table2, ...) dans l'input
+     */
+    addTableElement() {
+      if (this.selectTable.length === 0) {
+        return false;
+      }
+
+      const balise = this.selectTable.map((table) => this.schema + '.' + table).join(', ');
+      this.addElement(balise, false);
+      return false;
+    },
+
+    /**
+     * Ajoute les champs sélectionnés (col1, col2, ...) dans l'input
+     */
+    addFieldElement() {
+      if (this.selectField.length === 0) {
+        return false;
+      }
+
+      const balise = this.selectField.join(', ');
+      this.addElement(balise, false);
+      return false;
     },
 
     /**
@@ -462,13 +488,13 @@ export default {
           </div>
           <div class="form-control mb-3">
             <select class="form-input" multiple id="sql-table" size="8" v-model="selectTable">
-              <option v-for="table in filteredTable" @click="loadColumn(table.name)">
+              <option v-for="table in filteredTable" :value="table.name" @click="loadColumn(table.name)">
                 {{ table.name }}
               </option>
             </select>
           </div>
           <div class="mb-3">
-            <div class="btn btn-secondary btn-sm w-full" @click="addElement(schema + '.' + selectTable, false)">
+            <div class="btn btn-secondary btn-sm w-full" @click="addTableElement()">
               <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
               </svg>
@@ -498,7 +524,7 @@ export default {
               v-model="selectField"
               :disabled="selectColumns.length === 0"
             >
-              <option v-for="column in filteredFieldName">
+              <option v-for="column in filteredFieldName" :value="column">
                 {{ column }}
               </option>
             </select>
@@ -507,7 +533,7 @@ export default {
             <button
               :disabled="selectColumns.length === 0"
               class="btn btn-secondary btn-sm w-full"
-              @click="addElement(selectField, false)"
+              @click="addFieldElement()"
             >
               <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
