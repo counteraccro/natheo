@@ -157,3 +157,98 @@ export interface PageData {
   url_front: string;
   options_commentaire: PageOptionsCommentaire;
 }
+
+export interface PageTranslationItem {
+  id: number | null;
+  page: number | null;
+  locale: string;
+  titre: string;
+  url: string;
+}
+
+export interface PageStatistique {
+  id: number | null;
+  page: number | null;
+  key: string;
+  value: string;
+}
+
+export interface PageMetaTranslationItem {
+  id: number | null;
+  pageMeta: number | null;
+  locale: string;
+  value: string;
+}
+
+export interface PageMeta {
+  id: number | null;
+  page: number | null;
+  name: string;
+  pageMetaTranslations: PageMetaTranslationItem[];
+}
+
+export interface PageContentTranslationItem {
+  id: number;
+  pageContent: number;
+  locale: string;
+  text: string;
+}
+
+export interface PageContentItem {
+  id: number;
+  page: number;
+  renderOrder: number;
+  type: number;
+  pageContentTranslations: PageContentTranslationItem[];
+  typeId: number | null;
+  renderBlock: number;
+}
+
+export interface TagTranslationItem {
+  id: number;
+  tag: number;
+  locale: string;
+  label: string;
+}
+
+export interface Tag {
+  id: number;
+  color: string;
+  disabled: boolean;
+  tagTranslations: TagTranslationItem[];
+}
+
+export type PageMenuId = number | string;
+
+export interface Page {
+  id: number | null;
+  render: number;
+  status: number;
+  pageTranslations: PageTranslationItem[];
+  pageContents: PageContentItem[];
+  pageStatistiques: PageStatistique[];
+  disabled: boolean;
+  category: number;
+  landingPage: boolean;
+  openComment: boolean;
+  nbComment: number;
+  ruleComment: number;
+  pageMetas: PageMeta[];
+  headerImg: string | null;
+  menus: PageMenuId[];
+  tags: Tag[];
+}
+
+export interface PageHistoryState {
+  show_msg: boolean;
+  id: number;
+  msg: string;
+}
+
+export interface PageMenuItem {
+  name: string;
+  disabled: boolean;
+  id: number;
+}
+
+export type PageMenus = Record<string, PageMenuItem>;
