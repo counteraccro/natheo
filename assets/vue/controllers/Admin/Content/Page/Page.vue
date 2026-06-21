@@ -5,12 +5,20 @@ import SkeletonPageTag from '@/vue/Components/Skeleton/Page/PageTag.vue';
 import SkeletonPageHistory from '@/vue/Components/Skeleton/Page/PageHistory.vue';
 import SkeletonPageSave from '@/vue/Components/Skeleton/Page/PageSave.vue';
 import SkeletonPageSEO from '@/vue/Components/Skeleton/Page/PageSEO.vue';
-import { Locales, PageData, PageTranslations, Urls } from '@/ts/Page/type';
+import { Locales, Page, PageData, PageTranslations, Urls } from '@/ts/Page/type';
 import axios from 'axios';
+import PageContent from '@/vue/Components/Page/PageContent.vue';
 
 export default defineComponent({
   name: 'Page',
-  components: { SkeletonPageSEO, SkeletonPageSave, SkeletonPageHistory, SkeletonPageTag, SkeletonPageContent },
+  components: {
+    PageContent,
+    SkeletonPageSEO,
+    SkeletonPageSave,
+    SkeletonPageHistory,
+    SkeletonPageTag,
+    SkeletonPageContent,
+  },
   props: {
     id: {
       type: Number as PropType<number>,
@@ -36,7 +44,7 @@ export default defineComponent({
   data() {
     return {
       loading: false,
-      page: {},
+      page: {} as Page,
     };
   },
 
@@ -54,12 +62,7 @@ export default defineComponent({
       axios
         .get(url, {})
         .then((response) => {
-          console.log(response);
-
           this.page = response.data.page;
-          if (this.page.tags[0] === '-1') {
-            this.page.tags = [];
-          }
           /*
           this.historyInfo = response.data.history;
           this.menus = response.data.menus;*/
@@ -241,8 +244,10 @@ export default defineComponent({
       </ul>
     </div>
 
-    <div id="nav-tab-page" class="card rounded-lg p-6 sm:p-8">
-      <div class="" id="page-content" role="tabpanel" aria-labelledby="profile-tab">Content</div>
+    <div id="nav-tab-page">
+      <div class="" id="page-content" role="tabpanel" aria-labelledby="profile-tab">
+        <PageContent :translate="translate" :page="page" />
+      </div>
       <div class="hidden" id="page-seo" role="tabpanel" aria-labelledby="profile-tab2">Seo</div>
       <div class="hidden" id="page-tag" role="tabpanel" aria-labelledby="profile-tab3">Tag</div>
       <div class="hidden" id="page-history" role="tabpanel" aria-labelledby="profile-tab3">History</div>
