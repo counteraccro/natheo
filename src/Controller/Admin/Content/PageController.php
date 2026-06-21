@@ -340,7 +340,7 @@ class PageController extends AppAdminController
                 $pageArray['menus'][] = $menu->getId();
             }
         } else {
-            $pageArray['menus'][] = '-1';
+            $pageArray['menus'] = [];
         }
 
         if (!$page->getTags()->isEmpty()) {
@@ -363,7 +363,7 @@ class PageController extends AppAdminController
                 $i++;
             }
         } else {
-            $pageArray['tags'][] = '-1';
+            $pageArray['tags'] = [];
         }
 
         return $this->json([
