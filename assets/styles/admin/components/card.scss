@@ -2,55 +2,27 @@
    CARD COMPONENT
    ============================================ */
 
+
 .card {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
-  border-radius: 0.5rem;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  @apply bg-[var(--bg-card)] border border-[var(--border-color)] shadow-sm rounded-lg transition-colors duration-300;
 
   &-header {
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  &-section-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 20px 4px 20px;
-  }
-
-  &-icon {
-    width: 20px;
-    height: 20px;
-    color: var(--primary);
-    flex-shrink: 0;
+    @apply flex items-center justify-between border-b border-[var(--border-color)] px-5 pt-3 pb-2;
   }
 
   &-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-primary);
+    @apply flex items-center gap-2 text-base font-semibold text-[var(--text-primary)] mb-1;
+  }
+
+  &-icon {
+    @apply w-5 h-5 text-[var(--primary)] shrink-0;
   }
 
   &-subtitle {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    margin: 0 0 8px 0;
-    padding: 0 20px;
+    @apply text-sm text-[var(--text-secondary)] m-0;
+  }
+
+  &-actions {
+    @apply flex items-center gap-2;
   }
 }
-
-.card-header--actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 20px 4px 20px;
-}
-
-.card-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
