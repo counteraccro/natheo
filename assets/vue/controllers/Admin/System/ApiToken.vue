@@ -211,15 +211,15 @@ export default {
 </script>
 
 <template>
-  <div class="card rounded-lg p-6 mb-4 mt-4">
+  <div class="card mb-4">
     <div v-if="this.loading">
       <skeleton-form />
     </div>
-    <div v-else>
-      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-        <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
+    <div class="card-header">
+      <div>
+        <div class="card-title">
           <svg
-            class="icon-lg"
+            class="card-icon"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -245,9 +245,8 @@ export default {
           <span v-else>
             {{ 'this.translate.title_edit' }}
           </span>
-        </h2>
-
-        <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+        </div>
+        <p class="card-subtitle">
           <span v-if="this.apiToken.id === null">
             {{ this.translate.description_add }}
           </span>
@@ -256,7 +255,8 @@ export default {
           </span>
         </p>
       </div>
-
+    </div>
+    <div class="p-6">
       <div class="form-group">
         <label for="api-token-name" class="form-label required">{{ this.translate.title_label }}</label>
         <input
