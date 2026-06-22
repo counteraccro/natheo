@@ -349,12 +349,12 @@ export default {
   </div>
 
   <div v-else>
-    <div class="card rounded-lg p-6 mb-4">
-      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-        <div class="flex justify-between">
-          <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
+    <div class="card mb-4">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
             <svg
-              class="icon-lg"
+              class="card-icon"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -371,75 +371,79 @@ export default {
                 d="M19 6c0 1.657-3.134 3-7 3S5 7.657 5 6m14 0c0-1.657-3.134-3-7-3S5 4.343 5 6m14 0v6M5 6v6m0 0c0 1.657 3.134 3 7 3s7-1.343 7-3M5 12v6c0 1.657 3.134 3 7 3s7-1.343 7-3v-6"
               />
             </svg>
+
             {{ translate.title_my_query }}
-          </h2>
-          <div>
-            <div class="btn btn-success btn-sm me-2" @click="this.execute()">
-              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"
-                ></path>
-              </svg>
-              {{ translate.btn_execute_query }}
-            </div>
-            <div class="btn btn-primary btn-sm me-2" @click="this.save">
-              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
-                ></path>
-              </svg>
-              {{ translate.btn_save_query }}
-            </div>
+          </div>
+          <p class="card-subtitle">
+            {{ translate.sub_title_my_query }}
+          </p>
+        </div>
+
+        <div class="card-actions">
+          <div class="btn btn-success btn-sm me-2" @click="this.execute()">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"
+              ></path>
+            </svg>
+            {{ translate.btn_execute_query }}
+          </div>
+
+          <div class="btn btn-primary btn-sm me-2" @click="this.save">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+              ></path>
+            </svg>
+            {{ translate.btn_save_query }}
           </div>
         </div>
-        <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
-          {{ translate.sub_title_my_query }}
-        </div>
       </div>
-
-      <div class="form-control mb-3">
-        <label for="name-query" class="form-label">{{ translate.label_name }} *</label>
-        <input
-          type="text"
-          class="form-input"
-          :class="isErrorValidateName ? 'is-invalid' : ''"
-          id="name-query"
-          :placeholder="translate.label_name_placeholder"
-          v-model="sqlManager.name"
-        />
-        <div v-if="isErrorValidateName" class="form-text text-error">
-          {{ translate.error_name_empty }}
+      <div class="p-6">
+        <div class="form-control mb-3">
+          <label for="name-query" class="form-label">{{ translate.label_name }} *</label>
+          <input
+            type="text"
+            class="form-input"
+            :class="isErrorValidateName ? 'is-invalid' : ''"
+            id="name-query"
+            :placeholder="translate.label_name_placeholder"
+            v-model="sqlManager.name"
+          />
+          <div v-if="isErrorValidateName" class="form-text text-error">
+            {{ translate.error_name_empty }}
+          </div>
         </div>
-      </div>
 
-      <div class="form-control mb-3">
-        <label for="sql-textarea" class="form-label">{{ translate.label_textarea_query }}</label>
-        <textarea
-          class="form-input code-editor"
-          :class="isErrorValidateQuery ? 'is-invalid' : ''"
-          id="sql-textarea"
-          rows="10"
-          v-model="sqlManager.query"
-        ></textarea>
-        <div v-if="isErrorValidateQuery" class="form-text text-error">
-          {{ translate.error_query_empty }}
+        <div class="form-control mb-3">
+          <label for="sql-textarea" class="form-label">{{ translate.label_textarea_query }}</label>
+          <textarea
+            class="form-input code-editor"
+            :class="isErrorValidateQuery ? 'is-invalid' : ''"
+            id="sql-textarea"
+            rows="10"
+            v-model="sqlManager.query"
+          ></textarea>
+          <div v-if="isErrorValidateQuery" class="form-text text-error">
+            {{ translate.error_query_empty }}
+          </div>
         </div>
-      </div>
 
-      <alert-danger v-if="error !== ''" type="alert-danger-solid mb-3" :text="error" />
-      <alert-primary type="alert-primary-solid" :text="translate.help_text_1" />
+        <alert-danger v-if="error !== ''" type="alert-danger-solid mb-3" :text="error" />
+        <alert-primary type="alert-primary-solid" :text="translate.help_text_1" />
+      </div>
     </div>
 
     <div class="card mb-4">
-      <div class="card-section">
-        <div class="card-header--actions">
-          <div class="card-section-header">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
             <svg
               class="icon-lg"
               aria-hidden="true"
@@ -452,36 +456,38 @@ export default {
             >
               <path stroke="currentColor" stroke-width="2" d="m21 21-4.35-4.35M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z" />
             </svg>
-            <span class="card-title">
-              {{ translate.bloc_query }}
-            </span>
+
+            {{ translate.bloc_query }}
           </div>
-          <div class="p-3 align-middle h-max">
-            <div class="btn btn-success btn-sm me-2" @click="execute()">
-              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"
-                ></path>
-              </svg>
-              {{ translate.btn_execute_query }}
-            </div>
-            <div class="btn btn-primary btn-sm me-2" @click="save">
-              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
-                ></path>
-              </svg>
-              {{ translate.btn_save_query }}
-            </div>
-          </div>
-          <div class="card-subtitle">
+
+          <p class="card-subtitle">
             {{ translate.bloc_query_sub_title }}
+          </p>
+        </div>
+
+        <div class="card-actions">
+          <div class="btn btn-success btn-sm me-2" @click="execute()">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"
+              ></path>
+            </svg>
+            {{ translate.btn_execute_query }}
+          </div>
+
+          <div class="btn btn-primary btn-sm me-2" @click="save">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+              ></path>
+            </svg>
+            {{ translate.btn_save_query }}
           </div>
         </div>
       </div>
@@ -556,29 +562,24 @@ export default {
 
     <div class="card mb-4">
       <div class="card-header">
-        <div class="card-section-header">
-          <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-width="2"
-              d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"
-            />
-          </svg>
+        <div>
+          <div class="card-title">
+            <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--primary)">
+              <path stroke="currentColor" stroke-width="2" d="m21 21-4.35-4.35M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z" />
+            </svg>
 
-          <span class="card-title">
             {{ translate.bloc_result }}
-          </span>
-        </div>
+          </div>
 
-        <div class="card-subtitle">
-          {{ translate.bloc_result_sub_title }}
+          <p class="card-subtitle">
+            {{ translate.bloc_result_sub_title }}
+          </p>
         </div>
       </div>
 
       <div v-if="!Object.keys(result).length" class="text-center py-12 text-[var(--text-secondary)]">
         <svg
-          class="w-16 h-16 mx-auto mb-4 text-[var(-text-light)]"
+          class="w-16 h-16 mx-auto mb-4 text-[var(--text-light)]"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
