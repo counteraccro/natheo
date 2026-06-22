@@ -123,72 +123,77 @@ export default defineComponent({
     <SkeletonFaq :is-new="true" />
   </div>
   <div v-else>
-    <div class="card rounded-lg p-6 mb-4 mt-4">
-      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-        <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
-          <svg
-            class="icon-lg"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-            style="color: var(--primary)"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
-          {{ translate.new_faq }}
-        </h2>
-        <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">{{ translate.new_faq_sub_title }}</p>
+    <div class="card mb-4">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <svg
+              class="card-icon"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+              style="color: var(--primary)"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+            {{ translate.new_faq }}
+          </div>
+          <p class="card-subtitle">
+            {{ translate.new_faq_sub_title }}
+          </p>
+        </div>
       </div>
+      <div class="p-6">
+        <div class="form-group">
+          <label class="form-label">{{ translate.new_faq_input_title }}</label>
+          <input
+            type="text"
+            class="form-input"
+            v-model="faq.title"
+            @input="onTitleInput"
+            :class="{ 'is-invalid': showError }"
+          />
+          <span v-if="showError" class="form-text text-error">✗ {{ translate.new_faq_error_empty }}</span>
+          <span v-else class="form-text">{{ translate.new_faq_help }}</span>
+        </div>
 
-      <div class="form-group">
-        <label class="form-label">{{ translate.new_faq_input_title }}</label>
-        <input
-          type="text"
-          class="form-input"
-          v-model="faq.title"
-          @input="onTitleInput"
-          :class="{ 'is-invalid': showError }"
-        />
-        <span v-if="showError" class="form-text text-error">✗ {{ translate.new_faq_error_empty }}</span>
-        <span v-else class="form-text">{{ translate.new_faq_help }}</span>
-      </div>
-
-      <div class="flex flex-wrap gap-3 pt-4 mt-5 flex-row-reverse">
-        <button type="button" class="btn btn-outline-dark btn-sm" onclick="window.history.back()">
-          <svg
-            class="icon"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            ></path>
-          </svg>
-          {{ translate.new_faq_btn_cancel }}
-        </button>
-        <button class="btn btn-sm btn-primary" :disabled="!checkIsValid" @click="newFaq">
-          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-          </svg>
-          {{ translate.new_faq_btn }}
-        </button>
+        <div class="flex flex-wrap gap-3 pt-4 mt-5 flex-row-reverse">
+          <button type="button" class="btn btn-outline-dark btn-sm" onclick="window.history.back()">
+            <svg
+              class="icon"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              ></path>
+            </svg>
+            {{ translate.new_faq_btn_cancel }}
+          </button>
+          <button class="btn btn-sm btn-primary" :disabled="!checkIsValid" @click="newFaq">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            {{ translate.new_faq_btn }}
+          </button>
+        </div>
       </div>
     </div>
   </div>
