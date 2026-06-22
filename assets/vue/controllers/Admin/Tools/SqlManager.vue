@@ -352,25 +352,7 @@ export default {
     <div class="card rounded-lg p-6 mb-4">
       <div class="border-b-1 border-b-[var(--border-color)] mb-4">
         <div class="flex justify-between">
-          <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
-            <svg
-              class="icon-lg"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              viewBox="0 0 24 24"
-              style="color: var(--primary)"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 6c0 1.657-3.134 3-7 3S5 7.657 5 6m14 0c0-1.657-3.134-3-7-3S5 4.343 5 6m14 0v6M5 6v6m0 0c0 1.657 3.134 3 7 3s7-1.343 7-3M5 12v6c0 1.657 3.134 3 7 3s7-1.343 7-3v-6"
-              />
-            </svg>
+          <h2 class="text-lg font-bold text-[var(--text-primary)]">
             {{ translate.title_my_query }}
           </h2>
           <div>
@@ -436,27 +418,13 @@ export default {
       <alert-primary type="alert-primary-solid" :text="translate.help_text_1" />
     </div>
 
-    <div class="card mb-4">
-      <div class="card-section">
-        <div class="card-header--actions">
-          <div class="card-section-header">
-            <svg
-              class="icon-lg"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              viewBox="0 0 24 24"
-              style="color: var(--primary)"
-            >
-              <path stroke="currentColor" stroke-width="2" d="m21 21-4.35-4.35M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z" />
-            </svg>
-            <span class="card-title">
-              {{ translate.bloc_query }}
-            </span>
-          </div>
-          <div class="p-3 align-middle h-max">
+    <div class="card rounded-lg p-6 mb-4">
+      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+        <div class="flex justify-between">
+          <h2 class="text-lg font-bold text-[var(--text-primary)]">
+            {{ translate.bloc_query }}
+          </h2>
+          <div>
             <div class="btn btn-success btn-sm me-2" @click="execute()">
               <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -480,13 +448,13 @@ export default {
               {{ translate.btn_save_query }}
             </div>
           </div>
-          <div class="card-subtitle">
-            {{ translate.bloc_query_sub_title }}
-          </div>
+        </div>
+        <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
+          {{ translate.bloc_query_sub_title }}
         </div>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 p-5">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
           <h3 class="text-sm font-semibold mb-3 text-[var(--text-primary)]">{{ translate.label_list_table }}</h3>
           <div class="form-control mb-3">
@@ -554,24 +522,14 @@ export default {
       </div>
     </div>
 
-    <div class="card mb-4">
-      <div class="card-header">
-        <div class="card-section-header">
-          <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-width="2"
-              d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"
-            />
-          </svg>
-
-          <span class="card-title">
+    <div class="card rounded-lg p-6 mb-4">
+      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
+        <div class="flex justify-between">
+          <h2 class="text-lg font-bold text-[var(--text-primary)]">
             {{ translate.bloc_result }}
-          </span>
+          </h2>
         </div>
-
-        <div class="card-subtitle">
+        <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
           {{ translate.bloc_result_sub_title }}
         </div>
       </div>
