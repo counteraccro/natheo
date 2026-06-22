@@ -44,12 +44,14 @@ export default defineComponent({
   data() {
     return {
       loading: false,
+      currentLocale: '',
       page: {} as Page,
     };
   },
 
   mounted() {
     this.loadPage();
+    this.currentLocale = this.locales.current;
   },
 
   methods: {
@@ -128,6 +130,34 @@ export default defineComponent({
 
   <div v-else>
     <div class="mb-4 mt-4 border-b border-gray-200 dark:border-gray-700" id="nav-tab-option-system">
+      <div class="float-right flex items-center" style="margin-top: -0.5rem">
+        <div class="input-addon-group">
+          <span class="input-addon input-addon-left"
+            ><svg
+              class="icon-sm"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m13 19 3.5-9 3.5 9m-6.125-2h5.25M3 7h7m0 0h2m-2 0c0 1.63-.793 3.926-2.239 5.655M7.5 6.818V5m.261 7.655C6.79 13.82 5.521 14.725 4 15m3.761-2.345L5 10m2.761 2.655L10.2 15"
+              ></path></svg></span
+          ><select id="select-language" class="form-input form-input-sm" style="width: 120px" v-model="currentLocale">
+            <option value="" selected>{{ translate.select_locale }}</option>
+            <option v-for="(language, key) in locales.localesTranslate" :value="key">
+              {{ language }}
+            </option>
+          </select>
+        </div>
+      </div>
+
       <ul
         class="flex items-center flex-wrap mb-px text-sm font-medium text-center"
         id="default-styled-tab"
