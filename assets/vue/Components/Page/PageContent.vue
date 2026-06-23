@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Page, PageTranslations } from '@/ts/Page/type';
+import { Page, PageData, PageTranslationItem, PageTranslations } from '@/ts/Page/type';
 
 export default defineComponent({
   name: 'PageContent',
@@ -11,6 +11,26 @@ export default defineComponent({
     },
     page: {
       type: Object as PropType<Page>,
+      required: true,
+    },
+    currentLocale: {
+      type: String as PropType<string>,
+      required: true,
+    },
+    pageDatas: {
+      type: Object as PropType<PageData>,
+      required: true,
+    },
+  },
+  computed: {
+    currentTranslation(): PageTranslationItem | undefined {
+      return this.page.pageTranslations.find((t) => t.locale === this.currentLocale);
+    },
+    currentTitre(): string {
+      return this.currentTranslation?.titre ?? '';
+    },
+    currentUrl(): string {
+      return this.currentTranslation?.url ?? '';
     },
   },
 });
@@ -32,7 +52,15 @@ export default defineComponent({
       }}</span>
     </div>
 
-    <div class="p-4">aaa</div>
+    <div class="p-4">
+      <div class="form-group">
+        <label for="list-render-page" class="form-label">{{ translate.page_content_form.list_categories_label }}</label>
+        <select id="list-render-page" class="form-input" v-model="page.category">
+          <option v-for="(value, key) in pageDatas.list_categories" :value="parseInt(key)">{{ value }}</option>
+        </select>
+        <div id="list-status-help" class="form-text">{{ translate.page_content_form.list_categories_help }}</div>
+      </div>
+    </div>
   </div>
 
   <div class="card rounded-lg relative overflow-visible mb-5">

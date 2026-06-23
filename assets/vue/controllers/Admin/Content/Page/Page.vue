@@ -36,7 +36,7 @@ export default defineComponent({
       type: Object as PropType<PageTranslations>,
       required: true,
     },
-    page_datas: {
+    pageDatas: {
       type: Object as PropType<PageData>,
       required: true,
     },
@@ -276,7 +276,7 @@ export default defineComponent({
 
     <div id="nav-tab-page">
       <div class="" id="page-content" role="tabpanel" aria-labelledby="profile-tab">
-        <PageContent :translate="translate" :page="page" />
+        <PageContent :translate="translate" :page="page" :current-locale="currentLocale" :page-datas="pageDatas" />
       </div>
       <div class="hidden" id="page-seo" role="tabpanel" aria-labelledby="profile-tab2">Seo</div>
       <div class="hidden" id="page-tag" role="tabpanel" aria-labelledby="profile-tab3">Tag</div>
