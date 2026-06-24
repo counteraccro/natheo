@@ -156,6 +156,7 @@ class PageTranslate extends AppTranslate
             'input_url_info' => $this->translator->trans('page.page_content_form.input.url.info', domain: 'page'),
             'input_titre_label' => $this->translator->trans('page.page_content_form.input.titre.label', domain: 'page'),
             'input_titre_info' => $this->translator->trans('page.page_content_form.input.titre.info', domain: 'page'),
+            'input_titre_error' => $this->translator->trans('page.page_content_form.input.titre.error', domain: 'page'),
             'list_render_label' => $this->translator->trans('page.page_save.list_render_label', domain: 'page'),
             'list_render_help' => $this->translator->trans('page.page_save.list_render_help', domain: 'page'),
             'list_categories_label' => $this->translator->trans(

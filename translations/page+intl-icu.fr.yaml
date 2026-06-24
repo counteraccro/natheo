@@ -178,5 +178,6 @@ page.page_content.header_img.change: Changer
 page.content.listing.title: 'Liste des pages pour la catégorie "{category}"'
 page.page.no.exist.title: 'Aucune page trouvée'
 page.page.no.exist.text: "Cette page n'existe pas ou à été supprimée. Vous pouvez retourner à la liste ou en créer une nouvelle"
-page.btn.back: "Retour"
-page.btn.new: "Nouvelle page"
+page.btn.back: Retour
+page.btn.new: 'Nouvelle page'
+page.page_content_form.input.titre.error: 'Le titre de la page ne peut pas être vide'
