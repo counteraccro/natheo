@@ -1,6 +1,13 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Page, PageData, PageTranslationItem, PageTranslations } from '@/ts/Page/type';
+import { Locales, Page, PageData, PageTranslationItem, PageTranslations } from '@/ts/Page/type';
+
+type PageContentFieldErrors = {
+  titre: string;
+  url: string;
+};
+
+type PageContentErrorsByLocale = Record<string, PageContentFieldErrors>;
 
 export default defineComponent({
   name: 'PageContent',
@@ -17,20 +24,80 @@ export default defineComponent({
       type: String as PropType<string>,
       required: true,
     },
+    locales: {
+      type: Object as PropType<Locales>,
+      required: true,
+    },
     pageDatas: {
       type: Object as PropType<PageData>,
       required: true,
     },
   },
+  emits: ['update-translation', 'update:section-errors'],
   computed: {
     currentTranslation(): PageTranslationItem | undefined {
       return this.page.pageTranslations.find((t) => t.locale === this.currentLocale);
     },
-    currentTitre(): string {
-      return this.currentTranslation?.titre ?? '';
+    currentTitre: {
+      get(): string {
+        return this.currentTranslation?.titre ?? '';
+      },
+      set(value: string) {
+        this.$emit('update-translation', {
+          locale: this.currentLocale,
+          field: 'titre',
+          value,
+        });
+      },
     },
-    currentUrl(): string {
-      return this.currentTranslation?.url ?? '';
+    currentUrl: {
+      get(): string {
+        return this.currentTranslation?.url ?? '';
+      },
+      set(value: string) {
+        this.$emit('update-translation', {
+          locale: this.currentLocale,
+          field: 'url',
+          value,
+        });
+      },
+    },
+    errorsByLocale(): PageContentErrorsByLocale {
+      const result: PageContentErrorsByLocale = {};
+
+      for (const locale of this.locales.locales) {
+        const translation = this.page.pageTranslations.find((t) => t.locale === locale);
+        const titre = translation?.titre ?? '';
+        const url = translation?.url ?? '';
+
+        result[locale] = {
+          titre: titre.trim() === '' ? this.translate.page_content_form.input_titre_error : '',
+          url: url.trim() === '' ? this.translate.msg_error_url_no_unique : '',
+        };
+      }
+
+      return result;
+    },
+    fieldErrors(): PageContentFieldErrors {
+      return this.errorsByLocale[this.currentLocale] ?? { titre: '', url: '' };
+    },
+    hasError(): boolean {
+      return Object.values(this.errorsByLocale).some((localeErrors) =>
+        Object.values(localeErrors).some((error) => error !== '')
+      );
+    },
+  },
+  watch: {
+    errorsByLocale: {
+      immediate: true,
+      deep: true,
+      handler(value: PageContentErrorsByLocale) {
+        this.$emit('update:section-errors', {
+          section: 'content',
+          hasError: this.hasError,
+          errorsByLocale: value,
+        });
+      },
     },
   },
 });
@@ -59,6 +126,15 @@ export default defineComponent({
           <option v-for="(value, key) in pageDatas.list_categories" :value="parseInt(key)">{{ value }}</option>
         </select>
         <div id="list-status-help" class="form-text">{{ translate.page_content_form.list_categories_help }}</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">{{ translate.page_content_form.input_titre_label }}</label>
+        <input type="text" class="form-input" :class="fieldErrors.titre ? 'is-invalid' : ''" v-model="currentTitre" />
+        <div v-if="!fieldErrors.titre" id="list-status-help" class="form-text">
+          {{ translate.page_content_form.input_titre_info }}
+        </div>
+        <div v-if="fieldErrors.titre" class="form-text text-error">✗ {{ fieldErrors.titre }}</div>
       </div>
     </div>
   </div>

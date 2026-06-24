@@ -76,6 +76,22 @@ export default defineComponent({
           this.loading = false;
         });
     },
+
+    handleUpdatePageTranslation(payload: { locale: string; field: 'titre' | 'url'; value: string }) {
+      const translation = this.page.pageTranslations.find((t) => t.locale === payload.locale);
+
+      if (translation) {
+        translation[payload.field] = payload.value;
+      } else {
+        this.page.pageTranslations.push({
+          id: null,
+          page: this.page.id,
+          locale: payload.locale,
+          titre: payload.field === 'titre' ? payload.value : '',
+          url: payload.field === 'url' ? payload.value : '',
+        });
+      }
+    },
   },
 });
 </script>
@@ -276,7 +292,15 @@ export default defineComponent({
 
     <div id="nav-tab-page">
       <div class="" id="page-content" role="tabpanel" aria-labelledby="profile-tab">
-        <PageContent :translate="translate" :page="page" :current-locale="currentLocale" :page-datas="pageDatas" />
+        <PageContent
+          :translate="translate"
+          :page="page"
+          :current-locale="currentLocale"
+          :locales="locales"
+          :page-datas="pageDatas"
+          @update-translation="handleUpdatePageTranslation"
+          @update:section-errors="handleSectionErrors"
+        />
       </div>
       <div class="hidden" id="page-seo" role="tabpanel" aria-labelledby="profile-tab2">Seo</div>
       <div class="hidden" id="page-tag" role="tabpanel" aria-labelledby="profile-tab3">Tag</div>
