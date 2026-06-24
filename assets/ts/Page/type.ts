@@ -4,6 +4,7 @@ export interface PageContentFormTranslate {
   input_url_info: string;
   input_titre_label: string;
   input_titre_info: string;
+  input_titre_error: string;
   list_render_label: string;
   list_render_help: string;
   list_categories_label: string;
