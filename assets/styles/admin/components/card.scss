@@ -2,16 +2,27 @@
    CARD COMPONENT
    ============================================ */
 
+
 .card {
+  @apply bg-[var(--bg-card)] border border-[var(--border-color)] shadow-sm rounded-lg transition-colors duration-300;
 
   &-header {
+    @apply flex items-center justify-between border-b border-[var(--border-color)] px-5 pt-3 pb-2;
   }
 
   &-title {
+    @apply flex items-center gap-2 text-base font-semibold text-[var(--text-primary)] mb-1;
+  }
+
+  &-icon {
+    @apply w-5 h-5 text-[var(--primary)] shrink-0;
   }
 
   &-subtitle {
-}
+    @apply text-sm text-[var(--text-secondary)] m-0;
+  }
 
-}
+  &-actions {
+    @apply flex items-center gap-2;
+  }
 }

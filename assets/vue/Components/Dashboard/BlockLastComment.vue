@@ -64,10 +64,7 @@ export default {
       <div>
         <div class="card-title">
           <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-width="2"
-              d="M7 9h5m3 0h2M7 12h2m3 0h5M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-6.616a1 1 0 0 0-.67.257l-2.88 2.592A.5.5 0 0 1 8 18.477V17a1 1 0 0 0-1-1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"
-            />
+            <path stroke-width="2" d="M9 17h6l3 3v-3h2V9h-2M4 4h11v8H9l-3 3v-3H4V4Z" />
           </svg>
           {{ this.translate.title }}
         </div>

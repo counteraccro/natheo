@@ -17,147 +17,164 @@
     </p>
 
     {{ form_start(form) }}
-    <div class="card rounded-lg p-6 mb-4 mt-4">
-        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-            <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
-                <svg
-                    class="icon-lg"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    style="color: var(--primary)"
-                >
-                    <path
-                        stroke="currentColor"
-                        stroke-width="2"
-                        d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                    />
-                </svg>
-                {{ 'user.page_add.profil' | trans({}, 'user') }}
-            </h2>
-            <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]"> {{ 'user.page_add.profil.description' | trans({}, 'user') }} </p>
+    <div class="card mb-4">
+        <div class="card-header">
+            <div>
+                <div class="card-title">
+                    <svg
+                        class="card-icon"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        style="color: var(--primary)"
+                    >
+                        <path
+                            stroke="currentColor"
+                            stroke-width="2"
+                            d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                        />
+                    </svg>
+                    {{ 'user.page_add.profil' | trans({}, 'user') }}
+                </div>
+                <p class="card-subtitle">
+                    {{ 'user.page_add.profil.description' | trans({}, 'user') }}
+                </p>
+            </div>
         </div>
+        <div class="p-6">
+            <div class="form-group">
+                <label class="form-label">{{ field_label(form.email) }}</label>
+                <input type="email" class="form-input" value="{{ field_value(form.email) }}"
+                       placeholder="{{ field_label(form.email) }}" required
+                       id="{{ field_id(form.email) }}" name="{{ field_name(form.email) }}">
+                <span class="form-text">{{ field_help(form.email) }}</span>
+            </div>
 
-        <div class="form-group">
-            <label class="form-label">{{ field_label(form.email) }}</label>
-            <input type="email" class="form-input" value="{{ field_value(form.email) }}"
-                   placeholder="{{ field_label(form.email) }}" required
-                   id="{{ field_id(form.email) }}" name="{{ field_name(form.email) }}">
-            <span class="form-text">{{ field_help(form.email) }}</span>
-        </div>
+            <div class="form-group">
+                <label class="form-label">{{ field_label(form.roles) }}</label>
+                <select class="form-input" id="{{ field_id(form.roles) }}" name="{{ field_name(form.roles) }}">
+                    {% for label, value in field_choices(form.roles) %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+                <span class="form-text">{{ field_help(form.roles) }}</span>
+            </div>
 
-        <div class="form-group">
-            <label class="form-label">{{ field_label(form.roles) }}</label>
-            <select class="form-input" id="{{ field_id(form.roles) }}" name="{{ field_name(form.roles) }}">
-                {% for label, value in field_choices(form.roles) %}
-                    <option value="{{ value }}">{{ label }}</option>
-                {% endfor %}
-            </select>
-            <span class="form-text">{{ field_help(form.roles) }}</span>
-        </div>
-
-    </div>
-
-    <div class="card rounded-lg p-6 mb-4 mt-4 pb-14">
-        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-            <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
-                <svg
-                    class="icon-lg"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    style="color: var(--primary)"
-                >
-                    <path
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M7 6H5m2 3H5m2 3H5m2 3H5m2 3H5m11-1a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2M7 3h11a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm8 7a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"
-                    />
-                </svg>
-                {{ 'user.page_add.personal_data' | trans({}, 'user') }}
-            </h2>
-            <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]"> {{ 'user.page_add.personal_data.description' | trans({}, 'user') }} </p>
-        </div>
-
-        <div class="form-group">
-            <label class="form-label">{{ field_label(form.login) }}</label>
-            <input type="text" class="form-input" value="{{ field_value(form.login) }}"
-                   placeholder="{{ field_label(form.login) }}"
-                   id="{{ field_id(form.login) }}" name="{{ field_name(form.login) }}">
-            <span class="form-text">{{ field_help(form.login) }}</span>
-        </div>
-
-        <div class="form-group">
-            <label class="form-label">{{ field_label(form.firstname) }}</label>
-            <input type="text" class="form-input" value="{{ field_value(form.firstname) }}"
-                   placeholder="{{ field_label(form.firstname) }}"
-                   id="{{ field_id(form.firstname) }}" name="{{ field_name(form.firstname) }}">
-            <span class="form-text">{{ field_help(form.firstname) }}</span>
-        </div>
-
-        <div class="form-group">
-            <label class="form-label">{{ field_label(form.lastname) }}</label>
-            <input type="text" class="form-input" value="{{ field_value(form.lastname) }}"
-                   placeholder="{{ field_label(form.lastname) }}"
-                   id="{{ field_id(form.lastname) }}" name="{{ field_name(form.lastname) }}">
-            <span class="form-text">{{ field_help(form.lastname) }}</span>
-        </div>
-
-        {{ form(form) }}
-    </div>
-
-    <div class="card card rounded-lg p-6 mb-4 mt-4">
-
-        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-            <h2 class="flex gap-2 text-lg font-bold text-[var(--text-primary)]">
-                <svg
-                    class="icon-lg"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    style="color: var(--primary)"
-                >
-                    <path
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                    />
-                </svg>
-                {{ 'user.page_add.information' | trans({}, 'user') }}
-            </h2>
-            <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]"> {{ 'user.page_add.information.description' | trans({}, 'user') }} </p>
-        </div>
-
-        <div class="text-sm text-[var(--text-secondary)]">
-
-            <p class="mb-2">{{ 'user.page_add.information.role.info' | trans({}, 'user') }}</p>
-
-            {{ 'user.page_add.information.liste_role' | trans({}, 'user') }}
-            <ul class="list-inside list-disc mt-2 ms-2">
-                <li><b>{{ 'user.page_add.information.role.user' | trans({}, 'user') }}</b>
-                    : {{ 'user.page_add.information.role.user.info' | trans({}, 'user') }}</li>
-                <li><b>{{ 'user.page_add.information.role.contributeur' | trans({}, 'user') }}</b>
-                    : {{ 'user.page_add.information.role.contributeur.info' | trans({}, 'user') }}</li>
-                <li><b>{{ 'user.page_add.information.role.admin' | trans({}, 'user') }}</b>
-                    : {{ 'user.page_add.information.role.admin.info' | trans({}, 'user') }}</li>
-                <li><b>{{ 'user.page_add.information.role.super_admin' | trans({}, 'user') }}</b>
-                    : {{ 'user.page_add.information.role.super_admin.info' | trans({}, 'user') }}</li>
-            </ul>
         </div>
     </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <div>
+                <div class="card-title">
+                    <svg
+                        class="icon-lg"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        style="color: var(--primary)"
+                    >
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M7 6H5m2 3H5m2 3H5m2 3H5m2 3H5m11-1a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2M7 3h11a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm8 7a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"
+                        />
+                    </svg>
+                    {{ 'user.page_add.personal_data' | trans({}, 'user') }}
+                </div>
+                <p class="card-subtitle">
+                    {{ 'user.page_add.personal_data.description' | trans({}, 'user') }}
+                </p>
+            </div>
+        </div>
+        <div class="p-6">
+            <div class="form-group">
+                <label class="form-label">{{ field_label(form.login) }}</label>
+                <input type="text" class="form-input" value="{{ field_value(form.login) }}"
+                       placeholder="{{ field_label(form.login) }}"
+                       id="{{ field_id(form.login) }}" name="{{ field_name(form.login) }}">
+                <span class="form-text">{{ field_help(form.login) }}</span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">{{ field_label(form.firstname) }}</label>
+                <input type="text" class="form-input" value="{{ field_value(form.firstname) }}"
+                       placeholder="{{ field_label(form.firstname) }}"
+                       id="{{ field_id(form.firstname) }}" name="{{ field_name(form.firstname) }}">
+                <span class="form-text">{{ field_help(form.firstname) }}</span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">{{ field_label(form.lastname) }}</label>
+                <input type="text" class="form-input" value="{{ field_value(form.lastname) }}"
+                       placeholder="{{ field_label(form.lastname) }}"
+                       id="{{ field_id(form.lastname) }}" name="{{ field_name(form.lastname) }}">
+                <span class="form-text">{{ field_help(form.lastname) }}</span>
+            </div>
+
+
+        </div>
+    </div>
+
+    {{ form(form) }}
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <div>
+                <div class="card-title">
+                    <svg
+                        class="card-icon"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        style="color: var(--primary)"
+                    >
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                        />
+                    </svg>
+                    {{ 'user.page_add.information' | trans({}, 'user') }}
+                </div>
+                <p class="card-subtitle">
+                    {{ 'user.page_add.information.description' | trans({}, 'user') }}
+                </p>
+            </div>
+        </div>
+        <div class="p-6">
+            <div class="text-sm text-[var(--text-secondary)]">
+
+                <p class="mb-2">{{ 'user.page_add.information.role.info' | trans({}, 'user') }}</p>
+
+                {{ 'user.page_add.information.liste_role' | trans({}, 'user') }}
+                <ul class="list-inside list-disc mt-2 ms-2">
+                    <li><b>{{ 'user.page_add.information.role.user' | trans({}, 'user') }}</b>
+                        : {{ 'user.page_add.information.role.user.info' | trans({}, 'user') }}</li>
+                    <li><b>{{ 'user.page_add.information.role.contributeur' | trans({}, 'user') }}</b>
+                        : {{ 'user.page_add.information.role.contributeur.info' | trans({}, 'user') }}</li>
+                    <li><b>{{ 'user.page_add.information.role.admin' | trans({}, 'user') }}</b>
+                        : {{ 'user.page_add.information.role.admin.info' | trans({}, 'user') }}</li>
+                    <li><b>{{ 'user.page_add.information.role.super_admin' | trans({}, 'user') }}</b>
+                        : {{ 'user.page_add.information.role.super_admin.info' | trans({}, 'user') }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     {{ form_end(form) }}
 
 {% endblock %}

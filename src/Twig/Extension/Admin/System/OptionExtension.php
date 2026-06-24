@@ -154,22 +154,36 @@ class OptionExtension extends AppAdminExtension
      */
     private function generateContent(array $categories, array $optionsConfig): string
     {
-        $html = '<div id="nav-tab-option-system-content" class="card rounded-lg p-6 sm:p-8">';
+        $html = '<div id="nav-tab-option-system-content" class="card">';
 
         foreach ($categories as $key => $category) {
             $html .= '<div class="hidden" id="tab-' . $key . '" role="tabpanel" aria-labelledby="profile-tab">';
 
+            $html .= '<div class="card-header">';
+
+            $html .= '<div>';
+
+            $html .= '<div class="card-title">';
+            $html .= '<svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">';
             $html .=
-                '<div class="mb-6"><h2 class="text-xl font-semibold mb-2 text-[var(--text-primary)]">' .
-                $this->translator->trans($optionsConfig[$this->globalKey][$category]['title']) .
-                '</h2>';
-            $html .=
-                '<p class="text-sm text-[var(--text-secondary)]">' .
-                $this->translator->trans($optionsConfig[$this->globalKey][$category]['description']) .
-                '</p></div>';
+                '<path stroke-width="2" d="M21 13v-2a1 1 0 0 0-1-1h-.757l-.707-1.707.535-.536a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 0l-.536.535L14 4.757V4a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v.757l-1.707.707-.536-.535a1 1 0 0 0-1.414 0L4.929 6.343a1 1 0 0 0 0 1.414l.536.536L4.757 10H4a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h.757l.707 1.707-.535.536a1 1 0 0 0 0 1.414l1.414 1.414a1 1 0 0 0 1.414 0l.536-.535 1.707.707V20a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-.757l1.707-.708.536.536a1 1 0 0 0 1.414 0l1.414-1.414a1 1 0 0 0 0-1.414l-.535-.536.707-1.707H20a1 1 0 0 0 1-1Z"/>';
+            $html .= '<path stroke-width="2" d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>';
+            $html .= '</svg>';
+
+            $html .= $this->translator->trans($optionsConfig[$this->globalKey][$category]['title']);
+            $html .= '</div>';
+
+            $html .= '<p class="card-subtitle">';
+            $html .= $this->translator->trans($optionsConfig[$this->globalKey][$category]['description']);
+            $html .= '</p>';
+
+            $html .= '</div>';
+
+            $html .= '</div>';
 
             foreach ($optionsConfig[$this->globalKey][$category]['options'] as $keyOption => $element) {
-                $html .= '<div class="form-group mb-3 border-b border-[var(--border-color)] pb-5 last:border-0">';
+                $html .= '<div class="form-group mb-3 border-b border-[var(--border-color)] pb-5 last:border-0 p-5">';
+
                 switch ($element['type']) {
                     case 'text':
                         $html .= $this->generateInputText($keyOption, $element);
@@ -183,10 +197,11 @@ class OptionExtension extends AppAdminExtension
                     case 'select':
                         $html .= $this->generateSelect($keyOption, $element);
                         break;
-                    default:
                 }
+
                 $html .= '</div>';
             }
+
             $html .= '</div>';
         }
 
