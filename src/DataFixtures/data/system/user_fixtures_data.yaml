@@ -1,13 +1,13 @@
 user:
   User:
-    email: rcaron@tele2.fr
-    password: $2y$04$QwahcM5A9riB9EwHVjKlR.ilBCEiChthHyJL7IlnANvri5l/WbD5y
-    login: schneider.emile
+    email: navarro.pierre@tele2.fr
+    password: $2y$04$NHgaCfrTnbKYVfC2A6CIzuQltW6dpbNNeUM6CBAhyesGRou9LcVnG
+    login: zhernandez
     firstname: ''
     lastname: ''
     roles: ROLE_SUPER_ADMIN
-    disabled: 0
-    anonymous: 0
-    founder: 1
+    disabled: false
+    anonymous: false
+    founder: true
     avatar: avatar-2.png
     description: "N'oubliez pas de mettre à jour cette description"
