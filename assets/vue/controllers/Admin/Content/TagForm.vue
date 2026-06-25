@@ -282,7 +282,7 @@ export default {
         <div>
           <div class="card-title">
             <svg
-              class="icon-lg"
+              class="card-icon"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -360,7 +360,7 @@ export default {
         <div>
           <div class="card-title">
             <svg
-              class="icon-lg"
+              class="card-icon"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               width="24"
