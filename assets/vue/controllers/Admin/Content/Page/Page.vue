@@ -46,12 +46,40 @@ export default defineComponent({
       loading: false,
       currentLocale: '',
       page: {} as Page,
+      sectionErrors: {} as Record<
+        string,
+        { hasError: boolean; errorsByLocale: Record<string, Record<string, string>> }
+      >,
     };
   },
 
   mounted() {
     this.loadPage();
     this.currentLocale = this.locales.current;
+  },
+
+  computed: {
+    hasContentError(): boolean {
+      return this.sectionErrors.content?.hasError ?? false;
+    },
+    hasAnyError(): boolean {
+      return Object.values(this.sectionErrors).some((section) => section.hasError);
+    },
+    contentErrorMessages(): string[] {
+      const errorsByLocale = this.sectionErrors.content?.errorsByLocale ?? {};
+      const messages: string[] = [];
+
+      for (const locale of Object.keys(errorsByLocale)) {
+        const fieldErrors = errorsByLocale[locale];
+        for (const field of Object.keys(fieldErrors)) {
+          if (fieldErrors[field] !== '') {
+            messages.push(`${this.locales.localesTranslate[locale]} : ${fieldErrors[field]}`);
+          }
+        }
+      }
+
+      return messages;
+    },
   },
 
   methods: {
@@ -91,6 +119,17 @@ export default defineComponent({
           url: payload.field === 'url' ? payload.value : '',
         });
       }
+    },
+
+    handleSectionErrors(payload: {
+      section: string;
+      hasError: boolean;
+      errorsByLocale: Record<string, Record<string, string>>;
+    }) {
+      this.sectionErrors[payload.section] = {
+        hasError: payload.hasError,
+        errorsByLocale: payload.errorsByLocale,
+      };
     },
   },
 });
@@ -201,6 +240,11 @@ export default defineComponent({
               ></path>
             </svg>
             {{ translate.onglet_content }}
+            <span
+              v-if="hasContentError"
+              class="w-2 h-2 rounded-full"
+              style="background-color: var(--btn-danger)"
+            ></span>
           </button>
         </li>
         <li class="me-2" role="presentation">
@@ -317,6 +361,29 @@ export default defineComponent({
   <SkeletonPageHistory />
   ---
   <SkeletonPageSave />
+
+  <div
+    class="fixed right-0 bottom-0 left-0 lg:left-64 z-40 shrink-0 px-4 sm:px-6 py-3 flex items-center justify-between bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]"
+  >
+    <p v-if="!hasAnyError" class="text-xs flex items-center gap-2 text-gray-500 dark:text-gray-400">
+      <span class="w-2 h-2 rounded-full inline-block shrink-0" style="background-color: var(--btn-warning)"></span>
+      Modifications non sauvegardées
+    </p>
+    <div v-else class="text-xs flex items-center gap-2 min-w-0" style="color: var(--alert-danger-text)">
+      <span class="w-2 h-2 rounded-full inline-block shrink-0" style="background-color: var(--btn-danger)"></span>
+      <span class="truncate">{{ contentErrorMessages[0] }}</span>
+      <span v-if="contentErrorMessages.length > 1" class="shrink-0"> (+{{ contentErrorMessages.length - 1 }}) </span>
+    </div>
+    <div class="flex items-center gap-3">
+      <a :href="urls.listing" class="btn btn-outline-dark btn-sm">{{ translate.btn_back }}</a>
+      <button class="btn btn-primary btn-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        {{ translate.page_save.btn_save }}
+      </button>
+    </div>
+  </div>
 </template>
 
 <style scoped></style>
