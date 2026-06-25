@@ -18,40 +18,68 @@
     </p>
 
     {{ form_start(form) }}
-    <div class="card rounded-lg p-6 mb-4 mt-4">
-        <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-            <h2 class="text-lg font-bold text-[var(--text-primary)]"> {{ 'user.page_add.profil' | trans({}, 'user') }}</h2>
-            <p class="text-sm mt-1 mb-3 text-[var(--text-secondary)]"> {{ 'user.page_add.profil.description' | trans({}, 'user') }} </p>
+    <div class="card mb-4">
+        <div class="card-header">
+            <div>
+                <div class="card-title">
+                    <svg class="card-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" style="color: var(--primary)">
+                        <path stroke="currentColor" stroke-width="2" d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                    </svg>
+                    {{ 'user.page_add.profil' | trans({}, 'user') }}
+                </div>
+
+                <p class="card-subtitle">
+                    {{ 'user.page_add.profil.description' | trans({}, 'user') }}
+                </p>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label class="form-label">{{ field_label(form.email) }}</label>
-            <input type="email" class="form-input" value="{{ field_value(form.email) }}"
-                   placeholder="{{ field_label(form.email) }}" required
-                   id="{{ field_id(form.email) }}" name="{{ field_name(form.email) }}">
-            <span class="form-text">{{ field_help(form.email) }}</span>
-        </div>
+        <div class="p-5">
+            <div class="form-group">
+                <label class="form-label">{{ field_label(form.email) }}</label>
+                <input
+                    type="email"
+                    class="form-input"
+                    value="{{ field_value(form.email) }}"
+                    placeholder="{{ field_label(form.email) }}"
+                    required
+                    id="{{ field_id(form.email) }}"
+                    name="{{ field_name(form.email) }}"
+                >
+                <span class="form-text">{{ field_help(form.email) }}</span>
+            </div>
 
-        {% if isSuperAdmin is same as false %}
-        <div class="form-group">
-            <label class="form-label">{{ field_label(form.roles) }}</label>
-            <select class="form-input" id="{{ field_id(form.roles) }}" name="{{ field_name(form.roles) }}">
-                {% for label, value in field_choices(form.roles) %}
-                    <option value="{{ value }}">{{ label }}</option>
-                {% endfor %}
-            </select>
-            <span class="form-text">{{ field_help(form.roles) }}</span>
-        </div>
-        {% endif %}
+            {% if isSuperAdmin is same as false %}
+                <div class="form-group">
+                    <label class="form-label">{{ field_label(form.roles) }}</label>
+                    <select class="form-input" id="{{ field_id(form.roles) }}" name="{{ field_name(form.roles) }}">
+                        {% for label, value in field_choices(form.roles) %}
+                            <option value="{{ value }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="form-text">{{ field_help(form.roles) }}</span>
+                </div>
+            {% endif %}
 
-        {% if isSuperAdmin is same as false %}
-        <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="{{ field_id(form.disabled) }}" name="{{ field_name(form.disabled) }}" {% if user.disabled is same as true %} checked {% endif %}>
-            <label class="form-check-label" for="{{ field_id(form.disabled) }}">{{ field_label(form.disabled) }}</label>
+            {% if isSuperAdmin is same as false %}
+                <div class="form-check">
+                    <input
+                        type="checkbox"
+                        class="form-check-input"
+                        id="{{ field_id(form.disabled) }}"
+                        name="{{ field_name(form.disabled) }}"
+                        {% if user.disabled is same as true %} checked {% endif %}
+                    >
+                    <label class="form-check-label" for="{{ field_id(form.disabled) }}">
+                        {{ field_label(form.disabled) }}
+                    </label>
+                </div>
+                <span class="form-text">{{ field_help(form.disabled) }}</span>
+            {% endif %}
         </div>
-        <span class="form-text">{{ field_help(form.disabled) }}</span>
-        {% endif %}
     </div>
+
+
 
     <div class="card rounded-lg p-6 mb-4 mt-4 pb-14">
         <div class="border-b-1 border-b-[var(--border-color)] mb-4">
