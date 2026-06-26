@@ -8,6 +8,7 @@ import SkeletonPageSEO from '@/vue/Components/Skeleton/Page/PageSEO.vue';
 import { Locales, Page, PageData, PageTranslations, Urls } from '@/ts/Page/type';
 import axios from 'axios';
 import PageContent from '@/vue/Components/Page/PageContent.vue';
+import { initFlowbite } from 'flowbite';
 
 export default defineComponent({
   name: 'Page',
@@ -58,6 +59,16 @@ export default defineComponent({
     this.currentLocale = this.locales.current;
   },
 
+  watch: {
+    showErrorSummaryButton(value: boolean) {
+      if (value) {
+        this.$nextTick(() => {
+          initFlowbite();
+        });
+      }
+    },
+  },
+
   computed: {
     hasContentError(): boolean {
       return this.sectionErrors.content?.hasError ?? false;
@@ -65,20 +76,33 @@ export default defineComponent({
     hasAnyError(): boolean {
       return Object.values(this.sectionErrors).some((section) => section.hasError);
     },
-    contentErrorMessages(): string[] {
-      const errorsByLocale = this.sectionErrors.content?.errorsByLocale ?? {};
+    sectionLabels(): Record<string, string> {
+      return {
+        content: this.translate.onglet_content,
+        seo: this.translate.onglet_seo,
+      };
+    },
+    allErrorMessages(): string[] {
       const messages: string[] = [];
 
-      for (const locale of Object.keys(errorsByLocale)) {
-        const fieldErrors = errorsByLocale[locale];
-        for (const field of Object.keys(fieldErrors)) {
-          if (fieldErrors[field] !== '') {
-            messages.push(`${this.locales.localesTranslate[locale]} : ${fieldErrors[field]}`);
+      for (const section of Object.keys(this.sectionErrors)) {
+        const errorsByLocale = this.sectionErrors[section]?.errorsByLocale ?? {};
+        const sectionLabel = this.sectionLabels[section] ?? section;
+
+        for (const locale of Object.keys(errorsByLocale)) {
+          const fieldErrors = errorsByLocale[locale];
+          for (const field of Object.keys(fieldErrors)) {
+            if (fieldErrors[field] !== '') {
+              messages.push(`${sectionLabel} (${this.locales.localesTranslate[locale]}) : ${fieldErrors[field]}`);
+            }
           }
         }
       }
 
       return messages;
+    },
+    showErrorSummaryButton(): boolean {
+      return this.allErrorMessages.length > 1;
     },
   },
 
@@ -365,14 +389,40 @@ export default defineComponent({
   <div
     class="fixed right-0 bottom-0 left-0 lg:left-64 z-40 shrink-0 px-4 sm:px-6 py-3 flex items-center justify-between bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]"
   >
-    <p v-if="!hasAnyError" class="text-xs flex items-center gap-2 text-gray-500 dark:text-gray-400">
-      <span class="w-2 h-2 rounded-full inline-block shrink-0" style="background-color: var(--btn-warning)"></span>
-      Modifications non sauvegardées
-    </p>
-    <div v-else class="text-xs flex items-center gap-2 min-w-0" style="color: var(--alert-danger-text)">
-      <span class="w-2 h-2 rounded-full inline-block shrink-0" style="background-color: var(--btn-danger)"></span>
-      <span class="truncate">{{ contentErrorMessages[0] }}</span>
-      <span v-if="contentErrorMessages.length > 1" class="shrink-0"> (+{{ contentErrorMessages.length - 1 }}) </span>
+    <div class="flex items-center gap-2 flex-1 min-w-0">
+      <p v-if="!hasAnyError" class="text-xs flex items-center gap-2 text-gray-500 dark:text-gray-400 shrink-0">
+        <span class="w-2 h-2 rounded-full inline-block shrink-0 bg-amber-500"></span>
+        Modifications non sauvegardées
+      </p>
+      <div v-else class="text-xs flex items-center gap-2 min-w-0" style="color: var(--alert-danger-text)">
+        <span class="w-2 h-2 rounded-full inline-block shrink-0" style="background-color: var(--btn-danger)"></span>
+        <span class="truncate">{{ allErrorMessages[0] }}</span>
+        <button
+          v-if="showErrorSummaryButton"
+          id="errorSummaryButton"
+          data-dropdown-toggle="errorSummaryDropdown"
+          data-dropdown-placement="top"
+          type="button"
+          class="shrink-0 underline hover:no-underline"
+        >
+          (+{{ allErrorMessages.length - 1 }})
+        </button>
+
+        <div
+          id="errorSummaryDropdown"
+          class="z-50 hidden bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700 rounded-lg shadow-lg w-72 border border-gray-200 dark:border-gray-700"
+        >
+          <ul class="py-2 text-xs">
+            <li v-for="(message, index) in allErrorMessages" :key="index" class="flex items-start gap-2 px-4 py-2">
+              <span
+                class="w-1.5 h-1.5 rounded-full inline-block shrink-0 mt-1"
+                style="background-color: var(--btn-danger)"
+              ></span>
+              <span class="text-gray-700 dark:text-gray-300">{{ message }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
     <div class="flex items-center gap-3">
       <a :href="urls.listing" class="btn btn-outline-dark btn-sm">{{ translate.btn_back }}</a>
