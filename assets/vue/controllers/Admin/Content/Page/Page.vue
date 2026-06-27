@@ -82,8 +82,14 @@ export default defineComponent({
         seo: this.translate.onglet_seo,
       };
     },
-    allErrorMessages(): string[] {
-      const messages: string[] = [];
+    sectionTabIds(): Record<string, string> {
+      return {
+        content: 'nav-0-tab',
+        seo: 'nav-1-tab',
+      };
+    },
+    allErrors(): Array<{ section: string; locale: string; message: string }> {
+      const result: Array<{ section: string; locale: string; message: string }> = [];
 
       for (const section of Object.keys(this.sectionErrors)) {
         const errorsByLocale = this.sectionErrors[section]?.errorsByLocale ?? {};
@@ -93,16 +99,23 @@ export default defineComponent({
           const fieldErrors = errorsByLocale[locale];
           for (const field of Object.keys(fieldErrors)) {
             if (fieldErrors[field] !== '') {
-              messages.push(`${sectionLabel} (${this.locales.localesTranslate[locale]}) : ${fieldErrors[field]}`);
+              result.push({
+                section,
+                locale,
+                message: `${sectionLabel} (${this.locales.localesTranslate[locale]}) : ${fieldErrors[field]}`,
+              });
             }
           }
         }
       }
 
-      return messages;
+      return result;
+    },
+    allErrorMessages(): string[] {
+      return this.allErrors.map((error) => error.message);
     },
     showErrorSummaryButton(): boolean {
-      return this.allErrorMessages.length > 1;
+      return this.allErrors.length > 1;
     },
   },
 
@@ -129,6 +142,24 @@ export default defineComponent({
         });
     },
 
+    /**
+     * Redirect vers l'onglet et la langue ou l'erreur est présente
+     * @param error
+     */
+    goToError(error: { section: string; locale: string }) {
+      this.currentLocale = error.locale;
+
+      const tabId = this.sectionTabIds[error.section];
+      if (tabId) {
+        const tabButton = document.getElementById(tabId);
+        tabButton?.click();
+      }
+    },
+
+    /**
+     * Mise à jour Pour pageTranslation
+     * @param payload
+     */
     handleUpdatePageTranslation(payload: { locale: string; field: 'titre' | 'url'; value: string }) {
       const translation = this.page.pageTranslations.find((t) => t.locale === payload.locale);
 
@@ -413,12 +444,18 @@ export default defineComponent({
           class="z-50 hidden bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700 rounded-lg shadow-lg w-72 border border-gray-200 dark:border-gray-700"
         >
           <ul class="py-2 text-xs">
-            <li v-for="(message, index) in allErrorMessages" :key="index" class="flex items-start gap-2 px-4 py-2">
-              <span
-                class="w-1.5 h-1.5 rounded-full inline-block shrink-0 mt-1"
-                style="background-color: var(--btn-danger)"
-              ></span>
-              <span class="text-gray-700 dark:text-gray-300">{{ message }}</span>
+            <li v-for="(error, index) in allErrors" :key="index">
+              <button
+                type="button"
+                class="w-full flex items-start gap-2 px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                @click="goToError(error)"
+              >
+                <span
+                  class="w-1.5 h-1.5 rounded-full inline-block shrink-0 mt-1"
+                  style="background-color: var(--btn-danger)"
+                ></span>
+                <span class="text-gray-700 dark:text-gray-300">{{ error.message }}</span>
+              </button>
             </li>
           </ul>
         </div>
@@ -426,7 +463,7 @@ export default defineComponent({
     </div>
     <div class="flex items-center gap-3">
       <a :href="urls.listing" class="btn btn-outline-dark btn-sm">{{ translate.btn_back }}</a>
-      <button class="btn btn-primary btn-sm">
+      <button class="btn btn-primary btn-sm" :disabled="hasAnyError">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
         </svg>
