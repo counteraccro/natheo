@@ -397,6 +397,7 @@ export default defineComponent({
           :current-locale="currentLocale"
           :locales="locales"
           :page-datas="pageDatas"
+          :urls="urls"
           @update-translation="handleUpdatePageTranslation"
           @update:section-errors="handleSectionErrors"
         />

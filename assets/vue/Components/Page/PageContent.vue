@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Locales, Page, PageData, PageTranslationItem, PageTranslations } from '@/ts/Page/type';
+import { Locales, Page, PageData, PageTranslationItem, PageTranslations, Urls } from '@/ts/Page/type';
+import axios from 'axios';
 
 type PageContentFieldErrors = {
   titre: string;
@@ -32,6 +33,17 @@ export default defineComponent({
       type: Object as PropType<PageData>,
       required: true,
     },
+    urls: {
+      type: Object as PropType<Urls>,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      urlUniqueCheckResult: {} as Record<string, boolean>,
+      urlCheckPending: {} as Record<string, boolean>,
+      urlCheckTimeout: null as ReturnType<typeof setTimeout> | null,
+    };
   },
   emits: ['update-translation', 'update:section-errors'],
   computed: {
@@ -62,6 +74,9 @@ export default defineComponent({
         });
       },
     },
+    isCheckingUrl(): boolean {
+      return this.urlCheckPending[this.currentLocale] ?? false;
+    },
     errorsByLocale(): PageContentErrorsByLocale {
       const result: PageContentErrorsByLocale = {};
 
@@ -70,9 +85,16 @@ export default defineComponent({
         const titre = translation?.titre ?? '';
         const url = translation?.url ?? '';
 
+        let urlError = '';
+        if (url.trim() === '') {
+          urlError = this.translate.msg_error_url_no_unique;
+        } else if (false === this.urlUniqueCheckResult[locale]) {
+          urlError = this.translate.msg_error_url_no_unique;
+        }
+
         result[locale] = {
           titre: titre.trim() === '' ? this.translate.page_content_form.input_titre_error : '',
-          url: url.trim() === '' ? this.translate.msg_error_url_no_unique : '',
+          url: urlError,
         };
       }
 
@@ -98,6 +120,42 @@ export default defineComponent({
           errorsByLocale: value,
         });
       },
+    },
+    currentUrl(newValue: string) {
+      if (this.urlCheckTimeout) {
+        clearTimeout(this.urlCheckTimeout);
+      }
+
+      const locale = this.currentLocale;
+
+      if (newValue.trim() === '') {
+        delete this.urlUniqueCheckResult[locale];
+        this.urlCheckPending[locale] = false;
+        return;
+      }
+
+      this.urlCheckPending[locale] = true;
+
+      this.urlCheckTimeout = setTimeout(() => {
+        this.checkUrlUniqueness(newValue, locale);
+      }, 500);
+    },
+  },
+  methods: {
+    checkUrlUniqueness(url: string, locale: string) {
+      const translation = this.page.pageTranslations.find((t) => t.locale === locale);
+
+      axios
+        .post(this.urls.is_unique_url_page, { id: translation?.id ?? null, url, locale })
+        .then((response) => {
+          this.urlUniqueCheckResult[locale] = response.data.is_unique;
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.urlCheckPending[locale] = false;
+        });
     },
   },
 });
@@ -135,6 +193,32 @@ export default defineComponent({
           {{ translate.page_content_form.input_titre_info }}
         </div>
         <div v-if="fieldErrors.titre" class="form-text text-error">✗ {{ fieldErrors.titre }}</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">{{ translate.page_content_form.input_url_label }}</label>
+        <div class="relative">
+          <input type="text" class="form-input" :class="fieldErrors.url ? 'is-invalid' : ''" v-model="currentUrl" />
+          <svg
+            v-if="isCheckingUrl"
+            class="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 animate-spin"
+            style="color: var(--text-secondary)"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            ></path>
+          </svg>
+        </div>
+        <div v-if="!fieldErrors.url" id="list-status-help" class="form-text">
+          {{ translate.page_content_form.input_url_info }}
+        </div>
+        <div v-if="fieldErrors.url" class="form-text text-error">✗ {{ fieldErrors.url }}</div>
       </div>
     </div>
   </div>
