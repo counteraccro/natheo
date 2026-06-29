@@ -411,7 +411,7 @@ class PageService extends AppAdminService
         try {
             return $pageTransRepo->isUniqueUrl($url, $id);
         } catch (NonUniqueResultException $e) {
-            die($e->getMessage());
+            return false;
         }
     }
 
