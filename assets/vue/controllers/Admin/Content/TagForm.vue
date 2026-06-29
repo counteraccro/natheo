@@ -484,33 +484,36 @@ export default {
       </div>
     </div>
 
-    <div
-      v-if="this.tag.id !== null && this.templateStat !== ''"
-      class="card p-4 mb-6 mt-4"
-      style="background-color: var(--bg-hover)"
-    >
-      <h3>
-        <svg
-          class="w-4 h-4 inline"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 4v15a1 1 0 0 0 1 1h15M8 16l2.5-5.5 3 3L17.273 7 20 9.667"
-          />
-        </svg>
+    <div v-if="this.tag.id !== null && this.templateStat !== ''" class="card mb-4">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <svg
+              class="w-4 h-4 inline"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+              style="color: var(--primary)"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 4v15a1 1 0 0 0 1 1h15M8 16l2.5-5.5 3 3L17.273 7 20 9.667"
+              />
+            </svg>
 
-        {{ this.translate.statTitle }}
-      </h3>
-      <div class="form-text" v-html="this.templateStat"></div>
+            {{ this.translate.statTitle }}
+          </div>
+        </div>
+      </div>
+      <div class="p-5">
+        <div class="form-text" v-html="this.templateStat"></div>
+      </div>
     </div>
   </div>
 
