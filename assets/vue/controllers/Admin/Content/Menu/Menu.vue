@@ -594,7 +594,7 @@ export default defineComponent({
   </div>
 
   <div v-else>
-    <div class="card rounded-lg relative overflow-visible mb-5">
+    <div class="card mb-4">
       <div class="card-header">
         <div class="card-title">
           <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -608,7 +608,7 @@ export default defineComponent({
           {{ translate.title_demo }}
         </div>
       </div>
-      <div class="p-4">
+      <div class="p-5">
         <Component
           v-if="selectComponent"
           :is="selectComponent"
@@ -706,7 +706,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <div class="card rounded-lg overflow-hidden mb-5">
+    <div class="card mb-4">
       <div class="card-header">
         <div>
           <div class="card-title">
@@ -778,7 +778,7 @@ export default defineComponent({
           </button>
         </div>
       </div>
-      <div class="p-4">
+      <div class="p-5">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-5">
           <div class="space-y-4">
             <div class="form-group">
@@ -872,7 +872,7 @@ export default defineComponent({
     </div>
 
     <div class="grid grid-cols-1 xl:grid-cols-5 gap-6 items-stretch">
-      <div class="card xl:col-span-2 flex flex-col overflow-hidden" style="max-height: 680px">
+      <div class="card xl:col-span-2 flex flex-col" style="max-height: 680px">
         <div class="card-header">
           <div>
             <div class="card-title">
@@ -938,7 +938,7 @@ export default defineComponent({
         </div>
       </div>
 
-      <div class="card xl:col-span-3 overflow-hidden">
+      <div class="card xl:col-span-3">
         <div class="card-header">
           <div>
             <div class="card-title">
