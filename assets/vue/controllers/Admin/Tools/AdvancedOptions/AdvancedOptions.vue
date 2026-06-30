@@ -279,7 +279,7 @@ export default {
           </p>
         </div>
       </div>
-      <div class="p-6">
+      <div class="p-5">
         <div class="text-sm text-[var(--text-secondary)]">
           <div v-if="this.isDevEnv()">
             <p class="mb-2">{{ this.translate.switch_env_define_dev }}</p>
@@ -379,7 +379,7 @@ export default {
             </p>
           </div>
         </div>
-        <div class="p-6">
+        <div class="p-5">
           <alert-danger type="alert-danger-light" :text="this.translate.warning_danger_zone" />
 
           <div class="mb-6 pb-6 border-b-1 border-b-[var(--border-color)]">
