@@ -306,7 +306,7 @@ export default {
           </p>
         </div>
       </div>
-      <div class="p-6">
+      <div class="p-5">
         <div class="flex justify-between gap-10">
           <div class="form-group w-7/12">
             <label for="tagColor" class="form-label">{{ this.translate.colorTitle }} </label>
@@ -384,7 +384,7 @@ export default {
           </p>
         </div>
       </div>
-      <div class="p-6">
+      <div class="p-5">
         <div v-for="key in this.locales.locales">
           <div v-for="translation in tag.tagTranslations">
             <div v-if="translation.locale === key">
