@@ -152,7 +152,7 @@ export default defineComponent({
           </p>
         </div>
       </div>
-      <div class="p-6">
+      <div class="p-5">
         <div class="form-group">
           <label class="form-label">{{ translate.new_faq_input_title }}</label>
           <input
