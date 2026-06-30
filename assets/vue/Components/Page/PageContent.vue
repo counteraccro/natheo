@@ -43,10 +43,30 @@ export default defineComponent({
       urlUniqueCheckResult: {} as Record<string, boolean>,
       urlCheckPending: {} as Record<string, boolean>,
       urlCheckTimeout: null as ReturnType<typeof setTimeout> | null,
+      urlWatchReady: false,
+      autoSlugEnabled: {} as Record<string, boolean>,
+      isAutoSlugging: false,
     };
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.urlWatchReady = true;
+    });
   },
   emits: ['update-translation', 'update:section-errors'],
   computed: {
+    currentAutoSlugEnabled: {
+      get(): boolean {
+        return this.autoSlugEnabled[this.currentLocale] ?? false;
+      },
+      set(value: boolean) {
+        this.autoSlugEnabled[this.currentLocale] = value;
+
+        if (value) {
+          this.applySlugFromTitre();
+        }
+      },
+    },
     currentTranslation(): PageTranslationItem | undefined {
       return this.page.pageTranslations.find((t) => t.locale === this.currentLocale);
     },
@@ -121,7 +141,22 @@ export default defineComponent({
         });
       },
     },
+    currentTitre() {
+      if (this.currentAutoSlugEnabled) {
+        this.applySlugFromTitre();
+      }
+    },
     currentUrl(newValue: string) {
+      if (this.isAutoSlugging) {
+        this.isAutoSlugging = false;
+      } else if (this.currentAutoSlugEnabled) {
+        this.autoSlugEnabled[this.currentLocale] = false;
+      }
+
+      if (!this.urlWatchReady) {
+        return;
+      }
+
       if (this.urlCheckTimeout) {
         clearTimeout(this.urlCheckTimeout);
       }
@@ -157,6 +192,21 @@ export default defineComponent({
           this.urlCheckPending[locale] = false;
         });
     },
+
+    slugify(value: string): string {
+      return value
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/[\s_-]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    },
+    applySlugFromTitre() {
+      this.isAutoSlugging = true;
+      this.currentUrl = this.slugify(this.currentTitre);
+    },
   },
 });
 </script>
@@ -187,7 +237,17 @@ export default defineComponent({
       </div>
 
       <div class="form-group">
-        <label class="form-label">{{ translate.page_content_form.input_titre_label }}</label>
+        <div class="flex items-center justify-between">
+          <label class="form-label">{{ translate.page_content_form.input_titre_label }}</label>
+          <div class="flex items-center gap-1.5 text-xs cursor-pointer" style="color: var(--text-secondary)">
+            <div class="form-check">
+              <input type="checkbox" id="check-auto-slug" v-model="currentAutoSlugEnabled" class="form-check-input" />
+              <label class="form-check-label" for="check-auto-slug">{{
+                translate.page_content_form.auto_slug_label
+              }}</label>
+            </div>
+          </div>
+        </div>
         <input type="text" class="form-input" :class="fieldErrors.titre ? 'is-invalid' : ''" v-model="currentTitre" />
         <div v-if="!fieldErrors.titre" id="list-status-help" class="form-text">
           {{ translate.page_content_form.input_titre_info }}
