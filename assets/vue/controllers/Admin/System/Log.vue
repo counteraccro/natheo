@@ -250,7 +250,7 @@ export default {
         </p>
       </div>
     </div>
-    <div class="p-6">
+    <div class="p-5">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
         <div class="form-group">
           <label class="form-label" for="select-time">{{ this.trans.log_select_time_label }}</label>
