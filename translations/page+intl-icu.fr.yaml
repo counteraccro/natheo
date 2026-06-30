@@ -181,3 +181,4 @@ page.page.no.exist.text: "Cette page n'existe pas ou à été supprimée. Vous p
 page.btn.back: Retour
 page.btn.new: 'Nouvelle page'
 page.page_content_form.input.titre.error: 'Le titre de la page ne peut pas être vide'
+page.page_content.auto_slug.label: "Générer automatiquement l'url"

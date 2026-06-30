@@ -172,6 +172,7 @@ class PageTranslate extends AppTranslate
             'header_img_no_img' => $this->translator->trans('page.page_content.header_img.no.img', domain: 'page'),
             'header_img_remove' => $this->translator->trans('page.page_content.header_img.remove', domain: 'page'),
             'header_img_change' => $this->translator->trans('page.page_content.header_img.change', domain: 'page'),
+            'auto_slug_label' => $this->translator->trans('page.page_content.auto_slug.label', domain: 'page'),
         ];
     }
 

@@ -181,3 +181,4 @@ page.page.no.exist.text: __page.page.no.exist.text
 page.btn.back: __page.btn.back
 page.btn.new: __page.btn.new
 page.page_content_form.input.titre.error: __page.page_content_form.input.titre.error
+page.page_content.auto_slug.label: __page.page_content.auto_slug.label
