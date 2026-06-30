@@ -243,7 +243,7 @@ export default {
             {{ this.translate.title_add }}
           </span>
           <span v-else>
-            {{ 'this.translate.title_edit' }}
+            {{ this.translate.title_edit }}
           </span>
         </div>
         <p class="card-subtitle">
