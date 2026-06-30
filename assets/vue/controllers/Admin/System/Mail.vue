@@ -264,45 +264,58 @@ export default defineComponent({
       </div>
     </div>
 
-    <div class="card rounded-lg p-6 mb-4">
-      <div class="border-b-1 border-b-[var(--border-color)] mb-4">
-        <h2 class="text-lg font-bold text-[var(--text-primary)]">{{ translate.mailContentTitle }}</h2>
-        <div class="text-sm mt-1 mb-3 text-[var(--text-secondary)]">
-          {{ translate.mailContentSubtitle }}
+    <div class="card mb-4">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+              />
+            </svg>
+            {{ translate.mailContentTitle }}
+          </div>
+          <p class="card-subtitle">
+            {{ translate.mailContentSubtitle }}
+          </p>
         </div>
       </div>
-
-      <div class="mb-3">
-        <label for="titleTrans" class="form-label">{{ translate.titleTrans }}</label>
-        <input
-          type="text"
-          class="form-input"
-          :class="isValideTitle ? '' : 'is-invalid'"
-          id="titleTrans"
-          v-model="mail.titleTrans"
-          @change="checkTitle"
-        />
-        <div v-if="!isValideTitle" class="form-text text-error">
-          {{ translate.msgEmptyTitle }}
+      <div class="p-5">
+        <div class="mb-3">
+          <label for="titleTrans" class="form-label">{{ translate.titleTrans }}</label>
+          <input
+            type="text"
+            class="form-input"
+            :class="isValideTitle ? '' : 'is-invalid'"
+            id="titleTrans"
+            v-model="mail.titleTrans"
+            @change="checkTitle"
+          />
+          <div v-if="!isValideTitle" class="form-text text-error">
+            {{ translate.msgEmptyTitle }}
+          </div>
         </div>
-      </div>
 
-      <div class="mb-3">
-        <markdown-editor
-          :key="mail.key"
-          :me-id="String(mail.id)"
-          :me-value="mail.contentTrans"
-          :me-rows="15"
-          :me-translate="translateEditor"
-          :me-key-words="KeyWords"
-          :me-modules="editorModules"
-          :me-save="true"
-          :me-preview="true"
-          :me-required="true"
-          @editor-value="saveContent"
-          @editor-value-change="saveContent"
-        >
-        </markdown-editor>
+        <div class="mb-3">
+          <markdown-editor
+            :key="mail.key"
+            :me-id="String(mail.id)"
+            :me-value="mail.contentTrans"
+            :me-rows="15"
+            :me-translate="translateEditor"
+            :me-key-words="KeyWords"
+            :me-modules="editorModules"
+            :me-save="true"
+            :me-preview="true"
+            :me-required="true"
+            @editor-value="saveContent"
+            @editor-value-change="saveContent"
+          >
+          </markdown-editor>
+        </div>
       </div>
     </div>
   </div>
