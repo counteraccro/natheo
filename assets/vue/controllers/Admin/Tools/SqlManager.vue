@@ -405,7 +405,7 @@ export default {
           </div>
         </div>
       </div>
-      <div class="p-6">
+      <div class="p-5">
         <div class="form-control mb-3">
           <label for="name-query" class="form-label">{{ translate.label_name }} *</label>
           <input
