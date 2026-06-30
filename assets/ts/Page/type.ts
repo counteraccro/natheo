@@ -14,6 +14,7 @@ export interface PageContentFormTranslate {
   header_img_no_img: string;
   header_img_remove: string;
   header_img_change: string;
+  auto_slug_label: string;
   mediatheque: Record<string, string>;
 }
 
