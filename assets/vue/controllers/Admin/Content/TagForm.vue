@@ -489,7 +489,7 @@ export default {
         <div>
           <div class="card-title">
             <svg
-              class="w-4 h-4 inline"
+              class="card-icon"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               width="24"
