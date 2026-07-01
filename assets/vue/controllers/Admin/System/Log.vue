@@ -409,7 +409,7 @@ export default {
         </p>
       </div>
 
-      <div v-else class="p-6 pt-0">
+      <div v-else class="p-5">
         <div class="input-group mb-4">
           <svg class="icon icon-left" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
