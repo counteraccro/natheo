@@ -11,24 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé option nom du site
-     * @var string
-     */
-    //const string OS_SITE_NAME = 'OS_SITE_NAME';
-
-    /**
-     * Valeur par défaut défini pour OS_SITE_NAME
-     * @var string
-     */
-    //const string OS_SITE_NAME_DEFAULT_VALUE = 'Nathéo CMS';
-
-    /**
-     * Clé option theme du site
-     * @var string
-     */
-    const string OS_THEME_SITE = 'OS_THEME_SITE';
-
-    /**
      * Clé pour le logo du site
      */
     const string OS_LOGO_SITE = 'OS_LOGO_SITE';

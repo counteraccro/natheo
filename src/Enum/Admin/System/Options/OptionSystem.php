@@ -16,6 +16,11 @@ enum OptionSystem: string
      */
     case OS_SITE_NAME = 'OS_SITE_NAME';
 
+    /**
+     * Clé option theme du site
+     */
+    case OS_THEME_SITE = 'OS_THEME_SITE';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
     ];

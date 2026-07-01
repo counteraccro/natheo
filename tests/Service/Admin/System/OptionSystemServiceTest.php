@@ -110,8 +110,8 @@ class OptionSystemServiceTest extends AppWebTestCase
      */
     public function testSaveValueByKee(): void
     {
-        $this->optionSystemService->saveValueByKee(OptionSystemKey::OS_THEME_SITE, 'edit-purple');
-        $result = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_THEME_SITE);
+        $this->optionSystemService->saveValueByKee(OptionSystemEnum::OS_THEME_SITE->value, 'edit-purple');
+        $result = $this->optionSystemService->getValueByKey(OptionSystemEnum::OS_THEME_SITE->value);
         $this->assertNotNull($result);
         $this->assertEquals('edit-purple', $result);
     }

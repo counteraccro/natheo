@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Admin\System;
 
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\System\OptionSystemService;
 use App\Tests\AppWebTestCase;
 use App\Utils\System\Options\OptionSystemKey;
@@ -42,7 +43,7 @@ class OptionSystemControllerTest extends AppWebTestCase
         $this->client->loginUser($userSuperAdm, 'admin');
 
         $data = [
-            'key' => OptionSystemKey::OS_THEME_SITE,
+            'key' => OptionSystem::OS_THEME_SITE->value,
             'value' => 'theme-test-unit',
         ];
         $this->client->request(
@@ -59,7 +60,7 @@ class OptionSystemControllerTest extends AppWebTestCase
 
         /** @var OptionSystemService $optionSystemService */
         $optionSystemService = $this->container->get(OptionSystemService::class);
-        $result = $optionSystemService->getValueByKey(OptionSystemKey::OS_THEME_SITE);
+        $result = $optionSystemService->getValueByKey(OptionSystem::OS_THEME_SITE->value);
         $this->assertEquals('theme-test-unit', $result);
     }
 }

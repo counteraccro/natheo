@@ -104,7 +104,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_THEME_SITE,
+            'key' => OptionSystemEnum::OS_THEME_SITE->value,
             'value' => 'purple',
         ];
         $this->createOptionSystem($data);
