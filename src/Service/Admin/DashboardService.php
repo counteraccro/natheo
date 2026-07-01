@@ -79,7 +79,7 @@ class DashboardService extends AppAdminService
             $configComplete = false;
         }
 
-        if ($adresseSite === OptionSystemKey::OS_ADRESSE_SITE_DEFAULT_VALUE) {
+        if ($adresseSite === OptionSystem::OS_ADRESSE_SITE->getDefault()) {
             $body[OptionSystem::OS_ADRESSE_SITE->value] = [
                 'success' => false,
                 'msg' => $translator->trans(

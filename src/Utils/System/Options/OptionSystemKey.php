@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Valeur par défaut pour la clé OS_ADRESSE_SITE
-     * @var string
-     */
-    const string OS_ADRESSE_SITE_DEFAULT_VALUE = 'http://www.value-must-be-change.com';
-
-    /**
      * Clé option signature email
      * @var string
      */

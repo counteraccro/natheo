@@ -104,9 +104,16 @@ enum OptionSystem: string
      */
     case OS_ADRESSE_SITE = 'OS_ADRESSE_SITE';
 
+    /**
+     * Valeur par défaut pour la clé OS_ADRESSE_SITE
+     * @var string
+     */
+    const string OS_ADRESSE_SITE_DEFAULT_VALUE = 'http://www.value-must-be-change.com';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],
+        self::OS_ADRESSE_SITE->value => ['default' => 'http://www.value-must-be-change.com'],
     ];
 
     /**
