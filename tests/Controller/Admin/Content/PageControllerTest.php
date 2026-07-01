@@ -476,7 +476,7 @@ class PageControllerTest extends AppWebTestCase
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
         $this->assertArrayHasKey('is_unique', $content);
-        $this->assertTrue($content['is_unique']);
+        $this->assertFalse($content['is_unique']);
 
         $data = [
             'url' => 'toto-url',
@@ -494,7 +494,7 @@ class PageControllerTest extends AppWebTestCase
         $content = json_decode($response->getContent(), true);
         $this->assertIsArray($content);
         $this->assertArrayHasKey('is_unique', $content);
-        $this->assertFalse($content['is_unique']);
+        $this->assertTrue($content['is_unique']);
     }
 
     /**

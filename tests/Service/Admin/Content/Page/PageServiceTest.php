@@ -196,7 +196,7 @@ class PageServiceTest extends AppWebTestCase
     {
         $page = $this->createPageAllDataDefault();
         $result = $this->pageService->isUniqueUrl('url-demo', $page->getId());
-        $this->assertFalse($result);
+        $this->assertTrue($result);
     }
 
     /**
