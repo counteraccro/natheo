@@ -92,7 +92,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_DEFAULT_LANGUAGE,
+            'key' => OptionSystemEnum::OS_DEFAULT_LANGUAGE->value,
             'value' => 'fr',
         ];
         $this->createOptionSystem($data);

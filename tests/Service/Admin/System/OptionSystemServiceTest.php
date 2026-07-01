@@ -61,9 +61,9 @@ class OptionSystemServiceTest extends AppWebTestCase
         $this->assertEquals(OptionSystemEnum::OS_OPEN_SITE->value, $result->getKey());
         $this->assertEquals('1', $result->getValue());
 
-        $result = $this->optionSystemService->getByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE);
+        $result = $this->optionSystemService->getByKey(OptionSystemEnum::OS_DEFAULT_LANGUAGE->value);
         $this->assertInstanceOf(OptionSystem::class, $result);
-        $this->assertEquals(OptionSystemKey::OS_DEFAULT_LANGUAGE, $result->getKey());
+        $this->assertEquals(OptionSystemEnum::OS_DEFAULT_LANGUAGE->value, $result->getKey());
         $this->assertEquals('fr', $result->getValue());
     }
 
@@ -83,7 +83,7 @@ class OptionSystemServiceTest extends AppWebTestCase
         $this->assertNotNull($result);
         $this->assertEquals('1', $result);
 
-        $result = $this->optionSystemService->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE);
+        $result = $this->optionSystemService->getValueByKey(OptionSystemEnum::OS_DEFAULT_LANGUAGE->value);
         $this->assertNotNull($result);
         $this->assertEquals('fr', $result);
 

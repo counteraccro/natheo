@@ -68,6 +68,12 @@ enum OptionSystem: string
      */
     case OS_ALLOW_DELETE_DATA = 'OS_ALLOW_DELETE_DATA';
 
+    /**
+     * Clé option langue par défaut pour le site
+     * @var string
+     */
+    case OS_DEFAULT_LANGUAGE = 'OS_DEFAULT_LANGUAGE';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],

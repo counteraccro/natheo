@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace App\Service\Admin;
 
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Utils\System\Options\OptionSystemKey;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityRepository;
@@ -263,7 +264,7 @@ class AppAdminService extends AppAdminHandlerService
         if ($this->getRequestStack()->getCurrentRequest() !== null) {
             $current = $this->getRequestStack()->getCurrentRequest()->getLocale();
         } else {
-            $current = $optionSystemService->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE);
+            $current = $optionSystemService->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value);
         }
 
         $locales = explode('|', $this->getParameterBag()->get('app.supported_locales'));

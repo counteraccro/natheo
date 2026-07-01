@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Service\Admin\System;
 
 use App\Entity\Admin\System\Mail;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Service\Admin\AppAdminService;
 use App\Service\Admin\GridService;
 use App\Utils\Markdown;
@@ -352,7 +353,7 @@ class MailService extends AppAdminService
         $optionSystemService = $this->getOptionSystemService();
 
         $mailTranslate = $mail->geMailTranslationByLocale(
-            $optionSystemService->getValueByKey(OptionSystemKey::OS_DEFAULT_LANGUAGE),
+            $optionSystemService->getValueByKey(OptionSystem::OS_DEFAULT_LANGUAGE->value),
         );
         $content = str_replace(
             $tabKeyWord[KeyWord::KEY_SEARCH],
