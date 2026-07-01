@@ -56,7 +56,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_FRONT_SCRIPT_TOP,
+            'key' => OptionSystemEnum::OS_FRONT_SCRIPT_TOP->value,
             'value' => '',
         ];
         $this->createOptionSystem($data);

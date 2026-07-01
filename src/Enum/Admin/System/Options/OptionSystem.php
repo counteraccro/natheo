@@ -32,6 +32,12 @@ enum OptionSystem: string
      */
     case OS_OPEN_SITE = 'OS_OPEN_SITE';
 
+    /**
+     * Clé option script header
+     * @var string
+     */
+    case OS_FRONT_SCRIPT_TOP = 'OS_FRONT_SCRIPT_TOP';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],

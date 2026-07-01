@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé option script header
-     * @var string
-     */
-    const string OS_FRONT_SCRIPT_TOP = 'OS_FRONT_SCRIPT_TOP';
-
-    /**
      * Clé option script début body
      * @var string
      */

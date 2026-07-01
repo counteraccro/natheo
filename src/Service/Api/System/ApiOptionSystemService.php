@@ -25,7 +25,7 @@ class ApiOptionSystemService extends AppApiService
     {
         return [
             OptionSystem::OS_SITE_NAME->value,
-            OptionSystemKey::OS_FRONT_SCRIPT_TOP,
+            OptionSystem::OS_FRONT_SCRIPT_TOP->value,
             OptionSystemKey::OS_FRONT_SCRIPT_START_BODY,
             OptionSystemKey::OS_FRONT_SCRIPT_END_BODY,
             OptionSystemKey::OS_OPEN_COMMENT,
