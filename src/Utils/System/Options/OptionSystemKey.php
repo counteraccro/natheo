@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé option script fin body
-     * @var string
-     */
-    const string OS_FRONT_SCRIPT_END_BODY = 'OS_FRONT_SCRIPT_END_BODY';
-
-    /**
      * Clé option remplacement user delete
      * @var string
      */
