@@ -56,6 +56,12 @@ enum OptionSystem: string
      */
     case OS_REPLACE_DELETE_USER = 'OS_REPLACE_DELETE_USER';
 
+    /**
+     * Clé option confirmation quitter form
+     * @var string
+     */
+    case OS_CONFIRM_LEAVE_FORM = 'OS_CONFIRM_LEAVE_FORM';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],

@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé option confirmation quitter form
-     * @var string
-     */
-    const string OS_CONFIRM_LEAVE_FORM = 'OS_CONFIRM_LEAVE_FORM';
-
-    /**
      * Clé option authorisation suppression de données
      * @var string
      */

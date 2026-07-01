@@ -80,7 +80,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_CONFIRM_LEAVE_FORM,
+            'key' => OptionSystemEnum::OS_CONFIRM_LEAVE_FORM->value,
             'value' => '1',
         ];
         $this->createOptionSystem($data);
