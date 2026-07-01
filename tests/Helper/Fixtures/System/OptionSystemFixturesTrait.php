@@ -110,7 +110,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_NB_ELEMENT,
+            'key' => OptionSystemEnum::OS_NB_ELEMENT->value,
             'value' => '20',
         ];
         $this->createOptionSystem($data);

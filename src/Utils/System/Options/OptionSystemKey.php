@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé option nb élements par défaut pour les users
-     * @var string
-     */
-    const string OS_NB_ELEMENT = 'OS_NB_ELEMENT';
-
-    /**
      * Clé option qui permet de sauvegarder ou non les logs
      * @var string
      */

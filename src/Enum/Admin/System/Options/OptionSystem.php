@@ -74,6 +74,12 @@ enum OptionSystem: string
      */
     case OS_DEFAULT_LANGUAGE = 'OS_DEFAULT_LANGUAGE';
 
+    /**
+     * Clé option nb élements par défaut pour les users
+     * @var string
+     */
+    case OS_NB_ELEMENT = 'OS_NB_ELEMENT';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],
