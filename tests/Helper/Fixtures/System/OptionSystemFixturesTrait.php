@@ -62,7 +62,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_FRONT_SCRIPT_START_BODY,
+            'key' => OptionSystemEnum::OS_FRONT_SCRIPT_START_BODY->value,
             'value' => '',
         ];
         $this->createOptionSystem($data);
