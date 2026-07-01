@@ -316,7 +316,7 @@ class MailService extends AppAdminService
 
         return match ($key) {
             self::FROM => $optionSystemService->getValueByKey(OptionSystem::OS_MAIL_FROM->value),
-            self::REPLY_TO => $optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_REPLY_TO),
+            self::REPLY_TO => $optionSystemService->getValueByKey(OptionSystem::OS_MAIL_REPLY_TO->value),
             default => null,
         };
     }

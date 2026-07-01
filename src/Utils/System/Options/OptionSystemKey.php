@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé option pour récupérer l'email de réponse
-     * @var string
-     */
-    const string OS_MAIL_REPLY_TO = 'OS_MAIL_REPLY_TO';
-
-    /**
      * Clé option url racine du site
      * @var string
      */
