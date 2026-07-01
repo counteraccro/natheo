@@ -11,12 +11,6 @@ namespace App\Utils\System\Options;
 class OptionSystemKey
 {
     /**
-     * Clé option url racine du site
-     * @var string
-     */
-    const string OS_ADRESSE_SITE = 'OS_ADRESSE_SITE';
-
-    /**
      * Valeur par défaut pour la clé OS_ADRESSE_SITE
      * @var string
      */

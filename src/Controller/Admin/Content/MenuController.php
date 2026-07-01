@@ -244,7 +244,7 @@ class MenuController extends AppAdminController
 
         $name = $optionSystemService->getValueByKey(OptionSystem::OS_SITE_NAME->value);
         $logo = $optionSystemService->getValueByKey(OptionSystem::OS_LOGO_SITE->value);
-        $urlSite = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
+        $urlSite = $optionSystemService->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value);
         $allElement = [];
         if (isset($menu['allElements'])) {
             $allElement = $menu['allElements'];

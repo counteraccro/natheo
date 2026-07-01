@@ -134,7 +134,7 @@ trait OptionSystemFixturesTrait
         $this->createOptionSystem($data);
 
         $data = [
-            'key' => OptionSystemKey::OS_ADRESSE_SITE,
+            'key' => OptionSystemEnum::OS_ADRESSE_SITE->value,
             'value' => 'http://www.value-must-be-change.com',
         ];
         $this->createOptionSystem($data);

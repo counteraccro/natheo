@@ -12,6 +12,7 @@ namespace App\Service\Admin;
 use App\Entity\Admin\Content\Page\Page;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\System\Options\OptionSystemKey;
+use App\Enum\Admin\System\Options\OptionSystem;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -40,7 +41,7 @@ class MarkdownEditorService extends AppAdminService
     private function parseInternalLink(string $text): string
     {
         $locale = $this->getLocales()['current'];
-        $url = $this->getOptionSystemService()->getByKey(OptionSystemKey::OS_ADRESSE_SITE)->getValue();
+        $url = $this->getOptionSystemService()->getByKey(OptionSystem::OS_ADRESSE_SITE->value)->getValue();
         $tabCategories = $this->getPageService()->getAllCategories();
 
         $re = '/(P#(\d+))/m';

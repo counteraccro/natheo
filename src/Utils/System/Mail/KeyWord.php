@@ -163,7 +163,7 @@ class KeyWord
      */
     private function getGlobalKeyWord(User $user, OptionSystemService $optionSystemService): array
     {
-        $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
+        $url = $optionSystemService->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value);
         $siteName = $optionSystemService->getValueByKey(OptionSystem::OS_SITE_NAME->value);
 
         return [
@@ -216,7 +216,7 @@ class KeyWord
         string $urlChangePassword,
         OptionSystemService $optionSystemService,
     ): array {
-        $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
+        $url = $optionSystemService->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value);
 
         $tab = $this->getGlobalKeyWord($user, $optionSystemService);
         $tab2 = [
@@ -332,7 +332,7 @@ class KeyWord
         string $urlPath,
         OptionSystemService $optionSystemService,
     ): array {
-        $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
+        $url = $optionSystemService->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value);
         $minutes = $optionSystemService->getValueByKey(OptionSystemKey::OS_MAIL_RESET_PASSWORD_TIME);
 
         $tab = $this->getGlobalKeyWord($user, $optionSystemService);

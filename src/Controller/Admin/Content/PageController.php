@@ -234,7 +234,7 @@ class PageController extends AppAdminController
                 'list_content' => $pageService->getAllContent(),
                 'list_categories' => $pageService->getAllCategories(),
                 'list_comments_status' => $commentService->getAllStatus(),
-                'url_front' => $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE),
+                'url_front' => $optionSystemService->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value),
                 'options_commentaire' => [
                     'open' => $optionSystemService->getValueByKey(OptionSystemKey::OS_OPEN_COMMENT),
                     'new_comment' => $optionSystemService->getValueByKey(
@@ -621,7 +621,7 @@ class PageController extends AppAdminController
         }
 
         $siteName = $optionSystemService->getValueByKey(OptionSystem::OS_SITE_NAME->value);
-        $url = $optionSystemService->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
+        $url = $optionSystemService->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value);
         $logo = $optionSystemService->getValueByKey(OptionSystem::OS_LOGO_SITE->value);
 
         return $this->render('admin/content/page/preview.html.twig', [

@@ -15,6 +15,7 @@ use App\Entity\Admin\Content\Menu\Menu;
 use App\Entity\Admin\Content\Page\Page;
 use App\Entity\Admin\Content\Tag\Tag;
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Utils\Content\Page\PageConst;
 use App\Utils\System\Options\OptionSystemKey;
 use App\Utils\System\Options\OptionUserKey;
@@ -308,7 +309,7 @@ class GlobalSearchService extends AppAdminService
             $page->getUser()->getOptionUserByKey(OptionUserKey::OU_DEFAULT_PERSONAL_DATA_RENDER)->getValue(),
         );
 
-        $url = $this->getOptionSystemService()->getValueByKey(OptionSystemKey::OS_ADRESSE_SITE);
+        $url = $this->getOptionSystemService()->getValueByKey(OptionSystem::OS_ADRESSE_SITE->value);
         $pageService = $this->getPageService();
         $preview =
             $url .

@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Service\Api;
 
 use App\Entity\Admin\System\User;
+use App\Enum\Admin\System\Options\OptionSystem;
 use App\Utils\System\Options\OptionSystemKey;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityRepository;
@@ -103,10 +104,10 @@ class AppApiService extends AppApiHandlerService
     public function getOptionSystemApi(): array
     {
         $optionSystemService = $this->getOptionSystemService();
-        $optionAdresse = $optionSystemService->getByKey(OptionSystemKey::OS_ADRESSE_SITE);
+        $optionAdresse = $optionSystemService->getByKey(OptionSystem::OS_ADRESSE_SITE->value);
 
         return [
-            OptionSystemKey::OS_ADRESSE_SITE => $optionAdresse->getValue(),
+            OptionSystem::OS_ADRESSE_SITE->value => $optionAdresse->getValue(),
         ];
     }
 

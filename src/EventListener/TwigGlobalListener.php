@@ -16,5 +16,6 @@ class TwigGlobalListener
     {
         $this->twig->addGlobal('os_site_name', OptionSystem::OS_SITE_NAME->value);
         $this->twig->addGlobal('os_confirm_leave_form', OptionSystem::OS_CONFIRM_LEAVE_FORM->value);
+        $this->twig->addGlobal('os_adresse_site', OptionSystem::OS_ADRESSE_SITE->value);
     }
 }

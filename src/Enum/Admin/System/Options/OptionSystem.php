@@ -98,6 +98,12 @@ enum OptionSystem: string
      */
     case OS_MAIL_REPLY_TO = 'OS_MAIL_REPLY_TO';
 
+    /**
+     * Clé option url racine du site
+     * @var string
+     */
+    case OS_ADRESSE_SITE = 'OS_ADRESSE_SITE';
+
     const CONFIG = [
         self::OS_SITE_NAME->value => ['default' => 'Nathéo CMS'],
         self::OS_OPEN_SITE->value => ['default' => '0'],
